@@ -29,7 +29,7 @@ template<typename, size_t>
 struct PREV_SQUARE;
 
 template<typename, size_t, size_t>
-struct PREV_BIT;
+struct FIND_BIT;
 
 // include template definitions inside header since "export" keyword is not supported by Visual C++
 #include "BoardMetaTemplates.hpp"

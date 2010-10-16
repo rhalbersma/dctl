@@ -32,11 +32,40 @@ void generate_Zobrist(void)
 	std::cout << std::endl;
 }
 
+#include "Board/Board.h"
+#include "Board/BoardPredicates.h"
+
 int main(void)
 {
-        PerftSuite::International();
-	PerftSuite::ChessBoardVariants();
-	PerftSuite::ItalianRuleBook();
+        std::cout << ChessBoard::MIN_BITS << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 0>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 1>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 2>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 3>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 4>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 5>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 6>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 7>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 8>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 9>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 10>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 11>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 12>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 13>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 14>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 15>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 16>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 17>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 18>::VALUE) << std::endl;
+
+        std::cout << (IS_GHOST_BIT<ChessBoard, 40>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 41>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 42>::VALUE) << std::endl;
+        std::cout << (IS_GHOST_BIT<ChessBoard, 43>::VALUE) << std::endl;
+
+        //PerftSuite::International();
+	//PerftSuite::ChessBoardVariants();
+	//PerftSuite::ItalianRuleBook();
 
 	std::cout << "End of program." << std::endl;
         for (;;);

@@ -78,7 +78,7 @@ enum { INVALID = 999 };
 template<typename Board, size_t B>
 struct BIT2SQUARE
 {
-        static const size_t VALUE = (Board::MIN_BITS <= B|| IS_GHOST_BIT<Board, B>::VALUE)? INVALID : PREV_SQUARE<Board, B>::VALUE + 1;
+        static const size_t VALUE = IS_GHOST_BIT<Board, B>::VALUE? INVALID : PREV_SQUARE<Board, B>::VALUE + 1;
 };
 
 template<typename Board>
@@ -90,7 +90,7 @@ struct BIT2SQUARE<Board, 0>
 template<typename Board, size_t SQ>
 struct SQUARE2BIT
 {
-        static const size_t VALUE = (Board::NUM_SQUARES <= SQ)? INVALID : PREV_BIT<Board, SQ-1, Board::NUM_BITS-1>::VALUE;
+        static const size_t VALUE = IS_INVALID_SQUARE<Board, SQ>::VALUE? INVALID : FIND_BIT<Board, SQ, Board::NUM_BITS-1>::VALUE;
 };
 
 template<typename Board>
@@ -112,13 +112,13 @@ struct PREV_SQUARE<Board, 0>
 };
 
 template<typename Board, size_t SQ, size_t B>
-struct PREV_BIT
+struct FIND_BIT
 {
-	static const size_t VALUE = (PREV_SQUARE<Board, B>::VALUE == SQ)? B : PREV_BIT<Board, SQ, B-1>::VALUE;
+	static const size_t VALUE = (BIT2SQUARE<Board, B>::VALUE == SQ)? B : FIND_BIT<Board, SQ, B-1>::VALUE;
 };
 
 template<typename Board, size_t SQ>
-struct PREV_BIT<Board, SQ, 0>
+struct FIND_BIT<Board, SQ, 0>
 {
 	static const size_t VALUE = INVALID;
 };
