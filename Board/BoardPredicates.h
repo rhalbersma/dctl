@@ -2,6 +2,9 @@
 #include "../Utilities/IntegerTypes.h"
 
 template<typename, size_t>
+struct IS_INVALID_SQUARE;
+
+template<typename, size_t>
 class IS_GHOST_BIT;
 
 template<typename, bool, size_t>

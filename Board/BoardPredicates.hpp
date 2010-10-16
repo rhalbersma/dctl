@@ -1,5 +1,11 @@
 #include "Direction.h"
 
+template<typename Board, size_t SQ>
+struct IS_INVALID_SQUARE
+{
+        static const bool VALUE = SQ >= Board::NUM_SQUARES;
+};
+
 template<typename Board, size_t B>
 class IS_GHOST_BIT
 {
@@ -10,7 +16,7 @@ private:
                 EQ_LO = R == Board::GHOST_LO,   // left of odd rows
                 EQ_RO = R == Board::GHOST_RO,   // right of odd rows
                 EQ_LE = R == Board::GHOST_LE,   // left of even rows
-                EQ_MB = B > Board::MIN_BITS     // beyond minimal number of bits
+                EQ_MB = B >= Board::MIN_BITS    // beyond minimal number of bits
         };
 
 public:
