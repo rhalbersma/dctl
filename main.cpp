@@ -16,6 +16,8 @@ int main(void)
 
 /*
 TODO:
+-decouple internal/external board layout
+-generalize ghost columns
 -implement small endgame tests (3 vs 1, 2 vs 1)
 -implement test harness for hash function
 */
