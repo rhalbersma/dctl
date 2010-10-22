@@ -73,7 +73,7 @@ Position<Board> read_position_string<FEN, Board, Token>::operator()(const std::s
 }
 
 template<typename Token> template<typename Board>
-std::string write_position_string<FEN, Token>::operator()(const Position<Board>& p)
+std::string write_position_string<FEN, Token>::operator()(const Position<Board>& p) const
 {
         std::stringstream sstr;
 	bool c;
@@ -147,26 +147,15 @@ Position<Board> read_position_string<DXP, Board, Token>::operator()(const std::s
 }
 
 template<typename Token> template<typename Board>
-std::string write_position_string<DXP, Token>::operator()(const Position<Board>& p)
+std::string write_position_string<DXP, Token>::operator()(const Position<Board>& p) const
 {
 	std::stringstream sstr;
-	BitBoard b;
+	size_t b;
 
 	sstr << Token::COLOR[p.to_move()];				// side to move
 	for (size_t i = 0; i < Board::NUM_SQUARES; ++i) {
-		b = BitBoard(1) << Board::TABLE_SQUARE2BIT[i];          // convert square to bit
-		if (p.pieces(Side::BLACK) & b) {
-			if (p.kings() & b)
-                                sstr << Token::UPPER[Side::BLACK];	// black king
-			else
-                                sstr << Token::LOWER[Side::BLACK];	// black man
-		} else if (p.pieces(Side::WHITE) & b) {
-			if (p.kings() & b)
-                                sstr << Token::UPPER[Side::WHITE];	// white king
-			else
-                                sstr << Token::LOWER[Side::WHITE];      // white man
-		} else
-			sstr << Token::EMPTY;			        // empty square
+		b = Board::TABLE_SQUARE2BIT[i];                         // convert square to bit
+		write_position_bit<Board, Token>(p, b);                 // write content
 	}
 	return sstr.str();
 }
@@ -174,42 +163,31 @@ std::string write_position_string<DXP, Token>::operator()(const Position<Board>&
 //+----------------------------------------------------------------------------+
 
 template<typename Protocol, typename Token> template<typename Board>
-std::string write_position_stream<Protocol, Token>::operator()(const Position<Board>& p)
+std::string write_position_layout<Protocol, Token>::operator()(const Position<Board>& p) const
 {
-	std::stringstream sstr;
-        size_t b1, q1, r1, c1, r2, b2;
-        BitBoard b;
+        return write_bit_layout<Board>()(std::bind1st(write_position_bit<Board, Token>(), p));
+}
 
-        for (size_t i = 0; i < Board::NUM_SQUARES; ++i) {
-                b1 = Board::TABLE_SQUARE2BIT[i];                                // convert square to bit
-                q1 = b1 / Board::GHOST_MODULO;                                  // b1 = GHOST_MODULO * q1 + r1
-                r1 = b1 % Board::GHOST_MODULO;
-                c1 = r1 > Board::GHOST_RE;                                      // compare r1 to end of first row
-                b2 = b1 + Board::GHOST_MODULO - 1;
-                r2 = b2 % Board::GHOST_MODULO;                                  // r2 == (r1 - 1) mod GHOST_MODULO
+//+----------------------------------------------------------------------------+
 
-                if ((r2 == (c1? Board::GHOST_LO : Board::GHOST_LE)) && (c1 ^ Board::PARITY))
-                        sstr << std::setw(2) << WHITE_SPACE;                    // start of an indented row
+template<typename Board, typename Token>
+std::string write_position_bit<Board, Token>::operator()(const Position<Board>& p, size_t b) const
+{
+        const BitBoard bb = BitBoard(1) << b;
+        std::stringstream sstr;
 
-                sstr << std::setw(2);
-                b = BitBoard(1) << b1;
-                if (p.pieces(Side::BLACK) & b) {
-                        if (p.kings() & b)
-				sstr << Token::UPPER[Side::BLACK];              // black king
-                        else
-                                sstr << Token::LOWER[Side::BLACK];              // black man
-                } else if (p.pieces(Side::WHITE) & b) {
-                        if (p.kings() & b)
-                                sstr << Token::UPPER[Side::WHITE];              // white king
-                        else
-                                sstr << Token::LOWER[Side::WHITE];              // white man
-                } else
-                        sstr << Token::EMPTY;                                   // empty square
-
-                if (r1 == (c1? Board::GHOST_RO : Board::GHOST_RE) - 1)
-                        sstr << std::endl;                                      // start of a new row
+        if (p.pieces(Side::BLACK) & bb) {
+                if (p.kings() & bb)
+			sstr << Token::UPPER[Side::BLACK];              // black king
                 else
-                        sstr << std::setw(2) << WHITE_SPACE;                    // space between squares
-        }
+                        sstr << Token::LOWER[Side::BLACK];              // black man
+        } else if (p.pieces(Side::WHITE) & bb) {
+                if (p.kings() & bb)
+                        sstr << Token::UPPER[Side::WHITE];              // white king
+                else
+                        sstr << Token::LOWER[Side::WHITE];              // white man
+        } else
+                sstr << Token::EMPTY;                                   // empty square
+
         return sstr.str();
 }

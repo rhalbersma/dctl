@@ -14,6 +14,7 @@ void PerftSuite::International(void)
         Position<> i10;
         Position<> random178(read_position_string<FEN>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
         Position<> Woldouby(read_position_string<FEN>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
+        std::cout << write_square_layout<InternationalBoard>()() << std::endl;
         std::cout << write_bit_layout<InternationalBoard>()() << std::endl;
 
         Perft::root<InternationalRules>(i10, 11);
@@ -71,9 +72,9 @@ void PerftSuite::ItalianRuleBook(void)
                 "W:WK31:B18,20,K27,K28"         // Art. 6.10
         };
 
-        std::cout << write_position_stream<FEN>()(ITA_empty) << std::endl;
+        std::cout << write_position_layout<FEN>()(ITA_empty) << std::endl;
         write_square_layout<ITA_notation>()();
-        std::cout << write_position_stream<FEN>()(ITA_initial) << std::endl;
+        std::cout << write_position_layout<FEN>()(ITA_initial) << std::endl;
         for (size_t i = 0; i < 9; ++i) {
                 ITA_test = read_position_string<FEN, RomanBoard>()(ITA_rules[i]);
                 Divide::root<ItalianRules>(ITA_test, 1);

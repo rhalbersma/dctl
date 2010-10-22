@@ -2,18 +2,18 @@
 #include "BoardMetaTemplates.h"
 #include "../Position/Reversible/Side.h"
 
-template<size_t H, size_t W, size_t N, bool P>
-const BitBoard Board<H, W, N, P>::GHOSTS = INIT_GHOSTS<T, T::NUM_BITS-1>::VALUE;
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const BitBoard Board<H, W, P, N, G>::GHOSTS = INIT_GHOSTS<T, T::NUM_BITS-1>::VALUE;
 
-template<size_t H, size_t W, size_t N, bool P>
-const BitBoard Board<H, W, N, P>::INITIAL[] =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const BitBoard Board<H, W, P, N, G>::INITIAL[] =
 {
 	INIT_INITIAL<T, Side::BLACK>::VALUE,
         INIT_INITIAL<T, Side::WHITE>::VALUE
 };
 
-template<size_t H, size_t W, size_t N, bool P>
-const BitBoard Board<H, W, N, P>::TO_PROMOTION[][2] =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const BitBoard Board<H, W, P, N, G>::TO_PROMOTION[][2] =
 {
         {
                 INIT_ROW_MASK<T, Side::WHITE, 0>::VALUE,
@@ -25,8 +25,8 @@ const BitBoard Board<H, W, N, P>::TO_PROMOTION[][2] =
         }
 };
 
-template<size_t H, size_t W, size_t N, bool P>
-const BitBoard Board<H, W, N, P>::ROW_MASK[][10] =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const BitBoard Board<H, W, P, N, G>::ROW_MASK[][10] =
 {
         {
                 INIT_ROW_MASK<T, Side::BLACK, 0>::VALUE,
@@ -54,8 +54,8 @@ const BitBoard Board<H, W, N, P>::ROW_MASK[][10] =
         }
 };
 
-template<size_t H, size_t W, size_t N, bool P>
-const BitBoard Board<H, W, N, P>::COL_MASK[][10] =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const BitBoard Board<H, W, P, N, G>::COL_MASK[][10] =
 {
         {
                 INIT_COL_MASK<T, Side::BLACK, 0>::VALUE,
@@ -83,19 +83,19 @@ const BitBoard Board<H, W, N, P>::COL_MASK[][10] =
         }
 };
 
-template<size_t H, size_t W, size_t N, bool P>
-const BitBoard Board<H, W, N, P>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[2] =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const BitBoard Board<H, W, P, N, G>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[2] =
 {
         (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (SW_NE << 1))),
         (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (SE_NW << 1)))
 };
 
-template<size_t H, size_t W, size_t N, bool P>
-const BitBoard Board<H, W, N, P>::QUAD_NEAREST_NEIGHBOR_MAGIC =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const BitBoard Board<H, W, P, N, G>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
-template<size_t H, size_t W, size_t N, bool P>
-const BitBoard Board<H, W, N, P>::MAN_JUMP_GROUP[] =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const BitBoard Board<H, W, P, N, G>::MAN_JUMP_GROUP[] =
 {
         INIT_MAN_JUMP_GROUP<T, 0>::VALUE,
         INIT_MAN_JUMP_GROUP<T, SW_NE>::VALUE,
@@ -103,8 +103,8 @@ const BitBoard Board<H, W, N, P>::MAN_JUMP_GROUP[] =
         INIT_MAN_JUMP_GROUP<T, NO_SO>::VALUE
 };
 
-template<size_t H, size_t W, size_t N, bool P>
-const BitBoard Board<H, W, N, P>::JUMPABLE[] =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const BitBoard Board<H, W, P, N, G>::JUMPABLE[] =
 {
         INIT_JUMPABLE<T, 0>::VALUE,
         INIT_JUMPABLE<T, 1>::VALUE,
@@ -116,14 +116,14 @@ const BitBoard Board<H, W, N, P>::JUMPABLE[] =
         INIT_JUMPABLE<T, 7>::VALUE
 };
 
-template<size_t H, size_t W, size_t N, bool P>
-const size_t Board<H, W, N, P>::DIR[] = 
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const size_t Board<H, W, P, N, G>::DIR[] = 
 {
         WE_EA, SE_NW, NO_SO, SW_NE, WE_EA, SE_NW, NO_SO, SW_NE
 };
 
-template<size_t H, size_t W, size_t N, bool P>
-const size_t Board<H, W, N, P>::TABLE_BIT2SQUARE[] =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const size_t Board<H, W, P, N, G>::TABLE_BIT2SQUARE[] =
 {
         BIT2SQUARE<T,  0>::VALUE, BIT2SQUARE<T,  1>::VALUE, BIT2SQUARE<T,  2>::VALUE, BIT2SQUARE<T,  3>::VALUE,
         BIT2SQUARE<T,  4>::VALUE, BIT2SQUARE<T,  5>::VALUE, BIT2SQUARE<T,  6>::VALUE, BIT2SQUARE<T,  7>::VALUE,
@@ -143,8 +143,8 @@ const size_t Board<H, W, N, P>::TABLE_BIT2SQUARE[] =
         BIT2SQUARE<T, 60>::VALUE, BIT2SQUARE<T, 61>::VALUE, BIT2SQUARE<T, 62>::VALUE, BIT2SQUARE<T, 63>::VALUE
 };
 
-template<size_t H, size_t W, size_t N, bool P>
-const size_t Board<H, W, N, P>::TABLE_SQUARE2BIT[] =
+template<size_t H, size_t W, bool P, size_t N, size_t G>
+const size_t Board<H, W, P, N, G>::TABLE_SQUARE2BIT[] =
 {
         SQUARE2BIT<T,  0>::VALUE, SQUARE2BIT<T,  1>::VALUE, SQUARE2BIT<T,  2>::VALUE, SQUARE2BIT<T,  3>::VALUE,
         SQUARE2BIT<T,  4>::VALUE, SQUARE2BIT<T,  5>::VALUE, SQUARE2BIT<T,  6>::VALUE, SQUARE2BIT<T,  7>::VALUE,
