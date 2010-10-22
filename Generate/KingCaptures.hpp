@@ -184,7 +184,7 @@ bool KingCaptures::scan_long(BitBoard jump_sq, Propagate<Rules, Board>& capture,
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_reverse(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        return scan_dir<Color, Direction<Index>::ROTATE_180>(jump_sq, capture);
+        return scan_dir<Color, Rotate<Index, D180>::VALUE>(jump_sq, capture);
 }
 
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
@@ -211,8 +211,8 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_4>)
 {
         return (
-                scan_dir<Color, Direction<Index>::ROTATE_R090>(jump_sq, capture) |
-                scan_dir<Color, Direction<Index>::ROTATE_L090>(jump_sq, capture)
+                scan_dir<Color, Rotate<Index, R090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, Rotate<Index, L090>::VALUE>(jump_sq, capture)
         );
 }
 
@@ -221,12 +221,12 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_8>)
 {
         return (
-                scan_dir<Color, Direction<Index>::ROTATE_R045>(jump_sq, capture) |
-                scan_dir<Color, Direction<Index>::ROTATE_L045>(jump_sq, capture) |
-                scan_dir<Color, Direction<Index>::ROTATE_R090>(jump_sq, capture) |
-                scan_dir<Color, Direction<Index>::ROTATE_L090>(jump_sq, capture) |
-                scan_dir<Color, Direction<Index>::ROTATE_R135>(jump_sq, capture) |
-                scan_dir<Color, Direction<Index>::ROTATE_L135>(jump_sq, capture)
+                scan_dir<Color, Rotate<Index, R045>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, Rotate<Index, L045>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, Rotate<Index, R090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, Rotate<Index, L090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, Rotate<Index, R135>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, Rotate<Index, L135>::VALUE>(jump_sq, capture)
         );
 }
 
