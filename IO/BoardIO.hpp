@@ -5,54 +5,90 @@
 
 // write board square layout as an ASCII board
 template<typename Board>
-std::string write_square_layout<Board>::operator()(void)
+std::string write_square_layout<Board>::operator()(void) const
+{
+        return write_square_layout<Board>()(PlusOne());
+}
+
+template<typename Board> template<typename Functor>
+std::string write_square_layout<Board>::operator()(Functor f) const
 {
 	std::stringstream sstr;
-        size_t b1, q1, r1, c1, r2, b2;
 
-        for (size_t i = 0; i < Board::NUM_SQUARES; ++i) {
-                b1 = Board::TABLE_SQUARE2BIT[i];                                // convert square to bit
-                q1 = b1 / Board::GHOST_MODULO;                                  // b1 = GHOST_MODULO * q1 + r1
-                r1 = b1 % Board::GHOST_MODULO;
-                c1 = r1 > Board::GHOST_RE;                                      // compare r1 to end of first row
-                b2 = b1 + Board::GHOST_MODULO - 1;
-                r2 = b2 % Board::GHOST_MODULO;                                  // r2 == (r1 - 1) mod GHOST_MODULO
+        for (size_t sq = 0; sq < Board::NUM_SQUARES; ++sq) {
+                if (is_indent_row<Board>()(sq))
+                        sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 
-                if ((r2 == (c1? Board::GHOST_LO : Board::GHOST_LE)) && (c1 ^ Board::PARITY))
-                        sstr << std::setw(2) << WHITE_SPACE;                    // start of an indented row
-                sstr << std::setw(2) << (i + 1);                                // square number (starting at 1)
+                sstr << std::setw(2) << f(sq);                  // write square content 
 
-                if (r1 == (c1? Board::GHOST_RO : Board::GHOST_RE) - 1)
-                        sstr << std::endl;                                      // start of a new row
+                if (is_end_row<Board>()(sq))
+                        sstr << std::endl;                      // start of a new row
                 else
-                        sstr << std::setw(2) << WHITE_SPACE;                    // space between squares
+                        sstr << std::setw(2) << WHITE_SPACE;    // space between squares
         }
         return sstr.str();
 }
 
 // write board bit layout as an ASCII board
 template<typename Board>
-std::string write_bit_layout<Board>::operator()(void)
+std::string write_bit_layout<Board>::operator()(void) const
+{
+        return write_bit_layout<Board>()(Identity());
+}
+
+template<typename Board> template<typename Functor>
+std::string write_bit_layout<Board>::operator()(Functor f) const
 {
 	std::stringstream sstr;
-        size_t b1, q1, r1, c1, r2, b2;
+        size_t b;
 
-        for (size_t i = 0; i < Board::NUM_SQUARES; ++i) {
-                b1 = Board::TABLE_SQUARE2BIT[i];                                // convert square to bit
-                q1 = b1 / Board::GHOST_MODULO;                                  // b1 = GHOST_MODULO * q1 + r1
-                r1 = b1 % Board::GHOST_MODULO;
-                c1 = r1 > Board::GHOST_RE;                                      // compare r1 to end of first row
-                b2 = b1 + Board::GHOST_MODULO - 1;
-                r2 = b2 % Board::GHOST_MODULO;                                  // r2 == (r1 - 1) mod GHOST_MODULO
+        for (size_t sq = 0; sq < Board::NUM_SQUARES; ++sq) {
+                if (is_indent_row<Board>()(sq))
+                        sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 
-                if ((r2 == (c1? Board::GHOST_LO : Board::GHOST_LE)) && (c1 ^ Board::PARITY))
-                        sstr << std::setw(2) << WHITE_SPACE;                    // start of an indented row
-                sstr << std::setw(2) << b1;                                     // bit number (starting at 0)
+                b = Board::TABLE_SQUARE2BIT[sq];                // convert square to bit
+                sstr << std::setw(2) << f(b);                   // write bit content 
 
-                if (r1 == (c1? Board::GHOST_RO : Board::GHOST_RE) - 1)
-                        sstr << std::endl;                                      // start of a new row
+                if (is_end_row<Board>()(sq))
+                        sstr << std::endl;                      // start of a new row
                 else
-                        sstr << std::setw(2) << WHITE_SPACE;                    // space between squares
+                        sstr << std::setw(2) << WHITE_SPACE;    // space between squares
         }
         return sstr.str();
 }
+
+template<typename Board>
+bool is_end_row<Board>::operator()(size_t sq) const
+{
+        const size_t R = sq % Board::SQUARE_MODULO;             // sq = SQUARE_MODULO * Q + R 
+        const bool END_RE = R == Board::SQUARE_RE;              // right of even rows
+        const bool END_RO = R == Board::SQUARE_RO;              // right of odd rows
+
+        return END_RE || END_RO;
+}
+
+template<typename Board>
+bool is_indent_row<Board>::operator()(size_t sq) const
+{
+        const size_t R = sq % Board::SQUARE_MODULO;             // sq = SQUARE_MODULO * Q + R 
+        const bool BEGIN_LE = R == Board::SQUARE_LE;            // left of even rows
+        const bool BEGIN_LO = R == Board::SQUARE_LO;            // left of odd rows
+
+        return Board::PARITY? BEGIN_LO : BEGIN_LE;
+}
+
+struct PlusOne: public std::unary_function<size_t, size_t>
+{
+        size_t operator()(size_t sq) const
+        {
+                return sq + 1;
+        }
+};
+
+struct Identity: public std::unary_function<size_t, size_t>
+{
+        size_t operator()(size_t b) const
+        {
+                return b;
+        }
+};

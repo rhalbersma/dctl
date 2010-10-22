@@ -123,5 +123,5 @@ private:
 
 public:
         // twice the number of squares from the left edge plus the exclusive-OR parity of the row and the board
-        enum { VALUE = 2 * R3 + (C1 ^ Board::PARITY) };
+        enum { VALUE = 2 * R3 + (C1 ^ !Board::PARITY) };
 };
