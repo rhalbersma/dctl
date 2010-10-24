@@ -3,7 +3,7 @@
 template<typename Board, size_t SQ>
 struct IS_INVALID_SQUARE
 {
-        static const bool VALUE = SQ >= Board::NUM_SQUARES;
+        static const bool VALUE = !(SQ < Board::NUM_SQUARES);
 };
 
 template<typename Board, size_t B>
@@ -11,16 +11,16 @@ class IS_GHOST_BIT
 {
 private: 
         enum {
-                R = B % Board::GHOST_MODULO,    // B = GHOST_MODULO * Q + R 
-                EQ_RE = R == Board::GHOST_RE,   // right of even rows
-                EQ_LO = R == Board::GHOST_LO,   // left of odd rows
-                EQ_RO = R == Board::GHOST_RO,   // right of odd rows
-                EQ_LE = R == Board::GHOST_LE,   // left of even rows
-                EQ_MB = B >= Board::MIN_BITS    // beyond minimal number of bits
+                R = B % Board::GHOST_MODULO,            // B = GHOST_MODULO * Q + R 
+                BEGIN_LE = R < Board::GHOST_LE,         // left of even rows
+                BEGIN_LO = R < Board::GHOST_LO,         // left of odd rows
+                END_RE = R > Board::GHOST_RE,           // right of even rows
+                END_RO = R > Board::GHOST_RO,           // right of odd rows
+                END_BR = !(B < Board::BIT_RANGE)        // beyond minimal number of bits
         };
 
 public:
-        static const bool VALUE = EQ_RE || EQ_LO || EQ_RO || EQ_LE || EQ_MB;
+        static const bool VALUE = (END_RE && BEGIN_LO) || (END_RO && BEGIN_LE) || END_BR;
 };
 
 template<typename Board, bool C, size_t B>
