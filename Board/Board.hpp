@@ -167,13 +167,13 @@ const size_t Board<H, W, P, N, G>::TABLE_SQUARE2BIT[] =
 template<typename Board> inline
 BitBoard quad_nearest_shifts(BitBoard b)
 {
-        return (b * QUAD_NEAREST_NEIGHBOR_MAGIC) >> SE_NW;
+        return (b * Board::QUAD_NEAREST_NEIGHBOR_MAGIC) >> SE_NW;
 }
 
 template<typename Board> inline
 BitBoard double_nearest_shifts(BitBoard b, size_t i)
 {
-        return (b * DOUBLE_NEAREST_NEIGHBOR_MAGIC[i]) >> SE_NW;
+        return (b * Board::DOUBLE_NEAREST_NEIGHBOR_MAGIC[i]) >> SE_NW;
 }
 
 template<typename Board> inline
