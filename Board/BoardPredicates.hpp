@@ -3,7 +3,7 @@
 template<typename Board, size_t SQ>
 struct IS_INVALID_SQUARE
 {
-        static const bool VALUE = !(SQ < Board::NUM_SQUARES);
+        static const bool VALUE = !(SQ < Board::SQUARE_RANGE);
 };
 
 template<typename Board, size_t B>
@@ -100,7 +100,7 @@ private:
                 // B = GHOST_MODULO * Q + R
                 Q = B / Board::GHOST_MODULO,            // number of row pairs                     
                 R = B % Board::GHOST_MODULO,            // bits from the left edge of the first row
-                C = R > Board::GHOST_RE                 // determine whether bit R is in the first or second row
+                C = R >= Board::GHOST_LO                // determine whether bit R is in the first or second row
         };
 
 public:
@@ -116,8 +116,8 @@ private:
                 // B = GHOST_MODULO * Q1 + R1
                 Q1 = B / Board::GHOST_MODULO,           // number of row pairs
                 R1 = B % Board::GHOST_MODULO,           // bits from the left edge of the first row
-                R2 = R1 - (Board::GHOST_LO + 1),        // squares from the left edge of the second row
-                C1 = R1 > Board::GHOST_RE,              // determine whether bit R1 is in the first or second row
+                R2 = R1 - Board::GHOST_LO,              // squares from the left edge of the second row
+                C1 = R1 >= Board::GHOST_LO,             // determine whether bit R1 is in the first or second row
                 R3 = C1? R2 : R1                        // squares from the left edge
         };
 

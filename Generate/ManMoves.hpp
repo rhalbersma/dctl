@@ -60,7 +60,7 @@ void ManMoves::generate_promotions(const Position<Board>& p, Propagate<Rules, Bo
 template<bool Color, typename Board> FORCE_INLINE
 BitBoard ManMoves::promotors(const Position<Board>& p)
 {
-        return p.men(Color) & Board::TO_PROMOTION[Color][1];
+        return p.men(Color) & Board::PROMOTION[Color][1];
 }
 
 template<typename Board>

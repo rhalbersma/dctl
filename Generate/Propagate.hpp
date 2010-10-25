@@ -79,7 +79,7 @@ BitBoard Propagate<Rules, Board>::jumpers(void) const
 template<typename Rules, typename Board> template<bool Color>
 BitBoard Propagate<Rules, Board>::promotions(BitBoard dest_sq) const
 {
-        return dest_sq & Board::TO_PROMOTION[Color][0];
+        return dest_sq & Board::PROMOTION[Color][0];
 }
 
 template<typename Rules, typename Board>

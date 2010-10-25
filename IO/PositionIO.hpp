@@ -60,7 +60,7 @@ Position<Board> read_position_string<FEN, Board, Token>::operator()(const std::s
                         if (isdigit(ch)) {
                                 sstr.putback(ch);
                                 sstr >> sq;                     // read square
-			        assert(is_valid_square<Board>(sq));
+			        assert(is_valid_square<Board>(sq - 1));
 			        b = BitBoard(1) << Board::TABLE_SQUARE2BIT[sq - 1];
                                 p_pieces[setup_color] ^= b;
                                 if (setup_kings)
@@ -190,4 +190,10 @@ std::string write_position_bit<Board, Token>::operator()(const Position<Board>& 
                 sstr << Token::EMPTY;                                   // empty square
 
         return sstr.str();
+}
+
+template<typename Board>
+bool is_valid_square(size_t sq)
+{
+        return !(sq < Board::SQUARE_RANGE);
 }

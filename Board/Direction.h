@@ -2,7 +2,7 @@
 #include "../Utilities/IntegerTypes.h"
 #include "../Position/Reversible/Side.h"
 
-// directions are subject to arithmetic modulo 8, with the unit element equal to 45 degrees rotation
+// directions are subject to arithmetic modulo 8, with the unit element equal to a 45 degrees rotation
 enum { D000 = 0, L045 = 1, L090 = 2, L135 = 3, D180 = 4, R045 = 5, R090 = 6, R135 = 7, D360 = 8 };
 
 // the 8 diagonal and orthogonal direction indices for black and white to move
