@@ -90,7 +90,7 @@ struct BIT2SQUARE<Board, 0>
 template<typename Board, size_t SQ>
 struct SQUARE2BIT
 {
-        static const size_t VALUE = IS_INVALID_SQUARE<Board, SQ>::VALUE? INVALID : FIND_BIT<Board, SQ, Board::NUM_BITS-1>::VALUE;
+        static const size_t VALUE = IS_INVALID_SQUARE<Board, SQ>::VALUE? INVALID : FIND_BIT<Board, SQ, Board::BIT_RANGE-1>::VALUE;
 };
 
 template<typename Board>
