@@ -1,5 +1,5 @@
 #include "../Board/Direction.h"
-#include "../Rules/CaptureRules.h"
+#include "../Rules/CaptureTemplates.h"
 #include "../Position/Move.h"
 #include "../Utilities/Bit.h"
 #include "../Utilities/InlineOptions.h"

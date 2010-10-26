@@ -11,19 +11,6 @@
 //|                                                                                                      |
 //|      This trick is used in so-called "tag dispatching", a.k.a. partial specialization of             |
 //|      function templates. The universal move generator makes extensive use of this technique.         |
-//|                                                                                                      |
 //+------------------------------------------------------------------------------------------------------+
 
-template <size_t> struct Int2Type {};
-
-template<bool, typename T, typename I>
-struct enable_if_const 
-{
-        enum { VALUE = 8 * (sizeof(I) - sizeof(T)) };
-};
-
-template<typename T, typename I>
-struct enable_if_const<false, T, I>
-{
-        enum { VALUE = 0 };
-};
+template<size_t> struct Int2Type {};
