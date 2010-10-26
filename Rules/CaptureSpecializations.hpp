@@ -1,0 +1,5 @@
+#include "FrisianCapture.hpp"
+#include "InternationalCapture.hpp"
+#include "ItalianCapture.hpp"
+#include "KillerCapture.hpp"
+#include "SpanishCapture.hpp"
