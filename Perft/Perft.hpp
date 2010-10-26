@@ -113,7 +113,7 @@ NodeCount Perft::perft_bulk_hash(Position<Board>& p, size_t ply, size_t depth)
 
 template<typename Board>
 void Perft::announce(const Position<Board>& p, size_t nominal_depth)
-{
+{        
         std::cout << std::endl;
         std::cout << write_position_layout<FEN>()(p) << std::endl;
         std::cout << write_position_string<FEN>()(p) << std::endl << std::endl;

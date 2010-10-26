@@ -13,8 +13,7 @@ struct DamExchangeProtocol {};
 typedef ForsythEdwardsNotation FEN;
 typedef DamExchangeProtocol DXP;
 
-template<typename Protocol>
-struct DefaultToken;
+template<typename> struct DefaultToken;
 
 template<>
 struct DefaultToken<FEN>

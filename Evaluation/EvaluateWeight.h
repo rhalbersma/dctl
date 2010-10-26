@@ -3,9 +3,9 @@
 
 struct EvaluateWeight
 {
-        static const size_t MATERIAL[2];
-        static const size_t TEMPO[10];
-        static const size_t CENTER[5];
-        static const size_t BALANCE[5];
-        static const size_t MOBILITY;
+        static const int MATERIAL[2];
+        static const int TEMPO[10];
+        static const int CENTER[5];
+        static const int BALANCE[5];
+        static const int MOBILITY;
 };
