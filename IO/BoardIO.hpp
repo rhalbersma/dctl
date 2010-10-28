@@ -74,7 +74,7 @@ bool is_indent_row(size_t sq)
         const bool begin_LE = r == Board::SQUARE_LE;            // left of even rows
         const bool begin_LO = r == Board::SQUARE_LO;            // left of odd rows
 
-        return Board::PARITY? begin_LO : begin_LE;
+        return Board::COLORING? begin_LO : begin_LE;
 }
 
 struct PlusOne: public std::unary_function<size_t, size_t>

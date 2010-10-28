@@ -1,22 +1,22 @@
 #include "Direction.h"
 
-template<typename Board, size_t SQ>
+template<typename T, size_t SQ>
 struct IS_INVALID_SQUARE
 {
-        static const bool VALUE = !(SQ < Board::SQUARE_RANGE);
+        static const bool VALUE = !(SQ < T::SQUARE_RANGE);
 };
 
-template<typename Board, size_t B>
+template<typename T, size_t B>
 class IS_GHOST_BIT
 {
 private: 
         enum {
-                R = B % Board::GHOST_MODULO,            // B = GHOST_MODULO * Q + R 
-                BEGIN_LE = R < Board::GHOST_LE,         // left of even rows
-                BEGIN_LO = R < Board::GHOST_LO,         // left of odd rows
-                END_RE = R > Board::GHOST_RE,           // right of even rows
-                END_RO = R > Board::GHOST_RO,           // right of odd rows
-                END_BR = !(B < Board::BIT_RANGE)        // beyond minimal number of bits
+                R = B % T::GHOST_MODULO,        // B = GHOST_MODULO * Q + R 
+                BEGIN_LE = R < T::GHOST_LE,     // left of even rows
+                BEGIN_LO = R < T::GHOST_LO,     // left of odd rows
+                END_RE = R > T::GHOST_RE,       // right of even rows
+                END_RO = R > T::GHOST_RO,       // right of odd rows
+                END_BR = !(B < T::BIT_RANGE)    // beyond bit range
         };
 
 public:
@@ -28,27 +28,27 @@ class IS_INITIAL
 {
 private:
         enum {
-                LOWER_BOUND = C? (Board::HEIGHT - 1) - ((Board::HEIGHT - Board::NEUTRAL_ZONE) / 2 - 1) : 0,
-                UPPER_BOUND = C? (Board::HEIGHT - 1) : (Board::HEIGHT - Board::NEUTRAL_ZONE) / 2 - 1
+                LOWER_BOUND = C? (Board::HEIGHT - 1) - ((Board::HEIGHT - Board::NEUTRAL) / 2 - 1) : 0,
+                UPPER_BOUND = C? (Board::HEIGHT - 1) : (Board::HEIGHT - Board::NEUTRAL) / 2 - 1
         };
 
 public:
         static const bool VALUE =
-        	(LOWER_BOUND <= ROW_NUMBER<Board, B>::VALUE) &&
-                (UPPER_BOUND >= ROW_NUMBER<Board, B>::VALUE)
+        	(LOWER_BOUND <= BIT_ROW<Board, B>::VALUE) &&
+                (UPPER_BOUND >= BIT_ROW<Board, B>::VALUE)
         ;
 };
 
 template<typename Board, bool Color, size_t R, size_t B>
 struct IS_ROW_MASK
 {
-        static const bool VALUE = ROW_NUMBER<Board, B>::VALUE == (Color? Board::HEIGHT - (R + 1) : R);
+        static const bool VALUE = BIT_ROW<Board, B>::VALUE == (Color? Board::HEIGHT - (R + 1) : R);
 };
 
 template<typename Board, bool Color, size_t C, size_t B>
 struct IS_COL_MASK
 {
-        static const bool VALUE = COL_NUMBER<Board, B>::VALUE == (Color? Board::WIDTH - (C + 1) : C);
+        static const bool VALUE = BIT_COL<Board, B>::VALUE == (Color? Board::WIDTH - (C + 1) : C);
 };
 
 template<typename Board, size_t F, size_t D>
@@ -56,8 +56,8 @@ class IS_MAN_JUMP_GROUP
 {
 private: 
         enum {
-                R1 = (ROW_NUMBER<Board, F>::VALUE - ROW_NUMBER<Board, D>::VALUE) % 4,
-                C1 = (COL_NUMBER<Board, F>::VALUE - COL_NUMBER<Board, D>::VALUE) % 4,
+                R1 = (BIT_ROW<Board, F>::VALUE - BIT_ROW<Board, D>::VALUE) % 4,
+                C1 = (BIT_COL<Board, F>::VALUE - BIT_COL<Board, D>::VALUE) % 4,
                 R2 = (R1 + 2) % 4,
                 C2 = (C1 + 2) % 4
         };
@@ -85,15 +85,15 @@ private:
 public:
         // a jump in direction <D> is possible if bit <B> is within OFFSET of the edges being approached
         static const bool VALUE =
-	        (ROW_LOWER_BOUND <= ROW_NUMBER<Board, B>::VALUE) &&
-		(ROW_UPPER_BOUND >= ROW_NUMBER<Board, B>::VALUE) &&
-		(COL_LOWER_BOUND <= COL_NUMBER<Board, B>::VALUE) &&
-		(COL_UPPER_BOUND >= COL_NUMBER<Board, B>::VALUE)
+	        (ROW_LOWER_BOUND <= BIT_ROW<Board, B>::VALUE) &&
+		(ROW_UPPER_BOUND >= BIT_ROW<Board, B>::VALUE) &&
+		(COL_LOWER_BOUND <= BIT_COL<Board, B>::VALUE) &&
+		(COL_UPPER_BOUND >= BIT_COL<Board, B>::VALUE)
 	;
 };
 
 template<typename Board, size_t B>
-class ROW_NUMBER
+class BIT_ROW
 {
 private:
         enum {
@@ -109,7 +109,7 @@ public:
 };
 
 template<typename Board, size_t B>
-class COL_NUMBER
+class BIT_COL
 {
 private:
         enum {
@@ -123,5 +123,5 @@ private:
 
 public:
         // twice the number of squares from the left edge plus the exclusive-OR parity of the row and the board
-        enum { VALUE = 2 * R3 + (C1 ^ !Board::PARITY) };
+        enum { VALUE = 2 * R3 + (C1 ^ !Board::COLORING) };
 };

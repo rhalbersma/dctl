@@ -1,21 +1,18 @@
 #pragma once
-#include "Geometry.h"
-#include "Ghost.h"
+#include "Ghosts.h"
+#include "Squares.h"
+#include "Zones.h"
 #include "../Utilities/IntegerTypes.h"
 
 template
 <
-        typename Geometry,
-        size_t G = 2,
-        size_t N = 2
+        typename Layout,
+        typename Setup = Zones<>
 >
-struct Board: public Ghost<Geometry, G>
+struct Board: public Layout, public Setup
 {
         // reflection on template type
-        typedef Board<Geometry, G, N> T;
-
-        // reflection on template parameters
-        static const size_t NEUTRAL_ZONE = N;
+        typedef Board<Layout, Setup> T;
 
         // essential bitboard masks
         static const BitBoard GHOSTS;                           // "ghost" bits
@@ -39,21 +36,21 @@ struct Board: public Ghost<Geometry, G>
 };
 
 // square boards
-typedef Board< Geometry< 4,  4> > MicroBoard;
-typedef Board< Geometry< 6,  6> > MiniBoard;
-typedef Board< Geometry< 8,  8> > ChessBoard;
-typedef Board< Geometry<10, 10> > InternationalBoard;
+typedef Board< Ghosts< Squares< 4,  4> > > MicroBoard;
+typedef Board< Ghosts< Squares< 6,  6> > > MiniBoard;
+typedef Board< Ghosts< Squares< 8,  8> > > ChessBoard;
+typedef Board< Ghosts< Squares<10, 10> > > InternationalBoard;
 
 // Spanish-Italian board
-typedef Board< Geometry<8,  8, true> > RomanBoard;
+typedef Board< Ghosts< Squares< 8,  8, true> > > RomanBoard;
 
 // special initial position
-typedef Board< Geometry<8,  8>, 2, 4> ThaiBoard;
+typedef Board< Ghosts< Squares< 8,  8> >, Zones<4> > ThaiBoard;
 
 // rectangular boards
-typedef Board< Geometry<10,  8, true> > SpantsiretiBoard;
-typedef Board< Geometry<11, 10, true>, 1, 2> Ktar11Board;
-typedef Board< Geometry<12, 10, true>, 1, 3> Ktar12Board;
+typedef Board< Ghosts< Squares<10,  8, true>   >           > SpantsiretiBoard;
+typedef Board< Ghosts< Squares<11, 10, true>, 1>, Zones<3> > Ktar11Board;
+typedef Board< Ghosts< Squares<12, 10, true>, 1>           > Ktar12Board;
 
 // the default board
 typedef InternationalBoard DefaultBoard;

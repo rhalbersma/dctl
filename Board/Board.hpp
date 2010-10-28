@@ -2,18 +2,18 @@
 #include "BoardMetaTemplates.h"
 #include "../Position/Reversible/Side.h"
 
-template<typename Geometry, size_t G, size_t N>
-const BitBoard Board<Geometry, G, N>::GHOSTS = INIT_GHOSTS<T, T::NUM_BITS-1>::VALUE;
+template<typename Layout, typename Setup>
+const BitBoard Board<Layout, Setup>::GHOSTS = INIT_GHOSTS<T, T::NUM_BITS-1>::VALUE;
 
-template<typename Geometry, size_t G, size_t N>
-const BitBoard Board<Geometry, G, N>::INITIAL[] =
+template<typename Layout, typename Setup>
+const BitBoard Board<Layout, Setup>::INITIAL[] =
 {
 	INIT_INITIAL<T, Side::BLACK>::VALUE,
         INIT_INITIAL<T, Side::WHITE>::VALUE
 };
 
-template<typename Geometry, size_t G, size_t N>
-const BitBoard Board<Geometry, G, N>::PROMOTION[][2] =
+template<typename Layout, typename Setup>
+const BitBoard Board<Layout, Setup>::PROMOTION[][2] =
 {
         {
                 INIT_ROW_MASK<T, Side::WHITE, 0>::VALUE,
@@ -25,8 +25,8 @@ const BitBoard Board<Geometry, G, N>::PROMOTION[][2] =
         }
 };
 
-template<typename Geometry, size_t G, size_t N>
-const BitBoard Board<Geometry, G, N>::ROW_MASK[][10] =
+template<typename Layout, typename Setup>
+const BitBoard Board<Layout, Setup>::ROW_MASK[][10] =
 {
         {
                 INIT_ROW_MASK<T, Side::BLACK, 0>::VALUE,
@@ -54,8 +54,8 @@ const BitBoard Board<Geometry, G, N>::ROW_MASK[][10] =
         }
 };
 
-template<typename Geometry, size_t G, size_t N>
-const BitBoard Board<Geometry, G, N>::COL_MASK[][10] =
+template<typename Layout, typename Setup>
+const BitBoard Board<Layout, Setup>::COL_MASK[][10] =
 {
         {
                 INIT_COL_MASK<T, Side::BLACK, 0>::VALUE,
@@ -83,19 +83,19 @@ const BitBoard Board<Geometry, G, N>::COL_MASK[][10] =
         }
 };
 
-template<typename Geometry, size_t G, size_t N>
-const BitBoard Board<Geometry, G, N>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[2] =
+template<typename Layout, typename Setup>
+const BitBoard Board<Layout, Setup>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
 {
         (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (SW_NE << 1))),
         (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (SE_NW << 1)))
 };
 
-template<typename Geometry, size_t G, size_t N>
-const BitBoard Board<Geometry, G, N>::QUAD_NEAREST_NEIGHBOR_MAGIC =
+template<typename Layout, typename Setup>
+const BitBoard Board<Layout, Setup>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
-template<typename Geometry, size_t G, size_t N>
-const BitBoard Board<Geometry, G, N>::MAN_JUMP_GROUP[] =
+template<typename Layout, typename Setup>
+const BitBoard Board<Layout, Setup>::MAN_JUMP_GROUP[] =
 {
         INIT_MAN_JUMP_GROUP<T, 0>::VALUE,
         INIT_MAN_JUMP_GROUP<T, SW_NE>::VALUE,
@@ -103,8 +103,8 @@ const BitBoard Board<Geometry, G, N>::MAN_JUMP_GROUP[] =
         INIT_MAN_JUMP_GROUP<T, NO_SO>::VALUE
 };
 
-template<typename Geometry, size_t G, size_t N>
-const BitBoard Board<Geometry, G, N>::JUMPABLE[] =
+template<typename Layout, typename Setup>
+const BitBoard Board<Layout, Setup>::JUMPABLE[] =
 {
         INIT_JUMPABLE<T, 0>::VALUE,
         INIT_JUMPABLE<T, 1>::VALUE,
@@ -116,14 +116,14 @@ const BitBoard Board<Geometry, G, N>::JUMPABLE[] =
         INIT_JUMPABLE<T, 7>::VALUE
 };
 
-template<typename Geometry, size_t G, size_t N>
-const size_t Board<Geometry, G, N>::DIR[] = 
+template<typename Layout, typename Setup>
+const size_t Board<Layout, Setup>::DIR[] = 
 {
         WE_EA, SE_NW, NO_SO, SW_NE, WE_EA, SE_NW, NO_SO, SW_NE
 };
 
-template<typename Geometry, size_t G, size_t N>
-const size_t Board<Geometry, G, N>::TABLE_BIT2SQUARE[] =
+template<typename Layout, typename Setup>
+const size_t Board<Layout, Setup>::TABLE_BIT2SQUARE[] =
 {
         BIT2SQUARE<T,  0>::VALUE, BIT2SQUARE<T,  1>::VALUE, BIT2SQUARE<T,  2>::VALUE, BIT2SQUARE<T,  3>::VALUE,
         BIT2SQUARE<T,  4>::VALUE, BIT2SQUARE<T,  5>::VALUE, BIT2SQUARE<T,  6>::VALUE, BIT2SQUARE<T,  7>::VALUE,
@@ -143,8 +143,8 @@ const size_t Board<Geometry, G, N>::TABLE_BIT2SQUARE[] =
         BIT2SQUARE<T, 60>::VALUE, BIT2SQUARE<T, 61>::VALUE, BIT2SQUARE<T, 62>::VALUE, BIT2SQUARE<T, 63>::VALUE
 };
 
-template<typename Geometry, size_t G, size_t N>
-const size_t Board<Geometry, G, N>::TABLE_SQUARE2BIT[] =
+template<typename Layout, typename Setup>
+const size_t Board<Layout, Setup>::TABLE_SQUARE2BIT[] =
 {
         SQUARE2BIT<T,  0>::VALUE, SQUARE2BIT<T,  1>::VALUE, SQUARE2BIT<T,  2>::VALUE, SQUARE2BIT<T,  3>::VALUE,
         SQUARE2BIT<T,  4>::VALUE, SQUARE2BIT<T,  5>::VALUE, SQUARE2BIT<T,  6>::VALUE, SQUARE2BIT<T,  7>::VALUE,
