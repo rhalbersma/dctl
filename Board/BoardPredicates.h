@@ -23,10 +23,10 @@ template<typename, size_t, size_t>
 class IS_JUMPABLE;
 
 template<typename, size_t>
-class ROW_NUMBER;
+class BIT_ROW;
 
 template<typename, size_t>
-class COL_NUMBER;
+class BIT_COL;
 
 // include template definitions inside header since "export" keyword is not supported by Visual C++
 #include "BoardPredicates.hpp"
