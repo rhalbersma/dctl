@@ -1,14 +1,13 @@
 #pragma once
-#include "../Position/Reversible/Side.h"
 #include "../Utilities/IntegerTypes.h"
 
 template
 <
         size_t H,                                               // height
         size_t W,                                               // width
-        bool C = Side::BLACK                                    // coloring of top-left square
+        bool C = false                                          // coloring of top-left square
 >
-struct Squares
+struct Grid
 {
         // reflection on template parameters
         static const size_t HEIGHT = H;
@@ -37,28 +36,28 @@ struct Squares
 
 // identity rotation
 template<typename In, size_t = D000>
-struct RotateSquares
+struct RotateGrid
 {
         typedef In Out;
 };
 
 // rotate 90 degrees right
 template<typename In>
-struct RotateSquares<In, R090>
+struct RotateGrid<In, R090>
 {
-        typedef Squares<In::WIDTH, In::HEIGHT, (In::HEIGHT % 2) ^ !In::COLORING> Out;
+        typedef Grid<In::WIDTH, In::HEIGHT, (In::HEIGHT % 2) ^ !In::COLORING> Out;
 };
 
 // rotate 90 degree left
 template<typename In>
-struct RotateSquares<In, L090>
+struct RotateGrid<In, L090>
 {
-        typedef Squares<In::WIDTH, In::HEIGHT, (In::WIDTH % 2) ^ !In::COLORING> Out;
+        typedef Grid<In::WIDTH, In::HEIGHT, (In::WIDTH % 2) ^ !In::COLORING> Out;
 };
 
 // rotate 180 degrees
 template<typename In>
-struct RotateSquares<In, D180>
+struct RotateGrid<In, D180>
 {
-        typedef Squares<In::HEIGHT, In::WIDTH, (In::HEIGHT % 2) ^ (In::WIDTH % 2) ^ In::COLORING> Out;
+        typedef Grid<In::HEIGHT, In::WIDTH, (In::HEIGHT % 2) ^ (In::WIDTH % 2) ^ In::COLORING> Out;
 };

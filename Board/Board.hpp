@@ -1,9 +1,9 @@
-// template meta programs
 #include "BoardMetaTemplates.h"
+#include "GhostMetaTemplates.h"
 #include "../Position/Reversible/Side.h"
 
 template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::GHOSTS = INIT_GHOSTS<T, T::NUM_BITS-1>::VALUE;
+const BitBoard Board<Layout, Setup>::GHOSTS = INIT_GHOSTS<T>::VALUE;
 
 template<typename Layout, typename Setup>
 const BitBoard Board<Layout, Setup>::INITIAL[] =
@@ -26,60 +26,68 @@ const BitBoard Board<Layout, Setup>::PROMOTION[][2] =
 };
 
 template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::ROW_MASK[][10] =
+const BitBoard Board<Layout, Setup>::ROW_MASK[][12] =
 {
         {
-                INIT_ROW_MASK<T, Side::BLACK, 0>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 1>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 2>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 3>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 4>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 5>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 6>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 7>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 8>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 9>::VALUE
+                INIT_ROW_MASK<T, Side::BLACK,  0>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK,  1>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK,  2>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK,  3>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK,  4>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK,  5>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK,  6>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK,  7>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK,  8>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK,  9>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK, 10>::VALUE,
+                INIT_ROW_MASK<T, Side::BLACK, 11>::VALUE,
         },
         {
-                INIT_ROW_MASK<T, Side::WHITE, 0>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 1>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 2>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 3>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 4>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 5>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 6>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 7>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 8>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 9>::VALUE
+                INIT_ROW_MASK<T, Side::WHITE,  0>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE,  1>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE,  2>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE,  3>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE,  4>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE,  5>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE,  6>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE,  7>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE,  8>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE,  9>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE, 10>::VALUE,
+                INIT_ROW_MASK<T, Side::WHITE, 11>::VALUE,
         }
 };
 
 template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::COL_MASK[][10] =
+const BitBoard Board<Layout, Setup>::COL_MASK[][12] =
 {
         {
-                INIT_COL_MASK<T, Side::BLACK, 0>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 1>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 2>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 3>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 4>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 5>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 6>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 7>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 8>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 9>::VALUE
+                INIT_COL_MASK<T, Side::BLACK,  0>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK,  1>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK,  2>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK,  3>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK,  4>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK,  5>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK,  6>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK,  7>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK,  8>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK,  9>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK, 10>::VALUE,
+                INIT_COL_MASK<T, Side::BLACK, 11>::VALUE,
         },
         {
-                INIT_COL_MASK<T, Side::WHITE, 0>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 1>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 2>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 3>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 4>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 5>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 6>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 7>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 8>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 9>::VALUE
+                INIT_COL_MASK<T, Side::WHITE,  0>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE,  1>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE,  2>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE,  3>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE,  4>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE,  5>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE,  6>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE,  7>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE,  8>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE,  9>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE, 10>::VALUE,
+                INIT_COL_MASK<T, Side::WHITE, 11>::VALUE,
         }
 };
 
@@ -97,10 +105,10 @@ const BitBoard Board<Layout, Setup>::QUAD_NEAREST_NEIGHBOR_MAGIC =
 template<typename Layout, typename Setup>
 const BitBoard Board<Layout, Setup>::MAN_JUMP_GROUP[] =
 {
-        INIT_MAN_JUMP_GROUP<T, 0>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, SW_NE>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, SE_NW>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, NO_SO>::VALUE
+        INIT_MAN_JUMP_GROUP<T, SQUARE_LE + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, SQUARE_LE + 1>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, SQUARE_LO + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, SQUARE_LO + 1>::VALUE
 };
 
 template<typename Layout, typename Setup>

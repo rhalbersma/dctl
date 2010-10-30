@@ -1,127 +1,72 @@
 #include "Direction.h"
+#include "GridPredicates.h"
+#include "GhostPredicates.h"
 
-template<typename T, size_t SQ>
-struct IS_INVALID_SQUARE
-{
-        static const bool VALUE = !(SQ < T::SQUARE_RANGE);
-};
-
-template<typename T, size_t B>
-class IS_GHOST_BIT
-{
-private: 
-        enum {
-                R = B % T::GHOST_MODULO,        // B = GHOST_MODULO * Q + R 
-                BEGIN_LE = R < T::GHOST_LE,     // left of even rows
-                BEGIN_LO = R < T::GHOST_LO,     // left of odd rows
-                END_RE = R > T::GHOST_RE,       // right of even rows
-                END_RO = R > T::GHOST_RO,       // right of odd rows
-                END_BR = !(B < T::BIT_RANGE)    // beyond bit range
-        };
-
-public:
-        static const bool VALUE = (END_RE && BEGIN_LO) || (END_RO && BEGIN_LE) || END_BR;
-};
-
-template<typename Board, bool C, size_t B>
+template<typename T, bool C, size_t SQ>
 class IS_INITIAL
 {
 private:
         enum {
-                LOWER_BOUND = C? (Board::HEIGHT - 1) - ((Board::HEIGHT - Board::NEUTRAL) / 2 - 1) : 0,
-                UPPER_BOUND = C? (Board::HEIGHT - 1) : (Board::HEIGHT - Board::NEUTRAL) / 2 - 1
+                LOWER_BOUND = C? (T::HEIGHT - 1) - ((T::HEIGHT - T::NEUTRAL) / 2 - 1) : 0,
+                UPPER_BOUND = C? (T::HEIGHT - 1) : (T::HEIGHT - T::NEUTRAL) / 2 - 1,
+                ROW = SQUARE2COORD<T, SQ>::ROW
         };
 
 public:
-        static const bool VALUE =
-        	(LOWER_BOUND <= BIT_ROW<Board, B>::VALUE) &&
-                (UPPER_BOUND >= BIT_ROW<Board, B>::VALUE)
-        ;
+        static const bool VALUE = (ROW >= LOWER_BOUND) && (ROW <= UPPER_BOUND);
 };
 
-template<typename Board, bool Color, size_t R, size_t B>
+template<typename T, bool C, size_t ROW, size_t SQ>
 struct IS_ROW_MASK
 {
-        static const bool VALUE = BIT_ROW<Board, B>::VALUE == (Color? Board::HEIGHT - (R + 1) : R);
+        static const bool VALUE = SQUARE2COORD<T, SQ>::ROW == (C? (T::HEIGHT - 1) - ROW : ROW);
 };
 
-template<typename Board, bool Color, size_t C, size_t B>
+template<typename T, bool C, size_t COL, size_t SQ>
 struct IS_COL_MASK
 {
-        static const bool VALUE = BIT_COL<Board, B>::VALUE == (Color? Board::WIDTH - (C + 1) : C);
+        static const bool VALUE = SQUARE2COORD<T, SQ>::COL == (C? (T::WIDTH - 1) - COL : COL);
 };
 
-template<typename Board, size_t F, size_t D>
+template<typename T, size_t FROM, size_t DEST>
 class IS_MAN_JUMP_GROUP
 {
 private: 
         enum {
-                R1 = (BIT_ROW<Board, F>::VALUE - BIT_ROW<Board, D>::VALUE) % 4,
-                C1 = (BIT_COL<Board, F>::VALUE - BIT_COL<Board, D>::VALUE) % 4,
+                R1 = (SQUARE2COORD<T, FROM>::ROW - SQUARE2COORD<T, DEST>::ROW) % 4,
+                C1 = (SQUARE2COORD<T, FROM>::COL - SQUARE2COORD<T, DEST>::COL) % 4,
                 R2 = (R1 + 2) % 4,
                 C2 = (C1 + 2) % 4
         };
 
 public:
-        // a (diagonal OR orthogonal!) man capture between square <F> and square <D> is possible if 
+        // a diagonal or orthogonal man capture between square <FROM> and square <DEST> is possible if 
         static const bool VALUE =
         	(!R1 && !C1) || // row AND column numbers difference == 0 mod 4 (even number of captures)
                 (!R2 && !C2)    // row AND column numbers difference == 2 mod 4 (odd number of captures)
         ;
 };
 
-template<typename Board, size_t Index, size_t B>
+template<typename T, size_t I, size_t SQ>
 class IS_JUMPABLE
 {
 private:
         enum {
-                OFFSET = Direction<Index>::IS_DIAGONAL? 2 : 4,
-                ROW_LOWER_BOUND = Direction<Index>::IS_U? OFFSET : 0,
-                ROW_UPPER_BOUND = (Board::HEIGHT - 1) - (Direction<Index>::IS_D? OFFSET : 0),
-                COL_LOWER_BOUND = Direction<Index>::IS_L? OFFSET : 0,
-                COL_UPPER_BOUND = (Board::WIDTH - 1) - (Direction<Index>::IS_R? OFFSET : 0)
+                OFFSET = Direction<I>::IS_DIAGONAL? 2 : 4,
+                ROW_LOWER_BOUND = Direction<I>::IS_U? OFFSET : 0,
+                ROW_UPPER_BOUND = (T::HEIGHT - 1) - (Direction<I>::IS_D? OFFSET : 0),
+                COL_LOWER_BOUND = Direction<I>::IS_L? OFFSET : 0,
+                COL_UPPER_BOUND = (T::WIDTH - 1) - (Direction<I>::IS_R? OFFSET : 0),
+                ROW = SQUARE2COORD<T, SQ>::ROW,
+                COL = SQUARE2COORD<T, SQ>::COL
         };
 
 public:
-        // a jump in direction <D> is possible if bit <B> is within OFFSET of the edges being approached
+        // a jump in direction <I> is possible if square <SQ> is within OFFSET of the edges being approached
         static const bool VALUE =
-	        (ROW_LOWER_BOUND <= BIT_ROW<Board, B>::VALUE) &&
-		(ROW_UPPER_BOUND >= BIT_ROW<Board, B>::VALUE) &&
-		(COL_LOWER_BOUND <= BIT_COL<Board, B>::VALUE) &&
-		(COL_UPPER_BOUND >= BIT_COL<Board, B>::VALUE)
+	        (ROW >= ROW_LOWER_BOUND) &&
+		(ROW <= ROW_UPPER_BOUND) &&
+		(COL >= COL_LOWER_BOUND) &&
+		(COL <= COL_UPPER_BOUND)
 	;
-};
-
-template<typename Board, size_t B>
-class BIT_ROW
-{
-private:
-        enum {
-                // B = GHOST_MODULO * Q + R
-                Q = B / Board::GHOST_MODULO,            // number of row pairs                     
-                R = B % Board::GHOST_MODULO,            // bits from the left edge of the first row
-                C = R >= Board::GHOST_LO                // determine whether bit R is in the first or second row
-        };
-
-public:
-        // twice the number of row pairs plus the parity of the row within the first row pair
-        static const size_t VALUE = 2 * Q + C;
-};
-
-template<typename Board, size_t B>
-class BIT_COL
-{
-private:
-        enum {
-                // B = GHOST_MODULO * Q1 + R1
-                Q1 = B / Board::GHOST_MODULO,           // number of row pairs
-                R1 = B % Board::GHOST_MODULO,           // bits from the left edge of the first row
-                R2 = R1 - Board::GHOST_LO,              // squares from the left edge of the second row
-                C1 = R1 >= Board::GHOST_LO,             // determine whether bit R1 is in the first or second row
-                R3 = C1? R2 : R1                        // squares from the left edge
-        };
-
-public:
-        // twice the number of squares from the left edge plus the exclusive-OR parity of the row and the board
-        enum { VALUE = 2 * R3 + (C1 ^ !Board::COLORING) };
 };

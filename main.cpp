@@ -6,6 +6,8 @@
 
 #include "Board/Board.h"
 #include "IO/BoardIO.h"
+#include "Board/GridPredicates.h"
+#include "Board/Grid.h"
 
 int main(void)
 {
@@ -13,7 +15,7 @@ int main(void)
         std::cout << write_bit_layout< Ktar11Board      >()() << std::endl;
         std::cout << write_bit_layout< Ktar12Board      >()() << std::endl;
 
-        //PerftSuite::International();
+        PerftSuite::International();
 	//PerftSuite::ChessBoardVariants();
 	//PerftSuite::ItalianRuleBook();
 
