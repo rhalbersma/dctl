@@ -1,6 +1,6 @@
 #pragma once
-#include "Ghosts.h"
-#include "Squares.h"
+#include "Ghost.h"
+#include "Grid.h"
 #include "Zones.h"
 #include "../Utilities/IntegerTypes.h"
 
@@ -18,8 +18,8 @@ struct Board: public Layout, public Setup
         static const BitBoard GHOSTS;                           // "ghost" bits
         static const BitBoard INITIAL[];                        // initial position
         static const BitBoard PROMOTION[][2];                   // promotion zones
-        static const BitBoard ROW_MASK[][10];
-        static const BitBoard COL_MASK[][10];
+        static const BitBoard ROW_MASK[][12];
+        static const BitBoard COL_MASK[][12];
 
         // auxiliary bitboard masks
         static const BitBoard QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
@@ -36,21 +36,21 @@ struct Board: public Layout, public Setup
 };
 
 // square boards
-typedef Board< Ghosts< Squares< 4,  4> > > MicroBoard;
-typedef Board< Ghosts< Squares< 6,  6> > > MiniBoard;
-typedef Board< Ghosts< Squares< 8,  8> > > ChessBoard;
-typedef Board< Ghosts< Squares<10, 10> > > InternationalBoard;
+typedef Board< Ghost< Grid< 4,  4> > > MicroBoard;
+typedef Board< Ghost< Grid< 6,  6> > > MiniBoard;
+typedef Board< Ghost< Grid< 8,  8> > > ChessBoard;
+typedef Board< Ghost< Grid<10, 10> > > InternationalBoard;
 
 // Spanish-Italian board
-typedef Board< Ghosts< Squares< 8,  8, true> > > RomanBoard;
+typedef Board< Ghost< Grid< 8,  8, true> > > RomanBoard;
 
 // special initial position
-typedef Board< Ghosts< Squares< 8,  8> >, Zones<4> > ThaiBoard;
+typedef Board< Ghost< Grid< 8,  8> >, Zones<4> > ThaiBoard;
 
 // rectangular boards
-typedef Board< Ghosts< Squares<10,  8, true>   >           > SpantsiretiBoard;
-typedef Board< Ghosts< Squares<11, 10, true>, 1>, Zones<3> > Ktar11Board;
-typedef Board< Ghosts< Squares<12, 10, true>, 1>           > Ktar12Board;
+typedef Board< Ghost< Grid<10,  8, true>   >           > SpantsiretiBoard;
+typedef Board< Ghost< Grid<11, 10, true>, 1>, Zones<3> > Ktar11Board;
+typedef Board< Ghost< Grid<12, 10, true>, 1>           > Ktar12Board;
 
 // the default board
 typedef InternationalBoard DefaultBoard;
