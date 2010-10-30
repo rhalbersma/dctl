@@ -1,21 +1,26 @@
 #pragma once
 #include "Grid.h"
+#include "Transform.h"
 #include "../Utilities/IntegerTypes.h"
 
 template
 <
-        typename T,                                             // squares grid layout
-        size_t G = 2                                            // number of ghost bit columns
+        typename T,                                             // grid layout of squares
+        size_t G = 2,                                           // number of ghost bit columns
+        size_t A = D000                                         // angle of ghosts with respect to grid
 >
 struct Ghost: public T
 {
+        static const size_t GLUE = G;
+        static const size_t ANGLE = A;
+
         // diagonal directions
         static const size_t SW_NE = (T::WIDTH + G) / 2;         // Southwest-Northeast direction
         static const size_t SE_NW = SW_NE + 1;                  // Southeast-Northwest direction
 
         // orthogonal directions
         static const size_t WE_EA = SE_NW - SW_NE;              // == 1 by construction
-        static const size_t NO_SO = SE_NW + SW_NE;              // == 2 * ((WIDTH + C) / 2) + 1
+        static const size_t NO_SO = SE_NW + SW_NE;              // == 2 * ((T::WIDTH + G) / 2) + 1
 
         // number of bits per row pair
         static const size_t GHOST_MODULO = NO_SO;

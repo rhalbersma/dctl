@@ -40,15 +40,15 @@ template<typename T, size_t ROW, size_t COL>
 class COORD2BIT
 {
 private:
-        enum {
+        //enum {
                 // B = GHOST_MODULO * Q + R
-                Q = ROW / 2,                            // number of row pairs
-                P = ROW % 2,                            // row parity
-                S = COL / 2,
-                R0 = T::GHOST_LE + S,
-                R1 = T::GHOST_LO + S,
-                R = (P? R1 : R0) % T::GHOST_MODULO
-        };
+                static const size_t Q = ROW / 2;                            // number of row pairs
+                static const size_t P = ROW % 2;                            // row parity
+                static const size_t S = COL / 2;
+                static const size_t R0 = T::GHOST_LE + S;
+                static const size_t R1 = T::GHOST_LO + S;
+                static const size_t R = (P? R1 : R0) % T::GHOST_MODULO;
+        //};
 
 public:
         enum { VALUE = T::GHOST_MODULO * Q + R };
