@@ -1,6 +1,7 @@
 #pragma once
 #include "Ghost.h"
 #include "Grid.h"
+#include "Transform.h"
 #include "Zones.h"
 #include "../Utilities/IntegerTypes.h"
 
@@ -50,7 +51,7 @@ typedef Board< Ghost< Grid< 8,  8> >, Zones<4> > ThaiBoard;
 // rectangular boards
 typedef Board< Ghost< Grid<10,  8, true>   >           > SpantsiretiBoard;
 typedef Board< Ghost< Grid<11, 10, true>, 1>, Zones<3> > Ktar11Board;
-typedef Board< Ghost< Grid<12, 10, true>, 1>           > Ktar12Board;
+typedef Board< Ghost< Grid<12, 10, true>, 1, L090>           > Ktar12Board;
 
 // the default board
 typedef InternationalBoard DefaultBoard;

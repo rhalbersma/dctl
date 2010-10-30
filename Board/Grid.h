@@ -32,32 +32,4 @@ struct Grid
         static const size_t NUM_SQUARES = (H * W) / 2 + (H * W * C) % 2;
 };
 
-#include "Direction.h"
 
-// identity rotation
-template<typename In, size_t = D000>
-struct RotateGrid
-{
-        typedef In Out;
-};
-
-// rotate 90 degrees right
-template<typename In>
-struct RotateGrid<In, R090>
-{
-        typedef Grid<In::WIDTH, In::HEIGHT, (In::HEIGHT % 2) ^ !In::COLORING> Out;
-};
-
-// rotate 90 degree left
-template<typename In>
-struct RotateGrid<In, L090>
-{
-        typedef Grid<In::WIDTH, In::HEIGHT, (In::WIDTH % 2) ^ !In::COLORING> Out;
-};
-
-// rotate 180 degrees
-template<typename In>
-struct RotateGrid<In, D180>
-{
-        typedef Grid<In::HEIGHT, In::WIDTH, (In::HEIGHT % 2) ^ (In::WIDTH % 2) ^ In::COLORING> Out;
-};
