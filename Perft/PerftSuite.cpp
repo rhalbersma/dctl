@@ -15,8 +15,9 @@ void PerftSuite::International(void)
         Position<> random178(read_position_string<FEN>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
         Position<> Woldouby(read_position_string<FEN>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
         std::cout << write_square_layout<InternationalBoard>()() << std::endl;
+        std::cout << write_bit_layout<InternationalBoard>()() << std::endl;
 
-        //Perft::root<InternationalRules>(i10, 11);
+        Perft::root<InternationalRules>(i10, 11);
         Perft::root<InternationalRules>(random178, 9);
         Perft::root<InternationalRules>(Woldouby, 15);
 }

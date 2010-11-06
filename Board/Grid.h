@@ -9,10 +9,10 @@ template
 >
 struct Grid
 {
-        // reflection on template parameters
+        // store template parameters
         static const size_t HEIGHT = H;
         static const size_t WIDTH = W;
-        static const bool COLORING = C;
+        static const bool SQUARE_COLORING = C;
 
         // number of squares per row and row pair
         static const size_t ROW_E = (W +  C) / 2;               // number of squares in even rows
@@ -31,5 +31,3 @@ struct Grid
         // equivalent formula for the number of squares
         static const size_t NUM_SQUARES = (H * W) / 2 + (H * W * C) % 2;
 };
-
-

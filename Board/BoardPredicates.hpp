@@ -7,8 +7,8 @@ class IS_INITIAL
 {
 private:
         enum {
-                LOWER_BOUND = C? (T::HEIGHT - 1) - ((T::HEIGHT - T::NEUTRAL) / 2 - 1) : 0,
-                UPPER_BOUND = C? (T::HEIGHT - 1) : (T::HEIGHT - T::NEUTRAL) / 2 - 1,
+                LOWER_BOUND = C? (T::HEIGHT - 1) - ((T::HEIGHT - T::DMZ) / 2 - 1) : 0,
+                UPPER_BOUND = C? (T::HEIGHT - 1) : (T::HEIGHT - T::DMZ) / 2 - 1,
                 ROW = SQUARE2COORD<T, SQ>::ROW
         };
 

@@ -1,8 +1,8 @@
 template<typename T, size_t SQ>
-class SQUARE_IS_INVALID
+class SQUARE_IS_VALID
 {
 public:
-        static const bool VALUE = !(SQ < T::SQUARE_RANGE);
+        static const bool VALUE = SQ < T::SQUARE_RANGE;
 };
 
 template<typename T, size_t SQ>
@@ -23,7 +23,7 @@ public:
         static const size_t ROW = 2 * Q + P;
 
         // twice the number of squares from the left edge plus the row parity XOR the opposite board coloring
-        static const size_t COL = 2 * R + (P ^ !T::COLORING);
+        static const size_t COL = 2 * R + (P ^ !T::SQUARE_COLORING);
 };
 
 template<typename T, size_t ROW, size_t COL>
