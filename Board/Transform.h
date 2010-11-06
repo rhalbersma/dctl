@@ -4,6 +4,12 @@
 // rotations are subject to arithmetic modulo 8, with the unit element equal to a 45 degrees rotation
 enum { D000 = 0, L045 = 1, L090 = 2, L135 = 3, D180 = 4, R045 = 5, R090 = 6, R135 = 7, D360 = 8 };
 
+template<size_t ANGLE>
+struct InverseRotation
+{
+        static const size_t VALUE = (D360 - ANGLE) % D360;
+};
+
 // mirrored upward direction (orthogonal to the original)
 template<size_t I>
 struct MirrorDirection
@@ -29,21 +35,21 @@ struct RotateGrid
 template<typename In>
 struct RotateGrid<In, R090>
 {
-        typedef Grid<In::WIDTH, In::HEIGHT, (In::HEIGHT % 2) ^ !In::COLORING> Out;
+        typedef Grid<In::WIDTH, In::HEIGHT, (In::HEIGHT % 2) ^ !In::SQUARE_COLORING> Out;
 };
 
 // rotate 90 degree left
 template<typename In>
 struct RotateGrid<In, L090>
 {
-        typedef Grid<In::WIDTH, In::HEIGHT, (In::WIDTH % 2) ^ !In::COLORING> Out;
+        typedef Grid<In::WIDTH, In::HEIGHT, (In::WIDTH % 2) ^ !In::SQUARE_COLORING> Out;
 };
 
 // rotate 180 degrees
 template<typename In>
 struct RotateGrid<In, D180>
 {
-        typedef Grid<In::HEIGHT, In::WIDTH, (In::HEIGHT % 2) ^ (In::WIDTH % 2) ^ In::COLORING> Out;
+        typedef Grid<In::HEIGHT, In::WIDTH, (In::HEIGHT % 2) ^ (In::WIDTH % 2) ^ In::SQUARE_COLORING> Out;
 };
 
 // identity rotation

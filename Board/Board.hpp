@@ -1,19 +1,21 @@
 #include "BoardMetaTemplates.h"
-#include "GhostMetaTemplates.h"
 #include "../Position/Reversible/Side.h"
 
-template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::GHOSTS = INIT_GHOSTS<T>::VALUE;
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::GHOSTS = ~INIT_SQUARES<T>::VALUE;
 
-template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::INITIAL[] =
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::SQUARES = INIT_SQUARES<T>::VALUE;
+
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::INITIAL[] =
 {
 	INIT_INITIAL<T, Side::BLACK>::VALUE,
         INIT_INITIAL<T, Side::WHITE>::VALUE
 };
 
-template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::PROMOTION[][2] =
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::PROMOTION[][2] =
 {
         {
                 INIT_ROW_MASK<T, Side::WHITE, 0>::VALUE,
@@ -25,8 +27,8 @@ const BitBoard Board<Layout, Setup>::PROMOTION[][2] =
         }
 };
 
-template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::ROW_MASK[][12] =
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::ROW_MASK[][12] =
 {
         {
                 INIT_ROW_MASK<T, Side::BLACK,  0>::VALUE,
@@ -58,8 +60,8 @@ const BitBoard Board<Layout, Setup>::ROW_MASK[][12] =
         }
 };
 
-template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::COL_MASK[][12] =
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::COL_MASK[][12] =
 {
         {
                 INIT_COL_MASK<T, Side::BLACK,  0>::VALUE,
@@ -91,19 +93,19 @@ const BitBoard Board<Layout, Setup>::COL_MASK[][12] =
         }
 };
 
-template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
 {
         (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (SW_NE << 1))),
         (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (SE_NW << 1)))
 };
 
-template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::QUAD_NEAREST_NEIGHBOR_MAGIC =
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
-template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::MAN_JUMP_GROUP[] =
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::MAN_JUMP_GROUP[] =
 {
         INIT_MAN_JUMP_GROUP<T, SQUARE_LE + 0>::VALUE,
         INIT_MAN_JUMP_GROUP<T, SQUARE_LE + 1>::VALUE,
@@ -111,8 +113,8 @@ const BitBoard Board<Layout, Setup>::MAN_JUMP_GROUP[] =
         INIT_MAN_JUMP_GROUP<T, SQUARE_LO + 1>::VALUE
 };
 
-template<typename Layout, typename Setup>
-const BitBoard Board<Layout, Setup>::JUMPABLE[] =
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const BitBoard Board<GridLayout, D, N, A, GhostStructure>::JUMPABLE[] =
 {
         INIT_JUMPABLE<T, 0>::VALUE,
         INIT_JUMPABLE<T, 1>::VALUE,
@@ -124,35 +126,21 @@ const BitBoard Board<Layout, Setup>::JUMPABLE[] =
         INIT_JUMPABLE<T, 7>::VALUE
 };
 
-template<typename Layout, typename Setup>
-const size_t Board<Layout, Setup>::DIR[] = 
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const size_t Board<GridLayout, D, N, A, GhostStructure>::DIR[] = 
 {
-        WE_EA, SE_NW, NO_SO, SW_NE, WE_EA, SE_NW, NO_SO, SW_NE
+        GhostStructure::WE_EA, 
+        GhostStructure::SE_NW, 
+        GhostStructure::NO_SO, 
+        GhostStructure::SW_NE, 
+        GhostStructure::WE_EA, 
+        GhostStructure::SE_NW, 
+        GhostStructure::NO_SO, 
+        GhostStructure::SW_NE
 };
 
-template<typename Layout, typename Setup>
-const size_t Board<Layout, Setup>::TABLE_BIT2SQUARE[] =
-{
-        BIT2SQUARE<T,  0>::VALUE, BIT2SQUARE<T,  1>::VALUE, BIT2SQUARE<T,  2>::VALUE, BIT2SQUARE<T,  3>::VALUE,
-        BIT2SQUARE<T,  4>::VALUE, BIT2SQUARE<T,  5>::VALUE, BIT2SQUARE<T,  6>::VALUE, BIT2SQUARE<T,  7>::VALUE,
-        BIT2SQUARE<T,  8>::VALUE, BIT2SQUARE<T,  9>::VALUE, BIT2SQUARE<T, 10>::VALUE, BIT2SQUARE<T, 11>::VALUE,
-        BIT2SQUARE<T, 12>::VALUE, BIT2SQUARE<T, 13>::VALUE, BIT2SQUARE<T, 14>::VALUE, BIT2SQUARE<T, 15>::VALUE,
-        BIT2SQUARE<T, 16>::VALUE, BIT2SQUARE<T, 17>::VALUE, BIT2SQUARE<T, 18>::VALUE, BIT2SQUARE<T, 19>::VALUE,
-        BIT2SQUARE<T, 20>::VALUE, BIT2SQUARE<T, 21>::VALUE, BIT2SQUARE<T, 22>::VALUE, BIT2SQUARE<T, 23>::VALUE,
-        BIT2SQUARE<T, 24>::VALUE, BIT2SQUARE<T, 25>::VALUE, BIT2SQUARE<T, 26>::VALUE, BIT2SQUARE<T, 27>::VALUE,
-        BIT2SQUARE<T, 28>::VALUE, BIT2SQUARE<T, 29>::VALUE, BIT2SQUARE<T, 30>::VALUE, BIT2SQUARE<T, 31>::VALUE,
-        BIT2SQUARE<T, 32>::VALUE, BIT2SQUARE<T, 33>::VALUE, BIT2SQUARE<T, 34>::VALUE, BIT2SQUARE<T, 35>::VALUE,
-        BIT2SQUARE<T, 36>::VALUE, BIT2SQUARE<T, 37>::VALUE, BIT2SQUARE<T, 38>::VALUE, BIT2SQUARE<T, 39>::VALUE,
-        BIT2SQUARE<T, 40>::VALUE, BIT2SQUARE<T, 41>::VALUE, BIT2SQUARE<T, 42>::VALUE, BIT2SQUARE<T, 43>::VALUE,
-        BIT2SQUARE<T, 44>::VALUE, BIT2SQUARE<T, 45>::VALUE, BIT2SQUARE<T, 46>::VALUE, BIT2SQUARE<T, 47>::VALUE,
-        BIT2SQUARE<T, 48>::VALUE, BIT2SQUARE<T, 49>::VALUE, BIT2SQUARE<T, 50>::VALUE, BIT2SQUARE<T, 51>::VALUE,
-        BIT2SQUARE<T, 52>::VALUE, BIT2SQUARE<T, 53>::VALUE, BIT2SQUARE<T, 54>::VALUE, BIT2SQUARE<T, 55>::VALUE,
-        BIT2SQUARE<T, 56>::VALUE, BIT2SQUARE<T, 57>::VALUE, BIT2SQUARE<T, 58>::VALUE, BIT2SQUARE<T, 59>::VALUE,
-        BIT2SQUARE<T, 60>::VALUE, BIT2SQUARE<T, 61>::VALUE, BIT2SQUARE<T, 62>::VALUE, BIT2SQUARE<T, 63>::VALUE
-};
-
-template<typename Layout, typename Setup>
-const size_t Board<Layout, Setup>::TABLE_SQUARE2BIT[] =
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const size_t Board<GridLayout, D, N, A, GhostStructure>::TABLE_SQUARE2BIT[] =
 {
         SQUARE2BIT<T,  0>::VALUE, SQUARE2BIT<T,  1>::VALUE, SQUARE2BIT<T,  2>::VALUE, SQUARE2BIT<T,  3>::VALUE,
         SQUARE2BIT<T,  4>::VALUE, SQUARE2BIT<T,  5>::VALUE, SQUARE2BIT<T,  6>::VALUE, SQUARE2BIT<T,  7>::VALUE,
@@ -170,6 +158,27 @@ const size_t Board<Layout, Setup>::TABLE_SQUARE2BIT[] =
         SQUARE2BIT<T, 52>::VALUE, SQUARE2BIT<T, 53>::VALUE, SQUARE2BIT<T, 54>::VALUE, SQUARE2BIT<T, 55>::VALUE,
         SQUARE2BIT<T, 56>::VALUE, SQUARE2BIT<T, 57>::VALUE, SQUARE2BIT<T, 58>::VALUE, SQUARE2BIT<T, 59>::VALUE,
         SQUARE2BIT<T, 60>::VALUE, SQUARE2BIT<T, 61>::VALUE, SQUARE2BIT<T, 62>::VALUE, SQUARE2BIT<T, 63>::VALUE
+};
+
+template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
+const size_t Board<GridLayout, D, N, A, GhostStructure>::TABLE_BIT2SQUARE[] =
+{
+        BIT2SQUARE<T,  0>::VALUE, BIT2SQUARE<T,  1>::VALUE, BIT2SQUARE<T,  2>::VALUE, BIT2SQUARE<T,  3>::VALUE,
+        BIT2SQUARE<T,  4>::VALUE, BIT2SQUARE<T,  5>::VALUE, BIT2SQUARE<T,  6>::VALUE, BIT2SQUARE<T,  7>::VALUE,
+        BIT2SQUARE<T,  8>::VALUE, BIT2SQUARE<T,  9>::VALUE, BIT2SQUARE<T, 10>::VALUE, BIT2SQUARE<T, 11>::VALUE,
+        BIT2SQUARE<T, 12>::VALUE, BIT2SQUARE<T, 13>::VALUE, BIT2SQUARE<T, 14>::VALUE, BIT2SQUARE<T, 15>::VALUE,
+        BIT2SQUARE<T, 16>::VALUE, BIT2SQUARE<T, 17>::VALUE, BIT2SQUARE<T, 18>::VALUE, BIT2SQUARE<T, 19>::VALUE,
+        BIT2SQUARE<T, 20>::VALUE, BIT2SQUARE<T, 21>::VALUE, BIT2SQUARE<T, 22>::VALUE, BIT2SQUARE<T, 23>::VALUE,
+        BIT2SQUARE<T, 24>::VALUE, BIT2SQUARE<T, 25>::VALUE, BIT2SQUARE<T, 26>::VALUE, BIT2SQUARE<T, 27>::VALUE,
+        BIT2SQUARE<T, 28>::VALUE, BIT2SQUARE<T, 29>::VALUE, BIT2SQUARE<T, 30>::VALUE, BIT2SQUARE<T, 31>::VALUE,
+        BIT2SQUARE<T, 32>::VALUE, BIT2SQUARE<T, 33>::VALUE, BIT2SQUARE<T, 34>::VALUE, BIT2SQUARE<T, 35>::VALUE,
+        BIT2SQUARE<T, 36>::VALUE, BIT2SQUARE<T, 37>::VALUE, BIT2SQUARE<T, 38>::VALUE, BIT2SQUARE<T, 39>::VALUE,
+        BIT2SQUARE<T, 40>::VALUE, BIT2SQUARE<T, 41>::VALUE, BIT2SQUARE<T, 42>::VALUE, BIT2SQUARE<T, 43>::VALUE,
+        BIT2SQUARE<T, 44>::VALUE, BIT2SQUARE<T, 45>::VALUE, BIT2SQUARE<T, 46>::VALUE, BIT2SQUARE<T, 47>::VALUE,
+        BIT2SQUARE<T, 48>::VALUE, BIT2SQUARE<T, 49>::VALUE, BIT2SQUARE<T, 50>::VALUE, BIT2SQUARE<T, 51>::VALUE,
+        BIT2SQUARE<T, 52>::VALUE, BIT2SQUARE<T, 53>::VALUE, BIT2SQUARE<T, 54>::VALUE, BIT2SQUARE<T, 55>::VALUE,
+        BIT2SQUARE<T, 56>::VALUE, BIT2SQUARE<T, 57>::VALUE, BIT2SQUARE<T, 58>::VALUE, BIT2SQUARE<T, 59>::VALUE,
+        BIT2SQUARE<T, 60>::VALUE, BIT2SQUARE<T, 61>::VALUE, BIT2SQUARE<T, 62>::VALUE, BIT2SQUARE<T, 63>::VALUE
 };
 
 template<typename Board>

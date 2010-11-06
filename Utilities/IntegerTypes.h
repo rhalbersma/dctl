@@ -16,6 +16,8 @@ typedef uint64_t BitBoard;
 typedef uint64_t HashIndex;
 typedef uint64_t NodeCount;
 
+static const size_t BITBOARD_CAPACITY = 8 * sizeof(BitBoard);
+
 template<typename> struct is_IntegerType        { enum { VALUE = false }; };
 template<> struct is_IntegerType<uint8_t>       { enum { VALUE = true  }; };
 template<> struct is_IntegerType< int16_t>      { enum { VALUE = true  }; };

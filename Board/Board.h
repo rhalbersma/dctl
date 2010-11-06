@@ -1,22 +1,33 @@
 #pragma once
-#include "Ghost.h"
 #include "Grid.h"
+#include "Ghost.h"
 #include "Transform.h"
-#include "Zones.h"
 #include "../Utilities/IntegerTypes.h"
 
 template
 <
-        typename Layout,
-        typename Setup = Zones<>
+        typename GridLayout,
+        size_t D = 2,
+        size_t N = 2,
+        size_t A = D000,
+        typename GhostStructure = Ghost<typename RotateGrid<GridLayout, A>::Out, N>
 >
-struct Board: public Layout, public Setup
+struct Board: public GridLayout
 {
         // reflection on template type
-        typedef Board<Layout, Setup> T;
+        typedef Board<GridLayout, D, N, A, GhostStructure> T;
+
+        // reflection on template parameters
+        static const size_t DMZ = D;
+        static const size_t ANGLE_S2B = A;
+        static const size_t ANGLE_B2S = InverseRotation<A>::VALUE;
+        typedef                     GridLayout          ExternalGrid;
+        typedef typename RotateGrid<GridLayout, A>::Out InternalGrid;
+        typedef GhostStructure G;
 
         // essential bitboard masks
         static const BitBoard GHOSTS;                           // "ghost" bits
+        static const BitBoard SQUARES;
         static const BitBoard INITIAL[];                        // initial position
         static const BitBoard PROMOTION[][2];                   // promotion zones
         static const BitBoard ROW_MASK[][12];
@@ -37,21 +48,21 @@ struct Board: public Layout, public Setup
 };
 
 // square boards
-typedef Board< Ghost< Grid< 4,  4> > > MicroBoard;
-typedef Board< Ghost< Grid< 6,  6> > > MiniBoard;
-typedef Board< Ghost< Grid< 8,  8> > > ChessBoard;
-typedef Board< Ghost< Grid<10, 10> > > InternationalBoard;
+typedef Board< Grid< 4,  4> > MicroBoard;
+typedef Board< Grid< 6,  6> > MiniBoard;
+typedef Board< Grid< 8,  8> > ChessBoard;
+typedef Board< Grid<10, 10> > InternationalBoard;
 
 // Spanish-Italian board
-typedef Board< Ghost< Grid< 8,  8, true> > > RomanBoard;
+typedef Board< Grid< 8,  8, true> > RomanBoard;
 
 // special initial position
-typedef Board< Ghost< Grid< 8,  8> >, Zones<4> > ThaiBoard;
+typedef Board< Grid< 8,  8>, 4 > ThaiBoard;
 
 // rectangular boards
-typedef Board< Ghost< Grid<10,  8, true>   >           > SpantsiretiBoard;
-typedef Board< Ghost< Grid<11, 10, true>, 1>, Zones<3> > Ktar11Board;
-typedef Board< Ghost< Grid<12, 10, true>, 1, L090>           > Ktar12Board;
+typedef Board< Grid<10,  8, true>             > SpantsiretiBoard;
+typedef Board< Grid<11, 10, true>, 3, 1       > Ktar11Board;
+typedef Board< Grid<12, 10, true>, 2, 1, L090 > Ktar12Board;
 
 // the default board
 typedef InternationalBoard DefaultBoard;

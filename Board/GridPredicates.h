@@ -2,7 +2,7 @@
 #include "../Utilities/IntegerTypes.h"
 
 template<typename, size_t>
-class SQUARE_IS_INVALID;
+class SQUARE_IS_VALID;
 
 template<typename, size_t>
 class SQUARE2COORD;
