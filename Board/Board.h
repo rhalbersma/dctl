@@ -9,29 +9,26 @@ template
         typename GridLayout,
         size_t D = 2,
         size_t N = 2,
-        size_t A = D000,
-        typename GhostStructure = Ghost<typename RotateGrid<GridLayout, A>::Out, N>
+        size_t A = D000
 >
 struct Board: public GridLayout
 {
         // reflection on template type
-        typedef Board<GridLayout, D, N, A, GhostStructure> T;
+        typedef Board<GridLayout, D, N, A> T;
+        typedef GridLayout ExternalGrid;
+        typedef typename RotateGrid<ExternalGrid, A>::Out InternalGrid;
+        typedef Ghost<InternalGrid, N> GhostStructure;
 
         // reflection on template parameters
-        static const size_t DMZ = D;
-        static const size_t ANGLE_S2B = A;
-        static const size_t ANGLE_B2S = InverseRotation<A>::VALUE;
-        typedef                     GridLayout          ExternalGrid;
-        typedef typename RotateGrid<GridLayout, A>::Out InternalGrid;
-        typedef GhostStructure G;
+        static const size_t DMZ = D;                            // demilitarized rows in the initial position
+        static const size_t ANGLE = A;                          // rotation from external to internal grid
 
         // essential bitboard masks
         static const BitBoard GHOSTS;                           // "ghost" bits
-        static const BitBoard SQUARES;
         static const BitBoard INITIAL[];                        // initial position
         static const BitBoard PROMOTION[][2];                   // promotion zones
-        static const BitBoard ROW_MASK[][12];
-        static const BitBoard COL_MASK[][12];
+        static const BitBoard ROW_MASK[][12];                   // bit masks for the rows
+        static const BitBoard COL_MASK[][12];                   // bit masks for the columns
 
         // auxiliary bitboard masks
         static const BitBoard QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
@@ -40,7 +37,7 @@ struct Board: public GridLayout
         static const BitBoard JUMPABLE[];                       // squares from which a jump is possible in a direction
 
         // arrays of directions
-        static const size_t DIR[];                              // the bitwise shifts corresponding to all 8 directions
+        static const size_t DIR[];                              // the bitwise shifts for all 8 directions
 
         // square to bit and bit to square conversion tables
         static const size_t TABLE_SQUARE2BIT[];                 // convert a square to a bit

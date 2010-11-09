@@ -19,11 +19,13 @@ private:
         };
 
 public:
-        // twice the number of row pairs plus the row parity
-        static const size_t ROW = 2 * Q + P;
+        enum {
+                // twice the number of row pairs plus the row parity
+                ROW = 2 * Q + P,
 
-        // twice the number of squares from the left edge plus the row parity XOR the opposite board coloring
-        static const size_t COL = 2 * R + (P ^ !T::SQUARE_COLORING);
+                // twice the number of squares from the left edge plus the row parity XOR the opposite board coloring
+                COL = 2 * R + (P ^ !T::SQUARE_PARITY)
+        };
 };
 
 template<typename T, size_t ROW, size_t COL>

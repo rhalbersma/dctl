@@ -11,7 +11,7 @@ template
 struct Ghost
 {
         // extract coloring of top-left square
-        static const bool BIT_COLORING = T::SQUARE_COLORING;
+        static const bool BIT_PARITY = T::SQUARE_PARITY;
 
         // diagonal directions
         static const size_t SW_NE = (T::WIDTH + N) / 2;         // Southwest-Northeast direction
@@ -27,7 +27,7 @@ struct Ghost
         // boundaries of even and odd rows
         static const size_t BIT_LE = BIT_MODULO;                // leftmost bit of even rows
         static const size_t BIT_RE = T::SQUARE_RE;              // rightmost bit of even rows
-        static const size_t BIT_LO = SW_NE + BIT_COLORING;      // leftmost bit of odd rows
+        static const size_t BIT_LO = SW_NE + BIT_PARITY;        // leftmost bit of odd rows
         static const size_t BIT_RO = BIT_LO + T::ROW_O - 1;     // rightmost bit of odd rows
 
         // number of used bits
