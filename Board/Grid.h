@@ -5,18 +5,18 @@ template
 <
         size_t H,                                               // height
         size_t W,                                               // width
-        bool C = false                                          // coloring of top-left square
+        bool P = false                                          // coloring of top-left square
 >
 struct Grid
 {
         // store template parameters
         static const size_t HEIGHT = H;
         static const size_t WIDTH = W;
-        static const bool SQUARE_COLORING = C;
+        static const bool SQUARE_PARITY = P;
 
         // number of squares per row and row pair
-        static const size_t ROW_E = (W +  C) / 2;               // number of squares in even rows
-        static const size_t ROW_O = (W + !C) / 2;               // number of squares in odd rows
+        static const size_t ROW_E = (W +  P) / 2;               // number of squares in even rows
+        static const size_t ROW_O = (W + !P) / 2;               // number of squares in odd rows
         static const size_t SQUARE_MODULO = W;                  // number of squares per row pair
 
         // boundaries of even and odd rows
@@ -29,5 +29,5 @@ struct Grid
         static const size_t SQUARE_RANGE = SQUARE_MODULO * ((H - 1) / 2) + ((H % 2)? SQUARE_RE : SQUARE_RO) + 1;
 
         // equivalent formula for the number of squares
-        static const size_t NUM_SQUARES = (H * W) / 2 + (H * W * C) % 2;
+        static const size_t NUM_SQUARES = (H * W) / 2 + (H * W * P) % 2;
 };

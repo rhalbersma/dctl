@@ -1,25 +1,5 @@
 #include "BoardPredicates.h"
 
-template<typename T, size_t B>
-class INIT_GHOSTS
-{
-private:
-        static const BitBoard MASK = BIT_IS_GHOST<T, B>::VALUE? (BitBoard(1) << B) : 0;
-
-public:
-        static const BitBoard VALUE = MASK ^ INIT_GHOSTS<T, B-1>::VALUE;
-};
-
-template<typename T>
-class INIT_GHOSTS<T, 0>
-{
-private:
-        static const BitBoard MASK = BIT_IS_GHOST<T, 0>::VALUE? (BitBoard(1) << 0) : 0;
-
-public:
-        static const BitBoard VALUE = MASK;
-};
-
 template<typename T, size_t SQ>
 class INIT_SQUARES
 {
@@ -146,16 +126,20 @@ class SQUARE2BIT
 private:
         typedef typename T::ExternalGrid E;
         typedef typename T::InternalGrid I;
+        typedef typename T::GhostStructure G;
 
         enum {
+                // coordinates within the external grid
                 ROW = SQUARE2COORD<E, SQ>::ROW,
                 COL = SQUARE2COORD<E, SQ>::COL,
-                ROW_PRIME = RotateCoordinate<E, ROW, COL, T::ANGLE_S2B>::ROW,
-                COL_PRIME = RotateCoordinate<E, ROW, COL, T::ANGLE_S2B>::COL
+
+                // rotated coordinates within the internal grid
+                ROW_PRIME = RotateCoordinate<E, ROW, COL, T::ANGLE>::ROW,
+                COL_PRIME = RotateCoordinate<E, ROW, COL, T::ANGLE>::COL
         };
 
 public:
-        enum { VALUE = COORD2BIT<typename T::G, ROW_PRIME, COL_PRIME>::VALUE };
+        enum { VALUE = COORD2BIT<G, ROW_PRIME, COL_PRIME>::VALUE };
 };
 
 template<typename T, size_t B>
@@ -164,15 +148,21 @@ class BIT2SQUARE
 private:
         typedef typename T::ExternalGrid E;
         typedef typename T::InternalGrid I;
+        typedef typename T::GhostStructure G;
 
         enum {
-                ROW = BIT2COORD<T::G, B>::ROW,
-                COL = BIT2COORD<T::G, B>::COL,
-                ROW_PRIME = RotateCoordinate<I, ROW, COL, T::ANGLE_B2S>::ROW,
-                COL_PRIME = RotateCoordinate<I, ROW, COL, T::ANGLE_B2S>::COL,
-                INVALID = 999
+                // coordinates within the internal grid
+                ROW = BIT2COORD<G, B>::ROW,
+                COL = BIT2COORD<G, B>::COL,
+
+                // rotation from internal to external grid
+                ANGLE = InverseAngle<T::ANGLE>::VALUE,
+
+                // rotated coordinates within the external grid
+                ROW_PRIME = RotateCoordinate<I, ROW, COL, ANGLE>::ROW,
+                COL_PRIME = RotateCoordinate<I, ROW, COL, ANGLE>::COL
         };
 
 public:
-        enum { VALUE = BIT_IS_GHOST<typename T::G, B>::VALUE? INVALID : COORD2SQUARE<E, ROW_PRIME, COL_PRIME>::VALUE };
+        enum { VALUE = COORD2SQUARE<E, ROW_PRIME, COL_PRIME>::VALUE };
 };

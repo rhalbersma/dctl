@@ -1,21 +1,18 @@
 #include "BoardMetaTemplates.h"
 #include "../Position/Reversible/Side.h"
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::GHOSTS = ~INIT_SQUARES<T>::VALUE;
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const BitBoard Board<GridLayout, D, N, A>::GHOSTS = ~INIT_SQUARES<T>::VALUE;
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::SQUARES = INIT_SQUARES<T>::VALUE;
-
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::INITIAL[] =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const BitBoard Board<GridLayout, D, N, A>::INITIAL[] =
 {
 	INIT_INITIAL<T, Side::BLACK>::VALUE,
         INIT_INITIAL<T, Side::WHITE>::VALUE
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::PROMOTION[][2] =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const BitBoard Board<GridLayout, D, N, A>::PROMOTION[][2] =
 {
         {
                 INIT_ROW_MASK<T, Side::WHITE, 0>::VALUE,
@@ -27,8 +24,8 @@ const BitBoard Board<GridLayout, D, N, A, GhostStructure>::PROMOTION[][2] =
         }
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::ROW_MASK[][12] =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const BitBoard Board<GridLayout, D, N, A>::ROW_MASK[][12] =
 {
         {
                 INIT_ROW_MASK<T, Side::BLACK,  0>::VALUE,
@@ -60,8 +57,8 @@ const BitBoard Board<GridLayout, D, N, A, GhostStructure>::ROW_MASK[][12] =
         }
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::COL_MASK[][12] =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const BitBoard Board<GridLayout, D, N, A>::COL_MASK[][12] =
 {
         {
                 INIT_COL_MASK<T, Side::BLACK,  0>::VALUE,
@@ -93,19 +90,19 @@ const BitBoard Board<GridLayout, D, N, A, GhostStructure>::COL_MASK[][12] =
         }
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const BitBoard Board<GridLayout, D, N, A>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
 {
         (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (SW_NE << 1))),
         (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (SE_NW << 1)))
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const BitBoard Board<GridLayout, D, N, A>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::MAN_JUMP_GROUP[] =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const BitBoard Board<GridLayout, D, N, A>::MAN_JUMP_GROUP[] =
 {
         INIT_MAN_JUMP_GROUP<T, SQUARE_LE + 0>::VALUE,
         INIT_MAN_JUMP_GROUP<T, SQUARE_LE + 1>::VALUE,
@@ -113,21 +110,21 @@ const BitBoard Board<GridLayout, D, N, A, GhostStructure>::MAN_JUMP_GROUP[] =
         INIT_MAN_JUMP_GROUP<T, SQUARE_LO + 1>::VALUE
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const BitBoard Board<GridLayout, D, N, A, GhostStructure>::JUMPABLE[] =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const BitBoard Board<GridLayout, D, N, A>::JUMPABLE[] =
 {
-        INIT_JUMPABLE<T, 0>::VALUE,
-        INIT_JUMPABLE<T, 1>::VALUE,
-        INIT_JUMPABLE<T, 2>::VALUE,
-        INIT_JUMPABLE<T, 3>::VALUE,
-        INIT_JUMPABLE<T, 4>::VALUE,
-        INIT_JUMPABLE<T, 5>::VALUE,
-        INIT_JUMPABLE<T, 6>::VALUE,
-        INIT_JUMPABLE<T, 7>::VALUE
+        INIT_JUMPABLE<T, RotateDirection<0, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirection<1, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirection<2, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirection<3, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirection<4, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirection<5, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirection<6, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirection<7, ANGLE>::VALUE>::VALUE
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const size_t Board<GridLayout, D, N, A, GhostStructure>::DIR[] = 
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const size_t Board<GridLayout, D, N, A>::DIR[] = 
 {
         GhostStructure::WE_EA, 
         GhostStructure::SE_NW, 
@@ -139,8 +136,8 @@ const size_t Board<GridLayout, D, N, A, GhostStructure>::DIR[] =
         GhostStructure::SW_NE
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const size_t Board<GridLayout, D, N, A, GhostStructure>::TABLE_SQUARE2BIT[] =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const size_t Board<GridLayout, D, N, A>::TABLE_SQUARE2BIT[] =
 {
         SQUARE2BIT<T,  0>::VALUE, SQUARE2BIT<T,  1>::VALUE, SQUARE2BIT<T,  2>::VALUE, SQUARE2BIT<T,  3>::VALUE,
         SQUARE2BIT<T,  4>::VALUE, SQUARE2BIT<T,  5>::VALUE, SQUARE2BIT<T,  6>::VALUE, SQUARE2BIT<T,  7>::VALUE,
@@ -160,8 +157,8 @@ const size_t Board<GridLayout, D, N, A, GhostStructure>::TABLE_SQUARE2BIT[] =
         SQUARE2BIT<T, 60>::VALUE, SQUARE2BIT<T, 61>::VALUE, SQUARE2BIT<T, 62>::VALUE, SQUARE2BIT<T, 63>::VALUE
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A, typename GhostStructure>
-const size_t Board<GridLayout, D, N, A, GhostStructure>::TABLE_BIT2SQUARE[] =
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const size_t Board<GridLayout, D, N, A>::TABLE_BIT2SQUARE[] =
 {
         BIT2SQUARE<T,  0>::VALUE, BIT2SQUARE<T,  1>::VALUE, BIT2SQUARE<T,  2>::VALUE, BIT2SQUARE<T,  3>::VALUE,
         BIT2SQUARE<T,  4>::VALUE, BIT2SQUARE<T,  5>::VALUE, BIT2SQUARE<T,  6>::VALUE, BIT2SQUARE<T,  7>::VALUE,

@@ -1,9 +1,6 @@
 #pragma once
 #include "../Utilities/IntegerTypes.h"
 
-template<typename T, size_t = BITBOARD_CAPACITY - 1>
-class INIT_GHOSTS;
-
 template<typename T, size_t = T::SQUARE_RANGE - 1>
 class INIT_SQUARES;
 
