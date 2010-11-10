@@ -1,4 +1,4 @@
-template<typename T, size_t B>
+template<typename T, int B>
 class BIT_IS_GHOST
 {
 private: 
@@ -15,7 +15,7 @@ public:
         static const bool VALUE = (END_RE && BEGIN_LO) || (END_RO && BEGIN_LE) || END_BR;
 };
 
-template<typename T, size_t B>
+template<typename T, int B>
 class BIT2COORD
 {
 private:

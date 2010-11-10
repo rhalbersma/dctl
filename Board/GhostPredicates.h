@@ -1,10 +1,10 @@
 #pragma once
 #include "../Utilities/IntegerTypes.h"
 
-template<typename, size_t>
+template<typename, int>
 class BIT_IS_GHOST;
 
-template<typename, size_t>
+template<typename, int>
 class BIT2COORD;
 
 template<typename, int, int>

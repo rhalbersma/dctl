@@ -16,12 +16,14 @@ struct Board: public GridLayout
         // reflection on template type
         typedef Board<GridLayout, D, N, A> T;
         typedef GridLayout ExternalGrid;
+
         typedef typename RotateGrid<ExternalGrid, A>::Out InternalGrid;
         typedef Ghost<InternalGrid, N> GhostStructure;
 
         // reflection on template parameters
         static const size_t DMZ = D;                            // demilitarized rows in the initial position
-        static const size_t ANGLE = A;                          // rotation from external to internal grid
+        static const size_t ANGLE = A;                          // rotation from external to internal grid                        
+        static const size_t A_PRIME = InverseAngle<A>::VALUE;   // rotation from internal to external grid
 
         // essential bitboard masks
         static const BitBoard GHOSTS;                           // "ghost" bits
@@ -38,10 +40,11 @@ struct Board: public GridLayout
 
         // arrays of directions
         static const size_t DIR[];                              // the bitwise shifts for all 8 directions
+        static const size_t BASE_DIR[];
 
         // square to bit and bit to square conversion tables
-        static const size_t TABLE_SQUARE2BIT[];                 // convert a square to a bit
-        static const size_t TABLE_BIT2SQUARE[];                 // convert a bit to a square
+        static const int TABLE_SQUARE2BIT[];                 // convert a square to a bit
+        static const int TABLE_BIT2SQUARE[];                 // convert a bit to a square
 };
 
 // square boards

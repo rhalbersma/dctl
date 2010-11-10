@@ -15,6 +15,12 @@ int main(void)
         std::cout << write_bit_layout< Ktar11Board      >()() << std::endl;
         std::cout << write_bit_layout< Ktar12Board      >()() << std::endl;
 
+        std::cout << InternationalBoard::ANGLE << " " << InternationalBoard::A_PRIME << std::endl;
+        
+        for(size_t i = 0; i < 8; ++i) {
+                std::cout << InternationalBoard::DIR[i] << " " << InternationalBoard::BASE_DIR[i] << std::endl;
+        }
+
         PerftSuite::International();
 	//PerftSuite::ChessBoardVariants();
 	//PerftSuite::ItalianRuleBook();

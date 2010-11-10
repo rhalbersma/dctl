@@ -54,10 +54,10 @@ void KingMoves::generate_serial(BitBoard active_kings, Propagate<Rules, Board>& 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void KingMoves::generate_dirs(BitBoard from_sq, Propagate<Rules, Board>& moves)
 {
-        generate_dir<Color, DirIndex<Color>::LD>(from_sq, moves);
-        generate_dir<Color, DirIndex<Color>::RD>(from_sq, moves);
-        generate_dir<Color, DirIndex<Color>::LU>(from_sq, moves);
-        generate_dir<Color, DirIndex<Color>::RU>(from_sq, moves);
+        generate_dir<Color, DirIndex<Color>::LEFT_DOWN>(from_sq, moves);
+        generate_dir<Color, DirIndex<Color>::RIGHT_DOWN>(from_sq, moves);
+        generate_dir<Color, DirIndex<Color>::LEFT_UP>(from_sq, moves);
+        generate_dir<Color, DirIndex<Color>::RIGHT_UP>(from_sq, moves);
 }
 
 // tag dispatching based on king range
@@ -103,10 +103,10 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t KingMoves::count_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                count_dir<DirIndex<Color>::LD, Rules, Board>(active_kings, not_occupied) +
-                count_dir<DirIndex<Color>::RD, Rules, Board>(active_kings, not_occupied) +
-                count_dir<DirIndex<Color>::LU, Rules, Board>(active_kings, not_occupied) +
-                count_dir<DirIndex<Color>::RU, Rules, Board>(active_kings, not_occupied)
+                count_dir<DirIndex<Color>::LEFT_DOWN, Rules, Board>(active_kings, not_occupied) +
+                count_dir<DirIndex<Color>::RIGHT_DOWN, Rules, Board>(active_kings, not_occupied) +
+                count_dir<DirIndex<Color>::LEFT_UP, Rules, Board>(active_kings, not_occupied) +
+                count_dir<DirIndex<Color>::RIGHT_UP, Rules, Board>(active_kings, not_occupied)
         );
 }
 
@@ -151,10 +151,10 @@ template<bool Color, typename Board> FORCE_INLINE
 bool KingMoves::detect_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                detect_dir<DirIndex<Color>::LD, Board>(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Color>::RD, Board>(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Color>::LU, Board>(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Color>::RU, Board>(active_kings, not_occupied)
+                detect_dir<DirIndex<Color>::LEFT_DOWN, Board>(active_kings, not_occupied) ||
+                detect_dir<DirIndex<Color>::RIGHT_DOWN, Board>(active_kings, not_occupied) ||
+                detect_dir<DirIndex<Color>::LEFT_UP, Board>(active_kings, not_occupied) ||
+                detect_dir<DirIndex<Color>::RIGHT_UP, Board>(active_kings, not_occupied)
         );
 }
 

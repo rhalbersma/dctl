@@ -23,11 +23,11 @@ void Perft::report(NodeCount leafs, size_t nominal_depth, double time_used, bool
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(2);
         std::cout << std::setw(12) << leafs;
         std::cout << " leafs, ";
-        std::cout << std::setw(12) << nodes();
+        std::cout << std::setw(11) << nodes();
         std::cout << " nodes, ";
         std::cout << std::setw( 6) << time_used;
         std::cout << "s, ";
-        std::cout << std::setw( 6) << speed;
+        std::cout << std::setw( 5) << speed;
         std::cout << " Mnps";
         std::cout << std::endl;
 }

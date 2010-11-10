@@ -59,32 +59,32 @@ void ManCaptures::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& ca
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void ManCaptures::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, Int2Type<DIRS_2>)
 {
-        generate_dir<Color, DirIndex<Color>::LU>(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RU>(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::LEFT_UP >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::RIGHT_UP>(active_men, capture);
 }
 
 // partial specialization for men that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void ManCaptures::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, Int2Type<DIRS_4>)
 {
-        generate_dir<Color, DirIndex<Color>::LU>(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RU>(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::LD>(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RD>(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::LEFT_UP   >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::RIGHT_UP  >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::LEFT_DOWN >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::RIGHT_DOWN>(active_men, capture);
 }
 
 // partial specialization for men that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void ManCaptures::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, Int2Type<DIRS_8>)
 {
-        generate_dir<Color, DirIndex<Color>::LU>(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RU>(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::LD>(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RD>(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::L >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::R >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::U >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::D >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::LEFT_UP   >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::RIGHT_UP  >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::LEFT_DOWN >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::RIGHT_DOWN>(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::LEFT      >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::RIGHT     >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::UP        >(active_men, capture);
+        generate_dir<Color, DirIndex<Color>::DOWN      >(active_men, capture);
 }
 
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
@@ -270,8 +270,8 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_2>)
 {
         return (
-                detect_dir<DirIndex<Color>::LU, Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RU, Board>(active_men, opponent_pieces, not_occupied)
+                detect_dir<DirIndex<Color>::LEFT_UP,  Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::RIGHT_UP, Board>(active_men, opponent_pieces, not_occupied)
         );
 }
 
@@ -280,10 +280,10 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_4>)
 {
         return (
-                detect_dir<DirIndex<Color>::LU, Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RU, Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::LD, Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RD, Board>(active_men, opponent_pieces, not_occupied)
+                detect_dir<DirIndex<Color>::LEFT_UP,    Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::RIGHT_UP,   Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::LEFT_DOWN,  Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::RIGHT_DOWN, Board>(active_men, opponent_pieces, not_occupied)
         );
 }
 
@@ -292,14 +292,14 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_8>)
 {
         return (
-                detect_dir<DirIndex<Color>::LU, Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RU, Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::LD, Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RD, Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::L,  Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::R,  Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::U,  Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::D,  Board>(active_men, opponent_pieces, not_occupied)
+                detect_dir<DirIndex<Color>::LEFT_UP,    Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::RIGHT_UP,   Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::LEFT_DOWN,  Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::RIGHT_DOWN, Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::LEFT,       Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::RIGHT,      Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::UP,         Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Color>::DOWN,       Board>(active_men, opponent_pieces, not_occupied)
         );
 }
 
