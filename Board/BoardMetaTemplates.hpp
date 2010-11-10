@@ -120,7 +120,7 @@ public:
         static const BitBoard VALUE = MASK;
 };
 
-template<typename T, size_t SQ>
+template<typename T, int SQ>
 class SQUARE2BIT
 {
 private:
@@ -142,7 +142,7 @@ public:
         enum { VALUE = COORD2BIT<G, ROW_PRIME, COL_PRIME>::VALUE };
 };
 
-template<typename T, size_t B>
+template<typename T, int B>
 class BIT2SQUARE
 {
 private:
@@ -155,12 +155,9 @@ private:
                 ROW = BIT2COORD<G, B>::ROW,
                 COL = BIT2COORD<G, B>::COL,
 
-                // rotation from internal to external grid
-                ANGLE = InverseAngle<T::ANGLE>::VALUE,
-
                 // rotated coordinates within the external grid
-                ROW_PRIME = RotateCoordinate<I, ROW, COL, ANGLE>::ROW,
-                COL_PRIME = RotateCoordinate<I, ROW, COL, ANGLE>::COL
+                ROW_PRIME = RotateCoordinate<I, ROW, COL, T::A_PRIME>::ROW,
+                COL_PRIME = RotateCoordinate<I, ROW, COL, T::A_PRIME>::COL
         };
 
 public:

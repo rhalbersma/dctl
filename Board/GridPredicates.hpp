@@ -1,11 +1,11 @@
-template<typename T, size_t SQ>
+template<typename T, int SQ>
 class SQUARE_IS_VALID
 {
 public:
         static const bool VALUE = SQ < T::SQUARE_RANGE;
 };
 
-template<typename T, size_t SQ>
+template<typename T, int SQ>
 class SQUARE2COORD
 {
 private:
@@ -28,7 +28,7 @@ public:
         };
 };
 
-template<typename T, size_t ROW, size_t COL>
+template<typename T, int ROW, int COL>
 class COORD2SQUARE
 {
 private:

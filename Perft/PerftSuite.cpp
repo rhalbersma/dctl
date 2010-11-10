@@ -17,9 +17,9 @@ void PerftSuite::International(void)
         std::cout << write_square_layout<InternationalBoard>()() << std::endl;
         std::cout << write_bit_layout<InternationalBoard>()() << std::endl;
 
-        Perft::root<InternationalRules>(i10, 11);
+        Divide::root<InternationalRules>(i10, 2);
         Perft::root<InternationalRules>(random178, 9);
-        Perft::root<InternationalRules>(Woldouby, 15);
+        Divide::root<InternationalRules>(Woldouby, 15);
 }
 
 void PerftSuite::ChessBoardVariants(void)

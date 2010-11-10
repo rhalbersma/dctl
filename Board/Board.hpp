@@ -93,8 +93,8 @@ const BitBoard Board<GridLayout, D, N, A>::COL_MASK[][12] =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
 {
-        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (SW_NE << 1))),
-        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (SE_NW << 1)))
+        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (LEFT_DOWN  << 1))),
+        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (RIGHT_DOWN << 1)))
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
@@ -124,20 +124,33 @@ const BitBoard Board<GridLayout, D, N, A>::JUMPABLE[] =
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
-const size_t Board<GridLayout, D, N, A>::DIR[] = 
+const size_t Board<GridLayout, D, N, A>::BASE_DIR[] = 
 {
-        GhostStructure::WE_EA, 
-        GhostStructure::SE_NW, 
-        GhostStructure::NO_SO, 
-        GhostStructure::SW_NE, 
-        GhostStructure::WE_EA, 
-        GhostStructure::SE_NW, 
-        GhostStructure::NO_SO, 
-        GhostStructure::SW_NE
+        GhostStructure::RIGHT, 
+        GhostStructure::RIGHT_UP, 
+        GhostStructure::UP, 
+        GhostStructure::LEFT_UP, 
+        GhostStructure::LEFT, 
+        GhostStructure::LEFT_DOWN, 
+        GhostStructure::DOWN, 
+        GhostStructure::RIGHT_DOWN
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
-const size_t Board<GridLayout, D, N, A>::TABLE_SQUARE2BIT[] =
+const size_t Board<GridLayout, D, N, A>::DIR[] = 
+{
+        T::BASE_DIR[RotateDirection<0, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirection<1, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirection<2, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirection<3, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirection<4, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirection<5, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirection<6, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirection<7, A_PRIME>::VALUE], 
+};
+
+template<typename GridLayout, size_t D, size_t N, size_t A>
+const int Board<GridLayout, D, N, A>::TABLE_SQUARE2BIT[] =
 {
         SQUARE2BIT<T,  0>::VALUE, SQUARE2BIT<T,  1>::VALUE, SQUARE2BIT<T,  2>::VALUE, SQUARE2BIT<T,  3>::VALUE,
         SQUARE2BIT<T,  4>::VALUE, SQUARE2BIT<T,  5>::VALUE, SQUARE2BIT<T,  6>::VALUE, SQUARE2BIT<T,  7>::VALUE,
@@ -158,7 +171,7 @@ const size_t Board<GridLayout, D, N, A>::TABLE_SQUARE2BIT[] =
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
-const size_t Board<GridLayout, D, N, A>::TABLE_BIT2SQUARE[] =
+const int Board<GridLayout, D, N, A>::TABLE_BIT2SQUARE[] =
 {
         BIT2SQUARE<T,  0>::VALUE, BIT2SQUARE<T,  1>::VALUE, BIT2SQUARE<T,  2>::VALUE, BIT2SQUARE<T,  3>::VALUE,
         BIT2SQUARE<T,  4>::VALUE, BIT2SQUARE<T,  5>::VALUE, BIT2SQUARE<T,  6>::VALUE, BIT2SQUARE<T,  7>::VALUE,
