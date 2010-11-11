@@ -72,24 +72,24 @@ void KingCaptures::generate_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capt
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void KingCaptures::generate_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_4>)
 {
-        generate_dir<Color, DirIndex<Color>::LEFT_UP   >(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT_UP  >(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::LEFT_DOWN >(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT_DOWN>(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_UP   >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_UP  >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_DOWN >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_DOWN>(jump_sq, capture);
 }
 
 // partial specialization for kings that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void KingCaptures::generate_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_8>)
 {
-        generate_dir<Color, DirIndex<Color>::LEFT_UP   >(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT_UP  >(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::LEFT_DOWN >(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT_DOWN>(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::LEFT      >(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT     >(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::UP        >(jump_sq, capture);
-        generate_dir<Color, DirIndex<Color>::DOWN      >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_UP   >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_UP  >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_DOWN >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_DOWN>(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT      >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT     >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::UP        >(jump_sq, capture);
+        generate_dir<Color, DirIndex<Board, Color>::DOWN      >(jump_sq, capture);
 }
 
 // tag dispatching based on king range
@@ -103,7 +103,7 @@ void KingCaptures::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& captu
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 void KingCaptures::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_1>)
 {
-        ShiftAssign<Direction<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
+        ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
         if (jump_sq & capture.template targets<Index>()) {
                 capture.make(jump_sq);
                 generate_next<Color, Index>(jump_sq, capture);
@@ -115,7 +115,7 @@ void KingCaptures::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& captu
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 void KingCaptures::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_N>)
 {
-        do ShiftAssign<Direction<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]); while (jump_sq & capture.path());
+        do ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]); while (jump_sq & capture.path());
         if (jump_sq & capture.template targets<Index>()) {
                 capture.make(jump_sq);
                 generate_next<Color, Index>(jump_sq, capture);
@@ -126,7 +126,7 @@ void KingCaptures::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& captu
 template<bool Color, size_t Index, typename Rules, typename Board>
 void KingCaptures::generate_next(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        ShiftAssign<Direction<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
+        ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
         if (!scan_next<Color, Index>(jump_sq, capture) && capture.current_greater_equal_best()) {
 		if (capture.current_not_equal_to_best())
 			capture.improve_best();
@@ -185,7 +185,7 @@ bool KingCaptures::scan_long(BitBoard jump_sq, Propagate<Rules, Board>& capture,
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_reverse(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        return scan_dir<Color, RotateDirection<Index, D180>::VALUE>(jump_sq, capture);
+        return scan_dir<Color, RotateDirIndex<Index, D180>::VALUE>(jump_sq, capture);
 }
 
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
@@ -195,7 +195,7 @@ bool KingCaptures::scan_forward(BitBoard jump_sq, Propagate<Rules, Board>& captu
         bool found_capture = false;
         do {
                 found_capture |= scan_dirs<Color, Index>(jump_sq, capture);
-                ShiftAssign<Direction<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
+                ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
         } while (jump_sq & capture.path());
         return found_capture |= scan<Color, Index>(jump_sq, capture);
 }
@@ -212,8 +212,8 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_4>)
 {
         return (
-                scan_dir<Color, RotateDirection<Index, R090>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, L090>::VALUE>(jump_sq, capture)
+                scan_dir<Color, RotateDirIndex<Index, R090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, L090>::VALUE>(jump_sq, capture)
         );
 }
 
@@ -222,12 +222,12 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_8>)
 {
         return (
-                scan_dir<Color, RotateDirection<Index, R045>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, L045>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, R090>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, L090>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, R135>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, L135>::VALUE>(jump_sq, capture)
+                scan_dir<Color, RotateDirIndex<Index, R045>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, L045>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, R090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, L090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, R135>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, L135>::VALUE>(jump_sq, capture)
         );
 }
 
@@ -242,7 +242,7 @@ bool KingCaptures::scan_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_1>)
 {
-        ShiftAssign<Direction<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
+        ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
         return scan<Color, Index>(jump_sq, capture);
 }
 
@@ -250,7 +250,7 @@ bool KingCaptures::scan_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, 
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_N>)
 {
-        do ShiftAssign<Direction<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]); while (jump_sq & capture.template path<Index>());
+        do ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]); while (jump_sq & capture.template path<Index>());
         return scan<Color, Index>(jump_sq, capture);
 }
 
@@ -318,10 +318,10 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_4>)
 {
         return (
-                detect_dir<DirIndex<Color>::LEFT_UP,    Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_UP,   Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::LEFT_DOWN,  Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_DOWN, Rules, Board>(active_kings, opponent_pieces, not_occupied)
+                detect_dir<DirIndex<Board, Color>::LEFT_UP,    Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_UP,   Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::LEFT_DOWN,  Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_DOWN, Rules, Board>(active_kings, opponent_pieces, not_occupied)
         );
 }
 
@@ -330,14 +330,14 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_8>)
 {
         return (
-                detect_dir<DirIndex<Color>::LEFT_UP,    Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_UP,   Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::LEFT_DOWN,  Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_DOWN, Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::LEFT,       Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT,      Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::UP,         Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::DOWN,       Rules, Board>(active_kings, opponent_pieces, not_occupied)
+                detect_dir<DirIndex<Board, Color>::LEFT_UP,    Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_UP,   Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::LEFT_DOWN,  Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_DOWN, Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::LEFT,       Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT,      Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::UP,         Rules, Board>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::DOWN,       Rules, Board>(active_kings, opponent_pieces, not_occupied)
         );
 }
 
@@ -352,12 +352,12 @@ bool KingCaptures::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, B
 template<size_t Index, typename Board> FORCE_INLINE
 bool KingCaptures::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<RANGE_1>)
 {
-        return !Bit::is_zero(Shift<Direction<Index>::IS_POSITIVE>()(active_kings, Board::DIR[Index]) & opponent_pieces & Shift<Direction<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
+        return !Bit::is_zero(Shift<DirTraits<Index>::IS_POSITIVE>()(active_kings, Board::DIR[Index]) & opponent_pieces & Shift<DirTraits<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
 }
 
 // partial specialization for long ranged kings
 template<size_t Index, typename Board> FORCE_INLINE
 bool KingCaptures::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<RANGE_N>)
 {
-        return !Bit::is_zero(Shift<Direction<Index>::IS_POSITIVE>()(Bit::flood_fill<Direction<Index>::IS_POSITIVE>(active_kings, not_occupied, Board::DIR[Index]), Board::DIR[Index]) & opponent_pieces & Shift<Direction<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
+        return !Bit::is_zero(Shift<DirTraits<Index>::IS_POSITIVE>()(Bit::flood_fill<DirTraits<Index>::IS_POSITIVE>(active_kings, not_occupied, Board::DIR[Index]), Board::DIR[Index]) & opponent_pieces & Shift<DirTraits<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
 }

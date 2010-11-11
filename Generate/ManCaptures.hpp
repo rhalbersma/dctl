@@ -59,32 +59,32 @@ void ManCaptures::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& ca
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void ManCaptures::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, Int2Type<DIRS_2>)
 {
-        generate_dir<Color, DirIndex<Color>::LEFT_UP >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT_UP>(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_UP >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_UP>(active_men, capture);
 }
 
 // partial specialization for men that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void ManCaptures::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, Int2Type<DIRS_4>)
 {
-        generate_dir<Color, DirIndex<Color>::LEFT_UP   >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT_UP  >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::LEFT_DOWN >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT_DOWN>(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_UP   >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_UP  >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_DOWN >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_DOWN>(active_men, capture);
 }
 
 // partial specialization for men that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void ManCaptures::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, Int2Type<DIRS_8>)
 {
-        generate_dir<Color, DirIndex<Color>::LEFT_UP   >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT_UP  >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::LEFT_DOWN >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT_DOWN>(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::LEFT      >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::RIGHT     >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::UP        >(active_men, capture);
-        generate_dir<Color, DirIndex<Color>::DOWN      >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_UP   >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_UP  >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_DOWN >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_DOWN>(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT      >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT     >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::UP        >(active_men, capture);
+        generate_dir<Color, DirIndex<Board, Color>::DOWN      >(active_men, capture);
 }
 
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
@@ -93,7 +93,7 @@ void ManCaptures::generate_dir(BitBoard active_men, Propagate<Rules, Board>& cap
         BitBoard jump_sq, target_sq;
         for (active_men &= capture.template jumpers<Index>(); active_men; Bit::clear_lowest(active_men)) {
                 jump_sq = Bit::get_lowest(active_men);
-                target_sq = Shift<Direction<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
+                target_sq = Shift<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
                 capture.launch(jump_sq);
                 capture.make(target_sq);
                 generate_next<Color, Index>(target_sq, capture);
@@ -105,7 +105,7 @@ void ManCaptures::generate_dir(BitBoard active_men, Propagate<Rules, Board>& cap
 template<bool Color, size_t Index, typename Rules, typename Board>
 void ManCaptures::generate_next(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        ShiftAssign<Direction<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
+        ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
 	if (!scan_next<Color, Index>(jump_sq, capture) && capture.current_greater_equal_best()) {
 		if (capture.current_not_equal_to_best())
 			capture.improve_best();
@@ -153,7 +153,7 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_2>)
 {
         return (
-                scan_dir<Color, MirrorDirection<Index>::U090>(jump_sq, capture) |
+                scan_dir<Color, MirrorDirIndex<Index>::U090>(jump_sq, capture) |
                 scan_dir<Color, Index>(jump_sq, capture)
         );
 }
@@ -163,8 +163,8 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_4>)
 {
         return (
-                scan_dir<Color, RotateDirection<Index, R090>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, L090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, R090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, L090>::VALUE>(jump_sq, capture) |
                 scan_dir<Color, Index>(jump_sq, capture)
         );
 }
@@ -174,12 +174,12 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_8>)
 {
         return (
-                scan_dir<Color, RotateDirection<Index, R045>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, L045>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, R090>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, L090>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, R135>::VALUE>(jump_sq, capture) |
-                scan_dir<Color, RotateDirection<Index, L135>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, R045>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, L045>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, R090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, L090>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, R135>::VALUE>(jump_sq, capture) |
+                scan_dir<Color, RotateDirIndex<Index, L135>::VALUE>(jump_sq, capture) |
                 scan_dir<Color, Index>(jump_sq, capture)
         );
 }
@@ -187,7 +187,7 @@ bool ManCaptures::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, 
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::scan_dir(BitBoard target_sq, Propagate<Rules, Board>& capture)
 {
-        ShiftAssign<Direction<Index>::IS_POSITIVE>()(target_sq, Board::DIR[Index]);
+        ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(target_sq, Board::DIR[Index]);
         return scan<Color, Index>(target_sq, capture);
 }
 
@@ -270,8 +270,8 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_2>)
 {
         return (
-                detect_dir<DirIndex<Color>::LEFT_UP,  Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_UP, Board>(active_men, opponent_pieces, not_occupied)
+                detect_dir<DirIndex<Board, Color>::LEFT_UP,  Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_UP, Board>(active_men, opponent_pieces, not_occupied)
         );
 }
 
@@ -280,10 +280,10 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_4>)
 {
         return (
-                detect_dir<DirIndex<Color>::LEFT_UP,    Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_UP,   Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::LEFT_DOWN,  Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_DOWN, Board>(active_men, opponent_pieces, not_occupied)
+                detect_dir<DirIndex<Board, Color>::LEFT_UP,    Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_UP,   Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::LEFT_DOWN,  Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_DOWN, Board>(active_men, opponent_pieces, not_occupied)
         );
 }
 
@@ -292,19 +292,19 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_8>)
 {
         return (
-                detect_dir<DirIndex<Color>::LEFT_UP,    Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_UP,   Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::LEFT_DOWN,  Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_DOWN, Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::LEFT,       Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT,      Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::UP,         Board>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Color>::DOWN,       Board>(active_men, opponent_pieces, not_occupied)
+                detect_dir<DirIndex<Board, Color>::LEFT_UP,    Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_UP,   Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::LEFT_DOWN,  Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_DOWN, Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::LEFT,       Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT,      Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::UP,         Board>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::DOWN,       Board>(active_men, opponent_pieces, not_occupied)
         );
 }
 
 template<size_t Index, typename Board> FORCE_INLINE
 bool ManCaptures::detect_dir(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied)
 {
-        return !Bit::is_zero(Shift<Direction<Index>::IS_POSITIVE>()(active_men, Board::DIR[Index]) & opponent_pieces & Shift<Direction<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
+        return !Bit::is_zero(Shift<DirTraits<Index>::IS_POSITIVE>()(active_men, Board::DIR[Index]) & opponent_pieces & Shift<DirTraits<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
 }

@@ -52,11 +52,11 @@ class IS_JUMPABLE
 {
 private:
         enum {
-                OFFSET = Direction<I>::IS_DIAGONAL? 2 : 4,
-                ROW_LOWER_BOUND = Direction<I>::IS_UP? OFFSET : 0,
-                ROW_UPPER_BOUND = (T::HEIGHT - 1) - (Direction<I>::IS_DOWN? OFFSET : 0),
-                COL_LOWER_BOUND = Direction<I>::IS_LEFT? OFFSET : 0,
-                COL_UPPER_BOUND = (T::WIDTH - 1) - (Direction<I>::IS_RIGHT? OFFSET : 0),
+                OFFSET = DirTraits<I>::IS_DIAGONAL? 2 : 4,
+                ROW_LOWER_BOUND = DirTraits<I>::IS_UP? OFFSET : 0,
+                ROW_UPPER_BOUND = (T::HEIGHT - 1) - (DirTraits<I>::IS_DOWN? OFFSET : 0),
+                COL_LOWER_BOUND = DirTraits<I>::IS_LEFT? OFFSET : 0,
+                COL_UPPER_BOUND = (T::WIDTH - 1) - (DirTraits<I>::IS_RIGHT? OFFSET : 0),
                 ROW = SQUARE2COORD<T, SQ>::ROW,
                 COL = SQUARE2COORD<T, SQ>::COL
         };

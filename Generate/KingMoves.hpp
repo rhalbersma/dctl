@@ -54,10 +54,10 @@ void KingMoves::generate_serial(BitBoard active_kings, Propagate<Rules, Board>& 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void KingMoves::generate_dirs(BitBoard from_sq, Propagate<Rules, Board>& moves)
 {
-        generate_dir<Color, DirIndex<Color>::LEFT_DOWN>(from_sq, moves);
-        generate_dir<Color, DirIndex<Color>::RIGHT_DOWN>(from_sq, moves);
-        generate_dir<Color, DirIndex<Color>::LEFT_UP>(from_sq, moves);
-        generate_dir<Color, DirIndex<Color>::RIGHT_UP>(from_sq, moves);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_DOWN>(from_sq, moves);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_DOWN>(from_sq, moves);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_UP>(from_sq, moves);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_UP>(from_sq, moves);
 }
 
 // tag dispatching based on king range
@@ -71,7 +71,7 @@ void KingMoves::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves)
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 void KingMoves::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves, Int2Type<RANGE_1>)
 {
-        if (BitBoard dest_sq = Shift<Direction<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]) & moves.path())
+        if (BitBoard dest_sq = Shift<DirTraits<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]) & moves.path())
                 moves.add_king_move<Color>(from_sq ^ dest_sq);
 }
 
@@ -79,7 +79,7 @@ void KingMoves::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves, I
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 void KingMoves::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves, Int2Type<RANGE_N>)
 {
-        for (BitBoard dest_sq = Shift<Direction<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]); dest_sq & moves.path(); ShiftAssign<Direction<Index>::IS_POSITIVE>()(dest_sq, Board::DIR[Index]))
+        for (BitBoard dest_sq = Shift<DirTraits<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]); dest_sq & moves.path(); ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(dest_sq, Board::DIR[Index]))
                 moves.template add_king_move<Color>(from_sq ^ dest_sq);
 }
 
@@ -103,10 +103,10 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t KingMoves::count_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                count_dir<DirIndex<Color>::LEFT_DOWN, Rules, Board>(active_kings, not_occupied) +
-                count_dir<DirIndex<Color>::RIGHT_DOWN, Rules, Board>(active_kings, not_occupied) +
-                count_dir<DirIndex<Color>::LEFT_UP, Rules, Board>(active_kings, not_occupied) +
-                count_dir<DirIndex<Color>::RIGHT_UP, Rules, Board>(active_kings, not_occupied)
+                count_dir<DirIndex<Board, Color>::LEFT_DOWN, Rules, Board>(active_kings, not_occupied) +
+                count_dir<DirIndex<Board, Color>::RIGHT_DOWN, Rules, Board>(active_kings, not_occupied) +
+                count_dir<DirIndex<Board, Color>::LEFT_UP, Rules, Board>(active_kings, not_occupied) +
+                count_dir<DirIndex<Board, Color>::RIGHT_UP, Rules, Board>(active_kings, not_occupied)
         );
 }
 
@@ -121,14 +121,14 @@ size_t KingMoves::count_dir(BitBoard active_kings, BitBoard not_occupied)
 template<size_t Index, typename Board> FORCE_INLINE
 size_t KingMoves::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<RANGE_1>)
 {
-        return Bit::count(Shift<Direction<Index>::IS_POSITIVE>()(active_kings, Board::DIR[Index]) & not_occupied);
+        return Bit::count(Shift<DirTraits<Index>::IS_POSITIVE>()(active_kings, Board::DIR[Index]) & not_occupied);
 }
 
 // partial specialization for long ranged kings
 template<size_t Index, typename Board> FORCE_INLINE
 size_t KingMoves::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<RANGE_N>)
 {
-        return Bit::count(active_kings ^ Bit::flood_fill<Direction<Index>::IS_POSITIVE>(active_kings, not_occupied, Board::DIR[Index]));
+        return Bit::count(active_kings ^ Bit::flood_fill<DirTraits<Index>::IS_POSITIVE>(active_kings, not_occupied, Board::DIR[Index]));
 }
 
 template<typename Rules, typename Board>
@@ -151,15 +151,15 @@ template<bool Color, typename Board> FORCE_INLINE
 bool KingMoves::detect_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                detect_dir<DirIndex<Color>::LEFT_DOWN, Board>(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_DOWN, Board>(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Color>::LEFT_UP, Board>(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_UP, Board>(active_kings, not_occupied)
+                detect_dir<DirIndex<Board, Color>::LEFT_DOWN, Board>(active_kings, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_DOWN, Board>(active_kings, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::LEFT_UP, Board>(active_kings, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_UP, Board>(active_kings, not_occupied)
         );
 }
 
 template<size_t Index, typename Board> FORCE_INLINE
 bool KingMoves::detect_dir(BitBoard active_kings, BitBoard not_occupied)
 {
-        return !Bit::is_zero(Shift<Direction<Index>::IS_POSITIVE>()(active_kings, Board::DIR[Index]) & not_occupied);
+        return !Bit::is_zero(Shift<DirTraits<Index>::IS_POSITIVE>()(active_kings, Board::DIR[Index]) & not_occupied);
 }
