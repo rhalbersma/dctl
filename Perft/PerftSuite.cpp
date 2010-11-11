@@ -17,9 +17,28 @@ void PerftSuite::International(void)
         std::cout << write_square_layout<InternationalBoard>()() << std::endl;
         std::cout << write_bit_layout<InternationalBoard>()() << std::endl;
 
-        Divide::root<InternationalRules>(i10, 2);
+        Perft::root<InternationalRules>(i10, 11);
         Perft::root<InternationalRules>(random178, 9);
-        Divide::root<InternationalRules>(Woldouby, 15);
+        Perft::root<InternationalRules>(Woldouby, 15);
+}
+
+void PerftSuite::Rectangular(void)
+{
+	// The original perft thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2308
+        Position<SpantsiretiBoard> iS;
+        std::cout << write_square_layout<SpantsiretiBoard>()() << std::endl;
+        std::cout << write_bit_layout<SpantsiretiBoard>()() << std::endl;
+        Perft::root<InternationalRules>(iS, 9);
+
+        Position<Ktar11Board> iK11;
+        std::cout << write_square_layout<Ktar11Board>()() << std::endl;
+        std::cout << write_bit_layout<Ktar11Board>()() << std::endl;
+        Perft::root<InternationalRules>(iK11, 9);
+                
+        Position<Ktar12Board> iK12;
+        std::cout << write_square_layout<Ktar12Board>()() << std::endl;
+        std::cout << write_bit_layout<Ktar12Board>()() << std::endl;
+        Perft::root<InternationalRules>(iK12, 9);
 }
 
 void PerftSuite::ChessBoardVariants(void)

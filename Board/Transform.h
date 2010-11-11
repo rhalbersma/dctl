@@ -12,14 +12,14 @@ struct InverseAngle
 
 // mirrored upward direction (orthogonal to the original)
 template<size_t I>
-struct MirrorDirection
+struct MirrorDirIndex
 {
         static const size_t U090 = (I + L090) % D180 + (I / D180) * D180;
 };
 
 // rotated direction indices (in steps of 45 degrees)
 template<size_t I, size_t A>
-struct RotateDirection
+struct RotateDirIndex
 {
         static const size_t VALUE = (I + A) % D360;
 };
@@ -35,14 +35,14 @@ struct RotateGrid
 template<typename In>
 struct RotateGrid<In, R090>
 {
-        typedef Grid<In::WIDTH, In::HEIGHT, (In::HEIGHT % 2) ^ !In::SQUARE_PARITY> Out;
+        typedef Grid<In::WIDTH, In::HEIGHT, (In::WIDTH % 2) ^ !In::SQUARE_PARITY> Out;
 };
 
 // rotate 90 degree left
 template<typename In>
 struct RotateGrid<In, L090>
 {
-        typedef Grid<In::WIDTH, In::HEIGHT, (In::WIDTH % 2) ^ !In::SQUARE_PARITY> Out;
+        typedef Grid<In::WIDTH, In::HEIGHT, (In::HEIGHT % 2) ^ !In::SQUARE_PARITY> Out;
 };
 
 // rotate 180 degrees
@@ -67,18 +67,18 @@ template<typename T, int R, int C>
 struct RotateCoordinate<T, R, C, R090>
 {
         enum {
-                ROW = C,
-                COL = (T::HEIGHT - 1) - R
+                ROW = (T::WIDTH - 1) - C,
+                COL = R
         };
 };
 
-// rotate 90 degree left
+// rotate 90 degrees left
 template<typename T, int R, int C>
 struct RotateCoordinate<T, R, C, L090>
 {
         enum {
-                ROW = (T::WIDTH - 1) - C,
-                COL = R
+                ROW = C,
+                COL = (T::HEIGHT - 1) - R
         };
 };
 

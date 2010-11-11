@@ -113,18 +113,18 @@ const BitBoard Board<GridLayout, D, N, A>::MAN_JUMP_GROUP[] =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::JUMPABLE[] =
 {
-        INIT_JUMPABLE<T, RotateDirection<0, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirection<1, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirection<2, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirection<3, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirection<4, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirection<5, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirection<6, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirection<7, ANGLE>::VALUE>::VALUE
+        INIT_JUMPABLE<T, RotateDirIndex<0, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirIndex<1, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirIndex<2, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirIndex<3, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirIndex<4, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirIndex<5, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirIndex<6, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, RotateDirIndex<7, ANGLE>::VALUE>::VALUE
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
-const size_t Board<GridLayout, D, N, A>::BASE_DIR[] = 
+const size_t Board<GridLayout, D, N, A>::DIR[] = 
 {
         GhostStructure::RIGHT, 
         GhostStructure::RIGHT_UP, 
@@ -136,18 +136,20 @@ const size_t Board<GridLayout, D, N, A>::BASE_DIR[] =
         GhostStructure::RIGHT_DOWN
 };
 
+/*
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const size_t Board<GridLayout, D, N, A>::DIR[] = 
 {
-        T::BASE_DIR[RotateDirection<0, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirection<1, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirection<2, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirection<3, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirection<4, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirection<5, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirection<6, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirection<7, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirIndex<0, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirIndex<1, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirIndex<2, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirIndex<3, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirIndex<4, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirIndex<5, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirIndex<6, A_PRIME>::VALUE], 
+        T::BASE_DIR[RotateDirIndex<7, A_PRIME>::VALUE], 
 };
+*/
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const int Board<GridLayout, D, N, A>::TABLE_SQUARE2BIT[] =

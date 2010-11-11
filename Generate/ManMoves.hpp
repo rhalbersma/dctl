@@ -26,8 +26,8 @@ void ManMoves::generate(const Position<Board>& p, Propagate<Rules, Board>& moves
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void ManMoves::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& moves)
 {
-        generate_dir<Color, DirIndex<Color>::LEFT_UP>(active_men, moves);
-        generate_dir<Color, DirIndex<Color>::RIGHT_UP>(active_men, moves);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_UP>(active_men, moves);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_UP>(active_men, moves);
 }
 
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
@@ -36,7 +36,7 @@ void ManMoves::generate_dir(BitBoard active_men, Propagate<Rules, Board>& moves)
         BitBoard from_sq, dest_sq;
         for (active_men &= moves.template movers<Index>(); active_men; Bit::clear_lowest(active_men)) {
                 from_sq = Bit::get_lowest(active_men);
-                dest_sq = Shift<Direction<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]);
+                dest_sq = Shift<DirTraits<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]);
                 moves.template add_man_move<Color>(from_sq, dest_sq);
         }
 }
@@ -83,15 +83,15 @@ template<bool Color, typename Board> FORCE_INLINE
 size_t ManMoves::count_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
-                count_dir<DirIndex<Color>::LEFT_UP, Board>(active_men, not_occupied) +
-                count_dir<DirIndex<Color>::RIGHT_UP, Board>(active_men, not_occupied)
+                count_dir<DirIndex<Board, Color>::LEFT_UP, Board>(active_men, not_occupied) +
+                count_dir<DirIndex<Board, Color>::RIGHT_UP, Board>(active_men, not_occupied)
         );
 }
 
 template<size_t Index, typename Board> FORCE_INLINE
 size_t ManMoves::count_dir(BitBoard active_men, BitBoard not_occupied)
 {
-        return Bit::count(active_men & Shift<Direction<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
+        return Bit::count(active_men & Shift<DirTraits<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
 }
 
 template<typename Board>
@@ -114,15 +114,15 @@ template<bool Color, typename Board> FORCE_INLINE
 bool ManMoves::detect_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
-                detect_dir<DirIndex<Color>::LEFT_UP, Board>(active_men, not_occupied) ||
-                detect_dir<DirIndex<Color>::RIGHT_UP, Board>(active_men, not_occupied)
+                detect_dir<DirIndex<Board, Color>::LEFT_UP, Board>(active_men, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_UP, Board>(active_men, not_occupied)
         );
 }
 
 template<size_t Index, typename Board> FORCE_INLINE
 bool ManMoves::detect_dir(BitBoard active_men, BitBoard not_occupied)
 {
-        return !Bit::is_zero(active_men & Shift<Direction<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
+        return !Bit::is_zero(active_men & Shift<DirTraits<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
 }
 
 template<typename Board>

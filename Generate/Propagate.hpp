@@ -61,19 +61,19 @@ BitBoard Propagate<Rules, Board>::path(void) const
 template<typename Rules, typename Board> template<size_t Index>
 BitBoard Propagate<Rules, Board>::movers(void) const
 {
-        return Shift<Direction<Index>::IS_NEGATIVE>()(path(), Board::DIR[Index]);
+        return Shift<DirTraits<Index>::IS_NEGATIVE>()(path(), Board::DIR[Index]);
 }
 
 template<typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 BitBoard Propagate<Rules, Board>::targets(void) const
 {
-        return d_remaining_targets & Shift<Direction<Index>::IS_NEGATIVE>()(path(), Board::DIR[Index]);
+        return d_remaining_targets & Shift<DirTraits<Index>::IS_NEGATIVE>()(path(), Board::DIR[Index]);
 }
 
 template<typename Rules, typename Board> template<size_t Index>
 BitBoard Propagate<Rules, Board>::jumpers(void) const
 {
-        return Shift<Direction<Index>::IS_NEGATIVE>()(targets<Index>(), Board::DIR[Index]);
+        return Shift<DirTraits<Index>::IS_NEGATIVE>()(targets<Index>(), Board::DIR[Index]);
 }
 
 template<typename Rules, typename Board> template<bool Color>
@@ -278,7 +278,7 @@ void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq)
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
 void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<HALT_K>)
 {
-        if (d_opponent_kings & (Shift<Direction<Index>::IS_NEGATIVE>()(dest_sq, Board::DIR[Index])))
+        if (d_opponent_kings & (Shift<DirTraits<Index>::IS_NEGATIVE>()(dest_sq, Board::DIR[Index])))
                 add_king_capture<Color, Index>(dest_sq, Int2Type<HALT_1>());
         else
                 add_king_capture<Color, Index>(dest_sq, Int2Type<HALT_N>());
@@ -304,7 +304,7 @@ void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<HALT_N
         const bool ambiguous = !d_move_list.empty() && large<Rules>()(d_current_capture, captured_pieces);
         do {
                 add_king_capture<Color>(dest_sq, captured_pieces, captured_kings, ambiguous);
-                ShiftAssign<Direction<Index>::IS_POSITIVE>()(dest_sq, Board::DIR[Index]);
+                ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(dest_sq, Board::DIR[Index]);
         } while (dest_sq & path());
 }
 
