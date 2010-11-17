@@ -15,7 +15,7 @@ void Perft::root(Position<Board>& p, size_t nominal_depth)
         for (size_t depth = 1; depth <= nominal_depth; ++depth) {
                 start_time = clock();
                 reset_statistics();
-                perft_count = perft_bulk<Rules>(p, 0, depth);
+                perft_count = perft_hash<Rules>(p, 0, depth);
                 time_used = (clock() + 1 - start_time) / CLOCKS_PER_SEC;
                 report(perft_count, depth, time_used, true);
         }

@@ -54,10 +54,10 @@ void KingMoves::generate_serial(BitBoard active_kings, Propagate<Rules, Board>& 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void KingMoves::generate_dirs(BitBoard from_sq, Propagate<Rules, Board>& moves)
 {
-        generate_dir<Color, DirIndex<Board, Color>::LEFT_DOWN>(from_sq, moves);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_DOWN >(from_sq, moves);
         generate_dir<Color, DirIndex<Board, Color>::RIGHT_DOWN>(from_sq, moves);
-        generate_dir<Color, DirIndex<Board, Color>::LEFT_UP>(from_sq, moves);
-        generate_dir<Color, DirIndex<Board, Color>::RIGHT_UP>(from_sq, moves);
+        generate_dir<Color, DirIndex<Board, Color>::LEFT_UP   >(from_sq, moves);
+        generate_dir<Color, DirIndex<Board, Color>::RIGHT_UP  >(from_sq, moves);
 }
 
 // tag dispatching based on king range
@@ -72,7 +72,7 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 void KingMoves::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves, Int2Type<RANGE_1>)
 {
         if (BitBoard dest_sq = Shift<DirTraits<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]) & moves.path())
-                moves.add_king_move<Color>(from_sq ^ dest_sq);
+                moves.template add_king_move<Color>(from_sq ^ dest_sq);
 }
 
 // partial specialization for long ranged kings
@@ -103,10 +103,10 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t KingMoves::count_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                count_dir<DirIndex<Board, Color>::LEFT_DOWN, Rules, Board>(active_kings, not_occupied) +
+                count_dir<DirIndex<Board, Color>::LEFT_DOWN , Rules, Board>(active_kings, not_occupied) +
                 count_dir<DirIndex<Board, Color>::RIGHT_DOWN, Rules, Board>(active_kings, not_occupied) +
-                count_dir<DirIndex<Board, Color>::LEFT_UP, Rules, Board>(active_kings, not_occupied) +
-                count_dir<DirIndex<Board, Color>::RIGHT_UP, Rules, Board>(active_kings, not_occupied)
+                count_dir<DirIndex<Board, Color>::LEFT_UP   , Rules, Board>(active_kings, not_occupied) +
+                count_dir<DirIndex<Board, Color>::RIGHT_UP  , Rules, Board>(active_kings, not_occupied)
         );
 }
 
@@ -151,10 +151,10 @@ template<bool Color, typename Board> FORCE_INLINE
 bool KingMoves::detect_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                detect_dir<DirIndex<Board, Color>::LEFT_DOWN, Board>(active_kings, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::LEFT_DOWN , Board>(active_kings, not_occupied) ||
                 detect_dir<DirIndex<Board, Color>::RIGHT_DOWN, Board>(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::LEFT_UP, Board>(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::RIGHT_UP, Board>(active_kings, not_occupied)
+                detect_dir<DirIndex<Board, Color>::LEFT_UP   , Board>(active_kings, not_occupied) ||
+                detect_dir<DirIndex<Board, Color>::RIGHT_UP  , Board>(active_kings, not_occupied)
         );
 }
 

@@ -46,6 +46,10 @@ private:
         template<bool, typename, typename B> static size_t count(const Position<B>&, Int2Type<Pieces::ONLY_MEN>);
         template<bool, typename, typename B> static size_t count(const Position<B>&, Int2Type<Pieces::ONLY_KINGS>);
         template<bool, typename, typename B> static size_t count(const Position<B>&, Int2Type<Pieces::MEN_AND_KINGS>);
+
+        template<bool, typename, typename B> static bool detect(const Position<B>&, Int2Type<Pieces::ONLY_MEN>);
+        template<bool, typename, typename B> static bool detect(const Position<B>&, Int2Type<Pieces::ONLY_KINGS>);
+        template<bool, typename, typename B> static bool detect(const Position<B>&, Int2Type<Pieces::MEN_AND_KINGS>);
 };
 
 // include template definitions inside header because "export" keyword is not supported by Visual C++

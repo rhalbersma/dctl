@@ -31,7 +31,7 @@ struct increment<ItalianRules>
                 ++capture.num_pieces;
                 if (target_sq & opponent_kings) {
                         ++capture.num_kings;
-                        capture.piece_order ^= BitBoard(1) << (8 * sizeof(BitBoard) - capture.num_pieces);
+                        capture.piece_order ^= BitBoard(1) << (BITBOARD_CAPACITY - capture.num_pieces);
                 }
         }
 };
@@ -42,7 +42,7 @@ struct decrement<ItalianRules>
         void operator()(CaptureValue& capture, BitBoard target_sq, BitBoard opponent_kings) const
         {
                 if (target_sq & opponent_kings) {
-                        capture.piece_order ^= BitBoard(1) << (8 * sizeof(BitBoard) - capture.num_pieces);
+                        capture.piece_order ^= BitBoard(1) << (BITBOARD_CAPACITY - capture.num_pieces);
                         --capture.num_kings;
                 }
                 --capture.num_pieces;

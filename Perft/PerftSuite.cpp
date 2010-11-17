@@ -24,7 +24,6 @@ void PerftSuite::International(void)
 
 void PerftSuite::Rectangular(void)
 {
-	// The original perft thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2308
         Position<SpantsiretiBoard> iS;
         std::cout << write_square_layout<SpantsiretiBoard>()() << std::endl;
         std::cout << write_bit_layout<SpantsiretiBoard>()() << std::endl;
