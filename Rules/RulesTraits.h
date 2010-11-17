@@ -7,12 +7,12 @@
 
 // man capture directions
 enum {DIRS_2, DIRS_4, DIRS_8};
-template<typename> struct ManCaptureDirections                  { static const size_t VALUE = DIRS_4; };
+template<typename> struct ManCaptureDirections                  { enum { VALUE = DIRS_4 }; };
 
 template<typename Rules>
 struct is_ManCaptureBackwards
 {
-        static const bool VALUE = ManCaptureDirections<Rules>::VALUE != DIRS_2;
+        enum { VALUE = ManCaptureDirections<Rules>::VALUE != DIRS_2 };
 };
 
 // king capture directions
@@ -46,7 +46,9 @@ template<typename> struct LargeCaptureValue                     { enum { VALUE =
 template<typename Rules>
 struct is_AmbiguousManCapture
 {
-        static const bool VALUE = is_ManCaptureBackwards<Rules>::VALUE || is_PromotionEnPassant<Rules>::VALUE;
+        enum { 
+                VALUE = is_ManCaptureBackwards<Rules>::VALUE || is_PromotionEnPassant<Rules>::VALUE 
+        };
 };
 
 // restricted consecutive moves with the same king

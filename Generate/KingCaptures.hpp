@@ -115,7 +115,7 @@ void KingCaptures::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& captu
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 void KingCaptures::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_N>)
 {
-        do ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]); while (jump_sq & capture.path());
+        do ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]); while (jump_sq & capture.template path<Index>());
         if (jump_sq & capture.template targets<Index>()) {
                 capture.make(jump_sq);
                 generate_next<Color, Index>(jump_sq, capture);
@@ -191,7 +191,7 @@ bool KingCaptures::scan_reverse(BitBoard jump_sq, Propagate<Rules, Board>& captu
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_forward(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        assert(jump_sq & capture.path());
+        assert(jump_sq & capture_path);
         bool found_capture = false;
         do {
                 found_capture |= scan_dirs<Color, Index>(jump_sq, capture);

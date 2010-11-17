@@ -12,8 +12,11 @@ void SearchSuite::International(void)
         //Position<> Taille8pc(read_position_string<FEN>()("W:WK34,K46,K49,K50:BK4,26,36,45"));
         //Search::root<InternationalRules>(Taille8pc, 29);
 
-        Position<> DavidGoliath(read_position_string<FEN>()("B:W23:B5,6"));
-        Search::root<KillerRules>(DavidGoliath, 57);
+        Position<Ktar12Board> ThreeVOne(read_position_string<FEN, Ktar12Board>()("W:BK1:WK2,K3,K4"));
+        Search::root<InternationalRules>(ThreeVOne, 29);
+
+        //Position<> DavidGoliath(read_position_string<FEN>()("B:W23:B5,6"));
+        //Search::root<KillerRules>(DavidGoliath, 57);
 
         //Position<> Walinga(read_position_string<FEN>()("W:WK46,28:BK43"));
         //Search::root<FrisianRules>(Walinga, 39);

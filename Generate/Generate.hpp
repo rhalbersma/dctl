@@ -19,9 +19,9 @@ void Generate::generate(const Position<Board>& p, Propagate<Rules, Board>& moves
         assert(Generate::invariant<Rules>(p, moves.size()));
 }
 
-template<bool Color, typename Rules, typename Board>
+template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Generate::generate(const Position<Board>& p, Propagate<Rules, Board>& moves)
-{                
+{
         assert(p.to_move() == Color);
         switch(p.composition(Color)) {
         case Pieces::NONE:
@@ -199,15 +199,33 @@ bool Generate::detect(const Position<Board>& p)
         case Pieces::NONE:
 		return false;
         case Pieces::ONLY_MEN:
-                return ManMoves::detect<Color>(p) || ManCaptures::detect<Color, Rules>(p);
+                return detect<Color, Rules>(p, Int2Type<Pieces::ONLY_MEN>());
         case Pieces::ONLY_KINGS:
-                return KingMoves::detect<Color, Rules>(p) || KingCaptures::detect<Color, Rules>(p);
+                return detect<Color, Rules>(p, Int2Type<Pieces::ONLY_KINGS>());
         case Pieces::MEN_AND_KINGS:
-                return ManKingMoves::detect<Color, Rules>(p) || ManKingCaptures::detect<Color, Rules>(p);
+                return detect<Color, Rules>(p, Int2Type<Pieces::MEN_AND_KINGS>());
         default:
                 assert(false);
                 return false;
         }
+}
+
+template<bool Color, typename Rules, typename Board> FORCE_INLINE
+bool Generate::detect(const Position<Board>& p, Int2Type<Pieces::ONLY_MEN>)
+{
+        return ManMoves::detect<Color>(p) || ManCaptures::detect<Color, Rules>(p);
+}
+
+template<bool Color, typename Rules, typename Board> FORCE_INLINE
+bool Generate::detect(const Position<Board>& p, Int2Type<Pieces::ONLY_KINGS>)
+{
+        return KingMoves::detect<Color, Rules>(p) || KingCaptures::detect<Color, Rules>(p);
+}
+
+template<bool Color, typename Rules, typename Board> FORCE_INLINE
+bool Generate::detect(const Position<Board>& p, Int2Type<Pieces::MEN_AND_KINGS>)
+{
+        return ManKingMoves::detect<Color, Rules>(p) || ManKingCaptures::detect<Color, Rules>(p);
 }
 
 template<typename Rules, typename Board>
