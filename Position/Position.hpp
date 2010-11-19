@@ -164,7 +164,7 @@ BitBoard Position<Board>::occupied(void) const
 template<typename Board>
 BitBoard Position<Board>::not_occupied(void) const
 {
-        return ~(occupied() ^ Board::GHOSTS);
+        return Board::SQUARES ^ occupied();
 }
 
 // composition of black or white pieces
@@ -234,7 +234,7 @@ bool Position<Board>::is_pseudo_legal_undo(const Pieces& m) const
 template<typename Board>
 bool Position<Board>::pieces_invariant(void) const
 {
-        return Bit::is_exclusive(occupied(), Board::GHOSTS);
+        return Bit::is_within(occupied(), Board::SQUARES);
 }
 
 template<typename Board>
@@ -248,7 +248,7 @@ void Position<Board>::make(const Pieces& m)
 {
         assert(is_pseudo_legal_make(m));
 
-        make_irreversible<Rules>(m);
+        //make_irreversible<Rules>(m);
         make_reversible(m);
 
         assert(pieces_invariant());
@@ -356,10 +356,10 @@ template<typename Board> FORCE_INLINE
 void Position<Board>::make_reversible(const Pieces& m)
 {
         d_pieces.toggle(m);
-        hash_index() ^= ZobristHash<Pieces, HashIndex>()(m);
+        //hash_index() ^= ZobristHash<Pieces, HashIndex>()(m);
 
         d_side.pass();
-        hash_index() ^= ZobristHash<Side, HashIndex>()();
+        //hash_index() ^= ZobristHash<Side, HashIndex>()();
 }
 
 // tag dispatching based on consecutive king moves restrictions
@@ -369,7 +369,7 @@ void Position<Board>::undo(const Pieces& m)
         assert(is_pseudo_legal_undo(m));
 
         undo_reversible(m);
-        undo_irreversible<Rules>();
+        //undo_irreversible<Rules>();
 }
 
 // tag dispatching based on consecutive king moves restrictions

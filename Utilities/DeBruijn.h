@@ -9,5 +9,5 @@ struct DeBruijn
         static const size_t TABLE[];
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "DeBruijn.hpp"

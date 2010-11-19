@@ -13,5 +13,5 @@ struct FindSign: public std::unary_function<Item, Key>
         const Key& operator()(const Item&) const;
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "HashSign.hpp"

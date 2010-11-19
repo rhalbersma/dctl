@@ -9,7 +9,7 @@ template
         typename GridLayout,
         size_t D = 2,
         size_t N = 2,
-        size_t A = D000
+        size_t A = L090
 >
 struct Board: public GridLayout
 {
@@ -25,7 +25,7 @@ struct Board: public GridLayout
         static const size_t A_PRIME = InverseAngle<A>::VALUE;   // rotation from internal to external grid
 
         // essential bitboard masks
-        static const BitBoard GHOSTS;                           // "ghost" bits
+        static const BitBoard SQUARES;                          // bit mask of legal squares, excluding ghost squares
         static const BitBoard INITIAL[];                        // initial position
         static const BitBoard PROMOTION[][2];                   // promotion zones
         static const BitBoard ROW_MASK[][12];                   // bit masks for the rows
@@ -65,9 +65,5 @@ typedef Board< Grid<12, 10, true>, 2, 1, R090 > Ktar12Board;
 // the default board
 typedef InternationalBoard DefaultBoard;
 
-// wrappers to generate bitboard shift masks
-template<typename> BitBoard quad_nearest_shifts(BitBoard);
-template<typename> BitBoard double_nearest_shifts(BitBoard, size_t);
-
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Board.hpp"

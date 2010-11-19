@@ -14,8 +14,9 @@ public:
 
         template<typename, typename B> static NodeCount perft(Position<B>&, size_t, size_t);
         template<typename, typename B> static NodeCount perft_bulk(Position<B>&, size_t, size_t);
+        template<typename, typename B> static NodeCount perft_count(Position<B>&, size_t, size_t);
         template<typename, typename B> static NodeCount perft_hash(Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount perft_bulk_hash(Position<B>&, size_t, size_t);
+        template<typename, typename B> static NodeCount perft_count_hash(Position<B>&, size_t, size_t);
 
         template<typename B> static void announce(const Position<B>&, size_t);
 
@@ -38,5 +39,5 @@ private:
         static SearchStatistics d_statistics;
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Perft.hpp"

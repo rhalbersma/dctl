@@ -24,5 +24,5 @@ private:
         template<bool, typename B> static int mobility(const Position<B>& p);
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Evaluate.hpp"

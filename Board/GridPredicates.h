@@ -10,5 +10,5 @@ class SQUARE2COORD;
 template<typename, int, int>
 class COORD2SQUARE;
 
-// include template definitions inside header since "export" keyword is not supported by Visual C++
+// include template definitions inside header since "export" keyword is not supported by most C++ compilers
 #include "GridPredicates.hpp"

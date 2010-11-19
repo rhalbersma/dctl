@@ -14,7 +14,7 @@ std::string write_square_layout<T>::operator()(Functor f) const
 {
 	std::stringstream sstr;
 
-        for (size_t sq = 0; sq < T::NUM_SQUARES; ++sq) {
+        for (size_t sq = 0; sq < T::SQUARE_RANGE; ++sq) {
                 if (is_indent_row<T>(sq))
                         sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 
@@ -41,7 +41,7 @@ std::string write_bit_layout<T>::operator()(Functor f) const
 	std::stringstream sstr;
         size_t b;
 
-        for (size_t sq = 0; sq < T::NUM_SQUARES; ++sq) {
+        for (size_t sq = 0; sq < T::SQUARE_RANGE; ++sq) {
                 if (is_indent_row<T>(sq))
                         sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 

@@ -23,5 +23,5 @@ struct write_bit_layout: public std::unary_function<void, std::string>
 template<typename> bool is_end_row(size_t);
 template<typename> bool is_indent_row(size_t);
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "BoardIO.hpp"

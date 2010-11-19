@@ -12,7 +12,7 @@
 int main(void)
 {
         PerftSuite::International();
-        //PerftSuite::Rectangular();
+        PerftSuite::Rectangular();
 	//PerftSuite::ChessBoardVariants();
 	//PerftSuite::ItalianRuleBook();
 

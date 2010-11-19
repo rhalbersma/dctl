@@ -25,5 +25,5 @@ class SQUARE2BIT;
 template<typename, int>
 class BIT2SQUARE;
 
-// include template definitions inside header since "export" keyword is not supported by Visual C++
+// include template definitions inside header since "export" keyword is not supported by most C++ compilers
 #include "BoardMetaTemplates.hpp"

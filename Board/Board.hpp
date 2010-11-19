@@ -2,7 +2,7 @@
 #include "../Position/Reversible/Side.h"
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
-const BitBoard Board<GridLayout, D, N, A>::GHOSTS = ~INIT_SQUARES<T>::VALUE;
+const BitBoard Board<GridLayout, D, N, A>::SQUARES = INIT_SQUARES<T>::VALUE;
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::INITIAL[] =
@@ -136,21 +136,6 @@ const size_t Board<GridLayout, D, N, A>::DIR[] =
         GhostStructure::RIGHT_DOWN
 };
 
-/*
-template<typename GridLayout, size_t D, size_t N, size_t A>
-const size_t Board<GridLayout, D, N, A>::DIR[] = 
-{
-        T::BASE_DIR[RotateDirIndex<0, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirIndex<1, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirIndex<2, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirIndex<3, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirIndex<4, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirIndex<5, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirIndex<6, A_PRIME>::VALUE], 
-        T::BASE_DIR[RotateDirIndex<7, A_PRIME>::VALUE], 
-};
-*/
-
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const int Board<GridLayout, D, N, A>::TABLE_SQUARE2BIT[] =
 {
@@ -192,15 +177,3 @@ const int Board<GridLayout, D, N, A>::TABLE_BIT2SQUARE[] =
         BIT2SQUARE<T, 56>::VALUE, BIT2SQUARE<T, 57>::VALUE, BIT2SQUARE<T, 58>::VALUE, BIT2SQUARE<T, 59>::VALUE,
         BIT2SQUARE<T, 60>::VALUE, BIT2SQUARE<T, 61>::VALUE, BIT2SQUARE<T, 62>::VALUE, BIT2SQUARE<T, 63>::VALUE
 };
-
-template<typename Board>
-BitBoard quad_nearest_shifts(BitBoard b)
-{
-        return (b * Board::QUAD_NEAREST_NEIGHBOR_MAGIC) >> Board::SE_NW;
-}
-
-template<typename Board>
-BitBoard double_nearest_shifts(BitBoard b, size_t i)
-{
-        return (b * Board::DOUBLE_NEAREST_NEIGHBOR_MAGIC[i]) >> Board::SE_NW;
-}

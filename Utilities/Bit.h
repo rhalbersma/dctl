@@ -28,5 +28,5 @@ private:
         template<bool, typename T> static T dumb_fill(T, T, size_t);
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Bit.hpp"

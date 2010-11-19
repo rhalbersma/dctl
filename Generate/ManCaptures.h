@@ -57,5 +57,5 @@ private:
         template<size_t, typename> static bool detect_dir(BitBoard, BitBoard, BitBoard);
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "ManCaptures.hpp"

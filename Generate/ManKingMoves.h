@@ -18,5 +18,5 @@ public:
         template<bool, typename, typename B> static bool detect(const Position<B>&);
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "ManKingMoves.hpp"

@@ -8,19 +8,17 @@ template<typename Board, bool Color>
 class DirIndex
 { 
 private:                        
-        enum { A = (D180 * !Color) + Board::A_PRIME };
+        enum { ANGLE = (D180 * !Color) + Board::A_PRIME };
 
 public:
-        enum {
-                RIGHT           = RotateDirIndex<0, A>::VALUE, 
-                RIGHT_UP        = RotateDirIndex<1, A>::VALUE, 
-                UP              = RotateDirIndex<2, A>::VALUE, 
-                LEFT_UP         = RotateDirIndex<3, A>::VALUE, 
-                LEFT            = RotateDirIndex<4, A>::VALUE, 
-                LEFT_DOWN       = RotateDirIndex<5, A>::VALUE, 
-                DOWN            = RotateDirIndex<6, A>::VALUE, 
-                RIGHT_DOWN      = RotateDirIndex<7, A>::VALUE 
-        }; 
+        static const size_t RIGHT       = RotateDirIndex<0, ANGLE>::VALUE; 
+        static const size_t RIGHT_UP    = RotateDirIndex<1, ANGLE>::VALUE; 
+        static const size_t UP          = RotateDirIndex<2, ANGLE>::VALUE; 
+        static const size_t LEFT_UP     = RotateDirIndex<3, ANGLE>::VALUE; 
+        static const size_t LEFT        = RotateDirIndex<4, ANGLE>::VALUE; 
+        static const size_t LEFT_DOWN   = RotateDirIndex<5, ANGLE>::VALUE; 
+        static const size_t DOWN        = RotateDirIndex<6, ANGLE>::VALUE; 
+        static const size_t RIGHT_DOWN  = RotateDirIndex<7, ANGLE>::VALUE;
 };
 
 template<size_t I>
