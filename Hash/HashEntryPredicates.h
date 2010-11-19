@@ -26,5 +26,5 @@ struct leafs_compare: public std::binary_function<Entry, Entry, bool>
         bool operator()(const Entry&, const Entry&) const;
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "HashEntryPredicates.hpp"

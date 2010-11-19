@@ -19,5 +19,5 @@ private:
         static const size_t XOR_SHIFT_R[NUM_MIX];               // shift lengths used in the exclusive or steps
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "JenkinsMix.hpp"

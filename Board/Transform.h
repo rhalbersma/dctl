@@ -25,6 +25,38 @@ struct RotateDirIndex
 };
 
 // identity rotation
+template<typename T, int R, int C, size_t = D000>
+struct RotateCoordinates
+{
+        static const int ROW = R;
+        static const int COL = C;
+};
+
+// rotate 90 degrees right
+template<typename T, int R, int C>
+struct RotateCoordinates<T, R, C, R090>
+{
+        static const int ROW = (T::WIDTH - 1) - C;
+        static const int COL = R;
+};
+
+// rotate 90 degrees left
+template<typename T, int R, int C>
+struct RotateCoordinates<T, R, C, L090>
+{
+        static const int ROW = C;
+        static const int COL = (T::HEIGHT - 1) - R;
+};
+
+// rotate 180 degrees
+template<typename T, int R, int C>
+struct RotateCoordinates<T, R, C, D180>
+{
+        static const int ROW = (T::HEIGHT - 1) - R;
+        static const int COL = (T::WIDTH - 1) - C;
+};
+
+// identity rotation
 template<typename In, size_t = D000>
 struct RotateGrid
 {
@@ -50,44 +82,4 @@ template<typename In>
 struct RotateGrid<In, D180>
 {
         typedef Grid<In::HEIGHT, In::WIDTH, (In::HEIGHT % 2) ^ (In::WIDTH % 2) ^ In::SQUARE_PARITY> Out;
-};
-
-// identity rotation
-template<typename T, int R, int C, size_t = D000>
-struct RotateCoordinate
-{
-        enum {
-                ROW = R,
-                COL = C
-        };
-};
-
-// rotate 90 degrees right
-template<typename T, int R, int C>
-struct RotateCoordinate<T, R, C, R090>
-{
-        enum {
-                ROW = (T::WIDTH - 1) - C,
-                COL = R
-        };
-};
-
-// rotate 90 degrees left
-template<typename T, int R, int C>
-struct RotateCoordinate<T, R, C, L090>
-{
-        enum {
-                ROW = C,
-                COL = (T::HEIGHT - 1) - R
-        };
-};
-
-// rotate 180 degrees
-template<typename T, int R, int C>
-struct RotateCoordinate<T, R, C, D180>
-{
-        enum {
-                ROW = (T::HEIGHT - 1) - R,
-                COL = (T::WIDTH - 1) - C
-        };
 };

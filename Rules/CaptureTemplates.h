@@ -45,5 +45,5 @@ struct greater_equal: public std::binary_function<CaptureValue, CaptureValue, bo
         }
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "CaptureTemplates.hpp"

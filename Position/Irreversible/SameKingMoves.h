@@ -35,5 +35,5 @@ private:
         VectorBucket<PlyCount, PLY_MAX> d_moves;
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "SameKingMoves.hpp"

@@ -28,13 +28,11 @@ private:
         };
 
 public:
-        enum {
-                // twice the number of row pairs plus the row parity
-                ROW = 2 * Q + P,
-
-                // twice the number of bits from the left edge plus the row parity XOR the opposite board coloring
-                COL = 2 * R + (P ^ !T::BIT_PARITY)
-        };
+        // twice the number of row pairs plus the row parity
+        static const int ROW = 2 * Q + P;
+                                
+        // twice the number of bits from the left edge plus the row parity XOR the opposite board coloring
+        static const int COL = 2 * R + (P ^ !T::BIT_PARITY);
 };
 
 template<typename T, int ROW, int COL>
@@ -42,14 +40,16 @@ class COORD2BIT
 {
 private:
         enum {
-                Q = ROW / 2,                            // number of row pairs
+                L0 = T::BIT_LE,                         // the left edge of the zeroth row
+                L1 = T::BIT_LO,                         // the left edge of the first row
+                M = T::BIT_MODULO,                      // bits per row pair
                 P = ROW % 2,                            // row parity
+                Q = ROW / 2,                            // number of row pairs
+                L = P? L1 : L0,                         // the left edge
                 S = COL / 2,                            // number of column pairs
-                R0 = T::BIT_LE + S,                     // bits from the left edge of the zeroth row
-                R1 = T::BIT_LO + S,                     // bits from the left edge of the first row
-                R = (P? R1 : R0) % T::BIT_MODULO        // bits from the left edge
+                R = (L + S) % M                         // bits from the left edge
         };
 
 public:
-        enum { VALUE = T::BIT_MODULO * Q + R };
+        static const int VALUE = M * Q + R;
 };

@@ -10,7 +10,6 @@ class SQUARE2COORD
 {
 private:
         enum {
-                // SQ = SQUARE_MODULO * Q + R0
                 Q = SQ / T::SQUARE_MODULO,              // number of row pairs                     
                 R0 = SQ % T::SQUARE_MODULO,             // squares from the left edge of the zeroth row
                 R1 = R0 - T::SQUARE_LO,                 // squares from the left edge of the first row
@@ -19,13 +18,11 @@ private:
         };
 
 public:
-        enum {
-                // twice the number of row pairs plus the row parity
-                ROW = 2 * Q + P,
-
-                // twice the number of squares from the left edge plus the row parity XOR the opposite board coloring
-                COL = 2 * R + (P ^ !T::SQUARE_PARITY)
-        };
+        // twice the number of row pairs plus the row parity
+        static const int ROW = 2 * Q + P;
+               
+        // twice the number of squares from the left edge plus the row parity XOR the opposite board coloring
+        static const int COL = 2 * R + (P ^ !T::SQUARE_PARITY);
 };
 
 template<typename T, int ROW, int COL>
@@ -33,15 +30,16 @@ class COORD2SQUARE
 {
 private:
         enum {
-                // SQ = SQUARE_MODULO * Q + R
-                Q = ROW / 2,                            // number of row pairs
+                L0 = T::SQUARE_LE,                      // the left edge of the zeroth row
+                L1 = T::SQUARE_LO,                      // the left edge of the first row
+                M = T::SQUARE_MODULO,                   // bits per row pair
                 P = ROW % 2,                            // row parity
-                S = COL / 2,
-                R0 = T::SQUARE_LE + S,
-                R1 = T::SQUARE_LO + S,
-                R = P? R1 : R0
+                Q = ROW / 2,                            // number of row pairs
+                L = P? L1 : L0,                         // the left edge
+                S = COL / 2,                            // number of column pairs
+                R = (L + S) % M                         // bits from the left edge
         };
 
 public:
-        enum { VALUE = T::SQUARE_MODULO * Q + R };
+        static const int VALUE = M * Q + R;
 };

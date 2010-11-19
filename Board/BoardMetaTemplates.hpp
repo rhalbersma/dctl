@@ -134,8 +134,8 @@ private:
                 COL = SQUARE2COORD<E, SQ>::COL,
 
                 // rotated coordinates within the internal grid
-                ROW_PRIME = RotateCoordinate<E, ROW, COL, T::ANGLE>::ROW,
-                COL_PRIME = RotateCoordinate<E, ROW, COL, T::ANGLE>::COL
+                ROW_PRIME = RotateCoordinates<E, ROW, COL, T::ANGLE>::ROW,
+                COL_PRIME = RotateCoordinates<E, ROW, COL, T::ANGLE>::COL
         };
 
 public:
@@ -156,8 +156,8 @@ private:
                 COL = BIT2COORD<G, B>::COL,
 
                 // rotated coordinates within the external grid
-                ROW_PRIME = RotateCoordinate<I, ROW, COL, T::A_PRIME>::ROW,
-                COL_PRIME = RotateCoordinate<I, ROW, COL, T::A_PRIME>::COL
+                ROW_PRIME = RotateCoordinates<I, ROW, COL, T::A_PRIME>::ROW,
+                COL_PRIME = RotateCoordinates<I, ROW, COL, T::A_PRIME>::COL
         };
 
 public:

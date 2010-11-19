@@ -26,5 +26,5 @@ private:
         template<bool, typename R, typename B> static void generate_precede(const Position<B>&, Propagate<R, B>&, Int2Type<true>);
 };
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "ManKingCaptures.hpp"

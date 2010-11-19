@@ -91,5 +91,5 @@ struct write_position_bit: public std::binary_function<Position<Board>, size_t, 
 template<typename> 
 bool is_valid_square(size_t);
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "PositionIO.hpp"

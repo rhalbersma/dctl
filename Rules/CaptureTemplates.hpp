@@ -23,5 +23,5 @@ bool large<Rules>::operator()(const CaptureValue& capture, BitBoard, Int2Type<tr
         return capture.num_pieces >= LargeCaptureValue<Rules>::VALUE;
 }
 
-// include template definitions inside header because "export" keyword is not supported by Visual C++
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "CaptureSpecializations.hpp"

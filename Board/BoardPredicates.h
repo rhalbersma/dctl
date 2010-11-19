@@ -16,5 +16,5 @@ class IS_MAN_JUMP_GROUP;
 template<typename, size_t, size_t>
 class IS_JUMPABLE;
 
-// include template definitions inside header since "export" keyword is not supported by Visual C++
+// include template definitions inside header since "export" keyword is not supported by most C++ compilers
 #include "BoardPredicates.hpp"
