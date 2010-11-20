@@ -36,7 +36,7 @@ struct RotateCoordinates
 template<typename T, int R, int C>
 struct RotateCoordinates<T, R, C, R090>
 {
-        static const int ROW = static_cast<int>(T::WIDTH - 1) - C;
+        static const int ROW = (static_cast<int>(T::WIDTH) - 1) - C;
         static const int COL = R;
 };
 
@@ -45,15 +45,15 @@ template<typename T, int R, int C>
 struct RotateCoordinates<T, R, C, L090>
 {
         static const int ROW = C;
-        static const int COL = static_cast<int>(T::HEIGHT - 1) - R;
+        static const int COL = (static_cast<int>(T::HEIGHT) - 1) - R;
 };
 
 // rotate 180 degrees
 template<typename T, int R, int C>
 struct RotateCoordinates<T, R, C, D180>
 {
-        static const int ROW = static_cast<int>(T::HEIGHT - 1) - R;
-        static const int COL = static_cast<int>(T::WIDTH - 1) - C;
+        static const int ROW = (static_cast<int>(T::HEIGHT) - 1) - R;
+        static const int COL = (static_cast<int>(T::WIDTH) - 1) - C;
 };
 
 // identity rotation

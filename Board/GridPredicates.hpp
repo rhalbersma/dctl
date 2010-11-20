@@ -30,14 +30,14 @@ class COORD2SQUARE
 {
 private:
         enum {
-                L0 = T::SQUARE_LE,                      // the left edge of the zeroth row
-                L1 = T::SQUARE_LO,                      // the left edge of the first row
-                M = T::SQUARE_MODULO,                   // bits per row pair
+                L0 = static_cast<int>(T::SQUARE_LE),    // the left edge of the zeroth row
+                L1 = static_cast<int>(T::SQUARE_LO),    // the left edge of the first row
+                M = static_cast<int>(T::SQUARE_MODULO), // squares per row pair
                 P = ROW % 2,                            // row parity
                 Q = ROW / 2,                            // number of row pairs
                 L = P? L1 : L0,                         // the left edge
                 S = COL / 2,                            // number of column pairs
-                R = (L + S) % M                         // bits from the left edge
+                R = (L + S) % M                         // squares from the left edge
         };
 
 public:
