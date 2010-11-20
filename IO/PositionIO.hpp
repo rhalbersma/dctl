@@ -1,3 +1,4 @@
+#include "BoardIO.h"
 #include "../Board/Board.h"
 #include "../Position/Position.h"
 #include "../Position/Reversible/Side.h"
