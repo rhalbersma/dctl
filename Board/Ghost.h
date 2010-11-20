@@ -28,13 +28,13 @@ struct Ghost
         static const size_t UP = DOWN;                          // up direction
                
         // number of bits per row pair
-        static const int BIT_MODULO = DOWN;
+        static const size_t BIT_MODULO = DOWN;
                 
         // boundaries of even and odd rows
-        static const int BIT_LE = BIT_MODULO;                	// leftmost bit of even rows
-        static const int BIT_RE = T::SQUARE_RE;              	// rightmost bit of even rows
-        static const int BIT_LO = LEFT_DOWN + BIT_PARITY;    	// leftmost bit of odd rows
-        static const int BIT_RO = BIT_LO + T::ROW_O - 1;     	// rightmost bit of odd rows
+        static const size_t BIT_LE = BIT_MODULO;                // leftmost bit of even rows
+        static const size_t BIT_RE = T::SQUARE_RE;              // rightmost bit of even rows
+        static const size_t BIT_LO = LEFT_DOWN + BIT_PARITY;    // leftmost bit of odd rows
+        static const size_t BIT_RO = BIT_LO + T::ROW_O - 1;     	// rightmost bit of odd rows
 
         // number of used bits
         static const size_t BIT_RANGE = BIT_MODULO * ((T::HEIGHT - 1) / 2) + ((T::HEIGHT % 2)? BIT_RE : BIT_RO) + 1;

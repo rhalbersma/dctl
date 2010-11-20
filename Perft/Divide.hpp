@@ -6,8 +6,8 @@ template<typename Rules, typename Board>
 void Divide::root(Position<Board>& p, size_t nominal_depth)
 {
         double start_time, time_used;
-        NodeCount divide_count = 0;
-        NodeCount perft_count;
+        NodeCount leafs = 0;
+        NodeCount move_leafs;
 
         Propagate<Rules, Board> moves(p);
         Generate::generate(p, moves);
@@ -19,14 +19,14 @@ void Divide::root(Position<Board>& p, size_t nominal_depth)
 
                 p.template make<Rules>(moves[i]);
                 Perft::reset_statistics();
-                perft_count = Perft::perft<Rules>(p, 0, nominal_depth - 1);
-                divide_count += perft_count;
+                move_leafs = Perft::perft<Rules>(p, 0, nominal_depth - 1);
+                leafs += move_leafs;
                 p.template undo<Rules>(moves[i]);
 
                 time_used = (clock() + 1 - start_time) / CLOCKS_PER_SEC;
-                Perft::report(perft_count, nominal_depth - 1, time_used);
+                Perft::report(move_leafs, nominal_depth - 1, time_used);
         }
-        summary(divide_count);
+        summary(leafs);
 }
 
 template<typename Board>

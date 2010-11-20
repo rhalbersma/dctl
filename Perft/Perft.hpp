@@ -9,15 +9,15 @@ template<typename Rules, typename Board>
 void Perft::root(Position<Board>& p, size_t nominal_depth)
 {
         double start_time, time_used;
-        NodeCount perft_count;
+        NodeCount leafs;
 
         announce(p, nominal_depth);
         for (size_t depth = 1; depth <= nominal_depth; ++depth) {
                 start_time = clock();
                 reset_statistics();
-                perft_count = perft_bulk<Rules>(p, 0, depth);
+                leafs = perft<Rules>(p, 0, depth);
                 time_used = (clock() + 1 - start_time) / CLOCKS_PER_SEC;
-                report(perft_count, depth, time_used, true);
+                report(leafs, depth, time_used, true);
         }
 }
 
@@ -72,7 +72,7 @@ NodeCount Perft::perft_count(Position<Board>& p, size_t ply, size_t depth)
         NodeCount leafs = 0;
         for (size_t i = 0; i < moves.size(); ++i) {
                 p.template make<Rules>(moves[i]);
-                leafs += perft_bulk<Rules>(p, ply + 1, depth - 1);
+                leafs += perft_count<Rules>(p, ply + 1, depth - 1);
                 p.template undo<Rules>(moves[i]);
         }
         return leafs;
@@ -121,7 +121,7 @@ NodeCount Perft::perft_count_hash(Position<Board>& p, size_t ply, size_t depth)
                 leafs = 0;
                 for (size_t i = 0; i < moves.size(); ++i) {
                         p.template make<Rules>(moves[i]);
-                        leafs += perft_bulk_hash<Rules>(p, ply + 1, depth - 1);
+                        leafs += perft_count_hash<Rules>(p, ply + 1, depth - 1);
                         p.template undo<Rules>(moves[i]);
                 }
         }

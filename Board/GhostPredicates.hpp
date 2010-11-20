@@ -40,9 +40,9 @@ class COORD2BIT
 {
 private:
         enum {
-                L0 = T::BIT_LE,                         // the left edge of the zeroth row
-                L1 = T::BIT_LO,                         // the left edge of the first row
-                M = T::BIT_MODULO,                      // bits per row pair
+                L0 = static_cast<int>(T::BIT_LE),       // the left edge of the zeroth row
+                L1 = static_cast<int>(T::BIT_LO),       // the left edge of the first row
+                M = static_cast<int>(T::BIT_MODULO),    // bits per row pair
                 P = ROW % 2,                            // row parity
                 Q = ROW / 2,                            // number of row pairs
                 L = P? L1 : L0,                         // the left edge
