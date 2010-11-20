@@ -9,7 +9,7 @@ template
         typename GridLayout,
         size_t D = 2,
         size_t N = 2,
-        size_t A = L090
+        size_t A = D000
 >
 struct Board: public GridLayout
 {

@@ -93,8 +93,8 @@ const BitBoard Board<GridLayout, D, N, A>::COL_MASK[][12] =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
 {
-        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (LEFT_DOWN  << 1))),
-        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (RIGHT_DOWN << 1)))
+        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (GhostStructure::LEFT_DOWN  << 1))),
+        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (GhostStructure::RIGHT_DOWN << 1)))
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
@@ -104,10 +104,10 @@ const BitBoard Board<GridLayout, D, N, A>::QUAD_NEAREST_NEIGHBOR_MAGIC =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::MAN_JUMP_GROUP[] =
 {
-        INIT_MAN_JUMP_GROUP<T, SQUARE_LE + 0>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, SQUARE_LE + 1>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, SQUARE_LO + 0>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, SQUARE_LO + 1>::VALUE
+        INIT_MAN_JUMP_GROUP<T, GhostStructure::SQUARE_LE + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, GhostStructure::SQUARE_LE + 1>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, GhostStructure::SQUARE_LO + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, GhostStructure::SQUARE_LO + 1>::VALUE
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
