@@ -5,15 +5,51 @@
 #include "../Rules/Rules.h"
 #include "../IO/BoardIO.h"
 #include "../IO/PositionIO.h"
+#include <utility>
 
-///*
 void SearchSuite::International(void)
 {
         //Position<> Taille8pc(read_position_string<FEN>()("W:WK34,K46,K49,K50:BK4,26,36,45"));
         //Search::root<InternationalRules>(Taille8pc, 29);
 
-        Position<Ktar12Board> ThreeVOne(read_position_string<FEN, Ktar12Board>()("W:BK1:WK2,K3,K4"));
-        Search::root<InternationalRules>(ThreeVOne, 29);
+        typedef std::pair<std::string, size_t> DB_test;
+
+        DB_test DB_win11[] = {
+                DB_test("W:W33:B2."      , 17), // 1010
+                DB_test("W:WK42:B22."    ,  7), // 0110
+                DB_test("W:W10:BK46."    ,  3), // 1001
+                DB_test("W:WK10:BK5."    ,  3)  // 0101
+        };
+                
+        Position<> DB_position21;
+        DB_test DB_win21[] = {
+                DB_test("W:W40,44:B3."   , 23), // 2010
+                DB_test("W:WK2,11:B45."  , 11), // 1110
+                DB_test("W:WK7,K30:B45." ,  9), // 0210
+                DB_test("W:W6,7:BK45."   ,  7), // 2001
+                DB_test("W:WK2,6:BK50."  ,  9), // 1101
+                DB_test("W:WK1,K7:BK50." ,  7), // 0201
+                DB_test("W:W21:B3,4."    , 33), // 1020
+                DB_test("W:WK38:B4,18."  , 27), // 0120
+                DB_test("W:W18:B5,K23."  , 17), // 1011
+                DB_test("W:WK26:B23,K42.",  9), // 0111
+                DB_test("W:W14:BK10,K46.",  3), // 1002
+                DB_test("W:WK10:BK5,K23.",  3)  // 0102
+        };
+
+        int value;
+        for (size_t i = 0; i < 4; ++i) {
+                value = Search::root<InternationalRules>(read_position_string<FEN>()(DB_win11[i].first), DB_win11[i].second);
+                assert(value == SearchValue::win(DB_win11[i].second));
+        }
+        
+        for (size_t i = 0; i < 12; ++i) {
+                value = Search::root<InternationalRules>(read_position_string<FEN>()(DB_win21[i].first), DB_win21[i].second);
+                assert(value == SearchValue::win(DB_win21[i].second));
+        }
+
+        //Position<Ktar12Board> ThreeVOne(read_position_string<FEN, Ktar12Board>()("W:BK1:WK2,K3,K4"));
+        //Search::root<InternationalRules>(ThreeVOne, 29);
 
         //Position<> DavidGoliath(read_position_string<FEN>()("B:W23:B5,6"));
         //Search::root<KillerRules>(DavidGoliath, 57);
@@ -39,7 +75,7 @@ void SearchSuite::International(void)
         Search::root<InternationalRules>(Woldouby, 25);
         */
 }
-//*/
+
 /*
 void SearchSuite::ChessBoardVariants(void)
 {

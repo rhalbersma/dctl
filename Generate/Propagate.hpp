@@ -58,12 +58,6 @@ BitBoard Propagate<Rules, Board>::path(void) const
         return path() & Board::JUMPABLE[Index];
 }
 
-template<typename Rules, typename Board> template<size_t Index>
-BitBoard Propagate<Rules, Board>::movers(void) const
-{
-        return Shift<DirTraits<Index>::IS_NEGATIVE>()(path(), Board::DIR[Index]);
-}
-
 template<typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 BitBoard Propagate<Rules, Board>::targets(void) const
 {
@@ -71,7 +65,13 @@ BitBoard Propagate<Rules, Board>::targets(void) const
 }
 
 template<typename Rules, typename Board> template<size_t Index>
-BitBoard Propagate<Rules, Board>::jumpers(void) const
+BitBoard Propagate<Rules, Board>::man_movers(void) const
+{
+        return Shift<DirTraits<Index>::IS_NEGATIVE>()(path(), Board::DIR[Index]);
+}
+
+template<typename Rules, typename Board> template<size_t Index>
+BitBoard Propagate<Rules, Board>::man_jumpers(void) const
 {
         return Shift<DirTraits<Index>::IS_NEGATIVE>()(targets<Index>(), Board::DIR[Index]);
 }

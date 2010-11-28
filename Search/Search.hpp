@@ -10,11 +10,14 @@
 
 // iterative deepening with no move ordering at the root
 template<typename Rules, typename Board>
-void Search::root(Position<Board>& p, size_t nominal_depth)
+int Search::root(const Position<Board>& pp, size_t nominal_depth)
 {
         double start_time, time_used;
-        int value, alpha, beta;
+        int value = -SearchValue::infinity();                
+        int alpha, beta;
         SearchParameters root_node;
+
+        Position<Board> p(pp);
 
         announce(p, nominal_depth);
         for (size_t depth = 1; depth <= nominal_depth; depth += ROOT_ID_INCREMENT) {
@@ -28,6 +31,10 @@ void Search::root(Position<Board>& p, size_t nominal_depth)
                 print_PV<Rules>(root_node, p, true);
                 insert_PV<Rules>(root_node, p, value);
         }
+
+        assert(p == pp);
+
+        return value;
 }
 
 template<typename Board>
@@ -41,63 +48,63 @@ void Search::announce(const Position<Board>& p, size_t nominal_depth)
 }
 
 template<typename Rules, typename Board>
-void Search::insert_PV(const SearchParameters& node, const Position<Board>& p, int value)
+void Search::insert_PV(const SearchParameters& node, const Position<Board>& pp, int value)
 {
         const Move::Sequence& line = node.PV();
-        Position<Board> pp(p);
+        Position<Board> p(pp);
 
         for(size_t i = 0; i < line.size(); ++i) {
-                TT.insert(pp, SearchNode(value, SearchNode::exact(), line.size() - i, line[i]));
-                Propagate<Rules, Board> moves(pp);
-                Generate::generate<Rules>(pp, moves);
-                pp.template make<Rules>(moves[line[i]]);
+                TT.insert(p, SearchNode(value, SearchNode::exact(), line.size() - i, line[i]));
+                Propagate<Rules, Board> moves(p);
+                Generate::generate<Rules>(p, moves);
+                p.template make<Rules>(moves[line[i]]);
                 value = -SearchValue::stretch(value);
         }
-        TT.insert(pp, SearchNode(value, SearchNode::exact(), 0, SearchNode::no_move()));
+        TT.insert(p, SearchNode(value, SearchNode::exact(), 0, SearchNode::no_move()));
 }
 
 template<typename Rules, typename Board>
-void Search::print_PV(const SearchParameters& node, const Position<Board>& p, bool print_TT_info)
+void Search::print_PV(const SearchParameters& node, const Position<Board>& pp, bool print_TT_info)
 {
         const Move::Sequence& line = node.PV();
-        Position<Board> pp(p);
+        Position<Board> p(pp);
         const SearchNode* TT_entry;
         int eval_score;
         size_t same_king;
         size_t non_conversion;
 
         for(size_t i = 0; i < line.size(); ++i) {
-                Propagate<Rules, Board> moves(pp);
-                Generate::generate<Rules>(pp, moves);
+                Propagate<Rules, Board> moves(p);
+                Generate::generate<Rules>(p, moves);
                 assert(line[i] < moves.size());
 
-                if (pp.to_move())
-                        std::cout << write_move_string<Rules>()(pp, moves[line[i]]);
+                if (p.to_move())
+                        std::cout << write_move_string<Rules>()(p, moves[line[i]]);
                 else {
                         std::cout << "(";
-                        std::cout << write_move_string<Rules>()(pp, moves[line[i]]);
+                        std::cout << write_move_string<Rules>()(p, moves[line[i]]);
                         std::cout << ")";
                 }
 
-                pp.template make<Rules>(moves[line[i]]);
+                p.template make<Rules>(moves[line[i]]);
 
-                same_king = pp.same_moves(!pp.to_move());
+                same_king = p.same_moves(!p.to_move());
                 ///*
                 if (same_king)
                         std::cout << "^" << std::setw(1) << same_king;
                 else
                         std::cout << "  ";
                 //*/
-                non_conversion = pp.non_conversion_moves();
+                non_conversion = p.non_conversion_moves();
                 /*
                 if (non_conversion)
                         std::cout << "#" << std::setw(1) << non_conversion;
                 else
                         std::cout << "  ";
                 */
-                TT_entry = TT.find(pp);
+                TT_entry = TT.find(p);
 
-                eval_score = Evaluate::evaluate(pp);
+                eval_score = Evaluate::evaluate(p);
                 std::cout << " [";
                 std::cout << std::setw(4) << SearchValue::print(eval_score);
 

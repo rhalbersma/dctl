@@ -95,7 +95,6 @@ size_t KingMoves::count(const Position<Board>& p)
 template<bool Color, typename Rules, typename Board>
 size_t KingMoves::count(const Position<Board>& p)
 {
-        assert(p.to_move() == Color);
         return count_dirs<Color, Rules, Board>(p.template unrestricted_kings<Rules>(Color), p.not_occupied());
 }
 

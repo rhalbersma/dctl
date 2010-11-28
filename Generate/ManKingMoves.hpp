@@ -32,7 +32,6 @@ size_t ManKingMoves::count(const Position<Board>& p)
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t ManKingMoves::count(const Position<Board>& p)
 {     
-        assert(p.to_move() == Color);
         return KingMoves::count<Color, Rules>(p) + ManMoves::count<Color>(p);
 }
 

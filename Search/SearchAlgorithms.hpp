@@ -2,9 +2,9 @@
 
 // negamax
 template<typename Rules, typename Board>
-int Search::negamax(Position<Board>& p, size_t depth, SearchParameters& parent_node)
+int Search::negamax(Position<Board>& p, size_t ply, size_t depth, SearchParameters& parent_node)
 {
-        update_statistics();
+        update_statistics(ply);
 
         // check for a legal draw
         if (p.is_draw<Rules>())
@@ -24,7 +24,7 @@ int Search::negamax(Position<Board>& p, size_t depth, SearchParameters& parent_n
         SearchParameters child_node;
         for (size_t i = 0; i < moves.size(); ++i) {
                 p.template make<Rules>(moves[i]);
-                score = -squeeze(negamax<Rules>(p, depth - 1, child_node));
+                score = -squeeze(negamax<Rules>(p, ply + 1, depth - 1, child_node));
                 p.template undo<Rules>(moves[i]);
 
                 if (score > value) {
@@ -39,9 +39,9 @@ int Search::negamax(Position<Board>& p, size_t depth, SearchParameters& parent_n
 
 // alpha-beta
 template<typename Rules, typename Board>
-int Search::alpha_beta(Position<Board>& p, size_t depth, int alpha, int beta, SearchParameters& parent_node)
+int Search::alpha_beta(Position<Board>& p, size_t ply, size_t depth, int alpha, int beta, SearchParameters& parent_node)
 {
-        update_statistics();
+        update_statistics(ply);
 
         // check for a legal draw
         if (p.is_draw<Rules>())
@@ -67,7 +67,7 @@ int Search::alpha_beta(Position<Board>& p, size_t depth, int alpha, int beta, Se
         SearchParameters child_node;
         for (size_t i = 0; i < moves.size(); ++i) {
                 p.template make<Rules>(moves[i]);
-                score = -squeeze(alpha_beta<Rules>(p, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                score = -squeeze(alpha_beta<Rules>(p, ply  + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 p.template undo<Rules>(moves[i]);
 
                 if (score > value) {
@@ -90,11 +90,11 @@ template<size_t Node, typename Rules, typename Board>
 int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int beta, SearchParameters& parent_node)
 {
         update_statistics(ply);
-/*
+
         // check for a legal draw
         if (p.is_draw<Rules>())
                 return SearchValue::draw();
-*/
+
         // return evaluation in leaf nodes with valid moves
         if (depth == 0)
                 return !Generate::detect<Rules>(p)? SearchValue::loss(0) : 0;// Evaluate::evaluate(p);

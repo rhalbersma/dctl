@@ -6,19 +6,23 @@
 #include <iostream>
 
 template<typename Rules, typename Board>
-void Perft::root(Position<Board>& p, size_t nominal_depth)
+void Perft::root(const Position<Board>& pp, size_t nominal_depth)
 {
         double start_time, time_used;
         NodeCount leafs;
+
+        Position<Board> p(pp);
 
         announce(p, nominal_depth);
         for (size_t depth = 1; depth <= nominal_depth; ++depth) {
                 start_time = clock();
                 reset_statistics();
-                leafs = perft<Rules>(p, 0, depth);
+                leafs = perft_bulk<Rules>(p, 0, depth);
                 time_used = (clock() + 1 - start_time) / CLOCKS_PER_SEC;
                 report(leafs, depth, time_used, true);
         }
+                
+        assert(p == pp);
 }
 
 template<typename Rules, typename Board>
