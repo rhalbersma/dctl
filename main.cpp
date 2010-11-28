@@ -6,7 +6,8 @@
 
 int main(void)
 {
-        SearchSuite::International();
+        //SearchSuite::International();
+        SearchSuite::Killer();
         //PerftSuite::Rectangular();
 	//PerftSuite::ChessBoardVariants();
 	//PerftSuite::ItalianRuleBook();
