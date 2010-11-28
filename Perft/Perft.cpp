@@ -52,11 +52,6 @@ void Perft::reset_statistics(void)
         d_statistics.reset();
 }
 
-void Perft::update_statistics(void)
-{
-        d_statistics.update();
-}
-
 void Perft::update_statistics(size_t ply)
 {
         d_statistics.update(ply);

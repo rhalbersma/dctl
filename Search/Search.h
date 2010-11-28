@@ -16,15 +16,15 @@ public:
         // typdefs
         enum NodeType { PV, ZW };
 
-        template<typename, typename B> static void root(Position<B>&, size_t);
+        template<typename, typename B> static int root(const Position<B>&, size_t);
 
 private:
         // 32-bit hash signature, 4-byte {value, type, depth, move} entries, 2^27 entries (= 1 Gb)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
-        typedef HashMap<uint32_t, SearchNode, 7> TranspositionTable;
+        typedef HashMap<uint32_t, SearchNode, 27> TranspositionTable;
 
-        template<typename, typename B> static int negamax(Position<B>&, size_t, SearchParameters&);
-        template<typename, typename B> static int alpha_beta(Position<B>&, size_t, int, int, SearchParameters&);
+        template<typename, typename B> static int negamax(Position<B>&, size_t, size_t, SearchParameters&);
+        template<typename, typename B> static int alpha_beta(Position<B>&, size_t, size_t, int, int, SearchParameters&);
 
         template<size_t, typename, typename B> static int search(Position<B>&, size_t, int, int, int, SearchParameters&);
         template<size_t, typename, typename B> static int quiescence(Position<B>&, size_t, int, int, int, SearchParameters&);
@@ -40,7 +40,6 @@ private:
         static size_t max_ply(void);
 
         static void reset_statistics(void);
-        static void update_statistics(void);
         static void update_statistics(size_t);
         static void identity_permutation(Move::Order&);
 

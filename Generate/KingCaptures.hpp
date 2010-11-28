@@ -191,7 +191,7 @@ bool KingCaptures::scan_reverse(BitBoard jump_sq, Propagate<Rules, Board>& captu
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool KingCaptures::scan_forward(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        assert(jump_sq & capture_path);
+        assert(jump_sq & capture.path());
         bool found_capture = false;
         do {
                 found_capture |= scan_dirs<Color, Index>(jump_sq, capture);

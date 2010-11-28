@@ -58,11 +58,6 @@ void Search::reset_statistics(void)
         d_statistics.reset();
 }
 
-void Search::update_statistics(void)
-{
-        d_statistics.update();
-}
-
 void Search::update_statistics(size_t ply)
 {
         d_statistics.update(ply);

@@ -4,20 +4,15 @@
 #include <iostream>
 #include <iomanip>
 
-#include "Board/Board.h"
-#include "IO/BoardIO.h"
-#include "Board/GridPredicates.h"
-#include "Board/Grid.h"
-
 int main(void)
 {
-        PerftSuite::International();
-        PerftSuite::Rectangular();
+        SearchSuite::International();
+        //PerftSuite::Rectangular();
 	//PerftSuite::ChessBoardVariants();
 	//PerftSuite::ItalianRuleBook();
 
 	std::cout << "End of program." << std::endl;
-        for (;;);
+        //for (;;);
 }
 
 /*

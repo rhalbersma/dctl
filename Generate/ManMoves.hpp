@@ -34,7 +34,7 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 void ManMoves::generate_dir(BitBoard active_men, Propagate<Rules, Board>& moves)
 {
         BitBoard from_sq, dest_sq;
-        for (active_men &= moves.template movers<Index>(); active_men; Bit::clear_lowest(active_men)) {
+        for (active_men &= moves.template man_movers<Index>(); active_men; Bit::clear_lowest(active_men)) {
                 from_sq = Bit::get_lowest(active_men);
                 dest_sq = Shift<DirTraits<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]);
                 moves.template add_man_move<Color>(from_sq, dest_sq);
@@ -75,7 +75,6 @@ size_t ManMoves::count(const Position<Board>& p)
 template<bool Color, typename Board>
 size_t ManMoves::count(const Position<Board>& p)
 {
-        assert(p.to_move() == Color);
         return count_dirs<Color, Board>(p.men(Color), p.not_occupied());
 }
 

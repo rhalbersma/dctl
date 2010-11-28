@@ -91,7 +91,7 @@ template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 void ManCaptures::generate_dir(BitBoard active_men, Propagate<Rules, Board>& capture)
 {
         BitBoard jump_sq, target_sq;
-        for (active_men &= capture.template jumpers<Index>(); active_men; Bit::clear_lowest(active_men)) {
+        for (active_men &= capture.template man_jumpers<Index>(); active_men; Bit::clear_lowest(active_men)) {
                 jump_sq = Bit::get_lowest(active_men);
                 target_sq = Shift<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
                 capture.launch(jump_sq);

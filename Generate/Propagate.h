@@ -20,9 +20,9 @@ public:
         // views
         BitBoard path(void) const;
         template<size_t> BitBoard path(void) const;
-        template<size_t> BitBoard movers(void) const;
         template<size_t> BitBoard targets(void) const;
-        template<size_t> BitBoard jumpers(void) const;
+        template<size_t> BitBoard man_movers(void) const;
+        template<size_t> BitBoard man_jumpers(void) const;
 
         // unary predicates
         template<bool> bool is_promotion(BitBoard) const;
