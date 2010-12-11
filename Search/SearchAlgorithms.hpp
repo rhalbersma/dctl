@@ -90,14 +90,14 @@ template<size_t Node, typename Rules, typename Board>
 int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int beta, SearchParameters& parent_node)
 {
         update_statistics(ply);
-
+        /*
         // check for a legal draw
         if (p.is_draw<Rules>())
                 return SearchValue::draw();
-
+        */
         // return evaluation in leaf nodes with valid moves
-        if (depth == 0)
-                return !Generate::detect<Rules>(p)? SearchValue::loss(0) : 0;// Evaluate::evaluate(p);
+        if (depth <= 0)
+                return !Generate::detect<Rules>(p)? SearchValue::loss(0) : Evaluate::evaluate(p);
 
         assert(depth > 0);
         assert(alpha >= -SearchValue::infinity());
@@ -134,10 +134,21 @@ int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int bet
                 TT.insert(p, SearchNode(loss_score, loss_type, depth, SearchNode::no_move()));
                 return loss_score;
         }
-
+        
+        // internal iterative deepening
+        if (!(TT_entry && TT_entry->has_move())) {
+                const int IID_depth = is_PV(Node)? depth - 2 : depth / 2;
+                if (IID_depth > 0) {
+                        const int IID_value = search<Node, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
+                        TT.insert(p, SearchNode(IID_value, SearchNode::exact(), IID_depth, parent_node.best_move()));
+                        TT_entry = TT.find(p);
+                        assert(TT_entry);
+                }
+        }
+        
         // TT move ordering
-        Move::Sequence move_order(moves.size());
-        identity_permutation(move_order);
+        Move::Order move_order(moves.size());
+        identity_permutation(move_order);                
         if (TT_entry && TT_entry->has_move()) {
                 const size_t TT_move = TT_entry->move() % moves.size();
                 std::swap(move_order[0], move_order[TT_move]);
@@ -182,6 +193,7 @@ int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int bet
                 }
         }
 
+        // we must have found a best move with a finite value
         assert(value > -SearchValue::infinity());
         assert(best_move != SearchNode::no_move());
 

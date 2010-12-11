@@ -12,6 +12,7 @@ public:
         // views
         const Move::Sequence& PV(void) const;
         Move::Sequence& PV(void);
+        size_t best_move(void) const;
         bool do_null_move(void) const;
 
         // modifiers

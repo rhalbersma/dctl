@@ -4,8 +4,8 @@
 #include "../Board/Transform.h"
 #include "../Position/Position.h"
 #include "../Utilities/Bit.h"
-#include "../Utilities/InlineOptions.h"
 #include "../Utilities/Shift.h"
+#include "../Utilities/InlineOptions.h"
 #include <cassert>
 
 template<typename Rules, typename Board>

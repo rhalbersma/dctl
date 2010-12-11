@@ -1,9 +1,9 @@
 #pragma once
 
-struct SearchSuite
+struct PerftTest
 {
 	static void International(void);
-	static void Killer(void);
+        static void Rectangular(void);
 	static void ChessBoardVariants(void);
 	static void ItalianRuleBook(void);
 };

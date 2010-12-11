@@ -8,7 +8,7 @@ class Divide
 {
 public:
         template<typename, typename Board>
-        static void root(Position<Board>&, size_t);
+        static NodeCount divide(const Position<Board>&, size_t);
 
 private:
         template<typename Board>

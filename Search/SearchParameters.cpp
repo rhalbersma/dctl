@@ -16,6 +16,11 @@ Move::Sequence& SearchParameters::PV(void)
         return d_PV;
 }
 
+size_t SearchParameters::best_move(void) const
+{
+        return *PV().begin();
+}
+
 bool SearchParameters::do_null_move(void) const
 {
         return d_null_move;

@@ -52,8 +52,8 @@ private:
         bool is_exact(void) const;
         bool invariant(void) const;
 
-        static const size_t TYPE_BITS = 3;
-        static const size_t DEPTH_BITS = 6;
+        static const size_t TYPE_BITS = 2;
+        static const size_t DEPTH_BITS = 7;
         static const size_t MOVE_BITS = 7;
 
         static const size_t TYPE_SHIFT = 0;

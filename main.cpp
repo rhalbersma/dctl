@@ -1,16 +1,16 @@
-#include "Search/SearchSuite.h"
-#include "Perft/PerftSuite.h"
+#include "Search/SearchTest.h"
+#include "Perft/PerftTest.h"
 #include "Utilities/IntegerTypes.h"
 #include <iostream>
 #include <iomanip>
 
 int main(void)
 {
-        //SearchSuite::International();
-        SearchSuite::Killer();
-        //PerftSuite::Rectangular();
-	//PerftSuite::ChessBoardVariants();
-	//PerftSuite::ItalianRuleBook();
+        PerftTest::International();
+        //SearchTest::Killer();
+        //PerftTest::Rectangular();
+	//PerftTest::ChessBoardVariants();
+	//PerftTest::ItalianRuleBook();
 
 	std::cout << "End of program." << std::endl;
         //for (;;);
@@ -19,7 +19,6 @@ int main(void)
 /*
 TODO:
 -implement missing square layouts
--implement small endgame tests (3 vs 1, 2 vs 1)
 -implement test harness for hash function
 -generate DeBruijn constants
 */

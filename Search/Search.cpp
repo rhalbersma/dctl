@@ -7,15 +7,15 @@
 Search::TranspositionTable Search::TT;
 SearchStatistics Search::d_statistics;
 
-void Search::report(int value, size_t nominal_depth, int alpha, int beta, double time_used)
+void Search::report(size_t nominal_ply, int alpha, int beta, int value, const StopWatch& timer)
 {
-        double speed = (nodes() / 1e6) / time_used;
+        double speed = (nodes() / 1e6) / timer.delta();
         double average_ply = static_cast<double>(sum_ply()) / nodes();
 
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(1);
         std::cout << "search";
         std::cout << "[";
-        std::cout << std::setw(2) << nominal_depth;
+        std::cout << std::setw(2) << nominal_ply;
         std::cout << "/";
         std::cout << std::setw(4) << average_ply;
         std::cout << "/";
@@ -27,11 +27,11 @@ void Search::report(int value, size_t nominal_depth, int alpha, int beta, double
         std::cout << "] = ";
 
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(2);
-        std::cout << std::setw(4) << SearchValue::print(value);
+        std::cout << std::setw( 4) << SearchValue::print(value);
         std::cout << ", ";
         std::cout << std::setw(12) << nodes();
         std::cout << " nodes, ";
-        std::cout << std::setw( 6) << time_used;
+        std::cout << std::setw( 6) << timer.total();
         std::cout << "s, ";
         std::cout << std::setw( 4) << speed;
         std::cout << " Mnps";

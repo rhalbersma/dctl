@@ -2,8 +2,8 @@
 #include "../Rules/CaptureTemplates.h"
 #include "../Position/Move.h"
 #include "../Utilities/Bit.h"
-#include "../Utilities/InlineOptions.h"
 #include "../Utilities/Shift.h"
+#include "../Utilities/InlineOptions.h"
 #include <cassert>
 
 template<typename Rules, typename Board> FORCE_INLINE
