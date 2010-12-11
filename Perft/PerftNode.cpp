@@ -6,7 +6,7 @@ PerftNode::PerftNode(void)
 {
 }
 
-PerftNode::PerftNode(uint64_t s_leafs, size_t s_depth)
+PerftNode::PerftNode(NodeCount s_leafs, size_t s_depth)
 :
         d_perft_node(0)
 {
@@ -19,7 +19,7 @@ bool PerftNode::is_depth_equal_to(size_t s_depth) const
         return depth() == s_depth; 
 }
 
-uint64_t PerftNode::leafs(void) const
+NodeCount PerftNode::leafs(void) const
 {
         return (d_perft_node & (LEAFS_MASK << LEAFS_SHIFT)) >> LEAFS_SHIFT;
 }

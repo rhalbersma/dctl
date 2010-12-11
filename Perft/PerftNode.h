@@ -6,10 +6,10 @@ class PerftNode
 public:
         // constructors
         PerftNode(void);
-        PerftNode(uint64_t, size_t);
+        PerftNode(NodeCount, size_t);
 
         // views
-        uint64_t leafs(void) const;             // perft count
+        NodeCount leafs(void) const;            // leaf node count
         size_t depth(void) const;               // remaining depth to search
 
         // predicate
@@ -17,15 +17,15 @@ public:
 
 private:
         // implementation
-        static const size_t LEAFS_BITS = 59;
-        static const size_t DEPTH_BITS =  5;
+        static const size_t LEAFS_BITS = 59;    // up to 5.764608e+17 leaf nodes without overflow
+        static const size_t DEPTH_BITS =  5;    // up to 32 ply depth
 
         static const size_t LEAFS_SHIFT = 0;
         static const size_t DEPTH_SHIFT = LEAFS_SHIFT + LEAFS_BITS;
 
-        static const uint64_t LEAFS_MASK = ((uint64_t(1) << LEAFS_BITS) - 1);
-        static const uint64_t DEPTH_MASK = ((uint64_t(1) << DEPTH_BITS) - 1);
+        static const NodeCount LEAFS_MASK = ((NodeCount(1) << LEAFS_BITS) - 1);
+        static const NodeCount DEPTH_MASK = ((NodeCount(1) << DEPTH_BITS) - 1);
 
         // representation
-        uint64_t d_perft_node;                  // depth and count
+        NodeCount d_perft_node;                 // leaf node count and depth
 };

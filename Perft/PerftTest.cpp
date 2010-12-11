@@ -1,4 +1,4 @@
-#include "PerftSuite.h"
+#include "PerftTest.h"
 #include "Perft.h"
 #include "Divide.h"
 #include "../Position/Position.h"
@@ -8,7 +8,7 @@
 #include "../IO/PositionIO.h"
 #include <iostream>
 
-void PerftSuite::International(void)
+void PerftTest::International(void)
 {
 	// The original perft thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2308
         Position<> i10;
@@ -17,59 +17,59 @@ void PerftSuite::International(void)
         std::cout << write_square_layout<InternationalBoard>()() << std::endl;
         std::cout << write_bit_layout<InternationalBoard>()() << std::endl;
 
-        Perft::root<InternationalRules>(i10, 11);
-        Perft::root<InternationalRules>(random178, 9);
-        Perft::root<InternationalRules>(Woldouby, 15);
+        Perft::perft<InternationalRules>(i10, 11);
+        Perft::perft<InternationalRules>(random178, 9);
+        Perft::perft<InternationalRules>(Woldouby, 15);
 }
 
-void PerftSuite::Rectangular(void)
+void PerftTest::Rectangular(void)
 {
         Position<SpantsiretiBoard> iS;
         std::cout << write_square_layout<SpantsiretiBoard>()() << std::endl;
         std::cout << write_bit_layout<SpantsiretiBoard>()() << std::endl;
-        Perft::root<InternationalRules>(iS, 9);
+        Perft::perft<InternationalRules>(iS, 9);
 
         Position<Ktar11Board> iK11;
         std::cout << write_square_layout<Ktar11Board>()() << std::endl;
         std::cout << write_bit_layout<Ktar11Board>()() << std::endl;
-        Perft::root<InternationalRules>(iK11, 9);
+        Perft::perft<InternationalRules>(iK11, 9);
                 
         Position<Ktar12Board> iK12;
         std::cout << write_square_layout<Ktar12Board>()() << std::endl;
         std::cout << write_bit_layout<Ktar12Board>()() << std::endl;
-        Perft::root<InternationalRules>(iK12, 9);
+        Perft::perft<InternationalRules>(iK12, 9);
 }
 
-void PerftSuite::ChessBoardVariants(void)
+void PerftTest::ChessBoardVariants(void)
 {
         // The alternative game rules thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2822
         Position<ChessBoard> i8;
         std::cout << write_square_layout<ChessBoard>()() << std::endl;
         
-        Perft::root<BrazilianRules>(i8, 13);    // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
-        Perft::root<PoolRules>(i8, 13);         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-57.html
-        Perft::root<RussianRules>(i8, 14);      // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
-        Perft::root<EnglishRules>(i8, 14);      // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
-        Perft::root<CzechRules>(i8, 13);
+        Perft::perft<BrazilianRules>(i8, 13);    // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
+        Perft::perft<PoolRules>(i8, 13);         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-57.html
+        Perft::perft<RussianRules>(i8, 14);      // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
+        Perft::perft<EnglishRules>(i8, 14);      // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
+        Perft::perft<CzechRules>(i8, 13);
 
         Position<RomanBoard> r8;
         std::cout << write_square_layout<RomanBoard>()() << std::endl;
 
-        Perft::root<SpanishRules>(r8, 13);
-        Perft::root<ItalianRules>(r8, 13);
+        Perft::perft<SpanishRules>(r8, 13);
+        Perft::perft<ItalianRules>(r8, 13);
 
         // Addional Italian test positions from email conversation with Ed Gilbert
         Position<RomanBoard> ITA_Ed_Gilbert_2 = read_position_string<FEN, RomanBoard>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
         Position<RomanBoard> ITA_Ed_Gilbert_3 = read_position_string<FEN, RomanBoard>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
-        Perft::root<ItalianRules>(ITA_Ed_Gilbert_2, 16);
-        Perft::root<ItalianRules>(ITA_Ed_Gilbert_3, 12);
+        Perft::perft<ItalianRules>(ITA_Ed_Gilbert_2, 16);
+        Perft::perft<ItalianRules>(ITA_Ed_Gilbert_3, 12);
 
         Position<ThaiBoard> t8;
-        Perft::root<ThaiRules>(t8, 11);		// Thai initial position with 2 rows of men
-        Perft::root<ThaiRules>(i8, 13);		// Usual initial position with 3 rows of men
+        Perft::perft<ThaiRules>(t8, 11);		// Thai initial position with 2 rows of men
+        Perft::perft<ThaiRules>(i8, 13);		// Usual initial position with 3 rows of men
 }
 
-void PerftSuite::ItalianRuleBook(void)
+void PerftTest::ItalianRuleBook(void)
 {
         // test positions from the official Italian rules
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
@@ -95,6 +95,6 @@ void PerftSuite::ItalianRuleBook(void)
         std::cout << write_position_layout<FEN>()(ITA_initial) << std::endl;
         for (size_t i = 0; i < 9; ++i) {
                 ITA_test = read_position_string<FEN, RomanBoard>()(ITA_rules[i]);
-                Divide::root<ItalianRules>(ITA_test, 1);
+                Divide::divide<ItalianRules>(ITA_test, 1);
         }
 }

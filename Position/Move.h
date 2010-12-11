@@ -2,15 +2,17 @@
 #include "Reversible/Pieces.h"
 #include "../Containers/Generic/VectorBucket.h"
 #include "../Utilities/IntegerTypes.h"
+#include "../Utilities/Ply.h"
 
 class Move
 {
 public:
         // typedefs
-        typedef VectorBucket<Pieces, 128> List;
-        typedef VectorBucket<size_t, 128> Order;
-        typedef VectorBucket<size_t, 128> Sequence;
+        typedef VectorBucket<Pieces, MOVE_MAX> List;
+        typedef VectorBucket<size_t, MOVE_MAX> Order;
+        typedef VectorBucket<size_t, PLY_MAX> Sequence;
 
+        // predicate
         static bool unique_back(const List&);
 
         // modifiers

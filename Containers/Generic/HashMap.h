@@ -61,6 +61,7 @@ private:
 
         // representation
         EntryBucket* d_hash_map;
+        //TODO: std::vector<EntryBucket> d_hash_map;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

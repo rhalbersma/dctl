@@ -9,12 +9,13 @@
 
 template<typename> class Position;
 class SearchParameters;
+class StopWatch;
 
 class Search: private SearchValue
 {
 public:
         // typdefs
-        enum NodeType { PV, ZW };
+        enum NodeType { ZW, PV };
 
         template<typename, typename B> static int root(const Position<B>&, size_t);
 
@@ -30,7 +31,7 @@ private:
         template<size_t, typename, typename B> static int quiescence(Position<B>&, size_t, int, int, int, SearchParameters&);
 
         template<typename B> static void announce(const Position<B>&, size_t);
-        static void report(int, size_t, int, int, double);
+        static void report(size_t, int, int, int, const StopWatch&);
 
         template<typename, typename B> static void insert_PV(const SearchParameters&, const Position<B>&, int);
         template<typename, typename B> static void print_PV(const SearchParameters&, const Position<B>&, bool = false);

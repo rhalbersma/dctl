@@ -5,19 +5,17 @@
 Perft::TranspositionTable Perft::TT;
 SearchStatistics Perft::d_statistics;
 
-void Perft::report(NodeCount leafs, size_t nominal_depth, double time_used, bool print_average_ply)
+void Perft::report(size_t nominal_ply, NodeCount leafs, const StopWatch& timer)
 {
-        double speed = (nodes() / 1e6) / time_used;
+        double speed = (nodes() / 1e6) / timer.delta();
         double average_ply = static_cast<double>(sum_ply()) / nodes();
 
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(1);
         std::cout << "perft";
         std::cout << "[";
-        std::cout << std::setw(2) << nominal_depth;
-        if (print_average_ply) {
-                std::cout << "/";
-                std::cout << std::setw(4) << average_ply;
-        }
+        std::cout << std::setw(2) << nominal_ply;
+        std::cout << "/";                
+        std::cout << std::setw(4) << average_ply;
         std::cout << "] = ";
 
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(2);
@@ -25,7 +23,7 @@ void Perft::report(NodeCount leafs, size_t nominal_depth, double time_used, bool
         std::cout << " leafs, ";
         std::cout << std::setw(11) << nodes();
         std::cout << " nodes, ";
-        std::cout << std::setw( 6) << time_used;
+        std::cout << std::setw( 6) << timer.delta();
         std::cout << "s, ";
         std::cout << std::setw( 5) << speed;
         std::cout << " Mnps";

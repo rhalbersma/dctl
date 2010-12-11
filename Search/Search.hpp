@@ -4,7 +4,7 @@
 #include "../Evaluation/Evaluate.h"
 #include "../IO/PositionIO.h"
 #include "../IO/MoveIO.h"
-#include <ctime>
+#include "../Utilities/StopWatch.h"
 #include <iostream>
 #include <iomanip>
 
@@ -12,28 +12,26 @@
 template<typename Rules, typename Board>
 int Search::root(const Position<Board>& pp, size_t nominal_depth)
 {
-        double start_time, time_used;
+        Position<Board> p(pp);
         int value = -SearchValue::infinity();                
         int alpha, beta;
         SearchParameters root_node;
+        StopWatch timer;
 
-        Position<Board> p(pp);
-
+        timer.start();
         announce(p, nominal_depth);
         for (size_t depth = 1; depth <= nominal_depth; depth += ROOT_ID_INCREMENT) {
-                start_time = clock();
                 reset_statistics();
                 alpha = -SearchValue::infinity();
                 beta = SearchValue::infinity();
                 value = search<PV, Rules>(p, 0, depth, alpha, beta, root_node);
-                time_used = (clock() + 1 - start_time) / CLOCKS_PER_SEC;
-                report(value, depth, alpha, beta, time_used);
+                timer.split();
+                report(depth, alpha, beta, value, timer);
                 print_PV<Rules>(root_node, p, true);
                 insert_PV<Rules>(root_node, p, value);
         }
 
         assert(p == pp);
-
         return value;
 }
 
