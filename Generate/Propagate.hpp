@@ -32,11 +32,11 @@ Propagate<Rules, Board>::Propagate(const Position<Board>& p, bool Color)
         init_promotion();
 }
 
-// tag dispatching based on promotion rule
+// tag dispatching based on promotion condition
 template<typename Rules, typename Board>
 void Propagate<Rules, Board>::init_promotion(void)
 {
-        init_promotion(Int2Type<is_PromotionEnPassant<Rules>::VALUE>());
+        init_promotion(Int2Type<PromotionCondition<Rules>::VALUE>());
 }
 
 // partial specialization for men that promote en-passant
@@ -180,7 +180,7 @@ void Propagate<Rules, Board>::finish(BitBoard jump_sq)
 template<typename Rules, typename Board> FORCE_INLINE
 void Propagate<Rules, Board>::make(BitBoard target_sq)
 {
-        make(target_sq, Int2Type<is_IntegralCaptureRemoval<Rules>::VALUE>());
+        make(target_sq, Int2Type<CaptureRemoval<Rules>::VALUE>());
 }
 
 // partial specialization for piece by piece removal during a capture sequence
@@ -203,7 +203,7 @@ void Propagate<Rules, Board>::make(BitBoard target_sq, Int2Type<REMOVE_N>)
 template<typename Rules, typename Board> FORCE_INLINE
 void Propagate<Rules, Board>::undo(BitBoard target_sq)
 {
-        undo(target_sq, Int2Type<is_IntegralCaptureRemoval<Rules>::VALUE>());
+        undo(target_sq, Int2Type<CaptureRemoval<Rules>::VALUE>());
 }
 
 // partial specialization for piece by piece removal during a capture sequence
@@ -253,7 +253,7 @@ template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
 void Propagate<Rules, Board>::add_man_capture(BitBoard dest_sq, Int2Type<false>)
 {
         const BitBoard captured_pieces = captured_targets();
-        Move::push_back<Color>(d_move_list, d_from_sq ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_kings(captured_pieces));
+        Move::push_back<Color, Rules>(d_move_list, d_from_sq ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_kings(captured_pieces));
 }
 
 // partial specialization for man captures that can be ambiguous
@@ -262,8 +262,8 @@ void Propagate<Rules, Board>::add_man_capture(BitBoard dest_sq, Int2Type<true>)
 {
         const BitBoard captured_pieces = captured_targets();
         const bool ambiguous = !d_move_list.empty() && large<Rules>()(d_current_capture, captured_pieces);
-        Move::push_back<Color>(d_move_list, d_from_sq ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_kings(captured_pieces));
-        if (ambiguous && !Move::unique_back(d_move_list))
+        Move::push_back<Color, Rules>(d_move_list, d_from_sq ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_kings(captured_pieces));
+        if (ambiguous && Move::non_unique_back<Rules>(d_move_list))
                 d_move_list.pop_back();
 }
 
@@ -308,12 +308,12 @@ void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<HALT_N
         } while (dest_sq & path());
 }
 
-// tag dispatching based on promotion rule
+// tag dispatching based on promotion condition
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
 void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, bool ambiguous)
 {
-        add_king_capture<Color>(dest_sq, captured_pieces, captured_kings, Int2Type<is_PromotionEnPassant<Rules>::VALUE>());
-        if (ambiguous && !Move::unique_back(d_move_list))
+        add_king_capture<Color>(dest_sq, captured_pieces, captured_kings, Int2Type<PromotionCondition<Rules>::VALUE>());
+        if (ambiguous && Move::non_unique_back<Rules>(d_move_list))
                 d_move_list.pop_back();
 }
 
@@ -321,7 +321,7 @@ void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captur
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
 void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Int2Type<PROMOTE_BR>)
 {
-        Move::push_back<Color>(d_move_list, d_from_sq ^ dest_sq, captured_pieces, captured_kings);
+        Move::push_back<Color, Rules>(d_move_list, d_from_sq ^ dest_sq, captured_pieces, captured_kings);
 }
 
 // partial specialization for men that promote en-passant
@@ -329,7 +329,7 @@ template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
 void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Int2Type<PROMOTE_EP>)
 {
         if (!is_promotion())
-                Move::push_back<Color>(d_move_list, d_from_sq ^ dest_sq,          captured_pieces, captured_kings);
+                Move::push_back<Color, Rules>(d_move_list, d_from_sq ^ dest_sq,          captured_pieces, captured_kings);
         else
-                Move::push_back<Color>(d_move_list, d_from_sq ^ dest_sq, dest_sq, captured_pieces, captured_kings);
+                Move::push_back<Color, Rules>(d_move_list, d_from_sq ^ dest_sq, dest_sq, captured_pieces, captured_kings);
 }

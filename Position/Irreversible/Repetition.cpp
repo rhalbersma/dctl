@@ -3,17 +3,17 @@
 #include <iterator>
 
 // C++ STL does not provide (reverse) stride iterators, so we have a hand-crafted loop here
-bool Repetition::unique_back(size_t max_cycle) const
+bool Repetition::non_unique_back(size_t max_cycle) const
 {
         if (max_cycle < MIN_CYCLE)
-                return true;
+                return false;
 
         const_reverse_iterator ri_max = std::min(rbegin() + max_cycle, rend());
         for (const_reverse_iterator ri = rbegin() + MIN_CYCLE; ri <= ri_max; ri += STRIDE) {
                 if (*ri == hash_index())
-                        return false;
+                        return true;
         }
-        return true;
+        return false;
 }
 
 Repetition::const_reverse_iterator Repetition::rbegin(void) const

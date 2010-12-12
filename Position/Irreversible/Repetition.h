@@ -10,7 +10,7 @@ public:
         Repetition(void) {};
 
         // predicates
-        bool unique_back(size_t) const;
+        bool non_unique_back(size_t) const;
 
         // element access
         HashIndex& hash_index(void);

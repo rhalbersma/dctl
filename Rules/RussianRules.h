@@ -4,4 +4,4 @@
 // http://www.shashist.ru/kodeks/kodeks2004.doc
 struct RussianRules {};
 
-template<> struct is_PromotionEnPassant<RussianRules>           { enum { VALUE = PROMOTE_EP }; };
+template<> struct PromotionCondition<RussianRules>           { enum { VALUE = PROMOTE_EP }; };

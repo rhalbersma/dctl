@@ -1,5 +1,6 @@
 #pragma once
 #include "../Board/Board.h"
+#include "../Rules/Rules.h"
 #include "Reversible/Pieces.h"
 #include "Reversible/Side.h"
 #include "Irreversible/SameKingMoves.h"
@@ -12,9 +13,6 @@ template<typename Board = DefaultBoard>
 class Position: private Board
 {
 public:
-        // typedefs
-        typedef uint64_t Index;
-
         // constructors
         Position(void);                                         // the initial position
         Position(BitBoard, BitBoard, BitBoard, bool);           // initialize with a set of bitboards and a color
@@ -52,6 +50,7 @@ public:
         void undo(void);                                        // undo a null move
 
 private:
+        // implentation
         bool is_repetition_draw(void) const;
         template<typename> bool is_non_conversion_draw(void) const;
         template<typename> bool is_non_conversion_draw(Int2Type<true>) const;
@@ -83,8 +82,16 @@ private:
         void undo_reversible(const Pieces&);
 
         // pre-conditions for modifiers
-        bool is_pseudo_legal_make(const Pieces&) const;
-        bool is_pseudo_legal_undo(const Pieces&) const;
+        template<typename> bool is_pseudo_legal_make(const Pieces&) const;
+        template<typename> bool is_pseudo_legal_undo(const Pieces&) const;
+
+        template<typename> bool make_sequential_capture_removal(const Pieces&) const;
+        bool make_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_1>) const;
+        bool make_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_N>) const;
+                
+        template<typename> bool undo_sequential_capture_removal(const Pieces&) const;
+        bool undo_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_1>) const;
+        bool undo_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_N>) const;
 
         // post-conditions for the constructors and modifiers
         bool pieces_invariant(void) const;                      // logical consistency of the representation
@@ -101,3 +108,4 @@ private:
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Position.hpp"
+#include "MakeUndo.hpp"
