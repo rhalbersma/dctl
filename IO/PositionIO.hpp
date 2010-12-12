@@ -12,10 +12,14 @@
 
 template<typename Board, typename Token>
 Position<Board> read_position_string<FEN, Board, Token>::operator()(const std::string& s)
-{
-	BitBoard p_pieces[2] = {0, 0};
+{      
+        BitBoard p_pieces[2] = {0, 0};
 	BitBoard p_kings = 0;
 	bool p_side = Side::BLACK;
+
+        // do not attempt to parse empty strings
+        if (s.empty())
+                return Position<Board>(p_pieces[Side::BLACK], p_pieces[Side::WHITE], p_kings, p_side);
 
         bool setup_kings = false;
         bool setup_color = p_side;

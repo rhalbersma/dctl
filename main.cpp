@@ -6,18 +6,19 @@
 
 int main(void)
 {
-        PerftTest::International();
+        //PerftTest::International();
         //SearchTest::Killer();
         //PerftTest::Rectangular();
 	//PerftTest::ChessBoardVariants();
-	//PerftTest::ItalianRuleBook();
+	PerftTest::ItalianRuleBook();
 
 	std::cout << "End of program." << std::endl;
-        //for (;;);
+        for (;;);
 }
 
 /*
 TODO:
+-implement algebraic notation
 -implement missing square layouts
 -implement test harness for hash function
 -generate DeBruijn constants

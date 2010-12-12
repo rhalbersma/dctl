@@ -31,11 +31,11 @@ template<typename> struct is_MenCaptureKings                    { enum { VALUE =
 
 // promotion en-passant
 enum {PROMOTE_BR, PROMOTE_EP};
-template<typename> struct is_PromotionEnPassant                 { enum { VALUE = PROMOTE_BR }; };
+template<typename> struct PromotionCondition                    { enum { VALUE = PROMOTE_BR }; };
 
 // capture removal
 enum {REMOVE_1, REMOVE_N};
-template<typename> struct is_IntegralCaptureRemoval             { enum { VALUE = REMOVE_N }; };
+template<typename> struct CaptureRemoval                        { enum { VALUE = REMOVE_N }; };
 
 // capture direction reversal
 template<typename> struct is_DirectionReversal                  { enum { VALUE = false }; };
@@ -47,7 +47,7 @@ template<typename Rules>
 struct is_AmbiguousManCapture
 {
         enum { 
-                VALUE = is_ManCaptureBackwards<Rules>::VALUE || is_PromotionEnPassant<Rules>::VALUE 
+                VALUE = is_ManCaptureBackwards<Rules>::VALUE || PromotionCondition<Rules>::VALUE 
         };
 };
 
@@ -89,3 +89,9 @@ template<typename> struct MaxNonConversionMoves                 { enum { VALUE =
 // other drawing rules
 template<typename> struct num_Max3v1                            { enum { VALUE = 32 }; };       // (FMJD rule 6.3)
 template<typename> struct num_Max2v1                            { enum { VALUE = 10 }; };       // (FMJD rule 6.4)
+
+//+----------------------------------------------------------------------------+
+//|      Implementation of move generation                                     |
+//+----------------------------------------------------------------------------+
+
+template<typename> struct is_CheckCaptureUniqueness             { enum { VALUE = true }; };

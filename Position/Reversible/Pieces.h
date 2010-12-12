@@ -16,6 +16,9 @@ public:
         bool operator==(const Pieces&) const;
         bool operator!=(const Pieces&) const;
 
+        // post-conditions for constructors and modifiers
+        bool invariant(void) const;                    // logical consistency of the representation
+
         // views
         BitBoard men(bool) const;                       // black or white men
         BitBoard kings(bool) const;                     // black or white kings
@@ -32,9 +35,6 @@ public:
         Pieces& toggle(const Pieces&);                  // toggle the set bits of another piece set
 
 private:
-        // post-conditions for constructors and modifiers
-        bool invariant(void) const;                    // logical consistency of the representation
-
         // representation
         BitBoard d_pieces[2];                           // black and white pieces
         BitBoard d_kings;                               // kings

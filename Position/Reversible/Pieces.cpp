@@ -7,12 +7,14 @@
 Pieces::Pieces(BitBoard)
 {
         init<Side::BLACK>(0, 0, 0);
+        assert(invariant());
 }
 
 // initialize with a set of bitboards
 Pieces::Pieces(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings)
 {
         init<Side::BLACK>(black_pieces, white_pieces, kings);
+        assert(invariant());
 }
 
 // overloaded equality operator

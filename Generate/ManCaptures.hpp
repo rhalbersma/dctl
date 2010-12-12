@@ -113,11 +113,11 @@ void ManCaptures::generate_next(BitBoard jump_sq, Propagate<Rules, Board>& captu
 	}
 }
 
-// tag dispatching based on promotion rule
+// tag dispatching based on promotion condition
 template<bool Color, size_t Index, typename Rules, typename Board> FORCE_INLINE
 bool ManCaptures::scan_next(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        return scan_next<Color, Index>(jump_sq, capture, Int2Type<is_PromotionEnPassant<Rules>::VALUE>());
+        return scan_next<Color, Index>(jump_sq, capture, Int2Type<PromotionCondition<Rules>::VALUE>());
 }
 
 // partial specialization for men that promote on the back row
