@@ -1,11 +1,12 @@
 #pragma once
 #include "../../Utilities/IntegerTypes.h"
+#include <cassert>
 
 class Pieces
 {
 public:
         // typedefs 
-        enum Composition {NONE, ONLY_MEN, ONLY_KINGS, MEN_AND_KINGS};
+        enum Composition {NONE, PAWN, KING, BOTH};
 
         // constructors
         Pieces(void) {};

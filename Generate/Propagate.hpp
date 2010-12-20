@@ -20,16 +20,8 @@ Propagate<Rules, Board>::Propagate(const Position<Board>& p)
 }
 
 template<typename Rules, typename Board> FORCE_INLINE
-Propagate<Rules, Board>::Propagate(const Position<Board>& p, bool Color)
-:
-	d_initial_targets(p.pieces(!Color)),
-	d_remaining_targets(d_initial_targets),
-	d_not_occupied(p.not_occupied()),
-	d_opponent_kings(p.kings(!Color))
+Propagate<Rules, Board>::Propagate(const Position<Board>& p, const Pieces& m)
 {
-        init<Rules>()(d_current_capture);
-        init<Rules>()(d_best_capture);
-        init_promotion();
 }
 
 // tag dispatching based on promotion condition
@@ -37,6 +29,12 @@ template<typename Rules, typename Board>
 void Propagate<Rules, Board>::init_promotion(void)
 {
         init_promotion(Int2Type<PromotionCondition<Rules>::VALUE>());
+}
+
+// partial specialization for men that promote on the back row
+template<typename Rules, typename Board>
+void Propagate<Rules, Board>::init_promotion(Int2Type<PROMOTE_BR>)
+{
 }
 
 // partial specialization for men that promote en-passant

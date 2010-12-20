@@ -15,7 +15,7 @@ class Propagate: private Board
 public:
         // constructors
         explicit Propagate(const Position<Board>&);
-        Propagate(const Position<Board>&, bool);
+        Propagate(const Position<Board>&, const Pieces&);
 
         // views
         BitBoard path(void) const;
@@ -62,8 +62,8 @@ private:
         template<bool> BitBoard promotions(BitBoard) const;
 
         void init_promotion(void);
-        void init_promotion(Int2Type<PROMOTE_BR>) {};                   // men that promote on the back row
-        void init_promotion(Int2Type<PROMOTE_EP>);
+        void init_promotion(Int2Type<PROMOTE_BR>);                      // men that promote on the back row
+        void init_promotion(Int2Type<PROMOTE_EP>);                      // men that promote en-passant
 
         void make(BitBoard, Int2Type<REMOVE_1>);
         void make(BitBoard, Int2Type<REMOVE_N>);

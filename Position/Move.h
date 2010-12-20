@@ -13,6 +13,7 @@ public:
         typedef VectorBucket<Pieces, MOVE_MAX> List;
         typedef VectorBucket<size_t, MOVE_MAX> Order;
         typedef VectorBucket<size_t, PLY_MAX> Sequence;
+        typedef enum Type { JUMPS, MOVES }; 
 
         // predicate
         template<typename> static bool non_unique_back(const List&);
