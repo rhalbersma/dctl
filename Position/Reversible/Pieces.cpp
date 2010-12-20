@@ -72,7 +72,7 @@ BitBoard Pieces::occupied(void) const
 // composition of black or white pieces
 Pieces::Composition Pieces::composition(bool color) const
 {
-        return static_cast<Composition>((!!kings(color) << 1) + !!men(color));
+        return static_cast<Composition>(((kings(color) != 0) << 1) + (men(color) != 0));
 }
 
 // toggle the set bits of another piece set

@@ -10,7 +10,7 @@
 #include "../Utilities/TemplateTricks.h"
 
 template<typename Board = DefaultBoard>
-class Position: private Board
+class Position
 {
 public:
         // constructors
@@ -103,7 +103,7 @@ private:
 
         SameKingMoves d_same_king_moves[2];
         NonConversion d_non_conversion;
-        Repetition d_repetition;
+        Repetition d_repetition; 
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

@@ -171,7 +171,7 @@ BitBoard Position<Board>::not_occupied(void) const
 template<typename Board>
 Pieces::Composition Position<Board>::composition(bool color) const
 {
-        return static_cast<Pieces::Composition>((!!kings(color) << 1) + !!men(color));
+        return d_pieces.composition(color);
 }
 
 // the side to move
@@ -182,15 +182,15 @@ bool Position<Board>::to_move(void) const
 }
 
 template<typename Board>
-BitBoard Position<Board>::same_king(bool to_move) const
+BitBoard Position<Board>::same_king(bool color) const
 {
-        return d_same_king_moves[to_move].king();
+        return d_same_king_moves[color].king();
 }
 
 template<typename Board>
-PlyCount Position<Board>::same_moves(bool to_move) const
+PlyCount Position<Board>::same_moves(bool color) const
 {
-        return d_same_king_moves[to_move].moves();
+        return d_same_king_moves[color].moves();
 }
 
 template<typename Board>
