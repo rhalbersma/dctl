@@ -90,11 +90,17 @@ template<size_t Node, typename Rules, typename Board>
 int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int beta, SearchParameters& parent_node)
 {
         update_statistics(ply);
-        /*
+        
+        assert(p.non_conversion_moves() <= ply);
+
+        ///*
         // check for a legal draw
-        if (p.is_draw<Rules>())
+        if (p.is_draw<Rules>()) {
+                assert(ply >= 5);
                 return SearchValue::draw();
-        */
+        }
+        //*/
+
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0)
                 return !Generate::detect<Rules>(p)? SearchValue::loss(0) : Evaluate::evaluate(p);
@@ -134,7 +140,8 @@ int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int bet
                 TT.insert(p, SearchNode(loss_score, loss_type, depth, SearchNode::no_move()));
                 return loss_score;
         }
-        
+
+        /*
         // internal iterative deepening
         if (!(TT_entry && TT_entry->has_move())) {
                 const int IID_depth = is_PV(Node)? depth - 2 : depth / 2;
@@ -145,7 +152,8 @@ int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int bet
                         assert(TT_entry);
                 }
         }
-        
+        */
+
         // TT move ordering
         Move::Order move_order(moves.size());
         identity_permutation(move_order);                

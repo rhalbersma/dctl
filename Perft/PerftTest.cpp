@@ -8,21 +8,23 @@
 #include "../IO/PositionIO.h"
 #include <iostream>
 
+// The original perft thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 void PerftTest::International(void)
 {
-	// The original perft thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2308
         std::cout << write_square_layout<InternationalBoard>()() << std::endl;
         std::cout << write_bit_layout<InternationalBoard>()() << std::endl;
 
         Position<> i10;
-        Position<> random178(read_position_string<FEN>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
-        Position<> Woldouby(read_position_string<FEN>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
-
         Perft::perft<InternationalRules>(i10, 11);
+
+        Position<> random178(read_position_string<FEN>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
         Perft::perft<InternationalRules>(random178, 9);
+
+        Position<> Woldouby(read_position_string<FEN>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
         Perft::perft<InternationalRules>(Woldouby, 15);
 }
 
+// The rectangular board thread on the FMJD forum: http://laatste.info/bb3/viewtopic.php?f=53&t=3014
 void PerftTest::Rectangular(void)
 {
         std::cout << write_square_layout<SpantsiretiBoard>()() << std::endl;
@@ -44,9 +46,9 @@ void PerftTest::Rectangular(void)
         Perft::perft<InternationalRules>(iK12, 9);
 }
 
+// The alternative game rules thread on the FMJD forum: http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 void PerftTest::ChessBoardVariants(void)
 {
-        // The alternative game rules thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2822
         Position<ChessBoard> i8;
         std::cout << write_square_layout<ChessBoard>()() << std::endl;
         
@@ -73,10 +75,10 @@ void PerftTest::ChessBoardVariants(void)
         Perft::perft<ThaiRules>(i8, 13);		// Usual initial position with 3 rows of men
 }
 
+
+// Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 void PerftTest::ItalianRuleBook(void)
 {
-        // test positions from the official Italian rules
-        // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         Position<RomanBoard> ITA_empty = read_position_string<FEN, RomanBoard>()("");	// Art. 2.1
         typedef RomanBoard ITA_notation;                                      	        // Art. 2.4
         Position<RomanBoard> ITA_initial;						// Art. 2.6

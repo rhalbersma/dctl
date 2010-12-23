@@ -10,6 +10,13 @@
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 void SearchTest::International(void)
 {
+        //Position<> Taille1 = read_position_string<FEN>()("B:W13,18,27,30,K23,34:B4,K11,16");
+        //Search::root<InternationalRules>(Taille1, 7);
+
+        Position<> Taille2 = read_position_string<FEN>()("B:W13,18,27,30,K32,34:B4,K11,16");
+        Search::root<InternationalRules>(Taille2, 7);
+
+        /*
         typedef std::pair<std::string, size_t> DB_unittest;
         int value;       
         
@@ -86,6 +93,7 @@ void SearchTest::International(void)
                 value = Search::root<InternationalRules>(read_position_string<FEN>()(DB_win31[i].first), DB_win31[i].second);
                 assert(value == SearchValue::win(DB_win31[i].second));
         }
+        */
 }
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        

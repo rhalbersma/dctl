@@ -94,12 +94,12 @@ void Search::print_PV(const SearchParameters& node, const Position<Board>& pp, b
                         std::cout << "  ";
                 //*/
                 non_conversion = p.non_conversion_moves();
-                /*
+                ///*
                 if (non_conversion)
                         std::cout << "#" << std::setw(1) << non_conversion;
                 else
                         std::cout << "  ";
-                */
+                //*/
                 TT_entry = TT.find(p);
 
                 eval_score = Evaluate::evaluate(p);

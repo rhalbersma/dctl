@@ -5,10 +5,19 @@
 #include <iomanip>
 
 #include "CheckerBoard/CheckerBoardAPI.h"
+#include "DamExchange/DamExchangeAPI.h"
+#include "Utilities/DeBruijn.h"
 
 int main(void)
 {
-        PerftTest::International();
+        DeBruijn<1>::generate_prefix_table();
+        DeBruijn<2>::generate_prefix_table();
+        DeBruijn<3>::generate_prefix_table();
+        DeBruijn<4>::generate_prefix_table();
+        DeBruijn<5>::generate_prefix_table();
+        DeBruijn<6>::generate_prefix_table();
+
+        //SearchTest::International();
         //SearchTest::Killer();
         //PerftTest::Rectangular();
 	//PerftTest::ChessBoardVariants();
@@ -23,5 +32,4 @@ TODO:
 -implement algebraic notation
 -implement missing square layouts
 -implement test harness for hash function
--generate DeBruijn constants
 */

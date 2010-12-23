@@ -81,7 +81,7 @@ size_t Bit::count(T b)
         return count_Kernighan(b);
 }
 
-template<bool Sign, typename T> FORCE_INLINE
+template<bool Sign, typename T>
 T Bit::flood_fill(T generator, T propagator, size_t dir)
 {
         return dumb_fill<Sign>(generator, propagator, dir);
@@ -92,12 +92,14 @@ T Bit::flood_fill(T generator, T propagator, size_t dir)
 //|      http://supertech.csail.mit.edu/papers/debruijn.pdf                    |
 //+----------------------------------------------------------------------------+
 
-template<typename T>
+template<typename T> FORCE_INLINE
 size_t Bit::index_DeBruijn(T b)
 {
-        b *= DeBruijn<T>::SEQUENCE;
-        b >>= DeBruijn<T>::SHIFT;
-        return DeBruijn<T>::TABLE[b];
+        const size_t N = Log2SizeOf<T>::VALUE;
+
+        b *= DeBruijn<N>::FORD_SEQUENCE;
+        b >>= DeBruijn<N>::SHIFT;
+        return DeBruijn<N>::PREFIX_TABLE[b];
 }
 
 //+----------------------------------------------------------------------------+
@@ -105,7 +107,7 @@ size_t Bit::index_DeBruijn(T b)
 //|      https://chessprogramming.wikispaces.com/Population+Count              |
 //+----------------------------------------------------------------------------+
 
-template<typename T>
+template<typename T> FORCE_INLINE
 size_t Bit::count_Kernighan(T b)
 {
         size_t count = 0;
