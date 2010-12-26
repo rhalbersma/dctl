@@ -20,7 +20,7 @@ public:
         virtual bool detect_promotions(const Position<Board>&) const = 0;   
 };
 
-template<Pieces::Composition, bool Color, typename Rules, typename Board> 
+template<bool Color, Pieces::Composition, typename Rules, typename Board> 
 class GeneratePiece: public AbstractGeneratePiece<Color, Rules, Board>
 {
 public:

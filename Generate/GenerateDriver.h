@@ -6,7 +6,7 @@
 template<typename> class Position;
 template<typename, typename> class Propagate;
 
-template<Pieces::Composition, Move::Type, bool, typename Rules, typename Board>
+template<bool, Pieces::Composition, Move::Type, typename Rules, typename Board>
 class GenerateDriver
 {
 public:

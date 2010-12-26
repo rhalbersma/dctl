@@ -8,7 +8,7 @@ template<typename> class Position;
 template<typename, typename> class Propagate;
 
 template<bool Color, typename Rules, typename Board> 
-class GenerateDriver<Pieces::KING, Move::MOVES, Color, Rules, Board>
+class GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>
 {
 public:
         static void generate(const Position<Board>&, Propagate<Rules, Board>&);
