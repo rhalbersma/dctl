@@ -3,7 +3,7 @@ void Position<Board>::make(const Pieces& m)
 {
         assert(is_pseudo_legal_make<Rules>(m));
 
-        make_irreversible<Rules>(m);
+        //make_irreversible<Rules>(m);
         make_reversible(m);
 
         assert(pieces_invariant());
@@ -111,10 +111,10 @@ template<typename Board> FORCE_INLINE
 void Position<Board>::make_reversible(const Pieces& m)
 {
         d_pieces.toggle(m);
-        hash_index() ^= ZobristHash<Pieces, HashIndex>()(m);
+        //hash_index() ^= ZobristHash<Pieces, HashIndex>()(m);
 
         d_side.pass();
-        hash_index() ^= ZobristHash<Side, HashIndex>()();
+        //hash_index() ^= ZobristHash<Side, HashIndex>()();
 }
 
 // tag dispatching based on consecutive king moves restrictions
@@ -124,7 +124,7 @@ void Position<Board>::undo(const Pieces& m)
         assert(is_pseudo_legal_undo<Rules>(m));
 
         undo_reversible(m);
-        undo_irreversible<Rules>();
+        //undo_irreversible<Rules>();
 }
 
 // tag dispatching based on consecutive king moves restrictions

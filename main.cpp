@@ -10,14 +10,16 @@
 
 int main(void)
 {
+        /*
         DeBruijn<1>::generate_prefix_table();
         DeBruijn<2>::generate_prefix_table();
         DeBruijn<3>::generate_prefix_table();
         DeBruijn<4>::generate_prefix_table();
         DeBruijn<5>::generate_prefix_table();
         DeBruijn<6>::generate_prefix_table();
+        */
 
-        //SearchTest::International();
+        PerftTest::International();
         //SearchTest::Killer();
         //PerftTest::Rectangular();
 	//PerftTest::ChessBoardVariants();
