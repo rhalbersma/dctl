@@ -5,12 +5,16 @@
 class DXP_Chat: public DXP_AbstractMessage
 {
 public:
+        // constructors
         DXP_Chat(const std::string&);
 
-        std::string send_message(void) const;
+        // views
+        std::string message(void) const;
 
+        // implementation
         static const char HEADER = 'C';
 
-private:    
-        std::string message;
+private:
+        // representation
+        std::string d_message;
 };

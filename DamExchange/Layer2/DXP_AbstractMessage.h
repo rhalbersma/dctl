@@ -4,5 +4,5 @@
 class DXP_AbstractMessage
 {
 public:
-        virtual std::string send_message(void) const = 0;
+        virtual std::string message(void) const = 0;
 };
