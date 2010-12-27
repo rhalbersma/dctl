@@ -8,10 +8,9 @@
 #include "DXP_BackAcknowledge.h"
 #include <cassert>
 
-DXP_AbstractMessage* DXP_MessageFactory::create(const std::string& s) const
+const DXP_AbstractMessage* DXP_MessageFactory::create(const std::string& dxp_message)
 {
-        const char dxp_header = *s.begin();
-        const std::string dxp_message = s.substr(1);
+        const char dxp_header = *dxp_message.begin();
 
         switch(dxp_header) {
         case DXP_GameRequest::HEADER: 

@@ -5,5 +5,5 @@
 class DXP_MessageFactory
 {
 public:
-        DXP_AbstractMessage* create(const std::string&) const;
+        static const DXP_AbstractMessage* create(const std::string&);
 };

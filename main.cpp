@@ -5,21 +5,15 @@
 #include <iomanip>
 
 #include "CheckerBoard/CheckerBoardAPI.h"
-#include "DamExchange/DamExchangeAPI.h"
+#include "DamExchange/Layer2/DXP_Test.h"
 #include "Utilities/DeBruijn.h"
 
 int main(void)
 {
-        /*
-        DeBruijn<1>::generate_prefix_table();
-        DeBruijn<2>::generate_prefix_table();
-        DeBruijn<3>::generate_prefix_table();
-        DeBruijn<4>::generate_prefix_table();
-        DeBruijn<5>::generate_prefix_table();
-        DeBruijn<6>::generate_prefix_table();
-        */
+     
+        DXP_Test::Mesander_examples();
 
-        PerftTest::International();
+        //PerftTest::International();
         //SearchTest::Killer();
         //PerftTest::Rectangular();
 	//PerftTest::ChessBoardVariants();
@@ -31,7 +25,10 @@ int main(void)
 
 /*
 TODO:
+-implement DXP Layer 1 (Boost sockets)
 -implement algebraic notation
 -implement missing square layouts
 -implement test harness for hash function
+-search...
+-eval...
 */

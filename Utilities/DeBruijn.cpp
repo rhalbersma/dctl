@@ -1,5 +1,14 @@
 #include "DeBruijn.h"
 
+/*
+        DeBruijn<1>::generate_prefix_table();
+        DeBruijn<2>::generate_prefix_table();
+        DeBruijn<3>::generate_prefix_table();
+        DeBruijn<4>::generate_prefix_table();
+        DeBruijn<5>::generate_prefix_table();
+        DeBruijn<6>::generate_prefix_table();
+*/
+
 const DeBruijn<1>::T DeBruijn<1>::FORD_SEQUENCE = 0x1;
 
 const size_t DeBruijn<1>::PREFIX_TABLE[] = {

@@ -2,18 +2,18 @@
 #include <iomanip>
 #include <sstream>
 
-DXP_Chat::DXP_Chat(const std::string& m)
+DXP_Chat::DXP_Chat(const std::string& s)
 :
-        message(m)
+        d_message(s.substr(1))
 {
 }
 
-std::string DXP_Chat::send_message(void) const
+std::string DXP_Chat::message(void) const
 {
         std::stringstream sstr;
 
         sstr << std::setw( 1) << HEADER;
-        sstr << message;
+        sstr << d_message;
 
         return sstr.str();
 }
