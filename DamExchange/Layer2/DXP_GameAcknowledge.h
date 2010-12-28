@@ -13,6 +13,7 @@ public:
         DXP_GameAcknowledge(const std::string&, AcceptanceCode);
 
         // views
+        char header(void) const;
         std::string message(void) const;
         const std::string& name_follower(void) const;
         AcceptanceCode acceptance_code(void) const;

@@ -13,6 +13,7 @@ public:
         DXP_GameEnd(size_t, StopCode);
 
         // views
+        char header(void) const;
         std::string message(void) const;
         size_t reason(void) const;
         StopCode stop_code(void) const;

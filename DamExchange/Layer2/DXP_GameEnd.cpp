@@ -1,4 +1,5 @@
 #include "DXP_GameEnd.h"
+#include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
@@ -15,6 +16,12 @@ DXP_GameEnd::DXP_GameEnd(const std::string& s)
         d_reason(atoi(s.substr(1, 1).c_str())),
         d_stop_code(static_cast<StopCode>(atoi(s.substr(2, 1).c_str())))
 {
+        assert(invariant(*s.begin()));
+}
+
+char DXP_GameEnd::header(void) const
+{
+        return HEADER;
 }
 
 std::string DXP_GameEnd::message(void) const

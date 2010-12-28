@@ -2,7 +2,7 @@
 #include "IntegerTypes.h"
 
 // typedefs
-enum {L, R};
+enum { L, R };
 
 // template function object for uniform left/right bitwise shift
 template<bool>

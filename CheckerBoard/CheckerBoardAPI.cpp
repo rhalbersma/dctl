@@ -6,7 +6,7 @@ int WINAPI enginecommand( /*
         char reply[1024]        // the engine should print a reply */
 ) 
 {
-        // 
+        return 0;
 }
 
 // gets a move from the engine
@@ -21,7 +21,7 @@ int WINAPI getmove( /*
         struct CBmove *move     // move trajectory */
 )
 {
-        // 
+        return 0;
 }
 
 // tells CheckerBoard about the rules of your version of checkers
@@ -33,5 +33,5 @@ int WINAPI islegal( /*
         struct CBmove *move     // move trajectory */
 ) 
 {
-        //
+        return 0;
 }

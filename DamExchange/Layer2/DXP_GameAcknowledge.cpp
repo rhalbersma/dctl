@@ -1,4 +1,5 @@
 #include "DXP_GameAcknowledge.h"
+#include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
@@ -15,6 +16,12 @@ DXP_GameAcknowledge::DXP_GameAcknowledge(const std::string& s)
         d_name_follower(s.substr(1, 32)),
         d_acceptance_code(static_cast<AcceptanceCode>(atoi(s.substr(33, 1).c_str())))
 {
+        assert(invariant(*s.begin()));
+}
+
+char DXP_GameAcknowledge::header(void) const
+{
+        return HEADER;
 }
 
 std::string DXP_GameAcknowledge::message(void) const

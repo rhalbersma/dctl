@@ -32,7 +32,7 @@ public:
         static const int ROW = 2 * Q + P;
                                 
         // twice the number of bits from the left edge plus the row parity XOR the opposite board coloring
-        static const int COL = 2 * R + (P ^ !T::BIT_PARITY);
+        static const int COL = static_cast<int>(2 * R + (P ^ !T::BIT_PARITY));
 };
 
 template<typename T, int ROW, int COL>
