@@ -11,6 +11,7 @@ public:
         DXP_Move(size_t, size_t, size_t, size_t, const std::vector<size_t>&);
 
         // views
+        char header(void) const;
         std::string message(void) const;        
         size_t seconds(void) const;
         size_t from_sq(void) const;

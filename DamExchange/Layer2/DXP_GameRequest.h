@@ -10,6 +10,7 @@ public:
         DXP_GameRequest(const std::string&, bool, size_t, size_t, bool, const std::string&);
 
         // views
+        char header(void) const;
         std::string message(void) const;
         const std::string& name_initiator(void) const;
         bool color_follower(void) const;

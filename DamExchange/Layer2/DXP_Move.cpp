@@ -1,4 +1,5 @@
 #include "DXP_Move.h"
+#include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
@@ -23,6 +24,13 @@ DXP_Move::DXP_Move(const std::string& s)
 {
         for(size_t i = 0; i < num_captured(); ++i)
                 d_captured_pieces.push_back(atoi(s.substr(11 + 2 * i, 2).c_str()));
+
+        assert(invariant(*s.begin()));
+}
+
+char DXP_Move::header(void) const
+{
+        return HEADER;
 }
 
 std::string DXP_Move::message(void) const

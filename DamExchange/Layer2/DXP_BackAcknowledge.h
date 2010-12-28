@@ -13,6 +13,7 @@ public:
         DXP_BackAcknowledge(AcceptanceCode);
 
         // views
+        char header(void) const;
         std::string message(void) const;
         AcceptanceCode acceptance_code(void) const;
 

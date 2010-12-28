@@ -9,6 +9,7 @@ public:
         DXP_Chat(const std::string&);
 
         // views
+        char header(void) const;
         std::string message(void) const;
 
         // implementation

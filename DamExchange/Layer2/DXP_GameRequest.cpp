@@ -1,5 +1,6 @@
 #include "DXP_GameRequest.h"
 #include "../../IO/Token.h"
+#include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
@@ -26,6 +27,13 @@ DXP_GameRequest::DXP_GameRequest(const std::string& s)
 {
         if (setup_position())
                 d_special_position = s.substr(43);
+
+        assert(invariant(*s.begin()));
+}
+
+char DXP_GameRequest::header(void) const
+{
+        return HEADER;
 }
 
 std::string DXP_GameRequest::message(void) const

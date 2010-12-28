@@ -7,7 +7,7 @@ int Search::negamax(Position<Board>& p, size_t ply, size_t depth, SearchParamete
         update_statistics(ply);
 
         // check for a legal draw
-        if (p.is_draw<Rules>())
+        if (p.template is_draw<Rules>())
                 return SearchValue::draw();
 
         // return evaluation in leaf nodes with valid moves
@@ -44,7 +44,7 @@ int Search::alpha_beta(Position<Board>& p, size_t ply, size_t depth, int alpha, 
         update_statistics(ply);
 
         // check for a legal draw
-        if (p.is_draw<Rules>())
+        if (p.template is_draw<Rules>())
                 return SearchValue::draw();
 
         // mate distance pruning
@@ -95,7 +95,7 @@ int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int bet
 
         ///*
         // check for a legal draw
-        if (p.is_draw<Rules>()) {
+        if (p.template is_draw<Rules>()) {
                 assert(ply >= 5);
                 return SearchValue::draw();
         }

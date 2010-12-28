@@ -1,4 +1,5 @@
 #include "DXP_BackAcknowledge.h"
+#include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
@@ -13,6 +14,12 @@ DXP_BackAcknowledge::DXP_BackAcknowledge(const std::string& s)
 :
         d_acceptance_code(static_cast<AcceptanceCode>(atoi(s.substr(1, 1).c_str())))
 {
+        assert(invariant(*s.begin()));
+}
+
+char DXP_BackAcknowledge::header(void) const
+{
+        return HEADER;
 }
 
 std::string DXP_BackAcknowledge::message(void) const

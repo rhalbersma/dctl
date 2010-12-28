@@ -1,5 +1,6 @@
 #include "DXP_BackRequest.h"
 #include "../../IO/Token.h"
+#include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
@@ -16,6 +17,12 @@ DXP_BackRequest::DXP_BackRequest(const std::string& s)
         d_move_number(atoi(s.substr(1, 3).c_str())),
         d_side_to_move(DXP_PositionToken::read_color( *(s.substr(4, 1)).begin() ))
 {
+        assert(invariant(*s.begin()));
+}
+
+char DXP_BackRequest::header(void) const
+{
+        return HEADER;
 }
 
 std::string DXP_BackRequest::message(void) const

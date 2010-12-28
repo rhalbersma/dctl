@@ -10,6 +10,7 @@ public:
         DXP_BackRequest(size_t, bool);
 
         // views
+        char header(void) const;
         std::string message(void) const;
         size_t move_number(void) const;
         bool side_to_move(void) const;

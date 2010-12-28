@@ -24,6 +24,8 @@ template<bool Color, Pieces::Composition, typename Rules, typename Board>
 class GeneratePiece: public AbstractGeneratePiece<Color, Rules, Board>
 {
 public:
+		GeneratePiece(void) {};
+
         void generate(const Position<Board>&, Propagate<Rules, Board>&) const;
         void generate_captures(const Position<Board>&, Propagate<Rules, Board>&) const;
         void generate_promotions(const Position<Board>&, Propagate<Rules, Board>&) const;

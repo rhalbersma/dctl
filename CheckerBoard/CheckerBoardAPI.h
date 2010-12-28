@@ -1,5 +1,6 @@
 #pragma once
-#include "windows.h"
+//#include "windows.h"
+#define WINAPI
 
  #ifdef __cplusplus
  extern "C" {

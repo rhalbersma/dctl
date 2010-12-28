@@ -13,14 +13,14 @@ int main(void)
      
         DXP_Test::Mesander_examples();
 
-        //PerftTest::International();
+        PerftTest::International();
         //SearchTest::Killer();
         //PerftTest::Rectangular();
-	//PerftTest::ChessBoardVariants();
-	//PerftTest::ItalianRuleBook();
+        //PerftTest::ChessBoardVariants();
+        //PerftTest::ItalianRuleBook();
 
-	std::cout << "End of program." << std::endl;
-        for (;;);
+        std::cout << "End of program." << std::endl;
+        //for (;;);
 }
 
 /*
