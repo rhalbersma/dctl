@@ -1,5 +1,6 @@
 #pragma once
 #include "DXP_AbstractMessage.h"
+#include "DXP_String.h"
 #include <string>
 #include <vector>
 
@@ -7,22 +8,25 @@ class DXP_Move: public DXP_AbstractMessage
 {
 public:
         // constructors
+        static DXP_AbstractMessage* create(const DXP_String&);
+
         DXP_Move(const std::string&);
         DXP_Move(size_t, size_t, size_t, size_t, const std::vector<size_t>&);
 
         // views
-        char header(void) const;
-        std::string message(void) const;        
+        virtual DXP_String message(void) const;        
+
         size_t seconds(void) const;
         size_t from_sq(void) const;
         size_t dest_sq(void) const;
         size_t num_captured(void) const;
         const std::vector<size_t>& captured_pieces(void) const;
 
+private:
         // implementation
         static const char HEADER = 'M';
+        static const bool REGISTERED;
 
-private:
         // representation
         size_t d_seconds;
         size_t d_from_sq;

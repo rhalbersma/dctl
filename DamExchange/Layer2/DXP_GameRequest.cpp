@@ -1,9 +1,30 @@
 #include "DXP_GameRequest.h"
+#include "DXP_MessageFactory.h"
 #include "../../IO/Token.h"
 #include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
+
+const bool DXP_GameRequest::REGISTERED = DXP_MessageFactory::register_creator(HEADER, create);
+
+DXP_AbstractMessage* DXP_GameRequest::create(const DXP_String& s)
+{
+        assert(s.header() == HEADER);
+        return new DXP_GameRequest(s.content());
+}
+
+DXP_GameRequest::DXP_GameRequest(const std::string& s)
+:
+        d_name_initiator(s.substr(2, 32)),
+        d_color_follower(DXP_PositionToken::read_color( *(s.substr(34, 1)).begin() )),
+        d_minutes(atoi(s.substr(35, 3).c_str())),
+        d_moves(atoi(s.substr(38, 3).c_str())),
+        d_setup_position(DXP_PositionToken::read_setup( *(s.substr(41, 1)).begin() ))
+{
+        if (setup_position())
+                d_special_position = s.substr(42);
+}
 
 DXP_GameRequest::DXP_GameRequest(const std::string& n, bool c, size_t min, size_t mov, bool s, const std::string& f)
 :
@@ -17,30 +38,10 @@ DXP_GameRequest::DXP_GameRequest(const std::string& n, bool c, size_t min, size_
                 d_special_position = f;
 }
 
-DXP_GameRequest::DXP_GameRequest(const std::string& s)
-:
-        d_name_initiator(s.substr(3, 32)),
-        d_color_follower(DXP_PositionToken::read_color( *(s.substr(35, 1)).begin() )),
-        d_minutes(atoi(s.substr(36, 3).c_str())),
-        d_moves(atoi(s.substr(39, 3).c_str())),
-        d_setup_position(DXP_PositionToken::read_setup( *(s.substr(42, 1)).begin() ))
-{
-        if (setup_position())
-                d_special_position = s.substr(43);
-
-        assert(invariant(*s.begin()));
-}
-
-char DXP_GameRequest::header(void) const
-{
-        return HEADER;
-}
-
-std::string DXP_GameRequest::message(void) const
+DXP_String DXP_GameRequest::message(void) const
 {
         std::stringstream sstr;
 
-        sstr << std::setw( 1) << HEADER;
         sstr << std::setw( 2) << std::setfill('0') << PROTOCOL_VERSION;
         sstr << std::setw(32) << name_initiator() << std::setfill(' ');
         sstr << std::setw( 1) << DXP_PositionToken::write_color(color_follower());
@@ -50,7 +51,7 @@ std::string DXP_GameRequest::message(void) const
         if (setup_position())
                 sstr << std::setw(51) << special_position();
 
-        return sstr.str();
+        return DXP_String(HEADER, sstr.str());
 }
 
 const std::string& DXP_GameRequest::name_initiator(void) const
