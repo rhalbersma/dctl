@@ -1,9 +1,25 @@
 #include "DXP_BackRequest.h"
+#include "DXP_MessageFactory.h"
 #include "../../IO/Token.h"
 #include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
+
+const bool DXP_BackRequest::REGISTERED = DXP_MessageFactory::register_creator(HEADER, create);
+
+DXP_AbstractMessage* DXP_BackRequest::create(const DXP_String& s)
+{
+        assert(s.header() == HEADER);
+        return new DXP_BackRequest(s.content());
+}
+
+DXP_BackRequest::DXP_BackRequest(const std::string& s)
+:
+        d_move_number(atoi(s.substr(0, 3).c_str())),
+        d_side_to_move(DXP_PositionToken::read_color( *(s.substr(3, 1)).begin() ))
+{
+}
 
 DXP_BackRequest::DXP_BackRequest(size_t m, bool c)
 :
@@ -12,28 +28,14 @@ DXP_BackRequest::DXP_BackRequest(size_t m, bool c)
 {
 }
 
-DXP_BackRequest::DXP_BackRequest(const std::string& s)
-:
-        d_move_number(atoi(s.substr(1, 3).c_str())),
-        d_side_to_move(DXP_PositionToken::read_color( *(s.substr(4, 1)).begin() ))
-{
-        assert(invariant(*s.begin()));
-}
-
-char DXP_BackRequest::header(void) const
-{
-        return HEADER;
-}
-
-std::string DXP_BackRequest::message(void) const
+DXP_String DXP_BackRequest::message(void) const
 {
         std::stringstream sstr;
 
-        sstr << std::setw( 1) << HEADER;
         sstr << std::setw( 3) << std::setfill('0') << move_number();
         sstr << std::setw( 1) << DXP_PositionToken::write_color(side_to_move());
 
-        return sstr.str();
+        return DXP_String(HEADER, sstr.str());
 }
 
 size_t DXP_BackRequest::move_number(void) const

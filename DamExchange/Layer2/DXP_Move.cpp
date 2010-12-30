@@ -1,8 +1,29 @@
 #include "DXP_Move.h"
+#include "DXP_MessageFactory.h"
 #include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
+
+const bool DXP_Move::REGISTERED = DXP_MessageFactory::register_creator(HEADER, create);
+
+DXP_AbstractMessage* DXP_Move::create(const DXP_String& s)
+{
+        assert(s.header() == HEADER);
+        return new DXP_Move(s.content());
+}
+
+DXP_Move::DXP_Move(const std::string& s)
+:
+        d_seconds(atoi(s.substr(0, 4).c_str())),
+        d_from_sq(atoi(s.substr(4, 2).c_str())),
+        d_dest_sq(atoi(s.substr(6, 2).c_str())),
+        d_num_captured(atoi(s.substr(8, 2).c_str()))
+
+{
+        for(size_t i = 0; i < num_captured(); ++i)
+                d_captured_pieces.push_back(atoi(s.substr(10 + 2 * i, 2).c_str()));
+}
 
 DXP_Move::DXP_Move(size_t s, size_t f, size_t d, size_t n, const std::vector<size_t>& c)
 :
@@ -14,30 +35,10 @@ DXP_Move::DXP_Move(size_t s, size_t f, size_t d, size_t n, const std::vector<siz
 {
 }
 
-DXP_Move::DXP_Move(const std::string& s)
-:
-        d_seconds(atoi(s.substr(1, 4).c_str())),
-        d_from_sq(atoi(s.substr(5, 2).c_str())),
-        d_dest_sq(atoi(s.substr(7, 2).c_str())),
-        d_num_captured(atoi(s.substr(9, 2).c_str()))
-
-{
-        for(size_t i = 0; i < num_captured(); ++i)
-                d_captured_pieces.push_back(atoi(s.substr(11 + 2 * i, 2).c_str()));
-
-        assert(invariant(*s.begin()));
-}
-
-char DXP_Move::header(void) const
-{
-        return HEADER;
-}
-
-std::string DXP_Move::message(void) const
+DXP_String DXP_Move::message(void) const
 {
         std::stringstream sstr;
 
-        sstr << std::setw( 1) << HEADER;
         sstr << std::setw( 4) << std::setfill('0') << seconds();
         sstr << std::setw( 2) << std::setfill('0') << from_sq();
         sstr << std::setw( 2) << std::setfill('0') << dest_sq();
@@ -45,7 +46,7 @@ std::string DXP_Move::message(void) const
         for(std::vector<size_t>::const_iterator it = captured_pieces().begin(); it != captured_pieces().end(); ++it)
                 sstr << std::setw(2) << std::setfill('0') << *it;
 
-        return sstr.str();
+        return DXP_String(HEADER, sstr.str());
 }
 
 size_t DXP_Move::seconds(void) const
