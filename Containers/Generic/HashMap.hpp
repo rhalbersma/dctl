@@ -3,20 +3,20 @@
 template<typename Key, typename Value, size_t LogN, typename Replace, template<typename, typename> class Hash, typename Index>
 HashMap<Key, Value, LogN, Replace, Hash, Index>::HashMap(void)
 {
-        d_hash_map = new EntryBucket[NUM_BUCKETS];
+        hash_map_ = new EntryBucket[NUM_BUCKETS];
 }
 
 template<typename Key, typename Value, size_t LogN, typename Replace, template<typename, typename> class Hash, typename Index>
 HashMap<Key, Value, LogN, Replace, Hash, Index>::~HashMap(void)
 {
-        delete [] d_hash_map;
+        delete [] hash_map_;
 }
 
 template<typename Key, typename Value, size_t LogN, typename Replace, template<typename, typename> class Hash, typename Index>
 const Value* HashMap<Key, Value, LogN, Replace, Hash, Index>::find(const Key& key) const
 {
         const Index index = Hash<Key, Index>()(key);
-        return find_entry<Key, Value>()(d_hash_map[bucket(index)], key);
+        return find_entry<Key, Value>()(hash_map_[bucket(index)], key);
 }
 
 // tag dispatching based on the key's integer type trait
@@ -34,7 +34,7 @@ const Value* HashMap<Key, Value, LogN, Replace, Hash, Index>::find(const Item& i
 {
         const Index index = Hash<Item, Index>()(item);
         const Key key = ShiftSign<Index, Key>()(index);
-        return find_entry<Key, Value>()(d_hash_map[bucket(index)], key);
+        return find_entry<Key, Value>()(hash_map_[bucket(index)], key);
 }
 
 // partial specialization for non-integer keys
@@ -44,14 +44,14 @@ const Value* HashMap<Key, Value, LogN, Replace, Hash, Index>::find(const Item& i
 {
         const Index index = Hash<Item, Index>()(item);
         const Key key = FindSign<Item, Key>()(item);
-        return find_entry<Key, Value>()(d_hash_map[bucket(index)], key);
+        return find_entry<Key, Value>()(hash_map_[bucket(index)], key);
 }
 
 template<typename Key, typename Value, size_t LogN, typename Replace, template<typename, typename> class Hash, typename Index>
 void HashMap<Key, Value, LogN, Replace, Hash, Index>::insert(const Key& key, const Value& value)
 {
         const Index index = Hash<Key, Index>()(key);
-        insert_entry<Key, Value, Replace>()(d_hash_map[bucket(index)], Entry(key, value));
+        insert_entry<Key, Value, Replace>()(hash_map_[bucket(index)], Entry(key, value));
 }
 
 // tag dispatching based on the key's integer type trait
@@ -69,7 +69,7 @@ void HashMap<Key, Value, LogN, Replace, Hash, Index>::insert(const Item& item, c
 {
         const Index index = Hash<Item, Index>()(item);
         const Key key = ShiftSign<Index, Key>()(index);
-        insert_entry<Key, Value, Replace>()(d_hash_map[bucket(index)], Entry(key, value));
+        insert_entry<Key, Value, Replace>()(hash_map_[bucket(index)], Entry(key, value));
 }
 
 // partial specialization for non-integer keys
@@ -79,7 +79,7 @@ void HashMap<Key, Value, LogN, Replace, Hash, Index>::insert(const Item& item, c
 {
         const Index index = Hash<Item, Index>()(item);
         const Key key = FindSign<Item, Key>()(item);
-        insert_entry<Key, Value, Replace>()(d_hash_map[bucket(index)], Entry(key, value));
+        insert_entry<Key, Value, Replace>()(hash_map_[bucket(index)], Entry(key, value));
 }
 
 template<typename Key, typename Value, size_t LogN, typename Replace, template<typename, typename> class Hash, typename Index>

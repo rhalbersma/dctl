@@ -1,34 +1,34 @@
 template<typename Index>
-void JenkinsMix<Index>::mix(Index& d_index, bool color)
+void JenkinsMix<Index>::mix(Index& index_, bool color)
 {
-        d_index = (0 - color) & SIDE;
+        index_ = (0 - color) & SIDE;
 }
 
 template<typename Index>
-void JenkinsMix<Index>::mix(Index& d_index, BitBoard b)
+void JenkinsMix<Index>::mix(Index& index_, BitBoard b)
 {
-        add_shift_L(d_index, ADD_SHIFT_L[0], b);
-        xor_shift_R(d_index, XOR_SHIFT_R[0]);
+        add_shift_L(index_, ADD_SHIFT_L[0], b);
+        xor_shift_R(index_, XOR_SHIFT_R[0]);
         for (size_t i = 1; i < NUM_MIX; ++i) {
-                add_shift_L(d_index, ADD_SHIFT_L[i]);
-                xor_shift_R(d_index, XOR_SHIFT_R[i]);
+                add_shift_L(index_, ADD_SHIFT_L[i]);
+                xor_shift_R(index_, XOR_SHIFT_R[i]);
         }
 }
 
 template<typename Index>
-void JenkinsMix<Index>::add_shift_L(Index& d_index, size_t s, BitBoard b)
+void JenkinsMix<Index>::add_shift_L(Index& index_, size_t s, BitBoard b)
 {
-        d_index += (b << s) - b;
+        index_ += (b << s) - b;
 }
 
 template<typename Index>
-void JenkinsMix<Index>::add_shift_L(Index& d_index, size_t s)
+void JenkinsMix<Index>::add_shift_L(Index& index_, size_t s)
 {
-        d_index += (d_index << s);
+        index_ += (index_ << s);
 }
 
 template<typename Index>
-void JenkinsMix<Index>::xor_shift_R(Index& d_index, size_t s)
+void JenkinsMix<Index>::xor_shift_R(Index& index_, size_t s)
 {
-        d_index ^= (d_index >> s);
+        index_ ^= (index_ >> s);
 }

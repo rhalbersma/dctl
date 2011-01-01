@@ -2,16 +2,16 @@
 
 PerftNode::PerftNode(void)
 :
-        d_perft_node(0)
+        perft_node_(0)
 {
 }
 
 PerftNode::PerftNode(NodeCount s_leafs, size_t s_depth)
 :
-        d_perft_node(0)
+        perft_node_(0)
 {
-        d_perft_node ^= (s_leafs & LEAFS_MASK) << LEAFS_SHIFT;
-        d_perft_node ^= (s_depth & DEPTH_MASK) << DEPTH_SHIFT;
+        perft_node_ ^= (s_leafs & LEAFS_MASK) << LEAFS_SHIFT;
+        perft_node_ ^= (s_depth & DEPTH_MASK) << DEPTH_SHIFT;
 }
 
 bool PerftNode::is_depth_equal_to(size_t s_depth) const
@@ -21,10 +21,10 @@ bool PerftNode::is_depth_equal_to(size_t s_depth) const
 
 NodeCount PerftNode::leafs(void) const
 {
-        return (d_perft_node & (LEAFS_MASK << LEAFS_SHIFT)) >> LEAFS_SHIFT;
+        return (perft_node_ & (LEAFS_MASK << LEAFS_SHIFT)) >> LEAFS_SHIFT;
 }
 
 size_t PerftNode::depth(void) const
 {
-        return static_cast<size_t>((d_perft_node & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT);
+        return static_cast<size_t>((perft_node_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT);
 }

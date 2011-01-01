@@ -1,5 +1,5 @@
 #include "DXP_Test.h"
-#include "DXP_String.h"
+#include "DXP_StringMessage.h"
 #include <cassert>
 #include <iostream>
 
@@ -18,7 +18,7 @@ void DXP_Test::Mesander_examples(void)
         };
 
         for (size_t i = 0; i < 8; ++i) {
-                const DXP_String s(example[i]);
+                const DXP_StringMessage s(example[i]);
                 const DXP_AbstractMessage* m = DXP_MessageFactory::select_creator(s);
                 assert(!s.str().compare(m->message().str()));
                 std::cout << m->message().str() << std::endl;

@@ -25,7 +25,7 @@ void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_se
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, Propagate<Rules, Board>& moves, Int2Type<true>)
 {
-        while(active_kings) {
+        while (active_kings) {
                 generate_dirs(Bit::get_lowest(active_kings), moves);
                 Bit::clear_lowest(active_kings);
         }

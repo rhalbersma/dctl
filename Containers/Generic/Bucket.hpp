@@ -3,13 +3,13 @@
 template<typename T, size_t N>
 typename Bucket<T, N>::iterator Bucket<T, N>::begin(void)
 {
-        return d_bucket;
+        return bucket_;
 }
 
 template<typename T, size_t N>
 typename Bucket<T, N>::const_iterator Bucket<T, N>::begin(void) const
 {
-        return d_bucket;
+        return bucket_;
 }
 
 template<typename T, size_t N>

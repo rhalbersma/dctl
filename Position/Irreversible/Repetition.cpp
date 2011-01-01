@@ -18,35 +18,35 @@ bool Repetition::non_unique_back(size_t max_cycle) const
 
 Repetition::const_reverse_iterator Repetition::rbegin(void) const
 {
-        return d_repetition.rbegin();
+        return repetition_.rbegin();
 }
 
 Repetition::const_reverse_iterator Repetition::rend(void) const
 {
-        return d_repetition.rend();
+        return repetition_.rend();
 }
 
 HashIndex& Repetition::hash_index(void)
 {
-        return d_repetition.back();
+        return repetition_.back();
 }
 
 HashIndex Repetition::hash_index(void) const
 {
-        return d_repetition.back();
+        return repetition_.back();
 }
 
 void Repetition::copy_back(void)
 {
-        d_repetition.copy_back();
+        repetition_.copy_back();
 }
 
 void Repetition::push_back(HashIndex i)
 {
-        d_repetition.push_back(i);
+        repetition_.push_back(i);
 }
 
 void Repetition::pop_back(void)
 {
-        d_repetition.pop_back();
+        repetition_.pop_back();
 }

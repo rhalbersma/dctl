@@ -3,13 +3,13 @@
 #include "../Position/Reversible/Pieces.h"
 
 template<bool Color, typename Rules, typename Board> 
-class GenerateFactory
+class GenerateStrategy
 {
 public:
-        static const AbstractGeneratePiece<Color, Rules, Board>* select_generator(Pieces::Composition);
+        static const AbstractGeneratePiece<Color, Rules, Board>* select_strategy(Pieces::Composition);
 
 private:
-        static const AbstractGeneratePiece<Color, Rules, Board>* d_generator[];
+        static const AbstractGeneratePiece<Color, Rules, Board>* const STRATEGY[];
 
         static const GeneratePiece<Color, Pieces::NONE, Rules, Board> GENERATE_NONE;
         static const GeneratePiece<Color, Pieces::PAWN, Rules, Board> GENERATE_PAWN;
@@ -18,4 +18,4 @@ private:
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "GenerateFactory.hpp"
+#include "GenerateStrategy.hpp"

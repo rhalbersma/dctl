@@ -31,8 +31,8 @@ private:
         bool invariant(void) const;
 
         // representation
-        VectorBucket<BitBoard, PLY_MAX> d_king;
-        VectorBucket<PlyCount, PLY_MAX> d_moves;
+        VectorBucket<BitBoard, PLY_MAX> king_;
+        VectorBucket<PlyCount, PLY_MAX> moves_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

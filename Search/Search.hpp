@@ -51,7 +51,7 @@ void Search::insert_PV(const SearchParameters& node, const Position<Board>& pp, 
         const Move::Sequence& line = node.PV();
         Position<Board> p(pp);
 
-        for(size_t i = 0; i < line.size(); ++i) {
+        for (size_t i = 0; i < line.size(); ++i) {
                 TT.insert(p, SearchNode(value, SearchNode::exact(), line.size() - i, line[i]));
                 Propagate<Rules, Board> moves(p);
                 Generate::generate<Rules>(p, moves);
@@ -71,7 +71,7 @@ void Search::print_PV(const SearchParameters& node, const Position<Board>& pp, b
         size_t same_king;
         size_t non_conversion;
 
-        for(size_t i = 0; i < line.size(); ++i) {
+        for (size_t i = 0; i < line.size(); ++i) {
                 Propagate<Rules, Board> moves(p);
                 Generate::generate<Rules>(p, moves);
                 assert(line[i] < moves.size());

@@ -3,40 +3,40 @@
 
 BitBoard& SameKingMoves::king(void)
 {
-        return d_king.back();
+        return king_.back();
 }
 
 BitBoard SameKingMoves::king(void) const
 {
-        return d_king.back();
+        return king_.back();
 }
 
 PlyCount& SameKingMoves::moves(void)
 {
-        return d_moves.back();
+        return moves_.back();
 }
 
 PlyCount SameKingMoves::moves(void) const
 {
-        return d_moves.back();
+        return moves_.back();
 }
 
 void SameKingMoves::copy_back(void)
 {
-        d_king.copy_back();
-        d_moves.copy_back();
+        king_.copy_back();
+        moves_.copy_back();
 }
 
 void SameKingMoves::push_back(BitBoard s_king, PlyCount s_moves)
 {
-        d_king.push_back(s_king);
-        d_moves.push_back(s_moves);
+        king_.push_back(s_king);
+        moves_.push_back(s_moves);
 }
 
 void SameKingMoves::pop_back(void)
 {
-        d_king.pop_back();
-        d_moves.pop_back();
+        king_.pop_back();
+        moves_.pop_back();
 }
 
 void SameKingMoves::init(BitBoard s_king)

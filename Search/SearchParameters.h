@@ -25,6 +25,6 @@ private:
         static const bool TOGGLE = true;
 
         // representation
-        Move::Sequence d_PV;
-        bool d_null_move;
+        Move::Sequence PV_;
+        bool null_move_;
 };

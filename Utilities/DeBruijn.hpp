@@ -8,7 +8,7 @@ typename DeBruijn<N>::T DeBruijn<N>::generate_Ford_sequence(void)
         T sequence = 0;
 
         // highest N bits are always zero; only have to try the remaining bits (SHIFT == 2^N - N)
-        for(int i = SHIFT - 1; i >= 0; --i) {
+        for (int i = SHIFT - 1; i >= 0; --i) {
                 T new_prefix = (sequence >> i) & PREFIX_MASK;
 
                 // greedy algorithm: set the least significant bit of the next prefix equal to one

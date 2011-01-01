@@ -1,24 +1,24 @@
 #pragma once
 #include "DXP_AbstractMessage.h"
-#include "DXP_String.h"
+#include "DXP_StringMessage.h"
 #include <string>
 
 class DXP_Chat: public DXP_AbstractMessage
 {
 public:
         // constructors
-        static DXP_AbstractMessage* create(const DXP_String&);
+        static DXP_AbstractMessage* create(const DXP_StringMessage&);
 
-        DXP_Chat(const std::string&);
+        explicit DXP_Chat(const std::string&);
 
         // views
-        virtual DXP_String message(void) const;
+        virtual DXP_StringMessage message(void) const;
 
 private:
         // implementation
-        static const char HEADER = 'C';
+        static const std::string HEADER;
         static const bool REGISTERED;
 
         // representation
-        std::string d_message;
+        std::string message_;
 };

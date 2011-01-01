@@ -48,7 +48,7 @@ BitBoard Pieces::kings(bool color) const
 // black or white pieces
 BitBoard Pieces::pieces(bool color) const
 {
-        return d_pieces[color];
+        return pieces_[color];
 }
 
 // black and white men
@@ -60,7 +60,7 @@ BitBoard Pieces::men(void) const
 // black and white kings
 BitBoard Pieces::kings(void) const
 {
-        return d_kings;
+        return kings_;
 }
 
 // black and white pieces
@@ -78,9 +78,9 @@ Pieces::Composition Pieces::composition(bool color) const
 // toggle the set bits of another piece set
 Pieces& Pieces::toggle(const Pieces& other)
 {
-        d_pieces[Side::BLACK] ^= other.pieces(Side::BLACK);
-        d_pieces[Side::WHITE] ^= other.pieces(Side::WHITE);
-        d_kings ^= other.kings();
+        pieces_[Side::BLACK] ^= other.pieces(Side::BLACK);
+        pieces_[Side::WHITE] ^= other.pieces(Side::WHITE);
+        kings_ ^= other.kings();
 
         assert(invariant());
         return *this;

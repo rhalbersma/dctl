@@ -35,10 +35,13 @@ private:
         template<bool, typename> static void init(Pieces&, BitBoard, BitBoard, BitBoard, BitBoard);     // man capture
 
         // pre-conditions for initialization
+
+        // tag dispatching based on promotion condition
         template<typename> static bool promotion_en_passant(BitBoard, BitBoard);                        // Russian draughts
         static bool promotion_en_passant(BitBoard, BitBoard, Int2Type<PROMOTE_BR>);
         static bool promotion_en_passant(BitBoard, BitBoard, Int2Type<PROMOTE_EP>);
 
+        // tag dispatching on capture removal
         template<typename> static bool sequential_capture_removal(BitBoard, BitBoard);                  // Thai draughts
         static bool sequential_capture_removal(BitBoard, BitBoard, Int2Type<REMOVE_1>);        
         static bool sequential_capture_removal(BitBoard, BitBoard, Int2Type<REMOVE_N>);

@@ -17,6 +17,8 @@ public:
 
 private:
         // implementation
+
+        // tag dispatching based on absolute king capture precedence
         static void generate_precede(const Position<Board>&, Propagate<Rules, Board>&);
         static void generate_precede(const Position<Board>&, Propagate<Rules, Board>&, Int2Type<false>);
         static void generate_precede(const Position<Board>&, Propagate<Rules, Board>&, Int2Type<true>);

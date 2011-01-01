@@ -1,4 +1,4 @@
-#include "GenerateFactory.h"
+#include "GenerateStrategy.h"
 #include "../Position/Position.h"
 #include "../Utilities/InlineOptions.h"
 
@@ -17,7 +17,7 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Generate::generate(const Position<Board>& p, Propagate<Rules, Board>& moves)
 {
         assert(p.to_move() == Color);        
-        GenerateFactory<Color, Rules, Board>::select_generator(p.composition(Color))->generate(p, moves);
+        GenerateStrategy<Color, Rules, Board>::select_strategy(p.composition(Color))->generate(p, moves);
 }
 
 template<typename Rules, typename Board>
@@ -33,7 +33,7 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Generate::generate_captures(const Position<Board>& p, Propagate<Rules, Board>& moves)
 {
         assert(p.to_move() == Color);
-        GenerateFactory<Color, Rules, Board>::select_generator(p.composition(Color))->generate_captures(p, moves);
+        GenerateStrategy<Color, Rules, Board>::select_strategy(p.composition(Color))->generate_captures(p, moves);
 }
 
 template<typename Rules, typename Board>
@@ -49,7 +49,7 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Generate::generate_promotions(const Position<Board>& p, Propagate<Rules, Board>& moves)
 {
         assert(p.to_move() == Color);
-        GenerateFactory<Color, Rules, Board>::select_generator(p.composition(Color))->generate_promotions(p, moves);
+        GenerateStrategy<Color, Rules, Board>::select_strategy(p.composition(Color))->generate_promotions(p, moves);
 }
 
 template<typename Rules, typename Board>
@@ -65,14 +65,14 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t Generate::count(const Position<Board>& p)
 {
         assert(p.to_move() == Color);
-        return GenerateFactory<Color, Rules, Board>::select_generator(p.composition(Color))->count(p);
+        return GenerateStrategy<Color, Rules, Board>::select_strategy(p.composition(Color))->count(p);
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t Generate::count_moves(const Position<Board>& p)
 {
         assert(p.to_move() == Color);
-        return GenerateFactory<Color, Rules, Board>::select_generator(p.composition(Color))->count_moves(p);
+        return GenerateStrategy<Color, Rules, Board>::select_strategy(p.composition(Color))->count_moves(p);
 }
 
 template<typename Rules, typename Board>
@@ -88,7 +88,7 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool Generate::detect(const Position<Board>& p)
 {
         assert(p.to_move() == Color);
-        return GenerateFactory<Color, Rules, Board>::select_generator(p.composition(Color))->detect(p);
+        return GenerateStrategy<Color, Rules, Board>::select_strategy(p.composition(Color))->detect(p);
 }
 
 template<typename Rules, typename Board>
@@ -104,7 +104,7 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool Generate::detect_captures(const Position<Board>& p)
 {
         assert(p.to_move() == Color);
-        return GenerateFactory<Color, Rules, Board>::select_generator(p.composition(Color))->detect_captures(p);
+        return GenerateStrategy<Color, Rules, Board>::select_strategy(p.composition(Color))->detect_captures(p);
 }
 
 template<typename Rules, typename Board>
@@ -120,7 +120,7 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool Generate::detect_promotions(const Position<Board>& p)
 {
         assert(p.to_move() == Color);
-        GenerateFactory<Color, Rules, Board>::select_generator(p.composition(Color))->detect_promotions(p);
+        GenerateStrategy<Color, Rules, Board>::select_strategy(p.composition(Color))->detect_promotions(p);
 }
 
 template<typename Rules, typename Board>

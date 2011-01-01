@@ -17,10 +17,13 @@ public:
 
 private:
         // implementation
+        
+        // tag dispatching based on whether men can capture kings
         static void generate_targets(const Position<Board>&, Propagate<Rules, Board>&);
         static void generate_targets(const Position<Board>&, Propagate<Rules, Board>&, Int2Type<false>);
         static void generate_targets(const Position<Board>&, Propagate<Rules, Board>&, Int2Type<true>);
 
+        // tag dispatching based on man capture directions
         static void generate_dirs(BitBoard, Propagate<Rules, Board>&);
         static void generate_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_2>);
         static void generate_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_4>);
@@ -29,10 +32,12 @@ private:
         template<size_t> static void generate_dir(BitBoard, Propagate<Rules, Board>&);
         template<size_t> static void generate_next(BitBoard, Propagate<Rules, Board>&);
 
+        // tag dispatching based on promotion condition
         template<size_t> static bool scan_next(BitBoard, Propagate<Rules, Board>&);
         template<size_t> static bool scan_next(BitBoard, Propagate<Rules, Board>&, Int2Type<PROMOTE_BR>);
         template<size_t> static bool scan_next(BitBoard, Propagate<Rules, Board>&, Int2Type<PROMOTE_EP>);
 
+        // tag dispatching based on man capture directions
         template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&);
         template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_2>);
         template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_4>);
@@ -41,10 +46,12 @@ private:
         template<size_t> static bool scan_dir(BitBoard, Propagate<Rules, Board>&);
         template<size_t> static bool scan(BitBoard, Propagate<Rules, Board>&);
 
+        // tag dispatching based on whether men can capture kings
         static bool detect_targets(const Position<Board>&);
         static bool detect_targets(const Position<Board>&, Int2Type<false>);
         static bool detect_targets(const Position<Board>&, Int2Type<true>);
 
+        // tag dispatching based on man capture directions
         static bool detect_dirs(BitBoard, BitBoard, BitBoard);
         static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<DIRS_2>);
         static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<DIRS_4>);

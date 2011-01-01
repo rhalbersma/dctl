@@ -6,14 +6,14 @@
 #include <sstream>
 
 // move tokens
-template<typename> struct d_MoveToken           { typedef MoveToken<'-', 'x'> TYPE; };
-template<> struct d_MoveToken<RussianRules>     { typedef MoveToken<'-', ':'> TYPE; };
-template<> struct d_MoveToken<CzechRules>       { typedef MoveToken<'-', ':'> TYPE; };
+template<typename> struct MoveToken_           { typedef MoveToken<'-', 'x'> TYPE; };
+template<> struct MoveToken_<RussianRules>     { typedef MoveToken<'-', ':'> TYPE; };
+template<> struct MoveToken_<CzechRules>       { typedef MoveToken<'-', ':'> TYPE; };
 
 template<typename Rules> template<typename Board>
 std::string write_move_string<Rules>::operator()(const Position<Board>& p, const Pieces& m)
 {
-        typedef typename d_MoveToken<Rules>::TYPE Token;
+        typedef typename MoveToken_<Rules>::TYPE Token;
 
         const BitBoard from_sq  =  p.pieces( p.to_move()) & m.pieces( p.to_move());
         const BitBoard dest_sq  = ~p.pieces( p.to_move()) & m.pieces( p.to_move());

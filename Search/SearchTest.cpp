@@ -184,7 +184,7 @@ void SearchTest::Killer(void)
 /*
 void SearchTest::ChessBoardVariants(void)
 {
-        // The alternative game rules thread_pos on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+        // The alternative game rules thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2822
         Position<ChessBoard> i8;
         std::cout << write_square_layout<ChessBoard>()() << std::endl;
 

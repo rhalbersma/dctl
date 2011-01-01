@@ -6,39 +6,41 @@
 #include <iomanip>
 #include <sstream>
 
+const std::string DXP_GameRequest::HEADER = "R";
+
 const bool DXP_GameRequest::REGISTERED = DXP_MessageFactory::register_creator(HEADER, create);
 
-DXP_AbstractMessage* DXP_GameRequest::create(const DXP_String& s)
+DXP_AbstractMessage* DXP_GameRequest::create(const DXP_StringMessage& s)
 {
         assert(s.header() == HEADER);
-        return new DXP_GameRequest(s.content());
+        return new DXP_GameRequest(s.body());
 }
 
 DXP_GameRequest::DXP_GameRequest(const std::string& s)
 :
-        d_name_initiator(s.substr(2, 32)),
-        d_color_follower(DXP_PositionToken::read_color( *(s.substr(34, 1)).begin() )),
-        d_minutes(atoi(s.substr(35, 3).c_str())),
-        d_moves(atoi(s.substr(38, 3).c_str())),
-        d_setup_position(DXP_PositionToken::read_setup( *(s.substr(41, 1)).begin() ))
+        name_initiator_(s.substr(2, 32)),
+        color_follower_(DXP_PositionToken::read_color( *(s.substr(34, 1)).begin() )),
+        minutes_(atoi(s.substr(35, 3).c_str())),
+        moves_(atoi(s.substr(38, 3).c_str())),
+        setup_position_(DXP_PositionToken::read_setup( *(s.substr(41, 1)).begin() ))
 {
         if (setup_position())
-                d_special_position = s.substr(42);
+                special_position_ = s.substr(42);
 }
 
 DXP_GameRequest::DXP_GameRequest(const std::string& n, bool c, size_t min, size_t mov, bool s, const std::string& f)
 :
-        d_name_initiator(n),
-        d_color_follower(c),
-        d_minutes(min),
-        d_moves(mov),
-        d_setup_position(s)
+        name_initiator_(n),
+        color_follower_(c),
+        minutes_(min),
+        moves_(mov),
+        setup_position_(s)
 {
         if (setup_position())
-                d_special_position = f;
+                special_position_ = f;
 }
 
-DXP_String DXP_GameRequest::message(void) const
+DXP_StringMessage DXP_GameRequest::message(void) const
 {
         std::stringstream sstr;
 
@@ -51,35 +53,35 @@ DXP_String DXP_GameRequest::message(void) const
         if (setup_position())
                 sstr << std::setw(51) << special_position();
 
-        return DXP_String(HEADER, sstr.str());
+        return DXP_StringMessage(HEADER, sstr.str());
 }
 
 const std::string& DXP_GameRequest::name_initiator(void) const
 {
-        return d_name_initiator;
+        return name_initiator_;
 }
 
 bool DXP_GameRequest::color_follower(void) const
 {
-        return d_color_follower;
+        return color_follower_;
 }
 
 size_t DXP_GameRequest::minutes(void) const
 {
-        return d_minutes;
+        return minutes_;
 }
 
 size_t DXP_GameRequest::moves(void) const
 {
-        return d_moves;
+        return moves_;
 }
 
 bool DXP_GameRequest::setup_position(void) const
 {
-        return d_setup_position;
+        return setup_position_;
 }
 
 const std::string& DXP_GameRequest::special_position(void) const
 {
-        return d_special_position;
+        return special_position_;
 }

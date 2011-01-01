@@ -3,27 +3,27 @@
 
 NodeCount SearchStatistics::nodes(void) const
 {
-        return d_nodes;
+        return nodes_;
 }
 
 NodeCount SearchStatistics::sum_ply(void) const
 {
-        return d_sum_ply;
+        return sum_ply_;
 }
 
 size_t SearchStatistics::max_ply(void) const
 {
-        return d_max_ply;
+        return max_ply_;
 }
 
 void SearchStatistics::reset(void)
 {
-        d_nodes = d_sum_ply = d_max_ply = 0;
+        nodes_ = sum_ply_ = max_ply_ = 0;
 }
 
 void SearchStatistics::update(size_t ply)
 {
-        ++d_nodes;
-        d_sum_ply += ply;
-        d_max_ply = std::max(ply, d_max_ply);
+        ++nodes_;
+        sum_ply_ += ply;
+        max_ply_ = std::max(ply, max_ply_);
 }

@@ -36,17 +36,14 @@ public:
 
 private:
         // implementation
-        template<typename Item>
-        const Value* find(const Item&, Int2Type<true>) const;
 
-        template<typename Item>
-        const Value* find(const Item&, Int2Type<false>) const;
+        // tag dispatching based on the key's integer type trait
+        template<typename Item> const Value* find(const Item&, Int2Type<true>) const;
+        template<typename Item> const Value* find(const Item&, Int2Type<false>) const;
 
-        template<typename Item>
-        void insert(const Item&, const Value&, Int2Type<true>);
-
-        template<typename Item>
-        void insert(const Item&, const Value&, Int2Type<false>);
+        // tag dispatching based on the key's integer type trait
+        template<typename Item> void insert(const Item&, const Value&, Int2Type<true>);
+        template<typename Item> void insert(const Item&, const Value&, Int2Type<false>);
 
         static Index bucket(Index);
 
@@ -60,8 +57,8 @@ private:
         typedef Bucket<Entry, ASSOCIATIVITY> EntryBucket;
 
         // representation
-        EntryBucket* d_hash_map;
-        //TODO: std::vector<EntryBucket> d_hash_map;
+        EntryBucket* hash_map_;
+        //TODO: std::vector<EntryBucket> hash_map_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

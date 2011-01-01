@@ -17,5 +17,5 @@ private:
         double seconds(clock_t) const;  // convert clock() ticks to seconds
 
         // representation
-        std::vector<clock_t> d_split;   // split() history
+        std::vector<clock_t> split_;   // split() history
 };

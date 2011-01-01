@@ -7,13 +7,13 @@ struct JenkinsHash<Position<Board>, Index>: public std::unary_function<Position<
 {
         Index operator()(const Position<Board>& p) const
         {
-                Index d_index = 0;
+                Index index_ = 0;
 
-                JenkinsMix<Index>::mix(d_index, p.to_move());
-                JenkinsMix<Index>::mix(d_index, p.pieces(Side::BLACK));
-                JenkinsMix<Index>::mix(d_index, p.pieces(Side::WHITE));
-                JenkinsMix<Index>::mix(d_index, p.kings());
+                JenkinsMix<Index>::mix(index_, p.to_move());
+                JenkinsMix<Index>::mix(index_, p.pieces(Side::BLACK));
+                JenkinsMix<Index>::mix(index_, p.pieces(Side::WHITE));
+                JenkinsMix<Index>::mix(index_, p.kings());
                 
-                return d_index;
+                return index_;
         }
 };

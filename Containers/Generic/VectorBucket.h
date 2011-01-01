@@ -54,8 +54,8 @@ private:
         bool in_range(size_t) const;
 
         // representation
-        Bucket<T, N> d_bucket;
-        size_t d_size;
+        Bucket<T, N> bucket_;
+        size_t size_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

@@ -8,13 +8,13 @@
 template<typename Board>
 Position<Board>::Position(void)
 :
-        d_pieces(Board::INITIAL[Side::BLACK], Board::INITIAL[Side::WHITE], 0),
-        d_side(Side::WHITE)
+        pieces_(Board::INITIAL[Side::BLACK], Board::INITIAL[Side::WHITE], 0),
+        side_(Side::WHITE)
 {
-        d_same_king_moves[Side::BLACK].push_back(BitBoard(), PlyCount());
-        d_same_king_moves[Side::WHITE].push_back(BitBoard(), PlyCount());
-        d_non_conversion.push_back(PlyCount());
-        d_repetition.push_back(ZobristHash<Position<Board>, HashIndex>()(*this));
+        same_king_moves_[Side::BLACK].push_back(BitBoard(), PlyCount());
+        same_king_moves_[Side::WHITE].push_back(BitBoard(), PlyCount());
+        non_conversion_.push_back(PlyCount());
+        repetition_.push_back(ZobristHash<Position<Board>, HashIndex>()(*this));
         assert(pieces_invariant());
 }
 
@@ -22,13 +22,13 @@ Position<Board>::Position(void)
 template<typename Board>
 Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
 :
-        d_pieces(black_pieces, white_pieces, kings),
-        d_side(to_move)
+        pieces_(black_pieces, white_pieces, kings),
+        side_(to_move)
 {
-        d_same_king_moves[Side::BLACK].push_back(BitBoard(), PlyCount());
-        d_same_king_moves[Side::WHITE].push_back(BitBoard(), PlyCount());
-        d_non_conversion.push_back(PlyCount());
-        d_repetition.push_back(ZobristHash<Position<Board>, HashIndex>()(*this));
+        same_king_moves_[Side::BLACK].push_back(BitBoard(), PlyCount());
+        same_king_moves_[Side::WHITE].push_back(BitBoard(), PlyCount());
+        non_conversion_.push_back(PlyCount());
+        repetition_.push_back(ZobristHash<Position<Board>, HashIndex>()(*this));
         assert(pieces_invariant());
 }
 
@@ -58,21 +58,24 @@ bool Position<Board>::is_draw(void) const
 template<typename Board>
 bool Position<Board>::is_repetition_draw(void) const
 {
-        return d_repetition.non_unique_back(non_conversion_moves());
+        return repetition_.non_unique_back(non_conversion_moves());
 }
 
+// tag dispatching based on restrictions on consecutive king moves by both sides
 template<typename Board> template<typename Rules>
 bool Position<Board>::is_non_conversion_draw(void) const
 {
         return is_non_conversion_draw<Rules>(Int2Type<is_RestrictedNonConversionMoves<Rules>::VALUE>());
 }
 
+// partial specialization for restricted consecutive king moves by both sides
 template<typename Board> template<typename Rules>
 bool Position<Board>::is_non_conversion_draw(Int2Type<true>) const
 {
         return non_conversion_moves() >= MaxNonConversionMoves<Rules>::VALUE;
 }
 
+// partial specialization for unrestricted consecutive king moves by both sides
 template<typename Board> template<typename Rules>
 bool Position<Board>::is_non_conversion_draw(Int2Type<false>) const
 {
@@ -80,15 +83,15 @@ bool Position<Board>::is_non_conversion_draw(Int2Type<false>) const
 }
 
 template<typename Board> template<PlyCount N>
-bool Position<Board>::is_restricted_same_king(bool color) const
+bool Position<Board>::is_restricted_same_king_(bool color) const
 {
-        return d_same_king_moves[color].is_restricted<N>();
+        return same_king_moves_[color].is_restricted<N>();
 }
 
 template<typename Board>
 const Pieces& Position<Board>::pieces(void) const
 {
-        return d_pieces;
+        return pieces_;
 }
 
 // black or white men
@@ -105,19 +108,19 @@ BitBoard Position<Board>::kings(bool color) const
         return pieces(color) & kings();
 }
 
-// tag dispatching based on consecutive king move restrictions
+// tag dispatching for restrictions on consecutive moves with the same king
 template<typename Board> template<typename Rules>
 BitBoard Position<Board>::unrestricted_kings(bool color) const
 {
         return unrestricted_kings<Rules>(color, Int2Type<is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
-// partial specialization for restricted consecutive king moves
+// partial specialization for restricted consecutive moves with the same king
 template<typename Board> template<typename Rules>
 BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<true>) const
 {
         if (men(color) && kings(color)) {
-                if (is_restricted_same_king<MaxSameKingMoves<Rules>::VALUE>(color))
+                if (is_restricted_same_king_<MaxSameKingMoves<Rules>::VALUE>(color))
                         return kings(color) ^ same_king(color);
                 else
                         return kings(color);
@@ -125,7 +128,7 @@ BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<true>) const
                 return kings(color);
 }
 
-// partial specialization for unrestricted consecutive king moves
+// partial specialization for unrestricted consecutive moves with the same king
 template<typename Board> template<typename Rules>
 BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<false>) const
 {
@@ -136,7 +139,7 @@ BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<false>) const
 template<typename Board>
 BitBoard Position<Board>::pieces(bool color) const
 {
-        return d_pieces.pieces(color);
+        return pieces_.pieces(color);
 }
 
 // black and white men
@@ -150,7 +153,7 @@ BitBoard Position<Board>::men(void) const
 template<typename Board>
 BitBoard Position<Board>::kings(void) const
 {
-        return d_pieces.kings();
+        return pieces_.kings();
 }
 
 // occupied squares
@@ -171,44 +174,44 @@ BitBoard Position<Board>::not_occupied(void) const
 template<typename Board>
 Pieces::Composition Position<Board>::composition(bool color) const
 {
-        return d_pieces.composition(color);
+        return pieces_.composition(color);
 }
 
 // the side to move
 template<typename Board>
 bool Position<Board>::to_move(void) const
 {
-        return d_side.to_move();
+        return side_.to_move();
 }
 
 template<typename Board>
 BitBoard Position<Board>::same_king(bool color) const
 {
-        return d_same_king_moves[color].king();
+        return same_king_moves_[color].king();
 }
 
 template<typename Board>
 PlyCount Position<Board>::same_moves(bool color) const
 {
-        return d_same_king_moves[color].moves();
+        return same_king_moves_[color].moves();
 }
 
 template<typename Board>
 PlyCount Position<Board>::non_conversion_moves(void) const
 {
-        return d_non_conversion.moves();
+        return non_conversion_.moves();
 }
 
 template<typename Board>
 HashIndex& Position<Board>::hash_index(void)
 {
-        return d_repetition.hash_index();
+        return repetition_.hash_index();
 }
 
 template<typename Board>
 HashIndex Position<Board>::hash_index(void) const
 {
-        return d_repetition.hash_index();
+        return repetition_.hash_index();
 }
 
 // logical consistency of the representation

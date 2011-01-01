@@ -33,5 +33,5 @@ private:
         const static size_t STRIDE = 2;
 
         // representation
-        VectorBucket<HashIndex, PLY_MAX> d_repetition;
+        VectorBucket<HashIndex, PLY_MAX> repetition_;
 };
