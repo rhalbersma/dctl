@@ -3,7 +3,7 @@
 template<typename T, size_t N>
 VectorBucket<T, N>::VectorBucket(void)
 :
-        d_size(0)
+        size_(0)
 {
         assert(invariant());
 }
@@ -11,7 +11,7 @@ VectorBucket<T, N>::VectorBucket(void)
 template<typename T, size_t N>
 VectorBucket<T, N>::VectorBucket(size_t s_size)
 :
-        d_size(s_size)
+        size_(s_size)
 {
         assert(invariant());
 }
@@ -19,13 +19,13 @@ VectorBucket<T, N>::VectorBucket(size_t s_size)
 template<typename T, size_t N>
 typename VectorBucket<T, N>::iterator VectorBucket<T, N>::begin(void)
 {
-        return d_bucket.begin();
+        return bucket_.begin();
 }
 
 template<typename T, size_t N>
 typename VectorBucket<T, N>::const_iterator VectorBucket<T, N>::begin(void) const
 {
-        return d_bucket.begin();
+        return bucket_.begin();
 }
 
 template<typename T, size_t N>
@@ -67,19 +67,19 @@ typename VectorBucket<T, N>::const_reverse_iterator VectorBucket<T, N>::rend(voi
 template<typename T, size_t N>
 size_t VectorBucket<T, N>::size(void) const
 {
-        return d_size;
+        return size_;
 }
 
 template<typename T, size_t N>
 void VectorBucket<T, N>::resize(size_t s_size)
 {
-        d_size = s_size;
+        size_ = s_size;
 }
 
 template<typename T, size_t N>
 size_t VectorBucket<T, N>::capacity(void) const
 {
-        return d_bucket.capacity();
+        return bucket_.capacity();
 }
 
 template<typename T, size_t N>
@@ -138,7 +138,7 @@ template<typename T, size_t N>
 void VectorBucket<T, N>::push(void)
 {
         assert(!full());        // pre-condition
-        ++d_size;
+        ++size_;
         assert(invariant());
 }
 
@@ -146,14 +146,14 @@ template<typename T, size_t N>
 void VectorBucket<T, N>::pop_back(void)
 {
         assert(!empty());       // pre-condition
-        --d_size;
+        --size_;
         assert(invariant());
 }
 
 template<typename T, size_t N>
 void VectorBucket<T, N>::clear(void)
 {
-        d_size = 0;
+        size_ = 0;
         assert(invariant());
 }
 

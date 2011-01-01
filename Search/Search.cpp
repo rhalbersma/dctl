@@ -5,7 +5,7 @@
 #include <iostream>
 
 Search::TranspositionTable Search::TT;
-SearchStatistics Search::d_statistics;
+SearchStatistics Search::statistics_;
 
 void Search::report(size_t nominal_ply, int alpha, int beta, int value, const StopWatch& timer)
 {
@@ -40,27 +40,27 @@ void Search::report(size_t nominal_ply, int alpha, int beta, int value, const St
 
 uint64_t Search::nodes(void)
 {
-        return d_statistics.nodes();
+        return statistics_.nodes();
 }
 
 uint64_t Search::sum_ply(void)
 {
-        return d_statistics.sum_ply();
+        return statistics_.sum_ply();
 }
 
 size_t Search::max_ply(void)
 {
-        return d_statistics.max_ply();
+        return statistics_.max_ply();
 }
 
 void Search::reset_statistics(void)
 {
-        d_statistics.reset();
+        statistics_.reset();
 }
 
 void Search::update_statistics(size_t ply)
 {
-        d_statistics.update(ply);
+        statistics_.update(ply);
 }
 
 void Search::identity_permutation(Move::Order& permutation)

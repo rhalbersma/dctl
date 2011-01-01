@@ -2,27 +2,27 @@
 
 PlyCount& NonConversion::moves(void)
 {
-        return d_moves.back();
+        return moves_.back();
 }
 
 PlyCount NonConversion::moves(void) const
 {
-        return d_moves.back();
+        return moves_.back();
 }
 
 void NonConversion::copy_back(void)
 {
-        d_moves.copy_back();
+        moves_.copy_back();
 }
 
 void NonConversion::push_back(PlyCount s_moves)
 {
-        d_moves.push_back(s_moves);
+        moves_.push_back(s_moves);
 }
 
 void NonConversion::pop_back(void)
 {
-        d_moves.pop_back();
+        moves_.pop_back();
 }
 
 void NonConversion::increment(void)

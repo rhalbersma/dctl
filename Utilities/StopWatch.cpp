@@ -3,29 +3,29 @@
 
 void StopWatch::start(void)
 {
-        d_split.push_back(clock());
+        split_.push_back(clock());
 }
 
 void StopWatch::split(void)
 {
-        d_split.push_back(clock());        
+        split_.push_back(clock());        
 }
 
 void StopWatch::reset(void)
 {
-        d_split.clear();        
+        split_.clear();        
 }
 
 double StopWatch::total(void) const
 {
-        return seconds(d_split.end() - d_split.begin());
+        return seconds(split_.end() - split_.begin());
 }
 
 double StopWatch::delta(void) const
 {
-        assert(!d_split.empty());
-        const size_t i = d_split.size() - 1;
-        return seconds(d_split[i] - d_split[i - 1]);
+        assert(!split_.empty());
+        const size_t i = split_.size() - 1;
+        return seconds(split_[i] - split_[i - 1]);
 }
 
 double StopWatch::seconds(clock_t clocks) const

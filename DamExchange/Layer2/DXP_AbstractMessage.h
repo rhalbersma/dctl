@@ -1,10 +1,10 @@
 #pragma once
-#include "DXP_String.h"
+#include "DXP_StringMessage.h"
 
 class DXP_AbstractMessage
 {
 public:
-        virtual DXP_String message(void) const = 0;
+        virtual DXP_StringMessage message(void) const = 0;
 
         // virtual destructor
         virtual ~DXP_AbstractMessage(void) {};

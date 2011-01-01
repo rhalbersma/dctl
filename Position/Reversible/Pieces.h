@@ -6,7 +6,7 @@ class Pieces
 {
 public:
         // typedefs 
-        enum Composition {NONE, PAWN, KING, BOTH};
+        enum Composition { NONE, PAWN, KING, BOTH };
 
         // constructors
         Pieces(void) {};
@@ -37,8 +37,8 @@ public:
 
 private:
         // representation
-        BitBoard d_pieces[2];                           // black and white pieces
-        BitBoard d_kings;                               // kings
+        BitBoard pieces_[2];                            // black and white pieces
+        BitBoard kings_;                                // kings
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

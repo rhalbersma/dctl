@@ -1,6 +1,6 @@
 #pragma once
 #include "DXP_AbstractMessage.h"
-#include "DXP_String.h"
+#include "DXP_StringMessage.h"
 #include <string>
 
 class DXP_BackAcknowledge: public DXP_AbstractMessage
@@ -10,21 +10,21 @@ public:
         enum AcceptanceCode { ACCEPT = 0, NOT_SUPPORTED = 1, DECLINE = 2 };
 
         // constructors
-        static DXP_AbstractMessage* create(const DXP_String&);
+        static DXP_AbstractMessage* create(const DXP_StringMessage&);
 
-        DXP_BackAcknowledge(const std::string&);
-        DXP_BackAcknowledge(AcceptanceCode);
+        explicit DXP_BackAcknowledge(const std::string&);
+        explicit DXP_BackAcknowledge(AcceptanceCode);
 
         // views
-        virtual DXP_String message(void) const;
+        virtual DXP_StringMessage message(void) const;
 
         AcceptanceCode acceptance_code(void) const;
 
 private:
         // implementation
-        static const char HEADER = 'K';
+        static const std::string HEADER;
         static const bool REGISTERED;
 
         // representation
-        AcceptanceCode d_acceptance_code;
+        AcceptanceCode acceptance_code_;
 };

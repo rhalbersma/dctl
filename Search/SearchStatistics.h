@@ -14,7 +14,7 @@ public:
 
 private:
         // representation
-        NodeCount d_nodes;
-        NodeCount d_sum_ply;
-        size_t d_max_ply;
+        NodeCount nodes_;
+        NodeCount sum_ply_;
+        size_t max_ply_;
 };

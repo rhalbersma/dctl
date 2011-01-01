@@ -52,11 +52,15 @@ public:
 private:
         // implentation
         bool is_repetition_draw(void) const;
+        
+        // tag dispatching based on restrictions on consecutive king moves by both sides        
         template<typename> bool is_non_conversion_draw(void) const;
         template<typename> bool is_non_conversion_draw(Int2Type<true>) const;
         template<typename> bool is_non_conversion_draw(Int2Type<false>) const;
-        template<PlyCount> bool is_restricted_same_king(bool) const;
 
+        template<PlyCount> bool is_restricted_same_king_(bool) const;
+
+        // tag dispatching for restrictions on consecutive moves with the same king
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<true>) const;
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<false>) const;
 
@@ -65,17 +69,21 @@ private:
         bool is_with_king(const Pieces&) const;
         bool is_capture(const Pieces&) const;
 
+        // tag dispatching for restrictions on consecutive moves with the same king
         template<typename> void make_irreversible(const Pieces&);
         template<typename> void make_irreversible(const Pieces&, Int2Type<true>);
         template<typename> void make_irreversible(const Pieces&, Int2Type<false>);
+
         void make_repetition(void);
         void make_non_conversion(const Pieces&);
         template<PlyCount> void make_same_king_moves(const Pieces&);
         void make_reversible(const Pieces&);
 
+        // tag dispatching for restrictions on consecutive moves with the same king
         template<typename> void undo_irreversible(void);
         void undo_irreversible(Int2Type<true>);
         void undo_irreversible(Int2Type<false>);
+
         void undo_repetition(void);
         void undo_non_conversion(void);
         void undo_same_king_moves(void);
@@ -85,10 +93,12 @@ private:
         template<typename> bool is_pseudo_legal_make(const Pieces&) const;
         template<typename> bool is_pseudo_legal_undo(const Pieces&) const;
 
+        // tag dispatching on capture removal
         template<typename> bool make_sequential_capture_removal(const Pieces&) const;
         bool make_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_1>) const;
         bool make_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_N>) const;
                 
+        // tag dispatching on capture removal
         template<typename> bool undo_sequential_capture_removal(const Pieces&) const;
         bool undo_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_1>) const;
         bool undo_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_N>) const;
@@ -98,12 +108,12 @@ private:
         bool hash_index_invariant(void) const;
 
         // representation
-        Pieces d_pieces;
-        Side d_side;
+        Pieces pieces_;
+        Side side_;
 
-        SameKingMoves d_same_king_moves[2];
-        NonConversion d_non_conversion;
-        Repetition d_repetition; 
+        SameKingMoves same_king_moves_[2];
+        NonConversion non_conversion_;
+        Repetition repetition_; 
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

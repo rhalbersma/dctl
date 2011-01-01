@@ -5,24 +5,24 @@
 
 SearchNode::SearchNode(void)
 :
-        d_value(0),
-        d_rest(0)
+        value_(0),
+        rest_(0)
 {
 }
 
 SearchNode::SearchNode(int s_value, Type s_type, size_t s_depth, size_t s_move)
 :
-        d_value(static_cast<int16_t>(s_value)),
-        d_rest(0)
+        value_(static_cast<int16_t>(s_value)),
+        rest_(0)
 {
-        d_rest ^= (s_type & TYPE_MASK) << TYPE_SHIFT;
-        d_rest ^= (s_depth & DEPTH_MASK) << DEPTH_SHIFT;
-        d_rest ^= (s_move & MOVE_MASK) << MOVE_SHIFT;
+        rest_ ^= (s_type & TYPE_MASK) << TYPE_SHIFT;
+        rest_ ^= (s_depth & DEPTH_MASK) << DEPTH_SHIFT;
+        rest_ ^= (s_move & MOVE_MASK) << MOVE_SHIFT;
 }
 
 int SearchNode::value(void) const
 {
-        return d_value;
+        return value_;
 }
 
 int SearchNode::refined_value(int score) const
@@ -32,17 +32,17 @@ int SearchNode::refined_value(int score) const
 
 SearchNode::Type SearchNode::type(void) const
 {
-        return static_cast<Type>((d_rest & (TYPE_MASK << TYPE_SHIFT)) >> TYPE_SHIFT);
+        return static_cast<Type>((rest_ & (TYPE_MASK << TYPE_SHIFT)) >> TYPE_SHIFT);
 }
 
 size_t SearchNode::depth(void) const
 {
-        return (d_rest & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT;
+        return (rest_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT;
 }
 
 size_t SearchNode::move(void) const
 {
-        return (d_rest & (MOVE_MASK << MOVE_SHIFT)) >> MOVE_SHIFT;
+        return (rest_ & (MOVE_MASK << MOVE_SHIFT)) >> MOVE_SHIFT;
 }
 
 bool SearchNode::is_depth_greater_equal(size_t s_depth) const
@@ -158,8 +158,8 @@ std::string SearchNode::print_move(void) const
 
 void SearchNode::set_move(size_t s_move)
 {
-        d_rest ^= (move() & MOVE_MASK) << MOVE_SHIFT;
-        d_rest ^= (s_move & MOVE_MASK) << MOVE_SHIFT;
+        rest_ ^= (move() & MOVE_MASK) << MOVE_SHIFT;
+        rest_ ^= (s_move & MOVE_MASK) << MOVE_SHIFT;
 }
 
 SearchNode::Type SearchNode::lower()

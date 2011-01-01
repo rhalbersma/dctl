@@ -1,7 +1,7 @@
 #include "DXP_MessageFactory.h"
 #include <cassert>
 
-DXP_AbstractMessage* DXP_MessageFactory::select_creator(const DXP_String& s)
+DXP_AbstractMessage* DXP_MessageFactory::select_creator(const DXP_StringMessage& s)
 {
         CreatorMap::const_iterator i = creator_map().find(s.header());
         if (i != creator_map().end())
@@ -23,6 +23,6 @@ bool DXP_MessageFactory::unregister_creator(MessageId header)
 
 DXP_MessageFactory::CreatorMap& DXP_MessageFactory::creator_map(void)
 {
-        static CreatorMap d_creator_map;
-        return d_creator_map;
+        static CreatorMap creator_map_;
+        return creator_map_;
 }

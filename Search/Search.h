@@ -53,7 +53,7 @@ private:
 
         // representation
         static TranspositionTable TT;
-        static SearchStatistics d_statistics;
+        static SearchStatistics statistics_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

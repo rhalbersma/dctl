@@ -55,28 +55,37 @@ public:
 
 private:
         BitBoard captured_targets(void) const;
+
+        // tag dispatching based on whether men can capture kings
         BitBoard captured_kings(BitBoard) const;
-        BitBoard captured_kings(BitBoard, Int2Type<false>) const;       // men that cannot capture kings
-        BitBoard captured_kings(BitBoard, Int2Type<true>) const;        // men that can capture kings
+        BitBoard captured_kings(BitBoard, Int2Type<false>) const;
+        BitBoard captured_kings(BitBoard, Int2Type<true>) const;
 
         template<bool> BitBoard promotions(BitBoard) const;
 
+        // tag dispatching based on promotion condition
         void init_promotion(void);
-        void init_promotion(Int2Type<PROMOTE_BR>);                      // men that promote on the back row
-        void init_promotion(Int2Type<PROMOTE_EP>);                      // men that promote en-passant
+        void init_promotion(Int2Type<PROMOTE_BR>);
+        void init_promotion(Int2Type<PROMOTE_EP>);
 
+        // tag dispatching on capture removal
         void make(BitBoard, Int2Type<REMOVE_1>);
         void make(BitBoard, Int2Type<REMOVE_N>);
+
+        // tag dispatching on capture removal
         void undo(BitBoard, Int2Type<REMOVE_1>);
         void undo(BitBoard, Int2Type<REMOVE_N>);
 
+        // tag dispatching based on ambiguity of man captures
         template<bool> void add_man_capture(BitBoard, Int2Type<false>);
         template<bool> void add_man_capture(BitBoard, Int2Type<true>);
 
+        // tag dispatching based on king halt after final capture
         template<bool, size_t> void add_king_capture(BitBoard, Int2Type<HALT_K>);
         template<bool, size_t> void add_king_capture(BitBoard, Int2Type<HALT_1>);
         template<bool, size_t> void add_king_capture(BitBoard, Int2Type<HALT_N>);
 
+        // tag dispatching based on promotion condition
         template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, bool);
         template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Int2Type<PROMOTE_BR>);
         template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Int2Type<PROMOTE_EP>);
@@ -85,15 +94,15 @@ private:
 	static const bool TOGGLE = true;
 
         // representation
-        BitBoard d_initial_targets;                                     // targets at the start of a capture
-        BitBoard d_remaining_targets;                                   // targets at the end of a capture
-        BitBoard d_not_occupied;
-        BitBoard d_opponent_kings;
-        BitBoard d_from_sq;                                             
-        CaptureValue d_current_capture;
-        CaptureValue d_best_capture;
-        bool d_promotion;                                               // promotion en-passant
-        Move::List d_move_list;
+        BitBoard initial_targets_;                                     // targets at the start of a capture
+        BitBoard remaining_targets_;                                   // targets at the end of a capture
+        BitBoard not_occupied_;
+        BitBoard opponent_kings_;
+        BitBoard from_sq_;                                             
+        CaptureValue current_capture_;
+        CaptureValue best_capture_;
+        bool promotion_;                                               // promotion en-passant
+        Move::List move_list_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

@@ -42,7 +42,7 @@ Position<Board> read_position_string<FEN, Board, Token>::operator()(const std::s
                 assert(false);
 	}
 
-        for(sstr >> ch; sstr; sstr >> ch) {
+        for (sstr >> ch; sstr; sstr >> ch) {
                 switch(ch) {
                 case Token::COLON:
                         sstr >> ch;
@@ -135,7 +135,7 @@ Position<Board> read_position_string<DXP, Board, Token>::operator()(const std::s
 
 	BitBoard bb;
         size_t b;
-	for(size_t i = 0; i < Board::SQUARE_RANGE; ++i) {
+	for (size_t i = 0; i < Board::SQUARE_RANGE; ++i) {
                 b = Board::TABLE_SQUARE2BIT[i];         // covnert square to bit
 		bb = BitBoard(1) << b;                  // create bitboard
 		sstr >> ch;

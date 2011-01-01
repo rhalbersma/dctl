@@ -4,7 +4,7 @@ class Side
 {
 public:
         // typedefs 
-	enum {BLACK, WHITE};
+	enum { BLACK, WHITE };
 
         // constructors
         Side(void);                     // initialize with black to move
@@ -21,5 +21,5 @@ private:
         static const bool PASS = true;  // toggle the side to move
 
         // representation
-        bool d_side;                    // the side to move
+        bool side_;                     // the side to move
 };

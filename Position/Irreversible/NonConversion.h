@@ -22,5 +22,5 @@ public:
 
 private:
         // representation
-        VectorBucket<PlyCount, PLY_MAX> d_moves;
+        VectorBucket<PlyCount, PLY_MAX> moves_;
 };

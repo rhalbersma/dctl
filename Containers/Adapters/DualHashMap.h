@@ -26,7 +26,7 @@ public:
 
 private:
         // representation
-        HashMap<Key, Value, LogN - 1, Replace, Hash, Index> d_hash_map[2];
+        HashMap<Key, Value, LogN - 1, Replace, Hash, Index> hash_map_[2];
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

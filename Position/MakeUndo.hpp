@@ -3,21 +3,21 @@ void Position<Board>::make(const Pieces& m)
 {
         assert(is_pseudo_legal_make<Rules>(m));
 
-        //make_irreversible<Rules>(m);
+        make_irreversible<Rules>(m);
         make_reversible(m);
 
         assert(pieces_invariant());
         assert(hash_index_invariant());
 }
 
-// tag dispatching based on consecutive king moves restrictions
+// tag dispatching for restrictions on consecutive moves with the same king
 template<typename Board> template<typename Rules> FORCE_INLINE
 void Position<Board>::make_irreversible(const Pieces& m)
 {
         make_irreversible<Rules>(m, Int2Type<is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
-// partial specialization for restricted consecutive king moves
+// partial specialization for restricted consecutive moves with the same king
 template<typename Board> template<typename Rules> FORCE_INLINE
 void Position<Board>::make_irreversible(const Pieces& m, Int2Type<true>)
 {
@@ -25,7 +25,7 @@ void Position<Board>::make_irreversible(const Pieces& m, Int2Type<true>)
         make_same_king_moves<MaxSameKingMoves<Rules>::VALUE>(m);
 }
 
-// partial specialization for unrestricted consecutive king moves
+// partial specialization for unrestricted consecutive moves with the same king
 template<typename Board> template<typename Rules> FORCE_INLINE
 void Position<Board>::make_irreversible(const Pieces& m, Int2Type<false>)
 {
@@ -36,24 +36,24 @@ void Position<Board>::make_irreversible(const Pieces& m, Int2Type<false>)
 template<typename Board> FORCE_INLINE
 void Position<Board>::make_repetition(void)
 {
-        d_repetition.copy_back();
+        repetition_.copy_back();
 }
 
 template<typename Board> FORCE_INLINE
 void Position<Board>::make_non_conversion(const Pieces& m)
 {
-        d_non_conversion.copy_back();
+        non_conversion_.copy_back();
 
         if (is_with_king(m) && !is_capture(m))
-                d_non_conversion.increment();
+                non_conversion_.increment();
         else
-                d_non_conversion.reset();
+                non_conversion_.reset();
 }
 
 template<typename Board> template<PlyCount N> FORCE_INLINE
 void Position<Board>::make_same_king_moves(const Pieces& m)
 {
-        SameKingMoves& current_state = d_same_king_moves[to_move()];
+        SameKingMoves& current_state = same_king_moves_[to_move()];
         hash_index() ^= (
                 ZobristRandom<HashIndex>::xor_rand(current_state.king(), ZobristRandom<HashIndex>::SAME_KING[to_move()]) ^
                 ZobristRandom<HashIndex>::xor_rand(current_state.moves(), ZobristRandom<HashIndex>::SAME_MOVES[to_move()])
@@ -110,31 +110,30 @@ bool Position<Board>::is_capture(const Pieces& m) const
 template<typename Board> FORCE_INLINE
 void Position<Board>::make_reversible(const Pieces& m)
 {
-        d_pieces.toggle(m);
-        //hash_index() ^= ZobristHash<Pieces, HashIndex>()(m);
+        pieces_.toggle(m);
+        hash_index() ^= ZobristHash<Pieces, HashIndex>()(m);
 
-        d_side.pass();
-        //hash_index() ^= ZobristHash<Side, HashIndex>()();
+        side_.pass();
+        hash_index() ^= ZobristHash<Side, HashIndex>()();
 }
 
-// tag dispatching based on consecutive king moves restrictions
 template<typename Board> template<typename Rules>
 void Position<Board>::undo(const Pieces& m)
 {
         assert(is_pseudo_legal_undo<Rules>(m));
 
         undo_reversible(m);
-        //undo_irreversible<Rules>();
+        undo_irreversible<Rules>();
 }
 
-// tag dispatching based on consecutive king moves restrictions
+// tag dispatching for restrictions on consecutive moves with the same king
 template<typename Board> template<typename Rules> FORCE_INLINE
 void Position<Board>::undo_irreversible(void)
 {
         undo_irreversible(Int2Type<is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
-// partial specialization for restricted consecutive king moves
+// partial specialization for restricted consecutive moves with the same king
 template<typename Board> FORCE_INLINE
 void Position<Board>::undo_irreversible(Int2Type<true>)
 {
@@ -142,7 +141,7 @@ void Position<Board>::undo_irreversible(Int2Type<true>)
         undo_same_king_moves();
 }
 
-// partial specialization for restricted consecutive king moves
+// partial specialization for unrestricted consecutive moves with the same king
 template<typename Board> FORCE_INLINE
 void Position<Board>::undo_irreversible(Int2Type<false>)
 {
@@ -153,26 +152,26 @@ void Position<Board>::undo_irreversible(Int2Type<false>)
 template<typename Board> FORCE_INLINE
 void Position<Board>::undo_repetition(void)
 {
-        d_repetition.pop_back();
+        repetition_.pop_back();
 }
 
 template<typename Board> FORCE_INLINE
 void Position<Board>::undo_non_conversion(void)
 {
-        d_non_conversion.pop_back();
+        non_conversion_.pop_back();
 }
 
 template<typename Board> FORCE_INLINE
 void Position<Board>::undo_same_king_moves(void)
 {
-        d_same_king_moves[to_move()].pop_back();
+        same_king_moves_[to_move()].pop_back();
 }
 
 template<typename Board> FORCE_INLINE
 void Position<Board>::undo_reversible(const Pieces& m)
 {
-        d_side.pass();
-        d_pieces.toggle(m);
+        side_.pass();
+        pieces_.toggle(m);
 }
 
 template<typename Board> template<typename Rules>

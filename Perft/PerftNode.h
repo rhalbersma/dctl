@@ -27,5 +27,5 @@ private:
         static const NodeCount DEPTH_MASK = ((NodeCount(1) << DEPTH_BITS) - 1);
 
         // representation
-        NodeCount d_perft_node;                 // leaf node count and depth
+        NodeCount perft_node_;                 // leaf node count and depth
 };

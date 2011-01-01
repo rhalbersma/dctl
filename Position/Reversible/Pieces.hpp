@@ -4,7 +4,7 @@
 template<bool Color>
 void Pieces::init(BitBoard active_pieces, BitBoard opponent_pieces, BitBoard kings)
 {
-	d_pieces[Color] = active_pieces;
-	d_pieces[!Color] = opponent_pieces;
-        d_kings = kings;
+	pieces_[Color] = active_pieces;
+	pieces_[!Color] = opponent_pieces;
+        kings_ = kings;
 }

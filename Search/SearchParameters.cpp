@@ -2,18 +2,18 @@
 
 SearchParameters::SearchParameters(void)
 :
-        d_null_move(true)
+        null_move_(true)
 {
 }
 
 const Move::Sequence& SearchParameters::PV(void) const
 {
-        return d_PV;
+        return PV_;
 }
 
 Move::Sequence& SearchParameters::PV(void)
 {
-        return d_PV;
+        return PV_;
 }
 
 size_t SearchParameters::best_move(void) const
@@ -23,7 +23,7 @@ size_t SearchParameters::best_move(void) const
 
 bool SearchParameters::do_null_move(void) const
 {
-        return d_null_move;
+        return null_move_;
 }
 
 void SearchParameters::reset_PV(size_t move, const Move::Sequence& continuation)
@@ -35,10 +35,10 @@ void SearchParameters::reset_PV(size_t move, const Move::Sequence& continuation)
 
 void SearchParameters::clear_do_null_move()
 {
-        d_null_move = false;
+        null_move_ = false;
 }
 
 void SearchParameters::set_do_null_move()
 {
-        d_null_move = true;
+        null_move_ = true;
 }
