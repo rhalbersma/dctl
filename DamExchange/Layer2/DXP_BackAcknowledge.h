@@ -12,7 +12,6 @@ public:
         // constructors
         static DXP_AbstractMessage* create(const DXP_StringMessage&);
 
-        explicit DXP_BackAcknowledge(const std::string&);
         explicit DXP_BackAcknowledge(AcceptanceCode);
 
         // views
@@ -22,6 +21,8 @@ public:
 
 private:
         // implementation
+        explicit DXP_BackAcknowledge(const std::string&);
+
         static const std::string HEADER;
         static const bool REGISTERED;
 

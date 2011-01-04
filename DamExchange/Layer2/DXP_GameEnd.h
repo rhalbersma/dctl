@@ -13,7 +13,6 @@ public:
         // constructors
         static DXP_AbstractMessage* create(const DXP_StringMessage&);
 
-        explicit DXP_GameEnd(const std::string&);
         DXP_GameEnd(Reason, StopCode);
 
         // views
@@ -24,6 +23,8 @@ public:
 
 private:
         // implementation
+        explicit DXP_GameEnd(const std::string&);
+
         static const std::string HEADER;
         static const bool REGISTERED;
 

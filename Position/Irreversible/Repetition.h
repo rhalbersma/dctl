@@ -23,7 +23,7 @@ public:
 
 private:
         // implementation
-        typedef const HashIndex* const_iterator;
+        typedef VectorBucket<HashIndex, PLY_MAX>::const_iterator const_iterator;
         typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
         const_reverse_iterator rbegin(void) const;

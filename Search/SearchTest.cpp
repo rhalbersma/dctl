@@ -10,11 +10,15 @@
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 void SearchTest::International(void)
 {
+
+        Position<> Kuyken = read_position_string<FEN>()("W:W22,25,27,28,30,32,34,35,37,38,40,41,45,46,47,50:B3,4,8,9,11,12,13,14,16,17,19,21,23,24,26,29");
+        Search::root<InternationalRules>(Kuyken, 41);
+
         //Position<> Taille1 = read_position_string<FEN>()("B:W13,18,27,30,K23,34:B4,K11,16");
         //Search::root<InternationalRules>(Taille1, 7);
 
-        Position<> Taille2 = read_position_string<FEN>()("B:W13,18,27,30,K32,34:B4,K11,16");
-        Search::root<InternationalRules>(Taille2, 7);
+        //Position<> Taille2 = read_position_string<FEN>()("B:W13,18,27,30,K32,34:B4,K11,16");
+        //Search::root<InternationalRules>(Taille2, 7);
 
         /*
         typedef std::pair<std::string, size_t> DB_unittest;
@@ -95,7 +99,7 @@ void SearchTest::International(void)
         }
         */
 }
-
+/*
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        
 void SearchTest::Killer(void)
 {
@@ -180,7 +184,7 @@ void SearchTest::Killer(void)
         //Position<> Walinga(read_position_string<FEN>()("W:WK46,28:BK43"));
         //Search::root<FrisianRules>(Walinga, 39);
 }
-
+*/
 /*
 void SearchTest::ChessBoardVariants(void)
 {

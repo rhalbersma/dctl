@@ -1,17 +1,18 @@
 #pragma once
-#include "Bucket.h"
 #include "../../Utilities/IntegerTypes.h"
-#include <iterator>
+#include <array>
 
 template<typename T, size_t N>
 class VectorBucket
 {
 public:
         // typedefs
-        typedef T* iterator;
-        typedef const T* const_iterator;
-        typedef std::reverse_iterator<iterator> reverse_iterator;
-        typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+        typedef typename std::tr1::array<T, N>::iterator iterator;
+        typedef typename std::tr1::array<T, N>::const_iterator const_iterator;
+        typedef typename std::tr1::array<T, N>::reverse_iterator reverse_iterator;
+        typedef typename std::tr1::array<T, N>::const_reverse_iterator const_reverse_iterator;
+        typedef typename std::tr1::array<T, N>::reference reference;
+        typedef typename std::tr1::array<T, N>::const_reference const_reference;
 
         // constructors
         VectorBucket(void);
@@ -35,26 +36,27 @@ public:
         bool full(void) const;
 
         // element access: at() not supported
-              T& operator[](size_t);
-        const T& operator[](size_t) const;
-              T& front(void);
-        const T& front(void) const;
-              T& back(void);
-        const T& back(void) const;
+              reference operator[](size_t);
+        const_reference operator[](size_t) const;
+              reference front(void);
+        const_reference front(void) const;
+              reference back(void);
+        const_reference back(void) const;
 
         // modifiers: assign(), insert(), erase() and swap() not supported
         void copy_back(void);
-        void push_back(const T&);
+        void push_back(const_reference);
         void push(void);
         void pop_back(void);
         void clear(void);
 
 private:
         bool invariant(void) const;
-        bool in_range(size_t) const;
+        bool within_range(size_t) const;
+        bool within_bounds(size_t) const;
 
         // representation
-        Bucket<T, N> bucket_;
+        std::tr1::array<T, N> bucket_;
         size_t size_;
 };
 

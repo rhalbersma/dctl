@@ -1,11 +1,12 @@
 #pragma once
-#include "../Generic/Bucket.h"
 #include "../../Utilities/CacheAlign.h"
 #include "../../Utilities/IntegerTypes.h"
 #include "../../Utilities/TemplateTricks.h"
 #include "../../Hash/HashReplace.h"
 #include "../../Hash/HashAlgorithms.h"
+#include <array>
 #include <utility>
+#include <vector>
 
 template
 <
@@ -20,7 +21,6 @@ class HashMap
 {
 public:
 	HashMap(void);
-        ~HashMap(void);
 
         // views
         const Value* find(const Key&) const;
@@ -45,7 +45,7 @@ private:
         template<typename Item> void insert(const Item&, const Value&, Int2Type<true>);
         template<typename Item> void insert(const Item&, const Value&, Int2Type<false>);
 
-        static Index bucket(Index);
+        static size_t bucket(Index);
 
         typedef std::pair<Key, Value> Entry;
 
@@ -54,11 +54,10 @@ private:
         static const Index NUM_BUCKETS = NUM_ENTRIES / ASSOCIATIVITY;
         static const Index BUCKET_MASK = NUM_BUCKETS - 1;
 
-        typedef Bucket<Entry, ASSOCIATIVITY> EntryBucket;
+        typedef std::tr1::array<Entry, ASSOCIATIVITY> Bucket;
 
         // representation
-        EntryBucket* hash_map_;
-        //TODO: std::vector<EntryBucket> hash_map_;
+        std::vector<Bucket> hash_map_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

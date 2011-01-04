@@ -9,13 +9,13 @@ public:
         // constructors
         static DXP_AbstractMessage* create(const DXP_StringMessage&);
 
-        explicit DXP_Chat(const std::string&);
-
         // views
         virtual DXP_StringMessage message(void) const;
 
 private:
         // implementation
+        explicit DXP_Chat(const std::string&);
+
         static const std::string HEADER;
         static const bool REGISTERED;
 
