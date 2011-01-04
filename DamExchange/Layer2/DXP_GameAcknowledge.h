@@ -12,7 +12,6 @@ public:
         // constructors
         static DXP_AbstractMessage* create(const DXP_StringMessage&);
 
-        explicit DXP_GameAcknowledge(const std::string&);
         DXP_GameAcknowledge(const std::string&, AcceptanceCode);
 
         // views
@@ -23,6 +22,8 @@ public:
 
 private:    
         // implementation
+        explicit DXP_GameAcknowledge(const std::string&);
+
         static const std::string HEADER;
         static const bool REGISTERED;
 

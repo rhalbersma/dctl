@@ -9,7 +9,6 @@ public:
         // constructors
         static DXP_AbstractMessage* create(const DXP_StringMessage&);
 
-        explicit DXP_GameRequest(const std::string&);
         DXP_GameRequest(const std::string&, bool, size_t, size_t, bool, const std::string&);
 
         // views
@@ -24,6 +23,8 @@ public:
 
 private:
         // implementation
+        explicit DXP_GameRequest(const std::string&);
+
         static const std::string HEADER;
         static const size_t PROTOCOL_VERSION = 1;
         static const bool REGISTERED;

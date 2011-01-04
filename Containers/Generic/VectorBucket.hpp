@@ -9,9 +9,9 @@ VectorBucket<T, N>::VectorBucket(void)
 }
 
 template<typename T, size_t N>
-VectorBucket<T, N>::VectorBucket(size_t s_size)
+VectorBucket<T, N>::VectorBucket(size_t s)
 :
-        size_(s_size)
+        size_(s)
 {
         assert(invariant());
 }
@@ -55,13 +55,13 @@ typename VectorBucket<T, N>::const_reverse_iterator VectorBucket<T, N>::rbegin(v
 template<typename T, size_t N>
 typename VectorBucket<T, N>::reverse_iterator VectorBucket<T, N>::rend(void)
 {
-        return reverse_iterator(begin());
+        return bucket_.rend();
 }
 
 template<typename T, size_t N>
 typename VectorBucket<T, N>::const_reverse_iterator VectorBucket<T, N>::rend(void) const
 {
-        return const_reverse_iterator(begin());
+        return bucket_.rend();
 }
 
 template<typename T, size_t N>
@@ -71,15 +71,16 @@ size_t VectorBucket<T, N>::size(void) const
 }
 
 template<typename T, size_t N>
-void VectorBucket<T, N>::resize(size_t s_size)
+void VectorBucket<T, N>::resize(size_t s)
 {
-        size_ = s_size;
+        assert(within_bounds(s));
+        size_ = s;
 }
 
 template<typename T, size_t N>
 size_t VectorBucket<T, N>::capacity(void) const
 {
-        return bucket_.capacity();
+        return bucket_.size();
 }
 
 template<typename T, size_t N>
@@ -95,27 +96,27 @@ bool VectorBucket<T, N>::full(void) const
 }
 
 template<typename T, size_t N>
-T& VectorBucket<T, N>::operator[](size_t i)
+typename VectorBucket<T, N>::reference VectorBucket<T, N>::operator[](size_t i)
 {
-        assert(in_range(i));
-        return *(begin() + i);
+        assert(within_range(i));
+        return bucket_[i];
 }
 
 template<typename T, size_t N>
-const T& VectorBucket<T, N>::operator[](size_t i) const
+typename VectorBucket<T, N>::const_reference VectorBucket<T, N>::operator[](size_t i) const
 {
-        assert(in_range(i));
-        return *(begin() + i);
+        assert(within_range(i));
+        return bucket_[i];
 }
 
 template<typename T, size_t N>
-T& VectorBucket<T, N>::back(void)
+typename VectorBucket<T, N>::reference VectorBucket<T, N>::back(void)
 {
         return *(end() - 1);
 }
 
 template<typename T, size_t N>
-const T& VectorBucket<T, N>::back(void) const
+typename VectorBucket<T, N>::const_reference VectorBucket<T, N>::back(void) const
 {
         return *(end() - 1);
 }
@@ -123,12 +124,12 @@ const T& VectorBucket<T, N>::back(void) const
 template<typename T, size_t N>
 void VectorBucket<T, N>::copy_back(void)
 {
-        assert(!empty());       // pre-condition
+        assert(!empty());
         push_back(back());
 }
 
 template<typename T, size_t N>
-void VectorBucket<T, N>::push_back(const T& t)
+void VectorBucket<T, N>::push_back(const_reference t)
 {
         push();
         back() = t;
@@ -137,7 +138,7 @@ void VectorBucket<T, N>::push_back(const T& t)
 template<typename T, size_t N>
 void VectorBucket<T, N>::push(void)
 {
-        assert(!full());        // pre-condition
+        assert(!full());
         ++size_;
         assert(invariant());
 }
@@ -145,7 +146,7 @@ void VectorBucket<T, N>::push(void)
 template<typename T, size_t N>
 void VectorBucket<T, N>::pop_back(void)
 {
-        assert(!empty());       // pre-condition
+        assert(!empty());
         --size_;
         assert(invariant());
 }
@@ -164,7 +165,13 @@ bool VectorBucket<T, N>::invariant(void) const
 }
 
 template<typename T, size_t N>
-bool VectorBucket<T, N>::in_range(size_t i) const
+bool VectorBucket<T, N>::within_range(size_t i) const
 {
         return i < size();
+}
+
+template<typename T, size_t N>
+bool VectorBucket<T, N>::within_bounds(size_t i) const
+{
+        return i < capacity();
 }

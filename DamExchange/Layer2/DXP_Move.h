@@ -10,7 +10,6 @@ public:
         // constructors
         static DXP_AbstractMessage* create(const DXP_StringMessage&);
 
-        explicit DXP_Move(const std::string&);
         DXP_Move(size_t, size_t, size_t, size_t, const std::vector<size_t>&);
 
         // views
@@ -24,6 +23,8 @@ public:
 
 private:
         // implementation
+        explicit DXP_Move(const std::string&);
+
         static const std::string HEADER;
         static const bool REGISTERED;
 

@@ -3,13 +3,7 @@
 template<typename Key, typename Value, size_t LogN, typename Replace, template<typename, typename> class Hash, typename Index>
 HashMap<Key, Value, LogN, Replace, Hash, Index>::HashMap(void)
 {
-        hash_map_ = new EntryBucket[NUM_BUCKETS];
-}
-
-template<typename Key, typename Value, size_t LogN, typename Replace, template<typename, typename> class Hash, typename Index>
-HashMap<Key, Value, LogN, Replace, Hash, Index>::~HashMap(void)
-{
-        delete [] hash_map_;
+        hash_map_.reserve(NUM_BUCKETS);
 }
 
 template<typename Key, typename Value, size_t LogN, typename Replace, template<typename, typename> class Hash, typename Index>
@@ -83,7 +77,7 @@ void HashMap<Key, Value, LogN, Replace, Hash, Index>::insert(const Item& item, c
 }
 
 template<typename Key, typename Value, size_t LogN, typename Replace, template<typename, typename> class Hash, typename Index>
-Index HashMap<Key, Value, LogN, Replace, Hash, Index>::bucket(Index index)
+size_t HashMap<Key, Value, LogN, Replace, Hash, Index>::bucket(Index index)
 {
-	return index & BUCKET_MASK;
+	return static_cast<size_t>(index & BUCKET_MASK);
 }

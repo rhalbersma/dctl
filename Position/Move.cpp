@@ -11,7 +11,7 @@ bool Move::non_unique_back(const List&, Int2Type<false>)
 // specialization for move generation without duplicate capture checking
 bool Move::non_unique_back(const List& v, Int2Type<true>)
 {
-        return std::find(v.begin(), &v.back(), v.back()) != &v.back();
+        return std::find(v.begin(), v.end(), v.back()) != (v.end() - 1);
 }
 
 // specialization for men that promote on the back row

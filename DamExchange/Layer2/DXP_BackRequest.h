@@ -9,7 +9,6 @@ public:
         // constructors
         static DXP_AbstractMessage* create(const DXP_StringMessage&);
 
-        explicit DXP_BackRequest(const std::string&);
         DXP_BackRequest(size_t, bool);
 
         // views
@@ -20,6 +19,8 @@ public:
 
 private:
         // implementation
+        explicit DXP_BackRequest(const std::string&);
+
         static const std::string HEADER;
         static const bool REGISTERED;
 

@@ -3,7 +3,7 @@
 template<typename Index, typename Key>
 Key ShiftSign<Index, Key>::operator()(Index index) const
 {
-        return index >> 8 * (sizeof(Index) - sizeof(Key));
+        return static_cast<Key>(index >> 8 * (sizeof(Index) - sizeof(Key)));
 }
 
 template<typename Board, typename Key>

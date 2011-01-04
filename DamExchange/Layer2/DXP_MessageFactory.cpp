@@ -8,7 +8,7 @@ DXP_AbstractMessage* DXP_MessageFactory::select_creator(const DXP_StringMessage&
                 return (i->second)(s);
         
         assert(false);
-        return(0);
+        return(nullptr);
 }
 
 bool DXP_MessageFactory::register_creator(MessageId header, Creator creator)

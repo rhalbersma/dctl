@@ -65,6 +65,6 @@ private:
         static const size_t MOVE_MASK = ((1 << MOVE_BITS) - 1);
 
         // representation
-         int16_t value_;		                // value
-        uint16_t rest_;                                // type, depth and move
+         int16_t value_;                                // value
+        uint16_t rest_;                                 // type, depth and move
 };

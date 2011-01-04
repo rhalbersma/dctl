@@ -18,7 +18,7 @@ void StopWatch::reset(void)
 
 double StopWatch::total(void) const
 {
-        return seconds(split_.end() - split_.begin());
+        return seconds(split_.back() - split_.front());
 }
 
 double StopWatch::delta(void) const
