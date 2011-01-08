@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-Search::TranspositionTable Search::TT;
+Search::TranspositionTable Search::TT(12);
 SearchStatistics Search::statistics_;
 
 void Search::report(size_t nominal_ply, int alpha, int beta, int value, const StopWatch& timer)

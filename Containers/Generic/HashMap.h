@@ -12,7 +12,6 @@ template
 <
         typename Key,
         typename Value,
-        size_t LogN,
         typename Replace = EmptyOldUnderCutShallowestOfN,
         template<typename, typename> class Hash = ZobristFind,
         typename Index = HashIndex
@@ -20,7 +19,12 @@ template
 class HashMap
 {
 public:
-	HashMap(void);
+        // constructors
+        HashMap(void);
+	explicit HashMap(size_t);
+
+        // capacity
+        void resize(size_t);
 
         // views
         const Value* find(const Key&) const;
@@ -35,8 +39,6 @@ public:
         void insert(const Item&, const Value&);
 
 private:
-        // implementation
-
         // tag dispatching based on the key's integer type trait
         template<typename Item> const Value* find(const Item&, Int2Type<true>) const;
         template<typename Item> const Value* find(const Item&, Int2Type<false>) const;
@@ -45,19 +47,20 @@ private:
         template<typename Item> void insert(const Item&, const Value&, Int2Type<true>);
         template<typename Item> void insert(const Item&, const Value&, Int2Type<false>);
 
-        static size_t bucket(Index);
+        size_t bucket(Index) const;
 
         typedef std::pair<Key, Value> Entry;
-
         static const size_t ASSOCIATIVITY = CACHE_LINE / sizeof(Entry);
-        static const Index NUM_ENTRIES = Index(1) << LogN;
-        static const Index NUM_BUCKETS = NUM_ENTRIES / ASSOCIATIVITY;
-        static const Index BUCKET_MASK = NUM_BUCKETS - 1;
-
         typedef std::tr1::array<Entry, ASSOCIATIVITY> Bucket;
+
+        static const size_t LOG_MEGA_BYTE = 20;
+        static const size_t LOG_GIGA_BYTE = 30;
+        static const size_t MIN_LOG_BUCKETS = LOG_MEGA_BYTE - LOG_CACHE_LINE;
+        static const size_t MAX_LOG_BUCKETS = LOG_GIGA_BYTE - LOG_CACHE_LINE;
 
         // representation
         std::vector<Bucket> hash_map_;
+        Index bucket_mask_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

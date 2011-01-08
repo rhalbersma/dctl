@@ -20,9 +20,10 @@ public:
         template<typename, typename B> static int root(const Position<B>&, size_t);
 
 private:
-        // 32-bit hash signature, 4-byte {value, type, depth, move} entries, 2^27 entries (= 1 Gb)
+        // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content
+        // 8-way buckets on 64-byte cache lines, 2^24 buckets (= 1 Gb)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
-        typedef HashMap<uint32_t, SearchNode, 27> TranspositionTable;
+        typedef HashMap<uint32_t, SearchNode> TranspositionTable;
 
         template<typename, typename B> static int negamax(Position<B>&, size_t, size_t, SearchParameters&);
         template<typename, typename B> static int alpha_beta(Position<B>&, size_t, size_t, int, int, SearchParameters&);
