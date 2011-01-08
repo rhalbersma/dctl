@@ -39,20 +39,20 @@ void SameKingMoves::pop_back(void)
         moves_.pop_back();
 }
 
-void SameKingMoves::init(BitBoard s_king)
+void SameKingMoves::init(BitBoard k)
 {
-        king() = s_king;
+        king() = k;
         moves() = 1;
 
         assert(invariant());
 }
 
-void SameKingMoves::increment(BitBoard s_king)
+void SameKingMoves::increment(BitBoard k)
 {
-        assert(Bit::is_double(s_king));
+        assert(Bit::is_double(k));
 
-        king() ^= s_king;
-        ++moves();
+        king() ^= k;
+        moves() += 1;
 
         assert(invariant());
 }
@@ -67,5 +67,8 @@ void SameKingMoves::reset(void)
 
 bool SameKingMoves::invariant(void) const
 {
-        return !Bit::is_multiple(king()) && ((king() ==  0) == (moves() == 0));
+        return (
+                !Bit::is_multiple(king()) && 
+                ((king() ==  0) == (moves() == 0))
+        );
 }

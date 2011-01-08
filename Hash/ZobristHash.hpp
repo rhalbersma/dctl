@@ -22,10 +22,7 @@ struct ZobristHash<Position<Board>, Index>: public std::unary_function<Position<
                 return (
                         ZobristHash<Pieces, Index>()(p.pieces()) ^
                         ZobristHash<Side, Index>()(p.to_move()) ^
-                        ZobristRandom<Index>::xor_rand(p.same_king(Side::BLACK), ZobristRandom<Index>::SAME_KING[Side::BLACK]) ^
-                        ZobristRandom<Index>::xor_rand(p.same_moves(Side::BLACK), ZobristRandom<Index>::SAME_MOVES[Side::BLACK]) ^
-                        ZobristRandom<Index>::xor_rand(p.same_king(Side::WHITE), ZobristRandom<Index>::SAME_KING[Side::WHITE]) ^
-                        ZobristRandom<Index>::xor_rand(p.same_moves(Side::WHITE), ZobristRandom<Index>::SAME_MOVES[Side::WHITE])
+                        ZobristHash<SameKingMoves*, Index>()(p.same_king_moves())
                 );
         }
 };
@@ -56,5 +53,31 @@ struct ZobristHash<Side, Index>: public std::unary_function<bool, Index>
         Index operator()(void) const
         {
                 return ZobristRandom<Index>::SIDE;
+        }
+};
+
+// partial specialization for ab initio hashing of same king moves
+template<typename Index>
+struct ZobristHash<SameKingMoves*, Index>: public std::unary_function<bool, Index>
+{
+        Index operator()(const SameKingMoves* s) const
+        {
+                return (
+                        ZobristHash<SameKingMoves, Index>()(s[Side::BLACK], Side::BLACK) ^
+                        ZobristHash<SameKingMoves, Index>()(s[Side::WHITE], Side::WHITE)
+                );
+        }
+};
+
+// partial specialization for ab initio hashing of same king moves
+template<typename Index>
+struct ZobristHash<SameKingMoves, Index>: public std::unary_function<bool, Index>
+{
+        Index operator()(SameKingMoves s, bool color) const
+        {
+                return (
+                        ZobristRandom<Index>::xor_rand(s.king(), ZobristRandom<Index>::SAME_KING[color]) ^
+                        ZobristRandom<Index>::xor_rand(s.moves(), ZobristRandom<Index>::SAME_MOVES[color])
+                );
         }
 };

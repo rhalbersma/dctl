@@ -185,6 +185,12 @@ bool Position<Board>::to_move(void) const
 }
 
 template<typename Board>
+const SameKingMoves* Position<Board>::same_king_moves(void) const
+{
+        return same_king_moves_;
+}
+
+template<typename Board>
 BitBoard Position<Board>::same_king(bool color) const
 {
         return same_king_moves_[color].king();

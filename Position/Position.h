@@ -33,6 +33,7 @@ public:
         BitBoard not_occupied(void) const;                      // unoccupied squares
         Pieces::Composition composition(bool) const;            // composition of black or white pieces
         bool to_move(void) const;                               // the side to move
+        const SameKingMoves* same_king_moves(void) const;
         BitBoard same_king(bool) const;
         PlyCount same_moves(bool) const;
         PlyCount non_conversion_moves(void) const;
