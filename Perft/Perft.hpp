@@ -29,7 +29,7 @@ NodeCount Perft::perft(const Position<Board>& pp, size_t nominal_depth)
 template<typename Rules, typename Board>
 NodeCount Perft::driver(Position<Board>& p, size_t ply, size_t depth)
 {
-        return (depth == 0)? perft_leaf<Rules>(p, ply, depth) : perft_bulk<Rules>(p, ply, depth);
+        return perft_leaf<Rules>(p, ply, depth);//(depth == 0)? perft_leaf<Rules>(p, ply, depth) : perft_bulk<Rules>(p, ply, depth);
 }
 
 template<typename Rules, typename Board>

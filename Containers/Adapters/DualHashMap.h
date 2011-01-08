@@ -10,7 +10,6 @@ template
 <
         typename Key,
         typename Value,
-        size_t LogN,
         typename Replace = EmptyOldUnderCutShallowestOfN,
         template<typename, typename> class Hash = ZobristFind,
         typename Index = HashIndex
@@ -18,6 +17,10 @@ template
 class DualHashMap
 {
 public:
+        DualHashMap(size_t);
+
+        void resize(size_t);
+
         // views
         template<typename B> const Value* find(const Position<B>&) const;
 
@@ -26,7 +29,7 @@ public:
 
 private:
         // representation
-        HashMap<Key, Value, LogN - 1, Replace, Hash, Index> hash_map_[2];
+        HashMap<Key, Value, Replace, Hash, Index> hash_map_[2];
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

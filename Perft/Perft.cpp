@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
-Perft::TranspositionTable Perft::TT;
+Perft::TranspositionTable Perft::TT(1);
 SearchStatistics Perft::statistics_;
 
 void Perft::report(size_t nominal_ply, NodeCount leafs, const StopWatch& timer)

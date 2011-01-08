@@ -11,7 +11,7 @@ int main(void)
      
         DXP_Test::Mesander_examples();
 
-        SearchTest::International();
+        PerftTest::International();
         //SearchTest::Killer();
         //PerftTest::Rectangular();
         //PerftTest::ChessBoardVariants();

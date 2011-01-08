@@ -8,6 +8,7 @@ template<bool, typename Rules, typename Board>
 class AbstractGeneratePiece
 {
 public:
+        // interface
         virtual void generate(const Position<Board>&, Propagate<Rules, Board>&) const = 0;
         virtual void generate_captures(const Position<Board>&, Propagate<Rules, Board>&) const = 0;
         virtual void generate_promotions(const Position<Board>&, Propagate<Rules, Board>&) const = 0;
@@ -19,6 +20,7 @@ public:
         virtual bool detect_captures(const Position<Board>&) const = 0;
         virtual bool detect_promotions(const Position<Board>&) const = 0;
 
+        // virtual destructor
         virtual ~AbstractGeneratePiece(void) {};
 };
 

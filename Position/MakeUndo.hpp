@@ -3,7 +3,7 @@ void Position<Board>::make(const Pieces& m)
 {
         assert(is_pseudo_legal_make<Rules>(m));
 
-        make_irreversible<Rules>(m);
+        //make_irreversible<Rules>(m);
         make_reversible(m);
 
         assert(pieces_invariant());
@@ -54,12 +54,12 @@ template<typename Board> template<PlyCount N> FORCE_INLINE
 void Position<Board>::make_same_king_moves(const Pieces& m)
 {
         SameKingMoves& current_state = same_king_moves_[to_move()];
+        current_state.copy_back();
+
         hash_index() ^= (
                 ZobristRandom<HashIndex>::xor_rand(current_state.king(), ZobristRandom<HashIndex>::SAME_KING[to_move()]) ^
                 ZobristRandom<HashIndex>::xor_rand(current_state.moves(), ZobristRandom<HashIndex>::SAME_MOVES[to_move()])
         );
-
-        current_state.copy_back();
 
         if (men(to_move()) && kings(to_move())) {
                 const BitBoard from_sq = king_from_sq(m);
@@ -111,10 +111,10 @@ template<typename Board> FORCE_INLINE
 void Position<Board>::make_reversible(const Pieces& m)
 {
         pieces_.toggle(m);
-        hash_index() ^= ZobristHash<Pieces, HashIndex>()(m);
+        //hash_index() ^= ZobristHash<Pieces, HashIndex>()(m);
 
         side_.pass();
-        hash_index() ^= ZobristHash<Side, HashIndex>()();
+        //hash_index() ^= ZobristHash<Side, HashIndex>()();
 }
 
 template<typename Board> template<typename Rules>
@@ -123,7 +123,7 @@ void Position<Board>::undo(const Pieces& m)
         assert(is_pseudo_legal_undo<Rules>(m));
 
         undo_reversible(m);
-        undo_irreversible<Rules>();
+        //undo_irreversible<Rules>();
 }
 
 // tag dispatching for restrictions on consecutive moves with the same king
