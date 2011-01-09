@@ -1,6 +1,6 @@
 #include "DXP_BackRequest.h"
 #include "DXP_MessageFactory.h"
-#include "../../IO/Token.h"
+#include "../IO/Token.h"
 #include <cassert>
 #include <cstdlib>
 #include <iomanip>

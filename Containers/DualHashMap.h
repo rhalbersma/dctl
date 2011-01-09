@@ -1,8 +1,8 @@
 #pragma once
-#include "../Generic/HashMap.h"
-#include "../../Hash/HashReplace.h"
-#include "../../Hash/HashAlgorithms.h"
-#include "../../Utilities/IntegerTypes.h"
+#include "HashMap.h"
+#include "../Hash/HashReplace.h"
+#include "../Hash/HashAlgorithms.h"
+#include "../Utilities/IntegerTypes.h"
 
 template<typename> class Position;
 

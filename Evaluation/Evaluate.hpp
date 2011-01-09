@@ -2,7 +2,7 @@
 #include "../Generate/Generate.h"
 #include "../Rules/Rules.h"
 #include "../Position/Position.h"
-#include "../Position/Reversible/Side.h"
+#include "../Position/Side.h"
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>

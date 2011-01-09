@@ -4,10 +4,10 @@
 #include "../Rules/CaptureValue.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"
-#include "../Containers/Generic/VectorBucket.h"
+#include "../Containers/VectorBucket.h"
 #include "../Position/Position.h"
 #include "../Position/Move.h"
-#include "../Position/Reversible/Pieces.h"
+#include "../Position/Pieces.h"
 
 template<typename Rules, typename Board>
 class Propagate: private Board

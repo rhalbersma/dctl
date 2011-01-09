@@ -1,7 +1,7 @@
 #include "ZobristRandom.h"
 #include "../Position/Position.h"
-#include "../Position/Reversible/Pieces.h"
-#include "../Position/Reversible/Side.h"
+#include "../Position/Pieces.h"
+#include "../Position/Side.h"
 
 // partial specialization for retrieval of pre-computed indices of positions
 template<typename Board, typename Index>

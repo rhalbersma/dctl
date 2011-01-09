@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Containers/Generic/VectorBucket.h"
-#include "../../Utilities/IntegerTypes.h"
-#include "../../Utilities/Ply.h"
+#include "../Containers/VectorBucket.h"
+#include "../Utilities/IntegerTypes.h"
+#include "../Utilities/Ply.h"
 
 class SameKingMoves
 {

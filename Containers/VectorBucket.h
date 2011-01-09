@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Utilities/IntegerTypes.h"
+#include "../Utilities/IntegerTypes.h"
 #include <array>
 
 template<typename T, size_t N>

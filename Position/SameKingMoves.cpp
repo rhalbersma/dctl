@@ -1,5 +1,5 @@
 #include "SameKingMoves.h"
-#include "../../Utilities/Bit.h"
+#include "../Utilities/Bit.h"
 
 BitBoard& SameKingMoves::king(void)
 {

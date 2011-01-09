@@ -1,5 +1,5 @@
 #include "BoardMetaTemplates.h"
-#include "../Position/Reversible/Side.h"
+#include "../Position/Side.h"
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::SQUARES = INIT_SQUARES<T>::VALUE;

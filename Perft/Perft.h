@@ -1,7 +1,7 @@
 #pragma once
 #include "PerftNode.h"
-#include "../Containers/Adapters/DualHashMap.h"
-#include "../Position/Reversible/Pieces.h"
+#include "../Containers/DualHashMap.h"
+#include "../Position/Pieces.h"
 #include "../Search/SearchStatistics.h"
 #include "../Utilities/IntegerTypes.h"
 

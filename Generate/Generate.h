@@ -1,5 +1,5 @@
 #pragma once
-#include "../Position/Reversible/Pieces.h"
+#include "../Position/Pieces.h"
 #include "../Position/Move.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"

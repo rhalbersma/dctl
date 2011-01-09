@@ -2,7 +2,7 @@
 #include "SearchNode.h"
 #include "SearchStatistics.h"
 #include "SearchValue.h"
-#include "../Containers/Generic/HashMap.h"
+#include "../Containers/HashMap.h"
 #include "../Position/Move.h"
 #include "../Utilities/Ply.h"
 #include "../Utilities/IntegerTypes.h"

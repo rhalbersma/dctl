@@ -1,11 +1,11 @@
 #pragma once
 #include "../Board/Board.h"
 #include "../Rules/Rules.h"
-#include "Reversible/Pieces.h"
-#include "Reversible/Side.h"
-#include "Irreversible/SameKingMoves.h"
-#include "Irreversible/NonConversion.h"
-#include "Irreversible/Repetition.h"
+#include "Pieces.h"
+#include "Side.h"
+#include "SameKingMoves.h"
+#include "NonConversion.h"
+#include "Repetition.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"
 

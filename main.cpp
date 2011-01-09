@@ -4,7 +4,7 @@
 #include <iomanip>
 
 #include "CheckerBoard/CheckerBoardAPI.h"
-#include "DamExchange/Layer2/DXP_Test.h"
+#include "DamExchange/DXP_Test.h"
 
 int main(void)
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include "GeneratePiece.h"
-#include "../Position/Reversible/Pieces.h"
+#include "../Position/Pieces.h"
 
 template<bool Color, typename Rules, typename Board> 
 class GenerateStrategy
