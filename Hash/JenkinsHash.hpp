@@ -1,6 +1,6 @@
 #include "JenkinsMix.h"
 #include "../Position/Position.h"
-#include "../Position/Reversible/Side.h"
+#include "../Position/Side.h"
 
 template<typename Board, typename Index>
 struct JenkinsHash<Position<Board>, Index>: public std::unary_function<Position<Board>, Index>

@@ -1,6 +1,6 @@
 #include "Pieces.h"
 #include "Side.h"
-#include "../../Utilities/Bit.h"
+#include "../Utilities/Bit.h"
 #include <cassert>
 
 // zero initialize

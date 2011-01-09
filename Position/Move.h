@@ -1,7 +1,7 @@
 #pragma once
-#include "Reversible/Pieces.h"
+#include "Pieces.h"
 #include "../Rules/Rules.h"
-#include "../Containers/Generic/VectorBucket.h"
+#include "../Containers/VectorBucket.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/Ply.h"
 #include "../Utilities/TemplateTricks.h"

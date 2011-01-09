@@ -71,7 +71,7 @@ size_t Generate::count(const Position<Board>& p)
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t Generate::count_moves(const Position<Board>& p)
 {
-        assert(p.to_move() == Color);
+        // NO color assertion here because we want to count available moves for both sides
         return GenerateStrategy<Color, Rules, Board>::select_strategy(p.composition(Color))->count_moves(p);
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "../Position/Move.h"
-#include "../Position/Reversible/Pieces.h"
+#include "../Position/Pieces.h"
 #include "../Utilities/IntegerTypes.h"
 
 template<typename> class Position;

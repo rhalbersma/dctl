@@ -1,4 +1,4 @@
-#include "../../Hash/HashSign.h"
+#include "../Hash/HashSign.h"
 #include <cassert>
 #include <iostream>
 

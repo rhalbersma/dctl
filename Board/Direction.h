@@ -1,7 +1,7 @@
 #pragma once
 #include "Transform.h"
 #include "../Utilities/IntegerTypes.h"
-#include "../Position/Reversible/Side.h"
+#include "../Position/Side.h"
 
 // the 8 diagonal and orthogonal direction indices for black and white to move
 template<typename Board, bool Color> 

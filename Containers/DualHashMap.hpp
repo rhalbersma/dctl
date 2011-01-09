@@ -1,5 +1,5 @@
 #include "DualHashMap.h"
-#include "../../Position/Position.h"
+#include "../Position/Position.h"
 
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
 DualHashMap<Key, Value, Replace, Hash, Index>::DualHashMap(size_t log_n)

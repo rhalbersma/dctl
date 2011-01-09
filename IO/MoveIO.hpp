@@ -1,6 +1,6 @@
 #include "Token.h"
 #include "../Position/Position.h"
-#include "../Position/Reversible/Pieces.h"
+#include "../Position/Pieces.h"
 #include "../Rules/Rules.h"
 #include <iomanip>
 #include <sstream>

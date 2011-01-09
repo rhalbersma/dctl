@@ -1,7 +1,7 @@
 #include "BoardIO.h"
 #include "../Board/Board.h"
 #include "../Position/Position.h"
-#include "../Position/Reversible/Side.h"
+#include "../Position/Side.h"
 #include "../Utilities/Bit.h"
 #include "../Utilities/IntegerTypes.h"
 #include <cctype>

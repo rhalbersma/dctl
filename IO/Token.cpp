@@ -1,5 +1,5 @@
 #include "Token.h"
-#include "../Position/Reversible/Side.h"
+#include "../Position/Side.h"
 #include <cassert>
 
 const char DXP_PositionToken::SETUP[2] = {
