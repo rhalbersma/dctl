@@ -209,12 +209,6 @@ HashIndex Position<Board>::hash_index(void) const
         return hash_index_;
 }
 
-template<typename Board>
-void Position<Board>::link(const Position<Board>& other)
-{
-        parent_ = &other;
-}
-
 // logical consistency of the representation
 template<typename Board>
 bool Position<Board>::pieces_invariant(void) const

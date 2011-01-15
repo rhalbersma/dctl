@@ -7,9 +7,8 @@
 #include <iostream>
 
 template<typename Rules, typename Board>
-NodeCount Perft::perft(const Position<Board>& pp, size_t nominal_depth)
+NodeCount Perft::perft(const Position<Board>& p, size_t nominal_depth)
 {
-        Position<Board> p(pp);
         NodeCount leafs = 0;
         StopWatch timer;
 
@@ -22,12 +21,11 @@ NodeCount Perft::perft(const Position<Board>& pp, size_t nominal_depth)
                 report(depth, leafs, timer);
         }
                 
-        assert(p == pp);
         return leafs;
 }
 
 template<typename Rules, typename Board>
-NodeCount Perft::driver(Position<Board>& p, size_t ply, size_t depth)
+NodeCount Perft::driver(const Position<Board>& p, size_t ply, size_t depth)
 {
         return (depth == 0)? perft_leaf<Rules>(p, ply, depth) : perft_bulk<Rules>(p, ply, depth);
 }
@@ -43,15 +41,10 @@ NodeCount Perft::perft_leaf(const Position<Board>& p, size_t ply, size_t depth)
         Propagate<Rules, Board> moves(p);
         Generate::generate(p, moves);
         NodeCount leafs = 0;        
-        Position<Board> copy_p;
+        Position<Board> q;
         for (size_t i = 0; i < moves.size(); ++i) {
-                copy_p = p;
-                copy_p.link(p);
-                copy_p.template make<Rules>(moves[i]);
-
-                //p.template make<Rules>(moves[i]);
-                leafs += perft_leaf<Rules>(copy_p, ply + 1, depth - 1);
-                //p.template undo<Rules>(moves[i]);
+                q.template copy_make<Rules>(p, moves[i]);
+                leafs += perft_leaf<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
 }
@@ -67,21 +60,16 @@ NodeCount Perft::perft_bulk(const Position<Board>& p, size_t ply, size_t depth)
                 return moves.size();
         
         NodeCount leafs = 0;
-        Position<Board> copy_p;
+        Position<Board> q;
         for (size_t i = 0; i < moves.size(); ++i) {
-                copy_p = p;
-                copy_p.link(p);
-                copy_p.template make<Rules>(moves[i]);
-
-                //p.template make<Rules>(moves[i]);
-                leafs += perft_bulk<Rules>(copy_p, ply + 1, depth - 1);
-                //p.template undo<Rules>(moves[i]);
+                q.template copy_make<Rules>(p, moves[i]);
+                leafs += perft_bulk<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
 }
 
 template<typename Rules, typename Board>
-NodeCount Perft::perft_count(Position<Board>& p, size_t ply, size_t depth)
+NodeCount Perft::perft_count(const Position<Board>& p, size_t ply, size_t depth)
 {
         update_statistics(ply);
 
@@ -91,16 +79,16 @@ NodeCount Perft::perft_count(Position<Board>& p, size_t ply, size_t depth)
         Propagate<Rules, Board> moves(p);
         Generate::generate(p, moves);
         NodeCount leafs = 0;
+        Position<Board> q;
         for (size_t i = 0; i < moves.size(); ++i) {
-                p.template make<Rules>(moves[i]);
-                leafs += perft_count<Rules>(p, ply + 1, depth - 1);
-                //p.template undo<Rules>(moves[i]);
+                q.template copy_make<Rules>(p, moves[i]);
+                leafs += perft_count<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
 }
 
 template<typename Rules, typename Board>
-NodeCount Perft::perft_hash(Position<Board>& p, size_t ply, size_t depth)
+NodeCount Perft::perft_hash(const Position<Board>& p, size_t ply, size_t depth)
 {
         update_statistics(ply);
 
@@ -114,10 +102,10 @@ NodeCount Perft::perft_hash(Position<Board>& p, size_t ply, size_t depth)
         Propagate<Rules, Board> moves(p);
         Generate::generate(p, moves);
         NodeCount leafs = 0;
+        Position<Board> q;
         for (size_t i = 0; i < moves.size(); ++i) {
-                p.template make<Rules>(moves[i]);
-                leafs += perft_hash<Rules>(p, ply + 1, depth - 1);
-                //p.template undo<Rules>(moves[i]);
+                q.template copy_make<Rules>(p, moves[i]);
+                leafs += perft_hash<Rules>(q, ply + 1, depth - 1);
         }
 
         TT.insert(p, PerftNode(leafs, depth));
@@ -125,7 +113,7 @@ NodeCount Perft::perft_hash(Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Perft::perft_fast(Position<Board>& p, size_t ply, size_t depth)
+NodeCount Perft::perft_fast(const Position<Board>& p, size_t ply, size_t depth)
 {
         update_statistics(ply);
 
@@ -140,10 +128,10 @@ NodeCount Perft::perft_fast(Position<Board>& p, size_t ply, size_t depth)
                 Propagate<Rules, Board> moves(p);
                 Generate::generate(p, moves);
                 leafs = 0;
+                Position<Board> q;
                 for (size_t i = 0; i < moves.size(); ++i) {
-                        p.template make<Rules>(moves[i]);
-                        leafs += perft_fast<Rules>(p, ply + 1, depth - 1);
-                        //p.template undo<Rules>(moves[i]);
+                        q.template copy_make<Rules>(p, moves[i]);
+                        leafs += perft_fast<Rules>(q, ply + 1, depth - 1);
                 }
         }
 

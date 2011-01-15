@@ -25,11 +25,11 @@ private:
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
         typedef HashMap<uint32_t, SearchNode> TranspositionTable;
 
-        template<typename, typename B> static int negamax(Position<B>&, size_t, size_t, SearchParameters&);
-        template<typename, typename B> static int alpha_beta(Position<B>&, size_t, size_t, int, int, SearchParameters&);
+        template<typename, typename B> static int negamax(const Position<B>&, size_t, size_t, SearchParameters&);
+        template<typename, typename B> static int alpha_beta(const Position<B>&, size_t, size_t, int, int, SearchParameters&);
 
-        template<size_t, typename, typename B> static int search(Position<B>&, size_t, int, int, int, SearchParameters&);
-        template<size_t, typename, typename B> static int quiescence(Position<B>&, size_t, int, int, int, SearchParameters&);
+        template<size_t, typename, typename B> static int search(const Position<B>&, size_t, int, int, int, SearchParameters&);
+        template<size_t, typename, typename B> static int quiescence(const Position<B>&, size_t, int, int, int, SearchParameters&);
 
         template<typename B> static void announce(const Position<B>&, size_t);
         static void report(size_t, int, int, int, const StopWatch&);
