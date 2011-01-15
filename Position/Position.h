@@ -45,12 +45,13 @@ public:
         template<typename> 
         BitBoard unrestricted_kings(bool) const;
 
-        // modifiers
-        void link(const Position<Board>&);
-        template<typename> void make(const Pieces&);            // make a move
-        template<typename> void undo(const Pieces&);            // undo a move
-        void make(void);                                        // make a null move
-        void undo(void);                                        // undo a null move
+        // make a move in a copy from another position
+        template<typename>
+        void copy_make(const Position<Board>&, const Pieces&);
+        
+        // make a move in the current position
+        template<typename>
+        void make(const Pieces&);
 
 private:
         // implentation
@@ -72,6 +73,8 @@ private:
         bool is_non_conversion(const Pieces&) const;
         bool is_with_king(const Pieces&) const;
         bool is_capture(const Pieces&) const;
+
+        void link(const Position<Board>&);
 
         // tag dispatching for restrictions on consecutive moves with the same king
         template<typename> void make_irreversible(const Pieces&);

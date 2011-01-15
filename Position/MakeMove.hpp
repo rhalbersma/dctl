@@ -1,4 +1,18 @@
 template<typename Board> template<typename Rules>
+void Position<Board>::copy_make(const Position<Board>& p, const Pieces& m)
+{
+        *this = p;
+        link(p);
+        make<Rules>(m);
+}
+
+template<typename Board> FORCE_INLINE
+void Position<Board>::link(const Position<Board>& other)
+{
+        parent_ = &other;
+}
+
+template<typename Board> template<typename Rules> FORCE_INLINE
 void Position<Board>::make(const Pieces& m)
 {
         assert(is_pseudo_legal_make<Rules>(m));

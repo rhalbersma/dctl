@@ -12,7 +12,7 @@ class Perft
 {
 public:
         template<typename, typename B> static NodeCount perft(const Position<B>&, size_t);
-        template<typename, typename B> static NodeCount driver(Position<B>&, size_t, size_t);
+        template<typename, typename B> static NodeCount driver(const Position<B>&, size_t, size_t);
 
         template<typename B> static void announce(const Position<B>&, size_t);
 
@@ -24,9 +24,9 @@ public:
 private:
         template<typename, typename B> static NodeCount perft_leaf(const Position<B>&, size_t, size_t);
         template<typename, typename B> static NodeCount perft_bulk(const Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount perft_count(Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount perft_hash(Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount perft_fast(Position<B>&, size_t, size_t);
+        template<typename, typename B> static NodeCount perft_count(const Position<B>&, size_t, size_t);
+        template<typename, typename B> static NodeCount perft_hash(const Position<B>&, size_t, size_t);
+        template<typename, typename B> static NodeCount perft_fast(const Position<B>&, size_t, size_t);
         
         static NodeCount nodes(void);
         static NodeCount sum_ply(void);
