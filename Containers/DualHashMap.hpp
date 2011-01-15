@@ -4,6 +4,7 @@
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
 DualHashMap<Key, Value, Replace, Hash, Index>::DualHashMap(size_t log_n)
 {
+        assert(log_n > 0);
         resize(log_n);        
 }
 

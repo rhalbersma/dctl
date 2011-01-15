@@ -30,7 +30,7 @@ struct DefaultToken<DXP>
 template
 <
         typename Protocol, 
-        typename Board = DefaultBoard, 
+        typename Board = InternationalBoard, 
         typename Token = typename DefaultToken<Protocol>::TYPE
 >
 struct read_position_string

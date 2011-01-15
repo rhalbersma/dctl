@@ -15,14 +15,23 @@ struct ZobristFind<Position<Board>, Index>: public std::unary_function<Position<
 
 // partial specialization for ab initio hashing of positions
 template<typename Board, typename Index>
-struct ZobristHash<Position<Board>, Index>: public std::unary_function<Position<Board>, Index>
+struct ZobristHash<Position<Board>, Index>: public std::unary_function<Position<Board>, Index>, std::binary_function<Position<Board>, bool, Index>
 {
         Index operator()(const Position<Board>& p) const
         {
                 return (
                         ZobristHash<Pieces, Index>()(p.pieces()) ^
-                        ZobristHash<Side, Index>()(p.to_move()) ^
-                        ZobristHash<SameKingMoves*, Index>()(p.same_king_moves())
+                        ZobristHash<bool, Index>()(p.to_move()) ^
+                        ZobristHash<Position<Board>, Index>()(p, Side::BLACK) ^
+                        ZobristHash<Position<Board>, Index>()(p, Side::WHITE)
+                );
+        }
+                 
+        Index operator()(const Position<Board>& p, bool color) const
+        {
+                return (
+                        ZobristRandom<Index>::xor_rand(p.repeated_kings(color), ZobristRandom<Index>::REPEATED_KINGS[color]) ^
+                        ZobristRandom<Index>::xor_rand(p.repeated_moves(color), ZobristRandom<Index>::REPEATED_MOVES[color])
                 );
         }
 };
@@ -43,7 +52,7 @@ struct ZobristHash<Pieces, Index>: public std::unary_function<Pieces, Index>
 
 // partial specialization for ab initio hashing of side to move
 template<typename Index>
-struct ZobristHash<Side, Index>: public std::unary_function<bool, Index>
+struct ZobristHash<bool, Index>: public std::unary_function<bool, Index>
 {
         Index operator()(bool to_move) const
         {
@@ -53,31 +62,5 @@ struct ZobristHash<Side, Index>: public std::unary_function<bool, Index>
         Index operator()(void) const
         {
                 return ZobristRandom<Index>::SIDE;
-        }
-};
-
-// partial specialization for ab initio hashing of same king moves
-template<typename Index>
-struct ZobristHash<SameKingMoves*, Index>: public std::unary_function<bool, Index>
-{
-        Index operator()(const SameKingMoves* s) const
-        {
-                return (
-                        ZobristHash<SameKingMoves, Index>()(s[Side::BLACK], Side::BLACK) ^
-                        ZobristHash<SameKingMoves, Index>()(s[Side::WHITE], Side::WHITE)
-                );
-        }
-};
-
-// partial specialization for ab initio hashing of same king moves
-template<typename Index>
-struct ZobristHash<SameKingMoves, Index>: public std::unary_function<bool, Index>
-{
-        Index operator()(SameKingMoves s, bool color) const
-        {
-                return (
-                        ZobristRandom<Index>::xor_rand(s.king(), ZobristRandom<Index>::SAME_KING[color]) ^
-                        ZobristRandom<Index>::xor_rand(s.moves(), ZobristRandom<Index>::SAME_MOVES[color])
-                );
         }
 };

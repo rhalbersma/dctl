@@ -1,5 +1,5 @@
 #include <cassert>
-
+/*
 // negamax
 template<typename Rules, typename Board>
 int Search::negamax(Position<Board>& p, size_t ply, size_t depth, SearchParameters& parent_node)
@@ -25,7 +25,7 @@ int Search::negamax(Position<Board>& p, size_t ply, size_t depth, SearchParamete
         for (size_t i = 0; i < moves.size(); ++i) {
                 p.template make<Rules>(moves[i]);
                 score = -squeeze(negamax<Rules>(p, ply + 1, depth - 1, child_node));
-                p.template undo<Rules>(moves[i]);
+                //p.template undo<Rules>(moves[i]);
 
                 if (score > value) {
                         value = score;
@@ -68,7 +68,7 @@ int Search::alpha_beta(Position<Board>& p, size_t ply, size_t depth, int alpha, 
         for (size_t i = 0; i < moves.size(); ++i) {
                 p.template make<Rules>(moves[i]);
                 score = -squeeze(alpha_beta<Rules>(p, ply  + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
-                p.template undo<Rules>(moves[i]);
+                //p.template undo<Rules>(moves[i]);
 
                 if (score > value) {
                         if (score >= beta)
@@ -84,21 +84,19 @@ int Search::alpha_beta(Position<Board>& p, size_t ply, size_t depth, int alpha, 
         // without a valid move, the position is an immediate loss
         return std::max(SearchValue::loss(0), value);
 }
-
+*/
 // principal variation search (PVS) with TT cut-offs, TT move ordering and IID
 template<size_t Node, typename Rules, typename Board>
 int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int beta, SearchParameters& parent_node)
 {
         update_statistics(ply);
         
-        assert(p.non_conversion_moves() <= ply);
+        assert(p.non_conversion() <= ply);
 
         ///*
         // check for a legal draw
-        if (p.template is_draw<Rules>()) {
-                assert(ply >= 5);
-                return SearchValue::draw();
-        }
+        if (p.template is_draw<Rules>())
+                return SearchValue::draw();       
         //*/
 
         // return evaluation in leaf nodes with valid moves
@@ -169,23 +167,28 @@ int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int bet
         size_t i;
         SearchParameters child_node;
         const int original_alpha = alpha;
+
+        Position<Board> copy_p(p);
         for (size_t s = 0; s < move_order.size(); ++s) {
                 i = move_order[s];
                 // TODO: TT singular extension
 
                 // TODO: futility pruning
 
-                p.template make<Rules>(moves[i]);
+                copy_p = p;
+                copy_p.link(p);
+                copy_p.template make<Rules>(moves[i]);
+
                 if (is_PV(Node) && s == 0)
-                        score = -squeeze(search<PV, Rules>(p, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                        score = -squeeze(search<PV, Rules>(copy_p, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 else {
                         // TODO: late move reductions
 
-                        score = -squeeze(search<ZW, Rules>(p, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
+                        score = -squeeze(search<ZW, Rules>(copy_p, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
                         if (is_PV(Node) && score > alpha && score < beta)
-                                score = -squeeze(search<PV, Rules>(p, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                                score = -squeeze(search<PV, Rules>(copy_p, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 }
-                p.template undo<Rules>(moves[i]);
+                //p.template undo<Rules>(moves[i]);
 
                 if (score > value) {
                         if (score >= beta) {
@@ -211,16 +214,17 @@ int Search::search(Position<Board>& p, size_t ply, int depth, int alpha, int bet
         return value;
 }
 
+/*
 // principal variation search (PVS) with TT cut-offs, TT move ordering and IID
 template<size_t Node, typename Rules, typename Board>
 int Search::quiescence(Position<Board>& p, size_t ply, int depth, int alpha, int beta, SearchParameters& parent_node)
 {
         update_statistics(ply);
-/*
+
         // check for a legal draw
         if (p.is_draw<Rules>())
                 return SearchValue::draw();
-*/
+
         // check for legal moves
         if (!Generate::detect(p)) {
                 return SearchValue::loss(0);
@@ -241,3 +245,4 @@ int Search::quiescence(Position<Board>& p, size_t ply, int depth, int alpha, int
 
         // search generated moves
 }
+*/

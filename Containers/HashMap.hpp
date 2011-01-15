@@ -3,12 +3,6 @@
 #include <iostream>
 
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-HashMap<Key, Value, Replace, Hash, Index>::HashMap(void)
-{
-        resize(0);
-}
-
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
 HashMap<Key, Value, Replace, Hash, Index>::HashMap(size_t log_n)
 {
         resize(log_n);

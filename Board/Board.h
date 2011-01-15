@@ -62,8 +62,5 @@ typedef Board< Grid<10,  8, true>             > SpantsiretiBoard;
 typedef Board< Grid<11, 10, true>, 3, 1       > Ktar11Board;
 typedef Board< Grid<12, 10, true>, 2, 1, R090 > Ktar12Board;
 
-// the default board
-typedef InternationalBoard DefaultBoard;
-
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Board.hpp"

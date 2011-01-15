@@ -22,8 +22,8 @@ public:
         static void update_statistics(size_t);
 
 private:
-        template<typename, typename B> static NodeCount perft_leaf(Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount perft_bulk(Position<B>&, size_t, size_t);
+        template<typename, typename B> static NodeCount perft_leaf(const Position<B>&, size_t, size_t);
+        template<typename, typename B> static NodeCount perft_bulk(const Position<B>&, size_t, size_t);
         template<typename, typename B> static NodeCount perft_count(Position<B>&, size_t, size_t);
         template<typename, typename B> static NodeCount perft_hash(Position<B>&, size_t, size_t);
         template<typename, typename B> static NodeCount perft_fast(Position<B>&, size_t, size_t);
