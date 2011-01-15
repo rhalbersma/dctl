@@ -1,3 +1,4 @@
+#include "Position/Position.h"
 #include "Search/SearchTest.h"
 #include "Perft/PerftTest.h"
 #include <iostream>
@@ -7,11 +8,12 @@
 #include "DamExchange/DXP_Test.h"
 
 int main(void)
-{
-     
+{     
         DXP_Test::Mesander_examples();
 
-        PerftTest::International();
+        std::cout << sizeof(Position<InternationalBoard>) << std::endl;
+
+        SearchTest::International();
         //SearchTest::Killer();
         //PerftTest::Rectangular();
         //PerftTest::ChessBoardVariants();

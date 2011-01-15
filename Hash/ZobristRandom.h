@@ -11,8 +11,8 @@ struct ZobristRandom
         static const Index PIECES[2][64];
         static const Index KINGS[64];
         static const Index SIDE;
-        static const Index SAME_KING[2][64];
-        static const Index SAME_MOVES[2][8];
+        static const Index REPEATED_KINGS[2][64];
+        static const Index REPEATED_MOVES[2][8];
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

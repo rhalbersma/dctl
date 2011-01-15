@@ -21,19 +21,19 @@ public:
         bool invariant(void) const;                    // logical consistency of the representation
 
         // views
-        BitBoard men(bool) const;                       // black or white men
-        BitBoard kings(bool) const;                     // black or white kings
-        BitBoard pieces(bool) const;                    // black or white pieces
         BitBoard men(void) const;                       // black and white men
         BitBoard kings(void) const;                     // black and white kings
         BitBoard occupied(void) const;                  // black and white pieces
+        BitBoard men(bool) const;                       // black or white men
+        BitBoard kings(bool) const;                     // black or white kings
+        BitBoard pieces(bool) const;                    // black or white pieces
         Composition composition(bool) const;            // composition of black or white pieces
 
         // modifiers
         template<bool> 
         void init(BitBoard, BitBoard, BitBoard);        // initialize with a set of bitboards
 
-        Pieces& toggle(const Pieces&);                  // toggle the set bits of another piece set
+        Pieces& operator^=(const Pieces&);              // xor-assign the set bits of another piece set
 
 private:
         // representation

@@ -20,7 +20,7 @@ class HashMap
 {
 public:
         // constructors
-        HashMap(void);
+        HashMap(void) {};
 	explicit HashMap(size_t);
 
         // capacity

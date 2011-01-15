@@ -14,13 +14,13 @@ void PerftTest::International(void)
         std::cout << write_square_layout<InternationalBoard>()() << std::endl;
         std::cout << write_bit_layout<InternationalBoard>()() << std::endl;
 
-        Position<> i10;
+        Position<InternationalBoard> i10 = Position<InternationalBoard>::initial();
         Perft::perft<InternationalRules>(i10, 11);
 
-        Position<> random178(read_position_string<FEN>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
+        Position<InternationalBoard> random178(read_position_string<FEN>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
         Perft::perft<InternationalRules>(random178, 9);
 
-        Position<> Woldouby(read_position_string<FEN>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
+        Position<InternationalBoard> Woldouby(read_position_string<FEN>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
         Perft::perft<InternationalRules>(Woldouby, 15);
 }
 

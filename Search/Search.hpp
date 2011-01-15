@@ -68,7 +68,7 @@ void Search::print_PV(const SearchParameters& node, const Position<Board>& pp, b
         Position<Board> p(pp);
         const SearchNode* TT_entry;
         int eval_score;
-        size_t same_king;
+        size_t repeated_kings;
         size_t non_conversion;
 
         for (size_t i = 0; i < line.size(); ++i) {
@@ -86,14 +86,14 @@ void Search::print_PV(const SearchParameters& node, const Position<Board>& pp, b
 
                 p.template make<Rules>(moves[line[i]]);
 
-                same_king = p.same_moves(!p.to_move());
+                repeated_kings = p.repeated_moves(!p.to_move());
                 ///*
-                if (same_king)
-                        std::cout << "^" << std::setw(1) << same_king;
+                if (repeated_kings)
+                        std::cout << "^" << std::setw(1) << repeated_kings;
                 else
                         std::cout << "  ";
                 //*/
-                non_conversion = p.non_conversion_moves();
+                non_conversion = p.non_conversion();
                 ///*
                 if (non_conversion)
                         std::cout << "#" << std::setw(1) << non_conversion;

@@ -23,7 +23,7 @@ NodeCount Divide::divide(const Position<Board>& pp, size_t nominal_depth)
                 p.template make<Rules>(moves[i]);
                 move_leafs = Perft::driver<Rules>(p, 0, nominal_depth - 1);
                 leafs += move_leafs;
-                p.template undo<Rules>(moves[i]);
+                //p.template undo<Rules>(moves[i]);
                 
                 timer.split();
                 Perft::report(nominal_depth - 1, move_leafs, timer);

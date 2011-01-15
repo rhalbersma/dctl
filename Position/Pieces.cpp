@@ -33,24 +33,6 @@ bool Pieces::operator!=(const Pieces& other) const
         return !(*this == other);
 }
 
-// black or white men
-BitBoard Pieces::men(bool color) const
-{
-        return pieces(color) & ~kings();
-}
-
-// black or white kings
-BitBoard Pieces::kings(bool color) const
-{
-        return pieces(color) & kings();
-}
-
-// black or white pieces
-BitBoard Pieces::pieces(bool color) const
-{
-        return pieces_[color];
-}
-
 // black and white men
 BitBoard Pieces::men(void) const
 {
@@ -69,6 +51,24 @@ BitBoard Pieces::occupied(void) const
 	return pieces(Side::BLACK) ^ pieces(Side::WHITE);
 }
 
+// black or white men
+BitBoard Pieces::men(bool color) const
+{
+        return pieces(color) & ~kings();
+}
+
+// black or white kings
+BitBoard Pieces::kings(bool color) const
+{
+        return pieces(color) & kings();
+}
+
+// black or white pieces
+BitBoard Pieces::pieces(bool color) const
+{
+        return pieces_[color];
+}
+
 // composition of black or white pieces
 Pieces::Composition Pieces::composition(bool color) const
 {
@@ -76,7 +76,7 @@ Pieces::Composition Pieces::composition(bool color) const
 }
 
 // toggle the set bits of another piece set
-Pieces& Pieces::toggle(const Pieces& other)
+Pieces& Pieces::operator^=(const Pieces& other)
 {
         pieces_[Side::BLACK] ^= other.pieces(Side::BLACK);
         pieces_[Side::WHITE] ^= other.pieces(Side::WHITE);
