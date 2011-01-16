@@ -3,21 +3,21 @@
 #include <iostream>
 
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-HashMap<Key, Value, Replace, Hash, Index>::HashMap(size_t log_n)
+HashMap<Key, Value, Replace, Hash, Index>::HashMap(size_t log2_n)
 {
-        resize(log_n);
+        resize(log2_n);
 }
 
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-void HashMap<Key, Value, Replace, Hash, Index>::resize(size_t log_n)
+void HashMap<Key, Value, Replace, Hash, Index>::resize(size_t log2_n)
 {
-        size_t log_b = std::min(log_n + MIN_LOG_BUCKETS, MAX_LOG_BUCKETS);
-        while (log_b >= MIN_LOG_BUCKETS) {
+        size_t log2_b = log2_n + MIN_LOG2_BUCKETS;
+        while (log2_b >= MIN_LOG2_BUCKETS) {
                 try {
-                        hash_map_.resize(Index(1) << log_b);    // try to allocate all the buckets
+                        hash_map_.resize(Index(1) << log2_b);   // try to allocate all the buckets
                 }
                 catch (const std::bad_alloc&) {                        
-                        --log_b;                                // try allocating half the previous size
+                        --log2_b;                               // try allocating half the previous size
                         continue;       
                 }
                 bucket_mask_ = hash_map_.size() - 1;            // mask to do arithmetic MODULO the number of buckets

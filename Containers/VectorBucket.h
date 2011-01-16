@@ -1,6 +1,11 @@
 #pragma once
 #include "../Utilities/IntegerTypes.h"
+
+#ifdef _MSC_VER
 #include <array>
+#else
+#include <tr1/array>
+#endif
 
 template<typename T, size_t N>
 class VectorBucket

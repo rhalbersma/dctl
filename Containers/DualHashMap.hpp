@@ -2,17 +2,17 @@
 #include "../Position/Position.h"
 
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-DualHashMap<Key, Value, Replace, Hash, Index>::DualHashMap(size_t log_n)
+DualHashMap<Key, Value, Replace, Hash, Index>::DualHashMap(size_t log2_n)
 {
-        assert(log_n > 0);
-        resize(log_n);        
+        assert(log2_n > 0);
+        resize(log2_n);
 }
 
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-void DualHashMap<Key, Value, Replace, Hash, Index>::resize(size_t log_n)
+void DualHashMap<Key, Value, Replace, Hash, Index>::resize(size_t log2_n)
 {
-        hash_map_[0].resize(log_n - 1);
-        hash_map_[1].resize(log_n - 1);
+        hash_map_[0].resize(log2_n - 1);
+        hash_map_[1].resize(log2_n - 1);
 }
 
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>

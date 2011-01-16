@@ -38,12 +38,12 @@ void Search::report(size_t nominal_ply, int alpha, int beta, int value, const St
         std::cout << std::endl;
 }
 
-uint64_t Search::nodes(void)
+NodeCount Search::nodes(void)
 {
         return statistics_.nodes();
 }
 
-uint64_t Search::sum_ply(void)
+NodeCount Search::sum_ply(void)
 {
         return statistics_.sum_ply();
 }

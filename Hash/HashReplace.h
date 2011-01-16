@@ -1,5 +1,11 @@
 #pragma once
+
+#ifdef _MSC_VER
 #include <array>
+#else
+#include <tr1/array>
+#endif
+
 #include <utility>
 
 // replacement policies

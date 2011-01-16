@@ -37,8 +37,8 @@ private:
         template<typename, typename B> static void insert_PV(const SearchParameters&, const Position<B>&, int);
         template<typename, typename B> static void print_PV(const SearchParameters&, const Position<B>&, bool = false);
 
-        static uint64_t nodes(void);
-        static uint64_t sum_ply(void);
+        static NodeCount nodes(void);
+        static NodeCount sum_ply(void);
         static size_t max_ply(void);
 
         static void reset_statistics(void);
