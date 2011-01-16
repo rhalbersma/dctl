@@ -4,7 +4,13 @@
 #include "../Utilities/TemplateTricks.h"
 #include "../Hash/HashReplace.h"
 #include "../Hash/HashAlgorithms.h"
+
+#ifdef _MSC_VER
 #include <array>
+#else
+#include <tr1/array>
+#endif
+
 #include <utility>
 #include <vector>
 
@@ -53,10 +59,10 @@ private:
         static const size_t ASSOCIATIVITY = CACHE_LINE / sizeof(Entry);
         typedef std::tr1::array<Entry, ASSOCIATIVITY> Bucket;
 
-        static const size_t LOG_MEGA_BYTE = 20;
-        static const size_t LOG_GIGA_BYTE = 30;
-        static const size_t MIN_LOG_BUCKETS = LOG_MEGA_BYTE - LOG_CACHE_LINE;
-        static const size_t MAX_LOG_BUCKETS = LOG_GIGA_BYTE - LOG_CACHE_LINE;
+        static const size_t LOG2_MEGA_BYTE = 20;
+        static const size_t LOG2_GIGA_BYTE = 30;
+        static const size_t MIN_LOG2_BUCKETS = LOG2_MEGA_BYTE - LOG2_CACHE_LINE;
+        static const size_t MAX_LOG2_BUCKETS = LOG2_GIGA_BYTE - LOG2_CACHE_LINE;
 
         // representation
         std::vector<Bucket> hash_map_;

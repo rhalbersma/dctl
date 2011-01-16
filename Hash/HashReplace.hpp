@@ -5,7 +5,7 @@ template<typename Key, typename Value>
 template<size_t N>
 const Value* find_entry<Key, Value>::operator()(const std::tr1::array<Entry, N>& bucket, const Key& key) const
 {
-        std::tr1::array<Entry, N>::const_iterator entry = std::find_if(bucket.begin(), bucket.end(), std::bind2nd(key_equal_to<Entry, Key>(), key));       
+        typename std::tr1::array<Entry, N>::const_iterator entry = std::find_if(bucket.begin(), bucket.end(), std::bind2nd(key_equal_to<Entry, Key>(), key));
         return (entry != bucket.end())? &(entry->second) : 0;
 }
 
@@ -18,7 +18,7 @@ struct insert_entry<Key, Value, EmptyOldUnderCutSmallestOfN>
         template<size_t N>
         void operator()(std::tr1::array<Entry, N>& bucket, const Entry& entry) const
         {
-                std::tr1::array<Entry, N>::iterator replace;
+                typename std::tr1::array<Entry, N>::iterator replace;
 
                 // replace any empty or old entry
                 Key empty_or_old[2] = {Key(0), entry.first};
@@ -49,7 +49,7 @@ struct insert_entry<Key, Value, EmptyOldUnderCutShallowestOfN>
         template<size_t N>
         void operator()(std::tr1::array<Entry, N>& bucket, const Entry& entry) const
         {
-                std::tr1::array<Entry, N>::iterator replace;
+                typename std::tr1::array<Entry, N>::iterator replace;
 
                 // replace any empty or old entry
                 Key empty_or_old[2] = {Key(0), entry.first};

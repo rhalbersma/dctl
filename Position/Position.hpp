@@ -8,8 +8,8 @@
 template<typename Board>
 Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
 :
-        parent_(nullptr),
-        padding_(nullptr),
+        parent_(0),
+        padding_(0),
         pieces_(black_pieces, white_pieces, kings),
         repeated_kings_(0),
         non_conversion_(0),
