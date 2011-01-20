@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #ifdef _MSC_VER
 	typedef unsigned __int8  uint8_t;
 	typedef unsigned __int16 uint16_t;
@@ -10,10 +11,10 @@
         typedef __int16 int16_t;
         typedef __int32 int32_t;
         typedef __int64 int64_t;
-#else
+#else*/
 	#include <cstddef>
 	#include <stdint.h>
-#endif
+//#endif
 
 typedef uint8_t MoveCount;
 typedef uint8_t PlyCount;

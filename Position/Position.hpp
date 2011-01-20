@@ -78,9 +78,9 @@ bool Position<Board>::is_non_conversion_draw(Int2Type<false>) const
 }
 
 template<typename Board> template<PlyCount N>
-bool Position<Board>::is_restricted_repeated_kings_(bool color) const
+bool Position<Board>::is_restricted_king(bool color) const
 {
-        return repeated_kings_moves_[color].is_restricted<N>();
+        return repeated_moves(color) == N;
 }
 
 template<typename Board>
@@ -163,12 +163,9 @@ BitBoard Position<Board>::unrestricted_kings(bool color) const
 template<typename Board> template<typename Rules>
 BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<true>) const
 {
-        if (men(color) && kings(color)) {
-                if (is_restricted_repeated_kings_<MaxSameKingMoves<Rules>::VALUE>(color))
-                        return kings(color) ^ repeated_kings(color);
-                else
-                        return kings(color);
-        } else
+        if (men(color) && kings(color) && is_restricted_king<MaxSameKingMoves<Rules>::VALUE>(color))                        
+                return kings(color) ^ repeated_kings(color);
+        else
                 return kings(color);
 }
 

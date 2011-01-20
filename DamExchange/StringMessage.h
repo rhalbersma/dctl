@@ -1,12 +1,14 @@
 #pragma once
 #include <string>
 
-class DXP_StringMessage
+namespace DamExchangeProtocol {
+
+class StringMessage
 {
 public:
         // constructors
-        explicit DXP_StringMessage(const std::string&);
-        DXP_StringMessage(const std::string&, const std::string&);
+        explicit StringMessage(const std::string&);
+        StringMessage(const std::string&, const std::string&);
 
         // views
         const char* c_str(void) const;
@@ -26,3 +28,5 @@ private:
         // representation
         std::string content_;
 };
+
+} // namespace DamExchangeProtocol

@@ -62,7 +62,7 @@ private:
         template<typename> bool is_non_conversion_draw(Int2Type<true>) const;
         template<typename> bool is_non_conversion_draw(Int2Type<false>) const;
 
-        template<PlyCount> bool is_restricted_repeated_kings_(bool) const;
+        template<PlyCount> bool is_restricted_king(bool) const;
 
         // tag dispatching for restrictions on consecutive moves with the same king
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<true>) const;
