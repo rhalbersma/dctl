@@ -1,9 +1,12 @@
 #pragma once
-#include "DXP_AbstractMessage.h"
-#include "DXP_StringMessage.h"
+#include "AbstractMessage.h"
+#include "StringMessage.h"
 #include <string>
+#include <memory>
 
-class DXP_GameEnd: public DXP_AbstractMessage
+namespace DamExchangeProtocol {
+
+class GameEnd: public AbstractMessage
 {
 public:
         // typedefs
@@ -11,19 +14,18 @@ public:
         enum StopCode { STOP_THIS = 0, STOP_ALL = 1 };
 
         // constructors
-        static DXP_AbstractMessage* create(const DXP_StringMessage&);
-
-        DXP_GameEnd(Reason, StopCode);
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
+        explicit GameEnd(const std::string&);
+        GameEnd(Reason, StopCode);
 
         // views
-        virtual DXP_StringMessage message(void) const;
-
         Reason reason(void) const;
         StopCode stop_code(void) const;
 
 private:
         // implementation
-        explicit DXP_GameEnd(const std::string&);
+        virtual std::string header(void) const;
+        virtual std::string body(void) const;
 
         static const std::string HEADER;
         static const bool REGISTERED;
@@ -32,3 +34,5 @@ private:
         Reason reason_;
         StopCode stop_code_;
 };
+
+}       // namespace DamExchangeProtocol

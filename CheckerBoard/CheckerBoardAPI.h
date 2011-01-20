@@ -1,6 +1,6 @@
 #pragma once
-//#include "windows.h"
-#define WINAPI
+#define WIN32_LEAN_AND_MEAN
+#include "windows.h"
 
  #ifdef __cplusplus
  extern "C" {

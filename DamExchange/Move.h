@@ -1,20 +1,21 @@
 #pragma once
-#include "DXP_AbstractMessage.h"
-#include "DXP_StringMessage.h"
+#include "AbstractMessage.h"
+#include "StringMessage.h"
 #include <string>
 #include <vector>
+#include <memory>
 
-class DXP_Move: public DXP_AbstractMessage
+namespace DamExchangeProtocol {
+
+class Move: public AbstractMessage
 {
 public:
         // constructors
-        static DXP_AbstractMessage* create(const DXP_StringMessage&);
-
-        DXP_Move(size_t, size_t, size_t, size_t, const std::vector<size_t>&);
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
+        explicit Move(const std::string&);
+        Move(size_t, size_t, size_t, size_t, const std::vector<size_t>&);
 
         // views
-        virtual DXP_StringMessage message(void) const;        
-
         size_t seconds(void) const;
         size_t from_sq(void) const;
         size_t dest_sq(void) const;
@@ -23,7 +24,8 @@ public:
 
 private:
         // implementation
-        explicit DXP_Move(const std::string&);
+        virtual std::string header(void) const;
+        virtual std::string body(void) const;
 
         static const std::string HEADER;
         static const bool REGISTERED;
@@ -35,3 +37,5 @@ private:
         size_t num_captured_;
         std::vector<size_t> captured_pieces_;       
 };
+
+}       // namespace DamExchangeProtocol

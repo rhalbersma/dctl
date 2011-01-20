@@ -1,10 +1,13 @@
-#include "DXP_Test.h"
-#include "DXP_StringMessage.h"
+#include "Test.h"
+#include "StringMessage.h"
 #include <cassert>
 #include <iostream>
+#include <memory>
+
+namespace DXP  = DamExchangeProtocol;
 
 // Examples of DamExchange messages (Layer 2 Protocol): http://www.mesander.nl/damexchange/edxplg2.htm
-void DXP_Test::Mesander_examples(void)
+void DXP::Test::Mesander_examples(void)
 {
         const std::string example[] = {
                 "R01Tornado voor Windows 4.0        W060065A",
@@ -18,10 +21,9 @@ void DXP_Test::Mesander_examples(void)
         };
 
         for (size_t i = 0; i < 8; ++i) {
-                const DXP_StringMessage s(example[i]);
-                const DXP_AbstractMessage* m = DXP_MessageFactory::select_creator(s);
+                const DXP::StringMessage s(example[i]);
+                std::shared_ptr<DXP::AbstractMessage> m = DXP::MessageFactory::select_creator(s);
                 assert(!s.str().compare(m->message().str()));
                 std::cout << m->message().str() << std::endl;
-                delete m;
         }
 }

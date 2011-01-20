@@ -1,19 +1,20 @@
 #pragma once
-#include "DXP_AbstractMessage.h"
-#include "DXP_StringMessage.h"
+#include "AbstractMessage.h"
+#include "StringMessage.h"
 #include <string>
+#include <memory>
 
-class DXP_GameRequest: public DXP_AbstractMessage
+namespace DamExchangeProtocol {
+
+class GameRequest: public AbstractMessage
 {
 public:
         // constructors
-        static DXP_AbstractMessage* create(const DXP_StringMessage&);
-
-        DXP_GameRequest(const std::string&, bool, size_t, size_t, bool, const std::string&);
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
+        explicit GameRequest(const std::string&);
+        GameRequest(const std::string&, bool, size_t, size_t, bool, const std::string&);
 
         // views
-        virtual DXP_StringMessage message(void) const;
-
         const std::string& name_initiator(void) const;
         bool color_follower(void) const;
         size_t minutes(void) const;
@@ -23,7 +24,8 @@ public:
 
 private:
         // implementation
-        explicit DXP_GameRequest(const std::string&);
+        virtual std::string header(void) const;
+        virtual std::string body(void) const;
 
         static const std::string HEADER;
         static const size_t PROTOCOL_VERSION = 1;
@@ -37,3 +39,5 @@ private:
         bool setup_position_;
         std::string special_position_;
 };
+
+}       // namespace DamExchangeProtocol

@@ -5,11 +5,12 @@
 #include <iomanip>
 
 #include "CheckerBoard/CheckerBoardAPI.h"
-#include "DamExchange/DXP_Test.h"
+#include "DamExchange/Test.h"
+#include "DamExchange/Client.h"
 
 int main(void)
 {     
-        DXP_Test::Mesander_examples();
+        DamExchangeProtocol::Test::Mesander_examples();
 
         std::cout << sizeof(Position<InternationalBoard>) << std::endl;
 

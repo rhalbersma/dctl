@@ -1,16 +1,19 @@
 #pragma once
-#include "DXP_StringMessage.h"
-#include "DXP_AbstractMessage.h"
+#include "StringMessage.h"
+#include "AbstractMessage.h"
 #include <map>
+#include <memory>
 
-class DXP_MessageFactory
+namespace DamExchangeProtocol {
+
+class MessageFactory
 {
 public:
         // typedefs
         typedef std::string MessageId;
-        typedef DXP_AbstractMessage* (*Creator)(const DXP_StringMessage&);
+        typedef std::shared_ptr<AbstractMessage> (*Creator)(const StringMessage&);
 
-        static DXP_AbstractMessage* select_creator(const DXP_StringMessage&);
+        static std::shared_ptr<AbstractMessage> select_creator(const StringMessage&);
         static bool register_creator(MessageId, Creator);
         static bool unregister_creator(MessageId);
 
@@ -19,3 +22,5 @@ private:
         typedef std::map<MessageId, Creator> CreatorMap;
         static CreatorMap& creator_map(void);
 };
+
+}       // namespace DamExchangeProtocol
