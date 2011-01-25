@@ -1,5 +1,6 @@
 #pragma once
 #include "StringMessage.h"
+#include <string>
 
 namespace DamExchangeProtocol {
 

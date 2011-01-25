@@ -1,30 +1,31 @@
 #include "GameRequest.h"
 #include "MessageFactory.h"
-#include "../IO/Token.h"
+#include "Token.h"
 #include <cassert>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
 
-namespace DXP  = DamExchangeProtocol;
+namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::GameRequest::HEADER = "R";
 
-const bool DXP::GameRequest::REGISTERED = DXP::MessageFactory::register_creator(HEADER, create);
+const bool DXP::GameRequest::REGISTERED = MessageFactory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::GameRequest::create(const DXP::StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::GameRequest::create(const StringMessage& s)
 {
-        assert(s.header() == header());
-        return std::make_shared<DXP::GameRequest>(s.body());
+        assert(REGISTERED);
+        assert(s.header() == HEADER);
+        return std::make_shared<GameRequest>(s.body());
 }
 
 DXP::GameRequest::GameRequest(const std::string& s)
 :
         name_initiator_(s.substr(2, 32)),
-        color_follower_(DXP_PositionToken::read_color( *(s.substr(34, 1)).begin() )),
+        color_follower_(PositionToken<DXP_tag>::read_color( *(s.substr(34, 1)).begin() )),
         minutes_(atoi(s.substr(35, 3).c_str())),
         moves_(atoi(s.substr(38, 3).c_str())),
-        setup_position_(DXP_PositionToken::read_setup( *(s.substr(41, 1)).begin() ))
+        setup_position_(PositionToken<DXP_tag>::read_setup( *(s.substr(41, 1)).begin() ))
 {
         if (setup_position())
                 special_position_ = s.substr(42);
@@ -82,10 +83,10 @@ std::string DXP::GameRequest::body(void) const
         std::stringstream sstr;
         sstr << std::setw( 2) << std::setfill('0') << PROTOCOL_VERSION;
         sstr << std::setw(32) << name_initiator() << std::setfill(' ');
-        sstr << std::setw( 1) << DXP_PositionToken::write_color(color_follower());
+        sstr << std::setw( 1) << PositionToken<DXP_tag>::write_color(color_follower());
         sstr << std::setw( 3) << std::setfill('0') << minutes();
         sstr << std::setw( 3) << std::setfill('0') << moves();
-        sstr << std::setw( 1) << DXP_PositionToken::write_setup(setup_position());
+        sstr << std::setw( 1) << PositionToken<DXP_tag>::write_setup(setup_position());
         if (setup_position())
                 sstr << std::setw(51) << special_position();
         return sstr.str();

@@ -5,16 +5,17 @@
 #include <iomanip>
 #include <sstream>
 
-namespace DXP  = DamExchangeProtocol;
+namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::Move::HEADER = "M";
 
-const bool DXP::Move::REGISTERED = DXP::MessageFactory::register_creator(HEADER, create);
+const bool DXP::Move::REGISTERED = MessageFactory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::Move::create(const DXP::StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::Move::create(const StringMessage& s)
 {
-        assert(s.header() == header());
-        return std::make_shared<DXP::Move>(s.body());
+        assert(REGISTERED);
+        assert(s.header() == HEADER);
+        return std::make_shared<Move>(s.body());
 }
 
 DXP::Move::Move(const std::string& s)
@@ -23,7 +24,6 @@ DXP::Move::Move(const std::string& s)
         from_sq_(atoi(s.substr(4, 2).c_str())),
         dest_sq_(atoi(s.substr(6, 2).c_str())),
         num_captured_(atoi(s.substr(8, 2).c_str()))
-
 {
         for (size_t i = 0; i < num_captured(); ++i)
                 captured_pieces_.push_back(atoi(s.substr(10 + 2 * i, 2).c_str()));

@@ -10,7 +10,6 @@ class GameRequest: public AbstractMessage
 {
 public:
         // constructors
-        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         explicit GameRequest(const std::string&);
         GameRequest(const std::string&, bool, size_t, size_t, bool, const std::string&);
 
@@ -27,6 +26,7 @@ private:
         virtual std::string header(void) const;
         virtual std::string body(void) const;
 
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         static const std::string HEADER;
         static const size_t PROTOCOL_VERSION = 1;
         static const bool REGISTERED;

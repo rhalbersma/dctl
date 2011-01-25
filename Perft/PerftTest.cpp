@@ -5,7 +5,7 @@
 #include "../Board/Board.h"
 #include "../Rules/Rules.h"
 #include "../IO/BoardIO.h"
-#include "../IO/PositionIO.h"
+#include "../IO/FEN.h"
 #include <iostream>
 
 // The original perft thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2308
@@ -17,10 +17,10 @@ void PerftTest::International(void)
         Position<InternationalBoard> i10 = Position<InternationalBoard>::initial();
         Perft::perft<InternationalRules>(i10, 11);
 
-        Position<InternationalBoard> random178(read_position_string<FEN>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
+        Position<InternationalBoard> random178(read_position_string<FEN_tag>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
         Perft::perft<InternationalRules>(random178, 9);
 
-        Position<InternationalBoard> Woldouby(read_position_string<FEN>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
+        Position<InternationalBoard> Woldouby(read_position_string<FEN_tag>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
         Perft::perft<InternationalRules>(Woldouby, 15);
 }
 
@@ -65,8 +65,8 @@ void PerftTest::ChessBoardVariants(void)
         Perft::perft<ItalianRules>(r8, 13);
 
         // Addional Italian test positions from email conversation with Ed Gilbert
-        Position<RomanBoard> ITA_Ed_Gilbert_2 = read_position_string<FEN, RomanBoard>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
-        Position<RomanBoard> ITA_Ed_Gilbert_3 = read_position_string<FEN, RomanBoard>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
+        Position<RomanBoard> ITA_Ed_Gilbert_2 = read_position_string<FEN_tag, RomanBoard>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
+        Position<RomanBoard> ITA_Ed_Gilbert_3 = read_position_string<FEN_tag, RomanBoard>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
         Perft::perft<ItalianRules>(ITA_Ed_Gilbert_2, 16);
         Perft::perft<ItalianRules>(ITA_Ed_Gilbert_3, 12);
         
@@ -79,9 +79,9 @@ void PerftTest::ChessBoardVariants(void)
 // Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 void PerftTest::ItalianRuleBook(void)
 {
-        Position<RomanBoard> ITA_empty = read_position_string<FEN, RomanBoard>()("");	// Art. 2.1
-        typedef RomanBoard ITA_notation;                                      	        // Art. 2.4
-        Position<RomanBoard> ITA_initial;						// Art. 2.6
+        Position<RomanBoard> ITA_empty = read_position_string<FEN_tag, RomanBoard>()("");       // Art. 2.1
+        typedef RomanBoard ITA_notation;                                      	                // Art. 2.4
+        Position<RomanBoard> ITA_initial;						        // Art. 2.6
 
         std::string ITA_rules[] = {
                 "W:W30:B27",                    // Art. 5.6
@@ -95,9 +95,9 @@ void PerftTest::ItalianRuleBook(void)
                 "W:WK31:B18,20,K27,K28"         // Art. 6.10
         };
 
-        std::cout << write_position_layout<FEN>()(ITA_empty) << std::endl;
+        std::cout << write_position_layout<FEN_tag>()(ITA_empty) << std::endl;
         write_square_layout<ITA_notation>()();
-        std::cout << write_position_layout<FEN>()(ITA_initial) << std::endl;
+        std::cout << write_position_layout<FEN_tag>()(ITA_initial) << std::endl;
         for (size_t i = 0; i < 9; ++i)
-                Divide::divide<ItalianRules>(read_position_string<FEN, RomanBoard>()(ITA_rules[i]), 1);
+                Divide::divide<ItalianRules>(read_position_string<FEN_tag, RomanBoard>()(ITA_rules[i]), 1);
 }

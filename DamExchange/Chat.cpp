@@ -2,16 +2,17 @@
 #include "MessageFactory.h"
 #include <cassert>
 
-namespace DXP  = DamExchangeProtocol;
+namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::Chat::HEADER = "C";
 
-const bool DXP::Chat::REGISTERED = DXP::MessageFactory::register_creator(HEADER, create);
+const bool DXP::Chat::REGISTERED = MessageFactory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::Chat::create(const DXP::StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::Chat::create(const StringMessage& s)
 {
-        assert(s.header() == header());
-        return std::make_shared<DXP::Chat>(s.body());
+        assert(REGISTERED);
+        assert(s.header() == HEADER);
+        return std::make_shared<Chat>(s.body());
 }
 
 DXP::Chat::Chat(const std::string& s)

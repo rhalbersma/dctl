@@ -11,7 +11,6 @@ class Move: public AbstractMessage
 {
 public:
         // constructors
-        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         explicit Move(const std::string&);
         Move(size_t, size_t, size_t, size_t, const std::vector<size_t>&);
 
@@ -27,6 +26,7 @@ private:
         virtual std::string header(void) const;
         virtual std::string body(void) const;
 
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         static const std::string HEADER;
         static const bool REGISTERED;
 

@@ -5,16 +5,17 @@
 #include <iomanip>
 #include <sstream>
 
-namespace DXP  = DamExchangeProtocol;
+namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::GameEnd::HEADER = "E";
 
-const bool DXP::GameEnd::REGISTERED = DXP::MessageFactory::register_creator(HEADER, create);
+const bool DXP::GameEnd::REGISTERED = MessageFactory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::GameEnd::create(const DXP::StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::GameEnd::create(const StringMessage& s)
 {
-        assert(s.header() == header());
-        return std::make_shared<DXP::GameEnd>(s.body());
+        assert(REGISTERED);
+        assert(s.header() == HEADER);
+        return std::make_shared<GameEnd>(s.body());
 }
 
 DXP::GameEnd::GameEnd(const std::string& s)
