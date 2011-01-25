@@ -13,7 +13,6 @@ public:
         enum AcceptanceCode { ACCEPT = 0, DECLINE_VERSION = 1, DECLINE_THIS = 2, DECLINE_ALL = 3 };
 
         // constructors
-        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         explicit GameAcknowledge(const std::string&);
         GameAcknowledge(const std::string&, AcceptanceCode);
 
@@ -26,6 +25,7 @@ private:
         virtual std::string header(void) const;
         virtual std::string body(void) const;
 
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         static const std::string HEADER;
         static const bool REGISTERED;
 

@@ -5,16 +5,17 @@
 #include <iomanip>
 #include <sstream>
 
-namespace DXP  = DamExchangeProtocol;
+namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::BackAcknowledge::HEADER = "K";
 
-const bool DXP::BackAcknowledge::REGISTERED = DXP::MessageFactory::register_creator(HEADER, create);
+const bool DXP::BackAcknowledge::REGISTERED = MessageFactory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::BackAcknowledge::create(const DXP::StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::BackAcknowledge::create(const StringMessage& s)
 {
-        assert(s.header() == header());
-        return std::make_shared<DXP::BackAcknowledge>(s.body());
+        assert(REGISTERED);
+        assert(s.header() == HEADER);
+        return std::make_shared<BackAcknowledge>(s.body());
 }
 
 DXP::BackAcknowledge::BackAcknowledge(const std::string& s)

@@ -14,7 +14,6 @@ public:
         enum StopCode { STOP_THIS = 0, STOP_ALL = 1 };
 
         // constructors
-        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         explicit GameEnd(const std::string&);
         GameEnd(Reason, StopCode);
 
@@ -27,6 +26,7 @@ private:
         virtual std::string header(void) const;
         virtual std::string body(void) const;
 
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         static const std::string HEADER;
         static const bool REGISTERED;
 

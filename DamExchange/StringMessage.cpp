@@ -1,54 +1,78 @@
 #include "StringMessage.h"
 #include <cassert>
 
-namespace DXP  = DamExchangeProtocol;
+namespace DXP = DamExchangeProtocol;
+
+DXP::StringMessage::StringMessage(void)
+: 
+        body_length_(0)
+{
+}
 
 DXP::StringMessage::StringMessage(const std::string& s)
-:
-        content_(s)
+: 
+        body_length_(s.size() - HEADER_LENGTH)
 {
-        assert(invariant());
+        std::memcpy(data_, s.c_str(), HEADER_LENGTH + body_length_ + 1);
 }
 
-DXP::StringMessage::StringMessage(const std::string& h, const std::string& b)
-:
-        content_(h + b)
+std::string DXP::StringMessage::data(void) const
 {
-        assert(invariant(h, b));
+        return std::string(data_, length());
 }
 
-const char* DXP::StringMessage::c_str(void) const
+char* DXP::StringMessage::data(void)
 {
-        return str().c_str();
+        return data_;
 }
 
-std::string DXP::StringMessage::str(void) const
+size_t DXP::StringMessage::length(void) const
 {
-        return content_;
+        return HEADER_LENGTH + body_length_;
 }
 
 std::string DXP::StringMessage::header(void) const
 {
-        return str().substr(0, HEADER_LENGTH);
+        return std::string(data_, HEADER_LENGTH);
 }
 
 std::string DXP::StringMessage::body(void) const
 {
-        return str().substr(HEADER_LENGTH);
+        return std::string(data_ + HEADER_LENGTH, body_length());
 }
 
-bool DXP::StringMessage::invariant(void) const
+char* DXP::StringMessage::body(void)
 {
-        return (
-                header().length() == HEADER_LENGTH && 
-                body().length() <= MAX_BODY_LENGTH
-        );
+        return data_ + HEADER_LENGTH;
 }
 
-bool DXP::StringMessage::invariant(const std::string& header_, const std::string& body_) const
+size_t DXP::StringMessage::body_length(void) const
 {
-        return (
-                header_.length() == HEADER_LENGTH && 
-                body_.length() <= MAX_BODY_LENGTH
-        );
+        return body_length_;
+}
+
+void DXP::StringMessage::body_length(size_t length)
+{
+        body_length_ = length;
+        if (body_length_ > MAX_BODY_LENGTH)
+                body_length_ = MAX_BODY_LENGTH;
+}
+
+bool DXP::StringMessage::decode_header(void)
+{
+        char header[HEADER_LENGTH + 1] = "";
+        strncat_s(header, data_, HEADER_LENGTH);
+        body_length_ = std::atoi(header);
+        if (body_length_ > MAX_BODY_LENGTH) {
+                body_length_ = 0;
+                return false;
+        }
+        return true;
+}
+
+void DXP::StringMessage::encode_header(void)
+{
+        char header[HEADER_LENGTH + 1] = "";
+        sprintf_s(header, "%4d", body_length_);
+        std::memcpy(data_, header, HEADER_LENGTH);
 }

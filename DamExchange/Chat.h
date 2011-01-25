@@ -10,7 +10,6 @@ class Chat: public AbstractMessage
 {
 public:
         // constructors
-        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         explicit Chat(const std::string&);
 
 private:
@@ -18,6 +17,7 @@ private:
         virtual std::string header(void) const;
         virtual std::string body(void) const;
 
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         static const std::string HEADER;
         static const bool REGISTERED;
 

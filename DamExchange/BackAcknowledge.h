@@ -13,7 +13,6 @@ public:
         enum AcceptanceCode { ACCEPT = 0, NOT_SUPPORTED = 1, DECLINE = 2 };
 
         // constructors
-        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         explicit BackAcknowledge(const std::string&);
         explicit BackAcknowledge(AcceptanceCode);
 
@@ -25,6 +24,7 @@ private:
         virtual std::string header(void) const;
         virtual std::string body(void) const;
 
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         static const std::string HEADER;
         static const bool REGISTERED;
 

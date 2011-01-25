@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 
-namespace DXP  = DamExchangeProtocol;
+namespace DXP = DamExchangeProtocol;
 
 // Examples of DamExchange messages (Layer 2 Protocol): http://www.mesander.nl/damexchange/edxplg2.htm
 void DXP::Test::Mesander_examples(void)
@@ -23,7 +23,7 @@ void DXP::Test::Mesander_examples(void)
         for (size_t i = 0; i < 8; ++i) {
                 const DXP::StringMessage s(example[i]);
                 std::shared_ptr<DXP::AbstractMessage> m = DXP::MessageFactory::select_creator(s);
-                assert(!s.str().compare(m->message().str()));
-                std::cout << m->message().str() << std::endl;
+                assert(!s.data().compare(m->message().data()));
+                std::cout << m->message().data() << std::endl;
         }
 }

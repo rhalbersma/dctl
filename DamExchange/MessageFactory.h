@@ -20,7 +20,7 @@ public:
 private:
         // implementation
         typedef std::map<MessageId, Creator> CreatorMap;
-        static CreatorMap& creator_map(void);
+        static CreatorMap& instance(void);
 };
 
 }       // namespace DamExchangeProtocol

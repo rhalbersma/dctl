@@ -14,7 +14,7 @@ int main(void)
 
         std::cout << sizeof(Position<InternationalBoard>) << std::endl;
 
-        SearchTest::International();
+        PerftTest::International();
         //SearchTest::Killer();
         //PerftTest::Rectangular();
         //PerftTest::ChessBoardVariants();

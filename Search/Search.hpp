@@ -30,7 +30,6 @@ int Search::root(const Position<Board>& p, size_t nominal_depth)
                 insert_PV<Rules>(root_node, p, value);
         }
 
-        assert(p == pp);
         return value;
 }
 
@@ -38,8 +37,8 @@ template<typename Board>
 void Search::announce(const Position<Board>& p, size_t nominal_depth)
 {
         std::cout << std::endl;
-        std::cout << write_position_layout<FEN>()(p) << std::endl;
-        std::cout << write_position_string<FEN>()(p) << std::endl << std::endl;
+        std::cout << write_position_layout<FEN_tag>()(p) << std::endl;
+        std::cout << write_position_string<FEN_tag>()(p) << std::endl << std::endl;
         std::cout << "Searching to nominal depth=" << nominal_depth << std::endl;
         std::cout << std::endl;
 }

@@ -10,7 +10,6 @@ class BackRequest: public AbstractMessage
 {
 public:
         // constructors
-        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         explicit BackRequest(const std::string&);
         BackRequest(size_t, bool);
 
@@ -23,6 +22,7 @@ private:
         virtual std::string header(void) const;
         virtual std::string body(void) const;
 
+        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
         static const std::string HEADER;
         static const bool REGISTERED;
 
