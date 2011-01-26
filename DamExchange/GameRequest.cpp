@@ -14,8 +14,7 @@ const bool DXP::GameRequest::REGISTERED = MessageFactory::register_creator(HEADE
 
 std::shared_ptr<DXP::AbstractMessage> DXP::GameRequest::create(const StringMessage& s)
 {
-        assert(REGISTERED);
-        assert(s.header() == HEADER);
+        assert(pre_condition(s));
         return std::make_shared<GameRequest>(s.body());
 }
 
@@ -90,4 +89,9 @@ std::string DXP::GameRequest::body(void) const
         if (setup_position())
                 sstr << std::setw(51) << special_position();
         return sstr.str();
+}
+
+bool DXP::GameRequest::pre_condition(const StringMessage& s)
+{
+        return REGISTERED && HEADER == s.header();
 }

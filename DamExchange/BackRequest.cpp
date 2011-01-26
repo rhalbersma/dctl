@@ -14,8 +14,7 @@ const bool DXP::BackRequest::REGISTERED = MessageFactory::register_creator(HEADE
 
 std::shared_ptr<DXP::AbstractMessage> DXP::BackRequest::create(const StringMessage& s)
 {
-        assert(REGISTERED);
-        assert(s.header() == HEADER);
+        assert(pre_condition(s));
         return std::make_shared<BackRequest>(s.body());
 }
 
@@ -54,4 +53,9 @@ std::string DXP::BackRequest::body(void) const
         sstr << std::setw( 3) << std::setfill('0') << move_number();
         sstr << std::setw( 1) << PositionToken<DXP_tag>::write_color(side_to_move());
         return sstr.str();
+}
+
+bool DXP::BackRequest::pre_condition(const StringMessage& s)
+{
+        return REGISTERED && HEADER == s.header();
 }

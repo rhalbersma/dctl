@@ -13,8 +13,7 @@ const bool DXP::GameEnd::REGISTERED = MessageFactory::register_creator(HEADER, c
 
 std::shared_ptr<DXP::AbstractMessage> DXP::GameEnd::create(const StringMessage& s)
 {
-        assert(REGISTERED);
-        assert(s.header() == HEADER);
+        assert(pre_condition(s));
         return std::make_shared<GameEnd>(s.body());
 }
 
@@ -53,4 +52,9 @@ std::string DXP::GameEnd::body(void) const
         sstr << std::setw( 1) << reason();
         sstr << std::setw( 1) << stop_code();
         return sstr.str();
+}
+
+bool DXP::GameEnd::pre_condition(const StringMessage& s)
+{
+        return REGISTERED && HEADER == s.header();
 }

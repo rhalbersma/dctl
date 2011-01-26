@@ -13,8 +13,7 @@ const bool DXP::GameAcknowledge::REGISTERED = MessageFactory::register_creator(H
 
 std::shared_ptr<DXP::AbstractMessage> DXP::GameAcknowledge::create(const StringMessage& s)
 {
-        assert(REGISTERED);
-        assert(s.header() == HEADER);
+        assert(pre_condition(s));
         return std::make_shared<GameAcknowledge>(s.body());
 }
 
@@ -53,4 +52,9 @@ std::string DXP::GameAcknowledge::body(void) const
         sstr << std::setw(32) << name_follower() << std::setfill(' ');
         sstr << std::setw( 1) << acceptance_code();
         return sstr.str();
+}
+
+bool DXP::GameAcknowledge::pre_condition(const StringMessage& s)
+{
+        return REGISTERED && HEADER == s.header();
 }
