@@ -13,8 +13,7 @@ const bool DXP::Move::REGISTERED = MessageFactory::register_creator(HEADER, crea
 
 std::shared_ptr<DXP::AbstractMessage> DXP::Move::create(const StringMessage& s)
 {
-        assert(REGISTERED);
-        assert(s.header() == HEADER);
+        assert(pre_condition(s));
         return std::make_shared<Move>(s.body());
 }
 
@@ -79,4 +78,9 @@ std::string DXP::Move::body(void) const
         for (std::vector<size_t>::const_iterator it = captured_pieces().begin(); it != captured_pieces().end(); ++it)
                 sstr << std::setw(2) << std::setfill('0') << *it;
         return sstr.str();
+}
+
+bool DXP::Move::pre_condition(const StringMessage& s)
+{
+        return REGISTERED && HEADER == s.header();
 }

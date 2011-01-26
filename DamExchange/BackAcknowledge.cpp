@@ -13,8 +13,7 @@ const bool DXP::BackAcknowledge::REGISTERED = MessageFactory::register_creator(H
 
 std::shared_ptr<DXP::AbstractMessage> DXP::BackAcknowledge::create(const StringMessage& s)
 {
-        assert(REGISTERED);
-        assert(s.header() == HEADER);
+        assert(pre_condition(s));
         return std::make_shared<BackAcknowledge>(s.body());
 }
 
@@ -45,4 +44,9 @@ std::string DXP::BackAcknowledge::body(void) const
         std::stringstream sstr;
         sstr << std::setw( 1) << acceptance_code();
         return sstr.str();
+}
+
+bool DXP::BackAcknowledge::pre_condition(const StringMessage& s)
+{
+        return REGISTERED && HEADER == s.header();
 }

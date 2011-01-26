@@ -10,8 +10,7 @@ const bool DXP::Chat::REGISTERED = MessageFactory::register_creator(HEADER, crea
 
 std::shared_ptr<DXP::AbstractMessage> DXP::Chat::create(const StringMessage& s)
 {
-        assert(REGISTERED);
-        assert(s.header() == HEADER);
+        assert(pre_condition(s));
         return std::make_shared<Chat>(s.body());
 }
 
@@ -29,4 +28,9 @@ std::string DXP::Chat::header(void) const
 std::string DXP::Chat::body(void) const
 {
         return message_;
+}
+
+bool DXP::Chat::pre_condition(const StringMessage& s)
+{
+        return REGISTERED && HEADER == s.header();
 }
