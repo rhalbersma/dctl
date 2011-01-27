@@ -15,7 +15,7 @@ void GenerateDriver<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate(co
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void GenerateDriver<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Propagate<Rules, Board>& moves)
 {
-        generate_precede(p, moves, Int2Type<is_AbsoluteKingPrecedence<Rules>::VALUE>());
+        generate_precede(p, moves, Int2Type<Variant::is_AbsoluteKingPrecedence<Rules>::VALUE>());
 }
 
 // partial specialization for no absolute king capture precedence

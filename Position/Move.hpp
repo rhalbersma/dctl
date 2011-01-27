@@ -6,7 +6,7 @@
 template<typename Rules>
 bool Move::non_unique_back(const List& v)
 {
-        return non_unique_back(v, Int2Type<is_CheckCaptureUniqueness<Rules>::VALUE>());
+        return non_unique_back(v, Int2Type<Variant::is_CheckCaptureUniqueness<Rules>::VALUE>());
 }
 
 // add a king move
@@ -142,12 +142,12 @@ void Move::init(Pieces& m, BitBoard delta, BitBoard promotion, BitBoard captured
 template<typename Rules>
 bool Move::promotion_en_passant(BitBoard promotion, BitBoard delta)
 {
-        return promotion_en_passant(promotion, delta, Int2Type<PromotionCondition<Rules>::VALUE>());
+        return promotion_en_passant(promotion, delta, Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
 }
 
 // tag dispatching on capture removal
 template<typename Rules>
 bool Move::sequential_capture_removal(BitBoard delta, BitBoard captured_pieces)
 {
-        return sequential_capture_removal(delta, captured_pieces, Int2Type<CaptureRemoval<Rules>::VALUE>());
+        return sequential_capture_removal(delta, captured_pieces, Int2Type<Variant::CaptureRemoval<Rules>::VALUE>());
 }

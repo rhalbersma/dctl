@@ -1,6 +1,6 @@
 #pragma once
 #include "GenerateDriver.h"
-#include "../Rules/Rules.h"
+#include "../Variant/Rules.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"
 
@@ -25,23 +25,23 @@ private:
 
         // tag dispatching based on man capture directions
         static void generate_dirs(BitBoard, Propagate<Rules, Board>&);
-        static void generate_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_2>);
-        static void generate_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_4>);
-        static void generate_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_8>);
+        static void generate_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::DIRS_2>);
+        static void generate_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::DIRS_4>);
+        static void generate_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::DIRS_8>);
 
         template<size_t> static void generate_dir(BitBoard, Propagate<Rules, Board>&);
         template<size_t> static void generate_next(BitBoard, Propagate<Rules, Board>&);
 
         // tag dispatching based on promotion condition
         template<size_t> static bool scan_next(BitBoard, Propagate<Rules, Board>&);
-        template<size_t> static bool scan_next(BitBoard, Propagate<Rules, Board>&, Int2Type<PROMOTE_BR>);
-        template<size_t> static bool scan_next(BitBoard, Propagate<Rules, Board>&, Int2Type<PROMOTE_EP>);
+        template<size_t> static bool scan_next(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::PROMOTE_BR>);
+        template<size_t> static bool scan_next(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::PROMOTE_EP>);
 
         // tag dispatching based on man capture directions
         template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&);
-        template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_2>);
-        template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_4>);
-        template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<DIRS_8>);
+        template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::DIRS_2>);
+        template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::DIRS_4>);
+        template<size_t> static bool scan_dirs(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::DIRS_8>);
 
         template<size_t> static bool scan_dir(BitBoard, Propagate<Rules, Board>&);
         template<size_t> static bool scan(BitBoard, Propagate<Rules, Board>&);
@@ -53,9 +53,9 @@ private:
 
         // tag dispatching based on man capture directions
         static bool detect_dirs(BitBoard, BitBoard, BitBoard);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<DIRS_2>);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<DIRS_4>);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<DIRS_8>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variant::DIRS_2>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variant::DIRS_4>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variant::DIRS_8>);
 
         template<size_t> static bool detect_dir(BitBoard, BitBoard, BitBoard);
 };

@@ -4,16 +4,22 @@
 
 namespace DXP = DamExchangeProtocol;
 
-DXP::Client::Client(boost::asio::io_service& io_service, const std::string& host, const std::string& port)
+DXP::Client::Client(const std::string& host_name, const std::string& service_name)
 : 
-        io_service_(io_service),
-        socket_(io_service)
+        socket_(io_service_)
 {
+        tcp::resolver::query query(host_name, service_name);
         tcp::resolver resolver(io_service_);
-        tcp::resolver::query query(host, port);
         tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 
         async_connect_next(endpoint_iterator);
+        read_thread_ = boost::thread(boost::bind(&boost::asio::io_service::run, &io_service_));
+}
+
+DXP::Client::~Client(void)
+{
+        do_close();
+        read_thread_.join();
 }
 
 void DXP::Client::async_connect_next(tcp::resolver::iterator endpoint_iterator)
@@ -65,7 +71,8 @@ void DXP::Client::write(const chat_message& msg)
         io_service_.post(boost::bind(&Client::do_write, this, msg));
 }
 
-void DXP::Client::do_write(const chat_message& msg)
+// by-value instead of by-reference, or it might go out of scope before being used in the io_service::run() thread
+void DXP::Client::do_write(chat_message msg)
 {
         bool write_in_progress = !write_msgs_.empty();
         write_msgs_.push_back(msg);

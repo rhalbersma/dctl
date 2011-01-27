@@ -1,6 +1,6 @@
 #include "EvaluateWeight.h"
 #include "../Generate/Generate.h"
-#include "../Rules/Rules.h"
+#include "../Variant/Rules.h"
 #include "../Position/Position.h"
 #include "../Position/Side.h"
 #include <cstdlib>
@@ -109,7 +109,7 @@ int Evaluate::balance(const Position<Board>& p)
 template<bool Color, typename Board>
 int Evaluate::mobility(const Position<Board>& p)
 {
-        return EvaluateWeight::MOBILITY * Generate::count_moves<Color, InternationalRules>(p);
+        return EvaluateWeight::MOBILITY * Generate::count_moves<Color, Variant::International>(p);
 }
 
 template<typename Board>

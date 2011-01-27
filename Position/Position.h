@@ -1,6 +1,6 @@
 #pragma once
 #include "../Board/Board.h"
-#include "../Rules/Rules.h"
+#include "../Variant/Rules.h"
 #include "Pieces.h"
 #include "Side.h"
 #include "../Utilities/IntegerTypes.h"
@@ -91,8 +91,8 @@ private:
 
         // tag dispatching on capture removal
         template<typename> bool make_sequential_capture_removal(const Pieces&) const;
-        bool make_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_1>) const;
-        bool make_sequential_capture_removal(const Pieces&, Int2Type<REMOVE_N>) const;
+        bool make_sequential_capture_removal(const Pieces&, Int2Type<Variant::REMOVE_1>) const;
+        bool make_sequential_capture_removal(const Pieces&, Int2Type<Variant::REMOVE_N>) const;
                 
         // post-conditions for the constructors and modifiers
         bool pieces_invariant(void) const;                      // logical consistency of the representation
