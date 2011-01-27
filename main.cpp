@@ -1,6 +1,5 @@
-#include "Position/Position.h"
-#include "Search/SearchTest.h"
-#include "Perft/PerftTest.h"
+#include "TreeSearch/Test.h"
+#include "TreeWalk/Test.h"
 #include <iostream>
 #include <iomanip>
 
@@ -12,13 +11,11 @@ int main(void)
 {     
         DamExchangeProtocol::Test::Mesander_examples();
 
-        std::cout << sizeof(Position<InternationalBoard>) << std::endl;
-
-        PerftTest::International();
+        TreeWalk::Test::International();
         //SearchTest::Killer();
-        //PerftTest::Rectangular();
-        //PerftTest::ChessBoardVariants();
-        //PerftTest::ItalianRuleBook();
+        //TreeWalk::Test::Rectangular();
+        //TreeWalk::Test::ChessBoardVariants();
+        //TreeWalk::Test::ItalianRuleBook();
 
         std::cout << "End of program." << std::endl;
         for (;;);
@@ -26,7 +23,7 @@ int main(void)
 
 /*
 TODO:
--implement DXP Layer 1 (using Boost sockets)
+-test DXP Layer 1 (using Boost sockets)
 -implement algebraic notation
 -implement missing square layouts
 -implement test harness for hash function

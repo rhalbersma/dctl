@@ -1,5 +1,5 @@
 #include "../Board/Direction.h"
-#include "../Rules/CaptureTemplates.h"
+#include "../Variant/CaptureTemplates.h"
 #include "../Position/Move.h"
 #include "../Utilities/Bit.h"
 #include "../Utilities/Shift.h"
@@ -28,18 +28,18 @@ Propagate<Rules, Board>::Propagate(const Position<Board>& p, const Pieces& m)
 template<typename Rules, typename Board>
 void Propagate<Rules, Board>::init_promotion(void)
 {
-        init_promotion(Int2Type<PromotionCondition<Rules>::VALUE>());
+        init_promotion(Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
 }
 
 // partial specialization for men that promote on the back row
 template<typename Rules, typename Board>
-void Propagate<Rules, Board>::init_promotion(Int2Type<PROMOTE_BR>)
+void Propagate<Rules, Board>::init_promotion(Int2Type<Variant::PROMOTE_BR>)
 {
 }
 
 // partial specialization for men that promote en-passant
 template<typename Rules, typename Board>
-void Propagate<Rules, Board>::init_promotion(Int2Type<PROMOTE_EP>)
+void Propagate<Rules, Board>::init_promotion(Int2Type<Variant::PROMOTE_EP>)
 {
         promotion_ = false;
 }
@@ -90,7 +90,7 @@ BitBoard Propagate<Rules, Board>::captured_targets(void) const
 template<typename Rules, typename Board>
 BitBoard Propagate<Rules, Board>::captured_kings(BitBoard captured_pieces) const
 {
-        return captured_kings(captured_pieces, Int2Type<is_MenCaptureKings<Rules>::VALUE>());
+        return captured_kings(captured_pieces, Int2Type<Variant::is_MenCaptureKings<Rules>::VALUE>());
 }
 
 // specialization for men that cannot capture kings
@@ -178,20 +178,20 @@ void Propagate<Rules, Board>::finish(BitBoard jump_sq)
 template<typename Rules, typename Board> FORCE_INLINE
 void Propagate<Rules, Board>::make(BitBoard target_sq)
 {
-        make(target_sq, Int2Type<CaptureRemoval<Rules>::VALUE>());
+        make(target_sq, Int2Type<Variant::CaptureRemoval<Rules>::VALUE>());
 }
 
 // partial specialization for piece by piece removal during a capture sequence
 template<typename Rules, typename Board>
-void Propagate<Rules, Board>::make(BitBoard target_sq, Int2Type<REMOVE_1>)
+void Propagate<Rules, Board>::make(BitBoard target_sq, Int2Type<Variant::REMOVE_1>)
 {
         not_occupied_ ^= target_sq;
-        make(target_sq, Int2Type<REMOVE_N>());
+        make(target_sq, Int2Type<Variant::REMOVE_N>());
 }
 
 // partial specialization for complete removal after a capture sequence
 template<typename Rules, typename Board> FORCE_INLINE
-void Propagate<Rules, Board>::make(BitBoard target_sq, Int2Type<REMOVE_N>)
+void Propagate<Rules, Board>::make(BitBoard target_sq, Int2Type<Variant::REMOVE_N>)
 {
         remaining_targets_ ^= target_sq;
         increment<Rules>()(current_capture_, target_sq, opponent_kings_);
@@ -201,20 +201,20 @@ void Propagate<Rules, Board>::make(BitBoard target_sq, Int2Type<REMOVE_N>)
 template<typename Rules, typename Board> FORCE_INLINE
 void Propagate<Rules, Board>::undo(BitBoard target_sq)
 {
-        undo(target_sq, Int2Type<CaptureRemoval<Rules>::VALUE>());
+        undo(target_sq, Int2Type<Variant::CaptureRemoval<Rules>::VALUE>());
 }
 
 // partial specialization for piece by piece removal during a capture sequence
 template<typename Rules, typename Board> FORCE_INLINE
-void Propagate<Rules, Board>::undo(BitBoard target_sq, Int2Type<REMOVE_1>)
+void Propagate<Rules, Board>::undo(BitBoard target_sq, Int2Type<Variant::REMOVE_1>)
 {
-        undo(target_sq, Int2Type<REMOVE_N>());
+        undo(target_sq, Int2Type<Variant::REMOVE_N>());
         not_occupied_ ^= target_sq;
 }
 
 // partial specialization for complete removal after a capture sequence
 template<typename Rules, typename Board> FORCE_INLINE
-void Propagate<Rules, Board>::undo(BitBoard target_sq, Int2Type<REMOVE_N>)
+void Propagate<Rules, Board>::undo(BitBoard target_sq, Int2Type<Variant::REMOVE_N>)
 {
         decrement<Rules>()(current_capture_, target_sq, opponent_kings_);
         remaining_targets_ ^= target_sq;
@@ -243,7 +243,7 @@ void Propagate<Rules, Board>::add_man_move(BitBoard start_sq, BitBoard dest_sq)
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
 void Propagate<Rules, Board>::add_man_capture(BitBoard dest_sq)
 {
-        add_man_capture<Color>(dest_sq, Int2Type<is_AmbiguousManCapture<Rules>::VALUE>());
+        add_man_capture<Color>(dest_sq, Int2Type<Variant::is_AmbiguousManCapture<Rules>::VALUE>());
 }
 
 // partial specialization for man captures that are unambiguous
@@ -269,22 +269,22 @@ void Propagate<Rules, Board>::add_man_capture(BitBoard dest_sq, Int2Type<true>)
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
 void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq)
 {
-        add_king_capture<Color, Index>(dest_sq, Int2Type<KingCaptureHalt<Rules>::VALUE>());
+        add_king_capture<Color, Index>(dest_sq, Int2Type<Variant::KingCaptureHalt<Rules>::VALUE>());
 }
 
 // partial specialization for kings that halt immediately if the final capture is a king, and slide through otherwise
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<HALT_K>)
+void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<Variant::HALT_K>)
 {
         if (opponent_kings_ & (Shift<DirTraits<Index>::IS_NEGATIVE>()(dest_sq, Board::DIR[Index])))
-                add_king_capture<Color, Index>(dest_sq, Int2Type<HALT_1>());
+                add_king_capture<Color, Index>(dest_sq, Int2Type<Variant::HALT_1>());
         else
-                add_king_capture<Color, Index>(dest_sq, Int2Type<HALT_N>());
+                add_king_capture<Color, Index>(dest_sq, Int2Type<Variant::HALT_N>());
 }
 
 // partial specialization for kings that halt immediately after the final capture
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<HALT_1>)
+void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<Variant::HALT_1>)
 {
         const BitBoard captured_pieces = captured_targets();
         const bool ambiguous = !move_list_.empty() && large<Rules>()(current_capture_, captured_pieces);
@@ -293,7 +293,7 @@ void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<HALT_1
 
 // partial specialization for kings that slide through after the final capture
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<HALT_N>)
+void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<Variant::HALT_N>)
 {
         assert(dest_sq & path());
 
@@ -310,21 +310,21 @@ void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, Int2Type<HALT_N
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
 void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, bool ambiguous)
 {
-        add_king_capture<Color>(dest_sq, captured_pieces, captured_kings, Int2Type<PromotionCondition<Rules>::VALUE>());
+        add_king_capture<Color>(dest_sq, captured_pieces, captured_kings, Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
         if (ambiguous && Move::non_unique_back<Rules>(move_list_))
                 move_list_.pop_back();
 }
 
 // partial specialization for men that promote on the back row
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Int2Type<PROMOTE_BR>)
+void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Int2Type<Variant::PROMOTE_BR>)
 {
         Move::push_back<Color, Rules>(move_list_, from_sq_ ^ dest_sq, captured_pieces, captured_kings);
 }
 
 // partial specialization for men that promote en-passant
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Int2Type<PROMOTE_EP>)
+void Propagate<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Int2Type<Variant::PROMOTE_EP>)
 {
         if (!is_promotion())
                 Move::push_back<Color, Rules>(move_list_, from_sq_ ^ dest_sq,          captured_pieces, captured_kings);

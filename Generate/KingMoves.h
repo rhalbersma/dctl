@@ -1,6 +1,6 @@
 #pragma once
 #include "GenerateDriver.h"
-#include "../Rules/Rules.h"
+#include "../Variant/Rules.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"
 
@@ -27,15 +27,15 @@ private:
         
         // tag dispatching based on king range
         template<size_t> static void generate_dir(BitBoard, Propagate<Rules, Board>&);
-        template<size_t> static void generate_dir(BitBoard, Propagate<Rules, Board>&, Int2Type<RANGE_1>);
-        template<size_t> static void generate_dir(BitBoard, Propagate<Rules, Board>&, Int2Type<RANGE_N>);
+        template<size_t> static void generate_dir(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::RANGE_1>);
+        template<size_t> static void generate_dir(BitBoard, Propagate<Rules, Board>&, Int2Type<Variant::RANGE_N>);
 
         static size_t count_dirs(BitBoard, BitBoard);
         
         // tag dispatching based on king range
         template<size_t> static size_t count_dir(BitBoard, BitBoard);
-        template<size_t> static size_t count_dir(BitBoard, BitBoard, Int2Type<RANGE_1>);
-        template<size_t> static size_t count_dir(BitBoard, BitBoard, Int2Type<RANGE_N>);
+        template<size_t> static size_t count_dir(BitBoard, BitBoard, Int2Type<Variant::RANGE_1>);
+        template<size_t> static size_t count_dir(BitBoard, BitBoard, Int2Type<Variant::RANGE_N>);
 
         static bool detect_dirs(BitBoard, BitBoard);
 

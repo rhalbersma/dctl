@@ -1,14 +1,14 @@
 #include "Token.h"
 #include "../Position/Position.h"
 #include "../Position/Pieces.h"
-#include "../Rules/Rules.h"
+#include "../Variant/Rules.h"
 #include <iomanip>
 #include <sstream>
 
 // move tokens
-template<typename> struct MoveToken_           { typedef MoveToken<'-', 'x'> TYPE; };
-template<> struct MoveToken_<RussianRules>     { typedef MoveToken<'-', ':'> TYPE; };
-template<> struct MoveToken_<CzechRules>       { typedef MoveToken<'-', ':'> TYPE; };
+template<typename> struct MoveToken_            { typedef MoveToken<'-', 'x'> TYPE; };
+template<> struct MoveToken_<Variant::Russian>    { typedef MoveToken<'-', ':'> TYPE; };
+template<> struct MoveToken_<Variant::Czech>      { typedef MoveToken<'-', ':'> TYPE; };
 
 template<typename Rules> template<typename Board>
 std::string write_move_string<Rules>::operator()(const Position<Board>& p, const Pieces& m)

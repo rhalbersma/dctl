@@ -18,7 +18,7 @@ void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(co
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, Propagate<Rules, Board>& moves)
 {
-        generate_serial(active_kings, moves, Int2Type<is_RestrictedSameKingMoves<Rules>::VALUE>());
+        generate_serial(active_kings, moves, Int2Type<Variant::is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
 // partial specialization for restricted consecutive moves with the same king
@@ -55,12 +55,12 @@ void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_di
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves)
 {
-        return generate_dir<Index>(from_sq, moves, Int2Type<is_LongKingRange<Rules>::VALUE>());
+        return generate_dir<Index>(from_sq, moves, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves, Int2Type<RANGE_1>)
+void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves, Int2Type<Variant::RANGE_1>)
 {
         if (BitBoard dest_sq = Shift<DirTraits<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]) & moves.path())
                 moves.template add_king_move<Color>(from_sq ^ dest_sq);
@@ -68,7 +68,7 @@ void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_di
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves, Int2Type<RANGE_N>)
+void GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, Propagate<Rules, Board>& moves, Int2Type<Variant::RANGE_N>)
 {
         for (BitBoard dest_sq = Shift<DirTraits<Index>::IS_POSITIVE>()(from_sq, Board::DIR[Index]); dest_sq & moves.path(); ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(dest_sq, Board::DIR[Index]))
                 moves.template add_king_move<Color>(from_sq ^ dest_sq);
@@ -95,19 +95,19 @@ size_t GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 size_t GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied)
 {
-        return count_dir<Index>(active_kings, not_occupied, Int2Type<is_LongKingRange<Rules>::VALUE>());
+        return count_dir<Index>(active_kings, not_occupied, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-size_t GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<RANGE_1>)
+size_t GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<Variant::RANGE_1>)
 {
         return Bit::count(Shift<DirTraits<Index>::IS_POSITIVE>()(active_kings, Board::DIR[Index]) & not_occupied);
 }
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-size_t GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<RANGE_N>)
+size_t GenerateDriver<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<Variant::RANGE_N>)
 {
         return Bit::count(active_kings ^ Bit::flood_fill<DirTraits<Index>::IS_POSITIVE>(active_kings, not_occupied, Board::DIR[Index]));
 }

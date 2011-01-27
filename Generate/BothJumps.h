@@ -1,6 +1,6 @@
 #pragma once
 #include "GenerateDriver.h"
-#include "../Rules/Rules.h"
+#include "../Variant/Rules.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"
 

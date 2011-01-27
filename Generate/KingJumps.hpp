@@ -19,7 +19,7 @@ void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate(co
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Propagate<Rules, Board>& capture)
 {
-        generate_precede(p, capture, Int2Type<is_RelativeKingPrecedence<Rules>::VALUE>());
+        generate_precede(p, capture, Int2Type<Variant::is_RelativeKingPrecedence<Rules>::VALUE>());
 }
 
 // partial specialization for relative king capture precedence
@@ -56,12 +56,12 @@ void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_se
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        generate_dirs(jump_sq, capture, Int2Type<KingCaptureDirections<Rules>::VALUE>());
+        generate_dirs(jump_sq, capture, Int2Type<Variant::KingCaptureDirections<Rules>::VALUE>());
 }
 
 // partial specialization for kings that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_4>)
+void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::DIRS_4>)
 {
         generate_dir<DirIndex<Board, Color>::LEFT_UP   >(jump_sq, capture);
         generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(jump_sq, capture);
@@ -71,7 +71,7 @@ void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_di
 
 // partial specialization for kings that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_8>)
+void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::DIRS_8>)
 {
         generate_dir<DirIndex<Board, Color>::LEFT_UP   >(jump_sq, capture);
         generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(jump_sq, capture);
@@ -87,12 +87,12 @@ void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_di
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        return generate_dir<Index>(jump_sq, capture, Int2Type<is_LongKingRange<Rules>::VALUE>());
+        return generate_dir<Index>(jump_sq, capture, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_1>)
+void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::RANGE_1>)
 {
         ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
         if (jump_sq & capture.template targets<Index>()) {
@@ -104,7 +104,7 @@ void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_di
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_N>)
+void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::RANGE_N>)
 {
         do ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]); while (jump_sq & capture.template path<Index>());
         if (jump_sq & capture.template targets<Index>()) {
@@ -129,12 +129,12 @@ void GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_ne
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        return scan_next<Index>(jump_sq, capture, Int2Type<is_LongKingRange<Rules>::VALUE>());
+        return scan_next<Index>(jump_sq, capture, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_1>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::RANGE_1>)
 {
         return (
                 scan_dirs<Index>(jump_sq, capture) |
@@ -144,7 +144,7 @@ bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(B
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_N>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::RANGE_N>)
 {
         return scan_long<Index>(jump_sq, capture);
 }
@@ -153,7 +153,7 @@ bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(B
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_long(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        return scan_long<Index>(jump_sq, capture, Int2Type<is_DirectionReversal<Rules>::VALUE>());
+        return scan_long<Index>(jump_sq, capture, Int2Type<Variant::is_DirectionReversal<Rules>::VALUE>());
 }
 
 // partial specialization for kings that cannot reverse their capture direction
@@ -195,12 +195,12 @@ bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_forwar
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        return scan_dirs<Index>(jump_sq, capture, Int2Type<KingCaptureDirections<Rules>::VALUE>());
+        return scan_dirs<Index>(jump_sq, capture, Int2Type<Variant::KingCaptureDirections<Rules>::VALUE>());
 }
 
 // partial specialization for kings that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_4>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::DIRS_4>)
 {
         return (
                 scan_dir<RotateDirIndex<Index, R090>::VALUE>(jump_sq, capture) |
@@ -210,7 +210,7 @@ bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(B
 
 // partial specialization for kings that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<DIRS_8>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::DIRS_8>)
 {
         return (
                 scan_dir<RotateDirIndex<Index, R045>::VALUE>(jump_sq, capture) |
@@ -226,12 +226,12 @@ bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(B
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture)
 {
-        return scan_dir<Index>(jump_sq, capture, Int2Type<is_LongKingRange<Rules>::VALUE>());
+        return scan_dir<Index>(jump_sq, capture, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_1>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::RANGE_1>)
 {
         ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]);
         return scan<Index>(jump_sq, capture);
@@ -239,7 +239,7 @@ bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(Bi
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<RANGE_N>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jump_sq, Propagate<Rules, Board>& capture, Int2Type<Variant::RANGE_N>)
 {
         do ShiftAssign<DirTraits<Index>::IS_POSITIVE>()(jump_sq, Board::DIR[Index]); while (jump_sq & capture.template path<Index>());
         return scan<Index>(jump_sq, capture);
@@ -283,12 +283,12 @@ bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect(cons
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied)
 {
-        return detect_dirs(active_kings, opponent_pieces, not_occupied, Int2Type<KingCaptureDirections<Rules>::VALUE>());
+        return detect_dirs(active_kings, opponent_pieces, not_occupied, Int2Type<Variant::KingCaptureDirections<Rules>::VALUE>());
 }
 
 // partial specialization for kings that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_4>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::DIRS_4>)
 {
         return (
                 detect_dir<DirIndex<Board, Color>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
@@ -300,7 +300,7 @@ bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs
 
 // partial specialization for kings that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<DIRS_8>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::DIRS_8>)
 {
         return (
                 detect_dir<DirIndex<Board, Color>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
@@ -318,19 +318,19 @@ bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied)
 {
-        return detect_dir<Index>(active_kings, opponent_pieces, not_occupied, Int2Type<is_LongKingRange<Rules>::VALUE>());
+        return detect_dir<Index>(active_kings, opponent_pieces, not_occupied, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<RANGE_1>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::RANGE_1>)
 {
         return !Bit::is_zero(Shift<DirTraits<Index>::IS_POSITIVE>()(active_kings, Board::DIR[Index]) & opponent_pieces & Shift<DirTraits<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
 }
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<RANGE_N>)
+bool GenerateDriver<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::RANGE_N>)
 {
         return !Bit::is_zero(Shift<DirTraits<Index>::IS_POSITIVE>()(Bit::flood_fill<DirTraits<Index>::IS_POSITIVE>(active_kings, not_occupied, Board::DIR[Index]), Board::DIR[Index]) & opponent_pieces & Shift<DirTraits<Index>::IS_NEGATIVE>()(not_occupied, Board::DIR[Index]));
 }
