@@ -2,7 +2,7 @@ template<typename Board> template<typename Rules>
 void Position<Board>::copy_make(const Position<Board>& p, const Pieces& m)
 {
         *this = p;
-        link(p);
+        //link(p);
         make<Rules>(m);
 }
 
@@ -17,7 +17,7 @@ void Position<Board>::make(const Pieces& m)
 {
         assert(is_pseudo_legal_make<Rules>(m));
 
-        make_irreversible<Rules>(m);
+        //make_irreversible<Rules>(m);
         make_reversible(m);
 
         assert(pieces_invariant());
@@ -104,10 +104,10 @@ template<typename Board> FORCE_INLINE
 void Position<Board>::make_reversible(const Pieces& m)
 {
         pieces_ ^= m;
-        hash_index_ ^= ZobristHash<Pieces, HashIndex>()(m);
+        //hash_index_ ^= ZobristHash<Pieces, HashIndex>()(m);
 
         to_move_ ^= PASS;
-        hash_index_ ^= ZobristHash<bool, HashIndex>()();
+        //hash_index_ ^= ZobristHash<bool, HashIndex>()();
 }
 
 template<typename Board> template<typename Rules>

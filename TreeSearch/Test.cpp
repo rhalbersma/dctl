@@ -10,17 +10,9 @@
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 void TreeSearch::Test::International(void)
 {
+        Position<InternationalBoard> i10 = Position<InternationalBoard>::initial();
+        Search::root<Variant::International>(i10, 21);
 
-        Position<InternationalBoard> Kuyken = read_position_string<FEN_tag>()("W:W22,25,27,28,30,32,34,35,37,38,40,41,45,46,47,50:B3,4,8,9,11,12,13,14,16,17,19,21,23,24,26,29");
-        Search::root<Variant::International>(Kuyken, 41);
-
-        //Position<InternationalBoard> Taille1 = read_position_string<FEN_tag>()("B:W13,18,27,30,K23,34:B4,K11,16");
-        //Search::root<Variant::International>(Taille1, 7);
-
-        //Position<InternationalBoard> Taille2 = read_position_string<FEN_tag>()("B:W13,18,27,30,K32,34:B4,K11,16");
-        //Search::root<Variant::International>(Taille2, 7);
-
-        /*
         typedef std::pair<std::string, size_t> DB_unittest;
         int value;       
         
@@ -97,9 +89,8 @@ void TreeSearch::Test::International(void)
                 value = Search::root<Variant::International>(read_position_string<FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 assert(value == SearchValue::win(DB_win31[i].second));
         }
-        */
 }
-/*
+
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        
 void TreeSearch::Test::Killer(void)
 {
@@ -114,7 +105,7 @@ void TreeSearch::Test::Killer(void)
         };
 
         for (size_t i = 0; i < 4; ++i) {
-                value = Search::root<KillerRules>(read_position_string<FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
+                value = Search::root<Variant::Killer>(read_position_string<FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
                 assert(value == SearchValue::win(DB_win11[i].second));
         }
 
@@ -136,7 +127,7 @@ void TreeSearch::Test::Killer(void)
         };       
         
         for (size_t i = 0; i < 14; ++i) {
-                value = Search::root<KillerRules>(read_position_string<FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
+                value = Search::root<Variant::Killer>(read_position_string<FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
                 assert(value == SearchValue::win(DB_win21[i].second));
         }
 
@@ -153,7 +144,7 @@ void TreeSearch::Test::Killer(void)
         };
 
         for (size_t i = 0; i < 9; ++i) {
-                value = Search::root<KillerRules>(read_position_string<FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
+                value = Search::root<Variant::Killer>(read_position_string<FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
                 assert(value == SearchValue::win(DB_win22[i].second));
         }
         
@@ -177,14 +168,14 @@ void TreeSearch::Test::Killer(void)
         };
         
         for (size_t i = 0; i < 16; ++i) {
-                value = Search::root<KillerRules>(read_position_string<FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
+                value = Search::root<Variant::Killer>(read_position_string<FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 assert(value == SearchValue::win(DB_win31[i].second));
         }
 
         //Position<InternationalBoard> Walinga(read_position_string<FEN_tag>()("W:WK46,28:BK43"));
         //Search::root<FrisianRules>(Walinga, 39);
 }
-*/
+
 /*
 void TreeSearch::Test::ChessBoardVariants(void)
 {

@@ -6,12 +6,12 @@ TreeWalk::Node::Node(void)
 {
 }
 
-TreeWalk::Node::Node(NodeCount s_leafs, size_t s_depth)
+TreeWalk::Node::Node(NodeCount n, size_t d)
 :
         node_(0)
 {
-        node_ ^= (s_leafs & LEAFS_MASK) << LEAFS_SHIFT;
-        node_ ^= (s_depth & DEPTH_MASK) << DEPTH_SHIFT;
+        node_ ^= (n & LEAFS_MASK) << LEAFS_SHIFT;
+        node_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
 }
 
 bool TreeWalk::Node::is_depth_equal_to(size_t d) const

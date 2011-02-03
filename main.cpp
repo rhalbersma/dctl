@@ -9,10 +9,10 @@
 
 int main(void)
 {     
-        DamExchangeProtocol::Test::Mesander_examples();
+        //DamExchangeProtocol::Test::Mesander_examples();
 
         TreeWalk::Test::International();
-        //SearchTest::Killer();
+        //TreeSearch::Test::Killer();
         //TreeWalk::Test::Rectangular();
         //TreeWalk::Test::ChessBoardVariants();
         //TreeWalk::Test::ItalianRuleBook();
@@ -23,6 +23,7 @@ int main(void)
 
 /*
 TODO:
+-split Propagate into Capture + MoveList, change Move into MoveList
 -test DXP Layer 1 (using Boost sockets)
 -implement algebraic notation
 -implement missing square layouts

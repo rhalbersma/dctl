@@ -10,29 +10,34 @@ class Move
 {
 public:
         // typedefs
-        typedef VectorArray<Pieces, MOVE_MAX> List;
         typedef VectorArray<size_t, MOVE_MAX> Order;
         typedef VectorArray<size_t, PLY_MAX> Sequence;
         enum Type { JUMPS, MOVES };
+};
 
+class MoveList
+{
+public:
         // predicate
-        template<typename> static bool non_unique_back(const List&);
+        template<typename> bool non_unique_back(void);
+
+        size_t size(void) const;
+        const Pieces& operator[](size_t) const;
+
+        bool empty(void) const;
 
         // modifiers
-        template<bool> static void push_back(List&, BitBoard);                                          // king move
-        template<bool> static void push_back(List&, BitBoard, BitBoard);                                // man move
-        template<bool, typename> static void push_back(List&, BitBoard, BitBoard, BitBoard);            // king capture
-        template<bool, typename> static void push_back(List&, BitBoard, BitBoard, BitBoard, BitBoard);  // man capture
+        template<bool> void push_back(BitBoard);                                          // king move
+        template<bool> void push_back(BitBoard, BitBoard);                                // man move
+        template<bool, typename> void push_back(BitBoard, BitBoard, BitBoard);            // king capture
+        template<bool, typename> void push_back(BitBoard, BitBoard, BitBoard, BitBoard);  // man capture
+        void pop_back(void);
+        void clear(void);
 
 private:
         // implementation
-        static bool non_unique_back(const List&, Int2Type<false>);
-        static bool non_unique_back(const List&, Int2Type<true>);
-
-        template<bool> static void init(Pieces&, BitBoard);                                             // king move
-        template<bool> static void init(Pieces&, BitBoard, BitBoard);		                        // man move
-        template<bool, typename> static void init(Pieces&, BitBoard, BitBoard, BitBoard);               // king capture
-        template<bool, typename> static void init(Pieces&, BitBoard, BitBoard, BitBoard, BitBoard);     // man capture
+        bool non_unique_back(Int2Type<false>);
+        bool non_unique_back(Int2Type<true>);
 
         // pre-conditions for initialization
 
@@ -45,6 +50,8 @@ private:
         template<typename> static bool sequential_capture_removal(BitBoard, BitBoard);                  // Thai draughts
         static bool sequential_capture_removal(BitBoard, BitBoard, Int2Type<Variant::REMOVE_1>);        
         static bool sequential_capture_removal(BitBoard, BitBoard, Int2Type<Variant::REMOVE_N>);
+
+        VectorArray<Pieces, MOVE_MAX> move_list_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

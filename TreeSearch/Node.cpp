@@ -10,14 +10,14 @@ TreeSearch::Node::Node(void)
 {
 }
 
-TreeSearch::Node::Node(int s_value, Type s_type, size_t s_depth, size_t s_move)
+TreeSearch::Node::Node(int v, Type t, size_t d, size_t m)
 :
-        value_(static_cast<int16_t>(s_value)),
+        value_(static_cast<int16_t>(v)),
         rest_(0)
 {
-        rest_ ^= (s_type & TYPE_MASK) << TYPE_SHIFT;
-        rest_ ^= (s_depth & DEPTH_MASK) << DEPTH_SHIFT;
-        rest_ ^= (s_move & MOVE_MASK) << MOVE_SHIFT;
+        rest_ ^= (t & TYPE_MASK) << TYPE_SHIFT;
+        rest_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
+        rest_ ^= (m & MOVE_MASK) << MOVE_SHIFT;
 }
 
 int TreeSearch::Node::value(void) const
@@ -45,9 +45,9 @@ size_t TreeSearch::Node::move(void) const
         return (rest_ & (MOVE_MASK << MOVE_SHIFT)) >> MOVE_SHIFT;
 }
 
-bool TreeSearch::Node::is_depth_greater_equal(size_t s_depth) const
+bool TreeSearch::Node::is_depth_greater_equal(size_t d) const
 {
-        return depth() >= s_depth; 
+        return depth() >= d; 
 }
 
 bool TreeSearch::Node::is_cutoff(int alpha, int beta) const
@@ -57,7 +57,7 @@ bool TreeSearch::Node::is_cutoff(int alpha, int beta) const
 
 bool TreeSearch::Node::is_cutoff(int beta) const
 {
-        return is_fail_low(beta - 1) || is_fail_high(beta);
+        return is_cutoff(beta - 1, beta);
 }
 
 bool TreeSearch::Node::is_fail_low(int alpha) const
@@ -156,10 +156,10 @@ std::string TreeSearch::Node::print_move(void) const
         return sstr.str();
 }
 
-void TreeSearch::Node::set_move(size_t s_move)
+void TreeSearch::Node::set_move(size_t m)
 {
         rest_ ^= (move() & MOVE_MASK) << MOVE_SHIFT;
-        rest_ ^= (s_move & MOVE_MASK) << MOVE_SHIFT;
+        rest_ ^= (m      & MOVE_MASK) << MOVE_SHIFT;
 }
 
 TreeSearch::Node::Type TreeSearch::Node::lower()

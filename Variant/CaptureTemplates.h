@@ -3,7 +3,7 @@
 #include "../Utilities/TemplateTricks.h"
 #include <functional>
 
-class CaptureValue;
+struct CaptureValue;
 
 template<typename> struct init      { void operator()(CaptureValue&)                      const {} };
 template<typename> struct copy      { void operator()(CaptureValue&, const CaptureValue&) const {} };
