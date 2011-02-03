@@ -17,7 +17,7 @@ int Search::negamax(const Position<Board>& p, size_t ply, size_t depth, SearchPa
                 return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
 
         // generate moves
-        Propagate<Rules, Board> moves(p);
+        MoveList moves;
         Generate::generate(p, moves);
 
         // search moves
@@ -60,7 +60,7 @@ int Search::alpha_beta(const Position<Board>& p, size_t ply, size_t depth, int a
                 return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
 
         // generate moves
-        Propagate<Rules, Board> moves(p);
+        MoveList moves;;
         Generate::generate(p, moves);
 
         // search moves
@@ -95,15 +95,13 @@ int Search::search(const Position<Board>& p, size_t ply, int depth, int alpha, i
         
         assert(p.non_conversion() <= ply);
 
-        ///*
         // check for a legal draw
         if (p.template is_draw<Rules>())
                 return Value::draw();       
-        //*/
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0)
-                return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
+                return !Generate<Rules, Board>::detect(p)? Value::loss(0) : Evaluate::evaluate(p);
 
         assert(depth > 0);
         assert(alpha >= -Value::infinity());
@@ -126,8 +124,8 @@ int Search::search(const Position<Board>& p, size_t ply, int depth, int alpha, i
                 return TT_entry->value();
 
         // generate moves
-        Propagate<Rules, Board> moves(p);
-        Generate::generate(p, moves);
+        MoveList moves;
+        Generate<Rules, Board>::generate(p, moves);
 
         // without a valid move, the position is an immediate loss
         if (!moves.size()) {
@@ -141,18 +139,16 @@ int Search::search(const Position<Board>& p, size_t ply, int depth, int alpha, i
                 return loss_score;
         }
 
-        /*
         // internal iterative deepening
         if (!(TT_entry && TT_entry->has_move())) {
-                const int IID_depth = is_PV(Node)? depth - 2 : depth / 2;
+                const int IID_depth = is_PV(ThisNode)? depth - 2 : depth / 2;
                 if (IID_depth > 0) {
-                        const int IID_value = search<Node, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
+                        const int IID_value = search<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
                         TT.insert(p, Node(IID_value, Node::exact(), IID_depth, parent_node.best_move()));
                         TT_entry = TT.find(p);
                         assert(TT_entry);
                 }
         }
-        */
 
         // TT move ordering
         Move::Order move_order(moves.size());
@@ -230,7 +226,7 @@ int Search::quiescence(const Position<Board>& p, size_t ply, int depth, int alph
         }
 
         // generate captures and promotions
-        Propagate<Rules, Board> moves(p);
+        MoveList moves;;
         Generate::generate_captures_promotions(p, moves);
 
         if (!moves.size())

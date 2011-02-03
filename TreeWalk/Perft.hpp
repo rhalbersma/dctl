@@ -1,4 +1,4 @@
-#include "../Generate/Propagate.h"
+#include "../Position/Move.h"
 #include "../Generate/Generate.h"
 #include "../Position/Position.h"
 #include "../IO/PositionIO.h"
@@ -40,8 +40,8 @@ NodeCount Perft::perft_leaf(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 0)
                 return 1;
 
-        Propagate<Rules, Board> moves(p);
-        Generate::generate(p, moves);
+        MoveList moves;;
+        Generate<Rules, Board>::generate(p, moves);
         NodeCount leafs = 0;        
         Position<Board> q;
         for (size_t i = 0; i < moves.size(); ++i) {
@@ -56,8 +56,8 @@ NodeCount Perft::perft_bulk(const Position<Board>& p, size_t ply, size_t depth)
 {
         update_statistics(ply);
 
-        Propagate<Rules, Board> moves(p);
-        Generate::generate(p, moves);
+        MoveList moves;;
+        Generate<Rules, Board>::generate(p, moves);
         if (depth == 1)
                 return moves.size();
         
@@ -76,15 +76,15 @@ NodeCount Perft::perft_size(const Position<Board>& p, size_t ply, size_t depth)
         update_statistics(ply);
 
         if (depth == 1)
-                return Generate::count<Rules>(p);
+                return Generate<Rules, Board>::count<Rules>(p);
 
-        Propagate<Rules, Board> moves(p);
-        Generate::generate(p, moves);
+        MoveList moves;;
+        Generate<Rules, Board>::generate(p, moves);
         NodeCount leafs = 0;
         Position<Board> q;
         for (size_t i = 0; i < moves.size(); ++i) {
                 q.template copy_make<Rules>(p, moves[i]);
-                leafs += perft_count<Rules>(q, ply + 1, depth - 1);
+                leafs += perft_size<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
 }
@@ -101,8 +101,8 @@ NodeCount Perft::perft_hash(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 0)
                 return 1;
 
-        Propagate<Rules, Board> moves(p);
-        Generate::generate(p, moves);
+        MoveList moves;;
+        Generate<Rules, Board>::generate(p, moves);
         NodeCount leafs = 0;
         Position<Board> q;
         for (size_t i = 0; i < moves.size(); ++i) {
@@ -125,10 +125,10 @@ NodeCount Perft::perft_fast(const Position<Board>& p, size_t ply, size_t depth)
 
         NodeCount leafs;
         if (depth == 1)
-                leafs = Generate::count<Rules>(p);
+                leafs = Generate<Rules, Board>::count<Rules>(p);
         else {
-                Propagate<Rules, Board> moves(p);
-                Generate::generate(p, moves);
+                MoveList moves;;
+                Generate<Rules, Board>::generate(p, moves);
                 leafs = 0;
                 Position<Board> q;
                 for (size_t i = 0; i < moves.size(); ++i) {

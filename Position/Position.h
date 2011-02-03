@@ -95,7 +95,7 @@ private:
         bool make_sequential_capture_removal(const Pieces&, Int2Type<Variant::REMOVE_N>) const;
                 
         // post-conditions for the constructors and modifiers
-        bool pieces_invariant(void) const;                      // logical consistency of the representation
+        bool pieces_invariant(void) const;
         bool hash_index_invariant(void) const;
 
         // representation

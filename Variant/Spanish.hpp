@@ -24,10 +24,10 @@ struct copy<Spanish>
 template<>
 struct increment<Spanish>
 {
-        void operator()(CaptureValue& capture, BitBoard target_sq, BitBoard opponent_kings) const
+        void operator()(CaptureValue& capture, BitBoard target_sq, BitBoard king_targets) const
         {
                 ++capture.num_pieces;
-                if (target_sq & opponent_kings)
+                if (target_sq & king_targets)
                         ++capture.num_kings;
         }
 };
@@ -35,9 +35,9 @@ struct increment<Spanish>
 template<>
 struct decrement<Spanish>
 {
-        void operator()(CaptureValue& capture, BitBoard target_sq, BitBoard opponent_kings) const
+        void operator()(CaptureValue& capture, BitBoard target_sq, BitBoard king_targets) const
         {
-                if (target_sq & opponent_kings)
+                if (target_sq & king_targets)
                         --capture.num_kings;
                 --capture.num_pieces;
         }

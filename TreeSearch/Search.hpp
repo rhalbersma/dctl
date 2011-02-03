@@ -1,5 +1,5 @@
 #include "SearchParameters.h"
-#include "../Generate/Propagate.h"
+#include "../Position/Move.h"
 #include "../Generate/Generate.h"
 #include "../Evaluation/Evaluate.h"
 #include "../IO/PositionIO.h"
@@ -53,8 +53,8 @@ void Search::insert_PV(const SearchParameters& node, const Position<Board>& q, i
 
         for (size_t i = 0; i < line.size(); ++i) {
                 TT.insert(p, Node(value, Node::exact(), line.size() - i, line[i]));
-                Propagate<Rules, Board> moves(p);
-                Generate::generate<Rules>(p, moves);
+                MoveList moves;;
+                Generate<Rules, Board>::generate(p, moves);
                 p.template make<Rules>(moves[line[i]]);
                 value = -Value::stretch(value);
         }
@@ -72,8 +72,8 @@ void Search::print_PV(const SearchParameters& node, const Position<Board>& q, bo
         size_t non_conversion;
 
         for (size_t i = 0; i < line.size(); ++i) {
-                Propagate<Rules, Board> moves(p);
-                Generate::generate<Rules>(p, moves);
+                MoveList moves;
+                Generate<Rules, Board>::generate(p, moves);
                 assert(line[i] < moves.size());
 
                 if (p.to_move())

@@ -1,16 +1,16 @@
 #pragma once
-#include "GenerateDriver.h"
+#include "GenerateTemplate.h"
 #include "../Utilities/IntegerTypes.h"
 
 template<typename> class Position;
-template<typename, typename> class Propagate;
+class MoveList;
 
 template<bool Color, typename Rules, typename Board> 
-class GenerateDriver<Color, Pieces::PAWN, Move::MOVES, Rules, Board>
+class GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>
 {
 public:
-        static void generate(const Position<Board>&, Propagate<Rules, Board>&);
-        static void generate_promotions(const Position<Board>&, Propagate<Rules, Board>&);
+        static void generate(const Position<Board>&, MoveList&);
+        static void generate_promotions(const Position<Board>&, MoveList&);
 
         static size_t count(const Position<Board>&);
         
@@ -19,9 +19,11 @@ public:
 
 private:
         // implementation
-        static void generate_dirs(BitBoard, Propagate<Rules, Board>&);
-        template<size_t> static void generate_dir(BitBoard, Propagate<Rules, Board>&);
-        static BitBoard promotors(const Position<Board>&);
+        static void generate_dirs(BitBoard, BitBoard, MoveList&);
+        template<size_t> static void generate_dir(BitBoard, BitBoard, MoveList&);
+
+        static BitBoard promotion(BitBoard);
+        static BitBoard promotors(BitBoard);
 
         static size_t count_dirs(BitBoard, BitBoard);
         template<size_t> static size_t count_dir(BitBoard, BitBoard);

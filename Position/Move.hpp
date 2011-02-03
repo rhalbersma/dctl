@@ -4,51 +4,21 @@
 
 // tag dispatching based on duplicate capture checking
 template<typename Rules>
-bool Move::non_unique_back(const List& v)
+bool MoveList::non_unique_back(void)
 {
-        return non_unique_back(v, Int2Type<Variant::is_CheckCaptureUniqueness<Rules>::VALUE>());
+        return non_unique_back(Int2Type<Variant::is_CheckCaptureUniqueness<Rules>::VALUE>());
 }
 
 // add a king move
 template<bool Color> FORCE_INLINE
-void Move::push_back(List& v, BitBoard delta)
+void MoveList::push_back(BitBoard delta)
 {
-        v.push();
-        init<Color>(v.back(), delta);
-}
+        move_list_.push();
 
-// add a man move
-template<bool Color> FORCE_INLINE
-void Move::push_back(List& v, BitBoard delta, BitBoard promotion)
-{
-        v.push();
-        init<Color>(v.back(), delta, promotion);
-}
-
-// add a king capture
-template<bool Color, typename Rules> FORCE_INLINE
-void Move::push_back(List& v, BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
-{
-        v.push();
-        init<Color, Rules>(v.back(), delta, captured_pieces, captured_kings);
-}
-
-// add a man capture
-template<bool Color, typename Rules> FORCE_INLINE
-void Move::push_back(List& v, BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
-{
-        v.push();
-        init<Color, Rules>(v.back(), delta, promotion, captured_pieces, captured_kings);
-}
-
-// king move
-template<bool Color> FORCE_INLINE
-void Move::init(Pieces& m, BitBoard delta)
-{
         // necessary pre-conditions for king move semantics
         assert(Bit::is_double(delta));
 
-        m.init<Color>
+        move_list_.back().init<Color>
         (
                 delta,                          // move a king between the from and destination squares
                 0,
@@ -56,13 +26,15 @@ void Move::init(Pieces& m, BitBoard delta)
         );
                 
         // post-condtions are the pieces invariant 
-        assert(m.invariant());
+        assert(move_list_.back().invariant());
 }
 
-// man move
+// add a man move
 template<bool Color> FORCE_INLINE
-void Move::init(Pieces& m, BitBoard delta, BitBoard promotion)
+void MoveList::push_back(BitBoard delta, BitBoard promotion)
 {
+        move_list_.push();
+
         // necessary pre-conditions for the pieces invariant
         assert(Bit::is_within(promotion, delta));
 
@@ -70,7 +42,7 @@ void Move::init(Pieces& m, BitBoard delta, BitBoard promotion)
         assert(Bit::is_double(delta));
         assert(!Bit::is_multiple(promotion));
 
-        m.init<Color>
+        move_list_.back().init<Color>
         (
                 delta,                          // move a man between the from and destination squares
                 0,
@@ -78,13 +50,15 @@ void Move::init(Pieces& m, BitBoard delta, BitBoard promotion)
         );
 
         // post-conditions are the pieces invariant 
-        assert(m.invariant());
+        assert(move_list_.back().invariant());
 }
 
-// king capture
+// add a king capture
 template<bool Color, typename Rules> FORCE_INLINE
-void Move::init(Pieces& m, BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
+void MoveList::push_back(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
 {
+        move_list_.push();
+
         // necessary pre-conditions for the pieces invariant
         assert(Bit::is_exclusive(delta, captured_pieces) || sequential_capture_removal<Rules>(delta, captured_pieces));
         assert(Bit::is_within(captured_kings, captured_pieces));
@@ -93,7 +67,7 @@ void Move::init(Pieces& m, BitBoard delta, BitBoard captured_pieces, BitBoard ca
         assert(Bit::is_double(delta) || Bit::is_zero(delta));
         assert(!Bit::is_zero(captured_pieces));
 
-        m.init<Color>
+        move_list_.back().init<Color>
         (
                 delta,                          // move a king between the from and destination square
                 captured_pieces,                // remove the captured pieces
@@ -102,13 +76,15 @@ void Move::init(Pieces& m, BitBoard delta, BitBoard captured_pieces, BitBoard ca
 
         // post-conditions are the pieces invariants, with an exception for sequential capture removal (Thai draughts)
         // example: [FEN W:WK26:B9,12,18,19], white has to capture 26x12, landing on a square it also captured on
-        assert(m.invariant() || sequential_capture_removal<Rules>(delta, captured_pieces));
+        assert(move_list_.back().invariant() || sequential_capture_removal<Rules>(delta, captured_pieces));
 }
 
-// man capture
+// add a man capture
 template<bool Color, typename Rules> FORCE_INLINE
-void Move::init(Pieces& m, BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
+void MoveList::push_back(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
 {
+        move_list_.push();
+
         // necessary pre-conditions for the pieces invariant
         assert(Bit::is_within(promotion, delta) || promotion_en_passant<Rules>(promotion, delta));
         assert(Bit::is_exclusive(delta, captured_pieces));
@@ -119,7 +95,7 @@ void Move::init(Pieces& m, BitBoard delta, BitBoard promotion, BitBoard captured
         assert(!Bit::is_multiple(promotion));
         assert(!Bit::is_zero(captured_pieces));
 
-        m.init<Color>
+        move_list_.back().init<Color>
         (
                 delta,                          // move a man between the from and destination squares
                 captured_pieces,                // remove the captured pieces
@@ -130,9 +106,9 @@ void Move::init(Pieces& m, BitBoard delta, BitBoard promotion, BitBoard captured
         // example: [FEN W:W25:B8,9,20,22,30], white has to capture 25x25, promoting on its original square
         assert
         (
-                Bit::is_exclusive(m.pieces(Side::BLACK), m.pieces(Side::WHITE)) &&
+                Bit::is_exclusive(move_list_.back().pieces(Side::BLACK), move_list_.back().pieces(Side::WHITE)) &&
                 (
-                        Bit::is_within(m.kings(), m.occupied()) ||
+                        Bit::is_within(move_list_.back().kings(), move_list_.back().occupied()) ||
                         promotion_en_passant<Rules>(promotion, delta)
                 )
         );
@@ -140,14 +116,14 @@ void Move::init(Pieces& m, BitBoard delta, BitBoard promotion, BitBoard captured
 
 // tag dispatching based on promotion condition
 template<typename Rules>
-bool Move::promotion_en_passant(BitBoard promotion, BitBoard delta)
+bool MoveList::promotion_en_passant(BitBoard promotion, BitBoard delta)
 {
         return promotion_en_passant(promotion, delta, Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
 }
 
 // tag dispatching on capture removal
 template<typename Rules>
-bool Move::sequential_capture_removal(BitBoard delta, BitBoard captured_pieces)
+bool MoveList::sequential_capture_removal(BitBoard delta, BitBoard captured_pieces)
 {
         return sequential_capture_removal(delta, captured_pieces, Int2Type<Variant::CaptureRemoval<Rules>::VALUE>());
 }

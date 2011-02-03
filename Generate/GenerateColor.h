@@ -4,8 +4,8 @@
 template<typename> class Position;
 class MoveList;
 
-template<typename Rules, typename Board>
-class Generate
+template<typename bool Color, typename Rules, typename Board>
+class GenerateColor
 {
 public:
         static void generate(const Position<Board>&, MoveList&);
@@ -13,6 +13,7 @@ public:
         static void generate_promotions(const Position<Board>&, MoveList&);
 
         static size_t count(const Position<Board>&);
+        static size_t count_mobility(const Position<Board>&);
 
         static bool detect(const Position<Board>&);
         static bool detect_captures(const Position<Board>&);
@@ -22,4 +23,4 @@ public:
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "Generate.hpp"
+#include "GenerateColor.hpp"
