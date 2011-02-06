@@ -12,21 +12,21 @@ int Search::negamax(const Position<Board>& p, size_t ply, size_t depth, SearchPa
         if (p.template is_draw<Rules>())
                 return Value::draw();
 
-        // return evaluation in leaf nodes with valid moves
+        // return evaluation in leaf nodes with valid move_list
         if (depth == 0)
                 return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
 
-        // generate moves
-        MoveList moves;
-        Generate::generate(p, moves);
+        // generate move_list
+        MoveList move_list;
+        Generate::generate(p, move_list);
 
-        // search moves
+        // search move_list
         int value = -Value::infinity();
         int score;
         SearchParameters child_node;
         Position<Board> q;
-        for (size_t i = 0; i < moves.size(); ++i) {
-                q.template copy_make<Rules>(p, moves[i]);
+        for (size_t i = 0; i < move_list.size(); ++i) {
+                q.template copy_make<Rules>(p, move_list[i]);
                 score = -squeeze(negamax<Rules>(q, ply + 1, depth - 1, child_node));
 
                 if (score > value) {
@@ -55,21 +55,21 @@ int Search::alpha_beta(const Position<Board>& p, size_t ply, size_t depth, int a
         if (beta <= Value::loss(0))
                 return beta;
 
-        // return evaluation in leaf nodes with valid moves
+        // return evaluation in leaf nodes with valid move_list
         if (depth == 0)
                 return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
 
-        // generate moves
-        MoveList moves;;
-        Generate::generate(p, moves);
+        // generate move_list
+        MoveList move_list;
+        Generate::generate(p, move_list);
 
-        // search moves
+        // search move_list
         int value = -Value::infinity();
         int score;
         SearchParameters child_node;
         Position<Board> q;
-        for (size_t i = 0; i < moves.size(); ++i) {
-                q.template copy_make<Rules>(p, moves[i]);
+        for (size_t i = 0; i < move_list.size(); ++i) {
+                q.template copy_make<Rules>(p, move_list[i]);
                 score = -squeeze(alpha_beta<Rules>(p, ply  + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
 
                 if (score > value) {
@@ -99,7 +99,7 @@ int Search::search(const Position<Board>& p, size_t ply, int depth, int alpha, i
         if (p.template is_draw<Rules>())
                 return Value::draw();       
 
-        // return evaluation in leaf nodes with valid moves
+        // return evaluation in leaf nodes with valid move_list
         if (depth <= 0)
                 return !Generate<Rules, Board>::detect(p)? Value::loss(0) : Evaluate::evaluate(p);
 
@@ -123,12 +123,12 @@ int Search::search(const Position<Board>& p, size_t ply, int depth, int alpha, i
         if (TT_entry && (!TT_entry->is_heuristic() || TT_entry->is_depth_greater_equal(depth)) && TT_entry->is_cutoff(alpha, beta))
                 return TT_entry->value();
 
-        // generate moves
-        MoveList moves;
-        Generate<Rules, Board>::generate(p, moves);
+        // generate move_list
+        MoveList move_list;
+        Generate<Rules, Board>::generate(p, move_list);
 
         // without a valid move, the position is an immediate loss
-        if (!moves.size()) {
+        if (!move_list.size()) {
                 const int loss_score = Value::loss(0);
 
                 // we can only have an upper bound or an exact value at this point
@@ -151,14 +151,14 @@ int Search::search(const Position<Board>& p, size_t ply, int depth, int alpha, i
         }
 
         // TT move ordering
-        Move::Order move_order(moves.size());
+        Move::Order move_order(move_list.size());
         identity_permutation(move_order);                
         if (TT_entry && TT_entry->has_move()) {
-                const size_t TT_move = TT_entry->move() % moves.size();
+                const size_t TT_move = TT_entry->move() % move_list.size();
                 std::swap(move_order[0], move_order[TT_move]);
         }
 
-        // search moves
+        // search move_list
         int value = -Value::infinity();
         size_t best_move = Node::no_move();
         int score;
@@ -173,7 +173,7 @@ int Search::search(const Position<Board>& p, size_t ply, int depth, int alpha, i
 
                 // TODO: futility pruning
 
-                q.template copy_make<Rules>(p, moves[i]);
+                q.template copy_make<Rules>(p, move_list[i]);
 
                 if (is_PV(ThisNode) && s == 0)
                         score = -squeeze(search<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
@@ -220,16 +220,16 @@ int Search::quiescence(const Position<Board>& p, size_t ply, int depth, int alph
         if (p.is_draw<Rules>())
                 return Value::draw();
 
-        // check for legal moves
+        // check for legal move_list
         if (!Generate::detect(p)) {
                 return Value::loss(0);
         }
 
         // generate captures and promotions
-        MoveList moves;;
-        Generate::generate_captures_promotions(p, moves);
+        MoveList move_list;
+        Generate::generate_captures_promotions(p, move_list);
 
-        if (!moves.size())
+        if (!move_list.size())
         {
                 if (Generate::detect_pending_captures_promotions(p)) {
 
@@ -238,7 +238,7 @@ int Search::quiescence(const Position<Board>& p, size_t ply, int depth, int alph
                 }
         }
 
-        // search generated moves
+        // search generated move_list
 }
 */
 

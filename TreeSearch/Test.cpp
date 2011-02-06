@@ -10,6 +10,12 @@
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 void TreeSearch::Test::International(void)
 {
+        Position<InternationalBoard> Taille1 = read_position_string<FEN_tag>()("B:W27,30,32,33,35,36,37,39,40,38,43,44,45,47,48:B3,4,6,8,9,10,11,13,14,16,18,19,21,24,26");
+        Evaluate::print_break_down(Taille1);
+
+        Position<InternationalBoard> Taille2 = read_position_string<FEN_tag>()("B:W27,30,32,33,35,36,37,39,40,42,38,44,45,47,48:B3,4,6,8,9,10,11,13,14,16,18,19,21,24,26");
+        Evaluate::print_break_down(Taille2);
+
         Position<InternationalBoard> i10 = Position<InternationalBoard>::initial();
         Search::root<Variant::International>(i10, 21);
 
@@ -25,7 +31,7 @@ void TreeSearch::Test::International(void)
                 
         for (size_t i = 0; i < 4; ++i) {
                 value = Search::root<Variant::International>(read_position_string<FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
-                assert(value == SearchValue::win(DB_win11[i].second));
+                assert(value == Value::win(DB_win11[i].second));
         }
 
         DB_unittest DB_win21[] = {
@@ -46,7 +52,7 @@ void TreeSearch::Test::International(void)
 
         for (size_t i = 0; i < 13; ++i) {
                 value = Search::root<Variant::International>(read_position_string<FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
-                assert(value == SearchValue::win(DB_win21[i].second));
+                assert(value == Value::win(DB_win21[i].second));
         }
         
         DB_unittest DB_win22[] = {
@@ -63,7 +69,7 @@ void TreeSearch::Test::International(void)
 
         for (size_t i = 0; i < 9; ++i) {
                 value = Search::root<Variant::International>(read_position_string<FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
-                assert(value == SearchValue::win(DB_win22[i].second));
+                assert(value == Value::win(DB_win22[i].second));
         }
         
         DB_unittest DB_win31[] = {
@@ -87,7 +93,7 @@ void TreeSearch::Test::International(void)
         
         for (size_t i = 0; i < 16; ++i) {
                 value = Search::root<Variant::International>(read_position_string<FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
-                assert(value == SearchValue::win(DB_win31[i].second));
+                assert(value == Value::win(DB_win31[i].second));
         }
 }
 
@@ -106,7 +112,7 @@ void TreeSearch::Test::Killer(void)
 
         for (size_t i = 0; i < 4; ++i) {
                 value = Search::root<Variant::Killer>(read_position_string<FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
-                assert(value == SearchValue::win(DB_win11[i].second));
+                assert(value == Value::win(DB_win11[i].second));
         }
 
         DB_unittest DB_win21[] = {
@@ -128,7 +134,7 @@ void TreeSearch::Test::Killer(void)
         
         for (size_t i = 0; i < 14; ++i) {
                 value = Search::root<Variant::Killer>(read_position_string<FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
-                assert(value == SearchValue::win(DB_win21[i].second));
+                assert(value == Value::win(DB_win21[i].second));
         }
 
         DB_unittest DB_win22[] = {
@@ -145,7 +151,7 @@ void TreeSearch::Test::Killer(void)
 
         for (size_t i = 0; i < 9; ++i) {
                 value = Search::root<Variant::Killer>(read_position_string<FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
-                assert(value == SearchValue::win(DB_win22[i].second));
+                assert(value == Value::win(DB_win22[i].second));
         }
         
         DB_unittest DB_win31[] = {
@@ -169,7 +175,7 @@ void TreeSearch::Test::Killer(void)
         
         for (size_t i = 0; i < 16; ++i) {
                 value = Search::root<Variant::Killer>(read_position_string<FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
-                assert(value == SearchValue::win(DB_win31[i].second));
+                assert(value == Value::win(DB_win31[i].second));
         }
 
         //Position<InternationalBoard> Walinga(read_position_string<FEN_tag>()("W:WK46,28:BK43"));

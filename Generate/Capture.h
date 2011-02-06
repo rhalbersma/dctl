@@ -11,11 +11,11 @@
 class MoveList;
 
 template<typename Rules, typename Board>
-class Propagate: private Board
+class Capture: private Board
 {
 public:
         // constructors
-        explicit Propagate(const Position<Board>&);
+        explicit Capture(const Position<Board>&);
 
         // views
         template<size_t> BitBoard targets(void) const;
@@ -46,8 +46,8 @@ public:
         void improve_best(MoveList&);
 
         // modifiers after a capture
-        template<bool> void add_man_capture(MoveList&, BitBoard);
-        template<bool, size_t> void add_king_capture(MoveList&, BitBoard);
+        template<bool> void add_man_capture(BitBoard, MoveList&);
+        template<bool, size_t> void add_king_capture(BitBoard, MoveList&);
 
 private:
         BitBoard captured_targets(void) const;
@@ -68,31 +68,31 @@ private:
         void undo(BitBoard, Int2Type<Variant::REMOVE_N>);
 
         // tag dispatching based on ambiguity of man captures
-        template<bool> void add_man_capture(MoveList&, BitBoard, Int2Type<false>);
-        template<bool> void add_man_capture(MoveList&, BitBoard, Int2Type<true>);
+        template<bool> void add_man_capture(BitBoard, MoveList&, Int2Type<false>);
+        template<bool> void add_man_capture(BitBoard, MoveList&, Int2Type<true>);
 
         // tag dispatching based on king halt after final capture
-        template<bool, size_t> void add_king_capture(MoveList&, BitBoard, Int2Type<Variant::HALT_K>);
-        template<bool, size_t> void add_king_capture(MoveList&, BitBoard, Int2Type<Variant::HALT_1>);
-        template<bool, size_t> void add_king_capture(MoveList&, BitBoard, Int2Type<Variant::HALT_N>);
+        template<bool, size_t> void add_king_capture(BitBoard, MoveList&, Int2Type<Variant::HALT_K>);
+        template<bool, size_t> void add_king_capture(BitBoard, MoveList&, Int2Type<Variant::HALT_1>);
+        template<bool, size_t> void add_king_capture(BitBoard, MoveList&, Int2Type<Variant::HALT_N>);
 
         // tag dispatching based on promotion condition
-        template<bool> void add_king_capture(MoveList&, BitBoard, BitBoard, BitBoard, bool);
-        template<bool> void add_king_capture(MoveList&, BitBoard, BitBoard, BitBoard, Int2Type<Variant::PROMOTE_BR>);
-        template<bool> void add_king_capture(MoveList&, BitBoard, BitBoard, BitBoard, Int2Type<Variant::PROMOTE_EP>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, bool, MoveList&);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, MoveList&, Int2Type<Variant::PROMOTE_BR>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, MoveList&, Int2Type<Variant::PROMOTE_EP>);
 
         // implementation
 	static const bool TOGGLE = true;
 
         // representation
+        CaptureValue current_;
+        CaptureValue best_;
         BitBoard initial_targets_;                                     // targets at the start of a capture
         BitBoard remaining_targets_;                                   // targets at the end of a capture
         BitBoard not_occupied_;
         BitBoard king_targets_;
         BitBoard from_sq_;                                             
-        CaptureValue current_capture_;
-        CaptureValue best_capture_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "Propagate.hpp"
+#include "Capture.hpp"

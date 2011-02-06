@@ -4,10 +4,10 @@
 #include <cassert>
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE 
-void GenerateTemplate<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, MoveList& moves)
+void GenerateTemplate<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, MoveList& move_list)
 {
-        GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(p, moves);
-        GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(p, moves);     
+        GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(p, move_list);
+        GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(p, move_list);     
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE

@@ -1,5 +1,5 @@
 #include "KingJumps.h"
-#include "Propagate.h"
+#include "Capture.h"
 #include "../Board/Board.h"
 #include "../Board/Direction.h"
 #include "../Board/Transform.h"
@@ -10,129 +10,129 @@
 #include <cassert>
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, MoveList& move_list)
 {
-        Propagate<Rules, Board> capture(p);
-        generate(p, capture, moves);
+        Capture<Rules, Board> capture(p);
+        generate(p, capture, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Propagate<Rules, Board>& capture, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Capture<Rules, Board>& capture, MoveList& move_list)
 {
-        generate_targets(p, capture, moves);
+        generate_targets(p, capture, move_list);
 }
 
 // tag dispatching based on whether men can capture kings
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, Propagate<Rules, Board>& capture, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, Capture<Rules, Board>& capture, MoveList& move_list)
 {
-        generate_targets(p, capture, moves, Int2Type<Variant::is_MenCaptureKings<Rules>::VALUE>());
+        generate_targets(p, capture, move_list, Int2Type<Variant::is_MenCaptureKings<Rules>::VALUE>());
 }
 
 // partial specialization for men that cannot capture kings
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<false>)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<false>)
 {
         capture.toggle_king_targets();
-        generate_targets(p, capture, moves, Int2Type<true>());
+        generate_targets(p, capture, move_list, Int2Type<true>());
         capture.toggle_king_targets();
 }
 
 // partial specialization for men that can capture kings
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<true>)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<true>)
 {
-        generate_dirs(p.men(Color), capture, moves);
+        generate_dirs(p.men(Color), capture, move_list);
 }
 
 // tag dispatching based on man capture directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, Capture<Rules, Board>& capture, MoveList& move_list)
 {
-        generate_dirs(active_men, capture, moves, Int2Type<Variant::ManCaptureDirections<Rules>::VALUE>());
+        generate_dirs(active_men, capture, move_list, Int2Type<Variant::ManCaptureDirections<Rules>::VALUE>());
 }
 
 // partial specialization for men that capture in the 2 forward diagonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<Variant::DIRS_2>)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<Variant::DIRS_2>)
 {
-        generate_dir<DirIndex<Board, Color>::LEFT_UP >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::RIGHT_UP>(active_men, capture, moves);
+        generate_dir<DirIndex<Board, Color>::LEFT_UP >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::RIGHT_UP>(active_men, capture, move_list);
 }
 
 // partial specialization for men that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<Variant::DIRS_4>)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<Variant::DIRS_4>)
 {
-        generate_dir<DirIndex<Board, Color>::LEFT_UP   >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::LEFT_DOWN >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::RIGHT_DOWN>(active_men, capture, moves);
+        generate_dir<DirIndex<Board, Color>::LEFT_UP   >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::LEFT_DOWN >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::RIGHT_DOWN>(active_men, capture, move_list);
 }
 
 // partial specialization for men that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<Variant::DIRS_8>)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<Variant::DIRS_8>)
 {
-        generate_dir<DirIndex<Board, Color>::LEFT_UP   >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::LEFT_DOWN >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::RIGHT_DOWN>(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::LEFT      >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::RIGHT     >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::UP        >(active_men, capture, moves);
-        generate_dir<DirIndex<Board, Color>::DOWN      >(active_men, capture, moves);
+        generate_dir<DirIndex<Board, Color>::LEFT_UP   >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::LEFT_DOWN >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::RIGHT_DOWN>(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::LEFT      >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::RIGHT     >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::UP        >(active_men, capture, move_list);
+        generate_dir<DirIndex<Board, Color>::DOWN      >(active_men, capture, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dir(BitBoard active_men, Propagate<Rules, Board>& capture, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dir(BitBoard active_men, Capture<Rules, Board>& capture, MoveList& move_list)
 {
-        BitBoard jump_sq, target_sq;
+        BitBoard jumper, target;
         for (active_men &= Pull<Board, Index>()(capture.template targets<Index>()); active_men; Bit::clear_lowest(active_men)) {
-                jump_sq = Bit::get_lowest(active_men);
-                target_sq = Push<Board, Index>()(jump_sq);
-                capture.launch(jump_sq);
-                capture.make(target_sq);
-                generate_next<Index>(target_sq, capture, moves);
-                capture.undo(target_sq);
-                capture.finish(jump_sq);
+                jumper = Bit::get_lowest(active_men);
+                capture.launch(jumper);
+                target = Push<Board, Index>()(jumper);
+                capture.make(target);
+                generate_next<Index>(target, capture, move_list);
+                capture.undo(target);
+                capture.finish(jumper);
         }
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> 
-void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_next(BitBoard jump_sq, Propagate<Rules, Board>& capture, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_next(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list)
 {
-        PushAssign<Board, Index>()(jump_sq);
-	if (!scan_next<Index>(jump_sq, capture, moves) && capture.current_greater_equal_best()) {
+        PushAssign<Board, Index>()(jumper);
+	if (!scan_next<Index>(jumper, capture, move_list) && capture.current_greater_equal_best()) {
 		if (capture.current_not_equal_to_best())
-			capture.improve_best(moves);
-		capture.template add_man_capture<Color>(moves, jump_sq);
+			capture.improve_best(move_list);
+		capture.template add_man_capture<Color>(jumper, move_list);
 	}
 }
 
 // tag dispatching based on promotion condition
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_next(BitBoard jump_sq, Propagate<Rules, Board>& capture, MoveList& moves)
+bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list)
 {
-        return scan_next<Index>(jump_sq, capture, moves, Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
+        return scan_next<Index>(jumper, capture, move_list, Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
 }
 
 // partial specialization for men that promote on the back row
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_next(BitBoard jump_sq, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<Variant::PROMOTE_BR>)
+bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<Variant::PROMOTE_BR>)
 {
-        return scan_dirs<Index>(jump_sq, capture, moves);
+        return scan_dirs<Index>(jumper, capture, move_list);
 }
 
 // partial specialization for men that promote en-passant
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_next(BitBoard jump_sq, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<Variant::PROMOTE_EP>)
+bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<Variant::PROMOTE_EP>)
 {
-        if (!capture.is_promotion<Color>(jump_sq))
-                return scan_dirs<Index>(jump_sq, capture, moves);
+        if (!capture.is_promotion<Color>(jumper))
+                return scan_dirs<Index>(jumper, capture, move_list);
         else {
                 capture.toggle_promotion();
-                const bool found_next = GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::promote_en_passant<Index>(jump_sq, capture, moves);
+                const bool found_next = GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::promote_en_passant<Index>(jumper, capture, move_list);
                 capture.toggle_promotion();
                 return found_next;
         }
@@ -140,61 +140,61 @@ bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_next
 
 // tag dispatching based on man capture directions
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, MoveList& moves)
+bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list)
 {
-        return scan_dirs<Index>(jump_sq, capture, moves, Int2Type<Variant::ManCaptureDirections<Rules>::VALUE>());
+        return scan_dirs<Index>(jumper, capture, move_list, Int2Type<Variant::ManCaptureDirections<Rules>::VALUE>());
 }
 
 // partial specialization for men that capture in the 2 forward diagonal directions
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<Variant::DIRS_2>)
+bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<Variant::DIRS_2>)
 {
         return (
-                scan_dir<MirrorDirIndex<Index>::U090>(jump_sq, capture, moves) |
-                scan_dir<Index>(jump_sq, capture, moves)
+                scan_dir<MirrorDirIndex<Index>::U090>(jumper, capture, move_list) |
+                scan_dir<Index>(jumper, capture, move_list)
         );
 }
 
 // partial specialization for men that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<Variant::DIRS_4>)
+bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<Variant::DIRS_4>)
 {
         return (
-                scan_dir<RotateDirIndex<Index, R090>::VALUE>(jump_sq, capture, moves) |
-                scan_dir<RotateDirIndex<Index, L090>::VALUE>(jump_sq, capture, moves) |
-                scan_dir<Index>(jump_sq, capture, moves)
+                scan_dir<RotateDirIndex<Index, R090>::VALUE>(jumper, capture, move_list) |
+                scan_dir<RotateDirIndex<Index, L090>::VALUE>(jumper, capture, move_list) |
+                scan_dir<Index>(jumper, capture, move_list)
         );
 }
 
 // partial specialization for men that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jump_sq, Propagate<Rules, Board>& capture, MoveList& moves, Int2Type<Variant::DIRS_8>)
+bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<Variant::DIRS_8>)
 {
         return (
-                scan_dir<RotateDirIndex<Index, R045>::VALUE>(jump_sq, capture, moves) |
-                scan_dir<RotateDirIndex<Index, L045>::VALUE>(jump_sq, capture, moves) |
-                scan_dir<RotateDirIndex<Index, R090>::VALUE>(jump_sq, capture, moves) |
-                scan_dir<RotateDirIndex<Index, L090>::VALUE>(jump_sq, capture, moves) |
-                scan_dir<RotateDirIndex<Index, R135>::VALUE>(jump_sq, capture, moves) |
-                scan_dir<RotateDirIndex<Index, L135>::VALUE>(jump_sq, capture, moves) |
-                scan_dir<Index>(jump_sq, capture, moves)
+                scan_dir<RotateDirIndex<Index, R045>::VALUE>(jumper, capture, move_list) |
+                scan_dir<RotateDirIndex<Index, L045>::VALUE>(jumper, capture, move_list) |
+                scan_dir<RotateDirIndex<Index, R090>::VALUE>(jumper, capture, move_list) |
+                scan_dir<RotateDirIndex<Index, L090>::VALUE>(jumper, capture, move_list) |
+                scan_dir<RotateDirIndex<Index, R135>::VALUE>(jumper, capture, move_list) |
+                scan_dir<RotateDirIndex<Index, L135>::VALUE>(jumper, capture, move_list) |
+                scan_dir<Index>(jumper, capture, move_list)
         );
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dir(BitBoard target_sq, Propagate<Rules, Board>& capture, MoveList& moves)
+bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list)
 {
-        PushAssign<Board, Index>()(target_sq);
-        return scan<Index>(target_sq, capture, moves);
+        PushAssign<Board, Index>()(jumper);
+        return scan<Index>(jumper, capture, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan(BitBoard target_sq, Propagate<Rules, Board>& capture, MoveList& moves)
+bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan(BitBoard jumper, Capture<Rules, Board>& capture, MoveList& move_list)
 {
-        if (target_sq & capture.template targets<Index>()) {
-                capture.make(target_sq);
-                generate_next<Index>(target_sq, capture, moves);
-                capture.undo(target_sq);
+        if (jumper & capture.template targets<Index>()) {
+                capture.make(jumper);
+                generate_next<Index>(jumper, capture, move_list);
+                capture.undo(jumper);
                 return true;
         } else
                 return false;
@@ -203,9 +203,9 @@ bool GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan(BitB
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::count(const Position<Board>& p)
 {
-        MoveList moves;
-        generate(p, moves);
-        return moves.size();
+        MoveList move_list;
+        generate(p, move_list);
+        return move_list.size();
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE

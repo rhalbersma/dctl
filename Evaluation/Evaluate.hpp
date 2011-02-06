@@ -128,4 +128,5 @@ void Evaluate::print_break_down(const Position<Board>& p)
                 std::cout << "-";
         std::cout << std::endl;
         std::cout << "Evaluate" << std::setw(6) << evaluate<Side::BLACK>(p) << std::setw(6) << evaluate<Side::WHITE>(p) << std::setw(6) << delta_evaluate<Side::BLACK>(p) << std::endl;
+        std::cout << std::endl;
 }

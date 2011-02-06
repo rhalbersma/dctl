@@ -1,6 +1,6 @@
 #include "Perft.h"
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 TreeWalk::Perft::TranspositionTable TreeWalk::Perft::TT(1);
 SearchStatistics TreeWalk::Perft::statistics_;

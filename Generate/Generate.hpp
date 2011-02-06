@@ -1,33 +1,34 @@
 #include "GenerateColor.h"
 #include "../Position/Position.h"
+#include <iostream>
 
 template<typename Rules, typename Board>
-void Generate<Rules, Board>::generate(const Position<Board>& p, MoveList& moves)
+void Generate<Rules, Board>::generate(const Position<Board>& p, MoveList& move_list)
 {
         if (p.to_move())
-                GenerateColor<Side::WHITE, Rules, Board>::generate(p, moves);
+                GenerateColor<Side::WHITE, Rules, Board>::generate(p, move_list);
         else
-                GenerateColor<Side::BLACK, Rules, Board>::generate(p, moves);
+                GenerateColor<Side::BLACK, Rules, Board>::generate(p, move_list);
 
-        assert(invariant(p, moves.size()));
+        assert(invariant(p, move_list.size()));
 }
 
 template<typename Rules, typename Board>
-void Generate<Rules, Board>::generate_captures(const Position<Board>& p, MoveList& moves)
+void Generate<Rules, Board>::generate_captures(const Position<Board>& p, MoveList& move_list)
 {
         if (p.to_move())
-                GenerateColor<Side::WHITE, Rules, Board>::generate_captures(p, moves);
+                GenerateColor<Side::WHITE, Rules, Board>::generate_captures(p, move_list);
         else
-                GenerateColor<Side::BLACK, Rules, Board>::generate_captures(p, moves);
+                GenerateColor<Side::BLACK, Rules, Board>::generate_captures(p, move_list);
 }
 
 template<typename Rules, typename Board>
-void Generate<Rules, Board>::generate_promotions(const Position<Board>& p, MoveList& moves)
+void Generate<Rules, Board>::generate_promotions(const Position<Board>& p, MoveList& move_list)
 {
         if (p.to_move())
-                GenerateColor<Side::WHITE, Rules, Board>::generate_promotions(p, moves);
+                GenerateColor<Side::WHITE, Rules, Board>::generate_promotions(p, move_list);
         else
-                GenerateColor<Side::BLACK, Rules, Board>::generate_promotions(p, moves);
+                GenerateColor<Side::BLACK, Rules, Board>::generate_promotions(p, move_list);
 }
 
 template<typename Rules, typename Board>

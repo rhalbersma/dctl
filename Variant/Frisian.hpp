@@ -26,10 +26,10 @@ struct copy<Frisian>
 template<>
 struct increment<Frisian>
 {
-        void operator()(CaptureValue& capture, BitBoard target_sq, BitBoard opponent_kings) const
+        void operator()(CaptureValue& capture, BitBoard target_sq, BitBoard king_targets) const
         {
                 ++capture.num_pieces;
-                if (target_sq & opponent_kings)
+                if (target_sq & king_targets)
                         ++capture.num_kings;
         }
 };
@@ -37,9 +37,9 @@ struct increment<Frisian>
 template<>
 struct decrement<Frisian>
 {
-        void operator()(CaptureValue& capture, BitBoard target_sq, BitBoard opponent_kings) const
+        void operator()(CaptureValue& capture, BitBoard target_sq, BitBoard king_targets) const
         {
-                if (target_sq & opponent_kings)
+                if (target_sq & king_targets)
                         --capture.num_kings;
                 --capture.num_pieces;
         }

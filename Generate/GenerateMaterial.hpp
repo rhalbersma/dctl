@@ -8,23 +8,24 @@
 #include "../Utilities/InlineOptions.h"
 
 template<bool Color, Pieces::Composition Material, typename Rules, typename Board> FORCE_INLINE 
-void GenerateMaterial<Color, Material, Rules, Board>::generate(const Position<Board>& p, MoveList& moves) const 
+void GenerateMaterial<Color, Material, Rules, Board>::generate(const Position<Board>& p, MoveList& move_list) const 
 { 
-        GenerateTemplate<Color, Material, Move::JUMPS, Rules, Board>::generate(p, moves);
-        if (!moves.size())
-                GenerateTemplate<Color, Material, Move::MOVES, Rules, Board>::generate(p, moves);
+        GenerateTemplate<Color, Material, Move::JUMPS, Rules, Board>::generate(p, move_list);
+        if (!move_list.size())
+                GenerateTemplate<Color, Material, Move::MOVES, Rules, Board>::generate(p, move_list);
 }
 
 template<bool Color, Pieces::Composition Material, typename Rules, typename Board> FORCE_INLINE 
-void GenerateMaterial<Color, Material, Rules, Board>::generate_captures(const Position<Board>& p, MoveList& moves) const 
+void GenerateMaterial<Color, Material, Rules, Board>::generate_captures(const Position<Board>& p, MoveList& move_list) const 
 { 
-        GenerateTemplate<Color, Material, Move::JUMPS, Rules, Board>::generate(p, moves);
+        GenerateTemplate<Color, Material, Move::JUMPS, Rules, Board>::generate(p, move_list);
 }
 
 template<bool Color, Pieces::Composition Material, typename Rules, typename Board> FORCE_INLINE 
-void GenerateMaterial<Color, Material, Rules, Board>::generate_promotions(const Position<Board>& p, MoveList& moves) const 
+void GenerateMaterial<Color, Material, Rules, Board>::generate_promotions(const Position<Board>& p, MoveList& move_list) const 
 { 
-        GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(p, moves);
+        if (Material != Pieces::KING)
+                GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(p, move_list);
 }
 
 template<bool Color, Pieces::Composition Material, typename Rules, typename Board> FORCE_INLINE
