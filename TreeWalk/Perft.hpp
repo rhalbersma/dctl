@@ -40,12 +40,12 @@ NodeCount Perft::perft_leaf(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 0)
                 return 1;
 
-        MoveList moves;;
-        Generate<Rules, Board>::generate(p, moves);
+        MoveList move_list;
+        Generate<Rules, Board>::generate(p, move_list);
         NodeCount leafs = 0;        
         Position<Board> q;
-        for (size_t i = 0; i < moves.size(); ++i) {
-                q.template copy_make<Rules>(p, moves[i]);
+        for (size_t i = 0; i < move_list.size(); ++i) {
+                q.template copy_make<Rules>(p, move_list[i]);
                 leafs += perft_leaf<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
@@ -56,15 +56,15 @@ NodeCount Perft::perft_bulk(const Position<Board>& p, size_t ply, size_t depth)
 {
         update_statistics(ply);
 
-        MoveList moves;;
-        Generate<Rules, Board>::generate(p, moves);
+        MoveList move_list;
+        Generate<Rules, Board>::generate(p, move_list);
         if (depth == 1)
-                return moves.size();
+                return move_list.size();
         
         NodeCount leafs = 0;
         Position<Board> q;
-        for (size_t i = 0; i < moves.size(); ++i) {
-                q.template copy_make<Rules>(p, moves[i]);
+        for (size_t i = 0; i < move_list.size(); ++i) {
+                q.template copy_make<Rules>(p, move_list[i]);
                 leafs += perft_bulk<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
@@ -78,12 +78,12 @@ NodeCount Perft::perft_size(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 1)
                 return Generate<Rules, Board>::count<Rules>(p);
 
-        MoveList moves;;
-        Generate<Rules, Board>::generate(p, moves);
+        MoveList move_list;
+        Generate<Rules, Board>::generate(p, move_list);
         NodeCount leafs = 0;
         Position<Board> q;
-        for (size_t i = 0; i < moves.size(); ++i) {
-                q.template copy_make<Rules>(p, moves[i]);
+        for (size_t i = 0; i < move_list.size(); ++i) {
+                q.template copy_make<Rules>(p, move_list[i]);
                 leafs += perft_size<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
@@ -101,12 +101,12 @@ NodeCount Perft::perft_hash(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 0)
                 return 1;
 
-        MoveList moves;;
-        Generate<Rules, Board>::generate(p, moves);
+        MoveList move_list;
+        Generate<Rules, Board>::generate(p, move_list);
         NodeCount leafs = 0;
         Position<Board> q;
-        for (size_t i = 0; i < moves.size(); ++i) {
-                q.template copy_make<Rules>(p, moves[i]);
+        for (size_t i = 0; i < move_list.size(); ++i) {
+                q.template copy_make<Rules>(p, move_list[i]);
                 leafs += perft_hash<Rules>(q, ply + 1, depth - 1);
         }
 
@@ -127,12 +127,12 @@ NodeCount Perft::perft_fast(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 1)
                 leafs = Generate<Rules, Board>::count<Rules>(p);
         else {
-                MoveList moves;;
-                Generate<Rules, Board>::generate(p, moves);
+                MoveList move_list;
+                Generate<Rules, Board>::generate(p, move_list);
                 leafs = 0;
                 Position<Board> q;
-                for (size_t i = 0; i < moves.size(); ++i) {
-                        q.template copy_make<Rules>(p, moves[i]);
+                for (size_t i = 0; i < move_list.size(); ++i) {
+                        q.template copy_make<Rules>(p, move_list[i]);
                         leafs += perft_fast<Rules>(q, ply + 1, depth - 1);
                 }
         }

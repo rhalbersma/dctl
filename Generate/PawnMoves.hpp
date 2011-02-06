@@ -1,4 +1,4 @@
-#include "Propagate.h"
+#include "Capture.h"
 #include "../Board/Board.h"
 #include "../Board/Direction.h"
 #include "../Position/Position.h"
@@ -8,33 +8,33 @@
 #include <cassert>
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, MoveList& move_list)
 {
-        generate_dirs(p.men(Color), p.not_occupied(), moves);
+        generate_dirs(p.men(Color), p.not_occupied(), move_list);
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, MoveList& move_list)
 {
-        generate_dir<DirIndex<Board, Color>::LEFT_UP >(active_men, not_occupied, moves);
-        generate_dir<DirIndex<Board, Color>::RIGHT_UP>(active_men, not_occupied, moves);
+        generate_dir<DirIndex<Board, Color>::LEFT_UP >(active_men, not_occupied, move_list);
+        generate_dir<DirIndex<Board, Color>::RIGHT_UP>(active_men, not_occupied, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dir(BitBoard active_men, BitBoard not_occupied, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dir(BitBoard active_men, BitBoard not_occupied, MoveList& move_list)
 {
         BitBoard from_sq, dest_sq;
         for (active_men &= Pull<Board, Index>()(not_occupied); active_men; Bit::clear_lowest(active_men)) {
                 from_sq = Bit::get_lowest(active_men);
                 dest_sq = Push<Board, Index>()(from_sq);
-                moves.push_back<Color>(from_sq ^ dest_sq, promotion(dest_sq));
+                move_list.push_back<Color>(from_sq ^ dest_sq, promotion(dest_sq));
         }
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(const Position<Board>& p, MoveList& moves)
+void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(const Position<Board>& p, MoveList& move_list)
 {
-        generate_dirs(promotors(p.men(Color)), p.not_occupied(), moves);
+        generate_dirs(promotors(p.men(Color)), p.not_occupied(), move_list);
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
