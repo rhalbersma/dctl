@@ -8,9 +8,6 @@ using boost::asio::ip::tcp;
 
 namespace DamExchangeProtocol {
 
-typedef StringMessage chat_message; 
-typedef std::deque<chat_message> chat_message_queue;
-
 class Client
 {
 public:
@@ -19,7 +16,7 @@ public:
         ~Client(void);
 
         // interface
-        void write(const chat_message&);
+        void write(const StringMessage&);
         void close(void);
 
 private:
@@ -30,7 +27,7 @@ private:
         void async_read_next(void);
         void handle_read(const boost::system::error_code&);
 
-        void do_write(chat_message);
+        void do_write(StringMessage);
         void async_write_next(void);
         void handle_write(const boost::system::error_code&);
 
@@ -42,8 +39,9 @@ private:
         boost::asio::streambuf incoming_;
         boost::thread read_thread_;
 
-        chat_message_queue read_msgs_;
-        chat_message_queue write_msgs_;
+        typedef std::deque<StringMessage> StringMessageQueue;
+        StringMessageQueue read_msgs_;
+        StringMessageQueue write_msgs_;
 };
 
 }       // namespace DamExchangeProtocol

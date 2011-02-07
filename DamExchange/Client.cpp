@@ -46,7 +46,7 @@ void DXP::Client::async_read_next(void)
         boost::asio::async_read_until (
                 socket_,
                 incoming_,
-                chat_message::terminator(),
+                StringMessage::terminator(),
                 boost::bind(&Client::handle_read, this, boost::asio::placeholders::error)
         );
 }
@@ -56,8 +56,8 @@ void DXP::Client::handle_read(const boost::system::error_code& error)
         if (!error) {
                 std::istream incoming_stream(&incoming_);
                 std::string msg;
-                std::getline(incoming_stream, msg, chat_message::terminator());
-                read_msgs_.push_back(chat_message(msg));
+                std::getline(incoming_stream, msg, StringMessage::terminator());
+                read_msgs_.push_back(StringMessage(msg));
                 std::cout << msg << std::endl;
                 async_read_next();
         } else {
@@ -65,14 +65,14 @@ void DXP::Client::handle_read(const boost::system::error_code& error)
         }
 }
 
-void DXP::Client::write(const chat_message& msg)
+void DXP::Client::write(const StringMessage& msg)
 {
         // do_write() will only be called in a thread in which io_service::run() is currently being invoked.
         io_service_.post(boost::bind(&Client::do_write, this, msg));
 }
 
-// by-value instead of by-reference, or it might go out of scope before being used in the io_service::run() thread
-void DXP::Client::do_write(chat_message msg)
+// by-value instead of by-reference, or <msg> might go out of scope before being used in the io_service::run() thread
+void DXP::Client::do_write(StringMessage msg)
 {
         bool write_in_progress = !write_msgs_.empty();
         write_msgs_.push_back(msg);
@@ -85,7 +85,7 @@ void DXP::Client::async_write_next(void)
 {
         boost::asio::async_write (
                 socket_,
-                boost::asio::buffer(write_msgs_.front().str()),
+                boost::asio::buffer(write_msgs_.front().c_str(), write_msgs_.front().length() + 1),
                 boost::bind(&Client::handle_write, this, boost::asio::placeholders::error)
         );
 }

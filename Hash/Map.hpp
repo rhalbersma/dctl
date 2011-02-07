@@ -16,13 +16,13 @@ void Map<Key, Value, Replace, Hash, Index>::resize(size_t log2_n)
         size_t log2_b = log2_n + MIN_LOG2_BUCKETS;
         while (log2_b >= MIN_LOG2_BUCKETS) {
                 try {
-                        map_.resize(Index(1) << log2_b);   // try to allocate all the buckets
+                        map_.resize(Index(1) << log2_b);        // try to allocate all the buckets
                 }
-                catch (const std::bad_alloc&) {                        
+                catch (const std::bad_alloc&) {                                
                         --log2_b;                               // try allocating half the previous size
                         continue;       
                 }
-                bucket_mask_ = map_.size() - 1;            // mask to do arithmetic MODULO the number of buckets
+                bucket_mask_ = map_.size() - 1;                 // mask to do arithmetic MODULO the number of buckets
                 std::cout << "Successfully allocated " << map_.size() << " buckets " << std::endl;
                 return;
         }

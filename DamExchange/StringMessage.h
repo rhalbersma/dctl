@@ -18,7 +18,8 @@ public:
         std::string str(void) const;
         std::string header(void) const;
         std::string body(void) const;
-
+        const char* c_str(void) const;
+        size_t length(void) const;
         static char terminator(void);
 
 private:
