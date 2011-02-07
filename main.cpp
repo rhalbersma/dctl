@@ -9,16 +9,26 @@
 
 int main(void)
 {     
-        //DamExchangeProtocol::Test::Mesander_examples();
+        DamExchangeProtocol::Test::Mesander_examples();
 
-        TreeSearch::Test::International();
-        //TreeSearch::Test::Killer();
-        //TreeWalk::Test::Rectangular();
-        //TreeWalk::Test::ChessBoardVariants();
-        //TreeWalk::Test::ItalianRuleBook();
+        DamExchangeProtocol::Client my_connection("127.0.0.1", "27531");
+        std::string line;
+        while (std::getline(std::cin, line))
+        {                
+                my_connection.write(DamExchangeProtocol::StringMessage(line));
+        }
+        my_connection.close();
 
+        /*
+        TreeWalk::Test::International();
+        //TreeWalk::Test::Killer();
+        TreeWalk::Test::Rectangular();
+        TreeWalk::Test::ChessBoardVariants();
+        TreeWalk::Test::ItalianRuleBook();
+        */
         std::cout << "End of program." << std::endl;
         for (;;);
+
 }
 
 /*

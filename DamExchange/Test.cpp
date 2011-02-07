@@ -21,8 +21,8 @@ void DXP::Test::Mesander_examples(void)
         };
 
         for (size_t i = 0; i < 8; ++i) {
-                const DXP::StringMessage s(example[i]);
-                std::shared_ptr<DXP::AbstractMessage> m = DXP::MessageFactory::select_creator(s);
+                const StringMessage s(example[i]);
+                std::shared_ptr<AbstractMessage> m = MessageFactory::select_creator(s);
                 assert(!s.str().compare(m->message().str()));
                 std::cout << m->message().str() << std::endl;
         }

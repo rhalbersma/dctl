@@ -32,6 +32,21 @@ std::string DXP::StringMessage::body(void) const
         return str().substr(HEADER_LENGTH);
 }
 
+const char* DXP::StringMessage::c_str(void) const
+{
+        return str().c_str();
+}
+
+size_t DXP::StringMessage::length(void) const
+{
+        return str().length();
+}
+
+char DXP::StringMessage::terminator(void)
+{
+        return TERMINATOR;
+}
+
 bool DXP::StringMessage::invariant(void) const
 {
         return (
@@ -46,9 +61,4 @@ bool DXP::StringMessage::invariant(const std::string& header_, const std::string
                 header_.length() == HEADER_LENGTH && 
                 body_.length() <= MAX_BODY_LENGTH
         );
-}
-
-char DXP::StringMessage::terminator(void)
-{
-        return TERMINATOR;
 }

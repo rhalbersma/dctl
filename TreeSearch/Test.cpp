@@ -10,12 +10,6 @@
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 void TreeSearch::Test::International(void)
 {
-        Position<InternationalBoard> Taille1 = read_position_string<FEN_tag>()("B:W27,30,32,33,35,36,37,39,40,38,43,44,45,47,48:B3,4,6,8,9,10,11,13,14,16,18,19,21,24,26");
-        Evaluate::print_break_down(Taille1);
-
-        Position<InternationalBoard> Taille2 = read_position_string<FEN_tag>()("B:W27,30,32,33,35,36,37,39,40,42,38,44,45,47,48:B3,4,6,8,9,10,11,13,14,16,18,19,21,24,26");
-        Evaluate::print_break_down(Taille2);
-
         Position<InternationalBoard> i10 = Position<InternationalBoard>::initial();
         Search::root<Variant::International>(i10, 21);
 

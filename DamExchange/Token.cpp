@@ -1,5 +1,4 @@
 #include "Token.h"
-#include "../Position/Side.h"
 #include <cassert>
 
 const char PositionToken<DXP_tag>::SETUP[2] = {
@@ -11,12 +10,12 @@ bool PositionToken<DXP_tag>::read_color(char c)
 {
         switch(c) {
         case BLACK: 
-                return Side::BLACK;
+                return false;
         case WHITE: 
-                return Side::WHITE;
+                return true;
         default:
                 assert(false);
-                return Side::BLACK;
+                return false;
         }
 }
 
