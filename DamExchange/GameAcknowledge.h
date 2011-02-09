@@ -1,8 +1,7 @@
 #pragma once
 #include "AbstractMessage.h"
-#include "StringMessage.h"
-#include <string>
 #include <memory>
+#include <string>
 
 namespace DamExchangeProtocol {
 
@@ -25,9 +24,7 @@ private:
         virtual std::string header(void) const;
         virtual std::string body(void) const;
 
-        static std::shared_ptr<AbstractMessage> create(const StringMessage&);
-        static bool pre_condition(const StringMessage&);
-
+        static std::shared_ptr<AbstractMessage> create(const std::string&);
         static const std::string HEADER;
         static const bool REGISTERED;
 

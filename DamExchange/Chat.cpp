@@ -1,17 +1,16 @@
 #include "Chat.h"
-#include "MessageFactory.h"
+#include "Factory.h"
 #include <cassert>
 
 namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::Chat::HEADER = "C";
 
-const bool DXP::Chat::REGISTERED = MessageFactory::register_creator(HEADER, create);
+const bool DXP::Chat::REGISTERED = Factory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::Chat::create(const StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::Chat::create(const std::string& s)
 {
-        assert(pre_condition(s));
-        return std::make_shared<Chat>(s.body());
+        return std::make_shared<Chat>(s);
 }
 
 DXP::Chat::Chat(const std::string& s)
@@ -28,9 +27,4 @@ std::string DXP::Chat::header(void) const
 std::string DXP::Chat::body(void) const
 {
         return message_;
-}
-
-bool DXP::Chat::pre_condition(const StringMessage& s)
-{
-        return REGISTERED && HEADER == s.header();
 }

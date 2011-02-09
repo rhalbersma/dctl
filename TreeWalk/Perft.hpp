@@ -21,8 +21,7 @@ NodeCount Perft::perft(const Position<Board>& p, size_t nominal_depth)
                 leafs = driver<Rules>(p, 0, depth);
                 timer.split();
                 report(depth, leafs, timer);
-        }
-                
+        }                
         return leafs;
 }
 

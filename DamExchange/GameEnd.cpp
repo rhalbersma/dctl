@@ -1,5 +1,5 @@
 #include "GameEnd.h"
-#include "MessageFactory.h"
+#include "Factory.h"
 #include <cassert>
 #include <cstdlib>
 #include <iomanip>
@@ -9,12 +9,11 @@ namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::GameEnd::HEADER = "E";
 
-const bool DXP::GameEnd::REGISTERED = MessageFactory::register_creator(HEADER, create);
+const bool DXP::GameEnd::REGISTERED = Factory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::GameEnd::create(const StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::GameEnd::create(const std::string& s)
 {
-        assert(pre_condition(s));
-        return std::make_shared<GameEnd>(s.body());
+        return std::make_shared<GameEnd>(s);
 }
 
 DXP::GameEnd::GameEnd(const std::string& s)
@@ -52,9 +51,4 @@ std::string DXP::GameEnd::body(void) const
         sstr << std::setw( 1) << reason();
         sstr << std::setw( 1) << stop_code();
         return sstr.str();
-}
-
-bool DXP::GameEnd::pre_condition(const StringMessage& s)
-{
-        return REGISTERED && HEADER == s.header();
 }

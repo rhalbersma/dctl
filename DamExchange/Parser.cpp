@@ -1,53 +1,53 @@
-#include "StringMessage.h"
+#include "Parser.h"
 #include <cassert>
 
 namespace DXP = DamExchangeProtocol;
 
-DXP::StringMessage::StringMessage(const std::string& s)
+DXP::Parser::Parser(const std::string& s)
 :
         content_(s)
 {
         assert(invariant());
 }
 
-DXP::StringMessage::StringMessage(const std::string& h, const std::string& b)
+DXP::Parser::Parser(const std::string& h, const std::string& b)
 :
         content_(h + b)
 {
         assert(invariant(h, b));
 }
 
-std::string DXP::StringMessage::str(void) const
+std::string DXP::Parser::str(void) const
 {
         return content_;
 }
 
-std::string DXP::StringMessage::header(void) const
+std::string DXP::Parser::header(void) const
 {
         return str().substr(0, HEADER_LENGTH);
 }
 
-std::string DXP::StringMessage::body(void) const
+std::string DXP::Parser::body(void) const
 {
         return str().substr(HEADER_LENGTH);
 }
 
-const char* DXP::StringMessage::c_str(void) const
+const char* DXP::Parser::c_str(void) const
 {
         return str().c_str();
 }
 
-size_t DXP::StringMessage::length(void) const
+size_t DXP::Parser::length(void) const
 {
         return str().length();
 }
 
-char DXP::StringMessage::terminator(void)
+char DXP::Parser::terminator(void)
 {
         return TERMINATOR;
 }
 
-bool DXP::StringMessage::invariant(void) const
+bool DXP::Parser::invariant(void) const
 {
         return (
                 header().length() == HEADER_LENGTH && 
@@ -55,7 +55,7 @@ bool DXP::StringMessage::invariant(void) const
         );
 }
 
-bool DXP::StringMessage::invariant(const std::string& header_, const std::string& body_) const
+bool DXP::Parser::invariant(const std::string& header_, const std::string& body_) const
 {
         return (
                 header_.length() == HEADER_LENGTH && 

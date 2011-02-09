@@ -1,4 +1,4 @@
-#include "MessageFactory.h"
+#include "Factory.h"
 
 namespace DamExchangeProtocol {
 

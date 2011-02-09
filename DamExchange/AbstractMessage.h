@@ -1,5 +1,5 @@
 #pragma once
-#include "StringMessage.h"
+#include "Parser.h"
 #include <string>
 
 namespace DamExchangeProtocol {
@@ -8,7 +8,7 @@ class AbstractMessage
 {
 public:
         // interface
-        StringMessage message(void) const;
+        std::string str(void) const;
 
         // virtual destructor
         virtual ~AbstractMessage(void) {};

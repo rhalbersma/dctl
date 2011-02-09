@@ -1,5 +1,5 @@
 #include "GameRequest.h"
-#include "MessageFactory.h"
+#include "Factory.h"
 #include "Token.h"
 #include <cassert>
 #include <cstdlib>
@@ -10,12 +10,11 @@ namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::GameRequest::HEADER = "R";
 
-const bool DXP::GameRequest::REGISTERED = MessageFactory::register_creator(HEADER, create);
+const bool DXP::GameRequest::REGISTERED = Factory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::GameRequest::create(const StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::GameRequest::create(const std::string& s)
 {
-        assert(pre_condition(s));
-        return std::make_shared<GameRequest>(s.body());
+        return std::make_shared<GameRequest>(s);
 }
 
 DXP::GameRequest::GameRequest(const std::string& s)
@@ -89,9 +88,4 @@ std::string DXP::GameRequest::body(void) const
         if (setup_position())
                 sstr << std::setw(51) << special_position();
         return sstr.str();
-}
-
-bool DXP::GameRequest::pre_condition(const StringMessage& s)
-{
-        return REGISTERED && HEADER == s.header();
 }
