@@ -3,16 +3,12 @@
 
 namespace DamExchangeProtocol {
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
-class StringMessage
+class Parser
 {
 public:
         // constructors
-        explicit StringMessage(const std::string&);
-        StringMessage(const std::string&, const std::string&);
+        explicit Parser(const std::string&);
+        Parser(const std::string&, const std::string&);
 
         // views
         std::string str(void) const;

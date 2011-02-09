@@ -1,12 +1,24 @@
 #include "Client.h"
+#include "Parser.h"
 #include <iostream>
 #include <boost/bind.hpp>
 
 namespace DXP = DamExchangeProtocol;
 
-DXP::Client::Client(const std::string& host_name, const std::string& service_name)
-: 
+DXP::Client::Client(void)
+:
+        acceptor_(io_service_),
         socket_(io_service_)
+{
+}
+
+DXP::Client::~Client(void)
+{
+        do_close();
+        read_thread_.join();
+}
+
+void DXP::Client::connect(const std::string& host_name, const std::string& service_name)
 {
         tcp::resolver::query query(host_name, service_name);
         tcp::resolver resolver(io_service_);
@@ -16,16 +28,10 @@ DXP::Client::Client(const std::string& host_name, const std::string& service_nam
         read_thread_ = boost::thread(boost::bind(&boost::asio::io_service::run, &io_service_));
 }
 
-DXP::Client::~Client(void)
-{
-        do_close();
-        read_thread_.join();
-}
-
 void DXP::Client::async_connect_next(tcp::resolver::iterator endpoint_iterator)
 {
         tcp::endpoint endpoint = *endpoint_iterator;
-        socket_.async_connect (
+        socket_.async_connect(
                 endpoint,
                 boost::bind(&Client::handle_connect, this, boost::asio::placeholders::error, ++endpoint_iterator)
         );
@@ -41,12 +47,41 @@ void DXP::Client::handle_connect(const boost::system::error_code& error, tcp::re
         }
 }
 
+void DXP::Client::accept(const std::string& service_name)
+{
+        tcp::endpoint endpoint(tcp::v4(), atoi(service_name.c_str()));
+        acceptor_.open(endpoint.protocol());
+        acceptor_.set_option(tcp::acceptor::reuse_address(true));
+        acceptor_.bind(endpoint);
+        acceptor_.listen();
+
+        acceptor_.async_accept(
+                socket_,
+                boost::bind(&Client::handle_accept, this, boost::asio::placeholders::error)
+        );
+        read_thread_ = boost::thread(boost::bind(&boost::asio::io_service::run, &io_service_));
+}
+
+void DXP::Client::handle_accept(const boost::system::error_code& error)
+{
+        if (!error) {
+                async_read_next();
+        }
+}
+
+std::string DXP::Client::read(void)
+{
+        std::string msg = read_msgs_.front();
+        read_msgs_.pop_front();
+        return msg;
+}
+
 void DXP::Client::async_read_next(void)
 {
-        boost::asio::async_read_until (
+        boost::asio::async_read_until(
                 socket_,
                 incoming_,
-                StringMessage::terminator(),
+                Parser::terminator(),
                 boost::bind(&Client::handle_read, this, boost::asio::placeholders::error)
         );
 }
@@ -56,8 +91,8 @@ void DXP::Client::handle_read(const boost::system::error_code& error)
         if (!error) {
                 std::istream incoming_stream(&incoming_);
                 std::string msg;
-                std::getline(incoming_stream, msg, StringMessage::terminator());
-                read_msgs_.push_back(StringMessage(msg));
+                std::getline(incoming_stream, msg, Parser::terminator());
+                read_msgs_.push_back(msg);
                 std::cout << msg << std::endl;
                 async_read_next();
         } else {
@@ -65,25 +100,25 @@ void DXP::Client::handle_read(const boost::system::error_code& error)
         }
 }
 
-void DXP::Client::write(const StringMessage& msg)
+void DXP::Client::write(const std::string& msg)
 {
         // do_write() will only be called in a thread in which io_service::run() is currently being invoked.
         io_service_.post(boost::bind(&Client::do_write, this, msg));
 }
 
 // by-value instead of by-reference, or <msg> might go out of scope before being used in the io_service::run() thread
-void DXP::Client::do_write(StringMessage msg)
+void DXP::Client::do_write(std::string msg)
 {
-        bool write_in_progress = !write_msgs_.empty();
+        bool no_write_in_progress = write_msgs_.empty();
         write_msgs_.push_back(msg);
-        if (!write_in_progress) {
+        if (no_write_in_progress) {
                 async_write_next();
         }
 }
 
 void DXP::Client::async_write_next(void)
 {
-        boost::asio::async_write (
+        boost::asio::async_write(
                 socket_,
                 boost::asio::buffer(write_msgs_.front().c_str(), write_msgs_.front().length() + 1),
                 boost::bind(&Client::handle_write, this, boost::asio::placeholders::error)

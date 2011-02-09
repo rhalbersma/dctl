@@ -1,5 +1,5 @@
 #include "Move.h"
-#include "MessageFactory.h"
+#include "Factory.h"
 #include <cassert>
 #include <cstdlib>
 #include <iomanip>
@@ -9,12 +9,11 @@ namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::Move::HEADER = "M";
 
-const bool DXP::Move::REGISTERED = MessageFactory::register_creator(HEADER, create);
+const bool DXP::Move::REGISTERED = Factory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::Move::create(const StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::Move::create(const std::string& s)
 {
-        assert(pre_condition(s));
-        return std::make_shared<Move>(s.body());
+        return std::make_shared<Move>(s);
 }
 
 DXP::Move::Move(const std::string& s)
@@ -78,9 +77,4 @@ std::string DXP::Move::body(void) const
         for (std::vector<size_t>::const_iterator it = captured_pieces().begin(); it != captured_pieces().end(); ++it)
                 sstr << std::setw(2) << std::setfill('0') << *it;
         return sstr.str();
-}
-
-bool DXP::Move::pre_condition(const StringMessage& s)
-{
-        return REGISTERED && HEADER == s.header();
 }

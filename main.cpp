@@ -3,7 +3,6 @@
 #include <iostream>
 #include <iomanip>
 
-#include "CheckerBoard/CheckerBoardAPI.h"
 #include "DamExchange/Test.h"
 #include "DamExchange/Client.h"
 
@@ -11,13 +10,18 @@ int main(void)
 {     
         DamExchangeProtocol::Test::Mesander_examples();
 
-        DamExchangeProtocol::Client my_connection("127.0.0.1", "27531");
+        DamExchangeProtocol::Client dxp_connection;
+
+        // only one of these next two statements can be active!!
+        //dxp_connection.connect("127.0.0.1", "27531");
+        dxp_connection.accept("27531");
+
         std::string line;
         while (std::getline(std::cin, line))
         {                
-                my_connection.write(DamExchangeProtocol::StringMessage(line));
+                dxp_connection.write(line);
         }
-        my_connection.close();
+        dxp_connection.close();
 
         /*
         TreeWalk::Test::International();
@@ -28,7 +32,6 @@ int main(void)
         */
         std::cout << "End of program." << std::endl;
         for (;;);
-
 }
 
 /*

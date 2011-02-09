@@ -1,5 +1,5 @@
 #include "BackRequest.h"
-#include "MessageFactory.h"
+#include "Factory.h"
 #include "Token.h"
 #include <cassert>
 #include <cstdlib>
@@ -10,12 +10,11 @@ namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::BackRequest::HEADER = "B";
 
-const bool DXP::BackRequest::REGISTERED = MessageFactory::register_creator(HEADER, create);
+const bool DXP::BackRequest::REGISTERED = Factory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::BackRequest::create(const StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::BackRequest::create(const std::string& s)
 {
-        assert(pre_condition(s));
-        return std::make_shared<BackRequest>(s.body());
+        return std::make_shared<BackRequest>(s);
 }
 
 DXP::BackRequest::BackRequest(const std::string& s)
@@ -53,9 +52,4 @@ std::string DXP::BackRequest::body(void) const
         sstr << std::setw( 3) << std::setfill('0') << move_number();
         sstr << std::setw( 1) << PositionToken<DXP_tag>::write_color(side_to_move());
         return sstr.str();
-}
-
-bool DXP::BackRequest::pre_condition(const StringMessage& s)
-{
-        return REGISTERED && HEADER == s.header();
 }

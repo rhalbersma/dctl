@@ -2,7 +2,7 @@
 
 namespace DXP = DamExchangeProtocol;
 
-DXP::StringMessage DXP::AbstractMessage::message(void) const
+std::string DXP::AbstractMessage::str(void) const
 {
-        return StringMessage(header() + body());
+        return header() + body();
 }

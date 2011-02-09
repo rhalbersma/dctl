@@ -1,8 +1,8 @@
 #pragma once
 #include <deque>
+#include <string>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
-#include "StringMessage.h"
 
 using boost::asio::ip::tcp;
 
@@ -12,11 +12,14 @@ class Client
 {
 public:
         // constructors
-        Client(const std::string&, const std::string&);
+        Client(void);
         ~Client(void);
 
         // interface
-        void write(const StringMessage&);
+        void connect(const std::string&, const std::string&);
+        void accept(const std::string&);
+        std::string read(void);
+        void write(const std::string&);
         void close(void);
 
 private:
@@ -24,10 +27,12 @@ private:
         void async_connect_next(tcp::resolver::iterator);
         void handle_connect(const boost::system::error_code&, tcp::resolver::iterator);
 
+        void handle_accept(const boost::system::error_code&);
+
         void async_read_next(void);
         void handle_read(const boost::system::error_code&);
 
-        void do_write(StringMessage);
+        void do_write(std::string);
         void async_write_next(void);
         void handle_write(const boost::system::error_code&);
 
@@ -35,13 +40,14 @@ private:
 
         // representation        
         boost::asio::io_service io_service_;
+        tcp::acceptor acceptor_;
         tcp::socket socket_;         
-        boost::asio::streambuf incoming_;
         boost::thread read_thread_;
+        boost::asio::streambuf incoming_;
 
-        typedef std::deque<StringMessage> StringMessageQueue;
-        StringMessageQueue read_msgs_;
-        StringMessageQueue write_msgs_;
+        typedef std::deque<std::string> MessageQueue;
+        MessageQueue read_msgs_;
+        MessageQueue write_msgs_;
 };
 
 }       // namespace DamExchangeProtocol

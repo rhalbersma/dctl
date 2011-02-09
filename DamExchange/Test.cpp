@@ -1,5 +1,5 @@
 #include "Test.h"
-#include "StringMessage.h"
+#include "Parser.h"
 #include <cassert>
 #include <iostream>
 #include <memory>
@@ -21,9 +21,8 @@ void DXP::Test::Mesander_examples(void)
         };
 
         for (size_t i = 0; i < 8; ++i) {
-                const StringMessage s(example[i]);
-                std::shared_ptr<AbstractMessage> m = MessageFactory::select_creator(s);
-                assert(!s.str().compare(m->message().str()));
-                std::cout << m->message().str() << std::endl;
+                std::shared_ptr<AbstractMessage> m = Factory::select_creator(example[i]);
+                assert(!example[i].str().compare(m->str()));
+                std::cout << m->str() << std::endl;
         }
 }

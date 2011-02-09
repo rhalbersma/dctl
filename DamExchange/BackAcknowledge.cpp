@@ -1,5 +1,5 @@
 #include "BackAcknowledge.h"
-#include "MessageFactory.h"
+#include "Factory.h"
 #include <cassert>
 #include <cstdlib>
 #include <iomanip>
@@ -9,12 +9,11 @@ namespace DXP = DamExchangeProtocol;
 
 const std::string DXP::BackAcknowledge::HEADER = "K";
 
-const bool DXP::BackAcknowledge::REGISTERED = MessageFactory::register_creator(HEADER, create);
+const bool DXP::BackAcknowledge::REGISTERED = Factory::register_creator(HEADER, create);
 
-std::shared_ptr<DXP::AbstractMessage> DXP::BackAcknowledge::create(const StringMessage& s)
+std::shared_ptr<DXP::AbstractMessage> DXP::BackAcknowledge::create(const std::string& s)
 {
-        assert(pre_condition(s));
-        return std::make_shared<BackAcknowledge>(s.body());
+        return std::make_shared<BackAcknowledge>(s);
 }
 
 DXP::BackAcknowledge::BackAcknowledge(const std::string& s)
@@ -44,9 +43,4 @@ std::string DXP::BackAcknowledge::body(void) const
         std::stringstream sstr;
         sstr << std::setw( 1) << acceptance_code();
         return sstr.str();
-}
-
-bool DXP::BackAcknowledge::pre_condition(const StringMessage& s)
-{
-        return REGISTERED && HEADER == s.header();
 }

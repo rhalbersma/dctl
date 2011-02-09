@@ -1,5 +1,6 @@
 #include "EntryPredicates.h"
 #include <algorithm>
+#include <functional>
 
 namespace Hash {
 
