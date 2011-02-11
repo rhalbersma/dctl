@@ -6,6 +6,7 @@
 #include <tr1/array>
 #endif
 
+#include <cstddef>
 #include <utility>
 
 namespace Hash {

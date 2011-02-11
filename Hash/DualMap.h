@@ -1,8 +1,8 @@
 #pragma once
 #include "Map.h"
-#include "../Hash/Replace.h"
-#include "../Hash/Algorithms.h"
-#include "../Utilities/IntegerTypes.h"
+#include "Replace.h"
+#include "Algorithms.h"
+#include <cstddef>
 
 template<typename> class Position;
 
@@ -13,7 +13,7 @@ template
         typename Key,
         typename Value,
         typename Replace = EmptyOldUnderCutShallowestOfN,
-        template<typename, typename> class Hash = ZobristFind,
+        template<typename, typename> class Hash = Zobrist::Find,
         typename Index = HashIndex
 >
 class DualMap

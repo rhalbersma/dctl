@@ -58,7 +58,7 @@ void Position<Board>::make_non_conversion(const Pieces& m)
 template<typename Board> template<PlyCount N> FORCE_INLINE
 void Position<Board>::make_repeated_kings_moves(const Pieces& m)
 {
-        hash_index_ ^= ZobristHash<Position<Board>, HashIndex>()(*this, to_move());
+        hash_index_ ^= Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
         repeated_kings ^= repeated_kings(to_move());
         if (men(to_move()) && kings(to_move()) && is_non_conversion(m)) {
@@ -67,7 +67,7 @@ void Position<Board>::make_repeated_kings_moves(const Pieces& m)
         } else
                 repeated_moves[to_move()] = 0;
 
-        hash_index_ ^= ZobristHash<Position<Board>, HashIndex>()(*this, to_move());
+        hash_index_ ^= Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 }
 
 template<typename Board>
@@ -104,10 +104,10 @@ template<typename Board> FORCE_INLINE
 void Position<Board>::make_reversible(const Pieces& m)
 {
         pieces_ ^= m;
-        hash_index_ ^= ZobristHash<Pieces, HashIndex>()(m);
+        hash_index_ ^= Hash::Zobrist::Init<Pieces, HashIndex>()(m);
 
         to_move_ ^= PASS;
-        hash_index_ ^= ZobristHash<bool, HashIndex>()();
+        hash_index_ ^= Hash::Zobrist::Init<bool, HashIndex>()();
 }
 
 template<typename Board> template<typename Rules>

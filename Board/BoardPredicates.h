@@ -1,5 +1,5 @@
 #pragma once
-#include "../Utilities/IntegerTypes.h"
+#include <cstddef>
 
 template<typename, bool, size_t>
 class IS_INITIAL;

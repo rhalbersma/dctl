@@ -1,5 +1,5 @@
 #pragma once
-#include "IntegerTypes.h"
+#include <cstddef>
 
 // template function object for uniform left/right bitwise shift
 template<typename, size_t>

@@ -1,7 +1,7 @@
 #pragma once
 #include "Grid.h"
 #include "Transform.h"
-#include "../Utilities/IntegerTypes.h"
+#include <cstddef>
 
 template
 <

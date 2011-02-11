@@ -1,5 +1,5 @@
 #pragma once
-#include "../Utilities/IntegerTypes.h"
+#include <cstddef>
 
 template<typename T, size_t = T::SQUARE_RANGE - 1>
 class INIT_SQUARES;

@@ -1,9 +1,8 @@
 #pragma once
 #include "../Utilities/CacheAlign.h"
-#include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"
-#include "../Hash/Replace.h"
-#include "../Hash/Algorithms.h"
+#include "Replace.h"
+#include "Algorithms.h"
 
 #ifdef _MSC_VER
 #include <array>
@@ -11,6 +10,7 @@
 #include <tr1/array>
 #endif
 
+#include <cstddef>
 #include <utility>
 #include <vector>
 
@@ -21,7 +21,7 @@ template
         typename Key,
         typename Value,
         typename Replace = EmptyOldUnderCutShallowestOfN,
-        template<typename, typename> class Hash = ZobristFind,
+        template<typename, typename> class Hash = Zobrist::Find,
         typename Index = HashIndex
 >
 class Map

@@ -1,4 +1,5 @@
 #include "BoardPredicates.h"
+#include "../Utilities/IntegerTypes.h"
 
 template<typename T, size_t SQ>
 class INIT_SQUARES

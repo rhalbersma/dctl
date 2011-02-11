@@ -1,4 +1,4 @@
-#include "../Hash/ZobristHash.h"
+#include "../Hash/Algorithms.h"
 #include "../Utilities/Bit.h"
 #include "../Variant/Rules.h"
 #include <cassert>
@@ -16,7 +16,7 @@ Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard
         to_move_(to_move)
 {
         repeated_moves_[Side::BLACK] = repeated_moves_[Side::WHITE] = 0;
-        hash_index_ = ZobristHash<Position<Board>, HashIndex>()(*this);
+        hash_index_ = Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this);
         assert(pieces_invariant());
 }
 
@@ -216,5 +216,5 @@ bool Position<Board>::pieces_invariant(void) const
 template<typename Board>
 bool Position<Board>::hash_index_invariant(void) const
 {
-        return hash_index() == ZobristHash<Position<Board>, HashIndex>()(*this);
+        return hash_index() == Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this);
 }

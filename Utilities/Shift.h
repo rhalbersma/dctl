@@ -1,5 +1,5 @@
 #pragma once
-#include "IntegerTypes.h"
+#include <cstddef>
 
 // typedefs
 enum { L, R };

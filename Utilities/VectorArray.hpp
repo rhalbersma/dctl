@@ -9,7 +9,7 @@ VectorArray<T, N>::VectorArray(void)
 }
 
 template<typename T, size_t N>
-VectorArray<T, N>::VectorArray(size_t s)
+VectorArray<T, N>::VectorArray(size_type s)
 :
         size_(s)
 {
@@ -65,20 +65,20 @@ typename VectorArray<T, N>::const_reverse_iterator VectorArray<T, N>::rend(void)
 }
 
 template<typename T, size_t N>
-size_t VectorArray<T, N>::size(void) const
+typename VectorArray<T, N>::size_type VectorArray<T, N>::size(void) const
 {
         return size_;
 }
 
 template<typename T, size_t N>
-void VectorArray<T, N>::resize(size_t s)
+void VectorArray<T, N>::resize(size_type s)
 {
         assert(within_bounds(s));
         size_ = s;
 }
 
 template<typename T, size_t N>
-size_t VectorArray<T, N>::capacity(void) const
+typename VectorArray<T, N>::size_type VectorArray<T, N>::capacity(void) const
 {
         return array_.size();
 }
@@ -96,14 +96,14 @@ bool VectorArray<T, N>::full(void) const
 }
 
 template<typename T, size_t N>
-typename VectorArray<T, N>::reference VectorArray<T, N>::operator[](size_t i)
+typename VectorArray<T, N>::reference VectorArray<T, N>::operator[](size_type i)
 {
         assert(within_range(i));
         return array_[i];
 }
 
 template<typename T, size_t N>
-typename VectorArray<T, N>::const_reference VectorArray<T, N>::operator[](size_t i) const
+typename VectorArray<T, N>::const_reference VectorArray<T, N>::operator[](size_type i) const
 {
         assert(within_range(i));
         return array_[i];
@@ -165,13 +165,13 @@ bool VectorArray<T, N>::invariant(void) const
 }
 
 template<typename T, size_t N>
-bool VectorArray<T, N>::within_range(size_t i) const
+bool VectorArray<T, N>::within_range(size_type i) const
 {
         return i < size();
 }
 
 template<typename T, size_t N>
-bool VectorArray<T, N>::within_bounds(size_t i) const
+bool VectorArray<T, N>::within_bounds(size_type i) const
 {
         return i < capacity();
 }

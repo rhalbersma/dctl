@@ -1,5 +1,4 @@
 #pragma once
-#include "../Utilities/IntegerTypes.h"
 
 template<typename, int>
 class SQUARE_IS_VALID;

@@ -1,4 +1,3 @@
-#include "Capture.h"
 #include "../Board/Board.h"
 #include "../Board/Direction.h"
 #include "../Position/Position.h"

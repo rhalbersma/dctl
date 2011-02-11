@@ -1,105 +1,28 @@
-#include <cassert>
 #include "InlineOptions.h"
 #include "DeBruijn.h"
 #include "Shift.h"
+#include <cassert>
 
-//+----------------------------------------------------------------------------+
-//|      Chess Programming Wiki, general setwise operations                    |
-//|      https://chessprogramming.wikispaces.com/General+Setwise+Operations    |
-//+----------------------------------------------------------------------------+
-
-template<typename T>
-bool Bit::is_zero(T b)
-{
-        return b == 0;
-}
-
-template<typename T>
-bool Bit::is_single(T b)
-{
-        return !(is_zero(b) || is_multiple(b));
-}
-
-template<typename T>
-bool Bit::is_double(T b)
-{
-        return is_single(except_lowest(b));
-}
-
-template<typename T>
-bool Bit::is_multiple(T b)
-{
-        return !is_zero(except_lowest(b));
-}
-
-template<typename T>
-bool Bit::is_within(T a, T b)
-{
-        return is_zero(a & ~b);
-}
-
-template<typename T>
-bool Bit::is_exclusive(T a, T b)
-{
-        return is_zero(a & b);
-}
-
-template<typename T>
-T Bit::get_lowest(T b)
-{
-        return b & (0 - b);
-}
-
-template<typename T>
-T Bit::except_lowest(T b)
-{
-        return b & (b - 1);
-}
-
-template<typename T>
-void Bit::clear_lowest(T& b)
-{
-        b &= b - 1;
-}
-
-template<typename T>
-size_t Bit::scan_forward(T b)
-{
-        return index(get_lowest(b));
-}
-
-template<typename T>
-size_t Bit::index(T b)
-{
-	assert(is_single(b));
-        return index_DeBruijn(b);
-}
-
-template<typename T>
-size_t Bit::count(T b)
-{
-        return count_Kernighan(b);
-}
-
-template<bool Sign, typename T>
-T Bit::flood_fill(T generator, T propagator, size_t dir)
-{
-        return dumb_fill<Sign>(generator, propagator, dir);
-}
+namespace {
 
 //+----------------------------------------------------------------------------+
 //|      Leiserson, Prokop and Randall, 1998                                   |
 //|      http://supertech.csail.mit.edu/papers/debruijn.pdf                    |
 //+----------------------------------------------------------------------------+
 
-template<typename T> FORCE_INLINE
-size_t Bit::index_DeBruijn(T b)
-{
-        const size_t N = Log2SizeOf<T>::VALUE;
+template<typename> struct log2_sizeof;
+template<> struct log2_sizeof<uint8_t>           { enum { value = 3 }; };
+template<> struct log2_sizeof<uint16_t>          { enum { value = 4 }; };
+template<> struct log2_sizeof<uint32_t>          { enum { value = 5 }; };
+template<> struct log2_sizeof<uint64_t>          { enum { value = 6 }; };
 
-        b *= DeBruijn<N>::FORD_SEQUENCE;
+template<typename T>
+size_t index_DeBruijn(T b)
+{
+        static const size_t N = log2_sizeof<T>::value;
+        b *= static_cast<T>(DeBruijn<N>::SEQUENCE);
         b >>= DeBruijn<N>::SHIFT;
-        return DeBruijn<N>::PREFIX_TABLE[b];
+        return DeBruijn<N>::TABLE[b];
 }
 
 //+----------------------------------------------------------------------------+
@@ -108,21 +31,21 @@ size_t Bit::index_DeBruijn(T b)
 //+----------------------------------------------------------------------------+
 
 template<typename T> FORCE_INLINE
-size_t Bit::count_Kernighan(T b)
+size_t count_Kernighan(T b)
 {
         size_t count = 0;
-        for (; b; clear_lowest(b))
+        for (; b; Bit::clear_lowest(b))
                 ++count;
         return count;
 }
 
-//+-----------------------------------------------------------------------------+
-//|       Chess Programming Wiki, "Dumb7Fill" algorithm                         |
-//|       https://chessprogramming.wikispaces.com/Dumb7Fill                     |
-//+-----------------------------------------------------------------------------+
+//+-------------------------------------------------------------------------------------+
+//|       Chess Programming Wiki, "Fill Loop" algorithm                                 |
+//|       http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop  |
+//+-------------------------------------------------------------------------------------+
 
 template<bool Sign, typename T> FORCE_INLINE
-T Bit::dumb_fill(T generator, T propagator, size_t dir)
+T fill_loop(T generator, T propagator, size_t dir)
 {
         T flood = 0;
         while (generator) {
@@ -131,3 +54,88 @@ T Bit::dumb_fill(T generator, T propagator, size_t dir)
         }
         return flood;
 }
+
+}       // namespace
+
+namespace Bit {
+
+template<typename T>
+bool is_zero(T b)
+{
+        return b == 0;
+}
+
+template<typename T>
+bool is_single(T b)
+{
+        return !(is_zero(b) || is_multiple(b));
+}
+
+template<typename T>
+bool is_double(T b)
+{
+        return is_single(except_lowest(b));
+}
+
+template<typename T>
+bool is_multiple(T b)
+{
+        return !is_zero(except_lowest(b));
+}
+
+template<typename T>
+bool is_within(T a, T b)
+{
+        return is_zero(a & ~b);
+}
+
+template<typename T>
+bool is_exclusive(T a, T b)
+{
+        return is_zero(a & b);
+}
+
+template<typename T>
+T get_lowest(T b)
+{
+        return b & (0 - b);
+}
+
+template<typename T>
+T except_lowest(T b)
+{
+        return b & (b - 1);
+}
+
+template<typename T>
+size_t scan_forward(T b)
+{
+        return index(get_lowest(b));
+}
+
+template<typename T>
+size_t index(T b)
+{
+	assert(is_single(b));
+        return index_DeBruijn(b);
+}
+
+template<typename T>
+size_t count(T b)
+{
+        return count_Kernighan(b);
+}
+
+template<bool Sign, typename T>
+T flood_fill(T generator, T propagator, size_t dir)
+{
+        return fill_loop<Sign>(generator, propagator, dir);
+}
+
+template<typename T>
+void clear_lowest(T& b)
+{
+        b &= b - 1;
+}
+
+}       // namespace Bit

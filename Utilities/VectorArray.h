@@ -1,5 +1,5 @@
 #pragma once
-#include "../Utilities/IntegerTypes.h"
+#include <cstddef>
 
 #ifdef _MSC_VER
 #include <array>
@@ -18,10 +18,11 @@ public:
         typedef typename std::tr1::array<T, N>::const_reverse_iterator const_reverse_iterator;
         typedef typename std::tr1::array<T, N>::reference reference;
         typedef typename std::tr1::array<T, N>::const_reference const_reference;
+        typedef typename std::tr1::array<T, N>::size_type size_type;
 
         // constructors
         VectorArray(void);
-        explicit VectorArray(size_t);
+        explicit VectorArray(size_type);
 
         // iterators
         iterator begin(void);
@@ -34,15 +35,15 @@ public:
         const_reverse_iterator rend(void) const;
 
         // capacity: max_size() and reserve() not supported
-        size_t size(void) const;
-        void resize(size_t);
-        size_t capacity(void) const;
+        size_type size(void) const;
+        void resize(size_type);
+        size_type capacity(void) const;
         bool empty(void) const;
         bool full(void) const;
 
         // element access: at() not supported
-              reference operator[](size_t);
-        const_reference operator[](size_t) const;
+              reference operator[](size_type);
+        const_reference operator[](size_type) const;
               reference front(void);
         const_reference front(void) const;
               reference back(void);
@@ -57,12 +58,12 @@ public:
 
 private:
         bool invariant(void) const;
-        bool within_range(size_t) const;
-        bool within_bounds(size_t) const;
+        bool within_range(size_type) const;
+        bool within_bounds(size_type) const;
 
         // representation
         std::tr1::array<T, N> array_;
-        size_t size_;
+        size_type size_;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
