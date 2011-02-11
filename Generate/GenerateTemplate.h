@@ -1,8 +1,8 @@
 #pragma once
 #include "../Position/Move.h"
 #include "../Position/Pieces.h"
-#include "../Utilities/IntegerTypes.h"
 #include <cassert>
+#include <cstddef>
 
 template<typename> class Position;
 class MoveList;

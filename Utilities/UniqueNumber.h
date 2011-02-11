@@ -1,12 +1,11 @@
 #pragma once
-#include "IntegerTypes.h"
 
 class UniqueNumber
 {
 public:
         UniqueNumber(void);
-        size_t operator()(void);
+        int operator()(void);
 
 private:
-        size_t current;
+        int current_;
 };

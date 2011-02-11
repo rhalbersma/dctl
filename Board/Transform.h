@@ -1,5 +1,5 @@
 #pragma once
-#include "../Utilities/IntegerTypes.h"
+#include <cstddef>
 
 // rotations are subject to arithmetic modulo 8, with the unit element equal to a 45 degrees
 enum { D000 = 0, L045 = 1, L090 = 2, L135 = 3, D180 = 4, R135 = 5, R090 = 6, R045 = 7, D360 = 8 };

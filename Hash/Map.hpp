@@ -1,6 +1,7 @@
 #include "../Hash/Sign.h"
 #include <cassert>
 #include <iostream>
+#include <type_traits>
 
 namespace Hash {
 
@@ -41,7 +42,7 @@ template<typename Key, typename Value, typename Replace, template<typename, type
 template<typename Item>
 const Value* Map<Key, Value, Replace, Hash, Index>::find(const Item& item) const
 {
-        return find(item, Int2Type<is_IntegerType<Key>::VALUE>());
+        return find(item, Int2Type<std::is_integral<Key>::value>());
 }
 
 // partial specialization for integer keys
@@ -71,15 +72,15 @@ void Map<Key, Value, Replace, Hash, Index>::insert(const Key& key, const Value& 
         insert_entry<Key, Value, Replace>()(map_[bucket(index)], Entry(key, value));
 }
 
-// tag dispatching based on the key's integer type trait
+// tag dispatching based on the key's integral type trait
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
 template<typename Item>
 void Map<Key, Value, Replace, Hash, Index>::insert(const Item& item, const Value& value)
 {
-        insert(item, value, Int2Type<is_IntegerType<Key>::VALUE>());
+        insert(item, value, Int2Type<std::is_integral<Key>::value>());
 }
 
-// partial specialization for integer keys
+// partial specialization for integral keys
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
 template<typename Item>
 void Map<Key, Value, Replace, Hash, Index>::insert(const Item& item, const Value& value, Int2Type<true>)
@@ -89,7 +90,7 @@ void Map<Key, Value, Replace, Hash, Index>::insert(const Item& item, const Value
         insert_entry<Key, Value, Replace>()(map_[bucket(index)], Entry(key, value));
 }
 
-// partial specialization for non-integer keys
+// partial specialization for non-integral keys
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
 template<typename Item>
 void Map<Key, Value, Replace, Hash, Index>::insert(const Item& item, const Value& value, Int2Type<false>)

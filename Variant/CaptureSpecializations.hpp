@@ -1,5 +1,0 @@
-#include "Frisian.hpp"
-#include "International.hpp"
-#include "Italian.hpp"
-#include "Killer.hpp"
-#include "Spanish.hpp"

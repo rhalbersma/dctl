@@ -1,32 +1,32 @@
 #include "KingJumps.h"
 #include "PawnJumps.h"
-#include "Capture.h"
+#include "Capture/State.h"
 #include "../Utilities/InlineOptions.h"
 #include <cassert>
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, MoveList& move_list)
 {
-        Capture<Rules, Board> capture(p);
+        Capture::State<Rules, Board> capture(p);
         generate(p, capture, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Capture<Rules, Board>& capture, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Capture::State<Rules, Board>& capture, MoveList& move_list)
 {
         generate_precede(p, capture, move_list);
 }
 
 // tag dispatching based on absolute king capture precedence
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture<Rules, Board>& capture, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, MoveList& move_list)
 {
         generate_precede(p, capture, move_list, Int2Type<Variant::is_AbsoluteKingPrecedence<Rules>::VALUE>());
 }
 
 // partial specialization for no absolute king capture precedence
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<false>)
+void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, MoveList& move_list, Int2Type<false>)
 {
         GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate(p, capture, move_list);
         GenerateTemplate<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate(p, capture, move_list);
@@ -34,7 +34,7 @@ void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate_
 
 // partial specialization for absolute king capture precedence
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture<Rules, Board>& capture, MoveList& move_list, Int2Type<true>)
+void GenerateTemplate<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, MoveList& move_list, Int2Type<true>)
 {
         GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate(p, capture, move_list);
         if (!move_list.size())

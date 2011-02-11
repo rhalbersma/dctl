@@ -2,11 +2,11 @@
 
 UniqueNumber::UniqueNumber(void)        
 : 
-        current(0)
+        current_(0)
 {
 }
 
-size_t UniqueNumber::operator()(void)
+int UniqueNumber::operator()(void)
 {
-        return ++current - 1;
+        return ++current_ - 1;
 }

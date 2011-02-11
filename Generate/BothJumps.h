@@ -5,7 +5,7 @@
 #include "../Utilities/TemplateTricks.h"
 
 template<typename> class Position;
-template<typename, typename> class Capture;
+namespace Capture { template<typename, typename> class State; }
 class MoveList;
 
 template<bool Color, typename Rules, typename Board>
@@ -18,12 +18,12 @@ public:
 
 private:
         // implementation
-        static void generate(const Position<Board>&, Capture<Rules, Board>&, MoveList&);
+        static void generate(const Position<Board>&, Capture::State<Rules, Board>&, MoveList&);
 
         // tag dispatching based on absolute king capture precedence
-        static void generate_precede(const Position<Board>&, Capture<Rules, Board>&, MoveList&);
-        static void generate_precede(const Position<Board>&, Capture<Rules, Board>&, MoveList&, Int2Type<false>);
-        static void generate_precede(const Position<Board>&, Capture<Rules, Board>&, MoveList&, Int2Type<true>);
+        static void generate_precede(const Position<Board>&, Capture::State<Rules, Board>&, MoveList&);
+        static void generate_precede(const Position<Board>&, Capture::State<Rules, Board>&, MoveList&, Int2Type<false>);
+        static void generate_precede(const Position<Board>&, Capture::State<Rules, Board>&, MoveList&, Int2Type<true>);
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
