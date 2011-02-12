@@ -1,6 +1,6 @@
 #pragma once
 
-namespace DamExchangeProtocol {
+namespace DamExchange {
 
 class AbstractEngine
 {
@@ -18,4 +18,4 @@ public:
         virtual AbstractEngine(void) {};
 };
 
-}       // namespace DamExchangeProtocol
+}       // namespace DamExchange

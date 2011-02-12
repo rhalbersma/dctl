@@ -1,18 +1,17 @@
-
-
-#include "TreeSearch/Test.h"
-#include "TreeWalk/Test.h"
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
-#include "DamExchange/Message/Test.h"
-#include "DamExchange/Connection/Client.h"
+#include "Tree/Search/Test.h"
+#include "Tree/Walk/Test.h"
+
+#include "DamExchange/Layer1/Client.h"
+#include "DamExchange/Layer2/Test.h"
 
 int main(void)
 {     
-        DamExchangeProtocol::Message::Test::Mesander_examples();
+        DamExchange::Layer2::Test::Mesander_examples();
 
-        DamExchangeProtocol::Connection::Client dxp_connection;
+        DamExchange::Layer1::Client dxp_connection;
 
         // only one of these next two statements can be active!!
         //dxp_connection.connect("127.0.0.1", "27531");
@@ -26,11 +25,11 @@ int main(void)
         dxp_connection.close();
 
         
-        //TreeWalk::Test::International();
-        //TreeWalk::Test::Killer();
-        //TreeWalk::Test::Rectangular();
-        //TreeWalk::Test::ChessBoardVariants();
-        //TreeWalk::Test::ItalianRuleBook();
+        //Tree::Walk::Test::International();
+        //Tree::Walk::Test::Killer();
+        //Tree::Walk::Test::Rectangular();
+        //Tree::Walk::Test::ChessBoardVariants();
+        //Tree::Walk::Test::ItalianRuleBook();
         
         std::cout << "End of program." << std::endl;
         for (;;);
@@ -38,8 +37,6 @@ int main(void)
 
 /*
 TODO:
--split Capture into Capture + MoveList, change Move into MoveList
--test DXP Layer 1 (using Boost sockets)
 -implement algebraic notation
 -implement missing square layouts
 -implement test harness for hash function
