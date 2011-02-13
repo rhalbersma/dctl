@@ -1,6 +1,5 @@
 #pragma once
 #include "../Utilities/IntegerTypes.h"
-#include <cassert>
 
 class Pieces
 {
@@ -9,16 +8,16 @@ public:
         enum Composition { NONE, PAWN, KING, BOTH };
 
         // constructors
-        Pieces(void) {};
+        Pieces(void) {};                                // no default initialization
         explicit Pieces(BitBoard);                      // zero initialize
         Pieces(BitBoard, BitBoard, BitBoard);           // initialize with a set of bitboards
 
-        // predicates
-        bool operator==(const Pieces&) const;
-        bool operator!=(const Pieces&) const;
-
         // post-conditions for constructors and modifiers
         bool invariant(void) const;                    // logical consistency of the representation
+
+        // predicates
+        bool operator==(const Pieces&) const;           // overloaded equality operator
+        bool operator!=(const Pieces&) const;           // overloaded inequality operator
 
         // views
         BitBoard men(void) const;                       // black and white men

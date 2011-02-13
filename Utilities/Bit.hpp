@@ -19,8 +19,8 @@ template<> struct log2_sizeof<uint64_t>          { enum { value = 6 }; };
 template<typename T>
 size_t index_DeBruijn(T b)
 {
-        static const size_t N = log2_sizeof<T>::value;
-        b *= static_cast<T>(DeBruijn<N>::SEQUENCE);
+        const size_t N = log2_sizeof<T>::value;         // compute number of bits of type T
+        b *= static_cast<T>(DeBruijn<N>::SEQUENCE);     // cast from the internal 64-bit int to type T
         b >>= DeBruijn<N>::SHIFT;
         return DeBruijn<N>::TABLE[b];
 }

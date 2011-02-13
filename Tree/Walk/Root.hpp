@@ -125,7 +125,7 @@ NodeCount Root::hash(const Position<Board>& p, size_t ply, size_t depth)
         statistics_.update(ply);
 
         const PerftNode* TT_entry = TT.find(p);
-        if (TT_entry && TT_entry->is_depth_equal_to(depth))
+        if (TT_entry && TT_entry->is_sufficient(depth))
                 return TT_entry->leafs();
 
         if (depth == 0)
@@ -140,7 +140,7 @@ NodeCount Root::hash(const Position<Board>& p, size_t ply, size_t depth)
                 leafs += hash<Rules>(q, ply + 1, depth - 1);
         }
 
-        TT.insert(p, PerftNode(leafs, depth));
+        TT.insert(p, Node(leafs, depth));
         return leafs;
 }
 
@@ -150,7 +150,7 @@ NodeCount Root::fast(const Position<Board>& p, size_t ply, size_t depth)
         statistics_.update(ply);
 
         const PerftNode* TT_entry = TT.find(p);
-        if (TT_entry && TT_entry->is_depth_equal_to(depth))
+        if (TT_entry && TT_entry->is_sufficient(depth))
                 return TT_entry->leafs();
 
         NodeCount leafs;
@@ -167,7 +167,7 @@ NodeCount Root::fast(const Position<Board>& p, size_t ply, size_t depth)
                 }
         }
 
-        TT.insert(p, PerftNode(leafs, depth));
+        TT.insert(p, Node(leafs, depth));
         return leafs;
 }
 

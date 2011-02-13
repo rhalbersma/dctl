@@ -216,5 +216,5 @@ bool Position<Board>::pieces_invariant(void) const
 template<typename Board>
 bool Position<Board>::hash_index_invariant(void) const
 {
-        return hash_index() == Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this);
+        return Hash::Zobrist::Find<Position<Board>, HashIndex>()(*this) == Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this);
 }

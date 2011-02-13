@@ -1,11 +1,11 @@
 #pragma once
 
 namespace DamExchange {
-namespace Layer2 {
+namespace Layer1 {
 namespace Test {
 
-void Mesander_examples(void);
+void connection(void);
 
 }       // namespace Test
-}       // namespace Layer2
+}       // namespace Layer1
 }       // namespace DamExchange

@@ -124,7 +124,7 @@ int Root::search(const Position<Board>& p, size_t ply, int depth, int alpha, int
 
         // TT cut-off for exact win/loss scores or for deep enough heuristic scores
         const Node* TT_entry = TT.find(p);
-        if (TT_entry && (!TT_entry->is_heuristic() || TT_entry->is_depth_greater_equal(depth)) && TT_entry->is_cutoff(alpha, beta))
+        if (TT_entry && (!TT_entry->is_heuristic() || TT_entry->is_sufficient(depth)) && TT_entry->is_cutoff(alpha, beta))
                 return TT_entry->value();
 
         // generate move_list

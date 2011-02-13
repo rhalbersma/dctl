@@ -23,7 +23,7 @@ public:
 	size_t move(void) const;                        // index of the best move
 
         // predicates
-        bool is_depth_greater_equal(size_t) const;      // check for sufficient depth
+        bool is_sufficient(size_t) const;               // check for sufficient depth
         bool is_cutoff(int, int) const;                 // check for a cutoff
         bool is_cutoff(int) const;                      // check for a cutoff
         bool is_fail_low(int) const;                    // check for a fail low cutoff
