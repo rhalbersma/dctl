@@ -45,7 +45,7 @@ size_t Tree::Search::Node::move(void) const
         return (rest_ & (MOVE_MASK << MOVE_SHIFT)) >> MOVE_SHIFT;
 }
 
-bool Tree::Search::Node::is_depth_greater_equal(size_t d) const
+bool Tree::Search::Node::is_sufficient(size_t d) const
 {
         return depth() >= d; 
 }

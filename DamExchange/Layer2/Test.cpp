@@ -1,6 +1,7 @@
 #include "Test.h"
 #include "Parser.h"
 #include <cassert>
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -23,7 +24,7 @@ void DXP::Layer2::Test::Mesander_examples(void)
 
         for (size_t i = 0; i < 8; ++i) {
                 std::shared_ptr<AbstractMessage> m = Parser::find(example[i]);
-                assert(!example[i].str().compare(m->str()));
+                assert(!example[i].compare(m->str()));
                 std::cout << m->str() << std::endl;
         }
 }

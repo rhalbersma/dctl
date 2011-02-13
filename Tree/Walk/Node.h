@@ -16,7 +16,7 @@ public:
         size_t depth(void) const;               // remaining depth to search
 
         // predicate
-        bool is_depth_equal_to(size_t) const;   // check for sufficient depth
+        bool is_sufficient(size_t) const;       // check for sufficient depth
 
 private:
         // implementation

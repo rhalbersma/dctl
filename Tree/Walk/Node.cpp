@@ -14,7 +14,7 @@ Tree::Walk::Node::Node(NodeCount n, size_t d)
         node_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
 }
 
-bool Tree::Walk::Node::is_depth_equal_to(size_t d) const
+bool Tree::Walk::Node::is_sufficient(size_t d) const
 {
         return depth() == d; 
 }
