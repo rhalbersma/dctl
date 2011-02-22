@@ -1,21 +1,22 @@
 #include "Test.h"
-#include "Client.h"
+#include "Session.h"
 #include <iostream>
 #include <string>
 
 namespace DXP = DamExchange;
 
-void DXP::Layer1::Test::connection(void)
+void DXP::Layer1::Test::session(void)
 {
-        Client dxp_connection;
+        Session dxp_session;
         // only one of these next two statements can be active!!
-        //dxp_connection.connect("127.0.0.1", "27531");
-        dxp_connection.accept("27531");
+        dxp_session.connect();
+        
+        //dxp_session.accept();
 
         std::string line;
         while (std::getline(std::cin, line))
         {                
-                dxp_connection.write(line);
+                dxp_session.write(line);
         }
-        dxp_connection.close();
+        dxp_session.close();
 }

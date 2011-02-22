@@ -3,9 +3,9 @@
 
 namespace DXP = DamExchange;
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::Parser::find(const std::string& s)
+std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::Parser::find(const std::string& msg)
 {
-        DXP::Layer1::Scanner scanner(s);
+        DXP::Layer1::Scanner scanner(msg);
         CreatorMap::const_iterator i = instance().find(scanner.header());
         return (i != instance().end())? (i->second)(scanner.body()) : std::shared_ptr<AbstractMessage>();
 }

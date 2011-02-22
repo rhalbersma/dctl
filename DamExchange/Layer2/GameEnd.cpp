@@ -1,9 +1,9 @@
 #include "GameEnd.h"
 #include "Parser.h"
 #include <cassert>
-#include <cstdlib>
 #include <iomanip>
 #include <sstream>
+#include <boost/lexical_cast.hpp>
 
 namespace DXP = DamExchange;
 
@@ -11,15 +11,15 @@ const std::string DXP::Layer2::GameEnd::HEADER = "E";
 
 const bool DXP::Layer2::GameEnd::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::GameEnd::create(const std::string& s)
+std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::GameEnd::create(const std::string& msg)
 {
-        return std::make_shared<GameEnd>(s);
+        return std::make_shared<GameEnd>(msg);
 }
 
-DXP::Layer2::GameEnd::GameEnd(const std::string& s)
+DXP::Layer2::GameEnd::GameEnd(const std::string& msg)
 :
-        reason_(static_cast<Reason>(atoi(s.substr(0, 1).c_str()))),
-        stop_code_(static_cast<StopCode>(atoi(s.substr(1, 1).c_str())))
+        reason_(static_cast<Reason>(boost::lexical_cast<size_t>(msg.substr(0, 1).c_str()))),
+        stop_code_(static_cast<StopCode>(boost::lexical_cast<size_t>(msg.substr(1, 1).c_str())))
 {
 }
 

@@ -2,9 +2,9 @@
 #include "Parser.h"
 #include "Token.h"
 #include <cassert>
-#include <cstdlib>
 #include <iomanip>
 #include <sstream>
+#include <boost/lexical_cast.hpp>
 
 namespace DXP = DamExchange;
 
@@ -12,21 +12,21 @@ const std::string DXP::Layer2::GameRequest::HEADER = "R";
 
 const bool DXP::Layer2::GameRequest::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::GameRequest::create(const std::string& s)
+std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::GameRequest::create(const std::string& msg)
 {
-        return std::make_shared<GameRequest>(s);
+        return std::make_shared<GameRequest>(msg);
 }
 
-DXP::Layer2::GameRequest::GameRequest(const std::string& s)
+DXP::Layer2::GameRequest::GameRequest(const std::string& msg)
 :
-        name_initiator_(s.substr(2, 32)),
-        color_follower_(PositionToken<DXP_tag>::read_color( *(s.substr(34, 1)).begin() )),
-        minutes_(atoi(s.substr(35, 3).c_str())),
-        moves_(atoi(s.substr(38, 3).c_str())),
-        setup_position_(PositionToken<DXP_tag>::read_setup( *(s.substr(41, 1)).begin() ))
+        name_initiator_(msg.substr(2, 32)),
+        color_follower_(PositionToken<DXP_tag>::read_color( *(msg.substr(34, 1)).begin() )),
+        minutes_(boost::lexical_cast<size_t>(msg.substr(35, 3).c_str())),
+        moves_(boost::lexical_cast<size_t>(msg.substr(38, 3).c_str())),
+        setup_position_(PositionToken<DXP_tag>::read_setup( *(msg.substr(41, 1)).begin() ))
 {
         if (setup_position())
-                special_position_ = s.substr(42);
+                special_position_ = msg.substr(42);
 }
 
 DXP::Layer2::GameRequest::GameRequest(const std::string& n, bool c, size_t min, size_t mov, bool s, const std::string& f)

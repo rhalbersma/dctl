@@ -23,7 +23,7 @@ void Tree::Walk::Root::report(size_t nominal_ply, NodeCount leafs, const StopWat
         std::cout << " leafs, ";
         std::cout << std::setw(11) << statistics_.nodes();
         std::cout << " nodes, ";
-        std::cout << std::setw( 6) << timer.delta();
+        std::cout << std::setw( 6) << timer.total();
         std::cout << "s, ";
         std::cout << std::setw( 5) << speed;
         std::cout << " Mnps";

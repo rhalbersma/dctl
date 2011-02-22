@@ -7,6 +7,15 @@
 #include "../../IO/FEN.h"
 #include <iomanip>
 #include <iostream>
+#include <boost/thread.hpp>
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+
+NodeCount Tree::Walk::Test::test(void)
+{
+        //Position<InternationalBoard> i10 = Position<InternationalBoard>::initial();
+        return 1;//Root::perft<Variant::International>(i10, 11);
+}
 
 // The original perft thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 void Tree::Walk::Test::International(void)
@@ -14,14 +23,14 @@ void Tree::Walk::Test::International(void)
         std::cout << write_square_layout<InternationalBoard>()() << std::endl;
         std::cout << write_bit_layout<InternationalBoard>()() << std::endl;
 
-        Position<InternationalBoard> i10 = Position<InternationalBoard>::initial();
-        Root::perft<Variant::International>(i10, 11);
+        //Position<InternationalBoard> i10 = Position<InternationalBoard>::initial();
+        //boost::bind(test)();
 
-        Position<InternationalBoard> random178(read_position_string<FEN_tag>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
-        Root::perft<Variant::International>(random178, 9);
+        //Position<InternationalBoard> random178(read_position_string<FEN_tag>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
+        //Root::perft<Variant::International>(random178, 9);
 
-        Position<InternationalBoard> Woldouby(read_position_string<FEN_tag>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
-        Root::perft<Variant::International>(Woldouby, 15);
+        //Position<InternationalBoard> Woldouby(read_position_string<FEN_tag>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
+        //Root::perft<Variant::International>(Woldouby, 15);
 }
 
 // The rectangular board thread on the FMJD forum: http://laatste.info/bb3/viewtopic.php?f=53&t=3014

@@ -36,7 +36,7 @@ public:
         const Pieces& operator[](size_t) const;
 
         // modifiers before a capture
-        void toggle_king_targets(void);                               // men that cannot capture kings
+        void toggle_king_targets(void);                                 // men that cannot capture kings
         void toggle_with_king(void);                                    // king capture precedence
         void toggle_promotion(void);                                    // promotion en-passant
 

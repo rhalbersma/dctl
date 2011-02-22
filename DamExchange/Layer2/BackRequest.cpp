@@ -2,9 +2,9 @@
 #include "Parser.h"
 #include "Token.h"
 #include <cassert>
-#include <cstdlib>
 #include <iomanip>
 #include <sstream>
+#include <boost/lexical_cast.hpp>
 
 namespace DXP = DamExchange;
 
@@ -12,15 +12,15 @@ const std::string DXP::Layer2::BackRequest::HEADER = "B";
 
 const bool DXP::Layer2::BackRequest::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::BackRequest::create(const std::string& s)
+std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::BackRequest::create(const std::string& msg)
 {
-        return std::make_shared<BackRequest>(s);
+        return std::make_shared<BackRequest>(msg);
 }
 
-DXP::Layer2::BackRequest::BackRequest(const std::string& s)
+DXP::Layer2::BackRequest::BackRequest(const std::string& msg)
 :
-        move_number_(atoi(s.substr(0, 3).c_str())),
-        side_to_move_(PositionToken<DXP_tag>::read_color( *(s.substr(3, 1)).begin() ))
+        move_number_(boost::lexical_cast<size_t>(msg.substr(0, 3).c_str())),
+        side_to_move_(PositionToken<DXP_tag>::read_color( *(msg.substr(3, 1)).begin() ))
 {
 }
 

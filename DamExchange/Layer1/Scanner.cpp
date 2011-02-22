@@ -3,9 +3,9 @@
 
 namespace DXP = DamExchange;
 
-DXP::Layer1::Scanner::Scanner(const std::string& s)
+DXP::Layer1::Scanner::Scanner(const std::string& msg)
 :
-        message_(s)
+        message_(msg)
 {
         assert(invariant());
 }
