@@ -4,7 +4,7 @@ namespace DamExchange {
 namespace Layer1 {
 namespace Test {
 
-void connection(void);
+void session(void);
 
 }       // namespace Test
 }       // namespace Layer1

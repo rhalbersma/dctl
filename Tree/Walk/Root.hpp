@@ -6,6 +6,7 @@
 #include "../../Utilities/StopWatch.h"
 #include <cassert>
 #include <iostream>
+#include <boost/thread.hpp>
 
 namespace Tree {
 namespace Walk {
@@ -18,7 +19,8 @@ NodeCount Root::perft(const Position<Board>& p, size_t nominal_depth)
 
         timer.start();
         announce(p, nominal_depth);
-        for (size_t depth = 1; depth <= nominal_depth; ++depth) {             
+        for (size_t depth = 1; depth <= nominal_depth; ++depth) {                        
+                boost::this_thread::interruption_point();
                 statistics_.reset();
                 leafs = driver<Rules>(p, 0, depth);
                 timer.split();
@@ -64,7 +66,7 @@ NodeCount Root::driver(const Position<Board>& p, size_t ply, size_t depth)
 
 template<typename Rules, typename Board>
 NodeCount Root::leaf(const Position<Board>& p, size_t ply, size_t depth)
-{
+{        
         statistics_.update(ply);
 
         if (depth == 0)
@@ -84,6 +86,7 @@ NodeCount Root::leaf(const Position<Board>& p, size_t ply, size_t depth)
 template<typename Rules, typename Board>
 NodeCount Root::bulk(const Position<Board>& p, size_t ply, size_t depth)
 {
+        boost::this_thread::interruption_point();
         statistics_.update(ply);
 
         MoveList move_list;

@@ -23,8 +23,8 @@ void DXP::Layer2::Test::Mesander_examples(void)
         };
 
         for (size_t i = 0; i < 8; ++i) {
-                std::shared_ptr<AbstractMessage> m = Parser::find(example[i]);
-                assert(!example[i].compare(m->str()));
-                std::cout << m->str() << std::endl;
+                std::shared_ptr<AbstractMessage> msg = Parser::find(example[i]);
+                assert(!example[i].compare(msg->str()));
+                std::cout << msg->str() << std::endl;
         }
 }

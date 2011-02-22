@@ -1,9 +1,9 @@
 #include "BackAcknowledge.h"
 #include "Parser.h"
 #include <cassert>
-#include <cstdlib>
 #include <iomanip>
 #include <sstream>
+#include <boost/lexical_cast.hpp>
 
 namespace DXP = DamExchange;
 
@@ -11,14 +11,14 @@ const std::string DXP::Layer2::BackAcknowledge::HEADER = "K";
 
 const bool DXP::Layer2::BackAcknowledge::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::BackAcknowledge::create(const std::string& s)
+std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::BackAcknowledge::create(const std::string& msg)
 {
-        return std::make_shared<BackAcknowledge>(s);
+        return std::make_shared<BackAcknowledge>(msg);
 }
 
-DXP::Layer2::BackAcknowledge::BackAcknowledge(const std::string& s)
+DXP::Layer2::BackAcknowledge::BackAcknowledge(const std::string& msg)
 :
-        acceptance_code_(static_cast<AcceptanceCode>(atoi(s.substr(0, 1).c_str())))
+        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(msg.substr(0, 1).c_str())))
 {
 }
 

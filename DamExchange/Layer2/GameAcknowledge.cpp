@@ -1,9 +1,9 @@
 #include "GameAcknowledge.h"
 #include "Parser.h"
 #include <cassert>
-#include <cstdlib>
 #include <iomanip>
 #include <sstream>
+#include <boost/lexical_cast.hpp>
 
 namespace DXP = DamExchange;
 
@@ -11,15 +11,15 @@ const std::string DXP::Layer2::GameAcknowledge::HEADER = "A";
 
 const bool DXP::Layer2::GameAcknowledge::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::GameAcknowledge::create(const std::string& s)
+std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::GameAcknowledge::create(const std::string& msg)
 {
-        return std::make_shared<GameAcknowledge>(s);
+        return std::make_shared<GameAcknowledge>(msg);
 }
 
-DXP::Layer2::GameAcknowledge::GameAcknowledge(const std::string& s)
+DXP::Layer2::GameAcknowledge::GameAcknowledge(const std::string& msg)
 :
-        name_follower_(s.substr(0, 32)),
-        acceptance_code_(static_cast<AcceptanceCode>(atoi(s.substr(32, 1).c_str())))
+        name_follower_(msg.substr(0, 32)),
+        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(msg.substr(32, 1).c_str())))
 {
 }
 

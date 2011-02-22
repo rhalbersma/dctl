@@ -1,9 +1,9 @@
 #include "Move.h"
 #include "Parser.h"
 #include <cassert>
-#include <cstdlib>
 #include <iomanip>
 #include <sstream>
+#include <boost/lexical_cast.hpp>
 
 namespace DXP = DamExchange;
 
@@ -11,20 +11,20 @@ const std::string DXP::Layer2::Move::HEADER = "M";
 
 const bool DXP::Layer2::Move::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::Move::create(const std::string& s)
+std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::Move::create(const std::string& msg)
 {
-        return std::make_shared<Move>(s);
+        return std::make_shared<Move>(msg);
 }
 
-DXP::Layer2::Move::Move(const std::string& s)
+DXP::Layer2::Move::Move(const std::string& msg)
 :
-        seconds_(atoi(s.substr(0, 4).c_str())),
-        from_sq_(atoi(s.substr(4, 2).c_str())),
-        dest_sq_(atoi(s.substr(6, 2).c_str())),
-        num_captured_(atoi(s.substr(8, 2).c_str()))
+        seconds_(boost::lexical_cast<size_t>(msg.substr(0, 4).c_str())),
+        from_sq_(boost::lexical_cast<size_t>(msg.substr(4, 2).c_str())),
+        dest_sq_(boost::lexical_cast<size_t>(msg.substr(6, 2).c_str())),
+        num_captured_(boost::lexical_cast<size_t>(msg.substr(8, 2).c_str()))
 {
         for (size_t i = 0; i < num_captured(); ++i)
-                captured_pieces_.push_back(atoi(s.substr(10 + 2 * i, 2).c_str()));
+                captured_pieces_.push_back(boost::lexical_cast<size_t>(msg.substr(10 + 2 * i, 2).c_str()));
 }
 
 DXP::Layer2::Move::Move(size_t s, size_t f, size_t d, size_t n, const std::vector<size_t>& c)

@@ -7,10 +7,16 @@
 #include "DamExchange/Layer1/Test.h"
 #include "DamExchange/Layer2/Test.h"
 
+#include "Board/Board.h"
+#include "Variant/Rules.h"
+#include "Position/Move.h"
+#include "Generate/Capture/Value.h"
+#include "Generate/Capture/State.h"
+
 int main(void)
 {     
         //DamExchange::Layer2::Test::Mesander_examples();
-        //DamExchange::Layer1::Test::connection();
+        //DamExchange::Layer1::Test::session();
 
         Tree::Walk::Test::International();
         //Tree::Walk::Test::Killer();

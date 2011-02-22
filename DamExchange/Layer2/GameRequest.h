@@ -1,5 +1,6 @@
 #pragma once
 #include "AbstractMessage.h"
+#include <cstddef>
 #include <memory>
 #include <string>
 
