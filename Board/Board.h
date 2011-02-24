@@ -7,9 +7,9 @@
 template
 <
         typename GridLayout,
-        size_t D = 2,
-        size_t N = 1,
-        size_t A = D000
+        size_t D = 2,                                           // "demilitarized" rows in the initial position
+        size_t N = 1,                                           // number of ghost bit columns
+        size_t A = D000                                         // rotation from external to internal grid
 >
 struct Board: public GridLayout
 {

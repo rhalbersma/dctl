@@ -2,16 +2,18 @@
 #include "../Utilities/InlineOptions.h"
 #include <cassert>
 
+namespace Move {
+
 // tag dispatching based on duplicate capture checking
 template<typename Rules>
-bool MoveList::non_unique_back(void)
+bool Move::List::non_unique_back(void)
 {
         return non_unique_back(Int2Type<Variant::is_CheckCaptureUniqueness<Rules>::VALUE>());
 }
 
 // add a king move
 template<bool Color> FORCE_INLINE
-void MoveList::push_back(BitBoard delta)
+void Move::List::push_back(BitBoard delta)
 {
         move_list_.push();
 
@@ -31,7 +33,7 @@ void MoveList::push_back(BitBoard delta)
 
 // add a man move
 template<bool Color> FORCE_INLINE
-void MoveList::push_back(BitBoard delta, BitBoard promotion)
+void Move::List::push_back(BitBoard delta, BitBoard promotion)
 {
         move_list_.push();
 
@@ -55,7 +57,7 @@ void MoveList::push_back(BitBoard delta, BitBoard promotion)
 
 // add a king capture
 template<bool Color, typename Rules> FORCE_INLINE
-void MoveList::push_back(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
+void Move::List::push_back(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
 {
         move_list_.push();
 
@@ -81,7 +83,7 @@ void MoveList::push_back(BitBoard delta, BitBoard captured_pieces, BitBoard capt
 
 // add a man capture
 template<bool Color, typename Rules> FORCE_INLINE
-void MoveList::push_back(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
+void Move::List::push_back(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
 {
         move_list_.push();
 
@@ -116,14 +118,16 @@ void MoveList::push_back(BitBoard delta, BitBoard promotion, BitBoard captured_p
 
 // tag dispatching based on promotion condition
 template<typename Rules>
-bool MoveList::promotion_en_passant(BitBoard promotion, BitBoard delta)
+bool Move::List::promotion_en_passant(BitBoard promotion, BitBoard delta)
 {
         return promotion_en_passant(promotion, delta, Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
 }
 
 // tag dispatching on capture removal
 template<typename Rules>
-bool MoveList::sequential_capture_removal(BitBoard delta, BitBoard captured_pieces)
+bool Move::List::sequential_capture_removal(BitBoard delta, BitBoard captured_pieces)
 {
         return sequential_capture_removal(delta, captured_pieces, Int2Type<Variant::CaptureRemoval<Rules>::VALUE>());
 }
+
+}       // namespace Move

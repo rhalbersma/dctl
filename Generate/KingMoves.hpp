@@ -7,21 +7,21 @@
 #include <cassert>
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
 {
         generate_serial(p.template unrestricted_kings<Rules>(Color), p.not_occupied(), move_list);
 }
 
 // tag dispatching for restrictions on consecutive move_list with the same king
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::List& move_list)
 {
         generate_serial(active_kings, not_occupied, move_list, Int2Type<Variant::is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
 // partial specialization for restricted consecutive move_list with the same king
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, MoveList& move_list, Int2Type<true>)
+void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::List& move_list, Int2Type<true>)
 {
         // loop could be empty if the single active king detected during select_strategy() is restricted to move
         while (active_kings) {
@@ -32,7 +32,7 @@ void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_
 
 // partial specialization for unrestricted consecutive move_list with the same king
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, MoveList& move_list, Int2Type<false>)
+void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::List& move_list, Int2Type<false>)
 {
         // loop cannot be empty because all active kings detected during select_strategy() are unrestricted to move
         assert(!Bit::is_zero(active_kings));
@@ -43,7 +43,7 @@ void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dirs(BitBoard from_sq, BitBoard not_occupied, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dirs(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list)
 {
         generate_dir<DirIndex<Board, Color>::LEFT_DOWN >(from_sq, not_occupied, move_list);
         generate_dir<DirIndex<Board, Color>::RIGHT_DOWN>(from_sq, not_occupied, move_list);
@@ -53,14 +53,14 @@ void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_
 
 // tag dispatching based on king range
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list)
 {
         return generate_dir<Index>(from_sq, not_occupied, move_list, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, MoveList& move_list, Int2Type<Variant::RANGE_1>)
+void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list, Int2Type<Variant::RANGE_1>)
 {
         if (BitBoard dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
                 move_list.push_back<Color>(from_sq ^ dest_sq);
@@ -68,7 +68,7 @@ void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, MoveList& move_list, Int2Type<Variant::RANGE_N>)
+void GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list, Int2Type<Variant::RANGE_N>)
 {
         for (BitBoard dest_sq = Push<Board, Index>()(from_sq); dest_sq & not_occupied; PushAssign<Board, Index>()(dest_sq))
                 move_list.push_back<Color>(from_sq ^ dest_sq);

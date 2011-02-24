@@ -138,13 +138,6 @@ BitBoard Position<Board>::pieces(bool color) const
         return pieces_.pieces(color);
 }
 
-// composition of black or white pieces
-template<typename Board>
-Pieces::Composition Position<Board>::composition(bool color) const
-{
-        return pieces_.composition(color);
-}
-
 // the side to move
 template<typename Board>
 bool Position<Board>::to_move(void) const

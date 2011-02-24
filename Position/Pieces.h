@@ -5,7 +5,7 @@ class Pieces
 {
 public:
         // typedefs 
-        enum Composition { NONE, PAWN, KING, BOTH };
+        enum { NONE, PAWN, KING, BOTH };
 
         // constructors
         Pieces(void) {};                                // no default initialization
@@ -26,7 +26,6 @@ public:
         BitBoard men(bool) const;                       // black or white men
         BitBoard kings(bool) const;                     // black or white kings
         BitBoard pieces(bool) const;                    // black or white pieces
-        Composition composition(bool) const;            // composition of black or white pieces
 
         // modifiers
         template<bool> 

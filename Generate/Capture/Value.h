@@ -6,8 +6,8 @@ namespace Capture {
 struct Value
 {
         BitBoard piece_order;
-        size_t num_pieces;
-        size_t num_kings;
+        PieceCount num_pieces;
+        PieceCount num_kings;
         bool with_king;
         bool promotion;
 };

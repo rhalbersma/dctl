@@ -1,77 +1,118 @@
-#include "GenerateColor.h"
 #include "../Position/Position.h"
 #include <iostream>
 
 template<typename Rules, typename Board>
-void Generate<Rules, Board>::generate(const Position<Board>& p, MoveList& move_list)
+void Generate<Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
 {
-        if (p.to_move())
-                GenerateColor<Side::WHITE, Rules, Board>::generate(p, move_list);
-        else
-                GenerateColor<Side::BLACK, Rules, Board>::generate(p, move_list);
-
+        select(p)->generate(p, move_list);
         assert(invariant(p, move_list.size()));
 }
 
 template<typename Rules, typename Board>
-void Generate<Rules, Board>::generate_captures(const Position<Board>& p, MoveList& move_list)
+void Generate<Rules, Board>::generate_captures(const Position<Board>& p, Move::List& move_list)
 {
-        if (p.to_move())
-                GenerateColor<Side::WHITE, Rules, Board>::generate_captures(p, move_list);
-        else
-                GenerateColor<Side::BLACK, Rules, Board>::generate_captures(p, move_list);
+        select(p)->generate_captures(p, move_list);
 }
 
 template<typename Rules, typename Board>
-void Generate<Rules, Board>::generate_promotions(const Position<Board>& p, MoveList& move_list)
+void Generate<Rules, Board>::generate_promotions(const Position<Board>& p, Move::List& move_list)
 {
-        if (p.to_move())
-                GenerateColor<Side::WHITE, Rules, Board>::generate_promotions(p, move_list);
-        else
-                GenerateColor<Side::BLACK, Rules, Board>::generate_promotions(p, move_list);
+        select(p)->generate_promotions(p, move_list);
 }
 
 template<typename Rules, typename Board>
 size_t Generate<Rules, Board>::count(const Position<Board>& p)
 {
-        if (p.to_move())
-                return GenerateColor<Side::WHITE, Rules, Board>::count(p);
-        else
-                return GenerateColor<Side::BLACK, Rules, Board>::count(p);
+        return select(p)->count(p);
+}
+
+template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
+size_t Generate<Rules, Board>::count_mobility(const Position<Board>& p)
+{
+        // color template here because we want to count available moves for both sides
+        return select<Color>(p)->count_mobility(p);
 }
 
 template<typename Rules, typename Board>
 bool Generate<Rules, Board>::detect(const Position<Board>& p)
 {
-        if (p.to_move())
-                return GenerateColor<Side::WHITE, Rules, Board>::detect(p);
-        else
-                return GenerateColor<Side::BLACK, Rules, Board>::detect(p);
+        return select(p)->detect(p);
 }
 
 template<typename Rules, typename Board>
 bool Generate<Rules, Board>::detect_captures(const Position<Board>& p)
 {
-        if (p.to_move())
-                return GenerateColor<Side::WHITE, Rules, Board>::detect_captures(p);
-        else
-                return GenerateColor<Side::BLACK, Rules, Board>::detect_captures(p);
+        return select(p)->detect_captures(p);
 }
 
 template<typename Rules, typename Board>
 bool Generate<Rules, Board>::detect_promotions(const Position<Board>& p)
 {
-        if (p.to_move())
-                return GenerateColor<Side::WHITE, Rules, Board>::detect_promotions(p);
-        else
-                return GenerateColor<Side::BLACK, Rules, Board>::detect_promotions(p);
+        return select(p)->detect_promotions(p);
 }
 
 template<typename Rules, typename Board>
 bool Generate<Rules, Board>::invariant(const Position<Board>& p, size_t num_moves)
 {
-        if (p.to_move())
-                return GenerateColor<Side::WHITE, Rules, Board>::invariant(p, num_moves);
-        else
-                return GenerateColor<Side::BLACK, Rules, Board>::invariant(p, num_moves);
+        return count(p) == num_moves && detect(p) == (num_moves > 0);
 }
+
+template<typename Rules, typename Board>
+const AbstractGenerateState<Rules, Board>* Generate<Rules, Board>::select(const Position<Board>& p)
+{
+        return STATE[state(p)];
+};
+
+template<typename Rules, typename Board> template<bool Color>
+const AbstractGenerateState<Rules, Board>* Generate<Rules, Board>::select(const Position<Board>& p)
+{
+        return STATE[state<Color>(p)];
+};
+
+template<typename Rules, typename Board>
+int Generate<Rules, Board>::state(const Position<Board>& p)
+{
+        return state(p.to_move(), p.kings(p.to_move()), p.men(p.to_move()));
+}
+
+template<typename Rules, typename Board> template<bool Color>
+int Generate<Rules, Board>::state(const Position<Board>& p)
+{
+        return state(Color, p.kings(Color), p.men(Color));
+}
+
+template<typename Rules, typename Board>
+int Generate<Rules, Board>::state(bool color, BitBoard kings, BitBoard men)
+{
+        return (color << 2) + ((kings != 0) << 1) + (men != 0);
+}
+
+template<typename Rules, typename Board> 
+const AbstractGenerateState<Rules, Board>* const Generate<Rules, Board>::STATE[] = {
+        &BLACK_NONE, &BLACK_PAWN, &BLACK_KING, &BLACK_BOTH,
+        &WHITE_NONE, &WHITE_PAWN, &WHITE_KING, &WHITE_BOTH
+};
+
+template<typename Rules, typename Board> 
+const GenerateState<Side::BLACK, Pieces::NONE, Rules, Board> Generate<Rules, Board>::BLACK_NONE;
+
+template<typename Rules, typename Board> 
+const GenerateState<Side::BLACK, Pieces::PAWN, Rules, Board> Generate<Rules, Board>::BLACK_PAWN;
+
+template<typename Rules, typename Board> 
+const GenerateState<Side::BLACK, Pieces::KING, Rules, Board> Generate<Rules, Board>::BLACK_KING;
+
+template<typename Rules, typename Board> 
+const GenerateState<Side::BLACK, Pieces::BOTH, Rules, Board> Generate<Rules, Board>::BLACK_BOTH;
+
+template<typename Rules, typename Board> 
+const GenerateState<Side::WHITE, Pieces::NONE, Rules, Board> Generate<Rules, Board>::WHITE_NONE;
+
+template<typename Rules, typename Board> 
+const GenerateState<Side::WHITE, Pieces::PAWN, Rules, Board> Generate<Rules, Board>::WHITE_PAWN;
+
+template<typename Rules, typename Board> 
+const GenerateState<Side::WHITE, Pieces::KING, Rules, Board> Generate<Rules, Board>::WHITE_KING;
+
+template<typename Rules, typename Board> 
+const GenerateState<Side::WHITE, Pieces::BOTH, Rules, Board> Generate<Rules, Board>::WHITE_BOTH;

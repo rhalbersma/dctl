@@ -15,9 +15,9 @@ void Position<Board>::link(const Position<Board>& other)
 template<typename Board> template<typename Rules> FORCE_INLINE
 void Position<Board>::make(const Pieces& m)
 {
-        assert(is_pseudo_legal_make<Rules>(m));
+        assert(is_pseudo_legal_move<Rules>(m));
 
-        make_irreversible<Rules>(m);
+        //make_irreversible<Rules>(m);
         make_reversible(m);
 
         assert(pieces_invariant());
@@ -104,21 +104,21 @@ template<typename Board> FORCE_INLINE
 void Position<Board>::make_reversible(const Pieces& m)
 {
         pieces_ ^= m;
-        hash_index_ ^= Hash::Zobrist::Init<Pieces, HashIndex>()(m);
+        //hash_index_ ^= Hash::Zobrist::Init<Pieces, HashIndex>()(m);
 
         to_move_ ^= PASS;
-        hash_index_ ^= Hash::Zobrist::Init<bool, HashIndex>()();
+        //hash_index_ ^= Hash::Zobrist::Init<bool, HashIndex>()();
 }
 
 template<typename Board> template<typename Rules>
-bool Position<Board>::is_pseudo_legal_make(const Pieces& m) const
+bool Position<Board>::is_pseudo_legal_move(const Pieces& m) const
 {
         return (
                 !Bit::is_multiple(m.pieces(to_move()) & pieces(to_move())) &&           // cannot move multiple pieces                
-                Bit::is_within(m.pieces(!to_move()), pieces(!to_move())) &&             // capture existing pieces
+                Bit::is_within(m.pieces(!to_move()), pieces(!to_move())) &&             // only capture existing pieces
                 (                               
-                        Bit::is_within(m.kings(!to_move()), kings(!to_move())) ||       // capture existing kings
-                        make_sequential_capture_removal<Rules>(m)                       // Thai draughts
+                        Bit::is_within(m.kings(!to_move()), kings(!to_move())) ||       // only capture existing kings
+                        make_sequential_capture_removal<Rules>(m)                       // exception for Thai draughts
                 )
         );
 }

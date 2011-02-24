@@ -18,6 +18,9 @@ int main(void)
         //DamExchange::Layer2::Test::Mesander_examples();
         //DamExchange::Layer1::Test::session();
 
+        std::cout << sizeof(Capture::State<Variant::International, InternationalBoard>) << std::endl;
+        std::cout << sizeof(Capture::Value) << std::endl;
+
         Tree::Walk::Test::International();
         //Tree::Walk::Test::Killer();
         //Tree::Walk::Test::Rectangular();

@@ -4,7 +4,7 @@
 #include <cassert>
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE 
-void GenerateTemplate<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
 {
         GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(p, move_list);
         GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(p, move_list);     
