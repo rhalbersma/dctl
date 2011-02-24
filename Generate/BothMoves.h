@@ -3,13 +3,13 @@
 #include "../Utilities/IntegerTypes.h"
 
 template<typename> class Position;
-class MoveList;
+class Move::List;
 
 template<bool Color, typename Rules, typename Board> 
 class GenerateTemplate<Color, Pieces::BOTH, Move::MOVES, Rules, Board>
 {
 public:
-        static void generate(const Position<Board>&, MoveList&);
+        static void generate(const Position<Board>&, Move::List&);
         static size_t count(const Position<Board>&);        
         static bool detect(const Position<Board>&);
 };

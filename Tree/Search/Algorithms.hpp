@@ -21,7 +21,7 @@ int Root::negamax(const Position<Board>& p, size_t ply, size_t depth, Parameters
                 return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
 
         // generate move_list
-        MoveList move_list;
+        Move::List move_list;
         Generate::generate(p, move_list);
 
         // search move_list
@@ -64,7 +64,7 @@ int Root::alpha_beta(const Position<Board>& p, size_t ply, size_t depth, int alp
                 return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
 
         // generate move_list
-        MoveList move_list;
+        Move::List move_list;
         Generate::generate(p, move_list);
 
         // search move_list
@@ -128,7 +128,7 @@ int Root::search(const Position<Board>& p, size_t ply, int depth, int alpha, int
                 return TT_entry->value();
 
         // generate move_list
-        MoveList move_list;
+        Move::List move_list;
         Generate<Rules, Board>::generate(p, move_list);
 
         // without a valid move, the position is an immediate loss
@@ -230,7 +230,7 @@ int Root::quiescence(const Position<Board>& p, size_t ply, int depth, int alpha,
         }
 
         // generate captures and promotions
-        MoveList move_list;
+        Move::List move_list;
         Generate::generate_captures_promotions(p, move_list);
 
         if (!move_list.size())

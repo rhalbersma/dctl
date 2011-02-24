@@ -20,7 +20,6 @@ NodeCount Root::perft(const Position<Board>& p, size_t nominal_depth)
         timer.start();
         announce(p, nominal_depth);
         for (size_t depth = 1; depth <= nominal_depth; ++depth) {                        
-                boost::this_thread::interruption_point();
                 statistics_.reset();
                 leafs = driver<Rules>(p, 0, depth);
                 timer.split();
@@ -37,7 +36,7 @@ NodeCount Root::divide(const Position<Board>& p, size_t nominal_depth)
         StopWatch timer;
 
         timer.start();
-        MoveList move_list;
+        Move::List move_list;
         Generate<Rules, Board>::generate(p, move_list);
 
         announce(p, nominal_depth, move_list.size());
@@ -72,7 +71,7 @@ NodeCount Root::leaf(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 0)
                 return 1;
 
-        MoveList move_list;
+        Move::List move_list;
         Generate<Rules, Board>::generate(p, move_list);
         NodeCount leafs = 0;        
         Position<Board> q;
@@ -86,10 +85,9 @@ NodeCount Root::leaf(const Position<Board>& p, size_t ply, size_t depth)
 template<typename Rules, typename Board>
 NodeCount Root::bulk(const Position<Board>& p, size_t ply, size_t depth)
 {
-        boost::this_thread::interruption_point();
         statistics_.update(ply);
 
-        MoveList move_list;
+        Move::List move_list;
         Generate<Rules, Board>::generate(p, move_list);
         if (depth == 1)
                 return move_list.size();
@@ -111,7 +109,7 @@ NodeCount Root::count(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 1)
                 return Generate<Rules, Board>::count<Rules>(p);
 
-        MoveList move_list;
+        Move::List move_list;
         Generate<Rules, Board>::generate(p, move_list);
         NodeCount leafs = 0;
         Position<Board> q;
@@ -134,7 +132,7 @@ NodeCount Root::hash(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 0)
                 return 1;
 
-        MoveList move_list;
+        Move::List move_list;
         Generate<Rules, Board>::generate(p, move_list);
         NodeCount leafs = 0;
         Position<Board> q;
@@ -160,7 +158,7 @@ NodeCount Root::fast(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 1)
                 leafs = Generate<Rules, Board>::count<Rules>(p);
         else {
-                MoveList move_list;
+                Move::List move_list;
                 Generate<Rules, Board>::generate(p, move_list);
                 leafs = 0;
                 Position<Board> q;

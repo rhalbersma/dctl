@@ -1,9 +1,11 @@
 #pragma once
+#include "Grid.h"
 #include <cstddef>
 
-// rotations are subject to arithmetic modulo 8, with the unit element equal to a 45 degrees
+// rotations are subject to arithmetic modulo 360 degrees, with the unit element equal to 45 degrees anti-clockwise
 enum { D000 = 0, L045 = 1, L090 = 2, L135 = 3, D180 = 4, R135 = 5, R090 = 6, R045 = 7, D360 = 8 };
 
+// an inverse angle has the opposite sign modulo 360 degrees
 template<size_t A>
 struct InverseAngle
 {

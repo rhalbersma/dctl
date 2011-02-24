@@ -33,7 +33,6 @@ public:
         BitBoard men(bool) const;                               // black or white men
         BitBoard kings(bool) const;                             // black or white kings
         BitBoard pieces(bool) const;                            // black or white pieces
-        Pieces::Composition composition(bool) const;            // composition of black or white pieces
         bool to_move(void) const;                               // side to move
 
         HashIndex hash_index(void) const;
@@ -86,7 +85,7 @@ private:
         void make_reversible(const Pieces&);
 
         // pre-conditions for modifiers
-        template<typename> bool is_pseudo_legal_make(const Pieces&) const;
+        template<typename> bool is_pseudo_legal_move(const Pieces&) const;
         template<typename> bool is_pseudo_legal_undo(const Pieces&) const;
 
         // tag dispatching on capture removal

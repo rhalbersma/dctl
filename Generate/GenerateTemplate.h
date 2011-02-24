@@ -5,13 +5,13 @@
 #include <cstddef>
 
 template<typename> class Position;
-class MoveList;
+class Move::List;
 
-template<bool, Pieces::Composition, Move::Type, typename Rules, typename Board>
+template<bool, int, Move::Type, typename Rules, typename Board>
 class GenerateTemplate
 {
 public:
-        static void generate(const Position<Board>&, MoveList&) { assert(false); };
+        static void generate(const Position<Board>&, Move::List&) { assert(false); };
         static size_t count(const Position<Board>&) { assert(false); return 0; };
         static bool detect(const Position<Board>&) { assert(false); return false; };
 };

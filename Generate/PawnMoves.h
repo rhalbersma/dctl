@@ -3,14 +3,14 @@
 #include "../Utilities/IntegerTypes.h"
 
 template<typename> class Position;
-class MoveList;
+class Move::List;
 
 template<bool Color, typename Rules, typename Board> 
 class GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>
 {
 public:
-        static void generate(const Position<Board>&, MoveList&);
-        static void generate_promotions(const Position<Board>&, MoveList&);
+        static void generate(const Position<Board>&, Move::List&);
+        static void generate_promotions(const Position<Board>&, Move::List&);
 
         static size_t count(const Position<Board>&);
         
@@ -19,8 +19,8 @@ public:
 
 private:
         // implementation
-        static void generate_dirs(BitBoard, BitBoard, MoveList&);
-        template<size_t> static void generate_dir(BitBoard, BitBoard, MoveList&);
+        static void generate_dirs(BitBoard, BitBoard, Move::List&);
+        template<size_t> static void generate_dir(BitBoard, BitBoard, Move::List&);
 
         static BitBoard promotion(BitBoard);
         static BitBoard promotors(BitBoard);

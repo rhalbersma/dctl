@@ -6,16 +6,14 @@
 #include "../Utilities/Ply.h"
 #include "../Utilities/TemplateTricks.h"
 
-class Move
-{
-public:
-        // typedefs
-        typedef VectorArray<size_t, MOVE_MAX> Order;
-        typedef VectorArray<size_t, PLY_MAX> Sequence;
-        enum Type { JUMPS, MOVES };
-};
+namespace Move {
 
-class MoveList
+// typedefs
+enum Type { JUMPS, MOVES };
+typedef VectorArray<size_t, MOVE_MAX> Order;
+typedef VectorArray<size_t, PLY_MAX> Sequence;
+
+class List
 {
 public:
         // predicate
@@ -53,6 +51,8 @@ private:
 
         VectorArray<Pieces, MOVE_MAX> move_list_;
 };
+
+}       // namespace Move
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Move.hpp"

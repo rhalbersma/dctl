@@ -1,6 +1,4 @@
 #pragma once
-#include "Grid.h"
-#include "Transform.h"
 #include <cstddef>
 
 template

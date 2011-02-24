@@ -54,7 +54,7 @@ void Root::insert_PV(const Parameters& node, const Position<Board>& q, int value
 
         for (size_t i = 0; i < line.size(); ++i) {
                 TT.insert(p, Node(value, Node::exact(), line.size() - i, line[i]));
-                MoveList move_list;
+                Move::List move_list;
                 Generate<Rules, Board>::generate(p, move_list);
                 p.template make<Rules>(move_list[line[i]]);
                 value = -Value::stretch(value);
@@ -73,7 +73,7 @@ void Root::print_PV(const Parameters& node, const Position<Board>& q, bool print
         size_t non_conversion;
 
         for (size_t i = 0; i < line.size(); ++i) {
-                MoveList move_list;
+                Move::List move_list;
                 Generate<Rules, Board>::generate(p, move_list);
                 assert(line[i] < move_list.size());
 

@@ -2,16 +2,16 @@
 #include <cstddef>
 
 template<typename> class Position;
-class MoveList;
+namespace Move { class List; }
 
-template<bool Color, typename Rules, typename Board> 
-class AbstractGenerateMaterial
+template<typename Rules, typename Board> 
+class AbstractGenerateState
 {
 public:
         // interface
-        virtual void generate(const Position<Board>&, MoveList&) const = 0;
-        virtual void generate_captures(const Position<Board>&, MoveList&) const = 0;
-        virtual void generate_promotions(const Position<Board>&, MoveList&) const = 0;
+        virtual void generate(const Position<Board>&, Move::List&) const = 0;
+        virtual void generate_captures(const Position<Board>&, Move::List&) const = 0;
+        virtual void generate_promotions(const Position<Board>&, Move::List&) const = 0;
 
         virtual size_t count(const Position<Board>&) const = 0;
         virtual size_t count_mobility(const Position<Board>&) const = 0;
@@ -21,18 +21,18 @@ public:
         virtual bool detect_promotions(const Position<Board>&) const = 0;
 
         // virtual destructor
-        virtual ~AbstractGenerateMaterial(void) {};
+        virtual ~AbstractGenerateState(void) {};
 };
 
-template<bool Color, Pieces::Composition Material, typename Rules, typename Board> 
-class GenerateMaterial: public AbstractGenerateMaterial<Color, Rules, Board>
+template<bool Color, int Material, typename Rules, typename Board> 
+class GenerateState: public AbstractGenerateState<Rules, Board>
 {
 public:		
-        GenerateMaterial(void) {};
+        GenerateState(void) {};
 
-        virtual void generate(const Position<Board>&, MoveList&) const;
-        virtual void generate_captures(const Position<Board>&, MoveList&) const;
-        virtual void generate_promotions(const Position<Board>&, MoveList&) const;
+        virtual void generate(const Position<Board>&, Move::List&) const;
+        virtual void generate_captures(const Position<Board>&, Move::List&) const;
+        virtual void generate_promotions(const Position<Board>&, Move::List&) const;
 
         virtual size_t count(const Position<Board>&) const;
         virtual size_t count_mobility(const Position<Board>&) const;
@@ -43,4 +43,4 @@ public:
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "GenerateMaterial.hpp"
+#include "GenerateState.hpp"

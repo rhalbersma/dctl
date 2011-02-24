@@ -7,20 +7,20 @@
 #include <cassert>
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
 {
         generate_dirs(p.men(Color), p.not_occupied(), move_list);
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, Move::List& move_list)
 {
         generate_dir<DirIndex<Board, Color>::LEFT_UP >(active_men, not_occupied, move_list);
         generate_dir<DirIndex<Board, Color>::RIGHT_UP>(active_men, not_occupied, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dir(BitBoard active_men, BitBoard not_occupied, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dir(BitBoard active_men, BitBoard not_occupied, Move::List& move_list)
 {
         BitBoard from_sq, dest_sq;
         for (active_men &= Pull<Board, Index>()(not_occupied); active_men; Bit::clear_lowest(active_men)) {
@@ -31,7 +31,7 @@ void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(const Position<Board>& p, MoveList& move_list)
+void GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(const Position<Board>& p, Move::List& move_list)
 {
         generate_dirs(promotors(p.men(Color)), p.not_occupied(), move_list);
 }

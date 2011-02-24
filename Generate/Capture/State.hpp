@@ -173,7 +173,7 @@ void State<Rules, Board>::undo(BitBoard target_sq, Int2Type<Variant::REMOVE_N>)
 }
 
 template<typename Rules, typename Board>
-void State<Rules, Board>::improve_best(MoveList& move_list)
+void State<Rules, Board>::improve_best(Move::List& move_list)
 {
         copy<Rules>()(best_, current_);
         move_list.clear();
@@ -181,14 +181,14 @@ void State<Rules, Board>::improve_best(MoveList& move_list)
 
 // tag dispatching based on ambiguity of man captures
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void State<Rules, Board>::add_man_capture(BitBoard dest_sq, MoveList& move_list)
+void State<Rules, Board>::add_man_capture(BitBoard dest_sq, Move::List& move_list)
 {
         add_man_capture<Color>(dest_sq, move_list, Int2Type<Variant::is_AmbiguousManCapture<Rules>::VALUE>());
 }
 
 // partial specialization for man captures that are unambiguous
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void State<Rules, Board>::add_man_capture(BitBoard dest_sq, MoveList& move_list, Int2Type<false>)
+void State<Rules, Board>::add_man_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<false>)
 {
         const BitBoard captured_pieces = captured_targets();
         move_list.push_back<Color, Rules>(from_sq_ ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_kings(captured_pieces));
@@ -196,7 +196,7 @@ void State<Rules, Board>::add_man_capture(BitBoard dest_sq, MoveList& move_list,
 
 // partial specialization for man captures that can be ambiguous
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void State<Rules, Board>::add_man_capture(BitBoard dest_sq, MoveList& move_list, Int2Type<true>)
+void State<Rules, Board>::add_man_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<true>)
 {
         const BitBoard captured_pieces = captured_targets();
         const bool ambiguous = !move_list.empty() && large<Rules>()(current_, captured_pieces);
@@ -207,14 +207,14 @@ void State<Rules, Board>::add_man_capture(BitBoard dest_sq, MoveList& move_list,
 
 // tag dispatching based on king halt after final capture
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, MoveList& move_list)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list)
 {
         add_king_capture<Color, Index>(dest_sq, move_list, Int2Type<Variant::KingCaptureHalt<Rules>::VALUE>());
 }
 
 // partial specialization for kings that halt immediately if the final capture is a king, and slide through otherwise
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, MoveList& move_list, Int2Type<Variant::HALT_K>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<Variant::HALT_K>)
 {
         if (king_targets_ & Pull<Board, Index>()(dest_sq))
                 add_king_capture<Color, Index>(dest_sq, move_list, Int2Type<Variant::HALT_1>());
@@ -224,7 +224,7 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, MoveList& move_list
 
 // partial specialization for kings that halt immediately after the final capture
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, MoveList& move_list, Int2Type<Variant::HALT_1>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<Variant::HALT_1>)
 {
         const BitBoard captured_pieces = captured_targets();
         const bool ambiguous = !move_list.empty() && large<Rules>()(current_, captured_pieces);
@@ -233,7 +233,7 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, MoveList& move_list
 
 // partial specialization for kings that slide through after the final capture
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, MoveList& move_list, Int2Type<Variant::HALT_N>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<Variant::HALT_N>)
 {
         assert(dest_sq & path());
 
@@ -248,7 +248,7 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, MoveList& move_list
 
 // tag dispatching based on promotion condition
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, bool ambiguous, MoveList& move_list)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, bool ambiguous, Move::List& move_list)
 {
         add_king_capture<Color>(dest_sq, captured_pieces, captured_kings, move_list, Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
         if (ambiguous && move_list.non_unique_back<Rules>())
@@ -257,14 +257,14 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_p
 
 // partial specialization for men that promote on the back row
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, MoveList& move_list, Int2Type<Variant::PROMOTE_BR>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Move::List& move_list, Int2Type<Variant::PROMOTE_BR>)
 {
         move_list.push_back<Color, Rules>(from_sq_ ^ dest_sq, captured_pieces, captured_kings);
 }
 
 // partial specialization for men that promote en-passant
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, MoveList& move_list, Int2Type<Variant::PROMOTE_EP>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Move::List& move_list, Int2Type<Variant::PROMOTE_EP>)
 {
         if (!is_promotion())
                 move_list.push_back<Color, Rules>(from_sq_ ^ dest_sq,          captured_pieces, captured_kings);
