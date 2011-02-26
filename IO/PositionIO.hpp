@@ -1,5 +1,5 @@
 #include "BoardIO.h"
-#include "../Board/Board.h"
+#include "../Geometry/Board.h"
 #include "../Position/Position.h"
 #include "../Position/Side.h"
 #include "../Utilities/Bit.h"

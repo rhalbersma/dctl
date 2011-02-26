@@ -1,14 +1,14 @@
 #pragma once
-#include "GenerateTemplate.h"
-#include "../Variant/Rules.h"
+#include "Template.h"
+#include "../Variants/Rules.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"
 
 template<typename> class Position;
-class Move::List;
+namespace Move { class List; }
 
 template<bool Color, typename Rules, typename Board> 
-class GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>
+class Template<Color, Pieces::KING, Move::MOVES, Rules, Board>
 {
 public:
         static void generate(const Position<Board>&, Move::List&);
@@ -38,7 +38,6 @@ private:
         template<size_t> static size_t count_dir(BitBoard, BitBoard, Int2Type<Variant::RANGE_N>);
 
         static bool detect_dirs(BitBoard, BitBoard);
-
         template<size_t> static bool detect_dir(BitBoard, BitBoard);
 };
 

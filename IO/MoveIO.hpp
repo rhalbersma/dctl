@@ -1,7 +1,7 @@
 #include "Token.h"
 #include "../Position/Position.h"
 #include "../Position/Pieces.h"
-#include "../Variant/Rules.h"
+#include "../Variants/Rules.h"
 #include <iomanip>
 #include <sstream>
 

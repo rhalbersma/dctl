@@ -1,8 +1,8 @@
 #include "Templates.h"
-#include "../../Board/Direction.h"
+#include "../../Geometry/Direction.h"
+#include "../../Geometry/PushPull.h"
 #include "../../Position/Move.h"
 #include "../../Utilities/Bit.h"
-#include "../../Utilities/PushPull.h"
 #include "../../Utilities/InlineOptions.h"
 #include <cassert>
 

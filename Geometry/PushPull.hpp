@@ -1,7 +1,8 @@
-#include "Bit.h"
-#include "Shift.h"
-#include "../Board/Board.h"
-#include "../Board/Direction.h"
+#include "Direction.h"
+#include "../Utilities/Bit.h"
+#include "../Utilities/Shift.h"
+
+namespace Geometry {
 
 template<typename Board, size_t Index> template<typename T> 
 T Push<Board, Index>::operator()(T square) const
@@ -32,3 +33,5 @@ T FloodFill<Board, Index>::operator()(T generator, T propagator) const
 {
         return Bit::flood_fill<DirTraits<Index>::IS_POSITIVE>(generator, propagator, Board::DIR[Index]);
 }
+
+}       // namespace Geometry

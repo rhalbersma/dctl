@@ -1,6 +1,6 @@
 #include "../Hash/Algorithms.h"
 #include "../Utilities/Bit.h"
-#include "../Variant/Rules.h"
+#include "../Variants/Rules.h"
 #include <cassert>
 #include <iostream>
 
@@ -152,6 +152,13 @@ BitBoard Position<Board>::unrestricted_kings(bool color) const
         return unrestricted_kings<Rules>(color, Int2Type<Variant::is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
+// partial specialization for unrestricted consecutive moves with the same king
+template<typename Board> template<typename Rules>
+BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<false>) const
+{
+        return kings(color);
+}
+
 // partial specialization for restricted consecutive moves with the same king
 template<typename Board> template<typename Rules>
 BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<true>) const
@@ -160,13 +167,6 @@ BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<true>) const
                 return kings(color) ^ repeated_kings(color);
         else
                 return kings(color);
-}
-
-// partial specialization for unrestricted consecutive moves with the same king
-template<typename Board> template<typename Rules>
-BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<false>) const
-{
-        return kings(color);
 }
 
 template<typename Board>

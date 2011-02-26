@@ -1,28 +1,30 @@
 #pragma once
-#include "Grid.h"
-#include "Ghost.h"
+#include "Borders.h"
+#include "Squares.h"
 #include "Transform.h"
 #include "../Utilities/IntegerTypes.h"
 
+namespace Geometry {
+
 template
 <
-        typename GridLayout,
+        typename SquaresLayout,
         size_t D = 2,                                           // "demilitarized" rows in the initial position
         size_t N = 1,                                           // number of ghost bit columns
         size_t A = D000                                         // rotation from external to internal grid
 >
-struct Board: public GridLayout
+struct Board: public SquaresLayout
 {
         // reflection on template type parameters
-        typedef Board<GridLayout, D, N, A> T;
-        typedef GridLayout ExternalGrid;
-        typedef typename RotateGrid<ExternalGrid, A>::Out InternalGrid;
-        typedef Ghost<InternalGrid, N> GhostStructure;
+        typedef Board<SquaresLayout, D, N, A> T;
+        typedef SquaresLayout ExternalGrid;
+        typedef typename RotateSquares<ExternalGrid, A>::Out InternalGrid;
+        typedef Borders<InternalGrid, N> BordersLayout;
 
         // reflection on template non-type parameters
         static const size_t DMZ = D;                            // "demilitarized" rows in the initial position
         static const size_t ANGLE = A;                          // rotation from external to internal grid                        
-        static const size_t A_PRIME = InverseAngle<A>::VALUE;   // rotation from internal to external grid
+        static const size_t A_PRIME = Inverse<A>::VALUE;   // rotation from internal to external grid
 
         // essential bitboard masks
         static const BitBoard SQUARES;                          // bit mask of legal squares, excluding ghost squares
@@ -46,21 +48,23 @@ struct Board: public GridLayout
 };
 
 // square boards
-typedef Board< Grid< 4,  4> > MicroBoard;
-typedef Board< Grid< 6,  6> > MiniBoard;
-typedef Board< Grid< 8,  8> > ChessBoard;
-typedef Board< Grid<10, 10> > InternationalBoard;
+typedef Board< Squares< 4,  4> > Micro;
+typedef Board< Squares< 6,  6> > Mini;
+typedef Board< Squares< 8,  8> > Chess;
+typedef Board< Squares<10, 10> > International;
 
 // Spanish-Italian board
-typedef Board< Grid< 8,  8, true> > RomanBoard;
+typedef Board< Squares< 8,  8, true> > Roman;
 
 // special initial position
-typedef Board< Grid< 8,  8>, 4 > ThaiBoard;
+typedef Board< Squares< 8,  8>, 4 > Thai;
 
 // rectangular boards
-typedef Board< Grid<10,  8, true>             > SpantsiretiBoard;
-typedef Board< Grid<11, 10, true>, 3, 1       > Ktar11Board;
-typedef Board< Grid<12, 10, true>, 2, 1, R090 > Ktar12Board;
+typedef Board< Squares<10,  8, true>             > Spantsireti;
+typedef Board< Squares<11, 10, true>, 3, 1       > Ktar11;
+typedef Board< Squares<12, 10, true>, 2, 1, D270 > Ktar12;
+
+}       // namespace Geometry
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Board.hpp"

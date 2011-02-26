@@ -1,3 +1,5 @@
+namespace { enum { L, R }; }
+
 template<>
 struct Shift<L>
 {

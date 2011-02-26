@@ -1,3 +1,5 @@
+namespace Geometry {
+
 template<typename T, int SQ>
 class SQUARE_IS_VALID
 {
@@ -43,3 +45,5 @@ private:
 public:
         static const int VALUE = M * Q + R;
 };
+
+}       // namespace Geometry

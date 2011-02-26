@@ -1,36 +1,38 @@
 #include "Capture/State.h"
-#include "../Board/Board.h"
-#include "../Board/Direction.h"
-#include "../Board/Transform.h"
+#include "../Geometry/Board.h"
+#include "../Geometry/Direction.h"
+#include "../Geometry/PushPull.h"
+#include "../Geometry/Transform.h"
 #include "../Position/Position.h"
 #include "../Utilities/Bit.h"
-#include "../Utilities/PushPull.h"
 #include "../Utilities/InlineOptions.h"
 #include <cassert>
 
+using namespace Geometry;
+
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
 {
         Capture::State<Rules, Board> capture(p);
         generate(p, capture, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         generate_precede(p, capture, move_list);
 }
 
 // tag dispatching based on relative king capture precedence
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         generate_precede(p, capture, move_list, Int2Type<Variant::is_RelativeKingPrecedence<Rules>::VALUE>());
 }
 
 // partial specialization for relative king capture precedence
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<true>)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<true>)
 {
         capture.toggle_with_king();
         generate_precede(p, capture, move_list, Int2Type<false>());
@@ -39,13 +41,13 @@ void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_
 
 // partial specialization for no relative king capture precedence
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<false>)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<false>)
 {
         generate_serial(p.kings(Color), capture, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_serial(BitBoard active_kings, Capture::State<Rules, Board>& capture, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_serial(BitBoard active_kings, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         assert(!Bit::is_zero(active_kings));
         BitBoard jumper;
@@ -60,14 +62,14 @@ void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_
 
 // tag dispatching based on king capture directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         generate_dirs(jumper, capture, move_list, Int2Type<Variant::KingCaptureDirections<Rules>::VALUE>());
 }
 
 // partial specialization for kings that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::DIRS_4>)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::DIRS_4>)
 {
         generate_dir<DirIndex<Board, Color>::LEFT_UP   >(jumper, capture, move_list);
         generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(jumper, capture, move_list);
@@ -77,7 +79,7 @@ void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_
 
 // partial specialization for kings that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::DIRS_8>)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::DIRS_8>)
 {
         generate_dir<DirIndex<Board, Color>::LEFT_UP   >(jumper, capture, move_list);
         generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(jumper, capture, move_list);
@@ -91,14 +93,14 @@ void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_
 
 // tag dispatching based on king range
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         return generate_dir<Index>(jumper, capture, move_list, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_1>)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_1>)
 {
         PushAssign<Board, Index>()(jumper);
         if (jumper & capture.template targets<Index>()) {
@@ -110,7 +112,7 @@ void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_N>)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_N>)
 {
         do PushAssign<Board, Index>()(jumper); while (jumper & capture.template path<Index>());
         if (jumper & capture.template targets<Index>()) {
@@ -121,7 +123,7 @@ void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_next(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_next(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         PushAssign<Board, Index>()(jumper);
         if (!scan_next<Index>(jumper, capture, move_list) && capture.current_greater_equal_best()) {
@@ -133,14 +135,14 @@ void GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_
 
 // tag dispatching based on king range
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         return scan_next<Index>(jumper, capture, move_list, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_1>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_1>)
 {
         return (
                 scan_dirs<Index>(jumper, capture, move_list) |
@@ -150,28 +152,28 @@ bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_N>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_N>)
 {
         return scan_long<Index>(jumper, capture, move_list);
 }
 
 // tag dispatching based on king capture direction reversal
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_long(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_long(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         return scan_long<Index>(jumper, capture, move_list, Int2Type<Variant::is_DirectionReversal<Rules>::VALUE>());
 }
 
 // partial specialization for kings that cannot reverse their capture direction
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_long(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<false>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_long(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<false>)
 {
         return scan_forward<Index>(jumper, capture, move_list);
 }
 
 // partial specialization for kings that can reverse their capture direction
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_long(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<true>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_long(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<true>)
 {
         return (
                 scan_reverse<Index>(jumper, capture, move_list) |
@@ -180,13 +182,13 @@ bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_long
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_reverse(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_reverse(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
-        return scan_dir<RotateDirIndex<Index, D180>::VALUE>(jumper, capture, move_list);
+        return scan_dir<Rotate<Index>::I180>(jumper, capture, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_forward(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_forward(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         assert(jumper & capture.path());
         bool found_capture = false;
@@ -199,45 +201,45 @@ bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_forw
 
 // tag dispatching based on king capture directions
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         return scan_dirs<Index>(jumper, capture, move_list, Int2Type<Variant::KingCaptureDirections<Rules>::VALUE>());
 }
 
 // partial specialization for kings that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::DIRS_4>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::DIRS_4>)
 {
         return (
-                scan_dir<RotateDirIndex<Index, R090>::VALUE>(jumper, capture, move_list) |
-                scan_dir<RotateDirIndex<Index, L090>::VALUE>(jumper, capture, move_list)
+                scan_dir<Rotate<Index>::R090>(jumper, capture, move_list) |
+                scan_dir<Rotate<Index>::L090>(jumper, capture, move_list)
         );
 }
 
 // partial specialization for kings that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::DIRS_8>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::DIRS_8>)
 {
         return (
-                scan_dir<RotateDirIndex<Index, R045>::VALUE>(jumper, capture, move_list) |
-                scan_dir<RotateDirIndex<Index, L045>::VALUE>(jumper, capture, move_list) |
-                scan_dir<RotateDirIndex<Index, R090>::VALUE>(jumper, capture, move_list) |
-                scan_dir<RotateDirIndex<Index, L090>::VALUE>(jumper, capture, move_list) |
-                scan_dir<RotateDirIndex<Index, R135>::VALUE>(jumper, capture, move_list) |
-                scan_dir<RotateDirIndex<Index, L135>::VALUE>(jumper, capture, move_list)
+                scan_dir<Rotate<Index>::R045>(jumper, capture, move_list) |
+                scan_dir<Rotate<Index>::L045>(jumper, capture, move_list) |
+                scan_dir<Rotate<Index>::R090>(jumper, capture, move_list) |
+                scan_dir<Rotate<Index>::L090>(jumper, capture, move_list) |
+                scan_dir<Rotate<Index>::R135>(jumper, capture, move_list) |
+                scan_dir<Rotate<Index>::L135>(jumper, capture, move_list)
         );
 }
 
 // tag dispatching based on king range
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         return scan_dir<Index>(jumper, capture, move_list, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_1>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_1>)
 {
         PushAssign<Board, Index>()(jumper);
         return scan<Index>(jumper, capture, move_list);
@@ -245,14 +247,14 @@ bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_N>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan_dir(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variant::RANGE_N>)
 {
         do PushAssign<Board, Index>()(jumper); while (jumper & capture.template path<Index>());
         return scan<Index>(jumper, capture, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         if (jumper & capture.template targets<Index>()) {
                 capture.make(jumper);
@@ -264,13 +266,13 @@ bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::scan(BitB
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::promote_en_passant(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::promote_en_passant(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
         return scan_next<Index>(jumper, capture, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-size_t GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::count(const Position<Board>& p)
+size_t Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::count(const Position<Board>& p)
 {
         Move::List move_list;
         generate(p, move_list);
@@ -278,21 +280,21 @@ size_t GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::count(c
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect(const Position<Board>& p)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect(const Position<Board>& p)
 {
         return detect_dirs(p.kings(Color), p.pieces(!Color), p.not_occupied());
 }
 
 // tag dispatching based on king capture directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied)
 {
         return detect_dirs(active_kings, opponent_pieces, not_occupied, Int2Type<Variant::KingCaptureDirections<Rules>::VALUE>());
 }
 
 // partial specialization for kings that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::DIRS_4>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::DIRS_4>)
 {
         return (
                 detect_dir<DirIndex<Board, Color>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
@@ -304,7 +306,7 @@ bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_di
 
 // partial specialization for kings that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::DIRS_8>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::DIRS_8>)
 {
         return (
                 detect_dir<DirIndex<Board, Color>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
@@ -320,21 +322,21 @@ bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_di
 
 // tag dispatching based on king range
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied)
 {
         return detect_dir<Index>(active_kings, opponent_pieces, not_occupied, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::RANGE_1>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::RANGE_1>)
 {
         return !Bit::is_zero(Push<Board, Index>()(active_kings) & opponent_pieces & Pull<Board, Index>()(not_occupied));
 }
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::RANGE_N>)
+bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variant::RANGE_N>)
 {
         return !Bit::is_zero(Push<Board, Index>()(FloodFill<Board, Index>()(active_kings, not_occupied)) & opponent_pieces & Pull<Board, Index>()(not_occupied));
 }

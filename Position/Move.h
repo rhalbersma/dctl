@@ -1,6 +1,6 @@
 #pragma once
 #include "Pieces.h"
-#include "../Variant/Rules.h"
+#include "../Variants/Rules.h"
 #include "../Utilities/VectorArray.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/Ply.h"

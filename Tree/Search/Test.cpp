@@ -1,8 +1,8 @@
 #include "Test.h"
 #include "Root.h"
 #include "../../Position/Position.h"
-#include "../../Board/Board.h"
-#include "../../Variant/Rules.h"
+#include "../../Geometry/Board.h"
+#include "../../Variants/Rules.h"
 #include "../../IO/BoardIO.h"
 #include "../../IO/FEN.h"
 #include <utility>
@@ -10,7 +10,7 @@
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 void Tree::Search::Test::International(void)
 {
-        //Position<InternationalBoard> i10 = Position<InternationalBoard>::initial();
+        //Position<Geometry::International> i10 = Position<Geometry::International>::initial();
         //Root::analyze<Variant::International>(i10, 21);
 
         typedef std::pair<std::string, size_t> DB_unittest;
@@ -194,16 +194,16 @@ void Tree::Search::Test::Killer(void)
                 assert(value == Value::win(DB_win31[i].second));
         }
 
-        //Position<InternationalBoard> Walinga(read_position_string<FEN_tag>()("W:WK46,28:BK43"));
+        //Position<Geometry::International> Walinga(read_position_string<FEN_tag>()("W:WK46,28:BK43"));
         //Root::analyze<FrisianRules>(Walinga, 39);
 }
 
 /*
-void Tree::Search::Test::ChessBoardVariants(void)
+void Tree::Search::Test::ChessVariants(void)
 {
         // The alternative game rules thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2822
-        Position<ChessBoard> i8;
-        std::cout << write_square_layout<ChessBoard>()() << std::endl;
+        Position<Geometry::Chess> i8;
+        std::cout << write_square_layout<Geometry::Chess>()() << std::endl;
 
         Root::analyze<BrazilianRules>(i8, 19);    // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
         Root::analyze<PoolRules>(i8, 19);         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-57.html
@@ -211,19 +211,19 @@ void Tree::Search::Test::ChessBoardVariants(void)
         Root::analyze<EnglishRules>(i8, 19);      // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
 	Root::analyze<CzechRules>(i8, 19);
 
-        Position<RomanBoard> r8;
-        std::cout << write_square_layout<RomanBoard>()() << std::endl;
+        Position<Geometry::Roman> r8;
+        std::cout << write_square_layout<Geometry::Roman>()() << std::endl;
 
 	Root::analyze<SpanishRules>(r8, 19);
         Root::analyze<ItalianRules>(r8, 19);
 
         // Addional Italian test positions from email conversations with Ed Gilbert
-        Position<RomanBoard> ITA_Ed_Gilbert_2 = read_position_string<FEN_tag, RomanBoard>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
-        Position<RomanBoard> ITA_Ed_Gilbert_3 = read_position_string<FEN_tag, RomanBoard>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
+        Position<Geometry::Roman> ITA_Ed_Gilbert_2 = read_position_string<FEN_tag, Geometry::Roman>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
+        Position<Geometry::Roman> ITA_Ed_Gilbert_3 = read_position_string<FEN_tag, Geometry::Roman>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
         Root::analyze<ItalianRules>(ITA_Ed_Gilbert_2, 19);
         Root::analyze<ItalianRules>(ITA_Ed_Gilbert_3, 19);
 
-        Position<ThaiBoard> t8;
+        Position<Geometry::Thai> t8;
         Root::analyze<ThaiRules>(t8, 19);		// Thai initial position with 2 rows of men
         Root::analyze<ThaiRules>(i8, 19);		// Usual initial position with 3 rows of men
 

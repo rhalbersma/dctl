@@ -1,12 +1,12 @@
 #pragma once
-#include "GenerateTemplate.h"
+#include "Template.h"
 #include "../Utilities/IntegerTypes.h"
 
 template<typename> class Position;
-class Move::List;
+namespace Move { class List; }
 
 template<bool Color, typename Rules, typename Board> 
-class GenerateTemplate<Color, Pieces::BOTH, Move::MOVES, Rules, Board>
+class Template<Color, Pieces::BOTH, Move::MOVES, Rules, Board>
 {
 public:
         static void generate(const Position<Board>&, Move::List&);

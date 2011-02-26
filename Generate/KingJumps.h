@@ -1,15 +1,15 @@
 #pragma once
-#include "GenerateTemplate.h"
-#include "../Board/Board.h"
+#include "Template.h"
+#include "../Geometry/Board.h"
 #include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"
 
 template<typename> class Position;
 namespace Capture { template<typename, typename> class State; }
-class Move::List;
+namespace Move { class List; }
 
 template<bool Color, typename Rules, typename Board> 
-class GenerateTemplate<Color, Pieces::KING, Move::JUMPS, Rules, Board>
+class Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>
 {
 public:
         static void generate(const Position<Board>&, Move::List&);
