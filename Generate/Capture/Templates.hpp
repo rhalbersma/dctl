@@ -1,5 +1,5 @@
 #include "Value.h"
-#include "../../Variant/Rules.h"
+#include "../../Variants/Rules.h"
 #include "../../Utilities/Bit.h"
 
 namespace Capture {

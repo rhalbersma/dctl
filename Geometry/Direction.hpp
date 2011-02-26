@@ -1,6 +1,6 @@
-#pragma once
 #include "Transform.h"
-#include "../Utilities/IntegerTypes.h"
+
+namespace Geometry {
 
 // the 8 diagonal and orthogonal direction indices for black and white to move
 template<typename Board, bool Color> 
@@ -10,21 +10,23 @@ private:
         enum { ANGLE = (D180 * !Color) + Board::A_PRIME };
 
 public:
-        static const size_t RIGHT       = RotateDirIndex<0, ANGLE>::VALUE; 
-        static const size_t RIGHT_UP    = RotateDirIndex<1, ANGLE>::VALUE; 
-        static const size_t UP          = RotateDirIndex<2, ANGLE>::VALUE; 
-        static const size_t LEFT_UP     = RotateDirIndex<3, ANGLE>::VALUE; 
-        static const size_t LEFT        = RotateDirIndex<4, ANGLE>::VALUE; 
-        static const size_t LEFT_DOWN   = RotateDirIndex<5, ANGLE>::VALUE; 
-        static const size_t DOWN        = RotateDirIndex<6, ANGLE>::VALUE; 
-        static const size_t RIGHT_DOWN  = RotateDirIndex<7, ANGLE>::VALUE;
+        enum {
+                RIGHT       = AntiClockwise<D000, ANGLE>::VALUE,
+                RIGHT_UP    = AntiClockwise<D045, ANGLE>::VALUE,
+                UP          = AntiClockwise<D090, ANGLE>::VALUE,
+                LEFT_UP     = AntiClockwise<D135, ANGLE>::VALUE,
+                LEFT        = AntiClockwise<D180, ANGLE>::VALUE,
+                LEFT_DOWN   = AntiClockwise<D225, ANGLE>::VALUE,
+                DOWN        = AntiClockwise<D270, ANGLE>::VALUE,
+                RIGHT_DOWN  = AntiClockwise<D315, ANGLE>::VALUE
+        };
 };
 
 template<size_t I>
 class DirTraits
 {
 private:
-        static const size_t I_L090 = RotateDirIndex<I, L090>::VALUE;
+        static const size_t I_L090 = Rotate<I>::L090;
 
 public:
         // diagonality, orthogonality
@@ -41,3 +43,5 @@ public:
         static const bool IS_POSITIVE = IS_UP || (IS_LEFT && !IS_DOWN);         // 1, 2, 3, 4
         static const bool IS_NEGATIVE = !IS_POSITIVE;                           // 5, 6, 7, 0
 };
+
+}       // namespace Geometry

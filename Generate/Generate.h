@@ -1,5 +1,5 @@
 #pragma once
-#include "GenerateState.h"
+#include "State.h"
 #include "../Position/Pieces.h"
 #include "../Position/Side.h"
 #include <cstddef>
@@ -17,6 +17,8 @@ public:
         static void generate_promotions(const Position<Board>&, Move::List&);
 
         static size_t count(const Position<Board>&);
+        static size_t count_captures(const Position<Board>&);
+        static size_t count_promotions(const Position<Board>&);
         template<bool> static size_t count_mobility(const Position<Board>&);
 
         static bool detect(const Position<Board>&);
@@ -25,8 +27,8 @@ public:
 
 private:
         // implementation
-        static const AbstractGenerateState<Rules, Board>* select(const Position<Board>&);
-        template<bool> static const AbstractGenerateState<Rules, Board>* select(const Position<Board>&);
+        static const AbstractState<Rules, Board>* select(const Position<Board>&);
+        template<bool> static const AbstractState<Rules, Board>* select(const Position<Board>&);
 
         static int state(const Position<Board>&);
         template<bool> static int state(const Position<Board>&);
@@ -35,16 +37,16 @@ private:
         static bool invariant(const Position<Board>&, size_t);
 
         // representation
-        static const AbstractGenerateState<Rules, Board>* const STATE[];
+        static const AbstractState<Rules, Board>* const STATE[];
 
-        static const GenerateState<Side::BLACK, Pieces::NONE, Rules, Board> BLACK_NONE;
-        static const GenerateState<Side::BLACK, Pieces::PAWN, Rules, Board> BLACK_PAWN;
-        static const GenerateState<Side::BLACK, Pieces::KING, Rules, Board> BLACK_KING;
-        static const GenerateState<Side::BLACK, Pieces::BOTH, Rules, Board> BLACK_BOTH;
-        static const GenerateState<Side::WHITE, Pieces::NONE, Rules, Board> WHITE_NONE;
-        static const GenerateState<Side::WHITE, Pieces::PAWN, Rules, Board> WHITE_PAWN;
-        static const GenerateState<Side::WHITE, Pieces::KING, Rules, Board> WHITE_KING;
-        static const GenerateState<Side::WHITE, Pieces::BOTH, Rules, Board> WHITE_BOTH;
+        static const State<Side::BLACK, Pieces::NONE, Rules, Board> BLACK_NONE;
+        static const State<Side::BLACK, Pieces::PAWN, Rules, Board> BLACK_PAWN;
+        static const State<Side::BLACK, Pieces::KING, Rules, Board> BLACK_KING;
+        static const State<Side::BLACK, Pieces::BOTH, Rules, Board> BLACK_BOTH;
+        static const State<Side::WHITE, Pieces::NONE, Rules, Board> WHITE_NONE;
+        static const State<Side::WHITE, Pieces::PAWN, Rules, Board> WHITE_PAWN;
+        static const State<Side::WHITE, Pieces::KING, Rules, Board> WHITE_KING;
+        static const State<Side::WHITE, Pieces::BOTH, Rules, Board> WHITE_BOTH;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

@@ -5,10 +5,10 @@
 #include <cstddef>
 
 template<typename> class Position;
-class Move::List;
+namespace Move { class List; }
 
 template<bool, int, Move::Type, typename Rules, typename Board>
-class GenerateTemplate
+class Template
 {
 public:
         static void generate(const Position<Board>&, Move::List&) { assert(false); };

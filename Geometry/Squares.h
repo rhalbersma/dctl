@@ -1,13 +1,15 @@
 #pragma once
 #include <cstddef>
 
+namespace Geometry {
+
 template
 <
         size_t H,                                               // height
         size_t W,                                               // width
         bool P = false                                          // coloring of top-left square
 >
-struct Grid
+struct Squares
 {
         // reflection on template parameters
         static const size_t HEIGHT = H;
@@ -28,3 +30,5 @@ struct Grid
         // == (H * W) / 2 + (H * W * P) % 2
         static const size_t SQUARE_RANGE = SQUARE_MODULO * ((H - 1) / 2) + ((H % 2)? SQUARE_RE : SQUARE_RO) + 1;
 };
+
+}       // namespace Geometry

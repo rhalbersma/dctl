@@ -1,6 +1,8 @@
 #include "Direction.h"
-#include "GridPredicates.h"
-#include "GhostPredicates.h"
+#include "BordersPredicates.h"
+#include "SquaresPredicates.h"
+
+namespace Geometry {
 
 template<typename T, bool C, size_t SQ>
 class IS_INITIAL
@@ -70,3 +72,5 @@ public:
 		(COL <= COL_UPPER_BOUND)
 	;
 };
+
+}       // namespace Geometry

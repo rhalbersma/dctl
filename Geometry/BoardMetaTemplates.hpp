@@ -1,6 +1,8 @@
 #include "BoardPredicates.h"
 #include "../Utilities/IntegerTypes.h"
 
+namespace Geometry {
+
 template<typename T, size_t SQ>
 class INIT_SQUARES
 {
@@ -127,7 +129,7 @@ class SQUARE2BIT
 private:
         typedef typename T::ExternalGrid E;
         typedef typename T::InternalGrid I;
-        typedef typename T::GhostStructure G;
+        typedef typename T::BordersLayout G;
 
         enum {
                 // coordinates within the external grid
@@ -149,7 +151,7 @@ class BIT2SQUARE
 private:
         typedef typename T::ExternalGrid E;
         typedef typename T::InternalGrid I;
-        typedef typename T::GhostStructure G;
+        typedef typename T::BordersLayout G;
 
         enum {
                 // coordinates within the internal grid
@@ -164,3 +166,5 @@ private:
 public:
         enum { VALUE = COORD2SQUARE<E, ROW_PRIME, COL_PRIME>::VALUE };
 };
+
+}       // namespace Geometry

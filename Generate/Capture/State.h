@@ -1,7 +1,7 @@
 #pragma once
 #include "Value.h"
-#include "../../Board/Board.h"
-#include "../../Variant/Rules.h"
+#include "../../Geometry/Board.h"
+#include "../../Variants/Rules.h"
 #include "../../Utilities/IntegerTypes.h"
 #include "../../Utilities/TemplateTricks.h"
 #include "../../Utilities/VectorArray.h"

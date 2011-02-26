@@ -4,26 +4,26 @@
 #include <cassert>
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE 
-void GenerateTemplate<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
+void Template<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
 {
-        GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(p, move_list);
-        GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(p, move_list);     
+        Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(p, move_list);
+        Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(p, move_list);     
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-size_t GenerateTemplate<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::count(const Position<Board>& p)
+size_t Template<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::count(const Position<Board>& p)
 {     
         return (
-                GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::count(p) + 
-                GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::count(p)
+                Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count(p) + 
+                Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::count(p)
         );
 }
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
-bool GenerateTemplate<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::detect(const Position<Board>& p)
+bool Template<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::detect(const Position<Board>& p)
 {
         return (
-                GenerateTemplate<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::detect(p) || 
-                GenerateTemplate<Color, Pieces::KING, Move::MOVES, Rules, Board>::detect(p)
+                Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::detect(p) || 
+                Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::detect(p)
         );
 }

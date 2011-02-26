@@ -1,6 +1,8 @@
 #pragma once
 #include <cstddef>
 
+namespace Geometry {
+
 template<typename T, size_t = T::SQUARE_RANGE - 1>
 class INIT_SQUARES;
 
@@ -24,6 +26,8 @@ class SQUARE2BIT;
 
 template<typename, int>
 class BIT2SQUARE;
+
+}       // namespace Geometry
 
 // include template definitions inside header since "export" keyword is not supported by most C++ compilers
 #include "BoardMetaTemplates.hpp"

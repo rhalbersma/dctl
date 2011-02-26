@@ -8,7 +8,7 @@ template<typename> class Position;
 template
 <
         typename Protocol, 
-        typename Board = InternationalBoard, 
+        typename Board = Geometry::International, 
         typename Token = typename PositionToken<Protocol>
 >
 struct read_position_string

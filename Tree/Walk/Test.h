@@ -6,7 +6,7 @@ namespace Test {
 
 void International(void);
 void Rectangular(void);
-void ChessBoardVariants(void);
+void ChessVariants(void);
 void ItalianRuleBook(void);
 
 }       // namespace Test

@@ -1,5 +1,4 @@
 #include "../Position/Position.h"
-#include <iostream>
 
 template<typename Rules, typename Board>
 void Generate<Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
@@ -26,10 +25,21 @@ size_t Generate<Rules, Board>::count(const Position<Board>& p)
         return select(p)->count(p);
 }
 
-template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
+template<typename Rules, typename Board>
+size_t Generate<Rules, Board>::count_captures(const Position<Board>& p)
+{
+        return select(p)->count_captures(p);
+}
+
+template<typename Rules, typename Board>
+size_t Generate<Rules, Board>::count_promotions(const Position<Board>& p)
+{
+        return select(p)->count_promotions(p);
+}
+
+template<typename Rules, typename Board> template<bool Color>
 size_t Generate<Rules, Board>::count_mobility(const Position<Board>& p)
 {
-        // color template here because we want to count available moves for both sides
         return select<Color>(p)->count_mobility(p);
 }
 
@@ -58,13 +68,13 @@ bool Generate<Rules, Board>::invariant(const Position<Board>& p, size_t num_move
 }
 
 template<typename Rules, typename Board>
-const AbstractGenerateState<Rules, Board>* Generate<Rules, Board>::select(const Position<Board>& p)
+const AbstractState<Rules, Board>* Generate<Rules, Board>::select(const Position<Board>& p)
 {
         return STATE[state(p)];
 };
 
 template<typename Rules, typename Board> template<bool Color>
-const AbstractGenerateState<Rules, Board>* Generate<Rules, Board>::select(const Position<Board>& p)
+const AbstractState<Rules, Board>* Generate<Rules, Board>::select(const Position<Board>& p)
 {
         return STATE[state<Color>(p)];
 };
@@ -88,31 +98,31 @@ int Generate<Rules, Board>::state(bool color, BitBoard kings, BitBoard men)
 }
 
 template<typename Rules, typename Board> 
-const AbstractGenerateState<Rules, Board>* const Generate<Rules, Board>::STATE[] = {
+const AbstractState<Rules, Board>* const Generate<Rules, Board>::STATE[] = {
         &BLACK_NONE, &BLACK_PAWN, &BLACK_KING, &BLACK_BOTH,
         &WHITE_NONE, &WHITE_PAWN, &WHITE_KING, &WHITE_BOTH
 };
 
 template<typename Rules, typename Board> 
-const GenerateState<Side::BLACK, Pieces::NONE, Rules, Board> Generate<Rules, Board>::BLACK_NONE;
+const State<Side::BLACK, Pieces::NONE, Rules, Board> Generate<Rules, Board>::BLACK_NONE;
 
 template<typename Rules, typename Board> 
-const GenerateState<Side::BLACK, Pieces::PAWN, Rules, Board> Generate<Rules, Board>::BLACK_PAWN;
+const State<Side::BLACK, Pieces::PAWN, Rules, Board> Generate<Rules, Board>::BLACK_PAWN;
 
 template<typename Rules, typename Board> 
-const GenerateState<Side::BLACK, Pieces::KING, Rules, Board> Generate<Rules, Board>::BLACK_KING;
+const State<Side::BLACK, Pieces::KING, Rules, Board> Generate<Rules, Board>::BLACK_KING;
 
 template<typename Rules, typename Board> 
-const GenerateState<Side::BLACK, Pieces::BOTH, Rules, Board> Generate<Rules, Board>::BLACK_BOTH;
+const State<Side::BLACK, Pieces::BOTH, Rules, Board> Generate<Rules, Board>::BLACK_BOTH;
 
 template<typename Rules, typename Board> 
-const GenerateState<Side::WHITE, Pieces::NONE, Rules, Board> Generate<Rules, Board>::WHITE_NONE;
+const State<Side::WHITE, Pieces::NONE, Rules, Board> Generate<Rules, Board>::WHITE_NONE;
 
 template<typename Rules, typename Board> 
-const GenerateState<Side::WHITE, Pieces::PAWN, Rules, Board> Generate<Rules, Board>::WHITE_PAWN;
+const State<Side::WHITE, Pieces::PAWN, Rules, Board> Generate<Rules, Board>::WHITE_PAWN;
 
 template<typename Rules, typename Board> 
-const GenerateState<Side::WHITE, Pieces::KING, Rules, Board> Generate<Rules, Board>::WHITE_KING;
+const State<Side::WHITE, Pieces::KING, Rules, Board> Generate<Rules, Board>::WHITE_KING;
 
 template<typename Rules, typename Board> 
-const GenerateState<Side::WHITE, Pieces::BOTH, Rules, Board> Generate<Rules, Board>::WHITE_BOTH;
+const State<Side::WHITE, Pieces::BOTH, Rules, Board> Generate<Rules, Board>::WHITE_BOTH;

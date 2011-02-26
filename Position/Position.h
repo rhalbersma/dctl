@@ -1,6 +1,6 @@
 #pragma once
-#include "../Board/Board.h"
-#include "../Variant/Rules.h"
+#include "../Geometry/Board.h"
+#include "../Variants/Rules.h"
 #include "Pieces.h"
 #include "Side.h"
 #include "../Utilities/IntegerTypes.h"

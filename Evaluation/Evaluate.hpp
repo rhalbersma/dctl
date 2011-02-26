@@ -1,6 +1,6 @@
 #include "EvaluateWeight.h"
 #include "../Generate/Generate.h"
-#include "../Variant/Rules.h"
+#include "../Variants/Rules.h"
 #include "../Position/Position.h"
 #include "../Position/Side.h"
 #include <cstdlib>

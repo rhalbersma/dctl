@@ -1,5 +1,7 @@
 #pragma once
 
+namespace Geometry {
+
 template<typename, int>
 class SQUARE_IS_VALID;
 
@@ -9,5 +11,7 @@ class SQUARE2COORD;
 template<typename, int, int>
 class COORD2SQUARE;
 
+}       // namespace Geometry
+
 // include template definitions inside header since "export" keyword is not supported by most C++ compilers
-#include "GridPredicates.hpp"
+#include "SquaresPredicates.hpp"

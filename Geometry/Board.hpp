@@ -1,6 +1,8 @@
 #include "BoardMetaTemplates.h"
 #include "../Position/Side.h"
 
+namespace Geometry {
+
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::SQUARES = INIT_SQUARES<T>::VALUE;
 
@@ -93,8 +95,8 @@ const BitBoard Board<GridLayout, D, N, A>::COL_MASK[][12] =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
 {
-        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (GhostStructure::LEFT_DOWN  << 1))),
-        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (GhostStructure::RIGHT_DOWN << 1)))
+        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (BordersLayout::LEFT_DOWN  << 1))),
+        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (BordersLayout::RIGHT_DOWN << 1)))
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
@@ -104,36 +106,36 @@ const BitBoard Board<GridLayout, D, N, A>::QUAD_NEAREST_NEIGHBOR_MAGIC =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::MAN_JUMP_GROUP[] =
 {
-        INIT_MAN_JUMP_GROUP<T, GhostStructure::SQUARE_LE + 0>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, GhostStructure::SQUARE_LE + 1>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, GhostStructure::SQUARE_LO + 0>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, GhostStructure::SQUARE_LO + 1>::VALUE
+        INIT_MAN_JUMP_GROUP<T, BordersLayout::SQUARE_LE + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, BordersLayout::SQUARE_LE + 1>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, BordersLayout::SQUARE_LO + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, BordersLayout::SQUARE_LO + 1>::VALUE
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::JUMPABLE[] =
 {
-        INIT_JUMPABLE<T, RotateDirIndex<0, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirIndex<1, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirIndex<2, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirIndex<3, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirIndex<4, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirIndex<5, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirIndex<6, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, RotateDirIndex<7, ANGLE>::VALUE>::VALUE
+        INIT_JUMPABLE<T, AntiClockwise<D000, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, AntiClockwise<D045, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, AntiClockwise<D090, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, AntiClockwise<D135, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, AntiClockwise<D180, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, AntiClockwise<D225, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, AntiClockwise<D270, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, AntiClockwise<D315, ANGLE>::VALUE>::VALUE
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const size_t Board<GridLayout, D, N, A>::DIR[] = 
 {
-        GhostStructure::RIGHT, 
-        GhostStructure::RIGHT_UP, 
-        GhostStructure::UP, 
-        GhostStructure::LEFT_UP, 
-        GhostStructure::LEFT, 
-        GhostStructure::LEFT_DOWN, 
-        GhostStructure::DOWN, 
-        GhostStructure::RIGHT_DOWN
+        BordersLayout::RIGHT, 
+        BordersLayout::RIGHT_UP, 
+        BordersLayout::UP, 
+        BordersLayout::LEFT_UP, 
+        BordersLayout::LEFT, 
+        BordersLayout::LEFT_DOWN, 
+        BordersLayout::DOWN, 
+        BordersLayout::RIGHT_DOWN
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
@@ -177,3 +179,5 @@ const int Board<GridLayout, D, N, A>::TABLE_BIT2SQUARE[] =
         BIT2SQUARE<T, 56>::VALUE, BIT2SQUARE<T, 57>::VALUE, BIT2SQUARE<T, 58>::VALUE, BIT2SQUARE<T, 59>::VALUE,
         BIT2SQUARE<T, 60>::VALUE, BIT2SQUARE<T, 61>::VALUE, BIT2SQUARE<T, 62>::VALUE, BIT2SQUARE<T, 63>::VALUE
 };
+
+}       // namespace Geometry

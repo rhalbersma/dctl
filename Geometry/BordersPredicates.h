@@ -1,7 +1,9 @@
 #pragma once
 
+namespace Geometry {
+
 template<typename, int>
-class BIT_IS_GHOST;
+class BORDER_IS_GHOST;
 
 template<typename, int>
 class BIT2COORD;
@@ -9,5 +11,7 @@ class BIT2COORD;
 template<typename, int, int>
 class COORD2BIT;
 
+}       // namespace Geometry
+
 // include template definitions inside header since "export" keyword is not supported by most C++ compilers
-#include "GhostPredicates.hpp"
+#include "BordersPredicates.hpp"
