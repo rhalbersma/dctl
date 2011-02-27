@@ -1,4 +1,5 @@
 #pragma once
+#include "../../IO/PositionIO.h"
 #include "../../IO/Token.h"
 
 struct DXP_tag {};
