@@ -11,7 +11,7 @@
 void Tree::Search::Test::International(void)
 {
         //Position<Geometry::International> i10 = Position<Geometry::International>::initial();
-        //Root::analyze<Variant::International>(i10, 21);
+        //Root::analyze<Variants::International>(i10, 21);
 
         typedef std::pair<std::string, size_t> DB_unittest;
         int value;       
@@ -33,7 +33,7 @@ void Tree::Search::Test::International(void)
         };
 
         for (size_t i = 0; i < 13; ++i) {
-                value = Root::analyze<Variant::International>(read_position_string<FEN_tag>()(DB_winGWD[i].first), DB_winGWD[i].second);
+                value = Root::analyze<Variants::International>(read_position_string<FEN_tag>()(DB_winGWD[i].first), DB_winGWD[i].second);
                 assert(value == Value::win(DB_winGWD[i].second));
         }
 /*
@@ -45,7 +45,7 @@ void Tree::Search::Test::International(void)
         };
                 
         for (size_t i = 0; i < 4; ++i) {
-                value = Root::analyze<Variant::International>(read_position_string<FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
+                value = Root::analyze<Variants::International>(read_position_string<FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
                 assert(value == Value::win(DB_win11[i].second));
         }
 
@@ -66,7 +66,7 @@ void Tree::Search::Test::International(void)
         };
 
         for (size_t i = 0; i < 13; ++i) {
-                value = Root::analyze<Variant::International>(read_position_string<FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
+                value = Root::analyze<Variants::International>(read_position_string<FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
                 assert(value == Value::win(DB_win21[i].second));
         }
         
@@ -83,7 +83,7 @@ void Tree::Search::Test::International(void)
         };
 
         for (size_t i = 0; i < 9; ++i) {
-                value = Root::analyze<Variant::International>(read_position_string<FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
+                value = Root::analyze<Variants::International>(read_position_string<FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
                 assert(value == Value::win(DB_win22[i].second));
         }
         
@@ -107,7 +107,7 @@ void Tree::Search::Test::International(void)
         };
         
         for (size_t i = 0; i < 16; ++i) {
-                value = Root::analyze<Variant::International>(read_position_string<FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
+                value = Root::analyze<Variants::International>(read_position_string<FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 assert(value == Value::win(DB_win31[i].second));
         }
 */
@@ -127,7 +127,7 @@ void Tree::Search::Test::Killer(void)
         };
 
         for (size_t i = 0; i < 4; ++i) {
-                value = Root::analyze<Variant::Killer>(read_position_string<FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
+                value = Root::analyze<Variants::Killer>(read_position_string<FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
                 assert(value == Value::win(DB_win11[i].second));
         }
 
@@ -149,7 +149,7 @@ void Tree::Search::Test::Killer(void)
         };       
         
         for (size_t i = 0; i < 14; ++i) {
-                value = Root::analyze<Variant::Killer>(read_position_string<FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
+                value = Root::analyze<Variants::Killer>(read_position_string<FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
                 assert(value == Value::win(DB_win21[i].second));
         }
 
@@ -166,7 +166,7 @@ void Tree::Search::Test::Killer(void)
         };
 
         for (size_t i = 0; i < 9; ++i) {
-                value = Root::analyze<Variant::Killer>(read_position_string<FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
+                value = Root::analyze<Variants::Killer>(read_position_string<FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
                 assert(value == Value::win(DB_win22[i].second));
         }
         
@@ -190,7 +190,7 @@ void Tree::Search::Test::Killer(void)
         };
         
         for (size_t i = 0; i < 16; ++i) {
-                value = Root::analyze<Variant::Killer>(read_position_string<FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
+                value = Root::analyze<Variants::Killer>(read_position_string<FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 assert(value == Value::win(DB_win31[i].second));
         }
 
@@ -230,6 +230,6 @@ void Tree::Search::Test::ChessVariants(void)
         Root::analyze<FrisianRules>(i8, 19);
 
         Position<MiniBoard> i6;
-        Root::analyze<Variant::International>(i6, 31);
+        Root::analyze<Variants::International>(i6, 31);
 }
 */

@@ -7,8 +7,8 @@
 
 // move tokens
 template<typename> struct MoveToken_            { typedef MoveToken<'-', 'x'> TYPE; };
-template<> struct MoveToken_<Variant::Russian>    { typedef MoveToken<'-', ':'> TYPE; };
-template<> struct MoveToken_<Variant::Czech>      { typedef MoveToken<'-', ':'> TYPE; };
+template<> struct MoveToken_<Variants::Russian>    { typedef MoveToken<'-', ':'> TYPE; };
+template<> struct MoveToken_<Variants::Czech>      { typedef MoveToken<'-', ':'> TYPE; };
 
 template<typename Rules> template<typename Board>
 std::string write_move_string<Rules>::operator()(const Position<Board>& p, const Pieces& m)

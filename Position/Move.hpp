@@ -8,7 +8,7 @@ namespace Move {
 template<typename Rules>
 bool Move::List::non_unique_back(void)
 {
-        return non_unique_back(Int2Type<Variant::is_CheckCaptureUniqueness<Rules>::VALUE>());
+        return non_unique_back(Int2Type<Variants::is_CheckCaptureUniqueness<Rules>::VALUE>());
 }
 
 // add a king move
@@ -120,14 +120,14 @@ void Move::List::push_back(BitBoard delta, BitBoard promotion, BitBoard captured
 template<typename Rules>
 bool Move::List::promotion_en_passant(BitBoard promotion, BitBoard delta)
 {
-        return promotion_en_passant(promotion, delta, Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
+        return promotion_en_passant(promotion, delta, Int2Type<Variants::PromotionCondition<Rules>::VALUE>());
 }
 
 // tag dispatching on capture removal
 template<typename Rules>
 bool Move::List::sequential_capture_removal(BitBoard delta, BitBoard captured_pieces)
 {
-        return sequential_capture_removal(delta, captured_pieces, Int2Type<Variant::CaptureRemoval<Rules>::VALUE>());
+        return sequential_capture_removal(delta, captured_pieces, Int2Type<Variants::CaptureRemoval<Rules>::VALUE>());
 }
 
 }       // namespace Move

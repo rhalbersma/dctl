@@ -90,8 +90,8 @@ private:
 
         // tag dispatching on capture removal
         template<typename> bool make_sequential_capture_removal(const Pieces&) const;
-        bool make_sequential_capture_removal(const Pieces&, Int2Type<Variant::REMOVE_1>) const;
-        bool make_sequential_capture_removal(const Pieces&, Int2Type<Variant::REMOVE_N>) const;
+        bool make_sequential_capture_removal(const Pieces&, Int2Type<Variants::REMOVE_1>) const;
+        bool make_sequential_capture_removal(const Pieces&, Int2Type<Variants::REMOVE_N>) const;
                 
         // post-conditions for the constructors and modifiers
         bool pieces_invariant(void) const;

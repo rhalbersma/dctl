@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include <stdint.h>
+#include <cstdint>
 
 typedef uint8_t PieceCount;
 typedef uint8_t MoveCount;

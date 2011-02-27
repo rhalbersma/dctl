@@ -1,5 +1,5 @@
 #include "Random.h"
-#include <stdint.h>
+#include <cstdint>
 
 const uint64_t Hash::Zobrist::Random<uint64_t>::PIECES[2][64] = 
 {

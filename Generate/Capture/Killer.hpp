@@ -1,9 +1,9 @@
-namespace Variant { struct Killer; }
+namespace Variants { struct Killer; }
 
 namespace Capture {
 
 template<>
-struct init<Variant::Killer>
+struct init<Variants::Killer>
 {
         void operator()(Value& value) const
         {
@@ -12,7 +12,7 @@ struct init<Variant::Killer>
 };
 
 template<>
-struct copy<Variant::Killer>
+struct copy<Variants::Killer>
 {
         void operator()(Value& left, const Value& right) const
         {
@@ -21,7 +21,7 @@ struct copy<Variant::Killer>
 };
 
 template<>
-struct increment<Variant::Killer>
+struct increment<Variants::Killer>
 {
         void operator()(Value& value, BitBoard, BitBoard) const
         {
@@ -30,7 +30,7 @@ struct increment<Variant::Killer>
 };
 
 template<>
-struct decrement<Variant::Killer>
+struct decrement<Variants::Killer>
 {
         void operator()(Value& value, BitBoard, BitBoard) const
         {
@@ -39,7 +39,7 @@ struct decrement<Variant::Killer>
 };
 
 template<>
-struct equal_to<Variant::Killer>: public std::binary_function<Value, Value, bool>
+struct equal_to<Variants::Killer>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -48,7 +48,7 @@ struct equal_to<Variant::Killer>: public std::binary_function<Value, Value, bool
 };
 
 template<>
-struct greater_equal<Variant::Killer>: public std::binary_function<Value, Value, bool>
+struct greater_equal<Variants::Killer>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {

@@ -1,7 +1,7 @@
 #pragma once
 #include <cstddef>
 
-namespace Variant {
+namespace Variants {
 
 //+----------------------------------------------------------------------------+
 //|      Move and capture mechanics                                            |
@@ -98,4 +98,4 @@ template<typename> struct num_Max2v1                            { enum { VALUE =
 
 template<typename> struct is_CheckCaptureUniqueness             { enum { VALUE = true }; };
 
-}       // namespace Variant
+}       // namespace Variants
