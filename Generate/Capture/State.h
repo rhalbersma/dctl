@@ -62,26 +62,26 @@ private:
         template<bool> BitBoard promotions(BitBoard) const;
 
         // tag dispatching on capture removal
-        void make(BitBoard, Int2Type<Variant::REMOVE_1>);
-        void make(BitBoard, Int2Type<Variant::REMOVE_N>);
+        void make(BitBoard, Int2Type<Variants::REMOVE_1>);
+        void make(BitBoard, Int2Type<Variants::REMOVE_N>);
 
         // tag dispatching on capture removal
-        void undo(BitBoard, Int2Type<Variant::REMOVE_1>);
-        void undo(BitBoard, Int2Type<Variant::REMOVE_N>);
+        void undo(BitBoard, Int2Type<Variants::REMOVE_1>);
+        void undo(BitBoard, Int2Type<Variants::REMOVE_N>);
 
         // tag dispatching based on ambiguity of man captures
         template<bool> void add_man_capture(BitBoard, Move::List&, Int2Type<false>);
         template<bool> void add_man_capture(BitBoard, Move::List&, Int2Type<true>);
 
         // tag dispatching based on king halt after final capture
-        template<bool, size_t> void add_king_capture(BitBoard, Move::List&, Int2Type<Variant::HALT_K>);
-        template<bool, size_t> void add_king_capture(BitBoard, Move::List&, Int2Type<Variant::HALT_1>);
-        template<bool, size_t> void add_king_capture(BitBoard, Move::List&, Int2Type<Variant::HALT_N>);
+        template<bool, size_t> void add_king_capture(BitBoard, Move::List&, Int2Type<Variants::HALT_K>);
+        template<bool, size_t> void add_king_capture(BitBoard, Move::List&, Int2Type<Variants::HALT_1>);
+        template<bool, size_t> void add_king_capture(BitBoard, Move::List&, Int2Type<Variants::HALT_N>);
 
         // tag dispatching based on promotion condition
         template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, bool, Move::List&);
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Move::List&, Int2Type<Variant::PROMOTE_BR>);
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Move::List&, Int2Type<Variant::PROMOTE_EP>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Move::List&, Int2Type<Variants::PROMOTE_BR>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Move::List&, Int2Type<Variants::PROMOTE_EP>);
 
         // implementation
 	static const bool TOGGLE = true;

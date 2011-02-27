@@ -27,23 +27,23 @@ private:
 
         // tag dispatching based on man capture directions
         static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&);
-        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variant::DIRS_2>);
-        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variant::DIRS_4>);
-        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variant::DIRS_8>);
+        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_2>);
+        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_4>);
+        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_8>);
 
         template<size_t> static void generate_dir(BitBoard, Capture::State<Rules, Board>&, Move::List&);
         template<size_t> static void generate_next(BitBoard, Capture::State<Rules, Board>&, Move::List&);
 
         // tag dispatching based on promotion condition
         template<size_t> static bool scan_next(BitBoard, Capture::State<Rules, Board>&, Move::List&);
-        template<size_t> static bool scan_next(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variant::PROMOTE_BR>);
-        template<size_t> static bool scan_next(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variant::PROMOTE_EP>);
+        template<size_t> static bool scan_next(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::PROMOTE_BR>);
+        template<size_t> static bool scan_next(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::PROMOTE_EP>);
 
         // tag dispatching based on man capture directions
         template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&);
-        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variant::DIRS_2>);
-        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variant::DIRS_4>);
-        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variant::DIRS_8>);
+        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_2>);
+        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_4>);
+        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_8>);
 
         template<size_t> static bool scan_dir(BitBoard, Capture::State<Rules, Board>&, Move::List&);
         template<size_t> static bool scan(BitBoard, Capture::State<Rules, Board>&, Move::List&);
@@ -55,9 +55,9 @@ private:
 
         // tag dispatching based on man capture directions
         static bool detect_dirs(BitBoard, BitBoard, BitBoard);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variant::DIRS_2>);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variant::DIRS_4>);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variant::DIRS_8>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variants::DIRS_2>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variants::DIRS_4>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variants::DIRS_8>);
 
         template<size_t> static bool detect_dir(BitBoard, BitBoard, BitBoard);
 };

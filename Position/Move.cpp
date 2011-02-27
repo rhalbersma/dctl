@@ -30,25 +30,25 @@ bool Move::List::non_unique_back(Int2Type<true>)
 }
 
 // specialization for men that promote on the back row
-bool Move::List::promotion_en_passant(BitBoard, BitBoard, Int2Type<Variant::PROMOTE_BR>)
+bool Move::List::promotion_en_passant(BitBoard, BitBoard, Int2Type<Variants::PROMOTE_BR>)
 {
         return false;
 }
 
 // specialization for men that promote en-passant
-bool Move::List::promotion_en_passant(BitBoard promotion, BitBoard delta, Int2Type<Variant::PROMOTE_EP>)
+bool Move::List::promotion_en_passant(BitBoard promotion, BitBoard delta, Int2Type<Variants::PROMOTE_EP>)
 {
         return Bit::is_single(promotion) && Bit::is_zero(delta);
 }
 
 // specialization for complete removal after a capture sequence
-bool Move::List::sequential_capture_removal(BitBoard, BitBoard, Int2Type<Variant::REMOVE_N>)
+bool Move::List::sequential_capture_removal(BitBoard, BitBoard, Int2Type<Variants::REMOVE_N>)
 {
         return false; 
 }
 
 // specialization for piece by piece removal during a capture sequence
-bool Move::List::sequential_capture_removal(BitBoard delta, BitBoard captured_pieces, Int2Type<Variant::REMOVE_1>)
+bool Move::List::sequential_capture_removal(BitBoard delta, BitBoard captured_pieces, Int2Type<Variants::REMOVE_1>)
 {
         return Bit::is_single(delta & captured_pieces) && Bit::is_multiple(captured_pieces); 
 }

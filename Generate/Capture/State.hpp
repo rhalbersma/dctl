@@ -56,7 +56,7 @@ BitBoard State<Rules, Board>::captured_targets(void) const
 template<typename Rules, typename Board>
 BitBoard State<Rules, Board>::captured_kings(BitBoard captured_pieces) const
 {
-        return captured_kings(captured_pieces, Int2Type<Variant::is_MenCaptureKings<Rules>::VALUE>());
+        return captured_kings(captured_pieces, Int2Type<Variants::is_MenCaptureKings<Rules>::VALUE>());
 }
 
 // specialization for men that cannot capture kings
@@ -132,20 +132,20 @@ void State<Rules, Board>::finish(BitBoard jump_sq)
 template<typename Rules, typename Board> FORCE_INLINE
 void State<Rules, Board>::make(BitBoard target_sq)
 {
-        make(target_sq, Int2Type<Variant::CaptureRemoval<Rules>::VALUE>());
+        make(target_sq, Int2Type<Variants::CaptureRemoval<Rules>::VALUE>());
 }
 
 // partial specialization for piece by piece removal during a capture sequence
 template<typename Rules, typename Board>
-void State<Rules, Board>::make(BitBoard target_sq, Int2Type<Variant::REMOVE_1>)
+void State<Rules, Board>::make(BitBoard target_sq, Int2Type<Variants::REMOVE_1>)
 {
         not_occupied_ ^= target_sq;
-        make(target_sq, Int2Type<Variant::REMOVE_N>());
+        make(target_sq, Int2Type<Variants::REMOVE_N>());
 }
 
 // partial specialization for complete removal after a capture sequence
 template<typename Rules, typename Board> FORCE_INLINE
-void State<Rules, Board>::make(BitBoard target_sq, Int2Type<Variant::REMOVE_N>)
+void State<Rules, Board>::make(BitBoard target_sq, Int2Type<Variants::REMOVE_N>)
 {
         remaining_targets_ ^= target_sq;
         increment<Rules>()(current_, target_sq, king_targets_);
@@ -155,20 +155,20 @@ void State<Rules, Board>::make(BitBoard target_sq, Int2Type<Variant::REMOVE_N>)
 template<typename Rules, typename Board> FORCE_INLINE
 void State<Rules, Board>::undo(BitBoard target_sq)
 {
-        undo(target_sq, Int2Type<Variant::CaptureRemoval<Rules>::VALUE>());
+        undo(target_sq, Int2Type<Variants::CaptureRemoval<Rules>::VALUE>());
 }
 
 // partial specialization for piece by piece removal during a capture sequence
 template<typename Rules, typename Board> FORCE_INLINE
-void State<Rules, Board>::undo(BitBoard target_sq, Int2Type<Variant::REMOVE_1>)
+void State<Rules, Board>::undo(BitBoard target_sq, Int2Type<Variants::REMOVE_1>)
 {
-        undo(target_sq, Int2Type<Variant::REMOVE_N>());
+        undo(target_sq, Int2Type<Variants::REMOVE_N>());
         not_occupied_ ^= target_sq;
 }
 
 // partial specialization for complete removal after a capture sequence
 template<typename Rules, typename Board> FORCE_INLINE
-void State<Rules, Board>::undo(BitBoard target_sq, Int2Type<Variant::REMOVE_N>)
+void State<Rules, Board>::undo(BitBoard target_sq, Int2Type<Variants::REMOVE_N>)
 {
         decrement<Rules>()(current_, target_sq, king_targets_);
         remaining_targets_ ^= target_sq;
@@ -185,7 +185,7 @@ void State<Rules, Board>::improve_best(Move::List& move_list)
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
 void State<Rules, Board>::add_man_capture(BitBoard dest_sq, Move::List& move_list)
 {
-        add_man_capture<Color>(dest_sq, move_list, Int2Type<Variant::is_AmbiguousManCapture<Rules>::VALUE>());
+        add_man_capture<Color>(dest_sq, move_list, Int2Type<Variants::is_AmbiguousManCapture<Rules>::VALUE>());
 }
 
 // partial specialization for man captures that are unambiguous
@@ -211,22 +211,22 @@ void State<Rules, Board>::add_man_capture(BitBoard dest_sq, Move::List& move_lis
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
 void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list)
 {
-        add_king_capture<Color, Index>(dest_sq, move_list, Int2Type<Variant::KingCaptureHalt<Rules>::VALUE>());
+        add_king_capture<Color, Index>(dest_sq, move_list, Int2Type<Variants::KingCaptureHalt<Rules>::VALUE>());
 }
 
 // partial specialization for kings that halt immediately if the final capture is a king, and slide through otherwise
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<Variant::HALT_K>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<Variants::HALT_K>)
 {
         if (king_targets_ & Pull<Board, Index>()(dest_sq))
-                add_king_capture<Color, Index>(dest_sq, move_list, Int2Type<Variant::HALT_1>());
+                add_king_capture<Color, Index>(dest_sq, move_list, Int2Type<Variants::HALT_1>());
         else
-                add_king_capture<Color, Index>(dest_sq, move_list, Int2Type<Variant::HALT_N>());
+                add_king_capture<Color, Index>(dest_sq, move_list, Int2Type<Variants::HALT_N>());
 }
 
 // partial specialization for kings that halt immediately after the final capture
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<Variant::HALT_1>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<Variants::HALT_1>)
 {
         const BitBoard captured_pieces = captured_targets();
         const bool ambiguous = !move_list.empty() && large<Rules>()(current_, captured_pieces);
@@ -235,7 +235,7 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_li
 
 // partial specialization for kings that slide through after the final capture
 template<typename Rules, typename Board> template<bool Color, size_t Index> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<Variant::HALT_N>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_list, Int2Type<Variants::HALT_N>)
 {
         assert(dest_sq & path());
 
@@ -252,21 +252,21 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Move::List& move_li
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
 void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, bool ambiguous, Move::List& move_list)
 {
-        add_king_capture<Color>(dest_sq, captured_pieces, captured_kings, move_list, Int2Type<Variant::PromotionCondition<Rules>::VALUE>());
+        add_king_capture<Color>(dest_sq, captured_pieces, captured_kings, move_list, Int2Type<Variants::PromotionCondition<Rules>::VALUE>());
         if (ambiguous && move_list.non_unique_back<Rules>())
                 move_list.pop_back();
 }
 
 // partial specialization for men that promote on the back row
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Move::List& move_list, Int2Type<Variant::PROMOTE_BR>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Move::List& move_list, Int2Type<Variants::PROMOTE_BR>)
 {
         move_list.push_back<Color, Rules>(from_sq_ ^ dest_sq, captured_pieces, captured_kings);
 }
 
 // partial specialization for men that promote en-passant
 template<typename Rules, typename Board> template<bool Color> FORCE_INLINE
-void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Move::List& move_list, Int2Type<Variant::PROMOTE_EP>)
+void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_pieces, BitBoard captured_kings, Move::List& move_list, Int2Type<Variants::PROMOTE_EP>)
 {
         if (!is_promotion())
                 move_list.push_back<Color, Rules>(from_sq_ ^ dest_sq,          captured_pieces, captured_kings);

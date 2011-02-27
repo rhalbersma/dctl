@@ -1,9 +1,9 @@
-namespace Variant { struct Spanish; }
+namespace Variants { struct Spanish; }
 
 namespace Capture {
 
 template<>
-struct init<Variant::Spanish>
+struct init<Variants::Spanish>
 {
         void operator()(Value& value) const
         {
@@ -12,7 +12,7 @@ struct init<Variant::Spanish>
 };
 
 template<>
-struct copy<Variant::Spanish>
+struct copy<Variants::Spanish>
 {
         void operator()(Value& left, const Value& right) const
         {
@@ -22,7 +22,7 @@ struct copy<Variant::Spanish>
 };
 
 template<>
-struct increment<Variant::Spanish>
+struct increment<Variants::Spanish>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -33,7 +33,7 @@ struct increment<Variant::Spanish>
 };
 
 template<>
-struct decrement<Variant::Spanish>
+struct decrement<Variants::Spanish>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -44,7 +44,7 @@ struct decrement<Variant::Spanish>
 };
 
 template<>
-struct equal_to<Variant::Spanish>: public std::binary_function<Value, Value, bool>
+struct equal_to<Variants::Spanish>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -56,7 +56,7 @@ struct equal_to<Variant::Spanish>: public std::binary_function<Value, Value, boo
 };
 
 template<>
-struct greater_equal<Variant::Spanish>: public std::binary_function<Value, Value, bool>
+struct greater_equal<Variants::Spanish>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {

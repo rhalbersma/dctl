@@ -41,13 +41,13 @@ private:
 
         // tag dispatching based on promotion condition
         template<typename> static bool promotion_en_passant(BitBoard, BitBoard);                        // Russian draughts
-        static bool promotion_en_passant(BitBoard, BitBoard, Int2Type<Variant::PROMOTE_BR>);
-        static bool promotion_en_passant(BitBoard, BitBoard, Int2Type<Variant::PROMOTE_EP>);
+        static bool promotion_en_passant(BitBoard, BitBoard, Int2Type<Variants::PROMOTE_BR>);
+        static bool promotion_en_passant(BitBoard, BitBoard, Int2Type<Variants::PROMOTE_EP>);
 
         // tag dispatching on capture removal
         template<typename> static bool sequential_capture_removal(BitBoard, BitBoard);                  // Thai draughts
-        static bool sequential_capture_removal(BitBoard, BitBoard, Int2Type<Variant::REMOVE_1>);        
-        static bool sequential_capture_removal(BitBoard, BitBoard, Int2Type<Variant::REMOVE_N>);
+        static bool sequential_capture_removal(BitBoard, BitBoard, Int2Type<Variants::REMOVE_1>);        
+        static bool sequential_capture_removal(BitBoard, BitBoard, Int2Type<Variants::REMOVE_N>);
 
         VectorArray<Pieces, MOVE_MAX> move_list_;
 };

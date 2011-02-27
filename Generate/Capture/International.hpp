@@ -1,9 +1,9 @@
-namespace Variant { struct International; }
+namespace Variants { struct International; }
 
 namespace Capture {
 
 template<>
-struct init<Variant::International>
+struct init<Variants::International>
 {
         void operator()(Value& value) const
         {
@@ -12,7 +12,7 @@ struct init<Variant::International>
 };
 
 template<>
-struct copy<Variant::International>
+struct copy<Variants::International>
 {
         void operator()(Value& left, const Value& right) const
         {
@@ -21,7 +21,7 @@ struct copy<Variant::International>
 };
 
 template<>
-struct increment<Variant::International>
+struct increment<Variants::International>
 {
         void operator()(Value& value, BitBoard, BitBoard) const
         {
@@ -30,7 +30,7 @@ struct increment<Variant::International>
 };
 
 template<>
-struct decrement<Variant::International>
+struct decrement<Variants::International>
 {
         void operator()(Value& value, BitBoard, BitBoard) const
         {
@@ -39,7 +39,7 @@ struct decrement<Variant::International>
 };
 
 template<>
-struct equal_to<Variant::International>: public std::binary_function<Value, Value, bool>
+struct equal_to<Variants::International>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -48,7 +48,7 @@ struct equal_to<Variant::International>: public std::binary_function<Value, Valu
 };
 
 template<>
-struct greater_equal<Variant::International>: public std::binary_function<Value, Value, bool>
+struct greater_equal<Variants::International>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {

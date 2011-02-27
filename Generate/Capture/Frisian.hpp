@@ -1,9 +1,9 @@
-namespace Variant { struct Frisian; }
+namespace Variants { struct Frisian; }
 
 namespace Capture {
 
 template<>
-struct init<Variant::Frisian>
+struct init<Variants::Frisian>
 {
         void operator()(Value& value) const
         {
@@ -13,7 +13,7 @@ struct init<Variant::Frisian>
 };
 
 template<>
-struct copy<Variant::Frisian>
+struct copy<Variants::Frisian>
 {
         void operator()(Value& left, const Value& right) const
         {
@@ -24,7 +24,7 @@ struct copy<Variant::Frisian>
 };
 
 template<>
-struct increment<Variant::Frisian>
+struct increment<Variants::Frisian>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -35,7 +35,7 @@ struct increment<Variant::Frisian>
 };
 
 template<>
-struct decrement<Variant::Frisian>
+struct decrement<Variants::Frisian>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -46,7 +46,7 @@ struct decrement<Variant::Frisian>
 };
 
 template<>
-struct equal_to<Variant::Frisian>: public std::binary_function<Value, Value, bool>
+struct equal_to<Variants::Frisian>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -59,7 +59,7 @@ struct equal_to<Variant::Frisian>: public std::binary_function<Value, Value, boo
 };
 
 template<>
-struct greater_equal<Variant::Frisian>: public std::binary_function<Value, Value, bool>
+struct greater_equal<Variants::Frisian>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {

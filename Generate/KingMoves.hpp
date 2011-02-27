@@ -18,7 +18,7 @@ void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(const Po
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::List& move_list)
 {
-        generate_serial(active_kings, not_occupied, move_list, Int2Type<Variant::is_RestrictedSameKingMoves<Rules>::VALUE>());
+        generate_serial(active_kings, not_occupied, move_list, Int2Type<Variants::is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
 // partial specialization for restricted consecutive move_list with the same king
@@ -57,12 +57,12 @@ void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dirs(Bit
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list)
 {
-        return generate_dir<Index>(from_sq, not_occupied, move_list, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
+        return generate_dir<Index>(from_sq, not_occupied, move_list, Int2Type<Variants::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list, Int2Type<Variant::RANGE_1>)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list, Int2Type<Variants::RANGE_1>)
 {
         if (BitBoard dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
                 move_list.push_back<Color>(from_sq ^ dest_sq);
@@ -70,7 +70,7 @@ void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitB
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list, Int2Type<Variant::RANGE_N>)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list, Int2Type<Variants::RANGE_N>)
 {
         for (BitBoard dest_sq = Push<Board, Index>()(from_sq); dest_sq & not_occupied; PushAssign<Board, Index>()(dest_sq))
                 move_list.push_back<Color>(from_sq ^ dest_sq);
@@ -97,19 +97,19 @@ size_t Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dirs(BitB
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
 size_t Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied)
 {
-        return count_dir<Index>(active_kings, not_occupied, Int2Type<Variant::is_LongKingRange<Rules>::VALUE>());
+        return count_dir<Index>(active_kings, not_occupied, Int2Type<Variants::is_LongKingRange<Rules>::VALUE>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-size_t Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<Variant::RANGE_1>)
+size_t Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<Variants::RANGE_1>)
 {
         return Bit::count(Push<Board, Index>()(active_kings) & not_occupied);
 }
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
-size_t Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<Variant::RANGE_N>)
+size_t Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied, Int2Type<Variants::RANGE_N>)
 {
         return Bit::count(active_kings ^ FloodFill<Board, Index>()(active_kings, not_occupied));
 }

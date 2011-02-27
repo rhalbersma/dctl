@@ -21,7 +21,7 @@ void Template<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate(const Po
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Template<Color, Pieces::BOTH, Move::JUMPS, Rules, Board>::generate_precede(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
-        generate_precede(p, capture, move_list, Int2Type<Variant::is_AbsoluteKingPrecedence<Rules>::VALUE>());
+        generate_precede(p, capture, move_list, Int2Type<Variants::is_AbsoluteKingPrecedence<Rules>::VALUE>());
 }
 
 // partial specialization for no absolute king capture precedence

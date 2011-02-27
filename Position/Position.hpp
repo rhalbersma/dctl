@@ -60,14 +60,14 @@ bool Position<Board>::is_repetition_draw(void) const
 template<typename Board> template<typename Rules>
 bool Position<Board>::is_non_conversion_draw(void) const
 {
-        return is_non_conversion_draw<Rules>(Int2Type<Variant::is_RestrictedNonConversionMoves<Rules>::VALUE>());
+        return is_non_conversion_draw<Rules>(Int2Type<Variants::is_RestrictedNonConversionMoves<Rules>::VALUE>());
 }
 
 // partial specialization for restricted consecutive king moves by both sides
 template<typename Board> template<typename Rules>
 bool Position<Board>::is_non_conversion_draw(Int2Type<true>) const
 {
-        return non_conversion() >= Variant::MaxNonConversionMoves<Rules>::VALUE;
+        return non_conversion() >= Variants::MaxNonConversionMoves<Rules>::VALUE;
 }
 
 // partial specialization for unrestricted consecutive king moves by both sides
@@ -149,7 +149,7 @@ bool Position<Board>::to_move(void) const
 template<typename Board> template<typename Rules>
 BitBoard Position<Board>::unrestricted_kings(bool color) const
 {
-        return unrestricted_kings<Rules>(color, Int2Type<Variant::is_RestrictedSameKingMoves<Rules>::VALUE>());
+        return unrestricted_kings<Rules>(color, Int2Type<Variants::is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
 // partial specialization for unrestricted consecutive moves with the same king

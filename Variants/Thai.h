@@ -1,7 +1,7 @@
 #pragma once
 #include "Traits.h"
 
-namespace Variant {
+namespace Variants {
 
 struct Thai {};
 
@@ -11,4 +11,4 @@ template<> struct CaptureRemoval<Thai>                  { enum { VALUE = REMOVE_
 template<> struct is_DirectionReversal<Thai>            { enum { VALUE = true     }; };
 template<> struct LargeCaptureValue<Thai>               { enum { VALUE = 3        }; };
 
-}       // namespace Variant
+}       // namespace Variants

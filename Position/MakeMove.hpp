@@ -28,7 +28,7 @@ void Position<Board>::make(const Pieces& m)
 template<typename Board> template<typename Rules> FORCE_INLINE
 void Position<Board>::make_irreversible(const Pieces& m)
 {
-        make_irreversible<Rules>(m, Int2Type<Variant::is_RestrictedSameKingMoves<Rules>::VALUE>());
+        make_irreversible<Rules>(m, Int2Type<Variants::is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
 // partial specialization for restricted consecutive moves with the same king
@@ -127,19 +127,19 @@ bool Position<Board>::is_pseudo_legal_move(const Pieces& m) const
 template<typename Board> template<typename Rules>
 bool Position<Board>::make_sequential_capture_removal(const Pieces& m) const
 {
-        return make_sequential_capture_removal(m, Int2Type<Variant::CaptureRemoval<Rules>::VALUE>());
+        return make_sequential_capture_removal(m, Int2Type<Variants::CaptureRemoval<Rules>::VALUE>());
 }
 
 // partial specialization for complete removal after a capture sequence
 template<typename Board>
-bool Position<Board>::make_sequential_capture_removal(const Pieces&, Int2Type<Variant::REMOVE_N>) const
+bool Position<Board>::make_sequential_capture_removal(const Pieces&, Int2Type<Variants::REMOVE_N>) const
 {
         return false;
 }
 
 // partial specialization for piece by piece removal during a capture sequence
 template<typename Board>
-bool Position<Board>::make_sequential_capture_removal(const Pieces& m, Int2Type<Variant::REMOVE_1>) const
+bool Position<Board>::make_sequential_capture_removal(const Pieces& m, Int2Type<Variants::REMOVE_1>) const
 {
         // in Thai draughts, a capturing king can land on a square it also captured on
         // if a man was captured on that landing square, the move struct will indicate a king was captured

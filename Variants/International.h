@@ -1,7 +1,7 @@
 #pragma once
 #include "Traits.h"
 
-namespace Variant {
+namespace Variants {
 
 // http://www.fmjd.org/docs/Annex%201%20official%20FMJD%20rules%20of%20international%20draughts.doc
 struct International {};   
@@ -13,4 +13,4 @@ typedef International Canadian;
 
 template<> struct is_MajorityPrecedence<International>  { enum { VALUE = true  }; };
 
-}       // namespace Variant
+}       // namespace Variants
