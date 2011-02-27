@@ -1,4 +1,4 @@
-#include "../Hash/Sign.h"
+#include "Sign.h"
 #include <cassert>
 #include <iostream>
 

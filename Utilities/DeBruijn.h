@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include <cstdint>
+#include <stdint.h>
 
 template<size_t N>
 class DeBruijn
