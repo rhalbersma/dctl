@@ -1,7 +1,7 @@
 #include "../../Generate/Generate.h"
 #include "../../Position/Move.h"
 #include "../../Position/Position.h"
-#include "../../IO/PositionIO.h"
+#include "../../IO/FEN.h"
 #include "../../IO/MoveIO.h"
 #include "../../Utilities/StopWatch.h"
 #include <cassert>

@@ -163,7 +163,7 @@ BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<false>) const
 template<typename Board> template<typename Rules>
 BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<true>) const
 {
-        if (men(color) && kings(color) && is_restricted_king<MaxSameKingMoves<Rules>::VALUE>(color))                        
+        if (men(color) && kings(color) && is_restricted_king<Variants::MaxSameKingMoves<Rules>::VALUE>(color))
                 return kings(color) ^ repeated_kings(color);
         else
                 return kings(color);

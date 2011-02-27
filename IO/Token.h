@@ -1,7 +1,5 @@
 #pragma once
 
-template<typename> struct PositionToken;
-
 template<char B, char W, char E>
 struct PositionTokenTriple
 {
@@ -15,7 +13,7 @@ struct PositionTokenTriple
 };
 
 template<char M, char C>
-struct MoveToken
+struct MoveTokenDouble
 {
         static const char MOVE    = M;
         static const char CAPTURE = C;

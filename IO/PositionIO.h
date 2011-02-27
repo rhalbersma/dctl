@@ -1,15 +1,15 @@
 #pragma once
-#include "Token.h"
 #include <functional>
 #include <string>
 
 template<typename> class Position;
+template<typename> struct PositionToken;
 
 template
 <
         typename Protocol, 
-        typename Board = Geometry::International, 
-        typename Token = typename PositionToken<Protocol>
+        typename Board,
+        typename Token = PositionToken<Protocol>
 >
 struct read_position_string
 {
@@ -19,7 +19,7 @@ struct read_position_string
 template
 <
         typename Protocol, 
-        typename Token = typename PositionToken<Protocol>
+        typename Token = PositionToken<Protocol>
 >
 struct write_position_string
 {
@@ -29,7 +29,7 @@ struct write_position_string
 template
 <
         typename Protocol,
-        typename Token = typename PositionToken<Protocol>
+        typename Token = PositionToken<Protocol>
 >
 struct write_position_layout
 {

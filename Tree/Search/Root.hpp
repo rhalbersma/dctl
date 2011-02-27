@@ -2,7 +2,7 @@
 #include "../../Position/Move.h"
 #include "../../Generate/Generate.h"
 #include "../../Evaluation/Evaluate.h"
-#include "../../IO/PositionIO.h"
+#include "../../IO/FEN.h"
 #include "../../IO/MoveIO.h"
 #include "../../Utilities/StopWatch.h"
 #include <iostream>
