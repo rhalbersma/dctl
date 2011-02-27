@@ -8,7 +8,7 @@
 #include "../../Position/Position.h"
 #include "../../Position/Pieces.h"
 
-class Move::List;
+namespace Move { class List; }
 
 namespace Capture {
 

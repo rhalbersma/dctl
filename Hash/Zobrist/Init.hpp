@@ -1,7 +1,7 @@
 #include "Random.h"
-#include "../Position/Position.h"
-#include "../Position/Pieces.h"
-#include "../Position/Side.h"
+#include "../../Position/Position.h"
+#include "../../Position/Pieces.h"
+#include "../../Position/Side.h"
 
 namespace Hash {
 namespace Zobrist {

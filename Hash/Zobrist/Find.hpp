@@ -1,4 +1,4 @@
-#include "../Position/Position.h"
+#include "../../Position/Position.h"
 
 namespace Hash {
 namespace Zobrist {
