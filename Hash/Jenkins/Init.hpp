@@ -1,6 +1,6 @@
 #include "Mix.h"
-#include "../Position/Position.h"
-#include "../Position/Side.h"
+#include "../../Position/Position.h"
+#include "../../Position/Side.h"
 
 namespace Hash {
 namespace Jenkins {

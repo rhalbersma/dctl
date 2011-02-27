@@ -29,7 +29,7 @@ class Map
 public:
         // constructors
         Map(void) {};
-	explicit Map(size_t);
+        explicit Map(size_t);
 
         // capacity
         void resize(size_t);

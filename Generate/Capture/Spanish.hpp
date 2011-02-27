@@ -1,4 +1,4 @@
-namespace Variant { struct Variant::Spanish; }
+namespace Variant { struct Spanish; }
 
 namespace Capture {
 

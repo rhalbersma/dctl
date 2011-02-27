@@ -4,8 +4,8 @@
 #include "Tree/Search/Test.h"
 #include "Tree/Walk/Test.h"
 
-#include "DamExchange/Layer1/Test.h"
-#include "DamExchange/Layer2/Test.h"
+//#include "DamExchange/Layer1/Test.h"
+//#include "DamExchange/Layer2/Test.h"
 
 #include "Geometry/Board.h"
 #include "Variants/Rules.h"
@@ -21,7 +21,7 @@ int main(void)
         std::cout << sizeof(Capture::State<Variant::International, Geometry::International>) << std::endl;
         std::cout << sizeof(Capture::Value) << std::endl;
 
-        Tree::Walk::Test::International();
+        //Tree::Walk::Test::International();
         //Tree::Walk::Test::Killer();
         //Tree::Walk::Test::Rectangular();
         //Tree::Walk::Test::Geometry::ChessVariants();

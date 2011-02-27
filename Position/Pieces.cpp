@@ -69,7 +69,7 @@ BitBoard Pieces::pieces(bool color) const
         return pieces_[color];
 }
 
-// toggle the set bits of another piece set
+// xor-assign the set bits of another piece set
 Pieces& Pieces::operator^=(const Pieces& other)
 {
         pieces_[Side::BLACK] ^= other.pieces(Side::BLACK);
@@ -78,6 +78,12 @@ Pieces& Pieces::operator^=(const Pieces& other)
 
         assert(invariant());
         return *this;
+}
+
+// xor-assign the set bits of two piece sets
+Pieces operator^(const Pieces& left, const Pieces& right)
+{
+        return Pieces(left) ^= right;
 }
 
 // logical consistency of the representation

@@ -6,7 +6,6 @@
 #include "../../Utilities/StopWatch.h"
 #include <cassert>
 #include <iostream>
-#include <boost/thread.hpp>
 
 namespace Tree {
 namespace Walk {

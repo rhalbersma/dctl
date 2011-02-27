@@ -6,6 +6,8 @@
 #include "../../Utilities/InlineOptions.h"
 #include <cassert>
 
+using namespace Geometry;
+
 namespace Capture { 
 
 template<typename Rules, typename Board> FORCE_INLINE

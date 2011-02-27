@@ -39,5 +39,7 @@ private:
         BitBoard kings_;                                // kings
 };
 
+Pieces operator^(const Pieces&, const Pieces&);		    // xor-assign the set bits of two piece sets
+
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Pieces.hpp"

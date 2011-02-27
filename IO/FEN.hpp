@@ -1,3 +1,5 @@
+#include <cctype>
+
 template<typename Board, typename Token>
 Position<Board> read_position_string<FEN_tag, Board, Token>::operator()(const std::string& s)
 {      
