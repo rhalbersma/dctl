@@ -59,7 +59,7 @@ NodeCount Root::divide(const Position<Board>& p, size_t nominal_depth)
 template<typename Rules, typename Board>
 NodeCount Root::driver(const Position<Board>& p, size_t ply, size_t depth)
 {
-        return (depth == 0)? leaf<Rules>(p, ply, depth) : bulk<Rules>(p, ply, depth);
+        return (depth == 0)? leaf<Rules>(p, ply, depth) : fast<Rules>(p, ply, depth);
 }
 
 template<typename Rules, typename Board>
@@ -106,7 +106,7 @@ NodeCount Root::count(const Position<Board>& p, size_t ply, size_t depth)
         statistics_.update(ply);
 
         if (depth == 1)
-                return Generate<Rules, Board>::count<Rules>(p);
+                return Generate<Rules, Board>::count(p);
 
         Move::List move_list;
         Generate<Rules, Board>::generate(p, move_list);
@@ -124,7 +124,7 @@ NodeCount Root::hash(const Position<Board>& p, size_t ply, size_t depth)
 {
         statistics_.update(ply);
 
-        const PerftNode* TT_entry = TT.find(p);
+        const Node* TT_entry = TT.find(p);
         if (TT_entry && TT_entry->is_sufficient(depth))
                 return TT_entry->leafs();
 
@@ -149,13 +149,13 @@ NodeCount Root::fast(const Position<Board>& p, size_t ply, size_t depth)
 {
         statistics_.update(ply);
 
-        const PerftNode* TT_entry = TT.find(p);
+        const Node* TT_entry = TT.find(p);
         if (TT_entry && TT_entry->is_sufficient(depth))
                 return TT_entry->leafs();
 
         NodeCount leafs;
         if (depth == 1)
-                leafs = Generate<Rules, Board>::count<Rules>(p);
+                leafs = Generate<Rules, Board>::count(p);
         else {
                 Move::List move_list;
                 Generate<Rules, Board>::generate(p, move_list);

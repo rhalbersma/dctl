@@ -17,7 +17,7 @@ void Position<Board>::make(const Pieces& m)
 {
         assert(is_pseudo_legal_move<Rules>(m));
 
-        //make_irreversible<Rules>(m);
+        make_irreversible<Rules>(m);
         make_reversible(m);
 
         assert(pieces_invariant());
@@ -36,7 +36,7 @@ template<typename Board> template<typename Rules> FORCE_INLINE
 void Position<Board>::make_irreversible(const Pieces& m, Int2Type<true>)
 {
         make_irreversible<Rules>(m, Int2Type<false>());
-        make_repeated_kings_moves<MaxSameKingMoves<Rules>::VALUE>(m);
+        make_repeated_kings_moves<Variants::MaxSameKingMoves<Rules>::VALUE>(m);
 }
 
 // partial specialization for unrestricted consecutive moves with the same king
@@ -60,12 +60,12 @@ void Position<Board>::make_repeated_kings_moves(const Pieces& m)
 {
         hash_index_ ^= Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
-        repeated_kings ^= repeated_kings(to_move());
+        repeated_kings_ ^= repeated_kings(to_move());
         if (men(to_move()) && kings(to_move()) && is_non_conversion(m)) {
-                repeated_kings ^= king_dest_sq(m);                        
-                ++repeated_moves[to_move()];
+                repeated_kings_ ^= king_dest_sq(m);                        
+                ++repeated_moves_[to_move()];
         } else
-                repeated_moves[to_move()] = 0;
+                repeated_moves_[to_move()] = 0;
 
         hash_index_ ^= Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 }
@@ -104,10 +104,10 @@ template<typename Board> FORCE_INLINE
 void Position<Board>::make_reversible(const Pieces& m)
 {
         pieces_ ^= m;
-        //hash_index_ ^= Hash::Zobrist::Init<Pieces, HashIndex>()(m);
+        hash_index_ ^= Hash::Zobrist::Init<Pieces, HashIndex>()(m);
 
         to_move_ ^= PASS;
-        //hash_index_ ^= Hash::Zobrist::Init<bool, HashIndex>()();
+        hash_index_ ^= Hash::Zobrist::Init<bool, HashIndex>()();
 }
 
 template<typename Board> template<typename Rules>
