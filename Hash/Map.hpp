@@ -1,12 +1,7 @@
 #include "Sign.h"
 #include <cassert>
 #include <iostream>
-
-#ifdef _MSC_VER
-#include <type_traits>
-#else
-#include <tr1/type_traits>
-#endif
+#include <boost/type_traits.hpp>
 
 namespace Hash {
 
@@ -47,7 +42,7 @@ template<typename Key, typename Value, typename Replace, template<typename, type
 template<typename Item>
 const Value* Map<Key, Value, Replace, Hash, Index>::find(const Item& item) const
 {
-        return find(item, Int2Type<std::tr1::is_integral<Key>::value>());
+        return find(item, Int2Type<boost::is_integral<Key>::value>());
 }
 
 // partial specialization for integer keys
@@ -82,7 +77,7 @@ template<typename Key, typename Value, typename Replace, template<typename, type
 template<typename Item>
 void Map<Key, Value, Replace, Hash, Index>::insert(const Item& item, const Value& value)
 {
-        insert(item, value, Int2Type<std::tr1::is_integral<Key>::value>());
+        insert(item, value, Int2Type<boost::is_integral<Key>::value>());
 }
 
 // partial specialization for integral keys

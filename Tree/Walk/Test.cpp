@@ -17,20 +17,20 @@ void Tree::Walk::Test::International(void)
         Position<Geometry::International> i10 = Position<Geometry::International>::initial();
         Root::perft<Variants::International>(i10, 11);
 
-        //Position<Geometry::International> random178(read_position_string<FEN_tag>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
-        //Root::perft<Variants::International>(random178, 9);
+        Position<Geometry::International> random178(read_position_string<FEN_tag, Geometry::International>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
+        Root::perft<Variants::International>(random178, 9);
 
-        //Position<Geometry::International> Woldouby(read_position_string<FEN_tag>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
-        //Root::perft<Variants::International>(Woldouby, 15);
+        Position<Geometry::International> Woldouby(read_position_string<FEN_tag, Geometry::International>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
+        Root::perft<Variants::International>(Woldouby, 15);
 }
-/*
+
 // The rectangular board thread on the FMJD forum: http://laatste.info/bb3/viewtopic.php?f=53&t=3014
 void Tree::Walk::Test::Rectangular(void)
 {
-        std::cout << write_square_layout<SpantsiretiBoard>()() << std::endl;
-        std::cout << write_bit_layout<SpantsiretiBoard>()() << std::endl;
+        std::cout << write_square_layout<Geometry::Spantsireti>()() << std::endl;
+        std::cout << write_bit_layout<Geometry::Spantsireti>()() << std::endl;
 
-        Position<SpantsiretiBoard> iS;
+        Position<Geometry::Spantsireti> iS;
         Root::perft<Variants::International>(iS, 9);
 
         std::cout << write_square_layout<Geometry::Ktar11>()() << std::endl;
@@ -78,9 +78,9 @@ void Tree::Walk::Test::ChessVariants(void)
 // Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 void Tree::Walk::Test::ItalianRuleBook(void)
 {
-        Position<Geometry::Roman> ITA_empty = read_position_string<FEN_tag, Geometry::Roman>()("");       // Art. 2.1
+        Position<Geometry::Roman> ITA_empty = read_position_string<FEN_tag, Geometry::Roman>()("");     // Art. 2.1
         typedef Geometry::Roman ITA_notation;                                      	                // Art. 2.4
-        Position<Geometry::Roman> ITA_initial;						        // Art. 2.6
+        Position<Geometry::Roman> ITA_initial;						                // Art. 2.6
 
         std::string ITA_rules[] = {
                 "W:W30:B27",                    // Art. 5.6
@@ -100,4 +100,3 @@ void Tree::Walk::Test::ItalianRuleBook(void)
         for (size_t i = 0; i < 9; ++i)
                 Root::divide<Variants::Italian>(read_position_string<FEN_tag, Geometry::Roman>()(ITA_rules[i]), 1);
 }
-*/
