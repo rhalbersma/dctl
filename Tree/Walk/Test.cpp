@@ -30,26 +30,26 @@ void Tree::Walk::Test::Rectangular(void)
         std::cout << write_square_layout<Geometry::Spantsireti>()() << std::endl;
         std::cout << write_bit_layout<Geometry::Spantsireti>()() << std::endl;
 
-        Position<Geometry::Spantsireti> iS;
+        Position<Geometry::Spantsireti> iS = Position<Geometry::Spantsireti>::initial();
         Root::perft<Variants::International>(iS, 9);
 
         std::cout << write_square_layout<Geometry::Ktar11>()() << std::endl;
         std::cout << write_bit_layout<Geometry::Ktar11>()() << std::endl;
         
-        Position<Geometry::Ktar11> iK11;
+        Position<Geometry::Ktar11> iK11 = Position<Geometry::Ktar11>::initial();
         Root::perft<Variants::International>(iK11, 9);
                 
         std::cout << write_square_layout<Geometry::Ktar12>()() << std::endl;
         std::cout << write_bit_layout<Geometry::Ktar12>()() << std::endl;
         
-        Position<Geometry::Ktar12> iK12;
+        Position<Geometry::Ktar12> iK12 = Position<Geometry::Ktar12>::initial();
         Root::perft<Variants::International>(iK12, 9);
 }
 
 // The alternative game rules thread on the FMJD forum: http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 void Tree::Walk::Test::ChessVariants(void)
 {
-        Position<Geometry::Chess> i8;
+        Position<Geometry::Chess> i8 = Position<Geometry::Chess>::initial();
         std::cout << write_square_layout<Geometry::Chess>()() << std::endl;
         
         Root::perft<Variants::Brazilian>(i8, 13); // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
@@ -58,7 +58,7 @@ void Tree::Walk::Test::ChessVariants(void)
         Root::perft<Variants::English>(i8, 14);   // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
         Root::perft<Variants::Czech>(i8, 13);
 
-        Position<Geometry::Roman> r8;
+        Position<Geometry::Roman> r8 = Position<Geometry::Roman>::initial();
         std::cout << write_square_layout<Geometry::Roman>()() << std::endl;
 
         Root::perft<Variants::Spanish>(r8, 13);
@@ -70,7 +70,7 @@ void Tree::Walk::Test::ChessVariants(void)
         Root::perft<Variants::Italian>(ITA_Ed_Gilbert_2, 16);
         Root::perft<Variants::Italian>(ITA_Ed_Gilbert_3, 12);
         
-        Position<Geometry::Thai> t8;
+        Position<Geometry::Thai> t8 = Position<Geometry::Thai>::initial();
         Root::perft<Variants::Thai>(t8, 11);      // Thai initial position with 2 rows of men
         Root::perft<Variants::Thai>(i8, 13);      // Usual initial position with 3 rows of men
 }

@@ -21,11 +21,11 @@ int main(void)
         std::cout << sizeof(Capture::State<Variants::International, Geometry::International>) << std::endl;
         std::cout << sizeof(Capture::Value) << std::endl;
 
-        Tree::Walk::Test::International();
+        //Tree::Walk::Test::International();
         //Tree::Walk::Test::Killer();
-        //Tree::Walk::Test::Rectangular();
-        //Tree::Walk::Test::Geometry::ChessVariants();
-        //Tree::Walk::Test::ItalianRuleBook();
+        Tree::Walk::Test::Rectangular();
+        Tree::Walk::Test::ChessVariants();
+        Tree::Walk::Test::ItalianRuleBook();
         
         std::cout << "End of program." << std::endl;
         for (;;);
