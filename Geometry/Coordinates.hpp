@@ -12,6 +12,45 @@ struct Pair
         };
 };
 
+// identity rotation
+template<typename T, typename In>
+struct Rotate<T, In, Angles::D000>
+{
+        typedef In Out;
+};
+
+// rotate 90 degrees right
+template<typename T, typename In>
+struct Rotate<T, In, Angles::D270>
+{
+        typedef Pair
+        <
+                (static_cast<int>(T::WIDTH) - 1) - In::COL, 
+                In::ROW
+        > Out;
+};
+
+// rotate 90 degrees left
+template<typename T, typename In>
+struct Rotate<T, In, Angles::D090>
+{
+        typedef Pair
+        <
+                In::COL, (static_cast<int>(T::HEIGHT) - 1) - In::ROW
+        > Out;
+};
+
+// rotate 180 degrees
+template<typename T, typename In>
+struct Rotate<T, In, Angles::D180>
+{
+        typedef Pair
+        <
+                (static_cast<int>(T::HEIGHT) - 1) - In::ROW, 
+                (static_cast<int>(T::WIDTH) - 1) - In::COL
+        > Out;
+};
+
 template<typename T, int SQ>
 class FromRange
 {
@@ -49,34 +88,6 @@ private:
 
 public:
         static const int VALUE = M * Q + R;
-};
-
-// identity rotation
-template<typename T, typename In>
-struct Rotate<T, In, Angles::D000>
-{
-        typedef Pair<In::ROW, In::COL> Out;
-};
-
-// rotate 90 degrees right
-template<typename T, typename In>
-struct Rotate<T, In, Angles::D270>
-{
-        typedef Pair<(static_cast<int>(T::WIDTH) - 1) - In::COL, In::ROW> Out;
-};
-
-// rotate 90 degrees left
-template<typename T, typename In>
-struct Rotate<T, In, Angles::D090>
-{
-        typedef Pair<In::COL, (static_cast<int>(T::HEIGHT) - 1) - In::ROW> Out;
-};
-
-// rotate 180 degrees
-template<typename T, typename In>
-struct Rotate<T, In, Angles::D180>
-{
-        typedef Pair<(static_cast<int>(T::HEIGHT) - 1) - In::ROW, (static_cast<int>(T::WIDTH) - 1) - In::COL> Out;
 };
 
 }       // namespace Coordinates

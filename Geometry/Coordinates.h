@@ -6,14 +6,14 @@ namespace Coordinates {
 template<int, int>
 struct Pair;
 
+template<typename, typename, size_t> 
+struct Rotate;
+
 template<typename, int>
 class FromRange;
 
 template<typename, typename>
 class ToRange;
-
-template<typename, typename, size_t> 
-struct Rotate;
 
 }       // namespace Coordinates
 }       // namespace Geometry
