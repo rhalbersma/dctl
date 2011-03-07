@@ -1,7 +1,7 @@
 #pragma once
 #include "Borders.h"
 #include "Squares.h"
-#include "Transform.h"
+#include "Angles.h"
 #include "../Utilities/IntegerTypes.h"
 
 namespace Geometry {
@@ -11,20 +11,20 @@ template
         typename SquaresLayout,
         size_t D = 2,                                           // "demilitarized" rows in the initial position
         size_t N = 1,                                           // number of ghost bit columns
-        size_t A = D000                                         // rotation from external to internal grid
+        size_t A = Angles::D000                                 // rotation from external to internal grid
 >
 struct Board: public SquaresLayout
 {
         // reflection on template type parameters
         typedef Board<SquaresLayout, D, N, A> T;
         typedef SquaresLayout ExternalGrid;
-        typedef typename RotateSquares<ExternalGrid, A>::Out InternalGrid;
+        typedef typename Squares::Rotate<ExternalGrid, A>::Out InternalGrid;
         typedef Borders<InternalGrid, N> BordersLayout;
 
         // reflection on template non-type parameters
         static const size_t DMZ = D;                            // "demilitarized" rows in the initial position
         static const size_t ANGLE = A;                          // rotation from external to internal grid                        
-        static const size_t A_PRIME = Inverse<A>::VALUE;   // rotation from internal to external grid
+        static const size_t A_PRIME = Angles::Inverse<A>::VALUE;// rotation from internal to external grid
 
         // essential bitboard masks
         static const BitBoard SQUARES;                          // bit mask of legal squares, excluding ghost squares
@@ -48,21 +48,21 @@ struct Board: public SquaresLayout
 };
 
 // square boards
-typedef Board< Squares< 4,  4> > Micro;
-typedef Board< Squares< 6,  6> > Mini;
-typedef Board< Squares< 8,  8> > Chess;
-typedef Board< Squares<10, 10> > International;
+typedef Board< Squares::Grid< 4,  4> > Micro;
+typedef Board< Squares::Grid< 6,  6> > Mini;
+typedef Board< Squares::Grid< 8,  8> > Chess;
+typedef Board< Squares::Grid<10, 10> > International;
 
 // Spanish-Italian board
-typedef Board< Squares< 8,  8, true> > Roman;
+typedef Board< Squares::Grid< 8,  8, true> > Roman;
 
 // special initial position
-typedef Board< Squares< 8,  8>, 4 > Thai;
+typedef Board< Squares::Grid< 8,  8>, 4 > Thai;
 
 // rectangular boards
-typedef Board< Squares<10,  8, true>             > Spantsireti;
-typedef Board< Squares<11, 10, true>, 3, 1       > Ktar11;
-typedef Board< Squares<12, 10, true>, 2, 1, D270 > Ktar12;
+typedef Board< Squares::Grid<10,  8, true>                     > Spantsireti;
+typedef Board< Squares::Grid<11, 10, true>, 3, 1               > Ktar11;
+typedef Board< Squares::Grid<12, 10, true>, 2, 1, Angles::D270 > Ktar12;
 
 }       // namespace Geometry
 

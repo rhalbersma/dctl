@@ -1,29 +1,54 @@
-#include "Transform.h"
+#include "Angles.h"
 
 namespace Geometry {
+namespace Direction {
 
 // the 8 diagonal and orthogonal direction indices for black and white to move
 template<typename Board, bool Color> 
-class DirIndex
+class Indices
 { 
 private:                        
-        enum { ANGLE = (D180 * !Color) + Board::A_PRIME };
+        enum { ANGLE = (Angles::D180 * !Color) + Board::A_PRIME };
 
 public:
         enum {
-                RIGHT       = AntiClockwise<D000, ANGLE>::VALUE,
-                RIGHT_UP    = AntiClockwise<D045, ANGLE>::VALUE,
-                UP          = AntiClockwise<D090, ANGLE>::VALUE,
-                LEFT_UP     = AntiClockwise<D135, ANGLE>::VALUE,
-                LEFT        = AntiClockwise<D180, ANGLE>::VALUE,
-                LEFT_DOWN   = AntiClockwise<D225, ANGLE>::VALUE,
-                DOWN        = AntiClockwise<D270, ANGLE>::VALUE,
-                RIGHT_DOWN  = AntiClockwise<D315, ANGLE>::VALUE
+                RIGHT       = Angles::Rotate<Angles::D000, ANGLE>::VALUE,
+                RIGHT_UP    = Angles::Rotate<Angles::D045, ANGLE>::VALUE,
+                UP          = Angles::Rotate<Angles::D090, ANGLE>::VALUE,
+                LEFT_UP     = Angles::Rotate<Angles::D135, ANGLE>::VALUE,
+                LEFT        = Angles::Rotate<Angles::D180, ANGLE>::VALUE,
+                LEFT_DOWN   = Angles::Rotate<Angles::D225, ANGLE>::VALUE,
+                DOWN        = Angles::Rotate<Angles::D270, ANGLE>::VALUE,
+                RIGHT_DOWN  = Angles::Rotate<Angles::D315, ANGLE>::VALUE
         };
 };
 
+// rotated direction indices (in steps of 45 degrees anti-clockwise)
 template<size_t I>
-class DirTraits
+struct Rotate
+{
+        enum { 
+                I000 = Angles::Rotate<I, Angles::D000>::VALUE, 
+                L045 = Angles::Rotate<I, Angles::D045>::VALUE, 
+                L090 = Angles::Rotate<I, Angles::D090>::VALUE, 
+                L135 = Angles::Rotate<I, Angles::D135>::VALUE, 
+                I180 = Angles::Rotate<I, Angles::D180>::VALUE, 
+                R135 = Angles::Rotate<I, Angles::D225>::VALUE, 
+                R090 = Angles::Rotate<I, Angles::D270>::VALUE, 
+                R045 = Angles::Rotate<I, Angles::D315>::VALUE, 
+                I360 = Angles::Rotate<I, Angles::D360>::VALUE
+        };
+};
+
+// mirrored forward direction index (orthogonal to the original)
+template<size_t I>
+struct MirrorForward
+{
+        enum { VALUE = (I + Angles::D090) % Angles::D180 + (I / Angles::D180) * Angles::D180 };
+};
+
+template<size_t I>
+class Traits
 {
 private:
         static const size_t I_L090 = Rotate<I>::L090;
@@ -36,12 +61,13 @@ public:
         // up, down, right, left
         static const bool IS_UP = !(I / 4) && (I % 4);                          // 1, 2, 3
         static const bool IS_DOWN = (I / 4) && (I % 4);                         // 5, 6, 7
-        static const bool IS_RIGHT = DirTraits<I_L090>::IS_UP;                  // 0, 1, 7
-        static const bool IS_LEFT = DirTraits<I_L090>::IS_DOWN;                 // 3, 4, 5
+        static const bool IS_RIGHT = Traits<I_L090>::IS_UP;                     // 0, 1, 7
+        static const bool IS_LEFT = Traits<I_L090>::IS_DOWN;                    // 3, 4, 5
 
         // positive, negative
         static const bool IS_POSITIVE = IS_UP || (IS_LEFT && !IS_DOWN);         // 1, 2, 3, 4
         static const bool IS_NEGATIVE = !IS_POSITIVE;                           // 5, 6, 7, 0
 };
 
+}       // namespace Direction
 }       // namespace Geometry

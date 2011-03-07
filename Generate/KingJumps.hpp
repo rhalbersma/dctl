@@ -2,13 +2,12 @@
 #include "../Geometry/Board.h"
 #include "../Geometry/Direction.h"
 #include "../Geometry/PushPull.h"
-#include "../Geometry/Transform.h"
 #include "../Position/Position.h"
 #include "../Utilities/Bit.h"
 #include "../Utilities/InlineOptions.h"
 #include <cassert>
 
-using namespace Geometry;
+using namespace Geometry::Direction;
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
@@ -71,24 +70,24 @@ void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(Bit
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variants::DIRS_4>)
 {
-        generate_dir<DirIndex<Board, Color>::LEFT_UP   >(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::LEFT_DOWN >(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::RIGHT_DOWN>(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::LEFT_UP   >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::RIGHT_UP  >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::LEFT_DOWN >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::RIGHT_DOWN>(jumper, capture, move_list);
 }
 
 // partial specialization for kings that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list, Int2Type<Variants::DIRS_8>)
 {
-        generate_dir<DirIndex<Board, Color>::LEFT_UP   >(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::LEFT_DOWN >(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::RIGHT_DOWN>(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::LEFT      >(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::RIGHT     >(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::UP        >(jumper, capture, move_list);
-        generate_dir<DirIndex<Board, Color>::DOWN      >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::LEFT_UP   >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::RIGHT_UP  >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::LEFT_DOWN >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::RIGHT_DOWN>(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::LEFT      >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::RIGHT     >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::UP        >(jumper, capture, move_list);
+        generate_dir<Indices<Board, Color>::DOWN      >(jumper, capture, move_list);
 }
 
 // tag dispatching based on king range
@@ -297,10 +296,10 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variants::DIRS_4>)
 {
         return (
-                detect_dir<DirIndex<Board, Color>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::RIGHT_UP  >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::LEFT_DOWN >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::RIGHT_DOWN>(active_kings, opponent_pieces, not_occupied)
+                detect_dir<Indices<Board, Color>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::RIGHT_UP  >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::LEFT_DOWN >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::RIGHT_DOWN>(active_kings, opponent_pieces, not_occupied)
         );
 }
 
@@ -309,14 +308,14 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool Template<Color, Pieces::KING, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<Variants::DIRS_8>)
 {
         return (
-                detect_dir<DirIndex<Board, Color>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::RIGHT_UP  >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::LEFT_DOWN >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::RIGHT_DOWN>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::LEFT      >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::RIGHT     >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::UP        >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::DOWN      >(active_kings, opponent_pieces, not_occupied)
+                detect_dir<Indices<Board, Color>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::RIGHT_UP  >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::LEFT_DOWN >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::RIGHT_DOWN>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::LEFT      >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::RIGHT     >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::UP        >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Indices<Board, Color>::DOWN      >(active_kings, opponent_pieces, not_occupied)
         );
 }
 

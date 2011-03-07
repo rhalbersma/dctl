@@ -1,8 +1,14 @@
 #include "Direction.h"
-#include "BordersPredicates.h"
-#include "SquaresPredicates.h"
+#include "Coordinates.h"
 
 namespace Geometry {
+
+template<typename T, int SQ>
+class IS_VALID
+{
+public:
+        static const bool VALUE = SQ < T::SIZE;
+};
 
 template<typename T, bool C, size_t SQ>
 class IS_INITIAL
@@ -11,7 +17,7 @@ private:
         enum {
                 LOWER_BOUND = C? (T::HEIGHT - 1) - ((T::HEIGHT - T::DMZ) / 2 - 1) : 0,
                 UPPER_BOUND = C? (T::HEIGHT - 1) : (T::HEIGHT - T::DMZ) / 2 - 1,
-                ROW = SQUARE2COORD<T, SQ>::ROW
+                ROW = Coordinates::FromRange<T, SQ>::Out::ROW
         };
 
 public:
@@ -21,13 +27,13 @@ public:
 template<typename T, bool C, size_t ROW, size_t SQ>
 struct IS_ROW_MASK
 {
-        static const bool VALUE = SQUARE2COORD<T, SQ>::ROW == (C? (T::HEIGHT - 1) - ROW : ROW);
+        static const bool VALUE = Coordinates::FromRange<T, SQ>::Out::ROW == (C? (T::HEIGHT - 1) - ROW : ROW);
 };
 
 template<typename T, bool C, size_t COL, size_t SQ>
 struct IS_COL_MASK
 {
-        static const bool VALUE = SQUARE2COORD<T, SQ>::COL == (C? (T::WIDTH - 1) - COL : COL);
+        static const bool VALUE = Coordinates::FromRange<T, SQ>::Out::COL == (C? (T::WIDTH - 1) - COL : COL);
 };
 
 template<typename T, size_t FROM, size_t DEST>
@@ -35,8 +41,8 @@ class IS_MAN_JUMP_GROUP
 {
 private: 
         enum {
-                R1 = (SQUARE2COORD<T, FROM>::ROW - SQUARE2COORD<T, DEST>::ROW) % 4,
-                C1 = (SQUARE2COORD<T, FROM>::COL - SQUARE2COORD<T, DEST>::COL) % 4,
+                R1 = (Coordinates::FromRange<T, FROM>::Out::ROW - Coordinates::FromRange<T, DEST>::Out::ROW) % 4,
+                C1 = (Coordinates::FromRange<T, FROM>::Out::COL - Coordinates::FromRange<T, DEST>::Out::COL) % 4,
                 R2 = (R1 + 2) % 4,
                 C2 = (C1 + 2) % 4
         };
@@ -54,13 +60,13 @@ class IS_JUMPABLE
 {
 private:
         enum {
-                OFFSET = DirTraits<I>::IS_DIAGONAL? 2 : 4,
-                ROW_LOWER_BOUND = DirTraits<I>::IS_UP? OFFSET : 0,
-                ROW_UPPER_BOUND = (T::HEIGHT - 1) - (DirTraits<I>::IS_DOWN? OFFSET : 0),
-                COL_LOWER_BOUND = DirTraits<I>::IS_LEFT? OFFSET : 0,
-                COL_UPPER_BOUND = (T::WIDTH - 1) - (DirTraits<I>::IS_RIGHT? OFFSET : 0),
-                ROW = SQUARE2COORD<T, SQ>::ROW,
-                COL = SQUARE2COORD<T, SQ>::COL
+                OFFSET = Direction::Traits<I>::IS_DIAGONAL? 2 : 4,
+                ROW_LOWER_BOUND = Direction::Traits<I>::IS_UP? OFFSET : 0,
+                ROW_UPPER_BOUND = (T::HEIGHT - 1) - (Direction::Traits<I>::IS_DOWN? OFFSET : 0),
+                COL_LOWER_BOUND = Direction::Traits<I>::IS_LEFT? OFFSET : 0,
+                COL_UPPER_BOUND = (T::WIDTH - 1) - (Direction::Traits<I>::IS_RIGHT? OFFSET : 0),
+                ROW = Coordinates::FromRange<T, SQ>::Out::ROW,
+                COL = Coordinates::FromRange<T, SQ>::Out::COL
         };
 
 public:

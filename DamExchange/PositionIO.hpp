@@ -11,7 +11,7 @@
 template<typename Board, typename Token>
 Position<Board> read_position_string<DXP_tag, Board, Token>::operator()(const std::string& s)
 {
-	assert(s.length() == Board::SQUARE_RANGE + 1);
+	assert(s.length() == Board::SIZE + 1);
 
 	BitBoard p_pieces[2] = {0, 0};
 	BitBoard p_kings = 0;
@@ -34,7 +34,7 @@ Position<Board> read_position_string<DXP_tag, Board, Token>::operator()(const st
 
 	BitBoard bb;
         size_t b;
-	for (size_t i = 0; i < Board::SQUARE_RANGE; ++i) {
+	for (size_t i = 0; i < Board::SIZE; ++i) {
                 b = Board::TABLE_SQUARE2BIT[i];         // convert square to bit
 		bb = BitBoard(1) << b;                  // create bitboard
 		sstr >> ch;
@@ -63,7 +63,7 @@ std::string write_position_string<DXP_tag, Token>::operator()(const Position<Boa
 	size_t b;
 
 	sstr << Token::COLOR[p.to_move()];				// side to move
-	for (size_t sq = 0; sq < Board::SQUARE_RANGE; ++sq) {
+	for (size_t sq = 0; sq < Board::SIZE; ++sq) {
 		b = Board::TABLE_SQUARE2BIT[sq];                        // convert square to bit
 		sstr << write_position_bit<Board, Token>()(p, b);       // bit content
 	}

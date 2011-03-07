@@ -11,7 +11,7 @@ template
 struct Borders
 {
         // extract coloring of top-left square
-        static const bool BORDER_PARITY = T::SQUARE_PARITY;
+        static const bool PARITY = T::PARITY;
 
         // diagonal directions
         static const size_t LEFT_DOWN = (T::WIDTH + N) / 2;             // left-down direction
@@ -19,7 +19,7 @@ struct Borders
 
         // orthogonal directions
         static const size_t RIGHT = RIGHT_DOWN - LEFT_DOWN;             // right direction == 1 by construction
-        static const size_t DOWN = RIGHT_DOWN + LEFT_DOWN;              // down direction == 2 * ((T::WIDTH + G) / 2) + 1
+        static const size_t DOWN = RIGHT_DOWN + LEFT_DOWN;              // down direction == 2 * ((T::WIDTH + N) / 2) + 1
 
         // equivalent directions
         static const size_t LEFT_UP = RIGHT_DOWN;                       // left-up direction 
@@ -28,16 +28,16 @@ struct Borders
         static const size_t UP = DOWN;                                  // up direction
                
         // number of bits per row pair
-        static const size_t BORDER_MODULO = DOWN;
+        static const size_t MODULO = DOWN;
                 
         // boundaries of even and odd rows
-        static const size_t BORDER_LE = BORDER_MODULO;                  // leftmost bit of even rows
-        static const size_t BORDER_RE = T::SQUARE_RE;                   // rightmost bit of even rows
-        static const size_t BORDER_LO = LEFT_DOWN + BORDER_PARITY;      // leftmost bit of odd rows
-        static const size_t BORDER_RO = BORDER_LO + T::ROW_O - 1;     	// rightmost bit of odd rows
+        static const size_t EDGE_LE = MODULO;                           // left edge of even rows
+        static const size_t EDGE_RE = T::EDGE_RE;                       // right edge of even rows
+        static const size_t EDGE_LO = LEFT_DOWN + PARITY;               // left edge of odd rows
+        static const size_t EDGE_RO = EDGE_LO + T::ROW_O - 1;     	// right edge of odd rows
 
         // number of used bits
-        static const size_t BORDER_RANGE = BORDER_MODULO * ((T::HEIGHT - 1) / 2) + ((T::HEIGHT % 2)? BORDER_RE : BORDER_RO) + 1;
+        static const size_t SIZE = MODULO * ((T::HEIGHT - 1) / 2) + ((T::HEIGHT % 2)? EDGE_RE : EDGE_RO) + 1;
 };
 
 }       // namespace Geometry
