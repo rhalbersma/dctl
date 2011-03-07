@@ -6,7 +6,7 @@
 #include "../Utilities/InlineOptions.h"
 #include <cassert>
 
-using namespace Geometry;
+using namespace Geometry::Direction;
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
@@ -47,10 +47,10 @@ void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(B
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dirs(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list)
 {
-        generate_dir<DirIndex<Board, Color>::LEFT_DOWN >(from_sq, not_occupied, move_list);
-        generate_dir<DirIndex<Board, Color>::RIGHT_DOWN>(from_sq, not_occupied, move_list);
-        generate_dir<DirIndex<Board, Color>::LEFT_UP   >(from_sq, not_occupied, move_list);
-        generate_dir<DirIndex<Board, Color>::RIGHT_UP  >(from_sq, not_occupied, move_list);
+        generate_dir<Indices<Board, Color>::LEFT_DOWN >(from_sq, not_occupied, move_list);
+        generate_dir<Indices<Board, Color>::RIGHT_DOWN>(from_sq, not_occupied, move_list);
+        generate_dir<Indices<Board, Color>::LEFT_UP   >(from_sq, not_occupied, move_list);
+        generate_dir<Indices<Board, Color>::RIGHT_UP  >(from_sq, not_occupied, move_list);
 }
 
 // tag dispatching based on king range
@@ -86,10 +86,10 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                count_dir<DirIndex<Board, Color>::LEFT_DOWN >(active_kings, not_occupied) +
-                count_dir<DirIndex<Board, Color>::RIGHT_DOWN>(active_kings, not_occupied) +
-                count_dir<DirIndex<Board, Color>::LEFT_UP   >(active_kings, not_occupied) +
-                count_dir<DirIndex<Board, Color>::RIGHT_UP  >(active_kings, not_occupied)
+                count_dir<Indices<Board, Color>::LEFT_DOWN >(active_kings, not_occupied) +
+                count_dir<Indices<Board, Color>::RIGHT_DOWN>(active_kings, not_occupied) +
+                count_dir<Indices<Board, Color>::LEFT_UP   >(active_kings, not_occupied) +
+                count_dir<Indices<Board, Color>::RIGHT_UP  >(active_kings, not_occupied)
         );
 }
 
@@ -124,10 +124,10 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                detect_dir<DirIndex<Board, Color>::LEFT_DOWN >(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::RIGHT_DOWN>(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::LEFT_UP   >(active_kings, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::RIGHT_UP  >(active_kings, not_occupied)
+                detect_dir<Indices<Board, Color>::LEFT_DOWN >(active_kings, not_occupied) ||
+                detect_dir<Indices<Board, Color>::RIGHT_DOWN>(active_kings, not_occupied) ||
+                detect_dir<Indices<Board, Color>::LEFT_UP   >(active_kings, not_occupied) ||
+                detect_dir<Indices<Board, Color>::RIGHT_UP  >(active_kings, not_occupied)
         );
 }
 

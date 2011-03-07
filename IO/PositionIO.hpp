@@ -39,5 +39,5 @@ std::string write_position_bit<Board, Token>::operator()(const Position<Board>& 
 template<typename Board>
 bool is_valid_square(size_t sq)
 {
-        return sq < Board::SQUARE_RANGE;
+        return sq < Board::SIZE;
 }

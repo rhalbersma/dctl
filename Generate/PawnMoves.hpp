@@ -6,7 +6,7 @@
 #include "../Utilities/InlineOptions.h"
 #include <cassert>
 
-using namespace Geometry;
+using namespace Geometry::Direction;
 
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
@@ -17,8 +17,8 @@ void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(const Po
 template<bool Color, typename Rules, typename Board> FORCE_INLINE
 void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, Move::List& move_list)
 {
-        generate_dir<DirIndex<Board, Color>::LEFT_UP >(active_men, not_occupied, move_list);
-        generate_dir<DirIndex<Board, Color>::RIGHT_UP>(active_men, not_occupied, move_list);
+        generate_dir<Indices<Board, Color>::LEFT_UP >(active_men, not_occupied, move_list);
+        generate_dir<Indices<Board, Color>::RIGHT_UP>(active_men, not_occupied, move_list);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> FORCE_INLINE
@@ -60,8 +60,8 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 size_t Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::count_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
-                count_dir<DirIndex<Board, Color>::LEFT_UP >(active_men, not_occupied) +
-                count_dir<DirIndex<Board, Color>::RIGHT_UP>(active_men, not_occupied)
+                count_dir<Indices<Board, Color>::LEFT_UP >(active_men, not_occupied) +
+                count_dir<Indices<Board, Color>::RIGHT_UP>(active_men, not_occupied)
         );
 }
 
@@ -87,8 +87,8 @@ template<bool Color, typename Rules, typename Board> FORCE_INLINE
 bool Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
-                detect_dir<DirIndex<Board, Color>::LEFT_UP >(active_men, not_occupied) ||
-                detect_dir<DirIndex<Board, Color>::RIGHT_UP>(active_men, not_occupied)
+                detect_dir<Indices<Board, Color>::LEFT_UP >(active_men, not_occupied) ||
+                detect_dir<Indices<Board, Color>::RIGHT_UP>(active_men, not_occupied)
         );
 }
 

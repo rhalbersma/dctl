@@ -1,4 +1,5 @@
 #include "BoardPredicates.h"
+#include "Coordinates.h"
 #include "../Utilities/IntegerTypes.h"
 
 namespace Geometry {
@@ -7,7 +8,7 @@ template<typename T, size_t SQ>
 class INIT_SQUARES
 {
 private:
-        static const BitBoard MASK = SQUARE_IS_VALID<T, SQ>::VALUE? (BitBoard(1) << SQUARE2BIT<T, SQ>::VALUE) : 0;
+        static const BitBoard MASK = IS_VALID<T, SQ>::VALUE? (BitBoard(1) << SQUARE2BIT<T, SQ>::VALUE) : 0;
 
 public:
         static const BitBoard VALUE = MASK ^ INIT_SQUARES<T, SQ-1>::VALUE;
@@ -17,7 +18,7 @@ template<typename T>
 class INIT_SQUARES<T, 0>
 {
 private:
-        static const BitBoard MASK = SQUARE_IS_VALID<T, 0>::VALUE? (BitBoard(1) << SQUARE2BIT<T, 0>::VALUE) : 0;
+        static const BitBoard MASK = IS_VALID<T, 0>::VALUE? (BitBoard(1) << SQUARE2BIT<T, 0>::VALUE) : 0;
 
 public:
         static const BitBoard VALUE = MASK;
@@ -128,21 +129,16 @@ class SQUARE2BIT
 {
 private:
         typedef typename T::ExternalGrid E;
-        typedef typename T::InternalGrid I;
         typedef typename T::BordersLayout G;
 
-        enum {
-                // coordinates within the external grid
-                ROW = SQUARE2COORD<E, SQ>::ROW,
-                COL = SQUARE2COORD<E, SQ>::COL,
+        // coordinates within the external grid
+        typedef typename Coordinates::FromRange<E, SQ>::Out ExtCoord;
 
-                // rotated coordinates within the internal grid
-                ROW_PRIME = RotateCoordinates<E, ROW, COL, T::ANGLE>::ROW,
-                COL_PRIME = RotateCoordinates<E, ROW, COL, T::ANGLE>::COL
-        };
+        // rotated coordinates within the internal grid
+        typedef typename Coordinates::Rotate<E, ExtCoord, T::ANGLE>::Out RotCoord;
 
 public:
-        enum { VALUE = COORD2BIT<G, ROW_PRIME, COL_PRIME>::VALUE };
+        enum { VALUE = Coordinates::ToRange<G, RotCoord>::VALUE };
 };
 
 template<typename T, int B>
@@ -153,18 +149,14 @@ private:
         typedef typename T::InternalGrid I;
         typedef typename T::BordersLayout G;
 
-        enum {
-                // coordinates within the internal grid
-                ROW = BIT2COORD<G, B>::ROW,
-                COL = BIT2COORD<G, B>::COL,
+        // coordinates within the internal grid
+        typedef typename Coordinates::FromRange<G, B>::Out IntCoord;
 
-                // rotated coordinates within the external grid
-                ROW_PRIME = RotateCoordinates<I, ROW, COL, T::A_PRIME>::ROW,
-                COL_PRIME = RotateCoordinates<I, ROW, COL, T::A_PRIME>::COL
-        };
+        // rotated coordinates within the external grid
+        typedef typename Coordinates::Rotate<I, IntCoord, T::A_PRIME>::Out RotCoord;
 
 public:
-        enum { VALUE = COORD2SQUARE<E, ROW_PRIME, COL_PRIME>::VALUE };
+        enum { VALUE = Coordinates::ToRange<E, RotCoord>::VALUE };
 };
 
 }       // namespace Geometry

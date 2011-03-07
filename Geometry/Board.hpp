@@ -106,23 +106,23 @@ const BitBoard Board<GridLayout, D, N, A>::QUAD_NEAREST_NEIGHBOR_MAGIC =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::MAN_JUMP_GROUP[] =
 {
-        INIT_MAN_JUMP_GROUP<T, BordersLayout::SQUARE_LE + 0>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, BordersLayout::SQUARE_LE + 1>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, BordersLayout::SQUARE_LO + 0>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, BordersLayout::SQUARE_LO + 1>::VALUE
+        INIT_MAN_JUMP_GROUP<T, BordersLayout::LE + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, BordersLayout::LE + 1>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, BordersLayout::LO + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, BordersLayout::LO + 1>::VALUE
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::JUMPABLE[] =
 {
-        INIT_JUMPABLE<T, AntiClockwise<D000, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, AntiClockwise<D045, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, AntiClockwise<D090, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, AntiClockwise<D135, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, AntiClockwise<D180, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, AntiClockwise<D225, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, AntiClockwise<D270, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, AntiClockwise<D315, ANGLE>::VALUE>::VALUE
+        INIT_JUMPABLE<T, Angles::Rotate<Angles::D000, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, Angles::Rotate<Angles::D045, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, Angles::Rotate<Angles::D090, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, Angles::Rotate<Angles::D135, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, Angles::Rotate<Angles::D180, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, Angles::Rotate<Angles::D225, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, Angles::Rotate<Angles::D270, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, Angles::Rotate<Angles::D315, ANGLE>::VALUE>::VALUE
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>

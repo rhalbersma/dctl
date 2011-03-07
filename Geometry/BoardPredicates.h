@@ -3,6 +3,9 @@
 
 namespace Geometry {
 
+template<typename, int>
+class IS_VALID;
+
 template<typename, bool, size_t>
 class IS_INITIAL;
 
