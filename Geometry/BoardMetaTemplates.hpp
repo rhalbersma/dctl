@@ -129,7 +129,7 @@ class SQUARE2BIT
 {
 private:
         typedef typename T::ExternalGrid E;
-        typedef typename T::BordersLayout G;
+        typedef typename T::BordersGrid G;
 
         // coordinates within the external grid
         typedef typename Coordinates::FromRange<E, SQ>::Out ExtCoord;
@@ -147,7 +147,7 @@ class BIT2SQUARE
 private:
         typedef typename T::ExternalGrid E;
         typedef typename T::InternalGrid I;
-        typedef typename T::BordersLayout G;
+        typedef typename T::BordersGrid G;
 
         // coordinates within the internal grid
         typedef typename Coordinates::FromRange<G, B>::Out IntCoord;

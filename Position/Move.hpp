@@ -1,5 +1,4 @@
 #include "../Utilities/Bit.h"
-#include "../Utilities/InlineOptions.h"
 #include <cassert>
 
 namespace Move {
@@ -12,7 +11,7 @@ bool Move::List::non_unique_back(void)
 }
 
 // add a king move
-template<bool Color> FORCE_INLINE
+template<bool Color>
 void Move::List::push_back(BitBoard delta)
 {
         move_list_.push();
@@ -32,7 +31,7 @@ void Move::List::push_back(BitBoard delta)
 }
 
 // add a man move
-template<bool Color> FORCE_INLINE
+template<bool Color>
 void Move::List::push_back(BitBoard delta, BitBoard promotion)
 {
         move_list_.push();
@@ -56,7 +55,7 @@ void Move::List::push_back(BitBoard delta, BitBoard promotion)
 }
 
 // add a king capture
-template<bool Color, typename Rules> FORCE_INLINE
+template<bool Color, typename Rules>
 void Move::List::push_back(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
 {
         move_list_.push();
@@ -82,7 +81,7 @@ void Move::List::push_back(BitBoard delta, BitBoard captured_pieces, BitBoard ca
 }
 
 // add a man capture
-template<bool Color, typename Rules> FORCE_INLINE
+template<bool Color, typename Rules>
 void Move::List::push_back(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
 {
         move_list_.push();

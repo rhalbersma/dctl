@@ -3,7 +3,7 @@
 
 namespace Geometry {
 
-template<typename T, int SQ>
+template<typename T, size_t SQ>
 class IS_VALID
 {
 public:
@@ -15,13 +15,13 @@ class IS_INITIAL
 {
 private:
         enum {
-                LOWER_BOUND = C? (T::HEIGHT - 1) - ((T::HEIGHT - T::DMZ) / 2 - 1) : 0,
-                UPPER_BOUND = C? (T::HEIGHT - 1) : (T::HEIGHT - T::DMZ) / 2 - 1,
+                ROW_MIN = C? (T::HEIGHT - 1) - ((T::HEIGHT - T::DMZ) / 2 - 1) : 0,
+                ROW_MAX = C? (T::HEIGHT - 1) : (T::HEIGHT - T::DMZ) / 2 - 1,
                 ROW = Coordinates::FromRange<T, SQ>::Out::ROW
         };
 
 public:
-        static const bool VALUE = (ROW >= LOWER_BOUND) && (ROW <= UPPER_BOUND);
+        static const bool VALUE = (ROW >= ROW_MIN) && (ROW <= ROW_MAX);
 };
 
 template<typename T, bool C, size_t ROW, size_t SQ>
@@ -61,10 +61,10 @@ class IS_JUMPABLE
 private:
         enum {
                 OFFSET = Direction::Traits<I>::IS_DIAGONAL? 2 : 4,
-                ROW_LOWER_BOUND = Direction::Traits<I>::IS_UP? OFFSET : 0,
-                ROW_UPPER_BOUND = (T::HEIGHT - 1) - (Direction::Traits<I>::IS_DOWN? OFFSET : 0),
-                COL_LOWER_BOUND = Direction::Traits<I>::IS_LEFT? OFFSET : 0,
-                COL_UPPER_BOUND = (T::WIDTH - 1) - (Direction::Traits<I>::IS_RIGHT? OFFSET : 0),
+                ROW_MIN = Direction::Traits<I>::IS_UP? OFFSET : 0,
+                ROW_MAX = (T::HEIGHT - 1) - (Direction::Traits<I>::IS_DOWN? OFFSET : 0),
+                COL_MIN = Direction::Traits<I>::IS_LEFT? OFFSET : 0,
+                COL_MAX = (T::WIDTH - 1) - (Direction::Traits<I>::IS_RIGHT? OFFSET : 0),
                 ROW = Coordinates::FromRange<T, SQ>::Out::ROW,
                 COL = Coordinates::FromRange<T, SQ>::Out::COL
         };
@@ -72,10 +72,10 @@ private:
 public:
         // a jump in direction <I> is possible if square <SQ> is within OFFSET of the edges being approached
         static const bool VALUE =
-	        (ROW >= ROW_LOWER_BOUND) &&
-		(ROW <= ROW_UPPER_BOUND) &&
-		(COL >= COL_LOWER_BOUND) &&
-		(COL <= COL_UPPER_BOUND)
+	        (ROW >= ROW_MIN) &&
+		(ROW <= ROW_MAX) &&
+		(COL >= COL_MIN) &&
+		(COL <= COL_MAX)
 	;
 };
 

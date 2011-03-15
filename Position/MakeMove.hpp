@@ -6,13 +6,13 @@ void Position<Board>::copy_make(const Position<Board>& p, const Pieces& m)
         make<Rules>(m);
 }
 
-template<typename Board> FORCE_INLINE
+template<typename Board>
 void Position<Board>::link(const Position<Board>& other)
 {
         parent_ = &other;
 }
 
-template<typename Board> template<typename Rules> FORCE_INLINE
+template<typename Board> template<typename Rules>
 void Position<Board>::make(const Pieces& m)
 {
         assert(is_pseudo_legal_move<Rules>(m));
@@ -25,14 +25,14 @@ void Position<Board>::make(const Pieces& m)
 }
 
 // tag dispatching for restrictions on consecutive moves with the same king
-template<typename Board> template<typename Rules> FORCE_INLINE
+template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Pieces& m)
 {
         make_irreversible<Rules>(m, Int2Type<Variants::is_RestrictedSameKingMoves<Rules>::VALUE>());
 }
 
 // partial specialization for restricted consecutive moves with the same king
-template<typename Board> template<typename Rules> FORCE_INLINE
+template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Pieces& m, Int2Type<true>)
 {
         make_irreversible<Rules>(m, Int2Type<false>());
@@ -40,13 +40,13 @@ void Position<Board>::make_irreversible(const Pieces& m, Int2Type<true>)
 }
 
 // partial specialization for unrestricted consecutive moves with the same king
-template<typename Board> template<typename Rules> FORCE_INLINE
+template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Pieces& m, Int2Type<false>)
 {
         make_non_conversion(m);
 }
 
-template<typename Board> FORCE_INLINE
+template<typename Board>
 void Position<Board>::make_non_conversion(const Pieces& m)
 {
         if (is_non_conversion(m))
@@ -55,7 +55,7 @@ void Position<Board>::make_non_conversion(const Pieces& m)
                 non_conversion_ = 0;
 }
 
-template<typename Board> template<PlyCount N> FORCE_INLINE
+template<typename Board> template<PlyCount N>
 void Position<Board>::make_repeated_kings_moves(const Pieces& m)
 {
         hash_index_ ^= Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
@@ -100,7 +100,7 @@ bool Position<Board>::is_capture(const Pieces& m) const
         return m.pieces(!to_move()) != 0;
 }
 
-template<typename Board> FORCE_INLINE
+template<typename Board>
 void Position<Board>::make_reversible(const Pieces& m)
 {
         pieces_ ^= m;

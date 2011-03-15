@@ -14,14 +14,14 @@ public:
         Session(void);
 
         // connectors
-        void connect(void);                             // connect to default port and host
-        void connect(size_t);                           // connect to user supplied port on default host
-        void connect(const std::string&);               // connect to default port on user supplied host
-        void connect(const std::string&, size_t);       // connect to user supplied port and host
+        void connect(void);                                     // connect to default port and host
+        void connect(unsigned short);                           // connect to user supplied port on default host
+        void connect(const std::string&);                       // connect to default port on user supplied host
+        void connect(const std::string&, unsigned short);       // connect to user supplied port and host
 
         // acceptors
-        void accept(void);                              // accept on default port                           
-        void accept(size_t);                            // accept on user supplied port
+        void accept(void);                                      // accept on default port                           
+        void accept(unsigned short);                            // accept on user supplied port
 
         void close(void);
 

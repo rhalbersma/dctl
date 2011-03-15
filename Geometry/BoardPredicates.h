@@ -3,7 +3,7 @@
 
 namespace Geometry {
 
-template<typename, int>
+template<typename, size_t>
 class IS_VALID;
 
 template<typename, bool, size_t>

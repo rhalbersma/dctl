@@ -95,8 +95,8 @@ const BitBoard Board<GridLayout, D, N, A>::COL_MASK[][12] =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
 {
-        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (BordersLayout::LEFT_DOWN  << 1))),
-        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (BordersLayout::RIGHT_DOWN << 1)))
+        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (BordersGrid::LEFT_DOWN  << 1))),
+        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (BordersGrid::RIGHT_DOWN << 1)))
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
@@ -106,10 +106,10 @@ const BitBoard Board<GridLayout, D, N, A>::QUAD_NEAREST_NEIGHBOR_MAGIC =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::MAN_JUMP_GROUP[] =
 {
-        INIT_MAN_JUMP_GROUP<T, BordersLayout::LE + 0>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, BordersLayout::LE + 1>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, BordersLayout::LO + 0>::VALUE,
-        INIT_MAN_JUMP_GROUP<T, BordersLayout::LO + 1>::VALUE
+        INIT_MAN_JUMP_GROUP<T, BordersGrid::EDGE_LE + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, BordersGrid::EDGE_LE + 1>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, BordersGrid::EDGE_LO + 0>::VALUE,
+        INIT_MAN_JUMP_GROUP<T, BordersGrid::EDGE_LO + 1>::VALUE
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
@@ -128,14 +128,14 @@ const BitBoard Board<GridLayout, D, N, A>::JUMPABLE[] =
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const size_t Board<GridLayout, D, N, A>::DIR[] = 
 {
-        BordersLayout::RIGHT, 
-        BordersLayout::RIGHT_UP, 
-        BordersLayout::UP, 
-        BordersLayout::LEFT_UP, 
-        BordersLayout::LEFT, 
-        BordersLayout::LEFT_DOWN, 
-        BordersLayout::DOWN, 
-        BordersLayout::RIGHT_DOWN
+        BordersGrid::RIGHT, 
+        BordersGrid::RIGHT_UP, 
+        BordersGrid::UP, 
+        BordersGrid::LEFT_UP, 
+        BordersGrid::LEFT, 
+        BordersGrid::LEFT_DOWN, 
+        BordersGrid::DOWN, 
+        BordersGrid::RIGHT_DOWN
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
