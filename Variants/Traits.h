@@ -7,18 +7,35 @@ namespace Variants {
 //|      Move and capture mechanics                                            |
 //+----------------------------------------------------------------------------+
 
-// man capture directions
-enum {DIRS_2, DIRS_4, DIRS_8};
-template<typename> struct ManCaptureDirections                  { enum { VALUE = DIRS_4 }; };
+// capture directions
+enum { DIRS_UP, DIRS_DOWN, DIRS_DIAG, DIRS_ORTH, DIRS_ALL };
 
+// king capture directions
+template<typename> struct KingCaptureDirections                 { enum { VALUE = DIRS_DIAG }; };
+
+// man capture directions
+template<typename> struct ManCaptureDirections                  { enum { VALUE = DIRS_DIAG }; };
+
+// man backwards capture
 template<typename Rules>
 struct is_ManCaptureBackwards
 {
-        enum { VALUE = ManCaptureDirections<Rules>::VALUE != DIRS_2 };
+        enum { VALUE = ManCaptureDirections<Rules>::VALUE != DIRS_UP };
 };
 
-// king capture directions
-template<typename> struct KingCaptureDirections                 { enum { VALUE = DIRS_4 }; };
+// capture scan directions
+template<typename Rules> struct KingScanDirections              { enum { VALUE = ScanDirections<KingCaptureDirections<Rules>::VALUE>::VALUE }; };
+template<typename Rules> struct ManScanDirections               { enum { VALUE = ScanDirections<ManCaptureDirections<Rules>::VALUE>::VALUE  }; };
+
+// scan directions
+enum { SCAN_UP, SCAN_DOWN, SCAN_SIDE, SCAN_REST, SCAN_ALL };
+
+template<size_t> struct ScanDirections;
+template<> struct ScanDirections<DIRS_UP  >                     { enum { VALUE = SCAN_UP   }; };
+template<> struct ScanDirections<DIRS_DOWN>                     { enum { VALUE = SCAN_DOWN }; };
+template<> struct ScanDirections<DIRS_DIAG>                     { enum { VALUE = SCAN_SIDE }; };
+template<> struct ScanDirections<DIRS_ORTH>                     { enum { VALUE = SCAN_SIDE }; };
+template<> struct ScanDirections<DIRS_ALL >                     { enum { VALUE = SCAN_ALL  }; };
 
 // king range
 enum {RANGE_1, RANGE_N};

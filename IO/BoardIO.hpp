@@ -15,7 +15,7 @@ std::string write_square_layout<T>::operator()(Functor f) const
 {
 	std::stringstream sstr;
 
-        for (size_t sq = 0; sq < T::SIZE; ++sq) {
+        for (size_t sq = 0; is_valid<T>(sq); ++sq) {
                 if (is_indent_row<T>(sq))
                         sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 
@@ -42,7 +42,7 @@ std::string write_bit_layout<T>::operator()(Functor f) const
 	std::stringstream sstr;
         size_t b;
 
-        for (size_t sq = 0; sq < T::SIZE; ++sq) {
+        for (size_t sq = 0; is_valid<T>(sq); ++sq) {
                 if (is_indent_row<T>(sq))
                         sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 
@@ -57,7 +57,13 @@ std::string write_bit_layout<T>::operator()(Functor f) const
         return sstr.str();
 }
 
-template<typename T> inline
+template<typename T>
+bool is_valid(size_t sq)
+{
+        return sq < T::SIZE;
+}
+
+template<typename T>
 bool is_end_row(size_t sq)
 {
         const size_t r = sq % T::MODULO;                        // sq = MODULO * q + r 

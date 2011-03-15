@@ -31,13 +31,11 @@ private:
 
         // tag dispatching based on king capture directions
         static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&);
-        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_4>);
-        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_8>);
+        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_ALL >);
+        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_ORTH>);
+        static void generate_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_DIAG>);
 
-        // tag dispatching based on king range
         template<size_t> static void generate_dir(BitBoard, Capture::State<Rules, Board>&, Move::List&);
-        template<size_t> static void generate_dir(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::RANGE_1>);
-        template<size_t> static void generate_dir(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::RANGE_N>);
 
         template<size_t> static void generate_next(BitBoard, Capture::State<Rules, Board>&, Move::List&);
 
@@ -54,22 +52,25 @@ private:
         template<size_t> static bool scan_reverse(BitBoard, Capture::State<Rules, Board>&, Move::List&);
         template<size_t> static bool scan_forward(BitBoard, Capture::State<Rules, Board>&, Move::List&);
 
-        // tag dispatching based on king capture directions
+        // tag dispatching based on king scan directions
         template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&);
-        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_4>);
-        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::DIRS_8>);
+        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::SCAN_ALL >);
+        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::SCAN_SIDE>);
+        template<size_t> static bool scan_dirs(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::SCAN_REST>);
+
+        template<size_t> static bool scan_dir(BitBoard, Capture::State<Rules, Board>&, Move::List&);
+        template<size_t> static bool scan(BitBoard, Capture::State<Rules, Board>&, Move::List&);
 
         // tag dispatching based on king range
-        template<size_t> static bool scan_dir(BitBoard, Capture::State<Rules, Board>&, Move::List&);
-        template<size_t> static bool scan_dir(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::RANGE_1>);
-        template<size_t> static bool scan_dir(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<Variants::RANGE_N>);
-
-        template<size_t> static bool scan(BitBoard, Capture::State<Rules, Board>&, Move::List&);
+        template<size_t> static void king_slide(BitBoard&, BitBoard);
+        template<size_t> static void king_slide(BitBoard&, BitBoard, Int2Type<Variants::RANGE_1>);
+        template<size_t> static void king_slide(BitBoard&, BitBoard, Int2Type<Variants::RANGE_N>);
 
         // tag dispatching based on king capture directions
         static bool detect_dirs(BitBoard, BitBoard, BitBoard);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variants::DIRS_4>);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variants::DIRS_8>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variants::DIRS_ALL >);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variants::DIRS_ORTH>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<Variants::DIRS_DIAG>);
 
         // tag dispatching based on king range
         template<size_t> static bool detect_dir(BitBoard, BitBoard, BitBoard);

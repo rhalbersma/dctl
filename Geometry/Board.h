@@ -19,7 +19,7 @@ struct Board: public SquaresLayout
         typedef Board<SquaresLayout, D, N, A> T;
         typedef SquaresLayout ExternalGrid;
         typedef typename Squares::Rotate<ExternalGrid, A>::Out InternalGrid;
-        typedef Borders<InternalGrid, N> BordersLayout;
+        typedef Borders<InternalGrid, N> BordersGrid;
 
         // reflection on template non-type parameters
         static const size_t DMZ = D;                            // "demilitarized" rows in the initial position
@@ -27,7 +27,7 @@ struct Board: public SquaresLayout
         static const size_t A_PRIME = Angles::Inverse<A>::VALUE;// rotation from internal to external grid
 
         // essential bitboard masks
-        static const BitBoard SQUARES;                          // bit mask of legal squares, excluding ghost squares
+        static const BitBoard SQUARES;                          // bit mask of legal squares, excluding borders
         static const BitBoard INITIAL[];                        // initial position
         static const BitBoard PROMOTION[][2];                   // promotion zones
         static const BitBoard ROW_MASK[][12];                   // bit masks for the rows

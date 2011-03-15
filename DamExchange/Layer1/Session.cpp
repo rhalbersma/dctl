@@ -21,7 +21,7 @@ void DXP::Layer1::Session::connect(void)
         do_connect(boost::asio::ip::tcp::endpoint(LOOPBACK, PORT));
 }
 
-void DXP::Layer1::Session::connect(size_t port)
+void DXP::Layer1::Session::connect(unsigned short port)
 {
         do_connect(boost::asio::ip::tcp::endpoint(LOOPBACK, port));
 }
@@ -31,7 +31,7 @@ void DXP::Layer1::Session::connect(const std::string& host)
         do_connect(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(host), PORT));
 }
 
-void DXP::Layer1::Session::connect(const std::string& host, size_t port)
+void DXP::Layer1::Session::connect(const std::string& host, unsigned short port)
 {
         do_connect(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(host), port));
 }
@@ -41,7 +41,7 @@ void DXP::Layer1::Session::accept(void)
         do_accept(boost::asio::ip::tcp::endpoint(PROTOCOL, PORT));
 }
 
-void DXP::Layer1::Session::accept(size_t port)
+void DXP::Layer1::Session::accept(unsigned short port)
 {
         do_accept(boost::asio::ip::tcp::endpoint(PROTOCOL, port));
 }

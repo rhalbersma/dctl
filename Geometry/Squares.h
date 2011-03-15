@@ -6,27 +6,31 @@ namespace Squares {
 
 template
 <
-        size_t H,                                               // height
-        size_t W,                                               // width
-        bool P = false                                          // coloring of top-left square
+        size_t H,       // height
+        size_t W,       // width
+        bool P = false  // start at top-left square?
 >
-struct Grid
+class Grid
 {
+private:
+        // range of even (E) and odd (O) rows
+        static const size_t ROW_E = (W +  P) / 2;
+        static const size_t ROW_O = (W + !P) / 2;
+
+public:
         // reflection on template parameters
         static const size_t HEIGHT = H;
         static const size_t WIDTH = W;
         static const bool PARITY = P;
 
-        // number of squares per row and row pair
-        static const size_t ROW_E = (W +  P) / 2;               // range of even rows
-        static const size_t ROW_O = (W + !P) / 2;               // range of odd rows
-        static const size_t MODULO = W;                         // range of row pairs
+        // range of row pairs
+        static const size_t MODULO = W;
 
-        // boundaries of even and odd rows
-        static const size_t EDGE_LE = 0;                        // left edge of even rows
-        static const size_t EDGE_RE = EDGE_LE + ROW_E - 1;  	// right edge of even rows
-        static const size_t EDGE_LO = EDGE_RE + 1;              // left edge of odd rows
-        static const size_t EDGE_RO = EDGE_LO + ROW_O - 1;      // right edge of even rows
+        // left (L) and right (R) edges of even (E) and odd (O) rows
+        static const size_t EDGE_LE = 0;
+        static const size_t EDGE_RE = EDGE_LE + ROW_E - 1;
+        static const size_t EDGE_LO = EDGE_RE + 1;
+        static const size_t EDGE_RO = EDGE_LO + ROW_O - 1;
 
         // == (H * W) / 2 + (H * W * P) % 2
         static const size_t SIZE = MODULO * ((H - 1) / 2) + ((H % 2)? EDGE_RE : EDGE_RO) + 1;

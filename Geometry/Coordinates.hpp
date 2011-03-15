@@ -36,7 +36,8 @@ struct Rotate<T, In, Angles::D090>
 {
         typedef Pair
         <
-                In::COL, (static_cast<int>(T::HEIGHT) - 1) - In::ROW
+                In::COL, 
+                (static_cast<int>(T::HEIGHT) - 1) - In::ROW
         > Out;
 };
 
@@ -56,18 +57,18 @@ class FromRange
 {
 private:
         enum {
-                Q = SQ / T::MODULO,                     // number of row pairs                     
-                R0 = SQ % T::MODULO,                    // squares from the left edge of the zeroth row
-                R1 = R0 - T::EDGE_LO,                   // squares from the left edge of the first row
-                P = R1 >= 0,                            // determine whether square R0 is in the zeroth or first row
-                R = P? R1 : R0                          // squares from the left edge
+                Q = SQ / T::MODULO,             // number of row pairs                     
+                R0 = SQ % T::MODULO,            // squares from the left edge of the zeroth row
+                R1 = R0 - T::EDGE_LO,           // squares from the left edge of the first row
+                P = R1 >= 0,                    // determine whether square R0 is in the zeroth or first row
+                R = P? R1 : R0                  // squares from the left edge
         };
 
 public:
         typedef Pair
         <
-                2 * Q + P,                              // 2x the row pairs + the row parity
-                2 * R + (P ^ !T::PARITY)                // 2x the range from the left edge + the row parity XOR the opposite board coloring
+                2 * Q + P,                      // 2x the row pairs + the row parity
+                2 * R + (P ^ !T::PARITY)        // 2x the range from the left edge + the row parity XOR the opposite board coloring
         > Out;
 };
 
