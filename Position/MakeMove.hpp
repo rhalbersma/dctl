@@ -29,7 +29,7 @@ void Position<Board>::make(const Pieces& m)
 template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Pieces& m)
 {
-        make_irreversible<Rules>(m, Int2Type<Variants::is_RestrictedSameKingMoves<Rules>::VALUE>());
+        make_irreversible<Rules>(m, Int2Type<Variants::is_restricted_same_king_moves<Rules>::value>());
 }
 
 // partial specialization for restricted consecutive moves with the same king
@@ -37,7 +37,7 @@ template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Pieces& m, Int2Type<true>)
 {
         make_irreversible<Rules>(m, Int2Type<false>());
-        make_repeated_kings_moves<Variants::MaxSameKingMoves<Rules>::VALUE>(m);
+        make_repeated_kings_moves<Variants::max_same_king_moves<Rules>::value>(m);
 }
 
 // partial specialization for unrestricted consecutive moves with the same king
@@ -98,7 +98,7 @@ bool Position<Board>::is_pseudo_legal_move(const Pieces& m) const
 template<typename Board> template<typename Rules>
 bool Position<Board>::make_sequential_capture_removal(const Pieces& m) const
 {
-        return make_sequential_capture_removal(m, Int2Type<Variants::CaptureRemoval<Rules>::VALUE>());
+        return make_sequential_capture_removal(m, Int2Type<Variants::capture_removal<Rules>::value>());
 }
 
 // partial specialization for complete removal after a capture sequence

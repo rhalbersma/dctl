@@ -6,7 +6,7 @@ namespace Variants {
 // http://www.damweb.cz/pravidla/cdfull.html
 struct Czech {};
 
-template<> struct ManCaptureDirections<Czech>           { enum { VALUE = DIRS_UP }; };
-template<> struct is_AbsoluteKingPrecedence<Czech>      { enum { VALUE = true    }; };
+template<> struct man_capture_directions<Czech>         { enum { value = DIRS_UP }; };
+template<> struct is_absolute_king_precedence<Czech>    { enum { value = true    }; };
 
 }       // namespace Variants

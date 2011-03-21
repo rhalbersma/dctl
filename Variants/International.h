@@ -11,6 +11,6 @@ typedef International Brazilian;
 typedef International Polish;
 typedef International Canadian;
 
-template<> struct is_MajorityPrecedence<International>  { enum { VALUE = true  }; };
+template<> struct is_majority_precedence<International> { enum { value = true  }; };
 
 }       // namespace Variants
