@@ -2,6 +2,7 @@
 #include "Side.h"
 #include "../Utilities/Bit.h"
 #include <cassert>
+#include <functional>
 
 // zero initialize
 Pieces::Pieces(BitBoard)
