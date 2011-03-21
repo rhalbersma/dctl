@@ -12,7 +12,7 @@ int main(void)
         //DamExchange::Layer2::Test::Mesander_examples();
         //DamExchange::Layer1::Test::session();
 
-        Tree::Search::Test::International();
+        Tree::Walk::Test::International();
         //Tree::Search::Test::Killer();
         //Tree::Walk::Test::Rectangular();
         //Tree::Walk::Test::ChessVariants();

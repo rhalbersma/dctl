@@ -9,7 +9,8 @@ void Position<Board>::copy_make(const Position<Board>& p, const Pieces& m)
 template<typename Board>
 void Position<Board>::link(const Position<Board>& other)
 {
-        parent_ = &other;
+        parents_[0] = &other;
+        parents_[1] = other.parents_[0];
 }
 
 template<typename Board> template<typename Rules>
@@ -62,42 +63,12 @@ void Position<Board>::make_repeated_kings_moves(const Pieces& m)
 
         repeated_kings_ ^= repeated_kings(to_move());
         if (men(to_move()) && kings(to_move()) && is_non_conversion(m)) {
-                repeated_kings_ ^= king_dest_sq(m);                        
+                repeated_kings_ ^= dest_sq(m);                        
                 ++repeated_moves_[to_move()];
         } else
                 repeated_moves_[to_move()] = 0;
 
         hash_index_ ^= Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
-}
-
-template<typename Board>
-BitBoard Position<Board>::king_from_sq(const Pieces& m) const
-{
-        return kings(to_move()) & m.pieces(to_move());
-}
-
-template<typename Board>
-BitBoard Position<Board>::king_dest_sq(const Pieces& m) const
-{
-        return ~kings(to_move()) & m.pieces(to_move());
-}
-
-template<typename Board>
-bool Position<Board>::is_non_conversion(const Pieces& m) const
-{
-        return is_with_king(m) && !is_capture(m);
-}
-
-template<typename Board>
-bool Position<Board>::is_with_king(const Pieces& m) const
-{
-        return king_from_sq(m) != 0;
-}
-
-template<typename Board>
-bool Position<Board>::is_capture(const Pieces& m) const
-{
-        return m.pieces(!to_move()) != 0;
 }
 
 template<typename Board>

@@ -8,14 +8,13 @@
 template<typename Board>
 Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
 :
-        parent_(0),
-        padding_(0),
         pieces_(black_pieces, white_pieces, kings),
         repeated_kings_(0),
         non_conversion_(0),
         to_move_(to_move)
 {
         repeated_moves_[Side::BLACK] = repeated_moves_[Side::WHITE] = 0;
+        parents_[0] = parents_[1] = 0;
         hash_index_ = Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this);
         assert(pieces_invariant());
 }

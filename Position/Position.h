@@ -67,11 +67,13 @@ private:
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<true>) const;
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<false>) const;
 
-        BitBoard king_from_sq(const Pieces&) const;
-        BitBoard king_dest_sq(const Pieces&) const;
+        bool is_connected(const Pieces&, const Pieces&) const;
         bool is_non_conversion(const Pieces&) const;
+        bool is_promotion(const Pieces&) const;
         bool is_with_king(const Pieces&) const;
         bool is_capture(const Pieces&) const;
+        BitBoard from_sq(const Pieces&) const;
+        BitBoard dest_sq(const Pieces&) const;
 
         void link(const Position<Board>&);
 
@@ -98,9 +100,8 @@ private:
         bool hash_index_invariant(void) const;
 
         // representation
-        const Position<Board>* parent_;
-        const Position<Board>* padding_;
-        BitBoard pad_;
+        const Position<Board>* parents_[2];
+        BitBoard padding_;
         HashIndex hash_index_; 
         Pieces pieces_;
         BitBoard repeated_kings_;
@@ -112,9 +113,9 @@ private:
         const static size_t MIN_CYCLE = 4;
         const static size_t STRIDE = 2;
         static const bool PASS = true;  // toggle the side to move
-
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Position.hpp"
 #include "MakeMove.hpp"
+#include "MovePredicates.hpp"

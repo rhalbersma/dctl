@@ -76,7 +76,7 @@ void Move::List::push_back(BitBoard delta, BitBoard captured_pieces, BitBoard ca
         );
 
         // post-conditions are the pieces invariants, with an exception for sequential capture removal (Thai draughts)
-        // example: [FEN W:WK26:B9,12,18,19], white has to capture 26x12, landing on a square it also captured on
+        // example: [FEN "W:WK26:B9,12,18,19"]; white has to capture 26x12, landing on a square it also captured on
         assert(move_list_.back().invariant() || sequential_capture_removal<Rules>(delta, captured_pieces));
 }
 
@@ -104,7 +104,7 @@ void Move::List::push_back(BitBoard delta, BitBoard promotion, BitBoard captured
         );
 
         // post-conditions are the pieces invariants, with an exception for promotion en-passant (Russian draughts)
-        // example: [FEN W:W25:B8,9,20,22,30], white has to capture 25x25, promoting on its original square
+        // example: [FEN "W:W25:B8,9,20,22,30"]; white has to capture 25x25, promoting on its original square
         assert
         (
                 Bit::is_exclusive(move_list_.back().pieces(Side::BLACK), move_list_.back().pieces(Side::WHITE)) &&
