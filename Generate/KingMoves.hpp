@@ -17,7 +17,7 @@ void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(const Po
 template<bool Color, typename Rules, typename Board>
 void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::List& move_list)
 {
-        generate_serial(active_kings, not_occupied, move_list, Int2Type<Variants::is_RestrictedSameKingMoves<Rules>::VALUE>());
+        generate_serial(active_kings, not_occupied, move_list, Int2Type<Variants::is_restricted_same_king_moves<Rules>::value>());
 }
 
 // partial specialization for restricted consecutive move_list with the same king
@@ -56,7 +56,7 @@ void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dirs(Bit
 template<bool Color, typename Rules, typename Board> template<size_t Index>
 void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list)
 {
-        return generate_dir<Index>(from_sq, not_occupied, move_list, Int2Type<Variants::is_LongKingRange<Rules>::VALUE>());
+        return generate_dir<Index>(from_sq, not_occupied, move_list, Int2Type<Variants::is_long_king_range<Rules>::value>());
 }
 
 // partial specialization for short ranged kings
@@ -96,7 +96,7 @@ size_t Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dirs(BitB
 template<bool Color, typename Rules, typename Board> template<size_t Index>
 size_t Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard active_kings, BitBoard not_occupied)
 {
-        return count_dir<Index>(active_kings, not_occupied, Int2Type<Variants::is_LongKingRange<Rules>::VALUE>());
+        return count_dir<Index>(active_kings, not_occupied, Int2Type<Variants::is_long_king_range<Rules>::value>());
 }
 
 // partial specialization for short ranged kings

@@ -26,7 +26,7 @@ void Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate(const Po
 template<bool Color, typename Rules, typename Board>
 void Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
-        generate_targets(p, capture, move_list, Int2Type<Variants::is_MenCaptureKings<Rules>::VALUE>());
+        generate_targets(p, capture, move_list, Int2Type<Variants::is_men_capture_kings<Rules>::value>());
 }
 
 // partial specialization for men that cannot capture kings
@@ -49,7 +49,7 @@ void Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_targets(
 template<bool Color, typename Rules, typename Board>
 void Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
-        generate_dirs(active_men, capture, move_list, Int2Type<Variants::ManCaptureDirections<Rules>::VALUE>());
+        generate_dirs(active_men, capture, move_list, Int2Type<Variants::man_capture_directions<Rules>::value>());
 }
 
 // partial specialization for men that capture in the 8 diagonal and orthogonal directions
@@ -124,7 +124,7 @@ void Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::generate_next(Bit
 template<bool Color, typename Rules, typename Board> template<size_t Index>
 bool Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_next(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
-        return scan_next<Index>(jumper, capture, move_list, Int2Type<Variants::PromotionCondition<Rules>::VALUE>());
+        return scan_next<Index>(jumper, capture, move_list, Int2Type<Variants::promotion_condition<Rules>::value>());
 }
 
 // partial specialization for men that promote en-passant
@@ -154,7 +154,7 @@ bool Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_next(BitBoar
 template<bool Color, typename Rules, typename Board> template<size_t Index>
 bool Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, Capture::State<Rules, Board>& capture, Move::List& move_list)
 {
-        return scan_dirs<Index>(jumper, capture, move_list, Int2Type<Variants::ManScanDirections<Rules>::VALUE>());
+        return scan_dirs<Index>(jumper, capture, move_list, Int2Type<Variants::man_scan_directions<Rules>::value>());
 }
 
 // partial specialization for scans in all the 6 non-parallel diagonal and orthogonal directions
@@ -240,7 +240,7 @@ bool Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::detect(const Posi
 template<bool Color, typename Rules, typename Board>
 bool Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::detect_targets(const Position<Board>& p)
 {
-        return detect_targets(p, Int2Type<Variants::is_MenCaptureKings<Rules>::VALUE>());
+        return detect_targets(p, Int2Type<Variants::is_men_capture_kings<Rules>::value>());
 }
 
 // partial specialization for men that cannot capture kings
@@ -261,7 +261,7 @@ bool Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::detect_targets(co
 template<bool Color, typename Rules, typename Board>
 bool Template<Color, Pieces::PAWN, Move::JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied)
 {
-        return detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<Variants::ManCaptureDirections<Rules>::VALUE>());
+        return detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<Variants::man_capture_directions<Rules>::value>());
 }
 
 // partial specialization for men that capture in the 8 diagonal and orthogonal directions

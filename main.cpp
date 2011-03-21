@@ -14,9 +14,9 @@ int main(void)
 
         Tree::Walk::Test::International();
         //Tree::Search::Test::Killer();
-        //Tree::Walk::Test::Rectangular();
-        //Tree::Walk::Test::ChessVariants();
-        //Tree::Walk::Test::ItalianRuleBook();
+        Tree::Walk::Test::Rectangular();
+        Tree::Walk::Test::ChessVariants();
+        Tree::Walk::Test::ItalianRuleBook();
         
         std::cout << "End of program." << std::endl;
         for (;;);

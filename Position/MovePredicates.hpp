@@ -3,14 +3,6 @@
 template<typename Board>
 bool  Position<Board>::is_connected(const Pieces& m1, const Pieces& m2) const
 {
-        // two-step advance of single piece
-        if (dest_sq(m1) == from_sq(m2))
-                return true;
-
-        // second piece fills square vacated by first piece 
-        if (from_sq(m1) == dest_sq(m2))
-                return true;
-
         return false;
 }
 

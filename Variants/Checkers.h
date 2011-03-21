@@ -10,7 +10,7 @@ struct Checkers {};
 typedef Checkers English;
 typedef Checkers American;
 
-template<> struct ManCaptureDirections<Checkers>        { enum { VALUE = DIRS_UP }; };
-template<> struct is_LongKingRange<Checkers>            { enum { VALUE = RANGE_1 }; };
+template<> struct man_capture_directions<Checkers>      { enum { value = DIRS_UP }; };
+template<> struct is_long_king_range<Checkers>          { enum { value = RANGE_1 }; };
 
 }       // namespace Variants

@@ -11,108 +11,108 @@ namespace Variants {
 enum { DIRS_UP, DIRS_DOWN, DIRS_DIAG, DIRS_ORTH, DIRS_ALL };
 
 // king capture directions
-template<typename> struct KingCaptureDirections                 { enum { VALUE = DIRS_DIAG }; };
+template<typename> struct king_capture_directions               { enum { value = DIRS_DIAG }; };
 
 // man capture directions
-template<typename> struct ManCaptureDirections                  { enum { VALUE = DIRS_DIAG }; };
+template<typename> struct man_capture_directions                { enum { value = DIRS_DIAG }; };
 
 // man backwards capture
 template<typename Rules>
-struct is_ManCaptureBackwards
+struct is_men_capture_backwards
 {
-        enum { VALUE = ManCaptureDirections<Rules>::VALUE != DIRS_UP };
+        enum { value = man_capture_directions<Rules>::value != DIRS_UP };
 };
 
 // capture scan directions
-template<typename Rules> struct KingScanDirections              { enum { VALUE = ScanDirections<KingCaptureDirections<Rules>::VALUE>::VALUE }; };
-template<typename Rules> struct ManScanDirections               { enum { VALUE = ScanDirections<ManCaptureDirections<Rules>::VALUE>::VALUE  }; };
+template<typename Rules> struct king_scan_directions            { enum { value = scan_directions<king_capture_directions<Rules>::value>::value }; };
+template<typename Rules> struct man_scan_directions             { enum { value = scan_directions<man_capture_directions<Rules>::value>::value  }; };
 
 // scan directions
 enum { SCAN_UP, SCAN_DOWN, SCAN_SIDE, SCAN_REST, SCAN_ALL };
 
-template<size_t> struct ScanDirections;
-template<> struct ScanDirections<DIRS_UP  >                     { enum { VALUE = SCAN_UP   }; };
-template<> struct ScanDirections<DIRS_DOWN>                     { enum { VALUE = SCAN_DOWN }; };
-template<> struct ScanDirections<DIRS_DIAG>                     { enum { VALUE = SCAN_SIDE }; };
-template<> struct ScanDirections<DIRS_ORTH>                     { enum { VALUE = SCAN_SIDE }; };
-template<> struct ScanDirections<DIRS_ALL >                     { enum { VALUE = SCAN_ALL  }; };
+template<size_t> struct scan_directions;
+template<> struct scan_directions<DIRS_UP  >                    { enum { value = SCAN_UP   }; };
+template<> struct scan_directions<DIRS_DOWN>                    { enum { value = SCAN_DOWN }; };
+template<> struct scan_directions<DIRS_DIAG>                    { enum { value = SCAN_SIDE }; };
+template<> struct scan_directions<DIRS_ORTH>                    { enum { value = SCAN_SIDE }; };
+template<> struct scan_directions<DIRS_ALL >                    { enum { value = SCAN_ALL  }; };
 
 // king range
 enum {RANGE_1, RANGE_N};
-template<typename> struct is_LongKingRange                      { enum { VALUE = RANGE_N }; };
+template<typename> struct is_long_king_range                    { enum { value = RANGE_N }; };
 
 // king halt after final capture
 enum {HALT_1, HALT_N, HALT_K};
-template<typename Rules> struct KingCaptureHalt                 { enum { VALUE = is_LongKingRange<Rules>::VALUE }; };
+template<typename Rules> struct king_capture_halt               { enum { value = is_long_king_range<Rules>::value }; };
 
 // men can capture kings
-template<typename> struct is_MenCaptureKings                    { enum { VALUE = true  }; };
+template<typename> struct is_men_capture_kings                  { enum { value = true  }; };
 
 // promotion en-passant
 enum {PROMOTE_BR, PROMOTE_EP};
-template<typename> struct PromotionCondition                    { enum { VALUE = PROMOTE_BR }; };
+template<typename> struct promotion_condition                   { enum { value = PROMOTE_BR }; };
 
 // capture removal
 enum {REMOVE_1, REMOVE_N};
-template<typename> struct CaptureRemoval                        { enum { VALUE = REMOVE_N }; };
+template<typename> struct capture_removal                       { enum { value = REMOVE_N }; };
 
 // capture direction reversal
-template<typename> struct is_DirectionReversal                  { enum { VALUE = false }; };
+template<typename> struct is_capture_direction_reversal         { enum { value = false }; };
 
 // smallest value for which non-unique capture sequences can occur
-template<typename> struct LargeCaptureValue                     { enum { VALUE = 4 }; };
+template<typename> struct large_capture                         { enum { value = 4 }; };
 
 template<typename Rules>
-struct is_AmbiguousManCapture
+struct is_ambiguous_man_capture
 {
         enum { 
-                VALUE = is_ManCaptureBackwards<Rules>::VALUE || PromotionCondition<Rules>::VALUE 
+                value = is_men_capture_backwards<Rules>::value || promotion_condition<Rules>::value 
         };
 };
 
 // restricted consecutive moves with the same king
-template<typename> struct is_RestrictedSameKingMoves            { enum { VALUE = false }; };
+template<typename> struct is_restricted_same_king_moves         { enum { value = false }; };
 
 // maximum allowed consecutive moves with the same king
-template<typename> struct MaxSameKingMoves                      { enum { VALUE = 6 }; };
+template<typename> struct max_same_king_moves                   { enum { value = 3 }; };
 
 //+----------------------------------------------------------------------------+
 //|      Capture precedence                                                    |
 //+----------------------------------------------------------------------------+
 
 // absolute king capture precedence
-template<typename> struct is_AbsoluteKingPrecedence             { enum { VALUE = false }; };
+template<typename> struct is_absolute_king_precedence           { enum { value = false }; };
 
 // relative king capture precedence
-template<typename> struct is_RelativeKingPrecedence             { enum { VALUE = false }; };
+template<typename> struct is_relative_king_precedence           { enum { value = false }; };
 
 // majority capture precedence
-template<typename> struct is_MajorityPrecedence                 { enum { VALUE = false }; };
+template<typename> struct is_majority_precedence                { enum { value = false }; };
 
 //+----------------------------------------------------------------------------+
 //|      Drawing rules                                                         |
 //+----------------------------------------------------------------------------+
 
 // restricted repeated positions
-template<typename> struct RestrictedRepetitions                 { enum { VALUE = true }; };
+template<typename> struct is_restricted_repetitions             { enum { value = true }; };
 
 // maximum number of repeated positions
-template<typename> struct MaxRepetitions                        { enum { VALUE =  3 }; };       // (FMJD rule 6.1)
+template<typename> struct max_repetitions                       { enum { value =  3 }; };       // (FMJD rule 6.1)
 
 // restricted consecutive non-conversion moves
-template<typename> struct is_RestrictedNonConversionMoves       { enum { VALUE = true }; };
+template<typename> struct is_restricted_non_conversion_moves    { enum { value = true }; };
 
 // maximum allowed consecutive non-conversion moves 
-template<typename> struct MaxNonConversionMoves                 { enum { VALUE = 50 }; };       // (FMJD rule 6.2)
+template<typename> struct max_non_conversion_moves              { enum { value = 50 }; };       // (FMJD rule 6.2)
 
 // other drawing rules
-template<typename> struct num_Max3v1                            { enum { VALUE = 32 }; };       // (FMJD rule 6.3)
-template<typename> struct num_Max2v1                            { enum { VALUE = 10 }; };       // (FMJD rule 6.4)
+template<typename> struct max_3v1_moves                         { enum { value = 32 }; };       // (FMJD rule 6.3)
+template<typename> struct max_2v1_moves                         { enum { value = 10 }; };       // (FMJD rule 6.4)
 
 //+----------------------------------------------------------------------------+
 //|      Implementation of move generation                                     |
 //+----------------------------------------------------------------------------+
 
-template<typename> struct is_CheckCaptureUniqueness             { enum { VALUE = true }; };
+template<typename> struct is_check_capture_uniqueness           { enum { value = true }; };
 
 }       // namespace Variants
