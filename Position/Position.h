@@ -33,16 +33,22 @@ public:
         BitBoard men(bool) const;                               // black or white men
         BitBoard kings(bool) const;                             // black or white kings
         BitBoard pieces(bool) const;                            // black or white pieces
+        BitBoard active_men(void) const;                        // men for the side to move
+        BitBoard active_kings(void) const;                      // kings for the side to move
+        BitBoard active_pieces(void) const;                     // pieces for the side to move
+        BitBoard passive_men(void) const;                       // men for the opposite side
+        BitBoard passive_kings(void) const;                     // kings for the opposite side
+        BitBoard passive_pieces(void) const;                    // pieces for the opposite side
         bool to_move(void) const;                               // side to move
+
+        template<typename> 
+        BitBoard unrestricted_kings(bool) const;
 
         HashIndex hash_index(void) const;
         BitBoard repeated_kings(void) const;
         BitBoard repeated_kings(bool) const;
         PlyCount repeated_moves(bool) const;
         PlyCount non_conversion(void) const;
-
-        template<typename> 
-        BitBoard unrestricted_kings(bool) const;
 
         // make a move in a copy from another position
         template<typename>
@@ -67,33 +73,16 @@ private:
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<true>) const;
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<false>) const;
 
-        bool is_connected(const Pieces&, const Pieces&) const;
-        bool is_non_conversion(const Pieces&) const;
-        bool is_promotion(const Pieces&) const;
-        bool is_with_king(const Pieces&) const;
-        bool is_capture(const Pieces&) const;
-        BitBoard from_sq(const Pieces&) const;
-        BitBoard dest_sq(const Pieces&) const;
-
         void link(const Position<Board>&);
 
         // tag dispatching for restrictions on consecutive moves with the same king
         template<typename> void make_irreversible(const Pieces&);
-        template<typename> void make_irreversible(const Pieces&, Int2Type<true>);
+        template<typename> void make_irreversible(const Pieces&, Int2Type<true >);
         template<typename> void make_irreversible(const Pieces&, Int2Type<false>);
 
         void make_non_conversion(const Pieces&);
         template<PlyCount> void make_repeated_kings_moves(const Pieces&);
         void make_reversible(const Pieces&);
-
-        // pre-conditions for modifiers
-        template<typename> bool is_pseudo_legal_move(const Pieces&) const;
-        template<typename> bool is_pseudo_legal_undo(const Pieces&) const;
-
-        // tag dispatching on capture removal
-        template<typename> bool make_sequential_capture_removal(const Pieces&) const;
-        bool make_sequential_capture_removal(const Pieces&, Int2Type<Variants::REMOVE_1>) const;
-        bool make_sequential_capture_removal(const Pieces&, Int2Type<Variants::REMOVE_N>) const;
                 
         // post-conditions for the constructors and modifiers
         bool pieces_invariant(void) const;
@@ -118,4 +107,3 @@ private:
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Position.hpp"
 #include "MakeMove.hpp"
-#include "MovePredicates.hpp"

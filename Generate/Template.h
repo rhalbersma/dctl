@@ -1,5 +1,5 @@
 #pragma once
-#include "../Position/Move.h"
+#include "../Move/List.h"
 #include "../Position/Pieces.h"
 #include <cassert>
 #include <cstddef>

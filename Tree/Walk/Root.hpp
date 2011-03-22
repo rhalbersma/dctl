@@ -1,5 +1,5 @@
 #include "../../Generate/Generate.h"
-#include "../../Position/Move.h"
+#include "../../Move/List.h"
 #include "../../Position/Position.h"
 #include "../../IO/FEN.h"
 #include "../../IO/MoveIO.h"

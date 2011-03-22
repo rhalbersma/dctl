@@ -38,22 +38,22 @@ template<> struct scan_directions<DIRS_ORTH>                    { enum { value =
 template<> struct scan_directions<DIRS_ALL >                    { enum { value = SCAN_ALL  }; };
 
 // king range
-enum {RANGE_1, RANGE_N};
+enum { RANGE_1, RANGE_N };
 template<typename> struct is_long_king_range                    { enum { value = RANGE_N }; };
 
 // king halt after final capture
-enum {HALT_1, HALT_N, HALT_K};
+enum { HALT_1, HALT_N, HALT_K };
 template<typename Rules> struct king_capture_halt               { enum { value = is_long_king_range<Rules>::value }; };
 
 // men can capture kings
 template<typename> struct is_men_capture_kings                  { enum { value = true  }; };
 
 // promotion en-passant
-enum {PROMOTE_BR, PROMOTE_EP};
+enum { PROMOTE_BR, PROMOTE_EP };
 template<typename> struct promotion_condition                   { enum { value = PROMOTE_BR }; };
 
 // capture removal
-enum {REMOVE_1, REMOVE_N};
+enum { REMOVE_1, REMOVE_N };
 template<typename> struct capture_removal                       { enum { value = REMOVE_N }; };
 
 // capture direction reversal

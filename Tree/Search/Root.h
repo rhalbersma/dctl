@@ -3,7 +3,7 @@
 #include "Value.h"
 #include "../Statistics.h"
 #include "../../Hash/Map.h"
-#include "../../Position/Move.h"
+#include "../../Move/Types.h"
 #include "../../Utilities/Ply.h"
 #include "../../Utilities/IntegerTypes.h"
 

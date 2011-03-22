@@ -1,7 +1,7 @@
 #include "Templates.h"
 #include "../../Geometry/Direction.h"
 #include "../../Geometry/PushPull.h"
-#include "../../Position/Move.h"
+#include "../../Move/List.h"
 #include "../../Utilities/Bit.h"
 #include <cassert>
 
