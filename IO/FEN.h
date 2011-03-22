@@ -14,15 +14,16 @@ struct PositionToken<FEN_tag>: public PositionTokenTriple<'B', 'W', '.'>
 };
 
 template<typename Board, typename Token>
-struct read_position_string<FEN_tag, Board, Token>
+struct read_position_string<Board, FEN_tag, Token>
 {
-	Position<Board> operator()(const std::string&);
+	Tree::Node::Position<Board> operator()(const std::string&);
 };
 
 template<typename Token>
 struct write_position_string<FEN_tag, Token>
 {
-	template<typename Board> std::string operator()(const Position<Board>&) const;
+	template<typename Board> 
+        std::string operator()(const Tree::Node::Position<Board>&) const;
 };
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

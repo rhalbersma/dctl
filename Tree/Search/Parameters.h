@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Move/Types.h"
+#include "../Move/Types.h"
 
-template<typename> class Position;
+namespace Node { template<typename> class Position; }
 
 namespace Tree {
 namespace Search {
@@ -13,7 +13,7 @@ public:
         Parameters(void);
 
         // views
-        const Move::Sequence& PV(void) const;
+        const Tree::Move::Sequence& PV(void) const;
         Move::Sequence& PV(void);
         size_t best_move(void) const;
         bool do_null_move(void) const;

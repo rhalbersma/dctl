@@ -6,12 +6,12 @@ Tree::Search::Parameters::Parameters(void)
 {
 }
 
-const Move::Sequence& Tree::Search::Parameters::PV(void) const
+const Tree::Move::Sequence& Tree::Search::Parameters::PV(void) const
 {
         return PV_;
 }
 
-Move::Sequence& Tree::Search::Parameters::PV(void)
+Tree::Move::Sequence& Tree::Search::Parameters::PV(void)
 {
         return PV_;
 }

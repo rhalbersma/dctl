@@ -1,5 +1,5 @@
 #include "BoardMetaTemplates.h"
-#include "../Position/Side.h"
+#include "../Tree/Node/Side.h"
 
 namespace Geometry {
 
@@ -9,20 +9,20 @@ const BitBoard Board<GridLayout, D, N, A>::SQUARES = INIT_SQUARES<T>::VALUE;
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::INITIAL[] =
 {
-	INIT_INITIAL<T, Side::BLACK>::VALUE,
-        INIT_INITIAL<T, Side::WHITE>::VALUE
+	INIT_INITIAL<T, Tree::Node::Side::BLACK>::VALUE,
+        INIT_INITIAL<T, Tree::Node::Side::WHITE>::VALUE
 };
 
 template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::PROMOTION[][2] =
 {
         {
-                INIT_ROW_MASK<T, Side::WHITE, 0>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 1>::VALUE
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE, 0>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE, 1>::VALUE
         },
         {
-                INIT_ROW_MASK<T, Side::BLACK, 0>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 1>::VALUE
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK, 0>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK, 1>::VALUE
         }
 };
 
@@ -30,32 +30,32 @@ template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::ROW_MASK[][12] =
 {
         {
-                INIT_ROW_MASK<T, Side::BLACK,  0>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK,  1>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK,  2>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK,  3>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK,  4>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK,  5>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK,  6>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK,  7>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK,  8>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK,  9>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 10>::VALUE,
-                INIT_ROW_MASK<T, Side::BLACK, 11>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  0>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  1>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  2>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  3>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  4>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  5>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  6>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  7>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  8>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  9>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK, 10>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::BLACK, 11>::VALUE,
         },
         {
-                INIT_ROW_MASK<T, Side::WHITE,  0>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE,  1>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE,  2>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE,  3>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE,  4>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE,  5>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE,  6>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE,  7>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE,  8>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE,  9>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 10>::VALUE,
-                INIT_ROW_MASK<T, Side::WHITE, 11>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  0>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  1>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  2>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  3>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  4>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  5>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  6>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  7>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  8>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  9>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE, 10>::VALUE,
+                INIT_ROW_MASK<T, Tree::Node::Side::WHITE, 11>::VALUE,
         }
 };
 
@@ -63,32 +63,32 @@ template<typename GridLayout, size_t D, size_t N, size_t A>
 const BitBoard Board<GridLayout, D, N, A>::COL_MASK[][12] =
 {
         {
-                INIT_COL_MASK<T, Side::BLACK,  0>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK,  1>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK,  2>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK,  3>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK,  4>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK,  5>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK,  6>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK,  7>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK,  8>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK,  9>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 10>::VALUE,
-                INIT_COL_MASK<T, Side::BLACK, 11>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  0>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  1>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  2>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  3>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  4>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  5>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  6>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  7>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  8>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  9>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK, 10>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::BLACK, 11>::VALUE,
         },
         {
-                INIT_COL_MASK<T, Side::WHITE,  0>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE,  1>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE,  2>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE,  3>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE,  4>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE,  5>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE,  6>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE,  7>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE,  8>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE,  9>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 10>::VALUE,
-                INIT_COL_MASK<T, Side::WHITE, 11>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  0>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  1>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  2>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  3>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  4>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  5>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  6>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  7>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  8>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  9>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE, 10>::VALUE,
+                INIT_COL_MASK<T, Tree::Node::Side::WHITE, 11>::VALUE,
         }
 };
 

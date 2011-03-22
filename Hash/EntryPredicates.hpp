@@ -7,7 +7,7 @@ bool key_equal_to<Entry, Key>::operator()(const Entry& entry, const Key& key) co
 }
 
 template<typename Entry>
-bool type_equal_to<Entry>::operator()(const Entry& entry, Tree::Search::Node::Type type) const
+bool type_equal_to<Entry>::operator()(const Entry& entry, Tree::Search::Entry::Type type) const
 {
         return entry.second.type() == type;
 }

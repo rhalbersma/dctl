@@ -1,4 +1,4 @@
-#include "../Position/Position.h"
+#include "../Tree/Node/Position.h"
 
 namespace Hash {
 
@@ -9,9 +9,9 @@ Key ShiftSign<Index, Key>::operator()(Index index) const
 }
 
 template<typename Board, typename Key>
-struct FindSign<Position<Board>, Key>: public std::unary_function<Position<Board>, Key>
+struct FindSign<Tree::Node::Position<Board>, Key>: public std::unary_function<Tree::Node::Position<Board>, Key>
 {
-        const Key& operator()(const Position<Board>& p) const
+        const Key& operator()(const Tree::Node::Position<Board>& p) const
         {
                 return p.pieces();
         }

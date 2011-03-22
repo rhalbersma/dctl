@@ -1,6 +1,6 @@
 #include "Test.h"
 #include "Root.h"
-#include "../../Position/Position.h"
+#include "../Node/Position.h"
 #include "../../Geometry/Board.h"
 #include "../../Variants/Rules.h"
 #include "../../IO/BoardIO.h"
@@ -10,7 +10,7 @@
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 void Tree::Search::Test::International(void)
 {
-        Position<Geometry::International> i10 = Position<Geometry::International>::initial();
+        Tree::Node::Position<Geometry::International> i10 = Tree::Node::Position<Geometry::International>::initial();
         Root::analyze<Variants::International>(i10, 21);
 
         typedef std::pair<std::string, size_t> DB_unittest;
@@ -24,7 +24,7 @@ void Tree::Search::Test::International(void)
         };
                 
         for (size_t i = 0; i < 4; ++i) {
-                value = Root::analyze<Variants::International>(read_position_string<FEN_tag, Geometry::International>()(DB_win11[i].first), DB_win11[i].second);
+                value = Root::analyze<Variants::International>(read_position_string<Geometry::International, FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
                 assert(value == Value::win(DB_win11[i].second));
         }
 
@@ -45,7 +45,7 @@ void Tree::Search::Test::International(void)
         };
 
         for (size_t i = 0; i < 13; ++i) {
-                value = Root::analyze<Variants::International>(read_position_string<FEN_tag, Geometry::International>()(DB_win21[i].first), DB_win21[i].second);
+                value = Root::analyze<Variants::International>(read_position_string<Geometry::International, FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
                 assert(value == Value::win(DB_win21[i].second));
         }
         
@@ -62,7 +62,7 @@ void Tree::Search::Test::International(void)
         };
 
         for (size_t i = 0; i < 9; ++i) {
-                value = Root::analyze<Variants::International>(read_position_string<FEN_tag, Geometry::International>()(DB_win22[i].first), DB_win22[i].second);
+                value = Root::analyze<Variants::International>(read_position_string<Geometry::International, FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
                 assert(value == Value::win(DB_win22[i].second));
         }
         
@@ -86,7 +86,7 @@ void Tree::Search::Test::International(void)
         };
         
         for (size_t i = 0; i < 16; ++i) {
-                value = Root::analyze<Variants::International>(read_position_string<FEN_tag, Geometry::International>()(DB_win31[i].first), DB_win31[i].second);
+                value = Root::analyze<Variants::International>(read_position_string<Geometry::International, FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 assert(value == Value::win(DB_win31[i].second));
         }
 }
@@ -105,7 +105,7 @@ void Tree::Search::Test::Killer(void)
         };
 
         for (size_t i = 0; i < 4; ++i) {
-                value = Root::analyze<Variants::Killer>(read_position_string<FEN_tag, Geometry::International>()(DB_win11[i].first), DB_win11[i].second);
+                value = Root::analyze<Variants::Killer>(read_position_string<Geometry::International, FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
                 assert(value == Value::win(DB_win11[i].second));
         }
 
@@ -127,7 +127,7 @@ void Tree::Search::Test::Killer(void)
         };       
         
         for (size_t i = 0; i < 14; ++i) {
-                value = Root::analyze<Variants::Killer>(read_position_string<FEN_tag, Geometry::International>()(DB_win21[i].first), DB_win21[i].second);
+                value = Root::analyze<Variants::Killer>(read_position_string<Geometry::International, FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
                 assert(value == Value::win(DB_win21[i].second));
         }
 
@@ -144,7 +144,7 @@ void Tree::Search::Test::Killer(void)
         };
 
         for (size_t i = 0; i < 9; ++i) {
-                value = Root::analyze<Variants::Killer>(read_position_string<FEN_tag, Geometry::International>()(DB_win22[i].first), DB_win22[i].second);
+                value = Root::analyze<Variants::Killer>(read_position_string<Geometry::International, FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
                 assert(value == Value::win(DB_win22[i].second));
         }
         
@@ -168,7 +168,7 @@ void Tree::Search::Test::Killer(void)
         };
         
         for (size_t i = 0; i < 16; ++i) {
-                value = Root::analyze<Variants::Killer>(read_position_string<FEN_tag, Geometry::International>()(DB_win31[i].first), DB_win31[i].second);
+                value = Root::analyze<Variants::Killer>(read_position_string<Geometry::International, FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 assert(value == Value::win(DB_win31[i].second));
         }
 
@@ -179,7 +179,7 @@ void Tree::Search::Test::Killer(void)
 void Tree::Search::Test::ChessVariants(void)
 {
         // The alternative game rules thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2822
-        Position<Geometry::Chess> i8;
+        Tree::Node::Position<Geometry::Chess> i8;
         std::cout << write_square_layout<Geometry::Chess>()() << std::endl;
 
         Root::analyze<Variants::Brazilian>(i8, 19);    // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
@@ -188,24 +188,24 @@ void Tree::Search::Test::ChessVariants(void)
         Root::analyze<Variants::English>(i8, 19);      // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
         Root::analyze<Variants::Czech>(i8, 19);
 
-        Position<Geometry::Roman> r8;
+        Tree::Node::Position<Geometry::Roman> r8;
         std::cout << write_square_layout<Geometry::Roman>()() << std::endl;
 
         Root::analyze<Variants::Spanish>(r8, 19);
         Root::analyze<Variants::Italian>(r8, 19);
 
         // Addional Italian test positions from email conversations with Ed Gilbert
-        Position<Geometry::Roman> ITA_Ed_Gilbert_2 = read_position_string<FEN_tag, Geometry::Roman>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
-        Position<Geometry::Roman> ITA_Ed_Gilbert_3 = read_position_string<FEN_tag, Geometry::Roman>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
+        Tree::Node::Position<Geometry::Roman> ITA_Ed_Gilbert_2 = read_position_string<Geometry::Roman, FEN_tag>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
+        Tree::Node::Position<Geometry::Roman> ITA_Ed_Gilbert_3 = read_position_string<Geometry::Roman, FEN_tag>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
         Root::analyze<Variants::Italian>(ITA_Ed_Gilbert_2, 19);
         Root::analyze<Variants::Italian>(ITA_Ed_Gilbert_3, 19);
 
-        Position<Geometry::Thai> t8;
+        Tree::Node::Position<Geometry::Thai> t8;
         Root::analyze<Variants::Thai>(t8, 19);		// Thai initial position with 2 rows of men
         Root::analyze<Variants::Thai>(i8, 19);		// Usual initial position with 3 rows of men
 
         Root::analyze<Variants::Frisian>(i8, 19);
 
-        Position<Geometry::Mini> i6;
+        Tree::Node::Position<Geometry::Mini> i6;
         Root::analyze<Variants::International>(i6, 31);
 }

@@ -12,13 +12,6 @@ struct PositionTokenTriple
         static const char UPPER[2];
 };
 
-template<char M, char C>
-struct MoveTokenDouble
-{
-        static const char MOVE    = M;
-        static const char CAPTURE = C;
-};
-
 static const char WHITE_SPACE = ' ';
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

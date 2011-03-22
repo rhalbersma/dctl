@@ -2,18 +2,18 @@
 #include <functional>
 #include <string>
 
-template<typename> class Position;
+namespace Tree { namespace Node { template<typename> class Position; } }
 template<typename> struct PositionToken;
 
 template
 <
-        typename Protocol, 
         typename Board,
+        typename Protocol, 
         typename Token = PositionToken<Protocol>
 >
 struct read_position_string
 {
-	Position<Board> operator()(const std::string&);
+	Tree::Node::Position<Board> operator()(const std::string&);
 };
 
 template
@@ -23,7 +23,8 @@ template
 >
 struct write_position_string
 {
-	template<typename Board> std::string operator()(const Position<Board>&) const;
+	template<typename Board> 
+        std::string operator()(const Tree::Node::Position<Board>&) const;
 };
 
 template
@@ -33,7 +34,8 @@ template
 >
 struct write_position_layout
 {
-	template<typename Board> std::string operator()(const Position<Board>&) const;
+	template<typename Board> 
+        std::string operator()(const Tree::Node::Position<Board>&) const;
 };
 
 template
@@ -41,9 +43,9 @@ template
         typename Board, 
         typename Token
 >
-struct write_position_bit: public std::binary_function<Position<Board>, size_t, std::string>
+struct write_position_bit: public std::binary_function<Tree::Node::Position<Board>, size_t, std::string>
 {
-        std::string operator()(const Position<Board>&, size_t) const;
+        std::string operator()(const Tree::Node::Position<Board>&, size_t) const;
 };
 
 template<typename> 
