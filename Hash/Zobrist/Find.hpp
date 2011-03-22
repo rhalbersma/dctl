@@ -1,13 +1,13 @@
-#include "../../Position/Position.h"
+#include "../../Tree/Node/Position.h"
 
 namespace Hash {
 namespace Zobrist {
 
 // partial specialization for retrieval of pre-computed indices of positions
 template<typename Board, typename Index>
-struct Find<Position<Board>, Index>: public std::unary_function<Position<Board>, Index>
+struct Find<Tree::Node::Position<Board>, Index>: public std::unary_function<Tree::Node::Position<Board>, Index>
 {
-        Index operator()(const Position<Board>& p) const
+        Index operator()(const Tree::Node::Position<Board>& p) const
         {
                 return p.hash_index();
         }

@@ -1,36 +1,37 @@
 #include <cctype>
 
 template<typename Board, typename Token>
-Position<Board> read_position_string<FEN_tag, Board, Token>::operator()(const std::string& s)
+Tree::Node::Position<Board> read_position_string<Board, FEN_tag, Token>::operator()(const std::string& s)
 {      
         BitBoard p_pieces[2] = {0, 0};
 	BitBoard p_kings = 0;
-	bool p_side = Side::BLACK;
+	bool p_side = Tree::Node::Side::BLACK;
 
         // do not attempt to parse empty strings
         if (s.empty())
-                return Position<Board>(p_pieces[Side::BLACK], p_pieces[Side::WHITE], p_kings, p_side);
+                return Tree::Node::Position<Board>(p_pieces[Tree::Node::Side::BLACK], p_pieces[Tree::Node::Side::WHITE], p_kings, p_side);
 
         bool setup_kings = false;
         bool setup_color = p_side;
 
         std::stringstream sstr(s);
         char ch;
-        size_t sq;
-        size_t b;
-        BitBoard bb;
 
-	sstr >> ch;
+        sstr >> ch;
 	switch(ch) {
 	case Token::BLACK:
-		p_side = Side::BLACK;			                // black to move
+		p_side = Tree::Node::Side::BLACK;			        // black to move
 		break;
 	case Token::WHITE:
-		p_side = Side::WHITE;			                // white to move
+		p_side = Tree::Node::Side::WHITE;                             // white to move
 		break;
         default:
                 assert(false);
 	}
+
+        size_t sq;
+        size_t b;
+        BitBoard bb;
 
         for (sstr >> ch; sstr; sstr >> ch) {
                 switch(ch) {
@@ -38,10 +39,10 @@ Position<Board> read_position_string<FEN_tag, Board, Token>::operator()(const st
                         sstr >> ch;
                         switch(ch) {
                         case Token::BLACK:                              // setup black pieces
-                                setup_color = Side::BLACK;
+                                setup_color = Tree::Node::Side::BLACK;
                                 break;
                         case Token::WHITE:                              // setup white pieces
-                                setup_color = Side::WHITE;
+                                setup_color = Tree::Node::Side::WHITE;
                                 break;
                         default:
                                 assert(false);
@@ -66,11 +67,11 @@ Position<Board> read_position_string<FEN_tag, Board, Token>::operator()(const st
                         setup_kings = false;
                 }
         }
-        return Position<Board>(p_pieces[Side::BLACK], p_pieces[Side::WHITE], p_kings, p_side);
+        return Tree::Node::Position<Board>(p_pieces[Tree::Node::Side::BLACK], p_pieces[Tree::Node::Side::WHITE], p_kings, p_side);
 }
 
 template<typename Token> template<typename Board>
-std::string write_position_string<FEN_tag, Token>::operator()(const Position<Board>& p) const
+std::string write_position_string<FEN_tag, Token>::operator()(const Tree::Node::Position<Board>& p) const
 {
         std::stringstream sstr;
         size_t b;

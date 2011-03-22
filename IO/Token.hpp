@@ -2,8 +2,8 @@
 
 template<char B, char W, char E>
 const char PositionTokenTriple<B, W, E>::COLOR[2] = {
-		BLACK,
-		WHITE
+        BLACK,
+        WHITE
 };
 
 template<char B, char W, char E>

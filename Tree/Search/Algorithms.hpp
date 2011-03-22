@@ -1,4 +1,4 @@
-#include "../../Move/Types.h"
+#include "../Generate/Successors.h"
 #include <cassert>
 
 namespace Tree {
@@ -9,7 +9,7 @@ using Value::squeeze;
 
 // negamax
 template<typename Rules, typename Board>
-int Root::negamax(const Position<Board>& p, size_t ply, size_t depth, Parameters& parent_node)
+int Root::negamax(const Node::Position<Board>& p, size_t ply, size_t depth, Parameters& parent_node)
 {
         statistics_.update(ply);
 
@@ -46,7 +46,7 @@ int Root::negamax(const Position<Board>& p, size_t ply, size_t depth, Parameters
 
 // alpha-beta
 template<typename Rules, typename Board>
-int Root::alpha_beta(const Position<Board>& p, size_t ply, size_t depth, int alpha, int beta, Parameters& parent_node)
+int Root::alpha_beta(const Node::Position<Board>& p, size_t ply, size_t depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 
@@ -93,8 +93,8 @@ int Root::alpha_beta(const Position<Board>& p, size_t ply, size_t depth, int alp
 }
 
 // principal variation search (PVS) with TT cut-offs, TT move ordering and IID
-template<size_t ThisNode, typename Rules, typename Board>
-int Root::search(const Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
+template<size_t ThisEntry, typename Rules, typename Board>
+int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
         
@@ -106,7 +106,7 @@ int Root::search(const Position<Board>& p, size_t ply, int depth, int alpha, int
 
         // return evaluation in leaf nodes with valid move_stack
         if (depth <= 0)
-                return !Generate<Rules, Board>::detect(p)? Value::loss(0) : Evaluate::evaluate(p);
+                return !Generate::Successors<Rules, Board>::detect(p)? Value::loss(0) : Evaluate::evaluate(p);
 
         assert(depth > 0);
         assert(alpha >= -Value::infinity());
@@ -119,18 +119,18 @@ int Root::search(const Position<Board>& p, size_t ply, int depth, int alpha, int
                 return beta;
 
         assert(
-                ( is_PV(ThisNode) && alpha <  beta - 1) ||
-                (!is_PV(ThisNode) && alpha == beta - 1)
+                ( is_PV(ThisEntry) && alpha <  beta - 1) ||
+                (!is_PV(ThisEntry) && alpha == beta - 1)
         );
 
         // TT cut-off for exact win/loss scores or for deep enough heuristic scores
-        const Node* TT_entry = TT.find(p);
+        const Entry* TT_entry = TT.find(p);
         if (TT_entry && (!TT_entry->is_heuristic() || TT_entry->is_sufficient(depth)) && TT_entry->is_cutoff(alpha, beta))
                 return TT_entry->value();
 
         // generate move_stack
         Move::Stack move_stack;
-        Generate<Rules, Board>::generate(p, move_stack);
+        Generate::Successors<Rules, Board>::generate(p, move_stack);
 
         // without a valid move, the position is an immediate loss
         if (!move_stack.size()) {
@@ -138,18 +138,18 @@ int Root::search(const Position<Board>& p, size_t ply, int depth, int alpha, int
 
                 // we can only have an upper bound or an exact value at this point
                 assert(loss_score < beta);
-                const Node::Type loss_type = (loss_score <= alpha)? Node::upper() : Node::exact();
+                const Entry::Type loss_type = (loss_score <= alpha)? Entry::upper() : Entry::exact();
 
-                TT.insert(p, Node(loss_score, loss_type, depth, Node::no_move()));
+                TT.insert(p, Entry(loss_score, loss_type, depth, Entry::no_move()));
                 return loss_score;
         }
 
         // internal iterative deepening
         if (!(TT_entry && TT_entry->has_move())) {
-                const int IID_depth = is_PV(ThisNode)? depth - 2 : depth / 2;
+                const int IID_depth = is_PV(ThisEntry)? depth - 2 : depth / 2;
                 if (IID_depth > 0) {
-                        const int IID_value = search<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
-                        TT.insert(p, Node(IID_value, Node::exact(), IID_depth, parent_node.best_move()));
+                        const int IID_value = search<ThisEntry, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
+                        TT.insert(p, Entry(IID_value, Entry::exact(), IID_depth, parent_node.best_move()));
                         TT_entry = TT.find(p);
                         assert(TT_entry);
                 }
@@ -165,13 +165,13 @@ int Root::search(const Position<Board>& p, size_t ply, int depth, int alpha, int
 
         // search move_stack
         int value = -Value::infinity();
-        size_t best_move = Node::no_move();
+        size_t best_move = Entry::no_move();
         int score;
         size_t i;
         Parameters child_node;
         const int original_alpha = alpha;
 
-        Position<Board> q;
+        Node::Position<Board> q;
         for (size_t s = 0; s < move_order.size(); ++s) {
                 i = move_order[s];
                 // TODO: TT singular extension
@@ -180,24 +180,24 @@ int Root::search(const Position<Board>& p, size_t ply, int depth, int alpha, int
 
                 q.template copy_make<Rules>(p, move_stack[i]);
 
-                if (is_PV(ThisNode) && s == 0)
+                if (is_PV(ThisEntry) && s == 0)
                         score = -squeeze(search<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 else {
                         // TODO: late move reductions
 
                         score = -squeeze(search<ZW, Rules>(q, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
-                        if (is_PV(ThisNode) && score > alpha && score < beta)
+                        if (is_PV(ThisEntry) && score > alpha && score < beta)
                                 score = -squeeze(search<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 }
 
                 if (score > value) {
                         if (score >= beta) {
-                                TT.insert(p, Node(score, Node::lower(), depth, i));
+                                TT.insert(p, Entry(score, Entry::lower(), depth, i));
                                 return score;
                         }
                         value = score;
                         best_move = i;
-                        if (is_PV(ThisNode) && value > alpha) {
+                        if (is_PV(ThisEntry) && value > alpha) {
                                 alpha = value;
                                 parent_node.reset_PV(i, child_node.PV());
                         }
@@ -206,18 +206,18 @@ int Root::search(const Position<Board>& p, size_t ply, int depth, int alpha, int
 
         // we must have found a best move with a finite value
         assert(value > -Value::infinity());
-        assert(best_move != Node::no_move());
+        assert(best_move != Entry::no_move());
 
         // we can only have an upper bound or an exact value at this point
-        const Node::Type value_type = (value <= original_alpha)? Node::upper() : Node::exact();
-        TT.insert(p, Node(value, value_type, depth, best_move));
+        const Entry::Type value_type = (value <= original_alpha)? Entry::upper() : Entry::exact();
+        TT.insert(p, Entry(value, value_type, depth, best_move));
         return value;
 }
 
 /*
 // principal variation search (PVS) with TT cut-offs, TT move ordering and IID
-template<size_t Node, typename Rules, typename Board>
-int Root::quiescence(const Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
+template<size_t Entry, typename Rules, typename Board>
+int Root::quiescence(const Node::Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 

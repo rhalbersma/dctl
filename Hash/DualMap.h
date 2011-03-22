@@ -4,7 +4,7 @@
 #include "Algorithms.h"
 #include <cstddef>
 
-template<typename> class Position;
+namespace Tree { namespace Node { template<typename> class Position; } }
 
 namespace Hash {
 
@@ -24,10 +24,10 @@ public:
         void resize(size_t);
 
         // views
-        template<typename Board> const Value* find(const Position<Board>&) const;
+        template<typename Board> const Value* find(const Tree::Node::Position<Board>&) const;
 
         // modifiers
-        template<typename Board> void insert(const Position<Board>&, const Value&);
+        template<typename Board> void insert(const Tree::Node::Position<Board>&, const Value&);
 
 private:
         // representation

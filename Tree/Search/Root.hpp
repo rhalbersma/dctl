@@ -1,9 +1,9 @@
 #include "Parameters.h"
-#include "../../Move/Types.h"
-#include "../../Generate/Generate.h"
+#include "../Move/String.h"
+#include "../Move/Types.h"
+#include "../Generate/Successors.h"
 #include "../../Evaluation/Evaluate.h"
 #include "../../IO/FEN.h"
-#include "../../IO/MoveIO.h"
 #include "../../Utilities/StopWatch.h"
 #include <iostream>
 #include <iomanip>
@@ -13,7 +13,7 @@ namespace Search {
 
 // iterative deepening with no move ordering at the root
 template<typename Rules, typename Board>
-int Root::analyze(const Position<Board>& p, size_t nominal_depth)
+int Root::analyze(const Node::Position<Board>& p, size_t nominal_depth)
 {
         int value = -Value::infinity();                
         int alpha, beta;
@@ -37,7 +37,7 @@ int Root::analyze(const Position<Board>& p, size_t nominal_depth)
 }
 
 template<typename Board>
-void Root::announce(const Position<Board>& p, size_t nominal_depth)
+void Root::announce(const Node::Position<Board>& p, size_t nominal_depth)
 {
         std::cout << std::endl;
         std::cout << write_position_layout<FEN_tag>()(p) << std::endl;
@@ -47,41 +47,41 @@ void Root::announce(const Position<Board>& p, size_t nominal_depth)
 }
 
 template<typename Rules, typename Board>
-void Root::insert_PV(const Parameters& node, const Position<Board>& q, int value)
+void Root::insert_PV(const Parameters& node, const Node::Position<Board>& q, int value)
 {
         const Move::Sequence& line = node.PV();
-        Position<Board> p(q);
+        Node::Position<Board> p(q);
 
         for (size_t i = 0; i < line.size(); ++i) {
-                TT.insert(p, Node(value, Node::exact(), line.size() - i, line[i]));
+                TT.insert(p, Entry(value, Entry::exact(), line.size() - i, line[i]));
                 Move::Stack move_stack;
-                Generate<Rules, Board>::generate(p, move_stack);
+                Generate::Successors<Rules, Board>::generate(p, move_stack);
                 p.template make<Rules>(move_stack[line[i]]);
                 value = -Value::stretch(value);
         }
-        TT.insert(p, Node(value, Node::exact(), 0, Node::no_move()));
+        TT.insert(p, Entry(value, Entry::exact(), 0, Entry::no_move()));
 }
 
 template<typename Rules, typename Board>
-void Root::print_PV(const Parameters& node, const Position<Board>& q, bool print_TT_info)
+void Root::print_PV(const Parameters& node, const Node::Position<Board>& q, bool print_TT_info)
 {
         const Move::Sequence& line = node.PV();
-        Position<Board> p(q);
-        const Node* TT_entry;
+        Node::Position<Board> p(q);
+        const Entry* TT_entry;
         int eval_score;
         size_t repeated_kings;
         size_t non_conversion;
 
         for (size_t i = 0; i < line.size(); ++i) {
                 Move::Stack move_stack;
-                Generate<Rules, Board>::generate(p, move_stack);
+                Generate::Successors<Rules, Board>::generate(p, move_stack);
                 assert(line[i] < move_stack.size());
 
                 if (p.to_move())
-                        std::cout << write_move_string<Rules>()(p, move_stack[line[i]]);
+                        std::cout << Move::String::write<Rules>()(p, move_stack[line[i]]);
                 else {
                         std::cout << "(";
-                        std::cout << write_move_string<Rules>()(p, move_stack[line[i]]);
+                        std::cout << Move::String::write<Rules>()(p, move_stack[line[i]]);
                         std::cout << ")";
                 }
 

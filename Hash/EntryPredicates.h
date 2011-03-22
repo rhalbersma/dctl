@@ -1,5 +1,5 @@
 #pragma once
-#include "../Tree/Search/Node.h"
+#include "../Tree/Search/Entry.h"
 #include <functional>
 
 namespace Hash {
@@ -11,9 +11,9 @@ struct key_equal_to: public std::binary_function<Entry, Key, bool>
 };
 
 template<typename Entry>
-struct type_equal_to: public std::binary_function<Entry, Tree::Search::Node::Type, bool>
+struct type_equal_to: public std::binary_function<Entry, Tree::Search::Entry::Type, bool>
 {
-        bool operator()(const Entry&, Tree::Search::Node::Type) const;
+        bool operator()(const Entry&, Tree::Search::Entry::Type) const;
 };
 
 template<typename Entry>
