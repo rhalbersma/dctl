@@ -3,7 +3,7 @@
 #include <cstddef>
 
 template<typename> class Position;
-namespace Move { class List; }
+namespace Move { class Stack; }
 
 template<bool Color, int Material, typename Rules, typename Board> 
 class State: public AbstractState<Rules, Board>
@@ -11,9 +11,9 @@ class State: public AbstractState<Rules, Board>
 public:		
         State(void) {};
 
-        virtual void generate(const Position<Board>&, Move::List&) const;
-        virtual void generate_captures(const Position<Board>&, Move::List&) const;
-        virtual void generate_promotions(const Position<Board>&, Move::List&) const;
+        virtual void generate(const Position<Board>&, Move::Stack&) const;
+        virtual void generate_captures(const Position<Board>&, Move::Stack&) const;
+        virtual void generate_promotions(const Position<Board>&, Move::Stack&) const;
 
         virtual size_t count(const Position<Board>&) const;
         virtual size_t count_captures(const Position<Board>&) const;

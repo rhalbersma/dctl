@@ -1,4 +1,5 @@
 #include "Predicates.h"
+#include "../Utilities/Bit.h"
 
 // specialization for piece by piece removal during a capture sequence
 bool Move::is_sequential_capture_removal(BitBoard delta, BitBoard captured_pieces, Int2Type<Variants::REMOVE_1>)

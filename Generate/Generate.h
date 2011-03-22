@@ -5,16 +5,16 @@
 #include <cstddef>
 
 template<typename> class Position;
-namespace Move { class List; }
+namespace Move { class Stack; }
         
 template<typename Rules, typename Board>
 class Generate
 {
 public:
         // interface
-        static void generate(const Position<Board>&, Move::List&);
-        static void generate_captures(const Position<Board>&, Move::List&);
-        static void generate_promotions(const Position<Board>&, Move::List&);
+        static void generate(const Position<Board>&, Move::Stack&);
+        static void generate_captures(const Position<Board>&, Move::Stack&);
+        static void generate_promotions(const Position<Board>&, Move::Stack&);
 
         static size_t count(const Position<Board>&);
         static size_t count_captures(const Position<Board>&);

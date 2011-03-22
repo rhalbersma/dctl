@@ -52,7 +52,7 @@ public:
         // modifiers: assign(), insert(), erase() and swap() not supported
         void copy_back(void);
         void push_back(const_reference);
-        void push(void);
+        void increment_size(void);
         void pop_back(void);
         void clear(void);
 

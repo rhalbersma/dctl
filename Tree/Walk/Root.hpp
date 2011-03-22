@@ -1,5 +1,5 @@
 #include "../../Generate/Generate.h"
-#include "../../Move/List.h"
+#include "../../Move/Stack.h"
 #include "../../Position/Position.h"
 #include "../../IO/FEN.h"
 #include "../../IO/MoveIO.h"
@@ -35,16 +35,16 @@ NodeCount Root::divide(const Position<Board>& p, size_t nominal_depth)
         StopWatch timer;
 
         timer.start();
-        Move::List move_list;
-        Generate<Rules, Board>::generate(p, move_list);
+        Move::Stack move_stack;
+        Generate<Rules, Board>::generate(p, move_stack);
 
-        announce(p, nominal_depth, move_list.size());
+        announce(p, nominal_depth, move_stack.size());
         Position<Board> q;
-        for (size_t i = 0; i < move_list.size(); ++i) {
+        for (size_t i = 0; i < move_stack.size(); ++i) {
                 statistics_.reset();
-                print_move(write_move_string<Rules>()(p, move_list[i]), i);
+                print_move(write_move_string<Rules>()(p, move_stack[i]), i);
 
-                q.template copy_make<Rules>(p, move_list[i]);
+                q.template copy_make<Rules>(p, move_stack[i]);
                 move_leafs = driver<Rules>(q, 0, nominal_depth - 1);
                 leafs += move_leafs;
                 
@@ -70,12 +70,12 @@ NodeCount Root::leaf(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 0)
                 return 1;
 
-        Move::List move_list;
-        Generate<Rules, Board>::generate(p, move_list);
+        Move::Stack move_stack;
+        Generate<Rules, Board>::generate(p, move_stack);
         NodeCount leafs = 0;        
         Position<Board> q;
-        for (size_t i = 0; i < move_list.size(); ++i) {
-                q.template copy_make<Rules>(p, move_list[i]);
+        for (size_t i = 0; i < move_stack.size(); ++i) {
+                q.template copy_make<Rules>(p, move_stack[i]);
                 leafs += leaf<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
@@ -86,15 +86,15 @@ NodeCount Root::bulk(const Position<Board>& p, size_t ply, size_t depth)
 {
         statistics_.update(ply);
 
-        Move::List move_list;
-        Generate<Rules, Board>::generate(p, move_list);
+        Move::Stack move_stack;
+        Generate<Rules, Board>::generate(p, move_stack);
         if (depth == 1)
-                return move_list.size();
+                return move_stack.size();
         
         NodeCount leafs = 0;
         Position<Board> q;
-        for (size_t i = 0; i < move_list.size(); ++i) {
-                q.template copy_make<Rules>(p, move_list[i]);
+        for (size_t i = 0; i < move_stack.size(); ++i) {
+                q.template copy_make<Rules>(p, move_stack[i]);
                 leafs += bulk<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
@@ -108,12 +108,12 @@ NodeCount Root::count(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 1)
                 return Generate<Rules, Board>::count(p);
 
-        Move::List move_list;
-        Generate<Rules, Board>::generate(p, move_list);
+        Move::Stack move_stack;
+        Generate<Rules, Board>::generate(p, move_stack);
         NodeCount leafs = 0;
         Position<Board> q;
-        for (size_t i = 0; i < move_list.size(); ++i) {
-                q.template copy_make<Rules>(p, move_list[i]);
+        for (size_t i = 0; i < move_stack.size(); ++i) {
+                q.template copy_make<Rules>(p, move_stack[i]);
                 leafs += count<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
@@ -131,12 +131,12 @@ NodeCount Root::hash(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 0)
                 return 1;
 
-        Move::List move_list;
-        Generate<Rules, Board>::generate(p, move_list);
+        Move::Stack move_stack;
+        Generate<Rules, Board>::generate(p, move_stack);
         NodeCount leafs = 0;
         Position<Board> q;
-        for (size_t i = 0; i < move_list.size(); ++i) {
-                q.template copy_make<Rules>(p, move_list[i]);
+        for (size_t i = 0; i < move_stack.size(); ++i) {
+                q.template copy_make<Rules>(p, move_stack[i]);
                 leafs += hash<Rules>(q, ply + 1, depth - 1);
         }
 
@@ -157,12 +157,12 @@ NodeCount Root::fast(const Position<Board>& p, size_t ply, size_t depth)
         if (depth == 1)
                 leafs = Generate<Rules, Board>::count(p);
         else {
-                Move::List move_list;
-                Generate<Rules, Board>::generate(p, move_list);
+                Move::Stack move_stack;
+                Generate<Rules, Board>::generate(p, move_stack);
                 leafs = 0;
                 Position<Board> q;
-                for (size_t i = 0; i < move_list.size(); ++i) {
-                        q.template copy_make<Rules>(p, move_list[i]);
+                for (size_t i = 0; i < move_stack.size(); ++i) {
+                        q.template copy_make<Rules>(p, move_stack[i]);
                         leafs += fast<Rules>(q, ply + 1, depth - 1);
                 }
         }
@@ -184,7 +184,7 @@ template<typename Board>
 void Root::announce(const Position<Board>& p, size_t nominal_depth, size_t num_moves)
 {
         announce(p, nominal_depth);
-        std::cout << "Found " << num_moves << " move_list, searching each to nominal depth=" << nominal_depth - 1 << std::endl;
+        std::cout << "Found " << num_moves << " move_stack, searching each to nominal depth=" << nominal_depth - 1 << std::endl;
         std::cout << std::endl;
 }
 

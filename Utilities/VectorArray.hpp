@@ -131,12 +131,12 @@ void VectorArray<T, N>::copy_back(void)
 template<typename T, size_t N>
 void VectorArray<T, N>::push_back(const_reference t)
 {
-        push();
+        increment_size();
         back() = t;
 }
 
 template<typename T, size_t N>
-void VectorArray<T, N>::push(void)
+void VectorArray<T, N>::increment_size(void)
 {
         assert(!full());
         ++size_;
