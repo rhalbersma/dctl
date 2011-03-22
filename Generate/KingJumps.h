@@ -24,7 +24,7 @@ private:
         
         // tag dispatching based on relative king capture precedence
         static void generate_precede(const Position<Board>&, Capture::State<Rules, Board>&, Move::List&);
-        static void generate_precede(const Position<Board>&, Capture::State<Rules, Board>&, Move::List&, Int2Type<true>);
+        static void generate_precede(const Position<Board>&, Capture::State<Rules, Board>&, Move::List&, Int2Type<true >);
         static void generate_precede(const Position<Board>&, Capture::State<Rules, Board>&, Move::List&, Int2Type<false>);
 
         static void generate_serial(BitBoard, Capture::State<Rules, Board>&, Move::List&);
@@ -47,7 +47,7 @@ private:
         // tag dispatching based on king capture direction reversal
         template<size_t> static bool scan_long(BitBoard, Capture::State<Rules, Board>&, Move::List&);
         template<size_t> static bool scan_long(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<false>);
-        template<size_t> static bool scan_long(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<true>);
+        template<size_t> static bool scan_long(BitBoard, Capture::State<Rules, Board>&, Move::List&, Int2Type<true >);
 
         template<size_t> static bool scan_reverse(BitBoard, Capture::State<Rules, Board>&, Move::List&);
         template<size_t> static bool scan_forward(BitBoard, Capture::State<Rules, Board>&, Move::List&);

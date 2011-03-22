@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Position/Move.h"
+#include "../../Move/Types.h"
 
 template<typename> class Position;
 

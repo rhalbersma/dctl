@@ -1,5 +1,5 @@
 #include "Parameters.h"
-#include "../../Position/Move.h"
+#include "../../Move/Types.h"
 #include "../../Generate/Generate.h"
 #include "../../Evaluation/Evaluate.h"
 #include "../../IO/FEN.h"

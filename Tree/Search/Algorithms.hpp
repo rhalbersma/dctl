@@ -1,3 +1,4 @@
+#include "../../Move/Types.h"
 #include <cassert>
 
 namespace Tree {

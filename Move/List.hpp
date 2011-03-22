@@ -115,18 +115,4 @@ void Move::List::push_back(BitBoard delta, BitBoard promotion, BitBoard captured
         );
 }
 
-// tag dispatching based on promotion condition
-template<typename Rules>
-bool Move::List::promotion_en_passant(BitBoard promotion, BitBoard delta)
-{
-        return promotion_en_passant(promotion, delta, Int2Type<Variants::promotion_condition<Rules>::value>());
-}
-
-// tag dispatching on capture removal
-template<typename Rules>
-bool Move::List::sequential_capture_removal(BitBoard delta, BitBoard captured_pieces)
-{
-        return sequential_capture_removal(delta, captured_pieces, Int2Type<Variants::capture_removal<Rules>::value>());
-}
-
 }       // namespace Move

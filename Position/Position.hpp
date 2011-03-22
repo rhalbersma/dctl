@@ -137,6 +137,48 @@ BitBoard Position<Board>::pieces(bool color) const
         return pieces_.pieces(color);
 }
 
+// men for the side to move
+template<typename Board>
+BitBoard Position<Board>::active_men(void) const
+{
+        return men(to_move());
+}
+
+// kings for the side to move
+template<typename Board>
+BitBoard Position<Board>::active_kings(void) const
+{
+        return kings(to_move());
+}
+
+// pieces for the side to move
+template<typename Board>
+BitBoard Position<Board>::active_pieces(void) const
+{
+        return pieces(to_move());
+}
+
+// men for the opposite side
+template<typename Board>
+BitBoard Position<Board>::passive_men(void) const
+{
+        return men(!to_move());
+}
+
+// kings for the opposite side
+template<typename Board>
+BitBoard Position<Board>::passive_kings(void) const
+{
+        return kings(!to_move());
+}
+
+// pieces for the opposite side
+template<typename Board>
+BitBoard Position<Board>::passive_pieces(void) const
+{
+        return pieces(!to_move());
+}
+
 // the side to move
 template<typename Board>
 bool Position<Board>::to_move(void) const
