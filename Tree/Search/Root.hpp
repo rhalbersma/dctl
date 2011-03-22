@@ -54,9 +54,9 @@ void Root::insert_PV(const Parameters& node, const Position<Board>& q, int value
 
         for (size_t i = 0; i < line.size(); ++i) {
                 TT.insert(p, Node(value, Node::exact(), line.size() - i, line[i]));
-                Move::List move_list;
-                Generate<Rules, Board>::generate(p, move_list);
-                p.template make<Rules>(move_list[line[i]]);
+                Move::Stack move_stack;
+                Generate<Rules, Board>::generate(p, move_stack);
+                p.template make<Rules>(move_stack[line[i]]);
                 value = -Value::stretch(value);
         }
         TT.insert(p, Node(value, Node::exact(), 0, Node::no_move()));
@@ -73,19 +73,19 @@ void Root::print_PV(const Parameters& node, const Position<Board>& q, bool print
         size_t non_conversion;
 
         for (size_t i = 0; i < line.size(); ++i) {
-                Move::List move_list;
-                Generate<Rules, Board>::generate(p, move_list);
-                assert(line[i] < move_list.size());
+                Move::Stack move_stack;
+                Generate<Rules, Board>::generate(p, move_stack);
+                assert(line[i] < move_stack.size());
 
                 if (p.to_move())
-                        std::cout << write_move_string<Rules>()(p, move_list[line[i]]);
+                        std::cout << write_move_string<Rules>()(p, move_stack[line[i]]);
                 else {
                         std::cout << "(";
-                        std::cout << write_move_string<Rules>()(p, move_list[line[i]]);
+                        std::cout << write_move_string<Rules>()(p, move_stack[line[i]]);
                         std::cout << ")";
                 }
 
-                p.template make<Rules>(move_list[line[i]]);
+                p.template make<Rules>(move_stack[line[i]]);
 
                 repeated_kings = p.repeated_moves(!p.to_move());
                 ///*

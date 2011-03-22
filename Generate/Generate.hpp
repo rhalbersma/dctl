@@ -1,22 +1,22 @@
 #include "../Position/Position.h"
 
 template<typename Rules, typename Board>
-void Generate<Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
+void Generate<Rules, Board>::generate(const Position<Board>& p, Move::Stack& move_stack)
 {
-        select(p)->generate(p, move_list);
-        assert(invariant(p, move_list.size()));
+        select(p)->generate(p, move_stack);
+        assert(invariant(p, move_stack.size()));
 }
 
 template<typename Rules, typename Board>
-void Generate<Rules, Board>::generate_captures(const Position<Board>& p, Move::List& move_list)
+void Generate<Rules, Board>::generate_captures(const Position<Board>& p, Move::Stack& move_stack)
 {
-        select(p)->generate_captures(p, move_list);
+        select(p)->generate_captures(p, move_stack);
 }
 
 template<typename Rules, typename Board>
-void Generate<Rules, Board>::generate_promotions(const Position<Board>& p, Move::List& move_list)
+void Generate<Rules, Board>::generate_promotions(const Position<Board>& p, Move::Stack& move_stack)
 {
-        select(p)->generate_promotions(p, move_list);
+        select(p)->generate_promotions(p, move_stack);
 }
 
 template<typename Rules, typename Board>

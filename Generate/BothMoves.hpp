@@ -3,10 +3,10 @@
 #include <cassert>
 
 template<bool Color, typename Rules, typename Board> 
-void Template<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
+void Template<Color, Pieces::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::Stack& move_stack)
 {
-        Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(p, move_list);
-        Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(p, move_list);     
+        Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(p, move_stack);
+        Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(p, move_stack);     
 }
 
 template<bool Color, typename Rules, typename Board>

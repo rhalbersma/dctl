@@ -8,71 +8,71 @@
 using namespace Geometry::Direction;
 
 template<bool Color, typename Rules, typename Board>
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::Stack& move_stack)
 {
-        generate_serial(p.template unrestricted_kings<Rules>(Color), p.not_occupied(), move_list);
+        generate_serial(p.template unrestricted_kings<Rules>(Color), p.not_occupied(), move_stack);
 }
 
-// tag dispatching for restrictions on consecutive move_list with the same king
+// tag dispatching for restrictions on consecutive move_stack with the same king
 template<bool Color, typename Rules, typename Board>
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::Stack& move_stack)
 {
-        generate_serial(active_kings, not_occupied, move_list, Int2Type<Variants::is_restricted_same_king_moves<Rules>::value>());
+        generate_serial(active_kings, not_occupied, move_stack, Int2Type<Variants::is_restricted_same_king_moves<Rules>::value>());
 }
 
-// partial specialization for restricted consecutive move_list with the same king
+// partial specialization for restricted consecutive move_stack with the same king
 template<bool Color, typename Rules, typename Board>
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::List& move_list, Int2Type<true>)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::Stack& move_stack, Int2Type<true>)
 {
         // loop could be empty if the single active king detected during select_strategy() is restricted to move
         while (active_kings) {
-                generate_dirs(Bit::get_lowest(active_kings), not_occupied, move_list);
+                generate_dirs(Bit::get_lowest(active_kings), not_occupied, move_stack);
                 Bit::clear_lowest(active_kings);
         }
 }
 
-// partial specialization for unrestricted consecutive move_list with the same king
+// partial specialization for unrestricted consecutive move_stack with the same king
 template<bool Color, typename Rules, typename Board>
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::List& move_list, Int2Type<false>)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::Stack& move_stack, Int2Type<false>)
 {
         // loop cannot be empty because all active kings detected during select_strategy() are unrestricted to move
         assert(!Bit::is_zero(active_kings));
         do {
-                generate_dirs(Bit::get_lowest(active_kings), not_occupied, move_list);
+                generate_dirs(Bit::get_lowest(active_kings), not_occupied, move_stack);
                 Bit::clear_lowest(active_kings);
         } while (active_kings);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dirs(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dirs(BitBoard from_sq, BitBoard not_occupied, Move::Stack& move_stack)
 {
-        generate_dir<Indices<Board, Color>::LEFT_DOWN >(from_sq, not_occupied, move_list);
-        generate_dir<Indices<Board, Color>::RIGHT_DOWN>(from_sq, not_occupied, move_list);
-        generate_dir<Indices<Board, Color>::LEFT_UP   >(from_sq, not_occupied, move_list);
-        generate_dir<Indices<Board, Color>::RIGHT_UP  >(from_sq, not_occupied, move_list);
+        generate_dir<Indices<Board, Color>::LEFT_DOWN >(from_sq, not_occupied, move_stack);
+        generate_dir<Indices<Board, Color>::RIGHT_DOWN>(from_sq, not_occupied, move_stack);
+        generate_dir<Indices<Board, Color>::LEFT_UP   >(from_sq, not_occupied, move_stack);
+        generate_dir<Indices<Board, Color>::RIGHT_UP  >(from_sq, not_occupied, move_stack);
 }
 
 // tag dispatching based on king range
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::Stack& move_stack)
 {
-        return generate_dir<Index>(from_sq, not_occupied, move_list, Int2Type<Variants::is_long_king_range<Rules>::value>());
+        return generate_dir<Index>(from_sq, not_occupied, move_stack, Int2Type<Variants::is_long_king_range<Rules>::value>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list, Int2Type<Variants::RANGE_1>)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::Stack& move_stack, Int2Type<Variants::RANGE_1>)
 {
         if (BitBoard dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
-                move_list.push_back<Color>(from_sq ^ dest_sq);
+                move_stack.push<Color>(from_sq ^ dest_sq);
 }
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::List& move_list, Int2Type<Variants::RANGE_N>)
+void Template<Color, Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::Stack& move_stack, Int2Type<Variants::RANGE_N>)
 {
         for (BitBoard dest_sq = Push<Board, Index>()(from_sq); dest_sq & not_occupied; PushAssign<Board, Index>()(dest_sq))
-                move_list.push_back<Color>(from_sq ^ dest_sq);
+                move_stack.push<Color>(from_sq ^ dest_sq);
 }
 
 template<bool Color, typename Rules, typename Board>

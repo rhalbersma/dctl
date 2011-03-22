@@ -8,33 +8,33 @@
 using namespace Geometry::Direction;
 
 template<bool Color, typename Rules, typename Board>
-void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list)
+void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Move::Stack& move_stack)
 {
-        generate_dirs(p.men(Color), p.not_occupied(), move_list);
+        generate_dirs(p.men(Color), p.not_occupied(), move_stack);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, Move::List& move_list)
+void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, Move::Stack& move_stack)
 {
-        generate_dir<Indices<Board, Color>::LEFT_UP >(active_men, not_occupied, move_list);
-        generate_dir<Indices<Board, Color>::RIGHT_UP>(active_men, not_occupied, move_list);
+        generate_dir<Indices<Board, Color>::LEFT_UP >(active_men, not_occupied, move_stack);
+        generate_dir<Indices<Board, Color>::RIGHT_UP>(active_men, not_occupied, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dir(BitBoard active_men, BitBoard not_occupied, Move::List& move_list)
+void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_dir(BitBoard active_men, BitBoard not_occupied, Move::Stack& move_stack)
 {
         BitBoard from_sq, dest_sq;
         for (active_men &= Pull<Board, Index>()(not_occupied); active_men; Bit::clear_lowest(active_men)) {
                 from_sq = Bit::get_lowest(active_men);
                 dest_sq = Push<Board, Index>()(from_sq);
-                move_list.push_back<Color>(from_sq ^ dest_sq, promotion(dest_sq));
+                move_stack.push<Color>(from_sq ^ dest_sq, promotion(dest_sq));
         }
 }
 
 template<bool Color, typename Rules, typename Board>
-void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(const Position<Board>& p, Move::List& move_list)
+void Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(const Position<Board>& p, Move::Stack& move_stack)
 {
-        generate_dirs(promotors(p.men(Color)), p.not_occupied(), move_list);
+        generate_dirs(promotors(p.men(Color)), p.not_occupied(), move_stack);
 }
 
 template<bool Color, typename Rules, typename Board>

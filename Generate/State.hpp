@@ -7,24 +7,24 @@
 #include "PawnMoves.h"
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void State<Color, Material, Rules, Board>::generate(const Position<Board>& p, Move::List& move_list) const 
+void State<Color, Material, Rules, Board>::generate(const Position<Board>& p, Move::Stack& move_stack) const 
 {
-        Template<Color, Material, Move::JUMPS, Rules, Board>::generate(p, move_list);
-        if (!move_list.size())
-                Template<Color, Material, Move::MOVES, Rules, Board>::generate(p, move_list);
+        Template<Color, Material, Move::JUMPS, Rules, Board>::generate(p, move_stack);
+        if (!move_stack.size())
+                Template<Color, Material, Move::MOVES, Rules, Board>::generate(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void State<Color, Material, Rules, Board>::generate_captures(const Position<Board>& p, Move::List& move_list) const 
+void State<Color, Material, Rules, Board>::generate_captures(const Position<Board>& p, Move::Stack& move_stack) const 
 { 
-        Template<Color, Material, Move::JUMPS, Rules, Board>::generate(p, move_list);
+        Template<Color, Material, Move::JUMPS, Rules, Board>::generate(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void State<Color, Material, Rules, Board>::generate_promotions(const Position<Board>& p, Move::List& move_list) const 
+void State<Color, Material, Rules, Board>::generate_promotions(const Position<Board>& p, Move::Stack& move_stack) const 
 { 
         if (Material != Pieces::KING)
-                Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(p, move_list);
+                Template<Color, Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
