@@ -28,7 +28,7 @@ void Stack::push(BitBoard delta)
         );
                 
         // post-condtions are the pieces invariant 
-        assert(vector_array_.back().invariant());
+        assert(top().invariant());
 }
 
 // add a man move
@@ -52,7 +52,7 @@ void Stack::push(BitBoard delta, BitBoard promotion)
         );
 
         // post-conditions are the pieces invariant 
-        assert(vector_array_.back().invariant());
+        assert(top().invariant());
 }
 
 // add a king capture
@@ -62,7 +62,7 @@ void Stack::push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kin
         vector_array_.increment_size();
 
         // necessary pre-conditions for the pieces invariant
-        assert(Bit::is_exclusive(delta, captured_pieces) || sequential_capture_removal<Rules>(delta, captured_pieces));
+        assert(Bit::is_exclusive(delta, captured_pieces) || is_sequential_capture_removal<Rules>(delta, captured_pieces));
         assert(Bit::is_within(captured_kings, captured_pieces));
 
         // necessary pre-conditions for king capture semantics
@@ -78,7 +78,7 @@ void Stack::push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kin
 
         // post-conditions are the pieces invariants, with an exception for sequential capture removal (Thai draughts)
         // example: [FEN "W:WK26:B9,12,18,19"]; white has to capture 26x12, landing on a square it also captured on
-        assert(vector_array_.back().invariant() || sequential_capture_removal<Rules>(delta, captured_pieces));
+        assert(top().invariant() || is_sequential_capture_removal<Rules>(delta, captured_pieces));
 }
 
 // add a man capture
@@ -88,7 +88,7 @@ void Stack::push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, B
         vector_array_.increment_size();
 
         // necessary pre-conditions for the pieces invariant
-        assert(Bit::is_within(promotion, delta) || promotion_en_passant<Rules>(promotion, delta));
+        assert(Bit::is_within(promotion, delta) || is_promotion_en_passant<Rules>(promotion, delta));
         assert(Bit::is_exclusive(delta, captured_pieces));
         assert(Bit::is_within(captured_kings, captured_pieces));
 
@@ -108,10 +108,10 @@ void Stack::push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, B
         // example: [FEN "W:W25:B8,9,20,22,30"]; white has to capture 25x25, promoting on its original square
         assert
         (
-                Bit::is_exclusive(vector_array_.back().pieces(Side::BLACK), vector_array_.back().pieces(Side::WHITE)) &&
+                Bit::is_exclusive(top().pieces(Node::Side::BLACK), top().pieces(Node::Side::WHITE)) &&
                 (
-                        Bit::is_within(vector_array_.back().kings(), vector_array_.back().occupied()) ||
-                        promotion_en_passant<Rules>(promotion, delta)
+                        Bit::is_within(top().kings(), top().occupied()) ||
+                        is_promotion_en_passant<Rules>(promotion, delta)
                 )
         );
 }

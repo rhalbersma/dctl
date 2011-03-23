@@ -3,23 +3,26 @@
 #include "Token.h"
 #include <string>
 
-namespace Node { template<typename> class Position; }
-class Pieces;
-
 namespace Tree {
+
+namespace Node { 
+        template<typename> class Position; 
+        class Pieces;
+}
+        
 namespace Move {
 namespace String {
 
 template
 <
         typename Rules,
-        typename Board,
         typename Protocol = typename Move::Protocol<Rules>::TYPE,
         typename Token = typename Move::Token<Rules>::TYPE
 >
 struct read
 {
-        Pieces operator()(const Node::Position<Board>&, const std::string&);
+	template<typename Board> 
+        Node::Pieces operator()(const Node::Position<Board>&, const std::string&);
 };
 
 template

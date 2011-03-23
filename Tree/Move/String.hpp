@@ -1,5 +1,4 @@
 #include "Predicates.h"
-#include "Token.h"
 #include "../../Geometry/Board.h"
 #include "../../Utilities/Bit.h"
 #include <iomanip>

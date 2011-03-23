@@ -1,8 +1,9 @@
 #include "../Generate/Successors.h"
 #include "../Move/Stack.h"
 #include "../Move/String.h"
+#include "../Node/Layout.h"
 #include "../Node/Position.h"
-#include "../../IO/FEN.h"
+#include "../Node/String.h"
 #include "../../Utilities/StopWatch.h"
 #include <cassert>
 #include <iostream>
@@ -23,7 +24,8 @@ NodeCount Root::perft(const Node::Position<Board>& p, size_t nominal_depth)
                 leafs = driver<Rules>(p, 0, depth);
                 timer.split();
                 report(depth, leafs, timer);
-        }                
+        }
+        summary();
         return leafs;
 }
 
@@ -174,8 +176,8 @@ NodeCount Root::fast(const Node::Position<Board>& p, size_t ply, size_t depth)
 template<typename Board>
 void Root::announce(const Node::Position<Board>& p, size_t nominal_depth)
 {        
-        std::cout << write_position_layout<FEN_tag>()(p) << std::endl;
-        std::cout << write_position_string<FEN_tag>()(p) << std::endl << std::endl;
+        std::cout << Node::Layout::write<Node::FEN_tag>()(p) << std::endl;
+        std::cout << Node::String::write<Node::FEN_tag>()(p) << std::endl << std::endl;
         std::cout << "Searching to nominal depth=" << nominal_depth << std::endl;
         std::cout << std::endl;
 }

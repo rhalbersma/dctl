@@ -30,6 +30,11 @@ void Tree::Walk::Root::report(size_t nominal_ply, NodeCount leafs, const StopWat
         std::cout << std::endl;
 }
 
+void Tree::Walk::Root::summary(void)
+{
+        std::cout << std::endl;
+}
+
 void Tree::Walk::Root::summary(NodeCount leafs)
 {
         std::cout << std::endl << "Total leafs: " << leafs << std::endl;

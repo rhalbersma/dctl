@@ -21,7 +21,7 @@ void Position<Board>::link(const Position<Board>& other)
 template<typename Board> template<typename Rules>
 void Position<Board>::make(const Pieces& m)
 {
-        assert(Move::is_pseudo_legal_move<Rules>(*this, m));
+        assert(Move::is_pseudo_legal<Rules>(*this, m));
 
         make_irreversible<Rules>(m);
         make_reversible(m);
