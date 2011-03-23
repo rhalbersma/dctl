@@ -25,6 +25,7 @@ private:
         template<typename B> static void announce(const Node::Position<B>&, size_t, size_t);
 
         static void report(size_t, NodeCount, const StopWatch&);
+        static void summary(void);
         static void summary(NodeCount);
         static void print_move(const std::string&, size_t);
 

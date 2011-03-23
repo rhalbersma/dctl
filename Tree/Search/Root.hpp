@@ -1,9 +1,11 @@
 #include "Parameters.h"
+#include "../Generate/Successors.h"
 #include "../Move/String.h"
 #include "../Move/Types.h"
-#include "../Generate/Successors.h"
+#include "../Node/Layout.h"
+#include "../Node/Position.h"
+#include "../Node/String.h"
 #include "../../Evaluation/Evaluate.h"
-#include "../../IO/FEN.h"
 #include "../../Utilities/StopWatch.h"
 #include <iostream>
 #include <iomanip>
@@ -40,8 +42,8 @@ template<typename Board>
 void Root::announce(const Node::Position<Board>& p, size_t nominal_depth)
 {
         std::cout << std::endl;
-        std::cout << write_position_layout<FEN_tag>()(p) << std::endl;
-        std::cout << write_position_string<FEN_tag>()(p) << std::endl << std::endl;
+        std::cout << Node::Layout::write<Node::FEN_tag>()(p) << std::endl;
+        std::cout << Node::String::write<Node::FEN_tag>()(p) << std::endl << std::endl;
         std::cout << "Searching to nominal depth=" << nominal_depth << std::endl;
         std::cout << std::endl;
 }

@@ -101,7 +101,7 @@ bool is_sequential_capture_removal(const Node::Position<Board>& p, const Node::P
 
 // partial specialization for complete removal after a capture sequence
 template<typename Board>
-bool is_sequential_capture_removal(const Node::Position<Board>& p, const Node::Pieces&, Int2Type<Variants::REMOVE_N>)
+bool is_sequential_capture_removal(const Node::Position<Board>&, const Node::Pieces&, Int2Type<Variants::REMOVE_N>)
 {
         return false;
 }
@@ -110,14 +110,14 @@ bool is_sequential_capture_removal(const Node::Position<Board>& p, const Node::P
 template<typename Rules>
 bool is_sequential_capture_removal(BitBoard delta, BitBoard captured_pieces)
 {
-        return sequential_capture_removal(delta, captured_pieces, Int2Type<Variants::capture_removal<Rules>::value>());
+        return is_sequential_capture_removal(delta, captured_pieces, Int2Type<Variants::capture_removal<Rules>::value>());
 }
 
 // tag dispatching based on promotion condition
 template<typename Rules>
 bool is_promotion_en_passant(BitBoard promotion, BitBoard delta)
 {
-        return promotion_en_passant(promotion, delta, Int2Type<Variants::promotion_condition<Rules>::value>());
+        return is_promotion_en_passant(promotion, delta, Int2Type<Variants::promotion_condition<Rules>::value>());
 }
 
 }       // namespace Move
