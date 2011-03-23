@@ -17,7 +17,7 @@ struct write<Board, Square_tag>
 {
         std::string operator()(void) const
         {
-                return write<Board, Square_tag>()(std::bind2nd(std::plus<size_t>(), 1));
+                return write<Board, Square_tag>()(boost::bind(std::plus<size_t>(), _1, 1));
         }
 
         template<typename Functor>
@@ -48,7 +48,7 @@ struct write<Board, Bit_tag>
 {
         std::string operator()(void) const
         {
-                return write<Board, Bit_tag>()(std::bind2nd(std::plus<size_t>(), 0));
+                return write<Board, Bit_tag>()(boost::bind(std::plus<size_t>(), _1, 0));
         }
 
         template<typename Functor>

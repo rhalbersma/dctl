@@ -1,6 +1,7 @@
 #include "Random.h"
 #include <stdint.h>
 
+template<>
 const uint64_t Hash::Zobrist::Random<uint64_t>::PIECES[2][64] = 
 {
 	{
@@ -41,6 +42,7 @@ const uint64_t Hash::Zobrist::Random<uint64_t>::PIECES[2][64] =
 	}	
 };
 
+template<>
 const uint64_t Hash::Zobrist::Random<uint64_t>::KINGS[64] =
 {
         0x863029ce1230836b, 0x8642409881fcba54, 0x0efcecdc6e8bce48, 0x8e01b2a4a6148a1d,
@@ -61,8 +63,10 @@ const uint64_t Hash::Zobrist::Random<uint64_t>::KINGS[64] =
         0x3cd30ec35fabdfeb, 0x78f342f7fb027268, 0x20f44fb568735fa4, 0x64179d1df2af998d
 };
 
+template<>
 const uint64_t Hash::Zobrist::Random<uint64_t>::SIDE = 0x461aea9b6bcff19a;
 
+template<>
 const uint64_t Hash::Zobrist::Random<uint64_t>::REPEATED_KINGS[2][64] = 
 {
 	{
@@ -103,6 +107,7 @@ const uint64_t Hash::Zobrist::Random<uint64_t>::REPEATED_KINGS[2][64] =
 	}	
 };
 
+template<>
 const uint64_t Hash::Zobrist::Random<uint64_t>::REPEATED_MOVES[2][8] = 
 {
 	{
