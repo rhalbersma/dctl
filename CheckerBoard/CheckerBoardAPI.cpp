@@ -1,5 +1,7 @@
 #include "CheckerBoardAPI.h"
 
+#ifdef _MSC_VER
+
 // used for all other communication between engine and CheckerBoard
 int WINAPI enginecommand( /*
         char command[256],      // the interface sends a command string to the engine
@@ -35,3 +37,5 @@ int WINAPI islegal( /*
 {
         return 0;
 }
+
+#endif // _MSC_VER

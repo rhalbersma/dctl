@@ -1,10 +1,13 @@
 #pragma once
+
+#ifdef _MSC_VER
+
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
 
- #ifdef __cplusplus
- extern "C" {
- #endif
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 // Full documentation of the CheckerBoard 1.64 API: http://www.fierz.ch/cbdeveloper.php
 
@@ -67,6 +70,8 @@ struct CBmove
 #define LOSS 2
 #define UNKNOWN 3
 
- #ifdef __cplusplus
- }
- #endif
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+
+#endif // _MSC_VER
