@@ -5,9 +5,9 @@
 Tree::Walk::Root::TranspositionTable Tree::Walk::Root::TT(1);
 Tree::Statistics Tree::Walk::Root::statistics_;
 
-void Tree::Walk::Root::report(size_t nominal_ply, NodeCount leafs, const StopWatch& timer)
+void Tree::Walk::Root::report(size_t nominal_ply, NodeCount leafs, const Timer& timer)
 {
-        double speed = (statistics_.nodes() / 1e6) / timer.delta();
+        double speed = (statistics_.nodes() / 1e6) / timer.lap();
         double average_ply = static_cast<double>(statistics_.sum_ply()) / statistics_.nodes();
 
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(1);
@@ -23,7 +23,7 @@ void Tree::Walk::Root::report(size_t nominal_ply, NodeCount leafs, const StopWat
         std::cout << " leafs, ";
         std::cout << std::setw(11) << statistics_.nodes();
         std::cout << " nodes, ";
-        std::cout << std::setw( 6) << timer.total();
+        std::cout << std::setw( 6) << timer.elapsed();
         std::cout << "s, ";
         std::cout << std::setw( 5) << speed;
         std::cout << " Mnps";

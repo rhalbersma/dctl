@@ -23,13 +23,6 @@ int main(void)
 }
 
 /*
-TODO:
--implement algebraic notation
--implement missing square layouts
--implement test harness for hash function
--search...
--eval...
-
 C++0x dependencies:
 <memory> (shared_ptr, make_shared)
 
@@ -42,5 +35,12 @@ Boost library dependencies:
 
 Microsoft dependencies:
 -CheckerBoard
+
+TODO:
+-implement algebraic notation
+-implement missing square layouts
+-implement test harness for hash function
+-search...
+-eval...
 
 */

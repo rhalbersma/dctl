@@ -4,7 +4,7 @@
 #include "../Node/Layout.h"
 #include "../Node/Position.h"
 #include "../Node/String.h"
-#include "../../Utilities/StopWatch.h"
+#include "../../Utilities/Timer.h"
 #include <cassert>
 #include <iostream>
 
@@ -15,9 +15,8 @@ template<typename Rules, typename Board>
 NodeCount Root::perft(const Node::Position<Board>& p, size_t nominal_depth)
 {
         NodeCount leafs = 0;
-        StopWatch timer;
-
-        timer.start();
+        
+        Timer timer;
         announce(p, nominal_depth);
         for (size_t depth = 1; depth <= nominal_depth; ++depth) {                        
                 statistics_.reset();
@@ -34,9 +33,8 @@ NodeCount Root::divide(const Node::Position<Board>& p, size_t nominal_depth)
 {
         NodeCount leafs = 0;
         NodeCount move_leafs;                
-        StopWatch timer;
-
-        timer.start();
+        
+        Timer timer;
         Move::Stack move_stack;
         Generate::Successors<Rules, Board>::generate(p, move_stack);
 
