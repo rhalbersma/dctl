@@ -60,7 +60,7 @@ private:
                 Q = SQ / T::MODULO,             // number of row pairs                     
                 R0 = SQ % T::MODULO,            // squares from the left edge of the zeroth row
                 R1 = R0 - T::EDGE_LO,           // squares from the left edge of the first row
-                P = R1 >= 0,                    // determine whether square R0 is in the zeroth or first row
+                P = R1 >= 0,                    // determine whether R0 is in the zeroth or first row
                 R = P? R1 : R0                  // squares from the left edge
         };
 

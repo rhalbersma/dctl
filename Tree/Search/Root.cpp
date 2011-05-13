@@ -7,9 +7,9 @@
 Tree::Search::Root::TranspositionTable Tree::Search::Root::TT(10);
 Tree::Statistics Tree::Search::Root::statistics_;
 
-void Tree::Search::Root::report(size_t nominal_ply, int alpha, int beta, int value, const StopWatch& timer)
+void Tree::Search::Root::report(size_t nominal_ply, int alpha, int beta, int value, const Timer& timer)
 {
-        double speed = (statistics_.nodes() / 1e6) / timer.delta();
+        double speed = (statistics_.nodes() / 1e6) / timer.lap();
         double average_ply = static_cast<double>(statistics_.sum_ply()) / statistics_.nodes();
 
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(1);
@@ -31,7 +31,7 @@ void Tree::Search::Root::report(size_t nominal_ply, int alpha, int beta, int val
         std::cout << ", ";
         std::cout << std::setw(12) << statistics_.nodes();
         std::cout << " nodes, ";
-        std::cout << std::setw( 6) << timer.total();
+        std::cout << std::setw( 6) << timer.elapsed();
         std::cout << "s, ";
         std::cout << std::setw( 4) << speed;
         std::cout << " Mnps";

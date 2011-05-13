@@ -21,7 +21,6 @@ public:
 private:
         // invariants
         bool invariant(void) const;
-        bool invariant(const std::string&, const std::string&) const;
 
         // implementation
         static const size_t HEADER_LENGTH = 1;

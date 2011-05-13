@@ -6,7 +6,7 @@
 #include "../Node/Position.h"
 #include "../Node/String.h"
 #include "../../Evaluation/Evaluate.h"
-#include "../../Utilities/StopWatch.h"
+#include "../../Utilities/Timer.h"
 #include <iostream>
 #include <iomanip>
 
@@ -20,9 +20,8 @@ int Root::analyze(const Node::Position<Board>& p, size_t nominal_depth)
         int value = -Value::infinity();                
         int alpha, beta;
         Parameters root_node;
-        StopWatch timer;
-
-        timer.start();
+        
+        Timer timer;
         announce(p, nominal_depth);
         for (size_t depth = 1; depth <= nominal_depth; depth += ROOT_ID_INCREMENT) {
                 statistics_.reset();
