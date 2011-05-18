@@ -136,7 +136,7 @@
     <ClCompile Include="Source\Utilities\Bit.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library\Mistral.vcxproj">
+    <ProjectReference Include="..\Library\Library.vcxproj">
       <Project>{2bba0958-e029-4d35-beed-227743cd7bd4}</Project>
     </ProjectReference>
   </ItemGroup>
