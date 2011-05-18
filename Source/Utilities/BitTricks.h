@@ -1,5 +1,5 @@
 #pragma once
-#include <cstddef>
+#include "IntegerTypes.h"
 
 namespace Bit {
 

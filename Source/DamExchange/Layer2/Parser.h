@@ -18,6 +18,12 @@ public:
         static bool erase(const std::string&);
 
 private:
+        //  enforce singleton semantics 
+        Parser(void);
+        Parser(const Parser&);
+        Parser& operator=(const Parser&);
+        ~Parser(void);
+
         // implementation
         typedef std::map<std::string, Creator> CreatorMap;
         static CreatorMap& instance(void);

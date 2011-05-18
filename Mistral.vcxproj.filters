@@ -1,0 +1,663 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\CheckerBoard">
+      <UniqueIdentifier>{92420d88-c5e2-4ec9-865b-444bf8ba6477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CheckerBoard">
+      <UniqueIdentifier>{3a8b08ef-fb3b-4f91-9519-0bba05170bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Hash">
+      <UniqueIdentifier>{de78291a-5669-4a63-8848-e155042d8fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{cc70d3cd-efd0-40c6-9310-d0e779421e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Evaluation">
+      <UniqueIdentifier>{752cc172-a8a2-4e78-807c-71e8cfb43e8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Evaluation">
+      <UniqueIdentifier>{19fee193-8fd5-4886-b224-6b0a9b47f1dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Hash\Zobrist">
+      <UniqueIdentifier>{55ab2cd1-3ba5-43c7-9dc0-4ee17123d3ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Hash\Jenkins">
+      <UniqueIdentifier>{13b7f98f-bb65-4c8f-8cc6-69c389586ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DamExchange">
+      <UniqueIdentifier>{a7ba68ee-d99d-406a-aa4d-6d247f937916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DamExchange\Layer1">
+      <UniqueIdentifier>{feb2d2fc-d23e-4b31-a939-8c186a28fa83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DamExchange\Layer2">
+      <UniqueIdentifier>{d4736d95-49ee-4c0d-a9c4-8791f89c17e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DamExchange">
+      <UniqueIdentifier>{1f51466a-5cb9-4151-a65b-518885188d0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DamExchange\Layer1">
+      <UniqueIdentifier>{c16351fc-5332-4842-ae4d-d3bb21d57bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DamExchange\Layer2">
+      <UniqueIdentifier>{6a469d45-45ea-4ba1-9c33-1530a85671bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tree">
+      <UniqueIdentifier>{5f64f8a6-f373-41d8-8b4a-b42fccb05f78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tree\Walk">
+      <UniqueIdentifier>{08df25bd-c71b-4435-aa40-8daf348bcfaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tree">
+      <UniqueIdentifier>{efbf656c-5ae8-4105-a3ba-822108322acc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tree\Walk">
+      <UniqueIdentifier>{e71125f1-3d07-44fd-a3a7-36de5984988b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tree\Search">
+      <UniqueIdentifier>{9fddec3a-719a-4e47-85bc-d08933240bdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tree\Search">
+      <UniqueIdentifier>{c0f1e9d7-3f6d-4af6-b601-af60f9961ef1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{5f168311-fc6d-452b-ad4e-2bec86d81636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry">
+      <UniqueIdentifier>{0b92fca3-892f-4792-a5c2-649e8bfa4068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Geometry">
+      <UniqueIdentifier>{2c7fb852-223e-4548-8a1e-e0444f2a340b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Variants">
+      <UniqueIdentifier>{157b949c-1f3f-4960-a7cf-3a1033db931c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tree\Move">
+      <UniqueIdentifier>{6007c521-8ee3-4248-accd-96bf3a4e06a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tree\Node">
+      <UniqueIdentifier>{4c3aecbc-0823-49f5-9e6f-a7cab95cde43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tree\Move">
+      <UniqueIdentifier>{62304568-ed23-4bae-8b61-16516b2497ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tree\Node">
+      <UniqueIdentifier>{3579e545-c666-486d-8e44-133eebd643fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tree\Generate">
+      <UniqueIdentifier>{0474e3f4-afb4-4dd1-8554-2a1819948d56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tree\Generate\Capture">
+      <UniqueIdentifier>{60e7e53c-3491-41d0-b210-b3402a12fb59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tree\Generate">
+      <UniqueIdentifier>{2856444e-4021-4335-8d96-cbec057a2cfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tree\Generate\Capture">
+      <UniqueIdentifier>{9c0e0474-8175-411e-9584-446a0c2c90dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry\Hash">
+      <UniqueIdentifier>{bcfec1e3-7753-4ca3-829c-7ed30566ed03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry\Hash\Zobrist">
+      <UniqueIdentifier>{fe52db01-07dc-4621-ac60-23dd2d94e311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry\Hash\Jenkins">
+      <UniqueIdentifier>{3240917a-3615-4230-9768-71ef1284badf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Utilities\UniqueNumber.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\Bit.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\CacheAlign.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\IntegerTypes.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\Ply.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\TemplateTricks.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\Bit.hpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Evaluation\Evaluate.hpp">
+      <Filter>Source Files\Evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Evaluation\EvaluateWeight.h">
+      <Filter>Header Files\Evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Evaluation\Evaluate.h">
+      <Filter>Header Files\Evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CheckerBoard\CheckerBoardAPI.h">
+      <Filter>Header Files\CheckerBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Sign.h">
+      <Filter>Header Files\Geometry\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Sign.hpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Replace.h">
+      <Filter>Header Files\Geometry\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Replace.hpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\EntryPredicates.hpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\EntryPredicates.h">
+      <Filter>Header Files\Geometry\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Algorithms.h">
+      <Filter>Header Files\Geometry\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Map.h">
+      <Filter>Header Files\Geometry\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\DualMap.h">
+      <Filter>Header Files\Geometry\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\DualMap.hpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Map.hpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\VectorArray.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\VectorArray.hpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Zobrist\Random.h">
+      <Filter>Header Files\Geometry\Hash\Zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Zobrist\Random.hpp">
+      <Filter>Source Files\Hash\Zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Jenkins\Mix.h">
+      <Filter>Header Files\Geometry\Hash\Jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Jenkins\Mix.hpp">
+      <Filter>Source Files\Hash\Jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="source\hash\jenkins\Init.hpp">
+      <Filter>Source Files\Hash\Jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Jenkins\Init.h">
+      <Filter>Header Files\Geometry\Hash\Jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Zobrist\Init.h">
+      <Filter>Header Files\Geometry\Hash\Zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="source\hash\zobrist\Init.hpp">
+      <Filter>Source Files\Hash\Zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Zobrist\Find.h">
+      <Filter>Header Files\Geometry\Hash\Zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Zobrist\Find.hpp">
+      <Filter>Source Files\Hash\Zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\DeBruijn.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\DeBruijn.hpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\AbstractEngine.h">
+      <Filter>Header Files\DamExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer1\Scanner.h">
+      <Filter>Header Files\DamExchange\Layer1</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\Move.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\Parser.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\AbstractMessage.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\BackAcknowledge.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\BackRequest.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\Chat.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\GameAcknowledge.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\GameEnd.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\GameRequest.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Walk\Test.h">
+      <Filter>Header Files\Tree\Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Statistics.h">
+      <Filter>Header Files\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Search\Value.h">
+      <Filter>Header Files\Tree\Search</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Search\Test.h">
+      <Filter>Header Files\Tree\Search</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Search\Algorithms.hpp">
+      <Filter>Source Files\Tree\Search</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Search\Parameters.h">
+      <Filter>Header Files\Tree\Search</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Walk\Root.h">
+      <Filter>Header Files\Tree\Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Walk\Root.hpp">
+      <Filter>Source Files\Tree\Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Search\Root.h">
+      <Filter>Header Files\Tree\Search</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tree\search\Root.hpp">
+      <Filter>Source Files\Tree\Search</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer1\Session.h">
+      <Filter>Header Files\DamExchange\Layer1</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\Shift.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\Shift.hpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\BoardMetaTemplates.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\BoardPredicates.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Borders.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Direction.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\PushPull.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Squares.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Board.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Board.hpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\BoardMetaTemplates.hpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\BoardPredicates.hpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Direction.hpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\PushPull.hpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Checkers.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Czech.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Frisian.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\International.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Italian.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Killer.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Pool.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Rules.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Russian.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Spanish.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Specializations.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Thai.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Variants\Traits.h">
+      <Filter>Header Files\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Angles.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Angles.hpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Squares.hpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Coordinates.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Coordinates.hpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\BitTricks.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\BitTricks.hpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Search\Entry.h">
+      <Filter>Header Files\Tree\Search</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Walk\Entry.h">
+      <Filter>Header Files\Tree\Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Types.h">
+      <Filter>Header Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Predicates.h">
+      <Filter>Header Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Protocol.h">
+      <Filter>Header Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Stack.h">
+      <Filter>Header Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\String.h">
+      <Filter>Header Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Token.h">
+      <Filter>Header Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\String.hpp">
+      <Filter>Source Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Predicates.hpp">
+      <Filter>Source Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Stack.hpp">
+      <Filter>Source Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Side.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Pieces.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Position.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Position.hpp">
+      <Filter>Source Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\MakeMove.hpp">
+      <Filter>Source Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Pieces.hpp">
+      <Filter>Source Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Template.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\AbstractState.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\BothJumps.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\BothMoves.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\KingJumps.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\KingMoves.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\PawnJumps.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\PawnMoves.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\State.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Successors.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\State.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Successors.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\BothJumps.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\BothMoves.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\KingJumps.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\KingMoves.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\PawnJumps.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\PawnMoves.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\Value.h">
+      <Filter>Header Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\State.h">
+      <Filter>Header Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\Templates.h">
+      <Filter>Header Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\Templates.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\Frisian.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\International.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\Italian.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\Killer.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\Russian.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\Spanish.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\Specializations.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Capture\State.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\String.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Token.hpp">
+      <Filter>Source Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Token.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Protocol.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tree\node\String.hpp">
+      <Filter>Source Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Layout.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Layout.hpp">
+      <Filter>Source Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="source\geometry\Layout.hpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Layout.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\Timer.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Utilities\UniqueNumber.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Evaluation\EvaluateWeight.cpp">
+      <Filter>Source Files\Evaluation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CheckerBoard\CheckerBoardAPI.cpp">
+      <Filter>Source Files\CheckerBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Hash\Zobrist\Random.cpp">
+      <Filter>Source Files\Hash\Zobrist</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Hash\Jenkins\Mix.cpp">
+      <Filter>Source Files\Hash\Jenkins</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utilities\DeBruijn.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\AbstractMessage.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\BackAcknowledge.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\BackRequest.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\Chat.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\GameAcknowledge.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\GameEnd.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\GameRequest.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\Move.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\Parser.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer1\Scanner.cpp">
+      <Filter>Source Files\DamExchange\Layer1</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Walk\Test.cpp">
+      <Filter>Source Files\Tree\Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Statistics.cpp">
+      <Filter>Source Files\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Search\Test.cpp">
+      <Filter>Source Files\Tree\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Search\Value.cpp">
+      <Filter>Source Files\Tree\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Search\Parameters.cpp">
+      <Filter>Source Files\Tree\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Walk\Root.cpp">
+      <Filter>Source Files\Tree\Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Search\Root.cpp">
+      <Filter>Source Files\Tree\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer1\Session.cpp">
+      <Filter>Source Files\DamExchange\Layer1</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Search\Entry.cpp">
+      <Filter>Source Files\Tree\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Walk\Entry.cpp">
+      <Filter>Source Files\Tree\Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Move\Predicates.cpp">
+      <Filter>Source Files\Tree\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Move\Stack.cpp">
+      <Filter>Source Files\Tree\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Node\Pieces.cpp">
+      <Filter>Source Files\Tree\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utilities\Timer.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
