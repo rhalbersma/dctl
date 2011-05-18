@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2BBA0958-E029-4D35-BEED-227743CD7BD4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Library</RootNamespace>
+    <ProjectName>Library</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Full</Optimization>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_46_1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <AdditionalOptions>/wd4127 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files\boost\boost_1_46_1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_46_1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <StringPooling>true</StringPooling>
+      <AdditionalOptions>/wd4127 %(AdditionalOptions)</AdditionalOptions>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Program Files\boost\boost_1_44\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\CheckerBoard\CheckerBoardAPI.h" />
+    <ClInclude Include="Source\DamExchange\AbstractEngine.h" />
+    <ClInclude Include="Source\DamExchange\Layer1\Session.h" />
+    <ClInclude Include="Source\DamExchange\Layer1\Scanner.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\AbstractMessage.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\BackAcknowledge.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\BackRequest.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\Chat.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\GameAcknowledge.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\GameEnd.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\GameRequest.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\Move.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\Parser.h" />
+    <ClInclude Include="Source\Evaluation\Evaluate.h" />
+    <ClInclude Include="Source\Evaluation\Evaluate.hpp" />
+    <ClInclude Include="Source\Evaluation\EvaluateWeight.h" />
+    <ClInclude Include="Source\Geometry\Angles.h" />
+    <ClInclude Include="Source\Geometry\Angles.hpp" />
+    <ClInclude Include="Source\Geometry\Board.h" />
+    <ClInclude Include="Source\Geometry\Board.hpp" />
+    <ClInclude Include="Source\Geometry\Layout.h" />
+    <ClInclude Include="source\geometry\Layout.hpp" />
+    <ClInclude Include="Source\Geometry\BoardMetaTemplates.h" />
+    <ClInclude Include="Source\Geometry\BoardMetaTemplates.hpp" />
+    <ClInclude Include="Source\Geometry\BoardPredicates.h" />
+    <ClInclude Include="Source\Geometry\BoardPredicates.hpp" />
+    <ClInclude Include="Source\Geometry\Borders.h" />
+    <ClInclude Include="Source\Geometry\Coordinates.h" />
+    <ClInclude Include="Source\Geometry\Coordinates.hpp" />
+    <ClInclude Include="Source\Geometry\Direction.h" />
+    <ClInclude Include="Source\Geometry\Direction.hpp" />
+    <ClInclude Include="Source\Geometry\PushPull.h" />
+    <ClInclude Include="Source\Geometry\PushPull.hpp" />
+    <ClInclude Include="Source\Geometry\Squares.h" />
+    <ClInclude Include="Source\Geometry\Squares.hpp" />
+    <ClInclude Include="Source\Hash\Algorithms.h" />
+    <ClInclude Include="Source\Hash\DualMap.h" />
+    <ClInclude Include="Source\Hash\DualMap.hpp" />
+    <ClInclude Include="Source\Hash\EntryPredicates.h" />
+    <ClInclude Include="Source\Hash\EntryPredicates.hpp" />
+    <ClInclude Include="Source\Hash\Jenkins\Init.h" />
+    <ClInclude Include="Source\Hash\Jenkins\Init.hpp" />
+    <ClInclude Include="Source\Hash\Jenkins\Mix.h" />
+    <ClInclude Include="Source\Hash\Jenkins\Mix.hpp" />
+    <ClInclude Include="Source\Hash\Map.h" />
+    <ClInclude Include="Source\Hash\Map.hpp" />
+    <ClInclude Include="Source\Hash\Replace.h" />
+    <ClInclude Include="Source\Hash\Replace.hpp" />
+    <ClInclude Include="Source\Hash\Sign.h" />
+    <ClInclude Include="Source\Hash\Sign.hpp" />
+    <ClInclude Include="Source\Hash\Zobrist\Find.h" />
+    <ClInclude Include="Source\Hash\Zobrist\Find.hpp" />
+    <ClInclude Include="Source\Hash\Zobrist\Random.h" />
+    <ClInclude Include="Source\Hash\Zobrist\Random.hpp" />
+    <ClInclude Include="Source\Hash\Zobrist\Init.h" />
+    <ClInclude Include="Source\Hash\Zobrist\Init.hpp" />
+    <ClInclude Include="Source\Tree\Generate\AbstractState.h" />
+    <ClInclude Include="Source\Tree\Generate\BothJumps.h" />
+    <ClInclude Include="Source\Tree\Generate\BothJumps.hpp" />
+    <ClInclude Include="Source\Tree\Generate\BothMoves.h" />
+    <ClInclude Include="Source\Tree\Generate\BothMoves.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\Frisian.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\International.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\Italian.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\Killer.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\Russian.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\Spanish.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\Specializations.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\State.h" />
+    <ClInclude Include="Source\Tree\Generate\Capture\State.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\Templates.h" />
+    <ClInclude Include="Source\Tree\Generate\Capture\Templates.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Capture\Value.h" />
+    <ClInclude Include="Source\Tree\Generate\KingJumps.h" />
+    <ClInclude Include="Source\Tree\Generate\KingJumps.hpp" />
+    <ClInclude Include="Source\Tree\Generate\KingMoves.h" />
+    <ClInclude Include="Source\Tree\Generate\KingMoves.hpp" />
+    <ClInclude Include="Source\Tree\Generate\PawnJumps.h" />
+    <ClInclude Include="Source\Tree\Generate\PawnJumps.hpp" />
+    <ClInclude Include="Source\Tree\Generate\PawnMoves.h" />
+    <ClInclude Include="Source\Tree\Generate\PawnMoves.hpp" />
+    <ClInclude Include="Source\Tree\Generate\State.h" />
+    <ClInclude Include="Source\Tree\Generate\State.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Successors.h" />
+    <ClInclude Include="Source\Tree\Generate\Successors.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Template.h" />
+    <ClInclude Include="Source\Tree\Move\Predicates.h" />
+    <ClInclude Include="Source\Tree\Move\Predicates.hpp" />
+    <ClInclude Include="Source\Tree\Move\Protocol.h" />
+    <ClInclude Include="Source\Tree\Move\Stack.h" />
+    <ClInclude Include="Source\Tree\Move\Stack.hpp" />
+    <ClInclude Include="Source\Tree\Move\String.h" />
+    <ClInclude Include="Source\Tree\Move\String.hpp" />
+    <ClInclude Include="Source\Tree\Move\Token.h" />
+    <ClInclude Include="Source\Tree\Move\Types.h" />
+    <ClInclude Include="Source\Tree\Node\Layout.hpp" />
+    <ClInclude Include="Source\Tree\Node\Protocol.h" />
+    <ClInclude Include="Source\Tree\Node\Layout.h" />
+    <ClInclude Include="source\tree\node\String.hpp" />
+    <ClInclude Include="Source\Tree\Node\MakeMove.hpp" />
+    <ClInclude Include="Source\Tree\Node\Pieces.h" />
+    <ClInclude Include="Source\Tree\Node\Pieces.hpp" />
+    <ClInclude Include="Source\Tree\Node\Position.h" />
+    <ClInclude Include="Source\Tree\Node\Position.hpp" />
+    <ClInclude Include="Source\Tree\Node\Side.h" />
+    <ClInclude Include="Source\Tree\Node\String.h" />
+    <ClInclude Include="Source\Tree\Node\Token.h" />
+    <ClInclude Include="Source\Tree\Node\Token.hpp" />
+    <ClInclude Include="Source\Tree\Search\Algorithms.hpp" />
+    <ClInclude Include="Source\Tree\Search\Entry.h" />
+    <ClInclude Include="Source\Tree\Search\Root.h" />
+    <ClInclude Include="Source\Tree\Search\Root.hpp" />
+    <ClInclude Include="Source\Tree\Search\Parameters.h" />
+    <ClInclude Include="Source\Tree\Search\Test.h" />
+    <ClInclude Include="Source\Tree\Search\Value.h" />
+    <ClInclude Include="Source\Tree\Statistics.h" />
+    <ClInclude Include="Source\Tree\Walk\Entry.h" />
+    <ClInclude Include="Source\Tree\Walk\Root.h" />
+    <ClInclude Include="Source\Tree\Walk\Root.hpp" />
+    <ClInclude Include="Source\Tree\Walk\Test.h" />
+    <ClInclude Include="Source\Utilities\Bit.h" />
+    <ClInclude Include="Source\Utilities\Bit.hpp" />
+    <ClInclude Include="Source\Utilities\BitTricks.h" />
+    <ClInclude Include="Source\Utilities\BitTricks.hpp" />
+    <ClInclude Include="Source\Utilities\CacheAlign.h" />
+    <ClInclude Include="Source\Utilities\DeBruijn.h" />
+    <ClInclude Include="Source\Utilities\DeBruijn.hpp" />
+    <ClInclude Include="Source\Utilities\IntegerTypes.h" />
+    <ClInclude Include="Source\Utilities\Ply.h" />
+    <ClInclude Include="Source\Utilities\Shift.h" />
+    <ClInclude Include="Source\Utilities\Shift.hpp" />
+    <ClInclude Include="Source\Utilities\Timer.h" />
+    <ClInclude Include="Source\Utilities\TemplateTricks.h" />
+    <ClInclude Include="Source\Utilities\UniqueNumber.h" />
+    <ClInclude Include="Source\Utilities\VectorArray.h" />
+    <ClInclude Include="Source\Utilities\VectorArray.hpp" />
+    <ClInclude Include="Source\Variants\Checkers.h" />
+    <ClInclude Include="Source\Variants\Czech.h" />
+    <ClInclude Include="Source\Variants\Frisian.h" />
+    <ClInclude Include="Source\Variants\International.h" />
+    <ClInclude Include="Source\Variants\Italian.h" />
+    <ClInclude Include="Source\Variants\Killer.h" />
+    <ClInclude Include="Source\Variants\Pool.h" />
+    <ClInclude Include="Source\Variants\Rules.h" />
+    <ClInclude Include="Source\Variants\Russian.h" />
+    <ClInclude Include="Source\Variants\Spanish.h" />
+    <ClInclude Include="Source\Variants\Specializations.h" />
+    <ClInclude Include="Source\Variants\Thai.h" />
+    <ClInclude Include="Source\Variants\Traits.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\CheckerBoard\CheckerBoardAPI.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer1\Session.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer1\Scanner.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\AbstractMessage.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\BackAcknowledge.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\BackRequest.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\Chat.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\GameAcknowledge.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\GameEnd.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\GameRequest.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\Move.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\Parser.cpp" />
+    <ClCompile Include="Source\Evaluation\EvaluateWeight.cpp" />
+    <ClCompile Include="Source\Hash\Jenkins\Mix.cpp" />
+    <ClCompile Include="Source\Hash\Zobrist\Random.cpp" />
+    <ClCompile Include="Source\Tree\Move\Predicates.cpp" />
+    <ClCompile Include="Source\Tree\Move\Stack.cpp" />
+    <ClCompile Include="Source\Tree\Node\Pieces.cpp" />
+    <ClCompile Include="Source\Tree\Search\Entry.cpp" />
+    <ClCompile Include="Source\Tree\Search\Root.cpp" />
+    <ClCompile Include="Source\Tree\Search\Parameters.cpp" />
+    <ClCompile Include="Source\Tree\Search\Test.cpp" />
+    <ClCompile Include="Source\Tree\Search\Value.cpp" />
+    <ClCompile Include="Source\Tree\Statistics.cpp" />
+    <ClCompile Include="Source\Tree\Walk\Entry.cpp" />
+    <ClCompile Include="Source\Tree\Walk\Root.cpp" />
+    <ClCompile Include="Source\Tree\Walk\Test.cpp" />
+    <ClCompile Include="Source\Utilities\DeBruijn.cpp" />
+    <ClCompile Include="Source\Utilities\Timer.cpp" />
+    <ClCompile Include="Source\Utilities\UniqueNumber.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

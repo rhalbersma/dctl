@@ -22,6 +22,7 @@ bool DXP::Layer2::Parser::erase(const std::string& header)
 
 DXP::Layer2::Parser::CreatorMap& DXP::Layer2::Parser::instance(void)
 {
-        static CreatorMap creator_map_;
-        return creator_map_;
+        // Meyers Singleton, see Modern C++ Design p.117
+        static CreatorMap singleton_;
+        return singleton_;
 }
