@@ -16,29 +16,29 @@ void Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::generate(co
         generate_serial(p.template unrestricted_kings<Rules>(Color), p.not_occupied(), move_stack);
 }
 
-// tag dispatching for restrictions on consecutive move_stack with the same king
+// tag dispatching for restrictions on consecutive moves with the same king
 template<bool Color, typename Rules, typename Board>
 void Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::Stack& move_stack)
 {
         generate_serial(active_kings, not_occupied, move_stack, Int2Type<Variants::is_restricted_same_king_moves<Rules>::value>());
 }
 
-// partial specialization for restricted consecutive move_stack with the same king
+// partial specialization for restricted consecutive moves with the same king
 template<bool Color, typename Rules, typename Board>
 void Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::Stack& move_stack, Int2Type<true>)
 {
-        // loop could be empty if the single active king detected during select_strategy() is restricted to move
+        // loop could be empty if the single active king detected during Successors<Rules, Board>::select is restricted to move
         while (active_kings) {
                 generate_dirs(Bit::get_lowest(active_kings), not_occupied, move_stack);
                 Bit::clear_lowest(active_kings);
         }
 }
 
-// partial specialization for unrestricted consecutive move_stack with the same king
+// partial specialization for unrestricted consecutive moves with the same king
 template<bool Color, typename Rules, typename Board>
 void Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Move::Stack& move_stack, Int2Type<false>)
 {
-        // loop cannot be empty because all active kings detected during select_strategy() are unrestricted to move
+        // loop cannot be empty because all active kings detected during Successors<Rules, Board>::select() are unrestricted to move
         assert(!Bit::is_zero(active_kings));
         do {
                 generate_dirs(Bit::get_lowest(active_kings), not_occupied, move_stack);
