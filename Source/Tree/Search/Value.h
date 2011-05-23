@@ -6,21 +6,21 @@ namespace Search {
 namespace Value {
 
 // predicates
+bool is_infinity(int);
+bool is_finite(int);
+bool is_heuristic(int);
 bool is_loss(int);
 bool is_win(int);
-bool is_infinity(int);
-bool is_heuristic(int);
-bool is_finite(int);
 
 // views
-int loss(int);
-int draw(void);
-int win(int);
 int infinity(void);
+int loss(int);
+int win(int);
+int draw(void);
 
 // modifiers
-int squeeze(int);
 int stretch(int);
+int squeeze(int);
 
 std::string print(int);
 
