@@ -164,8 +164,8 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
         }
 
         // search move_stack
-        int value = -Value::infinity();
         size_t best_move = Entry::no_move();
+        int value = -Value::infinity();
         int score;
         size_t i;
         Parameters child_node;
