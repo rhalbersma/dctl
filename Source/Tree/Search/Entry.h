@@ -9,27 +9,28 @@ class Entry
 {
 public:
         // typedefs
-        enum Type {LOWER = 1, UPPER, EXACT};
+        enum Type { LOWER = 1, UPPER = 2, EXACT = 3 };
 
         // constructors
 	Entry(void);
 	Entry(int, Type, size_t, size_t);
 
 	// views
-	int value(void) const;                          // value
-	int refined_value(int) const;                   // refined value
-	Type type(void) const;                          // upper or lower bound, or exact
-	size_t depth(void) const;                       // remaining depth to search
-	size_t move(void) const;                        // index of the best move
+	int value(void) const;                  // value
+	int refined_value(int) const;           // refined value
+	Type type(void) const;                  // upper or lower bound, or exact
+	size_t depth(void) const;               // remaining depth to search
+	size_t move(void) const;                // index of the best move
 
         // predicates
-        bool is_sufficient(size_t) const;               // check for sufficient depth
-        bool is_cutoff(int, int) const;                 // check for a cutoff
-        bool is_cutoff(int) const;                      // check for a cutoff
-        bool is_fail_low(int) const;                    // check for a fail low cutoff
-        bool is_fail_high(int) const;                   // check for a fail high cutoff
-        bool is_heuristic(void) const;                  // check for a heuristic score
-        bool has_move(void) const;                      // check for a best move
+        bool equal_to(size_t) const;            // check for equal depth
+        bool greater_equal(size_t) const;       // check for greater or equal depth
+        bool is_cutoff(int, int) const;         // check for a cutoff against a non-null window
+        bool is_cutoff(int) const;              // check for a cutoff against a null window
+        bool is_fail_low(int) const;            // check for a fail low cutoff
+        bool is_fail_high(int) const;           // check for a fail high cutoff
+        bool is_mate(void) const;               // check for a mate score
+        bool has_move(void) const;              // check for a best move
 
         // output
         std::string print_value(void) const;
@@ -68,8 +69,8 @@ private:
         static const size_t MOVE_MASK = ((1 << MOVE_BITS) - 1);
 
         // representation
-         int16_t value_;                                // value
-        uint16_t rest_;                                 // type, depth and move
+         int16_t value_;                        // value
+        uint16_t rest_;                         // type, depth and move
 };
 
 }       // namespace Search

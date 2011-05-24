@@ -6,9 +6,9 @@ namespace Search {
 namespace Value {
 
 // predicates
-bool is_infinity(int);
+bool is_infinite(int);
 bool is_finite(int);
-bool is_heuristic(int);
+bool is_mate(int);
 bool is_loss(int);
 bool is_win(int);
 
