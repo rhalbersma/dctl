@@ -97,7 +97,7 @@ void Tree::Search::Test::Killer(void)
 {
         typedef std::pair<std::string, size_t> DB_unittest;                
         int value;
-
+        /*
         DB_unittest DB_win11[] = {
                 DB_unittest("W:W31:B5."   , 17),        // 1010
                 DB_unittest("W:WK49:B29." ,  7),        // 0110
@@ -109,7 +109,7 @@ void Tree::Search::Test::Killer(void)
                 value = Root::analyze<Variants::Killer>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
                 assert(value == Value::win(DB_win11[i].second));
         }
-
+        */
         DB_unittest DB_win21[] = {
                 DB_unittest("W:W41,46:B24."  , 63),     // 2010
                 DB_unittest("B:W23:B5,6"     , 57),     // David & Goliath with black to move    
@@ -127,11 +127,11 @@ void Tree::Search::Test::Killer(void)
                 DB_unittest("W:WK10:BK5,K41.",  3)      // 0102
         };       
         
-        for (size_t i = 0; i < 14; ++i) {
+        for (size_t i = 1; i < 2; ++i) {
                 value = Root::analyze<Variants::Killer>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
                 assert(value == Value::win(DB_win21[i].second));
         }
-
+        /*
         DB_unittest DB_win22[] = {
                 DB_unittest("W:W31,49:B9,14."    , 77), // 2020
                 DB_unittest("W:WK4,36:B7,38."    , 67), // 1120
@@ -172,7 +172,7 @@ void Tree::Search::Test::Killer(void)
                 value = Root::analyze<Variants::Killer>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 assert(value == Value::win(DB_win31[i].second));
         }
-
+        */
         //Position<Geometry::International> Walinga(Node::String::read<FEN_tag, Geometry::International>()("W:WK46,28:BK43"));
         //Root::analyze<FrisianRules>(Walinga, 39);
 }

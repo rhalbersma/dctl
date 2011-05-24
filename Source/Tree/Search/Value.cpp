@@ -7,16 +7,16 @@ namespace {
 
 const int INFINITY = SHRT_MAX;
 const int LOSS_0 = -(INFINITY - 1);
-const int LOSS_MAX = LOSS_0 + PLY_MAX / 2;
-const int DRAW = 0;
-const int WIN_MAX = -LOSS_MAX;
+const int LOSS_THRESHOLD = LOSS_0 + GRAFTED_PLY_MAX / 2;
 const int WIN_1 = -LOSS_0;
+const int WIN_THRESHOLD = -LOSS_THRESHOLD;
+const int DRAW = 0;
 
 }       // namespace
 
-bool Tree::Search::Value::is_infinity(int score)
+bool Tree::Search::Value::is_infinite(int score)
 {
-        return score == infinity();
+        return !is_finite(score);
 }
 
 bool Tree::Search::Value::is_finite(int score)
@@ -24,24 +24,24 @@ bool Tree::Search::Value::is_finite(int score)
         return score > -infinity() && score < infinity();
 }
 
-int Tree::Search::Value::infinity(void)
+bool Tree::Search::Value::is_mate(int score)
 {
-        return INFINITY;
-}
-
-bool Tree::Search::Value::is_heuristic(int score)
-{
-        return !(is_loss(score) || is_win(score)) ;
+        return is_loss(score) || is_win(score);
 }
 
 bool Tree::Search::Value::is_loss(int score)
 {
-        return score >= LOSS_0 && score <= LOSS_MAX;
+        return score < LOSS_THRESHOLD && score >= LOSS_0;
 }
 
 bool Tree::Search::Value::is_win(int score)
 {
-        return score >= WIN_MAX && score <= WIN_1;
+        return score > WIN_THRESHOLD && score <= WIN_1;
+}
+
+int Tree::Search::Value::infinity(void)
+{
+        return INFINITY;
 }
 
 int Tree::Search::Value::loss(int ply)
@@ -73,10 +73,8 @@ std::string Tree::Search::Value::print(int score)
 {
         std::stringstream sstr;
 
-        if (is_infinity(-score))
-                sstr << "-INF";
-        else if (is_infinity(score))
-                sstr << "+INF";
+        if (is_infinite(score))
+                sstr << (score < 0? "-" : "+") << "INF";
         else if (is_loss(score))
                 sstr << "L" << 2 * (score - LOSS_0);
         else if (is_win(score))
