@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Source\DamExchange\Layer2\Parser.cpp" />
     <ClCompile Include="Source\test_main.cpp" />
+    <ClCompile Include="Source\Tree\Search\Value.cpp" />
     <ClCompile Include="Source\Utilities\Bit.cpp" />
   </ItemGroup>
   <ItemGroup>

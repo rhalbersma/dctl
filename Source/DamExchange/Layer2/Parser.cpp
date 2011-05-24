@@ -4,7 +4,8 @@
 #include <memory>
 #include <string>
 
-namespace DXP = DamExchange;
+namespace DamExchange {
+namespace Layer2 {
 
 // Examples of DamExchange messages (Layer 2 Protocol): http://www.mesander.nl/damexchange/edxplg2.htm
 TEST(Parser, MesanderExamples)
@@ -22,7 +23,10 @@ TEST(Parser, MesanderExamples)
         };
 
         for (size_t i = 0; i < 8; ++i) {
-                std::shared_ptr<DXP::Layer2::AbstractMessage> parsed = DXP::Layer2::Parser::find(message[i]);
+                std::shared_ptr<AbstractMessage> parsed = Parser::find(message[i]);
                 EXPECT_EQ(0, parsed->str().compare(message[i]));
         }
 }
+
+}       // namespace Layer2
+}       // namespace DamExchange
