@@ -7,12 +7,6 @@ bool key_equal_to<Entry, Key>::operator()(const Entry& entry, const Key& key) co
 }
 
 template<typename Entry>
-bool type_equal_to<Entry>::operator()(const Entry& entry, Tree::Search::Entry::Type type) const
-{
-        return entry.second.type() == type;
-}
-
-template<typename Entry>
 bool depth_compare<Entry>::operator()(const Entry& left, const Entry& right) const
 {
         return left.second.depth() < right.second.depth();

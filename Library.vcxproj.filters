@@ -109,13 +109,13 @@
     <Filter Include="Source Files\Tree\Generate\Capture">
       <UniqueIdentifier>{9c0e0474-8175-411e-9584-446a0c2c90dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry\Hash">
+    <Filter Include="Header Files\Hash">
       <UniqueIdentifier>{bcfec1e3-7753-4ca3-829c-7ed30566ed03}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry\Hash\Zobrist">
+    <Filter Include="Header Files\Hash\Zobrist">
       <UniqueIdentifier>{fe52db01-07dc-4621-ac60-23dd2d94e311}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry\Hash\Jenkins">
+    <Filter Include="Header Files\Hash\Jenkins">
       <UniqueIdentifier>{3240917a-3615-4230-9768-71ef1284badf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -154,13 +154,13 @@
       <Filter>Header Files\CheckerBoard</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Sign.h">
-      <Filter>Header Files\Geometry\Hash</Filter>
+      <Filter>Header Files\Hash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Sign.hpp">
       <Filter>Source Files\Hash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Replace.h">
-      <Filter>Header Files\Geometry\Hash</Filter>
+      <Filter>Header Files\Hash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Replace.hpp">
       <Filter>Source Files\Hash</Filter>
@@ -169,16 +169,16 @@
       <Filter>Source Files\Hash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\EntryPredicates.h">
-      <Filter>Header Files\Geometry\Hash</Filter>
+      <Filter>Header Files\Hash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Algorithms.h">
-      <Filter>Header Files\Geometry\Hash</Filter>
+      <Filter>Header Files\Hash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Map.h">
-      <Filter>Header Files\Geometry\Hash</Filter>
+      <Filter>Header Files\Hash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\DualMap.h">
-      <Filter>Header Files\Geometry\Hash</Filter>
+      <Filter>Header Files\Hash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\DualMap.hpp">
       <Filter>Source Files\Hash</Filter>
@@ -193,13 +193,13 @@
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Zobrist\Random.h">
-      <Filter>Header Files\Geometry\Hash\Zobrist</Filter>
+      <Filter>Header Files\Hash\Zobrist</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Zobrist\Random.hpp">
       <Filter>Source Files\Hash\Zobrist</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Jenkins\Mix.h">
-      <Filter>Header Files\Geometry\Hash\Jenkins</Filter>
+      <Filter>Header Files\Hash\Jenkins</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Jenkins\Mix.hpp">
       <Filter>Source Files\Hash\Jenkins</Filter>
@@ -208,16 +208,16 @@
       <Filter>Source Files\Hash\Jenkins</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Jenkins\Init.h">
-      <Filter>Header Files\Geometry\Hash\Jenkins</Filter>
+      <Filter>Header Files\Hash\Jenkins</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Zobrist\Init.h">
-      <Filter>Header Files\Geometry\Hash\Zobrist</Filter>
+      <Filter>Header Files\Hash\Zobrist</Filter>
     </ClInclude>
     <ClInclude Include="source\hash\zobrist\Init.hpp">
       <Filter>Source Files\Hash\Zobrist</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Zobrist\Find.h">
-      <Filter>Header Files\Geometry\Hash\Zobrist</Filter>
+      <Filter>Header Files\Hash\Zobrist</Filter>
     </ClInclude>
     <ClInclude Include="Source\Hash\Zobrist\Find.hpp">
       <Filter>Source Files\Hash\Zobrist</Filter>
@@ -566,6 +566,9 @@
     </ClInclude>
     <ClInclude Include="Source\Utilities\Timer.h">
       <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Template.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

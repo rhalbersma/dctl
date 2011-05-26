@@ -218,6 +218,7 @@
     <ClInclude Include="Source\Tree\Generate\Successors.h" />
     <ClInclude Include="Source\Tree\Generate\Successors.hpp" />
     <ClInclude Include="Source\Tree\Generate\Template.h" />
+    <ClInclude Include="Source\Tree\Generate\Template.hpp" />
     <ClInclude Include="Source\Tree\Move\Predicates.h" />
     <ClInclude Include="Source\Tree\Move\Predicates.hpp" />
     <ClInclude Include="Source\Tree\Move\Protocol.h" />

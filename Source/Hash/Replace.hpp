@@ -1,6 +1,6 @@
 #include "EntryPredicates.h"
 #include <algorithm>
-#include <boost/bind.hpp>
+#include <functional>
 
 namespace Hash {
 
@@ -8,7 +8,7 @@ template<typename Key, typename Value>
 template<size_t N>
 const Value* find_entry<Key, Value>::operator()(const std::tr1::array<Entry, N>& bucket, const Key& key) const
 {
-        typename std::tr1::array<Entry, N>::const_iterator entry = std::find_if(bucket.begin(), bucket.end(), boost::bind(key_equal_to<Entry, Key>(), _1, key));
+        typename std::tr1::array<Entry, N>::const_iterator entry = std::find_if(bucket.begin(), bucket.end(), std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, key));
         return (entry != bucket.end())? &(entry->second) : 0;
 }
 
