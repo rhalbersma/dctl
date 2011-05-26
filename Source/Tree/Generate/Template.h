@@ -1,8 +1,6 @@
 #pragma once
 #include "../Move/Stack.h"
 #include "../Move/Types.h"
-#include "../Node/Pieces.h"
-#include <cassert>
 #include <cstddef>
 
 namespace Tree {
@@ -12,14 +10,17 @@ namespace Move { class Stack; }
 
 namespace Generate {
 
-template<bool, int, Move::Type, typename Rules, typename Board>
+template<bool, int NodePieces, Move::Type, typename Rules, typename Board>
 class Template
 {
 public:
-        static void generate(const Node::Position<Board>&, Move::Stack&) { assert(false); };
-        static size_t count(const Node::Position<Board>&) { assert(false); return 0; };
-        static bool detect(const Node::Position<Board>&) { assert(false); return false; };
+        static void generate(const Node::Position<Board>&, Move::Stack&);
+        static size_t count(const Node::Position<Board>&);
+        static bool detect(const Node::Position<Board>&);
 };
 
 }       // namespace Generate
 }       // namespace Tree
+
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+#include "Template.hpp"

@@ -17,24 +17,7 @@ namespace Search {
 template<typename Rules, typename Board>
 int Root::analyze(const Node::Position<Board>& p, size_t nominal_depth)
 {
-        int value = -Value::infinity();                
-        int alpha, beta;
-        Parameters root_node;
-        
-        Timer timer;
-        announce(p, nominal_depth);
-        for (size_t depth = 1; depth <= nominal_depth; depth += ROOT_ID_INCREMENT) {
-                statistics_.reset();
-                alpha = -Value::infinity();
-                beta = Value::infinity();
-                value = search<PV, Rules>(p, 0, depth, alpha, beta, root_node);
-                timer.split();
-                report(depth, alpha, beta, value, timer);
-                print_PV<Rules>(root_node, p, true);
-                insert_PV<Rules>(root_node, p, value);
-        }
-
-        return value;
+        return iterative_deepening<Rules, Board>(p, nominal_depth);
 }
 
 template<typename Board>

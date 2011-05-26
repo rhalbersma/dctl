@@ -2,8 +2,8 @@
 #include "../../Geometry/Layout.h"
 #include "../../Utilities/Bit.h"
 #include "../../Utilities/IntegerTypes.h"
+#include <functional>
 #include <sstream>
-#include <boost/bind.hpp>
 
 namespace Tree {
 namespace Node {
@@ -12,7 +12,7 @@ namespace Layout {
 template<typename Protocol, typename Token> template<typename Board>
 std::string write<Protocol, Token>::operator()(const Position<Board>& p) const
 {
-        return Geometry::Layout::write<Board, Geometry::Layout::Bit_tag>()(boost::bind(bit_content<Token>, p.pieces(), _1));
+        return Geometry::Layout::write<Board, Geometry::Layout::Bit_tag>()(std::bind(bit_content<Token>, p.pieces(), std::placeholders::_1));
 }
 
 template<typename Token>

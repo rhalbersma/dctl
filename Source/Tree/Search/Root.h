@@ -34,6 +34,7 @@ private:
 
         template<typename, typename B> static int negamax(const Node::Position<B>&, size_t, size_t, Parameters&);
         template<typename, typename B> static int alpha_beta(const Node::Position<B>&, size_t, size_t, int, int, Parameters&);
+        template<typename, typename B> static int iterative_deepening(const Node::Position<B>&, size_t);        
         template<size_t, typename, typename B> static int search(const Node::Position<B>&, size_t, int, int, int, Parameters&);
         template<size_t, typename, typename B> static int quiescence(const Node::Position<B>&, size_t, int, int, int, Parameters&);
 

@@ -2,7 +2,6 @@
 #include <functional>
 #include <iomanip>
 #include <sstream>
-#include <boost/bind.hpp>
 
 namespace Geometry {
 namespace Layout {
@@ -17,7 +16,7 @@ struct write<Board, Square_tag>
 {
         std::string operator()(void) const
         {
-                return write<Board, Square_tag>()(boost::bind(std::plus<size_t>(), _1, 1));
+                return write<Board, Square_tag>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 1));
         }
 
         template<typename Functor>
@@ -48,13 +47,13 @@ struct write<Board, Bit_tag>
 {
         std::string operator()(void) const
         {
-                return write<Board, Bit_tag>()(boost::bind(std::plus<size_t>(), _1, 0));
+                return write<Board, Bit_tag>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 0));
         }
 
         template<typename Functor>
         std::string operator()(Functor f) const
         {
-	        return write<Board, Square_tag>()(boost::bind(f, boost::bind(square2bit<Board>, _1)));
+	        return write<Board, Square_tag>()(std::bind(f, std::bind(square2bit<Board>, std::placeholders::_1)));
         }
 };
 
