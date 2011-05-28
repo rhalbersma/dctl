@@ -24,14 +24,14 @@ int Root::iterative_deepening(const Node::Position<Board>& p, size_t nominal_dep
                 value = search<PV, Rules>(p, 0, depth, alpha, beta, root_node);
                 timer.split();
                 report(depth, alpha, beta, value, timer);
-                print_PV<Rules>(root_node, p, true);
-                insert_PV<Rules>(root_node, p, value);
+                print_PV<Rules>(p, root_node.PV());
+                insert_PV<Rules>(p, root_node.PV(), value);
         }
 
         return value;
 }
 
-// principal variation search (PVS) with TT cut-offs, TT move ordering and IID
+// principal variation search (PVS)
 template<size_t ThisNode, typename Rules, typename Board>
 int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
@@ -77,9 +77,9 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
 
                 // we can only have an upper bound or an exact value at this point
                 assert(loss_score < beta);
-                const Entry::Type loss_type = (loss_score <= alpha)? Entry::upper() : Entry::exact();
+                const Entry::Bound bound = (loss_score <= alpha)? Entry::upper() : Entry::exact();
 
-                TT.insert(p, Entry(loss_score, loss_type, depth, Entry::no_move()));
+                TT.insert(p, Entry(loss_score, bound, depth, Entry::no_move()));
                 return loss_score;
         }
 
@@ -94,7 +94,7 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
                 }
         }
 
-        // TT move ordering
+        // move ordering
         Move::Order move_order(move_stack.size());
         identity_permutation(move_order);                
         if (TT_entry && TT_entry->has_move()) {
@@ -103,8 +103,8 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
         }
 
         // search move_stack
-        size_t best_move = Entry::no_move();
         int value = -Value::infinity();
+        size_t best_move = Entry::no_move();
         int score;
         size_t i;
         Parameters child_node;
@@ -133,12 +133,12 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
                         if (score >= beta) {
                                 TT.insert(p, Entry(score, Entry::lower(), depth, i));
                                 return score;
-                        }
+                        }                        
                         value = score;
                         best_move = i;
                         if (is_PV(ThisNode) && value > alpha) {
                                 alpha = value;
-                                parent_node.reset_PV(i, child_node.PV());
+                                parent_node.set_PV(best_move, child_node.PV());
                         }
                 }
         }
@@ -147,9 +147,9 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
         assert(best_move != Entry::no_move());
         assert(value > -Value::infinity());
 
-        // we can only have an upper bound or an exact value at this point
-        const Entry::Type value_type = (value <= original_alpha)? Entry::upper() : Entry::exact();
-        TT.insert(p, Entry(value, value_type, depth, best_move));
+        // determine the bound type of the value
+        const Entry::Bound bound = value <= original_alpha ? Entry::upper() : Entry::exact();
+        TT.insert(p, Entry(value, bound, depth, best_move));
         return value;
 }
 
@@ -215,7 +215,7 @@ int Root::negamax(const Node::Position<Board>& p, size_t ply, size_t depth, Para
 
                 if (score > value) {
                         value = score;
-                        parent_node.reset_PV(i, child_node.PV());
+                        parent_node.set_PV(i, child_node.PV());
                 }
         }
 
@@ -262,7 +262,7 @@ int Root::alpha_beta(const Node::Position<Board>& p, size_t ply, size_t depth, i
                         value = score;
                         if (value > alpha) {
                                 alpha = value;
-                                parent_node.reset_PV(i, child_node.PV());
+                                parent_node.set_PV(i, child_node.PV());
                         }
                 }
         }

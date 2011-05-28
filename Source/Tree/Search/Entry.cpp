@@ -10,12 +10,12 @@ Tree::Search::Entry::Entry(void)
 {
 }
 
-Tree::Search::Entry::Entry(int v, Type t, size_t d, size_t m)
+Tree::Search::Entry::Entry(int v, Bound t, size_t d, size_t m)
 :
         value_(static_cast<int16_t>(v)),
         rest_(0)
 {
-        rest_ ^= (t & TYPE_MASK) << TYPE_SHIFT;
+        rest_ ^= (t & BOUND_MASK) << BOUND_SHIFT;
         rest_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
         rest_ ^= (m & MOVE_MASK) << MOVE_SHIFT;
 }
@@ -30,9 +30,9 @@ int Tree::Search::Entry::refined_value(int score) const
         return is_cutoff(score)? value() : score;
 }
 
-Tree::Search::Entry::Type Tree::Search::Entry::type(void) const
+Tree::Search::Entry::Bound Tree::Search::Entry::bound(void) const
 {
-        return static_cast<Type>((rest_ & (TYPE_MASK << TYPE_SHIFT)) >> TYPE_SHIFT);
+        return static_cast<Bound>((rest_ & (BOUND_MASK << BOUND_SHIFT)) >> BOUND_SHIFT);
 }
 
 size_t Tree::Search::Entry::depth(void) const
@@ -91,27 +91,27 @@ bool Tree::Search::Entry::has_move(void) const
 
 bool Tree::Search::Entry::has_lower(void) const
 {
-        return (type() & lower()) != 0;
+        return (bound() & lower()) != 0;
 }
 
 bool Tree::Search::Entry::has_upper(void) const
 {
-        return (type() & upper()) != 0;
+        return (bound() & upper()) != 0;
 }
 
 bool Tree::Search::Entry::is_lower(void) const
 {
-        return type() == lower();
+        return bound() == lower();
 }
 
 bool Tree::Search::Entry::is_upper(void) const
 {
-        return type() == upper();
+        return bound() == upper();
 }
 
 bool Tree::Search::Entry::is_exact(void) const
 {
-        return type() == exact();
+        return bound() == exact();
 }
 
 bool Tree::Search::Entry::invariant(void) const
@@ -125,10 +125,10 @@ std::string Tree::Search::Entry::print_value(void) const
         return sstr.str();
 }
 
-std::string Tree::Search::Entry::print_type(void) const
+std::string Tree::Search::Entry::print_bound(void) const
 {
         std::stringstream sstr;
-        switch(type()) {
+        switch(bound()) {
         case LOWER:
                 sstr << ">=";
                 break;
@@ -167,17 +167,17 @@ void Tree::Search::Entry::set_move(size_t m)
         rest_ ^= (m      & MOVE_MASK) << MOVE_SHIFT;
 }
 
-Tree::Search::Entry::Type Tree::Search::Entry::lower()
+Tree::Search::Entry::Bound Tree::Search::Entry::lower()
 {
         return LOWER;
 }
 
-Tree::Search::Entry::Type Tree::Search::Entry::upper()
+Tree::Search::Entry::Bound Tree::Search::Entry::upper()
 {
         return UPPER;
 }
 
-Tree::Search::Entry::Type Tree::Search::Entry::exact()
+Tree::Search::Entry::Bound Tree::Search::Entry::exact()
 {
         return EXACT;
 }

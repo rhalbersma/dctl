@@ -31,80 +31,44 @@ void Root::announce(const Node::Position<Board>& p, size_t nominal_depth)
 }
 
 template<typename Rules, typename Board>
-void Root::insert_PV(const Parameters& node, const Node::Position<Board>& q, int value)
+void Root::insert_PV(const Node::Position<Board>& p, const Move::Sequence& pv, int value)
 {
-        const Move::Sequence& line = node.PV();
-        Node::Position<Board> p(q);
+        Node::Position<Board> q(p);
 
-        for (size_t i = 0; i < line.size(); ++i) {
-                TT.insert(p, Entry(value, Entry::exact(), line.size() - i, line[i]));
+        for (size_t i = 0; i < pv.size(); ++i) {
                 Move::Stack move_stack;
-                Generate::Successors<Rules, Board>::generate(p, move_stack);
-                p.template make<Rules>(move_stack[line[i]]);
+                Generate::Successors<Rules, Board>::generate(q, move_stack);
+
+                TT.insert(q, Entry(value, Entry::exact(), pv.size() - i, pv[i]));
                 value = -Value::stretch(value);
+
+                q.template make<Rules>(move_stack[pv[i]]);
         }
-        TT.insert(p, Entry(value, Entry::exact(), 0, Entry::no_move()));
+        TT.insert(q, Entry(value, Entry::exact(), 0, Entry::no_move()));
+        
+        assert(
+                (value == Evaluate::evaluate(q)) || 
+                (value == Value::loss(0) && !Generate::Successors<Rules, Board>::detect(q))
+                // NOTE: with endgame databases, delayed losses can occur at the tips of the PV
+        );
 }
 
 template<typename Rules, typename Board>
-void Root::print_PV(const Parameters& node, const Node::Position<Board>& q, bool print_TT_info)
+void Root::print_PV(const Node::Position<Board>& p, const Move::Sequence& pv)
 {
-        const Move::Sequence& line = node.PV();
-        Node::Position<Board> p(q);
-        const Entry* TT_entry;
-        int eval_score;
-        size_t repeated_kings;
-        size_t non_conversion;
+        Node::Position<Board> q(p);
 
-        for (size_t i = 0; i < line.size(); ++i) {
+        for (size_t i = 0; i < pv.size(); ++i) {
                 Move::Stack move_stack;
-                Generate::Successors<Rules, Board>::generate(p, move_stack);
-                assert(line[i] < move_stack.size());
+                Generate::Successors<Rules, Board>::generate(q, move_stack);
 
-                if (p.to_move())
-                        std::cout << Move::String::write<Rules>()(p, move_stack[line[i]]);
-                else {
-                        std::cout << "(";
-                        std::cout << Move::String::write<Rules>()(p, move_stack[line[i]]);
-                        std::cout << ")";
-                }
-
-                p.template make<Rules>(move_stack[line[i]]);
-
-                repeated_kings = p.repeated_moves(!p.to_move());
-                ///*
-                if (repeated_kings)
-                        std::cout << "^" << std::setw(1) << repeated_kings;
-                else
-                        std::cout << "  ";
-                //*/
-                non_conversion = p.non_conversion();
-                ///*
-                if (non_conversion)
-                        std::cout << "#" << std::setw(1) << non_conversion;
-                else
-                        std::cout << "  ";
-                //*/
-                TT_entry = TT.find(p);
-
-                eval_score = Evaluate::evaluate(p);
-                std::cout << " [";
-                std::cout << std::setw(4) << Value::print(eval_score);
-
-                if (print_TT_info && TT_entry) {
-                        std::cout << ", ";
-                        std::cout << std::setw(4) << (TT_entry->print_value());
-                        std::cout << ", ";
-                        std::cout << std::setw(2) << (TT_entry->print_type());
-                        std::cout << ", ";
-                        std::cout << std::setw(2) << (TT_entry->print_depth());
-                        std::cout << ", ";
-                        std::cout << std::setw(3) << (TT_entry->print_move());
-                }
-                std::cout << "] ";
-
-                if ((i % 2 != 0))
+                if (!(i % 2))                        
+                        std::cout << std::setw(2) << std::right << ((i / 2) + 1) << ". ";
+                std::cout << Move::String::write<Rules>()(q, move_stack[pv[i]]) << " ";
+                if (i % 2)
                         std::cout << std::endl;
+
+                q.template make<Rules>(move_stack[pv[i]]);
         }
         std::cout << std::endl << std::endl;
 }

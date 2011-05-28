@@ -9,16 +9,16 @@ class Entry
 {
 public:
         // typedefs
-        enum Type { LOWER = 1, UPPER = 2, EXACT = 3 };
+        enum Bound { LOWER = 1, UPPER = 2, EXACT = 3 };
 
         // constructors
 	Entry(void);
-	Entry(int, Type, size_t, size_t);
+	Entry(int, Bound, size_t, size_t);
 
 	// views
 	int value(void) const;                  // value
 	int refined_value(int) const;           // refined value
-	Type type(void) const;                  // upper or lower bound, or exact
+	Bound bound(void) const;                // upper or lower bound, or exact
 	size_t depth(void) const;               // remaining depth to search
 	size_t move(void) const;                // index of the best move
 
@@ -34,16 +34,16 @@ public:
 
         // output
         std::string print_value(void) const;
-        std::string print_type(void) const;
+        std::string print_bound(void) const;
         std::string print_depth(void) const;
         std::string print_move(void) const;
 
         // modifiers
         void set_move(size_t);
 
-        static Type lower(void);
-        static Type upper(void);
-        static Type exact(void);
+        static Bound lower(void);
+        static Bound upper(void);
+        static Bound exact(void);
         static size_t no_move(void);
 
 private:
@@ -56,21 +56,21 @@ private:
         bool is_exact(void) const;
         bool invariant(void) const;
 
-        static const size_t TYPE_BITS = 2;
+        static const size_t BOUND_BITS = 2;
         static const size_t DEPTH_BITS = 7;
         static const size_t MOVE_BITS = 7;
 
-        static const size_t TYPE_SHIFT = 0;
-        static const size_t DEPTH_SHIFT = TYPE_SHIFT + TYPE_BITS;
+        static const size_t BOUND_SHIFT = 0;
+        static const size_t DEPTH_SHIFT = BOUND_SHIFT + BOUND_BITS;
         static const size_t MOVE_SHIFT = DEPTH_SHIFT + DEPTH_BITS;
 
-        static const size_t TYPE_MASK = ((1 << TYPE_BITS) - 1);
+        static const size_t BOUND_MASK = ((1 << BOUND_BITS) - 1);
         static const size_t DEPTH_MASK = ((1 << DEPTH_BITS) - 1);
         static const size_t MOVE_MASK = ((1 << MOVE_BITS) - 1);
 
         // representation
          int16_t value_;                        // value
-        uint16_t rest_;                         // type, depth and move
+        uint16_t rest_;                         // bound, depth and move
 };
 
 }       // namespace Search

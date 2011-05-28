@@ -14,10 +14,11 @@ namespace Capture {
 template<typename Rules, typename Board>
 State<Rules, Board>::State(const Node::Position<Board>& p)
 :
-	initial_targets_(p.pieces(!p.to_move())),
+        initial_targets_(p.passive_pieces()),
 	remaining_targets_(initial_targets_),
 	not_occupied_(p.not_occupied()),
-	king_targets_(p.kings(!p.to_move()))
+        king_targets_(p.passive_kings()),
+        from_sq_(0)
 {
         init<Rules>()(current_);
         init<Rules>()(best_);
@@ -275,6 +276,6 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_p
                 move_stack.push<Color, Rules>(from_sq_ ^ dest_sq, dest_sq, captured_pieces, captured_kings);
 }
 
-}        // namespace Capture
+}       // namespace Capture
 }       // namespace Generate
 }       // namespace Tree
