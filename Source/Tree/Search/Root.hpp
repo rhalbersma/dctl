@@ -64,9 +64,11 @@ void Root::print_PV(const Node::Position<Board>& p, const Move::Sequence& pv)
 
                 if (!(i % 2))                        
                         std::cout << std::setw(2) << std::right << ((i / 2) + 1) << ". ";
-                std::cout << Move::String::write<Rules>()(q, move_stack[pv[i]]) << " ";
-                if (i % 2)
+                std::cout << Move::String::write<Rules>()(q, move_stack[pv[i]]);
+                if (i % 10 == 9)
                         std::cout << std::endl;
+                else
+                        std::cout << " ";
 
                 q.template make<Rules>(move_stack[pv[i]]);
         }

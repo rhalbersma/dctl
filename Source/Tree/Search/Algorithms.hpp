@@ -23,7 +23,7 @@ int Root::iterative_deepening(const Node::Position<Board>& p, size_t nominal_dep
                 beta = Value::infinity();
                 value = search<PV, Rules>(p, 0, depth, alpha, beta, root_node);
                 timer.split();
-                report(depth, alpha, beta, value, timer);
+                report(depth, value, timer);
                 print_PV<Rules>(p, root_node.PV());
                 insert_PV<Rules>(p, root_node.PV(), value);
         }
@@ -87,8 +87,7 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
         if (!(TT_entry && TT_entry->has_move())) {
                 const int IID_depth = is_PV(ThisNode)? depth - 2 : depth / 2;
                 if (IID_depth > 0) {
-                        const int IID_value = search<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
-                        TT.insert(p, Entry(IID_value, Entry::exact(), IID_depth, parent_node.best_move()));
+                        search<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
                         TT_entry = TT.find(p);
                         assert(TT_entry);
                 }
@@ -130,16 +129,16 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
                 }
 
                 if (score > value) {
-                        if (score >= beta) {
-                                TT.insert(p, Entry(score, Entry::lower(), depth, i));
-                                return score;
-                        }                        
                         value = score;
-                        best_move = i;
+                        best_move = i; 
+                        // move set_PV and update_pv code here in case of MTD(f)
                         if (is_PV(ThisNode) && value > alpha) {
-                                alpha = value;
                                 parent_node.set_PV(best_move, child_node.PV());
+                                statistics_.update_pv();
+                                alpha = value;
                         }
+                        if (value >= beta)
+                                break;                      
                 }
         }
 
@@ -148,7 +147,9 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
         assert(value > -Value::infinity());
 
         // determine the bound type of the value
-        const Entry::Bound bound = value <= original_alpha ? Entry::upper() : Entry::exact();
+        const Entry::Bound bound = 
+                value <= original_alpha ? Entry::upper() : 
+                value >= beta ? Entry::lower() : Entry::exact();
         TT.insert(p, Entry(value, bound, depth, best_move));
         return value;
 }

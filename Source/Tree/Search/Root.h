@@ -39,7 +39,7 @@ private:
         template<size_t, typename, typename B> static int quiescence(const Node::Position<B>&, size_t, int, int, int, Parameters&);
 
         template<typename B> static void announce(const Node::Position<B>&, size_t);
-        static void report(size_t, int, int, int, const Timer&);
+        static void report(size_t, int, const Timer&);
 
         template<typename, typename B> static void insert_PV(const Node::Position<B>&, const Move::Sequence&, int);
         template<typename, typename B> static void print_PV(const Node::Position<B>&, const Move::Sequence&);
