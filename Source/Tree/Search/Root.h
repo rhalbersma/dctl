@@ -41,8 +41,8 @@ private:
         template<typename B> static void announce(const Node::Position<B>&, size_t);
         static void report(size_t, int, int, int, const Timer&);
 
-        template<typename, typename B> static void insert_PV(const Parameters&, const Node::Position<B>&, int);
-        template<typename, typename B> static void print_PV(const Parameters&, const Node::Position<B>&, bool = false);
+        template<typename, typename B> static void insert_PV(const Node::Position<B>&, const Move::Sequence&, int);
+        template<typename, typename B> static void print_PV(const Node::Position<B>&, const Move::Sequence&);
 
         static void identity_permutation(Move::Order&);
         static bool is_PV(size_t);
