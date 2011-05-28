@@ -22,9 +22,6 @@ public:
         void clear_PV(void);
 
 private:
-        // implementation
-        static const bool TOGGLE = true;
-
         // representation
         Move::Sequence PV_;
 };

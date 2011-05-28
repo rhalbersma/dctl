@@ -16,9 +16,14 @@ size_t Tree::Statistics::max_ply(void) const
         return max_ply_;
 }
 
+NodeCount Tree::Statistics::pv(void) const
+{
+        return pv_;
+}
+
 void Tree::Statistics::reset(void)
 {
-        nodes_ = sum_ply_ = max_ply_ = 0;
+        nodes_ = sum_ply_ = pv_ = max_ply_ = 0;
 }
 
 void Tree::Statistics::update(size_t ply)
@@ -26,4 +31,9 @@ void Tree::Statistics::update(size_t ply)
         ++nodes_;
         sum_ply_ += ply;
         max_ply_ = std::max(ply, max_ply_);
+}
+
+void Tree::Statistics::update_pv(void)
+{
+        ++pv_;
 }
