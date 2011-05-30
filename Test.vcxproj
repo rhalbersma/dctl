@@ -90,7 +90,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -133,7 +133,9 @@
   <ItemGroup>
     <ClCompile Include="Source\DamExchange\Layer2\Parser.cpp" />
     <ClCompile Include="Source\test_main.cpp" />
+    <ClCompile Include="Source\Tree\Search\Root.cpp" />
     <ClCompile Include="Source\Tree\Search\Value.cpp" />
+    <ClCompile Include="Source\Tree\Walk\Root.cpp" />
     <ClCompile Include="Source\Utilities\Bit.cpp" />
   </ItemGroup>
   <ItemGroup>
