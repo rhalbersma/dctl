@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Tree\Search">
       <UniqueIdentifier>{46f28f37-070c-4069-a1ce-f7b5350fb5fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Tree\Walk">
+      <UniqueIdentifier>{3294b551-3e24-42c8-acd7-3c03f32be15d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\test_main.cpp">
@@ -44,6 +47,12 @@
     </ClCompile>
     <ClCompile Include="Source\Tree\Search\Value.cpp">
       <Filter>Source Files\Tree\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Search\Root.cpp">
+      <Filter>Source Files\Tree\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Walk\Root.cpp">
+      <Filter>Source Files\Tree\Walk</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
