@@ -26,7 +26,6 @@ void Tree::Search::Root::report(size_t nominal_ply, int value, const Timer& time
 
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(2);
         std::cout << std::setw(12) << std::right << statistics_.nodes();
-        std::cout << std::setw(6) << static_cast<double>(100 * statistics_.pv()) / statistics_.nodes() << "%";
         std::cout << " nodes, ";
         std::cout << std::setw( 6) << timer.elapsed();
         std::cout << "s, ";
