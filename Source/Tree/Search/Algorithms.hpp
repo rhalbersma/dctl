@@ -131,10 +131,8 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
                 if (score > value) {
                         value = score;
                         best_move = i; 
-                        // move set_PV and update_pv code here in case of MTD(f)
                         if (is_PV(ThisNode) && value > alpha) {
                                 parent_node.set_PV(best_move, child_node.PV());
-                                statistics_.update_pv();
                                 alpha = value;
                         }
                         if (value >= beta)

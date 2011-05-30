@@ -91,7 +91,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -246,13 +246,11 @@
     <ClInclude Include="Source\Tree\Search\Root.h" />
     <ClInclude Include="Source\Tree\Search\Root.hpp" />
     <ClInclude Include="Source\Tree\Search\Parameters.h" />
-    <ClInclude Include="Source\Tree\Search\Test.h" />
     <ClInclude Include="Source\Tree\Search\Value.h" />
     <ClInclude Include="Source\Tree\Statistics.h" />
     <ClInclude Include="Source\Tree\Walk\Entry.h" />
     <ClInclude Include="Source\Tree\Walk\Root.h" />
     <ClInclude Include="Source\Tree\Walk\Root.hpp" />
-    <ClInclude Include="Source\Tree\Walk\Test.h" />
     <ClInclude Include="Source\Utilities\Bit.h" />
     <ClInclude Include="Source\Utilities\Bit.hpp" />
     <ClInclude Include="Source\Utilities\BitTricks.h" />
@@ -305,12 +303,10 @@
     <ClCompile Include="Source\Tree\Search\Entry.cpp" />
     <ClCompile Include="Source\Tree\Search\Root.cpp" />
     <ClCompile Include="Source\Tree\Search\Parameters.cpp" />
-    <ClCompile Include="Source\Tree\Search\Test.cpp" />
     <ClCompile Include="Source\Tree\Search\Value.cpp" />
     <ClCompile Include="Source\Tree\Statistics.cpp" />
     <ClCompile Include="Source\Tree\Walk\Entry.cpp" />
     <ClCompile Include="Source\Tree\Walk\Root.cpp" />
-    <ClCompile Include="Source\Tree\Walk\Test.cpp" />
     <ClCompile Include="Source\Utilities\DeBruijn.cpp" />
     <ClCompile Include="Source\Utilities\Timer.cpp" />
     <ClCompile Include="Source\Utilities\UniqueNumber.cpp" />

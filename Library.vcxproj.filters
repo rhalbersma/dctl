@@ -261,16 +261,10 @@
     <ClInclude Include="Source\DamExchange\Layer2\GameRequest.h">
       <Filter>Header Files\DamExchange\Layer2</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tree\Walk\Test.h">
-      <Filter>Header Files\Tree\Walk</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Tree\Statistics.h">
       <Filter>Header Files\Tree</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tree\Search\Value.h">
-      <Filter>Header Files\Tree\Search</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Tree\Search\Test.h">
       <Filter>Header Files\Tree\Search</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tree\Search\Algorithms.hpp">
@@ -620,14 +614,8 @@
     <ClCompile Include="Source\DamExchange\Layer1\Scanner.cpp">
       <Filter>Source Files\DamExchange\Layer1</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Tree\Walk\Test.cpp">
-      <Filter>Source Files\Tree\Walk</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Tree\Statistics.cpp">
       <Filter>Source Files\Tree</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Tree\Search\Test.cpp">
-      <Filter>Source Files\Tree\Search</Filter>
     </ClCompile>
     <ClCompile Include="Source\Tree\Search\Value.cpp">
       <Filter>Source Files\Tree\Search</Filter>
