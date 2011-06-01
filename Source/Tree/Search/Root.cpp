@@ -1,3 +1,5 @@
+#include <utility>
+#include "gtest/gtest.h"
 #include "../../../../Library/Source/Tree/Search/Root.h"
 #include "../../../../Library/Source/Tree/Node/Position.h"
 #include "../../../../Library/Source/Tree/Node/Protocol.h"
@@ -5,13 +7,9 @@
 #include "../../../../Library/Source/Geometry/Board.h"
 #include "../../../../Library/Source/Geometry/Layout.h"
 #include "../../../../Library/Source/Variants/Rules.h"
-#include <utility>
-#include "gtest/gtest.h"
 
 namespace Tree {
 namespace Search {
-
-#if ACCEPTANCE_TEST == 1
 
 // The fixture for testing class SearchEndgame.
 class SearchEndgame: public ::testing::Test {
@@ -42,6 +40,8 @@ protected:
 
 // Objects declared here can be used by all tests in the test case for Foo.
 };
+
+#if ACCEPTANCE_TEST == 1
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 TEST_F(SearchEndgame, International11)

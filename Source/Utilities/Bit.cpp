@@ -1,6 +1,6 @@
+#include "gtest/gtest.h"
 #include "../../../Library/Source/Utilities/Bit.h"
 #include "../../../Library/Source/Utilities/IntegerTypes.h"
-#include "gtest/gtest.h"
 
 namespace Bit {
 

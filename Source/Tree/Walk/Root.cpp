@@ -1,3 +1,4 @@
+#include "gtest/gtest.h"
 #include "../../../../Library/Source/Tree/Walk/Root.h"
 #include "../../../../Library/Source/Tree/Node/Position.h"
 #include "../../../../Library/Source/Tree/Node/Protocol.h"
@@ -5,12 +6,9 @@
 #include "../../../../Library/Source/Geometry/Board.h"
 #include "../../../../Library/Source/Geometry/Layout.h"
 #include "../../../../Library/Source/Variants/Rules.h"
-#include "gtest/gtest.h"
 
 namespace Tree {
 namespace Walk {
-
-#if ACCEPTANCE_TEST == 1
 
 // The fixture for testing class SearchEndgame.
 class Perft: public ::testing::Test {
@@ -41,6 +39,8 @@ protected:
 
 // Objects declared here can be used by all tests in the test case for Foo.
 };
+
+#if ACCEPTANCE_TEST == 1
 
 // The original perft thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 TEST_F(Perft, International)
