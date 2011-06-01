@@ -5,6 +5,8 @@ namespace Tree {
 class Statistics
 {
 public:
+        Statistics(void);
+
         // views
         NodeCount nodes(void) const;
         NodeCount sum_ply(void) const;
