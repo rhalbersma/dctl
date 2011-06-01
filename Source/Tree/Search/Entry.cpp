@@ -18,6 +18,8 @@ Tree::Search::Entry::Entry(int v, Bound t, size_t d, size_t m)
         rest_ ^= (t & BOUND_MASK) << BOUND_SHIFT;
         rest_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
         rest_ ^= (m & MOVE_MASK) << MOVE_SHIFT;
+
+        assert(invariant());
 }
 
 int Tree::Search::Entry::value(void) const

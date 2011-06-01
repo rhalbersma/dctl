@@ -1,6 +1,14 @@
 #include "Statistics.h"
 #include <algorithm>
 
+Tree::Statistics::Statistics(void)
+:
+        nodes_(0),
+        sum_ply_(0),
+        max_ply_(0)
+{
+}
+
 NodeCount Tree::Statistics::nodes(void) const
 {
         return nodes_;

@@ -20,8 +20,8 @@ public:
         static Position initial(void);                          // initial position
 
         // predicates
-        bool operator==(const Node::Position<Board>&) const;          // overloaded equality operator
-        bool operator!=(const Node::Position<Board>&) const;          // overloaded inequality operator
+        bool operator==(const Node::Position<Board>&) const;    // overloaded equality operator
+        bool operator!=(const Node::Position<Board>&) const;    // overloaded inequality operator
         
         template<typename> 
         bool is_draw(void) const;
