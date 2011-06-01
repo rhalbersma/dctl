@@ -1,9 +1,9 @@
+#include <cassert>
 #include "Templates.h"
 #include "../../Move/Stack.h"
 #include "../../../Geometry/Direction.h"
 #include "../../../Geometry/PushPull.h"
 #include "../../../Utilities/Bit.h"
-#include <cassert>
 
 using namespace Geometry::Direction;
 
@@ -14,10 +14,10 @@ namespace Capture {
 template<typename Rules, typename Board>
 State<Rules, Board>::State(const Node::Position<Board>& p)
 :
-        initial_targets_(p.passive_pieces()),
+        initial_targets_(passive_pieces(p)),
 	remaining_targets_(initial_targets_),
 	not_occupied_(p.not_occupied()),
-        king_targets_(p.passive_kings()),
+        king_targets_(passive_kings(p)),
         from_sq_(0)
 {
         init<Rules>()(current_);

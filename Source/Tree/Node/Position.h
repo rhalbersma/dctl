@@ -36,12 +36,6 @@ public:
         BitBoard men(bool) const;                               // black or white men
         BitBoard kings(bool) const;                             // black or white kings
         BitBoard pieces(bool) const;                            // black or white pieces
-        BitBoard active_men(void) const;                        // men for the side to move
-        BitBoard active_kings(void) const;                      // kings for the side to move
-        BitBoard active_pieces(void) const;                     // pieces for the side to move
-        BitBoard passive_men(void) const;                       // men for the opposite side
-        BitBoard passive_kings(void) const;                     // kings for the opposite side
-        BitBoard passive_pieces(void) const;                    // pieces for the opposite side
         bool to_move(void) const;                               // side to move
 
         template<typename> 
@@ -57,12 +51,8 @@ public:
         template<typename>
         void copy_make(const Node::Position<Board>&, const Node::Pieces&);
         
-        // make a move in the current position
-        template<typename>
-        void make(const Node::Pieces&);
-
 private:
-        // implentation
+        // implementation
         bool is_repetition_draw(void) const;
         
         // tag dispatching based on restrictions on consecutive king moves by both sides        
@@ -77,6 +67,7 @@ private:
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<false>) const;
 
         void link(const Node::Position<Board>&);
+        template<typename> void make(const Node::Pieces&);
 
         // tag dispatching for restrictions on consecutive moves with the same king
         template<typename> void make_irreversible(const Node::Pieces&);
@@ -106,6 +97,13 @@ private:
         const static size_t STRIDE = 2;
         static const bool PASS = true;  // toggle the side to move
 };
+
+template<typename Board> BitBoard active_men(const Position<Board>&);           // men for the side to move
+template<typename Board> BitBoard active_kings(const Position<Board>&);         // kings for the side to move
+template<typename Board> BitBoard active_pieces(const Position<Board>&);        // pieces for the side to move
+template<typename Board> BitBoard passive_men(const Position<Board>&);          // men for the opposite side
+template<typename Board> BitBoard passive_kings(const Position<Board>&);        // kings for the opposite side
+template<typename Board> BitBoard passive_pieces(const Position<Board>&);       // pieces for the opposite side
 
 }       // namespace Node
 }       // namespace Tree

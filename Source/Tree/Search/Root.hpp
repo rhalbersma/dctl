@@ -1,3 +1,5 @@
+#include <iostream>
+#include <iomanip>
 #include "Parameters.h"
 #include "../Generate/Successors.h"
 #include "../Move/String.h"
@@ -7,8 +9,6 @@
 #include "../Node/String.h"
 #include "../../Evaluation/Evaluate.h"
 #include "../../Utilities/Timer.h"
-#include <iostream>
-#include <iomanip>
 
 namespace Tree {
 namespace Search {

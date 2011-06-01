@@ -1,6 +1,6 @@
+#include <cctype>
 #include "../../Geometry/Board.h"
 #include "../../Geometry/Layout.h"
-#include <cctype>
 
 namespace Tree {
 namespace Node {

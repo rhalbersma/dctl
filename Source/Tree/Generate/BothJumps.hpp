@@ -1,7 +1,7 @@
+#include <cassert>
 #include "KingJumps.h"
 #include "PawnJumps.h"
 #include "Capture/State.h"
-#include <cassert>
 
 namespace Tree {
 namespace Generate {

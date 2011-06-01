@@ -1,3 +1,5 @@
+#include <cassert>
+#include <iostream>
 #include "../Generate/Successors.h"
 #include "../Move/Stack.h"
 #include "../Move/String.h"
@@ -5,8 +7,6 @@
 #include "../Node/Position.h"
 #include "../Node/String.h"
 #include "../../Utilities/Timer.h"
-#include <cassert>
-#include <iostream>
 
 namespace Tree {
 namespace Walk {

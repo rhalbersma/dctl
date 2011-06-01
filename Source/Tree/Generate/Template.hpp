@@ -1,5 +1,5 @@
-#include "../Node/Pieces.h"
 #include <cassert>
+#include "../Node/Pieces.h"
 
 namespace Tree {
 namespace Generate {

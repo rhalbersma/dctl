@@ -1,8 +1,8 @@
-#include "Root.h"
-#include "../../Utilities/UniqueNumber.h"
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
+#include "Root.h"
+#include "../../Utilities/UniqueNumber.h"
 
 Tree::Search::Root::TranspositionTable Tree::Search::Root::TT(10);
 Tree::Statistics Tree::Search::Root::statistics_;

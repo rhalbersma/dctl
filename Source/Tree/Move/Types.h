@@ -1,7 +1,7 @@
 #pragma once
+#include <cstddef>
 #include "../../Utilities/Ply.h"
 #include "../../Utilities/VectorArray.h"
-#include <cstddef>
 
 namespace Tree {
 namespace Move {

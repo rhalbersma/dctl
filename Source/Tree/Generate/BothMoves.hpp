@@ -1,6 +1,6 @@
+#include <cassert>
 #include "KingMoves.h"
 #include "PawnMoves.h"
-#include <cassert>
 
 namespace Tree {
 namespace Generate {

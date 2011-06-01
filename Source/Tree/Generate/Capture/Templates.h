@@ -1,7 +1,7 @@
 #pragma once
+#include <functional>
 #include "../../../Utilities/IntegerTypes.h"
 #include "../../../Utilities/TemplateTricks.h"
-#include <functional>
 
 namespace Tree {
 namespace Generate {

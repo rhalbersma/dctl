@@ -1,5 +1,5 @@
-#include "Statistics.h"
 #include <algorithm>
+#include "Statistics.h"
 
 Tree::Statistics::Statistics(void)
 :

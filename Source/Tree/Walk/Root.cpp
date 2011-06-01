@@ -1,6 +1,6 @@
-#include "Root.h"
 #include <iomanip>
 #include <iostream>
+#include "Root.h"
 
 Tree::Walk::Root::TranspositionTable Tree::Walk::Root::TT(1);
 Tree::Statistics Tree::Walk::Root::statistics_;

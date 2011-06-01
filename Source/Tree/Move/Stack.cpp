@@ -1,6 +1,6 @@
+#include <algorithm>
 #include "Stack.h"
 #include "../../Utilities/Bit.h"
-#include <algorithm>
 
 size_t Tree::Move::Stack::size(void) const
 {

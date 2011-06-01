@@ -1,7 +1,7 @@
-#include "Sign.h"
 #include <cassert>
 #include <iostream>
 #include <type_traits>
+#include "Sign.h"
 
 namespace Hash {
 

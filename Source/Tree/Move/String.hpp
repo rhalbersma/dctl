@@ -1,8 +1,8 @@
+#include <iomanip>
+#include <sstream>
 #include "Predicates.h"
 #include "../../Geometry/Board.h"
 #include "../../Utilities/Bit.h"
-#include <iomanip>
-#include <sstream>
 
 namespace Tree {
 namespace Move {

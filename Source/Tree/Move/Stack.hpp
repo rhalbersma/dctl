@@ -1,5 +1,5 @@
-#include "../../Utilities/Bit.h"
 #include <cassert>
+#include "../../Utilities/Bit.h"
 
 namespace Tree {
 namespace Move {
@@ -55,8 +55,13 @@ void Stack::push(BitBoard delta, BitBoard promotion)
 template<bool Color, typename Rules>
 void Stack::push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
 {
-        // necessary pre-conditions for the pieces invariant
-        assert(Bit::is_exclusive(delta, captured_pieces) || is_sequential_capture_removal<Rules>(delta, captured_pieces));
+        // necessary pre-conditions for the pieces invariant 
+        assert(
+                Bit::is_exclusive(delta, captured_pieces) || 
+
+                // EXCEPTION: for intersecting captures, delta overlaps with captured pieces
+                is_intersecting_capture<Rules>(delta, captured_pieces)
+        );
         assert(Bit::is_within(captured_kings, captured_pieces));
 
         // necessary pre-conditions for king capture semantics
@@ -70,10 +75,16 @@ void Stack::push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kin
                 delta ^ captured_kings          // move a king and remove the captured kings
         );
 
-        // post-conditions are the pieces invariants, with an exception for sequential capture removal (Thai draughts)
-        // example: [FEN "W:WK26:B9,12,18,19"]; white has to capture 26x12, landing on a square it also captured on
-        // (i.e. the moving and captured pieces are not mutually exclusive)
-        assert(top().invariant() || is_sequential_capture_removal<Rules>(delta, captured_pieces));
+        // post-conditions are the pieces invariants                        
+        assert(
+                (
+                        Bit::is_exclusive(top().pieces(Node::Side::BLACK), top().pieces(Node::Side::WHITE)) ||
+
+                        // EXCEPTION: for intersecting captures, WHITE and BLACK pieces() overlap
+                        is_intersecting_capture<Rules>(delta, captured_pieces)
+                ) &&
+                Bit::is_within(top().kings(), top().occupied())
+        );
 }
 
 // add a man capture
@@ -81,8 +92,13 @@ template<bool Color, typename Rules>
 void Stack::push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
 {
         // necessary pre-conditions for the pieces invariant
-        assert(Bit::is_within(promotion, delta) || is_promotion_en_passant<Rules>(promotion, delta));
         assert(Bit::is_exclusive(delta, captured_pieces));
+        assert(
+                Bit::is_within(promotion, delta) ||
+
+                // EXCEPTION: for intersecting promotions, delta is empty, and promotion is non-empty
+                is_intersecting_promotion<Rules>(promotion, delta)
+        );
         assert(Bit::is_within(captured_kings, captured_pieces));
 
         // necessary pre-conditions for man capture semantics
@@ -97,14 +113,14 @@ void Stack::push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, B
                 promotion ^ captured_kings      // crown a king and remove the captured kings
         );
 
-        // post-conditions are the pieces invariants, with an exception for promotion en-passant (Russian draughts)
-        // example: [FEN "W:W25:B8,9,20,22,30"]; white has to capture 25x25, promoting on its original square
-        // (i.e. the delta_kings is not contained within the delta_pieces)
+        // post-conditions are the pieces invariants                        
         assert(
                 Bit::is_exclusive(top().pieces(Node::Side::BLACK), top().pieces(Node::Side::WHITE)) &&
                 (
                         Bit::is_within(top().kings(), top().occupied()) ||
-                        is_promotion_en_passant<Rules>(promotion, delta)
+
+                        // EXCEPTION: for intersecting promotions, kings() is non-empty, and occupied() is empty
+                        is_intersecting_promotion<Rules>(promotion, delta)
                 )
         );
 }

@@ -1,6 +1,6 @@
 #pragma once
-#include "../Tree/Search/Entry.h"
 #include <functional>
+#include "../Tree/Search/Entry.h"
 
 namespace Hash {
 

@@ -48,7 +48,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_46_1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
@@ -133,7 +133,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\CheckerBoard\CheckerBoardAPI.h" />
-    <ClInclude Include="Source\DamExchange\AbstractEngine.h" />
     <ClInclude Include="Source\DamExchange\Layer1\Session.h" />
     <ClInclude Include="Source\DamExchange\Layer1\Scanner.h" />
     <ClInclude Include="Source\DamExchange\Layer2\AbstractMessage.h" />

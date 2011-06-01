@@ -1,9 +1,9 @@
+#include <functional>
+#include <sstream>
 #include "Side.h"
 #include "../../Geometry/Layout.h"
 #include "../../Utilities/Bit.h"
 #include "../../Utilities/IntegerTypes.h"
-#include <functional>
-#include <sstream>
 
 namespace Tree {
 namespace Node {

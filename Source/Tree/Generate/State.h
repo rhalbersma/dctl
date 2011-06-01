@@ -1,6 +1,6 @@
 #pragma once
-#include "AbstractState.h"
 #include <cstddef>
+#include "AbstractState.h"
 
 namespace Tree {
 
