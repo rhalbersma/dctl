@@ -1,11 +1,11 @@
+#include <cstdlib>
+#include <iomanip>
+#include <iostream>
 #include "EvaluateWeight.h"
 #include "../Tree/Generate/Successors.h"
 #include "../Tree/Node/Position.h"
 #include "../Tree/Node/Side.h"
 #include "../Variants/Rules.h"
-#include <cstdlib>
-#include <iomanip>
-#include <iostream>
 
 template<typename Board>
 int Evaluate::evaluate(const Tree::Node::Position<Board>& p)

@@ -1,3 +1,4 @@
+#include <cassert>
 #include "KingJumps.h"
 #include "Capture/State.h"
 #include "../Node/Position.h"
@@ -5,7 +6,6 @@
 #include "../../Geometry/Direction.h"
 #include "../../Geometry/PushPull.h"
 #include "../../Utilities/Bit.h"
-#include <cassert>
 
 using namespace Geometry::Direction;
 

@@ -1,5 +1,5 @@
-#include "Scanner.h"
 #include <cassert>
+#include "Scanner.h"
 
 namespace DXP = DamExchange;
 

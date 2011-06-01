@@ -1,8 +1,8 @@
-#include "Session.h"
-#include "Scanner.h"
 #include <iomanip>
 #include <iostream>
 #include <boost/bind.hpp>
+#include "Session.h"
+#include "Scanner.h"
 
 namespace DXP = DamExchange;
 

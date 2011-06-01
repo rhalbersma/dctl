@@ -1,5 +1,5 @@
-#include "../Generate/Successors.h"
 #include <cassert>
+#include "../Generate/Successors.h"
 
 namespace Tree {
 namespace Search {
@@ -67,7 +67,7 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
         if (TT_entry && (TT_entry->is_mate() || TT_entry->greater_equal(depth)) && TT_entry->is_cutoff(alpha, beta))
                 return TT_entry->value();
 
-        // generate move_stack
+        // generate moves
         Move::Stack move_stack;
         Generate::Successors<Rules, Board>::generate(p, move_stack);
 
@@ -101,7 +101,7 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
                 std::swap(move_order[0], move_order[TT_move]);
         }
 
-        // search move_stack
+        // search moves
         int value = -Value::infinity();
         size_t best_move = Entry::no_move();
         int score;
@@ -181,7 +181,7 @@ int Root::quiescence(const Node::Position<Board>& p, size_t ply, int depth, int 
                 }
         }
 
-        // search generated move_stack
+        // search generated moves
 }
 */
 
@@ -199,11 +199,11 @@ int Root::negamax(const Node::Position<Board>& p, size_t ply, size_t depth, Para
         if (depth == 0)
                 return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
 
-        // generate move_stack
+        // generate moves
         Move::Stack move_stack;
         Generate::generate(p, move_stack);
 
-        // search move_stack
+        // search moves
         int value = -Value::infinity();
         int score;
         Parameters child_node;
@@ -242,11 +242,11 @@ int Root::alpha_beta(const Node::Position<Board>& p, size_t ply, size_t depth, i
         if (depth == 0)
                 return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
 
-        // generate move_stack
+        // generate moves
         Move::Stack move_stack;
         Generate::generate(p, move_stack);
 
-        // search move_stack
+        // search moves
         int value = -Value::infinity();
         int score;
         Parameters child_node;

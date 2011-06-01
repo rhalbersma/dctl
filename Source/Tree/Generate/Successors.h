@@ -1,8 +1,8 @@
 #pragma once
+#include <cstddef>
 #include "State.h"
 #include "../Node/Pieces.h"
 #include "../Node/Side.h"
-#include <cstddef>
 
 namespace Tree {
 

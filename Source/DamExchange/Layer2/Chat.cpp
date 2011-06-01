@@ -1,6 +1,6 @@
+#include <cassert>
 #include "Chat.h"
 #include "Parser.h"
-#include <cassert>
 
 namespace DXP = DamExchange;
 

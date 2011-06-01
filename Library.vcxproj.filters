@@ -228,9 +228,6 @@
     <ClInclude Include="Source\Utilities\DeBruijn.hpp">
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DamExchange\AbstractEngine.h">
-      <Filter>Header Files\DamExchange</Filter>
-    </ClInclude>
     <ClInclude Include="Source\DamExchange\Layer1\Scanner.h">
       <Filter>Header Files\DamExchange\Layer1</Filter>
     </ClInclude>

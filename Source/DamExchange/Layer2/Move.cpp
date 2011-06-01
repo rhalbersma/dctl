@@ -1,9 +1,9 @@
-#include "Move.h"
-#include "Parser.h"
 #include <cassert>
 #include <iomanip>
 #include <sstream>
 #include <boost/lexical_cast.hpp>
+#include "Move.h"
+#include "Parser.h"
 
 namespace DXP = DamExchange;
 

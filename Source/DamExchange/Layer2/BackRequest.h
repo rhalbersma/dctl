@@ -1,8 +1,8 @@
 #pragma once
-#include "AbstractMessage.h"
 #include <cstddef>
 #include <memory>
 #include <string>
+#include "AbstractMessage.h"
 
 namespace DamExchange {
 namespace Layer2 {

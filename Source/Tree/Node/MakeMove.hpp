@@ -66,14 +66,32 @@ void Position<Board>::make_repeated_kings_moves(const Pieces& m)
 {
         hash_index_ ^= Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
-        repeated_kings_ ^= repeated_kings(to_move());
-        if (men(to_move()) && kings(to_move()) && Move::is_non_conversion(*this, m)) {
-                repeated_kings_ ^= Move::dest_sq(*this, m);                        
-                ++repeated_moves_[to_move()];
-        } else
+        if (active_men(*this) && active_kings(*this) && Move::is_non_conversion(*this, m)) {                
+                if (Bit::is_zero(repeated_kings_ & Move::from_sq(*this, m)))
+                        repeated_kings_ ^= Move::dest_sq(*this, m);
+                        repeated_moves_[to_move()] = 1;
+                else {
+                        if (!is_restricted<N>(to_move())) {
+                                repeated_kings_ ^= Move::moving_kings(*this, m);
+                                ++repeated_moves_[to_move()];
+                        } else {
+                                repeated_kings_ &= passive_kings(*this);
+                                repeated_moves_[to_move()] = 0;
+                        }
+                }
+        } else {                 
+                repeated_kings_ &= passive_kings(*this);
                 repeated_moves_[to_move()] = 0;
+        }
 
         hash_index_ ^= Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
+
+        // capture of the opponent's most recently moved king
+        if (Bit::is_single(repeated_kings_[!to_move()] & Move::captured_pieces(*this, m))) {
+                hash_index_ ^= Hash::Zobrist::Init<Position<Board>, HashIndex>()(*this, !to_move());
+                repeated_kings_ &= active_kings(*this);
+                repeated_moves_[!to_move()] = 0;
+        }
 }
 
 template<typename Board>

@@ -1,7 +1,7 @@
 #pragma once
+#include <cstddef>
 #include "../Move/Stack.h"
 #include "../Move/Types.h"
-#include <cstddef>
 
 namespace Tree {
 

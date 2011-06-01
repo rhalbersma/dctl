@@ -1,7 +1,7 @@
-#include "Value.h"
-#include "../../Utilities/Ply.h"
 #include <climits>
 #include <sstream>
+#include "Value.h"
+#include "../../Utilities/Ply.h"
 
 namespace {
 

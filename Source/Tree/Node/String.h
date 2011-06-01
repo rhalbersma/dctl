@@ -1,8 +1,8 @@
 #pragma once
+#include <string>
 #include "Protocol.h"
 #include "Position.h"
 #include "Token.h"
-#include <string>
 
 namespace Tree {
 namespace Node {

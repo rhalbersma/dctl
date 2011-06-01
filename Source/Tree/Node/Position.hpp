@@ -1,8 +1,9 @@
+#include <cassert>
+#include <iostream>
 #include "../../Hash/Algorithms.h"
 #include "../../Utilities/Bit.h"
 #include "../../Variants/Rules.h"
-#include <cassert>
-#include <iostream>
+
 
 namespace Tree {
 namespace Node {
@@ -17,7 +18,7 @@ Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard
         to_move_(to_move)
 {
         repeated_moves_[Side::BLACK] = repeated_moves_[Side::WHITE] = 0;
-        parents_[0] = parents_[1] = 0;
+        parents_[0] = parents_[1] = NULL;
         hash_index_ = Hash::Zobrist::Init<Node::Position<Board>, HashIndex>()(*this);
         assert(pieces_invariant());
 }
@@ -140,48 +141,6 @@ BitBoard Position<Board>::pieces(bool color) const
         return pieces_.pieces(color);
 }
 
-// men for the side to move
-template<typename Board>
-BitBoard Position<Board>::active_men(void) const
-{
-        return men(to_move());
-}
-
-// kings for the side to move
-template<typename Board>
-BitBoard Position<Board>::active_kings(void) const
-{
-        return kings(to_move());
-}
-
-// pieces for the side to move
-template<typename Board>
-BitBoard Position<Board>::active_pieces(void) const
-{
-        return pieces(to_move());
-}
-
-// men for the opposite side
-template<typename Board>
-BitBoard Position<Board>::passive_men(void) const
-{
-        return men(!to_move());
-}
-
-// kings for the opposite side
-template<typename Board>
-BitBoard Position<Board>::passive_kings(void) const
-{
-        return kings(!to_move());
-}
-
-// pieces for the opposite side
-template<typename Board>
-BitBoard Position<Board>::passive_pieces(void) const
-{
-        return pieces(!to_move());
-}
-
 // the side to move
 template<typename Board>
 bool Position<Board>::to_move(void) const
@@ -254,6 +213,48 @@ template<typename Board>
 bool Position<Board>::hash_index_invariant(void) const
 {
         return Hash::Zobrist::Find<Node::Position<Board>, HashIndex>()(*this) == Hash::Zobrist::Init<Node::Position<Board>, HashIndex>()(*this);
+}
+
+// men for the side to move
+template<typename Board>
+BitBoard active_men(const Position<Board>& p)
+{
+        return p.men(p.to_move());
+}
+
+// kings for the side to move
+template<typename Board>
+BitBoard active_kings(const Position<Board>& p)
+{
+        return p.kings(p.to_move());
+}
+
+// pieces for the side to move
+template<typename Board>
+BitBoard active_pieces(const Position<Board>& p)
+{
+        return p.pieces(p.to_move());
+}
+
+// men for the opposite side
+template<typename Board>
+BitBoard passive_men(const Position<Board>& p)
+{
+        return p.men(!p.to_move());
+}
+
+// kings for the opposite side
+template<typename Board>
+BitBoard passive_kings(const Position<Board>& p)
+{
+        return p.kings(!p.to_move());
+}
+
+// pieces for the opposite side
+template<typename Board>
+BitBoard passive_pieces(const Position<Board>& p)
+{
+        return p.pieces(!p.to_move());
 }
 
 }       // namespace Node

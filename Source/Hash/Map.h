@@ -1,8 +1,8 @@
 #pragma once
-#include "../Utilities/CacheAlign.h"
-#include "../Utilities/TemplateTricks.h"
 #include "Algorithms.h"
 #include "Replace.h"
+#include "../Utilities/CacheAlign.h"
+#include "../Utilities/TemplateTricks.h"
 
 #ifdef _MSC_VER
 #include <array>

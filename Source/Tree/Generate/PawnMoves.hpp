@@ -1,9 +1,9 @@
+#include <cassert>
 #include "../Node/Position.h"
 #include "../../Geometry/Board.h"
 #include "../../Geometry/Direction.h"
 #include "../../Geometry/PushPull.h"
 #include "../../Utilities/Bit.h"
-#include <cassert>
 
 using namespace Geometry::Direction;
 

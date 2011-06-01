@@ -1,8 +1,8 @@
+#include <cassert>
+#include <functional>
 #include "Pieces.h"
 #include "Side.h"
 #include "../../Utilities/Bit.h"
-#include <cassert>
-#include <functional>
 
 // zero initialize
 Tree::Node::Pieces::Pieces(BitBoard)

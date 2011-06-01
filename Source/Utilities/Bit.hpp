@@ -1,5 +1,5 @@
-#include "BitTricks.h"
 #include <cassert>
+#include "BitTricks.h"
 
 namespace Bit {
 

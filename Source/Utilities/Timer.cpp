@@ -1,5 +1,5 @@
-#include "Timer.h"
 #include <cassert>
+#include "Timer.h"
 
 Timer::Timer(void)
 {

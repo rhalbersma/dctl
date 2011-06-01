@@ -1,7 +1,7 @@
-#include "Entry.h"
-#include "Value.h"
 #include <cassert>
 #include <sstream>
+#include "Entry.h"
+#include "Value.h"
 
 Tree::Search::Entry::Entry(void)
 :

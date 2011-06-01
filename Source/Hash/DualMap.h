@@ -1,8 +1,8 @@
 #pragma once
+#include <cstddef>
 #include "Map.h"
 #include "Replace.h"
 #include "Algorithms.h"
-#include <cstddef>
 
 namespace Tree { namespace Node { template<typename> class Position; } }
 
