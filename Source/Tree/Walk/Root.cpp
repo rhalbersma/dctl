@@ -109,33 +109,7 @@ TEST_F(Perft, ChessVariants)
         Root::perft<Variants::Thai>(i8, 13);      // Usual initial position with 3 rows of men
 }
 
-// Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
-TEST_F(Perft, ItalianRuleBook)
-{
-        Node::Position<Geometry::Roman> ITA_empty = Node::String::read<Geometry::Roman, Node::FEN_tag>()("");   // Art. 2.1
-        typedef Geometry::Roman ITA_notation;                                      	                        // Art. 2.4
-        Node::Position<Geometry::Roman> ITA_initial;						                // Art. 2.6
-
-        std::string ITA_rules[] = {
-                "W:W30:B27",                    // Art. 5.6
-                "W:W31:B12,20,28",              // Art. 5.7
-                "W:WK22:B18,19,27",             // Art. 5.8
-                "W:WK27:B5,6,13,15,21,23",      // Art. 5.9
-                "W:WK21,31:B10,18,27",          // Art. 6.6
-                "W:WK23,31:B19,26,27",          // Art. 6.7
-                "W:WK23:B19,K28",               // Art. 6.8
-                "W:WK30:B10,12,18,K20,K26,27",  // Art. 6.9
-                "W:WK31:B18,20,K27,K28"         // Art. 6.10
-        };
-
-        std::cout << Node::Layout::write<Node::FEN_tag>()(ITA_empty) << std::endl;
-        Geometry::Layout::write<ITA_notation, Geometry::Layout::Square_tag>()();
-        std::cout << Node::Layout::write<Node::FEN_tag>()(ITA_initial) << std::endl;
-        for (size_t i = 0; i < 9; ++i)
-                Root::divide<Variants::Italian>(Node::String::read<Geometry::Roman, Node::FEN_tag>()(ITA_rules[i]), 1);
-}
-
 #endif
 
-}       // namespace Search
+}       // namespace Walk
 }       // namespace Tree
