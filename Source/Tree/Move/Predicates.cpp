@@ -23,6 +23,6 @@ bool Tree::Move::is_intersecting_promotion(BitBoard, BitBoard, Int2Type<Variants
 // specialization for men that promote en-passant (Russian draughts)
 bool Tree::Move::is_intersecting_promotion(BitBoard promotion, BitBoard delta, Int2Type<Variants::PROMOTE_EP>)
 {
-        // [FEN "W:W25:B8,9,20,22,30"] white has to capture 25x25, promoting on its original square
+        // [FEN "W:W15:B10,13,20,23"] white has to capture 15x15, promoting on its original square
         return Bit::is_single(promotion) && Bit::is_zero(delta);
 }
