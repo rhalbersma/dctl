@@ -22,7 +22,7 @@ public:
 
 private:
         bool operator()(const Value&, BitBoard, Int2Type<false>) const;
-        bool operator()(const Value&, BitBoard, Int2Type<true>) const;
+        bool operator()(const Value&, BitBoard, Int2Type<true >) const;
 };
 
 template<typename> 

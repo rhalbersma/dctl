@@ -60,13 +60,16 @@ struct equal_to<Variants::Spanish>: public std::binary_function<Value, Value, bo
 template<>
 struct greater_equal<Variants::Spanish>: public std::binary_function<Value, Value, bool>
 {
+        // http://fpdamas.home.sapo.pt/regrasclass.htm
         bool operator()(const Value& left, const Value& right) const
         {
+                // 15 b)
                 if (left.num_pieces > right.num_pieces)
                         return true;
                 if (left.num_pieces < right.num_pieces)
                         return false;
 
+                // 15 c)
                 return left.num_kings >= right.num_kings;
         }
 };
