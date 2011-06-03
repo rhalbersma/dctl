@@ -12,6 +12,13 @@ void Template<Color, Node::Pieces::BOTH, Move::MOVES, Rules, Board>::generate(co
         Template<Color, Node::Pieces::PAWN, Move::MOVES, Rules, Board>::generate(p, move_stack);     
 }
 
+template<bool Color, typename Rules, typename Board> 
+void Template<Color, Node::Pieces::BOTH, Move::MOVES, Rules, Board>::generate_promotions(const Node::Position<Board>& p, Move::Stack& move_stack)
+{
+        Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::generate_promotions(p, move_stack);
+        Template<Color, Node::Pieces::PAWN, Move::MOVES, Rules, Board>::generate_promotions(p, move_stack);     
+}
+
 template<bool Color, typename Rules, typename Board>
 size_t Template<Color, Node::Pieces::BOTH, Move::MOVES, Rules, Board>::count(const Node::Position<Board>& p)
 {     
@@ -22,11 +29,29 @@ size_t Template<Color, Node::Pieces::BOTH, Move::MOVES, Rules, Board>::count(con
 }
 
 template<bool Color, typename Rules, typename Board>
+size_t Template<Color, Node::Pieces::BOTH, Move::MOVES, Rules, Board>::count_promotions(const Node::Position<Board>& p)
+{     
+        return (
+                Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::count_promotions(p) + 
+                Template<Color, Node::Pieces::PAWN, Move::MOVES, Rules, Board>::count_promotions(p)
+        );
+}
+
+template<bool Color, typename Rules, typename Board>
 bool Template<Color, Node::Pieces::BOTH, Move::MOVES, Rules, Board>::detect(const Node::Position<Board>& p)
 {
         return (
                 Template<Color, Node::Pieces::PAWN, Move::MOVES, Rules, Board>::detect(p) || 
                 Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::detect(p)
+        );
+}
+
+template<bool Color, typename Rules, typename Board>
+bool Template<Color, Node::Pieces::BOTH, Move::MOVES, Rules, Board>::detect_promotions(const Node::Position<Board>& p)
+{
+        return (
+                Template<Color, Node::Pieces::PAWN, Move::MOVES, Rules, Board>::detect_promotions(p) || 
+                Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::detect_promotions(p)
         );
 }
 
