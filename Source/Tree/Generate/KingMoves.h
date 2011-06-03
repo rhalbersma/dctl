@@ -17,8 +17,13 @@ class Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>
 {
 public:
         static void generate(const Node::Position<Board>&, Move::Stack&);
+        static void generate_promotions(const Node::Position<Board>&, Move::Stack&);
+
         static size_t count(const Node::Position<Board>&);
+        static size_t count_promotions(const Node::Position<Board>&);
+        
         static bool detect(const Node::Position<Board>&);
+        static bool detect_promotions(const Node::Position<Board>&);
 
 private:
         // implementation

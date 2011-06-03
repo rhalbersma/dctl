@@ -70,6 +70,12 @@ void Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::generate_di
                 move_stack.push<Color>(from_sq ^ dest_sq);
 }
 
+template<bool Color, typename Rules, typename Board>
+void Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::generate_promotions(const Node::Position<Board>&, Move::Stack&) 
+{ 
+        return;
+}
+
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index>
 void Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, Move::Stack& move_stack, Int2Type<Variants::RANGE_N>)
@@ -117,6 +123,12 @@ size_t Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::count_dir
 }
 
 template<bool Color, typename Rules, typename Board>
+size_t Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::count_promotions(const Node::Position<Board>&) 
+{ 
+        return 0; 
+}
+
+template<bool Color, typename Rules, typename Board>
 bool Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::detect(const Node::Position<Board>& p)
 {
         return detect_dirs(p.template unrestricted_kings<Rules>(Color), p.not_occupied());
@@ -137,6 +149,12 @@ template<bool Color, typename Rules, typename Board> template<size_t Index>
 bool Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::detect_dir(BitBoard active_kings, BitBoard not_occupied)
 {
         return !Bit::is_zero(Push<Board, Index>()(active_kings) & not_occupied);
+}
+        
+template<bool Color, typename Rules, typename Board>
+bool Template<Color, Node::Pieces::KING, Move::MOVES, Rules, Board>::detect_promotions(const Node::Position<Board>&) 
+{ 
+        return false; 
 }
 
 }       // namespace Generate
