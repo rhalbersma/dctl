@@ -63,24 +63,27 @@ struct equal_to<Variants::Frisian>: public std::binary_function<Value, Value, bo
 template<>
 struct greater_equal<Variants::Frisian>: public std::binary_function<Value, Value, bool>
 {
+        // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
         bool operator()(const Value& left, const Value& right) const
         {
-                int delta_kings = left.num_kings - right.num_kings;
-                int delta_men = left.num_pieces - right.num_pieces - delta_kings;
+                const int delta_kings = left.num_kings - right.num_kings;
+                const int delta_men = left.num_pieces - right.num_pieces - delta_kings;
 
-                if (delta_kings * delta_men < 0) {
-                        if (delta_kings > 0)
-                                return delta_men + 2 * delta_kings - 1 >= 0;
-                        else
-                                return delta_men + 2 * delta_kings     >= 0;
-                } else {
+                // Art. 11
+                if (delta_kings * delta_men >= 0) {
                         if (delta_men + delta_kings > 0)
                                 return true;
                         if (delta_men + delta_kings < 0)
                                 return false;
-
-                        return left.with_king >= right.with_king;
+                } else {
+                        if (delta_kings > 0)
+                                return delta_men + 2 * delta_kings - 1 >= 0;
+                        else
+                                return delta_men + 2 * delta_kings     >= 0;
                 }
+
+                // Art. 12
+                return left.with_king >= right.with_king;
         }
 };
 

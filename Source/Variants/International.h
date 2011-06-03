@@ -11,6 +11,7 @@ typedef International Brazilian;
 typedef International Polish;
 typedef International Canadian;
 
+// capture precedence
 template<> struct is_majority_precedence<International> { enum { value = true  }; };
 
 }       // namespace Variants
