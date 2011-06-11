@@ -1,48 +1,48 @@
 #include "Direction.h"
 #include "Coordinates.h"
 
-namespace Geometry {
+namespace geometry {
 
-template<typename T, size_t SQ>
+template<typename T, int SQ>
 class IS_VALID
 {
 public:
         static const bool VALUE = SQ < T::SIZE;
 };
 
-template<typename T, bool C, size_t SQ>
+template<typename T, bool C, int SQ>
 class IS_INITIAL
 {
 private:
         enum {
                 ROW_MIN = C? (T::HEIGHT - 1) - ((T::HEIGHT - T::DMZ) / 2 - 1) : 0,
                 ROW_MAX = C? (T::HEIGHT - 1) : (T::HEIGHT - T::DMZ) / 2 - 1,
-                ROW = Coordinates::FromRange<T, SQ>::Out::ROW
+                ROW = coordinates::FromRange<T, SQ>::Out::ROW
         };
 
 public:
         static const bool VALUE = (ROW >= ROW_MIN) && (ROW <= ROW_MAX);
 };
 
-template<typename T, bool C, size_t ROW, size_t SQ>
+template<typename T, bool C, int ROW, int SQ>
 struct IS_ROW_MASK
 {
-        static const bool VALUE = Coordinates::FromRange<T, SQ>::Out::ROW == (C? (T::HEIGHT - 1) - ROW : ROW);
+        static const bool VALUE = coordinates::FromRange<T, SQ>::Out::ROW == (C? (T::HEIGHT - 1) - ROW : ROW);
 };
 
-template<typename T, bool C, size_t COL, size_t SQ>
+template<typename T, bool C, int COL, int SQ>
 struct IS_COL_MASK
 {
-        static const bool VALUE = Coordinates::FromRange<T, SQ>::Out::COL == (C? (T::WIDTH - 1) - COL : COL);
+        static const bool VALUE = coordinates::FromRange<T, SQ>::Out::COL == (C? (T::WIDTH - 1) - COL : COL);
 };
 
-template<typename T, size_t FROM, size_t DEST>
+template<typename T, int FROM, int DEST>
 class IS_MAN_JUMP_GROUP
 {
 private: 
         enum {
-                R1 = (Coordinates::FromRange<T, FROM>::Out::ROW - Coordinates::FromRange<T, DEST>::Out::ROW) % 4,
-                C1 = (Coordinates::FromRange<T, FROM>::Out::COL - Coordinates::FromRange<T, DEST>::Out::COL) % 4,
+                R1 = (coordinates::FromRange<T, FROM>::Out::ROW - coordinates::FromRange<T, DEST>::Out::ROW) % 4,
+                C1 = (coordinates::FromRange<T, FROM>::Out::COL - coordinates::FromRange<T, DEST>::Out::COL) % 4,
                 R2 = (R1 + 2) % 4,
                 C2 = (C1 + 2) % 4
         };
@@ -55,18 +55,18 @@ public:
         ;
 };
 
-template<typename T, size_t I, size_t SQ>
+template<typename T, int I, int SQ>
 class IS_JUMPABLE
 {
 private:
         enum {
-                OFFSET = Direction::Traits<I>::IS_DIAGONAL? 2 : 4,
-                ROW_MIN = Direction::Traits<I>::IS_UP? OFFSET : 0,
-                ROW_MAX = (T::HEIGHT - 1) - (Direction::Traits<I>::IS_DOWN? OFFSET : 0),
-                COL_MIN = Direction::Traits<I>::IS_LEFT? OFFSET : 0,
-                COL_MAX = (T::WIDTH - 1) - (Direction::Traits<I>::IS_RIGHT? OFFSET : 0),
-                ROW = Coordinates::FromRange<T, SQ>::Out::ROW,
-                COL = Coordinates::FromRange<T, SQ>::Out::COL
+                OFFSET = direction::Traits<I>::IS_DIAGONAL? 2 : 4,
+                ROW_MIN = direction::Traits<I>::IS_UP? OFFSET : 0,
+                ROW_MAX = (T::HEIGHT - 1) - (direction::Traits<I>::IS_DOWN? OFFSET : 0),
+                COL_MIN = direction::Traits<I>::IS_LEFT? OFFSET : 0,
+                COL_MAX = (T::WIDTH - 1) - (direction::Traits<I>::IS_RIGHT? OFFSET : 0),
+                ROW = coordinates::FromRange<T, SQ>::Out::ROW,
+                COL = coordinates::FromRange<T, SQ>::Out::COL
         };
 
 public:
@@ -79,4 +79,4 @@ public:
 	;
 };
 
-}       // namespace Geometry
+}       // namespace geometry

@@ -8,11 +8,11 @@
 #include "../Node/String.h"
 #include "../../Utilities/Timer.h"
 
-namespace Tree {
-namespace Walk {
+namespace tree {
+namespace walk {
 
 template<typename Rules, typename Board>
-NodeCount Root::perft(const Node::Position<Board>& p, size_t nominal_depth)
+NodeCount Root::perft(const node::Position<Board>& p, size_t nominal_depth)
 {
         NodeCount leafs = 0;
         
@@ -29,20 +29,20 @@ NodeCount Root::perft(const Node::Position<Board>& p, size_t nominal_depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::divide(const Node::Position<Board>& p, size_t nominal_depth)
+NodeCount Root::divide(const node::Position<Board>& p, size_t nominal_depth)
 {
         NodeCount leafs = 0;
         NodeCount move_leafs;                
         
         Timer timer;
-        Move::Stack move_stack;
-        Generate::Successors<Rules, Board>::generate(p, move_stack);
+        move::Stack move_stack;
+        generate::Successors<Rules, Board>::generate(p, move_stack);
 
         announce(p, nominal_depth, move_stack.size());
-        Node::Position<Board> q;
+        node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
                 statistics_.reset();
-                print_move(Move::String::write<Rules>()(p, move_stack[i]), i);
+                print_move(move::string::write<Rules>()(p, move_stack[i]), i);
 
                 q.template copy_make<Rules>(p, move_stack[i]);
                 move_leafs = driver<Rules>(q, 0, nominal_depth - 1);
@@ -57,23 +57,23 @@ NodeCount Root::divide(const Node::Position<Board>& p, size_t nominal_depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::driver(const Node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::driver(const node::Position<Board>& p, size_t ply, size_t depth)
 {
         return (depth == 0)? leaf<Rules>(p, ply, depth) : fast<Rules>(p, ply, depth);
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::leaf(const Node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::leaf(const node::Position<Board>& p, size_t ply, size_t depth)
 {        
         statistics_.update(ply);
 
         if (depth == 0)
                 return 1;
 
-        Move::Stack move_stack;
-        Generate::Successors<Rules, Board>::generate(p, move_stack);
+        move::Stack move_stack;
+        generate::Successors<Rules, Board>::generate(p, move_stack);
         NodeCount leafs = 0;        
-        Node::Position<Board> q;
+        node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
                 q.template copy_make<Rules>(p, move_stack[i]);
                 leafs += leaf<Rules>(q, ply + 1, depth - 1);
@@ -82,17 +82,17 @@ NodeCount Root::leaf(const Node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::bulk(const Node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::bulk(const node::Position<Board>& p, size_t ply, size_t depth)
 {
         statistics_.update(ply);
 
-        Move::Stack move_stack;
-        Generate::Successors<Rules, Board>::generate(p, move_stack);
+        move::Stack move_stack;
+        generate::Successors<Rules, Board>::generate(p, move_stack);
         if (depth == 1)
                 return move_stack.size();
         
         NodeCount leafs = 0;
-        Node::Position<Board> q;
+        node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
                 q.template copy_make<Rules>(p, move_stack[i]);
                 leafs += bulk<Rules>(q, ply + 1, depth - 1);
@@ -101,17 +101,17 @@ NodeCount Root::bulk(const Node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::count(const Node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::count(const node::Position<Board>& p, size_t ply, size_t depth)
 {
         statistics_.update(ply);
 
         if (depth == 1)
-                return Generate::Successors<Rules, Board>::count(p);
+                return generate::Successors<Rules, Board>::count(p);
 
-        Move::Stack move_stack;
-        Generate::Successors<Rules, Board>::generate(p, move_stack);
+        move::Stack move_stack;
+        generate::Successors<Rules, Board>::generate(p, move_stack);
         NodeCount leafs = 0;
-        Node::Position<Board> q;
+        node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
                 q.template copy_make<Rules>(p, move_stack[i]);
                 leafs += count<Rules>(q, ply + 1, depth - 1);
@@ -120,7 +120,7 @@ NodeCount Root::count(const Node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::hash(const Node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::hash(const node::Position<Board>& p, size_t ply, size_t depth)
 {
         statistics_.update(ply);
 
@@ -131,10 +131,10 @@ NodeCount Root::hash(const Node::Position<Board>& p, size_t ply, size_t depth)
         if (depth == 0)
                 return 1;
 
-        Move::Stack move_stack;
-        Generate::Successors<Rules, Board>::generate(p, move_stack);
+        move::Stack move_stack;
+        generate::Successors<Rules, Board>::generate(p, move_stack);
         NodeCount leafs = 0;
-        Node::Position<Board> q;
+        node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
                 q.template copy_make<Rules>(p, move_stack[i]);
                 leafs += hash<Rules>(q, ply + 1, depth - 1);
@@ -145,7 +145,7 @@ NodeCount Root::hash(const Node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::fast(const Node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::fast(const node::Position<Board>& p, size_t ply, size_t depth)
 {
         statistics_.update(ply);
 
@@ -155,12 +155,12 @@ NodeCount Root::fast(const Node::Position<Board>& p, size_t ply, size_t depth)
 
         NodeCount leafs;
         if (depth == 1)
-                leafs = Generate::Successors<Rules, Board>::count(p);
+                leafs = generate::Successors<Rules, Board>::count(p);
         else {
-                Move::Stack move_stack;
-                Generate::Successors<Rules, Board>::generate(p, move_stack);
+                move::Stack move_stack;
+                generate::Successors<Rules, Board>::generate(p, move_stack);
                 leafs = 0;
-                Node::Position<Board> q;
+                node::Position<Board> q;
                 for (size_t i = 0; i < move_stack.size(); ++i) {
                         q.template copy_make<Rules>(p, move_stack[i]);
                         leafs += fast<Rules>(q, ply + 1, depth - 1);
@@ -172,16 +172,16 @@ NodeCount Root::fast(const Node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Board>
-void Root::announce(const Node::Position<Board>& p, size_t nominal_depth)
+void Root::announce(const node::Position<Board>& p, size_t nominal_depth)
 {        
-        std::cout << Node::Layout::write<Node::FEN_tag>()(p) << std::endl;
-        std::cout << Node::String::write<Node::FEN_tag>()(p) << std::endl << std::endl;
+        std::cout << node::layout::write<node::FEN_tag>()(p) << std::endl;
+        std::cout << node::string::write<node::FEN_tag>()(p) << std::endl << std::endl;
         std::cout << "Searching to nominal depth=" << nominal_depth << std::endl;
         std::cout << std::endl;
 }
 
 template<typename Board>
-void Root::announce(const Node::Position<Board>& p, size_t nominal_depth, size_t num_moves)
+void Root::announce(const node::Position<Board>& p, size_t nominal_depth, size_t num_moves)
 {
         announce(p, nominal_depth);
         std::cout << "Found " << num_moves << " move_stack, searching each to nominal depth=" << nominal_depth - 1 << std::endl;
@@ -189,4 +189,4 @@ void Root::announce(const Node::Position<Board>& p, size_t nominal_depth, size_t
 }
 
 }       // namesapce Walk
-}       // namespace Tree
+}       // namespace tree

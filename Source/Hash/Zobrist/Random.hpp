@@ -1,14 +1,14 @@
 #include "../../Utilities/Bit.h"
 
-namespace Hash {
-namespace Zobrist {
+namespace hash {
+namespace zobrist {
 
 template<typename Index>
 Index Random<Index>::xor_rand(BitBoard b, const Index* random)
 {
         Index hash = 0;
-        for (; b; Bit::clear_lowest(b))
-                hash ^= random[Bit::scan_forward(b)];
+        for (; b; bit::clear_lowest(b))
+                hash ^= random[bit::scan_forward(b)];
         return hash;
 }
 
@@ -24,8 +24,8 @@ Index Random<Index>::xor_rand(bool to_move, Index random)
         return to_move? random : 0;
 }
 
-}       // namespace Zobrist
-}       // namespace Hash
+}       // namespace zobrist
+}       // namespace hash
 
 /*
 uint64_t rand64(void)

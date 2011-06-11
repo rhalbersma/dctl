@@ -1,7 +1,7 @@
 #include <cassert>
-#include "BitTricks.h"
+#include "bitTricks.h"
 
-namespace Bit {
+namespace bit {
 
 template<typename T>
 bool is_zero(T b)
@@ -82,4 +82,4 @@ void clear_lowest(T& b)
         b &= b - 1;
 }
 
-}       // namespace Bit
+}       // namespace bit

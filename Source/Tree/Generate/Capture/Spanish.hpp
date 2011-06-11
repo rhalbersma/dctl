@@ -1,11 +1,11 @@
-namespace Variants { struct Spanish; }
+namespace variants { struct Spanish; }
 
-namespace Tree {
-namespace Generate {
-namespace Capture {
+namespace tree {
+namespace generate {
+namespace capture {
 
 template<>
-struct init<Variants::Spanish>
+struct init<variants::Spanish>
 {
         void operator()(Value& value) const
         {
@@ -14,7 +14,7 @@ struct init<Variants::Spanish>
 };
 
 template<>
-struct copy<Variants::Spanish>
+struct copy<variants::Spanish>
 {
         void operator()(Value& left, const Value& right) const
         {
@@ -24,7 +24,7 @@ struct copy<Variants::Spanish>
 };
 
 template<>
-struct increment<Variants::Spanish>
+struct increment<variants::Spanish>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -35,7 +35,7 @@ struct increment<Variants::Spanish>
 };
 
 template<>
-struct decrement<Variants::Spanish>
+struct decrement<variants::Spanish>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -46,7 +46,7 @@ struct decrement<Variants::Spanish>
 };
 
 template<>
-struct equal_to<Variants::Spanish>: public std::binary_function<Value, Value, bool>
+struct equal_to<variants::Spanish>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -58,7 +58,7 @@ struct equal_to<Variants::Spanish>: public std::binary_function<Value, Value, bo
 };
 
 template<>
-struct greater_equal<Variants::Spanish>: public std::binary_function<Value, Value, bool>
+struct greater_equal<variants::Spanish>: public std::binary_function<Value, Value, bool>
 {
         // http://fpdamas.home.sapo.pt/regrasclass.htm
         bool operator()(const Value& left, const Value& right) const
@@ -74,6 +74,6 @@ struct greater_equal<Variants::Spanish>: public std::binary_function<Value, Valu
         }
 };
 
-}       // namespace Capture
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace capture
+}       // namespace generate
+}       // namespace tree

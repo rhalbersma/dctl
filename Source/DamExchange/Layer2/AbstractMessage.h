@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-namespace DamExchange {
-namespace Layer2 {
+namespace damexchange {
+namespace layer2 {
 
 class AbstractMessage
 {
@@ -19,5 +19,5 @@ private:
         virtual std::string body(void) const = 0;
 };
 
-}       // namespace Layer2
-}       // namespace DamExchange
+}       // namespace layer2
+}       // namespace damexchange

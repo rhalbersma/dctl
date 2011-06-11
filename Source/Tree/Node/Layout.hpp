@@ -5,14 +5,14 @@
 #include "../../Utilities/Bit.h"
 #include "../../Utilities/IntegerTypes.h"
 
-namespace Tree {
-namespace Node {
-namespace Layout {
+namespace tree {
+namespace node {
+namespace layout {
 
 template<typename Protocol, typename Token> template<typename Board>
 std::string write<Protocol, Token>::operator()(const Position<Board>& p) const
 {
-        return Geometry::Layout::write<Board, Geometry::Layout::Bit_tag>()(std::bind(bit_content<Token>, p.pieces(), std::placeholders::_1));
+        return geometry::layout::write<Board, geometry::layout::bit_tag>()(std::bind(bit_content<Token>, p.pieces(), std::placeholders::_1));
 }
 
 template<typename Token>
@@ -36,6 +36,6 @@ std::string bit_content(const Pieces& p, size_t b)
         return sstr.str();
 }
 
-}       // namespace Layout
-}       // namespace Node
-}       // namespace Tree
+}       // namespace layout
+}       // namespace node
+}       // namespace tree

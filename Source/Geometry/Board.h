@@ -4,27 +4,27 @@
 #include "Angles.h"
 #include "../Utilities/IntegerTypes.h"
 
-namespace Geometry {
+namespace geometry {
 
 template
 <
         typename SquaresLayout,
-        size_t D = 2,                                           // "demilitarized" rows in the initial position
-        size_t N = 1,                                           // number of ghost bit columns
-        size_t A = Angles::D000                                 // rotation from external to internal grid
+        int D = 2,                                              // "demilitarized" rows in the initial position
+        int N = 1,                                              // number of ghost bit columns
+        int A = angles::D000                                    // rotation from external to internal grid
 >
 struct Board: public SquaresLayout
 {
         // reflection on template type parameters
         typedef Board<SquaresLayout, D, N, A> T;
         typedef SquaresLayout ExternalGrid;
-        typedef typename Squares::Rotate<ExternalGrid, A>::Out InternalGrid;
+        typedef typename squares::Rotate<ExternalGrid, A>::Out InternalGrid;
         typedef Borders<InternalGrid, N> BordersGrid;
 
         // reflection on template non-type parameters
-        static const size_t DMZ = D;                            // "demilitarized" rows in the initial position
-        static const size_t ANGLE = A;                          // rotation from external to internal grid                        
-        static const size_t A_PRIME = Angles::Inverse<A>::VALUE;// rotation from internal to external grid
+        static const int DMZ = D;                               // "demilitarized" rows in the initial position
+        static const int ANGLE = A;                             // rotation from external to internal grid                        
+        static const int A_PRIME = angles::Inverse<A>::VALUE;   // rotation from internal to external grid
 
         // essential bitboard masks
         static const BitBoard SQUARES;                          // bit mask of legal squares, excluding borders
@@ -40,7 +40,7 @@ struct Board: public SquaresLayout
         static const BitBoard JUMPABLE[];                       // squares from which a jump is possible in a direction
 
         // arrays of directions
-        static const size_t DIR[];                              // the bitwise shifts for all 8 directions
+        static const int DIR[];                                 // the bitwise shifts for all 8 directions
 
         // square to bit and bit to square conversion tables
         static const int TABLE_SQUARE2BIT[];                    // convert a square to a bit
@@ -48,23 +48,23 @@ struct Board: public SquaresLayout
 };
 
 // square boards
-typedef Board< Squares::Grid< 4,  4> > Micro;
-typedef Board< Squares::Grid< 6,  6> > Mini;
-typedef Board< Squares::Grid< 8,  8> > Chess;
-typedef Board< Squares::Grid<10, 10> > International;
+typedef Board< squares::Grid< 4,  4> > Micro;
+typedef Board< squares::Grid< 6,  6> > Mini;
+typedef Board< squares::Grid< 8,  8> > Chess;
+typedef Board< squares::Grid<10, 10> > International;
 
 // Spanish-Italian board
-typedef Board< Squares::Grid< 8,  8, true> > Roman;
+typedef Board< squares::Grid< 8,  8, true> > Roman;
 
 // special initial position
-typedef Board< Squares::Grid< 8,  8>, 4 > Thai;
+typedef Board< squares::Grid< 8,  8>, 4 > Thai;
 
 // rectangular boards
-typedef Board< Squares::Grid<10,  8, true>                     > Spantsireti;
-typedef Board< Squares::Grid<11, 10, true>, 3, 1               > Ktar11;
-typedef Board< Squares::Grid<12, 10, true>, 2, 1, Angles::D270 > Ktar12;
+typedef Board< squares::Grid<10,  8, true>                     > Spantsireti;
+typedef Board< squares::Grid<11, 10, true>, 3, 1               > Ktar11;
+typedef Board< squares::Grid<12, 10, true>, 2, 1, angles::D270 > Ktar12;
 
-}       // namespace Geometry
+}       // namespace geometry
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Board.hpp"

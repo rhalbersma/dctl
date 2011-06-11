@@ -2,8 +2,8 @@
 #include <string>
 #include "../../Utilities/IntegerTypes.h"
 
-namespace Tree {
-namespace Search {
+namespace tree {
+namespace search {
 
 class Entry
 {
@@ -73,5 +73,5 @@ private:
         uint16_t rest_;                         // bound, depth and move
 };
 
-}       // namespace Search
-}       // namespace Tree
+}       // namespace search
+}       // namespace tree

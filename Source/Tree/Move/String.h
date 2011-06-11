@@ -3,43 +3,43 @@
 #include "Protocol.h"
 #include "Token.h"
 
-namespace Tree {
+namespace tree {
 
-namespace Node { 
+namespace node { 
         template<typename> class Position; 
         class Pieces;
 }
         
-namespace Move {
-namespace String {
+namespace move {
+namespace string {
 
 template
 <
         typename Rules,
-        typename Protocol = typename Move::Protocol<Rules>::TYPE,
-        typename Token = typename Move::Token<Rules>::TYPE
+        typename Protocol = typename move::Protocol<Rules>::TYPE,
+        typename Token = typename move::Token<Rules>::TYPE
 >
 struct read
 {
 	template<typename Board> 
-        Node::Pieces operator()(const Node::Position<Board>&, const std::string&);
+        node::Pieces operator()(const node::Position<Board>&, const std::string&);
 };
 
 template
 <
         typename Rules, 
-        typename Protocol = typename Move::Protocol<Rules>::TYPE,
-        typename Token = typename Move::Token<Rules>::TYPE
+        typename Protocol = typename move::Protocol<Rules>::TYPE,
+        typename Token = typename move::Token<Rules>::TYPE
 >
 struct write
 {
 	template<typename Board> 
-        std::string operator()(const Node::Position<Board>&, const Node::Pieces&);
+        std::string operator()(const node::Position<Board>&, const node::Pieces&);
 };
 
-}       // namespace String
-}       // namespace Move
-}       // namespace Tree
+}       // namespace string
+}       // namespace move
+}       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "String.hpp"

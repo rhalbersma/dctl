@@ -2,9 +2,9 @@
 #include "../../Geometry/Board.h"
 #include "../../Geometry/Layout.h"
 
-namespace Tree {
-namespace Node {
-namespace String {
+namespace tree {
+namespace node {
+namespace string {
 
 template<typename Token>
 bool read_color(char c)
@@ -67,7 +67,7 @@ struct read<Board, FEN_tag, Token>
                                 if (isdigit(ch)) {
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
-			                assert(Geometry::Layout::is_valid<Board>(sq - 1)); 
+			                assert(geometry::layout::is_valid<Board>(sq - 1)); 
                                         b = Board::TABLE_SQUARE2BIT[sq - 1];    // convert square to bit
 			                bb = BitBoard(1) << b;                  // create bitboard
                                         p_pieces[setup_color] ^= bb;
@@ -99,12 +99,12 @@ struct write<FEN_tag, Token>
 			        sstr << Token::COLON;                           // colon
 			        sstr << Token::COLOR[c];                        // color tag
 		        }
-		        for (BitBoard bb = p.pieces(c); bb; Bit::clear_lowest(bb)) {
-			        if (p.kings() & Bit::get_lowest(bb))
+		        for (BitBoard bb = p.pieces(c); bb; bit::clear_lowest(bb)) {
+			        if (p.kings() & bit::get_lowest(bb))
 				        sstr << Token::KING;			// king tag
-                                b = Bit::scan_forward(bb);                      // bit index                        
+                                b = bit::scan_forward(bb);                      // bit index                        
 			        sstr << Board::TABLE_BIT2SQUARE[b] + 1;	        // square number
-			        if (Bit::is_multiple(bb))                       // still pieces remaining
+			        if (bit::is_multiple(bb))                       // still pieces remaining
 				        sstr << Token::COMMA;			// comma separator
 		        }
 	        }
@@ -132,7 +132,7 @@ struct read<Board, DXP_tag, Token>
 
 	        BitBoard bb;
                 size_t b;
-                for (size_t sq = 0; Geometry::Layout::is_valid<Board>(sq); ++sq) {
+                for (size_t sq = 0; geometry::layout::is_valid<Board>(sq); ++sq) {
                         b = Board::TABLE_SQUARE2BIT[sq];        // convert square to bit
 		        bb = BitBoard(1) << b;                  // create bitboard
 		        sstr >> ch;
@@ -167,12 +167,12 @@ struct write<DXP_tag, Token>
 	        sstr << write_color<Token>(p.to_move());		// side to move
 	        for (size_t sq = 0; sq < Board::SIZE; ++sq) {
 		        b = Board::TABLE_SQUARE2BIT[sq];                // convert square to bit
-		        sstr << BitContent<Board, Token>()(p, b);       // bit content
+		        sstr << bitContent<Board, Token>()(p, b);       // bit content
 	        }
 	        return sstr.str();
         }
 };
 
-}       // namespace String
-}       // namespace Node
-}       // namespace Tree
+}       // namespace string
+}       // namespace node
+}       // namespace tree

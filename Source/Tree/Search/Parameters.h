@@ -1,10 +1,10 @@
 #pragma once
 #include "../Move/Types.h"
 
-namespace Node { template<typename> class Position; }
+namespace node { template<typename> class Position; }
 
-namespace Tree {
-namespace Search {
+namespace tree {
+namespace search {
 
 class Parameters
 {
@@ -13,18 +13,18 @@ public:
         Parameters(void);
 
         // views
-        const Tree::Move::Sequence& PV(void) const;
-        Move::Sequence& PV(void);
+        const tree::move::Sequence& PV(void) const;
+        move::Sequence& PV(void);
         size_t best_move(void) const;
 
         // modifiers
-        void set_PV(size_t, const Move::Sequence&);
+        void set_PV(size_t, const move::Sequence&);
         void clear_PV(void);
 
 private:
         // representation
-        Move::Sequence PV_;
+        move::Sequence PV_;
 };
 
-}       // namespace Search
-}       // namespace Tree
+}       // namespace search
+}       // namespace tree

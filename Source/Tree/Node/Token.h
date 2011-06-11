@@ -1,8 +1,8 @@
 #pragma once
 #include "Protocol.h"
 
-namespace Tree {
-namespace Node {
+namespace tree {
+namespace node {
 
 template<char B, char W, char E>
 struct Triplet
@@ -30,8 +30,8 @@ struct Token<FEN_tag>: public Triplet<'B', 'W', '.'>
 template<>
 struct Token<DXP_tag>: public Triplet<'Z', 'W', 'e'> {};
 
-}       // namespace Node
-}       // namespace Tree
+}       // namespace node
+}       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Token.hpp"

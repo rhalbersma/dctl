@@ -1,5 +1,5 @@
-namespace Hash {
-namespace Jenkins {
+namespace hash {
+namespace jenkins {
 
 template<typename Index>
 void Mix<Index>::mix(Index& index_, bool color)
@@ -36,5 +36,5 @@ void Mix<Index>::xor_shift_R(Index& index_, size_t s)
         index_ ^= (index_ >> s);
 }
 
-}       // namespace Jenkins
-}       // namespace Hash
+}       // namespace jenkins
+}       // namespace hash

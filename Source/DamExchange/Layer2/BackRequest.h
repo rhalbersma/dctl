@@ -4,8 +4,8 @@
 #include <string>
 #include "AbstractMessage.h"
 
-namespace DamExchange {
-namespace Layer2 {
+namespace damexchange {
+namespace layer2 {
 
 class BackRequest: public AbstractMessage
 {
@@ -32,5 +32,5 @@ private:
         char side_to_move_;
 };
 
-}       // namespace Layer2
-}       // namespace DamExchange
+}       // namespace layer2
+}       // namespace damexchange

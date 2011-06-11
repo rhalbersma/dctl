@@ -10,37 +10,37 @@
 #include "../../Evaluation/Evaluate.h"
 #include "../../Utilities/Timer.h"
 
-namespace Tree {
-namespace Search {
+namespace tree {
+namespace search {
 
 // iterative deepening with no move ordering at the root
 template<typename Rules, typename Board>
-int Root::analyze(const Node::Position<Board>& p, size_t nominal_depth)
+int Root::analyze(const node::Position<Board>& p, size_t nominal_depth)
 {
         return iterative_deepening<Rules, Board>(p, nominal_depth);
 }
 
 template<typename Board>
-void Root::announce(const Node::Position<Board>& p, size_t nominal_depth)
+void Root::announce(const node::Position<Board>& p, size_t nominal_depth)
 {
         std::cout << std::endl;
-        std::cout << Node::Layout::write<Node::FEN_tag>()(p) << std::endl;
-        std::cout << Node::String::write<Node::FEN_tag>()(p) << std::endl << std::endl;
+        std::cout << node::layout::write<node::FEN_tag>()(p) << std::endl;
+        std::cout << node::string::write<node::FEN_tag>()(p) << std::endl << std::endl;
         std::cout << "Searching to nominal depth=" << nominal_depth << std::endl;
         std::cout << std::endl;
 }
 
 template<typename Rules, typename Board>
-void Root::insert_PV(const Node::Position<Board>& p, const Move::Sequence& pv, int value)
+void Root::insert_PV(const node::Position<Board>& p, const move::Sequence& pv, int value)
 {
-        Node::Position<Board> q(p);
+        node::Position<Board> q(p);
 
         for (size_t i = 0; i < pv.size(); ++i) {
-                Move::Stack move_stack;
-                Generate::Successors<Rules, Board>::generate(q, move_stack);
+                move::Stack move_stack;
+                generate::Successors<Rules, Board>::generate(q, move_stack);
 
                 TT.insert(q, Entry(value, Entry::exact(), pv.size() - i, pv[i]));
-                value = -Value::stretch(value);
+                value = -value::stretch(value);
 
                 q.template make<Rules>(move_stack[pv[i]]);
         }
@@ -48,23 +48,23 @@ void Root::insert_PV(const Node::Position<Board>& p, const Move::Sequence& pv, i
         
         assert(
                 (value == Evaluate::evaluate(q)) || 
-                (value == Value::loss(0) && !Generate::Successors<Rules, Board>::detect(q))
+                (value == value::loss(0) && !generate::Successors<Rules, Board>::detect(q))
                 // NOTE: with endgame databases, delayed losses can occur at the tips of the PV
         );
 }
 
 template<typename Rules, typename Board>
-void Root::print_PV(const Node::Position<Board>& p, const Move::Sequence& pv)
+void Root::print_PV(const node::Position<Board>& p, const move::Sequence& pv)
 {
-        Node::Position<Board> q(p);
+        node::Position<Board> q(p);
 
         for (size_t i = 0; i < pv.size(); ++i) {
-                Move::Stack move_stack;
-                Generate::Successors<Rules, Board>::generate(q, move_stack);
+                move::Stack move_stack;
+                generate::Successors<Rules, Board>::generate(q, move_stack);
 
                 if (!(i % 2))                        
                         std::cout << std::setw(2) << std::right << ((i / 2) + 1) << ". ";
-                std::cout << Move::String::write<Rules>()(q, move_stack[pv[i]]);
+                std::cout << move::string::write<Rules>()(q, move_stack[pv[i]]);
                 if (i % 10 == 9)
                         std::cout << std::endl;
                 else
@@ -75,5 +75,5 @@ void Root::print_PV(const Node::Position<Board>& p, const Move::Sequence& pv)
         std::cout << std::endl << std::endl;
 }
 
-}       // namespace Search
-}       // namespace Tree
+}       // namespace search
+}       // namespace tree

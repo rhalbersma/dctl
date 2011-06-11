@@ -3,9 +3,9 @@
 #include "../../../Utilities/IntegerTypes.h"
 #include "../../../Utilities/TemplateTricks.h"
 
-namespace Tree {
-namespace Generate {
-namespace Capture {
+namespace tree {
+namespace generate {
+namespace capture {
 
 struct Value;
 
@@ -52,9 +52,9 @@ struct greater_equal: public std::binary_function<Value, Value, bool>
         }
 };
 
-}       // namespace Capture
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace capture
+}       // namespace generate
+}       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Templates.hpp"

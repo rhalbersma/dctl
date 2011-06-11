@@ -1,9 +1,9 @@
 #pragma once
 #include "../../../Utilities/IntegerTypes.h"
 
-namespace Tree {
-namespace Generate {
-namespace Capture {
+namespace tree {
+namespace generate {
+namespace capture {
 
 struct Value
 {
@@ -14,6 +14,6 @@ struct Value
         bool promotion;
 };
 
-}       // namespace Capture
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace capture
+}       // namespace generate
+}       // namespace tree

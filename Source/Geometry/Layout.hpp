@@ -2,8 +2,8 @@
 #include <iomanip>
 #include <sstream>
 
-namespace Geometry {
-namespace Layout {
+namespace geometry {
+namespace layout {
 
 static const char WHITE_SPACE = ' ';
 
@@ -15,7 +15,7 @@ struct write<Board, Square_tag>
 {
         std::string operator()(void) const
         {
-                return write<Board, Square_tag>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 1));
+                return write<Board, Square_tag>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
         }
 
         template<typename Functor>
@@ -88,5 +88,5 @@ bool is_indent_row(size_t sq)
         return Board::PARITY? indent_LO : indent_LE;
 }
 
-}       // namespace Layout
-}       // namespace Geometry
+}       // namespace layout
+}       // namespace geometry

@@ -1,7 +1,7 @@
 #include <cctype>
 
-namespace Tree {
-namespace Node {
+namespace tree {
+namespace node {
 
 template<char B, char W, char E>
 const char Triplet<B, W, E>::COLOR[2] = {
@@ -21,5 +21,5 @@ const char Triplet<B, W, E>::UPPER[2] = {
         static_cast<char>(toupper(WHITE))
 };
 
-}       // namespace Node
-}       // namespace Tree
+}       // namespace node
+}       // namespace tree

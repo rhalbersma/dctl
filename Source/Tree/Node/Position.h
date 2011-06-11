@@ -7,8 +7,8 @@
 #include "../../Utilities/TemplateTricks.h"
 #include "../../Utilities/CacheAlign.h"
 
-namespace Tree {
-namespace Node {
+namespace tree {
+namespace node {
 
 template<typename Board> 
 class Position
@@ -20,14 +20,14 @@ public:
         static Position initial(void);                          // initial position
 
         // predicates
-        bool operator==(const Node::Position<Board>&) const;    // overloaded equality operator
-        bool operator!=(const Node::Position<Board>&) const;    // overloaded inequality operator
+        bool operator==(const Position<Board>&) const;          // overloaded equality operator
+        bool operator!=(const Position<Board>&) const;          // overloaded inequality operator
         
         template<typename> 
         bool is_draw(void) const;
 
         // views
-        const Node::Pieces& pieces(void) const;
+        const node::Pieces& pieces(void) const;
 
         BitBoard men(void) const;                               // black and white men
         BitBoard kings(void) const;                             // black and white kings
@@ -49,7 +49,7 @@ public:
 
         // make a move in a copy from another position
         template<typename>
-        void copy_make(const Node::Position<Board>&, const Node::Pieces&);
+        void copy_make(const Position<Board>&, const Pieces&);
         
 private:
         // implementation
@@ -66,24 +66,24 @@ private:
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<true>) const;
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<false>) const;
 
-        void link(const Node::Position<Board>&);
-        template<typename> void make(const Node::Pieces&);
+        void link(const Position<Board>&);
+        template<typename> void make(const Pieces&);
 
         // tag dispatching for restrictions on consecutive moves with the same king
-        template<typename> void make_irreversible(const Node::Pieces&);
-        template<typename> void make_irreversible(const Node::Pieces&, Int2Type<true >);
-        template<typename> void make_irreversible(const Node::Pieces&, Int2Type<false>);
+        template<typename> void make_irreversible(const Pieces&);
+        template<typename> void make_irreversible(const Pieces&, Int2Type<true >);
+        template<typename> void make_irreversible(const Pieces&, Int2Type<false>);
 
-        void make_non_conversion(const Node::Pieces&);
-        template<PlyCount> void make_repeated_kings_moves(const Node::Pieces&);
-        void make_reversible(const Node::Pieces&);
+        void make_non_conversion(const Pieces&);
+        template<PlyCount> void make_repeated_kings_moves(const Pieces&);
+        void make_reversible(const Pieces&);
                 
         // post-conditions for the constructors and modifiers
         bool pieces_invariant(void) const;
         bool hash_index_invariant(void) const;
 
         // representation
-        const Node::Position<Board>* parents_[2];
+        const node::Position<Board>* parents_[2];
         BitBoard padding_;
         HashIndex hash_index_; 
         Pieces pieces_;
@@ -105,8 +105,8 @@ template<typename Board> BitBoard passive_men(const Position<Board>&);          
 template<typename Board> BitBoard passive_kings(const Position<Board>&);        // kings for the opposite side
 template<typename Board> BitBoard passive_pieces(const Position<Board>&);       // pieces for the opposite side
 
-}       // namespace Node
-}       // namespace Tree
+}       // namespace node
+}       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Position.hpp"

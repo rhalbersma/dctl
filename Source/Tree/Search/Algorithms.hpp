@@ -1,17 +1,17 @@
 #include <cassert>
 #include "../Generate/Successors.h"
 
-namespace Tree {
-namespace Search {
+namespace tree {
+namespace search {
 
-using Value::stretch;
-using Value::squeeze;
+using value::stretch;
+using value::squeeze;
 
 // iterative deepening with no move ordering at the root
 template<typename Rules, typename Board>
-int Root::iterative_deepening(const Node::Position<Board>& p, size_t nominal_depth)
+int Root::iterative_deepening(const node::Position<Board>& p, size_t nominal_depth)
 {
-        int value = -Value::infinity();                
+        int value = -value::infinity();                
         int alpha, beta;
 
         Parameters root_node;       
@@ -19,8 +19,8 @@ int Root::iterative_deepening(const Node::Position<Board>& p, size_t nominal_dep
         announce(p, nominal_depth);
         for (size_t depth = 1; depth <= nominal_depth; depth += ROOT_ID_INCREMENT) {
                 statistics_.reset();
-                alpha = -Value::infinity();
-                beta = Value::infinity();
+                alpha = -value::infinity();
+                beta = value::infinity();
                 value = search<PV, Rules>(p, 0, depth, alpha, beta, root_node);
                 timer.split();
                 report(depth, value, timer);
@@ -33,7 +33,7 @@ int Root::iterative_deepening(const Node::Position<Board>& p, size_t nominal_dep
 
 // principal variation search (PVS)
 template<size_t ThisNode, typename Rules, typename Board>
-int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
+int Root::search(const node::Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
         
@@ -41,20 +41,20 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
 
         // check for a legal draw
         if (p.template is_draw<Rules>())
-                return Value::draw();       
+                return value::draw();       
 
         // return evaluation in leaf nodes with valid move_stack
         if (depth <= 0)
-                return !Generate::Successors<Rules, Board>::detect(p)? Value::loss(0) : Evaluate::evaluate(p);
+                return !generate::Successors<Rules, Board>::detect(p)? value::loss(0) : Evaluate::evaluate(p);
 
         assert(depth > 0);
-        assert(alpha >= -Value::infinity());
-        assert(beta <= Value::infinity());
+        assert(alpha >= -value::infinity());
+        assert(beta <= value::infinity());
 
         // mate distance pruning
-        if (alpha >= Value::win(1))
+        if (alpha >= value::win(1))
                 return alpha;
-        if (beta <= Value::loss(0))
+        if (beta <= value::loss(0))
                 return beta;
 
         assert(
@@ -68,12 +68,12 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
                 return TT_entry->value();
 
         // generate moves
-        Move::Stack move_stack;
-        Generate::Successors<Rules, Board>::generate(p, move_stack);
+        move::Stack move_stack;
+        generate::Successors<Rules, Board>::generate(p, move_stack);
 
         // without a valid move, the position is an immediate loss
         if (!move_stack.size()) {
-                const int loss_score = Value::loss(0);
+                const int loss_score = value::loss(0);
 
                 // we can only have an upper bound or an exact value at this point
                 assert(loss_score < beta);
@@ -94,7 +94,7 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
         }
 
         // move ordering
-        Move::Order move_order(move_stack.size());
+        move::Order move_order(move_stack.size());
         identity_permutation(move_order);                
         if (TT_entry && TT_entry->has_move()) {
                 const size_t TT_move = TT_entry->move() % move_stack.size();
@@ -102,14 +102,14 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
         }
 
         // search moves
-        int value = -Value::infinity();
+        int value = -value::infinity();
         size_t best_move = Entry::no_move();
         int score;
         size_t i;
         Parameters child_node;
         const int original_alpha = alpha;
 
-        Node::Position<Board> q;
+        node::Position<Board> q;
         for (size_t s = 0; s < move_order.size(); ++s) {
                 i = move_order[s];
                 // TODO: TT singular extension
@@ -142,7 +142,7 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
 
         // we must have found a best move with a finite value
         assert(best_move != Entry::no_move());
-        assert(value > -Value::infinity());
+        assert(value > -value::infinity());
 
         // determine the bound type of the value
         const Entry::Bound bound = 
@@ -155,26 +155,26 @@ int Root::search(const Node::Position<Board>& p, size_t ply, int depth, int alph
 /*
 // principal variation search (PVS) with TT cut-offs, TT move ordering and IID
 template<size_t Entry, typename Rules, typename Board>
-int Root::quiescence(const Node::Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
+int Root::quiescence(const node::Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 
         // check for a legal draw
         if (p.is_draw<Rules>())
-                return Value::draw();
+                return value::draw();
 
         // check for legal move_stack
-        if (!Generate::detect(p)) {
-                return Value::loss(0);
+        if (!generate::detect(p)) {
+                return value::loss(0);
         }
 
         // generate captures and promotions
-        Move::Stack move_stack;
-        Generate::generate_captures_promotions(p, move_stack);
+        move::Stack move_stack;
+        generate::generate_captures_promotions(p, move_stack);
 
         if (!move_stack.size())
         {
-                if (Generate::detect_pending_captures_promotions(p)) {
+                if (generate::detect_pending_captures_promotions(p)) {
 
                 } else {
                         // return eval
@@ -187,24 +187,24 @@ int Root::quiescence(const Node::Position<Board>& p, size_t ply, int depth, int 
 
 // negamax
 template<typename Rules, typename Board>
-int Root::negamax(const Node::Position<Board>& p, size_t ply, size_t depth, Parameters& parent_node)
+int Root::negamax(const node::Position<Board>& p, size_t ply, size_t depth, Parameters& parent_node)
 {
         statistics_.update(ply);
 
         // check for a legal draw
         if (p.template is_draw<Rules>())
-                return Value::draw();
+                return value::draw();
 
         // return evaluation in leaf nodes with valid move_stack
         if (depth == 0)
-                return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
+                return !generate::detect<Rules>(p)? value::loss(0) : Evaluate::evaluate(p);
 
         // generate moves
-        Move::Stack move_stack;
-        Generate::generate(p, move_stack);
+        move::Stack move_stack;
+        generate::generate(p, move_stack);
 
         // search moves
-        int value = -Value::infinity();
+        int value = -value::infinity();
         int score;
         Parameters child_node;
         Position<Board> q;
@@ -219,35 +219,35 @@ int Root::negamax(const Node::Position<Board>& p, size_t ply, size_t depth, Para
         }
 
         // without a valid move, the position is an immediate loss
-        return std::max(Value::loss(0), value);
+        return std::max(value::loss(0), value);
 }
 
 // alpha-beta
 template<typename Rules, typename Board>
-int Root::alpha_beta(const Node::Position<Board>& p, size_t ply, size_t depth, int alpha, int beta, Parameters& parent_node)
+int Root::alpha_beta(const node::Position<Board>& p, size_t ply, size_t depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 
         // check for a legal draw
         if (p.template is_draw<Rules>())
-                return Value::draw();
+                return value::draw();
 
         // mate distance pruning
-        if (alpha >= Value::win(1))
+        if (alpha >= value::win(1))
                 return alpha;
-        if (beta <= Value::loss(0))
+        if (beta <= value::loss(0))
                 return beta;
 
         // return evaluation in leaf nodes with valid move_stack
         if (depth == 0)
-                return !Generate::detect<Rules>(p)? Value::loss(0) : Evaluate::evaluate(p);
+                return !generate::detect<Rules>(p)? value::loss(0) : Evaluate::evaluate(p);
 
         // generate moves
-        Move::Stack move_stack;
-        Generate::generate(p, move_stack);
+        move::Stack move_stack;
+        generate::generate(p, move_stack);
 
         // search moves
-        int value = -Value::infinity();
+        int value = -value::infinity();
         int score;
         Parameters child_node;
         Position<Board> q;
@@ -267,8 +267,8 @@ int Root::alpha_beta(const Node::Position<Board>& p, size_t ply, size_t depth, i
         }
 
         // without a valid move, the position is an immediate loss
-        return std::max(Value::loss(0), value);
+        return std::max(value::loss(0), value);
 }
 
-}       // namespace Search
-}       // namespace Tree
+}       // namespace search
+}       // namespace tree

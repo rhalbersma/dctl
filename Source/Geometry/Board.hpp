@@ -1,109 +1,109 @@
 #include "BoardMetaTemplates.h"
 #include "../Tree/Node/Side.h"
 
-namespace Geometry {
+namespace geometry {
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::SQUARES = INIT_SQUARES<T>::VALUE;
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::INITIAL[] =
 {
-	INIT_INITIAL<T, Tree::Node::Side::BLACK>::VALUE,
-        INIT_INITIAL<T, Tree::Node::Side::WHITE>::VALUE
+	INIT_INITIAL<T, tree::node::Side::BLACK>::VALUE,
+        INIT_INITIAL<T, tree::node::Side::WHITE>::VALUE
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::PROMOTION[][2] =
 {
         {
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE, 0>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE, 1>::VALUE
+                INIT_ROW_MASK<T, tree::node::Side::WHITE, 0>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE, 1>::VALUE
         },
         {
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK, 0>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK, 1>::VALUE
+                INIT_ROW_MASK<T, tree::node::Side::BLACK, 0>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK, 1>::VALUE
         }
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::ROW_MASK[][12] =
 {
         {
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  0>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  1>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  2>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  3>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  4>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  5>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  6>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  7>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  8>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK,  9>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK, 10>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::BLACK, 11>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  0>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  1>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  2>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  3>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  4>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  5>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  6>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  7>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  8>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK,  9>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK, 10>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::BLACK, 11>::VALUE,
         },
         {
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  0>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  1>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  2>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  3>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  4>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  5>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  6>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  7>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  8>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE,  9>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE, 10>::VALUE,
-                INIT_ROW_MASK<T, Tree::Node::Side::WHITE, 11>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  0>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  1>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  2>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  3>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  4>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  5>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  6>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  7>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  8>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE,  9>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE, 10>::VALUE,
+                INIT_ROW_MASK<T, tree::node::Side::WHITE, 11>::VALUE,
         }
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::COL_MASK[][12] =
 {
         {
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  0>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  1>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  2>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  3>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  4>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  5>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  6>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  7>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  8>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK,  9>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK, 10>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::BLACK, 11>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  0>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  1>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  2>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  3>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  4>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  5>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  6>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  7>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  8>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK,  9>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK, 10>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::BLACK, 11>::VALUE,
         },
         {
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  0>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  1>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  2>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  3>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  4>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  5>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  6>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  7>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  8>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE,  9>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE, 10>::VALUE,
-                INIT_COL_MASK<T, Tree::Node::Side::WHITE, 11>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  0>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  1>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  2>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  3>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  4>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  5>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  6>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  7>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  8>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE,  9>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE, 10>::VALUE,
+                INIT_COL_MASK<T, tree::node::Side::WHITE, 11>::VALUE,
         }
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] =
 {
         (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (BordersGrid::LEFT_DOWN  << 1))),
         (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (BordersGrid::RIGHT_DOWN << 1)))
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::MAN_JUMP_GROUP[] =
 {
         INIT_MAN_JUMP_GROUP<T, BordersGrid::EDGE_LE + 0>::VALUE,
@@ -112,21 +112,21 @@ const BitBoard Board<GridLayout, D, N, A>::MAN_JUMP_GROUP[] =
         INIT_MAN_JUMP_GROUP<T, BordersGrid::EDGE_LO + 1>::VALUE
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::JUMPABLE[] =
 {
-        INIT_JUMPABLE<T, Angles::Rotate<Angles::D000, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, Angles::Rotate<Angles::D045, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, Angles::Rotate<Angles::D090, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, Angles::Rotate<Angles::D135, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, Angles::Rotate<Angles::D180, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, Angles::Rotate<Angles::D225, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, Angles::Rotate<Angles::D270, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, Angles::Rotate<Angles::D315, ANGLE>::VALUE>::VALUE
+        INIT_JUMPABLE<T, angles::Rotate<angles::D000, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, angles::Rotate<angles::D045, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, angles::Rotate<angles::D090, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, angles::Rotate<angles::D135, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, angles::Rotate<angles::D180, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, angles::Rotate<angles::D225, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, angles::Rotate<angles::D270, ANGLE>::VALUE>::VALUE,
+        INIT_JUMPABLE<T, angles::Rotate<angles::D315, ANGLE>::VALUE>::VALUE
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
-const size_t Board<GridLayout, D, N, A>::DIR[] = 
+template<typename GridLayout, int D, int N, int A>
+const int Board<GridLayout, D, N, A>::DIR[] = 
 {
         BordersGrid::RIGHT, 
         BordersGrid::RIGHT_UP, 
@@ -138,7 +138,7 @@ const size_t Board<GridLayout, D, N, A>::DIR[] =
         BordersGrid::RIGHT_DOWN
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const int Board<GridLayout, D, N, A>::TABLE_SQUARE2BIT[] =
 {
         SQUARE2BIT<T,  0>::VALUE, SQUARE2BIT<T,  1>::VALUE, SQUARE2BIT<T,  2>::VALUE, SQUARE2BIT<T,  3>::VALUE,
@@ -159,7 +159,7 @@ const int Board<GridLayout, D, N, A>::TABLE_SQUARE2BIT[] =
         SQUARE2BIT<T, 60>::VALUE, SQUARE2BIT<T, 61>::VALUE, SQUARE2BIT<T, 62>::VALUE, SQUARE2BIT<T, 63>::VALUE
 };
 
-template<typename GridLayout, size_t D, size_t N, size_t A>
+template<typename GridLayout, int D, int N, int A>
 const int Board<GridLayout, D, N, A>::TABLE_BIT2SQUARE[] =
 {
         BIT2SQUARE<T,  0>::VALUE, BIT2SQUARE<T,  1>::VALUE, BIT2SQUARE<T,  2>::VALUE, BIT2SQUARE<T,  3>::VALUE,
@@ -180,4 +180,4 @@ const int Board<GridLayout, D, N, A>::TABLE_BIT2SQUARE[] =
         BIT2SQUARE<T, 60>::VALUE, BIT2SQUARE<T, 61>::VALUE, BIT2SQUARE<T, 62>::VALUE, BIT2SQUARE<T, 63>::VALUE
 };
 
-}       // namespace Geometry
+}       // namespace geometry

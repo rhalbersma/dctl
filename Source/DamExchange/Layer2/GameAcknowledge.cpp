@@ -5,47 +5,47 @@
 #include "GameAcknowledge.h"
 #include "Parser.h"
 
-namespace DXP = DamExchange;
+namespace DXP = damexchange;
 
-const std::string DXP::Layer2::GameAcknowledge::HEADER = "A";
+const std::string DXP::layer2::GameAcknowledge::HEADER = "A";
 
-const bool DXP::Layer2::GameAcknowledge::REGISTERED = Parser::insert(HEADER, create);
+const bool DXP::layer2::GameAcknowledge::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::GameAcknowledge::create(const std::string& msg)
+std::shared_ptr<DXP::layer2::AbstractMessage> DXP::layer2::GameAcknowledge::create(const std::string& msg)
 {
         return std::make_shared<GameAcknowledge>(msg);
 }
 
-DXP::Layer2::GameAcknowledge::GameAcknowledge(const std::string& msg)
+DXP::layer2::GameAcknowledge::GameAcknowledge(const std::string& msg)
 :
         name_follower_(msg.substr(0, 32)),
         acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(msg.substr(32, 1).c_str())))
 {
 }
 
-DXP::Layer2::GameAcknowledge::GameAcknowledge(const std::string& n, AcceptanceCode a)
+DXP::layer2::GameAcknowledge::GameAcknowledge(const std::string& n, AcceptanceCode a)
 :
         name_follower_(n),
         acceptance_code_(a)
 {
 }
 
-const std::string& DXP::Layer2::GameAcknowledge::name_follower(void) const
+const std::string& DXP::layer2::GameAcknowledge::name_follower(void) const
 {
         return name_follower_;
 }
 
-DXP::Layer2::GameAcknowledge::AcceptanceCode DXP::Layer2::GameAcknowledge::acceptance_code(void) const
+DXP::layer2::GameAcknowledge::AcceptanceCode DXP::layer2::GameAcknowledge::acceptance_code(void) const
 {
         return acceptance_code_;
 }
 
-std::string DXP::Layer2::GameAcknowledge::header(void) const
+std::string DXP::layer2::GameAcknowledge::header(void) const
 {
         return HEADER;
 }
 
-std::string DXP::Layer2::GameAcknowledge::body(void) const
+std::string DXP::layer2::GameAcknowledge::body(void) const
 {
         std::stringstream sstr;
         sstr << std::setw(32) << name_follower() << std::setfill(' ');

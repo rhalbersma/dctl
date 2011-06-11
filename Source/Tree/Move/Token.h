@@ -1,8 +1,8 @@
 #pragma once
 #include "../../Variants/Rules.h"
 
-namespace Tree {
-namespace Move {
+namespace tree {
+namespace move {
 
 template<char M, char C>
 struct Doublet
@@ -12,8 +12,9 @@ struct Doublet
 };
 
 template<typename> struct Token		        { typedef Doublet<'-', 'x'> TYPE; };
-template<> struct Token<Variants::Russian>      { typedef Doublet<'-', ':'> TYPE; };
-template<> struct Token<Variants::Czech>	{ typedef Doublet<'-', ':'> TYPE; };
+template<> struct Token<variants::Russian>      { typedef Doublet<'-', ':'> TYPE; };
+template<> struct Token<variants::Czech>	{ typedef Doublet<'-', ':'> TYPE; };
+template<> struct Token<variants::Thai>         { typedef Doublet<'-', '-'> TYPE; };
 
-}       // namespace Move
-}       // namespace Move
+}       // namespace move
+}       // namespace move

@@ -1,8 +1,8 @@
 #pragma once
 #include "../../Utilities/IntegerTypes.h"
 
-namespace Hash {
-namespace Zobrist {
+namespace hash {
+namespace zobrist {
 
 template<typename Index>
 struct Random
@@ -18,8 +18,8 @@ struct Random
         static const Index REPEATED_MOVES[2][8];
 };
 
-}       // namespace Zobrist
-}       // namespace Hash
+}       // namespace zobrist
+}       // namespace hash
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Random.hpp"

@@ -1,18 +1,18 @@
-namespace Geometry {
-namespace Angles {
+namespace geometry {
+namespace angles {
 
-template<size_t I, size_t A>
+template<int I, int A>
 struct Rotate
 {
         enum { VALUE = (I + A) % D360 };
 };
 
 // an inverse angle has the opposite sign modulo 360 degrees
-template<size_t A>
+template<int A>
 struct Inverse
 {
         enum { VALUE = (D360 - A) % D360 };
 };
 
-}       // namespace Angles
-}       // namespace Geometry
+}       // namespace angles
+}       // namespace geometry

@@ -1,26 +1,25 @@
 #pragma once
-#include <cstddef>
 
-namespace Geometry {
-namespace Direction {
+namespace geometry {
+namespace direction {
 
 template<typename, bool> 
 class Indices;
 
-template<size_t>
+template<int>
 class Traits;
 
-template<size_t>
+template<int>
 struct Rotate;
 
-template<size_t>
+template<int>
 struct MirrorUp;
 
-template<size_t>
+template<int>
 struct MirrorDown;
 
-}       // namespace Direction
-}       // namespace Geometry
+}       // namespace direction
+}       // namespace geometry
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Direction.hpp"

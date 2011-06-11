@@ -4,16 +4,16 @@
 #include "Replace.h"
 #include "Algorithms.h"
 
-namespace Tree { namespace Node { template<typename> class Position; } }
+namespace tree { namespace node { template<typename> class Position; } }
 
-namespace Hash {
+namespace hash {
 
 template
 <
         typename Key,
         typename Value,
         typename Replace = EmptyOldUnderCutShallowestOfN,
-        template<typename, typename> class Hash = Zobrist::Find,
+        template<typename, typename> class Hash = zobrist::Find,
         typename Index = HashIndex
 >
 class DualMap
@@ -24,10 +24,10 @@ public:
         void resize(size_t);
 
         // views
-        template<typename Board> const Value* find(const Tree::Node::Position<Board>&) const;
+        template<typename Board> const Value* find(const tree::node::Position<Board>&) const;
 
         // modifiers
-        template<typename Board> void insert(const Tree::Node::Position<Board>&, const Value&);
+        template<typename Board> void insert(const tree::node::Position<Board>&, const Value&);
 
 private:
         // representation

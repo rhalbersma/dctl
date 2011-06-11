@@ -1,11 +1,11 @@
-namespace Variants { struct Russian; }
+namespace variants { struct Russian; }
 
-namespace Tree {
-namespace Generate {
-namespace Capture {
+namespace tree {
+namespace generate {
+namespace capture {
 
 template<>
-struct init<Variants::Russian>
+struct init<variants::Russian>
 {
         void operator()(Value& value) const
         {
@@ -13,6 +13,6 @@ struct init<Variants::Russian>
         }
 };
 
-}       // namespace Capture
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace capture
+}       // namespace generate
+}       // namespace tree

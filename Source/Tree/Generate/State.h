@@ -2,12 +2,12 @@
 #include <cstddef>
 #include "AbstractState.h"
 
-namespace Tree {
+namespace tree {
 
-namespace Node { template<typename> class Position; }
-namespace Move { class Stack; }
+namespace node { template<typename> class Position; }
+namespace move { class Stack; }
 
-namespace Generate {
+namespace generate {
 
 template<bool Color, int Material, typename Rules, typename Board> 
 class State: public AbstractState<Rules, Board>
@@ -15,22 +15,22 @@ class State: public AbstractState<Rules, Board>
 public:		
         State(void) {};
 
-        virtual void generate(const Node::Position<Board>&, Move::Stack&) const;
-        virtual void generate_captures(const Node::Position<Board>&, Move::Stack&) const;
-        virtual void generate_promotions(const Node::Position<Board>&, Move::Stack&) const;
+        virtual void generate(const node::Position<Board>&, move::Stack&) const;
+        virtual void generate_captures(const node::Position<Board>&, move::Stack&) const;
+        virtual void generate_promotions(const node::Position<Board>&, move::Stack&) const;
 
-        virtual size_t count(const Node::Position<Board>&) const;
-        virtual size_t count_captures(const Node::Position<Board>&) const;
-        virtual size_t count_promotions(const Node::Position<Board>&) const;
-        virtual size_t count_mobility(const Node::Position<Board>&) const;
+        virtual size_t count(const node::Position<Board>&) const;
+        virtual size_t count_captures(const node::Position<Board>&) const;
+        virtual size_t count_promotions(const node::Position<Board>&) const;
+        virtual size_t count_mobility(const node::Position<Board>&) const;
 
-        virtual bool detect(const Node::Position<Board>&) const;
-        virtual bool detect_captures(const Node::Position<Board>&) const;
-        virtual bool detect_promotions(const Node::Position<Board>&) const;
+        virtual bool detect(const node::Position<Board>&) const;
+        virtual bool detect_captures(const node::Position<Board>&) const;
+        virtual bool detect_promotions(const node::Position<Board>&) const;
 };
 
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace generate
+}       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "State.hpp"

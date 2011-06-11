@@ -4,8 +4,8 @@
 #include <string>
 #include "AbstractMessage.h"
 
-namespace DamExchange {
-namespace Layer2 {
+namespace damexchange {
+namespace layer2 {
 
 class GameRequest: public AbstractMessage
 {
@@ -47,5 +47,5 @@ private:
         std::string special_position_;
 };
 
-}       // namespace Layer2
-}       // namespace DamExchange
+}       // namespace layer2
+}       // namespace damexchange

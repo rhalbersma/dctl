@@ -1,10 +1,10 @@
 #pragma once
 
-namespace Tree {
-namespace Node {
+namespace tree {
+namespace node {
 
 struct FEN_tag {};      // Forsyth-Edwards Notation
 struct DXP_tag {};      // DamExchange Protocol
 
-}       // namespace Node
-}       // namespace Tree
+}       // namespace node
+}       // namespace tree

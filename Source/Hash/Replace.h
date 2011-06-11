@@ -9,7 +9,7 @@
 #include <cstddef>
 #include <utility>
 
-namespace Hash {
+namespace hash {
 
 // replacement policies
 struct EmptyOldUnderCutSmallestOfN {};
@@ -35,7 +35,7 @@ struct insert_entry
         void operator()(std::tr1::array<Entry, N>&, const Entry&) const;
 };
 
-}       // namespace Hash
+}       // namespace hash
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Replace.hpp"

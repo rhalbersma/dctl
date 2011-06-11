@@ -1,7 +1,7 @@
 #include "DeBruijn.h"
 #include "Shift.h"
 
-namespace Bit {
+namespace bit {
 
 //+----------------------------------------------------------------------------+
 //|      Leiserson, Prokop and Randall, 1998                                   |
@@ -26,7 +26,7 @@ template<typename T>
 size_t count_Kernighan(T b)
 {
         size_t count = 0;
-        for (; b; Bit::clear_lowest(b))
+        for (; b; bit::clear_lowest(b))
                 ++count;
         return count;
 }
@@ -47,4 +47,4 @@ T fill_loop(T generator, T propagator, size_t dir)
         return flood;
 }
 
-}       // namespace Bit
+}       // namespace bit

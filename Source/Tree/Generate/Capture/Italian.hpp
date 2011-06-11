@@ -1,11 +1,11 @@
-namespace Variants { struct Italian; }
+namespace variants { struct Italian; }
 
-namespace Tree {
-namespace Generate {
-namespace Capture {
+namespace tree {
+namespace generate {
+namespace capture {
 
 template<>
-struct init<Variants::Italian>
+struct init<variants::Italian>
 {
         void operator()(Value& value) const
         {
@@ -16,7 +16,7 @@ struct init<Variants::Italian>
 };
 
 template<>
-struct copy<Variants::Italian>
+struct copy<variants::Italian>
 {
         void operator()(Value& left, const Value& right) const
         {
@@ -28,7 +28,7 @@ struct copy<Variants::Italian>
 };
 
 template<>
-struct increment<Variants::Italian>
+struct increment<variants::Italian>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -41,7 +41,7 @@ struct increment<Variants::Italian>
 };
 
 template<>
-struct decrement<Variants::Italian>
+struct decrement<variants::Italian>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -54,7 +54,7 @@ struct decrement<Variants::Italian>
 };
 
 template<>
-struct equal_to<Variants::Italian>: public std::binary_function<Value, Value, bool>
+struct equal_to<variants::Italian>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -68,7 +68,7 @@ struct equal_to<Variants::Italian>: public std::binary_function<Value, Value, bo
 };
 
 template<>
-struct greater_equal<Variants::Italian>: public std::binary_function<Value, Value, bool>
+struct greater_equal<variants::Italian>: public std::binary_function<Value, Value, bool>
 {
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         bool operator()(const Value& left, const Value& right) const
@@ -96,6 +96,6 @@ struct greater_equal<Variants::Italian>: public std::binary_function<Value, Valu
         }
 };
 
-}       // namespace Capture
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace capture
+}       // namespace generate
+}       // namespace tree

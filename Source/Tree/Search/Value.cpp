@@ -14,62 +14,62 @@ const int DRAW = 0;
 
 }       // namespace
 
-bool Tree::Search::Value::is_infinite(int score)
+bool tree::search::value::is_infinite(int score)
 {
         return !is_finite(score);
 }
 
-bool Tree::Search::Value::is_finite(int score)
+bool tree::search::value::is_finite(int score)
 {
         return score > -infinity() && score < infinity();
 }
 
-bool Tree::Search::Value::is_mate(int score)
+bool tree::search::value::is_mate(int score)
 {
         return is_loss(score) || is_win(score);
 }
 
-bool Tree::Search::Value::is_loss(int score)
+bool tree::search::value::is_loss(int score)
 {
         return score < LOSS_THRESHOLD && score >= LOSS_0;
 }
 
-bool Tree::Search::Value::is_win(int score)
+bool tree::search::value::is_win(int score)
 {
         return score > WIN_THRESHOLD && score <= WIN_1;
 }
 
-int Tree::Search::Value::infinity(void)
+int tree::search::value::infinity(void)
 {
         return INFINITY;
 }
 
-int Tree::Search::Value::loss(int ply)
+int tree::search::value::loss(int ply)
 {
         return LOSS_0 + ply / 2;
 }
 
-int Tree::Search::Value::win(int ply)
+int tree::search::value::win(int ply)
 {
         return WIN_1 - ply / 2;
 }
 
-int Tree::Search::Value::draw(void)
+int tree::search::value::draw(void)
 {
         return DRAW;
 }
 
-int Tree::Search::Value::stretch(int score)
+int tree::search::value::stretch(int score)
 {
         return score - is_loss(score);
 }
 
-int Tree::Search::Value::squeeze(int score)
+int tree::search::value::squeeze(int score)
 {
         return score - is_win(score);
 }
 
-std::string Tree::Search::Value::print(int score)
+std::string tree::search::value::print(int score)
 {
         std::stringstream sstr;
 
