@@ -4,8 +4,8 @@
 #include <memory>
 #include <string>
 
-namespace DamExchange {
-namespace Layer2 {
+namespace damexchange {
+namespace layer2 {
 
 // Examples of DamExchange messages (Layer 2 Protocol): http://www.mesander.nl/damexchange/edxplg2.htm
 TEST(Parser, MesanderExamples)
@@ -28,5 +28,5 @@ TEST(Parser, MesanderExamples)
         }
 }
 
-}       // namespace Layer2
-}       // namespace DamExchange
+}       // namespace layer2
+}       // namespace damexchange

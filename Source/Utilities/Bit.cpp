@@ -2,9 +2,9 @@
 #include "../../../Library/Source/Utilities/Bit.h"
 #include "../../../Library/Source/Utilities/IntegerTypes.h"
 
-namespace Bit {
+namespace bit {
 
-TEST(Bit, IsZero)
+TEST(bit, IsZero)
 {
         BitBoard b = 0;
         EXPECT_EQ(true,  is_zero(b));
@@ -13,7 +13,7 @@ TEST(Bit, IsZero)
         EXPECT_EQ(false, is_multiple(b));
 }
 
-TEST(Bit, IsSingle)
+TEST(bit, IsSingle)
 {
         for (size_t i = 0; i < 64; ++i) {
                 BitBoard b = BitBoard(1) << i;
@@ -24,7 +24,7 @@ TEST(Bit, IsSingle)
         }
 }
 
-TEST(Bit, IsDouble)
+TEST(bit, IsDouble)
 {
         for (size_t i = 0; i < 64; ++i) {
                 for (size_t j = 0; j < 64; ++j) {                                
@@ -41,7 +41,7 @@ TEST(Bit, IsDouble)
         }
 }
 
-TEST(Bit, IsMultiple)
+TEST(bit, IsMultiple)
 {
         for (size_t i = 0; i < 64; ++i) {
                 for (size_t j = 0; j < 64 - i; ++j) {
@@ -68,7 +68,7 @@ TEST(Bit, IsMultiple)
         EXPECT_EQ(true, is_multiple(BitBoard(~0)));
 }
 
-TEST(Bit, Index)
+TEST(bit, Index)
 {
         for (size_t i = 0; i < 64; ++i) {
                 BitBoard b = BitBoard(1) << i;
@@ -76,7 +76,7 @@ TEST(Bit, Index)
         }
 }
 
-TEST(Bit, Count)
+TEST(bit, Count)
 {
         EXPECT_EQ(0, count(0));
 
@@ -104,4 +104,4 @@ TEST(Bit, Count)
         EXPECT_EQ(64, count(BitBoard(~0)));
 }
 
-}       // namespace Bit
+}       // namespace bit
