@@ -2,8 +2,8 @@
 #include "../Utilities/Bit.h"
 #include "../Utilities/Shift.h"
 
-namespace Geometry {
-namespace Direction {
+namespace geometry {
+namespace direction {
 
 template<typename Board, size_t Index> template<typename T> 
 T Push<Board, Index>::operator()(T square) const
@@ -32,8 +32,8 @@ void PullAssign<Board, Index>::operator()(T& square) const
 template<typename Board, size_t Index> template<typename T> 
 T FloodFill<Board, Index>::operator()(T generator, T propagator) const
 {
-        return Bit::flood_fill<Traits<Index>::IS_POSITIVE>(generator, propagator, Board::DIR[Index]);
+        return bit::flood_fill<Traits<Index>::IS_POSITIVE>(generator, propagator, Board::DIR[Index]);
 }
 
-}       // namespace Direction
-}       // namespace Geometry
+}       // namespace direction
+}       // namespace geometry

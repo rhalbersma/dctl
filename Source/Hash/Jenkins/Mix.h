@@ -1,8 +1,8 @@
 #pragma once
 #include "../../Utilities/IntegerTypes.h"
 
-namespace Hash {
-namespace Jenkins {
+namespace hash {
+namespace jenkins {
 
 template<typename Index>
 class Mix
@@ -22,8 +22,8 @@ private:
         static const size_t XOR_SHIFT_R[NUM_MIX];               // shift lengths used in the exclusive-OR steps
 };
 
-}       // namespace Jenkins
-}       // namespace Hash
+}       // namespace jenkins
+}       // namespace hash
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Mix.hpp"

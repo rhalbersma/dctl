@@ -4,10 +4,10 @@
 #include "Root.h"
 #include "../../Utilities/UniqueNumber.h"
 
-Tree::Search::Root::TranspositionTable Tree::Search::Root::TT(10);
-Tree::Statistics Tree::Search::Root::statistics_;
+tree::search::Root::TranspositionTable tree::search::Root::TT(10);
+tree::Statistics tree::search::Root::statistics_;
 
-void Tree::Search::Root::report(size_t nominal_ply, int value, const Timer& timer)
+void tree::search::Root::report(size_t nominal_ply, int value, const Timer& timer)
 {
         double speed = (statistics_.nodes() / 1e6) / timer.lap();
         double average_ply = static_cast<double>(statistics_.sum_ply()) / statistics_.nodes();
@@ -21,7 +21,7 @@ void Tree::Search::Root::report(size_t nominal_ply, int value, const Timer& time
         std::cout << std::setw(2) << statistics_.max_ply();
 
         std::cout << " value = ";
-        std::cout << std::setw( 4) << std::left << Value::print(value);
+        std::cout << std::setw( 4) << std::left << value::print(value);
         std::cout << " ";
 
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(2);
@@ -34,13 +34,13 @@ void Tree::Search::Root::report(size_t nominal_ply, int value, const Timer& time
         std::cout << std::endl;
 }
 
-void Tree::Search::Root::identity_permutation(Move::Order& permutation)
+void tree::search::Root::identity_permutation(move::Order& permutation)
 {
         UniqueNumber unique_number;
         std::generate(permutation.begin(), permutation.end(), unique_number);
 }
 
-bool Tree::Search::Root::is_PV(size_t node)
+bool tree::search::Root::is_PV(size_t node)
 {
         return node == PV;
 }

@@ -1,11 +1,11 @@
-namespace Variants { struct International; }
+namespace variants { struct International; }
 
-namespace Tree {
-namespace Generate {
-namespace Capture {
+namespace tree {
+namespace generate {
+namespace capture {
 
 template<>
-struct init<Variants::International>
+struct init<variants::International>
 {
         void operator()(Value& value) const
         {
@@ -14,7 +14,7 @@ struct init<Variants::International>
 };
 
 template<>
-struct copy<Variants::International>
+struct copy<variants::International>
 {
         void operator()(Value& left, const Value& right) const
         {
@@ -23,7 +23,7 @@ struct copy<Variants::International>
 };
 
 template<>
-struct increment<Variants::International>
+struct increment<variants::International>
 {
         void operator()(Value& value, BitBoard, BitBoard) const
         {
@@ -32,7 +32,7 @@ struct increment<Variants::International>
 };
 
 template<>
-struct decrement<Variants::International>
+struct decrement<variants::International>
 {
         void operator()(Value& value, BitBoard, BitBoard) const
         {
@@ -41,7 +41,7 @@ struct decrement<Variants::International>
 };
 
 template<>
-struct equal_to<Variants::International>: public std::binary_function<Value, Value, bool>
+struct equal_to<variants::International>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -50,7 +50,7 @@ struct equal_to<Variants::International>: public std::binary_function<Value, Val
 };
 
 template<>
-struct greater_equal<Variants::International>: public std::binary_function<Value, Value, bool>
+struct greater_equal<variants::International>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -58,6 +58,6 @@ struct greater_equal<Variants::International>: public std::binary_function<Value
         }
 };
 
-}       // namespace Capture
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace capture
+}       // namespace generate
+}       // namespace tree

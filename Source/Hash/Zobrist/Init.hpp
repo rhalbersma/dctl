@@ -3,24 +3,24 @@
 #include "../../Tree/Node/Pieces.h"
 #include "../../Tree/Node/Side.h"
 
-namespace Hash {
-namespace Zobrist {
+namespace hash {
+namespace zobrist {
 
 // partial specialization for ab initio hashing of positions
 template<typename Board, typename Index>
-struct Init<Tree::Node::Position<Board>, Index>: public std::unary_function<Tree::Node::Position<Board>, Index>, std::binary_function<Tree::Node::Position<Board>, bool, Index>
+struct Init<tree::node::Position<Board>, Index>: public std::unary_function<tree::node::Position<Board>, Index>, std::binary_function<tree::node::Position<Board>, bool, Index>
 {
-        Index operator()(const Tree::Node::Position<Board>& p) const
+        Index operator()(const tree::node::Position<Board>& p) const
         {
                 return (
-                        Init<Tree::Node::Pieces, Index>()(p.pieces()) ^
+                        Init<tree::node::Pieces, Index>()(p.pieces()) ^
                         Init<bool, Index>()(p.to_move()) ^
-                        Init<Tree::Node::Position<Board>, Index>()(p, Tree::Node::Side::BLACK) ^
-                        Init<Tree::Node::Position<Board>, Index>()(p, Tree::Node::Side::WHITE)
+                        Init<tree::node::Position<Board>, Index>()(p, tree::node::Side::BLACK) ^
+                        Init<tree::node::Position<Board>, Index>()(p, tree::node::Side::WHITE)
                 );
         }
                  
-        Index operator()(const Tree::Node::Position<Board>& p, bool color) const
+        Index operator()(const tree::node::Position<Board>& p, bool color) const
         {
                 return (
                         Random<Index>::xor_rand(p.repeated_kings(color), Random<Index>::REPEATED_KINGS[color]) ^
@@ -31,13 +31,13 @@ struct Init<Tree::Node::Position<Board>, Index>: public std::unary_function<Tree
 
 // partial specialization for ab initio hashing of piece lists
 template<typename Index>
-struct Init<Tree::Node::Pieces, Index>: public std::unary_function<Tree::Node::Pieces, Index>
+struct Init<tree::node::Pieces, Index>: public std::unary_function<tree::node::Pieces, Index>
 {
-        Index operator()(const Tree::Node::Pieces& p) const
+        Index operator()(const tree::node::Pieces& p) const
         {
                 return (
-        	        Random<Index>::xor_rand(p.pieces(Tree::Node::Side::BLACK), Random<Index>::PIECES[Tree::Node::Side::BLACK]) ^
-                        Random<Index>::xor_rand(p.pieces(Tree::Node::Side::WHITE), Random<Index>::PIECES[Tree::Node::Side::WHITE]) ^
+        	        Random<Index>::xor_rand(p.pieces(tree::node::Side::BLACK), Random<Index>::PIECES[tree::node::Side::BLACK]) ^
+                        Random<Index>::xor_rand(p.pieces(tree::node::Side::WHITE), Random<Index>::PIECES[tree::node::Side::WHITE]) ^
                         Random<Index>::xor_rand(p.kings()                        , Random<Index>::KINGS                          )
                 );
         }
@@ -58,5 +58,5 @@ struct Init<bool, Index>: public std::unary_function<bool, Index>
         }
 };
 
-}       // namespace Zobrist
-}       // namespace Hash
+}       // namespace zobrist
+}       // namespace hash

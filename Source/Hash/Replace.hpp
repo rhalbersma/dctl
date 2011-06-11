@@ -2,7 +2,7 @@
 #include <functional>
 #include "EntryPredicates.h"
 
-namespace Hash {
+namespace hash {
 
 template<typename Key, typename Value>
 template<size_t N>
@@ -74,4 +74,4 @@ struct insert_entry<Key, Value, EmptyOldUnderCutShallowestOfN>
         }
 };
 
-}       // namespace Hash
+}       // namespace hash

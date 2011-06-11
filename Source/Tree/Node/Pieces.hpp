@@ -1,5 +1,5 @@
-namespace Tree {
-namespace Node {
+namespace tree {
+namespace node {
 
 // initialize with a set of bitboards
 template<bool Color>
@@ -10,5 +10,5 @@ void Pieces::init(BitBoard active_pieces, BitBoard opponent_pieces, BitBoard kin
         kings_ = kings;
 }
 
-}       // namespace Node
-}       // namespace Tree
+}       // namespace node
+}       // namespace tree

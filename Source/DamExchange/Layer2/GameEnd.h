@@ -3,8 +3,8 @@
 #include <string>
 #include "AbstractMessage.h"
 
-namespace DamExchange {
-namespace Layer2 {
+namespace damexchange {
+namespace layer2 {
 
 class GameEnd: public AbstractMessage
 {
@@ -35,5 +35,5 @@ private:
         StopCode stop_code_;
 };
 
-}       // namespace Layer2
-}       // namespace DamExchange
+}       // namespace layer2
+}       // namespace damexchange

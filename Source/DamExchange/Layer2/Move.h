@@ -5,8 +5,8 @@
 #include <vector>
 #include "AbstractMessage.h"
 
-namespace DamExchange {
-namespace Layer2 {
+namespace damexchange {
+namespace layer2 {
 
 class Move: public AbstractMessage
 {
@@ -39,5 +39,5 @@ private:
         std::vector<size_t> captured_pieces_;       
 };
 
-}       // namespace Layer2
-}       // namespace DamExchange
+}       // namespace layer2
+}       // namespace damexchange

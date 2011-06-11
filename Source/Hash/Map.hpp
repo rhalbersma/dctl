@@ -3,7 +3,7 @@
 #include <type_traits>
 #include "Sign.h"
 
-namespace Hash {
+namespace hash {
 
 template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
 Map<Key, Value, Replace, Hash, Index>::Map(size_t log2_n)
@@ -106,4 +106,4 @@ size_t Map<Key, Value, Replace, Hash, Index>::bucket(Index index) const
 	return static_cast<size_t>(index & bucket_mask_);
 }
 
-}       // namespace Hash
+}       // namespace hash

@@ -1,8 +1,8 @@
 #pragma once
 #include "../../Utilities/IntegerTypes.h"
 
-namespace Tree {
-namespace Node {
+namespace tree {
+namespace node {
 
 class Pieces
 {
@@ -19,8 +19,8 @@ public:
         bool invariant(void) const;                             // logical consistency of the representation
 
         // predicates
-        bool operator==(const Node::Pieces&) const;             // overloaded equality operator
-        bool operator!=(const Node::Pieces&) const;             // overloaded inequality operator
+        bool operator==(const node::Pieces&) const;             // overloaded equality operator
+        bool operator!=(const node::Pieces&) const;             // overloaded inequality operator
 
         // views
         BitBoard men(void) const;                               // black and white men
@@ -34,7 +34,7 @@ public:
         template<bool> 
         void init(BitBoard, BitBoard, BitBoard);                // initialize with a set of bitboards
 
-        Pieces& operator^=(const Node::Pieces&);                // xor-assign the set bits of another piece set
+        Pieces& operator^=(const node::Pieces&);                // xor-assign the set bits of another piece set
 
 private:
         // representation
@@ -42,10 +42,10 @@ private:
         BitBoard kings_;                                        // kings
 };
 
-Pieces operator^(const Node::Pieces&, const Node::Pieces&);     // xor-assign the set bits of two piece sets
+Pieces operator^(const node::Pieces&, const node::Pieces&);     // xor-assign the set bits of two piece sets
 
-}       // namespace Node
-}       // namespace Tree
+}       // namespace node
+}       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Pieces.hpp"

@@ -5,47 +5,47 @@
 #include "BackRequest.h"
 #include "Parser.h"
 
-namespace DXP = DamExchange;
+namespace DXP = damexchange;
 
-const std::string DXP::Layer2::BackRequest::HEADER = "B";
+const std::string DXP::layer2::BackRequest::HEADER = "B";
 
-const bool DXP::Layer2::BackRequest::REGISTERED = Parser::insert(HEADER, create);
+const bool DXP::layer2::BackRequest::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::BackRequest::create(const std::string& msg)
+std::shared_ptr<DXP::layer2::AbstractMessage> DXP::layer2::BackRequest::create(const std::string& msg)
 {
         return std::make_shared<BackRequest>(msg);
 }
 
-DXP::Layer2::BackRequest::BackRequest(const std::string& msg)
+DXP::layer2::BackRequest::BackRequest(const std::string& msg)
 :
         move_number_(boost::lexical_cast<size_t>(msg.substr(0, 3).c_str())),
         side_to_move_(*(msg.substr(3, 1)).begin())
 {
 }
 
-DXP::Layer2::BackRequest::BackRequest(size_t m, char c)
+DXP::layer2::BackRequest::BackRequest(size_t m, char c)
 :
         move_number_(m),
         side_to_move_(c)
 {
 }
 
-size_t DXP::Layer2::BackRequest::move_number(void) const
+size_t DXP::layer2::BackRequest::move_number(void) const
 {
         return move_number_;
 }
 
-char DXP::Layer2::BackRequest::side_to_move(void) const
+char DXP::layer2::BackRequest::side_to_move(void) const
 {
         return side_to_move_;
 }
 
-std::string DXP::Layer2::BackRequest::header(void) const
+std::string DXP::layer2::BackRequest::header(void) const
 {
         return HEADER;
 }
 
-std::string DXP::Layer2::BackRequest::body(void) const
+std::string DXP::layer2::BackRequest::body(void) const
 {
         std::stringstream sstr;
         sstr << std::setw( 3) << std::setfill('0') << move_number();

@@ -14,14 +14,14 @@
 #include <utility>
 #include <vector>
 
-namespace Hash {
+namespace hash {
 
 template
 <
         typename Key,
         typename Value,
         typename Replace = EmptyOldUnderCutShallowestOfN,
-        template<typename, typename> class Hash = Zobrist::Find,
+        template<typename, typename> class Hash = zobrist::Find,
         typename Index = HashIndex
 >
 class Map
@@ -71,7 +71,7 @@ private:
         Index bucket_mask_;
 };
 
-}       // namespace Hash
+}       // namespace hash
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Map.hpp"

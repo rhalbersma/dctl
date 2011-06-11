@@ -1,7 +1,7 @@
 #pragma once
 #include <cstddef>
 
-namespace Bit {
+namespace bit {
 
 // unary predicates
 template<typename T> bool is_zero(T);		        // 0 bits set to 1
@@ -26,7 +26,7 @@ template<bool, typename T> T flood_fill(T, T, size_t);  // direction-wise flood-
 // unary modifiers
 template<typename T> void clear_lowest(T&);		// clear the least significant 1-bit
 
-}       // namespace Bit
+}       // namespace bit
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Bit.hpp"

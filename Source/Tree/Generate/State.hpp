@@ -6,76 +6,76 @@
 #include "PawnJumps.h"
 #include "PawnMoves.h"
 
-namespace Tree {
-namespace Generate {
+namespace tree {
+namespace generate {
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void State<Color, Material, Rules, Board>::generate(const Node::Position<Board>& p, Move::Stack& move_stack) const 
+void State<Color, Material, Rules, Board>::generate(const node::Position<Board>& p, move::Stack& move_stack) const 
 {
-        Template<Color, Material, Move::JUMPS, Rules, Board>::generate(p, move_stack);
+        Template<Color, Material, move::JUMPS, Rules, Board>::generate(p, move_stack);
         if (!move_stack.size())
-                Template<Color, Material, Move::MOVES, Rules, Board>::generate(p, move_stack);
+                Template<Color, Material, move::MOVES, Rules, Board>::generate(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void State<Color, Material, Rules, Board>::generate_captures(const Node::Position<Board>& p, Move::Stack& move_stack) const 
+void State<Color, Material, Rules, Board>::generate_captures(const node::Position<Board>& p, move::Stack& move_stack) const 
 { 
-        Template<Color, Material, Move::JUMPS, Rules, Board>::generate(p, move_stack);
+        Template<Color, Material, move::JUMPS, Rules, Board>::generate(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void State<Color, Material, Rules, Board>::generate_promotions(const Node::Position<Board>& p, Move::Stack& move_stack) const 
+void State<Color, Material, Rules, Board>::generate_promotions(const node::Position<Board>& p, move::Stack& move_stack) const 
 { 
-        Template<Color, Material, Move::MOVES, Rules, Board>::generate_promotions(p, move_stack);
+        Template<Color, Material, move::MOVES, Rules, Board>::generate_promotions(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-size_t State<Color, Material, Rules, Board>::count(const Node::Position<Board>& p) const
+size_t State<Color, Material, Rules, Board>::count(const node::Position<Board>& p) const
 {
-        size_t num_moves = Template<Color, Material, Move::JUMPS, Rules, Board>::count(p);
+        size_t num_moves = Template<Color, Material, move::JUMPS, Rules, Board>::count(p);
         if (!num_moves)
-                num_moves += Template<Color, Material, Move::MOVES, Rules, Board>::count(p);
+                num_moves += Template<Color, Material, move::MOVES, Rules, Board>::count(p);
         return num_moves;
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-size_t State<Color, Material, Rules, Board>::count_captures(const Node::Position<Board>& p) const
+size_t State<Color, Material, Rules, Board>::count_captures(const node::Position<Board>& p) const
 {
-        return Template<Color, Material, Move::JUMPS, Rules, Board>::count(p);
+        return Template<Color, Material, move::JUMPS, Rules, Board>::count(p);
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-size_t State<Color, Material, Rules, Board>::count_promotions(const Node::Position<Board>& p) const
+size_t State<Color, Material, Rules, Board>::count_promotions(const node::Position<Board>& p) const
 {
-        return Template<Color, Material, Move::MOVES, Rules, Board>::count_promotions(p);
+        return Template<Color, Material, move::MOVES, Rules, Board>::count_promotions(p);
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-size_t State<Color, Material, Rules, Board>::count_mobility(const Node::Position<Board>& p) const
+size_t State<Color, Material, Rules, Board>::count_mobility(const node::Position<Board>& p) const
 {
-        return Template<Color, Material, Move::MOVES, Rules, Board>::count(p);
+        return Template<Color, Material, move::MOVES, Rules, Board>::count(p);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-bool State<Color, Material, Rules, Board>::detect(const Node::Position<Board>& p) const 
+bool State<Color, Material, Rules, Board>::detect(const node::Position<Board>& p) const 
 { 
         return (
-                Template<Color, Material, Move::MOVES, Rules, Board>::detect(p) || 
-                Template<Color, Material, Move::JUMPS, Rules, Board>::detect(p)
+                Template<Color, Material, move::MOVES, Rules, Board>::detect(p) || 
+                Template<Color, Material, move::JUMPS, Rules, Board>::detect(p)
         );
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-bool State<Color, Material, Rules, Board>::detect_captures(const Node::Position<Board>& p) const 
+bool State<Color, Material, Rules, Board>::detect_captures(const node::Position<Board>& p) const 
 { 
-        return Template<Color, Material, Move::JUMPS, Rules, Board>::detect(p);
+        return Template<Color, Material, move::JUMPS, Rules, Board>::detect(p);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-bool State<Color, Material, Rules, Board>::detect_promotions(const Node::Position<Board>& p) const 
+bool State<Color, Material, Rules, Board>::detect_promotions(const node::Position<Board>& p) const 
 {
-        return Template<Color, Material, Move::MOVES, Rules, Board>::detect_promotions(p);
+        return Template<Color, Material, move::MOVES, Rules, Board>::detect_promotions(p);
 }
 
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace generate
+}       // namespace tree

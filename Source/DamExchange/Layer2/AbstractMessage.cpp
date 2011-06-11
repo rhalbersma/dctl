@@ -1,8 +1,8 @@
 #include "AbstractMessage.h"
 
-namespace DXP = DamExchange;
+namespace DXP = damexchange;
 
-std::string DXP::Layer2::AbstractMessage::str(void) const
+std::string DXP::layer2::AbstractMessage::str(void) const
 {
         return header() + body();
 }

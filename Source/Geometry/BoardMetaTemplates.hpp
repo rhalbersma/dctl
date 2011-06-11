@@ -2,9 +2,9 @@
 #include "Coordinates.h"
 #include "../Utilities/IntegerTypes.h"
 
-namespace Geometry {
+namespace geometry {
 
-template<typename T, size_t SQ>
+template<typename T, int SQ>
 class INIT_SQUARES
 {
 private:
@@ -24,7 +24,7 @@ public:
         static const BitBoard VALUE = MASK;
 };
 
-template<typename T, bool C, size_t SQ>
+template<typename T, bool C, int SQ>
 class INIT_INITIAL
 {
 private:
@@ -44,7 +44,7 @@ public:
         static const BitBoard VALUE = MASK;
 };
 
-template<typename T, bool C, size_t ROW, size_t SQ>
+template<typename T, bool C, int ROW, int SQ>
 class INIT_ROW_MASK
 {
 private:
@@ -54,7 +54,7 @@ public:
         static const BitBoard VALUE = MASK ^ INIT_ROW_MASK<T, C, ROW, SQ-1>::VALUE;
 };
 
-template<typename T, bool C, size_t ROW>
+template<typename T, bool C, int ROW>
 class INIT_ROW_MASK<T, C, ROW, 0>
 {
 private:
@@ -64,7 +64,7 @@ public:
         static const BitBoard VALUE = MASK;
 };
 
-template<typename T, bool C, size_t COL, size_t SQ>
+template<typename T, bool C, int COL, int SQ>
 class INIT_COL_MASK
 {
 private:
@@ -74,7 +74,7 @@ public:
         static const BitBoard VALUE = MASK ^ INIT_COL_MASK<T, C, COL, SQ-1>::VALUE;
 };
 
-template<typename T, bool C, size_t COL>
+template<typename T, bool C, int COL>
 class INIT_COL_MASK<T, C, COL, 0>
 {
 private:
@@ -84,7 +84,7 @@ public:
         static const BitBoard VALUE = MASK;
 };
 
-template<typename T, size_t G, size_t SQ>
+template<typename T, int G, int SQ>
 class INIT_MAN_JUMP_GROUP
 {
 private:
@@ -94,7 +94,7 @@ public:
         static const BitBoard VALUE = MASK ^ INIT_MAN_JUMP_GROUP<T, G, SQ-1>::VALUE;
 };
 
-template<typename T, size_t G>
+template<typename T, int G>
 class INIT_MAN_JUMP_GROUP<T, G, 0>
 {
 private:
@@ -104,7 +104,7 @@ public:
         static const BitBoard VALUE = MASK;
 };
 
-template<typename T, size_t I, size_t SQ>
+template<typename T, int I, int SQ>
 class INIT_JUMPABLE
 {
 private:
@@ -114,7 +114,7 @@ public:
         static const BitBoard VALUE = MASK ^ INIT_JUMPABLE<T, I, SQ-1>::VALUE;
 };
 
-template<typename T, size_t I>
+template<typename T, int I>
 class INIT_JUMPABLE<T, I, 0>
 {
 private:
@@ -132,13 +132,13 @@ private:
         typedef typename T::BordersGrid G;
 
         // coordinates within the external grid
-        typedef typename Coordinates::FromRange<E, SQ>::Out ExtCoord;
+        typedef typename coordinates::FromRange<E, SQ>::Out ExtCoord;
 
         // rotated coordinates within the internal grid
-        typedef typename Coordinates::Rotate<E, ExtCoord, T::ANGLE>::Out RotCoord;
+        typedef typename coordinates::Rotate<E, ExtCoord, T::ANGLE>::Out RotCoord;
 
 public:
-        enum { VALUE = Coordinates::ToRange<G, RotCoord>::VALUE };
+        enum { VALUE = coordinates::ToRange<G, RotCoord>::VALUE };
 };
 
 template<typename T, int B>
@@ -150,13 +150,13 @@ private:
         typedef typename T::BordersGrid G;
 
         // coordinates within the internal grid
-        typedef typename Coordinates::FromRange<G, B>::Out IntCoord;
+        typedef typename coordinates::FromRange<G, B>::Out IntCoord;
 
         // rotated coordinates within the external grid
-        typedef typename Coordinates::Rotate<I, IntCoord, T::A_PRIME>::Out RotCoord;
+        typedef typename coordinates::Rotate<I, IntCoord, T::A_PRIME>::Out RotCoord;
 
 public:
-        enum { VALUE = Coordinates::ToRange<E, RotCoord>::VALUE };
+        enum { VALUE = coordinates::ToRange<E, RotCoord>::VALUE };
 };
 
-}       // namespace Geometry
+}       // namespace geometry

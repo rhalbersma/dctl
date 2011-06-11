@@ -1,12 +1,12 @@
 #pragma once
 
-namespace Tree {
-namespace Node {
+namespace tree {
+namespace node {
 
 struct Side
 {
         enum { BLACK, WHITE };
 };
 
-}       // namespace Node
-}       // namespace Tree
+}       // namespace node
+}       // namespace tree

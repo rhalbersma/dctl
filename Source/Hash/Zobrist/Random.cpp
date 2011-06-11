@@ -2,7 +2,7 @@
 #include "Random.h"
 
 template<>
-const uint64_t Hash::Zobrist::Random<uint64_t>::PIECES[2][64] = 
+const uint64_t hash::zobrist::Random<uint64_t>::PIECES[2][64] = 
 {
 	{
                 0x9904662fb3c24ae1, 0xc59adcabb4a95f90, 0x9dbe36bc60dda6e9, 0xb1766ba9896d953c,
@@ -43,7 +43,7 @@ const uint64_t Hash::Zobrist::Random<uint64_t>::PIECES[2][64] =
 };
 
 template<>
-const uint64_t Hash::Zobrist::Random<uint64_t>::KINGS[64] =
+const uint64_t hash::zobrist::Random<uint64_t>::KINGS[64] =
 {
         0x863029ce1230836b, 0x8642409881fcba54, 0x0efcecdc6e8bce48, 0x8e01b2a4a6148a1d,
         0x676532e665b948db, 0x4ac38afe80a7a237, 0x83b6b8ac17caef57, 0x5b9bf4203936176d,
@@ -64,10 +64,10 @@ const uint64_t Hash::Zobrist::Random<uint64_t>::KINGS[64] =
 };
 
 template<>
-const uint64_t Hash::Zobrist::Random<uint64_t>::SIDE = 0x461aea9b6bcff19a;
+const uint64_t hash::zobrist::Random<uint64_t>::SIDE = 0x461aea9b6bcff19a;
 
 template<>
-const uint64_t Hash::Zobrist::Random<uint64_t>::REPEATED_KINGS[2][64] = 
+const uint64_t hash::zobrist::Random<uint64_t>::REPEATED_KINGS[2][64] = 
 {
 	{
                 0x30d1f0b5b2955a21, 0x4bb531b53a827011, 0x14e30ca35ed706bb, 0x3003989830651c20,
@@ -108,7 +108,7 @@ const uint64_t Hash::Zobrist::Random<uint64_t>::REPEATED_KINGS[2][64] =
 };
 
 template<>
-const uint64_t Hash::Zobrist::Random<uint64_t>::REPEATED_MOVES[2][8] = 
+const uint64_t hash::zobrist::Random<uint64_t>::REPEATED_MOVES[2][8] = 
 {
 	{
                 0xd0155d45da58e0ae, 0x51a0ad8a6b634382, 0xfd6508b01ff7ef6a, 0x2f88513a4e1f888b,

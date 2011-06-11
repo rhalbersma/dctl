@@ -5,8 +5,8 @@
 #include "../../Variants/Rules.h"
 
 
-namespace Tree {
-namespace Node {
+namespace tree {
+namespace node {
 
 // initialize with a set of bitboards and a color
 template<typename Board>
@@ -19,7 +19,7 @@ Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard
 {
         repeated_moves_[Side::BLACK] = repeated_moves_[Side::WHITE] = 0;
         parents_[0] = parents_[1] = NULL;
-        hash_index_ = Hash::Zobrist::Init<Node::Position<Board>, HashIndex>()(*this);
+        hash_index_ = hash::zobrist::Init<node::Position<Board>, HashIndex>()(*this);
         assert(pieces_invariant());
 }
 
@@ -31,7 +31,7 @@ Position<Board> Position<Board>::initial(void)
 }
 
 template<typename Board>
-bool Position<Board>::operator==(const Node::Position<Board>& other) const
+bool Position<Board>::operator==(const node::Position<Board>& other) const
 {
         return (
 		(pieces(Side::BLACK) == other.pieces(Side::BLACK)) &&
@@ -42,7 +42,7 @@ bool Position<Board>::operator==(const Node::Position<Board>& other) const
 }
 
 template<typename Board>
-bool Position<Board>::operator!=(const Node::Position<Board>& other) const
+bool Position<Board>::operator!=(const node::Position<Board>& other) const
 {
         return !(*this == other);
 }
@@ -63,14 +63,14 @@ bool Position<Board>::is_repetition_draw(void) const
 template<typename Board> template<typename Rules>
 bool Position<Board>::is_non_conversion_draw(void) const
 {
-        return is_non_conversion_draw<Rules>(Int2Type<Variants::is_restricted_non_conversion_moves<Rules>::value>());
+        return is_non_conversion_draw<Rules>(Int2Type<variants::is_restricted_non_conversion_moves<Rules>::value>());
 }
 
 // partial specialization for restricted consecutive king moves by both sides
 template<typename Board> template<typename Rules>
 bool Position<Board>::is_non_conversion_draw(Int2Type<true>) const
 {
-        return non_conversion() >= Variants::max_non_conversion_moves<Rules>::value;
+        return non_conversion() >= variants::max_non_conversion_moves<Rules>::value;
 }
 
 // partial specialization for unrestricted consecutive king moves by both sides
@@ -87,7 +87,7 @@ bool Position<Board>::is_restricted_king(bool color) const
 }
 
 template<typename Board>
-const Node::Pieces& Position<Board>::pieces(void) const
+const node::Pieces& Position<Board>::pieces(void) const
 {
         return pieces_;
 }
@@ -152,7 +152,7 @@ bool Position<Board>::to_move(void) const
 template<typename Board> template<typename Rules>
 BitBoard Position<Board>::unrestricted_kings(bool color) const
 {
-        return unrestricted_kings<Rules>(color, Int2Type<Variants::is_restricted_same_king_moves<Rules>::value>());
+        return unrestricted_kings<Rules>(color, Int2Type<variants::is_restricted_same_king_moves<Rules>::value>());
 }
 
 // partial specialization for unrestricted consecutive moves with the same king
@@ -166,7 +166,7 @@ BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<false>) const
 template<typename Board> template<typename Rules>
 BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<true>) const
 {
-        if (men(color) && kings(color) && is_restricted_king<Variants::max_same_king_moves<Rules>::value>(color))
+        if (men(color) && kings(color) && is_restricted_king<variants::max_same_king_moves<Rules>::value>(color))
                 return kings(color) ^ repeated_kings(color);
         else
                 return kings(color);
@@ -206,13 +206,13 @@ HashIndex Position<Board>::hash_index(void) const
 template<typename Board>
 bool Position<Board>::pieces_invariant(void) const
 {
-        return Bit::is_within(occupied(), Board::SQUARES);
+        return bit::is_within(occupied(), Board::SQUARES);
 }
 
 template<typename Board>
 bool Position<Board>::hash_index_invariant(void) const
 {
-        return Hash::Zobrist::Find<Node::Position<Board>, HashIndex>()(*this) == Hash::Zobrist::Init<Node::Position<Board>, HashIndex>()(*this);
+        return hash::zobrist::Find<node::Position<Board>, HashIndex>()(*this) == hash::zobrist::Init<node::Position<Board>, HashIndex>()(*this);
 }
 
 // men for the side to move
@@ -257,5 +257,5 @@ BitBoard passive_pieces(const Position<Board>& p)
         return p.pieces(!p.to_move());
 }
 
-}       // namespace Node
-}       // namespace Tree
+}       // namespace node
+}       // namespace tree

@@ -2,29 +2,29 @@
 #include "Chat.h"
 #include "Parser.h"
 
-namespace DXP = DamExchange;
+namespace DXP = damexchange;
 
-const std::string DXP::Layer2::Chat::HEADER = "C";
+const std::string DXP::layer2::Chat::HEADER = "C";
 
-const bool DXP::Layer2::Chat::REGISTERED = Parser::insert(HEADER, create);
+const bool DXP::layer2::Chat::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::Chat::create(const std::string& msg)
+std::shared_ptr<DXP::layer2::AbstractMessage> DXP::layer2::Chat::create(const std::string& msg)
 {
         return std::make_shared<Chat>(msg);
 }
 
-DXP::Layer2::Chat::Chat(const std::string& msg)
+DXP::layer2::Chat::Chat(const std::string& msg)
 :
         message_(msg)
 {
 }
 
-std::string DXP::Layer2::Chat::header(void) const
+std::string DXP::layer2::Chat::header(void) const
 {
         return HEADER;
 }
 
-std::string DXP::Layer2::Chat::body(void) const
+std::string DXP::layer2::Chat::body(void) const
 {
         return message_;
 }

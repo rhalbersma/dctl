@@ -1,8 +1,7 @@
 #pragma once
-#include <cstddef>
 
-namespace Geometry {
-namespace Angles {
+namespace geometry {
+namespace angles {
 
 // angles are subject to arithmetic modulo 360 degrees, with the unit element equal to 45 degrees anti-clockwise
  enum {
@@ -17,14 +16,14 @@ namespace Angles {
         D360 = 8 
 };
 
-template<size_t, size_t>
+template<int, int>
 struct Rotate;
 
-template<size_t>
+template<int>
 struct Inverse;
 
-}       // namespace Angles
-}       // namespace Geometry
+}       // namespace angles
+}       // namespace geometry
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Angles.hpp"

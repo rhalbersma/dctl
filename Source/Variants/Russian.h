@@ -1,7 +1,7 @@
 #pragma once
 #include "Traits.h"
 
-namespace Variants {
+namespace variants {
 
 // http://www.shashist.ru/kodeks/kodeks2004.doc
 struct Russian {};
@@ -9,4 +9,4 @@ struct Russian {};
 // move mechanics
 template<> struct promotion_condition<Russian>  { enum { value = PROMOTE_EP }; };
 
-}       // namespace Variants
+}       // namespace variants

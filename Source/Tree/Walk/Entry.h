@@ -1,8 +1,8 @@
 #pragma once
 #include "../../Utilities/IntegerTypes.h"
 
-namespace Tree {
-namespace Walk {
+namespace tree {
+namespace walk {
 
 class Entry
 {
@@ -33,5 +33,5 @@ private:
         NodeCount entry_;                        // leaf node count and depth
 };
 
-}       // namespace Walk
-}       // namespace Tree
+}       // namespace walk
+}       // namespace tree

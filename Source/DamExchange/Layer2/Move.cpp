@@ -5,18 +5,18 @@
 #include "Move.h"
 #include "Parser.h"
 
-namespace DXP = DamExchange;
+namespace DXP = damexchange;
 
-const std::string DXP::Layer2::Move::HEADER = "M";
+const std::string DXP::layer2::Move::HEADER = "M";
 
-const bool DXP::Layer2::Move::REGISTERED = Parser::insert(HEADER, create);
+const bool DXP::layer2::Move::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::Move::create(const std::string& msg)
+std::shared_ptr<DXP::layer2::AbstractMessage> DXP::layer2::Move::create(const std::string& msg)
 {
         return std::make_shared<Move>(msg);
 }
 
-DXP::Layer2::Move::Move(const std::string& msg)
+DXP::layer2::Move::Move(const std::string& msg)
 :
         seconds_(boost::lexical_cast<size_t>(msg.substr(0, 4).c_str())),
         from_sq_(boost::lexical_cast<size_t>(msg.substr(4, 2).c_str())),
@@ -27,7 +27,7 @@ DXP::Layer2::Move::Move(const std::string& msg)
                 captured_pieces_.push_back(boost::lexical_cast<size_t>(msg.substr(10 + 2 * i, 2).c_str()));
 }
 
-DXP::Layer2::Move::Move(size_t s, size_t f, size_t d, size_t n, const std::vector<size_t>& c)
+DXP::layer2::Move::Move(size_t s, size_t f, size_t d, size_t n, const std::vector<size_t>& c)
 :
         seconds_(s),
         from_sq_(f),
@@ -37,37 +37,37 @@ DXP::Layer2::Move::Move(size_t s, size_t f, size_t d, size_t n, const std::vecto
 {
 }
 
-size_t DXP::Layer2::Move::seconds(void) const
+size_t DXP::layer2::Move::seconds(void) const
 {
         return seconds_;
 }
 
-size_t DXP::Layer2::Move::from_sq(void) const
+size_t DXP::layer2::Move::from_sq(void) const
 {
         return from_sq_;
 }
 
-size_t DXP::Layer2::Move::dest_sq(void) const
+size_t DXP::layer2::Move::dest_sq(void) const
 {
         return dest_sq_;
 }
 
-size_t DXP::Layer2::Move::num_captured(void) const
+size_t DXP::layer2::Move::num_captured(void) const
 {
         return num_captured_;
 }
 
-const std::vector<size_t>& DXP::Layer2::Move::captured_pieces(void) const
+const std::vector<size_t>& DXP::layer2::Move::captured_pieces(void) const
 {
         return captured_pieces_;
 }
 
-std::string DXP::Layer2::Move::header(void) const
+std::string DXP::layer2::Move::header(void) const
 {
         return HEADER;
 }
 
-std::string DXP::Layer2::Move::body(void) const
+std::string DXP::layer2::Move::body(void) const
 {
         std::stringstream sstr;
         sstr << std::setw( 4) << std::setfill('0') << seconds();

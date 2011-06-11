@@ -1,7 +1,7 @@
 #pragma once
 #include "Traits.h"
 
-namespace Variants {
+namespace variants {
 
 struct Thai {};
 
@@ -14,4 +14,4 @@ template<> struct capture_removal<Thai>                 { enum { value = REMOVE_
 // implementation of move generation
 template<> struct large_capture<Thai>                   { enum { value = 3        }; };
 
-}       // namespace Variants
+}       // namespace variants

@@ -1,8 +1,8 @@
 #pragma once
 #include <cstddef>
 
-namespace Geometry {
-namespace Direction {
+namespace geometry {
+namespace direction {
 
 // template function object for uniform left/right bitwise shift
 template<typename, size_t>
@@ -37,8 +37,8 @@ struct FloodFill
         template<typename T> T operator()(T, T) const;
 };
 
-}       // namespace Direction
-}       // namespace Geometry
+}       // namespace direction
+}       // namespace geometry
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "PushPull.hpp"

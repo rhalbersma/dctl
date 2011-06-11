@@ -1,7 +1,7 @@
 #include "Angles.h"
 
-namespace Geometry {
-namespace Coordinates {
+namespace geometry {
+namespace coordinates {
 
 template<int R, int C>
 struct Pair
@@ -14,41 +14,41 @@ struct Pair
 
 // identity rotation
 template<typename T, typename In>
-struct Rotate<T, In, Angles::D000>
+struct Rotate<T, In, angles::D000>
 {
         typedef In Out;
 };
 
 // rotate 90 degrees right
 template<typename T, typename In>
-struct Rotate<T, In, Angles::D270>
+struct Rotate<T, In, angles::D270>
 {
         typedef Pair
         <
-                (static_cast<int>(T::WIDTH) - 1) - In::COL, 
+                (T::WIDTH - 1) - In::COL, 
                 In::ROW
         > Out;
 };
 
 // rotate 90 degrees left
 template<typename T, typename In>
-struct Rotate<T, In, Angles::D090>
+struct Rotate<T, In, angles::D090>
 {
         typedef Pair
         <
                 In::COL, 
-                (static_cast<int>(T::HEIGHT) - 1) - In::ROW
+                (T::HEIGHT - 1) - In::ROW
         > Out;
 };
 
 // rotate 180 degrees
 template<typename T, typename In>
-struct Rotate<T, In, Angles::D180>
+struct Rotate<T, In, angles::D180>
 {
         typedef Pair
         <
-                (static_cast<int>(T::HEIGHT) - 1) - In::ROW, 
-                (static_cast<int>(T::WIDTH) - 1) - In::COL
+                (T::HEIGHT - 1) - In::ROW, 
+                (T::WIDTH - 1) - In::COL
         > Out;
 };
 
@@ -77,19 +77,16 @@ class ToRange
 {
 private:
         enum {
-                L0 = static_cast<int>(T::EDGE_LE),      // left edge of the zeroth row
-                L1 = static_cast<int>(T::EDGE_LO),      // left edge of the first row
-                M = static_cast<int>(T::MODULO),        // range for row pairs
-                P = In::ROW % 2,                        // row parity
-                Q = In::ROW / 2,                        // number of row pairs
-                L = P? L1 : L0,                         // the left edge
-                S = In::COL / 2,                        // number of column pairs
-                R = (L + S) % M                         // squares from the left edge
+                P = In::ROW % 2,                // row parity
+                Q = In::ROW / 2,                // number of row pairs
+                L = P? T::EDGE_LO : T::EDGE_LE, // the left edge
+                S = In::COL / 2,                // number of column pairs
+                R = (L + S) % T::MODULO         // squares from the left edge
         };
 
 public:
-        static const int VALUE = M * Q + R;
+        static const int VALUE = T::MODULO * Q + R;
 };
 
-}       // namespace Coordinates
-}       // namespace Geometry
+}       // namespace coordinates
+}       // namespace geometry

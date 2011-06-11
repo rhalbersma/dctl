@@ -5,25 +5,25 @@
 #include "GameRequest.h"
 #include "Parser.h"
 
-namespace DXP = DamExchange;
+namespace DXP = damexchange;
 
-const std::string DXP::Layer2::GameRequest::HEADER = "R";
+const std::string DXP::layer2::GameRequest::HEADER = "R";
 
-const char DXP::Layer2::GameRequest::INITIAL = 'A';
-const char DXP::Layer2::GameRequest::SPECIAL = 'B';
-const char DXP::Layer2::GameRequest::SETUP[2] = {
+const char DXP::layer2::GameRequest::INITIAL = 'A';
+const char DXP::layer2::GameRequest::SPECIAL = 'B';
+const char DXP::layer2::GameRequest::SETUP[2] = {
         INITIAL,
         SPECIAL
 };
 
-const bool DXP::Layer2::GameRequest::REGISTERED = Parser::insert(HEADER, create);
+const bool DXP::layer2::GameRequest::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::Layer2::AbstractMessage> DXP::Layer2::GameRequest::create(const std::string& msg)
+std::shared_ptr<DXP::layer2::AbstractMessage> DXP::layer2::GameRequest::create(const std::string& msg)
 {
         return std::make_shared<GameRequest>(msg);
 }
 
-DXP::Layer2::GameRequest::GameRequest(const std::string& msg)
+DXP::layer2::GameRequest::GameRequest(const std::string& msg)
 :
         name_initiator_(msg.substr(2, 32)),
         color_follower_(*(msg.substr(34, 1)).begin()),
@@ -35,7 +35,7 @@ DXP::Layer2::GameRequest::GameRequest(const std::string& msg)
                 special_position_ = msg.substr(42);
 }
 
-DXP::Layer2::GameRequest::GameRequest(const std::string& n, char c, size_t min, size_t mov, bool s, const std::string& f)
+DXP::layer2::GameRequest::GameRequest(const std::string& n, char c, size_t min, size_t mov, bool s, const std::string& f)
 :
         name_initiator_(n),
         color_follower_(c),
@@ -47,42 +47,42 @@ DXP::Layer2::GameRequest::GameRequest(const std::string& n, char c, size_t min, 
                 special_position_ = f;
 }
 
-const std::string& DXP::Layer2::GameRequest::name_initiator(void) const
+const std::string& DXP::layer2::GameRequest::name_initiator(void) const
 {
         return name_initiator_;
 }
 
-char DXP::Layer2::GameRequest::color_follower(void) const
+char DXP::layer2::GameRequest::color_follower(void) const
 {
         return color_follower_;
 }
 
-size_t DXP::Layer2::GameRequest::minutes(void) const
+size_t DXP::layer2::GameRequest::minutes(void) const
 {
         return minutes_;
 }
 
-size_t DXP::Layer2::GameRequest::moves(void) const
+size_t DXP::layer2::GameRequest::moves(void) const
 {
         return moves_;
 }
 
-bool DXP::Layer2::GameRequest::setup_position(void) const
+bool DXP::layer2::GameRequest::setup_position(void) const
 {
         return setup_position_;
 }
 
-const std::string& DXP::Layer2::GameRequest::special_position(void) const
+const std::string& DXP::layer2::GameRequest::special_position(void) const
 {
         return special_position_;
 }
 
-std::string DXP::Layer2::GameRequest::header(void) const
+std::string DXP::layer2::GameRequest::header(void) const
 {
         return HEADER;
 }
 
-std::string DXP::Layer2::GameRequest::body(void) const
+std::string DXP::layer2::GameRequest::body(void) const
 {
         std::stringstream sstr;
         sstr << std::setw( 2) << std::setfill('0') << PROTOCOL_VERSION;
@@ -96,7 +96,7 @@ std::string DXP::Layer2::GameRequest::body(void) const
         return sstr.str();
 }
 
-bool DXP::Layer2::GameRequest::read_setup(char c)
+bool DXP::layer2::GameRequest::read_setup(char c)
 {
         switch(c) {                
         case INITIAL: 
@@ -109,7 +109,7 @@ bool DXP::Layer2::GameRequest::read_setup(char c)
         }
 }
 
-char DXP::Layer2::GameRequest::write_setup(bool b)
+char DXP::layer2::GameRequest::write_setup(bool b)
 {
         return SETUP[b];
 }

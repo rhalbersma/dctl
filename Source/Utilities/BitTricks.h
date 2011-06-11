@@ -1,7 +1,7 @@
 #pragma once
 #include "IntegerTypes.h"
 
-namespace Bit {
+namespace bit {
 
 template<typename> struct log2_sizeof;
 template<> struct log2_sizeof<uint8_t>           { enum { value = 3 }; };
@@ -16,7 +16,7 @@ template<typename T> size_t count_Kernighan(T);         // number of set 1-bits
 // binary views
 template<bool, typename T> T fill_loop(T, T, size_t);   // direction-wise flood-fill T1 over T2
 
-}       // namespace Bit
+}       // namespace bit
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "BitTricks.hpp"
+#include "bitTricks.hpp"

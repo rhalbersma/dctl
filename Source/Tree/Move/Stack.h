@@ -6,8 +6,8 @@
 #include "../../Utilities/TemplateTricks.h"
 #include "../../Utilities/VectorArray.h"
 
-namespace Tree {
-namespace Move {
+namespace tree {
+namespace move {
 
 class Stack
 {
@@ -17,10 +17,10 @@ public:
         bool empty(void) const;
 
         // element access
-              Node::Pieces& operator[](size_t);
-        const Node::Pieces& operator[](size_t) const;
-              Node::Pieces& top(void);
-        const Node::Pieces& top(void) const;
+              node::Pieces& operator[](size_t);
+        const node::Pieces& operator[](size_t) const;
+              node::Pieces& top(void);
+        const node::Pieces& top(void) const;
 
         // predicates
         template<typename> bool non_unique_top(void);
@@ -39,11 +39,11 @@ private:
         bool non_unique_top(Int2Type<true >);
 
         // representation
-        VectorArray<Node::Pieces, MOVE_MAX> vector_array_;
+        VectorArray<node::Pieces, MOVE_MAX> vector_array_;
 };
 
-}       // namespace Move
-}       // namespace Tree
+}       // namespace move
+}       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Stack.hpp"

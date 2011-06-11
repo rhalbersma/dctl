@@ -2,10 +2,10 @@
 #include <iostream>
 #include "Root.h"
 
-Tree::Walk::Root::TranspositionTable Tree::Walk::Root::TT(1);
-Tree::Statistics Tree::Walk::Root::statistics_;
+tree::walk::Root::TranspositionTable tree::walk::Root::TT(1);
+tree::Statistics tree::walk::Root::statistics_;
 
-void Tree::Walk::Root::report(size_t nominal_ply, NodeCount leafs, const Timer& timer)
+void tree::walk::Root::report(size_t nominal_ply, NodeCount leafs, const Timer& timer)
 {
         double speed = (statistics_.nodes() / 1e6) / timer.lap();
         double average_ply = static_cast<double>(statistics_.sum_ply()) / statistics_.nodes();
@@ -30,18 +30,18 @@ void Tree::Walk::Root::report(size_t nominal_ply, NodeCount leafs, const Timer& 
         std::cout << std::endl;
 }
 
-void Tree::Walk::Root::summary(void)
+void tree::walk::Root::summary(void)
 {
         std::cout << std::endl;
 }
 
-void Tree::Walk::Root::summary(NodeCount leafs)
+void tree::walk::Root::summary(NodeCount leafs)
 {
         std::cout << std::endl << "Total leafs: " << leafs << std::endl;
         std::cout << std::endl;
 }
 
-void Tree::Walk::Root::print_move(const std::string& move, size_t i)
+void tree::walk::Root::print_move(const std::string& move, size_t i)
 {
         std::cout << std::setw(2) << (i + 1) << "." << move << " ";
 }

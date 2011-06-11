@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 
-namespace Tree {
-namespace Search {
-namespace Value {
+namespace tree {
+namespace search {
+namespace value {
 
 // predicates
 bool is_infinite(int);
@@ -24,6 +24,6 @@ int squeeze(int);
 
 std::string print(int);
 
-}       // namespace Value
-}       // namespace Search
-}       // namespace Tree
+}       // namespace value
+}       // namespace search
+}       // namespace tree

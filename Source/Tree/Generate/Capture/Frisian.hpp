@@ -1,11 +1,11 @@
-namespace Variants { struct Frisian; }
+namespace variants { struct Frisian; }
 
-namespace Tree {
-namespace Generate {
-namespace Capture {
+namespace tree {
+namespace generate {
+namespace capture {
 
 template<>
-struct init<Variants::Frisian>
+struct init<variants::Frisian>
 {
         void operator()(Value& value) const
         {
@@ -15,7 +15,7 @@ struct init<Variants::Frisian>
 };
 
 template<>
-struct copy<Variants::Frisian>
+struct copy<variants::Frisian>
 {
         void operator()(Value& left, const Value& right) const
         {
@@ -26,7 +26,7 @@ struct copy<Variants::Frisian>
 };
 
 template<>
-struct increment<Variants::Frisian>
+struct increment<variants::Frisian>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -37,7 +37,7 @@ struct increment<Variants::Frisian>
 };
 
 template<>
-struct decrement<Variants::Frisian>
+struct decrement<variants::Frisian>
 {
         void operator()(Value& value, BitBoard target_sq, BitBoard king_targets) const
         {
@@ -48,7 +48,7 @@ struct decrement<Variants::Frisian>
 };
 
 template<>
-struct equal_to<Variants::Frisian>: public std::binary_function<Value, Value, bool>
+struct equal_to<variants::Frisian>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -61,7 +61,7 @@ struct equal_to<Variants::Frisian>: public std::binary_function<Value, Value, bo
 };
 
 template<>
-struct greater_equal<Variants::Frisian>: public std::binary_function<Value, Value, bool>
+struct greater_equal<variants::Frisian>: public std::binary_function<Value, Value, bool>
 {
         // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
         bool operator()(const Value& left, const Value& right) const
@@ -87,6 +87,6 @@ struct greater_equal<Variants::Frisian>: public std::binary_function<Value, Valu
         }
 };
 
-}       // namespace Capture
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace capture
+}       // namespace generate
+}       // namespace tree

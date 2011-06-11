@@ -1,7 +1,7 @@
 #pragma once
 #include "Traits.h"
 
-namespace Variants {
+namespace variants {
 
 // http://www.usacheckers.com/rulesofcheckers.php
 struct Checkers {};
@@ -16,4 +16,4 @@ template<> struct is_long_king_range<Checkers>          { enum { value = RANGE_1
 // capture mechanics
 template<> struct man_capture_directions<Checkers>      { enum { value = DIRS_UP }; };
 
-}       // namespace Variants
+}       // namespace variants

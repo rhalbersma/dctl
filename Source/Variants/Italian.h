@@ -1,7 +1,7 @@
 #pragma once
 #include "Traits.h"
 
-namespace Variants {
+namespace variants {
 
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 struct Italian {};
@@ -17,4 +17,4 @@ template<> struct is_men_capture_kings<Italian>         { enum { value = false  
 template<> struct is_majority_precedence<Italian>       { enum { value = true    }; };
 template<> struct is_relative_king_precedence<Italian>  { enum { value = true    }; };
 
-}       // namespace Variants
+}       // namespace variants

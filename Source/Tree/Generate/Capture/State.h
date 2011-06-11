@@ -6,20 +6,20 @@
 #include "../../../Utilities/TemplateTricks.h"
 #include "../../../Utilities/VectorArray.h"
 
-namespace Tree {
+namespace tree {
 
-namespace Node { template<typename> class Position; }
-namespace Move { class Stack; }
+namespace node { template<typename> class Position; }
+namespace move { class Stack; }
         
-namespace Generate {
-namespace Capture {
+namespace generate {
+namespace capture {
 
 template<typename Rules, typename Board>
 class State: private Board
 {
 public:
         // constructors
-        explicit State(const Node::Position<Board>&);
+        explicit State(const node::Position<Board>&);
 
         // views
         template<size_t> BitBoard targets(void) const;
@@ -35,7 +35,7 @@ public:
         bool current_not_equal_to_best(void) const;
 
         size_t size(void) const;
-        const Node::Pieces& operator[](size_t) const;
+        const node::Pieces& operator[](size_t) const;
 
         // modifiers before a capture
         void toggle_king_targets(void);                                 // men that cannot capture kings
@@ -47,11 +47,11 @@ public:
         void finish(BitBoard);
         void make(BitBoard);
         void undo(BitBoard);
-        void improve_best(Move::Stack&);
+        void improve_best(move::Stack&);
 
         // modifiers after a capture
-        template<bool> void add_man_capture(BitBoard, Move::Stack&);
-        template<bool, size_t> void add_king_capture(BitBoard, Move::Stack&);
+        template<bool> void add_man_capture(BitBoard, move::Stack&);
+        template<bool, size_t> void add_king_capture(BitBoard, move::Stack&);
 
 private:
         BitBoard captured_targets(void) const;
@@ -64,26 +64,26 @@ private:
         template<bool> BitBoard promotions(BitBoard) const;
 
         // tag dispatching on capture removal
-        void make(BitBoard, Int2Type<Variants::REMOVE_1>);
-        void make(BitBoard, Int2Type<Variants::REMOVE_N>);
+        void make(BitBoard, Int2Type<variants::REMOVE_1>);
+        void make(BitBoard, Int2Type<variants::REMOVE_N>);
 
         // tag dispatching on capture removal
-        void undo(BitBoard, Int2Type<Variants::REMOVE_1>);
-        void undo(BitBoard, Int2Type<Variants::REMOVE_N>);
+        void undo(BitBoard, Int2Type<variants::REMOVE_1>);
+        void undo(BitBoard, Int2Type<variants::REMOVE_N>);
 
         // tag dispatching based on ambiguity of man captures
-        template<bool> void add_man_capture(BitBoard, Move::Stack&, Int2Type<false>);
-        template<bool> void add_man_capture(BitBoard, Move::Stack&, Int2Type<true>);
+        template<bool> void add_man_capture(BitBoard, move::Stack&, Int2Type<false>);
+        template<bool> void add_man_capture(BitBoard, move::Stack&, Int2Type<true>);
 
         // tag dispatching based on king halt after final capture
-        template<bool, size_t> void add_king_capture(BitBoard, Move::Stack&, Int2Type<Variants::HALT_K>);
-        template<bool, size_t> void add_king_capture(BitBoard, Move::Stack&, Int2Type<Variants::HALT_1>);
-        template<bool, size_t> void add_king_capture(BitBoard, Move::Stack&, Int2Type<Variants::HALT_N>);
+        template<bool, size_t> void add_king_capture(BitBoard, move::Stack&, Int2Type<variants::HALT_K>);
+        template<bool, size_t> void add_king_capture(BitBoard, move::Stack&, Int2Type<variants::HALT_1>);
+        template<bool, size_t> void add_king_capture(BitBoard, move::Stack&, Int2Type<variants::HALT_N>);
 
         // tag dispatching based on promotion condition
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, bool, Move::Stack&);
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Move::Stack&, Int2Type<Variants::PROMOTE_BR>);
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Move::Stack&, Int2Type<Variants::PROMOTE_EP>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, bool, move::Stack&);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, move::Stack&, Int2Type<variants::PROMOTE_BR>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, move::Stack&, Int2Type<variants::PROMOTE_EP>);
 
         // implementation
 	static const bool TOGGLE = true;
@@ -98,9 +98,9 @@ private:
         BitBoard from_sq_;                                             
 };
 
-}       // namespace Capture
-}       // namespace Generate
-}       // namespace Tree
+}       // namespace capture
+}       // namespace generate
+}       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "State.hpp"

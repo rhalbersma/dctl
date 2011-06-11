@@ -1,7 +1,7 @@
 #pragma once
 #include "Traits.h"
 
-namespace Variants {
+namespace variants {
 
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
 struct Frisian {};
@@ -20,4 +20,4 @@ template<> struct is_relative_king_precedence<Frisian>          { enum { value =
 // implementation of move generation
 template<> struct large_capture<Frisian>                        { enum { value = 3        }; };
 
-}       // namespace Variants
+}       // namespace variants

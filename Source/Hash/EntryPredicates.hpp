@@ -1,4 +1,4 @@
-namespace Hash {
+namespace hash {
 
 template<typename Entry, typename Key>
 bool key_equal_to<Entry, Key>::operator()(const Entry& entry, const Key& key) const
@@ -18,4 +18,4 @@ bool leafs_compare<Entry>::operator()(const Entry& left, const Entry& right) con
         return left.second.leafs() < right.second.leafs();
 }
 
-}       // namespace Hash
+}       // namespace hash

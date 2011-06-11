@@ -7,7 +7,7 @@
 #include <tr1/array>
 #endif
 
-template<typename T, size_t N>
+template<typename T, std::size_t N>
 class VectorArray
 {
 public:

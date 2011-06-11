@@ -1,18 +1,18 @@
 #include "Angles.h"
 
-namespace Geometry {
-namespace Squares {
+namespace geometry {
+namespace squares {
 
 // identity rotation
 template<typename In>
-struct Rotate<In, Angles::D000>
+struct Rotate<In, angles::D000>
 {
         typedef In Out;
 };
 
 // rotate 90 degrees right
 template<typename In>
-struct Rotate<In, Angles::D270>
+struct Rotate<In, angles::D270>
 {
         typedef Grid
         <
@@ -24,7 +24,7 @@ struct Rotate<In, Angles::D270>
 
 // rotate 90 degree left
 template<typename In>
-struct Rotate<In, Angles::D090>
+struct Rotate<In, angles::D090>
 {
         typedef Grid
         <
@@ -36,7 +36,7 @@ struct Rotate<In, Angles::D090>
 
 // rotate 180 degrees
 template<typename In>
-struct Rotate<In, Angles::D180>
+struct Rotate<In, angles::D180>
 {
         typedef Grid
         <
@@ -46,5 +46,5 @@ struct Rotate<In, Angles::D180>
         > Out;
 };
 
-}       // namespace Squares
-}       // namespace Geometry
+}       // namespace squares
+}       // namespace geometry

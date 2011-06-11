@@ -4,8 +4,8 @@
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 
-namespace DamExchange {
-namespace Layer1 {
+namespace damexchange {
+namespace layer1 {
 
 class Session
 {
@@ -65,5 +65,5 @@ private:
         MessageQueue write_msgs_;
 };
 
-}       // namespace Layer1
-}       // namespace DamExchange
+}       // namespace layer1
+}       // namespace damexchange

@@ -1,33 +1,35 @@
 #include "Angles.h"
 
-namespace Geometry {
-namespace Direction {
+namespace geometry {
+namespace direction {
 
 // the 8 diagonal and orthogonal direction indices for black and white to move
 template<typename Board, bool Color> 
 class Indices
 { 
 private:                        
-        enum { ANGLE = (Angles::D180 * !Color) + Board::A_PRIME };
+        enum { 
+                ANGLE = (angles::D180 * !Color) + Board::A_PRIME 
+        };
 
 public:
         enum {
-                RIGHT       = Angles::Rotate<Angles::D000, ANGLE>::VALUE,
-                RIGHT_UP    = Angles::Rotate<Angles::D045, ANGLE>::VALUE,
-                UP          = Angles::Rotate<Angles::D090, ANGLE>::VALUE,
-                LEFT_UP     = Angles::Rotate<Angles::D135, ANGLE>::VALUE,
-                LEFT        = Angles::Rotate<Angles::D180, ANGLE>::VALUE,
-                LEFT_DOWN   = Angles::Rotate<Angles::D225, ANGLE>::VALUE,
-                DOWN        = Angles::Rotate<Angles::D270, ANGLE>::VALUE,
-                RIGHT_DOWN  = Angles::Rotate<Angles::D315, ANGLE>::VALUE
+                RIGHT       = angles::Rotate<angles::D000, ANGLE>::VALUE,
+                RIGHT_UP    = angles::Rotate<angles::D045, ANGLE>::VALUE,
+                UP          = angles::Rotate<angles::D090, ANGLE>::VALUE,
+                LEFT_UP     = angles::Rotate<angles::D135, ANGLE>::VALUE,
+                LEFT        = angles::Rotate<angles::D180, ANGLE>::VALUE,
+                LEFT_DOWN   = angles::Rotate<angles::D225, ANGLE>::VALUE,
+                DOWN        = angles::Rotate<angles::D270, ANGLE>::VALUE,
+                RIGHT_DOWN  = angles::Rotate<angles::D315, ANGLE>::VALUE
         };
 };
 
-template<size_t I>
+template<int I>
 class Traits
 {
 private:
-        static const size_t I_L090 = Rotate<I>::L090;
+        static const int I_L090 = Rotate<I>::L090;
 
 public:
         // diagonality, orthogonality
@@ -46,35 +48,35 @@ public:
 };
 
 // rotated direction indices (in steps of 45 degrees anti-clockwise)
-template<size_t I>
+template<int I>
 struct Rotate
 {
         enum { 
-                I000 = Angles::Rotate<I, Angles::D000>::VALUE, 
-                L045 = Angles::Rotate<I, Angles::D045>::VALUE, 
-                L090 = Angles::Rotate<I, Angles::D090>::VALUE, 
-                L135 = Angles::Rotate<I, Angles::D135>::VALUE, 
-                I180 = Angles::Rotate<I, Angles::D180>::VALUE, 
-                R135 = Angles::Rotate<I, Angles::D225>::VALUE, 
-                R090 = Angles::Rotate<I, Angles::D270>::VALUE, 
-                R045 = Angles::Rotate<I, Angles::D315>::VALUE, 
-                I360 = Angles::Rotate<I, Angles::D360>::VALUE
+                I000 = angles::Rotate<I, angles::D000>::VALUE, 
+                L045 = angles::Rotate<I, angles::D045>::VALUE, 
+                L090 = angles::Rotate<I, angles::D090>::VALUE, 
+                L135 = angles::Rotate<I, angles::D135>::VALUE, 
+                I180 = angles::Rotate<I, angles::D180>::VALUE, 
+                R135 = angles::Rotate<I, angles::D225>::VALUE, 
+                R090 = angles::Rotate<I, angles::D270>::VALUE, 
+                R045 = angles::Rotate<I, angles::D315>::VALUE, 
+                I360 = angles::Rotate<I, angles::D360>::VALUE
         };
 };
 
 // mirrored forward direction index (orthogonal to the original)
-template<size_t I>
+template<int I>
 struct MirrorUp
 {
-        enum { VALUE = (I + Angles::D090) % Angles::D180 + (I / Angles::D180) * Angles::D180 };
+        enum { VALUE = (I + angles::D090) % angles::D180 + (I / angles::D180) * angles::D180 };
 };
 
 // mirrored backward direction index (orthogonal to the original)
-template<size_t I>
+template<int I>
 struct MirrorDown
 {
         enum { VALUE = Rotate<MirrorUp<Rotate<I>::L090>::VALUE>::R090 };
 };
 
-}       // namespace Direction
-}       // namespace Geometry
+}       // namespace direction
+}       // namespace geometry

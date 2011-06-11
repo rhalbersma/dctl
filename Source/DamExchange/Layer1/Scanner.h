@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-namespace DamExchange {
-namespace Layer1 {
+namespace damexchange {
+namespace layer1 {
 
 class Scanner
 {
@@ -31,5 +31,5 @@ private:
         std::string message_;
 };
 
-}       // namespace Layer1
-}       // namespace DamExchange
+}       // namespace layer1
+}       // namespace damexchange
