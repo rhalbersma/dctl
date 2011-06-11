@@ -2,9 +2,9 @@
 #include "../../../../Library/Source/Tree/Search/Value.h"
 #include "../../../../Library/Source/Utilities/Ply.h"
 
-namespace Tree {
-namespace Search {
-namespace Value {
+namespace tree {
+namespace search {
+namespace value {
 
 TEST(Value, IsFiniteLoss)
 {
@@ -68,6 +68,6 @@ TEST(Value, SqueezeWin)
         EXPECT_EQ(false, is_win(squeeze(win(2 * i + 1))));
 }
 
-}       // namespace Value
-}       // namespace Search
-}       // namespace Tree
+}       // namespace value
+}       // namespace search
+}       // namespace tree

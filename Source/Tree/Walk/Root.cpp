@@ -7,8 +7,8 @@
 #include "../../../../Library/Source/Geometry/Layout.h"
 #include "../../../../Library/Source/Variants/Rules.h"
 
-namespace Tree {
-namespace Walk {
+namespace tree {
+namespace walk {
 
 // The fixture for testing class SearchEndgame.
 class Perft: public ::testing::Test {
@@ -40,76 +40,76 @@ protected:
 // Objects declared here can be used by all tests in the test case for Foo.
 };
 
-#if ACCEPTANCE_TEST == 1
+#if INTEGRATION_TEST == 1
 
 // The original perft thread on the FMJD forum http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 TEST_F(Perft, International)
 {
-        std::cout << Geometry::Layout::write<Geometry::International, Geometry::Layout::Square_tag>()() << std::endl;
-        std::cout << Geometry::Layout::write<Geometry::International, Geometry::Layout::Bit_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::International, geometry::layout::Square_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::International, geometry::layout::bit_tag>()() << std::endl;
 
-        Node::Position<Geometry::International> i10 = Node::Position<Geometry::International>::initial();
-        Root::perft<Variants::International>(i10, 11);
+        node::Position<geometry::International> i10 = node::Position<geometry::International>::initial();
+        Root::perft<variants::International>(i10, 11);
 
-        Node::Position<Geometry::International> random178(Node::String::read<Geometry::International, Node::FEN_tag>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
-        Root::perft<Variants::International>(random178, 9);
+        node::Position<geometry::International> random178(node::string::read<geometry::International, node::FEN_tag>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
+        Root::perft<variants::International>(random178, 9);
 
-        Node::Position<Geometry::International> Woldouby(Node::String::read<Geometry::International, Node::FEN_tag>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
-        Root::perft<Variants::International>(Woldouby, 15);
+        node::Position<geometry::International> Woldouby(node::string::read<geometry::International, node::FEN_tag>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
+        Root::perft<variants::International>(Woldouby, 15);
 }
 
 // The rectangular board thread on the FMJD forum: http://laatste.info/bb3/viewtopic.php?f=53&t=3014
 TEST_F(Perft, Rectangular)
 {
-        std::cout << Geometry::Layout::write<Geometry::Spantsireti, Geometry::Layout::Square_tag>()() << std::endl;
-        std::cout << Geometry::Layout::write<Geometry::Spantsireti, Geometry::Layout::Bit_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::Spantsireti, geometry::layout::Square_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::Spantsireti, geometry::layout::bit_tag>()() << std::endl;
 
-        Node::Position<Geometry::Spantsireti> iS = Node::Position<Geometry::Spantsireti>::initial();
-        Root::perft<Variants::International>(iS, 9);
+        node::Position<geometry::Spantsireti> iS = node::Position<geometry::Spantsireti>::initial();
+        Root::perft<variants::International>(iS, 9);
 
-        std::cout << Geometry::Layout::write<Geometry::Ktar11, Geometry::Layout::Square_tag>()() << std::endl;
-        std::cout << Geometry::Layout::write<Geometry::Ktar11, Geometry::Layout::Bit_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::Ktar11, geometry::layout::Square_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::Ktar11, geometry::layout::bit_tag>()() << std::endl;
         
-        Node::Position<Geometry::Ktar11> iK11 = Node::Position<Geometry::Ktar11>::initial();
-        Root::perft<Variants::International>(iK11, 9);
+        node::Position<geometry::Ktar11> iK11 = node::Position<geometry::Ktar11>::initial();
+        Root::perft<variants::International>(iK11, 9);
                 
-        std::cout << Geometry::Layout::write<Geometry::Ktar12, Geometry::Layout::Square_tag>()() << std::endl;
-        std::cout << Geometry::Layout::write<Geometry::Ktar12, Geometry::Layout::Bit_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::Ktar12, geometry::layout::Square_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::Ktar12, geometry::layout::bit_tag>()() << std::endl;
         
-        Node::Position<Geometry::Ktar12> iK12 = Node::Position<Geometry::Ktar12>::initial();
-        Root::perft<Variants::International>(iK12, 9);
+        node::Position<geometry::Ktar12> iK12 = node::Position<geometry::Ktar12>::initial();
+        Root::perft<variants::International>(iK12, 9);
 }
 
 // The alternative game rules thread on the FMJD forum: http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 TEST_F(Perft, ChessVariants)
 {
-        Node::Position<Geometry::Chess> i8 = Node::Position<Geometry::Chess>::initial();
-        std::cout << Geometry::Layout::write<Geometry::Chess, Geometry::Layout::Square_tag>()() << std::endl;
+        node::Position<geometry::Chess> i8 = node::Position<geometry::Chess>::initial();
+        std::cout << geometry::layout::write<geometry::Chess, geometry::layout::Square_tag>()() << std::endl;
         
-        Root::perft<Variants::Brazilian>(i8, 13); // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
-        Root::perft<Variants::Pool>(i8, 13);      // http://shashki.com/PNphpBB2-viewtopic-t-627-start-57.html
-        Root::perft<Variants::Russian>(i8, 14);   // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
-        Root::perft<Variants::English>(i8, 14);   // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
-        Root::perft<Variants::Czech>(i8, 13);
+        Root::perft<variants::Brazilian>(i8, 13); // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
+        Root::perft<variants::Pool>(i8, 13);      // http://shashki.com/PNphpBB2-viewtopic-t-627-start-57.html
+        Root::perft<variants::Russian>(i8, 14);   // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
+        Root::perft<variants::English>(i8, 14);   // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
+        Root::perft<variants::Czech>(i8, 13);
 
-        Node::Position<Geometry::Roman> r8 = Node::Position<Geometry::Roman>::initial();
-        std::cout << Geometry::Layout::write<Geometry::Roman, Geometry::Layout::Square_tag>()() << std::endl;
+        node::Position<geometry::Roman> r8 = node::Position<geometry::Roman>::initial();
+        std::cout << geometry::layout::write<geometry::Roman, geometry::layout::Square_tag>()() << std::endl;
 
-        Root::perft<Variants::Spanish>(r8, 13);
-        Root::perft<Variants::Italian>(r8, 13);
+        Root::perft<variants::Spanish>(r8, 13);
+        Root::perft<variants::Italian>(r8, 13);
 
         // Addional Italian test positions from email conversation with Ed Gilbert
-        Node::Position<Geometry::Roman> ITA_Ed_Gilbert_2 = Node::String::read<Geometry::Roman, Node::FEN_tag>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
-        Node::Position<Geometry::Roman> ITA_Ed_Gilbert_3 = Node::String::read<Geometry::Roman, Node::FEN_tag>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
-        Root::perft<Variants::Italian>(ITA_Ed_Gilbert_2, 16);
-        Root::perft<Variants::Italian>(ITA_Ed_Gilbert_3, 12);
+        node::Position<geometry::Roman> ITA_Ed_Gilbert_2 = node::string::read<geometry::Roman, node::FEN_tag>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
+        node::Position<geometry::Roman> ITA_Ed_Gilbert_3 = node::string::read<geometry::Roman, node::FEN_tag>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
+        Root::perft<variants::Italian>(ITA_Ed_Gilbert_2, 16);
+        Root::perft<variants::Italian>(ITA_Ed_Gilbert_3, 12);
         
-        Node::Position<Geometry::Thai> t8 = Node::Position<Geometry::Thai>::initial();
-        Root::perft<Variants::Thai>(t8, 11);      // Thai initial position with 2 rows of men
-        Root::perft<Variants::Thai>(i8, 13);      // Usual initial position with 3 rows of men
+        node::Position<geometry::Thai> t8 = node::Position<geometry::Thai>::initial();
+        Root::perft<variants::Thai>(t8, 11);      // Thai initial position with 2 rows of men
+        Root::perft<variants::Thai>(i8, 13);      // Usual initial position with 3 rows of men
 }
 
 #endif
 
-}       // namespace Walk
-}       // namespace Tree
+}       // namespace walk
+}       // namespace tree

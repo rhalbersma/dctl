@@ -8,8 +8,8 @@
 #include "../../../../Library/Source/Geometry/Layout.h"
 #include "../../../../Library/Source/Variants/Rules.h"
 
-namespace Tree {
-namespace Search {
+namespace tree {
+namespace search {
 
 // The fixture for testing class SearchEndgame.
 class SearchEndgame: public ::testing::Test {
@@ -41,7 +41,7 @@ protected:
 // Objects declared here can be used by all tests in the test case for Foo.
 };
 
-#if ACCEPTANCE_TEST == 1
+#if INTEGRATION_TEST == 1
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 TEST_F(SearchEndgame, International11)
@@ -57,8 +57,8 @@ TEST_F(SearchEndgame, International11)
         };
                 
         for (size_t i = 0; i < 4; ++i) {
-                value = Root::analyze<Variants::International>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
-                EXPECT_EQ(value, Value::win(DB_win11[i].second));
+                value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
+                EXPECT_EQ(value, value::win(DB_win11[i].second));
         }
 }
 
@@ -84,8 +84,8 @@ TEST_F(SearchEndgame, International21)
         };
 
         for (size_t i = 0; i < 13; ++i) {
-                value = Root::analyze<Variants::International>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
-                EXPECT_EQ(value, Value::win(DB_win21[i].second));
+                value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
+                EXPECT_EQ(value, value::win(DB_win21[i].second));
         }
 }        
 
@@ -107,8 +107,8 @@ TEST_F(SearchEndgame, International22)
         };
 
         for (size_t i = 0; i < 9; ++i) {
-                value = Root::analyze<Variants::International>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
-                EXPECT_EQ(value, Value::win(DB_win22[i].second));
+                value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
+                EXPECT_EQ(value, value::win(DB_win22[i].second));
         }        
 }
 
@@ -137,8 +137,8 @@ TEST_F(SearchEndgame, International31)
         };
         
         for (size_t i = 0; i < 16; ++i) {
-                value = Root::analyze<Variants::International>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
-                EXPECT_EQ(value, Value::win(DB_win31[i].second));
+                value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
+                EXPECT_EQ(value, value::win(DB_win31[i].second));
         }
 }
 
@@ -156,8 +156,8 @@ TEST_F(SearchEndgame, Killer11)
         };
 
         for (size_t i = 0; i < 4; ++i) {
-                value = Root::analyze<Variants::Killer>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
-                EXPECT_EQ(value, Value::win(DB_win11[i].second));
+                value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
+                EXPECT_EQ(value, value::win(DB_win11[i].second));
         }
 }
 
@@ -184,8 +184,8 @@ TEST_F(SearchEndgame, Killer21)
         };       
         
         for (size_t i = 0; i < 14; ++i) {
-                value = Root::analyze<Variants::Killer>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
-                EXPECT_EQ(value, Value::win(DB_win21[i].second));
+                value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
+                EXPECT_EQ(value, value::win(DB_win21[i].second));
         }
 }
 
@@ -207,8 +207,8 @@ TEST_F(SearchEndgame, Killer22)
         };
 
         for (size_t i = 0; i < 9; ++i) {
-                value = Root::analyze<Variants::Killer>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
-                EXPECT_EQ(value, Value::win(DB_win22[i].second));
+                value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
+                EXPECT_EQ(value, value::win(DB_win22[i].second));
         }
 }
 
@@ -237,15 +237,15 @@ TEST_F(SearchEndgame, Killer31)
         };
         
         for (size_t i = 0; i < 16; ++i) {
-                value = Root::analyze<Variants::Killer>(Node::String::read<Geometry::International, Node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
-                EXPECT_EQ(value, Value::win(DB_win31[i].second));
+                value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
+                EXPECT_EQ(value, value::win(DB_win31[i].second));
         }
 
-        //Position<Geometry::International> Walinga(Node::String::read<FEN_tag, Geometry::International>()("W:WK46,28:BK43"));
+        //Position<geometry::International> Walinga(node::string::read<FEN_tag, geometry::International>()("W:WK46,28:BK43"));
         //Root::analyze<FrisianRules>(Walinga, 39);
 }
 
 #endif
 
-}       // namespace Search
-}       // namespace Tree
+}       // namespace search
+}       // namespace tree
