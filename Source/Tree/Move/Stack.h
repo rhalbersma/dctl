@@ -1,5 +1,5 @@
 #pragma once
-#include "Types.h"
+#include <cstddef>
 #include "../Node/Pieces.h"
 #include "../../Utilities/IntegerTypes.h"
 #include "../../Utilities/Ply.h"
@@ -9,38 +9,27 @@
 namespace tree {
 namespace move {
 
-class Stack
-{
-public:
-        // capacity
-        size_t size(void) const;
-        bool empty(void) const;
+// typedefs
+enum Type { JUMPS, MOVES };
+typedef VectorArray<size_t, PLY_MAX> Sequence;
+typedef VectorArray<size_t, MOVE_MAX> Order;
+typedef VectorArray<node::Pieces, MOVE_MAX> Stack;
 
-        // element access
-              node::Pieces& operator[](size_t);
-        const node::Pieces& operator[](size_t) const;
-              node::Pieces& top(void);
-        const node::Pieces& top(void) const;
+// element access
+Stack::reference top(Stack*);
+Stack::const_reference top(const Stack&);
 
-        // predicates
-        template<typename> bool non_unique_top(void);
+// predicates
+template<typename> bool non_unique_top(const Stack&);
+bool non_unique_top(const Stack&, Int2Type<false>);
+bool non_unique_top(const Stack&, Int2Type<true >);
 
-        // modifiers
-        template<bool> void push(BitBoard);                                             // king move
-        template<bool> void push(BitBoard, BitBoard);                                   // man move
-        template<bool, typename> void push(BitBoard, BitBoard, BitBoard);               // king capture
-        template<bool, typename> void push(BitBoard, BitBoard, BitBoard, BitBoard);     // man capture
-        void pop(void);
-        void clear(void);
-
-private:
-        // implementation
-        bool non_unique_top(Int2Type<false>);
-        bool non_unique_top(Int2Type<true >);
-
-        // representation
-        VectorArray<node::Pieces, MOVE_MAX> vector_array_;
-};
+// modifiers
+template<bool> void push(BitBoard, Stack*);                                             // add a king move
+template<bool> void push(BitBoard, BitBoard, Stack*);                                   // add a man move
+template<bool, typename> void push(BitBoard, BitBoard, BitBoard, Stack*);               // add a king capture
+template<bool, typename> void push(BitBoard, BitBoard, BitBoard, BitBoard, Stack*);     // add a man capture
+void pop(Stack*);                                                                       // remove the last move  
 
 }       // namespace move
 }       // namespace tree

@@ -12,13 +12,13 @@ namespace tree {
 namespace walk {
 
 template<typename Rules, typename Board>
-NodeCount Root::perft(const node::Position<Board>& p, size_t nominal_depth)
+NodeCount Root::perft(const node::Position<Board>& p, int nominal_depth)
 {
         NodeCount leafs = 0;
         
         Timer timer;
         announce(p, nominal_depth);
-        for (size_t depth = 1; depth <= nominal_depth; ++depth) {                        
+        for (int depth = 1; depth <= nominal_depth; ++depth) {                        
                 statistics_.reset();
                 leafs = driver<Rules>(p, 0, depth);
                 timer.split();
@@ -29,14 +29,14 @@ NodeCount Root::perft(const node::Position<Board>& p, size_t nominal_depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::divide(const node::Position<Board>& p, size_t nominal_depth)
+NodeCount Root::divide(const node::Position<Board>& p, int nominal_depth)
 {
         NodeCount leafs = 0;
         NodeCount move_leafs;                
         
         Timer timer;
         move::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        generate::Successors<Rules, Board>::generate(p, &move_stack);
 
         announce(p, nominal_depth, move_stack.size());
         node::Position<Board> q;
@@ -57,13 +57,13 @@ NodeCount Root::divide(const node::Position<Board>& p, size_t nominal_depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::driver(const node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::driver(const node::Position<Board>& p, int ply, int depth)
 {
         return (depth == 0)? leaf<Rules>(p, ply, depth) : fast<Rules>(p, ply, depth);
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::leaf(const node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::leaf(const node::Position<Board>& p, int ply, int depth)
 {        
         statistics_.update(ply);
 
@@ -71,7 +71,7 @@ NodeCount Root::leaf(const node::Position<Board>& p, size_t ply, size_t depth)
                 return 1;
 
         move::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        generate::Successors<Rules, Board>::generate(p, &move_stack);
         NodeCount leafs = 0;        
         node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
@@ -82,12 +82,12 @@ NodeCount Root::leaf(const node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::bulk(const node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::bulk(const node::Position<Board>& p, int ply, int depth)
 {
         statistics_.update(ply);
 
         move::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        generate::Successors<Rules, Board>::generate(p, &move_stack);
         if (depth == 1)
                 return move_stack.size();
         
@@ -101,7 +101,7 @@ NodeCount Root::bulk(const node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::count(const node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::count(const node::Position<Board>& p, int ply, int depth)
 {
         statistics_.update(ply);
 
@@ -109,7 +109,7 @@ NodeCount Root::count(const node::Position<Board>& p, size_t ply, size_t depth)
                 return generate::Successors<Rules, Board>::count(p);
 
         move::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        generate::Successors<Rules, Board>::generate(p, &move_stack);
         NodeCount leafs = 0;
         node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
@@ -120,7 +120,7 @@ NodeCount Root::count(const node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::hash(const node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::hash(const node::Position<Board>& p, int ply, int depth)
 {
         statistics_.update(ply);
 
@@ -132,7 +132,7 @@ NodeCount Root::hash(const node::Position<Board>& p, size_t ply, size_t depth)
                 return 1;
 
         move::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        generate::Successors<Rules, Board>::generate(p, &move_stack);
         NodeCount leafs = 0;
         node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
@@ -145,7 +145,7 @@ NodeCount Root::hash(const node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Rules, typename Board>
-NodeCount Root::fast(const node::Position<Board>& p, size_t ply, size_t depth)
+NodeCount Root::fast(const node::Position<Board>& p, int ply, int depth)
 {
         statistics_.update(ply);
 
@@ -158,7 +158,7 @@ NodeCount Root::fast(const node::Position<Board>& p, size_t ply, size_t depth)
                 leafs = generate::Successors<Rules, Board>::count(p);
         else {
                 move::Stack move_stack;
-                generate::Successors<Rules, Board>::generate(p, move_stack);
+                generate::Successors<Rules, Board>::generate(p, &move_stack);
                 leafs = 0;
                 node::Position<Board> q;
                 for (size_t i = 0; i < move_stack.size(); ++i) {
@@ -172,7 +172,7 @@ NodeCount Root::fast(const node::Position<Board>& p, size_t ply, size_t depth)
 }
 
 template<typename Board>
-void Root::announce(const node::Position<Board>& p, size_t nominal_depth)
+void Root::announce(const node::Position<Board>& p, int nominal_depth)
 {        
         std::cout << node::layout::write<node::FEN_tag>()(p) << std::endl;
         std::cout << node::string::write<node::FEN_tag>()(p) << std::endl << std::endl;
@@ -181,7 +181,7 @@ void Root::announce(const node::Position<Board>& p, size_t nominal_depth)
 }
 
 template<typename Board>
-void Root::announce(const node::Position<Board>& p, size_t nominal_depth, size_t num_moves)
+void Root::announce(const node::Position<Board>& p, int nominal_depth, int num_moves)
 {
         announce(p, nominal_depth);
         std::cout << "Found " << num_moves << " move_stack, searching each to nominal depth=" << nominal_depth - 1 << std::endl;

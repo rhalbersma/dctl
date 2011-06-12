@@ -4,14 +4,14 @@ namespace tree {
 namespace generate {
 
 template<bool Color, int Material, move::Type MoveType, typename Rules, typename Board>
-void Template<Color, Material, MoveType, Rules, Board>::generate(const node::Position<Board>&, move::Stack&) 
+void Template<Color, Material, MoveType, Rules, Board>::generate(const node::Position<Board>&, move::Stack*) 
 { 
         static_assert(Material == node::Pieces::NONE, "Template function already defined.");
         return;
 }
 
 template<bool Color, int Material, move::Type MoveType, typename Rules, typename Board>
-void Template<Color, Material, MoveType, Rules, Board>::generate_promotions(const node::Position<Board>&, move::Stack&) 
+void Template<Color, Material, MoveType, Rules, Board>::generate_promotions(const node::Position<Board>&, move::Stack*) 
 { 
         static_assert(Material == node::Pieces::NONE, "Template function already defined.");
         return;

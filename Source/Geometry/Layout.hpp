@@ -23,7 +23,7 @@ struct write<Board, Square_tag>
         {
 	        std::stringstream sstr;
 
-                for (size_t sq = 0; is_valid<Board>(sq); ++sq) {
+                for (int sq = 0; is_valid<Board>(sq); ++sq) {
                         if (is_indent_row<Board>(sq))
                                 sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 

@@ -58,9 +58,6 @@
     <Filter Include="Header Files\Tree">
       <UniqueIdentifier>{5f64f8a6-f373-41d8-8b4a-b42fccb05f78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Tree\Walk">
-      <UniqueIdentifier>{08df25bd-c71b-4435-aa40-8daf348bcfaf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Tree">
       <UniqueIdentifier>{efbf656c-5ae8-4105-a3ba-822108322acc}</UniqueIdentifier>
     </Filter>
@@ -117,6 +114,9 @@
     </Filter>
     <Filter Include="Header Files\Hash\Jenkins">
       <UniqueIdentifier>{3240917a-3615-4230-9768-71ef1284badf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tree\Walk">
+      <UniqueIdentifier>{08df25bd-c71b-4435-aa40-8daf348bcfaf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -235,9 +235,6 @@
       <Filter>Header Files\DamExchange\Layer2</Filter>
     </ClInclude>
     <ClInclude Include="Source\DamExchange\Layer2\Parser.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\DamExchange\Layer2\AbstractMessage.h">
       <Filter>Header Files\DamExchange\Layer2</Filter>
     </ClInclude>
     <ClInclude Include="Source\DamExchange\Layer2\BackAcknowledge.h">
@@ -393,16 +390,10 @@
     <ClInclude Include="Source\Tree\Walk\Entry.h">
       <Filter>Header Files\Tree\Walk</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tree\Move\Types.h">
-      <Filter>Header Files\Tree\Move</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Tree\Move\Predicates.h">
       <Filter>Header Files\Tree\Move</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tree\Move\Protocol.h">
-      <Filter>Header Files\Tree\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Tree\Move\Stack.h">
       <Filter>Header Files\Tree\Move</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tree\Move\String.h">
@@ -415,9 +406,6 @@
       <Filter>Source Files\Tree\Move</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tree\Move\Predicates.hpp">
-      <Filter>Source Files\Tree\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Tree\Move\Stack.hpp">
       <Filter>Source Files\Tree\Move</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tree\Node\Side.h">
@@ -561,6 +549,15 @@
     <ClInclude Include="Source\Tree\Generate\Template.hpp">
       <Filter>Source Files\Tree\Generate</Filter>
     </ClInclude>
+    <ClInclude Include="Source\DamExchange\Layer2\MessageInterface.h">
+      <Filter>Header Files\DamExchange\Layer2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Stack.hpp">
+      <Filter>Source Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Stack.h">
+      <Filter>Header Files\Tree\Move</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Utilities\UniqueNumber.cpp">
@@ -580,9 +577,6 @@
     </ClCompile>
     <ClCompile Include="Source\Utilities\DeBruijn.cpp">
       <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\DamExchange\Layer2\AbstractMessage.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
     </ClCompile>
     <ClCompile Include="Source\DamExchange\Layer2\BackAcknowledge.cpp">
       <Filter>Source Files\DamExchange\Layer2</Filter>
@@ -638,14 +632,17 @@
     <ClCompile Include="Source\Tree\Move\Predicates.cpp">
       <Filter>Source Files\Tree\Move</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Tree\Move\Stack.cpp">
-      <Filter>Source Files\Tree\Move</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Tree\Node\Pieces.cpp">
       <Filter>Source Files\Tree\Node</Filter>
     </ClCompile>
     <ClCompile Include="Source\Utilities\Timer.cpp">
       <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DamExchange\Layer2\MessageInterface.cpp">
+      <Filter>Source Files\DamExchange\Layer2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Move\Stack.cpp">
+      <Filter>Source Files\Tree\Move</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

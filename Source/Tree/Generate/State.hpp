@@ -10,21 +10,21 @@ namespace tree {
 namespace generate {
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void State<Color, Material, Rules, Board>::generate(const node::Position<Board>& p, move::Stack& move_stack) const 
+void State<Color, Material, Rules, Board>::generate(const node::Position<Board>& p, move::Stack* move_stack) const 
 {
         Template<Color, Material, move::JUMPS, Rules, Board>::generate(p, move_stack);
-        if (!move_stack.size())
+        if (move_stack->empty())
                 Template<Color, Material, move::MOVES, Rules, Board>::generate(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void State<Color, Material, Rules, Board>::generate_captures(const node::Position<Board>& p, move::Stack& move_stack) const 
+void State<Color, Material, Rules, Board>::generate_captures(const node::Position<Board>& p, move::Stack* move_stack) const 
 { 
         Template<Color, Material, move::JUMPS, Rules, Board>::generate(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void State<Color, Material, Rules, Board>::generate_promotions(const node::Position<Board>& p, move::Stack& move_stack) const 
+void State<Color, Material, Rules, Board>::generate_promotions(const node::Position<Board>& p, move::Stack* move_stack) const 
 { 
         Template<Color, Material, move::MOVES, Rules, Board>::generate_promotions(p, move_stack);
 }

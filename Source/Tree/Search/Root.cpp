@@ -7,7 +7,7 @@
 tree::search::Root::TranspositionTable tree::search::Root::TT(10);
 tree::Statistics tree::search::Root::statistics_;
 
-void tree::search::Root::report(size_t nominal_ply, int value, const Timer& timer)
+void tree::search::Root::report(int nominal_ply, int value, const Timer& timer)
 {
         double speed = (statistics_.nodes() / 1e6) / timer.lap();
         double average_ply = static_cast<double>(statistics_.sum_ply()) / statistics_.nodes();
@@ -40,7 +40,7 @@ void tree::search::Root::identity_permutation(move::Order& permutation)
         std::generate(permutation.begin(), permutation.end(), unique_number);
 }
 
-bool tree::search::Root::is_PV(size_t node)
+bool tree::search::Root::is_PV(int node)
 {
         return node == PV;
 }

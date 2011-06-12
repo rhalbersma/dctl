@@ -1,12 +1,11 @@
 #pragma once
 #include "Template.h"
-#include "../Move/Types.h"
+#include "../Move/Stack.h"
 #include "../../Utilities/IntegerTypes.h"
 
 namespace tree {
 
 namespace node { template<typename> class Position; }
-namespace move { class Stack; }
 
 namespace generate {
 
@@ -14,8 +13,8 @@ template<bool Color, typename Rules, typename Board>
 class Template<Color, node::Pieces::BOTH, move::MOVES, Rules, Board>
 {
 public:
-        static void generate(const node::Position<Board>&, move::Stack&);
-        static void generate_promotions(const node::Position<Board>&, move::Stack&);
+        static void generate(const node::Position<Board>&, move::Stack*);
+        static void generate_promotions(const node::Position<Board>&, move::Stack*);
 
         static size_t count(const node::Position<Board>&);
         static size_t count_promotions(const node::Position<Board>&);

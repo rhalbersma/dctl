@@ -4,20 +4,20 @@ namespace tree {
 namespace generate {
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate(const node::Position<Board>& p, move::Stack& move_stack)
+void Successors<Rules, Board>::generate(const node::Position<Board>& p, move::Stack* move_stack)
 {
         select(p)->generate(p, move_stack);
         assert(invariant(p, move_stack.size()));
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_captures(const node::Position<Board>& p, move::Stack& move_stack)
+void Successors<Rules, Board>::generate_captures(const node::Position<Board>& p, move::Stack* move_stack)
 {
         select(p)->generate_captures(p, move_stack);
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_promotions(const node::Position<Board>& p, move::Stack& move_stack)
+void Successors<Rules, Board>::generate_promotions(const node::Position<Board>& p, move::Stack* move_stack)
 {
         select(p)->generate_promotions(p, move_stack);
 }

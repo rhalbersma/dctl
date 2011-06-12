@@ -17,24 +17,24 @@ namespace walk {
 class Root
 {
 public:
-        template<typename, typename B> static NodeCount perft(const node::Position<B>&, size_t);
-        template<typename, typename B> static NodeCount divide(const node::Position<B>&, size_t);
+        template<typename, typename B> static NodeCount perft(const node::Position<B>&, int);
+        template<typename, typename B> static NodeCount divide(const node::Position<B>&, int);
 
 private:
-        template<typename B> static void announce(const node::Position<B>&, size_t);
-        template<typename B> static void announce(const node::Position<B>&, size_t, size_t);
+        template<typename B> static void announce(const node::Position<B>&, int);
+        template<typename B> static void announce(const node::Position<B>&, int, int);
 
-        static void report(size_t, NodeCount, const Timer&);
+        static void report(int, NodeCount, const Timer&);
         static void summary(void);
         static void summary(NodeCount);
-        static void print_move(const std::string&, size_t);
+        static void print_move(const std::string&, int);
 
-        template<typename, typename B> static NodeCount driver(const node::Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount leaf(const node::Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount bulk(const node::Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount count(const node::Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount hash(const node::Position<B>&, size_t, size_t);
-        template<typename, typename B> static NodeCount fast(const node::Position<B>&, size_t, size_t);
+        template<typename, typename B> static NodeCount driver(const node::Position<B>&, int, int);
+        template<typename, typename B> static NodeCount leaf(const node::Position<B>&, int, int);
+        template<typename, typename B> static NodeCount bulk(const node::Position<B>&, int, int);
+        template<typename, typename B> static NodeCount count(const node::Position<B>&, int, int);
+        template<typename, typename B> static NodeCount hash(const node::Position<B>&, int, int);
+        template<typename, typename B> static NodeCount fast(const node::Position<B>&, int, int);
         
         // 32-byte hash entries: 24-byte piece lists signature, 8-byte (59-bit leafs, 5-bit depth) content
         // 2-way buckets on 64-byte cache lines, 2 * 2^23 buckets (= 1 Gb)

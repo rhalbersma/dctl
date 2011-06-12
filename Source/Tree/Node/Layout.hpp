@@ -12,7 +12,7 @@ namespace layout {
 template<typename Protocol, typename Token> template<typename Board>
 std::string write<Protocol, Token>::operator()(const Position<Board>& p) const
 {
-        return geometry::layout::write<Board, geometry::layout::bit_tag>()(std::bind(bit_content<Token>, p.pieces(), std::placeholders::_1));
+        return geometry::layout::write<Board, geometry::layout::Bit_tag>()(std::bind(bit_content<Token>, p.pieces(), std::placeholders::_1));
 }
 
 template<typename Token>

@@ -135,7 +135,7 @@
     <ClInclude Include="Source\CheckerBoard\CheckerBoardAPI.h" />
     <ClInclude Include="Source\DamExchange\Layer1\Session.h" />
     <ClInclude Include="Source\DamExchange\Layer1\Scanner.h" />
-    <ClInclude Include="Source\DamExchange\Layer2\AbstractMessage.h" />
+    <ClInclude Include="Source\DamExchange\Layer2\MessageInterface.h" />
     <ClInclude Include="Source\DamExchange\Layer2\BackAcknowledge.h" />
     <ClInclude Include="Source\DamExchange\Layer2\BackRequest.h" />
     <ClInclude Include="Source\DamExchange\Layer2\Chat.h" />
@@ -221,12 +221,11 @@
     <ClInclude Include="Source\Tree\Move\Predicates.h" />
     <ClInclude Include="Source\Tree\Move\Predicates.hpp" />
     <ClInclude Include="Source\Tree\Move\Protocol.h" />
-    <ClInclude Include="Source\Tree\Move\Stack.h" />
     <ClInclude Include="Source\Tree\Move\Stack.hpp" />
     <ClInclude Include="Source\Tree\Move\String.h" />
     <ClInclude Include="Source\Tree\Move\String.hpp" />
     <ClInclude Include="Source\Tree\Move\Token.h" />
-    <ClInclude Include="Source\Tree\Move\Types.h" />
+    <ClInclude Include="Source\Tree\Move\Stack.h" />
     <ClInclude Include="Source\Tree\Node\Layout.hpp" />
     <ClInclude Include="Source\Tree\Node\Protocol.h" />
     <ClInclude Include="Source\Tree\Node\Layout.h" />
@@ -284,7 +283,7 @@
     <ClCompile Include="Source\CheckerBoard\CheckerBoardAPI.cpp" />
     <ClCompile Include="Source\DamExchange\Layer1\Session.cpp" />
     <ClCompile Include="Source\DamExchange\Layer1\Scanner.cpp" />
-    <ClCompile Include="Source\DamExchange\Layer2\AbstractMessage.cpp" />
+    <ClCompile Include="Source\DamExchange\Layer2\MessageInterface.cpp" />
     <ClCompile Include="Source\DamExchange\Layer2\BackAcknowledge.cpp" />
     <ClCompile Include="Source\DamExchange\Layer2\BackRequest.cpp" />
     <ClCompile Include="Source\DamExchange\Layer2\Chat.cpp" />
