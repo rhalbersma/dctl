@@ -18,7 +18,7 @@ const char DXP::layer2::GameRequest::SETUP[2] = {
 
 const bool DXP::layer2::GameRequest::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::layer2::AbstractMessage> DXP::layer2::GameRequest::create(const std::string& msg)
+std::shared_ptr<DXP::layer2::MessageInterface> DXP::layer2::GameRequest::create(const std::string& msg)
 {
         return std::make_shared<GameRequest>(msg);
 }

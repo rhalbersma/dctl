@@ -1,5 +1,5 @@
 #pragma once
-#include "../Move/Types.h"
+#include "../Move/Stack.h"
 
 namespace node { template<typename> class Position; }
 

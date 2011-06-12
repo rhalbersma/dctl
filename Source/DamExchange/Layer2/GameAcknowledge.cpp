@@ -11,7 +11,7 @@ const std::string DXP::layer2::GameAcknowledge::HEADER = "A";
 
 const bool DXP::layer2::GameAcknowledge::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::layer2::AbstractMessage> DXP::layer2::GameAcknowledge::create(const std::string& msg)
+std::shared_ptr<DXP::layer2::MessageInterface> DXP::layer2::GameAcknowledge::create(const std::string& msg)
 {
         return std::make_shared<GameAcknowledge>(msg);
 }

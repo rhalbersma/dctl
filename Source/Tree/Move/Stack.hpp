@@ -6,32 +6,32 @@ namespace move {
 
 // tag dispatching based on duplicate capture checking
 template<typename Rules>
-bool Stack::non_unique_top(void)
+bool non_unique_top(const Stack& stack)
 {
-        return non_unique_top(Int2Type<variants::is_check_capture_uniqueness<Rules>::value>());
+        return non_unique_top(stack, Int2Type<variants::is_check_capture_uniqueness<Rules>::value>());
 }
 
 // add a king move
 template<bool Color>
-void Stack::push(BitBoard delta)
+void push(BitBoard delta, Stack* stack)
 {
         // necessary pre-conditions for king move semantics
         assert(bit::is_double(delta));
 
-        vector_array_.increment_size();
-        top().init<Color>(
+        stack->increment_size();
+        top(stack).init<Color>(
                 delta,                          // move a king between the from and destination squares
                 0,
                 delta                           // move a king between the from and destination squares
         );
                 
         // post-condtions are the pieces invariant 
-        assert(top().invariant());
+        assert(top(stack).invariant());
 }
 
 // add a man move
 template<bool Color>
-void Stack::push(BitBoard delta, BitBoard promotion)
+void push(BitBoard delta, BitBoard promotion, Stack* stack)
 {
         // necessary pre-conditions for the pieces invariant
         assert(bit::is_within(promotion, delta));
@@ -40,20 +40,20 @@ void Stack::push(BitBoard delta, BitBoard promotion)
         assert(bit::is_double(delta));
         assert(!bit::is_multiple(promotion));
 
-        vector_array_.increment_size();
-        top().init<Color>(
+        stack->increment_size();
+        top(stack).init<Color>(
                 delta,                          // move a man between the from and destination squares
                 0,
                 promotion                       // crown a king on the back row
         );
 
         // post-conditions are the pieces invariant 
-        assert(top().invariant());
+        assert(top(stack).invariant());
 }
 
 // add a king capture
 template<bool Color, typename Rules>
-void Stack::push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
+void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Stack* stack)
 {
         // necessary pre-conditions for the pieces invariant 
         assert(
@@ -68,8 +68,8 @@ void Stack::push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kin
         assert(bit::is_double(delta) || bit::is_zero(delta));
         assert(!bit::is_zero(captured_pieces));
 
-        vector_array_.increment_size();
-        top().init<Color>(
+        stack->increment_size();
+        top(stack).init<Color>(
                 delta,                          // move a king between the from and destination square
                 captured_pieces,                // remove the captured pieces
                 delta ^ captured_kings          // move a king and remove the captured kings
@@ -78,18 +78,18 @@ void Stack::push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kin
         // post-conditions are the pieces invariants                        
         assert(
                 (
-                        bit::is_exclusive(top().pieces(node::Side::BLACK), top().pieces(node::Side::WHITE)) ||
+                        bit::is_exclusive(top(stack).pieces(node::Side::BLACK), top(stack).pieces(node::Side::WHITE)) ||
 
                         // EXCEPTION: for intersecting captures, WHITE and BLACK pieces() overlap
                         is_intersecting_capture<Rules>(delta, captured_pieces)
                 ) &&
-                bit::is_within(top().kings(), top().occupied())
+                bit::is_within(top(stack).kings(), top(stack).occupied())
         );
 }
 
 // add a man capture
 template<bool Color, typename Rules>
-void Stack::push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
+void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings, Stack* stack)
 {
         // necessary pre-conditions for the pieces invariant
         assert(bit::is_exclusive(delta, captured_pieces));
@@ -106,8 +106,8 @@ void Stack::push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, B
         assert(!bit::is_multiple(promotion));
         assert(!bit::is_zero(captured_pieces));
 
-        vector_array_.increment_size();
-        top().init<Color>(
+        stack->increment_size();
+        top(stack).init<Color>(
                 delta,                          // move a man between the from and destination squares
                 captured_pieces,                // remove the captured pieces
                 promotion ^ captured_kings      // crown a king and remove the captured kings
@@ -115,9 +115,9 @@ void Stack::push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, B
 
         // post-conditions are the pieces invariants                        
         assert(
-                bit::is_exclusive(top().pieces(node::Side::BLACK), top().pieces(node::Side::WHITE)) &&
+                bit::is_exclusive(top(stack).pieces(node::Side::BLACK), top(stack).pieces(node::Side::WHITE)) &&
                 (
-                        bit::is_within(top().kings(), top().occupied()) ||
+                        bit::is_within(top(stack).kings(), top(stack).occupied()) ||
 
                         // EXCEPTION: for intersecting promotions, kings() is non-empty, and occupied() is empty
                         is_intersecting_promotion<Rules>(promotion, delta)

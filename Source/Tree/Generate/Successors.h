@@ -1,13 +1,13 @@
 #pragma once
 #include <cstddef>
 #include "State.h"
+#include "../Move/Stack.h"
 #include "../Node/Pieces.h"
 #include "../Node/Side.h"
 
 namespace tree {
 
 namespace node { template<typename> class Position; }
-namespace move { class Stack; }
 
 namespace generate {
         
@@ -16,9 +16,9 @@ class Successors
 {
 public:
         // interface
-        static void generate(const node::Position<Board>&, move::Stack&);
-        static void generate_captures(const node::Position<Board>&, move::Stack&);
-        static void generate_promotions(const node::Position<Board>&, move::Stack&);
+        static void generate(const node::Position<Board>&, move::Stack*);
+        static void generate_captures(const node::Position<Board>&, move::Stack*);
+        static void generate_promotions(const node::Position<Board>&, move::Stack*);
 
         static size_t count(const node::Position<Board>&);
         static size_t count_captures(const node::Position<Board>&);

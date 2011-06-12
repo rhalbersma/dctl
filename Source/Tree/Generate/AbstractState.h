@@ -1,10 +1,10 @@
 #pragma once
 #include <cstddef>
+#include "../Move/Stack.h"
 
 namespace tree {
 
 namespace node { template<typename> class Position; }
-namespace move { class Stack; }
 
 namespace generate {
 
@@ -13,9 +13,9 @@ class AbstractState
 {
 public:
         // interface
-        virtual void generate(const node::Position<Board>&, move::Stack&) const = 0;
-        virtual void generate_captures(const node::Position<Board>&, move::Stack&) const = 0;
-        virtual void generate_promotions(const node::Position<Board>&, move::Stack&) const = 0;
+        virtual void generate(const node::Position<Board>&, move::Stack*) const = 0;
+        virtual void generate_captures(const node::Position<Board>&, move::Stack*) const = 0;
+        virtual void generate_promotions(const node::Position<Board>&, move::Stack*) const = 0;
 
         virtual size_t count(const node::Position<Board>&) const = 0;
         virtual size_t count_captures(const node::Position<Board>&) const = 0;

@@ -64,7 +64,7 @@ private:
 
         typedef std::pair<Key, Value> Entry;
         static const size_t ASSOCIATIVITY = CACHE_LINE / sizeof(Entry);
-        typedef std::tr1::array<Entry, ASSOCIATIVITY> Bucket;
+        typedef std::array<Entry, ASSOCIATIVITY> Bucket;
 
         // representation
         std::vector<Bucket> map_;

@@ -38,7 +38,7 @@ void DeBruijn<N>::generate_table(void)
         const T sequence = generate_sequence();
 
         size_t table[POW2N];
-        for (size_t i = 0; i < POW2N; ++i)
+        for (int i = 0; i < POW2N; ++i)
                 table[((sequence << i) >> SHIFT) & MASK] = i;
 
         std::cout << "template<>" << std::endl;
@@ -48,9 +48,9 @@ void DeBruijn<N>::generate_table(void)
         
         std::cout << "template<>" << std::endl;
         std::cout << "const size_t DeBruijn<" << N << ">::TABLE[] = {" << std::endl;
-        for (size_t i = 0; i < POW2N; ++i) {
+        for (int i = 0; i < POW2N; ++i) {
                 if (i % 8 == 0)
-                        for (size_t j = 0; j < 8; ++j)
+                        for (int j = 0; j < 8; ++j)
                                 std::cout << " ";
                 std::cout << std::dec << std::setw(2) << std::setfill(' ') << table[i];
                 if (i != POW2N - 1)

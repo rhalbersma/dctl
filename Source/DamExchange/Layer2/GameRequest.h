@@ -2,12 +2,12 @@
 #include <cstddef>
 #include <memory>
 #include <string>
-#include "AbstractMessage.h"
+#include "MessageInterface.h"
 
 namespace damexchange {
 namespace layer2 {
 
-class GameRequest: public AbstractMessage
+class GameRequest: public MessageInterface
 {
 public:
         // constructors
@@ -27,7 +27,7 @@ private:
         virtual std::string header(void) const;
         virtual std::string body(void) const;
 
-        static std::shared_ptr<AbstractMessage> create(const std::string&);
+        static std::shared_ptr<MessageInterface> create(const std::string&);
         static const std::string HEADER;
         static const size_t PROTOCOL_VERSION = 1;
         static const bool REGISTERED;

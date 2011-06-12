@@ -9,7 +9,7 @@ using value::squeeze;
 
 // iterative deepening with no move ordering at the root
 template<typename Rules, typename Board>
-int Root::iterative_deepening(const node::Position<Board>& p, size_t nominal_depth)
+int Root::iterative_deepening(const node::Position<Board>& p, int nominal_depth)
 {
         int value = -value::infinity();                
         int alpha, beta;
@@ -17,11 +17,11 @@ int Root::iterative_deepening(const node::Position<Board>& p, size_t nominal_dep
         Parameters root_node;       
         Timer timer;
         announce(p, nominal_depth);
-        for (size_t depth = 1; depth <= nominal_depth; depth += ROOT_ID_INCREMENT) {
+        for (int depth = 1; depth <= nominal_depth; depth += ROOT_ID_INCREMENT) {
                 statistics_.reset();
                 alpha = -value::infinity();
                 beta = value::infinity();
-                value = search<PV, Rules>(p, 0, depth, alpha, beta, root_node);
+                value = pvs<PV, Rules>(p, 0, depth, alpha, beta, root_node);
                 timer.split();
                 report(depth, value, timer);
                 print_PV<Rules>(p, root_node.PV());
@@ -32,8 +32,8 @@ int Root::iterative_deepening(const node::Position<Board>& p, size_t nominal_dep
 }
 
 // principal variation search (PVS)
-template<size_t ThisNode, typename Rules, typename Board>
-int Root::search(const node::Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
+template<int ThisNode, typename Rules, typename Board>
+int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
         
@@ -69,10 +69,10 @@ int Root::search(const node::Position<Board>& p, size_t ply, int depth, int alph
 
         // generate moves
         move::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        generate::Successors<Rules, Board>::generate(p, &move_stack);
 
         // without a valid move, the position is an immediate loss
-        if (!move_stack.size()) {
+        if (move_stack.empty()) {
                 const int loss_score = value::loss(0);
 
                 // we can only have an upper bound or an exact value at this point
@@ -87,7 +87,7 @@ int Root::search(const node::Position<Board>& p, size_t ply, int depth, int alph
         if (!(TT_entry && TT_entry->has_move())) {
                 const int IID_depth = is_PV(ThisNode)? depth - 2 : depth / 2;
                 if (IID_depth > 0) {
-                        search<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
+                        pvs<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
                         TT_entry = TT.find(p);
                         assert(TT_entry);
                 }
@@ -119,13 +119,13 @@ int Root::search(const node::Position<Board>& p, size_t ply, int depth, int alph
                 q.template copy_make<Rules>(p, move_stack[i]);
 
                 if (is_PV(ThisNode) && s == 0)
-                        score = -squeeze(search<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                        score = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 else {
                         // TODO: late move reductions
 
-                        score = -squeeze(search<ZW, Rules>(q, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
+                        score = -squeeze(pvs<ZW, Rules>(q, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
                         if (is_PV(ThisNode) && score > alpha && score < beta)
-                                score = -squeeze(search<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                                score = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 }
 
                 if (score > value) {
@@ -155,7 +155,7 @@ int Root::search(const node::Position<Board>& p, size_t ply, int depth, int alph
 /*
 // principal variation search (PVS) with TT cut-offs, TT move ordering and IID
 template<size_t Entry, typename Rules, typename Board>
-int Root::quiescence(const node::Position<Board>& p, size_t ply, int depth, int alpha, int beta, Parameters& parent_node)
+int Root::quiescence(const node::Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 
@@ -172,7 +172,7 @@ int Root::quiescence(const node::Position<Board>& p, size_t ply, int depth, int 
         move::Stack move_stack;
         generate::generate_captures_promotions(p, move_stack);
 
-        if (!move_stack.size())
+        if (move_stack.empty())
         {
                 if (generate::detect_pending_captures_promotions(p)) {
 
@@ -187,7 +187,7 @@ int Root::quiescence(const node::Position<Board>& p, size_t ply, int depth, int 
 
 // negamax
 template<typename Rules, typename Board>
-int Root::negamax(const node::Position<Board>& p, size_t ply, size_t depth, Parameters& parent_node)
+int Root::negamax(const node::Position<Board>& p, int ply, int depth, Parameters& parent_node)
 {
         statistics_.update(ply);
 
@@ -224,7 +224,7 @@ int Root::negamax(const node::Position<Board>& p, size_t ply, size_t depth, Para
 
 // alpha-beta
 template<typename Rules, typename Board>
-int Root::alpha_beta(const node::Position<Board>& p, size_t ply, size_t depth, int alpha, int beta, Parameters& parent_node)
+int Root::alpha_beta(const node::Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 

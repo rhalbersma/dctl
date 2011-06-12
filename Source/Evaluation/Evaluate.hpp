@@ -75,7 +75,7 @@ template<bool Color, typename Board>
 int Evaluate::tempo(const tree::node::Position<Board>& p)
 {
         size_t score = 0;
-        for (size_t i = 1; i < Board::HEIGHT; ++i)
+        for (int i = 1; i < Board::HEIGHT; ++i)
                 score += EvaluateWeight::TEMPO[i] * bit::count(p.pieces(Color) & Board::ROW_MASK[Color][i]);
         return score;
 }
@@ -84,7 +84,7 @@ template<bool Color, typename Board>
 int Evaluate::center(const tree::node::Position<Board>& p)
 {
         size_t score = 0;
-        for (size_t i = 1; i < Board::WIDTH / 2; ++i)
+        for (int i = 1; i < Board::WIDTH / 2; ++i)
                 score += EvaluateWeight::CENTER[i] *
                 (
                         bit::count(p.pieces(Color) & Board::COL_MASK[ Color][i]) +
@@ -97,7 +97,7 @@ template<bool Color, typename Board>
 int Evaluate::balance(const tree::node::Position<Board>& p)
 {
         int score = 0;
-        for (size_t i = 0; i < Board::WIDTH / 2; ++i)
+        for (int i = 0; i < Board::WIDTH / 2; ++i)
                 score += EvaluateWeight::BALANCE[i] *
                 (
                         bit::count(p.pieces(Color) & Board::COL_MASK[ Color][i]) -
@@ -116,7 +116,7 @@ template<typename Board>
 void Evaluate::print_break_down(const tree::node::Position<Board>& p)
 {
         std::cout << "Term    " << " BLACK"                                 << " WHITE"                                 << " DELTA"                                       << std::endl;
-        for (size_t i = 0; i < 26; ++i)
+        for (int i = 0; i < 26; ++i)
                 std::cout << "-";
         std::cout << std::endl;
         std::cout << "Material" << std::setw(6) << material<tree::node::Side::BLACK>(p) << std::setw(6) << material<tree::node::Side::WHITE>(p) << std::setw(6) << delta_material<tree::node::Side::BLACK>(p) << std::endl;
@@ -124,7 +124,7 @@ void Evaluate::print_break_down(const tree::node::Position<Board>& p)
         std::cout << "Center  " << std::setw(6) << center<tree::node::Side::BLACK>(p)   << std::setw(6) << center<tree::node::Side::WHITE>(p)   << std::setw(6) << delta_center<tree::node::Side::BLACK>(p)   << std::endl;
         std::cout << "Balance " << std::setw(6) << balance<tree::node::Side::BLACK>(p)  << std::setw(6) << balance<tree::node::Side::WHITE>(p)  << std::setw(6) << delta_balance<tree::node::Side::BLACK>(p)  << std::endl;
         std::cout << "Mobility" << std::setw(6) << mobility<tree::node::Side::BLACK>(p) << std::setw(6) << mobility<tree::node::Side::WHITE>(p) << std::setw(6) << delta_mobility<tree::node::Side::BLACK>(p) << std::endl;
-        for (size_t i = 0; i < 26; ++i)
+        for (int i = 0; i < 26; ++i)
                 std::cout << "-";
         std::cout << std::endl;
         std::cout << "Evaluate" << std::setw(6) << evaluate<tree::node::Side::BLACK>(p) << std::setw(6) << evaluate<tree::node::Side::WHITE>(p) << std::setw(6) << delta_evaluate<tree::node::Side::BLACK>(p) << std::endl;

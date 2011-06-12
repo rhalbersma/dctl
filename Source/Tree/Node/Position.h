@@ -50,6 +50,7 @@ public:
         // make a move in a copy from another position
         template<typename>
         void copy_make(const Position<Board>&, const Pieces&);
+        template<typename> void make(const Pieces&);
         
 private:
         // implementation
@@ -67,7 +68,6 @@ private:
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<false>) const;
 
         void link(const Position<Board>&);
-        template<typename> void make(const Pieces&);
 
         // tag dispatching for restrictions on consecutive moves with the same king
         template<typename> void make_irreversible(const Pieces&);

@@ -22,7 +22,7 @@ struct find_entry
         typedef std::pair<Key, Value> Entry;
 
         template<size_t N>
-        const Value* operator()(const std::tr1::array<Entry, N>&, const Key&) const;
+        const Value* operator()(const std::array<Entry, N>&, const Key&) const;
 };
 
 template<typename Key, typename Value, typename Replacement>
@@ -32,7 +32,7 @@ struct insert_entry
         typedef std::pair<Key, Value> Entry;
 
         template<size_t N>
-        void operator()(std::tr1::array<Entry, N>&, const Entry&) const;
+        void operator()(std::array<Entry, N>&, const Entry&) const;
 };
 
 }       // namespace hash

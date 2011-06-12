@@ -93,7 +93,7 @@ struct write<FEN_tag, Token>
 
 	        sstr << Token::QUOTE;					        // opening quotes
 	        sstr << Token::COLOR[p.to_move()];				// side to move
-	        for (size_t i = 0; i < 2; ++i) {
+	        for (int i = 0; i < 2; ++i) {
 		        c = i != 0;
 		        if (p.pieces(c)) {
 			        sstr << Token::COLON;                           // colon
@@ -132,7 +132,7 @@ struct read<Board, DXP_tag, Token>
 
 	        BitBoard bb;
                 size_t b;
-                for (size_t sq = 0; geometry::layout::is_valid<Board>(sq); ++sq) {
+                for (int sq = 0; geometry::layout::is_valid<Board>(sq); ++sq) {
                         b = Board::TABLE_SQUARE2BIT[sq];        // convert square to bit
 		        bb = BitBoard(1) << b;                  // create bitboard
 		        sstr >> ch;
@@ -165,7 +165,7 @@ struct write<DXP_tag, Token>
 	        size_t b;
 
 	        sstr << write_color<Token>(p.to_move());		// side to move
-	        for (size_t sq = 0; sq < Board::SIZE; ++sq) {
+	        for (int sq = 0; sq < Board::SIZE; ++sq) {
 		        b = Board::TABLE_SQUARE2BIT[sq];                // convert square to bit
 		        sstr << bitContent<Board, Token>()(p, b);       // bit content
 	        }

@@ -4,11 +4,11 @@
 namespace damexchange {
 namespace layer2 {
 
-class AbstractMessage
+class MessageInterface
 {
 public:
         // virtual destructor
-        virtual ~AbstractMessage(void) {};
+        virtual ~MessageInterface(void) {};
 
         // non-virtual interface
         std::string str(void) const;
