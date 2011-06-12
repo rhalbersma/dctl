@@ -47,9 +47,16 @@ public:
 
         // modifiers
         void push_back(const_reference);
-        void increment_size(void);
         void pop_back(void);
+        void increment_size(void);
+        void decrement_size(void);
         void clear(void);
+
+private:
+        // implementation
+        bool invariant(void) const;
+        bool within_range(size_type) const;
+        bool within_bounds(size_type) const;
 
         // representation
         std::array<T, N> array_;

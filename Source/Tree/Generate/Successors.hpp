@@ -7,7 +7,7 @@ template<typename Rules, typename Board>
 void Successors<Rules, Board>::generate(const node::Position<Board>& p, move::Stack* move_stack)
 {
         select(p)->generate(p, move_stack);
-        assert(invariant(p, move_stack.size()));
+        assert(invariant(p, move_stack->size()));
 }
 
 template<typename Rules, typename Board>
