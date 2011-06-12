@@ -15,7 +15,7 @@ TEST(bit, IsZero)
 
 TEST(bit, IsSingle)
 {
-        for (size_t i = 0; i < 64; ++i) {
+        for (int i = 0; i < 64; ++i) {
                 BitBoard b = BitBoard(1) << i;
                 EXPECT_EQ(false, is_zero(b));
                 EXPECT_EQ(true,  is_single(b));
@@ -26,8 +26,8 @@ TEST(bit, IsSingle)
 
 TEST(bit, IsDouble)
 {
-        for (size_t i = 0; i < 64; ++i) {
-                for (size_t j = 0; j < 64; ++j) {                                
+        for (int i = 0; i < 64; ++i) {
+                for (int j = 0; j < 64; ++j) {                                
                         BitBoard b = (BitBoard(1) << i) ^ (BitBoard(1) << j);
                         if (i == j) {
                                 EXPECT_EQ(true, is_zero(b));
@@ -43,8 +43,8 @@ TEST(bit, IsDouble)
 
 TEST(bit, IsMultiple)
 {
-        for (size_t i = 0; i < 64; ++i) {
-                for (size_t j = 0; j < 64 - i; ++j) {
+        for (int i = 0; i < 64; ++i) {
+                for (int j = 0; j < 64 - i; ++j) {
                         BitBoard b = ((BitBoard(1) << i) - 1) << j;
                         switch (i) {
                         case 0:
@@ -70,7 +70,7 @@ TEST(bit, IsMultiple)
 
 TEST(bit, Index)
 {
-        for (size_t i = 0; i < 64; ++i) {
+        for (int i = 0; i < 64; ++i) {
                 BitBoard b = BitBoard(1) << i;
                 EXPECT_EQ(i, index(b));
         }
@@ -80,13 +80,13 @@ TEST(bit, Count)
 {
         EXPECT_EQ(0, count(0));
 
-        for (size_t i = 0; i < 64; ++i) {
+        for (int i = 0; i < 64; ++i) {
                 BitBoard b = BitBoard(1) << i;
                 EXPECT_EQ(1, count(b));                
         }
 
-        for (size_t i = 0; i < 64; ++i) {
-                for (size_t j = 0; j < 64; ++j) {                                
+        for (int i = 0; i < 64; ++i) {
+                for (int j = 0; j < 64; ++j) {                                
                         BitBoard b = (BitBoard(1) << i) ^ (BitBoard(1) << j);
                         if (i == j) {
                                 EXPECT_EQ(0, count(b));
@@ -96,7 +96,7 @@ TEST(bit, Count)
                 }
         }
 
-        for (size_t i = 0; i < 64; ++i) {
+        for (int i = 0; i < 64; ++i) {
                 BitBoard b = (BitBoard(1) << i) - 1;
                 EXPECT_EQ(i, count(b));
         }

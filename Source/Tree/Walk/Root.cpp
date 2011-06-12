@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "../../../test_config.h"
 #include "../../../../Library/Source/Tree/Walk/Root.h"
 #include "../../../../Library/Source/Tree/Node/Position.h"
 #include "../../../../Library/Source/Tree/Node/Protocol.h"
@@ -46,7 +47,7 @@ protected:
 TEST_F(Perft, International)
 {
         std::cout << geometry::layout::write<geometry::International, geometry::layout::Square_tag>()() << std::endl;
-        std::cout << geometry::layout::write<geometry::International, geometry::layout::bit_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::International, geometry::layout::Bit_tag>()() << std::endl;
 
         node::Position<geometry::International> i10 = node::Position<geometry::International>::initial();
         Root::perft<variants::International>(i10, 11);
@@ -62,19 +63,19 @@ TEST_F(Perft, International)
 TEST_F(Perft, Rectangular)
 {
         std::cout << geometry::layout::write<geometry::Spantsireti, geometry::layout::Square_tag>()() << std::endl;
-        std::cout << geometry::layout::write<geometry::Spantsireti, geometry::layout::bit_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::Spantsireti, geometry::layout::Bit_tag>()() << std::endl;
 
         node::Position<geometry::Spantsireti> iS = node::Position<geometry::Spantsireti>::initial();
         Root::perft<variants::International>(iS, 9);
 
         std::cout << geometry::layout::write<geometry::Ktar11, geometry::layout::Square_tag>()() << std::endl;
-        std::cout << geometry::layout::write<geometry::Ktar11, geometry::layout::bit_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::Ktar11, geometry::layout::Bit_tag>()() << std::endl;
         
         node::Position<geometry::Ktar11> iK11 = node::Position<geometry::Ktar11>::initial();
         Root::perft<variants::International>(iK11, 9);
                 
         std::cout << geometry::layout::write<geometry::Ktar12, geometry::layout::Square_tag>()() << std::endl;
-        std::cout << geometry::layout::write<geometry::Ktar12, geometry::layout::bit_tag>()() << std::endl;
+        std::cout << geometry::layout::write<geometry::Ktar12, geometry::layout::Bit_tag>()() << std::endl;
         
         node::Position<geometry::Ktar12> iK12 = node::Position<geometry::Ktar12>::initial();
         Root::perft<variants::International>(iK12, 9);

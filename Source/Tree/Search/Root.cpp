@@ -1,5 +1,6 @@
 #include <utility>
 #include "gtest/gtest.h"
+#include "../../../test_config.h"
 #include "../../../../Library/Source/Tree/Search/Root.h"
 #include "../../../../Library/Source/Tree/Node/Position.h"
 #include "../../../../Library/Source/Tree/Node/Protocol.h"
@@ -56,7 +57,7 @@ TEST_F(SearchEndgame, International11)
                 DB_unittest("W:WK10:BK5.",  3)          // 0101
         };
                 
-        for (size_t i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) {
                 value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
                 EXPECT_EQ(value, value::win(DB_win11[i].second));
         }
@@ -83,7 +84,7 @@ TEST_F(SearchEndgame, International21)
                 DB_unittest("W:WK10:BK5,K23.",  3)      // 0102
         };
 
-        for (size_t i = 0; i < 13; ++i) {
+        for (int i = 0; i < 13; ++i) {
                 value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
                 EXPECT_EQ(value, value::win(DB_win21[i].second));
         }
@@ -106,7 +107,7 @@ TEST_F(SearchEndgame, International22)
                 DB_unittest("W:WK6,K22:BK17,K50.",  9)  // 0202
         };
 
-        for (size_t i = 0; i < 9; ++i) {
+        for (int i = 0; i < 9; ++i) {
                 value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
                 EXPECT_EQ(value, value::win(DB_win22[i].second));
         }        
@@ -136,7 +137,7 @@ TEST_F(SearchEndgame, International31)
                 DB_unittest("W:WK49:BK23,K43,K46.",  3)         // 0103       
         };
         
-        for (size_t i = 0; i < 16; ++i) {
+        for (int i = 0; i < 16; ++i) {
                 value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 EXPECT_EQ(value, value::win(DB_win31[i].second));
         }
@@ -155,7 +156,7 @@ TEST_F(SearchEndgame, Killer11)
                 DB_unittest("W:WK10:BK46.",  3)         // 0101
         };
 
-        for (size_t i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) {
                 value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
                 EXPECT_EQ(value, value::win(DB_win11[i].second));
         }
@@ -183,7 +184,7 @@ TEST_F(SearchEndgame, Killer21)
                 DB_unittest("W:WK10:BK5,K41.",  3)      // 0102
         };       
         
-        for (size_t i = 0; i < 14; ++i) {
+        for (int i = 0; i < 14; ++i) {
                 value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
                 EXPECT_EQ(value, value::win(DB_win21[i].second));
         }
@@ -206,7 +207,7 @@ TEST_F(SearchEndgame, Killer22)
                 DB_unittest("W:WK5,K23:BK19,K50.", 17)  // 0202
         };
 
-        for (size_t i = 0; i < 9; ++i) {
+        for (int i = 0; i < 9; ++i) {
                 value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
                 EXPECT_EQ(value, value::win(DB_win22[i].second));
         }
@@ -236,7 +237,7 @@ TEST_F(SearchEndgame, Killer31)
                 DB_unittest("W:WK48:BK10,K42,K46.",  3)         // 0103       
         };
         
-        for (size_t i = 0; i < 16; ++i) {
+        for (int i = 0; i < 16; ++i) {
                 value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 EXPECT_EQ(value, value::win(DB_win31[i].second));
         }
