@@ -8,13 +8,13 @@ namespace value {
 
 TEST(Value, IsFiniteLoss)
 {
-        for (size_t i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
+        for (int i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
                 EXPECT_EQ(true, is_finite(loss(2 * i)));
 }
 
 TEST(Value, IsNegativeLoss)
 {
-        for (size_t i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
+        for (int i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
                 EXPECT_EQ(true, loss(2 * i) < 0);
 }
 
@@ -28,13 +28,13 @@ TEST(Value, IsLoss)
 
 TEST(Value, IsFiniteWin)
 {
-        for (size_t i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
+        for (int i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
                 EXPECT_EQ(true, is_finite(win(2 * i + 1)));
 }
 
 TEST(Value, IsPositiveWin)
 {
-        for (size_t i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
+        for (int i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
                 EXPECT_EQ(true, win(2 * i + 1) > 0);
 }
 
@@ -48,7 +48,7 @@ TEST(Value, IsWin)
 
 TEST(Value, IsWinEqualMinusLoss)
 {
-        for (size_t i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
+        for (int i = 0; i < GRAFTED_PLY_MAX / 2; ++i)
                 EXPECT_EQ(true, win(2 * i + 1) == -loss(2 * i));
 }
 
