@@ -1,5 +1,5 @@
 #pragma once
-#include "Template.h"
+#include "Driver.h"
 #include "../Move/Stack.h"
 #include "../../Utilities/IntegerTypes.h"
 #include "../../Utilities/TemplateTricks.h"
@@ -14,7 +14,7 @@ namespace generate {
 namespace capture { template<typename, typename> class State; }
 
 template<bool Color, typename Rules, typename Board> 
-class Template<Color, node::Pieces::KING, move::JUMPS, Rules, Board>
+class Driver<Color, node::Pieces::KING, move::JUMPS, Rules, Board>
 {
 public:
         static void generate(const node::Position<Board>&, move::Stack*);

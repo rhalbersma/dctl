@@ -18,7 +18,7 @@ Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard
         to_move_(to_move)
 {
         repeated_moves_[Side::BLACK] = repeated_moves_[Side::WHITE] = 0;
-        parents_[0] = parents_[1] = NULL;
+        parent_[0] = parent_[1] = NULL;
         hash_index_ = hash::zobrist::Init<node::Position<Board>, HashIndex>()(*this);
         assert(pieces_invariant());
 }
@@ -30,23 +30,6 @@ Position<Board> Position<Board>::initial(void)
         return Position<Board>(Board::INITIAL[Side::BLACK], Board::INITIAL[Side::WHITE], 0, Side::WHITE);
 }
 
-template<typename Board>
-bool Position<Board>::operator==(const node::Position<Board>& other) const
-{
-        return (
-		(pieces(Side::BLACK) == other.pieces(Side::BLACK)) &&
-		(pieces(Side::WHITE) == other.pieces(Side::WHITE)) &&
-                            (kings() == other.kings()) &&
-                          (to_move() == other.to_move())
-        );
-}
-
-template<typename Board>
-bool Position<Board>::operator!=(const node::Position<Board>& other) const
-{
-        return !(*this == other);
-}
-
 template<typename Board> template<typename Rules>
 bool Position<Board>::is_draw(void) const
 {
@@ -56,6 +39,22 @@ bool Position<Board>::is_draw(void) const
 template<typename Board>
 bool Position<Board>::is_repetition_draw(void) const
 {
+        // a repetition draw needs at least MIN_CYCLE of non-conversion moves
+        if (non_conversion() < MIN_CYCLE)
+                return false;
+
+        // find the parent position at MIN_CYCLE ply above the current position
+        const Position<Board>* p = this;
+        for (size_t i = 0; i != MIN_CYCLE; i += STRIDE)
+                p = p->parent(1);
+
+        // check the hash index of the parent position with the current hash index
+        for (size_t i = MIN_CYCLE; i <= non_conversion(); i += STRIDE) {
+                if (p->hash_index() == hash_index())
+                        return true;
+                p = p->parent(1);
+        }
+
         return false;
 }
 
@@ -200,6 +199,12 @@ template<typename Board>
 HashIndex Position<Board>::hash_index(void) const
 {
         return hash_index_;
+}
+
+template<typename Board>
+const node::Position<Board>* Position<Board>::parent(size_t i) const
+{
+        return parent_[i];
 }
 
 // logical consistency of the representation

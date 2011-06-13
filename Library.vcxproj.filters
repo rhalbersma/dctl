@@ -426,12 +426,6 @@
     <ClInclude Include="Source\Tree\Node\Pieces.hpp">
       <Filter>Source Files\Tree\Node</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tree\Generate\Template.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Tree\Generate\AbstractState.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Tree\Generate\BothJumps.h">
       <Filter>Header Files\Tree\Generate</Filter>
     </ClInclude>
@@ -450,14 +444,8 @@
     <ClInclude Include="Source\Tree\Generate\PawnMoves.h">
       <Filter>Header Files\Tree\Generate</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tree\Generate\State.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Tree\Generate\Successors.h">
       <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Tree\Generate\State.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tree\Generate\Successors.hpp">
       <Filter>Source Files\Tree\Generate</Filter>
@@ -546,9 +534,6 @@
     <ClInclude Include="Source\Utilities\Timer.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tree\Generate\Template.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
     <ClInclude Include="Source\DamExchange\Layer2\MessageInterface.h">
       <Filter>Header Files\DamExchange\Layer2</Filter>
     </ClInclude>
@@ -557,6 +542,21 @@
     </ClInclude>
     <ClInclude Include="Source\Tree\Move\Stack.h">
       <Filter>Header Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\TemplateMethodInterface.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\TemplateMethod.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\TemplateMethod.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Driver.h">
+      <Filter>Header Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Generate\Driver.hpp">
+      <Filter>Source Files\Tree\Generate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include "State.h"
+#include "TemplateMethod.h"
 #include "../Move/Stack.h"
 #include "../Node/Pieces.h"
 #include "../Node/Side.h"
@@ -31,8 +31,8 @@ public:
 
 private:
         // implementation
-        static const AbstractState<Rules, Board>* select(const node::Position<Board>&);
-        template<bool> static const AbstractState<Rules, Board>* select(const node::Position<Board>&);
+        static const TemplateMethodInterface<Rules, Board>* select(const node::Position<Board>&);
+        template<bool> static const TemplateMethodInterface<Rules, Board>* select(const node::Position<Board>&);
 
         static int state(const node::Position<Board>&);
         template<bool> static int state(const node::Position<Board>&);
@@ -41,16 +41,16 @@ private:
         static bool invariant(const node::Position<Board>&, size_t);
 
         // representation
-        static const AbstractState<Rules, Board>* const FACTORY[];
+        static const TemplateMethodInterface<Rules, Board>* const FACTORY[];
 
-        static const State<node::Side::BLACK, node::Pieces::NONE, Rules, Board> BLACK_NONE;
-        static const State<node::Side::BLACK, node::Pieces::PAWN, Rules, Board> BLACK_PAWN;
-        static const State<node::Side::BLACK, node::Pieces::KING, Rules, Board> BLACK_KING;
-        static const State<node::Side::BLACK, node::Pieces::BOTH, Rules, Board> BLACK_BOTH;
-        static const State<node::Side::WHITE, node::Pieces::NONE, Rules, Board> WHITE_NONE;
-        static const State<node::Side::WHITE, node::Pieces::PAWN, Rules, Board> WHITE_PAWN;
-        static const State<node::Side::WHITE, node::Pieces::KING, Rules, Board> WHITE_KING;
-        static const State<node::Side::WHITE, node::Pieces::BOTH, Rules, Board> WHITE_BOTH;
+        static const TemplateMethod<node::Side::BLACK, node::Pieces::NONE, Rules, Board> BLACK_NONE;
+        static const TemplateMethod<node::Side::BLACK, node::Pieces::PAWN, Rules, Board> BLACK_PAWN;
+        static const TemplateMethod<node::Side::BLACK, node::Pieces::KING, Rules, Board> BLACK_KING;
+        static const TemplateMethod<node::Side::BLACK, node::Pieces::BOTH, Rules, Board> BLACK_BOTH;
+        static const TemplateMethod<node::Side::WHITE, node::Pieces::NONE, Rules, Board> WHITE_NONE;
+        static const TemplateMethod<node::Side::WHITE, node::Pieces::PAWN, Rules, Board> WHITE_PAWN;
+        static const TemplateMethod<node::Side::WHITE, node::Pieces::KING, Rules, Board> WHITE_KING;
+        static const TemplateMethod<node::Side::WHITE, node::Pieces::BOTH, Rules, Board> WHITE_BOTH;
 };
 
 }       // namespace generate

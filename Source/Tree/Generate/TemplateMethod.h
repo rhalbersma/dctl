@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include "AbstractState.h"
+#include "TemplateMethodInterface.h"
 #include "../Move/Stack.h"
 
 namespace tree {
@@ -10,10 +10,10 @@ namespace node { template<typename> class Position; }
 namespace generate {
 
 template<bool Color, int Material, typename Rules, typename Board> 
-class State: public AbstractState<Rules, Board>
+class TemplateMethod: public TemplateMethodInterface<Rules, Board>
 {
 public:		
-        State(void) {};
+        TemplateMethod(void) {};
 
         virtual void generate(const node::Position<Board>&, move::Stack*) const;
         virtual void generate_captures(const node::Position<Board>&, move::Stack*) const;
@@ -33,4 +33,4 @@ public:
 }       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "State.hpp"
+#include "TemplateMethod.hpp"

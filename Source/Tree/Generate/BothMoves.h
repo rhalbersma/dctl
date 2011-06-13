@@ -1,5 +1,5 @@
 #pragma once
-#include "Template.h"
+#include "Driver.h"
 #include "../Move/Stack.h"
 #include "../../Utilities/IntegerTypes.h"
 
@@ -10,7 +10,7 @@ namespace node { template<typename> class Position; }
 namespace generate {
 
 template<bool Color, typename Rules, typename Board> 
-class Template<Color, node::Pieces::BOTH, move::MOVES, Rules, Board>
+class Driver<Color, node::Pieces::BOTH, move::MOVES, Rules, Board>
 {
 public:
         static void generate(const node::Position<Board>&, move::Stack*);

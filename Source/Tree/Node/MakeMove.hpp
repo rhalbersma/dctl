@@ -14,8 +14,8 @@ void Position<Board>::copy_make(const Position<Board>& p, const Pieces& m)
 template<typename Board>
 void Position<Board>::link(const Position<Board>& other)
 {
-        parents_[0] = &other;
-        parents_[1] = other.parents_[0];
+        parent_[0] = &other;
+        parent_[1] = other.parent_[0];
 }
 
 template<typename Board> template<typename Rules>
