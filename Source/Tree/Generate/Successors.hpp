@@ -71,13 +71,13 @@ bool Successors<Rules, Board>::invariant(const node::Position<Board>& p, size_t 
 }
 
 template<typename Rules, typename Board>
-const AbstractState<Rules, Board>* Successors<Rules, Board>::select(const node::Position<Board>& p)
+const TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const node::Position<Board>& p)
 {
         return FACTORY[state(p)];
 };
 
 template<typename Rules, typename Board> template<bool Color>
-const AbstractState<Rules, Board>* Successors<Rules, Board>::select(const node::Position<Board>& p)
+const TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const node::Position<Board>& p)
 {
         return FACTORY[state<Color>(p)];
 };
@@ -101,34 +101,34 @@ int Successors<Rules, Board>::state(bool color, BitBoard kings, BitBoard men)
 }
 
 template<typename Rules, typename Board> 
-const AbstractState<Rules, Board>* const Successors<Rules, Board>::FACTORY[] = {
-        &BLACK_NONE, &BLACK_PAWN, &BLACK_KING, &BLACK_BOTH,
+const TemplateMethodInterface<Rules, Board>* const Successors<Rules, Board>::FACTORY[] = {
+        &BLACK_NONE, &BLACK_PAWN, &BLACK_KING, &BLACK_BOTH, 
         &WHITE_NONE, &WHITE_PAWN, &WHITE_KING, &WHITE_BOTH
 };
 
 template<typename Rules, typename Board> 
-const State<node::Side::BLACK, node::Pieces::NONE, Rules, Board> Successors<Rules, Board>::BLACK_NONE;
+const TemplateMethod<node::Side::BLACK, node::Pieces::NONE, Rules, Board> Successors<Rules, Board>::BLACK_NONE;
 
 template<typename Rules, typename Board> 
-const State<node::Side::BLACK, node::Pieces::PAWN, Rules, Board> Successors<Rules, Board>::BLACK_PAWN;
+const TemplateMethod<node::Side::BLACK, node::Pieces::PAWN, Rules, Board> Successors<Rules, Board>::BLACK_PAWN;
 
 template<typename Rules, typename Board> 
-const State<node::Side::BLACK, node::Pieces::KING, Rules, Board> Successors<Rules, Board>::BLACK_KING;
+const TemplateMethod<node::Side::BLACK, node::Pieces::KING, Rules, Board> Successors<Rules, Board>::BLACK_KING;
 
 template<typename Rules, typename Board> 
-const State<node::Side::BLACK, node::Pieces::BOTH, Rules, Board> Successors<Rules, Board>::BLACK_BOTH;
+const TemplateMethod<node::Side::BLACK, node::Pieces::BOTH, Rules, Board> Successors<Rules, Board>::BLACK_BOTH;
 
 template<typename Rules, typename Board> 
-const State<node::Side::WHITE, node::Pieces::NONE, Rules, Board> Successors<Rules, Board>::WHITE_NONE;
+const TemplateMethod<node::Side::WHITE, node::Pieces::NONE, Rules, Board> Successors<Rules, Board>::WHITE_NONE;
 
 template<typename Rules, typename Board> 
-const State<node::Side::WHITE, node::Pieces::PAWN, Rules, Board> Successors<Rules, Board>::WHITE_PAWN;
+const TemplateMethod<node::Side::WHITE, node::Pieces::PAWN, Rules, Board> Successors<Rules, Board>::WHITE_PAWN;
 
 template<typename Rules, typename Board> 
-const State<node::Side::WHITE, node::Pieces::KING, Rules, Board> Successors<Rules, Board>::WHITE_KING;
+const TemplateMethod<node::Side::WHITE, node::Pieces::KING, Rules, Board> Successors<Rules, Board>::WHITE_KING;
 
 template<typename Rules, typename Board> 
-const State<node::Side::WHITE, node::Pieces::BOTH, Rules, Board> Successors<Rules, Board>::WHITE_BOTH;
+const TemplateMethod<node::Side::WHITE, node::Pieces::BOTH, Rules, Board> Successors<Rules, Board>::WHITE_BOTH;
 
 }       // namespace generate
 }       // namespace tree

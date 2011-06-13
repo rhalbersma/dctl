@@ -9,7 +9,7 @@ namespace node { template<typename> class Position; }
 namespace generate {
 
 template<typename Rules, typename Board> 
-class AbstractState
+class TemplateMethodInterface
 {
 public:
         // interface
@@ -27,7 +27,7 @@ public:
         virtual bool detect_promotions(const node::Position<Board>&) const = 0;
 
         // virtual destructor
-        virtual ~AbstractState(void) {};
+        virtual ~TemplateMethodInterface(void) {};
 };
 
 }       // namespace generate

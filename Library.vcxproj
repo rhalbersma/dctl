@@ -187,7 +187,6 @@
     <ClInclude Include="Source\Hash\Zobrist\Random.hpp" />
     <ClInclude Include="Source\Hash\Zobrist\Init.h" />
     <ClInclude Include="Source\Hash\Zobrist\Init.hpp" />
-    <ClInclude Include="Source\Tree\Generate\AbstractState.h" />
     <ClInclude Include="Source\Tree\Generate\BothJumps.h" />
     <ClInclude Include="Source\Tree\Generate\BothJumps.hpp" />
     <ClInclude Include="Source\Tree\Generate\BothMoves.h" />
@@ -212,12 +211,13 @@
     <ClInclude Include="Source\Tree\Generate\PawnJumps.hpp" />
     <ClInclude Include="Source\Tree\Generate\PawnMoves.h" />
     <ClInclude Include="Source\Tree\Generate\PawnMoves.hpp" />
-    <ClInclude Include="Source\Tree\Generate\State.h" />
-    <ClInclude Include="Source\Tree\Generate\State.hpp" />
+    <ClInclude Include="Source\Tree\Generate\TemplateMethod.h" />
+    <ClInclude Include="Source\Tree\Generate\TemplateMethod.hpp" />
     <ClInclude Include="Source\Tree\Generate\Successors.h" />
     <ClInclude Include="Source\Tree\Generate\Successors.hpp" />
-    <ClInclude Include="Source\Tree\Generate\Template.h" />
-    <ClInclude Include="Source\Tree\Generate\Template.hpp" />
+    <ClInclude Include="Source\Tree\Generate\Driver.h" />
+    <ClInclude Include="Source\Tree\Generate\Driver.hpp" />
+    <ClInclude Include="Source\Tree\Generate\TemplateMethodInterface.h" />
     <ClInclude Include="Source\Tree\Move\Predicates.h" />
     <ClInclude Include="Source\Tree\Move\Predicates.hpp" />
     <ClInclude Include="Source\Tree\Move\Protocol.h" />

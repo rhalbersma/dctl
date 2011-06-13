@@ -20,11 +20,7 @@ public:
         static Position initial(void);                          // initial position
 
         // predicates
-        bool operator==(const Position<Board>&) const;          // overloaded equality operator
-        bool operator!=(const Position<Board>&) const;          // overloaded inequality operator
-        
-        template<typename> 
-        bool is_draw(void) const;
+        template<typename> bool is_draw(void) const;
 
         // views
         const node::Pieces& pieces(void) const;
@@ -47,9 +43,10 @@ public:
         PlyCount repeated_moves(bool) const;
         PlyCount non_conversion(void) const;
 
+        const node::Position<Board>* parent(size_t) const;
+
         // make a move in a copy from another position
-        template<typename>
-        void copy_make(const Position<Board>&, const Pieces&);
+        template<typename> void copy_make(const Position<Board>&, const Pieces&);
         template<typename> void make(const Pieces&);
         
 private:
@@ -83,7 +80,7 @@ private:
         bool hash_index_invariant(void) const;
 
         // representation
-        const node::Position<Board>* parents_[2];
+        const node::Position<Board>* parent_[2];
         BitBoard padding_;
         HashIndex hash_index_; 
         Pieces pieces_;
@@ -93,8 +90,10 @@ private:
         bool to_move_;
 
         // implementation
-        const static size_t MIN_CYCLE = 4;
-        const static size_t STRIDE = 2;
+        static const size_t MIN_CYCLE = 4;
+        static const size_t STRIDE = 2;
+        static_assert(MIN_CYCLE % STRIDE == 0, "Repetition draw needs MIN_CYCLE to be a multiple of STRIDE.");
+
         static const bool PASS = true;  // toggle the side to move
 };
 

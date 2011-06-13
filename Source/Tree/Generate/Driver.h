@@ -9,7 +9,7 @@ namespace node { template<typename> class Position; }
 namespace generate {
 
 template<bool, int NodePieces, move::Type, typename Rules, typename Board>
-class Template
+class Driver
 {
 public:
         static void generate(const node::Position<Board>&, move::Stack*);
@@ -26,4 +26,4 @@ public:
 }       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "Template.hpp"
+#include "Driver.hpp"
