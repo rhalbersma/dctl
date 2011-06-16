@@ -43,7 +43,7 @@ protected:
 };
 
 #if INTEGRATION_TEST == 1
-
+/*
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 TEST_F(SearchEndgame, International11)
 {
@@ -143,6 +143,7 @@ TEST_F(SearchEndgame, International31)
         }
 }
 
+
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        
 TEST_F(SearchEndgame, Killer11)
 {
@@ -212,7 +213,7 @@ TEST_F(SearchEndgame, Killer22)
                 EXPECT_EQ(value, value::win(DB_win22[i].second));
         }
 }
-
+*/
 TEST_F(SearchEndgame, Killer31)
 {
         typedef std::pair<std::string, size_t> DB_unittest;                
@@ -238,6 +239,7 @@ TEST_F(SearchEndgame, Killer31)
         };
         
         for (int i = 0; i < 16; ++i) {
+                Root::clear_hash();
                 value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
                 EXPECT_EQ(value, value::win(DB_win31[i].second));
         }
