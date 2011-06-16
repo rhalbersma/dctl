@@ -12,16 +12,21 @@ template
 <
         typename Key,
         typename Value,
-        typename Replace = EmptyOldUnderCutShallowestOfN,
         template<typename, typename> class Hash = zobrist::Find,
-        typename Index = HashIndex
+        typename Index = HashIndex,
+        typename Replace = EmptyOldUnderCutShallowestOfN
 >
 class DualMap
 {
 public:
-        DualMap(size_t);
+        // constructors
+        explicit DualMap(size_t);
 
+        // capacity
+        size_t size(void) const;
+        size_t empty(void) const;
         void resize(size_t);
+        void clear(void);
 
         // views
         template<typename Board> const Value* find(const tree::node::Position<Board>&) const;
@@ -31,7 +36,7 @@ public:
 
 private:
         // representation
-        Map<Key, Value, Replace, Hash, Index> dual_map_[2];
+        Map<Key, Value, Hash, Index, Replace> dual_map_[2];
 };
 
 }

@@ -11,7 +11,7 @@ using value::squeeze;
 template<typename Rules, typename Board>
 int Root::iterative_deepening(const node::Position<Board>& p, int nominal_depth)
 {
-        int value = -value::infinity();                
+        int score = -value::infinity();                
         int alpha, beta;
 
         Parameters root_node;       
@@ -21,14 +21,14 @@ int Root::iterative_deepening(const node::Position<Board>& p, int nominal_depth)
                 statistics_.reset();
                 alpha = -value::infinity();
                 beta = value::infinity();
-                value = pvs<PV, Rules>(p, 0, depth, alpha, beta, root_node);
+                score = pvs<PV, Rules>(p, 0, depth, alpha, beta, root_node);
                 timer.split();
-                report(depth, value, timer);
+                report(score, depth, timer);
                 print_PV<Rules>(p, root_node.PV());
-                insert_PV<Rules>(p, root_node.PV(), value);
+                insert_PV<Rules>(p, root_node.PV(), score);
         }
 
-        return value;
+        return score;
 }
 
 // principal variation search (PVS)
