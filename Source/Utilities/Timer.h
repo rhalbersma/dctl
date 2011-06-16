@@ -9,13 +9,10 @@ public:
         void split(void);
         void reset(void);
 
-        double elapsed(void) const;     // seconds since construction
-        double lap(void) const;         // seconds since last split()
+        clock_t elapsed(void) const;    // milliseconds since construction
+        clock_t lap(void) const;        // milliseconds since last split()
 
 private:
-        // implementation
-        double seconds(clock_t) const;  // convert clock() ticks to seconds
-
         // representation
         std::vector<clock_t> laps_;     // lap times
 };

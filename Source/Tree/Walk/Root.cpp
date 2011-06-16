@@ -5,28 +5,31 @@
 tree::walk::Root::TranspositionTable tree::walk::Root::TT(1);
 tree::Statistics tree::walk::Root::statistics_;
 
-void tree::walk::Root::report(int nominal_ply, NodeCount leafs, const Timer& timer)
+void tree::walk::Root::report(NodeCount leafs, int depth, const Timer& timer)
 {
-        double speed = (statistics_.nodes() / 1e6) / timer.lap();
-        double average_ply = static_cast<double>(statistics_.sum_ply()) / statistics_.nodes();
+        std::cout << "info";
 
-        std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(1);
-        std::cout << "perft";
-        std::cout << "[";
-        std::cout << std::setw(2) << nominal_ply;
-        std::cout << "/";                
-        std::cout << std::setw(4) << average_ply;
-        std::cout << "] = ";
+        std::cout << " leafs ";
+        std::cout << std::setw( 4) << std::left << leafs;
 
-        std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(2);
-        std::cout << std::setw(12) << leafs;
-        std::cout << " leafs, ";
-        std::cout << std::setw(11) << statistics_.nodes();
-        std::cout << " nodes, ";
+        std::cout << " depth ";
+        std::cout << std::setw( 2) << depth;
+
+        std::cout << " nodes ";
+        std::cout << std::setw(12) << std::right << statistics_.nodes();
+
+        std::cout << " time ";
         std::cout << std::setw( 6) << timer.elapsed();
-        std::cout << "s, ";
-        std::cout << std::setw( 5) << speed;
-        std::cout << " Mnps";
+
+        const double nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.lap());
+        std::cout << " nps ";
+        std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
+        std::cout << std::setw( 7) << nps;
+
+        const double hashfull = (1000 * (TT.size() - TT.empty())) / static_cast<double>(TT.size());
+        std::cout << " hashfull ";
+        std::cout << std::setw( 3) << std::right << hashfull;
+
         std::cout << std::endl;
 }
 
@@ -44,4 +47,9 @@ void tree::walk::Root::summary(NodeCount leafs)
 void tree::walk::Root::print_move(const std::string& move, int i)
 {
         std::cout << std::setw(2) << (i + 1) << "." << move << " ";
+}
+
+void tree::walk::Root::clear_hash(void)
+{
+        return TT.clear();
 }

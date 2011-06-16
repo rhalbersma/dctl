@@ -49,7 +49,7 @@ NodeCount Root::divide(const node::Position<Board>& p, int nominal_depth)
                 leafs += move_leafs;
                 
                 timer.split();
-                Root::report(nominal_depth - 1, move_leafs, timer);
+                Root::report(move_leafs, nominal_depth - 1, timer);
         }
         summary(leafs);
 

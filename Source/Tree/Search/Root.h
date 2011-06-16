@@ -25,6 +25,7 @@ public:
         enum EntryType { ZW, PV };
 
         template<typename, typename B> static int analyze(const node::Position<B>&, int);
+        static void clear_hash(void);
 
 private:
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content

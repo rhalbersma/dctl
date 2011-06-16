@@ -1,18 +1,13 @@
 #pragma once
+#include <array>
+#include <utility>
+#include <vector>
+
 #include "Algorithms.h"
 #include "Replace.h"
 #include "../Utilities/CacheAlign.h"
+#include "../Utilities/IntegerTypes.h"
 #include "../Utilities/TemplateTricks.h"
-
-#ifdef _MSC_VER
-#include <array>
-#else
-#include <tr1/array>
-#endif
-
-#include <cstddef>
-#include <utility>
-#include <vector>
 
 namespace hash {
 
@@ -20,9 +15,9 @@ template
 <
         typename Key,
         typename Value,
-        typename Replace = EmptyOldUnderCutShallowestOfN,
         template<typename, typename> class Hash = zobrist::Find,
-        typename Index = HashIndex
+        typename Index = HashIndex,
+        typename Replace = EmptyOldUnderCutShallowestOfN
 >
 class Map
 {
@@ -32,7 +27,10 @@ public:
         explicit Map(size_t);
 
         // capacity
+        size_t size(void) const;
+        size_t empty(void) const;
         void resize(size_t);
+        void clear(void);
 
         // views
         const Value* find(const Key&) const;
@@ -47,11 +45,6 @@ public:
         void insert(const Item&, const Value&);
 
 private:
-        static const size_t LOG2_MEGA_BYTE = 20;
-        static const size_t LOG2_GIGA_BYTE = 30;
-        static const size_t MIN_LOG2_BUCKETS = LOG2_MEGA_BYTE - LOG2_CACHE_LINE;
-        static const size_t MAX_LOG2_BUCKETS = LOG2_GIGA_BYTE - LOG2_CACHE_LINE;
-
         // tag dispatching based on the key's integer type trait
         template<typename Item> const Value* find(const Item&, Int2Type<true >) const;
         template<typename Item> const Value* find(const Item&, Int2Type<false>) const;
@@ -60,15 +53,20 @@ private:
         template<typename Item> void insert(const Item&, const Value&, Int2Type<true >);
         template<typename Item> void insert(const Item&, const Value&, Int2Type<false>);
 
-        size_t bucket(Index) const;
-
         typedef std::pair<Key, Value> Entry;
-        static const size_t ASSOCIATIVITY = CACHE_LINE / sizeof(Entry);
-        typedef std::array<Entry, ASSOCIATIVITY> Bucket;
+        typedef std::vector<Entry> VectorMap;
+        typedef typename VectorMap::iterator map_iterator;
+        typedef typename VectorMap::const_iterator const_map_iterator;
+
+        static const size_t BUCKET_SIZE = CACHE_LINE / sizeof(Entry);
+        static const Index BUCKET_MASK = BUCKET_SIZE - 1;
+        
+              map_iterator bucket_begin(Index);
+        const_map_iterator bucket_begin(Index) const;
 
         // representation
-        std::vector<Bucket> map_;
-        Index bucket_mask_;
+        VectorMap map_;
+        Index map_mask_;
 };
 
 }       // namespace hash

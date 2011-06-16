@@ -1,109 +1,137 @@
+#include <algorithm>    // std::count
 #include <cassert>
+#include <cstring>      // std::memset
 #include <iostream>
-#include <type_traits>
+#include <type_traits>  // std::is_integral
+
+#include "EntryPredicates.h"
 #include "Sign.h"
 
 namespace hash {
 
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-Map<Key, Value, Replace, Hash, Index>::Map(size_t log2_n)
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+Map<Key, Value, Hash, Index, Replace>::Map(size_t log2_n)
 {
         resize(log2_n);
 }
 
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-void Map<Key, Value, Replace, Hash, Index>::resize(size_t log2_n)
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+size_t Map<Key, Value, Hash, Index, Replace>::size(void) const
 {
-        size_t log2_b = log2_n + MIN_LOG2_BUCKETS;
-        while (log2_b >= MIN_LOG2_BUCKETS) {
-                try {
-                        map_.resize(Index(1) << log2_b);        // try to allocate all the buckets
-                }
-                catch (const std::bad_alloc&) {                                
-                        --log2_b;                               // try allocating half the previous size
-                        continue;       
-                }
-                bucket_mask_ = map_.size() - 1;                 // mask to do arithmetic MODULO the number of buckets
-                std::cout << "Successfully allocated " << map_.size() << " buckets " << std::endl;
-                return;
-        }
-        throw;                                                  // could not allocate the minimum number of buckets
+        return map_.size();
 }
 
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-const Value* Map<Key, Value, Replace, Hash, Index>::find(const Key& key) const
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+size_t Map<Key, Value, Hash, Index, Replace>::empty(void) const
+{
+        return std::count_if(map_.begin(), map_.end(), std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, Key(0)));
+}
+
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+void Map<Key, Value, Hash, Index, Replace>::resize(size_t log2_n)
+{
+        while (log2_n >= 0) {
+                try {
+                        map_.resize(Index(1) << log2_n);        // try to allocate all the entries
+                }
+                catch (const std::bad_alloc&) {                                
+                        --log2_n;                               // try allocating half the previous size
+                        continue;       
+                }
+                map_mask_ = map_.size() - 1;                    // MODULO the number of entries
+                map_mask_ ^= BUCKET_MASK;                       // MODULO the number of buckets
+                std::cout << "Successfully allocated " << map_.size() << " hash entries " << std::endl;
+                return;
+        }
+        throw;                                                  // could not allocate a single entry
+}
+
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+void Map<Key, Value, Hash, Index, Replace>::clear(void)
+{
+        std::memset(&map_[0], 0, map_.size() * sizeof(Entry));
+}
+
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+const Value* Map<Key, Value, Hash, Index, Replace>::find(const Key& key) const
 {
         const Index index = Hash<Key, Index>()(key);
-        return find_entry<Key, Value>()(map_[bucket(index)], key);
+        return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
 }
 
 // tag dispatching based on the key's integer type trait
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
-const Value* Map<Key, Value, Replace, Hash, Index>::find(const Item& item) const
+const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item) const
 {
         return find(item, Int2Type<std::is_integral<Key>::value>());
 }
 
 // partial specialization for integer keys
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
-const Value* Map<Key, Value, Replace, Hash, Index>::find(const Item& item, Int2Type<true>) const
+const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item, Int2Type<true>) const
 {
         const Index index = Hash<Item, Index>()(item);
         const Key key = ShiftSign<Index, Key>()(index);
-        return find_entry<Key, Value>()(map_[bucket(index)], key);
+        return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
 }
 
 // partial specialization for non-integer keys
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
-const Value* Map<Key, Value, Replace, Hash, Index>::find(const Item& item, Int2Type<false>) const
+const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item, Int2Type<false>) const
 {
         const Index index = Hash<Item, Index>()(item);
         const Key key = FindSign<Item, Key>()(item);
-        return find_entry<Key, Value>()(map_[bucket(index)], key);
+        return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
 }
 
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-void Map<Key, Value, Replace, Hash, Index>::insert(const Key& key, const Value& value)
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+void Map<Key, Value, Hash, Index, Replace>::insert(const Key& key, const Value& value)
 {
         const Index index = Hash<Key, Index>()(key);
-        insert_entry<Key, Value, Replace>()(map_[bucket(index)], Entry(key, value));
+        insert_entry<Key, Value, BUCKET_SIZE, Replace>()(bucket_begin(index), Entry(key, value));
 }
 
 // tag dispatching based on the key's integral type trait
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
-void Map<Key, Value, Replace, Hash, Index>::insert(const Item& item, const Value& value)
+void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value& value)
 {
         insert(item, value, Int2Type<std::is_integral<Key>::value>());
 }
 
 // partial specialization for integral keys
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
-void Map<Key, Value, Replace, Hash, Index>::insert(const Item& item, const Value& value, Int2Type<true>)
+void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value& value, Int2Type<true>)
 {
         const Index index = Hash<Item, Index>()(item);
         const Key key = ShiftSign<Index, Key>()(index);
-        insert_entry<Key, Value, Replace>()(map_[bucket(index)], Entry(key, value));
+        insert_entry<Key, Value, BUCKET_SIZE, Replace>()(bucket_begin(index), Entry(key, value));
 }
 
 // partial specialization for non-integral keys
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
-void Map<Key, Value, Replace, Hash, Index>::insert(const Item& item, const Value& value, Int2Type<false>)
+void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value& value, Int2Type<false>)
 {
         const Index index = Hash<Item, Index>()(item);
         const Key key = FindSign<Item, Key>()(item);
-        insert_entry<Key, Value, Replace>()(map_[bucket(index)], Entry(key, value));
+        insert_entry<Key, Value, BUCKET_SIZE, Replace>()(bucket_begin(index), Entry(key, value));
 }
 
-template<typename Key, typename Value, typename Replace, template<typename, typename> class Hash, typename Index>
-size_t Map<Key, Value, Replace, Hash, Index>::bucket(Index index) const
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+typename Map<Key, Value, Hash, Index, Replace>::map_iterator Map<Key, Value, Hash, Index, Replace>::bucket_begin(Index index)
 {
-	return static_cast<size_t>(index & bucket_mask_);
+	return map_.begin() + static_cast<size_t>(index & map_mask_);
+}
+
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+typename Map<Key, Value, Hash, Index, Replace>::const_map_iterator Map<Key, Value, Hash, Index, Replace>::bucket_begin(Index index) const
+{
+	return map_.begin() + static_cast<size_t>(index & map_mask_);
 }
 
 }       // namespace hash
