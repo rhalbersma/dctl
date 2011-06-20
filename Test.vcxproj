@@ -135,7 +135,7 @@
     <ClCompile Include="Source\test_main.cpp" />
     <ClCompile Include="Source\Tree\Generate\Successors.cpp" />
     <ClCompile Include="Source\Tree\Search\Root.cpp" />
-    <ClCompile Include="Source\Tree\Search\Value.cpp" />
+    <ClCompile Include="Source\Tree\Search\Score.cpp" />
     <ClCompile Include="Source\Tree\Walk\Root.cpp" />
     <ClCompile Include="Source\Utilities\Bit.cpp" />
   </ItemGroup>
