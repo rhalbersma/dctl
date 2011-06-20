@@ -258,9 +258,6 @@
     <ClInclude Include="Source\Tree\Statistics.h">
       <Filter>Header Files\Tree</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tree\Search\Value.h">
-      <Filter>Header Files\Tree\Search</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Tree\Search\Algorithms.hpp">
       <Filter>Source Files\Tree\Search</Filter>
     </ClInclude>
@@ -390,12 +387,6 @@
     <ClInclude Include="Source\Tree\Walk\Entry.h">
       <Filter>Header Files\Tree\Walk</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tree\Move\Predicates.h">
-      <Filter>Header Files\Tree\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Tree\Move\Protocol.h">
-      <Filter>Header Files\Tree\Move</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Tree\Move\String.h">
       <Filter>Header Files\Tree\Move</Filter>
     </ClInclude>
@@ -403,9 +394,6 @@
       <Filter>Header Files\Tree\Move</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tree\Move\String.hpp">
-      <Filter>Source Files\Tree\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Tree\Move\Predicates.hpp">
       <Filter>Source Files\Tree\Move</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tree\Node\Side.h">
@@ -537,12 +525,6 @@
     <ClInclude Include="Source\DamExchange\Layer2\MessageInterface.h">
       <Filter>Header Files\DamExchange\Layer2</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tree\Move\Stack.hpp">
-      <Filter>Source Files\Tree\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Tree\Move\Stack.h">
-      <Filter>Header Files\Tree\Move</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Tree\Generate\TemplateMethodInterface.h">
       <Filter>Header Files\Tree\Generate</Filter>
     </ClInclude>
@@ -557,6 +539,24 @@
     </ClInclude>
     <ClInclude Include="Source\Tree\Generate\Driver.hpp">
       <Filter>Source Files\Tree\Generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Search\Score.h">
+      <Filter>Header Files\Tree\Search</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Stack.hpp">
+      <Filter>Source Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Stack.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Move\Protocol.h">
+      <Filter>Header Files\Tree\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Predicates.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree\Node\Predicates.hpp">
+      <Filter>Source Files\Tree\Node</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -608,9 +608,6 @@
     <ClCompile Include="Source\Tree\Statistics.cpp">
       <Filter>Source Files\Tree</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Tree\Search\Value.cpp">
-      <Filter>Source Files\Tree\Search</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Tree\Search\Parameters.cpp">
       <Filter>Source Files\Tree\Search</Filter>
     </ClCompile>
@@ -629,9 +626,6 @@
     <ClCompile Include="Source\Tree\Walk\Entry.cpp">
       <Filter>Source Files\Tree\Walk</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Tree\Move\Predicates.cpp">
-      <Filter>Source Files\Tree\Move</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Tree\Node\Pieces.cpp">
       <Filter>Source Files\Tree\Node</Filter>
     </ClCompile>
@@ -641,8 +635,14 @@
     <ClCompile Include="Source\DamExchange\Layer2\MessageInterface.cpp">
       <Filter>Source Files\DamExchange\Layer2</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Tree\Move\Stack.cpp">
-      <Filter>Source Files\Tree\Move</Filter>
+    <ClCompile Include="Source\Tree\Search\Score.cpp">
+      <Filter>Source Files\Tree\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Node\Stack.cpp">
+      <Filter>Source Files\Tree\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Node\Predicates.cpp">
+      <Filter>Source Files\Tree\Node</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

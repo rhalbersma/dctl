@@ -1,6 +1,6 @@
 #pragma once
 #include "Value.h"
-#include "../../Move/Stack.h"
+#include "../../Node/Stack.h"
 #include "../../../Geometry/Board.h"
 #include "../../../Variants/Rules.h"
 #include "../../../Utilities/IntegerTypes.h"
@@ -47,11 +47,11 @@ public:
         void finish(BitBoard);
         void make(BitBoard);
         void undo(BitBoard);
-        void improve_best(move::Stack*);
+        void improve_best(node::Stack*);
 
         // modifiers after a capture
-        template<bool> void add_man_capture(BitBoard, move::Stack*);
-        template<bool, size_t> void add_king_capture(BitBoard, move::Stack*);
+        template<bool> void add_man_capture(BitBoard, node::Stack*);
+        template<bool, size_t> void add_king_capture(BitBoard, node::Stack*);
 
 private:
         BitBoard captured_targets(void) const;
@@ -72,18 +72,18 @@ private:
         void undo(BitBoard, Int2Type<variants::REMOVE_N>);
 
         // tag dispatching based on ambiguity of man captures
-        template<bool> void add_man_capture(BitBoard, move::Stack*, Int2Type<false>);
-        template<bool> void add_man_capture(BitBoard, move::Stack*, Int2Type<true>);
+        template<bool> void add_man_capture(BitBoard, node::Stack*, Int2Type<false>);
+        template<bool> void add_man_capture(BitBoard, node::Stack*, Int2Type<true>);
 
         // tag dispatching based on king halt after final capture
-        template<bool, size_t> void add_king_capture(BitBoard, move::Stack*, Int2Type<variants::HALT_K>);
-        template<bool, size_t> void add_king_capture(BitBoard, move::Stack*, Int2Type<variants::HALT_1>);
-        template<bool, size_t> void add_king_capture(BitBoard, move::Stack*, Int2Type<variants::HALT_N>);
+        template<bool, size_t> void add_king_capture(BitBoard, node::Stack*, Int2Type<variants::HALT_K>);
+        template<bool, size_t> void add_king_capture(BitBoard, node::Stack*, Int2Type<variants::HALT_1>);
+        template<bool, size_t> void add_king_capture(BitBoard, node::Stack*, Int2Type<variants::HALT_N>);
 
         // tag dispatching based on promotion condition
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, bool, move::Stack*);
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, move::Stack*, Int2Type<variants::PROMOTE_BR>);
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, move::Stack*, Int2Type<variants::PROMOTE_EP>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, bool, node::Stack*);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, node::Stack*, Int2Type<variants::PROMOTE_BR>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, node::Stack*, Int2Type<variants::PROMOTE_EP>);
 
         // implementation
 	static const bool TOGGLE = true;

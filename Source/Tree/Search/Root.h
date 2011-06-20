@@ -1,7 +1,7 @@
 #pragma once
 #include "Entry.h"
-#include "Value.h"
-#include "../Move/Stack.h"
+#include "Score.h"
+#include "../Node/Stack.h"
 #include "../Statistics.h"
 #include "../../Hash/Map.h"
 #include "../../Utilities/Ply.h"
@@ -25,7 +25,11 @@ public:
         enum EntryType { ZW, PV };
 
         template<typename, typename B> static int analyze(const node::Position<B>&, int);
+
+        static void resize_hash(size_t);
         static void clear_hash(void);
+        static void interrupt(void);
+        static bool is_interrupted(void);
 
 private:
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content
@@ -42,10 +46,10 @@ private:
         template<typename B> static void announce(const node::Position<B>&, int);
         static void report(int, int, const Timer&);
 
-        template<typename, typename B> static void insert_PV(const node::Position<B>&, const move::Sequence&, int);
-        template<typename, typename B> static void print_PV(const node::Position<B>&, const move::Sequence&);
+        template<typename, typename B> static void insert_PV(const node::Position<B>&, const node::Sequence&, int);
+        template<typename, typename B> static void print_PV(const node::Position<B>&, const node::Sequence&);
 
-        static void identity_permutation(move::Order&);
+        static void identity_permutation(node::Order&);
         static bool is_PV(int);
 
         // implementation
@@ -54,6 +58,7 @@ private:
         // representation
         static TranspositionTable TT;
         static Statistics statistics_;
+        static bool interrupted_;
 };
 
 }       // namespace search

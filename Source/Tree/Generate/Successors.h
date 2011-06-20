@@ -1,9 +1,9 @@
 #pragma once
 #include <cstddef>
 #include "TemplateMethod.h"
-#include "../Move/Stack.h"
 #include "../Node/Pieces.h"
 #include "../Node/Side.h"
+#include "../Node/Stack.h"
 
 namespace tree {
 
@@ -16,17 +16,21 @@ class Successors
 {
 public:
         // interface
-        static void generate(const node::Position<Board>&, move::Stack*);
-        static void generate_captures(const node::Position<Board>&, move::Stack*);
-        static void generate_promotions(const node::Position<Board>&, move::Stack*);
+        static void generate(const node::Position<Board>&, node::Stack*);
+        static void generate_captures(const node::Position<Board>&, node::Stack*);
+        static void generate_reverse(const node::Position<Board>&, node::Stack*);
+        static void generate_promotions(const node::Position<Board>&, node::Stack*);
 
         static size_t count(const node::Position<Board>&);
         static size_t count_captures(const node::Position<Board>&);
+        static size_t count_reverse(const node::Position<Board>&);
         static size_t count_promotions(const node::Position<Board>&);
+
         template<bool> static size_t count_mobility(const node::Position<Board>&);
 
         static bool detect(const node::Position<Board>&);
         static bool detect_captures(const node::Position<Board>&);
+        static bool detect_reverse(const node::Position<Board>&);
         static bool detect_promotions(const node::Position<Board>&);
 
 private:
@@ -39,6 +43,8 @@ private:
         static int state(bool, BitBoard, BitBoard);
 
         static bool invariant(const node::Position<Board>&, size_t);
+        static bool reverse_invariant(const node::Position<Board>&, size_t);
+        static bool promotions_invariant(const node::Position<Board>&, size_t);
 
         // representation
         static const TemplateMethodInterface<Rules, Board>* const FACTORY[];

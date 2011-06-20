@@ -4,12 +4,12 @@ tree::search::Parameters::Parameters(void)
 {
 }
 
-const tree::move::Sequence& tree::search::Parameters::PV(void) const
+const tree::node::Sequence& tree::search::Parameters::PV(void) const
 {
         return PV_;
 }
 
-tree::move::Sequence& tree::search::Parameters::PV(void)
+tree::node::Sequence& tree::search::Parameters::PV(void)
 {
         return PV_;
 }
@@ -19,7 +19,7 @@ size_t tree::search::Parameters::best_move(void) const
         return *PV().begin();
 }
 
-void tree::search::Parameters::set_PV(size_t first_move, const move::Sequence& continuation)
+void tree::search::Parameters::set_PV(size_t first_move, const node::Sequence& continuation)
 {
         PV().resize(1 + continuation.size());
         *PV().begin() = first_move;

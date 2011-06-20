@@ -1,6 +1,6 @@
 #pragma once
 #include "IntegerTypes.h"
 
-const static MoveCount MOVE_MAX = 128;
-const static PlyCount PLY_MAX = 255;
-const static int GRAFTED_PLY_MAX = (PLY_MAX + 1) << 4;
+const static MoveCount MAX_MOVES = 128;
+const static PlyCount MAX_PLY = 255;
+const static int MAX_GRAFTED_PLY = (MAX_PLY + 1) << 4;

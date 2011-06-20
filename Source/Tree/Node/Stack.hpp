@@ -2,7 +2,7 @@
 #include "../../Utilities/Bit.h"
 
 namespace tree {
-namespace move {
+namespace node {
 
 // tag dispatching based on duplicate capture checking
 template<typename Rules>
@@ -125,5 +125,5 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
         );
 }
 
-}       // namespace move
+}       // namespace node
 }       // namespace tree

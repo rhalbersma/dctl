@@ -8,7 +8,7 @@ class MessageInterface
 {
 public:
         // virtual destructor
-        virtual ~MessageInterface(void) {};
+        virtual ~MessageInterface(void) throw() {};
 
         // non-virtual interface
         std::string str(void) const;

@@ -1,7 +1,7 @@
 #include <cassert>
 #include <sstream>
 #include "Entry.h"
-#include "Value.h"
+#include "Score.h"
 
 tree::search::Entry::Entry(void)
 :
@@ -17,7 +17,7 @@ tree::search::Entry::Entry(int v, Bound t, size_t d, size_t m)
 {
         rest_ ^= (t & BOUND_MASK) << BOUND_SHIFT;
         rest_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
-        rest_ ^= (m & MOVE_MASK) << MOVE_SHIFT;
+        rest_ ^= (m &  MOVE_MASK) <<  MOVE_SHIFT;
 
         assert(invariant());
 }
@@ -79,12 +79,12 @@ bool tree::search::Entry::is_fail_high(int beta) const
 
 bool tree::search::Entry::is_finite(void) const
 {
-        return value::is_finite(value());
+        return score::is_finite(value());
 }
 
 bool tree::search::Entry::is_mate(void) const
 {
-        return value::is_mate(value());
+        return score::is_mate(value());
 }
 bool tree::search::Entry::has_move(void) const
 {
@@ -123,7 +123,7 @@ bool tree::search::Entry::invariant(void) const
 
 std::string tree::search::Entry::print_value(void) const
 {
-        std::stringstream sstr(value::print(value()));
+        std::stringstream sstr(score::print(value()));
         return sstr.str();
 }
 

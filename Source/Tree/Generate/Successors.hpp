@@ -4,22 +4,30 @@ namespace tree {
 namespace generate {
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate(const node::Position<Board>& p, move::Stack* move_stack)
+void Successors<Rules, Board>::generate(const node::Position<Board>& p, node::Stack* move_stack)
 {
         select(p)->generate(p, move_stack);
         assert(invariant(p, move_stack->size()));
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_captures(const node::Position<Board>& p, move::Stack* move_stack)
+void Successors<Rules, Board>::generate_captures(const node::Position<Board>& p, node::Stack* move_stack)
 {
         select(p)->generate_captures(p, move_stack);
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_promotions(const node::Position<Board>& p, move::Stack* move_stack)
+void Successors<Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack* move_stack)
+{
+        select(p)->generate_reverse(p, move_stack);
+        assert(reverse_invariant(p, move_stack->size()));
+}
+
+template<typename Rules, typename Board>
+void Successors<Rules, Board>::generate_promotions(const node::Position<Board>& p, node::Stack* move_stack)
 {
         select(p)->generate_promotions(p, move_stack);
+        assert(promotions_invariant(p, move_stack->size()));
 }
 
 template<typename Rules, typename Board>
@@ -32,6 +40,12 @@ template<typename Rules, typename Board>
 size_t Successors<Rules, Board>::count_captures(const node::Position<Board>& p)
 {
         return select(p)->count_captures(p);
+}
+
+template<typename Rules, typename Board>
+size_t Successors<Rules, Board>::count_reverse(const node::Position<Board>& p)
+{
+        return select(p)->count_reverse(p);
 }
 
 template<typename Rules, typename Board>
@@ -59,6 +73,12 @@ bool Successors<Rules, Board>::detect_captures(const node::Position<Board>& p)
 }
 
 template<typename Rules, typename Board>
+bool Successors<Rules, Board>::detect_reverse(const node::Position<Board>& p)
+{
+        return select(p)->detect_reverse(p);
+}
+
+template<typename Rules, typename Board>
 bool Successors<Rules, Board>::detect_promotions(const node::Position<Board>& p)
 {
         return select(p)->detect_promotions(p);
@@ -68,6 +88,18 @@ template<typename Rules, typename Board>
 bool Successors<Rules, Board>::invariant(const node::Position<Board>& p, size_t num_moves)
 {
         return count(p) == num_moves && detect(p) == (num_moves > 0);
+}
+
+template<typename Rules, typename Board>
+bool Successors<Rules, Board>::reverse_invariant(const node::Position<Board>& p, size_t num_reverse)
+{
+        return count_reverse(p) == num_reverse && detect_reverse(p) == (num_reverse > 0);
+}
+
+template<typename Rules, typename Board>
+bool Successors<Rules, Board>::promotions_invariant(const node::Position<Board>& p, size_t num_promotions)
+{
+        return count_promotions(p) == num_promotions && detect_promotions(p) == (num_promotions > 0);
 }
 
 template<typename Rules, typename Board>

@@ -17,9 +17,9 @@ size_t DualMap<Key, Value, Hash, Index, Replace>::size(void) const
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-size_t DualMap<Key, Value, Hash, Index, Replace>::empty(void) const
+size_t DualMap<Key, Value, Hash, Index, Replace>::available(void) const
 {
-        return dual_map_[0].empty() + dual_map_[1].empty();
+        return dual_map_[0].available() + dual_map_[1].available();
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>

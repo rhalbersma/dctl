@@ -19,13 +19,15 @@ class Root
 public:
         template<typename, typename B> static NodeCount perft(const node::Position<B>&, int);
         template<typename, typename B> static NodeCount divide(const node::Position<B>&, int);
+
+        static void resize_hash(size_t);
         static void clear_hash(void);
 
 private:
         template<typename B> static void announce(const node::Position<B>&, int);
         template<typename B> static void announce(const node::Position<B>&, int, int);
 
-        static void report(NodeCount, int, const Timer&);
+        static void report(int, NodeCount, const Timer&);
         static void summary(void);
         static void summary(NodeCount);
         static void print_move(const std::string&, int);

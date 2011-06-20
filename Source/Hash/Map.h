@@ -28,7 +28,7 @@ public:
 
         // capacity
         size_t size(void) const;
-        size_t empty(void) const;
+        size_t available(void) const;
         void resize(size_t);
         void clear(void);
 

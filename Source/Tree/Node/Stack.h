@@ -1,19 +1,19 @@
 #pragma once
 #include <cstddef>
-#include "../Node/Pieces.h"
+#include "Pieces.h"
 #include "../../Utilities/IntegerTypes.h"
 #include "../../Utilities/Ply.h"
 #include "../../Utilities/TemplateTricks.h"
 #include "../../Utilities/VectorArray.h"
 
 namespace tree {
-namespace move {
+namespace node {
 
 // typedefs
 enum Type { JUMPS, MOVES };
-typedef VectorArray<size_t, PLY_MAX> Sequence;
-typedef VectorArray<size_t, MOVE_MAX> Order;
-typedef VectorArray<node::Pieces, MOVE_MAX> Stack;
+typedef VectorArray<size_t, MAX_PLY> Sequence;
+typedef VectorArray<size_t, MAX_MOVES> Order;
+typedef VectorArray<Pieces, MAX_MOVES> Stack;
 
 // element access
 Stack::reference top(Stack*);
@@ -31,7 +31,7 @@ template<bool, typename> void push(BitBoard, BitBoard, BitBoard, Stack*);       
 template<bool, typename> void push(BitBoard, BitBoard, BitBoard, BitBoard, Stack*);     // add a man capture
 void pop(Stack*);                                                                       // remove the last move  
 
-}       // namespace move
+}       // namespace node
 }       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
