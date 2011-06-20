@@ -59,7 +59,7 @@ TEST(MoveGeneration, Italian)
         };
 
         for (size_t i = 0; i < 9; ++i) {
-                move::Stack move_stack;
+                node::Stack move_stack;
                 node::Position<geometry::Roman> p = node::string::read<geometry::Roman, node::FEN_tag>()(position[i]);
                 Successors<variants::Italian, geometry::Roman>::generate(p, &move_stack);
 

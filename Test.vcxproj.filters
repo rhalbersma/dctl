@@ -48,9 +48,6 @@
     <ClCompile Include="Source\Utilities\Bit.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Tree\Search\Value.cpp">
-      <Filter>Source Files\Tree\Search</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Tree\Search\Root.cpp">
       <Filter>Source Files\Tree\Search</Filter>
     </ClCompile>
@@ -59,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="Source\Tree\Generate\Successors.cpp">
       <Filter>Source Files\Tree\Generate</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree\Search\Score.cpp">
+      <Filter>Source Files\Tree\Search</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

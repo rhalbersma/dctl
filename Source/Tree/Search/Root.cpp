@@ -20,11 +20,13 @@ protected:
 
         SearchEndgame() {
         // You can do set-up work for each test here.
+                Root::resize_hash(27);
         }
 
-        virtual ~SearchEndgame() {
+        virtual ~SearchEndgame() throw() {
         // You can do clean-up work that doesn't throw exceptions here.
-        }
+                Root::resize_hash(0);
+        };
 
         // If the constructor and destructor are not enough for setting up
         // and cleaning up each test, you can define the following methods:
@@ -43,7 +45,14 @@ protected:
 };
 
 #if INTEGRATION_TEST == 1
-/*
+
+TEST_F(SearchEndgame, InternationalInitial)
+{
+        node::Position<geometry::International> i10 = node::Position<geometry::International>::initial();
+        Root::clear_hash();
+        Root::analyze<variants::International>(i10, 31);
+}
+
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 TEST_F(SearchEndgame, International11)
 {
@@ -58,8 +67,9 @@ TEST_F(SearchEndgame, International11)
         };
                 
         for (int i = 0; i < 4; ++i) {
+                Root::clear_hash();
                 value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
-                EXPECT_EQ(value, value::win(DB_win11[i].second));
+                EXPECT_EQ(value, score::win_value(DB_win11[i].second));
         }
 }
 
@@ -85,8 +95,9 @@ TEST_F(SearchEndgame, International21)
         };
 
         for (int i = 0; i < 13; ++i) {
+                Root::clear_hash();
                 value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
-                EXPECT_EQ(value, value::win(DB_win21[i].second));
+                EXPECT_EQ(value, score::win_value(DB_win21[i].second));
         }
 }        
 
@@ -108,8 +119,9 @@ TEST_F(SearchEndgame, International22)
         };
 
         for (int i = 0; i < 9; ++i) {
+                Root::clear_hash();
                 value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
-                EXPECT_EQ(value, value::win(DB_win22[i].second));
+                EXPECT_EQ(value, score::win_value(DB_win22[i].second));
         }        
 }
 
@@ -138,11 +150,11 @@ TEST_F(SearchEndgame, International31)
         };
         
         for (int i = 0; i < 16; ++i) {
+                Root::clear_hash();
                 value = Root::analyze<variants::International>(node::string::read<geometry::International, node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
-                EXPECT_EQ(value, value::win(DB_win31[i].second));
+                EXPECT_EQ(value, score::win_value(DB_win31[i].second));
         }
 }
-
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        
 TEST_F(SearchEndgame, Killer11)
@@ -158,8 +170,9 @@ TEST_F(SearchEndgame, Killer11)
         };
 
         for (int i = 0; i < 4; ++i) {
+                Root::clear_hash();
                 value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win11[i].first), DB_win11[i].second);
-                EXPECT_EQ(value, value::win(DB_win11[i].second));
+                EXPECT_EQ(value, score::win_value(DB_win11[i].second));
         }
 }
 
@@ -185,9 +198,10 @@ TEST_F(SearchEndgame, Killer21)
                 DB_unittest("W:WK10:BK5,K41.",  3)      // 0102
         };       
         
-        for (int i = 0; i < 14; ++i) {
+        for (int i = 0; i < 2 /*14*/; ++i) {
+                Root::clear_hash();
                 value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win21[i].first), DB_win21[i].second);
-                EXPECT_EQ(value, value::win(DB_win21[i].second));
+                EXPECT_EQ(value, score::win_value(DB_win21[i].second));
         }
 }
 
@@ -209,11 +223,12 @@ TEST_F(SearchEndgame, Killer22)
         };
 
         for (int i = 0; i < 9; ++i) {
+                Root::clear_hash();
                 value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win22[i].first), DB_win22[i].second);
-                EXPECT_EQ(value, value::win(DB_win22[i].second));
+                EXPECT_EQ(value, score::win_value(DB_win22[i].second));
         }
 }
-*/
+
 TEST_F(SearchEndgame, Killer31)
 {
         typedef std::pair<std::string, size_t> DB_unittest;                
@@ -241,7 +256,7 @@ TEST_F(SearchEndgame, Killer31)
         for (int i = 0; i < 16; ++i) {
                 Root::clear_hash();
                 value = Root::analyze<variants::Killer>(node::string::read<geometry::International, node::FEN_tag>()(DB_win31[i].first), DB_win31[i].second);
-                EXPECT_EQ(value, value::win(DB_win31[i].second));
+                EXPECT_EQ(value, score::win_value(DB_win31[i].second));
         }
 
         //Position<geometry::International> Walinga(node::string::read<FEN_tag, geometry::International>()("W:WK46,28:BK43"));
