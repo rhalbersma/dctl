@@ -74,7 +74,7 @@ int Evaluate::material(const tree::node::Position<Board>& p)
 template<bool Color, typename Board>
 int Evaluate::tempo(const tree::node::Position<Board>& p)
 {
-        size_t score = 0;
+        int score = 0;
         for (int i = 1; i < Board::HEIGHT; ++i)
                 score += EvaluateWeight::TEMPO[i] * bit::count(p.pieces(Color) & Board::ROW_MASK[Color][i]);
         return score;
@@ -83,7 +83,7 @@ int Evaluate::tempo(const tree::node::Position<Board>& p)
 template<bool Color, typename Board>
 int Evaluate::center(const tree::node::Position<Board>& p)
 {
-        size_t score = 0;
+        int score = 0;
         for (int i = 1; i < Board::WIDTH / 2; ++i)
                 score += EvaluateWeight::CENTER[i] *
                 (

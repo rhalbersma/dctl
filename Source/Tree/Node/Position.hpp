@@ -4,7 +4,6 @@
 #include "../../Utilities/Bit.h"
 #include "../../Variants/Rules.h"
 
-
 namespace tree {
 namespace node {
 

@@ -4,26 +4,26 @@
 namespace tree {
 namespace search {
 
-using value::stretch;
-using value::squeeze;
+using score::stretch;
+using score::squeeze;
 
 // iterative deepening with no move ordering at the root
 template<typename Rules, typename Board>
-int Root::iterative_deepening(const node::Position<Board>& p, int nominal_depth)
+int Root::iterative_deepening(const node::Position<Board>& p, int depth)
 {
-        int score = -value::infinity();                
+        int score = -score::infinity();                
         int alpha, beta;
 
         Parameters root_node;       
         Timer timer;
-        announce(p, nominal_depth);
-        for (int depth = 1; depth <= nominal_depth; depth += ROOT_ID_INCREMENT) {
+        announce(p, depth);
+        for (int i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
                 statistics_.reset();
-                alpha = -value::infinity();
-                beta = value::infinity();
-                score = pvs<PV, Rules>(p, 0, depth, alpha, beta, root_node);
+                alpha = -score::infinity();
+                beta = score::infinity();
+                score = pvs<PV, Rules>(p, 0, i, alpha, beta, root_node);
                 timer.split();
-                report(score, depth, timer);
+                report(i, score, timer);
                 print_PV<Rules>(p, root_node.PV());
                 insert_PV<Rules>(p, root_node.PV(), score);
         }
@@ -35,26 +35,27 @@ int Root::iterative_deepening(const node::Position<Board>& p, int nominal_depth)
 template<int ThisNode, typename Rules, typename Board>
 int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
+        //if (is_interrupted())
+        //        return alpha;
+
         statistics_.update(ply);
         
-        assert(p.non_conversion() <= ply);
-
         // check for a legal draw
         if (p.template is_draw<Rules>())
-                return value::draw();       
+                return score::draw();       
 
-        // return evaluation in leaf nodes with valid move_stack
+        // return evaluation in leaf nodes with valid moves
         if (depth <= 0)
-                return !generate::Successors<Rules, Board>::detect(p)? value::loss(0) : Evaluate::evaluate(p);
+                return !generate::Successors<Rules, Board>::detect(p)? score::loss_value(0) : Evaluate::evaluate(p);
 
         assert(depth > 0);
-        assert(alpha >= -value::infinity());
-        assert(beta <= value::infinity());
+        assert(alpha >= -score::infinity());
+        assert(beta <= score::infinity());
 
         // mate distance pruning
-        if (alpha >= value::win(1))
+        if (alpha >= score::win_value(1))
                 return alpha;
-        if (beta <= value::loss(0))
+        if (beta <= score::loss_value(0))
                 return beta;
 
         assert(
@@ -68,19 +69,19 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
                 return TT_entry->value();
 
         // generate moves
-        move::Stack move_stack;
+        node::Stack move_stack;
         generate::Successors<Rules, Board>::generate(p, &move_stack);
 
         // without a valid move, the position is an immediate loss
         if (move_stack.empty()) {
-                const int loss_score = value::loss(0);
+                const int value = score::loss_value(0);
 
                 // we can only have an upper bound or an exact value at this point
-                assert(loss_score < beta);
-                const Entry::Bound bound = (loss_score <= alpha)? Entry::upper() : Entry::exact();
+                assert(value < beta);
+                const Entry::Bound bound = (value <= alpha)? Entry::upper() : Entry::exact();
 
-                TT.insert(p, Entry(loss_score, bound, depth, Entry::no_move()));
-                return loss_score;
+                TT.insert(p, Entry(value, bound, depth, Entry::no_move()));
+                return value;
         }
 
         // internal iterative deepening
@@ -94,7 +95,7 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
         }
 
         // move ordering
-        move::Order move_order(move_stack.size());
+        node::Order move_order(move_stack.size());
         identity_permutation(move_order);                
         if (TT_entry && TT_entry->has_move()) {
                 const size_t TT_move = TT_entry->move() % move_stack.size();
@@ -102,9 +103,9 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
         }
 
         // search moves
-        int value = -value::infinity();
+        int best_value = -score::infinity();
         size_t best_move = Entry::no_move();
-        int score;
+        int value;
         size_t i;
         Parameters child_node;
         const int original_alpha = alpha;
@@ -119,37 +120,37 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
                 q.template copy_make<Rules>(p, move_stack[i]);
 
                 if (is_PV(ThisNode) && s == 0)
-                        score = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                        value = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 else {
                         // TODO: late move reductions
 
-                        score = -squeeze(pvs<ZW, Rules>(q, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
-                        if (is_PV(ThisNode) && score > alpha && score < beta)
-                                score = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                        value = -squeeze(pvs<ZW, Rules>(q, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
+                        if (is_PV(ThisNode) && value > alpha && value < beta)
+                                value = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 }
 
-                if (score > value) {
-                        value = score;
+                if (value > best_value) {
+                        best_value = value;
                         best_move = i; 
-                        if (is_PV(ThisNode) && value > alpha) {
+                        if (is_PV(ThisNode) && best_value > alpha) {
+                                alpha = best_value;
                                 parent_node.set_PV(best_move, child_node.PV());
-                                alpha = value;
                         }
-                        if (value >= beta)
+                        if (best_value >= beta)
                                 break;                      
                 }
         }
 
         // we must have found a best move with a finite value
+        assert(score::is_finite(best_value));
         assert(best_move != Entry::no_move());
-        assert(value > -value::infinity());
 
         // determine the bound type of the value
         const Entry::Bound bound = 
-                value <= original_alpha ? Entry::upper() : 
-                value >= beta ? Entry::lower() : Entry::exact();
-        TT.insert(p, Entry(value, bound, depth, best_move));
-        return value;
+                best_value <= original_alpha ? Entry::upper() : 
+                best_value >= beta ? Entry::lower() : Entry::exact();
+        TT.insert(p, Entry(best_value, bound, depth, best_move));
+        return best_value;
 }
 
 /*
@@ -161,15 +162,15 @@ int Root::quiescence(const node::Position<Board>& p, int ply, int depth, int alp
 
         // check for a legal draw
         if (p.is_draw<Rules>())
-                return value::draw();
+                return score::draw();
 
         // check for legal move_stack
         if (!generate::detect(p)) {
-                return value::loss(0);
+                return score::loss_value(0);
         }
 
         // generate captures and promotions
-        move::Stack move_stack;
+        node::Stack move_stack;
         generate::generate_captures_promotions(p, move_stack);
 
         if (move_stack.empty())
@@ -193,33 +194,33 @@ int Root::negamax(const node::Position<Board>& p, int ply, int depth, Parameters
 
         // check for a legal draw
         if (p.template is_draw<Rules>())
-                return value::draw();
+                return score::draw();
 
         // return evaluation in leaf nodes with valid move_stack
         if (depth == 0)
-                return !generate::detect<Rules>(p)? value::loss(0) : Evaluate::evaluate(p);
+                return !generate::detect<Rules>(p)? score::loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
-        move::Stack move_stack;
+        node::Stack move_stack;
         generate::generate(p, move_stack);
 
         // search moves
-        int value = -value::infinity();
-        int score;
+        int best_value = -score::infinity();
+        int value;
         Parameters child_node;
         Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
                 q.template copy_make<Rules>(p, move_stack[i]);
-                score = -squeeze(negamax<Rules>(q, ply + 1, depth - 1, child_node));
+                value = -squeeze(negamax<Rules>(q, ply + 1, depth - 1, child_node));
 
-                if (score > value) {
-                        value = score;
+                if (value > best_value) {
+                        best_value = value;
                         parent_node.set_PV(i, child_node.PV());
                 }
         }
 
         // without a valid move, the position is an immediate loss
-        return std::max(value::loss(0), value);
+        return std::max(score::loss_value(0), best_value);
 }
 
 // alpha-beta
@@ -230,44 +231,44 @@ int Root::alpha_beta(const node::Position<Board>& p, int ply, int depth, int alp
 
         // check for a legal draw
         if (p.template is_draw<Rules>())
-                return value::draw();
+                return score::draw();
 
         // mate distance pruning
-        if (alpha >= value::win(1))
+        if (alpha >= score::win_value(1))
                 return alpha;
-        if (beta <= value::loss(0))
+        if (beta <= score::loss_value(0))
                 return beta;
 
         // return evaluation in leaf nodes with valid move_stack
         if (depth == 0)
-                return !generate::detect<Rules>(p)? value::loss(0) : Evaluate::evaluate(p);
+                return !generate::detect<Rules>(p)? score::loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
-        move::Stack move_stack;
+        node::Stack move_stack;
         generate::generate(p, move_stack);
 
         // search moves
-        int value = -value::infinity();
-        int score;
+        int best_value = -score::infinity();
+        int value;
         Parameters child_node;
         Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
                 q.template copy_make<Rules>(p, move_stack[i]);
-                score = -squeeze(alpha_beta<Rules>(p, ply  + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                value = -squeeze(alpha_beta<Rules>(p, ply  + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
 
-                if (score > value) {
-                        if (score >= beta)
-                                return score;
-                        value = score;
-                        if (value > alpha) {
-                                alpha = value;
+                if (value > best_value) {
+                        best_value = value;
+                        if (best_value > alpha) {
+                                alpha = best_value;
                                 parent_node.set_PV(i, child_node.PV());
                         }
+                        if (best_value >= beta)
+                                break;                      
                 }
         }
 
         // without a valid move, the position is an immediate loss
-        return std::max(value::loss(0), value);
+        return std::max(score::loss_value(0), best_value);
 }
 
 }       // namespace search

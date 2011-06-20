@@ -1,4 +1,4 @@
-#include "../Move/Predicates.h"
+#include "Predicates.h"
 
 namespace tree {
 namespace node {
@@ -21,7 +21,7 @@ void Position<Board>::link(const Position<Board>& other)
 template<typename Board> template<typename Rules>
 void Position<Board>::make(const Pieces& m)
 {
-        assert(move::is_pseudo_legal<Rules>(*this, m));
+        assert(is_pseudo_legal<Rules>(*this, m));
 
         make_irreversible<Rules>(m);
         make_reversible(m);
@@ -55,7 +55,7 @@ void Position<Board>::make_irreversible(const Pieces& m, Int2Type<false>)
 template<typename Board>
 void Position<Board>::make_non_conversion(const Pieces& m)
 {
-        if (move::is_non_conversion(*this, m))
+        if (is_non_conversion(*this, m))
                 ++non_conversion_;
         else
                 non_conversion_ = 0;
@@ -66,13 +66,13 @@ void Position<Board>::make_repeated_kings_moves(const Pieces& m)
 {
         hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
-        if (active_men(*this) && active_kings(*this) && move::is_non_conversion(*this, m)) {                
-                if (bit::is_zero(repeated_kings_ & move::from_sq(*this, m)))
-                        repeated_kings_ ^= move::dest_sq(*this, m);
+        if (active_men(*this) && active_kings(*this) && is_non_conversion(*this, m)) {                
+                if (bit::is_zero(repeated_kings_ & from_sq(*this, m)))
+                        repeated_kings_ ^= dest_sq(*this, m);
                         repeated_moves_[to_move()] = 1;
                 else {
                         if (!is_restricted<N>(to_move())) {
-                                repeated_kings_ ^= move::moving_kings(*this, m);
+                                repeated_kings_ ^= moving_kings(*this, m);
                                 ++repeated_moves_[to_move()];
                         } else {
                                 repeated_kings_ &= passive_kings(*this);
@@ -87,7 +87,7 @@ void Position<Board>::make_repeated_kings_moves(const Pieces& m)
         hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
         // capture of the opponent's most recently moved king
-        if (bit::is_single(repeated_kings_[!to_move()] & move::captured_pieces(*this, m))) {
+        if (bit::is_single(repeated_kings_[!to_move()] & captured_pieces(*this, m))) {
                 hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, !to_move());
                 repeated_kings_ &= active_kings(*this);
                 repeated_moves_[!to_move()] = 0;

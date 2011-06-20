@@ -22,7 +22,7 @@ size_t Map<Key, Value, Hash, Index, Replace>::size(void) const
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-size_t Map<Key, Value, Hash, Index, Replace>::empty(void) const
+size_t Map<Key, Value, Hash, Index, Replace>::available(void) const
 {
         return std::count_if(map_.begin(), map_.end(), std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, Key(0)));
 }

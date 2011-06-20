@@ -1,5 +1,5 @@
 #pragma once
-#include "../Move/Stack.h"
+#include "../Node/Stack.h"
 
 namespace node { template<typename> class Position; }
 
@@ -13,17 +13,17 @@ public:
         Parameters(void);
 
         // views
-        const tree::move::Sequence& PV(void) const;
-        move::Sequence& PV(void);
+        const tree::node::Sequence& PV(void) const;
+        node::Sequence& PV(void);
         size_t best_move(void) const;
 
         // modifiers
-        void set_PV(size_t, const move::Sequence&);
+        void set_PV(size_t, const node::Sequence&);
         void clear_PV(void);
 
 private:
         // representation
-        move::Sequence PV_;
+        node::Sequence PV_;
 };
 
 }       // namespace search
