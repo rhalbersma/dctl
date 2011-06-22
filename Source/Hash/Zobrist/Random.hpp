@@ -32,7 +32,7 @@ uint64_t rand64(void)
 {
         uint64_t key = rand();
 
-        for (int i = 0; i < 4; ++i) {
+        for (auto i = 0; i < 4; ++i) {
                 key <<= 15;
                 key ^= rand();
         }
@@ -42,7 +42,7 @@ uint64_t rand64(void)
 
 void generate_Zobrist(void)
 {
-	for (int i = 0; i < 64; ++i) {
+	for (auto i = 0; i < 64; ++i) {
 		std::cout << "0x" << std::hex << std::right << std::setfill('0') << std::setw(16);
 		std::cout << rand64();
 		if (i != 63)

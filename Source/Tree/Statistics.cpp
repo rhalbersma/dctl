@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <algorithm>    // std:max
 #include "Statistics.h"
 
 tree::Statistics::Statistics(void)

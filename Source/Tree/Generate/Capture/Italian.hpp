@@ -9,7 +9,7 @@ struct init<variants::Italian>
 {
         void operator()(Value& value) const
         {
-                value.piece_order = 0;
+                value.piece_order = BitBoard(0);
                 value.num_pieces = value.num_kings = 0;
                 value.with_king = false;
         }

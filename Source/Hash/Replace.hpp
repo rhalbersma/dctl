@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <algorithm>    // std::find_if, std::find_first_of, std::min_element
 #include <functional>
 #include "EntryPredicates.h"
 
@@ -21,8 +21,8 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutSmallestOfN>
 
         void operator()(Iterator bucket_begin, const Entry& entry) const
         {
-                Iterator replace;
                 Iterator bucket_end = bucket_begin + N;
+                Iterator replace;
 
                 // replace any empty or old entry
                 Key empty_or_old[2] = {Key(0), entry.first};
@@ -53,8 +53,8 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutShallowestOfN>
 
         void operator()(Iterator bucket_begin, const Entry& entry) const
         {
-                Iterator replace;
                 Iterator bucket_end = bucket_begin + N;
+                Iterator replace;
 
                 // replace any empty or old entry
                 Key empty_or_old[2] = {Key(0), entry.first};

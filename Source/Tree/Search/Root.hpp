@@ -33,7 +33,7 @@ void Root::announce(const node::Position<Board>& p, int depth)
 template<typename Rules, typename Board>
 void Root::insert_PV(const node::Position<Board>& p, const node::Sequence& pv, int value)
 {
-        node::Position<Board> q(p);
+        auto q(p);
 
         for (size_t i = 0; i < pv.size(); ++i) {
                 node::Stack move_stack;
@@ -56,7 +56,7 @@ void Root::insert_PV(const node::Position<Board>& p, const node::Sequence& pv, i
 template<typename Rules, typename Board>
 void Root::print_PV(const node::Position<Board>& p, const node::Sequence& pv)
 {
-        node::Position<Board> q(p);
+        auto q(p);
 
         for (size_t i = 0; i < pv.size(); ++i) {
                 node::Stack move_stack;

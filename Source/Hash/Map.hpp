@@ -1,7 +1,6 @@
-#include <algorithm>    // std::count
+#include <algorithm>    // std::count_if
 #include <cassert>
 #include <cstring>      // std::memset
-#include <iostream>
 #include <type_traits>  // std::is_integral
 
 #include "EntryPredicates.h"
@@ -40,7 +39,6 @@ void Map<Key, Value, Hash, Index, Replace>::resize(size_t log2_n)
                 }
                 map_mask_ = map_.size() - 1;                    // MODULO the number of entries
                 map_mask_ ^= BUCKET_MASK;                       // MODULO the number of buckets
-                std::cout << "Successfully allocated " << map_.size() << " hash entries " << std::endl;
                 return;
         }
         throw;                                                  // could not allocate a single entry

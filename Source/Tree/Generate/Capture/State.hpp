@@ -56,21 +56,21 @@ BitBoard State<Rules, Board>::captured_targets(void) const
 
 // tag dispatching based on whether men can capture kings
 template<typename Rules, typename Board>
-BitBoard State<Rules, Board>::captured_kings(BitBoard captured_pieces) const
+BitBoard State<Rules, Board>::captured_king_targets(BitBoard captured_pieces) const
 {
-        return captured_kings(captured_pieces, Int2Type<variants::is_men_capture_kings<Rules>::value>());
+        return captured_king_targets(captured_pieces, Int2Type<variants::is_men_capture_kings<Rules>::value>());
 }
 
 // specialization for men that cannot capture kings
 template<typename Rules, typename Board>
-BitBoard State<Rules, Board>::captured_kings(BitBoard, Int2Type<false>) const
+BitBoard State<Rules, Board>::captured_king_targets(BitBoard, Int2Type<false>) const
 {
-        return 0;
+        return BitBoard(0);
 }
 
 // specialization for men that can capture kings
 template<typename Rules, typename Board>
-BitBoard State<Rules, Board>::captured_kings(BitBoard captured_pieces, Int2Type<true>) const
+BitBoard State<Rules, Board>::captured_king_targets(BitBoard captured_pieces, Int2Type<true>) const
 {
         return captured_pieces & king_targets_;
 }
@@ -195,7 +195,7 @@ template<typename Rules, typename Board> template<bool Color>
 void State<Rules, Board>::add_man_capture(BitBoard dest_sq, node::Stack* move_stack, Int2Type<false>)
 {
         const BitBoard captured_pieces = captured_targets();
-        node::push<Color, Rules>(from_sq_ ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_kings(captured_pieces), move_stack);
+        node::push<Color, Rules>(from_sq_ ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_king_targets(captured_pieces), move_stack);
 }
 
 // partial specialization for man captures that can be ambiguous
@@ -204,7 +204,7 @@ void State<Rules, Board>::add_man_capture(BitBoard dest_sq, node::Stack* move_st
 {
         const BitBoard captured_pieces = captured_targets();
         const bool ambiguous = !move_stack->empty() && large<Rules>()(current_, captured_pieces);
-        node::push<Color, Rules>(from_sq_ ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_kings(captured_pieces), move_stack);
+        node::push<Color, Rules>(from_sq_ ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_king_targets(captured_pieces), move_stack);
         if (ambiguous && node::non_unique_top<Rules>(*move_stack))
                 node::pop(move_stack);
 }
@@ -232,7 +232,7 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, node::Stack* move_s
 {
         const BitBoard captured_pieces = captured_targets();
         const bool ambiguous = !move_stack->empty() && large<Rules>()(current_, captured_pieces);
-        add_king_capture<Color>(dest_sq, captured_pieces, captured_pieces & king_targets_, ambiguous, move_stack);
+        add_king_capture<Color>(dest_sq, captured_pieces, captured_king_targets(captured_pieces), ambiguous, move_stack);
 }
 
 // partial specialization for kings that slide through after the final capture
@@ -242,7 +242,7 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, node::Stack* move_s
         assert(dest_sq & path());
 
         const BitBoard captured_pieces = captured_targets();
-        const BitBoard captured_kings = captured_pieces & king_targets_;
+        const BitBoard captured_kings = captured_king_targets(captured_pieces);
         const bool ambiguous = !move_stack->empty() && large<Rules>()(current_, captured_pieces);
         do {
                 add_king_capture<Color>(dest_sq, captured_pieces, captured_kings, ambiguous, move_stack);
