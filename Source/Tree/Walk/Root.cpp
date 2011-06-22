@@ -22,7 +22,7 @@ protected:
                 Root::resize_hash(24);
         }
 
-        virtual ~Perft() throw() {
+        virtual ~Perft() {
         // You can do clean-up work that doesn't throw exceptions here.
                 Root::resize_hash(0);
         }
@@ -44,7 +44,7 @@ protected:
 };
 
 #if INTEGRATION_TEST == 1
-/*
+
 // The original perft thread on the FMJD forum 
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 TEST_F(Perft, International)
@@ -140,7 +140,7 @@ TEST_F(Perft, ChessVariants)
         Root::clear_hash();
         Root::perft<variants::Thai>(i8, 13);      // Usual initial position with 3 rows of men
 }
-*/
+
 #endif
 
 }       // namespace walk

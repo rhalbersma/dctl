@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <algorithm>    // std::find
 #include <string>
 #include "gtest/gtest.h"
 #include "../../../../Library/Source/Tree/Generate/Successors.h"
@@ -58,9 +58,9 @@ TEST(MoveGeneration, Italian)
                 moves_66, moves_67, moves_68, moves_69, moves_610
         };
 
-        for (size_t i = 0; i < 9; ++i) {
+        for (auto i = 0; i < 9; ++i) {
                 node::Stack move_stack;
-                node::Position<geometry::Roman> p = node::string::read<geometry::Roman, node::FEN_tag>()(position[i]);
+                auto p = node::string::read<geometry::Roman, node::FEN_tag>()(position[i]);
                 Successors<variants::Italian, geometry::Roman>::generate(p, &move_stack);
 
                 // check the number of generated moves
