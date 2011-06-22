@@ -1,5 +1,4 @@
 #include <cassert>
-#include <iostream>
 #include "../../Hash/Algorithms.h"
 #include "../../Utilities/Bit.h"
 #include "../../Variants/Rules.h"
@@ -43,12 +42,12 @@ bool Position<Board>::is_repetition_draw(void) const
                 return false;
 
         // find the parent position at MIN_CYCLE ply above the current position
-        const Position<Board>* p = this;
-        for (size_t i = 0; i != MIN_CYCLE; i += STRIDE)
+        auto p = this;
+        for (auto i = 0; i != MIN_CYCLE; i += STRIDE)
                 p = p->parent(1);
 
         // check the hash index of the parent position with the current hash index
-        for (size_t i = MIN_CYCLE; i <= non_conversion(); i += STRIDE) {
+        for (auto i = MIN_CYCLE; i <= non_conversion(); i += STRIDE) {
                 if (p->hash_index() == hash_index())
                         return true;
                 p = p->parent(1);

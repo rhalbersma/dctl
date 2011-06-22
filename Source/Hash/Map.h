@@ -59,14 +59,14 @@ private:
         typedef typename VectorMap::const_iterator const_map_iterator;
 
         static const size_t BUCKET_SIZE = CACHE_LINE / sizeof(Entry);
-        static const Index BUCKET_MASK = BUCKET_SIZE - 1;
+        static const size_t BUCKET_MASK = BUCKET_SIZE - 1;
         
               map_iterator bucket_begin(Index);
         const_map_iterator bucket_begin(Index) const;
 
         // representation
         VectorMap map_;
-        Index map_mask_;
+        size_t map_mask_;
 };
 
 }       // namespace hash

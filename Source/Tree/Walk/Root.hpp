@@ -18,7 +18,7 @@ NodeCount Root::perft(const node::Position<Board>& p, int depth)
         
         Timer timer;
         announce(p, depth);
-        for (int i = 1; i <= depth; ++i) {                        
+        for (auto i = 1; i <= depth; ++i) {                        
                 statistics_.reset();
                 leafs = driver<Rules>(p, 0, i);
                 timer.split();
@@ -124,7 +124,7 @@ NodeCount Root::hash(const node::Position<Board>& p, int ply, int depth)
 {
         statistics_.update(ply);
 
-        const Entry* TT_entry = TT.find(p);
+        auto TT_entry = TT.find(p);
         if (TT_entry && TT_entry->equal_to(depth))
                 return TT_entry->leafs();
 
@@ -149,7 +149,7 @@ NodeCount Root::fast(const node::Position<Board>& p, int ply, int depth)
 {
         statistics_.update(ply);
 
-        const Entry* TT_entry = TT.find(p);
+        auto TT_entry = TT.find(p);
         if (TT_entry && TT_entry->equal_to(depth))
                 return TT_entry->leafs();
 

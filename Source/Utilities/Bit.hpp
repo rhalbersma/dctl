@@ -6,7 +6,7 @@ namespace bit {
 template<typename T>
 bool is_zero(T b)
 {
-        return b == 0;
+        return b == T(0);
 }
 
 template<typename T>
@@ -42,13 +42,13 @@ bool is_exclusive(T a, T b)
 template<typename T>
 T get_lowest(T b)
 {
-        return b & (0 - b);
+        return b & (T(0) - b);
 }
 
 template<typename T>
 T except_lowest(T b)
 {
-        return b & (b - 1);
+        return b & (b - T(1));
 }
 
 template<typename T>
@@ -79,7 +79,7 @@ T flood_fill(T generator, T propagator, size_t dir)
 template<typename T>
 void clear_lowest(T& b)
 {
-        b &= b - 1;
+        b &= b - T(1);
 }
 
 }       // namespace bit

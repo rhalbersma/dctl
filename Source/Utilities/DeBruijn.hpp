@@ -8,7 +8,7 @@ typename DeBruijn<N>::T DeBruijn<N>::generate_sequence(void)
         T sequence = 0;
 
         // highest N bits are always zero; only have to try the remaining bits (SHIFT == 2^N - N)
-        for (int i = SHIFT - 1; i >= 0; --i) {
+        for (auto i = SHIFT - 1; i >= 0; --i) {
                 T new_prefix = (sequence >> i) & MASK;
 
                 // greedy algorithm: set the least significant bit of the next prefix equal to one
@@ -16,7 +16,7 @@ typename DeBruijn<N>::T DeBruijn<N>::generate_sequence(void)
 
                 // test if the new prefix matches any of the previous prefixes
                 bool prefer_one = true;
-                for (int j = SHIFT - 1; j > i; --j) {
+                for (auto j = SHIFT - 1; j > i; --j) {
                         T old_prefix = (sequence >> j) & MASK;
                         if (old_prefix == new_prefix) {
                                 prefer_one = false;
@@ -38,7 +38,7 @@ void DeBruijn<N>::generate_table(void)
         const T sequence = generate_sequence();
 
         size_t table[POW2N];
-        for (int i = 0; i < POW2N; ++i)
+        for (auto i = 0; i < POW2N; ++i)
                 table[((sequence << i) >> SHIFT) & MASK] = i;
 
         std::cout << "template<>" << std::endl;
@@ -48,9 +48,9 @@ void DeBruijn<N>::generate_table(void)
         
         std::cout << "template<>" << std::endl;
         std::cout << "const size_t DeBruijn<" << N << ">::TABLE[] = {" << std::endl;
-        for (int i = 0; i < POW2N; ++i) {
+        for (auto i = 0; i < POW2N; ++i) {
                 if (i % 8 == 0)
-                        for (int j = 0; j < 8; ++j)
+                        for (auto j = 0; j < 8; ++j)
                                 std::cout << " ";
                 std::cout << std::dec << std::setw(2) << std::setfill(' ') << table[i];
                 if (i != POW2N - 1)

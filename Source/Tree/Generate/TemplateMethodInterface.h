@@ -30,7 +30,7 @@ public:
         virtual bool detect_promotions(const node::Position<Board>&) const = 0;
 
         // virtual destructor
-        virtual ~TemplateMethodInterface(void) throw() {};
+        virtual ~TemplateMethodInterface(void) {};
 };
 
 }       // namespace generate

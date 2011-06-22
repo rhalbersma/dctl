@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <algorithm>    // std::generate
 #include <iomanip>
 #include <iostream>
 #include "Root.h"

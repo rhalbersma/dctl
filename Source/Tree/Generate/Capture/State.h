@@ -9,13 +9,16 @@
 
 namespace tree {
 
-namespace node { template<typename> class Position; }
+namespace node { 
+        template<typename> class Position; 
+        class Pieces;
+}
         
 namespace generate {
 namespace capture {
 
 template<typename Rules, typename Board>
-class State: private Board
+class State//: private Board
 {
 public:
         // constructors
@@ -33,9 +36,6 @@ public:
         // binary predicates
         bool current_greater_equal_best(void) const;
         bool current_not_equal_to_best(void) const;
-
-        size_t size(void) const;
-        const node::Pieces& operator[](size_t) const;
 
         // modifiers before a capture
         void toggle_king_targets(void);                                 // men that cannot capture kings
@@ -57,9 +57,9 @@ private:
         BitBoard captured_targets(void) const;
 
         // tag dispatching based on whether men can capture kings
-        BitBoard captured_kings(BitBoard) const;
-        BitBoard captured_kings(BitBoard, Int2Type<false>) const;
-        BitBoard captured_kings(BitBoard, Int2Type<true>) const;
+        BitBoard captured_king_targets(BitBoard) const;
+        BitBoard captured_king_targets(BitBoard, Int2Type<false>) const;
+        BitBoard captured_king_targets(BitBoard, Int2Type<true >) const;
 
         template<bool> BitBoard promotions(BitBoard) const;
 
@@ -73,7 +73,7 @@ private:
 
         // tag dispatching based on ambiguity of man captures
         template<bool> void add_man_capture(BitBoard, node::Stack*, Int2Type<false>);
-        template<bool> void add_man_capture(BitBoard, node::Stack*, Int2Type<true>);
+        template<bool> void add_man_capture(BitBoard, node::Stack*, Int2Type<true >);
 
         // tag dispatching based on king halt after final capture
         template<bool, size_t> void add_king_capture(BitBoard, node::Stack*, Int2Type<variants::HALT_K>);

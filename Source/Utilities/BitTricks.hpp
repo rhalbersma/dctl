@@ -39,7 +39,7 @@ size_t count_Kernighan(T b)
 template<bool Sign, typename T>
 T fill_loop(T generator, T propagator, size_t dir)
 {
-        T flood = 0;
+        T flood(0);
         while (generator) {
                 flood |= generator;
                 generator = Shift<Sign>()(generator, dir) & propagator;

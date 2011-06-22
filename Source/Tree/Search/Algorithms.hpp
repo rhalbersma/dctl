@@ -17,7 +17,7 @@ int Root::iterative_deepening(const node::Position<Board>& p, int depth)
         Parameters root_node;       
         Timer timer;
         announce(p, depth);
-        for (int i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
+        for (auto i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
                 statistics_.reset();
                 alpha = -score::infinity();
                 beta = score::infinity();
@@ -64,7 +64,7 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
         );
 
         // TT cut-off for exact win/loss scores or for deep enough heuristic scores
-        const Entry* TT_entry = TT.find(p);
+        auto TT_entry = TT.find(p);
         if (TT_entry && (TT_entry->is_mate() || TT_entry->greater_equal(depth)) && TT_entry->is_cutoff(alpha, beta))
                 return TT_entry->value();
 

@@ -23,7 +23,7 @@ DXP::layer2::Move::Move(const std::string& msg)
         dest_sq_(boost::lexical_cast<int>(msg.substr(6, 2).c_str())),
         num_captured_(boost::lexical_cast<int>(msg.substr(8, 2).c_str()))
 {
-        for (int i = 0; i < num_captured(); ++i)
+        for (auto i = 0; i < num_captured(); ++i)
                 captured_pieces_.push_back(boost::lexical_cast<int>(msg.substr(10 + 2 * i, 2).c_str()));
 }
 

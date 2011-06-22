@@ -12,7 +12,7 @@ void Mix<Index>::mix(Index& index_, BitBoard b)
 {
         add_shift_L(index_, ADD_SHIFT_L[0], b);
         xor_shift_R(index_, XOR_SHIFT_R[0]);
-        for (int i = 1; i < NUM_MIX; ++i) {
+        for (auto i = 1; i < NUM_MIX; ++i) {
                 add_shift_L(index_, ADD_SHIFT_L[i]);
                 xor_shift_R(index_, XOR_SHIFT_R[i]);
         }
