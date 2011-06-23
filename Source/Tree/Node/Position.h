@@ -38,10 +38,10 @@ public:
         BitBoard unrestricted_kings(bool) const;
 
         HashIndex hash_index(void) const;
-        BitBoard repeated_kings(void) const;
-        BitBoard repeated_kings(bool) const;
-        PlyCount repeated_moves(bool) const;
-        PlyCount non_conversion(void) const;
+        BitBoard consecutive_same_kings(void) const;
+        BitBoard consecutive_same_kings(bool) const;
+        PlyCount consecutive_same_king_moves(bool) const;
+        PlyCount non_conversion_moves(void) const;
 
         const node::Position<Board>* parent(size_t) const;
 
@@ -53,26 +53,26 @@ private:
         // implementation
         bool is_repetition_draw(void) const;
         
-        // tag dispatching based on restrictions on consecutive king moves by both sides        
+        // tag dispatching based on restrictions on non conversion moves        
         template<typename> bool is_non_conversion_draw(void) const;
-        template<typename> bool is_non_conversion_draw(Int2Type<true>) const;
         template<typename> bool is_non_conversion_draw(Int2Type<false>) const;
+        template<typename> bool is_non_conversion_draw(Int2Type<true >) const;
 
         template<PlyCount> bool is_restricted_king(bool) const;
 
-        // tag dispatching for restrictions on consecutive moves with the same king
-        template<typename> BitBoard unrestricted_kings(bool, Int2Type<true>) const;
+        // tag dispatching based on restrictions on consecutive moves with the same king
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<false>) const;
+        template<typename> BitBoard unrestricted_kings(bool, Int2Type<true >) const;
 
         void link(const Position<Board>&);
 
-        // tag dispatching for restrictions on consecutive moves with the same king
+        // tag dispatching based on restrictions on consecutive moves with the same king
         template<typename> void make_irreversible(const Pieces&);
-        template<typename> void make_irreversible(const Pieces&, Int2Type<true >);
         template<typename> void make_irreversible(const Pieces&, Int2Type<false>);
+        template<typename> void make_irreversible(const Pieces&, Int2Type<true >);
 
-        void make_non_conversion(const Pieces&);
-        template<PlyCount> void make_repeated_kings_moves(const Pieces&);
+        void make_non_conversion_moves(const Pieces&);
+        template<PlyCount> void make_consecutive_same_kings_moves(const Pieces&);
         void make_reversible(const Pieces&);
                 
         // post-conditions for the constructors and modifiers
@@ -84,9 +84,9 @@ private:
         BitBoard padding_;
         HashIndex hash_index_; 
         Pieces pieces_;
-        BitBoard repeated_kings_;
-        PlyCount repeated_moves_[2];
-        PlyCount non_conversion_;
+        BitBoard consecutive_same_kings_;
+        PlyCount consecutive_same_king_moves_[2];
+        PlyCount non_conversion_moves_;
         bool to_move_;
 
         // implementation

@@ -23,8 +23,8 @@ struct Init<tree::node::Position<Board>, Index>: public std::unary_function<tree
         Index operator()(const tree::node::Position<Board>& p, bool color) const
         {
                 return (
-                        Random<Index>::xor_rand(p.repeated_kings(color), Random<Index>::REPEATED_KINGS[color]) ^
-                        Random<Index>::xor_rand(p.repeated_moves(color), Random<Index>::REPEATED_MOVES[color])
+                        Random<Index>::xor_rand(p.consecutive_same_kings(color), Random<Index>::REPEATED_KINGS[color]) ^
+                        Random<Index>::xor_rand(p.consecutive_same_king_moves(color), Random<Index>::REPEATED_MOVES[color])
                 );
         }
 };

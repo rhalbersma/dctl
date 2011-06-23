@@ -9,17 +9,17 @@ namespace variants {
 
 // king range
 enum { RANGE_1, RANGE_N };
-template<typename> struct is_long_king_range                    { enum { value = RANGE_N }; };
+template<typename> struct is_long_king_range                            { enum { value = RANGE_N }; };
 
 // restricted consecutive moves with the same king
-template<typename> struct is_restricted_same_king_moves         { enum { value = false }; };
+template<typename> struct is_restricted_consecutive_same_king_moves     { enum { value = false }; };
 
 // maximum consecutive moves with the same king
-template<typename> struct max_same_king_moves                   { enum { value = 3 }; };
+template<typename> struct max_consecutive_same_king_moves               { enum { value = 3 }; };
 
 // promotion condition: on the back row or en-passant
 enum { PROMOTE_BR, PROMOTE_EP };
-template<typename> struct promotion_condition                   { enum { value = PROMOTE_BR }; };
+template<typename> struct promotion_condition                           { enum { value = PROMOTE_BR }; };
 
 //+----------------------------------------------------------------------------+
 //|      Capture mechanics                                                     |

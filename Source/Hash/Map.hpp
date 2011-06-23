@@ -53,7 +53,7 @@ void Map<Key, Value, Hash, Index, Replace>::clear(void)
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 const Value* Map<Key, Value, Hash, Index, Replace>::find(const Key& key) const
 {
-        const Index index = Hash<Key, Index>()(key);
+        const auto index = Hash<Key, Index>()(key);
         return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
 }
 
@@ -70,8 +70,8 @@ template<typename Key, typename Value, template<typename, typename> class Hash, 
 template<typename Item>
 const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item, Int2Type<true>) const
 {
-        const Index index = Hash<Item, Index>()(item);
-        const Key key = ShiftSign<Index, Key>()(index);
+        const auto index = Hash<Item, Index>()(item);
+        const auto key = ShiftSign<Index, Key>()(index);
         return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
 }
 
@@ -80,15 +80,15 @@ template<typename Key, typename Value, template<typename, typename> class Hash, 
 template<typename Item>
 const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item, Int2Type<false>) const
 {
-        const Index index = Hash<Item, Index>()(item);
-        const Key key = FindSign<Item, Key>()(item);
+        const auto index = Hash<Item, Index>()(item);
+        const auto key = FindSign<Item, Key>()(item);
         return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 void Map<Key, Value, Hash, Index, Replace>::insert(const Key& key, const Value& value)
 {
-        const Index index = Hash<Key, Index>()(key);
+        const auto index = Hash<Key, Index>()(key);
         insert_entry<Key, Value, BUCKET_SIZE, Replace>()(bucket_begin(index), Entry(key, value));
 }
 
@@ -105,8 +105,8 @@ template<typename Key, typename Value, template<typename, typename> class Hash, 
 template<typename Item>
 void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value& value, Int2Type<true>)
 {
-        const Index index = Hash<Item, Index>()(item);
-        const Key key = ShiftSign<Index, Key>()(index);
+        const auto index = Hash<Item, Index>()(item);
+        const auto key = ShiftSign<Index, Key>()(index);
         insert_entry<Key, Value, BUCKET_SIZE, Replace>()(bucket_begin(index), Entry(key, value));
 }
 
@@ -115,8 +115,8 @@ template<typename Key, typename Value, template<typename, typename> class Hash, 
 template<typename Item>
 void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value& value, Int2Type<false>)
 {
-        const Index index = Hash<Item, Index>()(item);
-        const Key key = FindSign<Item, Key>()(item);
+        const auto index = Hash<Item, Index>()(item);
+        const auto key = FindSign<Item, Key>()(item);
         insert_entry<Key, Value, BUCKET_SIZE, Replace>()(bucket_begin(index), Entry(key, value));
 }
 

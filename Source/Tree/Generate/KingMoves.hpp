@@ -16,11 +16,11 @@ void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate(cons
         generate_serial(p.template unrestricted_kings<Rules>(Color), p.not_occupied(), move_stack);
 }
 
-// tag dispatching for restrictions on consecutive moves with the same king
+// tag dispatching based on restrictions on consecutive moves with the same king
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, node::Stack* move_stack)
 {
-        generate_serial(active_kings, not_occupied, move_stack, Int2Type<variants::is_restricted_same_king_moves<Rules>::value>());
+        generate_serial(active_kings, not_occupied, move_stack, Int2Type<variants::is_restricted_consecutive_same_king_moves<Rules>::value>());
 }
 
 // partial specialization for restricted consecutive moves with the same king

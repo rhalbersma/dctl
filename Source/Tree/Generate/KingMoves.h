@@ -30,10 +30,10 @@ public:
 private:
         // implementation
         
-        // tag dispatching for restrictions on consecutive moves with the same king
+        // tag dispatching based on restrictions on consecutive moves with the same king
         static void generate_serial(BitBoard, BitBoard, node::Stack*);
-        static void generate_serial(BitBoard, BitBoard, node::Stack*, Int2Type<true>);
         static void generate_serial(BitBoard, BitBoard, node::Stack*, Int2Type<false>);
+        static void generate_serial(BitBoard, BitBoard, node::Stack*, Int2Type<true >);
         
         static void generate_dirs(BitBoard, BitBoard, node::Stack*);
         
