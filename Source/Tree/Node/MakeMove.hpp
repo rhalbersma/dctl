@@ -30,11 +30,11 @@ void Position<Board>::make(const Pieces& m)
         assert(hash_index_invariant());
 }
 
-// tag dispatching for restrictions on consecutive moves with the same king
+// tag dispatching based on restrictions on consecutive moves with the same king
 template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Pieces& m)
 {
-        make_irreversible<Rules>(m, Int2Type<variants::is_restricted_same_king_moves<Rules>::value>());
+        make_irreversible<Rules>(m, Int2Type<variants::is_restricted_consecutive_same_king_moves<Rules>::value>());
 }
 
 // partial specialization for restricted consecutive moves with the same king
@@ -42,55 +42,55 @@ template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Pieces& m, Int2Type<true>)
 {
         make_irreversible<Rules>(m, Int2Type<false>());
-        make_repeated_kings_moves<variants::max_same_king_moves<Rules>::value>(m);
+        make_consecutive_same_kings_moves<variants::max_consecutive_same_king_moves<Rules>::value>(m);
 }
 
 // partial specialization for unrestricted consecutive moves with the same king
 template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Pieces& m, Int2Type<false>)
 {
-        make_non_conversion(m);
+        make_non_conversion_moves(m);
 }
 
 template<typename Board>
-void Position<Board>::make_non_conversion(const Pieces& m)
+void Position<Board>::make_non_conversion_moves(const Pieces& m)
 {
         if (is_non_conversion(*this, m))
-                ++non_conversion_;
+                ++non_conversion_moves_;
         else
-                non_conversion_ = 0;
+                non_conversion_moves_ = 0;
 }
 
 template<typename Board> template<PlyCount N>
-void Position<Board>::make_repeated_kings_moves(const Pieces& m)
+void Position<Board>::make_consecutive_same_kings_moves(const Pieces& m)
 {
         hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
         if (active_men(*this) && active_kings(*this) && is_non_conversion(*this, m)) {                
-                if (bit::is_zero(repeated_kings_ & from_sq(*this, m)))
-                        repeated_kings_ ^= dest_sq(*this, m);
-                        repeated_moves_[to_move()] = 1;
+                if (bit::is_zero(consecutive_same_kings_ & from_sq(*this, m)))
+                        consecutive_same_kings_ ^= dest_sq(*this, m);
+                        consecutive_same_king_moves_[to_move()] = 1;
                 else {
                         if (!is_restricted<N>(to_move())) {
-                                repeated_kings_ ^= moving_kings(*this, m);
-                                ++repeated_moves_[to_move()];
+                                consecutive_same_kings_ ^= moving_kings(*this, m);
+                                ++consecutive_same_king_moves_[to_move()];
                         } else {
-                                repeated_kings_ &= passive_kings(*this);
-                                repeated_moves_[to_move()] = 0;
+                                consecutive_same_kings_ &= passive_kings(*this);
+                                consecutive_same_king_moves_[to_move()] = 0;
                         }
                 }
         } else {                 
-                repeated_kings_ &= passive_kings(*this);
-                repeated_moves_[to_move()] = 0;
+                consecutive_same_kings_ &= passive_kings(*this);
+                consecutive_same_king_moves_[to_move()] = 0;
         }
 
         hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
         // capture of the opponent's most recently moved king
-        if (bit::is_single(repeated_kings_[!to_move()] & captured_pieces(*this, m))) {
+        if (bit::is_single(consecutive_same_kings_[!to_move()] & captured_pieces(*this, m))) {
                 hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, !to_move());
-                repeated_kings_ &= active_kings(*this);
-                repeated_moves_[!to_move()] = 0;
+                consecutive_same_kings_ &= active_kings(*this);
+                consecutive_same_king_moves_[!to_move()] = 0;
         }
 }
 

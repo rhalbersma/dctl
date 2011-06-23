@@ -27,13 +27,13 @@ template<typename, typename Board> bool is_pseudo_legal(const Position<Board>&, 
 
 template<typename, typename Board> bool is_intersecting_capture(const Position<Board>&, const Pieces&);
 
-// tag dispatching on capture removal
+// tag dispatching based on capture removal
 template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Pieces&, Int2Type<variants::REMOVE_1>);
 template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Pieces&, Int2Type<variants::REMOVE_N>);
 
 template<typename> bool is_intersecting_capture(BitBoard, BitBoard);
 
-// tag dispatching on capture removal
+// tag dispatching basd on capture removal
 bool is_intersecting_capture(BitBoard, BitBoard, Int2Type<variants::REMOVE_1>);        
 bool is_intersecting_capture(BitBoard, BitBoard, Int2Type<variants::REMOVE_N>);
 
