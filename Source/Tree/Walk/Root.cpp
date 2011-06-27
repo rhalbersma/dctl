@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../../../test_config.h"
+#include "../../test_config.h"
 #include "../../../../Library/Source/Tree/Walk/Root.h"
 #include "../../../../Library/Source/Tree/Node/Position.h"
 #include "../../../../Library/Source/Tree/Node/Protocol.h"
@@ -43,7 +43,7 @@ protected:
 // Objects declared here can be used by all tests in the test case for Foo.
 };
 
-#if INTEGRATION_TEST == 1
+#if INTEGRATION_TEST == 0
 
 // The original perft thread on the FMJD forum 
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308

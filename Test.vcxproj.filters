@@ -62,7 +62,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="test_config.h">
+    <ClInclude Include="Source\test_config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

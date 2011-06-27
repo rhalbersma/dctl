@@ -1,7 +1,7 @@
 #include "../../../../Library/Source/DamExchange/Layer2/Parser.h"
 
 #include "gtest/gtest.h"
-#include <memory>
+#include <memory>       // std::unique_ptr
 #include <string>
 
 namespace damexchange {
@@ -23,7 +23,7 @@ TEST(Parser, MesanderExamples)
         };
 
         for (auto i = 0; i < 8; ++i) {
-                std::shared_ptr<MessageInterface> parsed = Parser::find(message[i]);
+                std::unique_ptr<MessageInterface> parsed = Parser::find(message[i]);
                 EXPECT_EQ(0, parsed->str().compare(message[i]));
         }
 }
