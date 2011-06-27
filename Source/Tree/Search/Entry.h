@@ -23,13 +23,10 @@ public:
 	size_t move(void) const;                // index of the best move
 
         // predicates
-        bool equal_to(size_t) const;            // check for equal depth
-        bool greater_equal(size_t) const;       // check for greater or equal depth
         bool is_cutoff(int, int) const;         // check for a cutoff against a non-null window
         bool is_cutoff(int) const;              // check for a cutoff against a null window
         bool is_fail_low(int) const;            // check for a fail low cutoff
         bool is_fail_high(int) const;           // check for a fail high cutoff
-        bool is_mate(void) const;               // check for a mate score
         bool has_move(void) const;              // check for a best move
 
         // output

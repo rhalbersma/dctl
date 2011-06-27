@@ -125,7 +125,7 @@ NodeCount Root::hash(const node::Position<Board>& p, int ply, int depth)
         statistics_.update(ply);
 
         auto TT_entry = TT.find(p);
-        if (TT_entry && TT_entry->equal_to(depth))
+        if (TT_entry && TT_entry->depth() == depth)
                 return TT_entry->leafs();
 
         if (depth == 0)
@@ -150,7 +150,7 @@ NodeCount Root::fast(const node::Position<Board>& p, int ply, int depth)
         statistics_.update(ply);
 
         auto TT_entry = TT.find(p);
-        if (TT_entry && TT_entry->equal_to(depth))
+        if (TT_entry && TT_entry->depth() == depth)
                 return TT_entry->leafs();
 
         NodeCount leafs;

@@ -9,14 +9,11 @@ class Entry
 public:
         // constructors
         Entry(void);
-        Entry(NodeCount, size_t);
+        Entry(NodeCount, int);
 
         // views
         NodeCount leafs(void) const;            // leaf node count
-        size_t depth(void) const;               // remaining depth to search
-
-        // predicate
-        bool equal_to(size_t) const;            // check for equal depth
+        int depth(void) const;                  // remaining depth to search
 
 private:
         // implementation

@@ -1,6 +1,6 @@
 #pragma once
 #include <map>
-#include <memory>
+#include <memory>       // std::unique_ptr
 #include <string>
 #include "MessageInterface.h"
 
@@ -11,9 +11,9 @@ class Parser
 {
 public:
         // typedefs
-        typedef std::shared_ptr<MessageInterface> (*Creator)(const std::string&);
+        typedef std::unique_ptr<MessageInterface> (*Creator)(const std::string&);
 
-        static std::shared_ptr<MessageInterface> find(const std::string&);
+        static std::unique_ptr<MessageInterface> find(const std::string&);
         static bool insert(const std::string&, Creator);
         static bool erase(const std::string&);
 

@@ -47,16 +47,6 @@ size_t tree::search::Entry::move(void) const
         return (rest_ & (MOVE_MASK << MOVE_SHIFT)) >> MOVE_SHIFT;
 }
 
-bool tree::search::Entry::equal_to(size_t d) const
-{
-        return depth() == d; 
-}
-
-bool tree::search::Entry::greater_equal(size_t d) const
-{
-        return depth() >= d; 
-}
-
 bool tree::search::Entry::is_cutoff(int alpha, int beta) const
 {
         return is_fail_low(alpha) || is_fail_high(beta);
@@ -82,10 +72,6 @@ bool tree::search::Entry::is_finite(void) const
         return score::is_finite(value());
 }
 
-bool tree::search::Entry::is_mate(void) const
-{
-        return score::is_mate(value());
-}
 bool tree::search::Entry::has_move(void) const
 {
         return move() != no_move();

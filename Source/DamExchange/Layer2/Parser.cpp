@@ -3,11 +3,11 @@
 
 namespace DXP = damexchange;
 
-std::shared_ptr<DXP::layer2::MessageInterface> DXP::layer2::Parser::find(const std::string& msg)
+std::unique_ptr<DXP::layer2::MessageInterface> DXP::layer2::Parser::find(const std::string& msg)
 {
         DXP::layer1::Scanner scanner(msg);
         auto i = instance().find(scanner.header());
-        return (i != instance().end())? (i->second)(scanner.body()) : std::shared_ptr<MessageInterface>();
+        return (i != instance().end())? (i->second)(scanner.body()) : std::unique_ptr<MessageInterface>();
 }
 
 bool DXP::layer2::Parser::insert(const std::string& header, Creator creator)

@@ -6,7 +6,7 @@ tree::walk::Entry::Entry(void)
 {
 }
 
-tree::walk::Entry::Entry(NodeCount n, size_t d)
+tree::walk::Entry::Entry(NodeCount n, int d)
 :
         entry_(0)
 {
@@ -19,12 +19,7 @@ NodeCount tree::walk::Entry::leafs(void) const
         return (entry_ & (LEAFS_MASK << LEAFS_SHIFT)) >> LEAFS_SHIFT;
 }
 
-size_t tree::walk::Entry::depth(void) const
+int tree::walk::Entry::depth(void) const
 {
-        return static_cast<size_t>((entry_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT);
-}
-
-bool tree::walk::Entry::equal_to(size_t d) const
-{
-        return depth() == d; 
+        return static_cast<int>((entry_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT);
 }
