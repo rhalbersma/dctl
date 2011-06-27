@@ -128,6 +128,7 @@ template<typename Rules, typename Board>
 void State<Rules, Board>::finish(BitBoard jump_sq)
 {
         not_occupied_ ^= jump_sq;
+        from_sq_ = BitBoard(0);
 }
 
 // tag dispatching on capture removal

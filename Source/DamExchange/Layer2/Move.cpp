@@ -11,9 +11,9 @@ const std::string DXP::layer2::Move::HEADER = "M";
 
 const bool DXP::layer2::Move::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::layer2::MessageInterface> DXP::layer2::Move::create(const std::string& msg)
+std::unique_ptr<DXP::layer2::MessageInterface> DXP::layer2::Move::create(const std::string& msg)
 {
-        return std::make_shared<Move>(msg);
+        return std::unique_ptr<Move>(new Move(msg));
 }
 
 DXP::layer2::Move::Move(const std::string& msg)
@@ -25,16 +25,6 @@ DXP::layer2::Move::Move(const std::string& msg)
 {
         for (auto i = 0; i < num_captured(); ++i)
                 captured_pieces_.push_back(boost::lexical_cast<int>(msg.substr(10 + 2 * i, 2).c_str()));
-}
-
-DXP::layer2::Move::Move(int s, int f, int d, int n, const std::vector<int>& c)
-:
-        seconds_(s),
-        from_sq_(f),
-        dest_sq_(d),
-        num_captured_(n),
-        captured_pieces_(c)
-{
 }
 
 int DXP::layer2::Move::seconds(void) const
@@ -62,6 +52,11 @@ const std::vector<int>& DXP::layer2::Move::captured_pieces(void) const
         return captured_pieces_;
 }
 
+std::string DXP::layer2::Move::str(int s, int f, int d, int n, const std::vector<int>& c)
+{
+        return HEADER + body(s, f, d, n, c);
+}
+
 std::string DXP::layer2::Move::header(void) const
 {
         return HEADER;
@@ -69,12 +64,17 @@ std::string DXP::layer2::Move::header(void) const
 
 std::string DXP::layer2::Move::body(void) const
 {
+        return body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces());
+}
+
+std::string DXP::layer2::Move::body(int s, int f, int d, int n, const std::vector<int>& c)
+{ 
         std::stringstream sstr;
-        sstr << std::setw( 4) << std::setfill('0') << seconds();
-        sstr << std::setw( 2) << std::setfill('0') << from_sq();
-        sstr << std::setw( 2) << std::setfill('0') << dest_sq();
-        sstr << std::setw( 2) << std::setfill('0') << num_captured();
-        for (std::vector<int>::const_iterator it = captured_pieces().begin(); it != captured_pieces().end(); ++it)
+        sstr << std::setw( 4) << std::setfill('0') << s;
+        sstr << std::setw( 2) << std::setfill('0') << f;
+        sstr << std::setw( 2) << std::setfill('0') << d;
+        sstr << std::setw( 2) << std::setfill('0') << n;
+        for (auto it = c.begin(); it != c.end(); ++it)
                 sstr << std::setw(2) << std::setfill('0') << *it;
         return sstr.str();
 }

@@ -77,12 +77,6 @@ bool Position<Board>::is_non_conversion_draw(Int2Type<false>) const
         return false;
 }
 
-template<typename Board> template<PlyCount N>
-bool Position<Board>::is_restricted_king(bool color) const
-{
-        return consecutive_same_king_moves(color) == N;
-}
-
 template<typename Board>
 const node::Pieces& Position<Board>::pieces(void) const
 {
@@ -167,6 +161,12 @@ BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<true>) const
                 return kings(color) ^ consecutive_same_kings(color);
         else
                 return kings(color);
+}
+
+template<typename Board> template<PlyCount N>
+bool Position<Board>::is_restricted_king(bool color) const
+{
+        return consecutive_same_king_moves(color) == N;
 }
 
 template<typename Board>

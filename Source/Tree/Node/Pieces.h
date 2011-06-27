@@ -42,7 +42,7 @@ private:
         BitBoard kings_;                                // kings
 };
 
-Pieces operator^(const Pieces&, const Pieces&);         // xor-assign the set bits of two piece sets
+const Pieces operator^(const Pieces&, const Pieces&);   // xor-assign the set bits of two piece sets
 
 }       // namespace node
 }       // namespace tree

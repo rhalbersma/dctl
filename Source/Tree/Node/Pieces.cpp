@@ -82,7 +82,7 @@ tree::node::Pieces& tree::node::Pieces::operator^=(const Pieces& other)
 }
 
 // xor-assign the set bits of two piece sets
-tree::node::Pieces tree::node::operator^(const Pieces& left, const Pieces& right)
+const tree::node::Pieces tree::node::operator^(const Pieces& left, const Pieces& right)
 {
         return Pieces(left) ^= right;
 }

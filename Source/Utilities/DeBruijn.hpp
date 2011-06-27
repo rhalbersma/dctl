@@ -5,7 +5,7 @@
 template<size_t N>
 typename DeBruijn<N>::T DeBruijn<N>::generate_sequence(void)
 {
-        T sequence = 0;
+        T sequence(0);
 
         // highest N bits are always zero; only have to try the remaining bits (SHIFT == 2^N - N)
         for (auto i = SHIFT - 1; i >= 0; --i) {

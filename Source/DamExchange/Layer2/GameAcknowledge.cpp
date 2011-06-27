@@ -11,22 +11,15 @@ const std::string DXP::layer2::GameAcknowledge::HEADER = "A";
 
 const bool DXP::layer2::GameAcknowledge::REGISTERED = Parser::insert(HEADER, create);
 
-std::shared_ptr<DXP::layer2::MessageInterface> DXP::layer2::GameAcknowledge::create(const std::string& msg)
+std::unique_ptr<DXP::layer2::MessageInterface> DXP::layer2::GameAcknowledge::create(const std::string& msg)
 {
-        return std::make_shared<GameAcknowledge>(msg);
+        return std::unique_ptr<GameAcknowledge>(new GameAcknowledge(msg));
 }
 
 DXP::layer2::GameAcknowledge::GameAcknowledge(const std::string& msg)
 :
         name_follower_(msg.substr(0, 32)),
         acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(msg.substr(32, 1).c_str())))
-{
-}
-
-DXP::layer2::GameAcknowledge::GameAcknowledge(const std::string& n, AcceptanceCode a)
-:
-        name_follower_(n),
-        acceptance_code_(a)
 {
 }
 
@@ -40,6 +33,11 @@ DXP::layer2::GameAcknowledge::AcceptanceCode DXP::layer2::GameAcknowledge::accep
         return acceptance_code_;
 }
 
+std::string DXP::layer2::GameAcknowledge::str(const std::string& n, AcceptanceCode a)
+{
+        return HEADER + body(n, a);
+}
+
 std::string DXP::layer2::GameAcknowledge::header(void) const
 {
         return HEADER;
@@ -47,8 +45,13 @@ std::string DXP::layer2::GameAcknowledge::header(void) const
 
 std::string DXP::layer2::GameAcknowledge::body(void) const
 {
+        return body(name_follower(), acceptance_code());
+}
+        
+std::string DXP::layer2::GameAcknowledge::body(const std::string& n, AcceptanceCode a)
+{
         std::stringstream sstr;
-        sstr << std::setw(32) << name_follower() << std::setfill(' ');
-        sstr << std::setw( 1) << acceptance_code();
+        sstr << std::setw(32) << n << std::setfill(' ');
+        sstr << std::setw( 1) << a;
         return sstr.str();
 }

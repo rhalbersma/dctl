@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include <memory>
+#include <memory>       // std::unique_ptr
 #include <string>
 #include "MessageInterface.h"
 
@@ -10,20 +10,21 @@ namespace layer2 {
 class BackRequest: public MessageInterface
 {
 public:
-        // constructors
-        explicit BackRequest(const std::string&);
-        BackRequest(size_t, char);
-
         // views
         size_t move_number(void) const;
         char side_to_move(void) const;
+        static std::string str(size_t, char);
 
 private:
+        // private constructor to enforce factory creation
+        explicit BackRequest(const std::string&);
+
         // implementation
         virtual std::string header(void) const;
         virtual std::string body(void) const;
+        static std::string body(size_t, char);
 
-        static std::shared_ptr<MessageInterface> create(const std::string&);
+        static std::unique_ptr<MessageInterface> create(const std::string&);
         static const std::string HEADER;
         static const bool REGISTERED;
 

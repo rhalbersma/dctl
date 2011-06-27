@@ -40,7 +40,7 @@ struct Board: public SquaresLayout
         static const BitBoard JUMPABLE[];                       // squares from which a jump is possible in a direction
 
         // arrays of directions
-        static const int DIR[];                                 // the bitwise shifts for all 8 directions
+        static const int DIRECTION[];                           // the bitwise shifts for all 8 directions
 
         // square to bit and bit to square conversion tables
         static const int TABLE_SQUARE2BIT[];                    // convert a square to a bit

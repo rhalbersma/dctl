@@ -65,7 +65,7 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
 
         // TT cut-off for exact win/loss scores or for deep enough heuristic scores
         auto TT_entry = TT.find(p);
-        if (TT_entry && (TT_entry->is_mate() || TT_entry->greater_equal(depth)) && TT_entry->is_cutoff(alpha, beta))
+        if (TT_entry && (score::is_mate(TT_entry->value()) || TT_entry->depth() >= depth) && TT_entry->is_cutoff(alpha, beta))
                 return TT_entry->value();
 
         // generate moves

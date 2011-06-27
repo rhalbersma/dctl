@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include <memory>
+#include <memory>       // std::unique_ptr
 #include <string>
 #include "MessageInterface.h"
 
@@ -10,24 +10,25 @@ namespace layer2 {
 class GameRequest: public MessageInterface
 {
 public:
-        // constructors
-        explicit GameRequest(const std::string&);
-        GameRequest(const std::string&, char, size_t, size_t, bool, const std::string&);
-
         // views
         const std::string& name_initiator(void) const;
         char color_follower(void) const;
         size_t minutes(void) const;
         size_t moves(void) const;
-        bool setup_position(void) const;
-        const std::string& special_position(void) const;
+        bool setup(void) const;
+        const std::string& position(void) const;
+        static std::string str(const std::string&, char, size_t, size_t, bool, const std::string&);
 
 private:
+        // private constructor to enforce factory creation
+        explicit GameRequest(const std::string&);
+
         // implementation
         virtual std::string header(void) const;
         virtual std::string body(void) const;
+        static std::string body(const std::string&, char, size_t, size_t, bool, const std::string&);
 
-        static std::shared_ptr<MessageInterface> create(const std::string&);
+        static std::unique_ptr<MessageInterface> create(const std::string&);
         static const std::string HEADER;
         static const size_t PROTOCOL_VERSION = 1;
         static const bool REGISTERED;
@@ -43,8 +44,8 @@ private:
         char color_follower_;
         size_t minutes_;
         size_t moves_;
-        bool setup_position_;
-        std::string special_position_;
+        bool setup_;
+        std::string position_;
 };
 
 }       // namespace layer2
