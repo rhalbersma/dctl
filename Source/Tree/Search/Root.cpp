@@ -1,6 +1,6 @@
 #include <utility>
 #include "gtest/gtest.h"
-#include "../../../test_config.h"
+#include "../../test_config.h"
 #include "../../../../Library/Source/Tree/Search/Root.h"
 #include "../../../../Library/Source/Tree/Node/Position.h"
 #include "../../../../Library/Source/Tree/Node/Protocol.h"
@@ -20,7 +20,7 @@ protected:
 
         SearchEndgame() {
         // You can do set-up work for each test here.
-                Root::resize_hash(27);
+                Root::resize_hash(25);
         }
 
         virtual ~SearchEndgame() {
