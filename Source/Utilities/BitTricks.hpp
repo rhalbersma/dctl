@@ -11,10 +11,9 @@ namespace bit {
 template<typename T>
 size_t index_DeBruijn(T b)
 {
-        const size_t N = log2_sizeof<T>::value;         // compute number of bits of type T
-        b *= static_cast<T>(DeBruijn<N>::SEQUENCE);     // cast from the internal 64-bit int to type T
-        b >>= DeBruijn<N>::SHIFT;
-        return DeBruijn<N>::TABLE[b];
+        b *= DeBruijn<T>::SEQUENCE;
+        b >>= DeBruijn<T>::SHIFT;
+        return DeBruijn<T>::TABLE[b];
 }
 
 //+----------------------------------------------------------------------------+

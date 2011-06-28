@@ -151,7 +151,8 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_next(Bit
         return (
                 scan_dirs<Index>(jumper, capture, move_stack) |
                 scan_dir<Index>(jumper, capture, move_stack)
-        );}
+        );
+}
 
 // tag dispatching based on man scan directions
 template<bool Color, typename Rules, typename Board> template<size_t Index>
