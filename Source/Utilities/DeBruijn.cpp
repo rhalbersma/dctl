@@ -3,7 +3,7 @@
 // The remainder of this file has been copied from the output of the following main program:
 
 /*
-#include "../../Source/Utilities/DeBruijn.h"
+#include "../../Library/Source/Utilities/DeBruijn.h"
 
 int main(void)
 {
