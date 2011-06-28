@@ -2,13 +2,13 @@
 #include <iostream>
 
 // create the lexicographically least De Bruijn sequence
-template<size_t N>
-typename DeBruijn<N>::T DeBruijn<N>::generate_sequence(void)
+template<typename T>
+T DeBruijn<T>::generate_sequence(void)
 {
         T sequence(0);
 
         // highest N bits are always zero; only have to try the remaining bits (SHIFT == 2^N - N)
-        for (auto i = SHIFT - 1; i >= 0; --i) {
+        for (int i = SHIFT - 1; i >= 0; --i) {
                 T new_prefix = (sequence >> i) & MASK;
 
                 // greedy algorithm: set the least significant bit of the next prefix equal to one
@@ -16,9 +16,9 @@ typename DeBruijn<N>::T DeBruijn<N>::generate_sequence(void)
 
                 // test if the new prefix matches any of the previous prefixes
                 bool prefer_one = true;
-                for (auto j = SHIFT - 1; j > i; --j) {
+                for (int j = SHIFT - 1; j > i; --j) {
                         T old_prefix = (sequence >> j) & MASK;
-                        if (old_prefix == new_prefix) {
+                        if (new_prefix == old_prefix) {
                                 prefer_one = false;
                                 break;
                         }
@@ -32,19 +32,23 @@ typename DeBruijn<N>::T DeBruijn<N>::generate_sequence(void)
         return sequence;
 }
 
-template<size_t N>
-void DeBruijn<N>::generate_table(void)
+template<typename T>
+void DeBruijn<T>::generate_table(void)
 {
         const T sequence = generate_sequence();
 
         size_t table[POW2N];
-        for (auto i = 0; i < POW2N; ++i)
-                table[((sequence << i) >> SHIFT) & MASK] = i;
+        for (auto i = 0; i < POW2N; ++i) {
+                T b = T(1) << i;
+                b *= sequence;
+                b >>= SHIFT;
+                table[b] = i;
+        }
 
         std::cout << "template<>" << std::endl;
         std::cout << "const DeBruijn<" << N << ">::T DeBruijn<" << N << ">::SEQUENCE = ";
         std::cout << "0x" << std::hex << std::setw(POW2N / 4) << std::setfill('0');
-        std::cout << sequence << ";" << std::endl << std::endl;
+        std::cout << static_cast<uint64_t>(sequence) << ";" << std::endl << std::endl;
         
         std::cout << "template<>" << std::endl;
         std::cout << "const size_t DeBruijn<" << N << ">::TABLE[] = {" << std::endl;

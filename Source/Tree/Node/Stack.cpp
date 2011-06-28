@@ -24,7 +24,6 @@ bool tree::node::non_unique_top(const Stack& stack, Int2Type<true>)
         return std::find(stack.begin(), stack.end(), top(stack)) != (stack.end() - 1);
 }
 
-
 void tree::node::pop(Stack* stack)
 {
         return stack->pop_back();
