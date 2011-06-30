@@ -1,1 +1,1 @@
-#define INTEGRATION_TEST 0
+#define INTEGRATION_TEST 1

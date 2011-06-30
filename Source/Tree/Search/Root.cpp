@@ -61,7 +61,14 @@ TEST_F(SearchEndgame, InternationalInitial)
 {
         auto i10 = node::Position<geometry::International>::initial();
         Root::clear_hash();
-        Root::analyze<variants::International>(i10, 31);
+        Root::analyze<variants::International>(i10, 11);
+}
+
+TEST_F(SearchEndgame, FrisianWalinga21)
+{
+        auto Walinga = node::string::read<geometry::Frisian, node::FEN_tag>()("W:WK46,28:BK43");
+        Root::clear_hash();
+        Root::analyze<variants::Frisian>(Walinga, 39);
 }
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
@@ -221,9 +228,6 @@ TEST_F(SearchEndgame, Killer31)
         
         for (auto i = 0; i < 16; ++i)
                 Run<geometry::International, variants::Killer>(test_case[i]);
-
-        //Position<geometry::International> Walinga(node::string::read<FEN_tag, geometry::International>()("W:WK46,28:BK43"));
-        //Root::analyze<FrisianRules>(Walinga, 39);
 }
 
 #endif

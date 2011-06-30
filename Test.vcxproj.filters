@@ -60,9 +60,6 @@
     <ClCompile Include="Source\Tree\Search\Score.cpp">
       <Filter>Source Files\Tree\Search</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Utilities\DeBruijn.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\test_config.h">
