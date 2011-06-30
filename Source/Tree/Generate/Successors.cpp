@@ -61,7 +61,7 @@ TEST(MoveGeneration, Italian)
         for (auto i = 0; i < 9; ++i) {
                 node::Stack move_stack;
                 auto p = node::string::read<geometry::Roman, node::FEN_tag>()(position[i]);
-                Successors<variants::Italian, geometry::Roman>::generate(p, &move_stack);
+                Successors<variants::Italian, geometry::Roman>::generate(p, move_stack);
 
                 // check the number of generated moves
                 EXPECT_EQ(size[i], move_stack.size());

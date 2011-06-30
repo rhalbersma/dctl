@@ -104,40 +104,40 @@ TYPED_TEST(Bit, IsMultiple)
         EXPECT_EQ(true, is_multiple(TypeParam(~0)));
 }
 
-TYPED_TEST(Bit, Index)
+TYPED_TEST(Bit, IndexDeBruijn)
 {
         for (auto i = 0; i < NUM_BITS; ++i) {
-                TypeParam b = TypeParam(1) << i;
-                EXPECT_EQ(i, index(b));
+                TypeParam b = TypeParam(1) << i;               
+                EXPECT_EQ(i, index_DeBruijn(b));
         }
 }
 
-TYPED_TEST(Bit, Count)
+TYPED_TEST(Bit, CountKernighan)
 {
-        EXPECT_EQ(0, count(TypeParam(0)));
+        EXPECT_EQ(0, count_Kernighan(TypeParam(0)));
 
         for (auto i = 0; i < NUM_BITS; ++i) {
                 TypeParam b = TypeParam(1) << i;
-                EXPECT_EQ(1, count(b));                
+                EXPECT_EQ(1, count_Kernighan(b));                
         }
 
         for (auto i = 0; i < NUM_BITS; ++i) {
                 for (auto j = 0; j < NUM_BITS; ++j) {                                
                         TypeParam b = (TypeParam(1) << i) ^ (TypeParam(1) << j);
                         if (i == j) {
-                                EXPECT_EQ(0, count(b));
+                                EXPECT_EQ(0, count_Kernighan(b));
                         } else {
-                                EXPECT_EQ(2, count(b));
+                                EXPECT_EQ(2, count_Kernighan(b));
                         }
                 }
         }
 
         for (auto i = 0; i < NUM_BITS; ++i) {
                 TypeParam b = (TypeParam(1) << i) - 1;
-                EXPECT_EQ(i, count(b));
+                EXPECT_EQ(i, count_Kernighan(b));
         }
 
-        EXPECT_EQ(NUM_BITS, count(TypeParam(~0)));
+        EXPECT_EQ(NUM_BITS, count_Kernighan(TypeParam(~0)));
 }
 
 }       // namespace bit

@@ -138,7 +138,6 @@
     <ClCompile Include="Source\Tree\Search\Score.cpp" />
     <ClCompile Include="Source\Tree\Walk\Root.cpp" />
     <ClCompile Include="Source\Utilities\Bit.cpp" />
-    <ClCompile Include="Source\Utilities\DeBruijn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.vcxproj">
