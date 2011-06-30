@@ -10,27 +10,27 @@ namespace tree {
 namespace generate {
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void TemplateMethod<Color, Material, Rules, Board>::generate(const node::Position<Board>& p, node::Stack* move_stack) const 
+void TemplateMethod<Color, Material, Rules, Board>::generate(const node::Position<Board>& p, node::Stack& move_stack) const 
 {
         Driver<Color, Material, node::JUMPS, Rules, Board>::generate(p, move_stack);
-        if (move_stack->empty())
+        if (move_stack.empty())
                 Driver<Color, Material, node::MOVES, Rules, Board>::generate(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void TemplateMethod<Color, Material, Rules, Board>::generate_captures(const node::Position<Board>& p, node::Stack* move_stack) const 
+void TemplateMethod<Color, Material, Rules, Board>::generate_captures(const node::Position<Board>& p, node::Stack& move_stack) const 
 { 
         Driver<Color, Material, node::JUMPS, Rules, Board>::generate(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void TemplateMethod<Color, Material, Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack* move_stack) const 
+void TemplateMethod<Color, Material, Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack& move_stack) const 
 { 
         Driver<Color, Material, node::MOVES, Rules, Board>::generate_reverse(p, move_stack);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void TemplateMethod<Color, Material, Rules, Board>::generate_promotions(const node::Position<Board>& p, node::Stack* move_stack) const 
+void TemplateMethod<Color, Material, Rules, Board>::generate_promotions(const node::Position<Board>& p, node::Stack& move_stack) const 
 { 
         Driver<Color, Material, node::MOVES, Rules, Board>::generate_promotions(p, move_stack);
 }

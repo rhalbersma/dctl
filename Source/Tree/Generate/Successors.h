@@ -16,10 +16,10 @@ class Successors
 {
 public:
         // interface
-        static void generate(const node::Position<Board>&, node::Stack*);
-        static void generate_captures(const node::Position<Board>&, node::Stack*);
-        static void generate_reverse(const node::Position<Board>&, node::Stack*);
-        static void generate_promotions(const node::Position<Board>&, node::Stack*);
+        static void generate(const node::Position<Board>&, node::Stack&);
+        static void generate_captures(const node::Position<Board>&, node::Stack&);
+        static void generate_reverse(const node::Position<Board>&, node::Stack&);
+        static void generate_promotions(const node::Position<Board>&, node::Stack&);
 
         static size_t count(const node::Position<Board>&);
         static size_t count_captures(const node::Position<Board>&);

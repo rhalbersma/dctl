@@ -6,21 +6,21 @@ namespace tree {
 namespace generate {
 
 template<bool Color, typename Rules, typename Board> 
-void Driver<Color, node::Pieces::BOTH, node::MOVES, Rules, Board>::generate(const node::Position<Board>& p, node::Stack* move_stack)
+void Driver<Color, node::Pieces::BOTH, node::MOVES, Rules, Board>::generate(const node::Position<Board>& p, node::Stack& move_stack)
 {
         Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate(p, move_stack);
         Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate(p, move_stack);     
 }
 
 template<bool Color, typename Rules, typename Board> 
-void Driver<Color, node::Pieces::BOTH, node::MOVES, Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack* move_stack)
+void Driver<Color, node::Pieces::BOTH, node::MOVES, Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack& move_stack)
 {
         Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_reverse(p, move_stack);
         Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_reverse(p, move_stack);     
 }
 
 template<bool Color, typename Rules, typename Board> 
-void Driver<Color, node::Pieces::BOTH, node::MOVES, Rules, Board>::generate_promotions(const node::Position<Board>& p, node::Stack* move_stack)
+void Driver<Color, node::Pieces::BOTH, node::MOVES, Rules, Board>::generate_promotions(const node::Position<Board>& p, node::Stack& move_stack)
 {
         Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_promotions(p, move_stack);
         Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_promotions(p, move_stack);     

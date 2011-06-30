@@ -15,9 +15,9 @@ template<bool Color, typename Rules, typename Board>
 class Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>
 {
 public:
-        static void generate(const node::Position<Board>&, node::Stack*);
-        static void generate_reverse(const node::Position<Board>&, node::Stack*);
-        static void generate_promotions(const node::Position<Board>&, node::Stack*);
+        static void generate(const node::Position<Board>&, node::Stack&);
+        static void generate_reverse(const node::Position<Board>&, node::Stack&);
+        static void generate_promotions(const node::Position<Board>&, node::Stack&);
 
         static size_t count(const node::Position<Board>&);
         static size_t count_reverse(const node::Position<Board>&);
@@ -31,16 +31,16 @@ private:
         // implementation
         
         // tag dispatching based on restrictions on consecutive moves with the same king
-        static void generate_serial(BitBoard, BitBoard, node::Stack*);
-        static void generate_serial(BitBoard, BitBoard, node::Stack*, Int2Type<false>);
-        static void generate_serial(BitBoard, BitBoard, node::Stack*, Int2Type<true >);
+        static void generate_serial(BitBoard, BitBoard, node::Stack&);
+        static void generate_serial(BitBoard, BitBoard, node::Stack&, Int2Type<false>);
+        static void generate_serial(BitBoard, BitBoard, node::Stack&, Int2Type<true >);
         
-        static void generate_dirs(BitBoard, BitBoard, node::Stack*);
+        static void generate_dirs(BitBoard, BitBoard, node::Stack&);
         
         // tag dispatching based on king range
-        template<size_t> static void generate_dir(BitBoard, BitBoard, node::Stack*);
-        template<size_t> static void generate_dir(BitBoard, BitBoard, node::Stack*, Int2Type<variants::RANGE_1>);
-        template<size_t> static void generate_dir(BitBoard, BitBoard, node::Stack*, Int2Type<variants::RANGE_N>);
+        template<size_t> static void generate_dir(BitBoard, BitBoard, node::Stack&);
+        template<size_t> static void generate_dir(BitBoard, BitBoard, node::Stack&, Int2Type<variants::RANGE_1>);
+        template<size_t> static void generate_dir(BitBoard, BitBoard, node::Stack&, Int2Type<variants::RANGE_N>);
 
         static size_t count_dirs(BitBoard, BitBoard);
         

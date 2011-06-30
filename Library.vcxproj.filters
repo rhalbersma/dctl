@@ -159,12 +159,6 @@
     <ClInclude Include="Source\Hash\Sign.hpp">
       <Filter>Source Files\Hash</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Hash\Replace.h">
-      <Filter>Header Files\Hash</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Hash\Replace.hpp">
-      <Filter>Source Files\Hash</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Hash\EntryPredicates.hpp">
       <Filter>Source Files\Hash</Filter>
     </ClInclude>
@@ -375,12 +369,6 @@
     <ClInclude Include="Source\Geometry\Coordinates.hpp">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Utilities\BitTricks.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Utilities\BitTricks.hpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Tree\Search\Entry.h">
       <Filter>Header Files\Tree\Search</Filter>
     </ClInclude>
@@ -557,6 +545,15 @@
     </ClInclude>
     <ClInclude Include="Source\Tree\Node\Predicates.hpp">
       <Filter>Source Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\FindInsert.h">
+      <Filter>Header Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\FindInsert.hpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hash\Replace.h">
+      <Filter>Header Files\Hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,9 +2,9 @@
 #include "Stack.h"
 #include "../../Utilities/Bit.h"
 
-tree::node::Stack::reference tree::node::top(Stack* stack)
+tree::node::Stack::reference tree::node::top(Stack& stack)
 {
-        return stack->back();
+        return stack.back();
 }
 
 tree::node::Stack::const_reference tree::node::top(const Stack& stack)
@@ -24,7 +24,7 @@ bool tree::node::non_unique_top(const Stack& stack, Int2Type<true>)
         return std::find(stack.begin(), stack.end(), top(stack)) != (stack.end() - 1);
 }
 
-void tree::node::pop(Stack* stack)
+void tree::node::pop(Stack& stack)
 {
-        return stack->pop_back();
+        return stack.pop_back();
 }

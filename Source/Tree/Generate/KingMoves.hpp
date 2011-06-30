@@ -11,43 +11,43 @@ namespace tree {
 namespace generate {
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate(const node::Position<Board>& p, node::Stack* move_stack)
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate(const node::Position<Board>& p, node::Stack& move_stack)
 {
         generate_serial(p.template unrestricted_kings<Rules>(Color), p.not_occupied(), move_stack);
 }
 
 // tag dispatching based on restrictions on consecutive moves with the same king
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, node::Stack* move_stack)
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, node::Stack& move_stack)
 {
         generate_serial(active_kings, not_occupied, move_stack, Int2Type<variants::is_restricted_consecutive_same_king_moves<Rules>::value>());
 }
 
 // partial specialization for restricted consecutive moves with the same king
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, node::Stack* move_stack, Int2Type<true>)
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, node::Stack& move_stack, Int2Type<true>)
 {
         // loop could be empty if the single active king detected during Successors<Rules, Board>::select is restricted to move
         while (active_kings) {
-                generate_dirs(bit::get_lowest(active_kings), not_occupied, move_stack);
-                bit::clear_lowest(active_kings);
+                generate_dirs(bit::get_first(active_kings), not_occupied, move_stack);
+                bit::clear_first(active_kings);
         }
 }
 
 // partial specialization for unrestricted consecutive moves with the same king
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, node::Stack* move_stack, Int2Type<false>)
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, node::Stack& move_stack, Int2Type<false>)
 {
         // loop cannot be empty because all active kings detected during Successors<Rules, Board>::select() are unrestricted to move
         assert(!bit::is_zero(active_kings));
         do {
-                generate_dirs(bit::get_lowest(active_kings), not_occupied, move_stack);
-                bit::clear_lowest(active_kings);
+                generate_dirs(bit::get_first(active_kings), not_occupied, move_stack);
+                bit::clear_first(active_kings);
         } while (active_kings);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dirs(BitBoard from_sq, BitBoard not_occupied, node::Stack* move_stack)
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dirs(BitBoard from_sq, BitBoard not_occupied, node::Stack& move_stack)
 {
         generate_dir<Indices<Board, Color>::LEFT_DOWN >(from_sq, not_occupied, move_stack);
         generate_dir<Indices<Board, Color>::RIGHT_DOWN>(from_sq, not_occupied, move_stack);
@@ -57,14 +57,14 @@ void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dirs
 
 // tag dispatching based on king range
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, node::Stack* move_stack)
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, node::Stack& move_stack)
 {
         return generate_dir<Index>(from_sq, not_occupied, move_stack, Int2Type<variants::is_long_king_range<Rules>::value>());
 }
 
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, node::Stack* move_stack, Int2Type<variants::RANGE_1>)
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, node::Stack& move_stack, Int2Type<variants::RANGE_1>)
 {
         if (BitBoard dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
                 node::push<Color>(from_sq ^ dest_sq, move_stack);
@@ -72,20 +72,20 @@ void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dir(
 
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, node::Stack* move_stack, Int2Type<variants::RANGE_N>)
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dir(BitBoard from_sq, BitBoard not_occupied, node::Stack& move_stack, Int2Type<variants::RANGE_N>)
 {
         for (BitBoard dest_sq = Push<Board, Index>()(from_sq); dest_sq & not_occupied; PushAssign<Board, Index>()(dest_sq))
                 node::push<Color>(from_sq ^ dest_sq, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack* move_stack)
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack& move_stack)
 {
         generate_serial(p.kings(Color), p.not_occupied(), move_stack);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_promotions(const node::Position<Board>&, node::Stack*) 
+void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_promotions(const node::Position<Board>&, node::Stack&) 
 { 
         return;
 }

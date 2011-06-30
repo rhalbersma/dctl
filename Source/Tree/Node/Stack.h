@@ -16,7 +16,7 @@ typedef VectorArray<size_t, MAX_MOVES> Order;
 typedef VectorArray<Pieces, MAX_MOVES> Stack;
 
 // element access
-Stack::reference top(Stack*);
+Stack::reference top(Stack&);
 Stack::const_reference top(const Stack&);
 
 // predicates
@@ -25,11 +25,11 @@ bool non_unique_top(const Stack&, Int2Type<false>);
 bool non_unique_top(const Stack&, Int2Type<true >);
 
 // modifiers
-template<bool> void push(BitBoard, Stack*);                                             // add a king move
-template<bool> void push(BitBoard, BitBoard, Stack*);                                   // add a man move
-template<bool, typename> void push(BitBoard, BitBoard, BitBoard, Stack*);               // add a king capture
-template<bool, typename> void push(BitBoard, BitBoard, BitBoard, BitBoard, Stack*);     // add a man capture
-void pop(Stack*);                                                                       // remove the last move  
+template<bool> void push(BitBoard, Stack&);                                             // add a king move
+template<bool> void push(BitBoard, BitBoard, Stack&);                                   // add a man move
+template<bool, typename> void push(BitBoard, BitBoard, BitBoard, Stack&);               // add a king capture
+template<bool, typename> void push(BitBoard, BitBoard, BitBoard, BitBoard, Stack&);     // add a man capture
+void pop(Stack&);                                                                       // remove the last move  
 
 }       // namespace node
 }       // namespace tree

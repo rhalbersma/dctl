@@ -13,12 +13,12 @@ bool non_unique_top(const Stack& stack)
 
 // add a king move
 template<bool Color>
-void push(BitBoard delta, Stack* stack)
+void push(BitBoard delta, Stack& stack)
 {
         // necessary pre-conditions for king move semantics
         assert(bit::is_double(delta));
 
-        stack->increment_size();
+        stack.increment_size();
         top(stack).init<Color>(
                 delta,                          // move a king between the from and destination squares
                 0,
@@ -31,7 +31,7 @@ void push(BitBoard delta, Stack* stack)
 
 // add a man move
 template<bool Color>
-void push(BitBoard delta, BitBoard promotion, Stack* stack)
+void push(BitBoard delta, BitBoard promotion, Stack& stack)
 {
         // necessary pre-conditions for the pieces invariant
         assert(bit::is_within(promotion, delta));
@@ -40,7 +40,7 @@ void push(BitBoard delta, BitBoard promotion, Stack* stack)
         assert(bit::is_double(delta));
         assert(!bit::is_multiple(promotion));
 
-        stack->increment_size();
+        stack.increment_size();
         top(stack).init<Color>(
                 delta,                          // move a man between the from and destination squares
                 0,
@@ -53,7 +53,7 @@ void push(BitBoard delta, BitBoard promotion, Stack* stack)
 
 // add a king capture
 template<bool Color, typename Rules>
-void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Stack* stack)
+void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Stack& stack)
 {
         // necessary pre-conditions for the pieces invariant 
         assert(
@@ -68,7 +68,7 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
         assert(bit::is_double(delta) || bit::is_zero(delta));
         assert(!bit::is_zero(captured_pieces));
 
-        stack->increment_size();
+        stack.increment_size();
         top(stack).init<Color>(
                 delta,                          // move a king between the from and destination square
                 captured_pieces,                // remove the captured pieces
@@ -89,7 +89,7 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
 
 // add a man capture
 template<bool Color, typename Rules>
-void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings, Stack* stack)
+void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings, Stack& stack)
 {
         // necessary pre-conditions for the pieces invariant
         assert(bit::is_exclusive(delta, captured_pieces));
@@ -106,7 +106,7 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
         assert(!bit::is_multiple(promotion));
         assert(!bit::is_zero(captured_pieces));
 
-        stack->increment_size();
+        stack.increment_size();
         top(stack).init<Color>(
                 delta,                          // move a man between the from and destination squares
                 captured_pieces,                // remove the captured pieces

@@ -1,6 +1,7 @@
-#include <algorithm>    // std::find_if, std::find_first_of, std::min_element
-#include <functional>
+#include <algorithm>    // std::find_if, std::get_first_of, std::min_element
+#include <functional>   // std::bind
 #include "EntryPredicates.h"
+#include "Replace.h"
 
 namespace hash {
 

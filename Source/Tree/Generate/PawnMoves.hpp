@@ -11,44 +11,44 @@ namespace tree {
 namespace generate {
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate(const node::Position<Board>& p, node::Stack* move_stack)
+void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate(const node::Position<Board>& p, node::Stack& move_stack)
 {
         generate_dirs(p.men(Color), p.not_occupied(), move_stack);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, node::Stack* move_stack)
+void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, node::Stack& move_stack)
 {
         generate_dir<Indices<Board, Color>::LEFT_UP >(active_men, not_occupied, move_stack);
         generate_dir<Indices<Board, Color>::RIGHT_UP>(active_men, not_occupied, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_dir(BitBoard active_men, BitBoard not_occupied, node::Stack* move_stack)
+void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_dir(BitBoard active_men, BitBoard not_occupied, node::Stack& move_stack)
 {
         BitBoard from_sq, dest_sq;
-        for (active_men &= Pull<Board, Index>()(not_occupied); active_men; bit::clear_lowest(active_men)) {
-                from_sq = bit::get_lowest(active_men);
+        for (active_men &= Pull<Board, Index>()(not_occupied); active_men; bit::clear_first(active_men)) {
+                from_sq = bit::get_first(active_men);
                 dest_sq = Push<Board, Index>()(from_sq);
                 node::push<Color>(from_sq ^ dest_sq, promotion(dest_sq), move_stack);
         }
 }
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack* move_stack)
+void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack& move_stack)
 {
         generate_reverse_dirs(p.men(Color), p.not_occupied(), move_stack);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_reverse_dirs(BitBoard active_men, BitBoard not_occupied, node::Stack* move_stack)
+void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_reverse_dirs(BitBoard active_men, BitBoard not_occupied, node::Stack& move_stack)
 {
         generate_dir<Indices<Board, Color>::LEFT_DOWN >(active_men, not_occupied, move_stack);
         generate_dir<Indices<Board, Color>::RIGHT_DOWN>(active_men, not_occupied, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_promotions(const node::Position<Board>& p, node::Stack* move_stack)
+void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_promotions(const node::Position<Board>& p, node::Stack& move_stack)
 {
         generate_dirs(promotors(p.men(Color)), p.not_occupied(), move_stack);
 }

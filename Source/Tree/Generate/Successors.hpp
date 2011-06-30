@@ -4,30 +4,30 @@ namespace tree {
 namespace generate {
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate(const node::Position<Board>& p, node::Stack* move_stack)
+void Successors<Rules, Board>::generate(const node::Position<Board>& p, node::Stack& move_stack)
 {
         select(p)->generate(p, move_stack);
-        assert(invariant(p, move_stack->size()));
+        assert(invariant(p, move_stack.size()));
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_captures(const node::Position<Board>& p, node::Stack* move_stack)
+void Successors<Rules, Board>::generate_captures(const node::Position<Board>& p, node::Stack& move_stack)
 {
         select(p)->generate_captures(p, move_stack);
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack* move_stack)
+void Successors<Rules, Board>::generate_reverse(const node::Position<Board>& p, node::Stack& move_stack)
 {
         select(p)->generate_reverse(p, move_stack);
-        assert(reverse_invariant(p, move_stack->size()));
+        assert(reverse_invariant(p, move_stack.size()));
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_promotions(const node::Position<Board>& p, node::Stack* move_stack)
+void Successors<Rules, Board>::generate_promotions(const node::Position<Board>& p, node::Stack& move_stack)
 {
         select(p)->generate_promotions(p, move_stack);
-        assert(promotions_invariant(p, move_stack->size()));
+        assert(promotions_invariant(p, move_stack.size()));
 }
 
 template<typename Rules, typename Board>

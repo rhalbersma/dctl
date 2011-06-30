@@ -1,5 +1,8 @@
 #include <cassert>
-#include "bitTricks.h"
+#include <functional>
+#include <type_traits>
+#include "DeBruijn.h"
+#include "TemplateTricks.h"
 
 namespace bit {
 
@@ -18,13 +21,13 @@ bool is_single(T b)
 template<typename T>
 bool is_double(T b)
 {
-        return is_single(except_lowest(b));
+        return is_single(except_first(b));
 }
 
 template<typename T>
 bool is_multiple(T b)
 {
-        return !is_zero(except_lowest(b));
+        return !is_zero(except_first(b));
 }
 
 template<typename T>
@@ -40,13 +43,13 @@ bool is_exclusive(T a, T b)
 }
 
 template<typename T>
-T get_lowest(T b)
+T get_first(T b)
 {
         return b & (T(0) - b);
 }
 
 template<typename T>
-T except_lowest(T b)
+T except_first(T b)
 {
         return b & (b - T(1));
 }
@@ -54,7 +57,7 @@ T except_lowest(T b)
 template<typename T>
 size_t scan_forward(T b)
 {
-        return index(get_lowest(b));
+        return index(get_first(b));
 }
 
 template<typename T>
@@ -64,10 +67,37 @@ size_t index(T b)
         return index_DeBruijn(b);
 }
 
+//+----------------------------------------------------------------------------+
+//|      Leiserson, Prokop and Randall, 1998                                   |
+//|      http://supertech.csail.mit.edu/papers/debruijn.pdf                    |
+//+----------------------------------------------------------------------------+
+
+template<typename T>
+size_t index_DeBruijn(T b)
+{
+        b *= DeBruijn<T>::SEQUENCE;
+        b >>= DeBruijn<T>::SHIFT;
+        return DeBruijn<T>::TABLE[b];
+}
+
 template<typename T>
 size_t count(T b)
 {
-        return count_Kernighan(b);
+        return count_Kernighan(b);        
+}
+
+//+----------------------------------------------------------------------------+
+//|      Kernighan & Ritchie, The C programming language, 2nd Ed.              |
+//|      https://chessprogramming.wikispaces.com/Population+Count              |
+//+----------------------------------------------------------------------------+
+
+template<typename T>
+size_t count_Kernighan(T b)
+{
+        size_t count = 0;
+        for (; b; clear_first(b))
+                ++count;
+        return count;
 }
 
 template<bool Sign, typename T>
@@ -76,8 +106,24 @@ T flood_fill(T generator, T propagator, size_t dir)
         return fill_loop<Sign>(generator, propagator, dir);
 }
 
+//+-------------------------------------------------------------------------------------+
+//|       Chess Programming Wiki, "Fill Loop" algorithm                                 |
+//|       http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop  |
+//+-------------------------------------------------------------------------------------+
+
+template<bool Sign, typename T>
+T fill_loop(T generator, T propagator, size_t dir)
+{
+        T flood(0);
+        while (generator) {
+                flood |= generator;
+                generator = Shift<Sign>()(generator, dir) & propagator;
+        }
+        return flood;
+}
+
 template<typename T>
-void clear_lowest(T& b)
+void clear_first(T& b)
 {
         b &= b - T(1);
 }

@@ -67,11 +67,11 @@ void Position<Board>::make_consecutive_same_kings_moves(const Pieces& m)
         hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
         if (active_men(*this) && active_kings(*this) && is_non_conversion(*this, m)) {                
-                if (bit::is_zero(consecutive_same_kings_ & from_sq(*this, m)))
+                if (bit::is_zero(consecutive_same_kings_ & from_sq(*this, m))) {
                         consecutive_same_kings_ ^= dest_sq(*this, m);
                         consecutive_same_king_moves_[to_move()] = 1;
-                else {
-                        if (!is_restricted<N>(to_move())) {
+                } else {
+                        if (!is_restricted_king<N>(to_move())) {
                                 consecutive_same_kings_ ^= moving_kings(*this, m);
                                 ++consecutive_same_king_moves_[to_move()];
                         } else {
@@ -87,7 +87,7 @@ void Position<Board>::make_consecutive_same_kings_moves(const Pieces& m)
         hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
         // capture of the opponent's most recently moved king
-        if (bit::is_single(consecutive_same_kings_[!to_move()] & captured_pieces(*this, m))) {
+        if (bit::is_single(consecutive_same_kings_ & captured_pieces(*this, m))) {
                 hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, !to_move());
                 consecutive_same_kings_ &= active_kings(*this);
                 consecutive_same_king_moves_[!to_move()] = 0;

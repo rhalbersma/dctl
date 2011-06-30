@@ -37,7 +37,7 @@ void Root::insert_PV(const node::Position<Board>& p, const node::Sequence& pv, i
 
         for (size_t i = 0; i < pv.size(); ++i) {
                 node::Stack move_stack;
-                generate::Successors<Rules, Board>::generate(q, &move_stack);
+                generate::Successors<Rules, Board>::generate(q, move_stack);
 
                 TT.insert(q, Entry(value, Entry::exact(), pv.size() - i, pv[i]));
                 value = -score::stretch(value);
@@ -60,7 +60,7 @@ void Root::print_PV(const node::Position<Board>& p, const node::Sequence& pv)
 
         for (size_t i = 0; i < pv.size(); ++i) {
                 node::Stack move_stack;
-                generate::Successors<Rules, Board>::generate(q, &move_stack);
+                generate::Successors<Rules, Board>::generate(q, move_stack);
 
                 if (!(i % 2))                        
                         std::cout << std::setw(2) << std::right << ((i / 2) + 1) << ". ";

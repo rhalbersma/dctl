@@ -53,10 +53,13 @@ typedef Board< squares::Grid< 6,  6> > Mini;
 typedef Board< squares::Grid< 8,  8> > Chess;
 typedef Board< squares::Grid<10, 10> > International;
 
-// Spanish-Italian board
+// Frisian board needs at least 2 ghost columns
+typedef Board< squares::Grid<10, 10>, 2, 2 > Frisian;
+
+// Spanish-Italian board is mirrored
 typedef Board< squares::Grid< 8,  8, true> > Roman;
 
-// special initial position
+// Thai board has 4 demilitarized rows in the initial position
 typedef Board< squares::Grid< 8,  8>, 4 > Thai;
 
 // rectangular boards

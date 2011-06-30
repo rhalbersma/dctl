@@ -99,8 +99,8 @@ struct write<FEN_tag, Token>
 			        sstr << Token::COLON;                           // colon
 			        sstr << Token::COLOR[c];                        // color tag
 		        }
-		        for (BitBoard bb = p.pieces(c); bb; bit::clear_lowest(bb)) {
-			        if (p.kings() & bit::get_lowest(bb))
+		        for (BitBoard bb = p.pieces(c); bb; bit::clear_first(bb)) {
+			        if (p.kings() & bit::get_first(bb))
 				        sstr << Token::KING;			// king tag
                                 b = bit::scan_forward(bb);                      // bit index                        
 			        sstr << Board::TABLE_BIT2SQUARE[b] + 1;	        // square number
