@@ -10,7 +10,7 @@ tree::search::Entry::Entry(void)
 {
 }
 
-tree::search::Entry::Entry(int v, Bound t, size_t d, size_t m)
+tree::search::Entry::Entry(int v, Bound t, int d, size_t m)
 :
         value_(static_cast<int16_t>(v)),
         rest_(0)
@@ -37,9 +37,9 @@ tree::search::Entry::Bound tree::search::Entry::bound(void) const
         return static_cast<Bound>((rest_ & (BOUND_MASK << BOUND_SHIFT)) >> BOUND_SHIFT);
 }
 
-size_t tree::search::Entry::depth(void) const
+int tree::search::Entry::depth(void) const
 {
-        return (rest_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT;
+        return static_cast<int>((rest_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT);
 }
 
 size_t tree::search::Entry::move(void) const

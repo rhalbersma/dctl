@@ -15,10 +15,10 @@ class TemplateMethod: public TemplateMethodInterface<Rules, Board>
 public:		
         TemplateMethod(void) {};
 
-        virtual void generate(const node::Position<Board>&, node::Stack*) const;
-        virtual void generate_captures(const node::Position<Board>&, node::Stack*) const;
-        virtual void generate_reverse(const node::Position<Board>&, node::Stack*) const;
-        virtual void generate_promotions(const node::Position<Board>&, node::Stack*) const;
+        virtual void generate(const node::Position<Board>&, node::Stack&) const;
+        virtual void generate_captures(const node::Position<Board>&, node::Stack&) const;
+        virtual void generate_reverse(const node::Position<Board>&, node::Stack&) const;
+        virtual void generate_promotions(const node::Position<Board>&, node::Stack&) const;
 
         virtual size_t count(const node::Position<Board>&) const;
         virtual size_t count_captures(const node::Position<Board>&) const;

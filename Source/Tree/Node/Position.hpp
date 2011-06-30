@@ -77,12 +77,6 @@ bool Position<Board>::is_non_conversion_draw(Int2Type<false>) const
         return false;
 }
 
-template<typename Board>
-const node::Pieces& Position<Board>::pieces(void) const
-{
-        return pieces_;
-}
-
 // black and white men
 template<typename Board>
 BitBoard Position<Board>::men(void) const
@@ -197,6 +191,18 @@ template<typename Board>
 HashIndex Position<Board>::hash_index(void) const
 {
         return hash_index_;
+}
+
+template<typename Board>
+const node::Pieces& Position<Board>::pieces(void) const
+{
+        return pieces_;
+}
+
+template<typename Board>
+const node::Pieces& Position<Board>::key(void) const
+{
+        return pieces();
 }
 
 template<typename Board>

@@ -13,10 +13,10 @@ class TemplateMethodInterface
 {
 public:
         // interface
-        virtual void generate(const node::Position<Board>&, node::Stack*) const = 0;
-        virtual void generate_captures(const node::Position<Board>&, node::Stack*) const = 0;
-        virtual void generate_reverse(const node::Position<Board>&, node::Stack*) const = 0;
-        virtual void generate_promotions(const node::Position<Board>&, node::Stack*) const = 0;
+        virtual void generate(const node::Position<Board>&, node::Stack&) const = 0;
+        virtual void generate_captures(const node::Position<Board>&, node::Stack&) const = 0;
+        virtual void generate_reverse(const node::Position<Board>&, node::Stack&) const = 0;
+        virtual void generate_promotions(const node::Position<Board>&, node::Stack&) const = 0;
 
         virtual size_t count(const node::Position<Board>&) const = 0;
         virtual size_t count_captures(const node::Position<Board>&) const = 0;

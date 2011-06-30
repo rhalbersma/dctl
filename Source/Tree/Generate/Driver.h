@@ -12,9 +12,9 @@ template<bool, int NodePieces, node::Type, typename Rules, typename Board>
 class Driver
 {
 public:
-        static void generate(const node::Position<Board>&, node::Stack*);
-        static void generate_reverse(const node::Position<Board>&, node::Stack*);
-        static void generate_promotions(const node::Position<Board>&, node::Stack*);
+        static void generate(const node::Position<Board>&, node::Stack&);
+        static void generate_reverse(const node::Position<Board>&, node::Stack&);
+        static void generate_promotions(const node::Position<Board>&, node::Stack&);
 
         static size_t count(const node::Position<Board>&);
         static size_t count_reverse(const node::Position<Board>&);

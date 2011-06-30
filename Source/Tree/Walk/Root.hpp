@@ -36,7 +36,7 @@ NodeCount Root::divide(const node::Position<Board>& p, int depth)
         
         Timer timer;
         node::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, &move_stack);
+        generate::Successors<Rules, Board>::generate(p, move_stack);
 
         announce(p, depth, move_stack.size());
         node::Position<Board> q;
@@ -71,7 +71,7 @@ NodeCount Root::leaf(const node::Position<Board>& p, int ply, int depth)
                 return 1;
 
         node::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, &move_stack);
+        generate::Successors<Rules, Board>::generate(p, move_stack);
         NodeCount leafs = 0;        
         node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
@@ -87,7 +87,7 @@ NodeCount Root::bulk(const node::Position<Board>& p, int ply, int depth)
         statistics_.update(ply);
 
         node::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, &move_stack);
+        generate::Successors<Rules, Board>::generate(p, move_stack);
         if (depth == 1)
                 return move_stack.size();
         
@@ -109,7 +109,7 @@ NodeCount Root::count(const node::Position<Board>& p, int ply, int depth)
                 return generate::Successors<Rules, Board>::count(p);
 
         node::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, &move_stack);
+        generate::Successors<Rules, Board>::generate(p, move_stack);
         NodeCount leafs = 0;
         node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
@@ -132,7 +132,7 @@ NodeCount Root::hash(const node::Position<Board>& p, int ply, int depth)
                 return 1;
 
         node::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, &move_stack);
+        generate::Successors<Rules, Board>::generate(p, move_stack);
         NodeCount leafs = 0;
         node::Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
@@ -158,7 +158,7 @@ NodeCount Root::fast(const node::Position<Board>& p, int ply, int depth)
                 leafs = generate::Successors<Rules, Board>::count(p);
         else {
                 node::Stack move_stack;
-                generate::Successors<Rules, Board>::generate(p, &move_stack);
+                generate::Successors<Rules, Board>::generate(p, move_stack);
                 leafs = 0;
                 node::Position<Board> q;
                 for (size_t i = 0; i < move_stack.size(); ++i) {
@@ -188,5 +188,5 @@ void Root::announce(const node::Position<Board>& p, int depth, int num_moves)
         std::cout << std::endl;
 }
 
-}       // namesapce Walk
+}       // namespace walk
 }       // namespace tree

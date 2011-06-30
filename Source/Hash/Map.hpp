@@ -3,7 +3,7 @@
 #include <cstring>      // std::memset
 #include <type_traits>  // std::is_integral
 
-#include "EntryPredicates.h"
+#include "FindInsert.h"
 #include "Sign.h"
 
 namespace hash {

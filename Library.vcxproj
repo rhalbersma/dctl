@@ -177,8 +177,9 @@
     <ClInclude Include="Source\Hash\Jenkins\Mix.hpp" />
     <ClInclude Include="Source\Hash\Map.h" />
     <ClInclude Include="Source\Hash\Map.hpp" />
+    <ClInclude Include="Source\Hash\FindInsert.h" />
+    <ClInclude Include="Source\Hash\FindInsert.hpp" />
     <ClInclude Include="Source\Hash\Replace.h" />
-    <ClInclude Include="Source\Hash\Replace.hpp" />
     <ClInclude Include="Source\Hash\Sign.h" />
     <ClInclude Include="Source\Hash\Sign.hpp" />
     <ClInclude Include="Source\Hash\Zobrist\Find.h" />
@@ -251,8 +252,6 @@
     <ClInclude Include="Source\Tree\Walk\Root.hpp" />
     <ClInclude Include="Source\Utilities\Bit.h" />
     <ClInclude Include="Source\Utilities\Bit.hpp" />
-    <ClInclude Include="Source\Utilities\BitTricks.h" />
-    <ClInclude Include="Source\Utilities\BitTricks.hpp" />
     <ClInclude Include="Source\Utilities\CacheAlign.h" />
     <ClInclude Include="Source\Utilities\DeBruijn.h" />
     <ClInclude Include="Source\Utilities\DeBruijn.hpp" />

@@ -2,12 +2,13 @@
 #include <map>
 #include <memory>       // std::unique_ptr
 #include <string>
+#include <boost/utility.hpp>
 #include "MessageInterface.h"
 
 namespace damexchange {
 namespace layer2 {
 
-class Parser
+class Parser: private boost::noncopyable        // enforce singleton semantics
 {
 public:
         // typedefs
@@ -18,12 +19,6 @@ public:
         static bool erase(const std::string&);
 
 private:
-        // enforce singleton semantics 
-        Parser(void);
-        Parser(const Parser&);
-        Parser& operator=(const Parser&);
-        ~Parser(void);
-
         // implementation
         typedef std::map<std::string, Creator> CreatorMap;
         static CreatorMap& instance(void);

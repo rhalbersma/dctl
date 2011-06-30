@@ -70,7 +70,7 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
 
         // generate moves
         node::Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, &move_stack);
+        generate::Successors<Rules, Board>::generate(p, move_stack);
 
         // without a valid move, the position is an immediate loss
         if (move_stack.empty()) {

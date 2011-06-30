@@ -44,6 +44,7 @@ public:
         PlyCount non_conversion_moves(void) const;
 
         const node::Position<Board>* parent(size_t) const;
+        const node::Pieces& key(void) const;
 
         // make a move in a copy from another position
         template<typename> void copy_make(const Position<Board>&, const Pieces&);

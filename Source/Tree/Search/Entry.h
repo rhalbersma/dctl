@@ -13,13 +13,13 @@ public:
 
         // constructors
 	Entry(void);
-	Entry(int, Bound, size_t, size_t);
+	Entry(int, Bound, int, size_t);
 
 	// views
 	int value(void) const;                  // value
 	int refined_value(int) const;           // refined value
 	Bound bound(void) const;                // upper or lower bound, or exact
-	size_t depth(void) const;               // remaining depth to search
+	int depth(void) const;                  // remaining depth to search
 	size_t move(void) const;                // index of the best move
 
         // predicates

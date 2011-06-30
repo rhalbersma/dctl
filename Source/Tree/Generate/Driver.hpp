@@ -4,21 +4,21 @@ namespace tree {
 namespace generate {
 
 template<bool Color, int Material, node::Type MoveType, typename Rules, typename Board>
-void Driver<Color, Material, MoveType, Rules, Board>::generate(const node::Position<Board>&, node::Stack*) 
+void Driver<Color, Material, MoveType, Rules, Board>::generate(const node::Position<Board>&, node::Stack&) 
 { 
         static_assert(Material == node::Pieces::NONE, "Template function already defined.");
         return;
 }
 
 template<bool Color, int Material, node::Type MoveType, typename Rules, typename Board>
-void Driver<Color, Material, MoveType, Rules, Board>::generate_reverse(const node::Position<Board>&, node::Stack*) 
+void Driver<Color, Material, MoveType, Rules, Board>::generate_reverse(const node::Position<Board>&, node::Stack&) 
 { 
         static_assert(Material == node::Pieces::NONE, "Template function already defined.");
         return;
 }
 
 template<bool Color, int Material, node::Type MoveType, typename Rules, typename Board>
-void Driver<Color, Material, MoveType, Rules, Board>::generate_promotions(const node::Position<Board>&, node::Stack*) 
+void Driver<Color, Material, MoveType, Rules, Board>::generate_promotions(const node::Position<Board>&, node::Stack&) 
 { 
         static_assert(Material == node::Pieces::NONE, "Template function already defined.");
         return;
