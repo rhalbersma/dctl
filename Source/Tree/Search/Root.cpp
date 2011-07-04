@@ -1,13 +1,12 @@
 #include <utility>
 #include "gtest/gtest.h"
 #include "../../test_config.h"
-#include "../../../../Library/Source/Tree/Search/Root.h"
-#include "../../../../Library/Source/Tree/Node/Position.h"
-#include "../../../../Library/Source/Tree/Node/Protocol.h"
-#include "../../../../Library/Source/Tree/Node/String.h"
-#include "../../../../Library/Source/Geometry/Board.h"
-#include "../../../../Library/Source/Geometry/Layout.h"
-#include "../../../../Library/Source/Variants/Rules.h"
+#include "../../../../Library/src/Tree/Search/Root.h"
+#include "../../../../Library/src/Tree/Node/Position.h"
+#include "../../../../Library/src/Tree/Node/Protocol.h"
+#include "../../../../Library/src/Tree/Node/String.h"
+#include "../../../../Library/src/board/Types.h"
+#include "../../../../Library/src/rules/Variants.h"
 
 namespace tree {
 namespace search {
@@ -20,7 +19,7 @@ protected:
 
         SearchEndgame() {
         // You can do set-up work for each test here.
-                Root::resize_hash(25);
+                Root::resize_hash(27);
         }
 
         virtual ~SearchEndgame() {
@@ -49,26 +48,26 @@ protected:
                 Root::clear_hash();
                 auto position = node::string::read<Board, node::FEN_tag>()(test_case.first);
                 auto value = Root::analyze<Rules>(position, test_case.second);
-                EXPECT_EQ(value, score::win_value(test_case.second));
+                EXPECT_EQ(score::win_value(test_case.second), value);
         }
 
         // Objects declared here can be used by all tests in the test case for SearchEndgame.                
 };
 
 #if INTEGRATION_TEST == 1
-
+/*
 TEST_F(SearchEndgame, InternationalInitial)
 {
-        auto i10 = node::Position<geometry::International>::initial();
+        auto i10 = node::Position<board::International>::initial();
         Root::clear_hash();
-        Root::analyze<variants::International>(i10, 11);
+        Root::analyze<rules::International>(i10, 11);
 }
-
-TEST_F(SearchEndgame, FrisianWalinga21)
+*/
+TEST_F(SearchEndgame, Frisian21)
 {
-        auto Walinga = node::string::read<geometry::Frisian, node::FEN_tag>()("W:WK46,28:BK43");
-        Root::clear_hash();
-        Root::analyze<variants::Frisian>(Walinga, 39);
+        FEN_depth test_case("W:WK46,28:BK43", 39);      // Walinga book
+
+        Run<board::Frisian, rules::Frisian>(test_case);
 }
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
@@ -82,7 +81,7 @@ TEST_F(SearchEndgame, International11)
         };
                 
         for (auto i = 0; i < 4; ++i)
-                Run<geometry::International, variants::International>(test_case[i]);
+                Run<board::International, rules::International>(test_case[i]);
 }
 
 TEST_F(SearchEndgame, International21)
@@ -104,7 +103,7 @@ TEST_F(SearchEndgame, International21)
         };
 
         for (auto i = 0; i < 13; ++i)
-                Run<geometry::International, variants::International>(test_case[i]);
+                Run<board::International, rules::International>(test_case[i]);
 }        
 
 TEST_F(SearchEndgame, International22)
@@ -122,7 +121,7 @@ TEST_F(SearchEndgame, International22)
         };
 
         for (auto i = 0; i < 9; ++i)
-                Run<geometry::International, variants::International>(test_case[i]);      
+                Run<board::International, rules::International>(test_case[i]);      
 }
 
 TEST_F(SearchEndgame, International31)
@@ -147,7 +146,7 @@ TEST_F(SearchEndgame, International31)
         };
         
         for (auto i = 0; i < 16; ++i)
-                Run<geometry::International, variants::International>(test_case[i]);
+                Run<board::International, rules::International>(test_case[i]);
 }
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        
@@ -161,7 +160,7 @@ TEST_F(SearchEndgame, Killer11)
         };
 
         for (auto i = 0; i < 4; ++i)
-                Run<geometry::International, variants::Killer>(test_case[i]);
+                Run<board::International, rules::Killer>(test_case[i]);
 }
 
 TEST_F(SearchEndgame, Killer21)
@@ -184,7 +183,7 @@ TEST_F(SearchEndgame, Killer21)
         };       
         
         for (auto i = 0; i < 14; ++i)
-                Run<geometry::International, variants::Killer>(test_case[i]);
+                Run<board::International, rules::Killer>(test_case[i]);
 }
 
 TEST_F(SearchEndgame, Killer22)
@@ -202,7 +201,7 @@ TEST_F(SearchEndgame, Killer22)
         };
 
         for (auto i = 0; i < 9; ++i)
-                Run<geometry::International, variants::Killer>(test_case[i]);
+                Run<board::International, rules::Killer>(test_case[i]);
 }
 
 TEST_F(SearchEndgame, Killer31)
@@ -227,7 +226,7 @@ TEST_F(SearchEndgame, Killer31)
         };
         
         for (auto i = 0; i < 16; ++i)
-                Run<geometry::International, variants::Killer>(test_case[i]);
+                Run<board::International, rules::Killer>(test_case[i]);
 }
 
 #endif

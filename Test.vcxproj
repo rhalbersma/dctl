@@ -84,6 +84,7 @@
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
+    <PostBuildEvent />
     <PostBuildEvent>
       <Command>“$(TargetDir)$(TargetFileName)”</Command>
     </PostBuildEvent>
