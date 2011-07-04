@@ -1,14 +1,14 @@
 #include <algorithm>    // std::find
 #include <string>
 #include "gtest/gtest.h"
-#include "../../../../Library/Source/Tree/Generate/Successors.h"
-#include "../../../../Library/Source/Tree/Node/Position.h"
-#include "../../../../Library/Source/Tree/Node/Protocol.h"
-#include "../../../../Library/Source/Tree/Node/String.h"
-#include "../../../../Library/Source/Tree/Move/String.h"
-#include "../../../../Library/Source/Geometry/Board.h"
-#include "../../../../Library/Source/Geometry/Layout.h"
-#include "../../../../Library/Source/Variants/Rules.h"
+#include "../../../../Library/src/Tree/Generate/Successors.h"
+#include "../../../../Library/src/Tree/Node/Position.h"
+#include "../../../../Library/src/Tree/Node/Protocol.h"
+#include "../../../../Library/src/Tree/Node/String.h"
+#include "../../../../Library/src/Tree/Move/String.h"
+#include "../../../../Library/src/board/Layout.h"
+#include "../../../../Library/src/board/Types.h"
+#include "../../../../Library/src/rules/Variants.h"
 
 namespace tree {
 namespace generate {
@@ -17,12 +17,12 @@ namespace generate {
 // Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 TEST(MoveGeneration, ItalianBoard)
 {
-        node::Position<geometry::Roman> ITA_empty = node::string::read<geometry::Roman, node::FEN_tag>()("");   // Art. 2.1
-        typedef geometry::Roman ITA_notation;                                      	                        // Art. 2.4
-        node::Position<geometry::Roman> ITA_initial;						                // Art. 2.6
+        node::Position<board::Roman> ITA_empty = node::string::read<board::Roman, node::FEN_tag>()("");   // Art. 2.1
+        typedef board::Roman ITA_notation;                                      	                        // Art. 2.4
+        node::Position<board::Roman> ITA_initial;						                // Art. 2.6
 
         std::cout << node::layout::write<node::FEN_tag>()(ITA_empty) << std::endl;
-        geometry::layout::write<ITA_notation, geometry::layout::Square_tag>()();
+        board::layout::write<ITA_notation, board::layout::Square_tag>()();
         std::cout << node::layout::write<node::FEN_tag>()(ITA_initial) << std::endl;
 }
 */
@@ -60,15 +60,15 @@ TEST(MoveGeneration, Italian)
 
         for (auto i = 0; i < 9; ++i) {
                 node::Stack move_stack;
-                auto p = node::string::read<geometry::Roman, node::FEN_tag>()(position[i]);
-                Successors<variants::Italian, geometry::Roman>::generate(p, move_stack);
+                auto p = node::string::read<board::Roman, node::FEN_tag>()(position[i]);
+                Successors<rules::Italian, board::Roman>::generate(p, move_stack);
 
                 // check the number of generated moves
                 EXPECT_EQ(size[i], move_stack.size());
 
                 // check all generated moves
                 for (size_t j = 0; j < move_stack.size(); ++j) {
-                        std::string move_string = move::string::write<variants::Italian>()(p, move_stack[j]);
+                        std::string move_string = move::string::write<rules::Italian>()(p, move_stack[j]);
                         EXPECT_NE(moves[i] + size[i], std::find(moves[i], moves[i] + size[i], move_string)); 
                 }
         }

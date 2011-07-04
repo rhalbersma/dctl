@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "../../../../Library/Source/Tree/Search/Score.h"
-#include "../../../../Library/Source/Utilities/Ply.h"
+#include "../../../../Library/src/Tree/Search/Score.h"
+#include "../../../../Library/src/Utilities/Ply.h"
 
 namespace tree {
 namespace search {
