@@ -1,8 +1,12 @@
 #include "MessageInterface.h"
 
-namespace DXP = damexchange;
+namespace damexchange {
+namespace layer2 {
 
-std::string DXP::layer2::MessageInterface::str(void) const
+std::string MessageInterface::str() const
 {
         return header() + body();
 }
+
+}       // namespace layer2
+}       // namespace damexchange

@@ -7,8 +7,6 @@ namespace tree {
 namespace generate {
 namespace capture {
 
-struct Value;
-
 template<typename> struct init      { void operator()(Value&)                      const {} };
 template<typename> struct copy      { void operator()(Value&, const Value&)        const {} };
 template<typename> struct increment { void operator()(Value&, BitBoard, BitBoard)  const {} };

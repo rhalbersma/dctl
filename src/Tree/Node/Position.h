@@ -2,7 +2,7 @@
 #include "Pieces.h"
 #include "Side.h"
 #include "../../board/Board.h"
-#include "../../rules/Variants.h"
+#include "../../rules/Traits.h"
 #include "../../Utilities/IntegerTypes.h"
 #include "../../Utilities/TemplateTricks.h"
 #include "../../Utilities/CacheAlign.h"
@@ -15,36 +15,36 @@ class Position
 {
 public:
         // constructors
-        Position(void) {};                                      // trivial default constructor
+        Position() {};                                          // trivial default constructor
         Position(BitBoard, BitBoard, BitBoard, bool);           // initialize with a set of bitboards and a color
-        static Position initial(void);                          // initial position
+        static Position initial();                              // initial position
 
         // predicates
-        template<typename> bool is_draw(void) const;
+        template<typename> bool is_draw() const;
 
         // views
-        const node::Pieces& pieces(void) const;
+        const node::Pieces& pieces() const;
 
-        BitBoard men(void) const;                               // black and white men
-        BitBoard kings(void) const;                             // black and white kings
-        BitBoard occupied(void) const;                          // occupied squares
-        BitBoard not_occupied(void) const;                      // unoccupied squares
+        BitBoard men() const;                                   // black and white men
+        BitBoard kings() const;                                 // black and white kings
+        BitBoard occupied() const;                              // occupied squares
+        BitBoard not_occupied() const;                          // unoccupied squares
         BitBoard men(bool) const;                               // black or white men
         BitBoard kings(bool) const;                             // black or white kings
         BitBoard pieces(bool) const;                            // black or white pieces
-        bool to_move(void) const;                               // side to move
+        bool to_move() const;                                   // side to move
 
         template<typename> 
         BitBoard unrestricted_kings(bool) const;
 
-        HashIndex hash_index(void) const;
+        HashIndex hash_index() const;
         BitBoard same_king(bool) const;
         PlyCount same_king_moves(bool) const;
-        PlyCount reversible_moves(void) const;
+        PlyCount reversible_moves() const;
 
-        const node::Position<Board>* parent(void) const;
-        const node::Position<Board>* grand_parent(void) const;
-        const node::Pieces& key(void) const;
+        const node::Position<Board>* parent() const;
+        const node::Position<Board>* grand_parent() const;
+        const node::Pieces& key() const;
 
         // make a move in a copy from another position
         template<typename> void copy_make(const Position<Board>&, const Pieces&);
@@ -52,10 +52,10 @@ public:
         
 private:
         // implementation
-        bool is_repetition_draw(void) const;
+        bool is_repetition_draw() const;
         
         // tag dispatching based on restrictions on consecutive reversible moves        
-        template<typename> bool is_reversible_draw(void) const;
+        template<typename> bool is_reversible_draw() const;
         template<typename> bool is_reversible_draw(Int2Type<false>) const;
         template<typename> bool is_reversible_draw(Int2Type<true >) const;
 
@@ -77,9 +77,9 @@ private:
         void make_reversible(const Pieces&);
                 
         // post-conditions for the constructors and modifiers
-        bool pieces_invariant(void) const;
-        bool hash_index_invariant(void) const;
-        template<typename> bool same_king_invariant(void) const;
+        bool pieces_invariant() const;
+        bool hash_index_invariant() const;
+        template<typename> bool same_king_invariant() const;
         template<typename> bool same_king_invariant(bool) const;
         template<typename> bool same_king_invariant(bool, Int2Type<false>) const;
         template<typename> bool same_king_invariant(bool, Int2Type<true >) const;

@@ -21,3 +21,6 @@ template<> struct is_relative_king_precedence<Frisian>          { enum { value =
 template<> struct large_capture<Frisian>                        { enum { value = 3        }; };
 
 }       // namespace rules
+
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+#include "Frisian.hpp"

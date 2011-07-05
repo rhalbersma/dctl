@@ -11,16 +11,16 @@ public:
         explicit Scanner(const std::string&);
 
         // views
-        std::string str(void) const;
-        std::string header(void) const;
-        std::string body(void) const;
-        const char* c_str(void) const;
-        size_t length(void) const;
-        static char terminator(void);
+        std::string str() const;
+        std::string header() const;
+        std::string body() const;
+        const char* c_str() const;
+        size_t length() const;
+        static char terminator();
 
 private:
         // invariants
-        bool invariant(void) const;
+        bool invariant() const;
 
         // implementation
         static const size_t HEADER_LENGTH = 1;

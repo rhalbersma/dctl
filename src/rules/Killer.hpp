@@ -1,11 +1,12 @@
-namespace rules { struct International; }
+#include "../Tree/Generate/Capture/Templates.h"
+#include "../Tree/Generate/Capture/Value.h"
 
 namespace tree {
 namespace generate {
 namespace capture {
 
 template<>
-struct init<rules::International>
+struct init<rules::Killer>
 {
         void operator()(Value& value) const
         {
@@ -14,7 +15,7 @@ struct init<rules::International>
 };
 
 template<>
-struct copy<rules::International>
+struct copy<rules::Killer>
 {
         void operator()(Value& left, const Value& right) const
         {
@@ -23,7 +24,7 @@ struct copy<rules::International>
 };
 
 template<>
-struct increment<rules::International>
+struct increment<rules::Killer>
 {
         void operator()(Value& value, BitBoard, BitBoard) const
         {
@@ -32,7 +33,7 @@ struct increment<rules::International>
 };
 
 template<>
-struct decrement<rules::International>
+struct decrement<rules::Killer>
 {
         void operator()(Value& value, BitBoard, BitBoard) const
         {
@@ -41,7 +42,7 @@ struct decrement<rules::International>
 };
 
 template<>
-struct equal_to<rules::International>: public std::binary_function<Value, Value, bool>
+struct equal_to<rules::Killer>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {
@@ -50,7 +51,7 @@ struct equal_to<rules::International>: public std::binary_function<Value, Value,
 };
 
 template<>
-struct greater_equal<rules::International>: public std::binary_function<Value, Value, bool>
+struct greater_equal<rules::Killer>: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& left, const Value& right) const
         {

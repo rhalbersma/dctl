@@ -13,3 +13,6 @@ template<> struct man_capture_directions<Spanish>       { enum { value = DIRS_UP
 template<> struct is_majority_precedence<Spanish>       { enum { value = true    }; };
 
 }       // namespace rules
+
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+#include "Spanish.hpp"

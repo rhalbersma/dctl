@@ -2,7 +2,7 @@
 #include "Driver.h"
 #include "../Node/Pieces.h"
 #include "../Node/Stack.h"
-#include "../../rules/Variants.h"
+#include "../../rules/Traits.h"
 #include "../../Utilities/IntegerTypes.h"
 #include "../../Utilities/TemplateTricks.h"
 

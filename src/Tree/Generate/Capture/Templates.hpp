@@ -1,5 +1,5 @@
 #include "Value.h"
-#include "../../../rules/Variants.h"
+#include "../../../rules/Traits.h"
 #include "../../../Utilities/Bit.h"
 
 namespace tree {
@@ -30,6 +30,3 @@ bool large<Rules>::operator()(const Value& value, BitBoard, Int2Type<true>) cons
 }       // namespace capture
 }       // namespace generate
 }       // namespace tree
-
-// include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "Specializations.hpp"

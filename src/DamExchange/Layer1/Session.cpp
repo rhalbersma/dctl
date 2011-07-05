@@ -4,49 +4,50 @@
 #include "Session.h"
 #include "Scanner.h"
 
-namespace DXP = damexchange;
+namespace damexchange {
+namespace layer1 {
 
-const boost::asio::ip::tcp DXP::layer1::Session::PROTOCOL = boost::asio::ip::tcp::v4();
-const boost::asio::ip::address_v4 DXP::layer1::Session::LOOPBACK = boost::asio::ip::address_v4::loopback();
+const boost::asio::ip::tcp Session::PROTOCOL = boost::asio::ip::tcp::v4();
+const boost::asio::ip::address_v4 Session::LOOPBACK = boost::asio::ip::address_v4::loopback();
 
-DXP::layer1::Session::Session(void)
+Session::Session()
 :
         socket_(io_service_),
         acceptor_(io_service_)
 {
 }
 
-void DXP::layer1::Session::connect(void)
+void Session::connect()
 {
         do_connect(boost::asio::ip::tcp::endpoint(LOOPBACK, PORT));
 }
 
-void DXP::layer1::Session::connect(unsigned short port)
+void Session::connect(unsigned short port)
 {
         do_connect(boost::asio::ip::tcp::endpoint(LOOPBACK, port));
 }
 
-void DXP::layer1::Session::connect(const std::string& host)
+void Session::connect(const std::string& host)
 {
         do_connect(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(host), PORT));
 }
 
-void DXP::layer1::Session::connect(const std::string& host, unsigned short port)
+void Session::connect(const std::string& host, unsigned short port)
 {
         do_connect(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(host), port));
 }
 
-void DXP::layer1::Session::accept(void)
+void Session::accept()
 {
         do_accept(boost::asio::ip::tcp::endpoint(PROTOCOL, PORT));
 }
 
-void DXP::layer1::Session::accept(unsigned short port)
+void Session::accept(unsigned short port)
 {
         do_accept(boost::asio::ip::tcp::endpoint(PROTOCOL, port));
 }
 
-void DXP::layer1::Session::do_connect(const boost::asio::ip::tcp::endpoint& endpoint)
+void Session::do_connect(const boost::asio::ip::tcp::endpoint& endpoint)
 {
         socket_.async_connect(
                 endpoint,
@@ -55,7 +56,7 @@ void DXP::layer1::Session::do_connect(const boost::asio::ip::tcp::endpoint& endp
         start_event_loop();
 }
 
-void DXP::layer1::Session::do_accept(const boost::asio::ip::tcp::endpoint& endpoint)
+void Session::do_accept(const boost::asio::ip::tcp::endpoint& endpoint)
 {
         acceptor_.open(endpoint.protocol());
         acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
@@ -68,36 +69,36 @@ void DXP::layer1::Session::do_accept(const boost::asio::ip::tcp::endpoint& endpo
         start_event_loop();
 }
 
-void DXP::layer1::Session::start_event_loop(void)
+void Session::start_event_loop()
 {
         io_service_thread_ = boost::thread((boost::bind(&boost::asio::io_service::run, &io_service_)));
 }
 
-void DXP::layer1::Session::stop_event_loop(void)
+void Session::stop_event_loop()
 {
         io_service_thread_.join();
 }
 
-void DXP::layer1::Session::handle_open(const boost::system::error_code& error)
+void Session::handle_open(const boost::system::error_code& error)
 {
         if (!error) {
                 async_read_next();
         } 
 }
 
-void DXP::layer1::Session::close(void)
+void Session::close()
 {
         // do_close() will only be called in a thread in which io_service::run() is currently being invoked.
         io_service_.post(boost::bind(&Session::do_close, this));
 }
 
-void DXP::layer1::Session::do_close(void)
+void Session::do_close()
 {
         socket_.close();
         stop_event_loop();
 }
 
-void DXP::layer1::Session::async_read_next(void)
+void Session::async_read_next()
 {
         boost::asio::async_read_until(
                 socket_,
@@ -107,7 +108,7 @@ void DXP::layer1::Session::async_read_next(void)
         );
 }
 
-void DXP::layer1::Session::handle_read(const boost::system::error_code& error)
+void Session::handle_read(const boost::system::error_code& error)
 {
         if (!error) {
                 std::istream read_buf_stream(&read_buf_);
@@ -121,26 +122,26 @@ void DXP::layer1::Session::handle_read(const boost::system::error_code& error)
         }
 }
 
-void DXP::layer1::Session::read(std::string& msg)
+void Session::read(std::string& msg)
 {
         // do_read() will only be called in a thread in which io_service::run() is currently being invoked.
         io_service_.post(boost::bind(&Session::do_read, this, msg));
 }
 
-void DXP::layer1::Session::do_read(std::string& msg)
+void Session::do_read(std::string& msg)
 {
         msg = read_msgs_.front();
         read_msgs_.pop_front();
 }
 
-void DXP::layer1::Session::write(const std::string& msg)
+void Session::write(const std::string& msg)
 {
         // do_write() will only be called in a thread in which io_service::run() is currently being invoked.
         io_service_.post(boost::bind(&Session::do_write, this, msg));
 }
 
 // by-value instead of by-reference, or <msg> might go out of scope before being used in the io_service::run() thread
-void DXP::layer1::Session::do_write(std::string msg)
+void Session::do_write(std::string msg)
 {
         bool no_write_in_progress = write_msgs_.empty();
         write_msgs_.push_back(msg);
@@ -149,7 +150,7 @@ void DXP::layer1::Session::do_write(std::string msg)
         }
 }
 
-void DXP::layer1::Session::async_write_next(void)
+void Session::async_write_next()
 {
         boost::asio::async_write(
                 socket_,
@@ -158,7 +159,7 @@ void DXP::layer1::Session::async_write_next(void)
         );
 }
 
-void DXP::layer1::Session::handle_write(const boost::system::error_code& error)
+void Session::handle_write(const boost::system::error_code& error)
 {
         if (!error) {
                 write_msgs_.pop_front();
@@ -169,3 +170,6 @@ void DXP::layer1::Session::handle_write(const boost::system::error_code& error)
                 do_close();
         }
 }
+
+}       // namespace layer1
+}       // namespace damexchange

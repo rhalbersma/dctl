@@ -11,12 +11,12 @@ class GameRequest: public MessageInterface
 {
 public:
         // views
-        const std::string& name_initiator(void) const;
-        char color_follower(void) const;
-        size_t minutes(void) const;
-        size_t moves(void) const;
-        bool setup(void) const;
-        const std::string& position(void) const;
+        const std::string& name_initiator() const;
+        char color_follower() const;
+        size_t minutes() const;
+        size_t moves() const;
+        bool setup() const;
+        const std::string& position() const;
         static std::string str(const std::string&, char, size_t, size_t, bool, const std::string&);
 
 private:
@@ -24,8 +24,8 @@ private:
         explicit GameRequest(const std::string&);
 
         // implementation
-        virtual std::string header(void) const;
-        virtual std::string body(void) const;
+        virtual std::string header() const;
+        virtual std::string body() const;
         static std::string body(const std::string&, char, size_t, size_t, bool, const std::string&);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);

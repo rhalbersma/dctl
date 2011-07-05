@@ -11,8 +11,8 @@ class BackRequest: public MessageInterface
 {
 public:
         // views
-        size_t move_number(void) const;
-        char side_to_move(void) const;
+        size_t move_number() const;
+        char side_to_move() const;
         static std::string str(size_t, char);
 
 private:
@@ -20,8 +20,8 @@ private:
         explicit BackRequest(const std::string&);
 
         // implementation
-        virtual std::string header(void) const;
-        virtual std::string body(void) const;
+        virtual std::string header() const;
+        virtual std::string body() const;
         static std::string body(size_t, char);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);

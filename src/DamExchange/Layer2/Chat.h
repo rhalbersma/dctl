@@ -10,7 +10,7 @@ class Chat: public MessageInterface
 {
 public:
         // views
-        std::string message(void) const;
+        std::string message() const;
         static std::string str(const std::string&);
 
 private:
@@ -18,8 +18,8 @@ private:
         explicit Chat(const std::string&);
 
         // implementation
-        virtual std::string header(void) const;
-        virtual std::string body(void) const;
+        virtual std::string header() const;
+        virtual std::string body() const;
         static std::string body(const std::string&);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);

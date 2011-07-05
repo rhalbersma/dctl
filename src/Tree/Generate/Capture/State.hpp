@@ -23,19 +23,19 @@ State<Rules, Board>::State(const node::Position<Board>& p)
 }
 
 template<typename Rules, typename Board> template<size_t Index>
-BitBoard State<Rules, Board>::targets(void) const
+BitBoard State<Rules, Board>::targets() const
 {
         return remaining_targets_ & Pull<Board, Index>()(path());
 }
 
 template<typename Rules, typename Board> template<size_t Index>
-BitBoard State<Rules, Board>::path(void) const
+BitBoard State<Rules, Board>::path() const
 {
         return path() & Board::JUMPABLE[Index];
 }
 
 template<typename Rules, typename Board>
-BitBoard State<Rules, Board>::path(void) const
+BitBoard State<Rules, Board>::path() const
 {
         return not_occupied_;
 }
@@ -47,7 +47,7 @@ BitBoard State<Rules, Board>::promotions(BitBoard dest_sq) const
 }
 
 template<typename Rules, typename Board>
-BitBoard State<Rules, Board>::captured_targets(void) const
+BitBoard State<Rules, Board>::captured_targets() const
 {
         return initial_targets_ ^ remaining_targets_;
 }
@@ -80,37 +80,37 @@ bool State<Rules, Board>::is_promotion(BitBoard dest_sq) const
 }
 
 template<typename Rules, typename Board>
-bool State<Rules, Board>::is_promotion(void) const
+bool State<Rules, Board>::is_promotion() const
 {
         return current_.promotion;
 }
 
 template<typename Rules, typename Board>
-bool State<Rules, Board>::current_greater_equal_best(void) const
+bool State<Rules, Board>::current_greater_equal_best() const
 {
         return greater_equal<Rules>()(current_, best_);
 }
 
 template<typename Rules, typename Board>
-bool State<Rules, Board>::current_not_equal_to_best(void) const
+bool State<Rules, Board>::current_not_equal_to_best() const
 {
         return not_equal_to<Rules>()(current_, best_);
 }
 
 template<typename Rules, typename Board>
-void State<Rules, Board>::toggle_king_targets(void)
+void State<Rules, Board>::toggle_king_targets()
 {
         initial_targets_ = remaining_targets_ ^= king_targets_;
 }
 
 template<typename Rules, typename Board>
-void State<Rules, Board>::toggle_with_king(void)
+void State<Rules, Board>::toggle_with_king()
 {
         current_.with_king ^= true;
 }
 
 template<typename Rules, typename Board>
-void State<Rules, Board>::toggle_promotion(void)
+void State<Rules, Board>::toggle_promotion()
 {
         current_.promotion ^= true;
 }

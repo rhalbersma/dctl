@@ -5,18 +5,19 @@
 #include "Move.h"
 #include "Parser.h"
 
-namespace DXP = damexchange;
+namespace damexchange {
+namespace layer2 {
 
-const std::string DXP::layer2::Move::HEADER = "M";
+const std::string Move::HEADER = "M";
 
-const bool DXP::layer2::Move::REGISTERED = Parser::insert(HEADER, create);
+const bool Move::REGISTERED = Parser::insert(HEADER, create);
 
-std::unique_ptr<DXP::layer2::MessageInterface> DXP::layer2::Move::create(const std::string& msg)
+std::unique_ptr<MessageInterface> Move::create(const std::string& msg)
 {
         return std::unique_ptr<Move>(new Move(msg));
 }
 
-DXP::layer2::Move::Move(const std::string& msg)
+Move::Move(const std::string& msg)
 :
         seconds_(boost::lexical_cast<int>(msg.substr(0, 4).c_str())),
         from_sq_(boost::lexical_cast<int>(msg.substr(4, 2).c_str())),
@@ -27,47 +28,47 @@ DXP::layer2::Move::Move(const std::string& msg)
                 captured_pieces_.push_back(boost::lexical_cast<int>(msg.substr(10 + 2 * i, 2).c_str()));
 }
 
-int DXP::layer2::Move::seconds(void) const
+int Move::seconds() const
 {
         return seconds_;
 }
 
-int DXP::layer2::Move::from_sq(void) const
+int Move::from_sq() const
 {
         return from_sq_;
 }
 
-int DXP::layer2::Move::dest_sq(void) const
+int Move::dest_sq() const
 {
         return dest_sq_;
 }
 
-int DXP::layer2::Move::num_captured(void) const
+int Move::num_captured() const
 {
         return num_captured_;
 }
 
-const std::vector<int>& DXP::layer2::Move::captured_pieces(void) const
+const std::vector<int>& Move::captured_pieces() const
 {
         return captured_pieces_;
 }
 
-std::string DXP::layer2::Move::str(int s, int f, int d, int n, const std::vector<int>& c)
+std::string Move::str(int s, int f, int d, int n, const std::vector<int>& c)
 {
         return HEADER + body(s, f, d, n, c);
 }
 
-std::string DXP::layer2::Move::header(void) const
+std::string Move::header() const
 {
         return HEADER;
 }
 
-std::string DXP::layer2::Move::body(void) const
+std::string Move::body() const
 {
         return body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces());
 }
 
-std::string DXP::layer2::Move::body(int s, int f, int d, int n, const std::vector<int>& c)
+std::string Move::body(int s, int f, int d, int n, const std::vector<int>& c)
 { 
         std::stringstream sstr;
         sstr << std::setw( 4) << std::setfill('0') << s;
@@ -78,3 +79,6 @@ std::string DXP::layer2::Move::body(int s, int f, int d, int n, const std::vecto
                 sstr << std::setw(2) << std::setfill('0') << *it;
         return sstr.str();
 }
+
+}       // namespace layer2
+}       // namespace damexchange

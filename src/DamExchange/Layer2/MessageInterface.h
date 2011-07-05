@@ -8,15 +8,15 @@ class MessageInterface
 {
 public:
         // virtual destructor
-        virtual ~MessageInterface(void) {};
+        virtual ~MessageInterface() {};
 
         // non-virtual interface
-        std::string str(void) const;
+        std::string str() const;
 
 private:
         // pure virtual implementation
-        virtual std::string header(void) const = 0;
-        virtual std::string body(void) const = 0;
+        virtual std::string header() const = 0;
+        virtual std::string body() const = 0;
 };
 
 }       // namespace layer2

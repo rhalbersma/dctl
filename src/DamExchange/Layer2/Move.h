@@ -11,11 +11,11 @@ class Move: public MessageInterface
 {
 public:
         // views
-        int seconds(void) const;
-        int from_sq(void) const;
-        int dest_sq(void) const;
-        int num_captured(void) const;
-        const std::vector<int>& captured_pieces(void) const;
+        int seconds() const;
+        int from_sq() const;
+        int dest_sq() const;
+        int num_captured() const;
+        const std::vector<int>& captured_pieces() const;
         static std::string str(int, int, int, int, const std::vector<int>&);
 
 private:
@@ -23,8 +23,8 @@ private:
         explicit Move(const std::string&);
 
         // implementation
-        virtual std::string header(void) const;
-        virtual std::string body(void) const;
+        virtual std::string header() const;
+        virtual std::string body() const;
         static std::string body(int, int, int, int, const std::vector<int>&);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);

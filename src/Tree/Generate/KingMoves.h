@@ -3,7 +3,7 @@
 #include "../Node/Stack.h"
 #include "../../Utilities/IntegerTypes.h"
 #include "../../Utilities/TemplateTricks.h"
-#include "../../rules/Variants.h"
+#include "../../rules/Traits.h"
 
 namespace tree {
 

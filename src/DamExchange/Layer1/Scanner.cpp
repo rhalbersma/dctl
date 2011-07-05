@@ -1,49 +1,53 @@
 #include <cassert>
 #include "Scanner.h"
 
-namespace DXP = damexchange;
+namespace damexchange {
+namespace layer1 {
 
-DXP::layer1::Scanner::Scanner(const std::string& msg)
+Scanner::Scanner(const std::string& msg)
 :
         message_(msg)
 {
         assert(invariant());
 }
 
-std::string DXP::layer1::Scanner::str(void) const
+std::string Scanner::str() const
 {
         return message_;
 }
 
-std::string DXP::layer1::Scanner::header(void) const
+std::string Scanner::header() const
 {
         return str().substr(0, HEADER_LENGTH);
 }
 
-std::string DXP::layer1::Scanner::body(void) const
+std::string Scanner::body() const
 {
         return str().substr(HEADER_LENGTH);
 }
 
-const char* DXP::layer1::Scanner::c_str(void) const
+const char* Scanner::c_str() const
 {
         return str().c_str();
 }
 
-size_t DXP::layer1::Scanner::length(void) const
+size_t Scanner::length() const
 {
         return str().length();
 }
 
-char DXP::layer1::Scanner::terminator(void)
+char Scanner::terminator()
 {
         return TERMINATOR;
 }
 
-bool DXP::layer1::Scanner::invariant(void) const
+bool Scanner::invariant() const
 {
         return (
                 header().length() == HEADER_LENGTH && 
                 body().length() <= MAX_BODY_LENGTH
         );
 }
+
+}       // namespace layer1
+}       // namespace damexchange

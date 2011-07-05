@@ -5,7 +5,7 @@ namespace bit {
 
 // create the lexicographically least De Bruijn sequence
 template<typename T>
-T DeBruijn<T>::generate_sequence(void)
+T DeBruijn<T>::generate_sequence()
 {
         T sequence(0);
 
@@ -37,7 +37,7 @@ T DeBruijn<T>::generate_sequence(void)
 }
 
 template<typename T>
-void DeBruijn<T>::generate_table(void)
+void DeBruijn<T>::generate_table()
 {
         const T sequence = generate_sequence();
 
@@ -50,12 +50,12 @@ void DeBruijn<T>::generate_table(void)
         }
 
         std::cout << "template<>" << std::endl;
-        std::cout << "const " << typeid(T).name() << " bit::DeBruijn<" << typeid(T).name() << ">::SEQUENCE = ";
+        std::cout << "const " << typeid(T).name() << " DeBruijn<" << typeid(T).name() << ">::SEQUENCE = ";
         std::cout << "0x" << std::hex << std::setw(NUM_BITS / 4) << std::setfill('0');
         std::cout << static_cast<uint64_t>(sequence) << ";" << std::endl << std::endl;
         
         std::cout << "template<>" << std::endl;
-        std::cout << "const size_t bit::DeBruijn<" << typeid(T).name() << ">::TABLE[] = {" << std::endl;
+        std::cout << "const size_t DeBruijn<" << typeid(T).name() << ">::TABLE[] = {" << std::endl;
         for (auto i = 0; i < NUM_BITS; ++i) {
                 if (i % 8 == 0)
                         for (auto j = 0; j < 8; ++j)

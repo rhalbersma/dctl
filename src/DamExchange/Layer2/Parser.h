@@ -21,7 +21,7 @@ public:
 private:
         // implementation
         typedef std::map<std::string, Creator> CreatorMap;
-        static CreatorMap& instance(void);
+        static CreatorMap& instance();
 };
 
 }       // namespace layer2

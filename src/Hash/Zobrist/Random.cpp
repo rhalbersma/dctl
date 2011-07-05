@@ -1,8 +1,11 @@
 #include <stdint.h>
 #include "Random.h"
 
+namespace hash {
+namespace zobrist {
+
 template<>
-const uint64_t hash::zobrist::Random<uint64_t>::PIECES[2][64] = {
+const uint64_t Random<uint64_t>::PIECES[2][64] = {
 	{
                 0x9904662fb3c24ae1, 0xc59adcabb4a95f90, 0x9dbe36bc60dda6e9, 0xb1766ba9896d953c,
                 0x772183cf804c8124, 0xe881b24726834db7, 0x7a9bce6cd689074d, 0x8c8879aee145a6a6,
@@ -42,7 +45,7 @@ const uint64_t hash::zobrist::Random<uint64_t>::PIECES[2][64] = {
 };
 
 template<>
-const uint64_t hash::zobrist::Random<uint64_t>::KINGS[64] = {
+const uint64_t Random<uint64_t>::KINGS[64] = {
         0x863029ce1230836b, 0x8642409881fcba54, 0x0efcecdc6e8bce48, 0x8e01b2a4a6148a1d,
         0x676532e665b948db, 0x4ac38afe80a7a237, 0x83b6b8ac17caef57, 0x5b9bf4203936176d,
         0xde6e98f67dc59943, 0x5cc23e823652f1f6, 0x92f7b3bdd0f5a015, 0x8c9c05786db03d8f,
@@ -62,10 +65,10 @@ const uint64_t hash::zobrist::Random<uint64_t>::KINGS[64] = {
 };
 
 template<>
-const uint64_t hash::zobrist::Random<uint64_t>::SIDE = 0x461aea9b6bcff19a;
+const uint64_t Random<uint64_t>::SIDE = 0x461aea9b6bcff19a;
 
 template<>
-const uint64_t hash::zobrist::Random<uint64_t>::SAME_KING[2][64] = {
+const uint64_t Random<uint64_t>::SAME_KING[2][64] = {
 	{
                 0x30d1f0b5b2955a21, 0x4bb531b53a827011, 0x14e30ca35ed706bb, 0x3003989830651c20,
                 0xf0ebb5758217ac45, 0x3cc52df5fed45159, 0xc7a1bbfa85130ced, 0x5249dd6013c22fd9,
@@ -105,7 +108,7 @@ const uint64_t hash::zobrist::Random<uint64_t>::SAME_KING[2][64] = {
 };
 
 template<>
-const uint64_t hash::zobrist::Random<uint64_t>::SAME_KING_MOVES[2][8] = {
+const uint64_t Random<uint64_t>::SAME_KING_MOVES[2][8] = {
 	{
                 0xd0155d45da58e0ae, 0x51a0ad8a6b634382, 0xfd6508b01ff7ef6a, 0x2f88513a4e1f888b,
                 0x1329e62c4cc57a77, 0x7bd2096bab82649f, 0xdedadb0490930d7f, 0xce75c4bf3922ae01	
@@ -115,3 +118,6 @@ const uint64_t hash::zobrist::Random<uint64_t>::SAME_KING_MOVES[2][8] = {
                 0x3c34cbca92129b0a, 0xb0cd7c360fecb3b0, 0xbe011375b2271932, 0x1c302ddde8bbe6fb                
         }	
 };
+
+}       // namespace zobrist
+}       // namespace hash

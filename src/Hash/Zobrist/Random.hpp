@@ -28,7 +28,7 @@ Index Random<Index>::xor_rand(bool to_move, Index random)
 }       // namespace hash
 
 /*
-uint64_t rand64(void)
+uint64_t rand64()
 {
         uint64_t key = rand();
 
@@ -40,7 +40,7 @@ uint64_t rand64(void)
         return  key;
 }
 
-void generate_Zobrist(void)
+void generate_Zobrist()
 {
 	for (auto i = 0; i < 64; ++i) {
 		std::cout << "0x" << std::hex << std::right << std::setfill('0') << std::setw(16);
