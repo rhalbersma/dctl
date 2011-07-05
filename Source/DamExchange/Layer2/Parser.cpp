@@ -7,7 +7,8 @@
 namespace damexchange {
 namespace layer2 {
 
-// Examples of DamExchange messages (Layer 2 Protocol): http://www.mesander.nl/damexchange/edxplg2.htm
+// http://www.mesander.nl/damexchange/edxplg2.htm
+// Examples of DamExchange messages (Layer 2 Protocol)
 TEST(Parser, MesanderExamples)
 {
         const std::string message[] = 
