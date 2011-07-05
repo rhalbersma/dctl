@@ -24,14 +24,14 @@ class Map: public boost::noncopyable
 {
 public:
         // constructors
-        Map(void) {};
+        Map() {};
         explicit Map(size_t);
 
         // capacity
-        size_t size(void) const;
-        size_t available(void) const;
+        size_t size() const;
+        size_t available() const;
         void resize(size_t);
-        void clear(void);
+        void clear();
 
         // views
         const Value* find(const Key&) const;

@@ -13,8 +13,8 @@ public:
         enum AcceptanceCode { ACCEPT = 0, DECLINE_VERSION = 1, DECLINE_THIS = 2, DECLINE_ALL = 3 };
 
         // views
-        const std::string& name_follower(void) const;
-        AcceptanceCode acceptance_code(void) const;
+        const std::string& name_follower() const;
+        AcceptanceCode acceptance_code() const;
         static std::string str(const std::string&, AcceptanceCode);
 
 private:    
@@ -22,8 +22,8 @@ private:
         explicit GameAcknowledge(const std::string&);
 
         // implementation
-        virtual std::string header(void) const;
-        virtual std::string body(void) const;
+        virtual std::string header() const;
+        virtual std::string body() const;
         static std::string body(const std::string&, AcceptanceCode);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);

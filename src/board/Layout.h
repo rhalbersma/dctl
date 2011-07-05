@@ -12,7 +12,7 @@ template
 >
 struct write: public std::unary_function<void, std::string>
 {
-        std::string operator()(void) const;
+        std::string operator()() const;
         
         template<typename F> 
         std::string operator()(F) const;

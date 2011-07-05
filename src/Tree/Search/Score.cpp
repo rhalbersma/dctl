@@ -39,7 +39,7 @@ bool tree::search::score::is_win(int value)
         return value > WIN_THRESHOLD && value <= WIN_1;
 }
 
-int tree::search::score::infinity(void)
+int tree::search::score::infinity()
 {
         return INFINITY;
 }
@@ -64,7 +64,7 @@ int tree::search::score::win_ply(int value)
         return 2 * (WIN_1 - value) + 1;
 }
 
-int tree::search::score::draw(void)
+int tree::search::score::draw()
 {
         return DRAW;
 }

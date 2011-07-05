@@ -10,16 +10,16 @@ class Parameters
 {
 public:
         // constructors
-        Parameters(void);
+        Parameters();
 
         // views
-        const tree::node::Sequence& PV(void) const;
-        node::Sequence& PV(void);
-        size_t best_move(void) const;
+        const tree::node::Sequence& PV() const;
+        node::Sequence& PV();
+        size_t best_move() const;
 
         // modifiers
         void set_PV(size_t, const node::Sequence&);
-        void clear_PV(void);
+        void clear_PV();
 
 private:
         // representation

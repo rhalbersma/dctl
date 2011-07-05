@@ -33,7 +33,7 @@ void tree::walk::Root::report(int depth, NodeCount leafs, const Timer& timer)
         std::cout << std::endl;
 }
 
-void tree::walk::Root::summary(void)
+void tree::walk::Root::summary()
 {
         std::cout << std::endl;
 }
@@ -54,7 +54,7 @@ void tree::walk::Root::resize_hash(size_t s)
         return TT.resize(s);
 }
 
-void tree::walk::Root::clear_hash(void)
+void tree::walk::Root::clear_hash()
 {
         return TT.clear();
 }

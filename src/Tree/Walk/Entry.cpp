@@ -1,6 +1,6 @@
 #include "Entry.h"
 
-tree::walk::Entry::Entry(void)
+tree::walk::Entry::Entry()
 :
         entry_(0)
 {
@@ -14,12 +14,12 @@ tree::walk::Entry::Entry(NodeCount n, int d)
         entry_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
 }
 
-NodeCount tree::walk::Entry::leafs(void) const
+NodeCount tree::walk::Entry::leafs() const
 {
         return (entry_ & (LEAFS_MASK << LEAFS_SHIFT)) >> LEAFS_SHIFT;
 }
 
-int tree::walk::Entry::depth(void) const
+int tree::walk::Entry::depth() const
 {
         return static_cast<int>((entry_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT);
 }

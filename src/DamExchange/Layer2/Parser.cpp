@@ -1,28 +1,32 @@
 #include "Parser.h"
 #include "../layer1/Scanner.h"
 
-namespace DXP = damexchange;
+namespace damexchange {
+namespace layer2 {
 
-std::unique_ptr<DXP::layer2::MessageInterface> DXP::layer2::Parser::find(const std::string& msg)
+std::unique_ptr<MessageInterface> Parser::find(const std::string& msg)
 {
-        DXP::layer1::Scanner scanner(msg);
+        layer1::Scanner scanner(msg);
         auto i = instance().find(scanner.header());
         return (i != instance().end())? (i->second)(scanner.body()) : std::unique_ptr<MessageInterface>();
 }
 
-bool DXP::layer2::Parser::insert(const std::string& header, Creator creator)
+bool Parser::insert(const std::string& header, Creator creator)
 {
         return instance().insert(CreatorMap::value_type(header, creator)).second;
 }
 
-bool DXP::layer2::Parser::erase(const std::string& header)
+bool Parser::erase(const std::string& header)
 {
         return instance().erase(header) == 1;
 }
 
-DXP::layer2::Parser::CreatorMap& DXP::layer2::Parser::instance(void)
+Parser::CreatorMap& Parser::instance()
 {
         // Meyers Singleton, see Modern C++ Design p.117
         static CreatorMap singleton_;
         return singleton_;
 }
+
+}       // namespace layer2
+}       // namespace damexchange

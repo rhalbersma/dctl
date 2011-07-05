@@ -13,12 +13,12 @@ bool is_loss(int);
 bool is_win(int);
 
 // views
-int infinity(void);
+int infinity();
 int loss_value(int);
 int win_value(int);
 int loss_ply(int);
 int win_ply(int);
-int draw(void);
+int draw();
 
 // modifiers
 int stretch(int);

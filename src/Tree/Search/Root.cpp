@@ -69,17 +69,17 @@ void tree::search::Root::resize_hash(size_t s)
         return TT.resize(s);
 }
 
-void tree::search::Root::clear_hash(void)
+void tree::search::Root::clear_hash()
 {
         return TT.clear();
 }
 
-void tree::search::Root::interrupt(void)
+void tree::search::Root::interrupt()
 {
         interrupted_ = true;
 }
 
-bool tree::search::Root::is_interrupted(void)
+bool tree::search::Root::is_interrupted()
 {
         return interrupted_;
 }

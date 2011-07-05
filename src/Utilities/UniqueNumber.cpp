@@ -1,12 +1,12 @@
 #include "UniqueNumber.h"
 
-UniqueNumber::UniqueNumber(void)        
+UniqueNumber::UniqueNumber()        
 : 
         current_(0)
 {
 }
 
-int UniqueNumber::operator()(void)
+int UniqueNumber::operator()()
 {
         return ++current_ - 1;
 }

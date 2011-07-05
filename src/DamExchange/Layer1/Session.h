@@ -11,19 +11,19 @@ class Session
 {
 public:
         // constructors
-        Session(void);
+        Session();
 
         // connectors
-        void connect(void);                                     // connect to default port and host
+        void connect();                                         // connect to default port and host
         void connect(unsigned short);                           // connect to user supplied port on default host
         void connect(const std::string&);                       // connect to default port on user supplied host
         void connect(const std::string&, unsigned short);       // connect to user supplied port and host
 
         // acceptors
-        void accept(void);                                      // accept on default port                           
+        void accept();                                          // accept on default port                           
         void accept(unsigned short);                            // accept on user supplied port
 
-        void close(void);
+        void close();
 
         void read(std::string&);
         void write(const std::string&);
@@ -34,18 +34,18 @@ private:
         void do_accept(const boost::asio::ip::tcp::endpoint&);
         void handle_open(const boost::system::error_code&);
 
-        void do_close(void);
-        void handle_close(void);
+        void do_close();
+        void handle_close();
 
-        void start_event_loop(void);
-        void stop_event_loop(void);
+        void start_event_loop();
+        void stop_event_loop();
 
-        void async_read_next(void);
+        void async_read_next();
         void handle_read(const boost::system::error_code&);
         void do_read(std::string&);
 
         void do_write(std::string);
-        void async_write_next(void);
+        void async_write_next();
         void handle_write(const boost::system::error_code&);
 
         // representation

@@ -5,15 +5,15 @@ namespace tree {
 class Statistics
 {
 public:
-        Statistics(void);
+        Statistics();
 
         // views
-        NodeCount nodes(void) const;
-        NodeCount sum_ply(void) const;
-        size_t max_ply(void) const;
+        NodeCount nodes() const;
+        NodeCount sum_ply() const;
+        size_t max_ply() const;
 
         // modifiers
-        void reset(void);
+        void reset();
         void update(size_t);
 
 private:

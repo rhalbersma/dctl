@@ -3,8 +3,8 @@
 class UniqueNumber
 {
 public:
-        UniqueNumber(void);
-        int operator()(void);
+        UniqueNumber();
+        int operator()();
 
 private:
         int current_;

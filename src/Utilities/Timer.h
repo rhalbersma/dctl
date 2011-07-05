@@ -5,12 +5,12 @@
 class Timer
 {
 public:
-        Timer(void);                    // records time of construction
-        void split(void);
-        void reset(void);
+        Timer();                    // records time of construction
+        void split();
+        void reset();
 
-        clock_t elapsed(void) const;    // milliseconds since construction
-        clock_t lap(void) const;        // milliseconds since last split()
+        clock_t elapsed() const;    // milliseconds since construction
+        clock_t lap() const;        // milliseconds since last split()
 
 private:
         // representation

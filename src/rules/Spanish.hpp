@@ -1,4 +1,5 @@
-namespace rules { struct Spanish; }
+#include "../Tree/Generate/Capture/Templates.h"
+#include "../Tree/Generate/Capture/Value.h"
 
 namespace tree {
 namespace generate {

@@ -13,7 +13,7 @@ public:
         enum AcceptanceCode { ACCEPT = 0, NOT_SUPPORTED = 1, DECLINE = 2 };
 
         // views
-        AcceptanceCode acceptance_code(void) const;
+        AcceptanceCode acceptance_code() const;
         static std::string str(AcceptanceCode);
 
 private:
@@ -21,8 +21,8 @@ private:
         explicit BackAcknowledge(const std::string&);
 
         // implementation
-        virtual std::string header(void) const;
-        virtual std::string body(void) const;
+        virtual std::string header() const;
+        virtual std::string body() const;
         static std::string body(AcceptanceCode);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);

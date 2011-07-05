@@ -27,9 +27,9 @@ public:
         template<typename, typename B> static int analyze(const node::Position<B>&, int);
 
         static void resize_hash(size_t);
-        static void clear_hash(void);
-        static void interrupt(void);
-        static bool is_interrupted(void);
+        static void clear_hash();
+        static void interrupt();
+        static bool is_interrupted();
 
 private:
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content

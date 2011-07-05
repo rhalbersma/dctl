@@ -23,10 +23,10 @@ public:
         explicit DualMap(size_t);
 
         // capacity
-        size_t size(void) const;
-        size_t available(void) const;
+        size_t size() const;
+        size_t available() const;
         void resize(size_t);
-        void clear(void);
+        void clear();
 
         // views
         template<typename Board> const Value* find(const tree::node::Position<Board>&) const;

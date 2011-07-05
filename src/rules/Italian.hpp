@@ -1,4 +1,5 @@
-namespace rules { struct Italian; }
+#include "../Tree/Generate/Capture/Templates.h"
+#include "../Tree/Generate/Capture/Value.h"
 
 namespace tree {
 namespace generate {

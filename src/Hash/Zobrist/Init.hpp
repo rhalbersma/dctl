@@ -52,7 +52,7 @@ struct Init<bool, Index>: public std::unary_function<bool, Index>
                 return Random<Index>::xor_rand(to_move, Random<Index>::SIDE);
         }
 
-        Index operator()(void) const
+        Index operator()() const
         {
                 return Random<Index>::SIDE;
         }

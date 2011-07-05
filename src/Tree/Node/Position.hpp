@@ -1,7 +1,7 @@
 #include <cassert>
 #include "../../Hash/Algorithms.h"
 #include "../../Utilities/Bit.h"
-#include "../../rules/Variants.h"
+#include "../../rules/Traits.h"
 
 namespace tree {
 namespace node {
@@ -25,19 +25,19 @@ Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard
 
 // the initial position
 template<typename Board>
-Position<Board> Position<Board>::initial(void)
+Position<Board> Position<Board>::initial()
 {
         return Position<Board>(Board::INITIAL[Side::BLACK], Board::INITIAL[Side::WHITE], 0, Side::WHITE);
 }
 
 template<typename Board> template<typename Rules>
-bool Position<Board>::is_draw(void) const
+bool Position<Board>::is_draw() const
 {
         return is_repetition_draw() || is_reversible_draw<Rules>();
 }
 
 template<typename Board>
-bool Position<Board>::is_repetition_draw(void) const
+bool Position<Board>::is_repetition_draw() const
 {
         // a repetition draw needs at least MIN_CYCLE of reversible moves
         if (reversible_moves() < MIN_CYCLE)
@@ -60,7 +60,7 @@ bool Position<Board>::is_repetition_draw(void) const
 
 // tag dispatching based on restrictions on consecutive king moves by both sides
 template<typename Board> template<typename Rules>
-bool Position<Board>::is_reversible_draw(void) const
+bool Position<Board>::is_reversible_draw() const
 {
         return is_reversible_draw<Rules>(Int2Type<rules::is_restricted_reversible_moves<Rules>::value>());
 }
@@ -81,28 +81,28 @@ bool Position<Board>::is_reversible_draw(Int2Type<false>) const
 
 // black and white men
 template<typename Board>
-BitBoard Position<Board>::men(void) const
+BitBoard Position<Board>::men() const
 {
         return pieces_.men();
 }
 
 // black and white kings
 template<typename Board>
-BitBoard Position<Board>::kings(void) const
+BitBoard Position<Board>::kings() const
 {
         return pieces_.kings();
 }
 
 // occupied squares
 template<typename Board>
-BitBoard Position<Board>::occupied(void) const
+BitBoard Position<Board>::occupied() const
 {
         return pieces_.occupied();
 }
 
 // unoccupied squares
 template<typename Board>
-BitBoard Position<Board>::not_occupied(void) const
+BitBoard Position<Board>::not_occupied() const
 {
         return Board::SQUARES ^ occupied();
 }
@@ -130,7 +130,7 @@ BitBoard Position<Board>::pieces(bool color) const
 
 // the side to move
 template<typename Board>
-bool Position<Board>::to_move(void) const
+bool Position<Board>::to_move() const
 {
         return to_move_;
 }
@@ -178,56 +178,56 @@ PlyCount Position<Board>::same_king_moves(bool color) const
 }
 
 template<typename Board>
-PlyCount Position<Board>::reversible_moves(void) const
+PlyCount Position<Board>::reversible_moves() const
 {
         return reversible_moves_;
 }
 
 template<typename Board>
-HashIndex Position<Board>::hash_index(void) const
+HashIndex Position<Board>::hash_index() const
 {
         return hash_index_;
 }
 
 template<typename Board>
-const node::Pieces& Position<Board>::pieces(void) const
+const node::Pieces& Position<Board>::pieces() const
 {
         return pieces_;
 }
 
 template<typename Board>
-const node::Pieces& Position<Board>::key(void) const
+const node::Pieces& Position<Board>::key() const
 {
         return pieces();
 }
 
 template<typename Board>
-const node::Position<Board>* Position<Board>::parent(void) const
+const node::Position<Board>* Position<Board>::parent() const
 {
         return parent_;
 }
 
 template<typename Board>
-const node::Position<Board>* Position<Board>::grand_parent(void) const
+const node::Position<Board>* Position<Board>::grand_parent() const
 {
         return parent_? parent_->parent() : 0;
 }
 
 // logical consistency of the representation
 template<typename Board>
-bool Position<Board>::pieces_invariant(void) const
+bool Position<Board>::pieces_invariant() const
 {
         return bit::is_within(occupied(), Board::SQUARES);
 }
 
 template<typename Board>
-bool Position<Board>::hash_index_invariant(void) const
+bool Position<Board>::hash_index_invariant() const
 {
         return hash::zobrist::Find<node::Position<Board>, HashIndex>()(*this) == hash::zobrist::Init<node::Position<Board>, HashIndex>()(*this);
 }
 
 template<typename Board> template<typename Rules>
-bool Position<Board>::same_king_invariant(void) const
+bool Position<Board>::same_king_invariant() const
 {
         return (
                 same_king_invariant<Rules>(Side::BLACK) && 

@@ -8,12 +8,12 @@ class Entry
 {
 public:
         // constructors
-        Entry(void);
+        Entry();
         Entry(NodeCount, int);
 
         // views
-        NodeCount leafs(void) const;            // leaf node count
-        int depth(void) const;                  // remaining depth to search
+        NodeCount leafs() const;            // leaf node count
+        int depth() const;                  // remaining depth to search
 
 private:
         // implementation

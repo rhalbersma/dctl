@@ -14,8 +14,8 @@ public:
         enum StopCode { STOP_THIS = 0, STOP_ALL = 1 };
 
         // views
-        Reason reason(void) const;
-        StopCode stop_code(void) const;
+        Reason reason() const;
+        StopCode stop_code() const;
         static std::string str(Reason, StopCode);
 
 private:
@@ -23,8 +23,8 @@ private:
         explicit GameEnd(const std::string&);
 
         // implementation
-        virtual std::string header(void) const;
-        virtual std::string body(void) const;
+        virtual std::string header() const;
+        virtual std::string body() const;
         static std::string body(Reason, StopCode);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);

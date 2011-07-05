@@ -11,21 +11,21 @@ public:
         enum { NONE, PAWN, KING, BOTH };
 
         // constructors
-        Pieces(void) {};                                // no default initialization
+        Pieces() {};                                    // no default initialization
         explicit Pieces(BitBoard);                      // zero initialize
         Pieces(BitBoard, BitBoard, BitBoard);           // initialize with a set of bitboards
 
         // post-conditions for constructors and modifiers
-        bool invariant(void) const;                     // logical consistency of the representation
+        bool invariant() const;                         // logical consistency of the representation
 
         // predicates
         bool operator==(const Pieces&) const;           // overloaded equality operator
         bool operator!=(const Pieces&) const;           // overloaded inequality operator
 
         // views
-        BitBoard men(void) const;                       // black and white men
-        BitBoard kings(void) const;                     // black and white kings
-        BitBoard occupied(void) const;                  // black and white pieces
+        BitBoard men() const;                           // black and white men
+        BitBoard kings() const;                         // black and white kings
+        BitBoard occupied() const;                      // black and white pieces
         BitBoard men(bool) const;                       // black or white men
         BitBoard kings(bool) const;                     // black or white kings
         BitBoard pieces(bool) const;                    // black or white pieces

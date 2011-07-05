@@ -2,7 +2,7 @@
 #include "Value.h"
 #include "../../Node/Stack.h"
 #include "../../../board/Board.h"
-#include "../../../rules/Variants.h"
+#include "../../../rules/Traits.h"
 #include "../../../Utilities/IntegerTypes.h"
 #include "../../../Utilities/TemplateTricks.h"
 #include "../../../Utilities/VectorArray.h"
@@ -18,29 +18,29 @@ namespace generate {
 namespace capture {
 
 template<typename Rules, typename Board>
-class State//: private Board
+class State
 {
 public:
         // constructors
         explicit State(const node::Position<Board>&);
 
         // views
-        template<size_t> BitBoard targets(void) const;
-        template<size_t> BitBoard path(void) const;
-        BitBoard path(void) const;
+        template<size_t> BitBoard targets() const;
+        template<size_t> BitBoard path() const;
+        BitBoard path() const;
 
         // unary predicates
         template<bool> bool is_promotion(BitBoard) const;
-        bool is_promotion(void) const;
+        bool is_promotion() const;
 
         // binary predicates
-        bool current_greater_equal_best(void) const;
-        bool current_not_equal_to_best(void) const;
+        bool current_greater_equal_best() const;
+        bool current_not_equal_to_best() const;
 
         // modifiers before a capture
-        void toggle_king_targets(void);                                 // men that cannot capture kings
-        void toggle_with_king(void);                                    // king capture precedence
-        void toggle_promotion(void);                                    // promotion en-passant
+        void toggle_king_targets();     // men that cannot capture kings
+        void toggle_with_king();        // king capture precedence
+        void toggle_promotion();        // promotion en-passant
 
         // modifiers during a capture
         void launch(BitBoard);
@@ -54,7 +54,7 @@ public:
         template<bool, size_t> void add_king_capture(BitBoard, node::Stack&);
 
 private:
-        BitBoard captured_targets(void) const;
+        BitBoard captured_targets() const;
 
         // tag dispatching based on whether men can capture kings
         BitBoard captured_king_targets(BitBoard) const;
@@ -91,8 +91,8 @@ private:
         // representation
         Value current_;
         Value best_;
-        BitBoard initial_targets_;                                     // targets at the start of a capture
-        BitBoard remaining_targets_;                                   // targets at the end of a capture
+        BitBoard initial_targets_;      // targets at the start of a capture
+        BitBoard remaining_targets_;    // targets at the end of a capture
         BitBoard not_occupied_;
         BitBoard king_targets_;
         BitBoard from_sq_;                                             

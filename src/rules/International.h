@@ -15,3 +15,6 @@ typedef International Canadian;
 template<> struct is_majority_precedence<International> { enum { value = true  }; };
 
 }       // namespace rules
+
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+#include "International.hpp"

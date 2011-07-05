@@ -15,13 +15,13 @@ Map<Key, Value, Hash, Index, Replace>::Map(size_t log2_n)
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-size_t Map<Key, Value, Hash, Index, Replace>::size(void) const
+size_t Map<Key, Value, Hash, Index, Replace>::size() const
 {
         return map_.size();
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-size_t Map<Key, Value, Hash, Index, Replace>::available(void) const
+size_t Map<Key, Value, Hash, Index, Replace>::available() const
 {
         return std::count_if(map_.begin(), map_.end(), std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, Key(0)));
 }
@@ -45,7 +45,7 @@ void Map<Key, Value, Hash, Index, Replace>::resize(size_t log2_n)
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-void Map<Key, Value, Hash, Index, Replace>::clear(void)
+void Map<Key, Value, Hash, Index, Replace>::clear()
 {
         std::memset(&map_[0], 0, map_.size() * sizeof(Entry));
 }

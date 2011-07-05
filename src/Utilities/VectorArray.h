@@ -16,45 +16,45 @@ public:
         typedef typename std::array<T, N>::size_type size_type;
 
         // constructors
-        VectorArray(void);
+        VectorArray();
         explicit VectorArray(size_type);
 
         // iterators
-        iterator begin(void);
-        const_iterator begin(void) const;
-        iterator end(void);
-        const_iterator end(void) const;
-        reverse_iterator rbegin(void);
-        const_reverse_iterator rbegin(void) const;
-        reverse_iterator rend(void);
-        const_reverse_iterator rend(void) const;
+        iterator begin();
+        const_iterator begin() const;
+        iterator end();
+        const_iterator end() const;
+        reverse_iterator rbegin();
+        const_reverse_iterator rbegin() const;
+        reverse_iterator rend();
+        const_reverse_iterator rend() const;
 
         // capacity
-        size_type size(void) const;
-        size_type max_size(void) const;
+        size_type size() const;
+        size_type max_size() const;
         void resize(size_type);
-        size_type capacity(void) const;
-        bool empty(void) const;
-        bool full(void) const;
+        size_type capacity() const;
+        bool empty() const;
+        bool full() const;
 
         // element access
               reference operator[](size_type);
         const_reference operator[](size_type) const;
-              reference front(void);
-        const_reference front(void) const;
-              reference back(void);
-        const_reference back(void) const;
+              reference front();
+        const_reference front() const;
+              reference back();
+        const_reference back() const;
 
         // modifiers
         void push_back(const_reference);
-        void pop_back(void);
-        void increment_size(void);
-        void decrement_size(void);
-        void clear(void);
+        void pop_back();
+        void increment_size();
+        void decrement_size();
+        void clear();
 
 private:
         // implementation
-        bool invariant(void) const;
+        bool invariant() const;
         bool within_range(size_type) const;
         bool within_bounds(size_type) const;
 

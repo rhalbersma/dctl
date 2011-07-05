@@ -19,7 +19,7 @@
     <Filter Include="Source Files\CheckerBoard">
       <UniqueIdentifier>{3a8b08ef-fb3b-4f91-9519-0bba05170bc0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Hash">
+    <Filter Include="Source Files\hash">
       <UniqueIdentifier>{de78291a-5669-4a63-8848-e155042d8fda}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Utilities">
@@ -31,10 +31,10 @@
     <Filter Include="Source Files\Evaluation">
       <UniqueIdentifier>{19fee193-8fd5-4886-b224-6b0a9b47f1dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Hash\Zobrist">
+    <Filter Include="Source Files\hash\zobrist">
       <UniqueIdentifier>{55ab2cd1-3ba5-43c7-9dc0-4ee17123d3ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Hash\Jenkins">
+    <Filter Include="Source Files\hash\jenkins">
       <UniqueIdentifier>{13b7f98f-bb65-4c8f-8cc6-69c389586ac7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\DamExchange">
@@ -97,13 +97,13 @@
     <Filter Include="Source Files\Tree\Generate\Capture">
       <UniqueIdentifier>{9c0e0474-8175-411e-9584-446a0c2c90dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Hash">
+    <Filter Include="Header Files\hash">
       <UniqueIdentifier>{bcfec1e3-7753-4ca3-829c-7ed30566ed03}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Hash\Zobrist">
+    <Filter Include="Header Files\hash\zobrist">
       <UniqueIdentifier>{fe52db01-07dc-4621-ac60-23dd2d94e311}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Hash\Jenkins">
+    <Filter Include="Header Files\hash\jenkins">
       <UniqueIdentifier>{3240917a-3615-4230-9768-71ef1284badf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Tree\Walk">
@@ -117,6 +117,9 @@
     </Filter>
     <Filter Include="Source Files\board">
       <UniqueIdentifier>{2c7fb852-223e-4548-8a1e-e0444f2a340b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rules">
+      <UniqueIdentifier>{95da461c-2a12-4fe6-8842-91011de7d359}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,32 +156,32 @@
     <ClInclude Include="src\CheckerBoard\CheckerBoardAPI.h">
       <Filter>Header Files\CheckerBoard</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Sign.h">
-      <Filter>Header Files\Hash</Filter>
+    <ClInclude Include="src\hash\Sign.h">
+      <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Sign.hpp">
-      <Filter>Source Files\Hash</Filter>
+    <ClInclude Include="src\hash\Sign.hpp">
+      <Filter>Source Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\EntryPredicates.hpp">
-      <Filter>Source Files\Hash</Filter>
+    <ClInclude Include="src\hash\EntryPredicates.hpp">
+      <Filter>Source Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\EntryPredicates.h">
-      <Filter>Header Files\Hash</Filter>
+    <ClInclude Include="src\hash\EntryPredicates.h">
+      <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Algorithms.h">
-      <Filter>Header Files\Hash</Filter>
+    <ClInclude Include="src\hash\Algorithms.h">
+      <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Map.h">
-      <Filter>Header Files\Hash</Filter>
+    <ClInclude Include="src\hash\Map.h">
+      <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\DualMap.h">
-      <Filter>Header Files\Hash</Filter>
+    <ClInclude Include="src\hash\DualMap.h">
+      <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\DualMap.hpp">
-      <Filter>Source Files\Hash</Filter>
+    <ClInclude Include="src\hash\DualMap.hpp">
+      <Filter>Source Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Map.hpp">
-      <Filter>Source Files\Hash</Filter>
+    <ClInclude Include="src\hash\Map.hpp">
+      <Filter>Source Files\hash</Filter>
     </ClInclude>
     <ClInclude Include="src\Utilities\VectorArray.h">
       <Filter>Header Files\Utilities</Filter>
@@ -186,35 +189,35 @@
     <ClInclude Include="src\utilities\VectorArray.hpp">
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Zobrist\Random.h">
-      <Filter>Header Files\Hash\Zobrist</Filter>
+    <ClInclude Include="src\hash\zobrist\Random.h">
+      <Filter>Header Files\hash\zobrist</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Zobrist\Random.hpp">
-      <Filter>Source Files\Hash\Zobrist</Filter>
+    <ClInclude Include="src\hash\zobrist\Random.hpp">
+      <Filter>Source Files\hash\zobrist</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Jenkins\Mix.h">
-      <Filter>Header Files\Hash\Jenkins</Filter>
+    <ClInclude Include="src\hash\jenkins\Mix.h">
+      <Filter>Header Files\hash\jenkins</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Jenkins\Mix.hpp">
-      <Filter>Source Files\Hash\Jenkins</Filter>
+    <ClInclude Include="src\hash\jenkins\Mix.hpp">
+      <Filter>Source Files\hash\jenkins</Filter>
     </ClInclude>
     <ClInclude Include="src\hash\jenkins\Init.hpp">
-      <Filter>Source Files\Hash\Jenkins</Filter>
+      <Filter>Source Files\hash\jenkins</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Jenkins\Init.h">
-      <Filter>Header Files\Hash\Jenkins</Filter>
+    <ClInclude Include="src\hash\jenkins\Init.h">
+      <Filter>Header Files\hash\jenkins</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Zobrist\Init.h">
-      <Filter>Header Files\Hash\Zobrist</Filter>
+    <ClInclude Include="src\hash\zobrist\Init.h">
+      <Filter>Header Files\hash\zobrist</Filter>
     </ClInclude>
     <ClInclude Include="src\hash\zobrist\Init.hpp">
-      <Filter>Source Files\Hash\Zobrist</Filter>
+      <Filter>Source Files\hash\zobrist</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Zobrist\Find.h">
-      <Filter>Header Files\Hash\Zobrist</Filter>
+    <ClInclude Include="src\hash\zobrist\Find.h">
+      <Filter>Header Files\hash\zobrist</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Zobrist\Find.hpp">
-      <Filter>Source Files\Hash\Zobrist</Filter>
+    <ClInclude Include="src\hash\zobrist\Find.hpp">
+      <Filter>Source Files\hash\zobrist</Filter>
     </ClInclude>
     <ClInclude Include="src\Utilities\DeBruijn.h">
       <Filter>Header Files\Utilities</Filter>
@@ -366,27 +369,6 @@
     <ClInclude Include="src\Tree\Generate\Capture\Templates.hpp">
       <Filter>Source Files\Tree\Generate\Capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Frisian.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\International.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Italian.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Killer.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Russian.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Spanish.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Specializations.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
     <ClInclude Include="src\Tree\Generate\Capture\State.hpp">
       <Filter>Source Files\Tree\Generate\Capture</Filter>
     </ClInclude>
@@ -450,14 +432,14 @@
     <ClInclude Include="src\Tree\Node\Predicates.hpp">
       <Filter>Source Files\Tree\Node</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\FindInsert.h">
-      <Filter>Header Files\Hash</Filter>
+    <ClInclude Include="src\hash\FindInsert.h">
+      <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\FindInsert.hpp">
-      <Filter>Source Files\Hash</Filter>
+    <ClInclude Include="src\hash\FindInsert.hpp">
+      <Filter>Source Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hash\Replace.h">
-      <Filter>Header Files\Hash</Filter>
+    <ClInclude Include="src\hash\Replace.h">
+      <Filter>Header Files\hash</Filter>
     </ClInclude>
     <ClInclude Include="src\rules\Checkers.h">
       <Filter>Header Files\rules</Filter>
@@ -484,9 +466,6 @@
       <Filter>Header Files\rules</Filter>
     </ClInclude>
     <ClInclude Include="src\rules\Spanish.h">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rules\Specializations.h">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
     <ClInclude Include="src\rules\Thai.h">
@@ -552,6 +531,24 @@
     <ClInclude Include="src\board\Grid.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
+    <ClInclude Include="src\rules\Spanish.hpp">
+      <Filter>Source Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rules\Frisian.hpp">
+      <Filter>Source Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rules\International.hpp">
+      <Filter>Source Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rules\Italian.hpp">
+      <Filter>Source Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rules\Killer.hpp">
+      <Filter>Source Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rules\Russian.hpp">
+      <Filter>Source Files\rules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Utilities\UniqueNumber.cpp">
@@ -563,11 +560,11 @@
     <ClCompile Include="src\CheckerBoard\CheckerBoardAPI.cpp">
       <Filter>Source Files\CheckerBoard</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hash\Zobrist\Random.cpp">
-      <Filter>Source Files\Hash\Zobrist</Filter>
+    <ClCompile Include="src\hash\zobrist\Random.cpp">
+      <Filter>Source Files\hash\zobrist</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hash\Jenkins\Mix.cpp">
-      <Filter>Source Files\Hash\Jenkins</Filter>
+    <ClCompile Include="src\hash\jenkins\Mix.cpp">
+      <Filter>Source Files\hash\jenkins</Filter>
     </ClCompile>
     <ClCompile Include="src\Utilities\DeBruijn.cpp">
       <Filter>Source Files\Utilities</Filter>

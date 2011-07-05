@@ -35,19 +35,19 @@ bool tree::node::Pieces::operator!=(const Pieces& other) const
 }
 
 // black and white men
-BitBoard tree::node::Pieces::men(void) const
+BitBoard tree::node::Pieces::men() const
 {
         return occupied() & ~kings();
 }
 
 // black and white kings
-BitBoard tree::node::Pieces::kings(void) const
+BitBoard tree::node::Pieces::kings() const
 {
         return kings_;
 }
 
 // black and white pieces
-BitBoard tree::node::Pieces::occupied(void) const
+BitBoard tree::node::Pieces::occupied() const
 {
 	return pieces(Side::BLACK) ^ pieces(Side::WHITE);
 }
@@ -88,7 +88,7 @@ const tree::node::Pieces tree::node::operator^(const Pieces& left, const Pieces&
 }
 
 // logical consistency of the representation
-bool tree::node::Pieces::invariant(void) const
+bool tree::node::Pieces::invariant() const
 {
         return (
 		bit::is_exclusive(pieces(Side::BLACK), pieces(Side::WHITE)) &&

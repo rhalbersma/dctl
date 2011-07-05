@@ -13,7 +13,7 @@ struct Square_tag {};
 template<typename Board>
 struct write<Board, Square_tag>
 {
-        std::string operator()(void) const
+        std::string operator()() const
         {
                 return write<Board, Square_tag>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
         }
@@ -44,7 +44,7 @@ struct Bit_tag {};
 template<typename Board>
 struct write<Board, Bit_tag> 
 {
-        std::string operator()(void) const
+        std::string operator()() const
         {
                 return write<Board, Bit_tag>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 0));
         }
