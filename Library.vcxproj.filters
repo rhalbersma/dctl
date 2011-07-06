@@ -531,23 +531,23 @@
     <ClInclude Include="src\board\Grid.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="src\rules\Spanish.hpp">
-      <Filter>Source Files\rules</Filter>
+    <ClInclude Include="src\Tree\Generate\Capture\Frisian.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\rules\Frisian.hpp">
-      <Filter>Source Files\rules</Filter>
+    <ClInclude Include="src\Tree\Generate\Capture\International.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\rules\International.hpp">
-      <Filter>Source Files\rules</Filter>
+    <ClInclude Include="src\Tree\Generate\Capture\Italian.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\rules\Italian.hpp">
-      <Filter>Source Files\rules</Filter>
+    <ClInclude Include="src\Tree\Generate\Capture\Killer.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\rules\Killer.hpp">
-      <Filter>Source Files\rules</Filter>
+    <ClInclude Include="src\Tree\Generate\Capture\Russian.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\rules\Russian.hpp">
-      <Filter>Source Files\rules</Filter>
+    <ClInclude Include="src\Tree\Generate\Capture\Spanish.hpp">
+      <Filter>Source Files\Tree\Generate\Capture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

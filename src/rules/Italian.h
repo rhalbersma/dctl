@@ -20,4 +20,4 @@ template<> struct is_relative_king_precedence<Italian>  { enum { value = true   
 }       // namespace rules
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "Italian.hpp"
+#include "../Tree/Generate/Capture/Italian.hpp"
