@@ -16,7 +16,7 @@ template<typename T> bool is_exclusive(T, T);           // T1 and T2 mutually ex
 // unary views
 template<typename T> T get_first(T);		        // least significant 1-bit
 template<typename T> T except_first(T);	                // most significant 1-bits
-template<typename T> size_t scan_forward(T);            // index of the least significant 1-bit
+template<typename T> size_t find_first(T);              // index of the least significant 1-bit
 
 template<typename T> size_t index(T);		        // index of a set 1-bit
 template<typename T> size_t index_DeBruijn(T);          // index of a set 1-bit

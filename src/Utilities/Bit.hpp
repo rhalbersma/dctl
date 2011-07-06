@@ -55,7 +55,7 @@ T except_first(T b)
 }
 
 template<typename T>
-size_t scan_forward(T b)
+size_t find_first(T b)
 {
         return index(get_first(b));
 }

@@ -102,7 +102,7 @@ struct write<FEN_tag, Token>
 		        for (BitBoard bb = p.pieces(c); bb; bit::clear_first(bb)) {
 			        if (p.kings() & bit::get_first(bb))
 				        sstr << Token::KING;			// king tag
-                                b = bit::scan_forward(bb);                      // bit index                        
+                                b = bit::find_first(bb);                        // bit index                        
 			        sstr << Board::TABLE_BIT2SQUARE[b] + 1;	        // square number
 			        if (bit::is_multiple(bb))                       // still pieces remaining
 				        sstr << Token::COMMA;			// comma separator
