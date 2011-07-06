@@ -1,5 +1,3 @@
-#include "DeBruijn.h"
-
 // The remainder of this file has been copied from the output of the following main program:
 
 /*
@@ -13,6 +11,8 @@ int main()
         DeBruijn<uint64_t>::generate_table();
 }
 */
+
+#include "DeBruijn.h"
 
 namespace bit {
 

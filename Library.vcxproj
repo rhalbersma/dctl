@@ -262,6 +262,8 @@
     <ClInclude Include="src\Tree\Walk\Root.hpp" />
     <ClInclude Include="src\Utilities\Bit.h" />
     <ClInclude Include="src\Utilities\Bit.hpp" />
+    <ClInclude Include="src\Utilities\BitSet.h" />
+    <ClInclude Include="src\Utilities\BitSet.hpp" />
     <ClInclude Include="src\Utilities\CacheAlign.h" />
     <ClInclude Include="src\Utilities\DeBruijn.h" />
     <ClInclude Include="src\Utilities\DeBruijn.hpp" />

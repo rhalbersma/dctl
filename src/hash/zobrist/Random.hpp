@@ -8,7 +8,7 @@ Index Random<Index>::xor_rand(BitBoard b, const Index* random)
 {
         Index hash = 0;
         for (; b; bit::clear_first(b))
-                hash ^= random[bit::scan_forward(b)];
+                hash ^= random[bit::find_first(b)];
         return hash;
 }
 

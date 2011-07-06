@@ -118,9 +118,6 @@
     <Filter Include="Source Files\board">
       <UniqueIdentifier>{2c7fb852-223e-4548-8a1e-e0444f2a340b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\rules">
-      <UniqueIdentifier>{95da461c-2a12-4fe6-8842-91011de7d359}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Utilities\UniqueNumber.h">
@@ -548,6 +545,12 @@
     </ClInclude>
     <ClInclude Include="src\Tree\Generate\Capture\Spanish.hpp">
       <Filter>Source Files\Tree\Generate\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\BitSet.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\BitSet.hpp">
+      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
