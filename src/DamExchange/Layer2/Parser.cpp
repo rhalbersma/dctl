@@ -8,7 +8,7 @@ std::unique_ptr<MessageInterface> Parser::find(const std::string& msg)
 {
         layer1::Scanner scanner(msg);
         auto i = instance().find(scanner.header());
-        return (i != instance().end())? (i->second)(scanner.body()) : std::unique_ptr<MessageInterface>();
+        return (i != instance().end())? (i->second)(scanner.body()) : nullptr;
 }
 
 bool Parser::insert(const std::string& header, Creator creator)

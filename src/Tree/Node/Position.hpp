@@ -10,7 +10,7 @@ namespace node {
 template<typename Board>
 Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
 :
-        parent_(0), 
+        parent_(nullptr), 
         pieces_(black_pieces, white_pieces, kings),
         reversible_moves_(0),
         to_move_(to_move)
@@ -210,7 +210,7 @@ const node::Position<Board>* Position<Board>::parent() const
 template<typename Board>
 const node::Position<Board>* Position<Board>::grand_parent() const
 {
-        return parent_? parent_->parent() : 0;
+        return parent_ ? parent_->parent() : nullptr;
 }
 
 // logical consistency of the representation
