@@ -132,8 +132,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\board\Angles.h" />
-    <ClInclude Include="src\board\Angles.hpp" />
+    <ClInclude Include="src\board\Angle.h" />
+    <ClInclude Include="src\board\Angle.hpp" />
     <ClInclude Include="src\board\Board.h" />
     <ClInclude Include="src\board\Board.hpp" />
     <ClInclude Include="src\board\BoardMetaTemplates.h" />
@@ -144,7 +144,6 @@
     <ClInclude Include="src\board\Coordinates.h" />
     <ClInclude Include="src\board\Coordinates.hpp" />
     <ClInclude Include="src\board\Direction.h" />
-    <ClInclude Include="src\board\Direction.hpp" />
     <ClInclude Include="src\board\Layout.h" />
     <ClInclude Include="src\board\Layout.hpp" />
     <ClInclude Include="src\board\Grid.h" />

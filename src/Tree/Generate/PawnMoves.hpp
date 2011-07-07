@@ -17,8 +17,8 @@ void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate(cons
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_dirs(BitBoard active_men, BitBoard not_occupied, node::Stack& move_stack)
 {
-        generate_dir<board::direction::Indices<Board, Color>::LEFT_UP >(active_men, not_occupied, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::RIGHT_UP>(active_men, not_occupied, move_stack);
+        generate_dir<board::Direction<Color, Board>::LEFT_UP >(active_men, not_occupied, move_stack);
+        generate_dir<board::Direction<Color, Board>::RIGHT_UP>(active_men, not_occupied, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
@@ -41,8 +41,8 @@ void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_reve
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::generate_reverse_dirs(BitBoard active_men, BitBoard not_occupied, node::Stack& move_stack)
 {
-        generate_dir<board::direction::Indices<Board, Color>::LEFT_DOWN >(active_men, not_occupied, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::RIGHT_DOWN>(active_men, not_occupied, move_stack);
+        generate_dir<board::Direction<Color, Board>::LEFT_DOWN >(active_men, not_occupied, move_stack);
+        generate_dir<board::Direction<Color, Board>::RIGHT_DOWN>(active_men, not_occupied, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board>
@@ -73,8 +73,8 @@ template<bool Color, typename Rules, typename Board>
 size_t Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::count_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
-                count_dir<board::direction::Indices<Board, Color>::LEFT_UP >(active_men, not_occupied) +
-                count_dir<board::direction::Indices<Board, Color>::RIGHT_UP>(active_men, not_occupied)
+                count_dir<board::Direction<Color, Board>::LEFT_UP >(active_men, not_occupied) +
+                count_dir<board::Direction<Color, Board>::RIGHT_UP>(active_men, not_occupied)
         );
 }
 
@@ -94,8 +94,8 @@ template<bool Color, typename Rules, typename Board>
 size_t Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::count_reverse_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
-                count_dir<board::direction::Indices<Board, Color>::LEFT_DOWN >(active_men, not_occupied) +
-                count_dir<board::direction::Indices<Board, Color>::RIGHT_DOWN>(active_men, not_occupied)
+                count_dir<board::Direction<Color, Board>::LEFT_DOWN >(active_men, not_occupied) +
+                count_dir<board::Direction<Color, Board>::RIGHT_DOWN>(active_men, not_occupied)
         );
 }
 
@@ -115,8 +115,8 @@ template<bool Color, typename Rules, typename Board>
 bool Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
-                detect_dir<board::direction::Indices<Board, Color>::LEFT_UP >(active_men, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::RIGHT_UP>(active_men, not_occupied)
+                detect_dir<board::Direction<Color, Board>::LEFT_UP >(active_men, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::RIGHT_UP>(active_men, not_occupied)
         );
 }
 
@@ -136,8 +136,8 @@ template<bool Color, typename Rules, typename Board>
 bool Driver<Color, node::Pieces::PAWN, node::MOVES, Rules, Board>::detect_reverse_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
-                detect_dir<board::direction::Indices<Board, Color>::LEFT_DOWN >(active_men, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::RIGHT_DOWN>(active_men, not_occupied)
+                detect_dir<board::Direction<Color, Board>::LEFT_DOWN >(active_men, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::RIGHT_DOWN>(active_men, not_occupied)
         );
 }
 

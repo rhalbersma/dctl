@@ -1,5 +1,6 @@
 #include "BoardMetaTemplates.h"
 #include "../Tree/Node/Side.h"
+#include "../Utilities/TemplateTricks.h"
 
 namespace board {
 
@@ -108,14 +109,14 @@ const BitBoard Board<GridLayout, D, N, A>::MAN_JUMP_GROUP[] = {
 
 template<typename GridLayout, int D, int N, int A>
 const BitBoard Board<GridLayout, D, N, A>::JUMPABLE[] = {
-        INIT_JUMPABLE<T, angles::Rotate<angles::D000, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, angles::Rotate<angles::D045, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, angles::Rotate<angles::D090, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, angles::Rotate<angles::D135, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, angles::Rotate<angles::D180, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, angles::Rotate<angles::D225, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, angles::Rotate<angles::D270, ANGLE>::VALUE>::VALUE,
-        INIT_JUMPABLE<T, angles::Rotate<angles::D315, ANGLE>::VALUE>::VALUE
+        INIT_JUMPABLE<T, Rotate<Int2Type<Angle::D000>, ANGLE>::value>::VALUE,
+        INIT_JUMPABLE<T, Rotate<Int2Type<Angle::D045>, ANGLE>::value>::VALUE,
+        INIT_JUMPABLE<T, Rotate<Int2Type<Angle::D090>, ANGLE>::value>::VALUE,
+        INIT_JUMPABLE<T, Rotate<Int2Type<Angle::D135>, ANGLE>::value>::VALUE,
+        INIT_JUMPABLE<T, Rotate<Int2Type<Angle::D180>, ANGLE>::value>::VALUE,
+        INIT_JUMPABLE<T, Rotate<Int2Type<Angle::D225>, ANGLE>::value>::VALUE,
+        INIT_JUMPABLE<T, Rotate<Int2Type<Angle::D270>, ANGLE>::value>::VALUE,
+        INIT_JUMPABLE<T, Rotate<Int2Type<Angle::D315>, ANGLE>::value>::VALUE
 };
 
 template<typename GridLayout, int D, int N, int A>

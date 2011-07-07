@@ -471,9 +471,6 @@
     <ClInclude Include="src\rules\Traits.h">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="src\board\Angles.h">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
     <ClInclude Include="src\board\Board.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
@@ -495,9 +492,6 @@
     <ClInclude Include="src\board\Layout.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="src\board\Angles.hpp">
-      <Filter>Source Files\board</Filter>
-    </ClInclude>
     <ClInclude Include="src\board\Board.hpp">
       <Filter>Source Files\board</Filter>
     </ClInclude>
@@ -508,9 +502,6 @@
       <Filter>Source Files\board</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Coordinates.hpp">
-      <Filter>Source Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\board\Direction.hpp">
       <Filter>Source Files\board</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Layout.hpp">
@@ -551,6 +542,12 @@
     </ClInclude>
     <ClInclude Include="src\Utilities\BitSet.hpp">
       <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Angle.h">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Angle.hpp">
+      <Filter>Source Files\board</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

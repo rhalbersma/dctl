@@ -17,7 +17,7 @@ private:
         enum {
                 ROW_MIN = C? (T::HEIGHT - 1) - ((T::HEIGHT - T::DMZ) / 2 - 1) : 0,
                 ROW_MAX = C? (T::HEIGHT - 1) : (T::HEIGHT - T::DMZ) / 2 - 1,
-                ROW = coordinates::FromRange<T, SQ>::Out::ROW
+                ROW = Square2Coordiates< Square<T, SQ> >::type::row
         };
 
 public:
@@ -27,13 +27,13 @@ public:
 template<typename T, bool C, int ROW, int SQ>
 struct IS_ROW_MASK
 {
-        static const bool VALUE = coordinates::FromRange<T, SQ>::Out::ROW == (C? (T::HEIGHT - 1) - ROW : ROW);
+        static const bool VALUE = Square2Coordinates< Square<T, SQ> >::type::row == (C? (T::HEIGHT - 1) - ROW : ROW);
 };
 
 template<typename T, bool C, int COL, int SQ>
 struct IS_COL_MASK
 {
-        static const bool VALUE = coordinates::FromRange<T, SQ>::Out::COL == (C? (T::WIDTH - 1) - COL : COL);
+        static const bool VALUE = Square2Coordinates< Square<T, SQ> >::type::col == (C? (T::WIDTH - 1) - COL : COL);
 };
 
 template<typename T, int FROM, int DEST>
@@ -41,8 +41,12 @@ class IS_MAN_JUMP_GROUP
 {
 private: 
         enum {
-                R1 = (coordinates::FromRange<T, FROM>::Out::ROW - coordinates::FromRange<T, DEST>::Out::ROW) % 4,
-                C1 = (coordinates::FromRange<T, FROM>::Out::COL - coordinates::FromRange<T, DEST>::Out::COL) % 4,
+                FROM_ROW = Square2Coordinates< Square<T, FROM> >::type::row,
+                DEST_ROW = Square2Coordinates< Square<T, DEST> >::type::row,
+                FROM_COL = Square2Coordinates< Square<T, FROM> >::type::col,
+                DEST_COL = Square2Coordinates< Square<T, DEST> >::type::col,
+                R1 = (FROM_ROW - DEST_ROW) % 4,
+                C1 = (FROM_COL - DEST_COL) % 4,
                 R2 = (R1 + 2) % 4,
                 C2 = (C1 + 2) % 4
         };
@@ -60,13 +64,13 @@ class IS_JUMPABLE
 {
 private:
         enum {
-                OFFSET = direction::Traits<I>::IS_DIAGONAL? 2 : 4,
-                ROW_MIN = direction::Traits<I>::IS_UP? OFFSET : 0,
-                ROW_MAX = (T::HEIGHT - 1) - (direction::Traits<I>::IS_DOWN? OFFSET : 0),
-                COL_MIN = direction::Traits<I>::IS_LEFT? OFFSET : 0,
-                COL_MAX = (T::WIDTH - 1) - (direction::Traits<I>::IS_RIGHT? OFFSET : 0),
-                ROW = coordinates::FromRange<T, SQ>::Out::ROW,
-                COL = coordinates::FromRange<T, SQ>::Out::COL
+                OFFSET = Traits<I>::IS_DIAGONAL? 2 : 4,
+                ROW_MIN = Traits<I>::IS_UP? OFFSET : 0,
+                ROW_MAX = (T::HEIGHT - 1) - (Traits<I>::IS_DOWN? OFFSET : 0),
+                COL_MIN = Traits<I>::IS_LEFT? OFFSET : 0,
+                COL_MAX = (T::WIDTH - 1) - (Traits<I>::IS_RIGHT? OFFSET : 0),
+                ROW = Square2Coordinates< Square<T, SQ> >::type::row,
+                COL = Square2Coordinates< Square<T, SQ> >::type::col
         };
 
 public:
