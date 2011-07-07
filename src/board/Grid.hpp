@@ -1,50 +1,33 @@
-#include "Angles.h"
+#include "Angle.h"
 
 namespace board {
-namespace grid {
 
-// identity rotation
-template<typename In>
-struct Rotate<In, angles::D000>
+// partial specialization for identity rotations
+template<int H, int W, bool P>
+struct Rotate<Grid<H, W, P>, Angle::D000>
 {
-        typedef In Out;
+        typedef Grid<H, W, P> type;
 };
 
-// rotate 90 degrees right
-template<typename In>
-struct Rotate<In, angles::D270>
+// partial specialization for 90 degrees right rotations
+template<int H, int W, bool P>
+struct Rotate<Grid<H, W, P>, Angle::D270>
 {
-        typedef Grid
-        <
-                In::WIDTH, 
-                In::HEIGHT, 
-                (In::WIDTH % 2) ^ !In::PARITY
-        > Out;
+        typedef Grid<W, H, (W % 2) ^ !P> type;
 };
 
-// rotate 90 degree left
-template<typename In>
-struct Rotate<In, angles::D090>
+// partial specialization for 90 degrees left rotations
+template<int H, int W, bool P>
+struct Rotate<Grid<H, W, P>, Angle::D090>
 {
-        typedef Grid
-        <
-                In::WIDTH, 
-                In::HEIGHT, 
-                (In::HEIGHT % 2) ^ !In::PARITY
-        > Out;
+        typedef Grid<W, H, (H % 2) ^ !P> type;
 };
 
-// rotate 180 degrees
-template<typename In>
-struct Rotate<In, angles::D180>
+// partial specialization for 180 degrees rotations
+template<int H, int W, bool P>
+struct Rotate<Grid<H, W, P>, Angle::D180>
 {
-        typedef Grid
-        <
-                In::HEIGHT, 
-                In::WIDTH, 
-                (In::HEIGHT % 2) ^ (In::WIDTH % 2) ^ In::PARITY
-        > Out;
+        typedef Grid<H, W, (H % 2) ^ (W % 2) ^ static_cast<int>(P)> type;
 };
 
-}       // namespace grid
 }       // namespace board

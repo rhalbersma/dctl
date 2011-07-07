@@ -78,20 +78,20 @@ void Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::generate_dirs
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::DIRS_ORTH>)
 {
-        generate_dir<board::direction::Indices<Board, Color>::LEFT >(jumper, capture, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::RIGHT>(jumper, capture, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::UP   >(jumper, capture, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::DOWN >(jumper, capture, move_stack);
+        generate_dir<board::Direction<Color, Board>::LEFT >(jumper, capture, move_stack);
+        generate_dir<board::Direction<Color, Board>::RIGHT>(jumper, capture, move_stack);
+        generate_dir<board::Direction<Color, Board>::UP   >(jumper, capture, move_stack);
+        generate_dir<board::Direction<Color, Board>::DOWN >(jumper, capture, move_stack);
 }
 
 // partial specialization for kings that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::generate_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::DIRS_DIAG>)
 {
-        generate_dir<board::direction::Indices<Board, Color>::LEFT_UP   >(jumper, capture, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::RIGHT_UP  >(jumper, capture, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::LEFT_DOWN >(jumper, capture, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::RIGHT_DOWN>(jumper, capture, move_stack);
+        generate_dir<board::Direction<Color, Board>::LEFT_UP   >(jumper, capture, move_stack);
+        generate_dir<board::Direction<Color, Board>::RIGHT_UP  >(jumper, capture, move_stack);
+        generate_dir<board::Direction<Color, Board>::LEFT_DOWN >(jumper, capture, move_stack);
+        generate_dir<board::Direction<Color, Board>::RIGHT_DOWN>(jumper, capture, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
@@ -173,7 +173,7 @@ bool Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::scan_long(Bit
 template<bool Color, typename Rules, typename Board> template<size_t Index>
 bool Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::scan_reverse(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack)
 {
-        return scan_dir<board::direction::Rotate<Index>::I180>(jumper, capture, move_stack);
+        return scan_dir<board::Rotate<Int2Type<Index>, board::Angle::D180>::value>(jumper, capture, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
@@ -210,10 +210,10 @@ template<bool Color, typename Rules, typename Board> template<size_t Index>
 bool Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::SCAN_REST>)
 {
         return (
-                scan_dir<board::direction::Rotate<Index>::R045>(jumper, capture, move_stack) |
-                scan_dir<board::direction::Rotate<Index>::L045>(jumper, capture, move_stack) |
-                scan_dir<board::direction::Rotate<Index>::R135>(jumper, capture, move_stack) |
-                scan_dir<board::direction::Rotate<Index>::L135>(jumper, capture, move_stack)
+                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R045>::value>(jumper, capture, move_stack) |
+                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::L045>::value>(jumper, capture, move_stack) |
+                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R135>::value>(jumper, capture, move_stack) |
+                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::L135>::value>(jumper, capture, move_stack)
         );
 }
 
@@ -222,8 +222,8 @@ template<bool Color, typename Rules, typename Board> template<size_t Index>
 bool Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::SCAN_SIDE>)
 {
         return (
-                scan_dir<board::direction::Rotate<Index>::R090>(jumper, capture, move_stack) |
-                scan_dir<board::direction::Rotate<Index>::L090>(jumper, capture, move_stack)
+                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R090>::value>(jumper, capture, move_stack) |
+                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::L090>::value>(jumper, capture, move_stack)
         );
 }
 
@@ -303,10 +303,10 @@ template<bool Color, typename Rules, typename Board>
 bool Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_ORTH>)
 {
         return (
-                detect_dir<board::direction::Indices<Board, Color>::LEFT >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::RIGHT>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::UP   >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::DOWN >(active_kings, opponent_pieces, not_occupied)
+                detect_dir<board::Direction<Color, Board>::LEFT >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::RIGHT>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::UP   >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::DOWN >(active_kings, opponent_pieces, not_occupied)
         );
 }
 
@@ -315,10 +315,10 @@ template<bool Color, typename Rules, typename Board>
 bool Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_DIAG>)
 {
         return (
-                detect_dir<board::direction::Indices<Board, Color>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::RIGHT_UP  >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::LEFT_DOWN >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::RIGHT_DOWN>(active_kings, opponent_pieces, not_occupied)
+                detect_dir<board::Direction<Color, Board>::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::RIGHT_UP  >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::LEFT_DOWN >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::RIGHT_DOWN>(active_kings, opponent_pieces, not_occupied)
         );
 }
 

@@ -132,31 +132,31 @@ private:
         typedef typename T::BordersGrid G;
 
         // coordinates within the external grid
-        typedef typename coordinates::FromRange<E, SQ>::Out ExtCoord;
+        typedef typename Square2Coordinates< Square<E, SQ> >::type External;
 
         // rotated coordinates within the internal grid
-        typedef typename coordinates::Rotate<E, ExtCoord, T::ANGLE>::Out RotCoord;
+        typedef typename Rotate<External, T::ANGLE>::type Rotated;
 
 public:
-        enum { VALUE = coordinates::ToRange<G, RotCoord>::VALUE };
+        enum { VALUE = Coordinates2Square< Coordinates<G, Rotated::row, Rotated::col> >::type::square };
 };
 
 template<typename T, int B>
 class BIT2SQUARE
 {
 private:
+        typedef typename T::BordersGrid G;
         typedef typename T::ExternalGrid E;
         typedef typename T::InternalGrid I;
-        typedef typename T::BordersGrid G;
 
         // coordinates within the internal grid
-        typedef typename coordinates::FromRange<G, B>::Out IntCoord;
+        typedef typename Square2Coordinates< Square<G, B> >::type Internal;
 
         // rotated coordinates within the external grid
-        typedef typename coordinates::Rotate<I, IntCoord, T::A_PRIME>::Out RotCoord;
+        typedef typename Rotate< Coordinates<I, Internal::row, Internal::col>, T::A_PRIME>::type Rotated;
 
 public:
-        enum { VALUE = coordinates::ToRange<E, RotCoord>::VALUE };
+        enum { VALUE = Coordinates2Square< Coordinates<E, Rotated::row, Rotated::col> >::type::square };
 };
 
 }       // namespace board

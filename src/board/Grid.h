@@ -1,7 +1,6 @@
 #pragma once
 
 namespace board {
-namespace grid {
 
 template
 <
@@ -35,10 +34,6 @@ public:
         static const int SIZE = MODULO * ((H - 1) / 2) + ((H % 2)? EDGE_RE : EDGE_RO) + 1;
 };
 
-template<typename, int> 
-struct Rotate;
-
-}       // namespace grid
 }       // namespace board
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

@@ -47,10 +47,10 @@ void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_seri
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::generate_dirs(BitBoard from_sq, BitBoard not_occupied, node::Stack& move_stack)
 {
-        generate_dir<board::direction::Indices<Board, Color>::LEFT_DOWN >(from_sq, not_occupied, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::RIGHT_DOWN>(from_sq, not_occupied, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::LEFT_UP   >(from_sq, not_occupied, move_stack);
-        generate_dir<board::direction::Indices<Board, Color>::RIGHT_UP  >(from_sq, not_occupied, move_stack);
+        generate_dir<board::Direction<Color, Board>::LEFT_DOWN >(from_sq, not_occupied, move_stack);
+        generate_dir<board::Direction<Color, Board>::RIGHT_DOWN>(from_sq, not_occupied, move_stack);
+        generate_dir<board::Direction<Color, Board>::LEFT_UP   >(from_sq, not_occupied, move_stack);
+        generate_dir<board::Direction<Color, Board>::RIGHT_UP  >(from_sq, not_occupied, move_stack);
 }
 
 // tag dispatching based on king range
@@ -98,10 +98,10 @@ template<bool Color, typename Rules, typename Board>
 size_t Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::count_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                count_dir<board::direction::Indices<Board, Color>::LEFT_DOWN >(active_kings, not_occupied) +
-                count_dir<board::direction::Indices<Board, Color>::RIGHT_DOWN>(active_kings, not_occupied) +
-                count_dir<board::direction::Indices<Board, Color>::LEFT_UP   >(active_kings, not_occupied) +
-                count_dir<board::direction::Indices<Board, Color>::RIGHT_UP  >(active_kings, not_occupied)
+                count_dir<board::Direction<Color, Board>::LEFT_DOWN >(active_kings, not_occupied) +
+                count_dir<board::Direction<Color, Board>::RIGHT_DOWN>(active_kings, not_occupied) +
+                count_dir<board::Direction<Color, Board>::LEFT_UP   >(active_kings, not_occupied) +
+                count_dir<board::Direction<Color, Board>::RIGHT_UP  >(active_kings, not_occupied)
         );
 }
 
@@ -148,10 +148,10 @@ template<bool Color, typename Rules, typename Board>
 bool Driver<Color, node::Pieces::KING, node::MOVES, Rules, Board>::detect_dirs(BitBoard active_kings, BitBoard not_occupied)
 {
         return (
-                detect_dir<board::direction::Indices<Board, Color>::LEFT_DOWN >(active_kings, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::RIGHT_DOWN>(active_kings, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::LEFT_UP   >(active_kings, not_occupied) ||
-                detect_dir<board::direction::Indices<Board, Color>::RIGHT_UP  >(active_kings, not_occupied)
+                detect_dir<board::Direction<Color, Board>::LEFT_DOWN >(active_kings, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::RIGHT_DOWN>(active_kings, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::LEFT_UP   >(active_kings, not_occupied) ||
+                detect_dir<board::Direction<Color, Board>::RIGHT_UP  >(active_kings, not_occupied)
         );
 }
 
