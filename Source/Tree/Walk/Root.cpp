@@ -95,8 +95,8 @@ TEST_F(Perft, Rectangular)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 TEST_F(Perft, ChessVariants)
 {
-        node::Position<board::Chess> i8 = node::Position<board::Chess>::initial();
-        std::cout << board::layout::write<board::Chess, board::layout::Square_tag>()() << std::endl;
+        node::Position<board::Checker> i8 = node::Position<board::Checker>::initial();
+        std::cout << board::layout::write<board::Checker, board::layout::Square_tag>()() << std::endl;
         
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
         Root::clear_hash();
