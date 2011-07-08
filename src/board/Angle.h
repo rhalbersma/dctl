@@ -1,4 +1,5 @@
 #pragma once
+#include "../Utilities/TemplateTricks.h"
 
 namespace board {
 
@@ -16,7 +17,7 @@ namespace board {
                 D270 = R090
 */
 
-// angles are subject to arithmetic modulo 360 degrees, with the unit element equal to 45 degrees anti-clockwises
+// angles are subject to arithmetic modulo 360 degrees, with the unit element equal to 45 degrees anti-clockwise
 struct Angle
 {
         enum {
@@ -25,8 +26,11 @@ struct Angle
         };
 };
 
-template<typename T, int>
+template<typename, int>
 struct Rotate;
+
+template<int I, int R>
+struct Rotate<Int2Type<I>, R>;
 
 template<int>
 struct Inverse;

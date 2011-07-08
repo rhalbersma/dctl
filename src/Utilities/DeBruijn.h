@@ -15,8 +15,8 @@ public:
         static const size_t SHIFT = NUM_BITS - N;       // 2^N - N
         static const size_t TABLE[NUM_BITS];            // table with the 2^N unique N-bit prefixes
 
-        static T generate_sequence();               // compute the lexicographically least De Bruijn sequence
-        static void generate_table();               // compute the prefix table and print to stdout
+        static T generate_sequence();                   // compute the lexicographically least De Bruijn sequence
+        static void generate_table();                   // compute the prefix table and print to stdout
 };
 
 }       // namespace bit

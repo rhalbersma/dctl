@@ -125,7 +125,7 @@ const BitSet<T, N> operator<<(const BitSet<T, N>& left, size_t shift)
 }
 
 template<typename T, size_t N> 
-const BitSet<T, N> operator>>(const BitSet<T, N>& left, size_t shift)
+const BitSet<T, N> operator>>(const BitSet<T, N>& right, size_t shift)
 {
-        return BitSet<T, N>(left) >>= shift;
+        return BitSet<T, N>(right) >>= shift;
 }

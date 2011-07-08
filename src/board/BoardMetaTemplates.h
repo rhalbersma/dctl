@@ -3,28 +3,22 @@
 namespace board {
 
 template<typename T, int = T::SIZE - 1>
-class INIT_SQUARES;
+class init_squares;
 
 template<typename T, bool, int = T::SIZE - 1>
-class INIT_INITIAL;
+class init_initial;
 
 template<typename T, bool, int, int = T::SIZE - 1>
-class INIT_ROW_MASK;
+class init_row_mask;
 
 template<typename T, bool, int, int = T::SIZE - 1>
-class INIT_COL_MASK;
+class init_col_mask;
 
 template<typename T, int, int = T::SIZE - 1>
-class INIT_MAN_JUMP_GROUP;
+class init_man_jump_group;
 
 template<typename T, int, int = T::SIZE - 1>
-class INIT_JUMPABLE;
-
-template<typename, int>
-class SQUARE2BIT;
-
-template<typename, int>
-class BIT2SQUARE;
+class init_jumpable;
 
 }       // namespace board
 

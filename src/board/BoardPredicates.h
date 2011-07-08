@@ -3,22 +3,28 @@
 namespace board {
 
 template<typename, int>
-class IS_VALID;
+class is_square;
 
 template<typename, bool, int>
-class IS_INITIAL;
+class is_initial;
 
 template<typename, bool, int, int>
-struct IS_ROW_MASK;
+struct is_row_mask;
 
 template<typename, bool, int, int>
-struct IS_COL_MASK;
+struct is_col_mask;
 
 template<typename, int, int>
-class IS_MAN_JUMP_GROUP;
+class is_man_jump_group;
 
 template<typename, int, int>
-class IS_JUMPABLE;
+class is_jumpable;
+
+template<typename, int>
+class square2bit;
+
+template<typename, int>
+class bit2square;
 
 }       // namespace board
 
