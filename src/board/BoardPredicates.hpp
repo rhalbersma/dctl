@@ -1,17 +1,18 @@
-#include "Direction.h"
+#include "Angle.h"
 #include "Coordinates.h"
+#include "Grid.h"
 
 namespace board {
 
 template<typename T, int SQ>
-class IS_VALID
+class is_square
 {
 public:
-        static const bool VALUE = SQ < T::SIZE;
+        static const bool value = (SQ >= 0) && (SQ < T::SIZE);
 };
 
 template<typename T, bool C, int SQ>
-class IS_INITIAL
+class is_initial
 {
 private:
         enum {
@@ -21,23 +22,23 @@ private:
         };
 
 public:
-        static const bool VALUE = (ROW >= ROW_MIN) && (ROW <= ROW_MAX);
+        static const bool value = (ROW >= ROW_MIN) && (ROW <= ROW_MAX);
 };
 
 template<typename T, bool C, int ROW, int SQ>
-struct IS_ROW_MASK
+struct is_row_mask
 {
-        static const bool VALUE = Square2Coordinates< Square<T, SQ> >::type::row == (C? (T::HEIGHT - 1) - ROW : ROW);
+        static const bool value = Square2Coordinates< Square<T, SQ> >::type::row == (C? (T::HEIGHT - 1) - ROW : ROW);
 };
 
 template<typename T, bool C, int COL, int SQ>
-struct IS_COL_MASK
+struct is_col_mask
 {
-        static const bool VALUE = Square2Coordinates< Square<T, SQ> >::type::col == (C? (T::WIDTH - 1) - COL : COL);
+        static const bool value = Square2Coordinates< Square<T, SQ> >::type::col == (C? (T::WIDTH - 1) - COL : COL);
 };
 
 template<typename T, int FROM, int DEST>
-class IS_MAN_JUMP_GROUP
+class is_man_jump_group
 {
 private: 
         enum {
@@ -53,14 +54,14 @@ private:
 
 public:
         // a diagonal or orthogonal man capture between square <FROM> and square <DEST> is possible if 
-        static const bool VALUE =
+        static const bool value =
         	(!R1 && !C1) || // row AND column numbers difference == 0 mod 4 (even number of captures)
                 (!R2 && !C2)    // row AND column numbers difference == 2 mod 4 (odd number of captures)
         ;
 };
 
 template<typename T, int I, int SQ>
-class IS_JUMPABLE
+class is_jumpable
 {
 private:
         enum {
@@ -75,12 +76,48 @@ private:
 
 public:
         // a jump in direction <I> is possible if square <SQ> is within OFFSET of the edges being approached
-        static const bool VALUE =
+        static const bool value =
 	        (ROW >= ROW_MIN) &&
 		(ROW <= ROW_MAX) &&
 		(COL >= COL_MIN) &&
 		(COL <= COL_MAX)
 	;
+};
+
+template<typename T, int SQ>
+class square2bit
+{
+private:
+        typedef typename T::ExternalGrid E;
+        typedef typename T::InternalGrid I;
+
+        // square coordinates within the external grid
+        typedef typename Square2Coordinates< Square<E, SQ> >::type External;
+
+        // rotated coordinates within the external grid
+        typedef typename Rotate<External, T::ANGLE>::type Rotated;
+
+public:
+        // bit coordintaes re-interpreted within the internal grid
+        enum { value = Coordinates2Square< Coordinates<I, Rotated::row, Rotated::col> >::type::square };
+};
+
+template<typename T, int B>
+class bit2square
+{
+private:
+        typedef typename T::InternalGrid I;
+        typedef typename T::ExternalGrid E;
+
+        // bit coordinates within the internal grid
+        typedef typename Square2Coordinates< Square<I, B> >::type Internal;
+
+        // rotated coordinates within the external grid
+        typedef typename Rotate<Internal, T::A_PRIME>::type Rotated;
+
+public:
+        // square coordinates re-interpreted within the internal grid
+        enum { value = Coordinates2Square< Coordinates<E, Rotated::row, Rotated::col> >::type::square };
 };
 
 }       // namespace board

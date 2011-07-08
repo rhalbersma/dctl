@@ -7,7 +7,7 @@ template<int I, int A>
 struct Rotate<Int2Type<I>, A>
 {
         // angles are subject to arithmetic modulo 360 degrees, 
-        // with the unit element equal to 45 degrees anti-clockwises
+        // with the unit element equal to 45 degrees anti-clockwise
         enum { value = (I + A) % Angle::D360 };
 };
 

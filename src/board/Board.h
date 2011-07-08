@@ -1,7 +1,7 @@
 #pragma once
+#include "Angle.h"
 #include "Borders.h"
 #include "Grid.h"
-#include "Angle.h"
 #include "../Utilities/IntegerTypes.h"
 
 namespace board {
@@ -11,15 +11,14 @@ template
         typename SquaresLayout,
         int D = 2,                                              // "demilitarized" rows in the initial position
         int N = 2,                                              // number of ghost bit columns
-        int A = Angle::D000                                    // rotation from external to internal grid
+        int A = Angle::D000                                     // rotation from external to internal grid
 >
 struct Board: public SquaresLayout
 {
         // reflection on template type parameters
-        typedef Board<SquaresLayout, D, N, A> T;
         typedef SquaresLayout ExternalGrid;
-        typedef typename Rotate<ExternalGrid, A>::type InternalGrid;
-        typedef Borders<InternalGrid, N> BordersGrid;
+        typedef Board<ExternalGrid, D, N, A> T;
+        typedef Borders<typename Rotate<ExternalGrid, A>::type, N> InternalGrid;
 
         // reflection on template non-type parameters
         static const int DMZ = D;                               // "demilitarized" rows in the initial position

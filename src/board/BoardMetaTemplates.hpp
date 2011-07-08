@@ -1,162 +1,126 @@
 #include "BoardPredicates.h"
-#include "Coordinates.h"
 #include "../Utilities/IntegerTypes.h"
 
 namespace board {
 
 template<typename T, int SQ>
-class INIT_SQUARES
+class init_squares
 {
 private:
-        static const BitBoard MASK = IS_VALID<T, SQ>::VALUE? (BitBoard(1) << SQUARE2BIT<T, SQ>::VALUE) : 0;
+        static const BitBoard MASK = is_square<T, SQ>::value? (BitBoard(1) << square2bit<T, SQ>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK ^ INIT_SQUARES<T, SQ-1>::VALUE;
+        static const BitBoard value = MASK ^ init_squares<T, SQ-1>::value;
 };
 
 template<typename T>
-class INIT_SQUARES<T, 0>
+class init_squares<T, 0>
 {
 private:
-        static const BitBoard MASK = IS_VALID<T, 0>::VALUE? (BitBoard(1) << SQUARE2BIT<T, 0>::VALUE) : 0;
+        static const BitBoard MASK = is_square<T, 0>::value? (BitBoard(1) << square2bit<T, 0>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK;
+        static const BitBoard value = MASK;
 };
 
 template<typename T, bool C, int SQ>
-class INIT_INITIAL
+class init_initial
 {
 private:
-        static const BitBoard MASK = IS_INITIAL<T, C, SQ>::VALUE? (BitBoard(1) << SQUARE2BIT<T, SQ>::VALUE) : 0;
+        static const BitBoard MASK = is_initial<T, C, SQ>::value? (BitBoard(1) << square2bit<T, SQ>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK ^ INIT_INITIAL<T, C, SQ-1>::VALUE;
+        static const BitBoard value = MASK ^ init_initial<T, C, SQ-1>::value;
 };
 
 template<typename T, bool C>
-class INIT_INITIAL<T, C, 0>
+class init_initial<T, C, 0>
 {
 private:
-        static const BitBoard MASK = IS_INITIAL<T, C, 0>::VALUE? (BitBoard(1) << SQUARE2BIT<T, 0>::VALUE) : 0;
+        static const BitBoard MASK = is_initial<T, C, 0>::value? (BitBoard(1) << square2bit<T, 0>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK;
+        static const BitBoard value = MASK;
 };
 
 template<typename T, bool C, int ROW, int SQ>
-class INIT_ROW_MASK
+class init_row_mask
 {
 private:
-        static const BitBoard MASK = IS_ROW_MASK<T, C, ROW, SQ>::VALUE? (BitBoard(1) << SQUARE2BIT<T, SQ>::VALUE) : 0;
+        static const BitBoard MASK = is_row_mask<T, C, ROW, SQ>::value? (BitBoard(1) << square2bit<T, SQ>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK ^ INIT_ROW_MASK<T, C, ROW, SQ-1>::VALUE;
+        static const BitBoard value = MASK ^ init_row_mask<T, C, ROW, SQ-1>::value;
 };
 
 template<typename T, bool C, int ROW>
-class INIT_ROW_MASK<T, C, ROW, 0>
+class init_row_mask<T, C, ROW, 0>
 {
 private:
-        static const BitBoard MASK = IS_ROW_MASK<T, C, ROW, 0>::VALUE? (BitBoard(1) << SQUARE2BIT<T, 0>::VALUE) : 0;
+        static const BitBoard MASK = is_row_mask<T, C, ROW, 0>::value? (BitBoard(1) << square2bit<T, 0>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK;
+        static const BitBoard value = MASK;
 };
 
 template<typename T, bool C, int COL, int SQ>
-class INIT_COL_MASK
+class init_col_mask
 {
 private:
-        static const BitBoard MASK = IS_COL_MASK<T, C, COL, SQ>::VALUE? (BitBoard(1) << SQUARE2BIT<T, SQ>::VALUE) : 0;
+        static const BitBoard MASK = is_col_mask<T, C, COL, SQ>::value? (BitBoard(1) << square2bit<T, SQ>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK ^ INIT_COL_MASK<T, C, COL, SQ-1>::VALUE;
+        static const BitBoard value = MASK ^ init_col_mask<T, C, COL, SQ-1>::value;
 };
 
 template<typename T, bool C, int COL>
-class INIT_COL_MASK<T, C, COL, 0>
+class init_col_mask<T, C, COL, 0>
 {
 private:
-        static const BitBoard MASK = IS_COL_MASK<T, C, COL, 0>::VALUE? (BitBoard(1) << SQUARE2BIT<T, 0>::VALUE) : 0;
+        static const BitBoard MASK = is_col_mask<T, C, COL, 0>::value? (BitBoard(1) << square2bit<T, 0>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK;
+        static const BitBoard value = MASK;
 };
 
 template<typename T, int G, int SQ>
-class INIT_MAN_JUMP_GROUP
+class init_man_jump_group
 {
 private:
-        static const BitBoard MASK = IS_MAN_JUMP_GROUP<T, G, SQ>::VALUE? (BitBoard(1) << SQUARE2BIT<T, SQ>::VALUE) : 0;
+        static const BitBoard MASK = is_man_jump_group<T, G, SQ>::value? (BitBoard(1) << square2bit<T, SQ>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK ^ INIT_MAN_JUMP_GROUP<T, G, SQ-1>::VALUE;
+        static const BitBoard value = MASK ^ init_man_jump_group<T, G, SQ-1>::value;
 };
 
 template<typename T, int G>
-class INIT_MAN_JUMP_GROUP<T, G, 0>
+class init_man_jump_group<T, G, 0>
 {
 private:
-        static const BitBoard MASK = IS_MAN_JUMP_GROUP<T, G, 0>::VALUE? (BitBoard(1) << SQUARE2BIT<T, 0>::VALUE) : 0;
+        static const BitBoard MASK = is_man_jump_group<T, G, 0>::value? (BitBoard(1) << square2bit<T, 0>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK;
+        static const BitBoard value = MASK;
 };
 
 template<typename T, int I, int SQ>
-class INIT_JUMPABLE
+class init_jumpable
 {
 private:
-        static const BitBoard MASK = IS_JUMPABLE<T, I, SQ>::VALUE? (BitBoard(1) << SQUARE2BIT<T, SQ>::VALUE) : 0;
+        static const BitBoard MASK = is_jumpable<T, I, SQ>::value? (BitBoard(1) << square2bit<T, SQ>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK ^ INIT_JUMPABLE<T, I, SQ-1>::VALUE;
+        static const BitBoard value = MASK ^ init_jumpable<T, I, SQ-1>::value;
 };
 
 template<typename T, int I>
-class INIT_JUMPABLE<T, I, 0>
+class init_jumpable<T, I, 0>
 {
 private:
-        static const BitBoard MASK = IS_JUMPABLE<T, I, 0>::VALUE? (BitBoard(1) << SQUARE2BIT<T, 0>::VALUE) : 0;
+        static const BitBoard MASK = is_jumpable<T, I, 0>::value? (BitBoard(1) << square2bit<T, 0>::value) : 0;
 
 public:
-        static const BitBoard VALUE = MASK;
-};
-
-template<typename T, int SQ>
-class SQUARE2BIT
-{
-private:
-        typedef typename T::ExternalGrid E;
-        typedef typename T::BordersGrid G;
-
-        // coordinates within the external grid
-        typedef typename Square2Coordinates< Square<E, SQ> >::type External;
-
-        // rotated coordinates within the internal grid
-        typedef typename Rotate<External, T::ANGLE>::type Rotated;
-
-public:
-        enum { VALUE = Coordinates2Square< Coordinates<G, Rotated::row, Rotated::col> >::type::square };
-};
-
-template<typename T, int B>
-class BIT2SQUARE
-{
-private:
-        typedef typename T::BordersGrid G;
-        typedef typename T::ExternalGrid E;
-        typedef typename T::InternalGrid I;
-
-        // coordinates within the internal grid
-        typedef typename Square2Coordinates< Square<G, B> >::type Internal;
-
-        // rotated coordinates within the external grid
-        typedef typename Rotate< Coordinates<I, Internal::row, Internal::col>, T::A_PRIME>::type Rotated;
-
-public:
-        enum { VALUE = Coordinates2Square< Coordinates<E, Rotated::row, Rotated::col> >::type::square };
+        static const BitBoard value = MASK;
 };
 
 }       // namespace board

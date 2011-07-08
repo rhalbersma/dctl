@@ -1,6 +1,7 @@
 #include <cassert>
 #include "Capture/State.h"
 #include "../Node/Position.h"
+#include "../../board/Angle.h"
 #include "../../board/Board.h"
 #include "../../board/Direction.h"
 #include "../../Utilities/Bit.h"
