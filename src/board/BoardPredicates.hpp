@@ -84,36 +84,36 @@ public:
 	;
 };
 
-template<typename T, int SQ>
+template<typename Board, int SQ>
 class square2bit
 {
 private:
-        typedef typename T::ExternalGrid E;
-        typedef typename T::InternalGrid I;
+        typedef typename Board::ExternalGrid E;
+        typedef typename Board::InternalGrid I;
 
         // square coordinates within the external grid
         typedef typename Square2Coordinates< Square<E, SQ> >::type External;
 
         // rotated coordinates within the external grid
-        typedef typename Rotate<External, T::ANGLE>::type Rotated;
+        typedef typename Rotate<External, Board::ANGLE>::type Rotated;
 
 public:
         // bit coordintaes re-interpreted within the internal grid
         enum { value = Coordinates2Square< Coordinates<I, Rotated::row, Rotated::col> >::type::square };
 };
 
-template<typename T, int B>
+template<typename Board, int B>
 class bit2square
 {
 private:
-        typedef typename T::InternalGrid I;
-        typedef typename T::ExternalGrid E;
+        typedef typename Board::InternalGrid I;
+        typedef typename Board::ExternalGrid E;
 
         // bit coordinates within the internal grid
         typedef typename Square2Coordinates< Square<I, B> >::type Internal;
 
         // rotated coordinates within the external grid
-        typedef typename Rotate<Internal, T::A_PRIME>::type Rotated;
+        typedef typename Rotate<Internal, Board::A_INV>::type Rotated;
 
 public:
         // square coordinates re-interpreted within the internal grid

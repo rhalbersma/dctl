@@ -15,39 +15,33 @@ Map<Key, Value, Hash, Index, Replace>::Map(size_t log2_n)
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+size_t Map<Key, Value, Hash, Index, Replace>::available() const
+{
+        return std::count_if(
+                map_.begin(), 
+                map_.end(), 
+                std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, Key(0))
+        );
+}
+
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 size_t Map<Key, Value, Hash, Index, Replace>::size() const
 {
         return map_.size();
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-size_t Map<Key, Value, Hash, Index, Replace>::available() const
-{
-        return std::count_if(map_.begin(), map_.end(), std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, Key(0)));
-}
-
-template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 void Map<Key, Value, Hash, Index, Replace>::resize(size_t log2_n)
 {
-        while (log2_n >= 0) {
-                try {
-                        map_.resize(Index(1) << log2_n);        // try to allocate all the entries
-                }
-                catch (const std::bad_alloc&) {                                
-                        --log2_n;                               // try allocating half the previous size
-                        continue;       
-                }
-                map_mask_ = map_.size() - 1;                    // MODULO the number of entries
-                map_mask_ ^= BUCKET_MASK;                       // MODULO the number of buckets
-                return;
-        }
-        throw;                                                  // could not allocate a single entry
+        map_.resize(Index(1) << log2_n);        // allocate all the entries
+        map_mask_ = map_.size() - 1;            // MODULO the number of entries
+        map_mask_ ^= BUCKET_MASK;               // MODULO the number of buckets
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 void Map<Key, Value, Hash, Index, Replace>::clear()
 {
-        std::memset(&map_[0], 0, map_.size() * sizeof(Entry));
+        std::fill_n(map_.begin(), map_.size(), Entry());
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>

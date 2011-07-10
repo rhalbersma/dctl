@@ -23,7 +23,7 @@ struct Board: public SquaresLayout
         // reflection on template non-type parameters
         static const int DMZ = D;                               // "demilitarized" rows in the initial position
         static const int ANGLE = A;                             // rotation from external to internal grid                        
-        static const int A_PRIME = Inverse<A>::value;           // rotation from internal to external grid
+        static const int A_INV = Inverse<A>::value;             // rotation from internal to external grid
 
         // essential bitboard masks
         static const BitBoard SQUARES;                          // bit mask of legal squares, excluding borders
