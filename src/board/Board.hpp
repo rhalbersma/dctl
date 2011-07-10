@@ -121,13 +121,13 @@ const BitBoard Board<GridLayout, D, N, A>::JUMPABLE[] = {
 
 template<typename GridLayout, int D, int N, int A>
 const int Board<GridLayout, D, N, A>::DIRECTION[] = {
-        InternalGrid::RIGHT, 
-        InternalGrid::RIGHT_UP, 
-        InternalGrid::UP, 
-        InternalGrid::LEFT_UP, 
-        InternalGrid::LEFT, 
-        InternalGrid::LEFT_DOWN, 
-        InternalGrid::DOWN, 
+        InternalGrid::RIGHT,
+        InternalGrid::RIGHT_UP,
+        InternalGrid::UP,
+        InternalGrid::LEFT_UP,
+        InternalGrid::LEFT,
+        InternalGrid::LEFT_DOWN,
+        InternalGrid::DOWN,
         InternalGrid::RIGHT_DOWN
 };
 

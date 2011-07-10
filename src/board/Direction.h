@@ -8,7 +8,7 @@ template<bool Color, typename Board>
 class Direction
 { 
 private:                        
-        enum { A = (Angle::D180 * !Color) + Board::A_PRIME };
+        enum { A = (Angle::D180 * !Color) + Board::A_INV };
 
 public:
         enum {

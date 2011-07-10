@@ -11,15 +11,15 @@ DualMap<Key, Value, Hash, Index, Replace>::DualMap(size_t log2_n)
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-size_t DualMap<Key, Value, Hash, Index, Replace>::size() const
-{
-        return dual_map_[0].size() + dual_map_[1].size();
-}
-
-template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 size_t DualMap<Key, Value, Hash, Index, Replace>::available() const
 {
         return dual_map_[0].available() + dual_map_[1].available();
+}
+
+template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
+size_t DualMap<Key, Value, Hash, Index, Replace>::size() const
+{
+        return dual_map_[0].size() + dual_map_[1].size();
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>

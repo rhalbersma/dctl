@@ -9,9 +9,6 @@ template
 >
 struct Borders
 {
-        // extract coloring of top-left square
-        static const bool PARITY = T::PARITY;
-
         // diagonal directions
         static const int LEFT_DOWN = (T::WIDTH + N) / 2;
         static const int RIGHT_DOWN = LEFT_DOWN + 1;
@@ -26,6 +23,9 @@ struct Borders
         static const int LEFT = RIGHT;
         static const int UP = DOWN;
                
+        // extract coloring of top-left square
+        static const bool PARITY = T::PARITY;
+
         // range of row pairs
         static const int MODULO = DOWN;
                 

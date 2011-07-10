@@ -28,8 +28,8 @@ public:
         explicit Map(size_t);
 
         // capacity
-        size_t size() const;
         size_t available() const;
+        size_t size() const;
         void resize(size_t);
         void clear();
 
