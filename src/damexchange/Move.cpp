@@ -1,3 +1,4 @@
+#include <algorithm>    // std::for_each
 #include <cassert>
 #include <iomanip>
 #include <sstream>
@@ -10,22 +11,22 @@ namespace damexchange {
 
 const std::string Move::HEADER = "M";
 
-const bool Move::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
+const bool Move::REGISTERED = Parser<protocol_tag>::insert(HEADER, create);
 
-std::unique_ptr<MessageInterface> Move::create(const std::string& msg)
+std::unique_ptr<MessageInterface> Move::create(const std::string& message)
 {
-        return std::unique_ptr<Move>(new Move(msg));
+        return std::unique_ptr<Move>(new Move(message));
 }
 
-Move::Move(const std::string& msg)
+Move::Move(const std::string& message)
 :
-        seconds_(boost::lexical_cast<int>(msg.substr(0, 4).c_str())),
-        from_sq_(boost::lexical_cast<int>(msg.substr(4, 2).c_str())),
-        dest_sq_(boost::lexical_cast<int>(msg.substr(6, 2).c_str())),
-        num_captured_(boost::lexical_cast<int>(msg.substr(8, 2).c_str()))
+        seconds_(boost::lexical_cast<int>(message.substr(0, 4).c_str())),
+        from_sq_(boost::lexical_cast<int>(message.substr(4, 2).c_str())),
+        dest_sq_(boost::lexical_cast<int>(message.substr(6, 2).c_str())),
+        num_captured_(boost::lexical_cast<int>(message.substr(8, 2).c_str()))
 {
         for (auto i = 0; i < num_captured(); ++i)
-                captured_pieces_.push_back(boost::lexical_cast<int>(msg.substr(10 + 2 * i, 2).c_str()));
+                captured_pieces_.push_back(boost::lexical_cast<int>(message.substr(10 + 2 * i, 2).c_str()));
 }
 
 int Move::seconds() const
@@ -75,8 +76,9 @@ std::string Move::body(int s, int f, int d, int n, const std::vector<int>& c)
         sstr << std::setw( 2) << std::setfill('0') << f;
         sstr << std::setw( 2) << std::setfill('0') << d;
         sstr << std::setw( 2) << std::setfill('0') << n;
-        for (auto it = c.begin(); it != c.end(); ++it)
-                sstr << std::setw(2) << std::setfill('0') << *it;
+        std::for_each(c.begin(), c.end(), [&sstr](int x) { 
+                sstr << std::setw(2) << std::setfill('0') << x; 
+        });
         return sstr.str();
 }
 

@@ -116,7 +116,7 @@ struct write<FEN_tag, Token>
 };
 
 template<typename Board, typename Token>
-struct read<Board, damexchange::DXP_tag, Token>
+struct read<Board, damexchange::protocol_tag, Token>
 {
         Position<Board> operator()(const std::string& s)
         {
@@ -158,7 +158,7 @@ struct read<Board, damexchange::DXP_tag, Token>
 };
 
 template<typename Token>
-struct write<damexchange::DXP_tag, Token>
+struct write<damexchange::protocol_tag, Token>
 {
         template<typename Board>
         std::string operator()(const Position<Board>& p) const

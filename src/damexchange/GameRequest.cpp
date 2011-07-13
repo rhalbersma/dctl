@@ -17,23 +17,23 @@ const char GameRequest::SETUP[2] = {
         SPECIAL
 };
 
-const bool GameRequest::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
+const bool GameRequest::REGISTERED = Parser<protocol_tag>::insert(HEADER, create);
 
-std::unique_ptr<MessageInterface> GameRequest::create(const std::string& msg)
+std::unique_ptr<MessageInterface> GameRequest::create(const std::string& message)
 {
-        return std::unique_ptr<GameRequest>(new GameRequest(msg));
+        return std::unique_ptr<GameRequest>(new GameRequest(message));
 }
 
-GameRequest::GameRequest(const std::string& msg)
+GameRequest::GameRequest(const std::string& message)
 :
-        name_initiator_(msg.substr(2, 32)),
-        color_follower_(*(msg.substr(34, 1)).begin()),
-        minutes_(boost::lexical_cast<size_t>(msg.substr(35, 3).c_str())),
-        moves_(boost::lexical_cast<size_t>(msg.substr(38, 3).c_str())),
-        setup_(read_setup( *(msg.substr(41, 1)).begin() ))
+        name_initiator_(message.substr(2, 32)),
+        color_follower_(*(message.substr(34, 1)).begin()),
+        minutes_(boost::lexical_cast<size_t>(message.substr(35, 3).c_str())),
+        moves_(boost::lexical_cast<size_t>(message.substr(38, 3).c_str())),
+        setup_(read_setup( *(message.substr(41, 1)).begin() ))
 {
         if (setup())
-                position_ = msg.substr(42);
+                position_ = message.substr(42);
 }
 
 const std::string& GameRequest::name_initiator() const

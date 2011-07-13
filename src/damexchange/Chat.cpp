@@ -7,16 +7,16 @@ namespace damexchange {
 
 const std::string Chat::HEADER = "C";
 
-const bool Chat::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
+const bool Chat::REGISTERED = Parser<protocol_tag>::insert(HEADER, create);
 
-std::unique_ptr<MessageInterface> Chat::create(const std::string& msg)
+std::unique_ptr<MessageInterface> Chat::create(const std::string& message)
 {
-        return std::unique_ptr<Chat>(new Chat(msg));
+        return std::unique_ptr<Chat>(new Chat(message));
 }
 
-Chat::Chat(const std::string& msg)
+Chat::Chat(const std::string& message)
 : 
-        message_(msg)
+        message_(message)
 {
 }
 
@@ -25,9 +25,9 @@ std::string Chat::message() const
         return message_;
 }
 
-std::string Chat::str(const std::string& msg)
+std::string Chat::str(const std::string& message)
 {
-        return HEADER + body(msg);
+        return HEADER + body(message);
 }
 
 std::string Chat::header() const

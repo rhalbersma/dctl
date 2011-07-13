@@ -1,11 +1,12 @@
 #include <iomanip>
 #include <iostream>
 #include <boost/bind.hpp>
+#include <boost/thread.hpp>
 
 namespace damexchange {
 
 template<typename Protocol>
-Connection<Protocol>::Connection(unsigned short port, char terminator)
+Connection<Protocol>::Connection()
 :
         socket_(io_service_),
         acceptor_(io_service_)
@@ -122,10 +123,10 @@ void Connection<Protocol>::handle_read(const boost::system::error_code& error)
 {
         if (!error) {
                 std::istream read_buf_stream(&read_buf_);
-                std::string msg;
-                std::getline(read_buf_stream, msg, TERMINATOR);
-                read_msgs_.push_back(msg);
-                std::cout << msg << std::endl;
+                std::string message;
+                std::getline(read_buf_stream, message, TERMINATOR);
+                read_messages_.push_back(message);
+                std::cout << message << std::endl;
                 async_read_next();
         } else {
                 do_close();
@@ -133,32 +134,32 @@ void Connection<Protocol>::handle_read(const boost::system::error_code& error)
 }
 
 template<typename Protocol>
-void Connection<Protocol>::read(std::string& msg)
+void Connection<Protocol>::read(std::string& message)
 {
         // do_read() will only be called in a thread in which io_service::run() is currently being invoked.
-        io_service_.post(boost::bind(&Connection<Protocol>::do_read, this, msg));
+        io_service_.post(boost::bind(&Connection<Protocol>::do_read, this, message));
 }
 
 template<typename Protocol>
-void Connection<Protocol>::do_read(std::string& msg)
+void Connection<Protocol>::do_read(std::string& message)
 {
-        msg = read_msgs_.front();
-        read_msgs_.pop_front();
+        message = read_messages_.front();
+        read_messages_.pop_front();
 }
 
 template<typename Protocol>
-void Connection<Protocol>::write(const std::string& msg)
+void Connection<Protocol>::write(const std::string& message)
 {
         // do_write() will only be called in a thread in which io_service::run() is currently being invoked.
-        io_service_.post(boost::bind(&Connection<Protocol>::do_write, this, msg));
+        io_service_.post(boost::bind(&Connection<Protocol>::do_write, this, message));
 }
 
-// by-value instead of by-reference, or <msg> might go out of scope before being used in the io_service::run() thread
+// by-value instead of by-reference, or <message> might go out of scope before being used in the io_service::run() thread
 template<typename Protocol>
-void Connection<Protocol>::do_write(std::string msg)
+void Connection<Protocol>::do_write(std::string message)
 {
-        bool no_write_in_progress = write_msgs_.empty();
-        write_msgs_.push_back(msg);
+        bool no_write_in_progress = write_messages_.empty();
+        write_messages_.push_back(message);
         if (no_write_in_progress) {
                 async_write_next();
         }
@@ -169,7 +170,7 @@ void Connection<Protocol>::async_write_next()
 {
         boost::asio::async_write(
                 socket_,
-                boost::asio::buffer(write_msgs_.front().c_str(), write_msgs_.front().length() + 1),
+                boost::asio::buffer(write_messages_.front().c_str(), write_messages_.front().length() + 1),
                 boost::bind(&Connection<Protocol>::handle_write, this, boost::asio::placeholders::error)
         );
 }
@@ -178,8 +179,8 @@ template<typename Protocol>
 void Connection<Protocol>::handle_write(const boost::system::error_code& error)
 {
         if (!error) {
-                write_msgs_.pop_front();
-                if (!write_msgs_.empty()) {
+                write_messages_.pop_front();
+                if (!write_messages_.empty()) {
                         async_write_next();
                 }
         } else {

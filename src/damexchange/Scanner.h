@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "Protocol.h"
 
 namespace damexchange {
 
@@ -17,6 +18,10 @@ public:
 private:
         // invariants
         bool invariant() const;
+
+        // implementation
+        static const size_t HEADER_LENGTH = header_length<Protocol>::value;
+        static const size_t MAX_BODY_LENGTH = max_body_length<Protocol>::value;
 
         // representation
         std::string message_;

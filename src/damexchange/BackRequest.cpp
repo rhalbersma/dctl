@@ -10,17 +10,17 @@ namespace damexchange {
 
 const std::string BackRequest::HEADER = "B";
 
-const bool BackRequest::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
+const bool BackRequest::REGISTERED = Parser<protocol_tag>::insert(HEADER, create);
 
-std::unique_ptr<MessageInterface> BackRequest::create(const std::string& msg)
+std::unique_ptr<MessageInterface> BackRequest::create(const std::string& message)
 {
-        return std::unique_ptr<BackRequest>(new BackRequest(msg));
+        return std::unique_ptr<BackRequest>(new BackRequest(message));
 }
 
-BackRequest::BackRequest(const std::string& msg)
+BackRequest::BackRequest(const std::string& message)
 :
-        move_number_(boost::lexical_cast<size_t>(msg.substr(0, 3).c_str())),
-        side_to_move_(*(msg.substr(3, 1)).begin())
+        move_number_(boost::lexical_cast<size_t>(message.substr(0, 3).c_str())),
+        side_to_move_(*(message.substr(3, 1)).begin())
 {
 }
 

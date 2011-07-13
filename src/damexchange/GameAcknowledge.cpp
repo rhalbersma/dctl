@@ -10,17 +10,17 @@ namespace damexchange {
 
 const std::string GameAcknowledge::HEADER = "A";
 
-const bool GameAcknowledge::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
+const bool GameAcknowledge::REGISTERED = Parser<protocol_tag>::insert(HEADER, create);
 
-std::unique_ptr<MessageInterface> GameAcknowledge::create(const std::string& msg)
+std::unique_ptr<MessageInterface> GameAcknowledge::create(const std::string& message)
 {
-        return std::unique_ptr<GameAcknowledge>(new GameAcknowledge(msg));
+        return std::unique_ptr<GameAcknowledge>(new GameAcknowledge(message));
 }
 
-GameAcknowledge::GameAcknowledge(const std::string& msg)
+GameAcknowledge::GameAcknowledge(const std::string& message)
 :
-        name_follower_(msg.substr(0, 32)),
-        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(msg.substr(32, 1).c_str())))
+        name_follower_(message.substr(0, 32)),
+        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(message.substr(32, 1).c_str())))
 {
 }
 
