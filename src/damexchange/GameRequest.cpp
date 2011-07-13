@@ -4,9 +4,9 @@
 #include <boost/lexical_cast.hpp>
 #include "GameRequest.h"
 #include "Parser.h"
+#include "Protocol.h"
 
 namespace damexchange {
-namespace layer2 {
 
 const std::string GameRequest::HEADER = "R";
 
@@ -17,7 +17,7 @@ const char GameRequest::SETUP[2] = {
         SPECIAL
 };
 
-const bool GameRequest::REGISTERED = Parser::insert(HEADER, create);
+const bool GameRequest::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
 
 std::unique_ptr<MessageInterface> GameRequest::create(const std::string& msg)
 {
@@ -113,5 +113,4 @@ char GameRequest::write_setup(bool b)
         return SETUP[b];
 }
 
-}       // namespace layer2
 }       // namespace damexchange

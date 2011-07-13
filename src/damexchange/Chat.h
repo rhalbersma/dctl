@@ -1,37 +1,32 @@
 #pragma once
-#include <cstddef>
 #include <memory>       // std::unique_ptr
 #include <string>
 #include "MessageInterface.h"
 
 namespace damexchange {
-namespace layer2 {
 
-class BackRequest: public MessageInterface
+class Chat: public MessageInterface
 {
 public:
         // views
-        size_t move_number() const;
-        char side_to_move() const;
-        static std::string str(size_t, char);
+        std::string message() const;
+        static std::string str(const std::string&);
 
 private:
         // private constructor to enforce factory creation
-        explicit BackRequest(const std::string&);
+        explicit Chat(const std::string&);
 
         // implementation
         virtual std::string header() const;
         virtual std::string body() const;
-        static std::string body(size_t, char);
+        static std::string body(const std::string&);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);
         static const std::string HEADER;
         static const bool REGISTERED;
 
         // representation
-        size_t move_number_;
-        char side_to_move_;
+        std::string message_;
 };
 
-}       // namespace layer2
 }       // namespace damexchange

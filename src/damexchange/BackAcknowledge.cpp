@@ -4,13 +4,13 @@
 #include <boost/lexical_cast.hpp>
 #include "BackAcknowledge.h"
 #include "Parser.h"
+#include "Protocol.h"
 
 namespace damexchange {
-namespace layer2 {
 
 const std::string BackAcknowledge::HEADER = "K";
 
-const bool BackAcknowledge::REGISTERED = Parser::insert(HEADER, create);
+const bool BackAcknowledge::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
 
 std::unique_ptr<MessageInterface> BackAcknowledge::create(const std::string& msg)
 {
@@ -50,5 +50,4 @@ std::string BackAcknowledge::body(AcceptanceCode a)
         return sstr.str();
 }
 
-}       // namespace layer2
 }       // namespace damexchange

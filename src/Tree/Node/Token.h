@@ -1,5 +1,6 @@
 #pragma once
 #include "Protocol.h"
+#include "../../damexchange/Protocol.h"
 
 namespace tree {
 namespace node {
@@ -28,7 +29,7 @@ struct Token<FEN_tag>: public Triplet<'B', 'W', '.'>
 };
 
 template<>
-struct Token<DXP_tag>: public Triplet<'Z', 'W', 'e'> {};
+struct Token<damexchange::DXP_tag>: public Triplet<'Z', 'W', 'e'> {};
 
 }       // namespace node
 }       // namespace tree

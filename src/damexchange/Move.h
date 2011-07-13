@@ -5,7 +5,6 @@
 #include "MessageInterface.h"
 
 namespace damexchange {
-namespace layer2 {
 
 class Move: public MessageInterface
 {
@@ -39,5 +38,4 @@ private:
         std::vector<int> captured_pieces_;       
 };
 
-}       // namespace layer2
 }       // namespace damexchange

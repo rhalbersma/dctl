@@ -4,13 +4,13 @@
 #include <boost/lexical_cast.hpp>
 #include "BackRequest.h"
 #include "Parser.h"
+#include "Protocol.h"
 
 namespace damexchange {
-namespace layer2 {
 
 const std::string BackRequest::HEADER = "B";
 
-const bool BackRequest::REGISTERED = Parser::insert(HEADER, create);
+const bool BackRequest::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
 
 std::unique_ptr<MessageInterface> BackRequest::create(const std::string& msg)
 {
@@ -57,5 +57,4 @@ std::string BackRequest::body(size_t m, char c)
         return sstr.str();
 }
 
-}       // namespace layer2
 }       // namespace damexchange

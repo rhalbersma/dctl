@@ -5,7 +5,6 @@
 #include "MessageInterface.h"
 
 namespace damexchange {
-namespace layer2 {
 
 class GameRequest: public MessageInterface
 {
@@ -48,5 +47,4 @@ private:
         std::string position_;
 };
 
-}       // namespace layer2
 }       // namespace damexchange

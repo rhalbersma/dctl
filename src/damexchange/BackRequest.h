@@ -1,38 +1,35 @@
 #pragma once
+#include <cstddef>
 #include <memory>       // std::unique_ptr
 #include <string>
 #include "MessageInterface.h"
 
 namespace damexchange {
-namespace layer2 {
 
-class BackAcknowledge: public MessageInterface
+class BackRequest: public MessageInterface
 {
 public:
-        // typedefs
-        enum AcceptanceCode { ACCEPT = 0, NOT_SUPPORTED = 1, DECLINE = 2 };
-
         // views
-        AcceptanceCode acceptance_code() const;
-        static std::string str(AcceptanceCode);
+        size_t move_number() const;
+        char side_to_move() const;
+        static std::string str(size_t, char);
 
 private:
         // private constructor to enforce factory creation
-        explicit BackAcknowledge(const std::string&);
+        explicit BackRequest(const std::string&);
 
         // implementation
         virtual std::string header() const;
         virtual std::string body() const;
-        static std::string body(AcceptanceCode);
+        static std::string body(size_t, char);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);
         static const std::string HEADER;
         static const bool REGISTERED;
 
         // representation
-        AcceptanceCode acceptance_code_;
+        size_t move_number_;
+        char side_to_move_;
 };
 
-
-}       // namespace layer2
 }       // namespace damexchange

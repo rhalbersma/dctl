@@ -3,15 +3,16 @@
 #include <string>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
+#include "Protocol.h"
 
 namespace damexchange {
-namespace layer1 {
 
-class Session
+template<typename Protocol>
+class Connection
 {
 public:
         // constructors
-        Session();
+        Connection();
 
         // connectors
         void connect();                                         // connect to default port and host
@@ -49,9 +50,10 @@ private:
         void handle_write(const boost::system::error_code&);
 
         // representation
-        static const boost::asio::ip::tcp PROTOCOL;
-        static const boost::asio::ip::address_v4 LOOPBACK;
-        static const size_t PORT = 27531;
+        static const boost::asio::ip::tcp PROTOCOL = boost::asio::ip::tcp::v4();
+        static const boost::asio::ip::address_v4 LOOPBACK = boost::asio::ip::address_v4::loopback();
+        static const unsigned short PORT = port<Protocol>::value;
+        static const char TERMINATOR = terminator<Protocol>::value;
 
         boost::asio::io_service io_service_;
         boost::asio::ip::tcp::acceptor acceptor_;
@@ -65,5 +67,7 @@ private:
         MessageQueue write_msgs_;
 };
 
-}       // namespace layer1
 }       // namespace damexchange
+
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+#include "Connection.hpp"

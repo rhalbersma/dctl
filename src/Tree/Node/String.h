@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "Protocol.h"
 #include "Position.h"
 #include "Token.h"
 

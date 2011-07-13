@@ -1,10 +1,9 @@
 #pragma once
-#include <memory>       // unique_ptr
+#include <memory>       // std::unique_ptr
 #include <string>
 #include "MessageInterface.h"
 
 namespace damexchange {
-namespace layer2 {
 
 class GameAcknowledge: public MessageInterface
 {
@@ -35,5 +34,4 @@ private:
         AcceptanceCode acceptance_code_;
 };
 
-}       // namespace layer2
 }       // namespace damexchange
