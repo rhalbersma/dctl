@@ -29,7 +29,7 @@ struct Token<FEN_tag>: public Triplet<'B', 'W', '.'>
 };
 
 template<>
-struct Token<damexchange::DXP_tag>: public Triplet<'Z', 'W', 'e'> {};
+struct Token<damexchange::protocol_tag>: public Triplet<'Z', 'W', 'e'> {};
 
 }       // namespace node
 }       // namespace tree

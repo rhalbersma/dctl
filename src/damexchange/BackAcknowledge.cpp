@@ -10,16 +10,16 @@ namespace damexchange {
 
 const std::string BackAcknowledge::HEADER = "K";
 
-const bool BackAcknowledge::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
+const bool BackAcknowledge::REGISTERED = Parser<protocol_tag>::insert(HEADER, create);
 
-std::unique_ptr<MessageInterface> BackAcknowledge::create(const std::string& msg)
+std::unique_ptr<MessageInterface> BackAcknowledge::create(const std::string& message)
 {
-        return std::unique_ptr<BackAcknowledge>(new BackAcknowledge(msg));
+        return std::unique_ptr<BackAcknowledge>(new BackAcknowledge(message));
 }
 
-BackAcknowledge::BackAcknowledge(const std::string& msg)
+BackAcknowledge::BackAcknowledge(const std::string& message)
 :
-        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(msg.substr(0, 1).c_str())))
+        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(message.substr(0, 1).c_str())))
 {
 }
 

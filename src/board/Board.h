@@ -1,29 +1,23 @@
 #pragma once
-#include "Angle.h"
-#include "Borders.h"
 #include "Grid.h"
+#include "Structure.h"
 #include "../Utilities/IntegerTypes.h"
 
 namespace board {
 
 template
 <
-        typename SquaresLayout,
-        int D = 2,                                              // "demilitarized" rows in the initial position
-        int N = 2,                                              // number of ghost bit columns
-        int A = Angle::D000                                     // rotation from external to internal grid
+        typename Dimensions,                                    // height, width and parity
+        typename Structure = Structure<>                        // DMZ, ghosts and internal rotation
 >
-struct Board: public SquaresLayout
+struct Board: public Dimensions, public Structure
 {
-        // reflection on template type parameters
-        typedef SquaresLayout ExternalGrid;
-        typedef Board<ExternalGrid, D, N, A> T;
-        typedef Borders<typename Rotate<ExternalGrid, A>::type, N> InternalGrid;
+        // reflection on template parameters
+        typedef Board<Dimensions, Structure> B;
 
-        // reflection on template non-type parameters
-        static const int DMZ = D;                               // "demilitarized" rows in the initial position
-        static const int ANGLE = A;                             // rotation from external to internal grid                        
-        static const int A_INV = Inverse<A>::value;             // rotation from internal to external grid
+        // external and internal grids
+        typedef Grid<Dimensions> ExternalGrid;
+        typedef Grid<typename Rotate<Dimensions, Structure::ANGLE>::type, Structure::GHOSTS> InternalGrid;
 
         // essential bitboard masks
         static const BitBoard SQUARES;                          // bit mask of legal squares, excluding borders

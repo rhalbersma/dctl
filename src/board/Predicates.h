@@ -29,4 +29,4 @@ class bit2square;
 }       // namespace board
 
 // include template definitions inside header since "export" keyword is not supported by most C++ compilers
-#include "BoardPredicates.hpp"
+#include "Predicates.hpp"

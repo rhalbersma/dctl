@@ -2,7 +2,6 @@
 #include <deque>
 #include <string>
 #include <boost/asio.hpp>
-#include <boost/thread.hpp>
 #include "Protocol.h"
 
 namespace damexchange {
@@ -63,8 +62,8 @@ private:
         boost::asio::streambuf read_buf_;
 
         typedef std::deque<std::string> MessageQueue;
-        MessageQueue read_msgs_;
-        MessageQueue write_msgs_;
+        MessageQueue read_messages_;
+        MessageQueue write_messages_;
 };
 
 }       // namespace damexchange

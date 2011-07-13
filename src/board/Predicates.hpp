@@ -4,48 +4,48 @@
 
 namespace board {
 
-template<typename T, int SQ>
+template<typename Board, int SQ>
 class is_square
 {
 public:
-        static const bool value = (SQ >= 0) && (SQ < T::SIZE);
+        static const bool value = (SQ >= 0) && (SQ < Board::ExternalGrid::SIZE);
 };
 
-template<typename T, bool C, int SQ>
+template<typename Board, bool C, int SQ>
 class is_initial
 {
 private:
         enum {
-                ROW_MIN = C? (T::HEIGHT - 1) - ((T::HEIGHT - T::DMZ) / 2 - 1) : 0,
-                ROW_MAX = C? (T::HEIGHT - 1) : (T::HEIGHT - T::DMZ) / 2 - 1,
-                ROW = Square2Coordiates< Square<T, SQ> >::type::row
+                ROW_MIN = C? (Board::HEIGHT - 1) - ((Board::HEIGHT - Board::DMZ) / 2 - 1) : 0,
+                ROW_MAX = C? (Board::HEIGHT - 1) : (Board::HEIGHT - Board::DMZ) / 2 - 1,
+                ROW = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::row
         };
 
 public:
         static const bool value = (ROW >= ROW_MIN) && (ROW <= ROW_MAX);
 };
 
-template<typename T, bool C, int ROW, int SQ>
+template<typename Board, bool C, int ROW, int SQ>
 struct is_row_mask
 {
-        static const bool value = Square2Coordinates< Square<T, SQ> >::type::row == (C? (T::HEIGHT - 1) - ROW : ROW);
+        static const bool value = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::row == (C? (Board::HEIGHT - 1) - ROW : ROW);
 };
 
-template<typename T, bool C, int COL, int SQ>
+template<typename Board, bool C, int COL, int SQ>
 struct is_col_mask
 {
-        static const bool value = Square2Coordinates< Square<T, SQ> >::type::col == (C? (T::WIDTH - 1) - COL : COL);
+        static const bool value = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::col == (C? (Board::WIDTH - 1) - COL : COL);
 };
 
-template<typename T, int FROM, int DEST>
+template<typename Board, int FROM, int DEST>
 class is_man_jump_group
 {
 private: 
         enum {
-                FROM_ROW = Square2Coordinates< Square<T, FROM> >::type::row,
-                DEST_ROW = Square2Coordinates< Square<T, DEST> >::type::row,
-                FROM_COL = Square2Coordinates< Square<T, FROM> >::type::col,
-                DEST_COL = Square2Coordinates< Square<T, DEST> >::type::col,
+                FROM_ROW = Square2Coordinates< Square<Board::ExternalGrid, FROM> >::type::row,
+                DEST_ROW = Square2Coordinates< Square<Board::ExternalGrid, DEST> >::type::row,
+                FROM_COL = Square2Coordinates< Square<Board::ExternalGrid, FROM> >::type::col,
+                DEST_COL = Square2Coordinates< Square<Board::ExternalGrid, DEST> >::type::col,
                 R1 = (FROM_ROW - DEST_ROW) % 4,
                 C1 = (FROM_COL - DEST_COL) % 4,
                 R2 = (R1 + 2) % 4,
@@ -60,18 +60,18 @@ public:
         ;
 };
 
-template<typename T, int I, int SQ>
+template<typename Board, int I, int SQ>
 class is_jumpable
 {
 private:
         enum {
                 OFFSET = Traits<I>::IS_DIAGONAL? 2 : 4,
                 ROW_MIN = Traits<I>::IS_UP? OFFSET : 0,
-                ROW_MAX = (T::HEIGHT - 1) - (Traits<I>::IS_DOWN? OFFSET : 0),
+                ROW_MAX = (Board::HEIGHT - 1) - (Traits<I>::IS_DOWN? OFFSET : 0),
                 COL_MIN = Traits<I>::IS_LEFT? OFFSET : 0,
-                COL_MAX = (T::WIDTH - 1) - (Traits<I>::IS_RIGHT? OFFSET : 0),
-                ROW = Square2Coordinates< Square<T, SQ> >::type::row,
-                COL = Square2Coordinates< Square<T, SQ> >::type::col
+                COL_MAX = (Board::WIDTH - 1) - (Traits<I>::IS_RIGHT? OFFSET : 0),
+                ROW = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::row,
+                COL = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::col
         };
 
 public:

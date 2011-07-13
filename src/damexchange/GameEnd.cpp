@@ -10,17 +10,17 @@ namespace damexchange {
 
 const std::string GameEnd::HEADER = "E";
 
-const bool GameEnd::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
+const bool GameEnd::REGISTERED = Parser<protocol_tag>::insert(HEADER, create);
 
-std::unique_ptr<MessageInterface> GameEnd::create(const std::string& msg)
+std::unique_ptr<MessageInterface> GameEnd::create(const std::string& message)
 {
-        return std::unique_ptr<GameEnd>(new GameEnd(msg));
+        return std::unique_ptr<GameEnd>(new GameEnd(message));
 }
 
-GameEnd::GameEnd(const std::string& msg)
+GameEnd::GameEnd(const std::string& message)
 :
-        reason_(static_cast<Reason>(boost::lexical_cast<size_t>(msg.substr(0, 1).c_str()))),
-        stop_code_(static_cast<StopCode>(boost::lexical_cast<size_t>(msg.substr(1, 1).c_str())))
+        reason_(static_cast<Reason>(boost::lexical_cast<size_t>(message.substr(0, 1).c_str()))),
+        stop_code_(static_cast<StopCode>(boost::lexical_cast<size_t>(message.substr(1, 1).c_str())))
 {
 }
 

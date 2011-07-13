@@ -429,15 +429,6 @@
     <ClInclude Include="src\board\Board.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="src\board\BoardMetaTemplates.h">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\board\BoardPredicates.h">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\board\Borders.h">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
     <ClInclude Include="src\board\Coordinates.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
@@ -448,12 +439,6 @@
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Board.hpp">
-      <Filter>Source Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\board\BoardMetaTemplates.hpp">
-      <Filter>Source Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\board\BoardPredicates.hpp">
       <Filter>Source Files\board</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Coordinates.hpp">
@@ -467,9 +452,6 @@
     </ClInclude>
     <ClInclude Include="src\rules\Variants.h">
       <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="src\board\Grid.hpp">
-      <Filter>Source Files\board</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Grid.h">
       <Filter>Header Files\board</Filter>
@@ -548,6 +530,27 @@
     </ClInclude>
     <ClInclude Include="src\damexchange\Connection.hpp">
       <Filter>Source Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Predicates.h">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\MetaTemplates.h">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Predicates.hpp">
+      <Filter>Source Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\MetaTemplates.hpp">
+      <Filter>Source Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Dimensions.h">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Dimensions.hpp">
+      <Filter>Source Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Structure.h">
+      <Filter>Header Files\board</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
