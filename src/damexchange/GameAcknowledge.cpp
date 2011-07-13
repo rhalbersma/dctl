@@ -4,13 +4,13 @@
 #include <boost/lexical_cast.hpp>
 #include "GameAcknowledge.h"
 #include "Parser.h"
+#include "Protocol.h"
 
 namespace damexchange {
-namespace layer2 {
 
 const std::string GameAcknowledge::HEADER = "A";
 
-const bool GameAcknowledge::REGISTERED = Parser::insert(HEADER, create);
+const bool GameAcknowledge::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
 
 std::unique_ptr<MessageInterface> GameAcknowledge::create(const std::string& msg)
 {
@@ -57,5 +57,4 @@ std::string GameAcknowledge::body(const std::string& n, AcceptanceCode a)
         return sstr.str();
 }
 
-}       // namespace layer2
 }       // namespace damexchange

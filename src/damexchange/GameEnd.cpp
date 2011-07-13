@@ -4,13 +4,13 @@
 #include <boost/lexical_cast.hpp>
 #include "GameEnd.h"
 #include "Parser.h"
+#include "Protocol.h"
 
 namespace damexchange {
-namespace layer2 {
 
 const std::string GameEnd::HEADER = "E";
 
-const bool GameEnd::REGISTERED = Parser::insert(HEADER, create);
+const bool GameEnd::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
 
 std::unique_ptr<MessageInterface> GameEnd::create(const std::string& msg)
 {
@@ -57,5 +57,4 @@ std::string GameEnd::body(Reason r, StopCode s)
         return sstr.str();
 }
 
-}       // namespace layer2
 }       // namespace damexchange

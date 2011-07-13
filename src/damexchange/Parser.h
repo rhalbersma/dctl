@@ -6,8 +6,8 @@
 #include "MessageInterface.h"
 
 namespace damexchange {
-namespace layer2 {
 
+template<typename Protocol>
 class Parser: private boost::noncopyable        // enforce singleton semantics
 {
 public:
@@ -24,5 +24,7 @@ private:
         static CreatorMap& instance();
 };
 
-}       // namespace layer2
 }       // namespace damexchange
+
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+#include "Parser.hpp"

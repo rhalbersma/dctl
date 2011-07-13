@@ -37,24 +37,6 @@
     <Filter Include="Source Files\hash\jenkins">
       <UniqueIdentifier>{13b7f98f-bb65-4c8f-8cc6-69c389586ac7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\DamExchange">
-      <UniqueIdentifier>{a7ba68ee-d99d-406a-aa4d-6d247f937916}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\DamExchange\Layer1">
-      <UniqueIdentifier>{feb2d2fc-d23e-4b31-a939-8c186a28fa83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\DamExchange\Layer2">
-      <UniqueIdentifier>{d4736d95-49ee-4c0d-a9c4-8791f89c17e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\DamExchange">
-      <UniqueIdentifier>{1f51466a-5cb9-4151-a65b-518885188d0c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\DamExchange\Layer1">
-      <UniqueIdentifier>{c16351fc-5332-4842-ae4d-d3bb21d57bda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\DamExchange\Layer2">
-      <UniqueIdentifier>{6a469d45-45ea-4ba1-9c33-1530a85671bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Tree">
       <UniqueIdentifier>{5f64f8a6-f373-41d8-8b4a-b42fccb05f78}</UniqueIdentifier>
     </Filter>
@@ -117,6 +99,12 @@
     </Filter>
     <Filter Include="Source Files\board">
       <UniqueIdentifier>{2c7fb852-223e-4548-8a1e-e0444f2a340b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\damexchange">
+      <UniqueIdentifier>{1f51466a-5cb9-4151-a65b-518885188d0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\damexchange">
+      <UniqueIdentifier>{a7ba68ee-d99d-406a-aa4d-6d247f937916}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -222,33 +210,6 @@
     <ClInclude Include="src\Utilities\DeBruijn.hpp">
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer1\Scanner.h">
-      <Filter>Header Files\DamExchange\Layer1</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer2\Move.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer2\Parser.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer2\BackAcknowledge.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer2\BackRequest.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer2\Chat.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer2\GameAcknowledge.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer2\GameEnd.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer2\GameRequest.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
-    </ClInclude>
     <ClInclude Include="src\Tree\Statistics.h">
       <Filter>Header Files\Tree</Filter>
     </ClInclude>
@@ -269,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="src\tree\search\Root.hpp">
       <Filter>Source Files\Tree\Search</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer1\Session.h">
-      <Filter>Header Files\DamExchange\Layer1</Filter>
     </ClInclude>
     <ClInclude Include="src\Utilities\Shift.h">
       <Filter>Header Files\Utilities</Filter>
@@ -392,9 +350,6 @@
     </ClInclude>
     <ClInclude Include="src\Utilities\Timer.h">
       <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DamExchange\Layer2\MessageInterface.h">
-      <Filter>Header Files\DamExchange\Layer2</Filter>
     </ClInclude>
     <ClInclude Include="src\Tree\Generate\TemplateMethodInterface.h">
       <Filter>Header Files\Tree\Generate</Filter>
@@ -549,6 +504,51 @@
     <ClInclude Include="src\board\Angle.hpp">
       <Filter>Source Files\board</Filter>
     </ClInclude>
+    <ClInclude Include="src\damexchange\MessageInterface.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\Move.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\Parser.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\BackAcknowledge.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\BackRequest.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\Chat.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\Connection.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\GameAcknowledge.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\GameEnd.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\GameRequest.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\Scanner.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\Protocol.h">
+      <Filter>Header Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\Parser.hpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\Scanner.hpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\damexchange\Connection.hpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Utilities\UniqueNumber.cpp">
@@ -569,33 +569,6 @@
     <ClCompile Include="src\Utilities\DeBruijn.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer2\BackAcknowledge.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer2\BackRequest.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer2\Chat.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer2\GameAcknowledge.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer2\GameEnd.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer2\GameRequest.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer2\Move.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer2\Parser.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer1\Scanner.cpp">
-      <Filter>Source Files\DamExchange\Layer1</Filter>
-    </ClCompile>
     <ClCompile Include="src\Tree\Statistics.cpp">
       <Filter>Source Files\Tree</Filter>
     </ClCompile>
@@ -607,9 +580,6 @@
     </ClCompile>
     <ClCompile Include="src\Tree\Search\Root.cpp">
       <Filter>Source Files\Tree\Search</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer1\Session.cpp">
-      <Filter>Source Files\DamExchange\Layer1</Filter>
     </ClCompile>
     <ClCompile Include="src\Tree\Search\Entry.cpp">
       <Filter>Source Files\Tree\Search</Filter>
@@ -623,9 +593,6 @@
     <ClCompile Include="src\Utilities\Timer.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="src\DamExchange\Layer2\MessageInterface.cpp">
-      <Filter>Source Files\DamExchange\Layer2</Filter>
-    </ClCompile>
     <ClCompile Include="src\Tree\Search\Score.cpp">
       <Filter>Source Files\Tree\Search</Filter>
     </ClCompile>
@@ -634,6 +601,30 @@
     </ClCompile>
     <ClCompile Include="src\Tree\Node\Predicates.cpp">
       <Filter>Source Files\Tree\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\damexchange\BackAcknowledge.cpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\damexchange\BackRequest.cpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\damexchange\Chat.cpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\damexchange\GameAcknowledge.cpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\damexchange\GameEnd.cpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\damexchange\GameRequest.cpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\damexchange\MessageInterface.cpp">
+      <Filter>Source Files\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\damexchange\Move.cpp">
+      <Filter>Source Files\damexchange</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

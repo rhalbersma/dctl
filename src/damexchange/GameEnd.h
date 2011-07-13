@@ -4,7 +4,6 @@
 #include "MessageInterface.h"
 
 namespace damexchange {
-namespace layer2 {
 
 class GameEnd: public MessageInterface
 {
@@ -36,5 +35,4 @@ private:
         StopCode stop_code_;
 };
 
-}       // namespace layer2
 }       // namespace damexchange

@@ -4,13 +4,13 @@
 #include <boost/lexical_cast.hpp>
 #include "Move.h"
 #include "Parser.h"
+#include "Protocol.h"
 
 namespace damexchange {
-namespace layer2 {
 
 const std::string Move::HEADER = "M";
 
-const bool Move::REGISTERED = Parser::insert(HEADER, create);
+const bool Move::REGISTERED = Parser<DXP_tag>::insert(HEADER, create);
 
 std::unique_ptr<MessageInterface> Move::create(const std::string& msg)
 {
@@ -80,5 +80,4 @@ std::string Move::body(int s, int f, int d, int n, const std::vector<int>& c)
         return sstr.str();
 }
 
-}       // namespace layer2
 }       // namespace damexchange
