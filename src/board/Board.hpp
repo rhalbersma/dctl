@@ -120,7 +120,7 @@ const BitBoard Board<Dimensions, Structure>::JUMPABLE[] = {
 };
 
 template<typename Dimensions, typename Structure>
-const int Board<Dimensions, Structure>::DIRECTION[] = {
+const int Board<Dimensions, Structure>::SHIFT[] = {
         InternalGrid::RIGHT,
         InternalGrid::RIGHT_UP,
         InternalGrid::UP,
@@ -132,43 +132,73 @@ const int Board<Dimensions, Structure>::DIRECTION[] = {
 };
 
 template<typename Dimensions, typename Structure>
-const int Board<Dimensions, Structure>::TABLE_SQUARE2BIT[] = {
-        square2bit<B,  0>::value, square2bit<B,  1>::value, square2bit<B,  2>::value, square2bit<B,  3>::value,
-        square2bit<B,  4>::value, square2bit<B,  5>::value, square2bit<B,  6>::value, square2bit<B,  7>::value,
-        square2bit<B,  8>::value, square2bit<B,  9>::value, square2bit<B, 10>::value, square2bit<B, 11>::value,
-        square2bit<B, 12>::value, square2bit<B, 13>::value, square2bit<B, 14>::value, square2bit<B, 15>::value,
-        square2bit<B, 16>::value, square2bit<B, 17>::value, square2bit<B, 18>::value, square2bit<B, 19>::value,
-        square2bit<B, 20>::value, square2bit<B, 21>::value, square2bit<B, 22>::value, square2bit<B, 23>::value,
-        square2bit<B, 24>::value, square2bit<B, 25>::value, square2bit<B, 26>::value, square2bit<B, 27>::value,
-        square2bit<B, 28>::value, square2bit<B, 29>::value, square2bit<B, 30>::value, square2bit<B, 31>::value,
-        square2bit<B, 32>::value, square2bit<B, 33>::value, square2bit<B, 34>::value, square2bit<B, 35>::value,
-        square2bit<B, 36>::value, square2bit<B, 37>::value, square2bit<B, 38>::value, square2bit<B, 39>::value,
-        square2bit<B, 40>::value, square2bit<B, 41>::value, square2bit<B, 42>::value, square2bit<B, 43>::value,
-        square2bit<B, 44>::value, square2bit<B, 45>::value, square2bit<B, 46>::value, square2bit<B, 47>::value,
-        square2bit<B, 48>::value, square2bit<B, 49>::value, square2bit<B, 50>::value, square2bit<B, 51>::value,
-        square2bit<B, 52>::value, square2bit<B, 53>::value, square2bit<B, 54>::value, square2bit<B, 55>::value,
-        square2bit<B, 56>::value, square2bit<B, 57>::value, square2bit<B, 58>::value, square2bit<B, 59>::value,
-        square2bit<B, 60>::value, square2bit<B, 61>::value, square2bit<B, 62>::value, square2bit<B, 63>::value
+bool Board<Dimensions, Structure>::is_valid(int sq)
+{
+        return sq >= begin() && sq < end();
+}
+
+template<typename Dimensions, typename Structure>
+int Board<Dimensions, Structure>::begin()
+{
+        return 0;
+}
+
+template<typename Dimensions, typename Structure>
+int Board<Dimensions, Structure>::end()
+{
+        return ExternalGrid::SIZE;
+}
+
+template<typename Dimensions, typename Structure>
+int Board<Dimensions, Structure>::square2bit(int sq)
+{
+        return SQUARE2BIT[sq];
+}
+
+template<typename Dimensions, typename Structure>
+int Board<Dimensions, Structure>::bit2square(int b)
+{
+        return BIT2SQUARE[b];
+}
+
+template<typename Dimensions, typename Structure>
+const int Board<Dimensions, Structure>::SQUARE2BIT[] = {
+        square_to_bit<B,  0>::value, square_to_bit<B,  1>::value, square_to_bit<B,  2>::value, square_to_bit<B,  3>::value,
+        square_to_bit<B,  4>::value, square_to_bit<B,  5>::value, square_to_bit<B,  6>::value, square_to_bit<B,  7>::value,
+        square_to_bit<B,  8>::value, square_to_bit<B,  9>::value, square_to_bit<B, 10>::value, square_to_bit<B, 11>::value,
+        square_to_bit<B, 12>::value, square_to_bit<B, 13>::value, square_to_bit<B, 14>::value, square_to_bit<B, 15>::value,
+        square_to_bit<B, 16>::value, square_to_bit<B, 17>::value, square_to_bit<B, 18>::value, square_to_bit<B, 19>::value,
+        square_to_bit<B, 20>::value, square_to_bit<B, 21>::value, square_to_bit<B, 22>::value, square_to_bit<B, 23>::value,
+        square_to_bit<B, 24>::value, square_to_bit<B, 25>::value, square_to_bit<B, 26>::value, square_to_bit<B, 27>::value,
+        square_to_bit<B, 28>::value, square_to_bit<B, 29>::value, square_to_bit<B, 30>::value, square_to_bit<B, 31>::value,
+        square_to_bit<B, 32>::value, square_to_bit<B, 33>::value, square_to_bit<B, 34>::value, square_to_bit<B, 35>::value,
+        square_to_bit<B, 36>::value, square_to_bit<B, 37>::value, square_to_bit<B, 38>::value, square_to_bit<B, 39>::value,
+        square_to_bit<B, 40>::value, square_to_bit<B, 41>::value, square_to_bit<B, 42>::value, square_to_bit<B, 43>::value,
+        square_to_bit<B, 44>::value, square_to_bit<B, 45>::value, square_to_bit<B, 46>::value, square_to_bit<B, 47>::value,
+        square_to_bit<B, 48>::value, square_to_bit<B, 49>::value, square_to_bit<B, 50>::value, square_to_bit<B, 51>::value,
+        square_to_bit<B, 52>::value, square_to_bit<B, 53>::value, square_to_bit<B, 54>::value, square_to_bit<B, 55>::value,
+        square_to_bit<B, 56>::value, square_to_bit<B, 57>::value, square_to_bit<B, 58>::value, square_to_bit<B, 59>::value,
+        square_to_bit<B, 60>::value, square_to_bit<B, 61>::value, square_to_bit<B, 62>::value, square_to_bit<B, 63>::value
 };
 
 template<typename Dimensions, typename Structure>
-const int Board<Dimensions, Structure>::TABLE_BIT2SQUARE[] = {
-        bit2square<B,  0>::value, bit2square<B,  1>::value, bit2square<B,  2>::value, bit2square<B,  3>::value,
-        bit2square<B,  4>::value, bit2square<B,  5>::value, bit2square<B,  6>::value, bit2square<B,  7>::value,
-        bit2square<B,  8>::value, bit2square<B,  9>::value, bit2square<B, 10>::value, bit2square<B, 11>::value,
-        bit2square<B, 12>::value, bit2square<B, 13>::value, bit2square<B, 14>::value, bit2square<B, 15>::value,
-        bit2square<B, 16>::value, bit2square<B, 17>::value, bit2square<B, 18>::value, bit2square<B, 19>::value,
-        bit2square<B, 20>::value, bit2square<B, 21>::value, bit2square<B, 22>::value, bit2square<B, 23>::value,
-        bit2square<B, 24>::value, bit2square<B, 25>::value, bit2square<B, 26>::value, bit2square<B, 27>::value,
-        bit2square<B, 28>::value, bit2square<B, 29>::value, bit2square<B, 30>::value, bit2square<B, 31>::value,
-        bit2square<B, 32>::value, bit2square<B, 33>::value, bit2square<B, 34>::value, bit2square<B, 35>::value,
-        bit2square<B, 36>::value, bit2square<B, 37>::value, bit2square<B, 38>::value, bit2square<B, 39>::value,
-        bit2square<B, 40>::value, bit2square<B, 41>::value, bit2square<B, 42>::value, bit2square<B, 43>::value,
-        bit2square<B, 44>::value, bit2square<B, 45>::value, bit2square<B, 46>::value, bit2square<B, 47>::value,
-        bit2square<B, 48>::value, bit2square<B, 49>::value, bit2square<B, 50>::value, bit2square<B, 51>::value,
-        bit2square<B, 52>::value, bit2square<B, 53>::value, bit2square<B, 54>::value, bit2square<B, 55>::value,
-        bit2square<B, 56>::value, bit2square<B, 57>::value, bit2square<B, 58>::value, bit2square<B, 59>::value,
-        bit2square<B, 60>::value, bit2square<B, 61>::value, bit2square<B, 62>::value, bit2square<B, 63>::value
+const int Board<Dimensions, Structure>::BIT2SQUARE[] = {
+        bit_to_square<B,  0>::value, bit_to_square<B,  1>::value, bit_to_square<B,  2>::value, bit_to_square<B,  3>::value,
+        bit_to_square<B,  4>::value, bit_to_square<B,  5>::value, bit_to_square<B,  6>::value, bit_to_square<B,  7>::value,
+        bit_to_square<B,  8>::value, bit_to_square<B,  9>::value, bit_to_square<B, 10>::value, bit_to_square<B, 11>::value,
+        bit_to_square<B, 12>::value, bit_to_square<B, 13>::value, bit_to_square<B, 14>::value, bit_to_square<B, 15>::value,
+        bit_to_square<B, 16>::value, bit_to_square<B, 17>::value, bit_to_square<B, 18>::value, bit_to_square<B, 19>::value,
+        bit_to_square<B, 20>::value, bit_to_square<B, 21>::value, bit_to_square<B, 22>::value, bit_to_square<B, 23>::value,
+        bit_to_square<B, 24>::value, bit_to_square<B, 25>::value, bit_to_square<B, 26>::value, bit_to_square<B, 27>::value,
+        bit_to_square<B, 28>::value, bit_to_square<B, 29>::value, bit_to_square<B, 30>::value, bit_to_square<B, 31>::value,
+        bit_to_square<B, 32>::value, bit_to_square<B, 33>::value, bit_to_square<B, 34>::value, bit_to_square<B, 35>::value,
+        bit_to_square<B, 36>::value, bit_to_square<B, 37>::value, bit_to_square<B, 38>::value, bit_to_square<B, 39>::value,
+        bit_to_square<B, 40>::value, bit_to_square<B, 41>::value, bit_to_square<B, 42>::value, bit_to_square<B, 43>::value,
+        bit_to_square<B, 44>::value, bit_to_square<B, 45>::value, bit_to_square<B, 46>::value, bit_to_square<B, 47>::value,
+        bit_to_square<B, 48>::value, bit_to_square<B, 49>::value, bit_to_square<B, 50>::value, bit_to_square<B, 51>::value,
+        bit_to_square<B, 52>::value, bit_to_square<B, 53>::value, bit_to_square<B, 54>::value, bit_to_square<B, 55>::value,
+        bit_to_square<B, 56>::value, bit_to_square<B, 57>::value, bit_to_square<B, 58>::value, bit_to_square<B, 59>::value,
+        bit_to_square<B, 60>::value, bit_to_square<B, 61>::value, bit_to_square<B, 62>::value, bit_to_square<B, 63>::value
 };
 
 }       // namespace board

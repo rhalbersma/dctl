@@ -3,7 +3,6 @@
 #include <string>
 
 namespace board {
-namespace layout {
 
 template
 <
@@ -18,13 +17,10 @@ struct write: public std::unary_function<void, std::string>
         std::string operator()(F) const;
 };
 
-template<typename> bool bit2square(size_t);
-template<typename> bool is_valid(size_t);
-template<typename> bool is_end_row(size_t);
-template<typename> bool is_indent_row(size_t);
+template<typename> bool is_end_row(int);
+template<typename> bool is_indent_row(int);
 
-}       // namespace layout
-}       // namespace tree
+}       // namespace board
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Layout.hpp"

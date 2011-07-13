@@ -10,8 +10,9 @@ template
         typename Dimensions,                                    // height, width and parity
         typename Structure = Structure<>                        // DMZ, ghosts and internal rotation
 >
-struct Board: public Dimensions, public Structure
+class Board: public Dimensions, public Structure
 {
+public:
         // reflection on template parameters
         typedef Board<Dimensions, Structure> B;
 
@@ -33,11 +34,18 @@ struct Board: public Dimensions, public Structure
         static const BitBoard JUMPABLE[];                       // squares from which a jump is possible in a direction
 
         // arrays of directions
-        static const int DIRECTION[];                           // the bitwise shifts for all 8 directions
+        static const int SHIFT[];                               // the bitwise shifts for all 8 directions
 
+        static bool is_valid(int);
+        static int begin();
+        static int end();
+        static int square2bit(int);
+        static int bit2square(int);
+
+private:
         // square to bit and bit to square conversion tables
-        static const int TABLE_SQUARE2BIT[];                    // convert a square to a bit
-        static const int TABLE_BIT2SQUARE[];                    // convert a bit to a square
+        static const int SQUARE2BIT[];                          // convert a square to a bit
+        static const int BIT2SQUARE[];                          // convert a bit to a square
 };
 
 }       // namespace board

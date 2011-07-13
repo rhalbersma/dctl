@@ -21,10 +21,10 @@ template<typename, int, int>
 class is_jumpable;
 
 template<typename, int>
-class square2bit;
+class square_to_bit;
 
 template<typename, int>
-class bit2square;
+class bit_to_square;
 
 }       // namespace board
 

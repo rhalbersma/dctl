@@ -51,29 +51,29 @@ struct ShiftAssign<R>
 template<typename Board, size_t Index> template<typename T> 
 T Push<Board, Index>::operator()(T square) const
 {
-        return Shift<board::Traits<Index>::IS_POSITIVE>()(square, Board::DIRECTION[Index]);
+        return Shift<board::Traits<Index>::IS_POSITIVE>()(square, Board::SHIFT[Index]);
 }
 
 template<typename Board, size_t Index> template<typename T> 
 T Pull<Board, Index>::operator()(T square) const
 {
-        return Shift<board::Traits<Index>::IS_NEGATIVE>()(square, Board::DIRECTION[Index]);
+        return Shift<board::Traits<Index>::IS_NEGATIVE>()(square, Board::SHIFT[Index]);
 }
 
 template<typename Board, size_t Index> template<typename T> 
 void PushAssign<Board, Index>::operator()(T& square) const
 {
-        ShiftAssign<board::Traits<Index>::IS_POSITIVE>()(square, Board::DIRECTION[Index]);
+        ShiftAssign<board::Traits<Index>::IS_POSITIVE>()(square, Board::SHIFT[Index]);
 }
 
 template<typename Board, size_t Index> template<typename T> 
 void PullAssign<Board, Index>::operator()(T& square) const
 {
-        ShiftAssign<board::Traits<Index>::IS_NEGATIVE>()(square, Board::DIRECTION[Index]);
+        ShiftAssign<board::Traits<Index>::IS_NEGATIVE>()(square, Board::SHIFT[Index]);
 }
 
 template<typename Board, size_t Index> template<typename T> 
 T FloodFill<Board, Index>::operator()(T generator, T propagator) const
 {
-        return bit::flood_fill<board::Traits<Index>::IS_POSITIVE>(generator, propagator, Board::DIRECTION[Index]);
+        return bit::flood_fill<board::Traits<Index>::IS_POSITIVE>(generator, propagator, Board::SHIFT[Index]);
 }
