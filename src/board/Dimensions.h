@@ -4,9 +4,9 @@ namespace board {
 
 template
 <
-        int H,  // height
-        int W,  // width
-        bool P  // parity (== start at top-left square)
+        int H,          // height
+        int W,          // width
+        bool P = false  // parity (== start at top-left square)
 >
 struct Dimensions
 {

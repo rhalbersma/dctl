@@ -69,8 +69,8 @@ struct read<Board, FEN_tag, Token>
                                 if (isdigit(ch)) {
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
-			                assert(board::layout::is_valid<Board>(sq - 1)); 
-                                        b = Board::TABLE_SQUARE2BIT[sq - 1];    // convert square to bit
+			                assert(Board::is_valid(sq - 1)); 
+                                        b = Board::square2bit(sq - 1);          // convert square to bit
 			                bb = BitBoard(1) << b;                  // create bitboard
                                         p_pieces[setup_color] ^= bb;
                                         if (setup_kings)
@@ -105,7 +105,7 @@ struct write<FEN_tag, Token>
 			        if (p.kings() & bit::get_first(bb))
 				        sstr << Token::KING;			// king tag
                                 b = bit::find_first(bb);                        // bit index                        
-			        sstr << Board::TABLE_BIT2SQUARE[b] + 1;	        // square number
+			        sstr << Board::bit2square(b) + 1;	        // square number
 			        if (bit::is_multiple(bb))                       // still pieces remaining
 				        sstr << Token::COMMA;			// comma separator
 		        }
@@ -134,8 +134,8 @@ struct read<Board, damexchange::protocol_tag, Token>
 
 	        BitBoard bb;
                 size_t b;
-                for (auto sq = 0; board::layout::is_valid<Board>(sq); ++sq) {
-                        b = Board::TABLE_SQUARE2BIT[sq];        // convert square to bit
+                for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
+                        b = Board::square2bit(sq);              // convert square to bit
 		        bb = BitBoard(1) << b;                  // create bitboard
 		        sstr >> ch;
 		        switch(toupper(ch)) {
@@ -164,11 +164,9 @@ struct write<damexchange::protocol_tag, Token>
         std::string operator()(const Position<Board>& p) const
         {
 	        std::stringstream sstr;
-	        size_t b;
-
 	        sstr << write_color<Token>(p.to_move());		// side to move
-	        for (auto sq = 0; board::layout::is_valid<Board>(sq); ++sq) {
-		        b = Board::TABLE_SQUARE2BIT[sq];                // convert square to bit
+	        for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
+		        auto b = Board::square2bit(sq);                 // convert square to bit
 		        sstr << bitContent<Board, Token>()(p, b);       // bit content
 	        }
 	        return sstr.str();

@@ -1,9 +1,9 @@
 #include <functional>
 #include <iomanip>
 #include <sstream>
+#include "Board.h"
 
 namespace board {
-namespace layout {
 
 static const char WHITE_SPACE = ' ';
 
@@ -23,7 +23,7 @@ struct write<Board, Square_tag>
         {
 	        std::stringstream sstr;
 
-                for (auto sq = 0; is_valid<Board>(sq); ++sq) {
+                for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
                         if (is_indent_row<Board>(sq))
                                 sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 
@@ -52,26 +52,14 @@ struct write<Board, Bit_tag>
         template<typename Functor>
         std::string operator()(Functor f) const
         {
-	        return write<Board, Square_tag>()(std::bind(f, std::bind(square2bit<Board>, std::placeholders::_1)));
+	        return write<Board, Square_tag>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
         }
 };
 
 template<typename Board>
-size_t square2bit(size_t sq)
+bool is_end_row(int sq)
 {
-        return Board::TABLE_SQUARE2BIT[sq];
-}
-
-template<typename Board>
-bool is_valid(size_t sq)
-{
-        return sq < Board::ExternalGrid::SIZE;
-}
-
-template<typename Board>
-bool is_end_row(size_t sq)
-{
-        const size_t r = sq % Board::ExternalGrid::MODULO;              // sq = MODULO * q + r 
+        const auto r = sq % Board::ExternalGrid::MODULO;                // sq = MODULO * q + r 
         const bool end_RE = r == Board::ExternalGrid::EDGE_RE;          // right of even rows
         const bool end_RO = r == Board::ExternalGrid::EDGE_RO;          // right of odd rows
 
@@ -79,14 +67,13 @@ bool is_end_row(size_t sq)
 }
 
 template<typename Board>
-bool is_indent_row(size_t sq)
+bool is_indent_row(int sq)
 {
-        const size_t r = sq % Board::ExternalGrid::MODULO;              // sq = MODULO * q + r 
+        const auto r = sq % Board::ExternalGrid::MODULO;                // sq = MODULO * q + r 
         const bool indent_LE = r == Board::ExternalGrid::EDGE_LE;       // left of even rows
         const bool indent_LO = r == Board::ExternalGrid::EDGE_LO;       // left of odd rows
 
         return Board::PARITY? indent_LO : indent_LE;
 }
 
-}       // namespace layout
 }       // namespace board

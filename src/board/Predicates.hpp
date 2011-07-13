@@ -85,7 +85,7 @@ public:
 };
 
 template<typename Board, int SQ>
-class square2bit
+class square_to_bit
 {
 private:
         typedef typename Board::ExternalGrid E;
@@ -103,7 +103,7 @@ public:
 };
 
 template<typename Board, int B>
-class bit2square
+class bit_to_square
 {
 private:
         typedef typename Board::InternalGrid I;

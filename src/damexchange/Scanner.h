@@ -20,8 +20,8 @@ private:
         bool invariant() const;
 
         // implementation
-        static const size_t HEADER_LENGTH = header_length<Protocol>::value;
-        static const size_t MAX_BODY_LENGTH = max_body_length<Protocol>::value;
+        static const int HEADER_LENGTH = header_length<Protocol>::value;
+        static const int MAX_BODY_LENGTH = max_body_length<Protocol>::value;
 
         // representation
         std::string message_;
