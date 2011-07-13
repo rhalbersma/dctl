@@ -106,6 +106,9 @@
     <Filter Include="Source Files\damexchange">
       <UniqueIdentifier>{a7ba68ee-d99d-406a-aa4d-6d247f937916}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\pdn">
+      <UniqueIdentifier>{4d128ee8-be72-482e-906f-b825b53bd96e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Utilities\UniqueNumber.h">
@@ -629,5 +632,13 @@
     <ClCompile Include="src\damexchange\Move.cpp">
       <Filter>Source Files\damexchange</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="parser.y">
+      <Filter>Source Files\pdn</Filter>
+    </None>
+    <None Include="src\pdn\tokens.l">
+      <Filter>Source Files\pdn</Filter>
+    </None>
   </ItemGroup>
 </Project>

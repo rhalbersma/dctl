@@ -46,7 +46,7 @@ std::string BackAcknowledge::body() const
 std::string BackAcknowledge::body(AcceptanceCode a)
 {
         std::stringstream sstr;
-        sstr << std::setw( 1) << a;
+        sstr << std::setw(1) << a;
         return sstr.str();
 }
 
