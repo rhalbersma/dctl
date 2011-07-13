@@ -308,6 +308,10 @@
     <ClCompile Include="src\Utilities\Timer.cpp" />
     <ClCompile Include="src\Utilities\UniqueNumber.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="parser.y" />
+    <None Include="src\pdn\tokens.l" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
