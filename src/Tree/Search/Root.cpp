@@ -4,12 +4,15 @@
 #include "Root.h"
 #include "../../Utilities/UniqueNumber.h"
 
-tree::search::Root::TranspositionTable tree::search::Root::TT(0);
-tree::Statistics tree::search::Root::statistics_;
-bool tree::search::Root::interrupted_ = false;
+namespace tree {
+namespace search {
+
+Root::TranspositionTable Root::TT(0);
+Statistics Root::statistics_;
+bool Root::interrupted_ = false;
 
 // UCI format
-void tree::search::Root::report(int depth, int value, const Timer& timer)
+void Root::report(int depth, int value, const Timer& timer)
 {
         std::cout << "info";
 
@@ -39,7 +42,7 @@ void tree::search::Root::report(int depth, int value, const Timer& timer)
 
 /*
 // Winboard format
-void tree::search::Root::report(int depth, int value, const Timer& timer)
+void Root::report(int depth, int value, const Timer& timer)
 {
         std::cout << std::setw( 2) << std::right << depth;
 
@@ -53,33 +56,36 @@ void tree::search::Root::report(int depth, int value, const Timer& timer)
 }
 */
 
-void tree::search::Root::identity_permutation(node::Order& permutation)
+void Root::identity_permutation(node::Order& permutation)
 {
         UniqueNumber unique_number;
         std::generate(permutation.begin(), permutation.end(), unique_number);
 }
 
-bool tree::search::Root::is_PV(int node)
+bool Root::is_PV(int node)
 {
         return node == PV;
 }
 
-void tree::search::Root::resize_hash(size_t s)
+void Root::resize_hash(size_t s)
 {
         return TT.resize(s);
 }
 
-void tree::search::Root::clear_hash()
+void Root::clear_hash()
 {
         return TT.clear();
 }
 
-void tree::search::Root::interrupt()
+void Root::interrupt()
 {
         interrupted_ = true;
 }
 
-bool tree::search::Root::is_interrupted()
+bool Root::is_interrupted()
 {
         return interrupted_;
 }
+
+}       // namespace search
+}       // namespace tree

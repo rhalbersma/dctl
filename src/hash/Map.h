@@ -1,9 +1,6 @@
 #pragma once
 #include <utility>
 #include <vector>
-
-#include <boost/utility.hpp>
-
 #include "Algorithms.h"
 #include "Replace.h"
 #include "../Utilities/CacheAlign.h"
@@ -20,7 +17,7 @@ template
         typename Index = HashIndex,
         typename Replace = EmptyOldUnderCutShallowestOfN
 >
-class Map: public boost::noncopyable
+class Map
 {
 public:
         // constructors

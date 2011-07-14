@@ -2,10 +2,13 @@
 #include <iostream>
 #include "Root.h"
 
-tree::walk::Root::TranspositionTable tree::walk::Root::TT(1);
-tree::Statistics tree::walk::Root::statistics_;
+namespace tree {
+namespace walk {
 
-void tree::walk::Root::report(int depth, NodeCount leafs, const Timer& timer)
+Root::TranspositionTable Root::TT(1);
+Statistics Root::statistics_;
+
+void Root::report(int depth, NodeCount leafs, const Timer& timer)
 {
         std::cout << "info";
 
@@ -33,28 +36,31 @@ void tree::walk::Root::report(int depth, NodeCount leafs, const Timer& timer)
         std::cout << std::endl;
 }
 
-void tree::walk::Root::summary()
+void Root::summary()
 {
         std::cout << std::endl;
 }
 
-void tree::walk::Root::summary(NodeCount leafs)
+void Root::summary(NodeCount leafs)
 {
         std::cout << std::endl << "Total leafs: " << leafs << std::endl;
         std::cout << std::endl;
 }
 
-void tree::walk::Root::print_move(const std::string& move, int i)
+void Root::print_move(const std::string& move, int i)
 {
         std::cout << std::setw(2) << (i + 1) << "." << move << " ";
 }
 
-void tree::walk::Root::resize_hash(size_t s)
+void Root::resize_hash(size_t s)
 {
         return TT.resize(s);
 }
 
-void tree::walk::Root::clear_hash()
+void Root::clear_hash()
 {
         return TT.clear();
 }
+
+}       // namespace walk
+}       // namespace tree

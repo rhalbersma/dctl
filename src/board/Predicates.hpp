@@ -40,12 +40,13 @@ struct is_col_mask
 template<typename Board, int FROM, int DEST>
 class is_man_jump_group
 {
-private: 
+private:
+        typedef typename Board::ExternalGrid Grid;
         enum {
-                FROM_ROW = Square2Coordinates< Square<Board::ExternalGrid, FROM> >::type::row,
-                DEST_ROW = Square2Coordinates< Square<Board::ExternalGrid, DEST> >::type::row,
-                FROM_COL = Square2Coordinates< Square<Board::ExternalGrid, FROM> >::type::col,
-                DEST_COL = Square2Coordinates< Square<Board::ExternalGrid, DEST> >::type::col,
+                FROM_ROW = Square2Coordinates< Square<Grid, FROM> >::type::row,
+                DEST_ROW = Square2Coordinates< Square<Grid, DEST> >::type::row,
+                FROM_COL = Square2Coordinates< Square<Grid, FROM> >::type::col,
+                DEST_COL = Square2Coordinates< Square<Grid, DEST> >::type::col,
                 R1 = (FROM_ROW - DEST_ROW) % 4,
                 C1 = (FROM_COL - DEST_COL) % 4,
                 R2 = (R1 + 2) % 4,
@@ -55,8 +56,8 @@ private:
 public:
         // a diagonal or orthogonal man capture between square <FROM> and square <DEST> is possible if 
         static const bool value =
-        	(!R1 && !C1) || // row AND column numbers difference == 0 mod 4 (even number of captures)
-                (!R2 && !C2)    // row AND column numbers difference == 2 mod 4 (odd number of captures)
+        	(!R1 && !C1) || // BOTH row AND column numbers difference == 0 mod 4 (even number of captures)
+                (!R2 && !C2)    // BOTH row AND column numbers difference == 2 mod 4 (odd number of captures)
         ;
 };
 
@@ -64,23 +65,22 @@ template<typename Board, int I, int SQ>
 class is_jumpable
 {
 private:
+        typedef typename Board::ExternalGrid Grid;
         enum {
                 OFFSET = is_diagonal<I>::value? 2 : 4,
                 ROW_MIN = is_up<I>::value? OFFSET : 0,
                 ROW_MAX = (Board::HEIGHT - 1) - (is_down<I>::value? OFFSET : 0),
                 COL_MIN = is_left<I>::value? OFFSET : 0,
                 COL_MAX = (Board::WIDTH - 1) - (is_right<I>::value? OFFSET : 0),
-                ROW = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::row,
-                COL = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::col
+                ROW = Square2Coordinates< Square<Grid, SQ> >::type::row,
+                COL = Square2Coordinates< Square<Grid, SQ> >::type::col
         };
 
 public:
         // a jump in direction <I> is possible if square <SQ> is within OFFSET of the edges being approached
         static const bool value =
-	        (ROW >= ROW_MIN) &&
-		(ROW <= ROW_MAX) &&
-		(COL >= COL_MIN) &&
-		(COL <= COL_MAX)
+	        (ROW >= ROW_MIN) && (ROW <= ROW_MAX) &&
+		(COL >= COL_MIN) && (COL <= COL_MAX)
 	;
 };
 
