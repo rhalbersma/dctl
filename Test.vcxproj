@@ -132,13 +132,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\DamExchange\Layer2\Parser.cpp" />
-    <ClCompile Include="Source\test_main.cpp" />
-    <ClCompile Include="Source\Tree\Generate\Successors.cpp" />
-    <ClCompile Include="Source\Tree\Search\Root.cpp" />
-    <ClCompile Include="Source\Tree\Search\Score.cpp" />
-    <ClCompile Include="Source\Tree\Walk\Root.cpp" />
-    <ClCompile Include="Source\Utilities\Bit.cpp" />
+    <ClCompile Include="src\damexchange\Parser.cpp" />
+    <ClCompile Include="src\test_main.cpp" />
+    <ClCompile Include="src\Tree\Generate\Successors.cpp" />
+    <ClCompile Include="src\Tree\Search\Root.cpp" />
+    <ClCompile Include="src\Tree\Search\Score.cpp" />
+    <ClCompile Include="src\Tree\Walk\Root.cpp" />
+    <ClCompile Include="src\Utilities\Bit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.vcxproj">
@@ -146,7 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\test_config.h" />
+    <ClInclude Include="src\test_config.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

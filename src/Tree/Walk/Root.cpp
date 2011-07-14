@@ -49,8 +49,8 @@ protected:
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 TEST_F(Perft, International)
 {
-        std::cout << board::layout::write<board::International, board::layout::Square_tag>()() << std::endl;
-        std::cout << board::layout::write<board::International, board::layout::Bit_tag>()() << std::endl;
+        std::cout << board::write<board::International, board::Square_tag>()() << std::endl;
+        std::cout << board::write<board::International, board::Bit_tag>()() << std::endl;
 
         node::Position<board::International> i10 = node::Position<board::International>::initial();
         Root::clear_hash();
@@ -69,22 +69,22 @@ TEST_F(Perft, International)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=3014
 TEST_F(Perft, Rectangular)
 {
-        std::cout << board::layout::write<board::Spantsireti, board::layout::Square_tag>()() << std::endl;
-        std::cout << board::layout::write<board::Spantsireti, board::layout::Bit_tag>()() << std::endl;
+        std::cout << board::write<board::Spantsireti, board::Square_tag>()() << std::endl;
+        std::cout << board::write<board::Spantsireti, board::Bit_tag>()() << std::endl;
 
         node::Position<board::Spantsireti> iS = node::Position<board::Spantsireti>::initial();
         Root::clear_hash();
         Root::perft<rules::International>(iS, 9);
 
-        std::cout << board::layout::write<board::Ktar11, board::layout::Square_tag>()() << std::endl;
-        std::cout << board::layout::write<board::Ktar11, board::layout::Bit_tag>()() << std::endl;
+        std::cout << board::write<board::Ktar11, board::Square_tag>()() << std::endl;
+        std::cout << board::write<board::Ktar11, board::Bit_tag>()() << std::endl;
         
         node::Position<board::Ktar11> iK11 = node::Position<board::Ktar11>::initial();
         Root::clear_hash();
         Root::perft<rules::International>(iK11, 9);
                 
-        std::cout << board::layout::write<board::Ktar12, board::layout::Square_tag>()() << std::endl;
-        std::cout << board::layout::write<board::Ktar12, board::layout::Bit_tag>()() << std::endl;
+        std::cout << board::write<board::Ktar12, board::Square_tag>()() << std::endl;
+        std::cout << board::write<board::Ktar12, board::Bit_tag>()() << std::endl;
         
         node::Position<board::Ktar12> iK12 = node::Position<board::Ktar12>::initial();
         Root::clear_hash();
@@ -95,8 +95,8 @@ TEST_F(Perft, Rectangular)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 TEST_F(Perft, ChessVariants)
 {
-        node::Position<board::Checker> i8 = node::Position<board::Checker>::initial();
-        std::cout << board::layout::write<board::Checker, board::layout::Square_tag>()() << std::endl;
+        node::Position<board::Checkers> i8 = node::Position<board::Checkers>::initial();
+        std::cout << board::write<board::Checkers, board::Square_tag>()() << std::endl;
         
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
         Root::clear_hash();
@@ -118,7 +118,7 @@ TEST_F(Perft, ChessVariants)
         Root::perft<rules::Czech>(i8, 13);
 
         node::Position<board::Roman> r8 = node::Position<board::Roman>::initial();
-        std::cout << board::layout::write<board::Roman, board::layout::Square_tag>()() << std::endl;
+        std::cout << board::write<board::Roman, board::Square_tag>()() << std::endl;
 
         Root::clear_hash();
         Root::perft<rules::Spanish>(r8, 13);

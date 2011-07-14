@@ -20,10 +20,9 @@ TEST(Score, IsNegativeLoss)
 
 TEST(Score, IsLoss)
 {
-        auto i = 0;
-        for (; i < MAX_GRAFTED_PLY / 2; ++i)
+        for (auto i = 0; i < MAX_GRAFTED_PLY / 2; ++i)
                 EXPECT_EQ(true, is_loss(loss_value(2 * i)));
-        EXPECT_EQ(false, is_loss(loss_value(2 * i)));
+        EXPECT_EQ(false, is_loss(loss_value(MAX_GRAFTED_PLY)));
 }
 
 TEST(Score, IsFiniteWin)
@@ -39,11 +38,10 @@ TEST(Score, IsPositiveWin)
 }
 
 TEST(Score, IsWin)
-{
-        auto i = 0;
-        for (; i < MAX_GRAFTED_PLY / 2; ++i)
+{        
+        for (auto i = 0; i < MAX_GRAFTED_PLY / 2; ++i)
                 EXPECT_EQ(true, is_win(win_value(2 * i + 1)));
-        EXPECT_EQ(false, is_win(win_value(2 * i + 1)));
+        EXPECT_EQ(false, is_win(win_value(MAX_GRAFTED_PLY + 1)));
 }
 
 TEST(Score, IsWinEqualMinusLoss)
@@ -53,19 +51,17 @@ TEST(Score, IsWinEqualMinusLoss)
 }
 
 TEST(Score, StretchLoss)
-{
-        auto i = 0;
-        EXPECT_EQ(true, is_infinite(stretch(loss_value(2 * i))));
-        for (i = 1; i < MAX_GRAFTED_PLY / 2; ++i)
+{        
+        EXPECT_EQ(true, is_infinite(stretch(loss_value(0))));
+        for (auto i = 1; i < MAX_GRAFTED_PLY / 2; ++i)
                 EXPECT_EQ(true, loss_value(2 * (i - 1)) == stretch(loss_value(2 * i)));
 }
 
 TEST(Score, SqueezeWin)
-{
-        size_t i = 0;
-        for (; i < MAX_GRAFTED_PLY / 2; ++i)
+{        
+        for (auto i = 0; i < MAX_GRAFTED_PLY / 2; ++i)
                 EXPECT_EQ(true, win_value(2 * (i + 1) + 1) == squeeze(win_value(2 * i + 1)));
-        EXPECT_EQ(false, is_win(squeeze(win_value(2 * i + 1))));
+        EXPECT_EQ(false, is_win(squeeze(win_value(MAX_GRAFTED_PLY + 1))));
 }
 
 }       // namespace score
