@@ -1,4 +1,5 @@
 #pragma once
+#include "Transform.h"
 
 namespace board {
 
@@ -17,10 +18,13 @@ struct Square
 };
 
 template<typename>
-class Square2Coordinates;
+class Coordinates2Square;
 
 template<typename>
-class Coordinates2Square;
+class Square2Coordinates;
+
+template<typename G, int R, int C, int I>
+struct Rotate<Coordinates<G, R, C>, I>;
 
 }       // namespace board
 

@@ -149,6 +149,8 @@
     <ClInclude Include="src\board\Grid.h" />
     <ClInclude Include="src\board\Dimensions.hpp" />
     <ClInclude Include="src\board\Structure.h" />
+    <ClInclude Include="src\board\Traits.h" />
+    <ClInclude Include="src\board\Transform.h" />
     <ClInclude Include="src\board\Types.h" />
     <ClInclude Include="src\CheckerBoard\CheckerBoardAPI.h" />
     <ClInclude Include="src\damexchange\BackAcknowledge.h" />
@@ -309,7 +311,7 @@
     <ClCompile Include="src\Utilities\UniqueNumber.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="parser.y" />
+    <None Include="src\pdn\parser.y" />
     <None Include="src\pdn\tokens.l" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,6 @@
-#include "Angle.h"
 #include "Coordinates.h"
 #include "Grid.h"
+#include "Traits.h"
 
 namespace board {
 

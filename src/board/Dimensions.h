@@ -1,4 +1,5 @@
 #pragma once
+#include "Transform.h"
 
 namespace board {
 
@@ -15,6 +16,9 @@ struct Dimensions
         static const int WIDTH = W;
         static const bool PARITY = P;
 };
+
+template<int H, int W, bool P, int I>
+struct Rotate<Dimensions<H, W, P>, I>;
 
 }       // namespace board
 
