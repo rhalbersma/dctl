@@ -5,26 +5,45 @@
 
 namespace board {
 
-template<int I>
-class Traits
-{
-private:
-        static const int I_L090 = Rotate<Int2Type<I>, Angle::L090>::value;
+/*                      
+             2
+          3  |  1
+           \ | / 
+            \|/
+        4---- ----0
+            /|\
+           / | \
+          5  |  7
+             6                     
+*/
 
-public:
-        // diagonality, orthogonality
-        static const bool IS_DIAGONAL = I % 2;                          // 1, 3, 5, 7
-        static const bool IS_ORTHGONAL = !IS_DIAGONAL;                  // 0, 2, 4, 6
+// diagonal, orthogonal
+template<int I> struct is_diagonal      { enum { value = I % 2                    }; }; // 1, 3, 5, 7
+template<int I> struct is_orthogonal    { enum { value = !is_diagonal<I>::value   }; }; // 0, 2, 4, 6
 
-        // up, down, right, left
-        static const bool IS_UP = !(I / 4) && (I % 4);                  // 1, 2, 3
-        static const bool IS_DOWN = (I / 4) && (I % 4);                 // 5, 6, 7
-        static const bool IS_RIGHT = Traits<I_L090>::IS_UP;             // 0, 1, 7
-        static const bool IS_LEFT = Traits<I_L090>::IS_DOWN;            // 3, 4, 5
+// up, down, right, left
+template<int I> struct is_up            { enum { value = !(I / 4) && (I % 4)      }; }; // 1, 2, 3
+template<int I> struct is_down          { enum { value =  (I / 4) && (I % 4)      }; }; // 5, 6, 7
 
-        // positive, negative
-        static const bool IS_POSITIVE = IS_UP || (IS_LEFT && !IS_DOWN); // 1, 2, 3, 4
-        static const bool IS_NEGATIVE = !IS_POSITIVE;                   // 5, 6, 7, 0
+template<int I> 
+struct is_right          
+{ 
+        enum { value = is_up<Rotate<Int2Type<I>, Angle::L090>::value>::value };         // 0, 1, 7
+};     
+
+template<int I> 
+struct is_left         
+{ 
+        enum { value = is_down<Rotate<Int2Type<I>, Angle::L090>::value>::value };       // 3, 4, 5
+};   
+
+// negative, positive
+template<int I> struct is_negative      { enum { value = !is_positive<I>::value  }; };  // 5, 6, 7, 0 
+
+template<int I> 
+struct is_positive      
+{ 
+        enum { value = is_up<I>::value || (is_left<I>::value && !is_down<I>::value) };  // 1, 2, 3, 4 
 };
 
 }       // namespace board

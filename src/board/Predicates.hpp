@@ -65,11 +65,11 @@ class is_jumpable
 {
 private:
         enum {
-                OFFSET = Traits<I>::IS_DIAGONAL? 2 : 4,
-                ROW_MIN = Traits<I>::IS_UP? OFFSET : 0,
-                ROW_MAX = (Board::HEIGHT - 1) - (Traits<I>::IS_DOWN? OFFSET : 0),
-                COL_MIN = Traits<I>::IS_LEFT? OFFSET : 0,
-                COL_MAX = (Board::WIDTH - 1) - (Traits<I>::IS_RIGHT? OFFSET : 0),
+                OFFSET = is_diagonal<I>::value? 2 : 4,
+                ROW_MIN = is_up<I>::value? OFFSET : 0,
+                ROW_MAX = (Board::HEIGHT - 1) - (is_down<I>::value? OFFSET : 0),
+                COL_MIN = is_left<I>::value? OFFSET : 0,
+                COL_MAX = (Board::WIDTH - 1) - (is_right<I>::value? OFFSET : 0),
                 ROW = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::row,
                 COL = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::col
         };
