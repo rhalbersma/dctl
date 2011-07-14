@@ -1,5 +1,5 @@
-#include "../Tree/Generate/Capture/Templates.h"
-#include "../Tree/Generate/Capture/Value.h"
+#include "Templates.h"
+#include "Value.h"
 
 namespace tree {
 namespace generate {
