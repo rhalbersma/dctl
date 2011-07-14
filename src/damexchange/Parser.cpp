@@ -5,8 +5,8 @@
 
 namespace damexchange {
 
-// http://www.mesander.nl/damexchange/edxplg2.htm
 // Examples of DamExchange messages (Layer 2 Protocol)
+// http://www.mesander.nl/damexchange/edxplg2.htm
 TEST(Parser, MesanderExamples)
 {
         const std::string message[] = 
