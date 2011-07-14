@@ -9,7 +9,8 @@
 extern "C" {
 #endif // __cplusplus
 
-// Full documentation of the CheckerBoard 1.64 API: http://www.fierz.ch/cbdeveloper.php
+// Full documentation of the CheckerBoard 1.64 API: 
+// http://www.fierz.ch/cbdeveloper.php
 
 // used for all other communication between engine and CheckerBoard
 int WINAPI enginecommand(
