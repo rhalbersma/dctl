@@ -1,11 +1,9 @@
-#include "../../../../Library/src/DamExchange/Layer2/Parser.h"
-
-#include "gtest/gtest.h"
-#include <memory>       // std::unique_ptr
 #include <string>
+#include "gtest/gtest.h"
+#include "../../../Library/src/damexchange/Parser.h"
+#include "../../../Library/src/damexchange/Protocol.h"
 
 namespace damexchange {
-namespace layer2 {
 
 // http://www.mesander.nl/damexchange/edxplg2.htm
 // Examples of DamExchange messages (Layer 2 Protocol)
@@ -24,10 +22,9 @@ TEST(Parser, MesanderExamples)
         };
 
         for (auto i = 0; i < 8; ++i) {
-                std::unique_ptr<MessageInterface> parsed = Parser::find(message[i]);
+                auto parsed = Parser<protocol_tag>::find(message[i]);
                 EXPECT_EQ(0, parsed->str().compare(message[i]));
         }
 }
 
-}       // namespace layer2
 }       // namespace damexchange

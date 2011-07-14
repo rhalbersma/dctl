@@ -22,7 +22,7 @@ TEST(MoveGeneration, ItalianBoard)
         node::Position<board::Roman> ITA_initial;						                // Art. 2.6
 
         std::cout << node::layout::write<node::FEN_tag>()(ITA_empty) << std::endl;
-        board::layout::write<ITA_notation, board::layout::Square_tag>()();
+        board::write<ITA_notation, board::Square_tag>()();
         std::cout << node::layout::write<node::FEN_tag>()(ITA_initial) << std::endl;
 }
 */
