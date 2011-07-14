@@ -555,6 +555,12 @@
     <ClInclude Include="src\board\Structure.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
+    <ClInclude Include="src\board\Traits.h">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Transform.h">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Utilities\UniqueNumber.cpp">
@@ -634,10 +640,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="parser.y">
+    <None Include="src\pdn\tokens.l">
       <Filter>Source Files\pdn</Filter>
     </None>
-    <None Include="src\pdn\tokens.l">
+    <None Include="src\pdn\parser.y">
       <Filter>Source Files\pdn</Filter>
     </None>
   </ItemGroup>

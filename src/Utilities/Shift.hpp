@@ -1,6 +1,5 @@
 #include "Bit.h"
-#include "../board/Board.h"
-#include "../board/Direction.h"
+#include "../board/Traits.h"
 
 namespace { enum { L, R }; }
 

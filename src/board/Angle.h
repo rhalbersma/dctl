@@ -1,4 +1,5 @@
 #pragma once
+#include "Transform.h"
 #include "../Utilities/TemplateTricks.h"
 
 namespace board {
@@ -26,23 +27,9 @@ struct Angle
         };
 };
 
-template<typename, int>
-struct Rotate;
-
-template<int I, int R>
-struct Rotate<Int2Type<I>, R>;
-
-template<int>
-struct Inverse;
-
-template<int>
-struct MirrorUp;
-
-template<int>
-struct MirrorDown;
-
-template<int>
-class Traits;
+// partial specialization for angles
+template<int A, int I>
+struct Rotate<Int2Type<A>, I>;
 
 }       // namespace board
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Grid.h"
 #include "Structure.h"
+#include "Transform.h"
 #include "../Utilities/IntegerTypes.h"
 
 namespace board {
