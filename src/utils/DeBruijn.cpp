@@ -1,7 +1,7 @@
 // The remainder of this file has been copied from the output of the following main program:
 
 /*
-#include "../../Library/src/Utilities/DeBruijn.h"
+#include "../../Library/src/utils/DeBruijn.h"
 
 int main()
 {
