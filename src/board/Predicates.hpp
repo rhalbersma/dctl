@@ -99,7 +99,9 @@ private:
 
 public:
         // bit coordintaes re-interpreted within the internal grid
-        enum { value = Coordinates2Square< Coordinates<I, Rotated::row, Rotated::col> >::type::square };
+        enum { 
+                value = Coordinates2Square< Coordinates<I, Rotated::row, Rotated::col> >::type::square 
+        };
 };
 
 template<typename Board, int B>
@@ -117,7 +119,9 @@ private:
 
 public:
         // square coordinates re-interpreted within the internal grid
-        enum { value = Coordinates2Square< Coordinates<E, Rotated::row, Rotated::col> >::type::square };
+        enum { 
+                value = Coordinates2Square< Coordinates<E, Rotated::row, Rotated::col> >::type::square 
+        };
 };
 
 }       // namespace board

@@ -1,6 +1,6 @@
 #include "MetaTemplates.h"
 #include "../Tree/Node/Side.h"
-#include "../Utilities/TemplateTricks.h"
+#include "../utils/TemplateTricks.h"
 
 namespace board {
 

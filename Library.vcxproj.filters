@@ -22,9 +22,6 @@
     <Filter Include="Source Files\hash">
       <UniqueIdentifier>{de78291a-5669-4a63-8848-e155042d8fda}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utilities">
-      <UniqueIdentifier>{cc70d3cd-efd0-40c6-9310-d0e779421e4e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Evaluation">
       <UniqueIdentifier>{752cc172-a8a2-4e78-807c-71e8cfb43e8b}</UniqueIdentifier>
     </Filter>
@@ -51,9 +48,6 @@
     </Filter>
     <Filter Include="Source Files\Tree\Search">
       <UniqueIdentifier>{c0f1e9d7-3f6d-4af6-b601-af60f9961ef1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utilities">
-      <UniqueIdentifier>{5f168311-fc6d-452b-ad4e-2bec86d81636}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Tree\Move">
       <UniqueIdentifier>{6007c521-8ee3-4248-accd-96bf3a4e06a0}</UniqueIdentifier>
@@ -109,29 +103,14 @@
     <Filter Include="Source Files\pdn">
       <UniqueIdentifier>{4d128ee8-be72-482e-906f-b825b53bd96e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{cc70d3cd-efd0-40c6-9310-d0e779421e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{5f168311-fc6d-452b-ad4e-2bec86d81636}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Utilities\UniqueNumber.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\Bit.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\CacheAlign.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\IntegerTypes.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\Ply.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\TemplateTricks.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\Bit.hpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="src\Evaluation\Evaluate.hpp">
       <Filter>Source Files\Evaluation</Filter>
     </ClInclude>
@@ -171,12 +150,6 @@
     <ClInclude Include="src\hash\Map.hpp">
       <Filter>Source Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utilities\VectorArray.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utilities\VectorArray.hpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="src\hash\zobrist\Random.h">
       <Filter>Header Files\hash\zobrist</Filter>
     </ClInclude>
@@ -207,12 +180,6 @@
     <ClInclude Include="src\hash\zobrist\Find.hpp">
       <Filter>Source Files\hash\zobrist</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utilities\DeBruijn.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\DeBruijn.hpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="src\Tree\Statistics.h">
       <Filter>Header Files\Tree</Filter>
     </ClInclude>
@@ -233,12 +200,6 @@
     </ClInclude>
     <ClInclude Include="src\tree\search\Root.hpp">
       <Filter>Source Files\Tree\Search</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\Shift.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\Shift.hpp">
-      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="src\Tree\Search\Entry.h">
       <Filter>Header Files\Tree\Search</Filter>
@@ -350,9 +311,6 @@
     </ClInclude>
     <ClInclude Include="src\Tree\Node\Layout.hpp">
       <Filter>Source Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\Timer.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="src\Tree\Generate\TemplateMethodInterface.h">
       <Filter>Header Files\Tree\Generate</Filter>
@@ -477,12 +435,6 @@
     <ClInclude Include="src\Tree\Generate\Capture\Spanish.hpp">
       <Filter>Source Files\Tree\Generate\Capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utilities\BitSet.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\BitSet.hpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="src\board\Angle.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
@@ -561,11 +513,62 @@
     <ClInclude Include="src\board\Transform.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
+    <ClInclude Include="src\Tree\Node\Move.h">
+      <Filter>Header Files\Tree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\VectorArray.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Bit.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\BitSet.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\CacheAlign.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\DeBruijn.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\IntegerTypes.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Ply.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\PushPull.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Shift.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\TemplateTricks.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Timer.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\UniqueNumber.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\VectorArray.hpp">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Bit.hpp">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\BitSet.hpp">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\DeBruijn.hpp">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Shift.hpp">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Utilities\UniqueNumber.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="src\Evaluation\EvaluateWeight.cpp">
       <Filter>Source Files\Evaluation</Filter>
     </ClCompile>
@@ -577,9 +580,6 @@
     </ClCompile>
     <ClCompile Include="src\hash\jenkins\Mix.cpp">
       <Filter>Source Files\hash\jenkins</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utilities\DeBruijn.cpp">
-      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="src\Tree\Statistics.cpp">
       <Filter>Source Files\Tree</Filter>
@@ -601,9 +601,6 @@
     </ClCompile>
     <ClCompile Include="src\Tree\Node\Pieces.cpp">
       <Filter>Source Files\Tree\Node</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utilities\Timer.cpp">
-      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="src\Tree\Search\Score.cpp">
       <Filter>Source Files\Tree\Search</Filter>
@@ -637,6 +634,15 @@
     </ClCompile>
     <ClCompile Include="src\damexchange\Move.cpp">
       <Filter>Source Files\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\DeBruijn.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\Timer.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\UniqueNumber.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #include "Value.h"
 #include "../../../rules/Traits.h"
-#include "../../../Utilities/Bit.h"
+#include "../../../utils/Bit.h"
 
 namespace tree {
 namespace generate {

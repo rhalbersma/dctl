@@ -2,8 +2,8 @@
 #include <sstream>
 #include "Side.h"
 #include "../../board/Layout.h"
-#include "../../Utilities/Bit.h"
-#include "../../Utilities/IntegerTypes.h"
+#include "../../utils/Bit.h"
+#include "../../utils/IntegerTypes.h"
 
 namespace tree {
 namespace node {

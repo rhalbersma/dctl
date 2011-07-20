@@ -2,7 +2,7 @@
 #include "Grid.h"
 #include "Structure.h"
 #include "Transform.h"
-#include "../Utilities/IntegerTypes.h"
+#include "../utils/IntegerTypes.h"
 
 namespace board {
 

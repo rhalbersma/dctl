@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../../Utilities/IntegerTypes.h"
+#include "../../utils/IntegerTypes.h"
 
 namespace tree {
 namespace search {

@@ -36,12 +36,13 @@ void Map<Key, Value, Hash, Index, Replace>::resize(size_t log2_n)
         map_.resize(Index(1) << log2_n);        // allocate all the entries
         map_mask_ = map_.size() - 1;            // MODULO the number of entries
         map_mask_ ^= BUCKET_MASK;               // MODULO the number of buckets
+        clear();
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 void Map<Key, Value, Hash, Index, Replace>::clear()
 {
-        std::fill_n(map_.begin(), map_.size(), Entry());
+        std::fill_n(map_.begin(), map_.size(), Entry(Key(0), Value()));
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>

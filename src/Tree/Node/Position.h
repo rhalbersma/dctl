@@ -1,11 +1,12 @@
 #pragma once
 #include "Pieces.h"
 #include "Side.h"
+#include "Move.h"
 #include "../../board/Board.h"
 #include "../../rules/Traits.h"
-#include "../../Utilities/IntegerTypes.h"
-#include "../../Utilities/TemplateTricks.h"
-#include "../../Utilities/CacheAlign.h"
+#include "../../utils/IntegerTypes.h"
+#include "../../utils/TemplateTricks.h"
+#include "../../utils/CacheAlign.h"
 
 namespace tree {
 namespace node {
@@ -47,8 +48,8 @@ public:
         const node::Pieces& key() const;
 
         // make a move in a copy from another position
-        template<typename> void copy_make(const Position<Board>&, const Pieces&);
-        template<typename> void make(const Pieces&);
+        template<typename> void copy_make(const Position<Board>&, const Move&);
+        template<typename> void make(const Move&);
         
 private:
         // implementation
@@ -65,12 +66,13 @@ private:
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<false>) const;
         template<typename> BitBoard unrestricted_kings(bool, Int2Type<true >) const;
 
-        void link(const Position<Board>&);
+        void attach(const Position<Board>&);
+        void detach();
 
         // tag dispatching based on restrictions on consecutive moves with the same king
-        template<typename> void make_irreversible(const Pieces&);
-        template<typename> void make_irreversible(const Pieces&, Int2Type<false>);
-        template<typename> void make_irreversible(const Pieces&, Int2Type<true >);
+        template<typename> void make_irreversible(const Move&);
+        template<typename> void make_irreversible(const Move&, Int2Type<false>);
+        template<typename> void make_irreversible(const Move&, Int2Type<true >);
 
         void make_reversible_moves(const Pieces&);
         template<PlyCount> void make_same_king_moves(const Pieces&);

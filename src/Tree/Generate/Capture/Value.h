@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../Utilities/IntegerTypes.h"
+#include "../../../utils/IntegerTypes.h"
 
 namespace tree {
 namespace generate {

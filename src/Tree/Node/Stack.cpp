@@ -1,6 +1,6 @@
 #include <algorithm>    // std::find
 #include "Stack.h"
-#include "../../Utilities/Bit.h"
+#include "../../utils/Bit.h"
 
 namespace tree {
 namespace node {

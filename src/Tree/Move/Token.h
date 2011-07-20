@@ -11,10 +11,10 @@ struct Doublet
         static const char CAPTURE = C;
 };
 
-template<typename> struct Token		        { typedef Doublet<'-', 'x'> type; };
-template<> struct Token<rules::Russian>      { typedef Doublet<'-', ':'> type; };
+template<typename> struct Token		{ typedef Doublet<'-', 'x'> type; };
+template<> struct Token<rules::Russian> { typedef Doublet<'-', ':'> type; };
 template<> struct Token<rules::Czech>	{ typedef Doublet<'-', ':'> type; };
-template<> struct Token<rules::Thai>         { typedef Doublet<'-', '-'> type; };
+template<> struct Token<rules::Thai>    { typedef Doublet<'-', '-'> type; };
 
 }       // namespace move
 }       // namespace move

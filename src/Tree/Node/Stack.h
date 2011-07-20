@@ -1,10 +1,10 @@
 #pragma once
 #include <cstddef>
-#include "Pieces.h"
-#include "../../Utilities/IntegerTypes.h"
-#include "../../Utilities/Ply.h"
-#include "../../Utilities/TemplateTricks.h"
-#include "../../Utilities/VectorArray.h"
+#include "Move.h"
+#include "../../utils/IntegerTypes.h"
+#include "../../utils/Ply.h"
+#include "../../utils/TemplateTricks.h"
+#include "../../utils/VectorArray.h"
 
 namespace tree {
 namespace node {
@@ -13,7 +13,7 @@ namespace node {
 enum Type { JUMPS, MOVES };
 typedef VectorArray<size_t, MAX_PLY> Sequence;
 typedef VectorArray<size_t, MAX_MOVES> Order;
-typedef VectorArray<Pieces, MAX_MOVES> Stack;
+typedef VectorArray<Move, MAX_MOVES> Stack;
 
 // element access
 Stack::reference top(Stack&);

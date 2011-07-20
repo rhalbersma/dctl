@@ -6,7 +6,6 @@ namespace hash {
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 DualMap<Key, Value, Hash, Index, Replace>::DualMap(size_t log2_n)
 {
-        assert(log2_n > 0);
         resize(log2_n);
 }
 
@@ -25,6 +24,7 @@ size_t DualMap<Key, Value, Hash, Index, Replace>::size() const
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 void DualMap<Key, Value, Hash, Index, Replace>::resize(size_t log2_n)
 {
+        assert(log2_n > 0);
         dual_map_[0].resize(log2_n - 1);
         dual_map_[1].resize(log2_n - 1);
 }

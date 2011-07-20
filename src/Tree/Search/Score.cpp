@@ -1,7 +1,7 @@
 #include <climits>
 #include <sstream>
 #include "Score.h"
-#include "../../Utilities/Ply.h"
+#include "../../utils/Ply.h"
 
 namespace {
 
