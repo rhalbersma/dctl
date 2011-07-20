@@ -6,7 +6,7 @@
 #include "../Node/Position.h"
 #include "../Node/Stack.h"
 #include "../Node/String.h"
-#include "../../Utilities/Timer.h"
+#include "../../utils/Timer.h"
 
 namespace tree {
 namespace walk {
@@ -174,6 +174,7 @@ NodeCount Root::fast(const node::Position<Board>& p, int ply, int depth)
 template<typename Board>
 void Root::announce(const node::Position<Board>& p, int depth)
 {        
+        std::cout << sizeof(node::Position<Board>) << std::endl;
         std::cout << node::layout::write<node::FEN_tag>()(p) << std::endl;
         std::cout << node::string::write<node::FEN_tag>()(p) << std::endl << std::endl;
         std::cout << "Searching to nominal depth=" << depth << std::endl;

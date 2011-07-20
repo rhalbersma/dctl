@@ -1,8 +1,8 @@
 #pragma once
 #include "Driver.h"
 #include "../Node/Stack.h"
-#include "../../Utilities/IntegerTypes.h"
-#include "../../Utilities/TemplateTricks.h"
+#include "../../utils/IntegerTypes.h"
+#include "../../utils/TemplateTricks.h"
 #include "../../rules/Traits.h"
 
 namespace tree {

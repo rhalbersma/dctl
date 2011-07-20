@@ -46,13 +46,9 @@ struct read<Board, FEN_tag, Token>
 
                 std::stringstream sstr(s);
                 char ch;
-
                 sstr >> ch;
                 p_side = read_color<Token>(ch);
-
                 size_t sq;
-                size_t b;
-                BitBoard bb;
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch(ch) {
@@ -70,8 +66,8 @@ struct read<Board, FEN_tag, Token>
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
 			                assert(Board::is_valid(sq - 1)); 
-                                        b = Board::square2bit(sq - 1);          // convert square to bit
-			                bb = BitBoard(1) << b;                  // create bitboard
+                                        auto b = Board::square2bit(sq - 1);     // convert square to bit
+			                auto bb = BitBoard(1) << b;             // create bitboard
                                         p_pieces[setup_color] ^= bb;
                                         if (setup_kings)
                                                 p_kings ^= bb;
@@ -90,21 +86,19 @@ struct write<FEN_tag, Token>
         std::string operator()(const Position<Board>& p) const
         {
                 std::stringstream sstr;
-                size_t b;
-	        bool c;
-
 	        sstr << Token::QUOTE;					        // opening quotes
 	        sstr << Token::COLOR[p.to_move()];				// side to move
-	        for (auto i = 0; i < 2; ++i) {
-		        c = i != 0;
+
+                for (auto i = 0; i < 2; ++i) {
+		        auto c = i != 0;
 		        if (p.pieces(c)) {
 			        sstr << Token::COLON;                           // colon
 			        sstr << Token::COLOR[c];                        // color tag
 		        }
-		        for (BitBoard bb = p.pieces(c); bb; bit::clear_first(bb)) {
+		        for (auto bb = p.pieces(c); bb; bit::clear_first(bb)) {
 			        if (p.kings() & bit::get_first(bb))
 				        sstr << Token::KING;			// king tag
-                                b = bit::find_first(bb);                        // bit index                        
+                                auto b = bit::find_first(bb);                   // bit index                        
 			        sstr << Board::bit2square(b) + 1;	        // square number
 			        if (bit::is_multiple(bb))                       // still pieces remaining
 				        sstr << Token::COMMA;			// comma separator
@@ -128,15 +122,12 @@ struct read<Board, damexchange::protocol_tag, Token>
 
 	        std::stringstream sstr(s);
 	        char ch;
-
 	        sstr >> ch;
                 p_side = read_color<Token>(ch);
 
-	        BitBoard bb;
-                size_t b;
                 for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
-                        b = Board::square2bit(sq);              // convert square to bit
-		        bb = BitBoard(1) << b;                  // create bitboard
+                        auto b = Board::square2bit(sq);         // convert square to bit
+		        auto bb = BitBoard(1) << b;             // create bitboard
 		        sstr >> ch;
 		        switch(toupper(ch)) {
 		        case Token::BLACK:			

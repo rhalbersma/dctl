@@ -17,6 +17,7 @@ struct Dimensions
         static const bool PARITY = P;
 };
 
+// partial specialization for dimensions
 template<int H, int W, bool P, int I>
 struct Rotate<Dimensions<H, W, P>, I>;
 

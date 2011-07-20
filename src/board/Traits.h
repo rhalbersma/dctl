@@ -1,7 +1,7 @@
 #pragma once
 #include "Angle.h"
 #include "Transform.h"
-#include "../Utilities/TemplateTricks.h"
+#include "../utils/TemplateTricks.h"
 
 namespace board {
 

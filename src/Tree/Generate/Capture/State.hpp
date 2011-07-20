@@ -2,8 +2,8 @@
 #include "Templates.h"
 #include "../../Node/Stack.h"
 #include "../../../board/Direction.h"
-#include "../../../Utilities/Bit.h"
-#include "../../../Utilities/Shift.h"
+#include "../../../utils/Bit.h"
+#include "../../../utils/Shift.h"
 
 namespace tree {
 namespace generate {

@@ -4,21 +4,27 @@ namespace tree {
 namespace node {
 
 template<typename Board> template<typename Rules>
-void Position<Board>::copy_make(const Position<Board>& p, const Pieces& m)
+void Position<Board>::copy_make(const Position<Board>& p, const Move& m)
 {
-        *this = p;
-        link(p);
-        make<Rules>(m);
+        *this = p;      // copy the position
+        attach(p);      // link the pointers
+        make<Rules>(m); // make the move
 }
 
 template<typename Board>
-void Position<Board>::link(const Position<Board>& other)
+void Position<Board>::attach(const Position<Board>& other)
 {
         parent_ = &other;
 }
 
+template<typename Board>
+void Position<Board>::detach()
+{
+        parent_ = nullptr;
+}
+
 template<typename Board> template<typename Rules>
-void Position<Board>::make(const Pieces& m)
+void Position<Board>::make(const Move& m)
 {
         assert(is_pseudo_legal<Rules>(*this, m));
 
@@ -32,14 +38,14 @@ void Position<Board>::make(const Pieces& m)
 
 // tag dispatching based on restrictions on consecutive moves with the same king
 template<typename Board> template<typename Rules>
-void Position<Board>::make_irreversible(const Pieces& m)
+void Position<Board>::make_irreversible(const Move& m)
 {
         make_irreversible<Rules>(m, Int2Type<rules::is_restricted_same_king_moves<Rules>::value>());
 }
 
 // partial specialization for restricted consecutive moves with the same king
 template<typename Board> template<typename Rules>
-void Position<Board>::make_irreversible(const Pieces& m, Int2Type<true>)
+void Position<Board>::make_irreversible(const Move& m, Int2Type<true>)
 {
         make_irreversible<Rules>(m, Int2Type<false>());
         make_same_king_moves<rules::max_same_king_moves<Rules>::value>(m);
@@ -47,13 +53,13 @@ void Position<Board>::make_irreversible(const Pieces& m, Int2Type<true>)
 
 // partial specialization for unrestricted consecutive moves with the same king
 template<typename Board> template<typename Rules>
-void Position<Board>::make_irreversible(const Pieces& m, Int2Type<false>)
+void Position<Board>::make_irreversible(const Move& m, Int2Type<false>)
 {
         make_reversible_moves(m);
 }
 
 template<typename Board>
-void Position<Board>::make_reversible_moves(const Pieces& m)
+void Position<Board>::make_reversible_moves(const Move& m)
 {
         if (is_reversible(*this, m))
                 ++reversible_moves_;
@@ -62,7 +68,7 @@ void Position<Board>::make_reversible_moves(const Pieces& m)
 }
 
 template<typename Board> template<PlyCount N>
-void Position<Board>::make_same_king_moves(const Pieces& m)
+void Position<Board>::make_same_king_moves(const Move& m)
 {
         if (active_kings(*this) && active_men(*this)) {
                 hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
@@ -98,10 +104,10 @@ void Position<Board>::make_same_king_moves(const Pieces& m)
 }
 
 template<typename Board>
-void Position<Board>::make_reversible(const Pieces& m)
+void Position<Board>::make_reversible(const Move& m)
 {
         pieces_ ^= m;
-        hash_index_ ^= hash::zobrist::Init<Pieces, HashIndex>()(m);
+        hash_index_ ^= hash::zobrist::Init<Move, HashIndex>()(m);
 
         to_move_ ^= PASS;
         hash_index_ ^= hash::zobrist::Init<bool, HashIndex>()();

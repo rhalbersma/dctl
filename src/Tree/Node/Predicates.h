@@ -1,35 +1,35 @@
 #pragma once
-#include "../../Utilities/IntegerTypes.h"
-#include "../../Utilities/TemplateTricks.h"
+#include "Move.h"
+#include "../../utils/IntegerTypes.h"
+#include "../../utils/TemplateTricks.h"
 #include "../../rules/Traits.h"
 
 namespace tree {
 namespace node { 
 
 template<typename> class Position;
-class Pieces;
 
-template<typename Board> BitBoard from_sq(const Position<Board>&, const Pieces&);
-template<typename Board> BitBoard dest_sq(const Position<Board>&, const Pieces&);
-template<typename Board> BitBoard moving_pieces(const Position<Board>&, const Pieces&);
-template<typename Board> BitBoard moving_kings(const Position<Board>&, const Pieces&);
-template<typename Board> BitBoard captured_pieces(const Position<Board>&, const Pieces&);
-template<typename Board> BitBoard captured_kings(const Position<Board>&, const Pieces&);
+template<typename Board> BitBoard from_sq(const Position<Board>&, const Move&);
+template<typename Board> BitBoard dest_sq(const Position<Board>&, const Move&);
+template<typename Board> BitBoard moving_pieces(const Position<Board>&, const Move&);
+template<typename Board> BitBoard moving_kings(const Position<Board>&, const Move&);
+template<typename Board> BitBoard captured_pieces(const Position<Board>&, const Move&);
+template<typename Board> BitBoard captured_kings(const Position<Board>&, const Move&);
 
-template<typename Board> bool is_connected(const Position<Board>&, const Pieces&, const Pieces&);
-template<typename Board> bool is_reversible(const Position<Board>&, const Pieces&);
-template<typename Board> bool is_promotion(const Position<Board>&, const Pieces&);
-template<typename Board> bool is_with_king(const Position<Board>&, const Pieces&);
-template<typename Board> bool is_capture(const Position<Board>&, const Pieces&);
+template<typename Board> bool is_connected(const Position<Board>&, const Move&, const Move&);
+template<typename Board> bool is_reversible(const Position<Board>&, const Move&);
+template<typename Board> bool is_promotion(const Position<Board>&, const Move&);
+template<typename Board> bool is_with_king(const Position<Board>&, const Move&);
+template<typename Board> bool is_capture(const Position<Board>&, const Move&);
 
 // pre-conditions for modifiers
-template<typename, typename Board> bool is_pseudo_legal(const Position<Board>&, const Pieces&);
+template<typename, typename Board> bool is_pseudo_legal(const Position<Board>&, const Move&);
 
-template<typename, typename Board> bool is_intersecting_capture(const Position<Board>&, const Pieces&);
+template<typename, typename Board> bool is_intersecting_capture(const Position<Board>&, const Move&);
 
 // tag dispatching based on capture removal
-template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Pieces&, Int2Type<rules::REMOVE_1>);
-template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Pieces&, Int2Type<rules::REMOVE_N>);
+template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::REMOVE_1>);
+template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::REMOVE_N>);
 
 template<typename> bool is_intersecting_capture(BitBoard, BitBoard);
 

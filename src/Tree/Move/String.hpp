@@ -2,7 +2,7 @@
 #include <sstream>
 #include "../Node/Predicates.h"
 #include "../../board/Board.h"
-#include "../../Utilities/Bit.h"
+#include "../../utils/Bit.h"
 
 namespace tree {
 namespace move {
@@ -12,7 +12,7 @@ template<typename Rules, typename Token>
 struct write<Rules, NUM_tag, Token>
 {
         template<typename Board>
-        std::string operator()(const node::Position<Board>& p, const node::Pieces& m)
+        std::string operator()(const node::Position<Board>& p, const node::Move& m)
         {
                 std::stringstream sstr;
                 sstr << std::setw(2) << std::right << Board::bit2square(bit::find_first(node::from_sq(p, m))) + 1;
@@ -26,7 +26,7 @@ template<typename Rules, typename Token>
 struct write<Rules, ALG_tag, Token>
 {
         template<typename Board>
-        std::string operator()(const node::Position<Board>& p, const node::Pieces& m)
+        std::string operator()(const node::Position<Board>& p, const node::Move& m)
         {
                 std::stringstream sstr;
                 sstr << std::setw(2) << std::right << Board::bit2square(bit::find_first(node::from_sq(p, m))) + 1;

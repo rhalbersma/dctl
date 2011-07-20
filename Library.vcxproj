@@ -240,6 +240,7 @@
     <ClInclude Include="src\Tree\Move\String.hpp" />
     <ClInclude Include="src\Tree\Move\Token.h" />
     <ClInclude Include="src\Tree\Node\Layout.hpp" />
+    <ClInclude Include="src\Tree\Node\Move.h" />
     <ClInclude Include="src\Tree\Node\Predicates.h" />
     <ClInclude Include="src\Tree\Node\Predicates.hpp" />
     <ClInclude Include="src\Tree\Node\Protocol.h" />
@@ -266,22 +267,23 @@
     <ClInclude Include="src\Tree\Walk\Entry.h" />
     <ClInclude Include="src\Tree\Walk\Root.h" />
     <ClInclude Include="src\Tree\Walk\Root.hpp" />
-    <ClInclude Include="src\Utilities\Bit.h" />
-    <ClInclude Include="src\Utilities\Bit.hpp" />
-    <ClInclude Include="src\Utilities\BitSet.h" />
-    <ClInclude Include="src\Utilities\BitSet.hpp" />
-    <ClInclude Include="src\Utilities\CacheAlign.h" />
-    <ClInclude Include="src\Utilities\DeBruijn.h" />
-    <ClInclude Include="src\Utilities\DeBruijn.hpp" />
-    <ClInclude Include="src\Utilities\IntegerTypes.h" />
-    <ClInclude Include="src\Utilities\Ply.h" />
-    <ClInclude Include="src\Utilities\Shift.h" />
-    <ClInclude Include="src\Utilities\Shift.hpp" />
-    <ClInclude Include="src\Utilities\Timer.h" />
-    <ClInclude Include="src\Utilities\TemplateTricks.h" />
-    <ClInclude Include="src\Utilities\UniqueNumber.h" />
-    <ClInclude Include="src\Utilities\VectorArray.h" />
-    <ClInclude Include="src\Utilities\VectorArray.hpp" />
+    <ClInclude Include="src\utils\Bit.h" />
+    <ClInclude Include="src\utils\Bit.hpp" />
+    <ClInclude Include="src\utils\BitSet.h" />
+    <ClInclude Include="src\utils\BitSet.hpp" />
+    <ClInclude Include="src\utils\CacheAlign.h" />
+    <ClInclude Include="src\utils\DeBruijn.h" />
+    <ClInclude Include="src\utils\DeBruijn.hpp" />
+    <ClInclude Include="src\utils\IntegerTypes.h" />
+    <ClInclude Include="src\utils\Ply.h" />
+    <ClInclude Include="src\utils\PushPull.h" />
+    <ClInclude Include="src\utils\Shift.h" />
+    <ClInclude Include="src\utils\Shift.hpp" />
+    <ClInclude Include="src\utils\TemplateTricks.h" />
+    <ClInclude Include="src\utils\Timer.h" />
+    <ClInclude Include="src\utils\UniqueNumber.h" />
+    <ClInclude Include="src\utils\VectorArray.h" />
+    <ClInclude Include="src\utils\VectorArray.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CheckerBoard\CheckerBoardAPI.cpp" />
@@ -306,9 +308,9 @@
     <ClCompile Include="src\Tree\Statistics.cpp" />
     <ClCompile Include="src\Tree\Walk\Entry.cpp" />
     <ClCompile Include="src\Tree\Walk\Root.cpp" />
-    <ClCompile Include="src\Utilities\DeBruijn.cpp" />
-    <ClCompile Include="src\Utilities\Timer.cpp" />
-    <ClCompile Include="src\Utilities\UniqueNumber.cpp" />
+    <ClCompile Include="src\utils\DeBruijn.cpp" />
+    <ClCompile Include="src\utils\Timer.cpp" />
+    <ClCompile Include="src\utils\UniqueNumber.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\pdn\parser.y" />

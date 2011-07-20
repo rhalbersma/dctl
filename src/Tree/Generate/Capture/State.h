@@ -3,9 +3,9 @@
 #include "../../Node/Stack.h"
 #include "../../../board/Board.h"
 #include "../../../rules/Traits.h"
-#include "../../../Utilities/IntegerTypes.h"
-#include "../../../Utilities/TemplateTricks.h"
-#include "../../../Utilities/VectorArray.h"
+#include "../../../utils/IntegerTypes.h"
+#include "../../../utils/TemplateTricks.h"
+#include "../../../utils/VectorArray.h"
 
 namespace tree {
 

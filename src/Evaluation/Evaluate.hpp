@@ -53,11 +53,11 @@ template<bool Color, typename Board>
 int Evaluate::evaluate(const tree::node::Position<Board>& p)
 {
         int score = 0;
-        score += material<Color>(p); /*
+        score += material<Color>(p);
         score += tempo<Color>(p);
         score += center<Color>(p);
         score += balance<Color>(p);
-        score += mobility<Color>(p);*/
+        score += mobility<Color>(p);
         return score;
 }
 

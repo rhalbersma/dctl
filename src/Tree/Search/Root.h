@@ -4,8 +4,8 @@
 #include "../Node/Stack.h"
 #include "../Statistics.h"
 #include "../../Hash/Map.h"
-#include "../../Utilities/Ply.h"
-#include "../../Utilities/IntegerTypes.h"
+#include "../../utils/Ply.h"
+#include "../../utils/IntegerTypes.h"
 
 class Timer;
 

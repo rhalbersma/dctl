@@ -3,8 +3,8 @@
 #include "../Node/Pieces.h"
 #include "../Node/Stack.h"
 #include "../../rules/Traits.h"
-#include "../../Utilities/IntegerTypes.h"
-#include "../../Utilities/TemplateTricks.h"
+#include "../../utils/IntegerTypes.h"
+#include "../../utils/TemplateTricks.h"
 
 namespace tree {
 namespace generate {

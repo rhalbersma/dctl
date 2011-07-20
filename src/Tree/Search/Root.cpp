@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <iostream>
 #include "Root.h"
-#include "../../Utilities/UniqueNumber.h"
+#include "../../utils/UniqueNumber.h"
 
 namespace tree {
 namespace search {

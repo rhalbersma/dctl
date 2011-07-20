@@ -1,6 +1,6 @@
 #include <cassert>
 #include "../../Hash/Algorithms.h"
-#include "../../Utilities/Bit.h"
+#include "../../utils/Bit.h"
 #include "../../rules/Traits.h"
 
 namespace tree {
@@ -39,17 +39,19 @@ bool Position<Board>::is_draw() const
 template<typename Board>
 bool Position<Board>::is_repetition_draw() const
 {
+        const auto MAX_CYCLE = reversible_moves();
+
         // a repetition draw needs at least MIN_CYCLE of reversible moves
-        if (reversible_moves() < MIN_CYCLE)
+        if (MAX_CYCLE < MIN_CYCLE)
                 return false;
 
         // find the parent position at MIN_CYCLE ply above the current position
-        auto p = this;
-        for (auto i = 0; i != MIN_CYCLE; i += STRIDE)
+        auto p = grand_parent();
+        for (auto i = STRIDE; i != MIN_CYCLE; i += STRIDE)
                 p = p->grand_parent();
 
         // check the hash index of the parent position with the current hash index
-        for (auto i = MIN_CYCLE; i <= reversible_moves(); i += STRIDE) {
+        for (auto i = MIN_CYCLE; i <= MAX_CYCLE; i += STRIDE) {
                 if (p->hash_index() == hash_index())
                         return true;
                 p = p->grand_parent();

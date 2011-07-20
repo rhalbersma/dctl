@@ -2,7 +2,7 @@
 #include <functional>
 #include "Pieces.h"
 #include "Side.h"
-#include "../../Utilities/Bit.h"
+#include "../../utils/Bit.h"
 
 namespace tree {
 namespace node {

@@ -1,6 +1,6 @@
 #pragma once
 #include "Transform.h"
-#include "../Utilities/TemplateTricks.h"
+#include "../utils/TemplateTricks.h"
 
 namespace board {
 

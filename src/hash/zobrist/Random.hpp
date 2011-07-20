@@ -1,4 +1,4 @@
-#include "../../Utilities/Bit.h"
+#include "../../utils/Bit.h"
 
 namespace hash {
 namespace zobrist {

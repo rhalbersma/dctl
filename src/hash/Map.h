@@ -3,9 +3,9 @@
 #include <vector>
 #include "Algorithms.h"
 #include "Replace.h"
-#include "../Utilities/CacheAlign.h"
-#include "../Utilities/IntegerTypes.h"
-#include "../Utilities/TemplateTricks.h"
+#include "../utils/CacheAlign.h"
+#include "../utils/IntegerTypes.h"
+#include "../utils/TemplateTricks.h"
 
 namespace hash {
 

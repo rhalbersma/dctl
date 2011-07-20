@@ -8,7 +8,7 @@
 #include "../Node/Stack.h"
 #include "../Node/String.h"
 #include "../../Evaluation/Evaluate.h"
-#include "../../Utilities/Timer.h"
+#include "../../utils/Timer.h"
 
 namespace tree {
 namespace search {

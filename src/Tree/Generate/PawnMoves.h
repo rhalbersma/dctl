@@ -1,7 +1,7 @@
 #pragma once
 #include "Driver.h"
 #include "../Node/Stack.h"
-#include "../../Utilities/IntegerTypes.h"
+#include "../../utils/IntegerTypes.h"
 
 namespace tree {
 

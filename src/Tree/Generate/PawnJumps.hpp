@@ -5,8 +5,8 @@
 #include "../../board/Angle.h"
 #include "../../board/Board.h"
 #include "../../board/Direction.h"
-#include "../../Utilities/Bit.h"
-#include "../../Utilities/Shift.h"
+#include "../../utils/Bit.h"
+#include "../../utils/Shift.h"
 
 namespace tree {
 namespace generate {

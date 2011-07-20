@@ -3,7 +3,7 @@
 #include "../Node/Pieces.h"
 #include "../Statistics.h"
 #include "../../Hash/DualMap.h"
-#include "../../Utilities/IntegerTypes.h"
+#include "../../utils/IntegerTypes.h"
 
 class Timer;
 
