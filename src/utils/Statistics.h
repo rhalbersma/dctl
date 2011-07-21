@@ -1,6 +1,6 @@
 #include "../utils/IntegerTypes.h"
 
-namespace tree {
+namespace dtl {
 
 class Statistics
 {
@@ -23,4 +23,4 @@ private:
         size_t max_ply_;
 };
 
-}       // namespace tree
+}       // namespace dtl

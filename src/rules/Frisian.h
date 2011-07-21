@@ -23,4 +23,4 @@ template<> struct large_capture<Frisian>                        { enum { value =
 }       // namespace rules
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../tree/generate/Capture/Frisian.hpp"
+#include "../generate/capture/Frisian.hpp"
