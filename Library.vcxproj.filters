@@ -444,9 +444,6 @@
     <ClInclude Include="src\node\String.hpp">
       <Filter>Source Files\node</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\checkerboard\CheckerBoardAPI.h">
-      <Filter>Header Files\protocol\checkerboard</Filter>
-    </ClInclude>
     <ClInclude Include="src\protocol\damexchange\MessageInterface.h">
       <Filter>Header Files\protocol\damexchange</Filter>
     </ClInclude>
@@ -607,9 +604,6 @@
     </ClCompile>
     <ClCompile Include="src\node\Stack.cpp">
       <Filter>Source Files\node</Filter>
-    </ClCompile>
-    <ClCompile Include="src\protocol\checkerboard\CheckerBoardAPI.cpp">
-      <Filter>Source Files\protocol\checkerboard</Filter>
     </ClCompile>
     <ClCompile Include="src\protocol\damexchange\Move.cpp">
       <Filter>Source Files\protocol\damexchange</Filter>

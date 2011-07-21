@@ -2,6 +2,7 @@
 #include "KingJumps.h"
 #include "PawnJumps.h"
 #include "Capture/State.h"
+#include "../rules/Rules.h"
 
 namespace dtl {
 namespace generate {

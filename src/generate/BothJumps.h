@@ -2,7 +2,6 @@
 #include "Driver.h"
 #include "../node/Pieces.h"
 #include "../node/Stack.h"
-#include "../rules/Rules.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
@@ -26,7 +25,7 @@ private:
         // tag dispatching based on absolute king capture precedence
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<false>);
-        static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<true>);
+        static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<true >);
 };
 
 }       // namespace generate
