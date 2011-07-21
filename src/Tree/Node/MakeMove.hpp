@@ -1,26 +1,19 @@
 #include "Predicates.h"
 
 namespace tree {
-namespace node {
 
 template<typename Board> template<typename Rules>
-void Position<Board>::copy_make(const Position<Board>& p, const Move& m)
+void Position<Board>::copy_make(const Position<Board>& other, const Move& move)
 {
-        *this = p;      // copy the position
-        attach(p);      // link the pointers
-        make<Rules>(m); // make the move
+        attach(other);          // attach the position
+        make<Rules>(move);      // make the move
 }
 
 template<typename Board>
 void Position<Board>::attach(const Position<Board>& other)
 {
-        parent_ = &other;
-}
-
-template<typename Board>
-void Position<Board>::detach()
-{
-        parent_ = nullptr;
+        *this = other;          // copy the position
+        parent_ = &other;       // link the pointers
 }
 
 template<typename Board> template<typename Rules>
@@ -48,7 +41,7 @@ template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Move& m, Int2Type<true>)
 {
         make_irreversible<Rules>(m, Int2Type<false>());
-        make_same_king_moves<rules::max_same_king_moves<Rules>::value>(m);
+        make_same_king_moves<Rules>(m);
 }
 
 // partial specialization for unrestricted consecutive moves with the same king
@@ -67,13 +60,13 @@ void Position<Board>::make_reversible_moves(const Move& m)
                 reversible_moves_ = 0;
 }
 
-template<typename Board> template<PlyCount N>
+template<typename Board> template<typename Rules>
 void Position<Board>::make_same_king_moves(const Move& m)
 {
         if (active_kings(*this) && active_men(*this)) {
                 hash_index_ ^= hash::zobrist::Init<Position<Board>, HashIndex>()(*this, to_move());
 
-                if (is_reversible(*this, m) && !is_restricted_king<N>(to_move())) {
+                if (is_reversible(*this, m) && !has_restricted_king<Rules>(*this, to_move())) {
                         if (same_king(to_move()) & from_sq(*this, m))
                                 ++same_king_moves_[to_move()];               
                         else
@@ -113,5 +106,4 @@ void Position<Board>::make_reversible(const Move& m)
         hash_index_ ^= hash::zobrist::Init<bool, HashIndex>()();
 }
 
-}       // namespace node
 }       // namespace tree

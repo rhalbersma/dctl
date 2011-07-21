@@ -2,10 +2,9 @@
 #include "../../board/Board.h"
 #include "../../board/Layout.h"
 #include "Protocol.h"
-#include "../../damexchange/Protocol.h"
+#include "../../protocol/damexchange/Protocol.h"
 
 namespace tree {
-namespace node {
 namespace string {
 
 template<typename Token>
@@ -110,7 +109,7 @@ struct write<FEN_tag, Token>
 };
 
 template<typename Board, typename Token>
-struct read<Board, damexchange::protocol_tag, Token>
+struct read<Board, protocol::damexchange::version, Token>
 {
         Position<Board> operator()(const std::string& s)
         {
@@ -149,7 +148,7 @@ struct read<Board, damexchange::protocol_tag, Token>
 };
 
 template<typename Token>
-struct write<damexchange::protocol_tag, Token>
+struct write<protocol::damexchange::version, Token>
 {
         template<typename Board>
         std::string operator()(const Position<Board>& p) const
@@ -165,5 +164,4 @@ struct write<damexchange::protocol_tag, Token>
 };
 
 }       // namespace string
-}       // namespace node
 }       // namespace tree

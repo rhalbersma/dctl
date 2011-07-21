@@ -1,10 +1,9 @@
 #include <cassert>
-#include "../../Hash/Algorithms.h"
+#include "../hash/Algorithms.h"
 #include "../../utils/Bit.h"
-#include "../../rules/Traits.h"
+#include "../../rules/Rules.h"
 
 namespace tree {
-namespace node {
 
 // initialize with a set of bitboards and a color
 template<typename Board>
@@ -18,7 +17,7 @@ Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard
         same_king_[Side::BLACK] = same_king_[Side::WHITE] = 0;
         same_king_moves_[Side::BLACK] = same_king_moves_[Side::WHITE] = 0;
         
-        hash_index_ = hash::zobrist::Init<node::Position<Board>, HashIndex>()(*this);
+        hash_index_ = hash::zobrist::Init<Position<Board>, HashIndex>()(*this);
 
         assert(pieces_invariant());
 }
@@ -28,57 +27,6 @@ template<typename Board>
 Position<Board> Position<Board>::initial()
 {
         return Position<Board>(Board::INITIAL[Side::BLACK], Board::INITIAL[Side::WHITE], 0, Side::WHITE);
-}
-
-template<typename Board> template<typename Rules>
-bool Position<Board>::is_draw() const
-{
-        return is_repetition_draw() || is_reversible_draw<Rules>();
-}
-
-template<typename Board>
-bool Position<Board>::is_repetition_draw() const
-{
-        const auto MAX_CYCLE = reversible_moves();
-
-        // a repetition draw needs at least MIN_CYCLE of reversible moves
-        if (MAX_CYCLE < MIN_CYCLE)
-                return false;
-
-        // find the parent position at MIN_CYCLE ply above the current position
-        auto p = grand_parent();
-        for (auto i = STRIDE; i != MIN_CYCLE; i += STRIDE)
-                p = p->grand_parent();
-
-        // check the hash index of the parent position with the current hash index
-        for (auto i = MIN_CYCLE; i <= MAX_CYCLE; i += STRIDE) {
-                if (p->hash_index() == hash_index())
-                        return true;
-                p = p->grand_parent();
-        }
-
-        return false;
-}
-
-// tag dispatching based on restrictions on consecutive king moves by both sides
-template<typename Board> template<typename Rules>
-bool Position<Board>::is_reversible_draw() const
-{
-        return is_reversible_draw<Rules>(Int2Type<rules::is_restricted_reversible_moves<Rules>::value>());
-}
-
-// partial specialization for restricted consecutive king moves by both sides
-template<typename Board> template<typename Rules>
-bool Position<Board>::is_reversible_draw(Int2Type<true>) const
-{
-        return reversible_moves() >= rules::max_reversible_moves<Rules>::value;
-}
-
-// partial specialization for unrestricted consecutive king moves by both sides
-template<typename Board> template<typename Rules>
-bool Position<Board>::is_reversible_draw(Int2Type<false>) const
-{
-        return false;
 }
 
 // black and white men
@@ -137,36 +85,6 @@ bool Position<Board>::to_move() const
         return to_move_;
 }
 
-// tag dispatching based on restrictions on consecutive moves with the same king
-template<typename Board> template<typename Rules>
-BitBoard Position<Board>::unrestricted_kings(bool color) const
-{
-        return unrestricted_kings<Rules>(color, Int2Type<rules::is_restricted_same_king_moves<Rules>::value>());
-}
-
-// partial specialization for unrestricted consecutive moves with the same king
-template<typename Board> template<typename Rules>
-BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<false>) const
-{
-        return kings(color);
-}
-
-// partial specialization for restricted consecutive moves with the same king
-template<typename Board> template<typename Rules>
-BitBoard Position<Board>::unrestricted_kings(bool color, Int2Type<true>) const
-{
-        if (kings(color) && men(color) && is_restricted_king<rules::max_same_king_moves<Rules>::value>(color))
-                return kings(color) ^ same_king(color);
-        else
-                return kings(color);
-}
-
-template<typename Board> template<PlyCount N>
-bool Position<Board>::is_restricted_king(bool color) const
-{
-        return same_king_moves(color) == N;
-}
-
 template<typename Board>
 BitBoard Position<Board>::same_king(bool color) const
 {
@@ -192,25 +110,25 @@ HashIndex Position<Board>::hash_index() const
 }
 
 template<typename Board>
-const node::Pieces& Position<Board>::pieces() const
+const Pieces& Position<Board>::pieces() const
 {
         return pieces_;
 }
 
 template<typename Board>
-const node::Pieces& Position<Board>::key() const
+const Pieces& Position<Board>::key() const
 {
         return pieces();
 }
 
 template<typename Board>
-const node::Position<Board>* Position<Board>::parent() const
+const Position<Board>* Position<Board>::parent() const
 {
         return parent_;
 }
 
 template<typename Board>
-const node::Position<Board>* Position<Board>::grand_parent() const
+const Position<Board>* Position<Board>::grand_parent() const
 {
         return parent_ ? parent_->parent() : nullptr;
 }
@@ -225,7 +143,7 @@ bool Position<Board>::pieces_invariant() const
 template<typename Board>
 bool Position<Board>::hash_index_invariant() const
 {
-        return hash::zobrist::Find<node::Position<Board>, HashIndex>()(*this) == hash::zobrist::Init<node::Position<Board>, HashIndex>()(*this);
+        return hash::zobrist::Find<Position<Board>, HashIndex>()(*this) == hash::zobrist::Init<Position<Board>, HashIndex>()(*this);
 }
 
 template<typename Board> template<typename Rules>
@@ -306,5 +224,80 @@ BitBoard passive_pieces(const Position<Board>& p)
         return p.pieces(!p.to_move());
 }
 
-}       // namespace node
+// tag dispatching based on restrictions on consecutive moves with the same king
+template<typename Rules, typename Board>
+BitBoard unrestricted_kings(const Position<Board>& p, bool color)
+{
+        return unrestricted_kings<Rules>(p, color, Int2Type<rules::is_restricted_same_king_moves<Rules>::value>());
+}
+
+// partial specialization for unrestricted consecutive moves with the same king
+template<typename Rules, typename Board>
+BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<false>)
+{
+        return p.kings(color);
+}
+
+// partial specialization for restricted consecutive moves with the same king
+template<typename Rules, typename Board>
+BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<true>)
+{
+        return p.kings(color) ^ p.same_king(color);
+}
+
+template<typename Rules, typename Board>
+bool has_restricted_king(const Position<Board>& p, bool color)
+{
+        return p.same_king_moves(color) == rules::max_same_king_moves<Rules>::value;
+}
+
+template<typename Rules, typename Board>
+bool is_draw(const Position<Board>& p)
+{
+        return 
+                is_repetition_draw(p) || 
+                is_reversible_draw<Rules>(p)
+        ;
+}
+
+template<typename Board>
+bool is_repetition_draw(const Position<Board>& p)
+{
+        // a repetition draw needs at least 4 reversible moves
+        if (p.reversible_moves() < 4)
+                return false;
+
+        // find the parent position at 4 ply above the current position
+        auto q = p.grand_parent()->grand_parent();
+
+        // compare the ancestor hash indices with the current hash index
+        for (auto i = 4; i <= p.reversible_moves(); i += 2) {
+                if (q->hash_index() == p.hash_index())
+                        return true;
+                q = q->grand_parent();
+        }
+        return false;
+}
+
+// tag dispatching based on restrictions on consecutive king moves by both sides
+template<typename Rules, typename Board>
+bool is_reversible_draw(const Position<Board>& p)
+{
+        return is_reversible_draw<Rules>(p, Int2Type<rules::is_restricted_reversible_moves<Rules>::value>());
+}
+
+// partial specialization for unrestricted consecutive king moves by both sides
+template<typename Rules, typename Board>
+bool is_reversible_draw(const Position<Board>&, Int2Type<false>)
+{
+        return false;
+}
+
+// partial specialization for restricted consecutive king moves by both sides
+template<typename Rules, typename Board>
+bool is_reversible_draw(const Position<Board>& p, Int2Type<true>)
+{
+        return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
+}
+
 }       // namespace tree

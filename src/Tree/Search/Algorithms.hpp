@@ -1,5 +1,5 @@
 #include <cassert>
-#include "../Generate/Successors.h"
+#include "../generate/Successors.h"
 
 namespace tree {
 namespace search {
@@ -9,7 +9,7 @@ using score::squeeze;
 
 // iterative deepening with no move ordering at the root
 template<typename Rules, typename Board>
-int Root::iterative_deepening(const node::Position<Board>& p, int depth)
+int Root::iterative_deepening(const Position<Board>& p, int depth)
 {
         int score = -score::infinity();                
         int alpha, beta;
@@ -33,7 +33,7 @@ int Root::iterative_deepening(const node::Position<Board>& p, int depth)
 
 // principal variation search (PVS)
 template<int ThisNode, typename Rules, typename Board>
-int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
+int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         //if (is_interrupted())
         //        return alpha;
@@ -41,7 +41,7 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
         statistics_.update(ply);
         
         // check for a legal draw
-        if (p.template is_draw<Rules>())
+        if (is_draw<Rules>(p))
                 return score::draw();       
 
         // return evaluation in leaf nodes with valid moves
@@ -69,7 +69,7 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
                 return TT_entry->value();
 
         // generate moves
-        node::Stack move_stack;
+        Stack move_stack;
         generate::Successors<Rules, Board>::generate(p, move_stack);
 
         // without a valid move, the position is an immediate loss
@@ -78,9 +78,9 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
 
                 // we can only have an upper bound or an exact value at this point
                 assert(value < beta);
-                const Entry::Bound bound = (value <= alpha)? Entry::upper() : Entry::exact();
+                const Transposition::Bound bound = (value <= alpha)? Transposition::upper() : Transposition::exact();
 
-                TT.insert(p, Entry(value, bound, depth, Entry::no_move()));
+                TT.insert(p, Transposition(value, bound, depth, Transposition::no_move()));
                 return value;
         }
 
@@ -95,7 +95,7 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
         }
 
         // move ordering
-        node::Order move_order(move_stack.size());
+        Order move_order(move_stack.size());
         identity_permutation(move_order);                
         if (TT_entry && TT_entry->has_move()) {
                 const size_t TT_move = TT_entry->move() % move_stack.size();
@@ -104,13 +104,13 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
 
         // search moves
         int best_value = -score::infinity();
-        size_t best_move = Entry::no_move();
+        size_t best_move = Transposition::no_move();
         int value;
         size_t i;
         Parameters child_node;
         const int original_alpha = alpha;
 
-        node::Position<Board> q;
+        Position<Board> q;
         for (size_t s = 0; s < move_order.size(); ++s) {
                 i = move_order[s];
                 // TODO: TT singular extension
@@ -143,20 +143,20 @@ int Root::pvs(const node::Position<Board>& p, int ply, int depth, int alpha, int
 
         // we must have found a best move with a finite value
         assert(score::is_finite(best_value));
-        assert(best_move != Entry::no_move());
+        assert(best_move != Transposition::no_move());
 
         // determine the bound type of the value
-        const Entry::Bound bound = 
-                best_value <= original_alpha ? Entry::upper() : 
-                best_value >= beta ? Entry::lower() : Entry::exact();
-        TT.insert(p, Entry(best_value, bound, depth, best_move));
+        const Transposition::Bound bound = 
+                best_value <= original_alpha ? Transposition::upper() : 
+                best_value >= beta ? Transposition::lower() : Transposition::exact();
+        TT.insert(p, Transposition(best_value, bound, depth, best_move));
         return best_value;
 }
 
 /*
 // principal variation search (PVS) with TT cut-offs, TT move ordering and IID
-template<size_t Entry, typename Rules, typename Board>
-int Root::quiescence(const node::Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
+template<size_t Transposition, typename Rules, typename Board>
+int Root::quiescence(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 
@@ -170,7 +170,7 @@ int Root::quiescence(const node::Position<Board>& p, int ply, int depth, int alp
         }
 
         // generate captures and promotions
-        node::Stack move_stack;
+        Stack move_stack;
         generate::generate_captures_promotions(p, move_stack);
 
         if (move_stack.empty())
@@ -188,7 +188,7 @@ int Root::quiescence(const node::Position<Board>& p, int ply, int depth, int alp
 
 // negamax
 template<typename Rules, typename Board>
-int Root::negamax(const node::Position<Board>& p, int ply, int depth, Parameters& parent_node)
+int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& parent_node)
 {
         statistics_.update(ply);
 
@@ -201,7 +201,7 @@ int Root::negamax(const node::Position<Board>& p, int ply, int depth, Parameters
                 return !generate::detect<Rules>(p)? score::loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
-        node::Stack move_stack;
+        Stack move_stack;
         generate::generate(p, move_stack);
 
         // search moves
@@ -225,7 +225,7 @@ int Root::negamax(const node::Position<Board>& p, int ply, int depth, Parameters
 
 // alpha-beta
 template<typename Rules, typename Board>
-int Root::alpha_beta(const node::Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
+int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 
@@ -244,7 +244,7 @@ int Root::alpha_beta(const node::Position<Board>& p, int ply, int depth, int alp
                 return !generate::detect<Rules>(p)? score::loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
-        node::Stack move_stack;
+        Stack move_stack;
         generate::generate(p, move_stack);
 
         // search moves

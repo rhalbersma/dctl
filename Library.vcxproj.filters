@@ -13,78 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\CheckerBoard">
-      <UniqueIdentifier>{92420d88-c5e2-4ec9-865b-444bf8ba6477}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\CheckerBoard">
-      <UniqueIdentifier>{3a8b08ef-fb3b-4f91-9519-0bba05170bc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\hash">
-      <UniqueIdentifier>{de78291a-5669-4a63-8848-e155042d8fda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Evaluation">
-      <UniqueIdentifier>{752cc172-a8a2-4e78-807c-71e8cfb43e8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Evaluation">
-      <UniqueIdentifier>{19fee193-8fd5-4886-b224-6b0a9b47f1dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\hash\zobrist">
-      <UniqueIdentifier>{55ab2cd1-3ba5-43c7-9dc0-4ee17123d3ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\hash\jenkins">
-      <UniqueIdentifier>{13b7f98f-bb65-4c8f-8cc6-69c389586ac7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tree">
-      <UniqueIdentifier>{5f64f8a6-f373-41d8-8b4a-b42fccb05f78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree">
-      <UniqueIdentifier>{efbf656c-5ae8-4105-a3ba-822108322acc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree\Walk">
-      <UniqueIdentifier>{e71125f1-3d07-44fd-a3a7-36de5984988b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tree\Search">
-      <UniqueIdentifier>{9fddec3a-719a-4e47-85bc-d08933240bdb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree\Search">
-      <UniqueIdentifier>{c0f1e9d7-3f6d-4af6-b601-af60f9961ef1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tree\Move">
-      <UniqueIdentifier>{6007c521-8ee3-4248-accd-96bf3a4e06a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tree\Node">
-      <UniqueIdentifier>{4c3aecbc-0823-49f5-9e6f-a7cab95cde43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree\Move">
-      <UniqueIdentifier>{62304568-ed23-4bae-8b61-16516b2497ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree\Node">
-      <UniqueIdentifier>{3579e545-c666-486d-8e44-133eebd643fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tree\Generate">
-      <UniqueIdentifier>{0474e3f4-afb4-4dd1-8554-2a1819948d56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tree\Generate\Capture">
-      <UniqueIdentifier>{60e7e53c-3491-41d0-b210-b3402a12fb59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree\Generate">
-      <UniqueIdentifier>{2856444e-4021-4335-8d96-cbec057a2cfb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree\Generate\Capture">
-      <UniqueIdentifier>{9c0e0474-8175-411e-9584-446a0c2c90dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\hash">
-      <UniqueIdentifier>{bcfec1e3-7753-4ca3-829c-7ed30566ed03}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\hash\zobrist">
-      <UniqueIdentifier>{fe52db01-07dc-4621-ac60-23dd2d94e311}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\hash\jenkins">
-      <UniqueIdentifier>{3240917a-3615-4230-9768-71ef1284badf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tree\Walk">
-      <UniqueIdentifier>{08df25bd-c71b-4435-aa40-8daf348bcfaf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\rules">
       <UniqueIdentifier>{157b949c-1f3f-4960-a7cf-3a1033db931c}</UniqueIdentifier>
     </Filter>
@@ -94,266 +22,104 @@
     <Filter Include="Source Files\board">
       <UniqueIdentifier>{2c7fb852-223e-4548-8a1e-e0444f2a340b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\damexchange">
-      <UniqueIdentifier>{1f51466a-5cb9-4151-a65b-518885188d0c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\damexchange">
-      <UniqueIdentifier>{a7ba68ee-d99d-406a-aa4d-6d247f937916}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pdn">
-      <UniqueIdentifier>{4d128ee8-be72-482e-906f-b825b53bd96e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\utils">
       <UniqueIdentifier>{cc70d3cd-efd0-40c6-9310-d0e779421e4e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\utils">
       <UniqueIdentifier>{5f168311-fc6d-452b-ad4e-2bec86d81636}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\tree">
+      <UniqueIdentifier>{b698baa9-71e2-48ec-9c67-6c4ae66b07a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree">
+      <UniqueIdentifier>{7e3afc4c-2a01-4877-8faf-123538beffa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\protocol">
+      <UniqueIdentifier>{0a2619f3-9da7-4acc-a423-1b1dd70c2760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocol">
+      <UniqueIdentifier>{30c69d78-a17f-48b7-9456-5ecd889a8c5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocol\checkerboard">
+      <UniqueIdentifier>{3a8b08ef-fb3b-4f91-9519-0bba05170bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocol\damexchange">
+      <UniqueIdentifier>{a7ba68ee-d99d-406a-aa4d-6d247f937916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocol\pdn">
+      <UniqueIdentifier>{4d128ee8-be72-482e-906f-b825b53bd96e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\protocol\checkerboard">
+      <UniqueIdentifier>{92420d88-c5e2-4ec9-865b-444bf8ba6477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\protocol\damexchange">
+      <UniqueIdentifier>{1f51466a-5cb9-4151-a65b-518885188d0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\protocol\pdn">
+      <UniqueIdentifier>{fb9e6f14-ee87-4547-a9ac-3e4d892722e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\evaluate">
+      <UniqueIdentifier>{19fee193-8fd5-4886-b224-6b0a9b47f1dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\walk">
+      <UniqueIdentifier>{e71125f1-3d07-44fd-a3a7-36de5984988b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\generate">
+      <UniqueIdentifier>{2856444e-4021-4335-8d96-cbec057a2cfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\generate\capture">
+      <UniqueIdentifier>{9c0e0474-8175-411e-9584-446a0c2c90dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\hash">
+      <UniqueIdentifier>{de78291a-5669-4a63-8848-e155042d8fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\hash\zobrist">
+      <UniqueIdentifier>{55ab2cd1-3ba5-43c7-9dc0-4ee17123d3ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\hash\jenkins">
+      <UniqueIdentifier>{13b7f98f-bb65-4c8f-8cc6-69c389586ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\move">
+      <UniqueIdentifier>{62304568-ed23-4bae-8b61-16516b2497ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\node">
+      <UniqueIdentifier>{3579e545-c666-486d-8e44-133eebd643fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree\search">
+      <UniqueIdentifier>{c0f1e9d7-3f6d-4af6-b601-af60f9961ef1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\evaluate">
+      <UniqueIdentifier>{752cc172-a8a2-4e78-807c-71e8cfb43e8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\generate">
+      <UniqueIdentifier>{0474e3f4-afb4-4dd1-8554-2a1819948d56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\generate\capture">
+      <UniqueIdentifier>{60e7e53c-3491-41d0-b210-b3402a12fb59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\hash">
+      <UniqueIdentifier>{bcfec1e3-7753-4ca3-829c-7ed30566ed03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\hash\zobrist">
+      <UniqueIdentifier>{fe52db01-07dc-4621-ac60-23dd2d94e311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\hash\jenkins">
+      <UniqueIdentifier>{3240917a-3615-4230-9768-71ef1284badf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\move">
+      <UniqueIdentifier>{6007c521-8ee3-4248-accd-96bf3a4e06a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\node">
+      <UniqueIdentifier>{4c3aecbc-0823-49f5-9e6f-a7cab95cde43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\search">
+      <UniqueIdentifier>{9fddec3a-719a-4e47-85bc-d08933240bdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\walk">
+      <UniqueIdentifier>{08df25bd-c71b-4435-aa40-8daf348bcfaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Evaluation\Evaluate.hpp">
-      <Filter>Source Files\Evaluation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Evaluation\EvaluateWeight.h">
-      <Filter>Header Files\Evaluation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Evaluation\Evaluate.h">
-      <Filter>Header Files\Evaluation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CheckerBoard\CheckerBoardAPI.h">
-      <Filter>Header Files\CheckerBoard</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\Sign.h">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\Sign.hpp">
-      <Filter>Source Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\EntryPredicates.hpp">
-      <Filter>Source Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\EntryPredicates.h">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\Algorithms.h">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\Map.h">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\DualMap.h">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\DualMap.hpp">
-      <Filter>Source Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\Map.hpp">
-      <Filter>Source Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\zobrist\Random.h">
-      <Filter>Header Files\hash\zobrist</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\zobrist\Random.hpp">
-      <Filter>Source Files\hash\zobrist</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\jenkins\Mix.h">
-      <Filter>Header Files\hash\jenkins</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\jenkins\Mix.hpp">
-      <Filter>Source Files\hash\jenkins</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\jenkins\Init.hpp">
-      <Filter>Source Files\hash\jenkins</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\jenkins\Init.h">
-      <Filter>Header Files\hash\jenkins</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\zobrist\Init.h">
-      <Filter>Header Files\hash\zobrist</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\zobrist\Init.hpp">
-      <Filter>Source Files\hash\zobrist</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\zobrist\Find.h">
-      <Filter>Header Files\hash\zobrist</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\zobrist\Find.hpp">
-      <Filter>Source Files\hash\zobrist</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Statistics.h">
-      <Filter>Header Files\Tree</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Search\Algorithms.hpp">
-      <Filter>Source Files\Tree\Search</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Search\Parameters.h">
-      <Filter>Header Files\Tree\Search</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Walk\Root.h">
-      <Filter>Header Files\Tree\Walk</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Walk\Root.hpp">
-      <Filter>Source Files\Tree\Walk</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Search\Root.h">
-      <Filter>Header Files\Tree\Search</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tree\search\Root.hpp">
-      <Filter>Source Files\Tree\Search</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Search\Entry.h">
-      <Filter>Header Files\Tree\Search</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Walk\Entry.h">
-      <Filter>Header Files\Tree\Walk</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Move\String.h">
-      <Filter>Header Files\Tree\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Move\Token.h">
-      <Filter>Header Files\Tree\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Move\String.hpp">
-      <Filter>Source Files\Tree\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Side.h">
-      <Filter>Header Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Pieces.h">
-      <Filter>Header Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Position.h">
-      <Filter>Header Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Position.hpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\MakeMove.hpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Pieces.hpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\BothJumps.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\BothMoves.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\KingJumps.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\KingMoves.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\PawnJumps.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\PawnMoves.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Successors.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Successors.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\BothJumps.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\BothMoves.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\KingJumps.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\KingMoves.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\PawnJumps.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\PawnMoves.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Value.h">
-      <Filter>Header Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\State.h">
-      <Filter>Header Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Templates.h">
-      <Filter>Header Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Templates.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\State.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\String.h">
-      <Filter>Header Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Token.hpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Token.h">
-      <Filter>Header Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Protocol.h">
-      <Filter>Header Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tree\node\String.hpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Layout.h">
-      <Filter>Header Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Layout.hpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\TemplateMethodInterface.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\TemplateMethod.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\TemplateMethod.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Driver.h">
-      <Filter>Header Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Driver.hpp">
-      <Filter>Source Files\Tree\Generate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Search\Score.h">
-      <Filter>Header Files\Tree\Search</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Stack.hpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Stack.h">
-      <Filter>Header Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Move\Protocol.h">
-      <Filter>Header Files\Tree\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Predicates.h">
-      <Filter>Header Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Predicates.hpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\FindInsert.h">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\FindInsert.hpp">
-      <Filter>Source Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hash\Replace.h">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
     <ClInclude Include="src\rules\Checkers.h">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
@@ -382,9 +148,6 @@
       <Filter>Header Files\rules</Filter>
     </ClInclude>
     <ClInclude Include="src\rules\Thai.h">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rules\Traits.h">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Board.h">
@@ -417,74 +180,11 @@
     <ClInclude Include="src\board\Grid.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Frisian.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\International.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Italian.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Killer.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Russian.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Generate\Capture\Spanish.hpp">
-      <Filter>Source Files\Tree\Generate\Capture</Filter>
-    </ClInclude>
     <ClInclude Include="src\board\Angle.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Angle.hpp">
       <Filter>Source Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\MessageInterface.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\Move.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\Parser.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\BackAcknowledge.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\BackRequest.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\Chat.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\Connection.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\GameAcknowledge.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\GameEnd.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\GameRequest.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\Scanner.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\Protocol.h">
-      <Filter>Header Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\Parser.hpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\Scanner.hpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\damexchange\Connection.hpp">
-      <Filter>Source Files\damexchange</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Predicates.h">
       <Filter>Header Files\board</Filter>
@@ -512,9 +212,6 @@
     </ClInclude>
     <ClInclude Include="src\board\Transform.h">
       <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\Node\Move.h">
-      <Filter>Header Files\Tree\Node</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\VectorArray.h">
       <Filter>Header Files\utils</Filter>
@@ -567,74 +264,317 @@
     <ClInclude Include="src\utils\Shift.hpp">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\Statistics.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rules\Rules.h">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\search\Transposition.h">
+      <Filter>Header Files\tree\search</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\search\Parameters.h">
+      <Filter>Header Files\tree\search</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\search\Root.h">
+      <Filter>Header Files\tree\search</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\search\Score.h">
+      <Filter>Header Files\tree\search</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\search\Algorithms.hpp">
+      <Filter>Source Files\tree\search</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\search\Root.hpp">
+      <Filter>Source Files\tree\search</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\walk\Transposition.h">
+      <Filter>Header Files\tree\walk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\walk\Root.h">
+      <Filter>Header Files\tree\walk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\walk\Root.hpp">
+      <Filter>Source Files\tree\walk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\TemplateMethodInterface.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\BothJumps.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\BothMoves.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\Driver.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\KingJumps.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\KingMoves.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\PawnJumps.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\PawnMoves.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\Successors.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\TemplateMethod.h">
+      <Filter>Header Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\Successors.hpp">
+      <Filter>Source Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\TemplateMethod.hpp">
+      <Filter>Source Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\BothJumps.hpp">
+      <Filter>Source Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\BothMoves.hpp">
+      <Filter>Source Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\Driver.hpp">
+      <Filter>Source Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\KingJumps.hpp">
+      <Filter>Source Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\KingMoves.hpp">
+      <Filter>Source Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\PawnJumps.hpp">
+      <Filter>Source Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\PawnMoves.hpp">
+      <Filter>Source Files\tree\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\State.h">
+      <Filter>Header Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\Templates.h">
+      <Filter>Header Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\Value.h">
+      <Filter>Header Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\Frisian.hpp">
+      <Filter>Source Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\International.hpp">
+      <Filter>Source Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\Italian.hpp">
+      <Filter>Source Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\Killer.hpp">
+      <Filter>Source Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\Russian.hpp">
+      <Filter>Source Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\Spanish.hpp">
+      <Filter>Source Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\State.hpp">
+      <Filter>Source Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\generate\capture\Templates.hpp">
+      <Filter>Source Files\tree\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\move\Token.h">
+      <Filter>Header Files\tree\move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\move\String.h">
+      <Filter>Header Files\tree\move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\move\String.hpp">
+      <Filter>Source Files\tree\move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Token.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Layout.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Move.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Pieces.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Position.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Predicates.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Protocol.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Side.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Stack.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\String.h">
+      <Filter>Header Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Token.hpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Layout.hpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\MakeMove.hpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Pieces.hpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Position.hpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Predicates.hpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\Stack.hpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\node\String.hpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\checkerboard\CheckerBoardAPI.h">
+      <Filter>Header Files\protocol\checkerboard</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\MessageInterface.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Move.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Parser.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Protocol.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Scanner.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\BackAcknowledge.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\BackRequest.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Chat.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Connection.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\GameAcknowledge.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\GameEnd.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\GameRequest.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Parser.hpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Scanner.hpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Connection.hpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\Sign.h">
+      <Filter>Header Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\Algorithms.h">
+      <Filter>Header Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\DualMap.h">
+      <Filter>Header Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\EntryPredicates.h">
+      <Filter>Header Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\FindInsert.h">
+      <Filter>Header Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\Map.h">
+      <Filter>Header Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\Replace.h">
+      <Filter>Header Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\Sign.hpp">
+      <Filter>Source Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\DualMap.hpp">
+      <Filter>Source Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\EntryPredicates.hpp">
+      <Filter>Source Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\FindInsert.hpp">
+      <Filter>Source Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\Map.hpp">
+      <Filter>Source Files\tree\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\jenkins\Mix.h">
+      <Filter>Header Files\tree\hash\jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\jenkins\Init.h">
+      <Filter>Header Files\tree\hash\jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\jenkins\Mix.hpp">
+      <Filter>Source Files\tree\hash\jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\jenkins\Init.hpp">
+      <Filter>Source Files\tree\hash\jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\zobrist\Random.h">
+      <Filter>Header Files\tree\hash\zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\zobrist\Find.h">
+      <Filter>Header Files\tree\hash\zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\zobrist\Init.h">
+      <Filter>Header Files\tree\hash\zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\zobrist\Find.hpp">
+      <Filter>Source Files\tree\hash\zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\zobrist\Init.hpp">
+      <Filter>Source Files\tree\hash\zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\hash\zobrist\Random.hpp">
+      <Filter>Source Files\tree\hash\zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\evaluate\Weight.h">
+      <Filter>Header Files\tree\evaluate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\evaluate\Evaluate.h">
+      <Filter>Header Files\tree\evaluate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tree\evaluate\Evaluate.hpp">
+      <Filter>Source Files\tree\evaluate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Evaluation\EvaluateWeight.cpp">
-      <Filter>Source Files\Evaluation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CheckerBoard\CheckerBoardAPI.cpp">
-      <Filter>Source Files\CheckerBoard</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hash\zobrist\Random.cpp">
-      <Filter>Source Files\hash\zobrist</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hash\jenkins\Mix.cpp">
-      <Filter>Source Files\hash\jenkins</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Statistics.cpp">
-      <Filter>Source Files\Tree</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Search\Parameters.cpp">
-      <Filter>Source Files\Tree\Search</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Walk\Root.cpp">
-      <Filter>Source Files\Tree\Walk</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Search\Root.cpp">
-      <Filter>Source Files\Tree\Search</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Search\Entry.cpp">
-      <Filter>Source Files\Tree\Search</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Walk\Entry.cpp">
-      <Filter>Source Files\Tree\Walk</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Node\Pieces.cpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Search\Score.cpp">
-      <Filter>Source Files\Tree\Search</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Node\Stack.cpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\Node\Predicates.cpp">
-      <Filter>Source Files\Tree\Node</Filter>
-    </ClCompile>
-    <ClCompile Include="src\damexchange\BackAcknowledge.cpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClCompile>
-    <ClCompile Include="src\damexchange\BackRequest.cpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClCompile>
-    <ClCompile Include="src\damexchange\Chat.cpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClCompile>
-    <ClCompile Include="src\damexchange\GameAcknowledge.cpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClCompile>
-    <ClCompile Include="src\damexchange\GameEnd.cpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClCompile>
-    <ClCompile Include="src\damexchange\GameRequest.cpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClCompile>
-    <ClCompile Include="src\damexchange\MessageInterface.cpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClCompile>
-    <ClCompile Include="src\damexchange\Move.cpp">
-      <Filter>Source Files\damexchange</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\DeBruijn.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
@@ -644,13 +584,71 @@
     <ClCompile Include="src\utils\UniqueNumber.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\pdn\tokens.l">
-      <Filter>Source Files\pdn</Filter>
-    </None>
-    <None Include="src\pdn\parser.y">
-      <Filter>Source Files\pdn</Filter>
-    </None>
+    <ClCompile Include="src\utils\Statistics.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\search\Transposition.cpp">
+      <Filter>Source Files\tree\search</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\search\Parameters.cpp">
+      <Filter>Source Files\tree\search</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\search\Root.cpp">
+      <Filter>Source Files\tree\search</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\search\Score.cpp">
+      <Filter>Source Files\tree\search</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\walk\Transposition.cpp">
+      <Filter>Source Files\tree\walk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\walk\Root.cpp">
+      <Filter>Source Files\tree\walk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\node\Pieces.cpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\node\Predicates.cpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\node\Stack.cpp">
+      <Filter>Source Files\tree\node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\protocol\checkerboard\CheckerBoardAPI.cpp">
+      <Filter>Source Files\protocol\checkerboard</Filter>
+    </ClCompile>
+    <ClCompile Include="src\protocol\damexchange\Move.cpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\protocol\damexchange\BackAcknowledge.cpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\protocol\damexchange\BackRequest.cpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\protocol\damexchange\Chat.cpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\protocol\damexchange\GameAcknowledge.cpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\protocol\damexchange\GameEnd.cpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\protocol\damexchange\GameRequest.cpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\protocol\damexchange\MessageInterface.cpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\hash\jenkins\Mix.cpp">
+      <Filter>Source Files\tree\hash\jenkins</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\hash\zobrist\Random.cpp">
+      <Filter>Source Files\tree\hash\zobrist</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\evaluate\Weight.cpp">
+      <Filter>Source Files\tree\evaluate</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #include <cassert>
 #include "KingJumps.h"
 #include "Capture/State.h"
-#include "../Node/Position.h"
+#include "../node/Position.h"
 #include "../../board/Angle.h"
 #include "../../board/Board.h"
 #include "../../board/Direction.h"
@@ -12,28 +12,28 @@ namespace tree {
 namespace generate {
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate(const node::Position<Board>& p, node::Stack& move_stack)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate(const Position<Board>& p, Stack& move_stack)
 {
         capture::State<Rules, Board> capture(p);
         generate(p, capture, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate(const node::Position<Board>& p, capture::State<Rules, Board>& capture, node::Stack& move_stack)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         generate_targets(p, capture, move_stack);
 }
 
 // tag dispatching based on whether men can capture kings
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_targets(const node::Position<Board>& p, capture::State<Rules, Board>& capture, node::Stack& move_stack)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         generate_targets(p, capture, move_stack, Int2Type<rules::is_men_capture_kings<Rules>::value>());
 }
 
 // partial specialization for men that cannot capture kings
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_targets(const node::Position<Board>& p, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<false>)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<false>)
 {
         capture.toggle_king_targets();
         generate_targets(p, capture, move_stack, Int2Type<true>());
@@ -42,21 +42,21 @@ void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_targ
 
 // partial specialization for men that can capture kings
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_targets(const node::Position<Board>& p, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<true>)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_targets(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<true>)
 {
         generate_dirs(p.men(Color), capture, move_stack);
 }
 
 // tag dispatching based on man capture directions
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, node::Stack& move_stack)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         generate_dirs(active_men, capture, move_stack, Int2Type<rules::man_capture_directions<Rules>::value>());
 }
 
 // partial specialization for men that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::DIRS_ALL>)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::DIRS_ALL>)
 {
         generate_dirs(active_men, capture, move_stack, Int2Type<rules::DIRS_ORTH>());
         generate_dirs(active_men, capture, move_stack, Int2Type<rules::DIRS_DIAG>());
@@ -64,7 +64,7 @@ void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs
 
 // partial specialization for men that capture in the 4 orthogonal directions
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::DIRS_ORTH>)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::DIRS_ORTH>)
 {
         generate_dir<board::Direction<Color, Board>::LEFT >(active_men, capture, move_stack);
         generate_dir<board::Direction<Color, Board>::RIGHT>(active_men, capture, move_stack);
@@ -74,7 +74,7 @@ void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs
 
 // partial specialization for men that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::DIRS_DIAG>)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::DIRS_DIAG>)
 {
         generate_dirs(active_men, capture, move_stack, Int2Type<rules::DIRS_UP  >());
         generate_dirs(active_men, capture, move_stack, Int2Type<rules::DIRS_DOWN>());
@@ -82,7 +82,7 @@ void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs
 
 // partial specialization for men that capture in the 2 forward diagonal directions
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::DIRS_UP>)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::DIRS_UP>)
 {
         generate_dir<board::Direction<Color, Board>::LEFT_UP >(active_men, capture, move_stack);
         generate_dir<board::Direction<Color, Board>::RIGHT_UP>(active_men, capture, move_stack);
@@ -90,14 +90,14 @@ void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs
 
 // partial specialization for men that capture in the 2 backward diagonal directions
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::DIRS_DOWN>)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_dirs(BitBoard active_men, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::DIRS_DOWN>)
 {
         generate_dir<board::Direction<Color, Board>::LEFT_DOWN >(active_men, capture, move_stack);
         generate_dir<board::Direction<Color, Board>::RIGHT_DOWN>(active_men, capture, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dir(BitBoard active_men, capture::State<Rules, Board>& capture, node::Stack& move_stack)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_dir(BitBoard active_men, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         BitBoard jumper, target;
         for (active_men &= Pull<Board, Index>()(capture.template targets<Index>()); active_men; bit::clear_first(active_men)) {
@@ -112,7 +112,7 @@ void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_dir(
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index> 
-void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_next(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack)
+void Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::generate_next(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         PushAssign<Board, Index>()(jumper);
 	if (!scan_next<Index>(jumper, capture, move_stack) && capture.current_greater_equal_best()) {
@@ -124,20 +124,20 @@ void Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::generate_next
 
 // tag dispatching based on promotion condition
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_next(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_next(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         return scan_next<Index>(jumper, capture, move_stack, Int2Type<rules::promotion_condition<Rules>::value>());
 }
 
 // partial specialization for men that promote en-passant
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_next(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::PROMOTE_EP>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_next(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::PROMOTE_EP>)
 {
         if (!capture.is_promotion<Color>(jumper))
                 return scan_next<Index>(jumper, capture, move_stack, Int2Type<rules::PROMOTE_BR>());
         else {
                 capture.toggle_promotion();
-                const bool found_next = Driver<Color, node::Pieces::KING, node::JUMPS, Rules, Board>::promote_en_passant<Index>(jumper, capture, move_stack);
+                const bool found_next = Driver<Color, Pieces::KING, JUMPS, Rules, Board>::promote_en_passant<Index>(jumper, capture, move_stack);
                 capture.toggle_promotion();
                 return found_next;
         }
@@ -145,7 +145,7 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_next(Bit
 
 // partial specialization for men that promote on the back row
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_next(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::PROMOTE_BR>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_next(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::PROMOTE_BR>)
 {
         return (
                 scan_dirs<Index>(jumper, capture, move_stack) |
@@ -155,14 +155,14 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_next(Bit
 
 // tag dispatching based on man scan directions
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         return scan_dirs<Index>(jumper, capture, move_stack, Int2Type<rules::man_scan_directions<Rules>::value>());
 }
 
 // partial specialization for scans in all the 6 non-parallel diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::SCAN_ALL>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::SCAN_ALL>)
 {
         return (
                 scan_dirs<Index>(jumper, capture, move_stack, Int2Type<rules::SCAN_SIDE>()) |
@@ -172,7 +172,7 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dirs(Bit
 
 // partial specialization for scans in the remaining 4 diagonal or orthogonal directions
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::SCAN_REST>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::SCAN_REST>)
 {
         return (
                 scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R045>::value>(jumper, capture, move_stack) |
@@ -184,7 +184,7 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dirs(Bit
 
 // partial specialization for scans in the 2 sideways directions
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::SCAN_SIDE>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::SCAN_SIDE>)
 {
         return (
                 scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R090>::value>(jumper, capture, move_stack) |
@@ -194,27 +194,27 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dirs(Bit
 
 // partial specialization for scans in the 1 mirrored forward direction
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::SCAN_UP>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::SCAN_UP>)
 {
         return scan_dir<board::MirrorUp<Index>::value>(jumper, capture, move_stack);
 }
 
 // partial specialization for scans in the 1 mirrored backward direction
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack, Int2Type<rules::SCAN_DOWN>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_dirs(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack, Int2Type<rules::SCAN_DOWN>)
 {
         return scan_dir<board::MirrorDown<Index>::value>(jumper, capture, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan_dir(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan_dir(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         PushAssign<Board, Index>()(jumper);
         return scan<Index>(jumper, capture, move_stack);
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan(BitBoard jumper, capture::State<Rules, Board>& capture, node::Stack& move_stack)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::scan(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         if (jumper & capture.template targets<Index>()) {
                 capture.make(jumper);
@@ -226,50 +226,50 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::scan(BitBoard
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::count(const node::Position<Board>& p)
+size_t Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::count(const Position<Board>& p)
 {
-        node::Stack move_stack;
+        Stack move_stack;
         generate(p, move_stack);
         return move_stack.size();
 }
 
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect(const node::Position<Board>& p)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect(const Position<Board>& p)
 {
         return detect_targets(p);
 }
 
 // tag dispatching based on whether men can capture kings
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_targets(const node::Position<Board>& p)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_targets(const Position<Board>& p)
 {
         return detect_targets(p, Int2Type<rules::is_men_capture_kings<Rules>::value>());
 }
 
 // partial specialization for men that cannot capture kings
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_targets(const node::Position<Board>& p, Int2Type<false>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_targets(const Position<Board>& p, Int2Type<false>)
 {
         return detect_dirs(p.men(Color), p.men(!Color), p.not_occupied());
 }
 
 // partial specialization for men that can capture kings
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_targets(const node::Position<Board>& p, Int2Type<true>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_targets(const Position<Board>& p, Int2Type<true>)
 {
         return detect_dirs(p.men(Color), p.pieces(!Color), p.not_occupied());
 }
 
 // tag dispatching based on man capture directions
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied)
 {
         return detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::man_capture_directions<Rules>::value>());
 }
 
 // partial specialization for men that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_ALL>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_ALL>)
 {
         return (
                 detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::DIRS_ORTH>()) ||
@@ -279,7 +279,7 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(B
 
 // partial specialization for men that capture in the 8 diagonal and orthogonal directions
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_ORTH>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_ORTH>)
 {
         return (
                 detect_dir<board::Direction<Color, Board>::LEFT >(active_men, opponent_pieces, not_occupied) ||
@@ -291,7 +291,7 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(B
 
 // partial specialization for men that capture in the 4 diagonal directions
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_DIAG>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_DIAG>)
 {
         return (
                 detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::DIRS_UP  >()) ||
@@ -301,7 +301,7 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(B
 
 // partial specialization for men that capture in the 2 forward diagonal directions
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_UP>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_UP>)
 {
         return (
                 detect_dir<board::Direction<Color, Board>::LEFT_UP >(active_men, opponent_pieces, not_occupied) ||
@@ -311,7 +311,7 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(B
 
 // partial specialization for men that capture in the 2 backward diagonal directions
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_DOWN>)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_dirs(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_DOWN>)
 {
         return (
                 detect_dir<board::Direction<Color, Board>::LEFT_DOWN >(active_men, opponent_pieces, not_occupied) ||
@@ -320,7 +320,7 @@ bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dirs(B
 }
 
 template<bool Color, typename Rules, typename Board> template<size_t Index>
-bool Driver<Color, node::Pieces::PAWN, node::JUMPS, Rules, Board>::detect_dir(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied)
+bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_dir(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied)
 {
         return !bit::is_zero(
                 Push<Board, Index>()(active_men) & 

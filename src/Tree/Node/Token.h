@@ -1,9 +1,8 @@
 #pragma once
 #include "Protocol.h"
-#include "../../damexchange/Protocol.h"
+#include "../../protocol/damexchange/Protocol.h"
 
 namespace tree {
-namespace node {
 
 template<char B, char W, char E>
 struct Triplet
@@ -29,9 +28,8 @@ struct Token<FEN_tag>: public Triplet<'B', 'W', '.'>
 };
 
 template<>
-struct Token<damexchange::protocol_tag>: public Triplet<'Z', 'W', 'e'> {};
+struct Token<protocol::damexchange::version>: public Triplet<'Z', 'W', 'e'> {};
 
-}       // namespace node
 }       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

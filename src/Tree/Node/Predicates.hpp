@@ -1,7 +1,6 @@
 #include "Position.h"
 
 namespace tree {
-namespace node {
 
 template<typename Board>
 BitBoard from_sq(const Position<Board>& p, const Move& m)
@@ -124,5 +123,4 @@ bool is_intersecting_promotion(BitBoard promotion, BitBoard delta)
         return is_intersecting_promotion(promotion, delta, Int2Type<rules::promotion_condition<Rules>::value>());
 }
 
-}       // namespace node
 }       // namespace tree

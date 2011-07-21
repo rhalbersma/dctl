@@ -2,7 +2,6 @@
 #include "../../utils/Bit.h"
 
 namespace tree {
-namespace node {
 
 // tag dispatching based on duplicate capture checking
 template<typename Rules>
@@ -78,7 +77,7 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
         // post-conditions are the pieces invariants                        
         assert(
                 (
-                        bit::is_exclusive(top(stack).pieces(node::Side::BLACK), top(stack).pieces(node::Side::WHITE)) ||
+                        bit::is_exclusive(top(stack).pieces(Side::BLACK), top(stack).pieces(Side::WHITE)) ||
 
                         // EXCEPTION: for intersecting captures, WHITE and BLACK pieces() overlap
                         is_intersecting_capture<Rules>(delta, captured_pieces)
@@ -115,7 +114,7 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
 
         // post-conditions are the pieces invariants                        
         assert(
-                bit::is_exclusive(top(stack).pieces(node::Side::BLACK), top(stack).pieces(node::Side::WHITE)) &&
+                bit::is_exclusive(top(stack).pieces(Side::BLACK), top(stack).pieces(Side::WHITE)) &&
                 (
                         bit::is_within(top(stack).kings(), top(stack).occupied()) ||
 
@@ -125,5 +124,4 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
         );
 }
 
-}       // namespace node
 }       // namespace tree

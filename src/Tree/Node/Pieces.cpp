@@ -5,7 +5,6 @@
 #include "../../utils/Bit.h"
 
 namespace tree {
-namespace node {
 
 // zero initialize
 Pieces::Pieces(BitBoard)
@@ -97,5 +96,4 @@ bool Pieces::invariant() const
         );
 }
 
-}       // namespace node
 }       // namespace tree

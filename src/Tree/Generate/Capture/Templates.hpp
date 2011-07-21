@@ -1,5 +1,5 @@
 #include "Value.h"
-#include "../../../rules/Traits.h"
+#include "../../../rules/Rules.h"
 #include "../../../utils/Bit.h"
 
 namespace tree {

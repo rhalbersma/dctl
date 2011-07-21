@@ -3,7 +3,6 @@
 #include "../../utils/Bit.h"
 
 namespace tree {
-namespace node {
 
 Stack::reference top(Stack& stack)
 {
@@ -32,5 +31,4 @@ void pop(Stack& stack)
         return stack.pop_back();
 }
 
-}       // namespace node
 }       // namespace tree
