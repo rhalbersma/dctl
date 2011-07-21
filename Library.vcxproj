@@ -152,7 +152,6 @@
     <ClInclude Include="src\board\Traits.h" />
     <ClInclude Include="src\board\Transform.h" />
     <ClInclude Include="src\board\Types.h" />
-    <ClInclude Include="src\protocol\checkerboard\CheckerBoardAPI.h" />
     <ClInclude Include="src\protocol\damexchange\BackAcknowledge.h" />
     <ClInclude Include="src\protocol\damexchange\BackRequest.h" />
     <ClInclude Include="src\protocol\damexchange\Chat.h" />
@@ -285,7 +284,6 @@
     <ClInclude Include="src\utils\VectorArray.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\protocol\checkerboard\CheckerBoardAPI.cpp" />
     <ClCompile Include="src\protocol\damexchange\BackAcknowledge.cpp" />
     <ClCompile Include="src\protocol\damexchange\BackRequest.cpp" />
     <ClCompile Include="src\protocol\damexchange\Chat.cpp" />
