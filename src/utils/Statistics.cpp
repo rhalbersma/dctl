@@ -1,7 +1,7 @@
 #include <algorithm>    // std:max
 #include "Statistics.h"
 
-namespace tree {
+namespace dtl {
 
 Statistics::Statistics()
 :
@@ -38,4 +38,4 @@ void Statistics::update(size_t ply)
         max_ply_ = std::max(ply, max_ply_);
 }
 
-}       // namespace tree
+}       // namespace dtl
