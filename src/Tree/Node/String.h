@@ -4,14 +4,13 @@
 #include "Token.h"
 
 namespace tree {
-namespace node {
 namespace string {
 
 template
 <
         typename Board,
         typename Protocol, 
-        typename Token = node::Token<Protocol>
+        typename Token = Token<Protocol>
 >
 struct read
 {
@@ -21,7 +20,7 @@ struct read
 template
 <
         typename Protocol, 
-        typename Token = node::Token<Protocol>
+        typename Token = Token<Protocol>
 >
 struct write
 {
@@ -30,7 +29,6 @@ struct write
 };
 
 }       // namespace string
-}       // namespace node
 }       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

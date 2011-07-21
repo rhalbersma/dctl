@@ -1,29 +1,29 @@
 #pragma once
 #include "Driver.h"
-#include "../Node/Stack.h"
+#include "../node/Stack.h"
 #include "../../utils/IntegerTypes.h"
 
 namespace tree {
 
-namespace node { template<typename> class Position; }
+template<typename> class Position;
 
 namespace generate {
 
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, node::Pieces::BOTH, node::MOVES, Rules, Board>
+class Driver<Color, Pieces::BOTH, MOVES, Rules, Board>
 {
 public:
-        static void generate(const node::Position<Board>&, node::Stack&);
-        static void generate_reverse(const node::Position<Board>&, node::Stack&);
-        static void generate_promotions(const node::Position<Board>&, node::Stack&);
+        static void generate(const Position<Board>&, Stack&);
+        static void generate_reverse(const Position<Board>&, Stack&);
+        static void generate_promotions(const Position<Board>&, Stack&);
 
-        static size_t count(const node::Position<Board>&);
-        static size_t count_reverse(const node::Position<Board>&);
-        static size_t count_promotions(const node::Position<Board>&);
+        static size_t count(const Position<Board>&);
+        static size_t count_reverse(const Position<Board>&);
+        static size_t count_promotions(const Position<Board>&);
         
-        static bool detect(const node::Position<Board>&);
-        static bool detect_reverse(const node::Position<Board>&);
-        static bool detect_promotions(const node::Position<Board>&);
+        static bool detect(const Position<Board>&);
+        static bool detect_reverse(const Position<Board>&);
+        static bool detect_promotions(const Position<Board>&);
 };
 
 }       // namespace generate

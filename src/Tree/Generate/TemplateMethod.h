@@ -1,11 +1,11 @@
 #pragma once
 #include <cstddef>
 #include "TemplateMethodInterface.h"
-#include "../Node/Stack.h"
+#include "../node/Stack.h"
 
 namespace tree {
 
-namespace node { template<typename> class Position; }
+template<typename> class Position;
 
 namespace generate {
 
@@ -15,21 +15,21 @@ class TemplateMethod: public TemplateMethodInterface<Rules, Board>
 public:		
         TemplateMethod() {};
 
-        virtual void generate(const node::Position<Board>&, node::Stack&) const;
-        virtual void generate_captures(const node::Position<Board>&, node::Stack&) const;
-        virtual void generate_reverse(const node::Position<Board>&, node::Stack&) const;
-        virtual void generate_promotions(const node::Position<Board>&, node::Stack&) const;
+        virtual void generate(const Position<Board>&, Stack&) const;
+        virtual void generate_captures(const Position<Board>&, Stack&) const;
+        virtual void generate_reverse(const Position<Board>&, Stack&) const;
+        virtual void generate_promotions(const Position<Board>&, Stack&) const;
 
-        virtual size_t count(const node::Position<Board>&) const;
-        virtual size_t count_captures(const node::Position<Board>&) const;
-        virtual size_t count_reverse(const node::Position<Board>&) const;
-        virtual size_t count_promotions(const node::Position<Board>&) const;
-        virtual size_t count_mobility(const node::Position<Board>&) const;
+        virtual size_t count(const Position<Board>&) const;
+        virtual size_t count_captures(const Position<Board>&) const;
+        virtual size_t count_reverse(const Position<Board>&) const;
+        virtual size_t count_promotions(const Position<Board>&) const;
+        virtual size_t count_mobility(const Position<Board>&) const;
 
-        virtual bool detect(const node::Position<Board>&) const;
-        virtual bool detect_captures(const node::Position<Board>&) const;
-        virtual bool detect_reverse(const node::Position<Board>&) const;
-        virtual bool detect_promotions(const node::Position<Board>&) const;
+        virtual bool detect(const Position<Board>&) const;
+        virtual bool detect_captures(const Position<Board>&) const;
+        virtual bool detect_reverse(const Position<Board>&) const;
+        virtual bool detect_promotions(const Position<Board>&) const;
 };
 
 }       // namespace generate

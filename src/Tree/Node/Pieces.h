@@ -2,7 +2,6 @@
 #include "../../utils/IntegerTypes.h"
 
 namespace tree {
-namespace node {
 
 class Pieces
 {
@@ -44,7 +43,6 @@ private:
 
 const Pieces operator^(const Pieces&, const Pieces&);   // xor-assign the set bits of two piece sets
 
-}       // namespace node
 }       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

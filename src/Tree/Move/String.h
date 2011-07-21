@@ -2,13 +2,11 @@
 #include <string>
 #include "Protocol.h"
 #include "Token.h"
-#include "../Node/Move.h"
+#include "../node/Move.h"
 
 namespace tree {
 
-namespace node { 
-        template<typename> class Position; 
-}
+template<typename> class Position;
         
 namespace move {
 namespace string {
@@ -22,7 +20,7 @@ template
 struct read
 {
 	template<typename Board> 
-        node::Move operator()(const node::Position<Board>&, const std::string&);
+        Move operator()(const Position<Board>&, const std::string&);
 };
 
 template
@@ -34,7 +32,7 @@ template
 struct write
 {
 	template<typename Board> 
-        std::string operator()(const node::Position<Board>&, const node::Move&);
+        std::string operator()(const Position<Board>&, const Move&);
 };
 
 }       // namespace string

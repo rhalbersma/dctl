@@ -6,7 +6,6 @@
 #include "../../utils/IntegerTypes.h"
 
 namespace tree {
-namespace node {
 namespace layout {
 
 template<typename Protocol, typename Token> template<typename Board>
@@ -37,5 +36,4 @@ std::string bit_content(const Pieces& p, size_t b)
 }
 
 }       // namespace layout
-}       // namespace node
 }       // namespace tree

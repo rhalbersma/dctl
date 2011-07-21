@@ -1,5 +1,5 @@
 #pragma once
-#include "Traits.h"
+#include "Rules.h"
 
 namespace rules {
 

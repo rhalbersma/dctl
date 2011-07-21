@@ -1,5 +1,5 @@
 #pragma once
-#include "Traits.h"
+#include "Rules.h"
 
 namespace rules {
 
@@ -12,4 +12,4 @@ template<> struct promotion_condition<Russian>  { enum { value = PROMOTE_EP }; }
 }       // namespace rules
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../Tree/Generate/Capture/Russian.hpp"
+#include "../tree/generate/Capture/Russian.hpp"

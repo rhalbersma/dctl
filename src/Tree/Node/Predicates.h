@@ -2,10 +2,9 @@
 #include "Move.h"
 #include "../../utils/IntegerTypes.h"
 #include "../../utils/TemplateTricks.h"
-#include "../../rules/Traits.h"
+#include "../../rules/Rules.h"
 
 namespace tree {
-namespace node { 
 
 template<typename> class Position;
 
@@ -43,7 +42,6 @@ template<typename> bool is_intersecting_promotion(BitBoard, BitBoard);
 bool is_intersecting_promotion(BitBoard, BitBoard, Int2Type<rules::PROMOTE_BR>);
 bool is_intersecting_promotion(BitBoard, BitBoard, Int2Type<rules::PROMOTE_EP>);
 
-}       // namespace node
 }       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

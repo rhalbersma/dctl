@@ -56,7 +56,7 @@ void Root::report(int depth, int value, const Timer& timer)
 }
 */
 
-void Root::identity_permutation(node::Order& permutation)
+void Root::identity_permutation(Order& permutation)
 {
         UniqueNumber unique_number;
         std::generate(permutation.begin(), permutation.end(), unique_number);

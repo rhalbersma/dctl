@@ -2,18 +2,9 @@
 #include <cstddef>
 #include "Move.h"
 #include "../../utils/IntegerTypes.h"
-#include "../../utils/Ply.h"
 #include "../../utils/TemplateTricks.h"
-#include "../../utils/VectorArray.h"
 
 namespace tree {
-namespace node {
-
-// typedefs
-enum Type { JUMPS, MOVES };
-typedef VectorArray<size_t, MAX_PLY> Sequence;
-typedef VectorArray<size_t, MAX_MOVES> Order;
-typedef VectorArray<Move, MAX_MOVES> Stack;
 
 // element access
 Stack::reference top(Stack&);
@@ -31,7 +22,6 @@ template<bool, typename> void push(BitBoard, BitBoard, BitBoard, Stack&);       
 template<bool, typename> void push(BitBoard, BitBoard, BitBoard, BitBoard, Stack&);     // add a man capture
 void pop(Stack&);                                                                       // remove the last move  
 
-}       // namespace node
 }       // namespace tree
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

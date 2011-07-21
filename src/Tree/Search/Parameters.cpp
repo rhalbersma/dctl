@@ -7,12 +7,12 @@ Parameters::Parameters()
 {
 }
 
-const tree::node::Sequence& Parameters::PV() const
+const Sequence& Parameters::PV() const
 {
         return PV_;
 }
 
-tree::node::Sequence& Parameters::PV()
+Sequence& Parameters::PV()
 {
         return PV_;
 }
@@ -22,7 +22,7 @@ size_t Parameters::best_move() const
         return *PV().begin();
 }
 
-void Parameters::set_PV(size_t first_move, const node::Sequence& continuation)
+void Parameters::set_PV(size_t first_move, const Sequence& continuation)
 {
         PV().resize(1 + continuation.size());
         *PV().begin() = first_move;

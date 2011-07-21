@@ -1,5 +1,5 @@
 #pragma once
-#include "Traits.h"
+#include "Rules.h"
 
 namespace rules {
 
@@ -20,4 +20,4 @@ template<> struct is_relative_king_precedence<Italian>  { enum { value = true   
 }       // namespace rules
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../Tree/Generate/Capture/Italian.hpp"
+#include "../tree/generate/Capture/Italian.hpp"
