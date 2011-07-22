@@ -1,4 +1,4 @@
-namespace dtl {
+namespace dctl {
 namespace hash {
 namespace jenkins {
 
@@ -39,4 +39,4 @@ void Mix<Index>::xor_shift_R(Index& index_, size_t s)
 
 }       // namespace jenkins
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

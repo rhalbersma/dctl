@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "Mix.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 namespace jenkins {
 
@@ -11,4 +11,4 @@ template<> const size_t Mix<uint64_t>::XOR_SHIFT_R[NUM_MIX] = {23, 6, 10, 31};
 
 }       // namespace jenkins
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

@@ -1,4 +1,4 @@
-namespace dtl {
+namespace dctl {
 
 // initialize with a set of bitboards
 template<bool Color>
@@ -9,4 +9,4 @@ void Pieces::init(BitBoard active_pieces, BitBoard opponent_pieces, BitBoard kin
         kings_ = kings;
 }
 
-}       // namespace dtl
+}       // namespace dctl

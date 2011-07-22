@@ -1,7 +1,7 @@
 #include <cassert>
 #include "../utils/Bit.h"
 
-namespace dtl {
+namespace dctl {
 
 // tag dispatching based on duplicate capture checking
 template<typename Rules>
@@ -124,4 +124,4 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
         );
 }
 
-}       // namespace dtl
+}       // namespace dctl

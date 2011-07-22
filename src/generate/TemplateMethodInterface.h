@@ -2,7 +2,7 @@
 #include <cstddef>
 #include "../node/Stack.h"
 
-namespace dtl {
+namespace dctl {
 
 template<typename> class Position;
 
@@ -34,4 +34,4 @@ public:
 };
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

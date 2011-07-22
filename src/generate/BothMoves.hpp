@@ -2,7 +2,7 @@
 #include "KingMoves.h"
 #include "PawnMoves.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 
 template<bool Color, typename Rules, typename Board> 
@@ -81,4 +81,4 @@ bool Driver<Color, Pieces::BOTH, MOVES, Rules, Board>::detect_promotions(const P
 }
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

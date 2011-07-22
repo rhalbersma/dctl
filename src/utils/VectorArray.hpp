@@ -1,5 +1,7 @@
 #include <cassert>
 
+namespace dctl {
+
 template<typename T, std::size_t N>
 VectorArray<T, N>::VectorArray()
 :
@@ -192,3 +194,5 @@ bool VectorArray<T, N>::within_bounds(size_type i) const
 {
         return i < max_size();
 }
+
+}       // namespace dctl

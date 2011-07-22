@@ -5,7 +5,7 @@
 #include "../utils/Bit.h"
 #include "../utils/IntegerTypes.h"
 
-namespace dtl {
+namespace dctl {
 namespace layout {
 
 template<typename Protocol, typename Token> template<typename Board>
@@ -36,4 +36,4 @@ std::string bit_content(const Pieces& p, size_t b)
 }
 
 }       // namespace layout
-}       // namespace dtl
+}       // namespace dctl

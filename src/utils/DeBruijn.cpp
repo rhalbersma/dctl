@@ -14,6 +14,7 @@ int main()
 
 #include "DeBruijn.h"
 
+namespace dctl {
 namespace bit {
 
 template<>
@@ -60,3 +61,4 @@ const size_t DeBruijn<unsigned __int64>::TABLE[] = {
 };
 
 }       // namespace bit
+}       // namespace dctl

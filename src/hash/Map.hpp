@@ -6,7 +6,7 @@
 #include "FindInsert.h"
 #include "Sign.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
@@ -129,4 +129,4 @@ typename Map<Key, Value, Hash, Index, Replace>::const_map_iterator Map<Key, Valu
 }
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

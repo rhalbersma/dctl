@@ -4,7 +4,7 @@
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
-namespace dtl {
+namespace dctl {
 
 // element access
 Stack::reference top(Stack&);
@@ -22,7 +22,7 @@ template<bool, typename> void push(BitBoard, BitBoard, BitBoard, Stack&);       
 template<bool, typename> void push(BitBoard, BitBoard, BitBoard, BitBoard, Stack&);     // add a man capture
 void pop(Stack&);                                                                       // remove the last move  
 
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Stack.hpp"

@@ -1,6 +1,6 @@
 #include <type_traits>  // std::is_integral
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 
 template<typename Index, typename Key>
@@ -22,4 +22,4 @@ const Key& FindSign<Item, Key>::operator()(const Item& item) const
 }
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

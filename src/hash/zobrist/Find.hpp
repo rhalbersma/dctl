@@ -1,6 +1,6 @@
 #include "../../node/Position.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 namespace zobrist {
 
@@ -16,4 +16,4 @@ struct Find<Position<Board>, Index>: public std::unary_function<Position<Board>,
 
 }       // namespace zobrist
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

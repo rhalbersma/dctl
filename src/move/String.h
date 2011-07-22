@@ -4,7 +4,7 @@
 #include "Token.h"
 #include "../node/Move.h"
 
-namespace dtl {
+namespace dctl {
 
 template<typename> class Position;
         
@@ -37,7 +37,7 @@ struct write
 
 }       // namespace string
 }       // namespace move
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "String.hpp"

@@ -6,6 +6,7 @@
 #include "Parser.h"
 #include "Protocol.h"
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -116,3 +117,4 @@ char GameRequest::write_setup(bool b)
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

@@ -4,7 +4,7 @@
 #include "Side.h"
 #include "../utils/Bit.h"
 
-namespace dtl {
+namespace dctl {
 
 // zero initialize
 Pieces::Pieces(BitBoard)
@@ -96,4 +96,4 @@ bool Pieces::invariant() const
         );
 }
 
-}       // namespace dtl
+}       // namespace dctl

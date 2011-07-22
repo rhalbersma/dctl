@@ -4,6 +4,7 @@
 #include "DeBruijn.h"
 #include "TemplateTricks.h"
 
+namespace dctl {
 namespace bit {
 
 template<typename T>
@@ -129,3 +130,4 @@ void clear_first(T& b)
 }
 
 }       // namespace bit
+}       // namespace dctl

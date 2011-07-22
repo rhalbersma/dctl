@@ -1,5 +1,6 @@
 #include "Angle.h"
 
+namespace dctl {
 namespace board {
 
 // partial specialization for identity rotations
@@ -31,3 +32,4 @@ struct Rotate<Dimensions<H, W, P>, Angle::D180>
 };
 
 }       // namespace board
+}       // namespace dctl

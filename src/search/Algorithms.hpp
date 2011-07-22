@@ -1,7 +1,7 @@
 #include <cassert>
 #include "../generate/Successors.h"
 
-namespace dtl {
+namespace dctl {
 namespace search {
 
 using score::stretch;
@@ -272,4 +272,4 @@ int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, in
 }
 
 }       // namespace search
-}       // namespace dtl
+}       // namespace dctl

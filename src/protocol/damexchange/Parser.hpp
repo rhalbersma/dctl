@@ -1,5 +1,6 @@
 #include "Scanner.h"
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -33,3 +34,4 @@ typename Parser<Protocol>::CreatorMap& Parser<Protocol>::instance()
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

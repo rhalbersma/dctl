@@ -1,6 +1,8 @@
 #include "Bit.h"
 #include "../board/Traits.h"
 
+namespace dctl {
+
 namespace { enum { L, R }; }
 
 // specialization for bitwise shift-left
@@ -76,3 +78,5 @@ T FloodFill<Board, I>::operator()(T generator, T propagator) const
 {
         return bit::flood_fill<board::is_positive<I>::value>(generator, propagator, Board::SHIFT[I]);
 }
+
+}       // namespace dctl

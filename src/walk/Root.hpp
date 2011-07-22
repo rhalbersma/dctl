@@ -8,7 +8,7 @@
 #include "../node/String.h"
 #include "../utils/Timer.h"
 
-namespace dtl {
+namespace dctl {
 namespace walk {
 
 template<typename Rules, typename Board>
@@ -190,4 +190,4 @@ void Root::announce(const Position<Board>& p, int depth, int num_moves)
 }
 
 }       // namespace walk
-}       // namespace dtl
+}       // namespace dctl

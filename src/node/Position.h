@@ -5,7 +5,7 @@
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
-namespace dtl {
+namespace dctl {
 
 template<typename Board> 
 class Position
@@ -34,7 +34,6 @@ public:
         PlyCount reversible_moves() const;
 
         const Position<Board>* parent() const;
-        const Position<Board>* grand_parent() const;
         const Pieces& key() const;
 
         // make a move in a copy from another position
@@ -42,6 +41,7 @@ public:
         template<typename> void make(const Move&);
         
 private:
+        // implementation
         void attach(const Position<Board>&);
         void detach();
 
@@ -70,9 +70,6 @@ private:
         PlyCount same_king_moves_[2];
         PlyCount reversible_moves_;
         bool to_move_;
-
-        // implementation
-        static const bool PASS = true;  // toggle the side to move
 };
 
 template<typename Board> BitBoard active_men(const Position<Board>&);           // men for the side to move
@@ -88,6 +85,8 @@ template<typename, typename Board> BitBoard unrestricted_kings(const Position<Bo
 template<typename, typename Board> BitBoard unrestricted_kings(const Position<Board>&, bool, Int2Type<true >);
 template<PlyCount, typename Board> bool has_restricted_king(const Position<Board>&, bool);
 
+template<typename Board> const Position<Board>* grand_parent(const Position<Board>&);
+
 template<typename, typename Board> bool is_draw(const Position<Board>&);
 template<typename Board> bool is_repetition_draw(const Position<Board>&);       
 
@@ -96,7 +95,7 @@ template<typename, typename Board> bool is_reversible_draw(const Position<Board>
 template<typename, typename Board> bool is_reversible_draw(const Position<Board>&, Int2Type<false>);
 template<typename, typename Board> bool is_reversible_draw(const Position<Board>&, Int2Type<true >);
 
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Position.hpp"

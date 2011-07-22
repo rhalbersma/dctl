@@ -1,6 +1,6 @@
 #include "../../utils/Bit.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 namespace zobrist {
 
@@ -27,7 +27,7 @@ Index Random<Index>::xor_rand(bool to_move, Index random)
 
 }       // namespace zobrist
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl
 
 /*
 uint64_t rand64()

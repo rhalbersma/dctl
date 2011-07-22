@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 namespace jenkins {
 
@@ -13,7 +13,7 @@ struct Init: public std::unary_function<Key, Index>
 
 }       // namespace jenkins
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Init.hpp"

@@ -4,6 +4,7 @@
 #include "Dimensions.h"
 #include "Structure.h"
 
+namespace dctl {
 namespace board {
 
 // square boards
@@ -30,3 +31,4 @@ typedef Board< Dimensions<11, 10, true>, Structure<3, 1>              > Ktar11;
 typedef Board< Dimensions<12, 10, true>, Structure<2, 1, Angle::R090> > Ktar12;
 
 }       // namespace board
+}       // namespace dctl

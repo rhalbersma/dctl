@@ -1,5 +1,6 @@
 #pragma once
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -14,3 +15,4 @@ typedef V1 version;     // alias for the default protocol version
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

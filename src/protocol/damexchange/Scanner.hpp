@@ -1,5 +1,6 @@
 #include <cassert>
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -34,3 +35,4 @@ bool Scanner<Protocol>::invariant() const
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

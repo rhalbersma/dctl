@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 
 template<typename Index, typename Key>
@@ -17,7 +17,7 @@ struct FindSign: public std::unary_function<Item, Key>
 };
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Sign.hpp"

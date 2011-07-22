@@ -2,6 +2,7 @@
 #include <functional>
 #include <string>
 
+namespace dctl {
 namespace board {
 
 template
@@ -21,6 +22,7 @@ template<typename> bool is_end_row(int);
 template<typename> bool is_indent_row(int);
 
 }       // namespace board
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Layout.hpp"

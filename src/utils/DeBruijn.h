@@ -1,6 +1,7 @@
 #pragma once
 #include "IntegerTypes.h"
 
+namespace dctl {
 namespace bit {
 
 template<typename T>
@@ -20,6 +21,7 @@ public:
 };
 
 }       // namespace bit
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "DeBruijn.hpp"

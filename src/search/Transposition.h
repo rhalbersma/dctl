@@ -2,7 +2,7 @@
 #include <string>
 #include "../utils/IntegerTypes.h"
 
-namespace dtl {
+namespace dctl {
 namespace search {
 
 class Transposition
@@ -71,4 +71,4 @@ private:
 };
 
 }       // namespace search
-}       // namespace dtl
+}       // namespace dctl

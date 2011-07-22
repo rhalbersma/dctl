@@ -1,6 +1,7 @@
 #include <iomanip>
 #include <iostream>
 
+namespace dctl {
 namespace bit {
 
 // create the lexicographically least De Bruijn sequence
@@ -72,3 +73,4 @@ void DeBruijn<T>::generate_table()
 }
 
 }       // namespace bit
+}       // namespace dctl

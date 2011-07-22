@@ -1,7 +1,7 @@
 #include "DualMap.h"
 #include "../node/Position.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
@@ -52,4 +52,4 @@ void DualMap<Key, Value, Hash, Index, Replace>::insert(const Position<Board>& p,
 }
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

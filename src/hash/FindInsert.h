@@ -3,7 +3,7 @@
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 
 template<typename Key, typename Value, std::size_t N>
@@ -27,7 +27,7 @@ struct insert_entry
 };
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "FindInsert.hpp"

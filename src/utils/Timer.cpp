@@ -1,6 +1,8 @@
 #include <cassert>
 #include "Timer.h"
 
+namespace dctl {
+
 Timer::Timer()
 {
         split();
@@ -27,3 +29,5 @@ clock_t Timer::lap() const
         const size_t i = laps_.size() - 1;
         return laps_[i] - laps_[i - 1];
 }
+
+}       // namespace dctl

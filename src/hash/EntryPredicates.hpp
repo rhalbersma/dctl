@@ -1,4 +1,4 @@
-namespace dtl {
+namespace dctl {
 namespace hash {
 
 template<typename Entry, typename Key>
@@ -20,4 +20,4 @@ bool leafs_compare<Entry>::operator()(const Entry& left, const Entry& right) con
 }
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

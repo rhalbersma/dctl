@@ -1,6 +1,6 @@
 #pragma once
-#include <cstddef>
 
+namespace dctl {
 namespace rules {
 
 //+----------------------------------------------------------------------------+
@@ -113,3 +113,4 @@ template<typename> struct large_capture                         { enum { value =
 template<typename Rules> struct is_ambiguous_man_capture        { enum { value = is_men_capture_backwards<Rules>::value || promotion_condition<Rules>::value }; };
 
 }       // namespace rules
+}       // namespace dctl

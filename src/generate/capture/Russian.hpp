@@ -1,7 +1,7 @@
 #include "Templates.h"
 #include "Value.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 namespace capture {
 
@@ -16,4 +16,4 @@ struct init<rules::Russian>
 
 }       // namespace capture
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

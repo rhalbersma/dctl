@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 
 template<typename Entry, typename Key>
@@ -23,7 +23,7 @@ struct leafs_compare: public std::binary_function<Entry, Entry, bool>
 };
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "EntryPredicates.hpp"

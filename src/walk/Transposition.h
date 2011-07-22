@@ -1,7 +1,7 @@
 #pragma once
 #include "../utils/IntegerTypes.h"
 
-namespace dtl {
+namespace dctl {
 namespace walk {
 
 class Transposition
@@ -31,4 +31,4 @@ private:
 };
 
 }       // namespace walk
-}       // namespace dtl
+}       // namespace dctl

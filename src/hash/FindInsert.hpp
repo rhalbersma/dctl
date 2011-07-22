@@ -3,7 +3,7 @@
 #include "EntryPredicates.h"
 #include "Replace.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 
 template<typename Key, typename Value, size_t N>
@@ -79,4 +79,4 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutShallowestOfN>
 };
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

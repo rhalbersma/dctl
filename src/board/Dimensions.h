@@ -1,6 +1,7 @@
 #pragma once
 #include "Transform.h"
 
+namespace dctl {
 namespace board {
 
 template
@@ -22,6 +23,7 @@ template<int H, int W, bool P, int I>
 struct Rotate<Dimensions<H, W, P>, I>;
 
 }       // namespace board
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Dimensions.hpp"

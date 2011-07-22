@@ -1,5 +1,6 @@
 #include "MessageInterface.h"
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -10,3 +11,4 @@ std::string MessageInterface::str() const
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

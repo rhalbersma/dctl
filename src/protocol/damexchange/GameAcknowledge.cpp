@@ -6,6 +6,7 @@
 #include "Parser.h"
 #include "Protocol.h"
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -60,3 +61,4 @@ std::string GameAcknowledge::body(const std::string& n, AcceptanceCode a)
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

@@ -1,6 +1,6 @@
 #include "Transposition.h"
 
-namespace dtl {
+namespace dctl {
 namespace walk {
 
 Transposition::Transposition()
@@ -28,4 +28,4 @@ int Transposition::depth() const
 }
 
 }       // namespace walk
-}       // namespace dtl
+}       // namespace dctl

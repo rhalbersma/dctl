@@ -1,6 +1,7 @@
 #pragma once
 #include "../utils/TemplateTricks.h"
 
+namespace dctl {
 namespace board {
 
 // the 8 diagonal and orthogonal direction indices for black and white to move
@@ -24,3 +25,4 @@ public:
 };
 
 }       // namespace board
+}       // namespace dctl

@@ -5,7 +5,7 @@
 #include "../../utils/Bit.h"
 #include "../../utils/Shift.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 namespace capture { 
 
@@ -277,4 +277,4 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, BitBoard captured_p
 
 }       // namespace capture
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

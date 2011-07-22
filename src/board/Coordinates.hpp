@@ -1,5 +1,6 @@
 #include "Angle.h"
 
+namespace dctl {
 namespace board {
 
 template<typename C>
@@ -76,3 +77,4 @@ struct Rotate<Coordinates<G, R, C>, Angle::D180>
 };
 
 }       // namespace board
+}       // namespace dctl

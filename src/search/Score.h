@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-namespace dtl {
+namespace dctl {
 namespace search {
 namespace score {
 
@@ -28,4 +28,4 @@ std::string print(int);
 
 }       // namespace score
 }       // namespace search
-}       // namespace dtl
+}       // namespace dctl

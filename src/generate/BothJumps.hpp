@@ -4,7 +4,7 @@
 #include "Capture/State.h"
 #include "../rules/Rules.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 
 template<bool Color, typename Rules, typename Board>
@@ -62,4 +62,4 @@ bool Driver<Color, Pieces::BOTH, JUMPS, Rules, Board>::detect(const Position<Boa
 }
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

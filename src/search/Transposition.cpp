@@ -3,7 +3,7 @@
 #include "Transposition.h"
 #include "Score.h"
 
-namespace dtl {
+namespace dctl {
 namespace search {
 
 Transposition::Transposition()
@@ -179,4 +179,4 @@ size_t Transposition::no_move()
 }
 
 }       // namespace search
-}       // namespace dtl
+}       // namespace dctl

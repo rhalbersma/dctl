@@ -1,8 +1,9 @@
 #include <iomanip>
 #include <iostream>
 #include "Root.h"
+#include "../utils/Timer.h"
 
-namespace dtl {
+namespace dctl {
 namespace walk {
 
 Root::TranspositionTable Root::TT(1);
@@ -63,4 +64,4 @@ void Root::clear_hash()
 }
 
 }       // namespace walk
-}       // namespace dtl
+}       // namespace dctl

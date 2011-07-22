@@ -6,6 +6,7 @@
 #include "Parser.h"
 #include "Protocol.h"
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -53,3 +54,4 @@ std::string BackAcknowledge::body(AcceptanceCode a)
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

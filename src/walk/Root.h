@@ -5,12 +5,11 @@
 #include "../utils/IntegerTypes.h"
 #include "../utils/Statistics.h"
 
-class Timer;
-
-namespace dtl {
+namespace dctl {
 
 namespace generate { template<typename, typename> class Successors; }
 template<typename> class Position;
+class Timer;
 
 namespace walk {
 
@@ -50,7 +49,7 @@ private:
 };
 
 }       // namespace walk
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Root.hpp"

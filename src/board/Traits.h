@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "../utils/TemplateTricks.h"
 
+namespace dctl {
 namespace board {
 
 /*                      
@@ -47,3 +48,4 @@ struct is_positive
 };
 
 }       // namespace board
+}       // namespace dctl

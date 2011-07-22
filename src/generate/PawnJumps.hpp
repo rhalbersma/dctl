@@ -8,7 +8,7 @@
 #include "../utils/Bit.h"
 #include "../utils/Shift.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 
 template<bool Color, typename Rules, typename Board>
@@ -330,4 +330,4 @@ bool Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>::detect_dir(BitBoard activ
 }
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl
