@@ -1,8 +1,10 @@
 #include <string>
 #include "gtest/gtest.h"
-#include "../../../Library/src/damexchange/Parser.h"
-#include "../../../Library/src/damexchange/Protocol.h"
+#include "../../../../Library/src/protocol/damexchange/Parser.h"
+#include "../../../../Library/src/protocol/damexchange/Protocol.h"
 
+namespace dctl {
+namespace protocol {
 namespace damexchange {
 
 // Examples of DamExchange messages (Layer 2 Protocol)
@@ -22,9 +24,11 @@ TEST(Parser, MesanderExamples)
         };
 
         for (auto i = 0; i < 8; ++i) {
-                auto parsed = Parser<protocol_tag>::find(message[i]);
+                auto parsed = Parser<version>::find(message[i]);
                 EXPECT_EQ(0, parsed->str().compare(message[i]));
         }
 }
 
 }       // namespace damexchange
+}       // namespace protocol
+}       // namespace dctl

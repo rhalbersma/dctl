@@ -1,29 +1,29 @@
 #include <algorithm>    // std::find
 #include <string>
 #include "gtest/gtest.h"
-#include "../../../../Library/src/Tree/Generate/Successors.h"
-#include "../../../../Library/src/Tree/Node/Position.h"
-#include "../../../../Library/src/Tree/Node/Protocol.h"
-#include "../../../../Library/src/Tree/Node/String.h"
-#include "../../../../Library/src/Tree/Move/String.h"
-#include "../../../../Library/src/board/Layout.h"
-#include "../../../../Library/src/board/Types.h"
-#include "../../../../Library/src/rules/Variants.h"
+#include "../../../Library/src/generate/Successors.h"
+#include "../../../Library/src/node/Position.h"
+#include "../../../Library/src/node/Protocol.h"
+#include "../../../Library/src/node/String.h"
+#include "../../../Library/src/move/String.h"
+#include "../../../Library/src/board/Layout.h"
+#include "../../../Library/src/board/Types.h"
+#include "../../../Library/src/rules/Variants.h"
 
-namespace tree {
+namespace dctl {
 namespace generate {
 
 /*
 // Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 TEST(MoveGeneration, ItalianBoard)
 {
-        node::Position<board::Roman> ITA_empty = node::string::read<board::Roman, node::FEN_tag>()("");   // Art. 2.1
+        Position<board::Roman> ITA_empty = string::read<board::Roman, FEN_tag>()("");   // Art. 2.1
         typedef board::Roman ITA_notation;                                      	                        // Art. 2.4
-        node::Position<board::Roman> ITA_initial;						                // Art. 2.6
+        Position<board::Roman> ITA_initial;						                // Art. 2.6
 
-        std::cout << node::layout::write<node::FEN_tag>()(ITA_empty) << std::endl;
+        std::cout << layout::write<FEN_tag>()(ITA_empty) << std::endl;
         board::write<ITA_notation, board::Square_tag>()();
-        std::cout << node::layout::write<node::FEN_tag>()(ITA_initial) << std::endl;
+        std::cout << layout::write<FEN_tag>()(ITA_initial) << std::endl;
 }
 */
 TEST(MoveGeneration, Italian)
@@ -59,8 +59,8 @@ TEST(MoveGeneration, Italian)
         };
 
         for (auto i = 0; i < 9; ++i) {
-                node::Stack move_stack;
-                auto p = node::string::read<board::Roman, node::FEN_tag>()(position[i]);
+                Stack move_stack;
+                auto p = string::read<board::Roman, FEN_tag>()(position[i]);
                 Successors<rules::Italian, board::Roman>::generate(p, move_stack);
 
                 // check the number of generated moves
@@ -75,4 +75,4 @@ TEST(MoveGeneration, Italian)
 }
 
 }       // namespace generate
-}       // namespace tree
+}       // namespace dctl
