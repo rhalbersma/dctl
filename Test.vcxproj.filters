@@ -13,46 +13,46 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Utilities">
-      <UniqueIdentifier>{cb134f5f-b366-4cd5-b60c-bd22e3f9803d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree">
-      <UniqueIdentifier>{3bdb47d7-38c1-460d-8d7c-9b30d24e081a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree\Search">
-      <UniqueIdentifier>{46f28f37-070c-4069-a1ce-f7b5350fb5fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree\Walk">
-      <UniqueIdentifier>{3294b551-3e24-42c8-acd7-3c03f32be15d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tree\Generate">
+    <Filter Include="Source Files\generate">
       <UniqueIdentifier>{c32c176a-d5fd-4e7a-85e4-e8eb61648cbf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\damexchange">
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{cb134f5f-b366-4cd5-b60c-bd22e3f9803d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocol">
+      <UniqueIdentifier>{632fd6f8-2b9e-48d6-9a1f-229111f1a606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocol\damexchange">
       <UniqueIdentifier>{9a60d530-3f53-48ff-ac9c-786525623ad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\search">
+      <UniqueIdentifier>{46f28f37-070c-4069-a1ce-f7b5350fb5fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\walk">
+      <UniqueIdentifier>{3294b551-3e24-42c8-acd7-3c03f32be15d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\test_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utilities\Bit.cpp">
-      <Filter>Source Files\Utilities</Filter>
+    <ClCompile Include="src\generate\Successors.cpp">
+      <Filter>Source Files\generate</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tree\Search\Root.cpp">
-      <Filter>Source Files\Tree\Search</Filter>
+    <ClCompile Include="src\protocol\damexchange\Parser.cpp">
+      <Filter>Source Files\protocol\damexchange</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tree\Walk\Root.cpp">
-      <Filter>Source Files\Tree\Walk</Filter>
+    <ClCompile Include="src\search\Score.cpp">
+      <Filter>Source Files\search</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tree\Generate\Successors.cpp">
-      <Filter>Source Files\Tree\Generate</Filter>
+    <ClCompile Include="src\search\Root.cpp">
+      <Filter>Source Files\search</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tree\Search\Score.cpp">
-      <Filter>Source Files\Tree\Search</Filter>
+    <ClCompile Include="src\walk\Root.cpp">
+      <Filter>Source Files\walk</Filter>
     </ClCompile>
-    <ClCompile Include="src\damexchange\Parser.cpp">
-      <Filter>Source Files\damexchange</Filter>
+    <ClCompile Include="src\utils\Bit.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

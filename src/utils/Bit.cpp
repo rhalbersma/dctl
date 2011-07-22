@@ -1,7 +1,8 @@
 #include "gtest/gtest.h"
-#include "../../../Library/src/Utilities/Bit.h"
-#include "../../../Library/src/Utilities/IntegerTypes.h"
+#include "../../../Library/src/utils/Bit.h"
+#include "../../../Library/src/utils/IntegerTypes.h"
 
+namespace dctl {
 namespace bit {
 
 // The fixture for testing class SearchEndgame.
@@ -141,3 +142,4 @@ TYPED_TEST(Bit, CountKernighan)
 }
 
 }       // namespace bit
+}       // namespace dctl

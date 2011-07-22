@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
-#include "../../../../Library/src/Tree/Search/Score.h"
-#include "../../../../Library/src/Utilities/Ply.h"
+#include "../../../Library/src/search/Score.h"
+#include "../../../Library/src/utils/Ply.h"
 
-namespace tree {
+namespace dctl {
 namespace search {
 namespace score {
 
@@ -66,4 +66,4 @@ TEST(Score, SqueezeWin)
 
 }       // namespace score
 }       // namespace search
-}       // namespace tree
+}       // namespace dctl

@@ -132,13 +132,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\damexchange\Parser.cpp" />
+    <ClCompile Include="src\generate\Successors.cpp" />
+    <ClCompile Include="src\protocol\damexchange\Parser.cpp" />
+    <ClCompile Include="src\search\Root.cpp" />
+    <ClCompile Include="src\search\Score.cpp" />
     <ClCompile Include="src\test_main.cpp" />
-    <ClCompile Include="src\Tree\Generate\Successors.cpp" />
-    <ClCompile Include="src\Tree\Search\Root.cpp" />
-    <ClCompile Include="src\Tree\Search\Score.cpp" />
-    <ClCompile Include="src\Tree\Walk\Root.cpp" />
-    <ClCompile Include="src\Utilities\Bit.cpp" />
+    <ClCompile Include="src\utils\Bit.cpp" />
+    <ClCompile Include="src\walk\Root.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.vcxproj">
