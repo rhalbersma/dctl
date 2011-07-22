@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -21,3 +22,4 @@ private:
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

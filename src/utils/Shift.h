@@ -1,6 +1,8 @@
 #pragma once
 #include <cstddef>
 
+namespace dctl {
+
 // template function object for uniform left/right bitwise shift
 template<bool>
 struct Shift
@@ -55,6 +57,8 @@ struct FloodFill
         template<typename T> 
         T operator()(T, T) const;
 };
+
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Shift.hpp"

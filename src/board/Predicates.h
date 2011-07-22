@@ -1,5 +1,6 @@
 #pragma once
 
+namespace dctl {
 namespace board {
 
 template<typename, int>
@@ -27,6 +28,7 @@ template<typename, int>
 class bit_to_square;
 
 }       // namespace board
+}       // namespace dctl
 
 // include template definitions inside header since "export" keyword is not supported by most C++ compilers
 #include "Predicates.hpp"

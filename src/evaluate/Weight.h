@@ -1,6 +1,6 @@
 #pragma once
 
-namespace dtl {
+namespace dctl {
 
 struct Weight
 {
@@ -11,4 +11,4 @@ struct Weight
         static const int MOBILITY;
 };
 
-}       // namespace dtl
+}       // namespace dctl

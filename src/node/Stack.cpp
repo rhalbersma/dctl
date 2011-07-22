@@ -2,7 +2,7 @@
 #include "Stack.h"
 #include "../utils/Bit.h"
 
-namespace dtl {
+namespace dctl {
 
 Stack::reference top(Stack& stack)
 {
@@ -31,4 +31,4 @@ void pop(Stack& stack)
         return stack.pop_back();
 }
 
-}       // namespace dtl
+}       // namespace dctl

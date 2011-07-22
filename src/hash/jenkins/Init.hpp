@@ -2,7 +2,7 @@
 #include "../../node/Position.h"
 #include "../../node/Side.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 namespace jenkins {
 
@@ -24,4 +24,4 @@ struct Init<Position<Board>, Index>: public std::unary_function<Position<Board>,
 
 }       // namespace jenkins
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

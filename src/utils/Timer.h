@@ -2,6 +2,8 @@
 #include <ctime>
 #include <vector>
 
+namespace dctl {
+
 class Timer
 {
 public:
@@ -16,3 +18,5 @@ private:
         // representation
         std::vector<clock_t> laps_;     // lap times
 };
+
+}       // namespace dctl

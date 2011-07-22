@@ -2,6 +2,8 @@
 #include <array>
 #include <cstddef>
 
+namespace dctl {
+
 template<typename T, std::size_t N>
 class VectorArray
 {
@@ -62,6 +64,8 @@ private:
         std::array<T, N> array_;
         size_type size_;
 };
+
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "VectorArray.hpp"

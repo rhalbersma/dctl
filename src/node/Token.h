@@ -2,7 +2,7 @@
 #include "Protocol.h"
 #include "../protocol/damexchange/Protocol.h"
 
-namespace dtl {
+namespace dctl {
 
 template<char B, char W, char E>
 struct Triplet
@@ -30,7 +30,7 @@ struct Token<FEN_tag>: public Triplet<'B', 'W', '.'>
 template<>
 struct Token<protocol::damexchange::version>: public Triplet<'Z', 'W', 'e'> {};
 
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Token.hpp"

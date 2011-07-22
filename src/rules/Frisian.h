@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.h"
 
+namespace dctl {
 namespace rules {
 
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
@@ -21,6 +22,7 @@ template<> struct is_relative_king_precedence<Frisian>          { enum { value =
 template<> struct large_capture<Frisian>                        { enum { value = 3        }; };
 
 }       // namespace rules
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "../generate/capture/Frisian.hpp"

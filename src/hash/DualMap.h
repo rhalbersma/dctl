@@ -4,7 +4,7 @@
 #include "Map.h"
 #include "Replace.h"
 
-namespace dtl { 
+namespace dctl { 
         
 template<typename> class Position;
 
@@ -42,7 +42,7 @@ private:
 };
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "DualMap.hpp"

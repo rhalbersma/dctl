@@ -1,5 +1,6 @@
 #pragma once
 
+namespace dctl {
 namespace board {
 
 template
@@ -69,3 +70,4 @@ public:
 };
 
 }       // namespace board
+}       // namespace dctl

@@ -1,5 +1,7 @@
 #pragma once
 
+namespace dctl {
+
 class UniqueNumber
 {
 public:
@@ -9,3 +11,5 @@ public:
 private:
         int current_;
 };
+
+}       // namespace dctl

@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.h"
 
+namespace dctl {
 namespace rules {
 
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
@@ -18,6 +19,7 @@ template<> struct is_majority_precedence<Italian>       { enum { value = true   
 template<> struct is_relative_king_precedence<Italian>  { enum { value = true    }; };
 
 }       // namespace rules
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "../generate/capture/Italian.hpp"

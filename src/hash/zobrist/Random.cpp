@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "Random.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 namespace zobrist {
 
@@ -122,4 +122,4 @@ const uint64_t Random<uint64_t>::SAME_KING_MOVES[2][8] = {
 
 }       // namespace zobrist
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

@@ -1,9 +1,10 @@
 #include "Random.h"
 #include "../../node/Position.h"
+#include "../../node/Move.h"
 #include "../../node/Pieces.h"
 #include "../../node/Side.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 namespace zobrist {
 
@@ -30,6 +31,19 @@ struct Init<Position<Board>, Index>: public std::unary_function<Position<Board>,
         }
 };
 
+// partial specialization for ab initio hashing of moves
+template<typename Index>
+struct Init<Move, Index>: public std::unary_function<Move, Index>
+{
+        Index operator()(const Move& m) const
+        {
+                return (
+                        Init<Pieces, Index>()(m) ^
+                        Init<bool, Index>()(Side::PASS)
+                );
+        }
+};
+
 // partial specialization for ab initio hashing of piece lists
 template<typename Index>
 struct Init<Pieces, Index>: public std::unary_function<Pieces, Index>
@@ -39,7 +53,7 @@ struct Init<Pieces, Index>: public std::unary_function<Pieces, Index>
                 return (
         	        Random<Index>::xor_rand(p.pieces(Side::BLACK), Random<Index>::PIECES[Side::BLACK]) ^
                         Random<Index>::xor_rand(p.pieces(Side::WHITE), Random<Index>::PIECES[Side::WHITE]) ^
-                        Random<Index>::xor_rand(p.kings()                        , Random<Index>::KINGS                          )
+                        Random<Index>::xor_rand(p.kings()            , Random<Index>::KINGS                          )
                 );
         }
 };
@@ -52,13 +66,8 @@ struct Init<bool, Index>: public std::unary_function<bool, Index>
         {
                 return Random<Index>::xor_rand(to_move, Random<Index>::SIDE);
         }
-
-        Index operator()() const
-        {
-                return Random<Index>::SIDE;
-        }
 };
 
 }       // namespace zobrist
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl

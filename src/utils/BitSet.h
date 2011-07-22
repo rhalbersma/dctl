@@ -1,6 +1,8 @@
 #pragma once
 #include "IntegerTypes.h"
 
+namespace dctl {
+
 template<typename T, typename T, size_t N>
 class BitSet
 {
@@ -26,6 +28,8 @@ template<typename T, size_t N> const BitSet<T, N> operator|(const BitSet<T, N>&,
 template<typename T, size_t N> const BitSet<T, N> operator^(const BitSet<T, N>&, const BitSet<T, N>&);
 template<typename T, size_t N> const BitSet<T, N> operator<<(const BitSet<T, N>&, size_t);
 template<typename T, size_t N> const BitSet<T, N> operator>>(const BitSet<T, N>&, size_t);
+
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "BitSet.hpp"

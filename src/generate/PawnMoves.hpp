@@ -5,7 +5,7 @@
 #include "../utils/Bit.h"
 #include "../utils/Shift.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 
 template<bool Color, typename Rules, typename Board>
@@ -148,4 +148,4 @@ bool Driver<Color, Pieces::PAWN, MOVES, Rules, Board>::detect_promotions(const P
 }
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

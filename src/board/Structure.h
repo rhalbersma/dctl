@@ -1,6 +1,7 @@
 #pragma once
 #include "Angle.h"
 
+namespace dctl {
 namespace board {
 
 template
@@ -19,3 +20,4 @@ struct Structure
 };
 
 }       // namespace board
+}       // namespace dctl

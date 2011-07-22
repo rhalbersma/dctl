@@ -4,7 +4,7 @@
 #include "Protocol.h"
 #include "../protocol/damexchange/Protocol.h"
 
-namespace dtl {
+namespace dctl {
 namespace string {
 
 template<typename Token>
@@ -164,4 +164,4 @@ struct write<protocol::damexchange::version, Token>
 };
 
 }       // namespace string
-}       // namespace dtl
+}       // namespace dctl

@@ -1,6 +1,6 @@
 #include "Parameters.h"
 
-namespace dtl {
+namespace dctl {
 namespace search {
 
 Parameters::Parameters()
@@ -35,4 +35,4 @@ void Parameters::clear_PV()
 }
 
 }       // namespace search
-}       // namespace dtl
+}       // namespace dctl

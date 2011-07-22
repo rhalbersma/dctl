@@ -1,10 +1,10 @@
 #pragma once
 
-namespace dtl {
+namespace dctl {
 
 struct Side
 {
-        enum { BLACK, WHITE };
+        enum { BLACK, WHITE, PASS = 1 };
 };
 
-}       // namespace dtl
+}       // namespace dctl

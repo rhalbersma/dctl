@@ -1,6 +1,6 @@
 #include "Predicates.h"
 
-namespace dtl {
+namespace dctl {
 
 template<typename Board> template<typename Rules>
 void Position<Board>::copy_make(const Position<Board>& other, const Move& move)
@@ -100,10 +100,8 @@ template<typename Board>
 void Position<Board>::make_reversible(const Move& m)
 {
         pieces_ ^= m;
+        to_move_ ^= Side::PASS;
         hash_index_ ^= hash::zobrist::Init<Move, HashIndex>()(m);
-
-        to_move_ ^= PASS;
-        hash_index_ ^= hash::zobrist::Init<bool, HashIndex>()();
 }
 
-}       // namespace dtl
+}       // namespace dctl

@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.h"
 
+namespace dctl {
 namespace rules {
 
 struct Thai {};
@@ -15,3 +16,4 @@ template<> struct capture_removal<Thai>                 { enum { value = REMOVE_
 template<> struct large_capture<Thai>                   { enum { value = 3        }; };
 
 }       // namespace rules
+}       // namespace dctl

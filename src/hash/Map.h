@@ -7,7 +7,7 @@
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
-namespace dtl {
+namespace dctl {
 namespace hash {
 
 template
@@ -69,7 +69,7 @@ private:
 };
 
 }       // namespace hash
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Map.hpp"

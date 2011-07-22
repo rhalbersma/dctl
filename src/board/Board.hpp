@@ -2,6 +2,7 @@
 #include "../node/Side.h"
 #include "../utils/TemplateTricks.h"
 
+namespace dctl {
 namespace board {
 
 template<typename Dimensions, typename Structure>
@@ -9,83 +10,83 @@ const BitBoard Board<Dimensions, Structure>::SQUARES = init_squares<B>::value;
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::INITIAL[] = {
-	init_initial<B, dtl::Side::BLACK>::value,
-        init_initial<B, dtl::Side::WHITE>::value
+	init_initial<B, dctl::Side::BLACK>::value,
+        init_initial<B, dctl::Side::WHITE>::value
 };
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::PROMOTION[][2] = {
         {
-                init_row_mask<B, dtl::Side::WHITE, 0>::value,
-                init_row_mask<B, dtl::Side::WHITE, 1>::value
+                init_row_mask<B, dctl::Side::WHITE, 0>::value,
+                init_row_mask<B, dctl::Side::WHITE, 1>::value
         },
         {
-                init_row_mask<B, dtl::Side::BLACK, 0>::value,
-                init_row_mask<B, dtl::Side::BLACK, 1>::value
+                init_row_mask<B, dctl::Side::BLACK, 0>::value,
+                init_row_mask<B, dctl::Side::BLACK, 1>::value
         }
 };
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::ROW_MASK[][12] = {
         {
-                init_row_mask<B, dtl::Side::BLACK,  0>::value,
-                init_row_mask<B, dtl::Side::BLACK,  1>::value,
-                init_row_mask<B, dtl::Side::BLACK,  2>::value,
-                init_row_mask<B, dtl::Side::BLACK,  3>::value,
-                init_row_mask<B, dtl::Side::BLACK,  4>::value,
-                init_row_mask<B, dtl::Side::BLACK,  5>::value,
-                init_row_mask<B, dtl::Side::BLACK,  6>::value,
-                init_row_mask<B, dtl::Side::BLACK,  7>::value,
-                init_row_mask<B, dtl::Side::BLACK,  8>::value,
-                init_row_mask<B, dtl::Side::BLACK,  9>::value,
-                init_row_mask<B, dtl::Side::BLACK, 10>::value,
-                init_row_mask<B, dtl::Side::BLACK, 11>::value,
+                init_row_mask<B, dctl::Side::BLACK,  0>::value,
+                init_row_mask<B, dctl::Side::BLACK,  1>::value,
+                init_row_mask<B, dctl::Side::BLACK,  2>::value,
+                init_row_mask<B, dctl::Side::BLACK,  3>::value,
+                init_row_mask<B, dctl::Side::BLACK,  4>::value,
+                init_row_mask<B, dctl::Side::BLACK,  5>::value,
+                init_row_mask<B, dctl::Side::BLACK,  6>::value,
+                init_row_mask<B, dctl::Side::BLACK,  7>::value,
+                init_row_mask<B, dctl::Side::BLACK,  8>::value,
+                init_row_mask<B, dctl::Side::BLACK,  9>::value,
+                init_row_mask<B, dctl::Side::BLACK, 10>::value,
+                init_row_mask<B, dctl::Side::BLACK, 11>::value,
         },
         {
-                init_row_mask<B, dtl::Side::WHITE,  0>::value,
-                init_row_mask<B, dtl::Side::WHITE,  1>::value,
-                init_row_mask<B, dtl::Side::WHITE,  2>::value,
-                init_row_mask<B, dtl::Side::WHITE,  3>::value,
-                init_row_mask<B, dtl::Side::WHITE,  4>::value,
-                init_row_mask<B, dtl::Side::WHITE,  5>::value,
-                init_row_mask<B, dtl::Side::WHITE,  6>::value,
-                init_row_mask<B, dtl::Side::WHITE,  7>::value,
-                init_row_mask<B, dtl::Side::WHITE,  8>::value,
-                init_row_mask<B, dtl::Side::WHITE,  9>::value,
-                init_row_mask<B, dtl::Side::WHITE, 10>::value,
-                init_row_mask<B, dtl::Side::WHITE, 11>::value,
+                init_row_mask<B, dctl::Side::WHITE,  0>::value,
+                init_row_mask<B, dctl::Side::WHITE,  1>::value,
+                init_row_mask<B, dctl::Side::WHITE,  2>::value,
+                init_row_mask<B, dctl::Side::WHITE,  3>::value,
+                init_row_mask<B, dctl::Side::WHITE,  4>::value,
+                init_row_mask<B, dctl::Side::WHITE,  5>::value,
+                init_row_mask<B, dctl::Side::WHITE,  6>::value,
+                init_row_mask<B, dctl::Side::WHITE,  7>::value,
+                init_row_mask<B, dctl::Side::WHITE,  8>::value,
+                init_row_mask<B, dctl::Side::WHITE,  9>::value,
+                init_row_mask<B, dctl::Side::WHITE, 10>::value,
+                init_row_mask<B, dctl::Side::WHITE, 11>::value,
         }
 };
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::COL_MASK[][12] = {
         {
-                init_col_mask<B, dtl::Side::BLACK,  0>::value,
-                init_col_mask<B, dtl::Side::BLACK,  1>::value,
-                init_col_mask<B, dtl::Side::BLACK,  2>::value,
-                init_col_mask<B, dtl::Side::BLACK,  3>::value,
-                init_col_mask<B, dtl::Side::BLACK,  4>::value,
-                init_col_mask<B, dtl::Side::BLACK,  5>::value,
-                init_col_mask<B, dtl::Side::BLACK,  6>::value,
-                init_col_mask<B, dtl::Side::BLACK,  7>::value,
-                init_col_mask<B, dtl::Side::BLACK,  8>::value,
-                init_col_mask<B, dtl::Side::BLACK,  9>::value,
-                init_col_mask<B, dtl::Side::BLACK, 10>::value,
-                init_col_mask<B, dtl::Side::BLACK, 11>::value,
+                init_col_mask<B, dctl::Side::BLACK,  0>::value,
+                init_col_mask<B, dctl::Side::BLACK,  1>::value,
+                init_col_mask<B, dctl::Side::BLACK,  2>::value,
+                init_col_mask<B, dctl::Side::BLACK,  3>::value,
+                init_col_mask<B, dctl::Side::BLACK,  4>::value,
+                init_col_mask<B, dctl::Side::BLACK,  5>::value,
+                init_col_mask<B, dctl::Side::BLACK,  6>::value,
+                init_col_mask<B, dctl::Side::BLACK,  7>::value,
+                init_col_mask<B, dctl::Side::BLACK,  8>::value,
+                init_col_mask<B, dctl::Side::BLACK,  9>::value,
+                init_col_mask<B, dctl::Side::BLACK, 10>::value,
+                init_col_mask<B, dctl::Side::BLACK, 11>::value,
         },
         {
-                init_col_mask<B, dtl::Side::WHITE,  0>::value,
-                init_col_mask<B, dtl::Side::WHITE,  1>::value,
-                init_col_mask<B, dtl::Side::WHITE,  2>::value,
-                init_col_mask<B, dtl::Side::WHITE,  3>::value,
-                init_col_mask<B, dtl::Side::WHITE,  4>::value,
-                init_col_mask<B, dtl::Side::WHITE,  5>::value,
-                init_col_mask<B, dtl::Side::WHITE,  6>::value,
-                init_col_mask<B, dtl::Side::WHITE,  7>::value,
-                init_col_mask<B, dtl::Side::WHITE,  8>::value,
-                init_col_mask<B, dtl::Side::WHITE,  9>::value,
-                init_col_mask<B, dtl::Side::WHITE, 10>::value,
-                init_col_mask<B, dtl::Side::WHITE, 11>::value,
+                init_col_mask<B, dctl::Side::WHITE,  0>::value,
+                init_col_mask<B, dctl::Side::WHITE,  1>::value,
+                init_col_mask<B, dctl::Side::WHITE,  2>::value,
+                init_col_mask<B, dctl::Side::WHITE,  3>::value,
+                init_col_mask<B, dctl::Side::WHITE,  4>::value,
+                init_col_mask<B, dctl::Side::WHITE,  5>::value,
+                init_col_mask<B, dctl::Side::WHITE,  6>::value,
+                init_col_mask<B, dctl::Side::WHITE,  7>::value,
+                init_col_mask<B, dctl::Side::WHITE,  8>::value,
+                init_col_mask<B, dctl::Side::WHITE,  9>::value,
+                init_col_mask<B, dctl::Side::WHITE, 10>::value,
+                init_col_mask<B, dctl::Side::WHITE, 11>::value,
         }
 };
 
@@ -202,3 +203,4 @@ const int Board<Dimensions, Structure>::BIT2SQUARE[] = {
 };
 
 }       // namespace board
+}       // namespace dctl

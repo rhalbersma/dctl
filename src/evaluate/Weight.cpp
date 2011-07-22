@@ -1,6 +1,6 @@
 #include "Weight.h"
 
-namespace dtl {
+namespace dctl {
 
 const int Weight::MATERIAL[] =
 {
@@ -24,4 +24,4 @@ const int Weight::BALANCE[] =
 
 const int Weight::MOBILITY = 1;
 
-}       // namespace dtl
+}       // namespace dctl

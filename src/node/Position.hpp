@@ -3,7 +3,7 @@
 #include "../utils/Bit.h"
 #include "../rules/Rules.h"
 
-namespace dtl {
+namespace dctl {
 
 // initialize with a set of bitboards and a color
 template<typename Board>
@@ -127,12 +127,6 @@ const Position<Board>* Position<Board>::parent() const
         return parent_;
 }
 
-template<typename Board>
-const Position<Board>* Position<Board>::grand_parent() const
-{
-        return parent_ ? parent_->parent() : nullptr;
-}
-
 // logical consistency of the representation
 template<typename Board>
 bool Position<Board>::pieces_invariant() const
@@ -143,7 +137,10 @@ bool Position<Board>::pieces_invariant() const
 template<typename Board>
 bool Position<Board>::hash_index_invariant() const
 {
-        return hash::zobrist::Find<Position<Board>, HashIndex>()(*this) == hash::zobrist::Init<Position<Board>, HashIndex>()(*this);
+        return (
+                hash::zobrist::Find<Position<Board>, HashIndex>()(*this) == 
+                hash::zobrist::Init<Position<Board>, HashIndex>()(*this)
+        );
 }
 
 template<typename Board> template<typename Rules>
@@ -251,6 +248,12 @@ bool has_restricted_king(const Position<Board>& p, bool color)
         return p.same_king_moves(color) == rules::max_same_king_moves<Rules>::value;
 }
 
+template<typename Board>
+const Position<Board>* grand_parent(const Position<Board>& p)
+{
+        return p.parent() ? p.parent()->parent() : nullptr;
+}
+
 template<typename Rules, typename Board>
 bool is_draw(const Position<Board>& p)
 {
@@ -268,13 +271,13 @@ bool is_repetition_draw(const Position<Board>& p)
                 return false;
 
         // find the parent position at 4 ply above the current position
-        auto q = p.grand_parent()->grand_parent();
+        auto q = grand_parent(*grand_parent(p));
 
         // compare the ancestor hash indices with the current hash index
         for (auto i = 4; i <= p.reversible_moves(); i += 2) {
                 if (q->hash_index() == p.hash_index())
                         return true;
-                q = q->grand_parent();
+                q = grand_parent(*q);
         }
         return false;
 }
@@ -300,4 +303,4 @@ bool is_reversible_draw(const Position<Board>& p, Int2Type<true>)
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }
 
-}       // namespace dtl
+}       // namespace dctl

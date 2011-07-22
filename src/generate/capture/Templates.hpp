@@ -2,7 +2,7 @@
 #include "../../rules/Rules.h"
 #include "../../utils/Bit.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 namespace capture {
 
@@ -29,4 +29,4 @@ bool large<Rules>::operator()(const Value& value, BitBoard, Int2Type<true>) cons
 
 }       // namespace capture
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

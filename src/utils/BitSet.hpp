@@ -1,3 +1,5 @@
+namespace dctl {
+
 template<typename T, size_t N> 
 BitSet<T, N>& BitSet<T, N>::flip()
 {
@@ -129,3 +131,5 @@ const BitSet<T, N> operator>>(const BitSet<T, N>& right, size_t shift)
 {
         return BitSet<T, N>(right) >>= shift;
 }
+
+}       // namespace dctl

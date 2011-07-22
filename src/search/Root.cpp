@@ -2,9 +2,10 @@
 #include <iomanip>
 #include <iostream>
 #include "Root.h"
+#include "../utils/Timer.h"
 #include "../utils/UniqueNumber.h"
 
-namespace dtl {
+namespace dctl {
 namespace search {
 
 Root::TranspositionTable Root::TT(0);
@@ -88,4 +89,4 @@ bool Root::is_interrupted()
 }
 
 }       // namespace search
-}       // namespace dtl
+}       // namespace dctl

@@ -3,6 +3,7 @@
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -191,3 +192,4 @@ void Connection<Protocol>::handle_write(const boost::system::error_code& error)
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

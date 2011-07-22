@@ -1,7 +1,7 @@
 #include "Templates.h"
 #include "Value.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 namespace capture {
 
@@ -61,4 +61,4 @@ struct greater_equal<rules::Killer>: public std::binary_function<Value, Value, b
 
 }       // namespace capture
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

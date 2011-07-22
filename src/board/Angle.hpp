@@ -1,3 +1,4 @@
+namespace dctl {
 namespace board {
 
 // partial specialization for angles
@@ -32,3 +33,4 @@ struct MirrorDown
 };
 
 }       // namespace board
+}       // namespace dctl

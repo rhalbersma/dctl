@@ -1,7 +1,7 @@
 #include "Predicates.h"
 #include "../utils/Bit.h"
 
-namespace dtl {
+namespace dctl {
 
 // specialization for piece by piece removal during a capture sequence (Thai draughts)
 bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces, Int2Type<rules::REMOVE_1>)
@@ -29,4 +29,4 @@ bool is_intersecting_promotion(BitBoard promotion, BitBoard delta, Int2Type<rule
         return bit::is_single(promotion) && bit::is_zero(delta);
 }
 
-}       // namespace dtl
+}       // namespace dctl

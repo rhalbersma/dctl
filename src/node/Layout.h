@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-namespace dtl { 
+namespace dctl { 
         
 template<typename> class Position;
 
@@ -22,7 +22,7 @@ template<typename>
 std::string bit_content(const Pieces&, size_t);
 
 }       // namespace layout
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Layout.hpp"

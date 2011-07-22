@@ -1,6 +1,6 @@
 #include "../node/Position.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 
 template<typename Rules, typename Board>
@@ -163,4 +163,4 @@ template<typename Rules, typename Board>
 const TemplateMethod<Side::WHITE, Pieces::BOTH, Rules, Board> Successors<Rules, Board>::WHITE_BOTH;
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

@@ -1,7 +1,7 @@
 #pragma once
 #include "../../utils/IntegerTypes.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 namespace capture {
 
@@ -16,4 +16,4 @@ struct Value
 
 }       // namespace capture
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

@@ -9,8 +9,12 @@
 //
 // This "tag dispatching" simulates partial specialization of function templates.
 
+namespace dctl {
+
 template<int V>
 struct Int2Type
 {
         enum { value = V };
 };
+
+}       // namespace dctl

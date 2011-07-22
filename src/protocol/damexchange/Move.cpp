@@ -7,6 +7,7 @@
 #include "Parser.h"
 #include "Protocol.h"
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -85,3 +86,4 @@ std::string Move::body(int s, int f, int d, int n, const std::vector<int>& c)
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

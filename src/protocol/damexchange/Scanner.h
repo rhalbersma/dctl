@@ -2,6 +2,7 @@
 #include <string>
 #include "Protocol.h"
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -30,6 +31,7 @@ private:
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Scanner.hpp"

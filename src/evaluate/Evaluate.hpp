@@ -7,7 +7,7 @@
 #include "../node/Side.h"
 #include "../rules/Variants.h"
 
-namespace dtl {
+namespace dctl {
 
 template<typename Board>
 int Evaluate::evaluate(const Position<Board>& p)
@@ -133,4 +133,4 @@ void Evaluate::print_break_down(const Position<Board>& p)
         std::cout << std::endl;
 }
 
-}       // namespace dtl
+}       // namespace dctl

@@ -1,12 +1,12 @@
 #pragma once
-#include "Move.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 #include "../rules/Rules.h"
 
-namespace dtl {
+namespace dctl {
 
 template<typename> class Position;
+class Move;
 
 template<typename Board> BitBoard from_sq(const Position<Board>&, const Move&);
 template<typename Board> BitBoard dest_sq(const Position<Board>&, const Move&);
@@ -42,7 +42,7 @@ template<typename> bool is_intersecting_promotion(BitBoard, BitBoard);
 bool is_intersecting_promotion(BitBoard, BitBoard, Int2Type<rules::PROMOTE_BR>);
 bool is_intersecting_promotion(BitBoard, BitBoard, Int2Type<rules::PROMOTE_EP>);
 
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Predicates.hpp"

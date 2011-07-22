@@ -1,7 +1,7 @@
 #pragma once
 #include "../node/Stack.h"
 
-namespace dtl {
+namespace dctl {
 namespace search {
 
 class Parameters
@@ -25,4 +25,4 @@ private:
 };
 
 }       // namespace search
-}       // namespace dtl
+}       // namespace dctl

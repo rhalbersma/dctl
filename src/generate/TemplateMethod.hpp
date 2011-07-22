@@ -6,7 +6,7 @@
 #include "PawnJumps.h"
 #include "PawnMoves.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 
 template<bool Color, int Material, typename Rules, typename Board> 
@@ -96,4 +96,4 @@ bool TemplateMethod<Color, Material, Rules, Board>::detect_promotions(const Posi
 }
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

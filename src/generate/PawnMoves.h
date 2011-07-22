@@ -3,7 +3,7 @@
 #include "../node/Stack.h"
 #include "../utils/IntegerTypes.h"
 
-namespace dtl {
+namespace dctl {
 
 template<typename> class Position;
 
@@ -44,7 +44,7 @@ private:
 };
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "PawnMoves.hpp"

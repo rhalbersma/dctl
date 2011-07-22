@@ -4,6 +4,7 @@
 #include <string>
 #include "MessageInterface.h"
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -50,3 +51,4 @@ private:
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

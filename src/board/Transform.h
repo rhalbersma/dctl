@@ -1,5 +1,6 @@
 #pragma once
 
+namespace dctl {
 namespace board {
 
 template<typename, int>
@@ -15,3 +16,4 @@ template<int>
 struct MirrorDown;
 
 }       // namespace board
+}       // namespace dctl

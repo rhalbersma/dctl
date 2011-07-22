@@ -1,5 +1,6 @@
 #pragma once
 
+namespace dctl {
 namespace board {
 
 template<typename Board, int = Board::ExternalGrid::SIZE- 1>
@@ -21,6 +22,7 @@ template<typename Board, int, int = Board::ExternalGrid::SIZE- 1>
 class init_jumpable;
 
 }       // namespace board
+}       // namespace dctl
 
 // include template definitions inside header since "export" keyword is not supported by most C++ compilers
 #include "MetaTemplates.hpp"

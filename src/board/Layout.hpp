@@ -3,6 +3,7 @@
 #include <sstream>
 #include "Board.h"
 
+namespace dctl {
 namespace board {
 
 static const char WHITE_SPACE = ' ';
@@ -77,3 +78,4 @@ bool is_indent_row(int sq)
 }
 
 }       // namespace board
+}       // namespace dctl

@@ -5,7 +5,7 @@
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 
 namespace capture { template<typename, typename> class State; }
@@ -29,7 +29,7 @@ private:
 };
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "BothJumps.hpp"

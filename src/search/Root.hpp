@@ -10,7 +10,7 @@
 #include "../node/String.h"
 #include "../utils/Timer.h"
 
-namespace dtl {
+namespace dctl {
 namespace search {
 
 // iterative deepening with no move ordering at the root
@@ -78,4 +78,4 @@ void Root::print_PV(const Position<Board>& p, const Sequence& pv)
 }
 
 }       // namespace search
-}       // namespace dtl
+}       // namespace dctl

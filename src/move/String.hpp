@@ -4,7 +4,7 @@
 #include "../board/Board.h"
 #include "../utils/Bit.h"
 
-namespace dtl {
+namespace dctl {
 namespace move {
 namespace string {
 
@@ -38,4 +38,4 @@ struct write<Rules, ALG_tag, Token>
 
 }       // namespace string
 }       // namespace move
-}       // namespace dtl
+}       // namespace dctl

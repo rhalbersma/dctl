@@ -1,6 +1,6 @@
 #include "../node/Pieces.h"
 
-namespace dtl {
+namespace dctl {
 namespace generate {
 
 template<bool Color, int Material, int MoveType, typename Rules, typename Board>
@@ -67,4 +67,4 @@ bool Driver<Color, Material, MoveType, Rules, Board>::detect_promotions(const Po
 }
 
 }       // namespace generate
-}       // namespace dtl
+}       // namespace dctl

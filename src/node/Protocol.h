@@ -1,7 +1,7 @@
 #pragma once
 
-namespace dtl {
+namespace dctl {
 
 struct FEN_tag {};      // Forsyth-Edwards Notation
 
-}       // namespace dtl
+}       // namespace dctl

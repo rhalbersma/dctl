@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.h"
 
+namespace dctl {
 namespace rules {
 
 // http://www.usacheckers.com/rulesofcheckers.php
@@ -17,3 +18,4 @@ template<> struct is_long_king_range<Checkers>          { enum { value = RANGE_1
 template<> struct man_capture_directions<Checkers>      { enum { value = DIRS_UP }; };
 
 }       // namespace rules
+}       // namespace dctl

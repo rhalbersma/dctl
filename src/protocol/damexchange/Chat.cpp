@@ -3,6 +3,7 @@
 #include "Parser.h"
 #include "Protocol.h"
 
+namespace dctl {
 namespace protocol {
 namespace damexchange {
 
@@ -48,3 +49,4 @@ std::string Chat::body(const std::string& m)
 
 }       // namespace damexchange
 }       // namespace protocol
+}       // namespace dctl

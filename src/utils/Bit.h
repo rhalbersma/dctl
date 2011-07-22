@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
 
+namespace dctl {
 namespace bit {
 
 // unary predicates
@@ -32,6 +33,7 @@ template<bool, typename T> T fill_loop(T, T, size_t);   // direction-wise flood-
 template<typename T> void clear_first(T&);		// clear the least significant 1-bit
 
 }       // namespace bit
+}       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "Bit.hpp"

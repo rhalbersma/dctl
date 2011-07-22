@@ -2,6 +2,7 @@
 #include "Grid.h"
 #include "Traits.h"
 
+namespace dctl {
 namespace board {
 
 template<typename Board, int SQ>
@@ -125,3 +126,4 @@ public:
 };
 
 }       // namespace board
+}       // namespace dctl
