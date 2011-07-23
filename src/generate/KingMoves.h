@@ -12,7 +12,7 @@ template<typename> class Position;
 namespace generate {
 
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Pieces::KING, MOVES, Rules, Board>
+class Driver<Color, Material::KING, Move::MOVES, Rules, Board>
 {
 public:
         static void generate(const Position<Board>&, Stack&);

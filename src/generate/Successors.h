@@ -1,7 +1,7 @@
 #pragma once
 #include <cstddef>
 #include "TemplateMethod.h"
-#include "../node/Pieces.h"
+#include "../node/Material.h"
 #include "../node/Side.h"
 #include "../node/Stack.h"
 
@@ -49,14 +49,14 @@ private:
         // representation
         static const TemplateMethodInterface<Rules, Board>* const FACTORY[];
 
-        static const TemplateMethod<Side::BLACK, Pieces::NONE, Rules, Board> BLACK_NONE;
-        static const TemplateMethod<Side::BLACK, Pieces::PAWN, Rules, Board> BLACK_PAWN;
-        static const TemplateMethod<Side::BLACK, Pieces::KING, Rules, Board> BLACK_KING;
-        static const TemplateMethod<Side::BLACK, Pieces::BOTH, Rules, Board> BLACK_BOTH;
-        static const TemplateMethod<Side::WHITE, Pieces::NONE, Rules, Board> WHITE_NONE;
-        static const TemplateMethod<Side::WHITE, Pieces::PAWN, Rules, Board> WHITE_PAWN;
-        static const TemplateMethod<Side::WHITE, Pieces::KING, Rules, Board> WHITE_KING;
-        static const TemplateMethod<Side::WHITE, Pieces::BOTH, Rules, Board> WHITE_BOTH;
+        static const TemplateMethod<Side::BLACK, Material::NONE, Rules, Board> BLACK_NONE;
+        static const TemplateMethod<Side::BLACK, Material::PAWN, Rules, Board> BLACK_PAWN;
+        static const TemplateMethod<Side::BLACK, Material::KING, Rules, Board> BLACK_KING;
+        static const TemplateMethod<Side::BLACK, Material::BOTH, Rules, Board> BLACK_BOTH;
+        static const TemplateMethod<Side::WHITE, Material::NONE, Rules, Board> WHITE_NONE;
+        static const TemplateMethod<Side::WHITE, Material::PAWN, Rules, Board> WHITE_PAWN;
+        static const TemplateMethod<Side::WHITE, Material::KING, Rules, Board> WHITE_KING;
+        static const TemplateMethod<Side::WHITE, Material::BOTH, Rules, Board> WHITE_BOTH;
 };
 
 }       // namespace generate

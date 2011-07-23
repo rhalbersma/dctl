@@ -12,7 +12,7 @@ BitBoard from_sq(const Position<Board>& p, const Move& m)
 template<typename Board>
 BitBoard dest_sq(const Position<Board>& p, const Move& m)
 {
-        return moving_pieces(p, m) & p.not_occupied();
+        return moving_pieces(p, m) & not_occupied(p);
 }
 
 template<typename Board>

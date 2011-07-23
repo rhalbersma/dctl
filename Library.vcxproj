@@ -152,6 +152,9 @@
     <ClInclude Include="src\board\Traits.h" />
     <ClInclude Include="src\board\Transform.h" />
     <ClInclude Include="src\board\Types.h" />
+    <ClInclude Include="src\node\Move.hpp" />
+    <ClInclude Include="src\node\Restricted.h" />
+    <ClInclude Include="src\node\Restricted.hpp" />
     <ClInclude Include="src\protocol\damexchange\BackAcknowledge.h" />
     <ClInclude Include="src\protocol\damexchange\BackRequest.h" />
     <ClInclude Include="src\protocol\damexchange\Chat.h" />
@@ -241,8 +244,8 @@
     <ClInclude Include="src\node\Layout.hpp" />
     <ClInclude Include="src\node\MakeMove.hpp" />
     <ClInclude Include="src\node\Move.h" />
-    <ClInclude Include="src\node\Pieces.h" />
-    <ClInclude Include="src\node\Pieces.hpp" />
+    <ClInclude Include="src\node\Material.h" />
+    <ClInclude Include="src\node\Material.hpp" />
     <ClInclude Include="src\node\Position.h" />
     <ClInclude Include="src\node\Position.hpp" />
     <ClInclude Include="src\node\Predicates.h" />
@@ -283,6 +286,8 @@
     <ClInclude Include="src\utils\VectorArray.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\node\Move.cpp" />
+    <ClCompile Include="src\node\Restricted.cpp" />
     <ClCompile Include="src\protocol\damexchange\BackAcknowledge.cpp" />
     <ClCompile Include="src\protocol\damexchange\BackRequest.cpp" />
     <ClCompile Include="src\protocol\damexchange\Chat.cpp" />
@@ -294,7 +299,7 @@
     <ClCompile Include="src\evaluate\Weight.cpp" />
     <ClCompile Include="src\hash\jenkins\Mix.cpp" />
     <ClCompile Include="src\hash\zobrist\Random.cpp" />
-    <ClCompile Include="src\node\Pieces.cpp" />
+    <ClCompile Include="src\node\Material.cpp" />
     <ClCompile Include="src\node\Predicates.cpp" />
     <ClCompile Include="src\node\Stack.cpp" />
     <ClCompile Include="src\search\Parameters.cpp" />

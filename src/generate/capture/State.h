@@ -10,7 +10,7 @@
 namespace dctl {
 
 template<typename> class Position; 
-class Pieces;
+class Material;
         
 namespace generate {
 namespace capture {

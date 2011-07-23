@@ -139,28 +139,28 @@ const TemplateMethodInterface<Rules, Board>* const Successors<Rules, Board>::FAC
 };
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::BLACK, Pieces::NONE, Rules, Board> Successors<Rules, Board>::BLACK_NONE;
+const TemplateMethod<Side::BLACK, Material::NONE, Rules, Board> Successors<Rules, Board>::BLACK_NONE;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::BLACK, Pieces::PAWN, Rules, Board> Successors<Rules, Board>::BLACK_PAWN;
+const TemplateMethod<Side::BLACK, Material::PAWN, Rules, Board> Successors<Rules, Board>::BLACK_PAWN;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::BLACK, Pieces::KING, Rules, Board> Successors<Rules, Board>::BLACK_KING;
+const TemplateMethod<Side::BLACK, Material::KING, Rules, Board> Successors<Rules, Board>::BLACK_KING;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::BLACK, Pieces::BOTH, Rules, Board> Successors<Rules, Board>::BLACK_BOTH;
+const TemplateMethod<Side::BLACK, Material::BOTH, Rules, Board> Successors<Rules, Board>::BLACK_BOTH;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::WHITE, Pieces::NONE, Rules, Board> Successors<Rules, Board>::WHITE_NONE;
+const TemplateMethod<Side::WHITE, Material::NONE, Rules, Board> Successors<Rules, Board>::WHITE_NONE;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::WHITE, Pieces::PAWN, Rules, Board> Successors<Rules, Board>::WHITE_PAWN;
+const TemplateMethod<Side::WHITE, Material::PAWN, Rules, Board> Successors<Rules, Board>::WHITE_PAWN;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::WHITE, Pieces::KING, Rules, Board> Successors<Rules, Board>::WHITE_KING;
+const TemplateMethod<Side::WHITE, Material::KING, Rules, Board> Successors<Rules, Board>::WHITE_KING;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::WHITE, Pieces::BOTH, Rules, Board> Successors<Rules, Board>::WHITE_BOTH;
+const TemplateMethod<Side::WHITE, Material::BOTH, Rules, Board> Successors<Rules, Board>::WHITE_BOTH;
 
 }       // namespace generate
 }       // namespace dctl

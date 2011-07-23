@@ -4,7 +4,7 @@ namespace dctl {
 
 struct Side
 {
-        enum { BLACK, WHITE, PASS = 1 };
+        enum { BLACK, WHITE, RED = BLACK, PASS = 1 };
 };
 
 }       // namespace dctl

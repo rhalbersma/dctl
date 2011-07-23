@@ -396,9 +396,6 @@
     <ClInclude Include="src\node\Move.h">
       <Filter>Header Files\node</Filter>
     </ClInclude>
-    <ClInclude Include="src\node\Pieces.h">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
     <ClInclude Include="src\node\Position.h">
       <Filter>Header Files\node</Filter>
     </ClInclude>
@@ -424,9 +421,6 @@
       <Filter>Source Files\node</Filter>
     </ClInclude>
     <ClInclude Include="src\node\MakeMove.hpp">
-      <Filter>Source Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\node\Pieces.hpp">
       <Filter>Source Files\node</Filter>
     </ClInclude>
     <ClInclude Include="src\node\Position.hpp">
@@ -561,6 +555,21 @@
     <ClInclude Include="src\evaluate\Evaluate.hpp">
       <Filter>Source Files\evaluate</Filter>
     </ClInclude>
+    <ClInclude Include="src\node\Material.h">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\node\Material.hpp">
+      <Filter>Source Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\node\Restricted.h">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\node\Restricted.hpp">
+      <Filter>Source Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\node\Move.hpp">
+      <Filter>Source Files\node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\DeBruijn.cpp">
@@ -592,9 +601,6 @@
     </ClCompile>
     <ClCompile Include="src\walk\Root.cpp">
       <Filter>Source Files\walk</Filter>
-    </ClCompile>
-    <ClCompile Include="src\node\Pieces.cpp">
-      <Filter>Source Files\node</Filter>
     </ClCompile>
     <ClCompile Include="src\node\Predicates.cpp">
       <Filter>Source Files\node</Filter>
@@ -634,6 +640,15 @@
     </ClCompile>
     <ClCompile Include="src\evaluate\Weight.cpp">
       <Filter>Source Files\evaluate</Filter>
+    </ClCompile>
+    <ClCompile Include="src\node\Material.cpp">
+      <Filter>Source Files\node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\node\Restricted.cpp">
+      <Filter>Source Files\node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\node\Move.cpp">
+      <Filter>Source Files\node</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
