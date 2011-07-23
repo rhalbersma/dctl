@@ -10,16 +10,13 @@ template<typename Board>
 Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
 :
         parent_(nullptr), 
-        pieces_(black_pieces, white_pieces, kings),
+        material_(black_pieces, white_pieces, kings),
         reversible_moves_(0),
         to_move_(to_move)
-{
-        same_king_[Side::BLACK] = same_king_[Side::WHITE] = 0;
-        same_king_moves_[Side::BLACK] = same_king_moves_[Side::WHITE] = 0;
-        
+{       
         hash_index_ = hash::zobrist::Init<Position<Board>, HashIndex>()(*this);
 
-        assert(pieces_invariant());
+        assert(material_invariant());
 }
 
 // the initial position
@@ -29,78 +26,10 @@ Position<Board> Position<Board>::initial()
         return Position<Board>(Board::INITIAL[Side::BLACK], Board::INITIAL[Side::WHITE], 0, Side::WHITE);
 }
 
-// black and white men
 template<typename Board>
-BitBoard Position<Board>::men() const
+const Position<Board>* Position<Board>::parent() const
 {
-        return pieces_.men();
-}
-
-// black and white kings
-template<typename Board>
-BitBoard Position<Board>::kings() const
-{
-        return pieces_.kings();
-}
-
-// occupied squares
-template<typename Board>
-BitBoard Position<Board>::occupied() const
-{
-        return pieces_.occupied();
-}
-
-// unoccupied squares
-template<typename Board>
-BitBoard Position<Board>::not_occupied() const
-{
-        return Board::SQUARES ^ occupied();
-}
-
-// black or white men
-template<typename Board>
-BitBoard Position<Board>::men(bool color) const
-{
-        return pieces_.men(color);
-}
-
-// black or white kings
-template<typename Board>
-BitBoard Position<Board>::kings(bool color) const
-{
-        return pieces_.kings(color);
-}
-
-// black or white pieces
-template<typename Board>
-BitBoard Position<Board>::pieces(bool color) const
-{
-        return pieces_.pieces(color);
-}
-
-// the side to move
-template<typename Board>
-bool Position<Board>::to_move() const
-{
-        return to_move_;
-}
-
-template<typename Board>
-BitBoard Position<Board>::same_king(bool color) const
-{
-        return same_king_[color];
-}
-
-template<typename Board>
-PlyCount Position<Board>::same_king_moves(bool color) const
-{
-        return same_king_moves_[color];
-}
-
-template<typename Board>
-PlyCount Position<Board>::reversible_moves() const
-{
-        return reversible_moves_;
+        return parent_;
 }
 
 template<typename Board>
@@ -110,28 +39,41 @@ HashIndex Position<Board>::hash_index() const
 }
 
 template<typename Board>
-const Pieces& Position<Board>::pieces() const
+const Material& Position<Board>::material() const
 {
-        return pieces_;
+        return material_;
 }
 
 template<typename Board>
-const Pieces& Position<Board>::key() const
+const Material& Position<Board>::key() const
 {
-        return pieces();
+        return material();
 }
 
 template<typename Board>
-const Position<Board>* Position<Board>::parent() const
+const Restricted& Position<Board>::restricted() const
 {
-        return parent_;
+        return restricted_;
+}
+
+template<typename Board>
+PlyCount Position<Board>::reversible_moves() const
+{
+        return reversible_moves_;
+}
+
+// the side to move
+template<typename Board>
+bool Position<Board>::to_move() const
+{
+        return to_move_;
 }
 
 // logical consistency of the representation
 template<typename Board>
-bool Position<Board>::pieces_invariant() const
+bool Position<Board>::material_invariant() const
 {
-        return bit::is_within(occupied(), Board::SQUARES);
+        return bit::is_within(pieces(), Board::SQUARES);
 }
 
 template<typename Board>
@@ -143,40 +85,53 @@ bool Position<Board>::hash_index_invariant() const
         );
 }
 
-template<typename Board> template<typename Rules>
-bool Position<Board>::same_king_invariant() const
+// black or white men
+template<typename Board>
+BitBoard Position<Board>::men(bool color) const
 {
-        return (
-                same_king_invariant<Rules>(Side::BLACK) && 
-                same_king_invariant<Rules>(Side::WHITE)
-        );
+        return material_.men(color);
 }
 
-template<typename Board> template<typename Rules>
-bool Position<Board>::same_king_invariant(bool color) const
+// black or white kings
+template<typename Board>
+BitBoard Position<Board>::kings(bool color) const
 {
-        return same_king_invariant<Rules>(color, Int2Type<rules::is_restricted_same_king_moves<Rules>::value>());
+        return material_.kings(color);
 }
 
-template<typename Board> template<typename Rules>
-bool Position<Board>::same_king_invariant(bool color, Int2Type<false>) const
+// black or white pieces
+template<typename Board>
+BitBoard Position<Board>::pieces(bool color) const
 {
-        return (
-                same_king(color) == 0 && 
-                same_king_moves(color) == 0
-        );
+        return material_.pieces(color);
 }
 
-template<typename Board> template<typename Rules>
-bool Position<Board>::same_king_invariant(bool color, Int2Type<true>) const
+// black and white men
+template<typename Board>
+BitBoard Position<Board>::men() const
 {
-        return (
-                !bit::is_multiple(same_king(color)) && 
-                bit::is_within(same_king(color), kings(color)) &&
-                bit::is_exclusive(same_king(Side::BLACK), same_king(Side::WHITE)) &&
-                same_king_moves(color) <= rules::max_same_king_moves<Rules>::value &&
-                (same_king(color) == 0) == (same_king_moves(color) == 0)
-        );
+        return material_.men();
+}
+
+// black and white kings
+template<typename Board>
+BitBoard Position<Board>::kings() const
+{
+        return material_.kings();
+}
+
+// black and white pieces
+template<typename Board>
+BitBoard Position<Board>::pieces() const
+{
+        return material_.pieces();
+}
+
+// unoccupied squares
+template<typename Board>
+BitBoard not_occupied(const Position<Board>& p)
+{
+        return Board::SQUARES ^ p.pieces();
 }
 
 // men for the side to move
@@ -239,13 +194,7 @@ BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<false
 template<typename Rules, typename Board>
 BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<true>)
 {
-        return p.kings(color) ^ p.same_king(color);
-}
-
-template<typename Rules, typename Board>
-bool has_restricted_king(const Position<Board>& p, bool color)
-{
-        return p.same_king_moves(color) == rules::max_same_king_moves<Rules>::value;
+        return p.kings(color) ^ p.restricted().king(color);
 }
 
 template<typename Board>

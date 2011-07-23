@@ -14,7 +14,7 @@ State<Rules, Board>::State(const Position<Board>& p)
 :
         initial_targets_(passive_pieces(p)),
 	remaining_targets_(initial_targets_),
-	not_occupied_(p.not_occupied()),
+	not_occupied_(not_occupied(p)),
         king_targets_(passive_kings(p)),
         from_sq_(0)
 {

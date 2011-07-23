@@ -14,7 +14,7 @@ namespace generate {
 namespace capture { template<typename, typename> class State; }
 
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Pieces::PAWN, JUMPS, Rules, Board>
+class Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>
 {
 public:
         static void generate(const Position<Board>&, Stack&);

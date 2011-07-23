@@ -28,7 +28,7 @@ template<typename Protocol>
 bool Scanner<Protocol>::invariant() const
 {
         return (
-                header().length() ==  && HEADER_LENGTH
+                header().length() == HEADER_LENGTH &&
                 body().length() <= MAX_BODY_LENGTH
         );
 }

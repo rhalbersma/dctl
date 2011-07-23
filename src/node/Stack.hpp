@@ -82,7 +82,7 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
                         // EXCEPTION: for intersecting captures, WHITE and BLACK pieces() overlap
                         is_intersecting_capture<Rules>(delta, captured_pieces)
                 ) &&
-                bit::is_within(top(stack).kings(), top(stack).occupied())
+                bit::is_within(top(stack).kings(), top(stack).pieces())
         );
 }
 
@@ -116,7 +116,7 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
         assert(
                 bit::is_exclusive(top(stack).pieces(Side::BLACK), top(stack).pieces(Side::WHITE)) &&
                 (
-                        bit::is_within(top(stack).kings(), top(stack).occupied()) ||
+                        bit::is_within(top(stack).kings(), top(stack).pieces()) ||
 
                         // EXCEPTION: for intersecting promotions, kings() is non-empty, and occupied() is empty
                         is_intersecting_promotion<Rules>(promotion, delta)

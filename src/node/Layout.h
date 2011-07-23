@@ -19,7 +19,7 @@ struct write
 };
 
 template<typename> 
-std::string bit_content(const Pieces&, size_t);
+std::string bit_content(const Material&, size_t);
 
 }       // namespace layout
 }       // namespace dctl
