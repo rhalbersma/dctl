@@ -1,21 +1,20 @@
 #pragma once
 #include <string>
-#include "Protocol.h"
-#include "Token.h"
 #include "../node/Move.h"
+#include "../protocol/notation/Notation.h"
 
 namespace dctl {
 
 template<typename> class Position;
         
-namespace move {
+namespace notation {
 namespace string {
 
 template
 <
         typename Rules,
-        typename Protocol = typename move::Protocol<Rules>::type,
-        typename Token = typename move::Token<Rules>::type
+        typename Format = typename protocol::notation::Format<Rules>::type,
+        typename Separator = typename protocol::notation::Separator<Rules>::type
 >
 struct read
 {
@@ -26,8 +25,8 @@ struct read
 template
 <
         typename Rules, 
-        typename Protocol = typename move::Protocol<Rules>::type,
-        typename Token = typename move::Token<Rules>::type
+        typename Format = typename protocol::notation::Format<Rules>::type,
+        typename Separator = typename protocol::notation::Separator<Rules>::type
 >
 struct write
 {
@@ -36,7 +35,7 @@ struct write
 };
 
 }       // namespace string
-}       // namespace move
+}       // namespace notation
 }       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers

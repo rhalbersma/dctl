@@ -17,3 +17,6 @@ template<> struct large_capture<Thai>                   { enum { value = 3      
 
 }       // namespace rules
 }       // namespace dctl
+
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+#include "../protocol/notation/Thai.h"

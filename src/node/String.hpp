@@ -1,7 +1,7 @@
 #include <cctype>
 #include "../board/Board.h"
 #include "../board/Layout.h"
-#include "Protocol.h"
+#include "../protocol/pdn/Protocol.h"
 #include "../protocol/damexchange/Protocol.h"
 
 namespace dctl {
@@ -28,7 +28,7 @@ char write_color(bool b)
 }
 
 template<typename Board, typename Token>
-struct read<Board, FEN_tag, Token>
+struct read<Board, protocol::pdn::version, Token>
 {
         Position<Board> operator()(const std::string& s)
         {      
@@ -79,7 +79,7 @@ struct read<Board, FEN_tag, Token>
 };
 
 template<typename Token>
-struct write<FEN_tag, Token>
+struct write<protocol::pdn::version, Token>
 {
         template<typename Board>
         std::string operator()(const Position<Board>& p) const
