@@ -194,7 +194,10 @@ BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<false
 template<typename Rules, typename Board>
 BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<true>)
 {
-        return p.kings(color) ^ p.restricted().king(color);
+        if (p.kings(color) && p.men(color) && is_max<Rules>(p.restricted().moves(color)))
+                return p.kings(color) ^ p.restricted().king(color);
+        else
+                return p.kings(color);
 }
 
 template<typename Board>

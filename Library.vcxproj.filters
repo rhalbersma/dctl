@@ -112,6 +112,15 @@
     <Filter Include="Source Files\search">
       <UniqueIdentifier>{c0f1e9d7-3f6d-4af6-b601-af60f9961ef1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\protocol\notation">
+      <UniqueIdentifier>{3de5be87-4acd-41f5-a670-e7f873eb3ce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\protocol\setup">
+      <UniqueIdentifier>{c9dee8d4-b1da-4ba6-9ba3-f2b681ade9c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocol\setup">
+      <UniqueIdentifier>{8657155b-dd9d-4e1f-b130-2c4dd7da9d59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\rules\Checkers.h">
@@ -378,17 +387,11 @@
     <ClInclude Include="src\generate\capture\Templates.hpp">
       <Filter>Source Files\generate\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\move\Token.h">
-      <Filter>Header Files\move</Filter>
-    </ClInclude>
     <ClInclude Include="src\move\String.h">
       <Filter>Header Files\move</Filter>
     </ClInclude>
     <ClInclude Include="src\move\String.hpp">
       <Filter>Source Files\move</Filter>
-    </ClInclude>
-    <ClInclude Include="src\node\Token.h">
-      <Filter>Header Files\node</Filter>
     </ClInclude>
     <ClInclude Include="src\node\Layout.h">
       <Filter>Header Files\node</Filter>
@@ -402,9 +405,6 @@
     <ClInclude Include="src\node\Predicates.h">
       <Filter>Header Files\node</Filter>
     </ClInclude>
-    <ClInclude Include="src\node\Protocol.h">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
     <ClInclude Include="src\node\Side.h">
       <Filter>Header Files\node</Filter>
     </ClInclude>
@@ -413,9 +413,6 @@
     </ClInclude>
     <ClInclude Include="src\node\String.h">
       <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\node\Token.hpp">
-      <Filter>Source Files\node</Filter>
     </ClInclude>
     <ClInclude Include="src\node\Layout.hpp">
       <Filter>Source Files\node</Filter>
@@ -569,6 +566,33 @@
     </ClInclude>
     <ClInclude Include="src\node\Move.hpp">
       <Filter>Source Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\pdn\Protocol.h">
+      <Filter>Header Files\protocol\pdn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\notation\Czech.h">
+      <Filter>Header Files\protocol\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\notation\Notation.h">
+      <Filter>Header Files\protocol\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\notation\Russian.h">
+      <Filter>Header Files\protocol\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\notation\Thai.h">
+      <Filter>Header Files\protocol\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\setup\DamExchange.h">
+      <Filter>Header Files\protocol\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\setup\PDN.h">
+      <Filter>Header Files\protocol\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\setup\Setup.h">
+      <Filter>Header Files\protocol\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\setup\Setup.hpp">
+      <Filter>Source Files\protocol\setup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

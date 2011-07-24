@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "Position.h"
-#include "Token.h"
+#include "../protocol/setup/Setup.h"
 
 namespace dctl {
 namespace string {
@@ -10,7 +10,7 @@ template
 <
         typename Board,
         typename Protocol, 
-        typename Token = Token<Protocol>
+        typename Token = protocol::setup::Setup<Protocol>
 >
 struct read
 {
@@ -20,7 +20,7 @@ struct read
 template
 <
         typename Protocol, 
-        typename Token = Token<Protocol>
+        typename Token = protocol::setup::Setup<Protocol>
 >
 struct write
 {

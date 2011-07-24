@@ -15,3 +15,4 @@ template<> struct promotion_condition<Russian>  { enum { value = PROMOTE_EP }; }
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
 #include "../generate/capture/Russian.hpp"
+#include "../protocol/notation/Russian.h"

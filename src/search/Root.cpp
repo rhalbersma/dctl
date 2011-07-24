@@ -18,13 +18,13 @@ void Root::report(int depth, int value, const Timer& timer)
         std::cout << "info";
 
         std::cout << " score ";
-        std::cout << std::setw( 4) << std::right << score::print(value);
+        std::cout << std::setw( 3) << std::right << score::print(value);
 
         std::cout << " depth ";
         std::cout << std::setw( 2) << depth;
 
         std::cout << " nodes ";
-        std::cout << std::setw(12) << std::right << statistics_.nodes();
+        std::cout << std::setw(11) << std::right << statistics_.nodes();
 
         std::cout << " time ";
         std::cout << std::setw( 6) << timer.elapsed();

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "../protocol/setup/Setup.h"
 
 namespace dctl { 
         
@@ -10,7 +11,7 @@ namespace layout {
 template
 <
         typename Protocol,
-        typename Token = Token<Protocol>
+        typename Token = protocol::setup::Setup<Protocol>
 >
 struct write
 {
