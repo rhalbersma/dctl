@@ -1,12 +1,13 @@
 #include <cassert>
 #include <iostream>
 #include "../generate/Successors.h"
-#include "../move/String.h"
-#include "../node/Layout.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
-#include "../node/String.h"
 #include "../utils/Timer.h"
+#include "../node/Diagram.h"
+#include "../setup/String.h"
+#include "../notation/String.h"
+#include "../protocol/pdn/PDN.h"
 
 namespace dctl {
 namespace walk {
@@ -42,7 +43,7 @@ NodeCount Root::divide(const Position<Board>& p, int depth)
         Position<Board> q;
         for (size_t i = 0; i < move_stack.size(); ++i) {
                 statistics_.reset();
-                print_move(notation::string::write<Rules>()(p, move_stack[i]), i);
+                print_move(notation::write<Rules>()(p, move_stack[i]), i);
 
                 q.template copy_make<Rules>(p, move_stack[i]);
                 move_leafs = driver<Rules>(q, 0, depth - 1);
@@ -174,8 +175,8 @@ NodeCount Root::fast(const Position<Board>& p, int ply, int depth)
 template<typename Board>
 void Root::announce(const Position<Board>& p, int depth)
 {        
-        std::cout << layout::write<protocol::pdn::version>()(p) << std::endl;
-        std::cout << string::write<protocol::pdn::version>()(p) << std::endl << std::endl;
+        std::cout << Diagram<protocol::pdn::version>()(p) << std::endl;
+        std::cout << setup::write<protocol::pdn::version>()(p) << std::endl << std::endl;
         std::cout << "Searching to nominal depth=" << depth << std::endl;
         std::cout << std::endl;
 }

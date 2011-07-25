@@ -73,9 +73,6 @@
     <Filter Include="Header Files\hash\jenkins">
       <UniqueIdentifier>{3240917a-3615-4230-9768-71ef1284badf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\move">
-      <UniqueIdentifier>{6007c521-8ee3-4248-accd-96bf3a4e06a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\node">
       <UniqueIdentifier>{4c3aecbc-0823-49f5-9e6f-a7cab95cde43}</UniqueIdentifier>
     </Filter>
@@ -103,23 +100,23 @@
     <Filter Include="Source Files\hash\jenkins">
       <UniqueIdentifier>{13b7f98f-bb65-4c8f-8cc6-69c389586ac7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\move">
-      <UniqueIdentifier>{62304568-ed23-4bae-8b61-16516b2497ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\node">
       <UniqueIdentifier>{3579e545-c666-486d-8e44-133eebd643fe}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\search">
       <UniqueIdentifier>{c0f1e9d7-3f6d-4af6-b601-af60f9961ef1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\protocol\notation">
+    <Filter Include="Header Files\notation">
       <UniqueIdentifier>{3de5be87-4acd-41f5-a670-e7f873eb3ce6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\protocol\setup">
-      <UniqueIdentifier>{c9dee8d4-b1da-4ba6-9ba3-f2b681ade9c5}</UniqueIdentifier>
+    <Filter Include="Source Files\notation">
+      <UniqueIdentifier>{62304568-ed23-4bae-8b61-16516b2497ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\protocol\setup">
+    <Filter Include="Source Files\setup">
       <UniqueIdentifier>{8657155b-dd9d-4e1f-b130-2c4dd7da9d59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\setup">
+      <UniqueIdentifier>{c9dee8d4-b1da-4ba6-9ba3-f2b681ade9c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -162,16 +159,10 @@
     <ClInclude Include="src\board\Direction.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="src\board\Layout.h">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
     <ClInclude Include="src\board\Board.hpp">
       <Filter>Source Files\board</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Coordinates.hpp">
-      <Filter>Source Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\board\Layout.hpp">
       <Filter>Source Files\board</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Types.h">
@@ -387,15 +378,6 @@
     <ClInclude Include="src\generate\capture\Templates.hpp">
       <Filter>Source Files\generate\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\move\String.h">
-      <Filter>Header Files\move</Filter>
-    </ClInclude>
-    <ClInclude Include="src\move\String.hpp">
-      <Filter>Source Files\move</Filter>
-    </ClInclude>
-    <ClInclude Include="src\node\Layout.h">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
     <ClInclude Include="src\node\Move.h">
       <Filter>Header Files\node</Filter>
     </ClInclude>
@@ -411,12 +393,6 @@
     <ClInclude Include="src\node\Stack.h">
       <Filter>Header Files\node</Filter>
     </ClInclude>
-    <ClInclude Include="src\node\String.h">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\node\Layout.hpp">
-      <Filter>Source Files\node</Filter>
-    </ClInclude>
     <ClInclude Include="src\node\MakeMove.hpp">
       <Filter>Source Files\node</Filter>
     </ClInclude>
@@ -429,9 +405,6 @@
     <ClInclude Include="src\node\Stack.hpp">
       <Filter>Source Files\node</Filter>
     </ClInclude>
-    <ClInclude Include="src\node\String.hpp">
-      <Filter>Source Files\node</Filter>
-    </ClInclude>
     <ClInclude Include="src\protocol\damexchange\MessageInterface.h">
       <Filter>Header Files\protocol\damexchange</Filter>
     </ClInclude>
@@ -439,9 +412,6 @@
       <Filter>Header Files\protocol\damexchange</Filter>
     </ClInclude>
     <ClInclude Include="src\protocol\damexchange\Parser.h">
-      <Filter>Header Files\protocol\damexchange</Filter>
-    </ClInclude>
-    <ClInclude Include="src\protocol\damexchange\Protocol.h">
       <Filter>Header Files\protocol\damexchange</Filter>
     </ClInclude>
     <ClInclude Include="src\protocol\damexchange\Scanner.h">
@@ -567,32 +537,68 @@
     <ClInclude Include="src\node\Move.hpp">
       <Filter>Source Files\node</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\pdn\Protocol.h">
+    <ClInclude Include="src\node\Diagram.h">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\node\Diagram.hpp">
+      <Filter>Source Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Diagram.h">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board\Diagram.hpp">
+      <Filter>Source Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\notation\Notation.h">
+      <Filter>Header Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\notation\String.h">
+      <Filter>Header Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\notation\String.hpp">
+      <Filter>Source Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\notation\Czech.hpp">
+      <Filter>Source Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\notation\Russian.hpp">
+      <Filter>Source Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\notation\Thai.hpp">
+      <Filter>Source Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Setup.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Setup.hpp">
+      <Filter>Source Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\DamExchange.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\DamExchange.hpp">
+      <Filter>Source Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\PDN.hpp">
+      <Filter>Source Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\String.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\String.hpp">
+      <Filter>Source Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Version.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\damexchange\Traits.h">
+      <Filter>Header Files\protocol\damexchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\protocol\pdn\Version.h">
       <Filter>Header Files\protocol\pdn</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\notation\Czech.h">
-      <Filter>Header Files\protocol\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\protocol\notation\Notation.h">
-      <Filter>Header Files\protocol\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\protocol\notation\Russian.h">
-      <Filter>Header Files\protocol\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\protocol\notation\Thai.h">
-      <Filter>Header Files\protocol\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\protocol\setup\DamExchange.h">
-      <Filter>Header Files\protocol\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="src\protocol\setup\PDN.h">
-      <Filter>Header Files\protocol\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="src\protocol\setup\Setup.h">
-      <Filter>Header Files\protocol\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="src\protocol\setup\Setup.hpp">
-      <Filter>Source Files\protocol\setup</Filter>
+    <ClInclude Include="src\protocol\pdn\PDN.h">
+      <Filter>Header Files\protocol\pdn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -138,42 +138,56 @@ BitBoard not_occupied(const Position<Board>& p)
 template<typename Board>
 BitBoard active_men(const Position<Board>& p)
 {
-        return p.men(p.to_move());
+        return p.men(active_color(p));
 }
 
 // kings for the side to move
 template<typename Board>
 BitBoard active_kings(const Position<Board>& p)
 {
-        return p.kings(p.to_move());
+        return p.kings(active_color(p));
 }
 
 // pieces for the side to move
 template<typename Board>
 BitBoard active_pieces(const Position<Board>& p)
 {
-        return p.pieces(p.to_move());
+        return p.pieces(active_color(p));
+}
+
+// the side to move
+template<typename Board>
+bool active_color(const Position<Board>& p)
+{
+        return p.to_move();
 }
 
 // men for the opposite side
 template<typename Board>
 BitBoard passive_men(const Position<Board>& p)
 {
-        return p.men(!p.to_move());
+        return p.men(passive_color(p));
 }
 
 // kings for the opposite side
 template<typename Board>
 BitBoard passive_kings(const Position<Board>& p)
 {
-        return p.kings(!p.to_move());
+        return p.kings(passive_color(p));
 }
 
 // pieces for the opposite side
 template<typename Board>
 BitBoard passive_pieces(const Position<Board>& p)
 {
-        return p.pieces(!p.to_move());
+        return p.pieces(passive_color(p));
+}
+
+// the opposite side to move
+template<typename Board>
+bool passive_color(const Position<Board>& p)
+{
+        return !p.to_move();
 }
 
 // tag dispatching based on restrictions on consecutive moves with the same king
@@ -209,10 +223,10 @@ const Position<Board>* grand_parent(const Position<Board>& p)
 template<typename Rules, typename Board>
 bool is_draw(const Position<Board>& p)
 {
-        return 
+        return (
                 is_repetition_draw(p) || 
                 is_reversible_draw<Rules>(p)
-        ;
+        );
 }
 
 template<typename Board>

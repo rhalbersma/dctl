@@ -1,13 +1,10 @@
-#pragma once
 #include "Setup.h"
-#include "../pdn/Protocol.h"
 
 namespace dctl {
-namespace protocol {
 namespace setup {
 
 template<>
-struct Setup<pdn::version>
+struct Setup<protocol::pdn::version>
 : 
         public Token<'B', 'W', '.'>
 {
@@ -18,5 +15,4 @@ struct Setup<pdn::version>
 };
 
 }       // namespace setup
-}       // namespace protocol
 }       // namespace dctl

@@ -8,19 +8,19 @@ namespace board {
 
 static const char WHITE_SPACE = ' ';
 
-// write board square layout as an ASCII board
-struct Square_tag {};
+// write board square layout as an ASCII diagram
+struct squares {};
 
 template<typename Board>
-struct write<Board, Square_tag>
+struct Diagram<Board, squares>
 {
-        std::string operator()() const
+        const std::string operator()() const
         {
-                return write<Board, Square_tag>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
+                return Diagram<Board, squares>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
         }
 
         template<typename Functor>
-        std::string operator()(Functor f) const
+        const std::string operator()(Functor f) const
         {
 	        std::stringstream sstr;
 
@@ -39,21 +39,21 @@ struct write<Board, Square_tag>
         }
 };
 
-// write board bit layout as an ASCII board
-struct Bit_tag {};
+// write board bit layout as an ASCII diagram
+struct bits {};
 
 template<typename Board>
-struct write<Board, Bit_tag> 
+struct Diagram<Board, bits> 
 {
-        std::string operator()() const
+        const std::string operator()() const
         {
-                return write<Board, Bit_tag>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 0));
+                return Diagram<Board, bits>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 0));
         }
 
         template<typename Functor>
-        std::string operator()(Functor f) const
+        const std::string operator()(Functor f) const
         {
-	        return write<Board, Square_tag>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
+	        return Diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
         }
 };
 

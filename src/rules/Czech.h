@@ -17,4 +17,4 @@ template<> struct is_absolute_king_precedence<Czech>    { enum { value = true   
 }       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../protocol/notation/Czech.h"
+#include "../notation/Czech.hpp"

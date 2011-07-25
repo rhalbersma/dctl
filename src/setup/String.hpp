@@ -1,11 +1,9 @@
 #include <cctype>
-#include "../board/Board.h"
-#include "../board/Layout.h"
-#include "../protocol/pdn/Protocol.h"
-#include "../protocol/damexchange/Protocol.h"
+#include "../protocol/pdn/PDN.h"
+#include "../protocol/damexchange/DamExchange.h"
 
 namespace dctl {
-namespace string {
+namespace setup {
 
 template<typename Token>
 bool read_color(char c)
@@ -30,7 +28,7 @@ char write_color(bool b)
 template<typename Board, typename Token>
 struct read<Board, protocol::pdn::version, Token>
 {
-        Position<Board> operator()(const std::string& s)
+        const Position<Board> operator()(const std::string& s) const
         {      
                 BitBoard p_pieces[2] = {0, 0};
 	        BitBoard p_kings = 0;
@@ -82,7 +80,7 @@ template<typename Token>
 struct write<protocol::pdn::version, Token>
 {
         template<typename Board>
-        std::string operator()(const Position<Board>& p) const
+        const std::string operator()(const Position<Board>& p) const
         {
                 std::stringstream sstr;
 	        sstr << Token::QUOTE;					        // opening quotes
@@ -163,5 +161,5 @@ struct write<protocol::damexchange::version, Token>
         }
 };
 
-}       // namespace string
+}       // namespace setup
 }       // namespace dctl

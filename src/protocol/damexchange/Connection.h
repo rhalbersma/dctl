@@ -2,7 +2,7 @@
 #include <deque>
 #include <string>
 #include <boost/asio.hpp>
-#include "Protocol.h"
+#include "Traits.h"
 
 namespace dctl {
 namespace protocol {

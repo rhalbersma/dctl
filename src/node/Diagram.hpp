@@ -1,17 +1,18 @@
 #include <functional>
 #include <sstream>
+#include "Position.h"
+#include "Material.h"
 #include "Side.h"
-#include "../board/Layout.h"
+#include "../board/Diagram.h"
 #include "../utils/Bit.h"
 #include "../utils/IntegerTypes.h"
 
 namespace dctl {
-namespace layout {
 
 template<typename Protocol, typename Token> template<typename Board>
-std::string write<Protocol, Token>::operator()(const Position<Board>& p) const
+const std::string Diagram<Protocol, Token>::operator()(const Position<Board>& p) const
 {
-        return board::write<Board, board::Bit_tag>()(std::bind(bit_content<Token>, p.material(), std::placeholders::_1));
+        return board::Diagram<Board, board::bits>()(std::bind(bit_content<Token>, p.material(), std::placeholders::_1));
 }
 
 template<typename Token>
@@ -35,5 +36,4 @@ std::string bit_content(const Material& p, size_t b)
         return sstr.str();
 }
 
-}       // namespace layout
 }       // namespace dctl

@@ -3,13 +3,13 @@
 #include "Parameters.h"
 #include "../evaluate/Evaluate.h"
 #include "../generate/Successors.h"
-#include "../move/String.h"
-#include "../node/Layout.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
-#include "../node/String.h"
 #include "../utils/Timer.h"
-#include "../protocol/pdn/Protocol.h"
+#include "../node/Diagram.h"
+#include "../setup/String.h"
+#include "../notation/String.h"
+#include "../protocol/pdn/PDN.h"
 
 namespace dctl {
 namespace search {
@@ -25,8 +25,8 @@ template<typename Board>
 void Root::announce(const Position<Board>& p, int depth)
 {
         std::cout << std::endl;
-        std::cout << layout::write<protocol::pdn::version>()(p) << std::endl;
-        std::cout << string::write<protocol::pdn::version>()(p) << std::endl << std::endl;
+        std::cout << Diagram<protocol::pdn::version>()(p) << std::endl;
+        std::cout << setup::write<protocol::pdn::version>()(p) << std::endl << std::endl;
         std::cout << "Searching to nominal depth=" << depth << std::endl;
         std::cout << std::endl;
 }
@@ -65,7 +65,7 @@ void Root::print_PV(const Position<Board>& p, const Sequence& pv)
 
                 if (!(i % 2))                        
                         std::cout << std::setw(2) << std::right << ((i / 2) + 1) << ". ";
-                std::cout << notation::string::write<Rules>()(q, move_stack[pv[i]]);
+                std::cout << notation::write<Rules>()(q, move_stack[pv[i]]);
                 q.template make<Rules>(move_stack[pv[i]]);
                 //if (q.same_king_moves(!q.to_move()))
                         //std::cout << "^" << q.same_king_moves(!q.to_move());

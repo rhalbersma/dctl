@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Protocol.h"
+#include "DamExchange.h"
 
 namespace dctl {
 namespace protocol {

@@ -1,7 +1,7 @@
 #include <cassert>
 #include "Chat.h"
 #include "Parser.h"
-#include "Protocol.h"
+#include "Version.h"
 
 namespace dctl {
 namespace protocol {
