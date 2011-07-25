@@ -1,7 +1,6 @@
 #pragma once
 
 namespace dctl {
-namespace protocol {
 namespace notation {
 
 struct numeric {};      // numeric
@@ -19,5 +18,4 @@ struct Token
 template<typename> struct Separator     { typedef Token<'-', 'x'> type; };
 
 }       // namespace notation
-}       // namespace protocol
 }       // namespace dctl

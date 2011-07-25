@@ -1,29 +1,27 @@
 #pragma once
 #include <string>
-#include "../protocol/setup/Setup.h"
+#include "../setup/Setup.h"
 
 namespace dctl { 
         
 template<typename> class Position;
-
-namespace layout {
+class Material;
 
 template
 <
         typename Protocol,
-        typename Token = protocol::setup::Setup<Protocol>
+        typename Token = setup::Setup<Protocol>
 >
-struct write
+struct Diagram
 {
 	template<typename Board> 
-        std::string operator()(const Position<Board>&) const;
+        const std::string operator()(const Position<Board>&) const;
 };
 
 template<typename> 
 std::string bit_content(const Material&, size_t);
 
-}       // namespace layout
 }       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "Layout.hpp"
+#include "Diagram.hpp"

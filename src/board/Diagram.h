@@ -8,14 +8,14 @@ namespace board {
 template
 <
         typename Board, 
-        typename Protocol
+        typename Content
 >
-struct write: public std::unary_function<void, std::string>
+struct Diagram
 {
-        std::string operator()() const;
+        const std::string operator()() const;
         
         template<typename F> 
-        std::string operator()(F) const;
+        const std::string operator()(F) const;
 };
 
 template<typename> bool is_end_row(int);
@@ -25,4 +25,4 @@ template<typename> bool is_indent_row(int);
 }       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "Layout.hpp"
+#include "Diagram.hpp"

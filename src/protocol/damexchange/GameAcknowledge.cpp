@@ -4,7 +4,7 @@
 #include <boost/lexical_cast.hpp>
 #include "GameAcknowledge.h"
 #include "Parser.h"
-#include "Protocol.h"
+#include "Version.h"
 
 namespace dctl {
 namespace protocol {

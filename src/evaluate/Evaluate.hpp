@@ -66,8 +66,7 @@ int Evaluate::evaluate(const Position<Board>& p)
 template<bool Color, typename Board>
 int Evaluate::material(const Position<Board>& p)
 {
-        return
-        (
+        return (
                 Weight::MATERIAL[0] * bit::count(p.pieces(Color)) +
                 Weight::MATERIAL[1] * bit::count(p.kings(Color))
         );

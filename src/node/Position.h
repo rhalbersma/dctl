@@ -67,12 +67,16 @@ private:
 };
 
 template<typename Board> BitBoard not_occupied(const Position<Board>&);         // unoccupied squares
+
 template<typename Board> BitBoard active_men(const Position<Board>&);           // men for the side to move
 template<typename Board> BitBoard active_kings(const Position<Board>&);         // kings for the side to move
 template<typename Board> BitBoard active_pieces(const Position<Board>&);        // pieces for the side to move
+template<typename Board> bool active_color(const Position<Board>&);             // side to move
+
 template<typename Board> BitBoard passive_men(const Position<Board>&);          // men for the opposite side
 template<typename Board> BitBoard passive_kings(const Position<Board>&);        // kings for the opposite side
 template<typename Board> BitBoard passive_pieces(const Position<Board>&);       // pieces for the opposite side
+template<typename Board> bool passive_color(const Position<Board>&);            // opposite side to move
 
 // tag dispatching based on restrictions on consecutive moves with the same king
 template<typename, typename Board> BitBoard unrestricted_kings(const Position<Board>&, bool);

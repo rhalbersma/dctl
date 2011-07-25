@@ -5,7 +5,7 @@
 #include <boost/lexical_cast.hpp>
 #include "Move.h"
 #include "Parser.h"
-#include "Protocol.h"
+#include "Version.h"
 
 namespace dctl {
 namespace protocol {
