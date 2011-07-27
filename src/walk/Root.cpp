@@ -2,11 +2,12 @@
 #include "../test_config.h"
 #include "../../../Library/src/walk/Root.h"
 #include "../../../Library/src/node/Position.h"
-#include "../../../Library/src/node/Protocol.h"
-#include "../../../Library/src/node/String.h"
-#include "../../../Library/src/board/Layout.h"
 #include "../../../Library/src/board/Types.h"
 #include "../../../Library/src/rules/Variants.h"
+
+#include "../../../Library/src/setup/Diagram.h"
+#include "../../../Library/src/setup/String.h"
+#include "../../../Library/src/protocol/pdn/PDN.h"
 
 namespace dctl {
 namespace walk {
@@ -49,18 +50,18 @@ protected:
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 TEST_F(Perft, International)
 {
-        std::cout << board::write<board::International, board::Square_tag>()() << std::endl;
-        std::cout << board::write<board::International, board::Bit_tag>()() << std::endl;
+        std::cout << setup::diagram<board::International, setup::squares>()() << std::endl;
+        std::cout << setup::diagram<board::International, setup::bits>()() << std::endl;
 
-        Position<board::International> i10 = Position<board::International>::initial();
+        auto i10 = Position<board::International>::initial();
         Root::clear_hash();
         Root::perft<rules::International>(i10, 11);
 
-        Position<board::International> random178(string::read<board::International, FEN_tag>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
+        auto random178(setup::read<board::International, protocol::pdn::version>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
         Root::clear_hash();
         Root::perft<rules::International>(random178, 9);
 
-        Position<board::International> Woldouby(string::read<board::International, FEN_tag>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
+        auto Woldouby(setup::read<board::International, protocol::pdn::version>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
         Root::clear_hash();
         Root::perft<rules::International>(Woldouby, 15);
 }
@@ -69,24 +70,24 @@ TEST_F(Perft, International)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=3014
 TEST_F(Perft, Rectangular)
 {
-        std::cout << board::write<board::Spantsireti, board::Square_tag>()() << std::endl;
-        std::cout << board::write<board::Spantsireti, board::Bit_tag>()() << std::endl;
+        std::cout << setup::diagram<board::Spantsireti, setup::squares>()() << std::endl;
+        std::cout << setup::diagram<board::Spantsireti, setup::bits>()() << std::endl;
 
-        Position<board::Spantsireti> iS = Position<board::Spantsireti>::initial();
+        auto iS = Position<board::Spantsireti>::initial();
         Root::clear_hash();
         Root::perft<rules::International>(iS, 9);
 
-        std::cout << board::write<board::Ktar11, board::Square_tag>()() << std::endl;
-        std::cout << board::write<board::Ktar11, board::Bit_tag>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar11, setup::squares>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar11, setup::bits>()() << std::endl;
         
-        Position<board::Ktar11> iK11 = Position<board::Ktar11>::initial();
+        auto iK11 = Position<board::Ktar11>::initial();
         Root::clear_hash();
         Root::perft<rules::International>(iK11, 9);
                 
-        std::cout << board::write<board::Ktar12, board::Square_tag>()() << std::endl;
-        std::cout << board::write<board::Ktar12, board::Bit_tag>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar12, setup::squares>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar12, setup::bits>()() << std::endl;
         
-        Position<board::Ktar12> iK12 = Position<board::Ktar12>::initial();
+        auto iK12 = Position<board::Ktar12>::initial();
         Root::clear_hash();
         Root::perft<rules::International>(iK12, 9);
 }
@@ -95,8 +96,8 @@ TEST_F(Perft, Rectangular)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 TEST_F(Perft, ChessVariants)
 {
-        Position<board::Checkers> i8 = Position<board::Checkers>::initial();
-        std::cout << board::write<board::Checkers, board::Square_tag>()() << std::endl;
+        auto i8 = Position<board::Checkers>::initial();
+        std::cout << setup::diagram<board::Checkers, setup::squares>()() << std::endl;
         
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
         Root::clear_hash();
@@ -117,8 +118,8 @@ TEST_F(Perft, ChessVariants)
         Root::clear_hash();
         Root::perft<rules::Czech>(i8, 13);
 
-        Position<board::Roman> r8 = Position<board::Roman>::initial();
-        std::cout << board::write<board::Roman, board::Square_tag>()() << std::endl;
+        auto r8 = Position<board::Roman>::initial();
+        std::cout << setup::diagram<board::Roman, setup::squares>()() << std::endl;
 
         Root::clear_hash();
         Root::perft<rules::Spanish>(r8, 13);
@@ -127,14 +128,14 @@ TEST_F(Perft, ChessVariants)
         Root::perft<rules::Italian>(r8, 13);
 
         // Addional Italian test positions from email conversation with Ed Gilbert
-        Position<board::Roman> ITA_Ed_Gilbert_2 = string::read<board::Roman, FEN_tag>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
-        Position<board::Roman> ITA_Ed_Gilbert_3 = string::read<board::Roman, FEN_tag>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
+        auto ITA_Ed_Gilbert_2 = setup::read<board::Roman, protocol::pdn::version>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
+        auto ITA_Ed_Gilbert_3 = setup::read<board::Roman, protocol::pdn::version>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
         Root::clear_hash();
         Root::perft<rules::Italian>(ITA_Ed_Gilbert_2, 16);
         Root::clear_hash();
         Root::perft<rules::Italian>(ITA_Ed_Gilbert_3, 12);
         
-        Position<board::Thai> t8 = Position<board::Thai>::initial();
+        auto t8 = Position<board::Thai>::initial();
         Root::clear_hash();
         Root::perft<rules::Thai>(t8, 11);      // Thai initial position with 2 rows of men
         Root::clear_hash();
