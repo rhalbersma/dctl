@@ -1,22 +1,26 @@
 #include <functional>
 #include <iomanip>
 #include <sstream>
-#include "Board.h"
+#include "../node/Position.h"
+#include "../node/Material.h"
+#include "../node/Side.h"
+#include "../utils/Bit.h"
+#include "../utils/IntegerTypes.h"
 
 namespace dctl {
-namespace board {
+namespace setup {
 
 static const char WHITE_SPACE = ' ';
 
-// write board square layout as an ASCII diagram
 struct squares {};
 
+// partial specialization to write square numbers in diagram layout
 template<typename Board>
-struct Diagram<Board, squares>
+struct diagram<Board, squares>
 {
         const std::string operator()() const
         {
-                return Diagram<Board, squares>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
+                return diagram<Board, squares>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
         }
 
         template<typename Functor>
@@ -39,23 +43,30 @@ struct Diagram<Board, squares>
         }
 };
 
-// write board bit layout as an ASCII diagram
 struct bits {};
 
+// partial specialization to write bit numbers in diagram layout
 template<typename Board>
-struct Diagram<Board, bits> 
+struct diagram<Board, bits> 
 {
         const std::string operator()() const
         {
-                return Diagram<Board, bits>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 0));
+                return diagram<Board, bits>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 0));
         }
 
         template<typename Functor>
         const std::string operator()(Functor f) const
         {
-	        return Diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
+	        return diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
         }
 };
+
+// partial specialization to write position content in diagram layout
+template<typename Protocol, typename Setup> template<typename Board>
+const std::string diagram<Protocol, Setup>::operator()(const Position<Board>& p) const
+{
+        return diagram<Board, bits>()(std::bind(bit_content<Setup>, p.material(), std::placeholders::_1));
+}
 
 template<typename Board>
 bool is_end_row(int sq)
@@ -77,5 +88,26 @@ bool is_indent_row(int sq)
         return Board::PARITY? indent_LO : indent_LE;
 }
 
-}       // namespace board
+template<typename Setup>
+std::string bit_content(const Material& p, size_t b)
+{
+        const BitBoard bb = BitBoard(1) << b;
+
+        std::stringstream sstr;
+        if (p.pieces(Side::BLACK) & bb) {
+                if (p.kings() & bb)
+			sstr << Setup::UPPER[Side::BLACK];      // black king
+                else
+                        sstr << Setup::LOWER[Side::BLACK];      // black man
+        } else if (p.pieces(Side::WHITE) & bb) {
+                if (p.kings() & bb)
+                        sstr << Setup::UPPER[Side::WHITE];      // white king
+                else
+                        sstr << Setup::LOWER[Side::WHITE];      // white man
+        } else
+                sstr << Setup::EMPTY;                           // empty square
+        return sstr.str();
+}
+
+}       // namespace setup
 }       // namespace dctl

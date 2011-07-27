@@ -12,7 +12,7 @@ namespace dctl {
 template<typename Board>
 int Evaluate::evaluate(const Position<Board>& p)
 {
-        return p.to_move()? delta_evaluate<Side::WHITE>(p) : delta_evaluate<Side::BLACK>(p);
+        return (active_color(p) == Side::WHITE)? delta_evaluate<Side::WHITE>(p) : delta_evaluate<Side::BLACK>(p);
 }
 
 template<bool Color, typename Board>

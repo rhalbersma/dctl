@@ -12,7 +12,7 @@ template
 <
         typename Board,
         typename Protocol, 
-        typename Token = Setup<Protocol>
+        typename Setup = Setup<Protocol>
 >
 struct read
 {
@@ -22,7 +22,7 @@ struct read
 template
 <
         typename Protocol, 
-        typename Token = Setup<Protocol>
+        typename Setup = Setup<Protocol>
 >
 struct write
 {

@@ -4,6 +4,19 @@
 namespace dctl {
 namespace board {
 
+// direction indices are subject to arithmetic modulo 8, with the unit element equal to 1
+/*                      
+             2
+          3  |  1
+           \ | / 
+            \|/
+        4---- ----0
+            /|\
+           / | \
+          5  |  7
+             6                     
+*/
+
 // the 8 diagonal and orthogonal direction indices for black and white to move
 template<bool Color, typename Board> 
 class Direction
