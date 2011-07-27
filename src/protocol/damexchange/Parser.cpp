@@ -1,7 +1,7 @@
 #include <string>
 #include "gtest/gtest.h"
 #include "../../../../Library/src/protocol/damexchange/Parser.h"
-#include "../../../../Library/src/protocol/damexchange/Protocol.h"
+#include "../../../../Library/src/protocol/damexchange/Version.h"
 
 namespace dctl {
 namespace protocol {

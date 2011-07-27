@@ -3,10 +3,10 @@
 #include "gtest/gtest.h"
 #include "../../../Library/src/generate/Successors.h"
 #include "../../../Library/src/node/Position.h"
-#include "../../../Library/src/node/Protocol.h"
-#include "../../../Library/src/node/String.h"
-#include "../../../Library/src/move/String.h"
-#include "../../../Library/src/board/Layout.h"
+#include "../../../Library/src/setup/Diagram.h"
+#include "../../../Library/src/setup/String.h"
+#include "../../../Library/src/notation/String.h"
+#include "../../../Library/src/protocol/pdn/PDN.h"
 #include "../../../Library/src/board/Types.h"
 #include "../../../Library/src/rules/Variants.h"
 
@@ -17,13 +17,13 @@ namespace generate {
 // Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 TEST(MoveGeneration, ItalianBoard)
 {
-        Position<board::Roman> ITA_empty = string::read<board::Roman, FEN_tag>()("");   // Art. 2.1
+        Position<board::Roman> ITA_empty = string::read<board::Roman, protocol::pdn::version>()("");   // Art. 2.1
         typedef board::Roman ITA_notation;                                      	                        // Art. 2.4
         Position<board::Roman> ITA_initial;						                // Art. 2.6
 
-        std::cout << layout::write<FEN_tag>()(ITA_empty) << std::endl;
-        board::write<ITA_notation, board::Square_tag>()();
-        std::cout << layout::write<FEN_tag>()(ITA_initial) << std::endl;
+        std::cout << layout::write<protocol::pdn::version>()(ITA_empty) << std::endl;
+        board::Diagram<ITA_notation, board::squares>()();
+        std::cout << layout::write<protocol::pdn::version>()(ITA_initial) << std::endl;
 }
 */
 TEST(MoveGeneration, Italian)
@@ -60,7 +60,7 @@ TEST(MoveGeneration, Italian)
 
         for (auto i = 0; i < 9; ++i) {
                 Stack move_stack;
-                auto p = string::read<board::Roman, FEN_tag>()(position[i]);
+                auto p = setup::read<board::Roman, protocol::pdn::version>()(position[i]);
                 Successors<rules::Italian, board::Roman>::generate(p, move_stack);
 
                 // check the number of generated moves
@@ -68,7 +68,7 @@ TEST(MoveGeneration, Italian)
 
                 // check all generated moves
                 for (size_t j = 0; j < move_stack.size(); ++j) {
-                        std::string move_string = move::string::write<rules::Italian>()(p, move_stack[j]);
+                        std::string move_string = notation::write<rules::Italian>()(p, move_stack[j]);
                         EXPECT_NE(moves[i] + size[i], std::find(moves[i], moves[i] + size[i], move_string)); 
                 }
         }

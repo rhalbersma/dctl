@@ -3,10 +3,11 @@
 #include "../test_config.h"
 #include "../../../Library/src/search/Root.h"
 #include "../../../Library/src/node/Position.h"
-#include "../../../Library/src/node/Protocol.h"
-#include "../../../Library/src/node/String.h"
 #include "../../../Library/src/board/Types.h"
 #include "../../../Library/src/rules/Variants.h"
+
+#include "../../../Library/src/setup/String.h"
+#include "../../../Library/src/protocol/pdn/PDN.h"
 
 namespace dctl {
 namespace search {
@@ -46,7 +47,7 @@ protected:
         void Run(const FEN_depth& test_case) 
         {
                 Root::clear_hash();
-                auto position = string::read<Board, FEN_tag>()(test_case.first);
+                auto position = setup::read<Board, protocol::pdn::version>()(test_case.first);
                 auto value = Root::analyze<Rules>(position, test_case.second);
                 EXPECT_EQ(score::win_value(test_case.second), value);
         }
@@ -55,14 +56,14 @@ protected:
 };
 
 #if INTEGRATION_TEST == 1
-
+/*
 TEST_F(SearchEndgame, InternationalInitial)
 {
         auto i10 = Position<board::International>::initial();
         Root::clear_hash();
         Root::analyze<rules::International>(i10, 11);
 }
-
+*/
 TEST_F(SearchEndgame, Frisian21)
 {
         FEN_depth test_case("W:WK46,28:BK43", 39);      // Walinga book
