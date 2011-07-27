@@ -136,8 +136,6 @@
     <ClInclude Include="src\board\Angle.hpp" />
     <ClInclude Include="src\board\Board.h" />
     <ClInclude Include="src\board\Board.hpp" />
-    <ClInclude Include="src\board\Diagram.h" />
-    <ClInclude Include="src\board\Diagram.hpp" />
     <ClInclude Include="src\board\Dimensions.h" />
     <ClInclude Include="src\board\MetaTemplates.h" />
     <ClInclude Include="src\board\MetaTemplates.hpp" />
@@ -247,8 +245,6 @@
     <ClInclude Include="src\hash\zobrist\Init.hpp" />
     <ClInclude Include="src\hash\zobrist\Random.h" />
     <ClInclude Include="src\hash\zobrist\Random.hpp" />
-    <ClInclude Include="src\node\Diagram.h" />
-    <ClInclude Include="src\node\Diagram.hpp" />
     <ClInclude Include="src\node\MakeMove.hpp" />
     <ClInclude Include="src\node\Move.h" />
     <ClInclude Include="src\node\Material.h" />
@@ -267,6 +263,8 @@
     <ClInclude Include="src\search\Score.h" />
     <ClInclude Include="src\search\Transposition.h" />
     <ClInclude Include="src\setup\DamExchange.hpp" />
+    <ClInclude Include="src\setup\Diagram.h" />
+    <ClInclude Include="src\setup\Diagram.hpp" />
     <ClInclude Include="src\setup\PDN.hpp" />
     <ClInclude Include="src\setup\Setup.h" />
     <ClInclude Include="src\setup\Setup.hpp" />

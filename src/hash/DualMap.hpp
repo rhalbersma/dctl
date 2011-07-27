@@ -41,14 +41,14 @@ template<typename Key, typename Value, template<typename, typename> class Hash, 
 template<typename Board>
 const Value* DualMap<Key, Value, Hash, Index, Replace>::find(const Position<Board>& p) const
 {
-        return dual_map_[p.to_move()].find(p);
+        return dual_map_[active_color(p)].find(p);
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Board>
 void DualMap<Key, Value, Hash, Index, Replace>::insert(const Position<Board>& p, const Value& value)
 {
-        dual_map_[p.to_move()].insert(p, value);
+        dual_map_[active_color(p)].insert(p, value);
 }
 
 }       // namespace hash

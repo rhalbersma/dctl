@@ -5,6 +5,7 @@
 namespace dctl {
 namespace board {
 
+// angles are subject to arithmetic modulo 360 degrees, with the unit element equal to 45 degrees anti-clockwise
 /*
                 D090 = L090
                      |
@@ -19,7 +20,6 @@ namespace board {
                 D270 = R090
 */
 
-// angles are subject to arithmetic modulo 360 degrees, with the unit element equal to 45 degrees anti-clockwise
 struct Angle
 {
         enum {

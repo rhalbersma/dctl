@@ -537,18 +537,6 @@
     <ClInclude Include="src\node\Move.hpp">
       <Filter>Source Files\node</Filter>
     </ClInclude>
-    <ClInclude Include="src\node\Diagram.h">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\node\Diagram.hpp">
-      <Filter>Source Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="src\board\Diagram.h">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\board\Diagram.hpp">
-      <Filter>Source Files\board</Filter>
-    </ClInclude>
     <ClInclude Include="src\notation\Notation.h">
       <Filter>Header Files\notation</Filter>
     </ClInclude>
@@ -599,6 +587,12 @@
     </ClInclude>
     <ClInclude Include="src\protocol\pdn\PDN.h">
       <Filter>Header Files\protocol\pdn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Diagram.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Diagram.hpp">
+      <Filter>Source Files\setup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

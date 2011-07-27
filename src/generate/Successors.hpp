@@ -130,10 +130,9 @@ template<typename Rules, typename Board>
 int Successors<Rules, Board>::state(bool color, BitBoard kings, BitBoard men)
 {
         return (
-                ((color != 0) << 2) + 
-                ((kings != 0) << 1) +               
-                ((  men != 0) << 0)                
-  
+                ((color != 0) << 2) +
+                ((kings != 0) << 1) +
+                ((  men != 0) << 0)
         );
 }
 

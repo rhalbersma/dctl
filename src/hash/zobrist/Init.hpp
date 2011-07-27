@@ -16,8 +16,8 @@ struct Init<Position<Board>, Index>: public std::unary_function<Position<Board>,
         Index operator()(const Position<Board>& p) const
         {
                 return (
-                        Init<Material  , Index>()(p.material())   ^
-                        Init<bool      , Index>()(p.to_move())    ^
+                        Init<Material  , Index>()(p.material())    ^
+                        Init<bool      , Index>()(active_color(p)) ^
                         Init<Restricted, Index>()(p.restricted())
                 );
         }
