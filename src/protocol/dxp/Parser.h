@@ -7,7 +7,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 template<typename Protocol>
 class Parser: private boost::noncopyable        // enforce singleton semantics
@@ -26,7 +26,7 @@ private:
         static CreatorMap& instance();
 };
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl
 

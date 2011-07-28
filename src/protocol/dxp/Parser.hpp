@@ -2,7 +2,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 template<typename Protocol>
 std::unique_ptr<MessageInterface> Parser<Protocol>::find(const std::string& message)
@@ -32,6 +32,6 @@ typename Parser<Protocol>::CreatorMap& Parser<Protocol>::instance()
         return singleton_;
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

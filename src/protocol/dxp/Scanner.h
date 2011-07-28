@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
-#include "DamExchange.h"
+#include "DXP.h"
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 template<typename Protocol>
 class Scanner
@@ -29,7 +29,7 @@ private:
         std::string message_;
 };
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl
 

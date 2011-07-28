@@ -2,7 +2,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 template<typename Protocol>
 Scanner<Protocol>::Scanner(const std::string& message)
@@ -33,6 +33,6 @@ bool Scanner<Protocol>::invariant() const
         );
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

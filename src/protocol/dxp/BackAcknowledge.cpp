@@ -8,7 +8,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 const std::string BackAcknowledge::HEADER = "K";
 
@@ -52,6 +52,6 @@ std::string BackAcknowledge::body(AcceptanceCode a)
         return sstr.str();
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

@@ -8,7 +8,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 const std::string BackRequest::HEADER = "B";
 
@@ -59,6 +59,6 @@ std::string BackRequest::body(size_t m, char c)
         return sstr.str();
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

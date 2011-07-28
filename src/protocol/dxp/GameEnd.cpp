@@ -8,7 +8,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 const std::string GameEnd::HEADER = "E";
 
@@ -59,6 +59,6 @@ std::string GameEnd::body(Reason r, StopCode s)
         return sstr.str();
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

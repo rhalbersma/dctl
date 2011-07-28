@@ -5,7 +5,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 template<typename Protocol>
 Connection<Protocol>::Connection()
@@ -190,6 +190,6 @@ void Connection<Protocol>::handle_write(const boost::system::error_code& error)
         }
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

@@ -5,37 +5,38 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
-class GameAcknowledge: public MessageInterface
+class GameEnd: public MessageInterface
 {
 public:
         // typedefs
-        enum AcceptanceCode { ACCEPT = 0, DECLINE_VERSION = 1, DECLINE_THIS = 2, DECLINE_ALL = 3 };
+        enum Reason { FORFEIT = 0, RESIGN = 1, CLAIM_DRAW = 2, CLAIM_WIN = 3 }; 
+        enum StopCode { STOP_THIS = 0, STOP_ALL = 1 };
 
         // views
-        const std::string& name_follower() const;
-        AcceptanceCode acceptance_code() const;
-        static std::string str(const std::string&, AcceptanceCode);
+        Reason reason() const;
+        StopCode stop_code() const;
+        static std::string str(Reason, StopCode);
 
-private:    
+private:
         // private constructor to enforce factory creation
-        explicit GameAcknowledge(const std::string&);
+        explicit GameEnd(const std::string&);
 
         // implementation
         virtual std::string header() const;
         virtual std::string body() const;
-        static std::string body(const std::string&, AcceptanceCode);
+        static std::string body(Reason, StopCode);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);
         static const std::string HEADER;
         static const bool REGISTERED;
 
         // representation
-        std::string name_follower_;
-        AcceptanceCode acceptance_code_;
+        Reason reason_;
+        StopCode stop_code_;
 };
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

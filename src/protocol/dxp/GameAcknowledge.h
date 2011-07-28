@@ -1,39 +1,41 @@
 #pragma once
-#include <cstddef>
 #include <memory>       // std::unique_ptr
 #include <string>
 #include "MessageInterface.h"
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
-class BackRequest: public MessageInterface
+class GameAcknowledge: public MessageInterface
 {
 public:
-        // views
-        size_t move_number() const;
-        char side_to_move() const;
-        static std::string str(size_t, char);
+        // typedefs
+        enum AcceptanceCode { ACCEPT = 0, DECLINE_VERSION = 1, DECLINE_THIS = 2, DECLINE_ALL = 3 };
 
-private:
+        // views
+        const std::string& name_follower() const;
+        AcceptanceCode acceptance_code() const;
+        static std::string str(const std::string&, AcceptanceCode);
+
+private:    
         // private constructor to enforce factory creation
-        explicit BackRequest(const std::string&);
+        explicit GameAcknowledge(const std::string&);
 
         // implementation
         virtual std::string header() const;
         virtual std::string body() const;
-        static std::string body(size_t, char);
+        static std::string body(const std::string&, AcceptanceCode);
 
         static std::unique_ptr<MessageInterface> create(const std::string&);
         static const std::string HEADER;
         static const bool REGISTERED;
 
         // representation
-        size_t move_number_;
-        char side_to_move_;
+        std::string name_follower_;
+        AcceptanceCode acceptance_code_;
 };
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

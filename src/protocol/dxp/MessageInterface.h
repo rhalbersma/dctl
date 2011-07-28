@@ -3,7 +3,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 class MessageInterface
 {
@@ -20,6 +20,6 @@ private:
         virtual std::string body() const = 0;
 };
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

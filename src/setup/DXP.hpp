@@ -4,7 +4,7 @@ namespace dctl {
 namespace setup {
 
 template<>
-struct Setup<protocol::damexchange::version>
+struct Setup<protocol::dxp::version>
 : 
         public Token<'Z', 'W', 'e'> 
 {

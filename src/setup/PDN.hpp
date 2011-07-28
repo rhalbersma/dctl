@@ -11,7 +11,7 @@ struct Setup<protocol::pdn::version>
         static const char KING  = 'K';
         static const char COLON = ':';
         static const char COMMA = ',';
-        static const char QUOTE = '\"';
+        static const char QUOTE = '"';
 };
 
 }       // namespace setup

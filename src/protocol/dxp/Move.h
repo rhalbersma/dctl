@@ -6,7 +6,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 class Move: public MessageInterface
 {
@@ -40,6 +40,6 @@ private:
         std::vector<int> captured_pieces_;       
 };
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

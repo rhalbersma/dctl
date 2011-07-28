@@ -6,7 +6,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 template<typename Protocol>
 class Connection
@@ -68,7 +68,7 @@ private:
         MessageQueue write_messages_;
 };
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl
 
