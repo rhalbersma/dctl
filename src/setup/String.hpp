@@ -1,7 +1,7 @@
 #include <cctype>
 #include "Diagram.h"
 #include "../protocol/pdn/PDN.h"
-#include "../protocol/damexchange/DamExchange.h"
+#include "../protocol/dxp/DXP.h"
 
 namespace dctl {
 namespace setup {
@@ -21,15 +21,15 @@ bool read_color(char c)
 }
 
 template<typename Setup>
-char write_color(bool b)
+char write_color(bool color)
 {
-	return Setup::COLOR[b];
+	return Setup::COLOR[color];
 }
 
 template<typename Board, typename Setup>
 struct read<Board, protocol::pdn::version, Setup>
 {
-        const Position<Board> operator()(const std::string& s) const
+        Position<Board> operator()(const std::string& s) const
         {      
                 BitBoard p_pieces[2] = {0, 0};
 	        BitBoard p_kings = 0;
@@ -44,20 +44,21 @@ struct read<Board, protocol::pdn::version, Setup>
 
                 std::stringstream sstr(s);
                 char ch;
-                sstr >> ch;
-                p_side = read_color<Setup>(ch);
                 size_t sq;
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch(ch) {
+                        case Setup::BLACK:
+                                // falling through
+                        case Setup::WHITE:
+                                p_side = read_color<Setup>(ch);
+                                break;                                
                         case Setup::COLON:
                                 sstr >> ch;
                                 setup_color = read_color<Setup>(ch);
                                 break;
                         case Setup::KING:                                       // setup kings
                                 setup_kings = true;
-                                break;
-                        case Setup::COMMA:
                                 break;
                         default:
                                 if (isdigit(ch)) {
@@ -81,11 +82,11 @@ template<typename Setup>
 struct write<protocol::pdn::version, Setup>
 {
         template<typename Board>
-        const std::string operator()(const Position<Board>& p) const
+        std::string operator()(const Position<Board>& p) const
         {
                 std::stringstream sstr;
 	        sstr << Setup::QUOTE;					        // opening quotes
-	        sstr << Setup::COLOR[active_color(p)];				// side to move
+	        sstr << write_color<Setup>(active_color(p));			// side to move
 
                 for (auto i = 0; i < 2; ++i) {
 		        auto c = i != 0;
@@ -108,9 +109,9 @@ struct write<protocol::pdn::version, Setup>
 };
 
 template<typename Board, typename Setup>
-struct read<Board, protocol::damexchange::version, Setup>
+struct read<Board, protocol::dxp::version, Setup>
 {
-        Position<Board> operator()(const std::string& s)
+        Position<Board> operator()(const std::string& s) const
         {
 	        assert(s.length() == Board::SIZE + 1);
 
@@ -147,7 +148,7 @@ struct read<Board, protocol::damexchange::version, Setup>
 };
 
 template<typename Setup>
-struct write<protocol::damexchange::version, Setup>
+struct write<protocol::dxp::version, Setup>
 {
         template<typename Board>
         std::string operator()(const Position<Board>& p) const

@@ -2,13 +2,13 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 std::string MessageInterface::str() const
 {
         return header() + body();
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

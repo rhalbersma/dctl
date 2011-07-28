@@ -5,7 +5,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 const std::string Chat::HEADER = "C";
 
@@ -47,6 +47,6 @@ std::string Chat::body(const std::string& m)
         return m;
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

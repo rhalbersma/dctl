@@ -6,7 +6,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 class GameRequest: public MessageInterface
 {
@@ -49,6 +49,6 @@ private:
         std::string position_;
 };
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

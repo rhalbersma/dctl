@@ -16,13 +16,13 @@ template
 >
 struct diagram
 {
-        const std::string operator()() const;
+        std::string operator()() const;
         
         template<typename F> 
-        const std::string operator()(F) const;
+        std::string operator()(F) const;
 
         template<typename Board> 
-        const std::string operator()(const Position<Board>&) const;
+        std::string operator()(const Position<Board>&) const;
 };
 
 template<typename> bool is_end_row(int);

@@ -9,7 +9,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 const std::string Move::HEADER = "M";
 
@@ -84,6 +84,6 @@ std::string Move::body(int s, int f, int d, int n, const std::vector<int>& c)
         return sstr.str();
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

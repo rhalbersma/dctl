@@ -18,13 +18,13 @@ struct squares {};
 template<typename Board>
 struct diagram<Board, squares>
 {
-        const std::string operator()() const
+        std::string operator()() const
         {
                 return diagram<Board, squares>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
         }
 
         template<typename Functor>
-        const std::string operator()(Functor f) const
+        std::string operator()(Functor f) const
         {
 	        std::stringstream sstr;
 
@@ -49,13 +49,13 @@ struct bits {};
 template<typename Board>
 struct diagram<Board, bits> 
 {
-        const std::string operator()() const
+        std::string operator()() const
         {
                 return diagram<Board, bits>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 0));
         }
 
         template<typename Functor>
-        const std::string operator()(Functor f) const
+        std::string operator()(Functor f) const
         {
 	        return diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
         }
@@ -63,7 +63,7 @@ struct diagram<Board, bits>
 
 // partial specialization to write position content in diagram layout
 template<typename Protocol, typename Setup> template<typename Board>
-const std::string diagram<Protocol, Setup>::operator()(const Position<Board>& p) const
+std::string diagram<Protocol, Setup>::operator()(const Position<Board>& p) const
 {
         return diagram<Board, bits>()(std::bind(bit_content<Setup>, p.material(), std::placeholders::_1));
 }

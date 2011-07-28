@@ -8,7 +8,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 const std::string GameRequest::HEADER = "R";
 
@@ -115,6 +115,6 @@ char GameRequest::write_setup(bool b)
         return SETUP[b];
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

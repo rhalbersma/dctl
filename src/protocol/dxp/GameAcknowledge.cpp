@@ -8,7 +8,7 @@
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
 const std::string GameAcknowledge::HEADER = "A";
 
@@ -59,6 +59,6 @@ std::string GameAcknowledge::body(const std::string& n, AcceptanceCode a)
         return sstr.str();
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

@@ -16,7 +16,7 @@ template
 >
 struct read
 {
-	const Position<Board> operator()(const std::string&) const;
+	Position<Board> operator()(const std::string&) const;
 };
 
 template
@@ -27,7 +27,7 @@ template
 struct write
 {
 	template<typename Board> 
-        const std::string operator()(const Position<Board>&) const;
+        std::string operator()(const Position<Board>&) const;
 };
 
 }       // namespace setup
