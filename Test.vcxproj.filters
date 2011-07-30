@@ -19,12 +19,6 @@
     <Filter Include="Source Files\utils">
       <UniqueIdentifier>{cb134f5f-b366-4cd5-b60c-bd22e3f9803d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\protocol">
-      <UniqueIdentifier>{632fd6f8-2b9e-48d6-9a1f-229111f1a606}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\protocol\damexchange">
-      <UniqueIdentifier>{9a60d530-3f53-48ff-ac9c-786525623ad1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\search">
       <UniqueIdentifier>{46f28f37-070c-4069-a1ce-f7b5350fb5fc}</UniqueIdentifier>
     </Filter>
@@ -34,6 +28,9 @@
     <Filter Include="Source Files\setup">
       <UniqueIdentifier>{0ede2fe5-9e0b-4149-a79d-fefd2476370f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\dxp">
+      <UniqueIdentifier>{9a60d530-3f53-48ff-ac9c-786525623ad1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\test_main.cpp">
@@ -41,9 +38,6 @@
     </ClCompile>
     <ClCompile Include="src\generate\Successors.cpp">
       <Filter>Source Files\generate</Filter>
-    </ClCompile>
-    <ClCompile Include="src\protocol\damexchange\Parser.cpp">
-      <Filter>Source Files\protocol\damexchange</Filter>
     </ClCompile>
     <ClCompile Include="src\search\Score.cpp">
       <Filter>Source Files\search</Filter>
@@ -59,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="src\setup\Setup.cpp">
       <Filter>Source Files\setup</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dxp\Parser.cpp">
+      <Filter>Source Files\dxp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

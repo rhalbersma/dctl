@@ -1,10 +1,9 @@
 #include <string>
 #include "gtest/gtest.h"
-#include "../../../../Library/src/protocol/dxp/Parser.h"
-#include "../../../../Library/src/protocol/dxp/Version.h"
+#include "../../../Library/src/dxp/Parser.h"
+#include "../../../Library/src/dxp/DXP.h"
 
 namespace dctl {
-namespace protocol {
 namespace dxp {
 
 // Examples of DXP messages (Layer 2 Protocol)
@@ -24,11 +23,10 @@ TEST(Parser, MesanderExamples)
         };
 
         for (auto i = 0; i < 8; ++i) {
-                auto parsed = Parser<version>::find(message[i]);
+                auto parsed = Parser<protocol>::find(message[i]);
                 EXPECT_EQ(0, parsed->str().compare(message[i]));
         }
 }
 
 }       // namespace dxp
-}       // namespace protocol
 }       // namespace dctl

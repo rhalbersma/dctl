@@ -3,11 +3,10 @@
 #include "../../../Library/src/walk/Root.h"
 #include "../../../Library/src/node/Position.h"
 #include "../../../Library/src/board/Types.h"
-#include "../../../Library/src/rules/Variants.h"
+#include "../../../Library/src/rules/Rules.h"
 
 #include "../../../Library/src/setup/Diagram.h"
 #include "../../../Library/src/setup/String.h"
-#include "../../../Library/src/protocol/pdn/PDN.h"
 
 namespace dctl {
 namespace walk {
@@ -44,19 +43,7 @@ protected:
 // Objects declared here can be used by all tests in the test case for Foo.
 };
 
-#if INTEGRATION_TEST == 0
-
-// The alternative game rules thread on the FMJD forum
-// http://laatste.info/bb3/viewtopic.php?f=53&t=2822
-TEST_F(Perft, Frisian)
-{
-        std::cout << setup::diagram<board::Frisian, setup::squares>()() << std::endl;
-        std::cout << setup::diagram<board::Frisian, setup::bits>()() << std::endl;
-
-        auto f10 = Position<board::Frisian>::initial();
-        Root::clear_hash();
-        Root::perft<rules::Frisian>(f10, 11);
-}
+#if INTEGRATION_TEST == 1
 
 // The original perft thread on the FMJD forum 
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
@@ -69,13 +56,25 @@ TEST_F(Perft, International)
         Root::clear_hash();
         Root::perft<rules::International>(i10, 11);
 
-        auto random178(setup::read<board::International, protocol::pdn::version>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
+        auto random178(setup::read<board::International, pdn::protocol>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
         Root::clear_hash();
         Root::perft<rules::International>(random178, 9);
 
-        auto Woldouby(setup::read<board::International, protocol::pdn::version>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
+        auto Woldouby(setup::read<board::International, pdn::protocol>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
         Root::clear_hash();
         Root::perft<rules::International>(Woldouby, 15);
+}
+
+// The alternative game rules thread on the FMJD forum
+// http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+TEST_F(Perft, Frisian)
+{
+        std::cout << setup::diagram<board::Frisian, setup::squares>()() << std::endl;
+        std::cout << setup::diagram<board::Frisian, setup::bits>()() << std::endl;
+
+        auto f10 = Position<board::Frisian>::initial();
+        Root::clear_hash();
+        Root::perft<rules::Frisian>(f10, 11);
 }
 
 // The alternative game rules thread on the FMJD forum
@@ -114,8 +113,8 @@ TEST_F(Perft, ChessVariants)
         Root::perft<rules::Italian>(r8, 13);
 
         // Addional Italian test positions from email conversation with Ed Gilbert
-        auto ITA_Ed_Gilbert_1 = setup::read<board::Roman, protocol::pdn::version>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
-        auto ITA_Ed_Gilbert_2 = setup::read<board::Roman, protocol::pdn::version>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
+        auto ITA_Ed_Gilbert_1 = setup::read<board::Roman, pdn::protocol>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
+        auto ITA_Ed_Gilbert_2 = setup::read<board::Roman, pdn::protocol>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
         Root::clear_hash();
         Root::perft<rules::Italian>(ITA_Ed_Gilbert_1, 16);
         Root::clear_hash();
