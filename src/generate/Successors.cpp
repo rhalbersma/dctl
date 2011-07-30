@@ -3,12 +3,12 @@
 #include "gtest/gtest.h"
 #include "../../../Library/src/generate/Successors.h"
 #include "../../../Library/src/node/Position.h"
+#include "../../../Library/src/board/Types.h"
+#include "../../../Library/src/rules/Rules.h"
+
 #include "../../../Library/src/setup/Diagram.h"
 #include "../../../Library/src/setup/String.h"
 #include "../../../Library/src/notation/String.h"
-#include "../../../Library/src/protocol/pdn/PDN.h"
-#include "../../../Library/src/board/Types.h"
-#include "../../../Library/src/rules/Variants.h"
 
 namespace dctl {
 namespace generate {
@@ -17,13 +17,13 @@ namespace generate {
 // Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 TEST(MoveGeneration, ItalianBoard)
 {
-        Position<board::Roman> ITA_empty = string::read<board::Roman, protocol::pdn::version>()("");   // Art. 2.1
+        Position<board::Roman> ITA_empty = string::read<board::Roman, pdn::protocol>()("");   // Art. 2.1
         typedef board::Roman ITA_notation;                                      	                        // Art. 2.4
         Position<board::Roman> ITA_initial;						                // Art. 2.6
 
-        std::cout << layout::write<protocol::pdn::version>()(ITA_empty) << std::endl;
+        std::cout << layout::write<pdn::protocol>()(ITA_empty) << std::endl;
         board::Diagram<ITA_notation, board::squares>()();
-        std::cout << layout::write<protocol::pdn::version>()(ITA_initial) << std::endl;
+        std::cout << layout::write<pdn::protocol>()(ITA_initial) << std::endl;
 }
 */
 TEST(Successors, Italian)
@@ -60,7 +60,7 @@ TEST(Successors, Italian)
 
         for (auto i = 0; i < 9; ++i) {
                 Stack move_stack;
-                auto p = setup::read<board::Roman, protocol::pdn::version>()(position[i]);
+                auto p = setup::read<board::Roman, pdn::protocol>()(position[i]);
                 Successors<rules::Italian, board::Roman>::generate(p, move_stack);
 
                 // check the number of generated moves

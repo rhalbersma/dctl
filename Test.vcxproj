@@ -132,8 +132,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\dxp\Parser.cpp" />
     <ClCompile Include="src\generate\Successors.cpp" />
-    <ClCompile Include="src\protocol\damexchange\Parser.cpp" />
     <ClCompile Include="src\search\Root.cpp" />
     <ClCompile Include="src\search\Score.cpp" />
     <ClCompile Include="src\setup\Setup.cpp" />

@@ -4,10 +4,9 @@
 #include "../../../Library/src/search/Root.h"
 #include "../../../Library/src/node/Position.h"
 #include "../../../Library/src/board/Types.h"
-#include "../../../Library/src/rules/Variants.h"
+#include "../../../Library/src/rules/Rules.h"
 
 #include "../../../Library/src/setup/String.h"
-#include "../../../Library/src/protocol/pdn/PDN.h"
 
 namespace dctl {
 namespace search {
@@ -47,7 +46,7 @@ protected:
         void Run(const FEN_depth& test_case) 
         {
                 Root::clear_hash();
-                auto position = setup::read<Board, protocol::pdn::version>()(test_case.first);
+                auto position = setup::read<Board, pdn::protocol>()(test_case.first);
                 auto value = Root::analyze<Rules>(position, test_case.second);
                 EXPECT_EQ(score::win_value(test_case.second), value);
         }
