@@ -17,4 +17,4 @@ template<> struct is_majority_precedence<Killer>        { enum { value = true   
 }       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../generate/capture/Killer.hpp"
+#include "../generate/capture/Killer.h"

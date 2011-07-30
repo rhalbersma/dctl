@@ -19,4 +19,4 @@ template<> struct is_majority_precedence<International> { enum { value = true  }
 }       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../generate/capture/International.hpp"
+#include "../generate/capture/International.h"

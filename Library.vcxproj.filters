@@ -345,37 +345,7 @@
     <ClInclude Include="src\generate\PawnMoves.hpp">
       <Filter>Source Files\generate</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\State.h">
-      <Filter>Header Files\generate\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\generate\capture\Templates.h">
-      <Filter>Header Files\generate\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\generate\capture\Value.h">
-      <Filter>Header Files\generate\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\generate\capture\Frisian.hpp">
-      <Filter>Source Files\generate\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\generate\capture\International.hpp">
-      <Filter>Source Files\generate\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\generate\capture\Italian.hpp">
-      <Filter>Source Files\generate\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\generate\capture\Killer.hpp">
-      <Filter>Source Files\generate\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\generate\capture\Russian.hpp">
-      <Filter>Source Files\generate\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\generate\capture\Spanish.hpp">
-      <Filter>Source Files\generate\capture</Filter>
-    </ClInclude>
     <ClInclude Include="src\generate\capture\State.hpp">
-      <Filter>Source Files\generate\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\generate\capture\Templates.hpp">
       <Filter>Source Files\generate\capture</Filter>
     </ClInclude>
     <ClInclude Include="src\node\Move.h">
@@ -594,6 +564,33 @@
     <ClInclude Include="src\setup\DXP.hpp">
       <Filter>Source Files\setup</Filter>
     </ClInclude>
+    <ClInclude Include="src\generate\capture\Value.hpp">
+      <Filter>Source Files\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generate\capture\Value.h">
+      <Filter>Header Files\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generate\capture\State.h">
+      <Filter>Header Files\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generate\capture\Frisian.h">
+      <Filter>Header Files\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generate\capture\International.h">
+      <Filter>Header Files\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generate\capture\Italian.h">
+      <Filter>Header Files\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generate\capture\Killer.h">
+      <Filter>Header Files\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generate\capture\Russian.h">
+      <Filter>Header Files\generate\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generate\capture\Spanish.h">
+      <Filter>Header Files\generate\capture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\DeBruijn.cpp">
@@ -673,6 +670,24 @@
     </ClCompile>
     <ClCompile Include="src\protocol\dxp\Move.cpp">
       <Filter>Source Files\protocol\dxp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\generate\capture\Spanish.cpp">
+      <Filter>Source Files\generate\capture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\generate\capture\Frisian.cpp">
+      <Filter>Source Files\generate\capture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\generate\capture\International.cpp">
+      <Filter>Source Files\generate\capture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\generate\capture\Italian.cpp">
+      <Filter>Source Files\generate\capture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\generate\capture\Killer.cpp">
+      <Filter>Source Files\generate\capture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\generate\capture\Russian.cpp">
+      <Filter>Source Files\generate\capture</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

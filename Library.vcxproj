@@ -150,6 +150,13 @@
     <ClInclude Include="src\board\Traits.h" />
     <ClInclude Include="src\board\Transform.h" />
     <ClInclude Include="src\board\Types.h" />
+    <ClInclude Include="src\generate\capture\Frisian.h" />
+    <ClInclude Include="src\generate\capture\International.h" />
+    <ClInclude Include="src\generate\capture\Italian.h" />
+    <ClInclude Include="src\generate\capture\Killer.h" />
+    <ClInclude Include="src\generate\capture\Russian.h" />
+    <ClInclude Include="src\generate\capture\Spanish.h" />
+    <ClInclude Include="src\generate\capture\Value.hpp" />
     <ClInclude Include="src\node\Move.hpp" />
     <ClInclude Include="src\node\Restricted.h" />
     <ClInclude Include="src\node\Restricted.hpp" />
@@ -197,16 +204,8 @@
     <ClInclude Include="src\generate\BothJumps.hpp" />
     <ClInclude Include="src\generate\BothMoves.h" />
     <ClInclude Include="src\generate\BothMoves.hpp" />
-    <ClInclude Include="src\generate\capture\Frisian.hpp" />
-    <ClInclude Include="src\generate\capture\International.hpp" />
-    <ClInclude Include="src\generate\capture\Italian.hpp" />
-    <ClInclude Include="src\generate\capture\Killer.hpp" />
-    <ClInclude Include="src\generate\capture\Russian.hpp" />
-    <ClInclude Include="src\generate\capture\Spanish.hpp" />
     <ClInclude Include="src\generate\capture\State.h" />
     <ClInclude Include="src\generate\capture\State.hpp" />
-    <ClInclude Include="src\generate\capture\Templates.h" />
-    <ClInclude Include="src\generate\capture\Templates.hpp" />
     <ClInclude Include="src\generate\capture\Value.h" />
     <ClInclude Include="src\generate\Driver.h" />
     <ClInclude Include="src\generate\Driver.hpp" />
@@ -292,6 +291,12 @@
     <ClInclude Include="src\utils\VectorArray.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\generate\capture\Frisian.cpp" />
+    <ClCompile Include="src\generate\capture\International.cpp" />
+    <ClCompile Include="src\generate\capture\Italian.cpp" />
+    <ClCompile Include="src\generate\capture\Killer.cpp" />
+    <ClCompile Include="src\generate\capture\Russian.cpp" />
+    <ClCompile Include="src\generate\capture\Spanish.cpp" />
     <ClCompile Include="src\node\Move.cpp" />
     <ClCompile Include="src\node\Restricted.cpp" />
     <ClCompile Include="src\evaluate\Weight.cpp" />
