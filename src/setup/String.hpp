@@ -1,7 +1,5 @@
 #include <cctype>
 #include "Diagram.h"
-#include "../protocol/pdn/PDN.h"
-#include "../protocol/dxp/DXP.h"
 
 namespace dctl {
 namespace setup {
@@ -27,7 +25,7 @@ char write_color(bool color)
 }
 
 template<typename Board, typename Setup>
-struct read<Board, protocol::pdn::version, Setup>
+struct read<Board, pdn::protocol, Setup>
 {
         Position<Board> operator()(const std::string& s) const
         {      
@@ -79,7 +77,7 @@ struct read<Board, protocol::pdn::version, Setup>
 };
 
 template<typename Setup>
-struct write<protocol::pdn::version, Setup>
+struct write<pdn::protocol, Setup>
 {
         template<typename Board>
         std::string operator()(const Position<Board>& p) const
@@ -109,7 +107,7 @@ struct write<protocol::pdn::version, Setup>
 };
 
 template<typename Board, typename Setup>
-struct read<Board, protocol::dxp::version, Setup>
+struct read<Board, dxp::protocol, Setup>
 {
         Position<Board> operator()(const std::string& s) const
         {
@@ -148,7 +146,7 @@ struct read<Board, protocol::dxp::version, Setup>
 };
 
 template<typename Setup>
-struct write<protocol::dxp::version, Setup>
+struct write<dxp::protocol, Setup>
 {
         template<typename Board>
         std::string operator()(const Position<Board>& p) const

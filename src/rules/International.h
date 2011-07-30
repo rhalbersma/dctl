@@ -1,5 +1,4 @@
 #pragma once
-#include "Rules.h"
 
 namespace dctl {
 namespace rules {
@@ -13,10 +12,8 @@ typedef International Polish;           // 10x10 board
 typedef International Canadian;         // 12x12 board
 
 // capture precedence
+template<typename> struct is_majority_precedence;
 template<> struct is_majority_precedence<International> { enum { value = true  }; };
 
 }       // namespace rules
 }       // namespace dctl
-
-// include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../generate/capture/International.h"

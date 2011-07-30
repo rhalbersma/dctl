@@ -1,10 +1,9 @@
 #pragma once
+#include "Types.h"
+#include "Variants.h"
 
 namespace dctl {
 namespace notation {
-
-struct numeric {};      // numeric
-struct algebraic {};    // algebraic
 
 template<typename> struct Format        { typedef numeric type; };
 

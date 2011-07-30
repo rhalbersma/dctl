@@ -1,5 +1,5 @@
 #pragma once
-#include "Rules.h"
+#include "Enum.h"
 
 namespace dctl {
 namespace rules {
@@ -8,11 +8,8 @@ namespace rules {
 struct Russian {};
 
 // move mechanics
+template<typename> struct promotion_condition;
 template<> struct promotion_condition<Russian>  { enum { value = PROMOTE_EP }; };
 
 }       // namespace rules
 }       // namespace dctl
-
-// include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../generate/capture/Russian.h"
-#include "../notation/Russian.hpp"

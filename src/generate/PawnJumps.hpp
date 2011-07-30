@@ -1,6 +1,6 @@
 #include <cassert>
 #include "KingJumps.h"
-#include "Capture/State.h"
+#include "../capture/State.h"
 #include "../node/Position.h"
 #include "../board/Angle.h"
 #include "../board/Board.h"

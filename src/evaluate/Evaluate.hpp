@@ -5,7 +5,7 @@
 #include "../generate/Successors.h"
 #include "../node/Position.h"
 #include "../node/Side.h"
-#include "../rules/Variants.h"
+#include "../rules/Rules.h"
 
 namespace dctl {
 

@@ -28,24 +28,6 @@
     <Filter Include="Source Files\utils">
       <UniqueIdentifier>{5f168311-fc6d-452b-ad4e-2bec86d81636}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\protocol">
-      <UniqueIdentifier>{0a2619f3-9da7-4acc-a423-1b1dd70c2760}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\protocol">
-      <UniqueIdentifier>{30c69d78-a17f-48b7-9456-5ecd889a8c5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\protocol\checkerboard">
-      <UniqueIdentifier>{3a8b08ef-fb3b-4f91-9519-0bba05170bc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\protocol\pdn">
-      <UniqueIdentifier>{4d128ee8-be72-482e-906f-b825b53bd96e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\protocol\checkerboard">
-      <UniqueIdentifier>{92420d88-c5e2-4ec9-865b-444bf8ba6477}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\protocol\pdn">
-      <UniqueIdentifier>{fb9e6f14-ee87-4547-a9ac-3e4d892722e6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\evaluate">
       <UniqueIdentifier>{752cc172-a8a2-4e78-807c-71e8cfb43e8b}</UniqueIdentifier>
     </Filter>
@@ -54,9 +36,6 @@
     </Filter>
     <Filter Include="Header Files\generate">
       <UniqueIdentifier>{0474e3f4-afb4-4dd1-8554-2a1819948d56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\generate\capture">
-      <UniqueIdentifier>{60e7e53c-3491-41d0-b210-b3402a12fb59}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\hash">
       <UniqueIdentifier>{bcfec1e3-7753-4ca3-829c-7ed30566ed03}</UniqueIdentifier>
@@ -81,9 +60,6 @@
     </Filter>
     <Filter Include="Source Files\generate">
       <UniqueIdentifier>{2856444e-4021-4335-8d96-cbec057a2cfb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\generate\capture">
-      <UniqueIdentifier>{9c0e0474-8175-411e-9584-446a0c2c90dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\hash">
       <UniqueIdentifier>{de78291a-5669-4a63-8848-e155042d8fda}</UniqueIdentifier>
@@ -112,11 +88,29 @@
     <Filter Include="Header Files\setup">
       <UniqueIdentifier>{c9dee8d4-b1da-4ba6-9ba3-f2b681ade9c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\protocol\dxp">
+    <Filter Include="Source Files\dxp">
+      <UniqueIdentifier>{a7ba68ee-d99d-406a-aa4d-6d247f937916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dxp">
       <UniqueIdentifier>{1f51466a-5cb9-4151-a65b-518885188d0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\protocol\dxp">
-      <UniqueIdentifier>{a7ba68ee-d99d-406a-aa4d-6d247f937916}</UniqueIdentifier>
+    <Filter Include="Source Files\pdn">
+      <UniqueIdentifier>{4d128ee8-be72-482e-906f-b825b53bd96e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\checkerboard">
+      <UniqueIdentifier>{3a8b08ef-fb3b-4f91-9519-0bba05170bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\checkerboard">
+      <UniqueIdentifier>{92420d88-c5e2-4ec9-865b-444bf8ba6477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\pdn">
+      <UniqueIdentifier>{fb9e6f14-ee87-4547-a9ac-3e4d892722e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\capture">
+      <UniqueIdentifier>{9c0e0474-8175-411e-9584-446a0c2c90dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\capture">
+      <UniqueIdentifier>{60e7e53c-3491-41d0-b210-b3402a12fb59}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -345,9 +339,6 @@
     <ClInclude Include="src\generate\PawnMoves.hpp">
       <Filter>Source Files\generate</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\State.hpp">
-      <Filter>Source Files\generate\capture</Filter>
-    </ClInclude>
     <ClInclude Include="src\node\Move.h">
       <Filter>Header Files\node</Filter>
     </ClInclude>
@@ -474,23 +465,8 @@
     <ClInclude Include="src\notation\String.hpp">
       <Filter>Source Files\notation</Filter>
     </ClInclude>
-    <ClInclude Include="src\notation\Czech.hpp">
-      <Filter>Source Files\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\notation\Russian.hpp">
-      <Filter>Source Files\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\notation\Thai.hpp">
-      <Filter>Source Files\notation</Filter>
-    </ClInclude>
     <ClInclude Include="src\setup\Setup.h">
       <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="src\setup\Setup.hpp">
-      <Filter>Source Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="src\setup\PDN.hpp">
-      <Filter>Source Files\setup</Filter>
     </ClInclude>
     <ClInclude Include="src\setup\String.h">
       <Filter>Header Files\setup</Filter>
@@ -498,98 +474,128 @@
     <ClInclude Include="src\setup\String.hpp">
       <Filter>Source Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\pdn\Version.h">
-      <Filter>Header Files\protocol\pdn</Filter>
-    </ClInclude>
-    <ClInclude Include="src\protocol\pdn\PDN.h">
-      <Filter>Header Files\protocol\pdn</Filter>
-    </ClInclude>
     <ClInclude Include="src\setup\Diagram.h">
       <Filter>Header Files\setup</Filter>
     </ClInclude>
     <ClInclude Include="src\setup\Diagram.hpp">
       <Filter>Source Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Version.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\rules\Enum.h">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\BackAcknowledge.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\notation\Types.h">
+      <Filter>Header Files\notation</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\BackRequest.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\notation\Variants.h">
+      <Filter>Header Files\notation</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Chat.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\notation\Thai.h">
+      <Filter>Header Files\notation</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Connection.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\notation\Russian.h">
+      <Filter>Header Files\notation</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\GameAcknowledge.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\notation\Czech.h">
+      <Filter>Header Files\notation</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\GameEnd.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\BackAcknowledge.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\GameRequest.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\BackRequest.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\MessageInterface.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\Chat.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Move.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\Connection.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Parser.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\GameAcknowledge.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Scanner.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\GameEnd.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Traits.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\GameRequest.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\DXP.h">
-      <Filter>Header Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\MessageInterface.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Scanner.hpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\Move.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Connection.hpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\Parser.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\protocol\dxp\Parser.hpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClInclude Include="src\dxp\Scanner.h">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
-    <ClInclude Include="src\setup\DXP.hpp">
+    <ClInclude Include="src\dxp\Scanner.hpp">
+      <Filter>Source Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dxp\Connection.hpp">
+      <Filter>Source Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dxp\Parser.hpp">
+      <Filter>Source Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pdn\PDN.h">
+      <Filter>Header Files\pdn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dxp\DXP.h">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dxp\Protocol.h">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\DXP.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\PDN.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Token.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Token.hpp">
       <Filter>Source Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\Value.hpp">
-      <Filter>Source Files\generate\capture</Filter>
+    <ClInclude Include="src\setup\Protocols.h">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\Value.h">
-      <Filter>Header Files\generate\capture</Filter>
+    <ClInclude Include="src\capture\Variants.h">
+      <Filter>Header Files\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\State.h">
-      <Filter>Header Files\generate\capture</Filter>
+    <ClInclude Include="src\capture\Frisian.h">
+      <Filter>Header Files\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\Frisian.h">
-      <Filter>Header Files\generate\capture</Filter>
+    <ClInclude Include="src\capture\International.h">
+      <Filter>Header Files\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\International.h">
-      <Filter>Header Files\generate\capture</Filter>
+    <ClInclude Include="src\capture\Italian.h">
+      <Filter>Header Files\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\Italian.h">
-      <Filter>Header Files\generate\capture</Filter>
+    <ClInclude Include="src\capture\Killer.h">
+      <Filter>Header Files\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\Killer.h">
-      <Filter>Header Files\generate\capture</Filter>
+    <ClInclude Include="src\capture\Russian.h">
+      <Filter>Header Files\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\Russian.h">
-      <Filter>Header Files\generate\capture</Filter>
+    <ClInclude Include="src\capture\Spanish.h">
+      <Filter>Header Files\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\generate\capture\Spanish.h">
-      <Filter>Header Files\generate\capture</Filter>
+    <ClInclude Include="src\capture\State.h">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\capture\Value.h">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\capture\Value.hpp">
+      <Filter>Source Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\capture\State.hpp">
+      <Filter>Source Files\capture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -647,47 +653,47 @@
     <ClCompile Include="src\node\Move.cpp">
       <Filter>Source Files\node</Filter>
     </ClCompile>
-    <ClCompile Include="src\protocol\dxp\BackAcknowledge.cpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClCompile Include="src\dxp\BackAcknowledge.cpp">
+      <Filter>Source Files\dxp</Filter>
     </ClCompile>
-    <ClCompile Include="src\protocol\dxp\BackRequest.cpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClCompile Include="src\dxp\BackRequest.cpp">
+      <Filter>Source Files\dxp</Filter>
     </ClCompile>
-    <ClCompile Include="src\protocol\dxp\Chat.cpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClCompile Include="src\dxp\Chat.cpp">
+      <Filter>Source Files\dxp</Filter>
     </ClCompile>
-    <ClCompile Include="src\protocol\dxp\GameAcknowledge.cpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClCompile Include="src\dxp\GameAcknowledge.cpp">
+      <Filter>Source Files\dxp</Filter>
     </ClCompile>
-    <ClCompile Include="src\protocol\dxp\GameEnd.cpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClCompile Include="src\dxp\GameEnd.cpp">
+      <Filter>Source Files\dxp</Filter>
     </ClCompile>
-    <ClCompile Include="src\protocol\dxp\GameRequest.cpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClCompile Include="src\dxp\GameRequest.cpp">
+      <Filter>Source Files\dxp</Filter>
     </ClCompile>
-    <ClCompile Include="src\protocol\dxp\MessageInterface.cpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClCompile Include="src\dxp\MessageInterface.cpp">
+      <Filter>Source Files\dxp</Filter>
     </ClCompile>
-    <ClCompile Include="src\protocol\dxp\Move.cpp">
-      <Filter>Source Files\protocol\dxp</Filter>
+    <ClCompile Include="src\dxp\Move.cpp">
+      <Filter>Source Files\dxp</Filter>
     </ClCompile>
-    <ClCompile Include="src\generate\capture\Spanish.cpp">
-      <Filter>Source Files\generate\capture</Filter>
+    <ClCompile Include="src\capture\Frisian.cpp">
+      <Filter>Source Files\capture</Filter>
     </ClCompile>
-    <ClCompile Include="src\generate\capture\Frisian.cpp">
-      <Filter>Source Files\generate\capture</Filter>
+    <ClCompile Include="src\capture\International.cpp">
+      <Filter>Source Files\capture</Filter>
     </ClCompile>
-    <ClCompile Include="src\generate\capture\International.cpp">
-      <Filter>Source Files\generate\capture</Filter>
+    <ClCompile Include="src\capture\Italian.cpp">
+      <Filter>Source Files\capture</Filter>
     </ClCompile>
-    <ClCompile Include="src\generate\capture\Italian.cpp">
-      <Filter>Source Files\generate\capture</Filter>
+    <ClCompile Include="src\capture\Killer.cpp">
+      <Filter>Source Files\capture</Filter>
     </ClCompile>
-    <ClCompile Include="src\generate\capture\Killer.cpp">
-      <Filter>Source Files\generate\capture</Filter>
+    <ClCompile Include="src\capture\Russian.cpp">
+      <Filter>Source Files\capture</Filter>
     </ClCompile>
-    <ClCompile Include="src\generate\capture\Russian.cpp">
-      <Filter>Source Files\generate\capture</Filter>
+    <ClCompile Include="src\capture\Spanish.cpp">
+      <Filter>Source Files\capture</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
