@@ -6,9 +6,10 @@
 #include "../utils/TemplateTricks.h"
 
 namespace dctl {
-namespace generate {
 
 namespace capture { template<typename, typename> class State; }
+
+namespace generate {
 
 template<bool Color, typename Rules, typename Board>
 class Driver<Color, Material::BOTH, Move::JUMPS, Rules, Board>

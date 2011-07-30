@@ -1,4 +1,6 @@
 #pragma once
+#include "Enum.h"
+#include "Variants.h"
 
 namespace dctl {
 namespace rules {
@@ -8,7 +10,6 @@ namespace rules {
 //+----------------------------------------------------------------------------+
 
 // king range
-enum { RANGE_1, RANGE_N };
 template<typename> struct is_long_king_range                    { enum { value = RANGE_N }; };
 
 // restricted consecutive moves with the same king
@@ -18,15 +19,11 @@ template<typename> struct is_restricted_same_king_moves         { enum { value =
 template<typename> struct max_same_king_moves                   { enum { value = 6 }; };
 
 // promotion condition: on the back row or en-passant
-enum { PROMOTE_BR, PROMOTE_EP };
 template<typename> struct promotion_condition                   { enum { value = PROMOTE_BR }; };
 
 //+----------------------------------------------------------------------------+
 //|      Capture mechanics                                                     |
 //+----------------------------------------------------------------------------+
-
-// initial capture directions
-enum { DIRS_UP, DIRS_DOWN, DIRS_DIAG, DIRS_ORTH, DIRS_ALL };
 
 // king capture directions
 template<typename> struct king_capture_directions               { enum { value = DIRS_DIAG }; };
@@ -36,9 +33,6 @@ template<typename> struct man_capture_directions                { enum { value =
 
 // man backwards capture
 template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != DIRS_UP }; };
-
-// intermediate capture directions
-enum { SCAN_UP, SCAN_DOWN, SCAN_SIDE, SCAN_REST, SCAN_ALL };
 
 // relation between initial and intermediate capture directions
 template<size_t> struct scan_directions;
@@ -58,11 +52,9 @@ template<typename Rules> struct man_scan_directions             { enum { value =
 template<typename> struct is_capture_direction_reversal         { enum { value = false }; };
 
 // king halt after final capture
-enum { HALT_1, HALT_N, HALT_K };
 template<typename Rules> struct king_capture_halt               { enum { value = is_long_king_range<Rules>::value }; };
 
 // capture removal: one by one or all at once
-enum { REMOVE_1, REMOVE_N };
 template<typename> struct capture_removal                       { enum { value = REMOVE_N }; };
 
 // men can capture kings

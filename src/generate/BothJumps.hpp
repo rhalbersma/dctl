@@ -1,7 +1,7 @@
 #include <cassert>
 #include "KingJumps.h"
 #include "PawnJumps.h"
-#include "Capture/State.h"
+#include "../capture/State.h"
 #include "../rules/Rules.h"
 
 namespace dctl {

@@ -7,11 +7,11 @@
 
 namespace dctl {
 
+namespace capture { template<typename, typename> class State; }
+
 template<typename> class Position;
 
 namespace generate {
-
-namespace capture { template<typename, typename> class State; }
 
 template<bool Color, typename Rules, typename Board> 
 class Driver<Color, Material::KING, Move::JUMPS, Rules, Board>

@@ -10,7 +10,6 @@
 #include "../setup/Diagram.h"
 #include "../setup/String.h"
 #include "../notation/String.h"
-#include "../protocol/pdn/PDN.h"
 
 namespace dctl {
 namespace search {
@@ -26,8 +25,8 @@ template<typename Board>
 void Root::announce(const Position<Board>& p, int depth)
 {
         std::cout << std::endl;
-        std::cout << setup::diagram<protocol::pdn::version>()(p) << std::endl;
-        std::cout << setup::write<protocol::pdn::version>()(p) << std::endl << std::endl;
+        std::cout << setup::diagram<pdn::protocol>()(p) << std::endl;
+        std::cout << setup::write<pdn::protocol>()(p) << std::endl << std::endl;
         std::cout << "Searching to nominal depth=" << depth << std::endl;
         std::cout << std::endl;
 }

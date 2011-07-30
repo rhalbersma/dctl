@@ -1,5 +1,5 @@
 #pragma once
-#include "Rules.h"
+#include "Enum.h"
 
 namespace dctl {
 namespace rules {
@@ -8,13 +8,12 @@ namespace rules {
 struct Killer {};
 
 // capture mechanics
+template<typename> struct king_capture_halt;
 template<> struct king_capture_halt<Killer>             { enum { value = HALT_K }; };
 
 // capture precedence
+template<typename> struct is_majority_precedence;
 template<> struct is_majority_precedence<Killer>        { enum { value = true   }; };
 
 }       // namespace rules
 }       // namespace dctl
-
-// include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../generate/capture/Killer.h"
