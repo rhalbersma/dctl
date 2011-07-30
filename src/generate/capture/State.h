@@ -26,14 +26,12 @@ public:
         template<size_t> BitBoard targets() const;
         template<size_t> BitBoard path() const;
         BitBoard path() const;
+        const Value<Rules>& current() const;
+        const Value<Rules>& best() const;
 
         // unary predicates
         template<bool> bool is_promotion(BitBoard) const;
         bool is_promotion() const;
-
-        // binary predicates
-        bool current_greater_equal_best() const;
-        bool current_not_equal_to_best() const;
 
         // modifiers before a capture
         void toggle_king_targets();     // men that cannot capture kings
@@ -45,7 +43,7 @@ public:
         void finish(BitBoard);
         void make(BitBoard);
         void undo(BitBoard);
-        void improve_best(Stack&);
+        Value<Rules>& best();
 
         // modifiers after a capture
         template<bool> void add_man_capture(BitBoard, Stack&);
@@ -87,8 +85,8 @@ private:
 	static const bool TOGGLE = true;
 
         // representation
-        Value current_;
-        Value best_;
+        Value<Rules> current_;
+        Value<Rules> best_;
         BitBoard initial_targets_;      // targets at the start of a capture
         BitBoard remaining_targets_;    // targets at the end of a capture
         BitBoard not_occupied_;

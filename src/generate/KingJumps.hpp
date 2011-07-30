@@ -110,9 +110,14 @@ template<bool Color, typename Rules, typename Board> template<size_t Index>
 void Driver<Color, Material::KING, Move::JUMPS, Rules, Board>::generate_next(BitBoard jumper, capture::State<Rules, Board>& capture, Stack& move_stack)
 {
         PushAssign<Board, Index>()(jumper);
-        if (!scan_next<Index>(jumper, capture, move_stack) && capture.current_greater_equal_best()) {
-		if (capture.current_not_equal_to_best())
-			capture.improve_best(move_stack);
+        if (
+                !scan_next<Index>(jumper, capture, move_stack) && 
+                (capture.current() >= capture.best())
+        ) {
+		if (capture.current() != capture.best()) {
+                        capture.best() = capture.current();
+                        move_stack.clear();                
+                }
 		capture.template add_king_capture<Color, Index>(jumper, move_stack);
         }
 }

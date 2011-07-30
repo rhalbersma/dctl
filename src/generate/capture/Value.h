@@ -5,15 +5,27 @@ namespace dctl {
 namespace generate {
 namespace capture {
 
+template<typename Rules>
 struct Value
 {
-        BitBoard piece_order;
-        PieceCount num_pieces;
-        PieceCount num_kings;
-        bool with_king;
-        bool promotion;
+        // views
+        bool is_large(BitBoard) const;
+
+        // modifiers
+        void increment(BitBoard, BitBoard) {};
+        void decrement(BitBoard, BitBoard) {};
 };
+
+template<typename Rules> bool operator<(const Value<Rules>&, const Value<Rules>&);
+template<typename Rules> bool operator>(const Value<Rules>&, const Value<Rules>&);
+template<typename Rules> bool operator>=(const Value<Rules>&, const Value<Rules>&);
+template<typename Rules> bool operator<=(const Value<Rules>&, const Value<Rules>&);
+template<typename Rules> bool operator==(const Value<Rules>&, const Value<Rules>&);
+template<typename Rules> bool operator!=(const Value<Rules>&, const Value<Rules>&);
 
 }       // namespace capture
 }       // namespace generate
 }       // namespace dctl
+
+// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+#include "Value.hpp"

@@ -22,4 +22,4 @@ template<> struct is_relative_king_precedence<Italian>  { enum { value = true   
 }       // namespace dctl
 
 // include template definitions inside header because "export" keyword is not supported by most C++ compilers
-#include "../generate/capture/Italian.hpp"
+#include "../generate/capture/Italian.h"
