@@ -1,14 +1,14 @@
 #include <string>
 #include "gtest/gtest.h"
-#include "../../../../Library/src/protocol/damexchange/Parser.h"
-#include "../../../../Library/src/protocol/damexchange/Version.h"
+#include "../../../../Library/src/protocol/dxp/Parser.h"
+#include "../../../../Library/src/protocol/dxp/Version.h"
 
 namespace dctl {
 namespace protocol {
-namespace damexchange {
+namespace dxp {
 
-// Examples of DamExchange messages (Layer 2 Protocol)
-// http://www.mesander.nl/damexchange/edxplg2.htm
+// Examples of DXP messages (Layer 2 Protocol)
+// http://www.mesander.nl/dxp/edxplg2.htm
 TEST(Parser, MesanderExamples)
 {
         const std::string message[] = 
@@ -29,6 +29,6 @@ TEST(Parser, MesanderExamples)
         }
 }
 
-}       // namespace damexchange
+}       // namespace dxp
 }       // namespace protocol
 }       // namespace dctl

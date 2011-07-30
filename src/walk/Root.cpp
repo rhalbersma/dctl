@@ -44,7 +44,19 @@ protected:
 // Objects declared here can be used by all tests in the test case for Foo.
 };
 
-#if INTEGRATION_TEST == 1
+#if INTEGRATION_TEST == 0
+
+// The alternative game rules thread on the FMJD forum
+// http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+TEST_F(Perft, Frisian)
+{
+        std::cout << setup::diagram<board::Frisian, setup::squares>()() << std::endl;
+        std::cout << setup::diagram<board::Frisian, setup::bits>()() << std::endl;
+
+        auto f10 = Position<board::Frisian>::initial();
+        Root::clear_hash();
+        Root::perft<rules::Frisian>(f10, 11);
+}
 
 // The original perft thread on the FMJD forum 
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
@@ -64,32 +76,6 @@ TEST_F(Perft, International)
         auto Woldouby(setup::read<board::International, protocol::pdn::version>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
         Root::clear_hash();
         Root::perft<rules::International>(Woldouby, 15);
-}
-
-// The rectangular board thread on the FMJD forum
-// http://laatste.info/bb3/viewtopic.php?f=53&t=3014
-TEST_F(Perft, Rectangular)
-{
-        std::cout << setup::diagram<board::Spantsireti, setup::squares>()() << std::endl;
-        std::cout << setup::diagram<board::Spantsireti, setup::bits>()() << std::endl;
-
-        auto iS = Position<board::Spantsireti>::initial();
-        Root::clear_hash();
-        Root::perft<rules::International>(iS, 9);
-
-        std::cout << setup::diagram<board::Ktar11, setup::squares>()() << std::endl;
-        std::cout << setup::diagram<board::Ktar11, setup::bits>()() << std::endl;
-        
-        auto iK11 = Position<board::Ktar11>::initial();
-        Root::clear_hash();
-        Root::perft<rules::International>(iK11, 9);
-                
-        std::cout << setup::diagram<board::Ktar12, setup::squares>()() << std::endl;
-        std::cout << setup::diagram<board::Ktar12, setup::bits>()() << std::endl;
-        
-        auto iK12 = Position<board::Ktar12>::initial();
-        Root::clear_hash();
-        Root::perft<rules::International>(iK12, 9);
 }
 
 // The alternative game rules thread on the FMJD forum
@@ -128,18 +114,44 @@ TEST_F(Perft, ChessVariants)
         Root::perft<rules::Italian>(r8, 13);
 
         // Addional Italian test positions from email conversation with Ed Gilbert
-        auto ITA_Ed_Gilbert_2 = setup::read<board::Roman, protocol::pdn::version>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
-        auto ITA_Ed_Gilbert_3 = setup::read<board::Roman, protocol::pdn::version>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
+        auto ITA_Ed_Gilbert_1 = setup::read<board::Roman, protocol::pdn::version>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
+        auto ITA_Ed_Gilbert_2 = setup::read<board::Roman, protocol::pdn::version>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
         Root::clear_hash();
-        Root::perft<rules::Italian>(ITA_Ed_Gilbert_2, 16);
+        Root::perft<rules::Italian>(ITA_Ed_Gilbert_1, 16);
         Root::clear_hash();
-        Root::perft<rules::Italian>(ITA_Ed_Gilbert_3, 12);
+        Root::perft<rules::Italian>(ITA_Ed_Gilbert_2, 12);
         
         auto t8 = Position<board::Thai>::initial();
         Root::clear_hash();
         Root::perft<rules::Thai>(t8, 11);      // Thai initial position with 2 rows of men
         Root::clear_hash();
         Root::perft<rules::Thai>(i8, 13);      // Usual initial position with 3 rows of men
+}
+
+// The rectangular board thread on the FMJD forum
+// http://laatste.info/bb3/viewtopic.php?f=53&t=3014
+TEST_F(Perft, Rectangular)
+{
+        std::cout << setup::diagram<board::Spantsireti, setup::squares>()() << std::endl;
+        std::cout << setup::diagram<board::Spantsireti, setup::bits>()() << std::endl;
+
+        auto iS = Position<board::Spantsireti>::initial();
+        Root::clear_hash();
+        Root::perft<rules::International>(iS, 9);
+
+        std::cout << setup::diagram<board::Ktar11, setup::squares>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar11, setup::bits>()() << std::endl;
+        
+        auto iK11 = Position<board::Ktar11>::initial();
+        Root::clear_hash();
+        Root::perft<rules::International>(iK11, 9);
+                
+        std::cout << setup::diagram<board::Ktar12, setup::squares>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar12, setup::bits>()() << std::endl;
+        
+        auto iK12 = Position<board::Ktar12>::initial();
+        Root::clear_hash();
+        Root::perft<rules::International>(iK12, 9);
 }
 
 #endif
