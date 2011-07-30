@@ -136,6 +136,7 @@
     <ClCompile Include="src\protocol\damexchange\Parser.cpp" />
     <ClCompile Include="src\search\Root.cpp" />
     <ClCompile Include="src\search\Score.cpp" />
+    <ClCompile Include="src\setup\Setup.cpp" />
     <ClCompile Include="src\test_main.cpp" />
     <ClCompile Include="src\utils\Bit.cpp" />
     <ClCompile Include="src\walk\Root.cpp" />

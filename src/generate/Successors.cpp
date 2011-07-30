@@ -26,7 +26,7 @@ TEST(MoveGeneration, ItalianBoard)
         std::cout << layout::write<protocol::pdn::version>()(ITA_initial) << std::endl;
 }
 */
-TEST(MoveGeneration, Italian)
+TEST(Successors, Italian)
 {
         // Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
