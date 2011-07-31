@@ -22,9 +22,11 @@ public:
         const Position<Board>* parent() const;
         HashIndex hash_index() const;
         const Material& material() const;
-        const Restricted& restricted () const;
+        const Restricted& restricted() const;
+        const KingMoves& restricted(bool) const;
         PlyCount reversible_moves() const;
-        bool to_move() const;                                   // side to move
+        bool active_color() const;                              // side to move
+        bool passive_color() const;                             // opposite side to move
 
         const Material& key() const;
 
@@ -51,7 +53,9 @@ private:
 
         void make_reversible(const Move&);
         template<typename> void make_restricted(const Move&);
-        void make_material(const Move&);
+        template<typename> void make_active_king_moves(const Move&);
+        template<typename> void make_passive_king_moves(const Move&);
+        void make_incremental(const Move&);
                 
         // post-conditions for the constructors and modifiers
         bool material_invariant() const;
@@ -71,12 +75,10 @@ template<typename Board> BitBoard not_occupied(const Position<Board>&);         
 template<typename Board> BitBoard active_men(const Position<Board>&);           // men for the side to move
 template<typename Board> BitBoard active_kings(const Position<Board>&);         // kings for the side to move
 template<typename Board> BitBoard active_pieces(const Position<Board>&);        // pieces for the side to move
-template<typename Board> bool active_color(const Position<Board>&);             // side to move
 
 template<typename Board> BitBoard passive_men(const Position<Board>&);          // men for the opposite side
 template<typename Board> BitBoard passive_kings(const Position<Board>&);        // kings for the opposite side
 template<typename Board> BitBoard passive_pieces(const Position<Board>&);       // pieces for the opposite side
-template<typename Board> bool passive_color(const Position<Board>&);            // opposite side to move
 
 // tag dispatching based on restrictions on consecutive moves with the same king
 template<typename, typename Board> BitBoard unrestricted_kings(const Position<Board>&, bool);
@@ -84,6 +86,9 @@ template<typename, typename Board> BitBoard unrestricted_kings(const Position<Bo
 template<typename, typename Board> BitBoard unrestricted_kings(const Position<Board>&, bool, Int2Type<true >);
 
 template<typename Board> const Position<Board>* grand_parent(const Position<Board>&);
+
+template<typename Board> const KingMoves& active_restricted(const Position<Board>&);
+template<typename Board> const KingMoves& passive_restricted(const Position<Board>&);
 
 template<typename, typename Board> bool is_draw(const Position<Board>&);
 template<typename Board> bool is_repetition_draw(const Position<Board>&);       

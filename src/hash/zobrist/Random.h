@@ -15,8 +15,8 @@ struct Random
         static const Index PIECES[2][64];
         static const Index KINGS[64];
         static const Index SIDE;
-        static const Index SAME_KING[2][64];
-        static const Index SAME_KING_MOVES[2][8];
+        static const Index RESTRICTED_KING[2][64];
+        static const Index RESTRICTED_MOVES[2][8];
 };
 
 }       // namespace zobrist

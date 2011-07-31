@@ -29,6 +29,9 @@ public:
         template<bool> 
         void init(BitBoard, BitBoard, BitBoard);        // initialize with a set of bitboards
 
+        template<bool>
+        static Material create(BitBoard, BitBoard, BitBoard);
+
         Material& operator^=(const Material&);          // xor-assign the set bits of another piece set
 
 private:

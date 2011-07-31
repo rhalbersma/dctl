@@ -18,25 +18,25 @@ BitBoard dest_sq(const Position<Board>& p, const Move& m)
 template<typename Board>
 BitBoard moving_pieces(const Position<Board>& p, const Move& m)
 {
-        return m.pieces(active_color(p));
+        return m.pieces(p.active_color());
 }
 
 template<typename Board>
 BitBoard moving_kings(const Position<Board>& p, const Move& m)
 {
-        return m.kings(active_color(p));
+        return m.kings(p.active_color());
 }
 
 template<typename Board>
 BitBoard captured_pieces(const Position<Board>& p, const Move& m)
 {
-        return m.pieces(passive_color(p));
+        return m.pieces(p.passive_color());
 }
 
 template<typename Board>
 BitBoard captured_kings(const Position<Board>& p, const Move& m)
 {
-        return m.kings(passive_color(p));
+        return m.kings(p.passive_color());
 }
 
 template<typename Board>

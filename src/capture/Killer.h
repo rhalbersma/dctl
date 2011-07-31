@@ -30,7 +30,7 @@ public:
 
 private:
         // representation
-        PieceCount num_pieces;
+        PieceCount num_pieces_;
 };
         
 }       // namespace capture

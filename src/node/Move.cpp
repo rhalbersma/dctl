@@ -2,6 +2,12 @@
 
 namespace dctl {
 
+Move::Move(const Material& m)
+:
+        material_(m)
+{
+}
+
 const Material& Move::material() const
 {
         return material_;

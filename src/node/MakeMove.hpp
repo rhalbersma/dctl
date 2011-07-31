@@ -23,7 +23,7 @@ void Position<Board>::make(const Move& m)
         assert(is_pseudo_legal<Rules>(*this, m));
 
         make_irreversible<Rules>(m);
-        make_material(m);
+        make_incremental(m);
 
         assert(material_invariant());
         assert(hash_index_invariant());
@@ -63,38 +63,47 @@ void Position<Board>::make_reversible(const Move& m)
 template<typename Board> template<typename Rules>
 void Position<Board>::make_restricted(const Move& m)
 {
+        make_active_king_moves<Rules>(m);
+        make_passive_king_moves<Rules>(m);                
+}
+
+template<typename Board> template<typename Rules>
+void Position<Board>::make_active_king_moves(const Move& m)
+{
+        KingMoves& restricted = restricted_[active_color()];
+
         if (active_kings(*this) && active_men(*this)) {
-                hash_index_ ^= hash::zobrist::Init<Restricted, HashIndex>()(restricted_, to_move());
-
-                if (is_reversible(*this, m) && !is_max<Rules>(restricted_.moves(to_move()))) {
-                        if (restricted_.king(to_move()) & from_sq(*this, m))
-                                restricted_.increment(to_move(), dest_sq(*this, m));               
+                hash_index_ ^= hash::zobrist::Init<KingMoves, HashIndex>()(restricted, active_color());
+                if (is_reversible(*this, m) && !is_max<Rules>(restricted.moves())) {
+                        if (restricted.king() & from_sq(*this, m))
+                                restricted.increment(dest_sq(*this, m));               
                         else
-                                restricted_.init(to_move(), dest_sq(*this, m));
-                } else {
-                        restricted_.reset(to_move());
-                }
-
-                hash_index_ ^= hash::zobrist::Init<Restricted, HashIndex>()(restricted_, to_move());
+                                restricted.init(dest_sq(*this, m));
+                        hash_index_ ^= hash::zobrist::Init<KingMoves, HashIndex>()(restricted, active_color());
+                } else
+                        restricted.reset();
         } 
+}
+
+template<typename Board> template<typename Rules>
+void Position<Board>::make_passive_king_moves(const Move& m)
+{
+        KingMoves& restricted = restricted_[passive_color()];
 
         if (
-                restricted_.moves(!to_move()) && is_capture(*this, m) &&
+                restricted.moves() && is_capture(*this, m) &&
                 (
-                        bit::is_within(restricted_.king(!to_move()), captured_pieces(*this, m)) ||
-                        bit::is_within(passive_men(*this)          , captured_pieces(*this, m))
+                        bit::is_within(restricted.king() , captured_pieces(*this, m)) ||
+                        bit::is_within(passive_men(*this), captured_pieces(*this, m))
                 )
         ) {
-                hash_index_ ^= hash::zobrist::Init<Restricted, HashIndex>()(restricted_, !to_move());
-
-                restricted_.reset(!to_move());
-
-                hash_index_ ^= hash::zobrist::Init<Restricted, HashIndex>()(restricted_, !to_move());
+                hash_index_ ^= hash::zobrist::Init<KingMoves, HashIndex>()(restricted, passive_color());
+                restricted.reset();
         }
 }
 
 template<typename Board>
-void Position<Board>::make_material(const Move& m)
+void Position<Board>::make_incremental(const Move& m)
 {
         material_ ^= m.material();
         to_move_ ^= m.to_move();
