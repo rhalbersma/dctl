@@ -3,30 +3,31 @@
 
 namespace dctl {
 
-class Restricted
+class KingMoves
 {
 public:
         // constructors
-        Restricted();
+        KingMoves();
 
         // views
-        BitBoard king(bool) const;
-        PlyCount moves(bool) const;
+        BitBoard king() const;
+        PlyCount moves() const;
 
         // modifiers
-        void reset(bool);
-        void init(bool, BitBoard);
-        void increment(bool, BitBoard);
+        void reset();
+        void init(BitBoard);
+        void increment(BitBoard);
 
 private:
         // implementation
         bool invariant() const;
-        bool invariant(bool) const;
 
         // representation
-        BitBoard king_[2];
-        PlyCount moves_[2];
+        BitBoard king_;
+        PlyCount moves_;
 };
+
+typedef KingMoves Restricted[2];
 
 // predicates
 template<typename> bool is_max(PlyCount);

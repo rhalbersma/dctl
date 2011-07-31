@@ -84,7 +84,7 @@ struct write<pdn::protocol, Setup>
         {
                 std::stringstream sstr;
 	        sstr << Setup::QUOTE;					        // opening quotes
-	        sstr << write_color<Setup>(active_color(p));			// side to move
+	        sstr << write_color<Setup>(p.active_color());			// side to move
 
                 for (auto i = 0; i < 2; ++i) {
 		        auto c = i != 0;
@@ -111,7 +111,7 @@ struct read<Board, dxp::protocol, Setup>
 {
         Position<Board> operator()(const std::string& s) const
         {
-	        assert(s.length() == Board::SIZE + 1);
+	        assert(s.length() == Board::ExternalGrid::SIZE + 1);
 
 	        BitBoard p_pieces[2] = {0, 0};
 	        BitBoard p_kings = 0;
@@ -152,7 +152,7 @@ struct write<dxp::protocol, Setup>
         std::string operator()(const Position<Board>& p) const
         {
 	        std::stringstream sstr;
-	        sstr << write_color<Setup>(active_color(p));		// side to move
+	        sstr << write_color<Setup>(p.active_color());		// side to move
 	        for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
 		        auto b = Board::square2bit(sq);                 // convert square to bit
 		        sstr << bit_content<Setup>(p.material(), b);    // bit content

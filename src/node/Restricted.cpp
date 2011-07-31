@@ -5,62 +5,57 @@
 
 namespace dctl {
 
-Restricted::Restricted()
+KingMoves::KingMoves()
+:
+        king_(0),
+        moves_(0)
 {
-        king_[Side::BLACK] = king_[Side::WHITE] = 0;
-        moves_[Side::BLACK] = moves_[Side::WHITE] = 0;
         assert(invariant());
 }
 
-BitBoard Restricted::king(bool color) const
+BitBoard KingMoves::king() const
 {
-        return king_[color];
+        return king_;
 }
 
-PlyCount Restricted::moves(bool color) const
+PlyCount KingMoves::moves() const
 {
-        return moves_[color];
+        return moves_;
 }
 
-void Restricted::reset(bool color)
+void KingMoves::reset()
 {
-        king_[color] = 0;
-        moves_[color] = 0;
+        king_ = 0;
+        moves_ = 0;
 
-        assert(invariant(color));
+        assert(invariant());
 }
 
-void Restricted::init(bool color, BitBoard dest)
-{
-        assert(bit::is_single(dest));
-
-        king_[color] = dest;
-        moves_[color] = 1;
-
-        assert(invariant(color));
-}
-
-void Restricted::increment(bool color, BitBoard dest)
+void KingMoves::init(BitBoard dest)
 {
         assert(bit::is_single(dest));
 
-        king_[color] = dest;
-        ++moves_[color];
+        king_ = dest;
+        moves_ = 1;
 
-        assert(invariant(color));
+        assert(invariant());
 }
 
-bool Restricted::invariant() const
+void KingMoves::increment(BitBoard dest)
 {
-        return invariant(Side::BLACK) && invariant(Side::WHITE);
+        assert(bit::is_single(dest));
+
+        king_= dest;
+        ++moves_;
+
+        assert(invariant());
 }
 
-bool Restricted::invariant(bool color) const
+bool KingMoves::invariant() const
 {
         return (
-                !bit::is_multiple(king(color)) &&
-                bit::is_exclusive(king(color), king(!color)) &&
-                (king_[color] == 0) == (moves_[color] == 0)
+                !bit::is_multiple(king()) &&
+                (king() == 0) == (moves() == 0)
         );
 }
 

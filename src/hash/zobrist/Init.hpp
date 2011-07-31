@@ -16,8 +16,8 @@ struct Init<Position<Board>, Index>: public std::unary_function<Position<Board>,
         Index operator()(const Position<Board>& p) const
         {
                 return (
-                        Init<Material  , Index>()(p.material())    ^
-                        Init<bool      , Index>()(active_color(p)) ^
+                        Init<Material  , Index>()(p.material())         ^
+                        Init<bool      , Index>()(p.active_color())     ^
                         Init<Restricted, Index>()(p.restricted())
                 );
         }
@@ -64,19 +64,24 @@ struct Init<bool, Index>: public std::unary_function<bool, Index>
 template<typename Index>
 struct Init<Restricted, Index>: public std::unary_function<Restricted, Index>
 {               
-        Index operator()(const Restricted& r) const
+        Index operator()(const Restricted& restricted) const
         {
                 return (
-                        Init<Restricted, Index>()(r, Side::BLACK) ^
-                        Init<Restricted, Index>()(r, Side::WHITE)
+                        Init<KingMoves, Index>()(restricted[Side::BLACK], Side::BLACK) ^
+                        Init<KingMoves, Index>()(restricted[Side::WHITE], Side::WHITE)
                 );
         }
+};
 
-        Index operator()(const Restricted& r, bool color) const
+// partial specialization for ab initio hashing of restricted consecutive same king moves
+template<typename Index>
+struct Init<KingMoves, Index>: public std::binary_function<KingMoves, bool, Index>
+{               
+        Index operator()(const KingMoves& restricted, bool color) const
         {
                 return (
-                        Random<Index>::xor_rand(r.king(color),  Random<Index>::SAME_KING[color]      ) ^
-                        Random<Index>::xor_rand(r.moves(color), Random<Index>::SAME_KING_MOVES[color])
+                        Random<Index>::xor_rand(restricted.king(),  Random<Index>::RESTRICTED_KING[color] ) ^
+                        Random<Index>::xor_rand(restricted.moves(), Random<Index>::RESTRICTED_MOVES[color])
                 );
         }
 };

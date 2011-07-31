@@ -33,9 +33,9 @@ private:
         static const bool TOGGLE = true;
 
         // representation
-        PieceCount num_pieces;
-        PieceCount num_kings;
-        bool with_king;
+        PieceCount num_pieces_;
+        PieceCount num_kings_;
+        bool with_king_;
 };
         
 }       // namespace capture

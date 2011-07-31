@@ -57,6 +57,12 @@ const Restricted& Position<Board>::restricted() const
 }
 
 template<typename Board>
+const KingMoves& Position<Board>::restricted(bool color) const
+{
+        return restricted_[color];
+}
+
+template<typename Board>
 PlyCount Position<Board>::reversible_moves() const
 {
         return reversible_moves_;
@@ -64,9 +70,16 @@ PlyCount Position<Board>::reversible_moves() const
 
 // the side to move
 template<typename Board>
-bool Position<Board>::to_move() const
+bool Position<Board>::active_color() const
 {
         return to_move_;
+}
+
+// the opposite side to move
+template<typename Board>
+bool Position<Board>::passive_color() const
+{
+        return !to_move_;
 }
 
 // logical consistency of the representation
@@ -138,56 +151,42 @@ BitBoard not_occupied(const Position<Board>& p)
 template<typename Board>
 BitBoard active_men(const Position<Board>& p)
 {
-        return p.men(active_color(p));
+        return p.men(p.active_color());
 }
 
 // kings for the side to move
 template<typename Board>
 BitBoard active_kings(const Position<Board>& p)
 {
-        return p.kings(active_color(p));
+        return p.kings(p.active_color());
 }
 
 // pieces for the side to move
 template<typename Board>
 BitBoard active_pieces(const Position<Board>& p)
 {
-        return p.pieces(active_color(p));
-}
-
-// the side to move
-template<typename Board>
-bool active_color(const Position<Board>& p)
-{
-        return p.to_move();
+        return p.pieces(p.active_color());
 }
 
 // men for the opposite side
 template<typename Board>
 BitBoard passive_men(const Position<Board>& p)
 {
-        return p.men(passive_color(p));
+        return p.men(p.passive_color());
 }
 
 // kings for the opposite side
 template<typename Board>
 BitBoard passive_kings(const Position<Board>& p)
 {
-        return p.kings(passive_color(p));
+        return p.kings(p.passive_color());
 }
 
 // pieces for the opposite side
 template<typename Board>
 BitBoard passive_pieces(const Position<Board>& p)
 {
-        return p.pieces(passive_color(p));
-}
-
-// the opposite side to move
-template<typename Board>
-bool passive_color(const Position<Board>& p)
-{
-        return !p.to_move();
+        return p.pieces(p.passive_color());
 }
 
 // tag dispatching based on restrictions on consecutive moves with the same king
@@ -208,8 +207,8 @@ BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<false
 template<typename Rules, typename Board>
 BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<true>)
 {
-        if (p.kings(color) && p.men(color) && is_max<Rules>(p.restricted().moves(color)))
-                return p.kings(color) ^ p.restricted().king(color);
+        if (p.kings(color) && p.men(color) && is_max<Rules>(p.restricted(color).moves()))
+                return p.kings(color) ^ p.restricted(color).king();
         else
                 return p.kings(color);
 }
@@ -218,6 +217,18 @@ template<typename Board>
 const Position<Board>* grand_parent(const Position<Board>& p)
 {
         return p.parent() ? p.parent()->parent() : nullptr;
+}
+
+template<typename Board>
+const KingMoves& active_restricted(const Position<Board>& p)
+{
+        return p.restricted()[p.active_color()];
+}
+
+template<typename Board>
+const KingMoves& passive_restricted(const Position<Board>& p)
+{
+        return p.restricted()[p.passive_color()];
 }
 
 template<typename Rules, typename Board>

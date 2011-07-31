@@ -17,12 +17,11 @@ void push(BitBoard delta, Stack& stack)
         // necessary pre-conditions for king move semantics
         assert(bit::is_double(delta));
 
-        stack.increment_size();
-        top(stack).init<Color>(
+        stack.push_back(Move::create<Color>(
                 delta,                          // move a king between the from and destination squares
                 0,
                 delta                           // move a king between the from and destination squares
-        );
+        ));
                 
         // post-condtions are the pieces invariant 
         assert(top(stack).invariant());
@@ -39,12 +38,11 @@ void push(BitBoard delta, BitBoard promotion, Stack& stack)
         assert(bit::is_double(delta));
         assert(!bit::is_multiple(promotion));
 
-        stack.increment_size();
-        top(stack).init<Color>(
+        stack.push_back(Move::create<Color>(
                 delta,                          // move a man between the from and destination squares
                 0,
                 promotion                       // crown a king on the back row
-        );
+        ));
 
         // post-conditions are the pieces invariant 
         assert(top(stack).invariant());
@@ -67,12 +65,11 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
         assert(bit::is_double(delta) || bit::is_zero(delta));
         assert(!bit::is_zero(captured_pieces));
 
-        stack.increment_size();
-        top(stack).init<Color>(
+        stack.push_back(Move::create<Color>(
                 delta,                          // move a king between the from and destination square
                 captured_pieces,                // remove the captured pieces
                 delta ^ captured_kings          // move a king and remove the captured kings
-        );
+        ));
 
         // post-conditions are the pieces invariants                        
         assert(
@@ -105,12 +102,11 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
         assert(!bit::is_multiple(promotion));
         assert(!bit::is_zero(captured_pieces));
 
-        stack.increment_size();
-        top(stack).init<Color>(
+        stack.push_back(Move::create<Color>(
                 delta,                          // move a man between the from and destination squares
                 captured_pieces,                // remove the captured pieces
                 promotion ^ captured_kings      // crown a king and remove the captured kings
-        );
+        ));
 
         // post-conditions are the pieces invariants                        
         assert(

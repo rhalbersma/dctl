@@ -117,7 +117,7 @@ const TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(co
 template<typename Rules, typename Board>
 int Successors<Rules, Board>::state(const Position<Board>& p)
 {
-        return state(active_color(p), active_kings(p), active_men(p));
+        return state(p.active_color(), active_kings(p), active_men(p));
 }
 
 template<typename Rules, typename Board> template<bool Color>
