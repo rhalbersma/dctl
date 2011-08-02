@@ -1,10 +1,14 @@
 #pragma once
 #include <cstddef>
+#include <vector>
 #include "Move.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
 namespace dctl {
+
+//typedef std::vector<Move> Stack;
+typedef std::vector<Move> Stack;
 
 // element access
 Stack::reference top(Stack&);

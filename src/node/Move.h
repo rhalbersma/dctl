@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "Material.h"
 #include "Side.h"
 #include "../utils/IntegerTypes.h"
@@ -18,6 +17,10 @@ public:
         Move() {};
         Move(const Material&);
 
+        // create a new object from a set of bitboards
+        template<bool> 
+        static Move create(BitBoard, BitBoard, BitBoard);
+
         // views
         const Material& material() const;
         bool to_move() const;
@@ -32,13 +35,6 @@ public:
         // post-conditions for constructors and modifiers
         bool invariant() const;                         // logical consistency of the representation
 
-        // modifiers
-        template<bool> 
-        void init(BitBoard, BitBoard, BitBoard);        // initialize with a set of bitboards
-
-        template<bool> 
-        static Move create(BitBoard, BitBoard, BitBoard);       // initialize with a set of bitboards
-
 private:
         Material material_;
         static const bool to_move_ = Side::PASS;
@@ -51,9 +47,6 @@ bool operator!=(const Move&, const Move&);              // inequality operator
 // typedefs
 typedef VectorArray<int, MAX_PLY> Sequence;
 typedef VectorArray<int, MAX_MOVES> Order;
-//typedef VectorArray<Move, MAX_MOVES> Stack;           // drop-in replacement for std::vector
-
-typedef std::vector<Move> Stack;
 
 }       // namespace dctl
 
