@@ -14,6 +14,10 @@ public:
         explicit Material(BitBoard);                    // zero initialize
         Material(BitBoard, BitBoard, BitBoard);         // initialize with a set of bitboards
 
+        // create a new object from a set of bitboards
+        template<bool>
+        static Material create(BitBoard, BitBoard, BitBoard);
+
         // post-conditions for constructors and modifiers
         bool invariant() const;                         // logical consistency of the representation
 
@@ -26,15 +30,13 @@ public:
         BitBoard pieces() const;                        // black and white pieces
 
         // modifiers
-        template<bool> 
-        void init(BitBoard, BitBoard, BitBoard);        // initialize with a set of bitboards
-
-        template<bool>
-        static Material create(BitBoard, BitBoard, BitBoard);
-
         Material& operator^=(const Material&);          // xor-assign the set bits of another piece set
 
 private:
+        // implementation
+        template<bool> 
+        void init(BitBoard, BitBoard, BitBoard);        // initialize with a set of bitboards        
+
         // representation
         BitBoard pieces_[2];                            // black and white pieces
         BitBoard kings_;                                // kings
