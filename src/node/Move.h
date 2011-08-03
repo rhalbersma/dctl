@@ -1,9 +1,9 @@
 #pragma once
+#include <vector>
 #include "Material.h"
 #include "Side.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/Ply.h"
-#include "../utils/VectorArray.h"
 
 namespace dctl {
 
@@ -45,8 +45,8 @@ bool operator==(const Move&, const Move&);              // equality operator
 bool operator!=(const Move&, const Move&);              // inequality operator
 
 // typedefs
-typedef VectorArray<int, MAX_PLY> Sequence;
-typedef VectorArray<int, MAX_MOVES> Order;
+typedef std::vector<int> Sequence;
+typedef std::vector<int> Order;
 
 }       // namespace dctl
 

@@ -1,5 +1,9 @@
+#include <algorithm>    // std::generate
 #include <cassert>
+#include <iterator>     // std::back_inserter
+#include <vector>
 #include "../generate/Successors.h"
+#include "../utils/Iota.h"
 
 namespace dctl {
 namespace search {
@@ -96,8 +100,10 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         }
 
         // move ordering
-        Order move_order(move_stack.size());
-        identity_permutation(move_order);                
+        std::vector<int> move_order;
+        move_order.reserve(move_stack.size());
+        std::generate_n(std::back_inserter(move_order), move_stack.size(), Iota(0));
+
         if (TT_entry && TT_entry->has_move()) {
                 const size_t TT_move = TT_entry->move() % move_stack.size();
                 std::swap(move_order[0], move_order[TT_move]);

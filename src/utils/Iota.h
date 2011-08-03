@@ -2,10 +2,10 @@
 
 namespace dctl {
 
-class UniqueNumber
+class Iota
 {
 public:
-        UniqueNumber();
+        Iota(int = 0);
         int operator()();
 
 private:

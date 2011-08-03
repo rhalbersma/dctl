@@ -5,7 +5,6 @@
 #include "../rules/Rules.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
-#include "../utils/VectorArray.h"
 
 namespace dctl {
 

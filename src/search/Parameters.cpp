@@ -1,10 +1,12 @@
 #include "Parameters.h"
+#include <algorithm>    // std::copy
 
 namespace dctl {
 namespace search {
 
 Parameters::Parameters()
 {
+        PV_.reserve(32);
 }
 
 const Sequence& Parameters::PV() const
@@ -17,21 +19,15 @@ Sequence& Parameters::PV()
         return PV_;
 }
 
-size_t Parameters::best_move() const
+int Parameters::best_move() const
 {
         return *PV().begin();
 }
 
-void Parameters::set_PV(size_t first_move, const Sequence& continuation)
+void Parameters::set_PV(int first_move, const Sequence& continuation)
 {
-        PV().resize(1 + continuation.size());
         *PV().begin() = first_move;
         std::copy(continuation.begin(), continuation.end(), PV().begin() + 1);
-}
-
-void Parameters::clear_PV()
-{
-        PV().clear();
 }
 
 }       // namespace search
