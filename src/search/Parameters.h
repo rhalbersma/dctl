@@ -1,5 +1,5 @@
 #pragma once
-#include "../node/Stack.h"
+#include "../node/Move.h"
 
 namespace dctl {
 namespace search {
@@ -13,11 +13,10 @@ public:
         // views
         const Sequence& PV() const;
         Sequence& PV();
-        size_t best_move() const;
+        int best_move() const;
 
         // modifiers
-        void set_PV(size_t, const Sequence&);
-        void clear_PV();
+        void set_PV(int, const Sequence&);
 
 private:
         // representation

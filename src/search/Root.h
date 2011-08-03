@@ -43,7 +43,6 @@ private:
         template<typename, typename B> static void insert_PV(const Position<B>&, const Sequence&, int);
         template<typename, typename B> static void print_PV(const Position<B>&, const Sequence&);
 
-        static void identity_permutation(Order&);
         static bool is_PV(int);
 
         // implementation

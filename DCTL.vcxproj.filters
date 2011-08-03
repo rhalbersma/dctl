@@ -201,9 +201,6 @@
     <ClInclude Include="src\board\Transform.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="src\utils\VectorArray.h">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\Bit.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
@@ -230,12 +227,6 @@
     </ClInclude>
     <ClInclude Include="src\utils\Timer.h">
       <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\UniqueNumber.h">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\VectorArray.hpp">
-      <Filter>Source Files\utils</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\Bit.hpp">
       <Filter>Source Files\utils</Filter>
@@ -597,15 +588,15 @@
     <ClInclude Include="src\capture\State.hpp">
       <Filter>Source Files\capture</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\Iota.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\DeBruijn.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\Timer.cpp">
-      <Filter>Source Files\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utils\UniqueNumber.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\Statistics.cpp">
@@ -694,6 +685,9 @@
     </ClCompile>
     <ClCompile Include="src\capture\Spanish.cpp">
       <Filter>Source Files\capture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\Iota.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

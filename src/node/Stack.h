@@ -7,7 +7,6 @@
 
 namespace dctl {
 
-//typedef std::vector<Move> Stack;
 typedef std::vector<Move> Stack;
 
 // element access

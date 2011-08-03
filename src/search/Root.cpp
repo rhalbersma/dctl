@@ -1,9 +1,7 @@
-#include <algorithm>    // std::generate
 #include <iomanip>
 #include <iostream>
 #include "Root.h"
 #include "../utils/Timer.h"
-#include "../utils/UniqueNumber.h"
 
 namespace dctl {
 namespace search {
@@ -56,12 +54,6 @@ void Root::report(int depth, int value, const Timer& timer)
         std::cout << std::endl;
 }
 */
-
-void Root::identity_permutation(Order& permutation)
-{
-        UniqueNumber unique_number;
-        std::generate(permutation.begin(), permutation.end(), unique_number);
-}
 
 bool Root::is_PV(int node)
 {

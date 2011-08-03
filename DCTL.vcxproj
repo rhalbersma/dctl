@@ -13,8 +13,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2BBA0958-E029-4D35-BEED-227743CD7BD4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Library</RootNamespace>
-    <ProjectName>Library</ProjectName>
+    <RootNamespace>DCTL</RootNamespace>
+    <ProjectName>DCTL</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -91,7 +91,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -290,9 +290,7 @@
     <ClInclude Include="src\utils\Statistics.h" />
     <ClInclude Include="src\utils\TemplateTricks.h" />
     <ClInclude Include="src\utils\Timer.h" />
-    <ClInclude Include="src\utils\UniqueNumber.h" />
-    <ClInclude Include="src\utils\VectorArray.h" />
-    <ClInclude Include="src\utils\VectorArray.hpp" />
+    <ClInclude Include="src\utils\Iota.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\capture\Frisian.cpp" />
@@ -326,7 +324,7 @@
     <ClCompile Include="src\utils\DeBruijn.cpp" />
     <ClCompile Include="src\utils\Statistics.cpp" />
     <ClCompile Include="src\utils\Timer.cpp" />
-    <ClCompile Include="src\utils\UniqueNumber.cpp" />
+    <ClCompile Include="src\utils\Iota.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

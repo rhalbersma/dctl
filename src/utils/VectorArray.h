@@ -16,6 +16,7 @@ public:
         typedef typename std::array<T, N>::reference reference;
         typedef typename std::array<T, N>::const_reference const_reference;
         typedef typename std::array<T, N>::size_type size_type;
+        typedef typename std::array<T, N>::value_type value_type;
 
         // constructors
         VectorArray();
