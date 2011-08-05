@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "../../../Library/src/utils/Bit.h"
-#include "../../../Library/src/utils/IntegerTypes.h"
+#include "../../../DCTL/src/utils/Bit.h"
+#include "../../../DCTL/src/utils/IntegerTypes.h"
 
 namespace dctl {
 namespace bit {

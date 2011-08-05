@@ -1,12 +1,12 @@
 #include "gtest/gtest.h"
 #include "../test_config.h"
-#include "../../../Library/src/walk/Root.h"
-#include "../../../Library/src/node/Position.h"
-#include "../../../Library/src/board/Types.h"
-#include "../../../Library/src/rules/Rules.h"
+#include "../../../DCTL/src/walk/Root.h"
+#include "../../../DCTL/src/node/Position.h"
+#include "../../../DCTL/src/board/Types.h"
+#include "../../../DCTL/src/rules/Rules.h"
 
-#include "../../../Library/src/setup/Diagram.h"
-#include "../../../Library/src/setup/String.h"
+#include "../../../DCTL/src/setup/Diagram.h"
+#include "../../../DCTL/src/setup/String.h"
 
 namespace dctl {
 namespace walk {

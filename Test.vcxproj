@@ -91,7 +91,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -142,12 +142,12 @@
     <ClCompile Include="src\walk\Root.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library\Library.vcxproj">
-      <Project>{2bba0958-e029-4d35-beed-227743cd7bd4}</Project>
-    </ProjectReference>
+    <ClInclude Include="src\test_config.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\test_config.h" />
+    <ProjectReference Include="..\DCTL\DCTL.vcxproj">
+      <Project>{2bba0958-e029-4d35-beed-227743cd7bd4}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

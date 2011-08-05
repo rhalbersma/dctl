@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "../../../Library/src/search/Score.h"
-#include "../../../Library/src/utils/Ply.h"
+#include "../../../DCTL/src/search/Score.h"
+#include "../../../DCTL/src/utils/Ply.h"
 
 namespace dctl {
 namespace search {
