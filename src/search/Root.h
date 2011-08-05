@@ -38,7 +38,7 @@ private:
         template<int, typename, typename B> static int quiescence(const Position<B>&, int, int, int, int, Parameters&);
 
         template<typename B> static void announce(const Position<B>&, int);
-        static void report(int, int, const Timer&);
+        template<typename, typename B> static void report(int, int, const Timer&, const Position<B>&, const Sequence&);
 
         template<typename, typename B> static void insert_PV(const Position<B>&, const Sequence&, int);
         template<typename, typename B> static void print_PV(const Position<B>&, const Sequence&);
