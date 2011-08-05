@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 #include "gtest/gtest.h"
-#include "../../../Library/src/board/Types.h"
-#include "../../../Library/src/setup/Diagram.h"
-#include "../../../Library/src/setup/String.h"
+#include "../../../DCTL/src/board/Types.h"
+#include "../../../DCTL/src/setup/Diagram.h"
+#include "../../../DCTL/src/setup/String.h"
 
 namespace dctl {
 namespace setup {
@@ -25,7 +25,7 @@ TEST(Setup, Wieger)
         ";
         
         // parse the above diagram into a position using the DamExchange protocol
-        // with a modified character set (default is <'Z', 'W', 'E>)
+        // with a modified character set (default is <'Z', 'W', 'E'>)
         auto pos_w = setup::read<
                 board::International, 
                 dxp::protocol, 

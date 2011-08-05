@@ -1,14 +1,14 @@
 #include <algorithm>    // std::find
 #include <string>
 #include "gtest/gtest.h"
-#include "../../../Library/src/generate/Successors.h"
-#include "../../../Library/src/node/Position.h"
-#include "../../../Library/src/board/Types.h"
-#include "../../../Library/src/rules/Rules.h"
+#include "../../../DCTL/src/generate/Successors.h"
+#include "../../../DCTL/src/node/Position.h"
+#include "../../../DCTL/src/board/Types.h"
+#include "../../../DCTL/src/rules/Rules.h"
 
-#include "../../../Library/src/setup/Diagram.h"
-#include "../../../Library/src/setup/String.h"
-#include "../../../Library/src/notation/String.h"
+#include "../../../DCTL/src/setup/Diagram.h"
+#include "../../../DCTL/src/setup/String.h"
+#include "../../../DCTL/src/notation/String.h"
 
 namespace dctl {
 namespace generate {

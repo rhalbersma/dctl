@@ -1,7 +1,7 @@
 #include <string>
 #include "gtest/gtest.h"
-#include "../../../Library/src/dxp/Parser.h"
-#include "../../../Library/src/dxp/DXP.h"
+#include "../../../DCTL/src/dxp/Parser.h"
+#include "../../../DCTL/src/dxp/DXP.h"
 
 namespace dctl {
 namespace dxp {

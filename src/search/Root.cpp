@@ -1,12 +1,12 @@
 #include <utility>
 #include "gtest/gtest.h"
 #include "../test_config.h"
-#include "../../../Library/src/search/Root.h"
-#include "../../../Library/src/node/Position.h"
-#include "../../../Library/src/board/Types.h"
-#include "../../../Library/src/rules/Rules.h"
+#include "../../../DCTL/src/search/Root.h"
+#include "../../../DCTL/src/node/Position.h"
+#include "../../../DCTL/src/board/Types.h"
+#include "../../../DCTL/src/rules/Rules.h"
 
-#include "../../../Library/src/setup/String.h"
+#include "../../../DCTL/src/setup/String.h"
 
 namespace dctl {
 namespace search {
@@ -55,14 +55,14 @@ protected:
 };
 
 #if INTEGRATION_TEST == 1
-/*
+
 TEST_F(SearchEndgame, InternationalInitial)
 {
         auto i10 = Position<board::International>::initial();
         Root::clear_hash();
-        Root::analyze<rules::International>(i10, 11);
+        Root::analyze<rules::International>(i10, 15);
 }
-*/
+
 TEST_F(SearchEndgame, Frisian21)
 {
         FEN_depth test_case("W:WK46,28:BK43", 39);      // Walinga book
