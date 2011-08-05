@@ -26,10 +26,9 @@ int Root::iterative_deepening(const Position<Board>& p, int depth)
                 alpha = -score::infinity();
                 beta = score::infinity();
                 score = pvs<PV, Rules>(p, 0, i, alpha, beta, root_node);
-                timer.split();
-                report(i, score, timer);
-                print_PV<Rules>(p, root_node.PV());
                 insert_PV<Rules>(p, root_node.PV(), score);
+                timer.split();
+                report<Rules>(i, score, timer, p, root_node.PV());
         }
 
         return score;

@@ -1,7 +1,4 @@
-#include <iomanip>
-#include <iostream>
 #include "Root.h"
-#include "../utils/Timer.h"
 
 namespace dctl {
 namespace search {
@@ -9,35 +6,6 @@ namespace search {
 Root::TranspositionTable Root::TT(0);
 Statistics Root::statistics_;
 bool Root::interrupted_ = false;
-
-// UCI format
-void Root::report(int depth, int value, const Timer& timer)
-{
-        std::cout << "info";
-
-        std::cout << " score ";
-        std::cout << std::setw( 3) << std::right << score::print(value);
-
-        std::cout << " depth ";
-        std::cout << std::setw( 2) << depth;
-
-        std::cout << " nodes ";
-        std::cout << std::setw(11) << std::right << statistics_.nodes();
-
-        std::cout << " time ";
-        std::cout << std::setw( 6) << timer.elapsed();
-
-        const double nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.lap());
-        std::cout << " nps ";
-        std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
-        std::cout << std::setw( 7) << nps;
-
-        const double hashfull = 1000 * (static_cast<double>((TT.size() - TT.available())) / TT.size());
-        std::cout << " hashfull ";
-        std::cout << std::setw( 4) << std::right << hashfull;
-
-        std::cout << std::endl;
-}
 
 /*
 // Winboard format

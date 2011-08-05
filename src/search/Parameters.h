@@ -12,7 +12,7 @@ public:
 
         // views
         const Sequence& PV() const;
-        Sequence& PV();
+        //Sequence& PV();
         int best_move() const;
 
         // modifiers
