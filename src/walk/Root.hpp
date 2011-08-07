@@ -36,16 +36,17 @@ NodeCount Root::divide(const Position<Board>& p, int depth)
         NodeCount move_leafs;                
         
         Timer timer;
-        Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        Stack moves;
+        generate::Successors<Rules, Board>::generate(p, moves);
 
-        announce(p, depth, move_stack.size());
-        Position<Board> q;
-        for (size_t i = 0; i < move_stack.size(); ++i) {
+        announce(p, depth, moves.size());
+        for (size_t i = 0; i < moves.size(); ++i) {
                 statistics_.reset();
-                print_move(notation::write<Rules>()(p, move_stack[i]), i);
+                print_move(notation::write<Rules>()(p, moves[i]), i);
 
-                q.template copy_make<Rules>(p, move_stack[i]);
+                Position<Board> q(p);
+                q.attach(p);
+                q.template make<Rules>(moves[i]);
                 move_leafs = driver<Rules>(q, 0, depth - 1);
                 leafs += move_leafs;
                 
@@ -71,12 +72,13 @@ NodeCount Root::leaf(const Position<Board>& p, int ply, int depth)
         if (depth == 0)
                 return 1;
 
-        Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        Stack moves;
+        generate::Successors<Rules, Board>::generate(p, moves);
         NodeCount leafs = 0;        
-        Position<Board> q;
-        for (size_t i = 0; i < move_stack.size(); ++i) {
-                q.template copy_make<Rules>(p, move_stack[i]);
+        for (auto m = moves.begin(); m != moves.end(); ++m) {
+                auto q(p);
+                q.attach(p);
+                q.template make<Rules>(*m);
                 leafs += leaf<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
@@ -87,15 +89,16 @@ NodeCount Root::bulk(const Position<Board>& p, int ply, int depth)
 {
         statistics_.update(ply);
 
-        Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        Stack moves;
+        generate::Successors<Rules, Board>::generate(p, moves);
         if (depth == 1)
-                return move_stack.size();
+                return moves.size();
         
         NodeCount leafs = 0;
-        Position<Board> q;
-        for (size_t i = 0; i < move_stack.size(); ++i) {
-                q.template copy_make<Rules>(p, move_stack[i]);
+        for (auto m = moves.begin(); m != moves.end(); ++m) {
+                auto q(p);
+                q.attach(p);
+                q.template make<Rules>(*m);
                 leafs += bulk<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
@@ -109,12 +112,13 @@ NodeCount Root::count(const Position<Board>& p, int ply, int depth)
         if (depth == 1)
                 return generate::Successors<Rules, Board>::count(p);
 
-        Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        Stack moves;
+        generate::Successors<Rules, Board>::generate(p, moves);
         NodeCount leafs = 0;
-        Position<Board> q;
-        for (size_t i = 0; i < move_stack.size(); ++i) {
-                q.template copy_make<Rules>(p, move_stack[i]);
+        for (auto m = moves.begin(); m != moves.end(); ++m) {
+                auto q(p);
+                q.attach(p);
+                q.template make<Rules>(*m);
                 leafs += count<Rules>(q, ply + 1, depth - 1);
         }
         return leafs;
@@ -132,12 +136,13 @@ NodeCount Root::hash(const Position<Board>& p, int ply, int depth)
         if (depth == 0)
                 return 1;
 
-        Stack move_stack;
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        Stack moves;
+        generate::Successors<Rules, Board>::generate(p, moves);
         NodeCount leafs = 0;
-        Position<Board> q;
-        for (size_t i = 0; i < move_stack.size(); ++i) {
-                q.template copy_make<Rules>(p, move_stack[i]);
+        for (auto m = moves.begin(); m != moves.end(); ++m) {
+                auto q(p);
+                q.attach(p);
+                q.template make<Rules>(*m);
                 leafs += hash<Rules>(q, ply + 1, depth - 1);
         }
 
@@ -158,12 +163,13 @@ NodeCount Root::fast(const Position<Board>& p, int ply, int depth)
         if (depth == 1)
                 leafs = generate::Successors<Rules, Board>::count(p);
         else {
-                Stack move_stack;
-                generate::Successors<Rules, Board>::generate(p, move_stack);
+                Stack moves;
+                generate::Successors<Rules, Board>::generate(p, moves);
                 leafs = 0;
-                Position<Board> q;
-                for (size_t i = 0; i < move_stack.size(); ++i) {
-                        q.template copy_make<Rules>(p, move_stack[i]);
+                for (auto m = moves.begin(); m != moves.end(); ++m) {
+                        auto q(p);
+                        q.attach(p);
+                        q.template make<Rules>(*m);
                         leafs += fast<Rules>(q, ply + 1, depth - 1);
                 }
         }

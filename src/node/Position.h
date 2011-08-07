@@ -40,10 +40,10 @@ public:
         // make a move in a copy from another position
         template<typename> void copy_make(const Position<Board>&, const Move&);
         template<typename> void make(const Move&);
+        void attach(const Position<Board>&);
         
 private:
         // implementation
-        void attach(const Position<Board>&);
         void detach();
 
         // tag dispatching based on restrictions on consecutive moves with the same king

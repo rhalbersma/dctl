@@ -21,9 +21,11 @@ template<typename T> size_t find_first(T);              // index of the least si
 
 template<typename T> size_t index(T);		        // index of a set 1-bit
 template<typename T> size_t index_DeBruijn(T);          // index of a set 1-bit
+template<typename T> size_t index_lookup(T);            // index of a set 1-bit
 
 template<typename T> size_t count(T);		        // number of set 1-bits
 template<typename T> size_t count_Kernighan(T);         // number of set 1-bits
+template<typename T> size_t count_lookup(T);            // number of set 1-bits
 
 // binary views
 template<bool, typename T> T flood_fill(T, T, size_t);  // direction-wise flood-fill T1 over T2

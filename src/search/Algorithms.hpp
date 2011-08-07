@@ -72,12 +72,12 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
                 return TT_entry->value();
 
         // generate moves
-        Stack move_stack;
-        move_stack.reserve(32);
-        generate::Successors<Rules, Board>::generate(p, move_stack);
+        Stack moves;
+        moves.reserve(32);
+        generate::Successors<Rules, Board>::generate(p, moves);
 
         // without a valid move, the position is an immediate loss
-        if (move_stack.empty()) {
+        if (moves.empty()) {
                 const int value = score::loss_value(0);
 
                 // we can only have an upper bound or an exact value at this point
@@ -100,11 +100,11 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
         // move ordering
         std::vector<int> move_order;
-        move_order.reserve(move_stack.size());
-        std::generate_n(std::back_inserter(move_order), move_stack.size(), Iota(0));
+        move_order.reserve(moves.size());                               // reserve enough room for all indices
+        iota_n(std::back_inserter(move_order), moves.size(), 0);        // generate indices [0, moves.size() - 1]
 
         if (TT_entry && TT_entry->has_move()) {
-                const size_t TT_move = TT_entry->move() % move_stack.size();
+                const size_t TT_move = TT_entry->move() % moves.size();
                 std::swap(move_order[0], move_order[TT_move]);
         }
 
@@ -116,14 +116,15 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         Parameters child_node;
         const int original_alpha = alpha;
 
-        Position<Board> q;
         for (size_t s = 0; s < move_order.size(); ++s) {
                 i = move_order[s];
                 // TODO: TT singular extension
 
                 // TODO: futility pruning
 
-                q.template copy_make<Rules>(p, move_stack[i]);
+                auto q(p);
+                q.attach(p);
+                q.template make<Rules>(moves[i]);
 
                 if (is_PV(ThisNode) && s == 0)
                         value = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
@@ -207,16 +208,16 @@ int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& pare
                 return !generate::detect<Rules>(p)? score::loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
-        Stack move_stack;
-        generate::generate(p, move_stack);
+        Stack moves;
+        generate::generate(p, moves);
 
         // search moves
         int best_value = -score::infinity();
         int value;
         Parameters child_node;
         Position<Board> q;
-        for (size_t i = 0; i < move_stack.size(); ++i) {
-                q.template copy_make<Rules>(p, move_stack[i]);
+        for (size_t i = 0; i < moves.size(); ++i) {
+                q.template copy_make<Rules>(p, moves[i]);
                 value = -squeeze(negamax<Rules>(q, ply + 1, depth - 1, child_node));
 
                 if (value > best_value) {
@@ -245,21 +246,21 @@ int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, in
         if (beta <= score::loss_value(0))
                 return beta;
 
-        // return evaluation in leaf nodes with valid move_stack
+        // return evaluation in leaf nodes with valid moves
         if (depth == 0)
                 return !generate::detect<Rules>(p)? score::loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
-        Stack move_stack;
-        generate::generate(p, move_stack);
+        Stack moves;
+        generate::generate(p, moves);
 
         // search moves
         int best_value = -score::infinity();
         int value;
         Parameters child_node;
         Position<Board> q;
-        for (size_t i = 0; i < move_stack.size(); ++i) {
-                q.template copy_make<Rules>(p, move_stack[i]);
+        for (size_t i = 0; i < moves.size(); ++i) {
+                q.template copy_make<Rules>(p, moves[i]);
                 value = -squeeze(alpha_beta<Rules>(p, ply  + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
 
                 if (value > best_value) {

@@ -15,7 +15,6 @@ Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard
         to_move_(to_move)
 {       
         hash_index_ = hash::zobrist::Init<Position<Board>, HashIndex>()(*this);
-
         assert(material_invariant());
 }
 

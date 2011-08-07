@@ -1,8 +1,6 @@
 #include <cassert>
-#include <functional>
-#include <type_traits>
 #include "DeBruijn.h"
-#include "TemplateTricks.h"
+#include "Lookup.h"
 
 namespace dctl {
 namespace bit {
@@ -76,15 +74,19 @@ size_t index(T b)
 template<typename T>
 size_t index_DeBruijn(T b)
 {
-        b *= DeBruijn<T>::SEQUENCE;
-        b >>= DeBruijn<T>::SHIFT;
-        return DeBruijn<T>::TABLE[b];
+        return DeBruijn<T>::index(b);
+}
+
+template<typename T>
+size_t index_lookup(T b)
+{
+        return Lookup<uint8_t>::index(b);
 }
 
 template<typename T>
 size_t count(T b)
 {
-        return count_Kernighan(b);        
+        return count_lookup(b);        
 }
 
 //+----------------------------------------------------------------------------+
@@ -99,6 +101,12 @@ size_t count_Kernighan(T b)
         for (; b; clear_first(b))
                 ++count;
         return count;
+}
+
+template<typename T>
+size_t count_lookup(T b)
+{
+        return Lookup<uint8_t>::count(b);
 }
 
 template<bool Sign, typename T>
