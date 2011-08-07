@@ -113,6 +113,14 @@ TYPED_TEST(Bit, IndexDeBruijn)
         }
 }
 
+TYPED_TEST(Bit, IndexLookup)
+{
+        for (auto i = 0; i < NUM_BITS; ++i) {
+                TypeParam b = TypeParam(1) << i;               
+                EXPECT_EQ(i, index_lookup(b));
+        }
+}
+
 TYPED_TEST(Bit, CountKernighan)
 {
         EXPECT_EQ(0, count_Kernighan(TypeParam(0)));
@@ -125,11 +133,10 @@ TYPED_TEST(Bit, CountKernighan)
         for (auto i = 0; i < NUM_BITS; ++i) {
                 for (auto j = 0; j < NUM_BITS; ++j) {                                
                         TypeParam b = (TypeParam(1) << i) ^ (TypeParam(1) << j);
-                        if (i == j) {
+                        if (i == j)
                                 EXPECT_EQ(0, count_Kernighan(b));
-                        } else {
+                        else
                                 EXPECT_EQ(2, count_Kernighan(b));
-                        }
                 }
         }
 
@@ -139,6 +146,33 @@ TYPED_TEST(Bit, CountKernighan)
         }
 
         EXPECT_EQ(NUM_BITS, count_Kernighan(TypeParam(~0)));
+}
+
+TYPED_TEST(Bit, CountLookup)
+{
+        EXPECT_EQ(0, count_lookup(TypeParam(0)));
+
+        for (auto i = 0; i < NUM_BITS; ++i) {
+                TypeParam b = TypeParam(1) << i;
+                EXPECT_EQ(1, count_lookup(b));                
+        }
+
+        for (auto i = 0; i < NUM_BITS; ++i) {
+                for (auto j = 0; j < NUM_BITS; ++j) {                                
+                        TypeParam b = (TypeParam(1) << i) ^ (TypeParam(1) << j);
+                        if (i == j)
+                                EXPECT_EQ(0, count_lookup(b));
+                        else
+                                EXPECT_EQ(2, count_lookup(b));
+                }
+        }
+
+        for (auto i = 0; i < NUM_BITS; ++i) {
+                TypeParam b = (TypeParam(1) << i) - 1;
+                EXPECT_EQ(i, count_lookup(b));
+        }
+
+        EXPECT_EQ(NUM_BITS, count_lookup(TypeParam(~0)));
 }
 
 }       // namespace bit
