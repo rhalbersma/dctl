@@ -24,7 +24,7 @@ void Parameters::set_PV(int first_move, const Sequence& continuation)
 {
         PV_.clear();
         PV_.push_back(first_move);
-        std::copy(continuation.begin(), continuation.end(), std::back_inserter(PV_));
+        PV_.insert(PV_.end(), continuation.begin(), continuation.end());
 }
 
 }       // namespace search

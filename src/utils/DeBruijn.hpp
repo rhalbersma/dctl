@@ -4,6 +4,14 @@
 namespace dctl {
 namespace bit {
 
+template<typename T>
+int DeBruijn<T>::index(T b)
+{
+        b *= SEQUENCE;
+        b >>= SHIFT;
+        return TABLE[b];
+}
+
 // create the lexicographically least De Bruijn sequence
 template<typename T>
 T DeBruijn<T>::generate_sequence()
@@ -11,18 +19,18 @@ T DeBruijn<T>::generate_sequence()
         T sequence(0);
 
         // highest N bits are always zero; only have to try the remaining bits (SHIFT == 2^N - N)
-        for (int i = SHIFT - 1; i >= 0; --i) {
+        for (auto i = SHIFT - 1; i >= 0; --i) {
                 // cast the intermediate expression back to <T> to suppress promotion of small integer types
-                T new_prefix = static_cast<T>(sequence << (SHIFT - i)) >> SHIFT;
+                auto new_prefix = static_cast<T>(sequence << (SHIFT - i)) >> SHIFT;
 
                 // greedy algorithm: set the least significant bit of the next prefix equal to one
                 new_prefix ^= T(1);
 
                 // test if the new prefix matches any of the previous prefixes
                 bool prefer_one = true;
-                for (int j = SHIFT - 1; j > i; --j) {
+                for (auto j = SHIFT - 1; j > i; --j) {
                         // cast the intermediate expression back to <T> to suppress promotion of small integer types
-                        T old_prefix = static_cast<T>(sequence << (SHIFT - j)) >> SHIFT;
+                        auto old_prefix = static_cast<T>(sequence << (SHIFT - j)) >> SHIFT;
                         if (new_prefix == old_prefix) {
                                 prefer_one = false;
                                 break;
@@ -40,9 +48,9 @@ T DeBruijn<T>::generate_sequence()
 template<typename T>
 void DeBruijn<T>::generate_table()
 {
-        const T sequence = generate_sequence();
+        const auto sequence = generate_sequence();
 
-        size_t table[NUM_BITS];
+        int table[NUM_BITS];
         for (auto i = 0; i < NUM_BITS; ++i) {
                 T b = T(1) << i;
                 b *= sequence;
@@ -56,7 +64,7 @@ void DeBruijn<T>::generate_table()
         std::cout << static_cast<uint64_t>(sequence) << ";" << std::endl << std::endl;
         
         std::cout << "template<>" << std::endl;
-        std::cout << "const size_t DeBruijn<" << typeid(T).name() << ">::TABLE[] = {" << std::endl;
+        std::cout << "const int DeBruijn<" << typeid(T).name() << ">::TABLE[] = {" << std::endl;
         for (auto i = 0; i < NUM_BITS; ++i) {
                 if (i % 8 == 0)
                         for (auto j = 0; j < 8; ++j)

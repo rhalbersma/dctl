@@ -273,6 +273,9 @@
     <ClInclude Include="src\setup\String.h" />
     <ClInclude Include="src\setup\String.hpp" />
     <ClInclude Include="src\setup\Token.h" />
+    <ClInclude Include="src\utils\Iota.hpp" />
+    <ClInclude Include="src\utils\Lookup.h" />
+    <ClInclude Include="src\utils\Lookup.hpp" />
     <ClInclude Include="src\walk\Root.h" />
     <ClInclude Include="src\walk\Root.hpp" />
     <ClInclude Include="src\walk\Transposition.h" />
@@ -319,12 +322,12 @@
     <ClCompile Include="src\search\Root.cpp" />
     <ClCompile Include="src\search\Score.cpp" />
     <ClCompile Include="src\search\Transposition.cpp" />
+    <ClCompile Include="src\utils\Lookup.cpp" />
     <ClCompile Include="src\walk\Root.cpp" />
     <ClCompile Include="src\walk\Transposition.cpp" />
     <ClCompile Include="src\utils\DeBruijn.cpp" />
     <ClCompile Include="src\utils\Statistics.cpp" />
     <ClCompile Include="src\utils\Timer.cpp" />
-    <ClCompile Include="src\utils\Iota.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

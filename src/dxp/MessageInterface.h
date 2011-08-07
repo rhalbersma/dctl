@@ -7,11 +7,11 @@ namespace dxp {
 class MessageInterface
 {
 public:
-        // non-virtual interface
-        std::string str() const;
-
         // virtual destructor
         virtual ~MessageInterface() {};
+
+        // non-virtual interface
+        std::string str() const;
 
 private:
         // pure virtual implementation

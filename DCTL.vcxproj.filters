@@ -591,6 +591,15 @@
     <ClInclude Include="src\utils\Iota.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\Iota.hpp">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Lookup.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Lookup.hpp">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\DeBruijn.cpp">
@@ -686,7 +695,7 @@
     <ClCompile Include="src\capture\Spanish.cpp">
       <Filter>Source Files\capture</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\Iota.cpp">
+    <ClCompile Include="src\utils\Lookup.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>

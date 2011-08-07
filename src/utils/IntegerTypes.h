@@ -17,7 +17,7 @@ template<> struct log2_sizeof<uint16_t> { enum { value = 4 }; };
 template<> struct log2_sizeof<uint32_t> { enum { value = 5 }; };
 template<> struct log2_sizeof<uint64_t> { enum { value = 6 }; };
 
-template<size_t> struct exp2_typeof;
+template<int> struct exp2_typeof;
 template<> struct exp2_typeof<3>        { typedef uint8_t  type; };
 template<> struct exp2_typeof<4>        { typedef uint16_t type; };
 template<> struct exp2_typeof<5>        { typedef uint32_t type; };

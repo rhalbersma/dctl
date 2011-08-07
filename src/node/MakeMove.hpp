@@ -6,6 +6,7 @@ namespace dctl {
 template<typename Board> template<typename Rules>
 void Position<Board>::copy_make(const Position<Board>& other, const Move& move)
 {
+        *this = other;          // copy the position
         attach(other);          // attach the position
         make<Rules>(move);      // make the move
 }
@@ -13,7 +14,6 @@ void Position<Board>::copy_make(const Position<Board>& other, const Move& move)
 template<typename Board>
 void Position<Board>::attach(const Position<Board>& other)
 {
-        *this = other;          // copy the position
         parent_ = &other;       // link the pointers
 }
 
