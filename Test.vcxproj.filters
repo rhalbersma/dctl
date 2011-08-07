@@ -22,14 +22,14 @@
     <Filter Include="Source Files\search">
       <UniqueIdentifier>{46f28f37-070c-4069-a1ce-f7b5350fb5fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\walk">
-      <UniqueIdentifier>{3294b551-3e24-42c8-acd7-3c03f32be15d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\setup">
       <UniqueIdentifier>{0ede2fe5-9e0b-4149-a79d-fefd2476370f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\dxp">
       <UniqueIdentifier>{9a60d530-3f53-48ff-ac9c-786525623ad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\walk">
+      <UniqueIdentifier>{3294b551-3e24-42c8-acd7-3c03f32be15d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,14 +48,14 @@
     <ClCompile Include="src\walk\Root.cpp">
       <Filter>Source Files\walk</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\Bit.cpp">
-      <Filter>Source Files\utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\setup\Setup.cpp">
       <Filter>Source Files\setup</Filter>
     </ClCompile>
     <ClCompile Include="src\dxp\Parser.cpp">
       <Filter>Source Files\dxp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\Bit.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
