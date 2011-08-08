@@ -29,7 +29,7 @@ template<int I>
 struct MirrorDown
 {
         // M' == R M L
-        enum { value = Rotate<MirrorUp<Rotate<Int2Type<I>, Angle::L090>::value>::VALUE, Angle::R090>::value };
+        enum { value = Rotate<Int2Type<MirrorUp<Rotate<Int2Type<I>, Angle::L090>::value>::value>, Angle::R090>::value };
 };
 
 }       // namespace board

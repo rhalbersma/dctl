@@ -39,14 +39,14 @@ struct is_left
         enum { value = is_down<Rotate<Int2Type<I>, Angle::L090>::value>::value };       // 3, 4, 5
 };   
 
-// negative, positive
-template<int I> struct is_negative      { enum { value = !is_positive<I>::value  }; };  // 5, 6, 7, 0 
-
+// positive, negative
 template<int I> 
 struct is_positive      
 { 
         enum { value = is_up<I>::value || (is_left<I>::value && !is_down<I>::value) };  // 1, 2, 3, 4 
 };
+
+template<int I> struct is_negative      { enum { value = !is_positive<I>::value  }; };  // 5, 6, 7, 0
 
 }       // namespace board
 }       // namespace dctl

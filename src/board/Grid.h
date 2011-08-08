@@ -15,7 +15,7 @@ public:
 
         enum {
                 // diagonal directions
-                LEFT_DOWN = (WIDTH + GHOST) / 2,
+                LEFT_DOWN = (Dimensions::WIDTH + GHOST) / 2,
                 RIGHT_DOWN = LEFT_DOWN + 1,
 
                 // orthogonal directions
@@ -34,11 +34,11 @@ public:
                 // left (L) and right (R) edges of even (E) and odd (O) rows
                 EDGE_LE = BaseGrid::EDGE_LE,
                 EDGE_RE = BaseGrid::EDGE_RE,
-                EDGE_LO = LEFT_DOWN + PARITY,
+                EDGE_LO = LEFT_DOWN + Dimensions::PARITY,
                 EDGE_RO = EDGE_LO + BaseGrid::EDGE_RO - BaseGrid::EDGE_LO,
 
                 // grid size 
-                SIZE = MODULO * ((HEIGHT - 1) / 2) + ((HEIGHT % 2)? EDGE_RE : EDGE_RO) + 1
+                SIZE = MODULO * ((Dimensions::HEIGHT - 1) / 2) + ((Dimensions::HEIGHT % 2)? EDGE_RE : EDGE_RO) + 1
         };
 };
 
@@ -49,14 +49,14 @@ class Grid<Dimensions, 0>: public Dimensions
 private:
         enum {
                 // range of even (E) and odd (O) rows
-                ROW_E = (WIDTH +  PARITY) / 2,
-                ROW_O = (WIDTH + !PARITY) / 2
+                ROW_E = (Dimensions::WIDTH +  Dimensions::PARITY) / 2,
+                ROW_O = (Dimensions::WIDTH + !Dimensions::PARITY) / 2
         };
 
 public:
         enum {
                 // range of row pairs
-                MODULO = WIDTH,
+                MODULO = Dimensions::WIDTH,
 
                 // left (L) and right (R) edges of even (E) and odd (O) rows
                 EDGE_LE = 0,
@@ -65,7 +65,7 @@ public:
                 EDGE_RO = EDGE_LO + ROW_O - 1,
 
                 // == (H * W) / 2 + (H * W * P) % 2
-                SIZE = MODULO * ((HEIGHT - 1) / 2) + ((HEIGHT % 2)? EDGE_RE : EDGE_RO) + 1
+                SIZE = MODULO * ((Dimensions::HEIGHT - 1) / 2) + ((Dimensions::HEIGHT % 2)? EDGE_RE : EDGE_RO) + 1
         };
 };
 
