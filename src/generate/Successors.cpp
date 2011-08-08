@@ -1,5 +1,6 @@
 #include <algorithm>    // std::find
-#include <string>
+#include <cstddef>      // std::size_t
+#include <string>       // std::string
 #include "gtest/gtest.h"
 #include "../../../DCTL/src/generate/Successors.h"
 #include "../../../DCTL/src/node/Position.h"
@@ -41,7 +42,7 @@ TEST(Successors, Italian)
                 "W:WK31:B18,20,K27,K28"         // Art. 6.10
         };
 
-        size_t size[] = { 1, 1, 3, 1, 1, 1, 1, 1, 2 };
+        int size[] = { 1, 1, 3, 1, 1, 1, 1, 1, 2 };
 
         std::string moves_56[] = { "30x23" };
         std::string moves_57[] = { "31x8 " };
@@ -67,7 +68,7 @@ TEST(Successors, Italian)
                 EXPECT_EQ(size[i], move_stack.size());
 
                 // check all generated moves
-                for (size_t j = 0; j < move_stack.size(); ++j) {
+                for (std::size_t j = 0; j < move_stack.size(); ++j) {
                         std::string move_string = notation::write<rules::Italian>()(p, move_stack[j]);
                         EXPECT_NE(moves[i] + size[i], std::find(moves[i], moves[i] + size[i], move_string)); 
                 }

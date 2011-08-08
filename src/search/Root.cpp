@@ -40,7 +40,7 @@ protected:
         // before the destructor).
         }
 
-        typedef std::pair<std::string, size_t> FEN_depth;
+        typedef std::pair<std::string, int> FEN_depth;
 
         template<typename Board, typename Rules>
         void Run(const FEN_depth& test_case) 

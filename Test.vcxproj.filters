@@ -16,9 +16,6 @@
     <Filter Include="Source Files\generate">
       <UniqueIdentifier>{c32c176a-d5fd-4e7a-85e4-e8eb61648cbf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\utils">
-      <UniqueIdentifier>{cb134f5f-b366-4cd5-b60c-bd22e3f9803d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\search">
       <UniqueIdentifier>{46f28f37-070c-4069-a1ce-f7b5350fb5fc}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,9 @@
     </Filter>
     <Filter Include="Source Files\walk">
       <UniqueIdentifier>{3294b551-3e24-42c8-acd7-3c03f32be15d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bit">
+      <UniqueIdentifier>{4215ad7f-5ebb-48a3-9319-70a09de46ee5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,8 +54,8 @@
     <ClCompile Include="src\dxp\Parser.cpp">
       <Filter>Source Files\dxp</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\Bit.cpp">
-      <Filter>Source Files\utils</Filter>
+    <ClCompile Include="src\bit\Bit.cpp">
+      <Filter>Source Files\bit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

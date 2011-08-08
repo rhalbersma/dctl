@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../../../DCTL/src/utils/Bit.h"
+#include "../../../DCTL/src/bit/Bit.h"
 #include "../../../DCTL/src/utils/IntegerTypes.h"
 
 namespace dctl {
