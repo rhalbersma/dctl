@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>      // std::size_t
 #include "Transposition.h"
 #include "Score.h"
 #include "../node/Stack.h"
@@ -25,7 +26,7 @@ public:
 
         template<typename, typename B> static int analyze(const Position<B>&, int);
 
-        static void resize_hash(size_t);
+        static void resize_hash(std::size_t);
         static void clear_hash();
         static void interrupt();
         static bool is_interrupted();

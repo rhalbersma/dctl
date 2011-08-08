@@ -1,7 +1,7 @@
 // The remainder of this file has been copied from the output of the following main program:
 
 /*
-#include "../../DCTL/src/utils/Lookup.h"
+#include "../../DCTL/src/bit/Lookup.h"
 
 int main()
 {

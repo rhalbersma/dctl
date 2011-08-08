@@ -42,7 +42,7 @@ struct read<Board, pdn::protocol, Setup>
 
                 std::stringstream sstr(s);
                 char ch;
-                size_t sq;
+                std::size_t sq;
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch(ch) {

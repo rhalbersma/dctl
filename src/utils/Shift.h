@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 
 namespace dctl {
 
@@ -8,7 +7,7 @@ template<bool>
 struct Shift
 {
         template<typename T> 
-        T operator()(T, size_t) const;
+        T operator()(T, int) const;
 };
 
 // template function object for uniform left/right bitwise shift-assignment
@@ -16,11 +15,11 @@ template<bool>
 struct ShiftAssign
 {
         template<typename T> 
-        void operator()(T&, size_t) const;
+        void operator()(T&, int) const;
 };
 
 // template function object for uniform left/right bitwise shift
-template<typename, size_t>
+template<typename, int>
 struct Push
 {
         template<typename T> 
@@ -28,7 +27,7 @@ struct Push
 };
 
 // template function object for uniform left/right bitwise shift
-template<typename, size_t>
+template<typename, int>
 struct Pull
 {
         template<typename T> 
@@ -36,7 +35,7 @@ struct Pull
 };
 
 // template function object for uniform left/right bitwise shift-assignment
-template<typename, size_t>
+template<typename, int>
 struct PushAssign
 {
         template<typename T> 
@@ -44,14 +43,14 @@ struct PushAssign
 };
 
 // template function object for uniform left/right bitwise shift-assignment
-template<typename, size_t>
+template<typename, int>
 struct PullAssign
 {
         template<typename T> 
         void operator()(T&) const;
 };
 
-template<typename, size_t>
+template<typename, int>
 struct FloodFill
 {
         template<typename T> 

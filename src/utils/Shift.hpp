@@ -1,4 +1,4 @@
-#include "Bit.h"
+#include "../bit/Bit.h"
 #include "../board/Traits.h"
 
 namespace dctl {
@@ -10,7 +10,7 @@ template<>
 struct Shift<L>
 {
         template<typename T> 
-        T operator()(T square, size_t dir) const
+        T operator()(T square, int dir) const
         {
                 return square << dir;
         }
@@ -21,7 +21,7 @@ template<>
 struct Shift<R>
 {
         template<typename T> 
-        T operator()(T square, size_t dir) const
+        T operator()(T square, int dir) const
         {
                 return square >> dir;
         }
@@ -32,7 +32,7 @@ template<>
 struct ShiftAssign<L>
 {
         template<typename T> 
-        void operator()(T& square, size_t dir) const
+        void operator()(T& square, int dir) const
         {
                 square <<= dir;
         }
@@ -43,37 +43,37 @@ template<>
 struct ShiftAssign<R>
 {
         template<typename T> 
-        void operator()(T& square, size_t dir) const
+        void operator()(T& square, int dir) const
         {
                 square >>= dir;
         }
 };
 
-template<typename Board, size_t I> template<typename T> 
+template<typename Board, int I> template<typename T> 
 T Push<Board, I>::operator()(T square) const
 {
         return Shift<board::is_positive<I>::value>()(square, Board::SHIFT[I]);
 }
 
-template<typename Board, size_t I> template<typename T> 
+template<typename Board, int I> template<typename T> 
 T Pull<Board, I>::operator()(T square) const
 {
         return Shift<board::is_negative<I>::value>()(square, Board::SHIFT[I]);
 }
 
-template<typename Board, size_t I> template<typename T> 
+template<typename Board, int I> template<typename T> 
 void PushAssign<Board, I>::operator()(T& square) const
 {
         ShiftAssign<board::is_positive<I>::value>()(square, Board::SHIFT[I]);
 }
 
-template<typename Board, size_t I> template<typename T> 
+template<typename Board, int I> template<typename T> 
 void PullAssign<Board, I>::operator()(T& square) const
 {
         ShiftAssign<board::is_negative<I>::value>()(square, Board::SHIFT[I]);
 }
 
-template<typename Board, size_t I> template<typename T> 
+template<typename Board, int I> template<typename T> 
 T FloodFill<Board, I>::operator()(T generator, T propagator) const
 {
         return bit::flood_fill<board::is_positive<I>::value>(generator, propagator, Board::SHIFT[I]);

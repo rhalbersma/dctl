@@ -1,5 +1,5 @@
 #pragma once
-#include "IntegerTypes.h"
+#include "../utils/IntegerTypes.h"
 
 namespace dctl {
 namespace bit {

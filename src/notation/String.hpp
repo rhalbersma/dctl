@@ -1,7 +1,7 @@
 #include <iomanip>
 #include <sstream>
 #include "../node/Predicates.h"
-#include "../utils/Bit.h"
+#include "../bit/Bit.h"
 
 namespace dctl {
 namespace notation {

@@ -40,15 +40,15 @@ NodeCount Root::divide(const Position<Board>& p, int depth)
         generate::Successors<Rules, Board>::generate(p, moves);
 
         announce(p, depth, moves.size());
-        for (size_t i = 0; i < moves.size(); ++i) {
+        for (std::size_t i = 0; i < moves.size(); ++i) {
                 statistics_.reset();
                 print_move(notation::write<Rules>()(p, moves[i]), i);
 
-                Position<Board> q(p);
+                auto q(p);
                 q.attach(p);
                 q.template make<Rules>(moves[i]);
                 move_leafs = driver<Rules>(q, 0, depth - 1);
-                leafs += move_leafs;
+                leafs += move_leafs;              
                 
                 timer.split();
                 Root::report(depth - 1, move_leafs, timer);

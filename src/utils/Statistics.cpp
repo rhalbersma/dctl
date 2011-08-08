@@ -21,7 +21,7 @@ NodeCount Statistics::sum_ply() const
         return sum_ply_;
 }
 
-size_t Statistics::max_ply() const
+int Statistics::max_ply() const
 {
         return max_ply_;
 }
@@ -31,7 +31,7 @@ void Statistics::reset()
         nodes_ = sum_ply_ = max_ply_ = 0;
 }
 
-void Statistics::update(size_t ply)
+void Statistics::update(int ply)
 {
         ++nodes_;
         sum_ply_ += ply;

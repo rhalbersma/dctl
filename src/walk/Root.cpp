@@ -53,7 +53,7 @@ void Root::print_move(const std::string& move, int i)
         std::cout << std::setw(2) << (i + 1) << "." << move << " ";
 }
 
-void Root::resize_hash(size_t s)
+void Root::resize_hash(std::size_t s)
 {
         return TT.resize(s);
 }

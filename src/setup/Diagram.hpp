@@ -4,7 +4,7 @@
 #include "../node/Position.h"
 #include "../node/Material.h"
 #include "../node/Side.h"
-#include "../utils/Bit.h"
+#include "../bit/Bit.h"
 #include "../utils/IntegerTypes.h"
 
 namespace dctl {
@@ -51,7 +51,7 @@ struct diagram<Board, bits>
 {
         std::string operator()() const
         {
-                return diagram<Board, bits>()(std::bind(std::plus<size_t>(), std::placeholders::_1, 0));
+                return diagram<Board, bits>()(std::bind(std::plus<int>(), std::placeholders::_1, 0));
         }
 
         template<typename Functor>
@@ -89,7 +89,7 @@ bool is_indent_row(int sq)
 }
 
 template<typename Setup>
-std::string bit_content(const Material& p, size_t b)
+std::string bit_content(const Material& p, int b)
 {
         const BitBoard bb = BitBoard(1) << b;
 

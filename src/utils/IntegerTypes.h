@@ -1,6 +1,5 @@
 #pragma once
-#include <cstddef>
-#include <stdint.h>
+#include <cstdint>      // uint<X>_t for X = 8, 16, 32, 64
 
 namespace dctl {
 

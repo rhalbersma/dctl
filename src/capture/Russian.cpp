@@ -1,6 +1,6 @@
 #include "Russian.h"
 #include "../rules/Rules.h"
-#include "../utils/Bit.h"
+#include "../bit/Bit.h"
 
 namespace dctl {
 namespace capture {

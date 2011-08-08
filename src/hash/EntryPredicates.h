@@ -1,5 +1,5 @@
 #pragma once
-#include <functional>
+#include <functional>   // std::binary_function
 
 namespace dctl {
 namespace hash {

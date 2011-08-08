@@ -5,25 +5,25 @@ namespace dctl {
 namespace hash {
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-DualMap<Key, Value, Hash, Index, Replace>::DualMap(size_t log2_n)
+DualMap<Key, Value, Hash, Index, Replace>::DualMap(std::size_t log2_n)
 {
         resize(log2_n);
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-size_t DualMap<Key, Value, Hash, Index, Replace>::available() const
+std::size_t DualMap<Key, Value, Hash, Index, Replace>::available() const
 {
         return dual_map_[0].available() + dual_map_[1].available();
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-size_t DualMap<Key, Value, Hash, Index, Replace>::size() const
+std::size_t DualMap<Key, Value, Hash, Index, Replace>::size() const
 {
         return dual_map_[0].size() + dual_map_[1].size();
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-void DualMap<Key, Value, Hash, Index, Replace>::resize(size_t log2_n)
+void DualMap<Key, Value, Hash, Index, Replace>::resize(std::size_t log2_n)
 {
         assert(log2_n > 0);
         dual_map_[0].resize(log2_n - 1);

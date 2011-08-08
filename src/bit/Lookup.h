@@ -1,5 +1,5 @@
 #pragma once
-#include "IntegerTypes.h"
+#include <cstdint>      // uint<X>_t with X = 8, 16, 32, 64
 
 namespace dctl {
 namespace bit {

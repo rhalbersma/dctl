@@ -1,7 +1,7 @@
 #include <algorithm>    // std::generate
 #include <cassert>
 #include <iterator>     // std::back_inserter
-#include <vector>
+#include <vector>       // std::vector
 #include "../generate/Successors.h"
 #include "../utils/Iota.h"
 
@@ -104,19 +104,19 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         iota_n(std::back_inserter(move_order), moves.size(), 0);        // generate indices [0, moves.size() - 1]
 
         if (TT_entry && TT_entry->has_move()) {
-                const size_t TT_move = TT_entry->move() % moves.size();
+                const auto TT_move = TT_entry->move() % moves.size();
                 std::swap(move_order[0], move_order[TT_move]);
         }
 
         // search moves
-        int best_value = -score::infinity();
-        size_t best_move = Transposition::no_move();
+        const auto original_alpha = alpha;
+        auto best_value = -score::infinity();
+        auto best_move = Transposition::no_move();
         int value;
-        size_t i;
+        int i;
         Parameters child_node;
-        const int original_alpha = alpha;
 
-        for (size_t s = 0; s < move_order.size(); ++s) {
+        for (std::size_t s = 0; s < move_order.size(); ++s) {
                 i = move_order[s];
                 // TODO: TT singular extension
 
@@ -162,7 +162,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
 /*
 // principal variation search (PVS) with TT cut-offs, TT move ordering and IID
-template<size_t Transposition, typename Rules, typename Board>
+template<int ThisNode, typename Rules, typename Board>
 int Root::quiescence(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
@@ -212,12 +212,14 @@ int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& pare
         generate::generate(p, moves);
 
         // search moves
-        int best_value = -score::infinity();
+        auto best_value = -score::infinity();
         int value;
         Parameters child_node;
-        Position<Board> q;
-        for (size_t i = 0; i < moves.size(); ++i) {
-                q.template copy_make<Rules>(p, moves[i]);
+        for (std::size_t i = 0; i < moves.size(); ++i) {
+                auto q(p);
+                q.attach(p);
+                q.template make<Rules>(moves[i]);
+
                 value = -squeeze(negamax<Rules>(q, ply + 1, depth - 1, child_node));
 
                 if (value > best_value) {
@@ -255,12 +257,14 @@ int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, in
         generate::generate(p, moves);
 
         // search moves
-        int best_value = -score::infinity();
+        auto best_value = -score::infinity();
         int value;
         Parameters child_node;
-        Position<Board> q;
-        for (size_t i = 0; i < moves.size(); ++i) {
-                q.template copy_make<Rules>(p, moves[i]);
+        for (std::size_t i = 0; i < moves.size(); ++i) {
+                auto q(p);
+                q.attach(p);
+                q.template make<Rules>(moves[i]);
+
                 value = -squeeze(alpha_beta<Rules>(p, ply  + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
 
                 if (value > best_value) {

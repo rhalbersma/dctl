@@ -67,7 +67,7 @@ void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
 {
         auto q(p);
 
-        for (size_t i = 0; i < pv.size(); ++i) {
+        for (std::size_t i = 0; i < pv.size(); ++i) {
                 Stack move_stack;
                 generate::Successors<Rules, Board>::generate(q, move_stack);
 
@@ -90,7 +90,7 @@ void Root::print_PV(const Position<Board>& p, const Sequence& pv)
 {
         auto q(p);
 
-        for (size_t i = 0; i < pv.size(); ++i) {
+        for (std::size_t i = 0; i < pv.size(); ++i) {
                 Stack move_stack;
                 generate::Successors<Rules, Board>::generate(q, move_stack);
 

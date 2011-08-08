@@ -1,6 +1,6 @@
 #include <cassert>
 #include "../hash/Algorithms.h"
-#include "../utils/Bit.h"
+#include "../bit/Bit.h"
 #include "../rules/Rules.h"
 
 namespace dctl {

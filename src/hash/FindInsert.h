@@ -1,12 +1,11 @@
 #pragma once
-#include <cstddef>      // std::size_t
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
 namespace dctl {
 namespace hash {
 
-template<typename Key, typename Value, std::size_t N>
+template<typename Key, typename Value, int N>
 struct find_entry
 {
         // typedefs
@@ -16,7 +15,7 @@ struct find_entry
         const Value* operator()(ConstIterator, const Key&) const;
 };
 
-template<typename Key, typename Value, std::size_t N, typename Replacement>
+template<typename Key, typename Value, int N, typename Replacement>
 struct insert_entry
 {
         // typedefs

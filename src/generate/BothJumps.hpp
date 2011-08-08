@@ -45,7 +45,7 @@ void Driver<Color, Material::BOTH, Move::JUMPS, Rules, Board>::generate_precede(
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, Material::BOTH, Move::JUMPS, Rules, Board>::count(const Position<Board>& p)
+int Driver<Color, Material::BOTH, Move::JUMPS, Rules, Board>::count(const Position<Board>& p)
 {
         Stack move_stack;
         generate(p, move_stack);

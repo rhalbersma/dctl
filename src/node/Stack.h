@@ -1,6 +1,5 @@
 #pragma once
-#include <cstddef>
-#include <vector>
+#include <vector>       // std::vector
 #include "Move.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"

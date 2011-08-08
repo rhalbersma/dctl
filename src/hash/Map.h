@@ -1,6 +1,7 @@
 #pragma once
-#include <utility>
-#include <vector>
+#include <cstddef>      // std::size_t
+#include <utility>      // std::pair
+#include <vector>       // std::vector
 #include "Algorithms.h"
 #include "Replace.h"
 #include "../utils/CacheAlign.h"
@@ -23,12 +24,12 @@ class Map
 public:
         // constructors
         Map() {};
-        explicit Map(size_t);
+        explicit Map(std::size_t);
 
         // capacity
-        size_t available() const;
-        size_t size() const;
-        void resize(size_t);
+        std::size_t available() const;
+        std::size_t size() const;
+        void resize(std::size_t);
         void clear();
 
         // views
@@ -45,27 +46,27 @@ public:
 
 private:
         // tag dispatching based on the key's integer type trait
-        template<typename Item> const Value* find(const Item&, Int2Type<true >) const;
         template<typename Item> const Value* find(const Item&, Int2Type<false>) const;
+        template<typename Item> const Value* find(const Item&, Int2Type<true >) const;
 
         // tag dispatching based on the key's integer type trait
-        template<typename Item> void insert(const Item&, const Value&, Int2Type<true >);
         template<typename Item> void insert(const Item&, const Value&, Int2Type<false>);
+        template<typename Item> void insert(const Item&, const Value&, Int2Type<true >);
 
         typedef std::pair<Key, Value> Entry;
         typedef std::vector<Entry> VectorMap;
         typedef typename VectorMap::iterator map_iterator;
         typedef typename VectorMap::const_iterator const_map_iterator;
 
-        static const size_t BUCKET_SIZE = CACHE_LINE / sizeof(Entry);
-        static const size_t BUCKET_MASK = BUCKET_SIZE - 1;
+        static const std::size_t BUCKET_SIZE = CACHE_LINE / sizeof(Entry);
+        static const std::size_t BUCKET_MASK = BUCKET_SIZE - 1;
         
               map_iterator bucket_begin(Index);
         const_map_iterator bucket_begin(Index) const;
 
         // representation
         VectorMap map_;
-        size_t map_mask_;
+        std::size_t map_mask_;
 };
 
 }       // namespace hash

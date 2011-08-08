@@ -13,7 +13,7 @@ Transposition::Transposition()
 {
 }
 
-Transposition::Transposition(int v, Bound t, int d, size_t m)
+Transposition::Transposition(int v, Bound t, int d, int m)
 :
         value_(static_cast<int16_t>(v)),
         rest_(0)
@@ -45,7 +45,7 @@ int Transposition::depth() const
         return static_cast<int>((rest_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT);
 }
 
-size_t Transposition::move() const
+int Transposition::move() const
 {
         return (rest_ & (MOVE_MASK << MOVE_SHIFT)) >> MOVE_SHIFT;
 }
@@ -152,7 +152,7 @@ std::string Transposition::print_move() const
         return sstr.str();
 }
 
-void Transposition::set_move(size_t m)
+void Transposition::set_move(int m)
 {
         rest_ ^= (move() & MOVE_MASK) << MOVE_SHIFT;
         rest_ ^= (m      & MOVE_MASK) << MOVE_SHIFT;
@@ -173,7 +173,7 @@ Transposition::Bound Transposition::exact()
         return EXACT;
 }
 
-size_t Transposition::no_move()
+int Transposition::no_move()
 {
         return MOVE_MASK;
 }

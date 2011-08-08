@@ -28,7 +28,7 @@ bool Root::is_PV(int node)
         return node == PV;
 }
 
-void Root::resize_hash(size_t s)
+void Root::resize_hash(std::size_t s)
 {
         return TT.resize(s);
 }

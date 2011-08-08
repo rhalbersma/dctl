@@ -20,8 +20,8 @@ std::unique_ptr<MessageInterface> GameEnd::create(const std::string& message)
 
 GameEnd::GameEnd(const std::string& message)
 :
-        reason_(static_cast<Reason>(boost::lexical_cast<size_t>(message.substr(0, 1).c_str()))),
-        stop_code_(static_cast<StopCode>(boost::lexical_cast<size_t>(message.substr(1, 1).c_str())))
+        reason_(static_cast<Reason>(boost::lexical_cast<int>(message.substr(0, 1).c_str()))),
+        stop_code_(static_cast<StopCode>(boost::lexical_cast<int>(message.substr(1, 1).c_str())))
 {
 }
 
