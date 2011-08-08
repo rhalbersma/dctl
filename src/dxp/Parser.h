@@ -1,8 +1,8 @@
 #pragma once
-#include <map>
-#include <memory>       // std::unique_ptr
-#include <string>
-#include <boost/utility.hpp>
+#include <map>                  // std::map
+#include <memory>               // std::unique_ptr
+#include <string>               // std::string
+#include <boost/utility.hpp>    // boost::noncopyable            
 #include "MessageInterface.h"
 
 namespace dctl {

@@ -35,9 +35,9 @@ B Lookup<B>::block(T t, int i)
         return static_cast<B>(t >> (i * BITS_PER_BLOCK));
 }
 
-template<typename T> T get_first(T);		        // least significant 1-bit
-template<typename T> size_t index_DeBruijn(T);          // index of a set 1-bit
-template<typename T> size_t count_Kernighan(T);         // number of set 1-bits
+template<typename T> T get_first(T);		// least significant 1-bit
+template<typename T> int index_DeBruijn(T);     // index of a set 1-bit
+template<typename T> int count_Kernighan(T);    // number of set 1-bits
 
 template<typename B>
 void Lookup<B>::generate_index()

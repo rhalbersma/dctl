@@ -20,19 +20,19 @@ void Mix<Index>::mix(Index& index_, BitBoard b)
 }
 
 template<typename Index>
-void Mix<Index>::add_shift_L(Index& index_, size_t s, BitBoard b)
+void Mix<Index>::add_shift_L(Index& index_, int s, BitBoard b)
 {
         index_ += (b << s) - b;
 }
 
 template<typename Index>
-void Mix<Index>::add_shift_L(Index& index_, size_t s)
+void Mix<Index>::add_shift_L(Index& index_, int s)
 {
         index_ += (index_ << s);
 }
 
 template<typename Index>
-void Mix<Index>::xor_shift_R(Index& index_, size_t s)
+void Mix<Index>::xor_shift_R(Index& index_, int s)
 {
         index_ ^= (index_ >> s);
 }

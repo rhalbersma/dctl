@@ -20,7 +20,7 @@ std::unique_ptr<MessageInterface> BackAcknowledge::create(const std::string& mes
 
 BackAcknowledge::BackAcknowledge(const std::string& message)
 :
-        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(message.substr(0, 1).c_str())))
+        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(0, 1).c_str())))
 {
 }
 

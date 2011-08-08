@@ -27,7 +27,7 @@ void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate_promotio
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count(const Position<Board>& p)
+int Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count(const Position<Board>& p)
 {     
         return (
                 Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count(p) + 
@@ -36,7 +36,7 @@ size_t Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count(const Pos
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count_reverse(const Position<Board>& p)
+int Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count_reverse(const Position<Board>& p)
 {     
         return (
                 Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count_reverse(p) + 
@@ -45,7 +45,7 @@ size_t Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count_reverse(c
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count_promotions(const Position<Board>& p)
+int Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count_promotions(const Position<Board>& p)
 {     
         return (
                 Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count_promotions(p) + 

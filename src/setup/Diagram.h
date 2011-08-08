@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include <string>       // std::string
 #include "Setup.h"
 
 namespace dctl {
@@ -27,7 +27,7 @@ struct diagram
 
 template<typename> bool is_end_row(int);
 template<typename> bool is_indent_row(int);
-template<typename> std::string bit_content(const Material&, size_t);
+template<typename> std::string bit_content(const Material&, int);
 
 }       // namespace setup
 }       // namespace dctl

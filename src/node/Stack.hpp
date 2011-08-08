@@ -1,5 +1,5 @@
 #include <cassert>
-#include "../utils/Bit.h"
+#include "../bit/Bit.h"
 
 namespace dctl {
 

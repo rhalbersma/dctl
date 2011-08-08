@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 #include "TemplateMethod.h"
 #include "../node/Material.h"
 #include "../node/Side.h"
@@ -21,12 +20,12 @@ public:
         static void generate_reverse(const Position<Board>&, Stack&);
         static void generate_promotions(const Position<Board>&, Stack&);
 
-        static size_t count(const Position<Board>&);
-        static size_t count_captures(const Position<Board>&);
-        static size_t count_reverse(const Position<Board>&);
-        static size_t count_promotions(const Position<Board>&);
+        static int count(const Position<Board>&);
+        static int count_captures(const Position<Board>&);
+        static int count_reverse(const Position<Board>&);
+        static int count_promotions(const Position<Board>&);
 
-        template<bool> static size_t count_mobility(const Position<Board>&);
+        template<bool> static int count_mobility(const Position<Board>&);
 
         static bool detect(const Position<Board>&);
         static bool detect_captures(const Position<Board>&);
@@ -42,9 +41,9 @@ private:
         template<bool> static int state(const Position<Board>&);
         static int state(bool, BitBoard, BitBoard);
 
-        static bool invariant(const Position<Board>&, size_t);
-        static bool reverse_invariant(const Position<Board>&, size_t);
-        static bool promotions_invariant(const Position<Board>&, size_t);
+        static bool invariant(const Position<Board>&, int);
+        static bool reverse_invariant(const Position<Board>&, int);
+        static bool promotions_invariant(const Position<Board>&, int);
 
         // representation
         static const TemplateMethodInterface<Rules, Board>* const FACTORY[];

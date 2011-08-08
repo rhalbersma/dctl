@@ -31,31 +31,31 @@ void Successors<Rules, Board>::generate_promotions(const Position<Board>& p, Sta
 }
 
 template<typename Rules, typename Board>
-size_t Successors<Rules, Board>::count(const Position<Board>& p)
+int Successors<Rules, Board>::count(const Position<Board>& p)
 {
         return select(p)->count(p);
 }
 
 template<typename Rules, typename Board>
-size_t Successors<Rules, Board>::count_captures(const Position<Board>& p)
+int Successors<Rules, Board>::count_captures(const Position<Board>& p)
 {
         return select(p)->count_captures(p);
 }
 
 template<typename Rules, typename Board>
-size_t Successors<Rules, Board>::count_reverse(const Position<Board>& p)
+int Successors<Rules, Board>::count_reverse(const Position<Board>& p)
 {
         return select(p)->count_reverse(p);
 }
 
 template<typename Rules, typename Board>
-size_t Successors<Rules, Board>::count_promotions(const Position<Board>& p)
+int Successors<Rules, Board>::count_promotions(const Position<Board>& p)
 {
         return select(p)->count_promotions(p);
 }
 
 template<typename Rules, typename Board> template<bool Color>
-size_t Successors<Rules, Board>::count_mobility(const Position<Board>& p)
+int Successors<Rules, Board>::count_mobility(const Position<Board>& p)
 {
         return select<Color>(p)->count_mobility(p);
 }
@@ -85,19 +85,19 @@ bool Successors<Rules, Board>::detect_promotions(const Position<Board>& p)
 }
 
 template<typename Rules, typename Board>
-bool Successors<Rules, Board>::invariant(const Position<Board>& p, size_t num_moves)
+bool Successors<Rules, Board>::invariant(const Position<Board>& p, int num_moves)
 {
         return count(p) == num_moves && detect(p) == (num_moves > 0);
 }
 
 template<typename Rules, typename Board>
-bool Successors<Rules, Board>::reverse_invariant(const Position<Board>& p, size_t num_reverse)
+bool Successors<Rules, Board>::reverse_invariant(const Position<Board>& p, int num_reverse)
 {
         return count_reverse(p) == num_reverse && detect_reverse(p) == (num_reverse > 0);
 }
 
 template<typename Rules, typename Board>
-bool Successors<Rules, Board>::promotions_invariant(const Position<Board>& p, size_t num_promotions)
+bool Successors<Rules, Board>::promotions_invariant(const Position<Board>& p, int num_promotions)
 {
         return count_promotions(p) == num_promotions && detect_promotions(p) == (num_promotions > 0);
 }

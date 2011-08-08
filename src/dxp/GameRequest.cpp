@@ -29,8 +29,8 @@ GameRequest::GameRequest(const std::string& message)
 :
         name_initiator_(message.substr(2, 32)),
         color_follower_(*(message.substr(34, 1)).begin()),
-        minutes_(boost::lexical_cast<size_t>(message.substr(35, 3).c_str())),
-        moves_(boost::lexical_cast<size_t>(message.substr(38, 3).c_str())),
+        minutes_(boost::lexical_cast<int>(message.substr(35, 3).c_str())),
+        moves_(boost::lexical_cast<int>(message.substr(38, 3).c_str())),
         setup_(read_setup( *(message.substr(41, 1)).begin() ))
 {
         if (setup())
@@ -47,12 +47,12 @@ char GameRequest::color_follower() const
         return color_follower_;
 }
 
-size_t GameRequest::minutes() const
+int GameRequest::minutes() const
 {
         return minutes_;
 }
 
-size_t GameRequest::moves() const
+int GameRequest::moves() const
 {
         return moves_;
 }
@@ -67,7 +67,7 @@ const std::string& GameRequest::position() const
         return position_;
 }
 
-std::string GameRequest::str(const std::string& n, char c, size_t min, size_t mov, bool s, const std::string& p)
+std::string GameRequest::str(const std::string& n, char c, int min, int mov, bool s, const std::string& p)
 {
         return HEADER + body(n, c, min, mov, s, p);
 }
@@ -82,7 +82,7 @@ std::string GameRequest::body() const
         return body(name_initiator(), color_follower(), minutes(), moves(), setup(), position());
 }
 
-std::string GameRequest::body(const std::string& n, char c, size_t min, size_t mov, bool s, const std::string& p)
+std::string GameRequest::body(const std::string& n, char c, int min, int mov, bool s, const std::string& p)
 {
         std::stringstream sstr;
         sstr << std::setw( 2) << std::setfill('0') << PROTOCOL_VERSION;

@@ -1,7 +1,7 @@
 #include <cassert>
 #include "Restricted.h"
 #include "Side.h"
-#include "../utils/Bit.h"
+#include "../bit/Bit.h"
 
 namespace dctl {
 

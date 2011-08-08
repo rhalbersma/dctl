@@ -1,5 +1,5 @@
 #pragma once
-#include <cstddef>
+#include <cstddef>      // std::size_t
 #include "Algorithms.h"
 #include "Map.h"
 #include "Replace.h"
@@ -22,12 +22,12 @@ class DualMap
 {
 public:
         // constructors
-        explicit DualMap(size_t);
+        explicit DualMap(std::size_t);
 
         // capacity
-        size_t available() const;
-        size_t size() const;
-        void resize(size_t);
+        std::size_t available() const;
+        std::size_t size() const;
+        void resize(std::size_t);
         void clear();
 
         // views

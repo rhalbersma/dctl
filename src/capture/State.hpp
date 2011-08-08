@@ -1,7 +1,7 @@
 #include <cassert>
 #include "../node/Stack.h"
 #include "../board/Direction.h"
-#include "../utils/Bit.h"
+#include "../bit/Bit.h"
 #include "../utils/Shift.h"
 
 namespace dctl {
@@ -18,13 +18,13 @@ State<Rules, Board>::State(const Position<Board>& p)
 {
 }
 
-template<typename Rules, typename Board> template<size_t Index>
+template<typename Rules, typename Board> template<int Index>
 BitBoard State<Rules, Board>::targets() const
 {
         return remaining_targets_ & Pull<Board, Index>()(path());
 }
 
-template<typename Rules, typename Board> template<size_t Index>
+template<typename Rules, typename Board> template<int Index>
 BitBoard State<Rules, Board>::path() const
 {
         return path() & Board::JUMPABLE[Index];
@@ -204,14 +204,14 @@ void State<Rules, Board>::add_man_capture(BitBoard dest_sq, Stack& move_stack, I
 }
 
 // tag dispatching based on king halt after final capture
-template<typename Rules, typename Board> template<bool Color, size_t Index>
+template<typename Rules, typename Board> template<bool Color, int Index>
 void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Stack& move_stack)
 {
         add_king_capture<Color, Index>(dest_sq, move_stack, Int2Type<rules::king_capture_halt<Rules>::value>());
 }
 
 // partial specialization for kings that halt immediately if the final capture is a king, and slide through otherwise
-template<typename Rules, typename Board> template<bool Color, size_t Index>
+template<typename Rules, typename Board> template<bool Color, int Index>
 void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::HALT_K>)
 {
         if (king_targets_ & Pull<Board, Index>()(dest_sq))
@@ -221,7 +221,7 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Stack& move_stack, 
 }
 
 // partial specialization for kings that halt immediately after the final capture
-template<typename Rules, typename Board> template<bool Color, size_t Index>
+template<typename Rules, typename Board> template<bool Color, int Index>
 void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::HALT_1>)
 {
         const BitBoard captured_pieces = captured_targets();
@@ -230,7 +230,7 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Stack& move_stack, 
 }
 
 // partial specialization for kings that slide through after the final capture
-template<typename Rules, typename Board> template<bool Color, size_t Index>
+template<typename Rules, typename Board> template<bool Color, int Index>
 void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::HALT_N>)
 {
         assert(dest_sq & path());

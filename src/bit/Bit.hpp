@@ -54,13 +54,13 @@ T except_first(T b)
 }
 
 template<typename T>
-size_t find_first(T b)
+int find_first(T b)
 {
         return index(get_first(b));
 }
 
 template<typename T>
-size_t index(T b)
+int index(T b)
 {
 	assert(is_single(b));
         return index_DeBruijn(b);
@@ -72,19 +72,19 @@ size_t index(T b)
 //+----------------------------------------------------------------------------+
 
 template<typename T>
-size_t index_DeBruijn(T b)
+int index_DeBruijn(T b)
 {
         return DeBruijn<T>::index(b);
 }
 
 template<typename T>
-size_t index_lookup(T b)
+int index_lookup(T b)
 {
         return Lookup<uint8_t>::index(b);
 }
 
 template<typename T>
-size_t count(T b)
+int count(T b)
 {
         return count_lookup(b);        
 }
@@ -95,22 +95,22 @@ size_t count(T b)
 //+----------------------------------------------------------------------------+
 
 template<typename T>
-size_t count_Kernighan(T b)
+int count_Kernighan(T b)
 {
-        size_t count = 0;
+        int count = 0;
         for (; b; clear_first(b))
                 ++count;
         return count;
 }
 
 template<typename T>
-size_t count_lookup(T b)
+int count_lookup(T b)
 {
         return Lookup<uint8_t>::count(b);
 }
 
 template<bool Sign, typename T>
-T flood_fill(T generator, T propagator, size_t dir)
+T flood_fill(T generator, T propagator, int dir)
 {
         return fill_loop<Sign>(generator, propagator, dir);
 }
@@ -121,7 +121,7 @@ T flood_fill(T generator, T propagator, size_t dir)
 //+-------------------------------------------------------------------------------------+
 
 template<bool Sign, typename T>
-T fill_loop(T generator, T propagator, size_t dir)
+T fill_loop(T generator, T propagator, int dir)
 {
         T flood(0);
         while (generator) {

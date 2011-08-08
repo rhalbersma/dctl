@@ -132,6 +132,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\bit\Bit.h" />
+    <ClInclude Include="src\bit\Bit.hpp" />
+    <ClInclude Include="src\bit\DeBruijn.h" />
+    <ClInclude Include="src\bit\DeBruijn.hpp" />
+    <ClInclude Include="src\bit\Lookup.h" />
+    <ClInclude Include="src\bit\Lookup.hpp" />
     <ClInclude Include="src\board\Angle.h" />
     <ClInclude Include="src\board\Angle.hpp" />
     <ClInclude Include="src\board\Board.h" />
@@ -274,18 +280,10 @@
     <ClInclude Include="src\setup\String.hpp" />
     <ClInclude Include="src\setup\Token.h" />
     <ClInclude Include="src\utils\Iota.hpp" />
-    <ClInclude Include="src\utils\Lookup.h" />
-    <ClInclude Include="src\utils\Lookup.hpp" />
     <ClInclude Include="src\walk\Root.h" />
     <ClInclude Include="src\walk\Root.hpp" />
     <ClInclude Include="src\walk\Transposition.h" />
-    <ClInclude Include="src\utils\Bit.h" />
-    <ClInclude Include="src\utils\Bit.hpp" />
-    <ClInclude Include="src\utils\BitSet.h" />
-    <ClInclude Include="src\utils\BitSet.hpp" />
     <ClInclude Include="src\utils\CacheAlign.h" />
-    <ClInclude Include="src\utils\DeBruijn.h" />
-    <ClInclude Include="src\utils\DeBruijn.hpp" />
     <ClInclude Include="src\utils\IntegerTypes.h" />
     <ClInclude Include="src\utils\Ply.h" />
     <ClInclude Include="src\utils\Shift.h" />
@@ -296,6 +294,8 @@
     <ClInclude Include="src\utils\Iota.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\bit\DeBruijn.cpp" />
+    <ClCompile Include="src\bit\Lookup.cpp" />
     <ClCompile Include="src\capture\Frisian.cpp" />
     <ClCompile Include="src\capture\International.cpp" />
     <ClCompile Include="src\capture\Italian.cpp" />
@@ -322,10 +322,8 @@
     <ClCompile Include="src\search\Root.cpp" />
     <ClCompile Include="src\search\Score.cpp" />
     <ClCompile Include="src\search\Transposition.cpp" />
-    <ClCompile Include="src\utils\Lookup.cpp" />
     <ClCompile Include="src\walk\Root.cpp" />
     <ClCompile Include="src\walk\Transposition.cpp" />
-    <ClCompile Include="src\utils\DeBruijn.cpp" />
     <ClCompile Include="src\utils\Statistics.cpp" />
     <ClCompile Include="src\utils\Timer.cpp" />
   </ItemGroup>

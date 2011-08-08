@@ -21,7 +21,7 @@ std::unique_ptr<MessageInterface> GameAcknowledge::create(const std::string& mes
 GameAcknowledge::GameAcknowledge(const std::string& message)
 :
         name_follower_(message.substr(0, 32)),
-        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<size_t>(message.substr(32, 1).c_str())))
+        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(32, 1).c_str())))
 {
 }
 

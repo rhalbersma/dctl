@@ -16,7 +16,7 @@ class Driver<Color, Material::BOTH, Move::JUMPS, Rules, Board>
 {
 public:
         static void generate(const Position<Board>&, Stack&);
-        static size_t count(const Position<Board>&);
+        static int count(const Position<Board>&);
         static bool detect(const Position<Board>&);
 
 private:

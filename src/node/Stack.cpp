@@ -1,6 +1,6 @@
 #include <algorithm>    // std::find
 #include "Stack.h"
-#include "../utils/Bit.h"
+#include "../bit/Bit.h"
 
 namespace dctl {
 

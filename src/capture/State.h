@@ -21,8 +21,8 @@ public:
         explicit State(const Position<Board>&);
 
         // views
-        template<size_t> BitBoard targets() const;
-        template<size_t> BitBoard path() const;
+        template<int> BitBoard targets() const;
+        template<int> BitBoard path() const;
         BitBoard path() const;
         const Value<Rules>& current() const;
         const Value<Rules>& best() const;
@@ -45,7 +45,7 @@ public:
 
         // modifiers after a capture
         template<bool> void add_man_capture(BitBoard, Stack&);
-        template<bool, size_t> void add_king_capture(BitBoard, Stack&);
+        template<bool, int> void add_king_capture(BitBoard, Stack&);
 
 private:
         BitBoard captured_targets() const;
@@ -70,9 +70,9 @@ private:
         template<bool> void add_man_capture(BitBoard, Stack&, Int2Type<true >);
 
         // tag dispatching based on king halt after final capture
-        template<bool, size_t> void add_king_capture(BitBoard, Stack&, Int2Type<rules::HALT_K>);
-        template<bool, size_t> void add_king_capture(BitBoard, Stack&, Int2Type<rules::HALT_1>);
-        template<bool, size_t> void add_king_capture(BitBoard, Stack&, Int2Type<rules::HALT_N>);
+        template<bool, int> void add_king_capture(BitBoard, Stack&, Int2Type<rules::HALT_K>);
+        template<bool, int> void add_king_capture(BitBoard, Stack&, Int2Type<rules::HALT_1>);
+        template<bool, int> void add_king_capture(BitBoard, Stack&, Int2Type<rules::HALT_N>);
 
         // tag dispatching based on promotion condition
         template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, bool, Stack&);

@@ -35,7 +35,7 @@ template<typename> struct man_capture_directions                { enum { value =
 template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != DIRS_UP }; };
 
 // relation between initial and intermediate capture directions
-template<size_t> struct scan_directions;
+template<int> struct scan_directions;
 template<> struct scan_directions<DIRS_UP  >                    { enum { value = SCAN_UP   }; };
 template<> struct scan_directions<DIRS_DOWN>                    { enum { value = SCAN_DOWN }; };
 template<> struct scan_directions<DIRS_DIAG>                    { enum { value = SCAN_SIDE }; };

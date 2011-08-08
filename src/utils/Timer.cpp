@@ -26,7 +26,7 @@ clock_t Timer::elapsed() const
 clock_t Timer::lap() const
 {
         assert(!laps_.empty());
-        const size_t i = laps_.size() - 1;
+        const std::size_t i = laps_.size() - 1;
         return laps_[i] - laps_[i - 1];
 }
 

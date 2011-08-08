@@ -2,7 +2,7 @@
 #include "../node/Position.h"
 #include "../board/Board.h"
 #include "../board/Direction.h"
-#include "../utils/Bit.h"
+#include "../bit/Bit.h"
 #include "../utils/Shift.h"
 
 namespace dctl {
@@ -21,7 +21,7 @@ void Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate_dirs(Bit
         generate_dir<board::Direction<Color, Board>::RIGHT_UP>(active_men, not_occupied, move_stack);
 }
 
-template<bool Color, typename Rules, typename Board> template<size_t Index>
+template<bool Color, typename Rules, typename Board> template<int Index>
 void Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate_dir(BitBoard active_men, BitBoard not_occupied, Stack& move_stack)
 {
         BitBoard from_sq, dest_sq;
@@ -64,13 +64,13 @@ BitBoard Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::promotors(Bit
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count(const Position<Board>& p)
+int Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count(const Position<Board>& p)
 {
         return count_dirs(p.men(Color), not_occupied(p));
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_dirs(BitBoard active_men, BitBoard not_occupied)
+int Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
                 count_dir<board::Direction<Color, Board>::LEFT_UP >(active_men, not_occupied) +
@@ -78,20 +78,20 @@ size_t Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_dirs(BitB
         );
 }
 
-template<bool Color, typename Rules, typename Board> template<size_t Index>
-size_t Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_dir(BitBoard active_men, BitBoard not_occupied)
+template<bool Color, typename Rules, typename Board> template<int Index>
+int Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_dir(BitBoard active_men, BitBoard not_occupied)
 {
         return bit::count(active_men & Pull<Board, Index>()(not_occupied));
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_reverse(const Position<Board>& p)
+int Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_reverse(const Position<Board>& p)
 {
         return count_reverse_dirs(p.men(Color), not_occupied(p));
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_reverse_dirs(BitBoard active_men, BitBoard not_occupied)
+int Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_reverse_dirs(BitBoard active_men, BitBoard not_occupied)
 {
         return (
                 count_dir<board::Direction<Color, Board>::LEFT_DOWN >(active_men, not_occupied) +
@@ -100,7 +100,7 @@ size_t Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_reverse_d
 }
 
 template<bool Color, typename Rules, typename Board>
-size_t Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_promotions(const Position<Board>& p)
+int Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_promotions(const Position<Board>& p)
 {
         return count_dirs(promotors(p.men(Color)), not_occupied(p));
 }
@@ -120,7 +120,7 @@ bool Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::detect_dirs(BitBo
         );
 }
 
-template<bool Color, typename Rules, typename Board> template<size_t Index>
+template<bool Color, typename Rules, typename Board> template<int Index>
 bool Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::detect_dir(BitBoard active_men, BitBoard not_occupied)
 {
         return !bit::is_zero(active_men & Pull<Board, Index>()(not_occupied));

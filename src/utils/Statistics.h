@@ -10,17 +10,17 @@ public:
         // views
         NodeCount nodes() const;
         NodeCount sum_ply() const;
-        size_t max_ply() const;
+        int max_ply() const;
 
         // modifiers
         void reset();
-        void update(size_t);
+        void update(int);
 
 private:
         // representation
         NodeCount nodes_;
         NodeCount sum_ply_;
-        size_t max_ply_;
+        int max_ply_;
 };
 
 }       // namespace dctl

@@ -112,6 +112,12 @@
     <Filter Include="Header Files\capture">
       <UniqueIdentifier>{60e7e53c-3491-41d0-b210-b3402a12fb59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\bit">
+      <UniqueIdentifier>{08d76d6a-082c-408f-9dd6-5faf3ac5d47d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bit">
+      <UniqueIdentifier>{c96d595a-6610-4975-9db7-1d979f7589ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\rules\Checkers.h">
@@ -201,16 +207,7 @@
     <ClInclude Include="src\board\Transform.h">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="src\utils\Bit.h">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\BitSet.h">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\CacheAlign.h">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\DeBruijn.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\IntegerTypes.h">
@@ -227,15 +224,6 @@
     </ClInclude>
     <ClInclude Include="src\utils\Timer.h">
       <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\Bit.hpp">
-      <Filter>Source Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\BitSet.hpp">
-      <Filter>Source Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\DeBruijn.hpp">
-      <Filter>Source Files\utils</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\Shift.hpp">
       <Filter>Source Files\utils</Filter>
@@ -594,17 +582,26 @@
     <ClInclude Include="src\utils\Iota.hpp">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\utils\Lookup.h">
-      <Filter>Header Files\utils</Filter>
+    <ClInclude Include="src\bit\Lookup.h">
+      <Filter>Header Files\bit</Filter>
     </ClInclude>
-    <ClInclude Include="src\utils\Lookup.hpp">
-      <Filter>Source Files\utils</Filter>
+    <ClInclude Include="src\bit\Bit.h">
+      <Filter>Header Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bit\DeBruijn.h">
+      <Filter>Header Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bit\Lookup.hpp">
+      <Filter>Source Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bit\Bit.hpp">
+      <Filter>Source Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bit\DeBruijn.hpp">
+      <Filter>Source Files\bit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\utils\DeBruijn.cpp">
-      <Filter>Source Files\utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\Timer.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
@@ -695,8 +692,11 @@
     <ClCompile Include="src\capture\Spanish.cpp">
       <Filter>Source Files\capture</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\Lookup.cpp">
-      <Filter>Source Files\utils</Filter>
+    <ClCompile Include="src\bit\DeBruijn.cpp">
+      <Filter>Source Files\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bit\Lookup.cpp">
+      <Filter>Source Files\bit</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

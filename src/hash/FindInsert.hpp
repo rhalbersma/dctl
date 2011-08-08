@@ -6,7 +6,7 @@
 namespace dctl {
 namespace hash {
 
-template<typename Key, typename Value, size_t N>
+template<typename Key, typename Value, int N>
 const Value* find_entry<Key, Value, N>::operator()(ConstIterator bucket_begin, const Key& key) const
 {
         auto bucket_end = bucket_begin + N;
@@ -15,7 +15,7 @@ const Value* find_entry<Key, Value, N>::operator()(ConstIterator bucket_begin, c
 }
 
 // partial specialization for the following 3-stage replacement scheme
-template<typename Key, typename Value, size_t N>
+template<typename Key, typename Value, int N>
 struct insert_entry<Key, Value, N, EmptyOldUnderCutSmallestOfN>
 {
         // typedefs
@@ -47,7 +47,7 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutSmallestOfN>
 };
 
 // partial specialization for the following 3-stage replacement scheme
-template<typename Key, typename Value, size_t N>
+template<typename Key, typename Value, int N>
 struct insert_entry<Key, Value, N, EmptyOldUnderCutShallowestOfN>
 {
         // typedefs

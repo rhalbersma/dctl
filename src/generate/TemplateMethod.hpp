@@ -36,34 +36,34 @@ void TemplateMethod<Color, Material, Rules, Board>::generate_promotions(const Po
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-size_t TemplateMethod<Color, Material, Rules, Board>::count(const Position<Board>& p) const
+int TemplateMethod<Color, Material, Rules, Board>::count(const Position<Board>& p) const
 {
-        size_t num_moves = Driver<Color, Material, Move::JUMPS, Rules, Board>::count(p);
+        int num_moves = Driver<Color, Material, Move::JUMPS, Rules, Board>::count(p);
         if (!num_moves)
                 num_moves += Driver<Color, Material, Move::MOVES, Rules, Board>::count(p);
         return num_moves;
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-size_t TemplateMethod<Color, Material, Rules, Board>::count_captures(const Position<Board>& p) const
+int TemplateMethod<Color, Material, Rules, Board>::count_captures(const Position<Board>& p) const
 {
         return Driver<Color, Material, Move::JUMPS, Rules, Board>::count(p);
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-size_t TemplateMethod<Color, Material, Rules, Board>::count_reverse(const Position<Board>& p) const
+int TemplateMethod<Color, Material, Rules, Board>::count_reverse(const Position<Board>& p) const
 {
         return Driver<Color, Material, Move::MOVES, Rules, Board>::count_reverse(p);
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-size_t TemplateMethod<Color, Material, Rules, Board>::count_promotions(const Position<Board>& p) const
+int TemplateMethod<Color, Material, Rules, Board>::count_promotions(const Position<Board>& p) const
 {
         return Driver<Color, Material, Move::MOVES, Rules, Board>::count_promotions(p);
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-size_t TemplateMethod<Color, Material, Rules, Board>::count_mobility(const Position<Board>& p) const
+int TemplateMethod<Color, Material, Rules, Board>::count_mobility(const Position<Board>& p) const
 {
         return Driver<Color, Material, Move::MOVES, Rules, Board>::count(p);
 }
