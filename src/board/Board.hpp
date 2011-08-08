@@ -110,14 +110,14 @@ const BitBoard Board<Dimensions, Structure>::MAN_JUMP_GROUP[] = {
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::JUMPABLE[] = {
-        init_jumpable<B, Rotate<Int2Type<Angle::D000>, ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D045>, ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D090>, ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D135>, ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D180>, ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D225>, ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D270>, ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D315>, ANGLE>::value>::value
+        init_jumpable<B, Rotate<Int2Type<Angle::D000>, B::ANGLE>::value>::value,
+        init_jumpable<B, Rotate<Int2Type<Angle::D045>, B::ANGLE>::value>::value,
+        init_jumpable<B, Rotate<Int2Type<Angle::D090>, B::ANGLE>::value>::value,
+        init_jumpable<B, Rotate<Int2Type<Angle::D135>, B::ANGLE>::value>::value,
+        init_jumpable<B, Rotate<Int2Type<Angle::D180>, B::ANGLE>::value>::value,
+        init_jumpable<B, Rotate<Int2Type<Angle::D225>, B::ANGLE>::value>::value,
+        init_jumpable<B, Rotate<Int2Type<Angle::D270>, B::ANGLE>::value>::value,
+        init_jumpable<B, Rotate<Int2Type<Angle::D315>, B::ANGLE>::value>::value
 };
 
 template<typename Dimensions, typename Structure>

@@ -19,7 +19,7 @@ private:
         enum {
                 ROW_MIN = C? (Board::HEIGHT - 1) - ((Board::HEIGHT - Board::DMZ) / 2 - 1) : 0,
                 ROW_MAX = C? (Board::HEIGHT - 1) : (Board::HEIGHT - Board::DMZ) / 2 - 1,
-                ROW = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::row
+                ROW = Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row
         };
 
 public:
@@ -29,13 +29,13 @@ public:
 template<typename Board, bool C, int ROW, int SQ>
 struct is_row_mask
 {
-        static const bool value = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::row == (C? (Board::HEIGHT - 1) - ROW : ROW);
+        static const bool value = Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row == (C? (Board::HEIGHT - 1) - ROW : ROW);
 };
 
 template<typename Board, bool C, int COL, int SQ>
 struct is_col_mask
 {
-        static const bool value = Square2Coordinates< Square<Board::ExternalGrid, SQ> >::type::col == (C? (Board::WIDTH - 1) - COL : COL);
+        static const bool value = Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col == (C? (Board::WIDTH - 1) - COL : COL);
 };
 
 template<typename Board, int FROM, int DEST>

@@ -120,6 +120,8 @@ T flood_fill(T generator, T propagator, int dir)
 //|       http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop  |
 //+-------------------------------------------------------------------------------------+
 
+template<bool> struct Shift;
+
 template<bool Sign, typename T>
 T fill_loop(T generator, T propagator, int dir)
 {
