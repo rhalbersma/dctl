@@ -2,7 +2,7 @@
 
 namespace dctl {
 
-namespace rules { struct Czech; };
+namespace rules { struct Czech; }
 
 namespace notation {
 

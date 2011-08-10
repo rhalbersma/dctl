@@ -1,4 +1,5 @@
 #include <cassert>
+#include "Predicates.h"
 #include "../bit/Bit.h"
 #include "../rules/Rules.h"
 

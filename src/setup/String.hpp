@@ -62,14 +62,15 @@ struct read<Board, pdn::protocol, Setup>
                                 if (isdigit(ch)) {
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
-			                assert(Board::is_valid(sq - 1)); 
+                                        assert(Board::is_valid(sq - 1));
                                         auto b = Board::square2bit(sq - 1);     // convert square to bit
-			                auto bb = BitBoard(1) << b;             // create bitboard
+                                        auto bb = BitBoard(1) << b;             // create bitboard
                                         p_pieces[setup_color] ^= bb;
                                         if (setup_kings)
                                                 p_kings ^= bb;
                                 }
                                 setup_kings = false;
+                                break;
                         }
                 }
                 return Position<Board>(p_pieces[Side::BLACK], p_pieces[Side::WHITE], p_kings, p_side);
@@ -137,6 +138,7 @@ struct read<Board, dxp::protocol, Setup>
                                 break;
                         default:
                                 assert(false);
+                                break;
 		        }
                         if (isupper(ch))
                                 p_kings ^= bb;                  // king

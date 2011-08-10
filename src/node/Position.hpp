@@ -9,7 +9,7 @@ namespace dctl {
 template<typename Board>
 Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
 :
-        parent_(nullptr), 
+        parent_(NULL),
         material_(black_pieces, white_pieces, kings),
         reversible_moves_(0),
         to_move_(to_move)
@@ -215,7 +215,7 @@ BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<true>
 template<typename Board>
 const Position<Board>* grand_parent(const Position<Board>& p)
 {
-        return p.parent() ? p.parent()->parent() : nullptr;
+        return p.parent() ? p.parent()->parent() : NULL;
 }
 
 template<typename Board>

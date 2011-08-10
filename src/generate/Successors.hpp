@@ -106,13 +106,13 @@ template<typename Rules, typename Board>
 const TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
 {
         return FACTORY[state(p)];
-};
+}
 
 template<typename Rules, typename Board> template<bool Color>
 const TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
 {
         return FACTORY[state<Color>(p)];
-};
+}
 
 template<typename Rules, typename Board>
 int Successors<Rules, Board>::state(const Position<Board>& p)

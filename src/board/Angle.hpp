@@ -32,7 +32,7 @@ private:
         enum {
                 L = Rotate<Int2Type<I>, Angle::L090>::value,
                 ML = MirrorUp<L>::value,
-                RML = Rotate<Int2Type<M>, Angle::R090>::value
+                RML = Rotate<Int2Type<ML>, Angle::R090>::value
         };
 public:
         // M' == R M L

@@ -2,7 +2,7 @@
 
 namespace dctl {
 
-namespace rules { struct Thai; };
+namespace rules { struct Thai; }
 
 namespace notation {
 

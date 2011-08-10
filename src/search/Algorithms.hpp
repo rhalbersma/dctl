@@ -3,6 +3,8 @@
 #include <iterator>     // std::back_inserter
 #include <vector>       // std::vector
 #include "../generate/Successors.h"
+#include "../node/Position.h"
+#include "../node/Stack.h"
 #include "../utils/Iota.h"
 
 namespace dctl {
@@ -205,11 +207,11 @@ int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& pare
 
         // return evaluation in leaf nodes with valid move_stack
         if (depth == 0)
-                return !generate::detect<Rules>(p)? score::loss_value(0) : Evaluate::evaluate(p);
+                return !generate::Successors<Rules, Board>::detect(p)? score::loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
         Stack moves;
-        generate::generate(p, moves);
+        generate::Successors<Rules, Board>::generate(p, moves);
 
         // search moves
         auto best_value = -score::infinity();
@@ -250,11 +252,11 @@ int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, in
 
         // return evaluation in leaf nodes with valid moves
         if (depth == 0)
-                return !generate::detect<Rules>(p)? score::loss_value(0) : Evaluate::evaluate(p);
+                return !generate::Successors<Rules, Board>::detect(p)? score::loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
         Stack moves;
-        generate::generate(p, moves);
+        generate::Successors<Rules, Board>::generate(p, moves);
 
         // search moves
         auto best_value = -score::infinity();

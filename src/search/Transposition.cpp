@@ -131,6 +131,7 @@ std::string Transposition::print_bound() const
                 break;
         default:
                 assert(false);
+                break;
         }
         return sstr.str();
 }

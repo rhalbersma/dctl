@@ -3,7 +3,7 @@
 
 namespace dctl {
 
-namespace rules { struct Spanish; };
+namespace rules { struct Spanish; }
 
 namespace capture {
 
