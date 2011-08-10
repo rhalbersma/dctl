@@ -3,7 +3,7 @@
 
 namespace dctl {
 
-namespace rules { struct Frisian; };
+namespace rules { struct Frisian; }
 
 namespace capture {
 

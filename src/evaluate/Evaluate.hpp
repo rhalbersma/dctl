@@ -110,7 +110,7 @@ int Evaluate::balance(const Position<Board>& p)
 template<bool Color, typename Board>
 int Evaluate::mobility(const Position<Board>& p)
 {
-        return Weight::MOBILITY * generate::Successors<rules::International, Board>::count_mobility<Color>(p);
+        return Weight::MOBILITY * generate::Successors<rules::International, Board>::template count_mobility<Color>(p);
 }
 
 template<typename Board>

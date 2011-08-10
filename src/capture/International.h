@@ -3,7 +3,7 @@
 
 namespace dctl {
 
-namespace rules { struct International; };
+namespace rules { struct International; }
 
 namespace capture {
 

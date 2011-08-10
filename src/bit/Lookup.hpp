@@ -1,6 +1,7 @@
 #include <cassert>
 #include <iomanip>
 #include <iostream>
+#include <typeinfo>
 
 namespace dctl {
 namespace bit {
@@ -20,7 +21,7 @@ int Lookup<B>::index(T t)
 template<typename B> template<typename T>
 int Lookup<B>::count(T t)
 {
-        const auto NUM_BLOCKS = sizeof(T) / sizeof(B);
+        const int NUM_BLOCKS = sizeof(T) / sizeof(B);	// auto would give unsigned type!
         auto count = 0;
         for (auto i = 0; i < NUM_BLOCKS; ++i)
                 count += COUNT[block(t, i)];
@@ -30,7 +31,7 @@ int Lookup<B>::count(T t)
 template<typename B> template<typename T>
 B Lookup<B>::block(T t, int i)
 {
-        const auto NUM_BLOCKS = sizeof(T) / sizeof(B);
+        const int NUM_BLOCKS = sizeof(T) / sizeof(B);	// auto would give unsigned type!
         assert(i >= 0 && i < NUM_BLOCKS);
         return static_cast<B>(t >> (i * BITS_PER_BLOCK));
 }

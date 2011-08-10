@@ -3,7 +3,7 @@
 
 namespace dctl {
 
-namespace rules { struct Killer; };
+namespace rules { struct Killer; }
 
 namespace capture {
 

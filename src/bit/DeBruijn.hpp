@@ -1,5 +1,6 @@
 #include <iomanip>
 #include <iostream>
+#include <typeinfo>
 
 namespace dctl {
 namespace bit {
