@@ -1,4 +1,5 @@
 #pragma once
+#include "ValueInterface.h"
 #include "../utils/IntegerTypes.h"
 
 namespace dctl {
@@ -11,25 +12,23 @@ namespace capture {
 template<typename> class Value;
 
 template<>
-class Value<rules::Frisian>
+class Value<rules::Frisian>: public ValueInterface<rules::Frisian>
 {
 public:
         // constructors
         Value();
 
         // predicates
-        bool is_large(BitBoard) const;
         bool operator< (const Value<rules::Frisian>&) const;
         bool operator==(const Value<rules::Frisian>&) const;
 
-        // modifiers
-        void increment(BitBoard, BitBoard);
-        void decrement(BitBoard, BitBoard);
-        void toggle_with_king();
-        void toggle_promotion() {};
-
 private:
         // implementation
+        virtual bool do_is_large(BitBoard) const;
+        virtual void do_increment(BitBoard, BitBoard);
+        virtual void do_decrement(BitBoard, BitBoard);        
+        virtual void do_toggle_with_king();
+        
         static const bool TOGGLE = true;
 
         // representation

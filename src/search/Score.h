@@ -1,9 +1,8 @@
 #pragma once
-#include <string>
+#include <string>       // std::string
 
 namespace dctl {
 namespace search {
-namespace score {
 
 // predicates
 bool is_infinite(int);
@@ -26,6 +25,5 @@ int squeeze(int);
 
 std::string print(int);
 
-}       // namespace score
 }       // namespace search
 }       // namespace dctl

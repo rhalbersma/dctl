@@ -1,33 +1,33 @@
+#include <cassert>
 #include "../node/Position.h"
 
 namespace dctl {
-namespace generate {
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate(const Position<Board>& p, Stack& move_stack)
+void Successors<Rules, Board>::generate(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate(p, move_stack);
-        assert(invariant(p, move_stack.size()));
+        select(p)->generate(p, moves);
+        assert(invariant(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_captures(const Position<Board>& p, Stack& move_stack)
+void Successors<Rules, Board>::generate_captures(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_captures(p, move_stack);
+        select(p)->generate_captures(p, moves);
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_reverse(const Position<Board>& p, Stack& move_stack)
+void Successors<Rules, Board>::generate_reverse(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_reverse(p, move_stack);
-        assert(reverse_invariant(p, move_stack.size()));
+        select(p)->generate_reverse(p, moves);
+        assert(reverse_invariant(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_promotions(const Position<Board>& p, Stack& move_stack)
+void Successors<Rules, Board>::generate_promotions(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_promotions(p, move_stack);
-        assert(promotions_invariant(p, move_stack.size()));
+        select(p)->generate_promotions(p, moves);
+        assert(promotions_invariant(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
@@ -87,29 +87,38 @@ bool Successors<Rules, Board>::detect_promotions(const Position<Board>& p)
 template<typename Rules, typename Board>
 bool Successors<Rules, Board>::invariant(const Position<Board>& p, int num_moves)
 {
-        return count(p) == num_moves && detect(p) == (num_moves > 0);
+        return (
+                (count(p) == num_moves) && 
+                (detect(p) == (num_moves > 0))
+        );
 }
 
 template<typename Rules, typename Board>
 bool Successors<Rules, Board>::reverse_invariant(const Position<Board>& p, int num_reverse)
 {
-        return count_reverse(p) == num_reverse && detect_reverse(p) == (num_reverse > 0);
+        return (
+                (count_reverse(p) == num_reverse) && 
+                (detect_reverse(p) == (num_reverse > 0))
+        );
 }
 
 template<typename Rules, typename Board>
 bool Successors<Rules, Board>::promotions_invariant(const Position<Board>& p, int num_promotions)
 {
-        return count_promotions(p) == num_promotions && detect_promotions(p) == (num_promotions > 0);
+        return (
+                (count_promotions(p) == num_promotions) && 
+                (detect_promotions(p) == (num_promotions > 0))
+        );
 }
 
 template<typename Rules, typename Board>
-const TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
+const generate::TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
 {
         return FACTORY[state(p)];
 }
 
 template<typename Rules, typename Board> template<bool Color>
-const TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
+const generate::TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
 {
         return FACTORY[state<Color>(p)];
 }
@@ -137,34 +146,33 @@ int Successors<Rules, Board>::state(bool color, BitBoard kings, BitBoard men)
 }
 
 template<typename Rules, typename Board> 
-const TemplateMethodInterface<Rules, Board>* const Successors<Rules, Board>::FACTORY[] = {
+const generate::TemplateMethodInterface<Rules, Board>* const Successors<Rules, Board>::FACTORY[] = {
         &BLACK_NONE, &BLACK_PAWN, &BLACK_KING, &BLACK_BOTH, 
         &WHITE_NONE, &WHITE_PAWN, &WHITE_KING, &WHITE_BOTH
 };
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::BLACK, Material::NONE, Rules, Board> Successors<Rules, Board>::BLACK_NONE;
+const generate::TemplateMethod<Side::BLACK, Material::NONE, Rules, Board> Successors<Rules, Board>::BLACK_NONE;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::BLACK, Material::PAWN, Rules, Board> Successors<Rules, Board>::BLACK_PAWN;
+const generate::TemplateMethod<Side::BLACK, Material::PAWN, Rules, Board> Successors<Rules, Board>::BLACK_PAWN;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::BLACK, Material::KING, Rules, Board> Successors<Rules, Board>::BLACK_KING;
+const generate::TemplateMethod<Side::BLACK, Material::KING, Rules, Board> Successors<Rules, Board>::BLACK_KING;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::BLACK, Material::BOTH, Rules, Board> Successors<Rules, Board>::BLACK_BOTH;
+const generate::TemplateMethod<Side::BLACK, Material::BOTH, Rules, Board> Successors<Rules, Board>::BLACK_BOTH;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::WHITE, Material::NONE, Rules, Board> Successors<Rules, Board>::WHITE_NONE;
+const generate::TemplateMethod<Side::WHITE, Material::NONE, Rules, Board> Successors<Rules, Board>::WHITE_NONE;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::WHITE, Material::PAWN, Rules, Board> Successors<Rules, Board>::WHITE_PAWN;
+const generate::TemplateMethod<Side::WHITE, Material::PAWN, Rules, Board> Successors<Rules, Board>::WHITE_PAWN;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::WHITE, Material::KING, Rules, Board> Successors<Rules, Board>::WHITE_KING;
+const generate::TemplateMethod<Side::WHITE, Material::KING, Rules, Board> Successors<Rules, Board>::WHITE_KING;
 
 template<typename Rules, typename Board> 
-const TemplateMethod<Side::WHITE, Material::BOTH, Rules, Board> Successors<Rules, Board>::WHITE_BOTH;
+const generate::TemplateMethod<Side::WHITE, Material::BOTH, Rules, Board> Successors<Rules, Board>::WHITE_BOTH;
 
-}       // namespace generate
 }       // namespace dctl

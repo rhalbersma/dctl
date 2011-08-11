@@ -3,86 +3,84 @@
 #include "Score.h"
 #include "../utils/Ply.h"
 
-//namespace {
-
-
-//}       // namespace
-
 namespace dctl {
-const int INFINITY = SHRT_MAX;
-const int LOSS_0 = -(INFINITY - 1);
-const int LOSS_THRESHOLD = LOSS_0 + MAX_GRAFTED_PLY / 2;
-const int WIN_1 = -LOSS_0;
-const int WIN_THRESHOLD = -LOSS_THRESHOLD;
-const int DRAW = 0;
 namespace search {
 
-bool score::is_infinite(int value)
+namespace {
+        const int INFINITY = SHRT_MAX;
+        const int LOSS_0 = -(INFINITY - 1);
+        const int LOSS_THRESHOLD = LOSS_0 + MAX_GRAFTED_PLY / 2;
+        const int WIN_1 = -LOSS_0;
+        const int WIN_THRESHOLD = -LOSS_THRESHOLD;
+        const int DRAW = 0;
+}       // namespace 
+
+bool is_infinite(int value)
 {
         return !is_finite(value);
 }
 
-bool score::is_finite(int value)
+bool is_finite(int value)
 {
         return value > -infinity() && value < infinity();
 }
 
-bool score::is_mate(int value)
+bool is_mate(int value)
 {
         return is_loss(value) || is_win(value);
 }
 
-bool score::is_loss(int value)
+bool is_loss(int value)
 {
         return value < LOSS_THRESHOLD && value >= LOSS_0;
 }
 
-bool score::is_win(int value)
+bool is_win(int value)
 {
         return value > WIN_THRESHOLD && value <= WIN_1;
 }
 
-int score::infinity()
+int infinity()
 {
         return INFINITY;
 }
 
-int score::loss_value(int ply)
+int loss_value(int ply)
 {
         return LOSS_0 + ply / 2;
 }
 
-int score::win_value(int ply)
+int win_value(int ply)
 {
         return WIN_1 - ply / 2;
 }
 
-int score::loss_ply(int value)
+int loss_ply(int value)
 {
         return 2 * (value - LOSS_0);
 }
 
-int score::win_ply(int value)
+int win_ply(int value)
 {
         return 2 * (WIN_1 - value) + 1;
 }
 
-int score::draw()
+int draw()
 {
         return DRAW;
 }
 
-int score::stretch(int value)
+int stretch(int value)
 {
         return value - is_loss(value);
 }
 
-int score::squeeze(int value)
+int squeeze(int value)
 {
         return value - is_win(value);
 }
 
-std::string score::print(int value)
+std::string print(int value)
 {
         std::stringstream sstr;
 

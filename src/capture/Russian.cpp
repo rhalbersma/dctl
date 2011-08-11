@@ -11,17 +11,17 @@ Value<rules::Russian>::Value()
 {
 }
 
-bool Value<rules::Russian>::is_large(BitBoard captured_pieces) const
+bool Value<rules::Russian>::do_is_large(BitBoard captured_pieces) const
 {
         return bit::count(captured_pieces) >= rules::large_capture<rules::Russian>::value;
 }
 
-bool Value<rules::Russian>::is_promotion() const
+bool Value<rules::Russian>::do_is_promotion() const
 {
         return promotion_;
 }
 
-void Value<rules::Russian>::toggle_promotion()
+void Value<rules::Russian>::do_toggle_promotion()
 {
         promotion_ ^= TOGGLE;
 } 

@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include <string>       // std::string
 #include "Protocol.h"
 
 namespace dctl {

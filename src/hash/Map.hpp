@@ -18,11 +18,11 @@ Map<Key, Value, Hash, Index, Replace>::Map(std::size_t log2_n)
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 std::size_t Map<Key, Value, Hash, Index, Replace>::available() const
 {
-        return std::count_if(
+        return static_cast<size_t>(std::count_if(
                 map_.begin(), 
                 map_.end(), 
                 std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, Key(0))
-        );
+        ));
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
@@ -61,7 +61,7 @@ const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item) const
         return find(item, Int2Type<std::is_integral<Key>::value>());
 }
 
-// partial specialization for non-integer keys
+// partial specialization for non-integral keys
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
 const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item, Int2Type<false>) const
@@ -71,7 +71,7 @@ const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item, Int2T
         return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
 }
 
-// partial specialization for integer keys
+// partial specialization for integral keys
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
 const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item, Int2Type<true>) const
@@ -98,7 +98,7 @@ void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value
 
 // partial specialization for non-integral keys
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-template<typename Item>
+template<typename Item> 
 void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value& value, Int2Type<false>)
 {
         const auto index = Hash<Item, Index>()(item);

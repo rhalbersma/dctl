@@ -1,6 +1,6 @@
 #pragma once
-#include <deque>
-#include <string>
+#include <deque>        // std::deque
+#include <string>       // std::string
 #include <boost/asio.hpp>
 #include "Protocol.h"
 

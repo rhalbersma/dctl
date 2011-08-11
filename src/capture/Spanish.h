@@ -1,4 +1,5 @@
 #pragma once
+#include "ValueInterface.h"
 #include "../utils/IntegerTypes.h"
 
 namespace dctl {
@@ -11,24 +12,22 @@ namespace capture {
 template<typename> class Value;
 
 template<>
-class Value<rules::Spanish>
+class Value<rules::Spanish>: public ValueInterface<rules::Spanish>
 {
 public:
         // constructors
         Value();
 
         // predicates
-        bool is_large(BitBoard) const;
         bool operator< (const Value<rules::Spanish>&) const;
         bool operator==(const Value<rules::Spanish>&) const;
 
-        // modifiers
-        void increment(BitBoard, BitBoard);
-        void decrement(BitBoard, BitBoard);
-        void toggle_with_king() {};
-        void toggle_promotion() {};
-           
 private:
+        // implementation
+        virtual bool do_is_large(BitBoard) const;
+        virtual void do_increment(BitBoard, BitBoard);
+        virtual void do_decrement(BitBoard, BitBoard);        
+
         // representation
         PieceCount num_pieces_;
         PieceCount num_kings_;
