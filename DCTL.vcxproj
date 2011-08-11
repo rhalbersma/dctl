@@ -91,7 +91,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -166,6 +166,8 @@
     <ClInclude Include="src\capture\State.hpp" />
     <ClInclude Include="src\capture\Value.h" />
     <ClInclude Include="src\capture\Value.hpp" />
+    <ClInclude Include="src\capture\ValueInterface.h" />
+    <ClInclude Include="src\capture\ValueInterface.hpp" />
     <ClInclude Include="src\capture\Variants.h" />
     <ClInclude Include="src\dxp\BackAcknowledge.h" />
     <ClInclude Include="src\dxp\BackRequest.h" />
@@ -269,6 +271,8 @@
     <ClInclude Include="src\search\Root.hpp" />
     <ClInclude Include="src\search\Score.h" />
     <ClInclude Include="src\search\Transposition.h" />
+    <ClInclude Include="src\setup\Content.h" />
+    <ClInclude Include="src\setup\Content.hpp" />
     <ClInclude Include="src\setup\DXP.h" />
     <ClInclude Include="src\setup\Diagram.h" />
     <ClInclude Include="src\setup\Diagram.hpp" />

@@ -13,11 +13,6 @@ Value<rules::Italian>::Value()
 {
 }
         
-bool Value<rules::Italian>::is_large(BitBoard) const
-{
-        return num_pieces_ >= rules::large_capture<rules::Italian>::value; 
-}
-
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 bool Value<rules::Italian>::operator<(const Value<rules::Italian>& other) const
 {
@@ -53,7 +48,12 @@ bool Value<rules::Italian>::operator==(const Value<rules::Italian>& other) const
         );
 }
 
-void Value<rules::Italian>::increment(BitBoard target_sq, BitBoard king_targets)
+bool Value<rules::Italian>::do_is_large(BitBoard) const
+{
+        return num_pieces_ >= rules::large_capture<rules::Italian>::value; 
+}
+
+void Value<rules::Italian>::do_increment(BitBoard target_sq, BitBoard king_targets)
 {
         ++num_pieces_;
         if (target_sq & king_targets) {
@@ -62,7 +62,7 @@ void Value<rules::Italian>::increment(BitBoard target_sq, BitBoard king_targets)
         }
 }
 
-void Value<rules::Italian>::decrement(BitBoard target_sq, BitBoard king_targets)
+void Value<rules::Italian>::do_decrement(BitBoard target_sq, BitBoard king_targets)
 {
         if (target_sq & king_targets) {
                 piece_order_ ^= BitBoard(1) << (8 * sizeof(BitBoard) - num_pieces_);
@@ -71,7 +71,7 @@ void Value<rules::Italian>::decrement(BitBoard target_sq, BitBoard king_targets)
         --num_pieces_;
 }
 
-void Value<rules::Italian>::toggle_with_king()
+void Value<rules::Italian>::do_toggle_with_king()
 {
         with_king_ ^= TOGGLE;
 }

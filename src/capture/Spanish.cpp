@@ -11,11 +11,6 @@ Value<rules::Spanish>::Value()
 {
 }
         
-bool Value<rules::Spanish>::is_large(BitBoard) const
-{
-        return num_pieces_ >= rules::large_capture<rules::Spanish>::value; 
-}
-        
 // http://fpdamas.home.sapo.pt/regrasclass.htm
 bool Value<rules::Spanish>::operator<(const Value<rules::Spanish>& other) const
 {
@@ -37,14 +32,19 @@ bool Value<rules::Spanish>::operator==(const Value<rules::Spanish>& other) const
         );
 }
 
-void Value<rules::Spanish>::increment(BitBoard target_sq, BitBoard king_targets)
+bool Value<rules::Spanish>::do_is_large(BitBoard) const
+{
+        return num_pieces_ >= rules::large_capture<rules::Spanish>::value; 
+}
+        
+void Value<rules::Spanish>::do_increment(BitBoard target_sq, BitBoard king_targets)
 {
         ++num_pieces_;
         if (target_sq & king_targets)
                 ++num_kings_;
 }
 
-void Value<rules::Spanish>::decrement(BitBoard target_sq, BitBoard king_targets)
+void Value<rules::Spanish>::do_decrement(BitBoard target_sq, BitBoard king_targets)
 {
         if (target_sq & king_targets)
                 --num_kings_;

@@ -38,7 +38,7 @@ void Root::report(int depth, int value, const Timer& timer, const Position<Board
         std::cout << "info";
 
         std::cout << " score ";
-        std::cout << std::setw( 3) << std::right << score::print(value);
+        std::cout << std::setw( 3) << std::right << print(value);
 
         std::cout << " depth ";
         std::cout << std::setw( 2) << depth;
@@ -67,12 +67,12 @@ void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
 {
         auto q(p);
 
-        for (std::size_t i = 0; i < pv.size(); ++i) {
+        for (auto i = 0; i < static_cast<int>(pv.size()); ++i) {
                 Stack move_stack;
-                generate::Successors<Rules, Board>::generate(q, move_stack);
+                Successors<Rules, Board>::generate(q, move_stack);
 
                 TT.insert(q, Transposition(value, Transposition::exact(), pv.size() - i, pv[i]));
-                value = -score::stretch(value);
+                value = -stretch(value);
 
                 q.template make<Rules>(move_stack[pv[i]]);
         }
@@ -80,7 +80,7 @@ void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
         
         assert(
                 (value == Evaluate::evaluate(q)) || 
-                (value == score::loss_value(0) && !generate::Successors<Rules, Board>::detect(q))
+                (value == loss_value(0) && !Successors<Rules, Board>::detect(q))
                 // NOTE: with endgame databases, delayed losses can occur at the tips of the PV
         );
 }
@@ -90,14 +90,14 @@ void Root::print_PV(const Position<Board>& p, const Sequence& pv)
 {
         auto q(p);
 
-        for (std::size_t i = 0; i < pv.size(); ++i) {
-                Stack move_stack;
-                generate::Successors<Rules, Board>::generate(q, move_stack);
+        for (auto i = 0; i < static_cast<int>(pv.size()); ++i) {
+                Stack moves;
+                Successors<Rules, Board>::generate(q, moves);
 
                 if (!(i % 2))                        
                         std::cout << std::setw(2) << std::right << ((i / 2) + 1) << ". ";
-                std::cout << notation::write<Rules>()(q, move_stack[pv[i]]);
-                q.template make<Rules>(move_stack[pv[i]]);
+                std::cout << notation::write<Rules>()(q, moves[pv[i]]);
+                q.template make<Rules>(moves[pv[i]]);
                 //if (q.same_king_moves(!q.to_move()))
                         //std::cout << "^" << q.same_king_moves(!q.to_move());
                 if (i % 10 == 9)

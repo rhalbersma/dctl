@@ -13,7 +13,7 @@ void Root::report(int depth, int value, const Timer& timer)
 {
         std::cout << std::setw( 2) << std::right << depth;
 
-        std::cout << std::setw( 4) << std::right << score::print(value);
+        std::cout << std::setw( 4) << std::right << print(value);
 
         std::cout << std::setw(12) << std::right << statistics_.nodes();
 

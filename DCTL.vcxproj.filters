@@ -600,6 +600,18 @@
     <ClInclude Include="src\bit\DeBruijn.hpp">
       <Filter>Source Files\bit</Filter>
     </ClInclude>
+    <ClInclude Include="src\setup\Content.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Content.hpp">
+      <Filter>Source Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\capture\ValueInterface.h">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\capture\ValueInterface.hpp">
+      <Filter>Source Files\capture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\Timer.cpp">

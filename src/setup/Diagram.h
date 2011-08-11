@@ -5,7 +5,6 @@
 namespace dctl {
 
 template<typename> class Position;
-class Material;
 
 namespace setup {
 
@@ -14,20 +13,13 @@ template
         typename Protocol, 
         typename Setup = Setup<Protocol>
 >
-struct diagram
+class diagram
 {
-        std::string operator()() const;
-        
-        template<typename F> 
-        std::string operator()(F) const;
-
+public:
+        // the position square content
         template<typename Board> 
         std::string operator()(const Position<Board>&) const;
 };
-
-template<typename> bool is_end_row(int);
-template<typename> bool is_indent_row(int);
-template<typename> std::string bit_content(const Material&, int);
 
 }       // namespace setup
 }       // namespace dctl

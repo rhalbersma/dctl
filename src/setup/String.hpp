@@ -42,7 +42,7 @@ struct read<Board, pdn::protocol, Setup>
 
                 std::stringstream sstr(s);
                 char ch;
-                std::size_t sq;
+                int sq;
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch(ch) {
@@ -157,7 +157,7 @@ struct write<dxp::protocol, Setup>
 	        sstr << write_color<Setup>(p.active_color());		// side to move
 	        for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
 		        auto b = Board::square2bit(sq);                 // convert square to bit
-		        sstr << bit_content<Setup>(p.material(), b);    // bit content
+		        sstr << content<Setup>(p.material(), b);        // bit content
 	        }
 	        return sstr.str();
         }

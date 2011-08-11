@@ -1,47 +1,20 @@
-#include <functional>
+#include <functional>   // std::function
 #include <iomanip>
 #include <sstream>
+#include "Content.h"
 #include "../node/Position.h"
-#include "../node/Material.h"
 #include "../node/Side.h"
-#include "../bit/Bit.h"
 #include "../utils/IntegerTypes.h"
 
 namespace dctl {
 namespace setup {
 
-static const char WHITE_SPACE = ' ';
-
-struct squares {};
-
-// partial specialization to write square numbers in diagram layout
-template<typename Board>
-struct diagram<Board, squares>
+// position content in diagram layout
+template<typename Protocol, typename Setup> template<typename Board>
+std::string diagram<Protocol, Setup>::operator()(const Position<Board>& p) const
 {
-        std::string operator()() const
-        {
-                return diagram<Board, squares>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
-        }
-
-        template<typename Functor>
-        std::string operator()(Functor f) const
-        {
-	        std::stringstream sstr;
-
-                for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
-                        if (is_indent_row<Board>(sq))
-                                sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
-
-                        sstr << std::setw(2) << f(sq);                  // write square content 
-
-                        if (is_end_row<Board>(sq))
-                                sstr << std::endl;                      // start of a new row
-                        else
-                                sstr << std::setw(2) << WHITE_SPACE;    // space between squares
-                }
-                return sstr.str();
-        }
-};
+        return diagram<Board, bits>()(std::bind(content<Setup>, p.material(), std::placeholders::_1));
+}
 
 struct bits {};
 
@@ -49,11 +22,13 @@ struct bits {};
 template<typename Board>
 struct diagram<Board, bits> 
 {
+        // the board bit numbers (starting at 0)
         std::string operator()() const
         {
                 return diagram<Board, bits>()(std::bind(std::plus<int>(), std::placeholders::_1, 0));
         }
 
+        // parameterized board bit content
         template<typename Functor>
         std::string operator()(Functor f) const
         {
@@ -61,53 +36,60 @@ struct diagram<Board, bits>
         }
 };
 
-// partial specialization to write position content in diagram layout
-template<typename Protocol, typename Setup> template<typename Board>
-std::string diagram<Protocol, Setup>::operator()(const Position<Board>& p) const
-{
-        return diagram<Board, bits>()(std::bind(bit_content<Setup>, p.material(), std::placeholders::_1));
-}
+struct squares {};
 
+// partial specialization to write square numbers in diagram layout
 template<typename Board>
-bool is_end_row(int sq)
+class diagram<Board, squares>
 {
-        const auto r = sq % Board::ExternalGrid::MODULO;                // sq = MODULO * q + r 
-        const auto end_RE = r == Board::ExternalGrid::EDGE_RE;          // right of even rows
-        const auto end_RO = r == Board::ExternalGrid::EDGE_RO;          // right of odd rows
+public:
+        // the board square numbers (starting at 1)
+        std::string operator()() const
+        {
+                return diagram<Board, squares>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
+        }
+        
+        // parameterized board square content
+        template<typename Functor>
+        std::string operator()(Functor f) const
+        {
+	        std::stringstream sstr;
 
-        return end_RE || end_RO;
-}
+                for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
+                        if (is_indent_row(sq))
+                                sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 
-template<typename Board>
-bool is_indent_row(int sq)
-{
-        const auto r = sq % Board::ExternalGrid::MODULO;                // sq = MODULO * q + r 
-        const auto indent_LE = r == Board::ExternalGrid::EDGE_LE;       // left of even rows
-        const auto indent_LO = r == Board::ExternalGrid::EDGE_LO;       // left of odd rows
+                        sstr << std::setw(2) << f(sq);                  // write square content 
 
-        return Board::PARITY? indent_LO : indent_LE;
-}
+                        if (is_end_row(sq))
+                                sstr << std::endl;                      // start of a new row
+                        else
+                                sstr << std::setw(2) << WHITE_SPACE;    // space between squares
+                }
+                return sstr.str();
+        }
 
-template<typename Setup>
-std::string bit_content(const Material& p, int b)
-{
-        const BitBoard bb = BitBoard(1) << b;
+private:
+        static bool is_end_row(int sq)
+        {
+                const auto r = sq % Board::ExternalGrid::MODULO;                // sq = MODULO * q + r 
+                const auto end_RE = r == Board::ExternalGrid::EDGE_RE;          // right of even rows
+                const auto end_RO = r == Board::ExternalGrid::EDGE_RO;          // right of odd rows
 
-        std::stringstream sstr;
-        if (p.pieces(Side::BLACK) & bb) {
-                if (p.kings() & bb)
-			sstr << Setup::UPPER[Side::BLACK];      // black king
-                else
-                        sstr << Setup::LOWER[Side::BLACK];      // black man
-        } else if (p.pieces(Side::WHITE) & bb) {
-                if (p.kings() & bb)
-                        sstr << Setup::UPPER[Side::WHITE];      // white king
-                else
-                        sstr << Setup::LOWER[Side::WHITE];      // white man
-        } else
-                sstr << Setup::EMPTY;                           // empty square
-        return sstr.str();
-}
+                return end_RE || end_RO;
+        }
+
+        static bool is_indent_row(int sq)
+        {
+                const auto r = sq % Board::ExternalGrid::MODULO;                // sq = MODULO * q + r 
+                const auto indent_LE = r == Board::ExternalGrid::EDGE_LE;       // left of even rows
+                const auto indent_LO = r == Board::ExternalGrid::EDGE_LO;       // left of odd rows
+
+                return Board::PARITY? indent_LO : indent_LE;
+        }
+
+        static const char WHITE_SPACE = ' ';
+};
 
 }       // namespace setup
 }       // namespace dctl

@@ -11,12 +11,7 @@ Value<rules::Frisian>::Value()
         with_king_(false)
 {
 }
-        
-bool Value<rules::Frisian>::is_large(BitBoard) const
-{
-        return num_pieces_ >= rules::large_capture<rules::Frisian>::value; 
-}
-        
+               
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
 bool Value<rules::Frisian>::operator<(const Value<rules::Frisian>& other) const
 {
@@ -53,21 +48,26 @@ bool Value<rules::Frisian>::operator==(const Value<rules::Frisian>& other) const
         );
 }
 
-void Value<rules::Frisian>::increment(BitBoard target_sq, BitBoard king_targets)
+bool Value<rules::Frisian>::do_is_large(BitBoard) const
+{
+        return num_pieces_ >= rules::large_capture<rules::Frisian>::value; 
+}
+
+void Value<rules::Frisian>::do_increment(BitBoard target_sq, BitBoard king_targets)
 {
         ++num_pieces_;
         if (target_sq & king_targets)
                 ++num_kings_;
 }
 
-void Value<rules::Frisian>::decrement(BitBoard target_sq, BitBoard king_targets)
+void Value<rules::Frisian>::do_decrement(BitBoard target_sq, BitBoard king_targets)
 {
         if (target_sq & king_targets)
                 --num_kings_;
         --num_pieces_;
 }
 
-void Value<rules::Frisian>::toggle_with_king()
+void Value<rules::Frisian>::do_toggle_with_king()
 {
         with_king_ ^= TOGGLE;
 }

@@ -6,24 +6,24 @@ namespace dctl {
 namespace generate {
 
 template<bool Color, typename Rules, typename Board> 
-void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Stack& move_stack)
+void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
 {
-        Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate(p, move_stack);
-        Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate(p, move_stack);     
+        Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate(p, moves);
+        Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate(p, moves);     
 }
 
 template<bool Color, typename Rules, typename Board> 
-void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate_reverse(const Position<Board>& p, Stack& move_stack)
+void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate_reverse(const Position<Board>& p, Stack& moves)
 {
-        Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_reverse(p, move_stack);
-        Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate_reverse(p, move_stack);     
+        Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_reverse(p, moves);
+        Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate_reverse(p, moves);     
 }
 
 template<bool Color, typename Rules, typename Board> 
-void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate_promotions(const Position<Board>& p, Stack& move_stack)
+void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate_promotions(const Position<Board>& p, Stack& moves)
 {
-        Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_promotions(p, move_stack);
-        Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate_promotions(p, move_stack);     
+        Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_promotions(p, moves);
+        Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate_promotions(p, moves);     
 }
 
 template<bool Color, typename Rules, typename Board>

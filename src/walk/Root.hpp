@@ -37,10 +37,10 @@ NodeCount Root::divide(const Position<Board>& p, int depth)
         
         Timer timer;
         Stack moves;
-        generate::Successors<Rules, Board>::generate(p, moves);
+        Successors<Rules, Board>::generate(p, moves);
 
         announce(p, depth, moves.size());
-        for (std::size_t i = 0; i < moves.size(); ++i) {
+        for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
                 statistics_.reset();
                 print_move(notation::write<Rules>()(p, moves[i]), i);
 
@@ -73,7 +73,7 @@ NodeCount Root::leaf(const Position<Board>& p, int ply, int depth)
                 return 1;
 
         Stack moves;
-        generate::Successors<Rules, Board>::generate(p, moves);
+        Successors<Rules, Board>::generate(p, moves);
         NodeCount leafs = 0;        
         for (auto m = moves.begin(); m != moves.end(); ++m) {
                 auto q(p);
@@ -90,7 +90,7 @@ NodeCount Root::bulk(const Position<Board>& p, int ply, int depth)
         statistics_.update(ply);
 
         Stack moves;
-        generate::Successors<Rules, Board>::generate(p, moves);
+        Successors<Rules, Board>::generate(p, moves);
         if (depth == 1)
                 return moves.size();
         
@@ -110,10 +110,10 @@ NodeCount Root::count(const Position<Board>& p, int ply, int depth)
         statistics_.update(ply);
 
         if (depth == 1)
-                return generate::Successors<Rules, Board>::count(p);
+                return Successors<Rules, Board>::count(p);
 
         Stack moves;
-        generate::Successors<Rules, Board>::generate(p, moves);
+        Successors<Rules, Board>::generate(p, moves);
         NodeCount leafs = 0;
         for (auto m = moves.begin(); m != moves.end(); ++m) {
                 auto q(p);
@@ -137,7 +137,7 @@ NodeCount Root::hash(const Position<Board>& p, int ply, int depth)
                 return 1;
 
         Stack moves;
-        generate::Successors<Rules, Board>::generate(p, moves);
+        Successors<Rules, Board>::generate(p, moves);
         NodeCount leafs = 0;
         for (auto m = moves.begin(); m != moves.end(); ++m) {
                 auto q(p);
@@ -161,10 +161,10 @@ NodeCount Root::fast(const Position<Board>& p, int ply, int depth)
 
         NodeCount leafs;
         if (depth == 1)
-                leafs = generate::Successors<Rules, Board>::count(p);
+                leafs = Successors<Rules, Board>::count(p);
         else {
                 Stack moves;
-                generate::Successors<Rules, Board>::generate(p, moves);
+                Successors<Rules, Board>::generate(p, moves);
                 leafs = 0;
                 for (auto m = moves.begin(); m != moves.end(); ++m) {
                         auto q(p);

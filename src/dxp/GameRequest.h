@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>       // std::unique_ptr
-#include <string>
+#include <string>       // std::string
 #include "MessageInterface.h"
 
 namespace dctl {

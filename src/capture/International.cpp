@@ -10,11 +10,6 @@ Value<rules::International>::Value()
 {
 }
         
-bool Value<rules::International>::is_large(BitBoard) const
-{
-        return num_pieces_ >= rules::large_capture<rules::International>::value; 
-}
-
 bool Value<rules::International>::operator<(const Value<rules::International>& other) const
 {
         return num_pieces_ < other.num_pieces_;
@@ -25,12 +20,17 @@ bool Value<rules::International>::operator==(const Value<rules::International>& 
         return num_pieces_ == other.num_pieces_;
 }
 
-void Value<rules::International>::increment(BitBoard, BitBoard)
+bool Value<rules::International>::do_is_large(BitBoard) const
+{
+        return num_pieces_ >= rules::large_capture<rules::International>::value; 
+}
+
+void Value<rules::International>::do_increment(BitBoard, BitBoard)
 {
         ++num_pieces_;
 }
 
-void Value<rules::International>::decrement(BitBoard, BitBoard)
+void Value<rules::International>::do_decrement(BitBoard, BitBoard)
 {
         --num_pieces_;
 }

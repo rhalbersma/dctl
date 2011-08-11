@@ -72,7 +72,8 @@ bool Transposition::is_fail_high(int beta) const
 
 bool Transposition::is_finite() const
 {
-        return score::is_finite(value());
+        // delegate to is_finite() from the enclosing namespace scope "search"
+        return search::is_finite(value());
 }
 
 bool Transposition::has_move() const
@@ -112,7 +113,7 @@ bool Transposition::invariant() const
 
 std::string Transposition::print_value() const
 {
-        std::stringstream sstr(score::print(value()));
+        std::stringstream sstr(print(value()));
         return sstr.str();
 }
 

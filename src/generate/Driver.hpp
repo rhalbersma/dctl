@@ -1,3 +1,9 @@
+#include "BothJumps.h"
+#include "BothMoves.h"
+#include "KingJumps.h"
+#include "KingMoves.h"
+#include "PawnJumps.h"
+#include "PawnMoves.h"
 #include "../node/Material.h"
 
 namespace dctl {

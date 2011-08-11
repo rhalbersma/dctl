@@ -11,7 +11,7 @@ const Value* find_entry<Key, Value, N>::operator()(ConstIterator bucket_begin, c
 {
         auto bucket_end = bucket_begin + N;
         auto entry = std::find_if(bucket_begin, bucket_end, std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, key));
-        return (entry != bucket_end)? &(entry->second) : NULL;
+        return (entry != bucket_end)? &(entry->second) : nullptr;
 }
 
 // partial specialization for the following 3-stage replacement scheme
