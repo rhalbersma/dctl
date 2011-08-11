@@ -12,24 +12,11 @@
 #include "../../../DCTL/src/notation/String.h"
 
 namespace dctl {
-namespace generate {
 
-/*
-// Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
-TEST(MoveGeneration, ItalianBoard)
-{
-        Position<board::Roman> ITA_empty = string::read<board::Roman, pdn::protocol>()("");   // Art. 2.1
-        typedef board::Roman ITA_notation;                                      	                        // Art. 2.4
-        Position<board::Roman> ITA_initial;						                // Art. 2.6
-
-        std::cout << layout::write<pdn::protocol>()(ITA_empty) << std::endl;
-        board::Diagram<ITA_notation, board::squares>()();
-        std::cout << layout::write<pdn::protocol>()(ITA_initial) << std::endl;
-}
-*/
 TEST(Successors, Italian)
 {
-        // Test positions from the official Italian rules: http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
+        // Test positions from the official Italian rules: 
+        // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
                 "W:W30:B27",                    // Art. 5.6
                 "W:W31:B12,20,28",              // Art. 5.7
@@ -44,36 +31,35 @@ TEST(Successors, Italian)
 
         int size[] = { 1, 1, 3, 1, 1, 1, 1, 1, 2 };
 
-        std::string moves_56[] = { "30x23" };
-        std::string moves_57[] = { "31x8 " };
-        std::string moves_58[] = { "22x13", "22x15", "22x31" };
-        std::string moves_59[] = { "27x25" };
-        std::string moves_66[] = { "31x6 " };
-        std::string moves_67[] = { "23x21" };
-        std::string moves_68[] = { "23x32" };
-        std::string moves_69[] = { "30x5 " };
-        std::string moves_610[] = { "31x13", "31x15" };
+        std::string legal_56[] = { "30x23" };
+        std::string legal_57[] = { "31x8 " };
+        std::string legal_58[] = { "22x13", "22x15", "22x31" };
+        std::string legal_59[] = { "27x25" };
+        std::string legal_66[] = { "31x6 " };
+        std::string legal_67[] = { "23x21" };
+        std::string legal_68[] = { "23x32" };
+        std::string legal_69[] = { "30x5 " };
+        std::string legal_610[] = { "31x13", "31x15" };
 
-        std::string* moves[] = {
-                moves_56, moves_57, moves_58, moves_59,
-                moves_66, moves_67, moves_68, moves_69, moves_610
+        std::string* legal[] = {
+                legal_56, legal_57, legal_58, legal_59,
+                legal_66, legal_67, legal_68, legal_69, legal_610
         };
 
         for (auto i = 0; i < 9; ++i) {
-                Stack move_stack;
+                Stack moves;
                 auto p = setup::read<board::Roman, pdn::protocol>()(position[i]);
-                Successors<rules::Italian, board::Roman>::generate(p, move_stack);
+                Successors<rules::Italian, board::Roman>::generate(p, moves);
 
-                // check the number of generated moves
-                EXPECT_EQ(size[i], move_stack.size());
+                // check the number of generated legal
+                EXPECT_EQ(size[i], moves.size());
 
-                // check all generated moves
-                for (std::size_t j = 0; j < move_stack.size(); ++j) {
-                        std::string move_string = notation::write<rules::Italian>()(p, move_stack[j]);
-                        EXPECT_NE(moves[i] + size[i], std::find(moves[i], moves[i] + size[i], move_string)); 
+                // check all generated legal
+                for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
+                        std::string move_string = notation::write<rules::Italian>()(p, moves[j]);
+                        EXPECT_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string)); 
                 }
         }
 }
 
-}       // namespace generate
 }       // namespace dctl
