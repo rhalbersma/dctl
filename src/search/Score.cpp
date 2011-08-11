@@ -4,7 +4,6 @@
 
 namespace dctl {
 namespace search {
-namespace score {
 
 TEST(Score, IsFiniteLoss)
 {
@@ -15,7 +14,7 @@ TEST(Score, IsFiniteLoss)
 TEST(Score, IsNegativeLoss)
 {
         for (auto i = 0; i < MAX_GRAFTED_PLY / 2; ++i)
-                EXPECT_EQ(true, loss_value(2 * i) < 0);
+                EXPECT_LT(loss_value(2 * i), 0);
 }
 
 TEST(Score, IsLoss)
@@ -34,7 +33,7 @@ TEST(Score, IsFiniteWin)
 TEST(Score, IsPositiveWin)
 {
         for (auto i = 0; i < MAX_GRAFTED_PLY / 2; ++i)
-                EXPECT_EQ(true, win_value(2 * i + 1) > 0);
+                EXPECT_GT(win_value(2 * i + 1), 0);
 }
 
 TEST(Score, IsWin)
@@ -47,23 +46,22 @@ TEST(Score, IsWin)
 TEST(Score, IsWinEqualMinusLoss)
 {
         for (auto i = 0; i < MAX_GRAFTED_PLY / 2; ++i)
-                EXPECT_EQ(true, win_value(2 * i + 1) == -loss_value(2 * i));
+                EXPECT_EQ(win_value(2 * i + 1), -loss_value(2 * i));
 }
 
 TEST(Score, StretchLoss)
 {        
         EXPECT_EQ(true, is_infinite(stretch(loss_value(0))));
         for (auto i = 1; i < MAX_GRAFTED_PLY / 2; ++i)
-                EXPECT_EQ(true, loss_value(2 * (i - 1)) == stretch(loss_value(2 * i)));
+                EXPECT_EQ(loss_value(2 * (i - 1)), stretch(loss_value(2 * i)));
 }
 
 TEST(Score, SqueezeWin)
 {        
         for (auto i = 0; i < MAX_GRAFTED_PLY / 2; ++i)
-                EXPECT_EQ(true, win_value(2 * (i + 1) + 1) == squeeze(win_value(2 * i + 1)));
+                EXPECT_EQ(win_value(2 * (i + 1) + 1), squeeze(win_value(2 * i + 1)));
         EXPECT_EQ(false, is_win(squeeze(win_value(MAX_GRAFTED_PLY + 1))));
 }
 
-}       // namespace score
 }       // namespace search
 }       // namespace dctl

@@ -48,7 +48,7 @@ protected:
                 Root::clear_hash();
                 auto position = setup::read<Board, pdn::protocol>()(test_case.first);
                 auto value = Root::analyze<Rules>(position, test_case.second);
-                EXPECT_EQ(score::win_value(test_case.second), value);
+                EXPECT_EQ(win_value(test_case.second), value);
         }
 
         // Objects declared here can be used by all tests in the test case for SearchEndgame.                
