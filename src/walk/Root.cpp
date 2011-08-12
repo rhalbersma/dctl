@@ -4,9 +4,7 @@
 #include "../../../DCTL/src/node/Position.h"
 #include "../../../DCTL/src/board/Types.h"
 #include "../../../DCTL/src/rules/Rules.h"
-
-#include "../../../DCTL/src/setup/Diagram.h"
-#include "../../../DCTL/src/setup/String.h"
+#include "../../../DCTL/src/setup/Setup.h"
 
 namespace dctl {
 namespace walk {
@@ -46,14 +44,13 @@ protected:
 // Objects declared here can be used by all tests in the test case for Foo.
 };
 
-#if INTEGRATION_TEST == 0
+#if INTEGRATION_TEST == 1
 
 // The original perft thread on the FMJD forum 
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 TEST_F(Perft, International)
 {
-        std::cout << setup::diagram<board::International, setup::squares>()() << std::endl;
-        std::cout << setup::diagram<board::International, setup::bits>()() << std::endl;
+        std::cout << setup::diagram<board::International>()() << std::endl;
 
         auto i10 = Position<board::International>::initial();
         Root::clear_hash();
@@ -72,8 +69,7 @@ TEST_F(Perft, International)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 TEST_F(Perft, Frisian)
 {
-        std::cout << setup::diagram<board::Frisian, setup::squares>()() << std::endl;
-        std::cout << setup::diagram<board::Frisian, setup::bits>()() << std::endl;
+        std::cout << setup::diagram<board::Frisian>()() << std::endl;
 
         auto f10 = Position<board::Frisian>::initial();
         Root::clear_hash();
@@ -84,8 +80,8 @@ TEST_F(Perft, Frisian)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 TEST_F(Perft, ChessVariants)
 {
+        std::cout << setup::diagram<board::Checkers>()() << std::endl;
         auto i8 = Position<board::Checkers>::initial();
-        std::cout << setup::diagram<board::Checkers, setup::squares>()() << std::endl;
         
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
         Root::clear_hash();
@@ -106,8 +102,8 @@ TEST_F(Perft, ChessVariants)
         Root::clear_hash();
         Root::perft<rules::Czech>(i8, 13);
 
+        std::cout << setup::diagram<board::Roman>()() << std::endl;
         auto r8 = Position<board::Roman>::initial();
-        std::cout << setup::diagram<board::Roman, setup::squares>()() << std::endl;
 
         Root::clear_hash();
         Root::perft<rules::Spanish>(r8, 13);
@@ -134,22 +130,19 @@ TEST_F(Perft, ChessVariants)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=3014
 TEST_F(Perft, Rectangular)
 {
-        std::cout << setup::diagram<board::Spantsireti, setup::squares>()() << std::endl;
-        std::cout << setup::diagram<board::Spantsireti, setup::bits>()() << std::endl;
+        std::cout << setup::diagram<board::Spantsireti>()() << std::endl;
 
         auto iS = Position<board::Spantsireti>::initial();
         Root::clear_hash();
         Root::perft<rules::International>(iS, 9);
 
-        std::cout << setup::diagram<board::Ktar11, setup::squares>()() << std::endl;
-        std::cout << setup::diagram<board::Ktar11, setup::bits>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar11>()() << std::endl;
         
         auto iK11 = Position<board::Ktar11>::initial();
         Root::clear_hash();
         Root::perft<rules::International>(iK11, 9);
                 
-        std::cout << setup::diagram<board::Ktar12, setup::squares>()() << std::endl;
-        std::cout << setup::diagram<board::Ktar12, setup::bits>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar12>()() << std::endl;
         
         auto iK12 = Position<board::Ktar12>::initial();
         Root::clear_hash();
