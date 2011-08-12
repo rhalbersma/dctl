@@ -12,7 +12,10 @@ namespace dctl {
 namespace walk {
 
 // The fixture for testing class SearchEndgame.
-class Perft: public ::testing::Test {
+class Perft
+: 
+        public ::testing::Test 
+{
 protected:
         // You can remove any or all of the following functions if its body
         // is empty.
@@ -43,7 +46,7 @@ protected:
 // Objects declared here can be used by all tests in the test case for Foo.
 };
 
-#if INTEGRATION_TEST == 1
+#if INTEGRATION_TEST == 0
 
 // The original perft thread on the FMJD forum 
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
