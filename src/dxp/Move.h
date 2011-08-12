@@ -7,7 +7,9 @@
 namespace dctl {
 namespace dxp {
 
-class Move: public MessageInterface
+class Move
+: 
+        public MessageInterface
 {
 public:
         // views

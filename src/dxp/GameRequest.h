@@ -6,7 +6,9 @@
 namespace dctl {
 namespace dxp {
 
-class GameRequest: public MessageInterface
+class GameRequest
+: 
+        public MessageInterface
 {
 public:
         // views

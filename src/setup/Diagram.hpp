@@ -1,4 +1,4 @@
-#include <functional>   // std::function
+#include <functional>   // std::bind, std::placeholders
 #include <iomanip>
 #include <sstream>
 #include "Content.h"
@@ -20,8 +20,9 @@ struct bits {};
 
 // partial specialization to write bit numbers in diagram layout
 template<typename Board>
-struct diagram<Board, bits> 
+class diagram<Board, bits> 
 {
+public:
         // the board bit numbers (starting at 0)
         std::string operator()() const
         {

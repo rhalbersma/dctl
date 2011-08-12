@@ -6,7 +6,9 @@
 namespace dctl {
 namespace dxp {
 
-class BackAcknowledge: public MessageInterface
+class BackAcknowledge
+: 
+        public MessageInterface
 {
 public:
         // typedefs

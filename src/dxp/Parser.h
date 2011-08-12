@@ -9,7 +9,9 @@ namespace dctl {
 namespace dxp {
 
 template<typename Protocol>
-class Parser: private boost::noncopyable        // enforce singleton semantics
+class Parser
+: 
+        private boost::noncopyable      // enforce singleton semantics
 {
 public:
         // typedefs

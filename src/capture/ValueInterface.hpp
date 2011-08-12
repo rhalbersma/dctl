@@ -37,19 +37,6 @@ void ValueInterface<Rules>::toggle_promotion()
 {
         do_toggle_promotion();
 }
-/*
-template<typename Rules>
-bool ValueInterface<Rules>::do_is_large(BitBoard captured_pieces) const
-{
-        return bit::count(captured_pieces) >= rules::large_capture<Rules>::value;
-}
-*/
-/*
-template<typename Rules>
-bool ValueInterface<Rules>::do_is_promotion() const
-{
-        return false;
-}
-*/
+
 }       // namespace capture
 }       // namespace dctl
