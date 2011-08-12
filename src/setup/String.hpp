@@ -1,16 +1,17 @@
 #include <cctype>
 #include "Diagram.h"
+#include "Protocols.h"
 
 namespace dctl {
 namespace setup {
 
-template<typename Setup>
+template<typename Token>
 bool read_color(char c)
 {
 	switch(c) {
-	case Setup::BLACK:
+	case Token::BLACK:
 		return Side::BLACK;
-	case Setup::WHITE:
+	case Token::WHITE:
 		return Side::WHITE;
         default:
                 assert(false);
@@ -18,14 +19,14 @@ bool read_color(char c)
 	}
 }
 
-template<typename Setup>
+template<typename Token>
 char write_color(bool color)
 {
-	return Setup::COLOR[color];
+	return Token::COLOR[color];
 }
 
-template<typename Board, typename Setup>
-struct read<Board, pdn::protocol, Setup>
+template<typename Board, typename Token>
+struct read<Board, pdn::protocol, Token>
 {
         Position<Board> operator()(const std::string& s) const
         {      
@@ -46,16 +47,16 @@ struct read<Board, pdn::protocol, Setup>
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch(ch) {
-                        case Setup::BLACK:
+                        case Token::BLACK:
                                 // falling through
-                        case Setup::WHITE:
-                                p_side = read_color<Setup>(ch);
+                        case Token::WHITE:
+                                p_side = read_color<Token>(ch);
                                 break;                                
-                        case Setup::COLON:
+                        case Token::COLON:
                                 sstr >> ch;
-                                setup_color = read_color<Setup>(ch);
+                                setup_color = read_color<Token>(ch);
                                 break;
-                        case Setup::KING:                                       // setup kings
+                        case Token::KING:                                       // setup kings
                                 setup_kings = true;
                                 break;
                         default:
@@ -77,38 +78,38 @@ struct read<Board, pdn::protocol, Setup>
         }
 };
 
-template<typename Setup>
-struct write<pdn::protocol, Setup>
+template<typename Token>
+struct write<pdn::protocol, Token>
 {
         template<typename Board>
         std::string operator()(const Position<Board>& p) const
         {
                 std::stringstream sstr;
-	        sstr << Setup::QUOTE;					        // opening quotes
-	        sstr << write_color<Setup>(p.active_color());			// side to move
+	        sstr << Token::QUOTE;					        // opening quotes
+	        sstr << write_color<Token>(p.active_color());			// side to move
 
                 for (auto i = 0; i < 2; ++i) {
 		        auto c = i != 0;
 		        if (p.pieces(c)) {
-			        sstr << Setup::COLON;                           // colon
-			        sstr << Setup::COLOR[c];                        // color tag
+			        sstr << Token::COLON;                           // colon
+			        sstr << Token::COLOR[c];                        // color tag
 		        }
 		        for (auto bb = p.pieces(c); bb; bit::clear_first(bb)) {
 			        if (p.kings() & bit::get_first(bb))
-				        sstr << Setup::KING;			// king tag
+				        sstr << Token::KING;			// king tag
                                 auto b = bit::find_first(bb);                   // bit index                        
 			        sstr << Board::bit2square(b) + 1;	        // square number
 			        if (bit::is_multiple(bb))                       // still pieces remaining
-				        sstr << Setup::COMMA;			// comma separator
+				        sstr << Token::COMMA;			// comma separator
 		        }
 	        }
-	        sstr << Setup::QUOTE;						// closing quotes
+	        sstr << Token::QUOTE;						// closing quotes
 	        return sstr.str();
         }
 };
 
-template<typename Board, typename Setup>
-struct read<Board, dxp::protocol, Setup>
+template<typename Board, typename Token>
+struct read<Board, dxp::protocol, Token>
 {
         Position<Board> operator()(const std::string& s) const
         {
@@ -121,20 +122,20 @@ struct read<Board, dxp::protocol, Setup>
 	        std::stringstream sstr(s);
 	        char ch;
 	        sstr >> ch;
-                p_side = read_color<Setup>(ch);
+                p_side = read_color<Token>(ch);
 
                 for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
                         auto b = Board::square2bit(sq);         // convert square to bit
 		        auto bb = BitBoard(1) << b;             // create bitboard
 		        sstr >> ch;
 		        switch(toupper(ch)) {
-		        case Setup::BLACK:			
+		        case Token::BLACK:			
 			        p_pieces[Side::BLACK] ^= bb;    // black piece
 			        break;
-		        case Setup::WHITE:			
+		        case Token::WHITE:			
 			        p_pieces[Side::WHITE] ^= bb;    // white piece
 			        break;
-                        case Setup::EMPTY:
+                        case Token::EMPTY:
                                 break;
                         default:
                                 assert(false);
@@ -147,17 +148,17 @@ struct read<Board, dxp::protocol, Setup>
         }
 };
 
-template<typename Setup>
-struct write<dxp::protocol, Setup>
+template<typename Token>
+struct write<dxp::protocol, Token>
 {
         template<typename Board>
         std::string operator()(const Position<Board>& p) const
         {
 	        std::stringstream sstr;
-	        sstr << write_color<Setup>(p.active_color());		// side to move
+	        sstr << write_color<Token>(p.active_color());		// side to move
 	        for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
 		        auto b = Board::square2bit(sq);                 // convert square to bit
-		        sstr << content<Setup>(p.material(), b);        // bit content
+		        sstr << content<Token>(p.material(), b);        // bit content
 	        }
 	        return sstr.str();
         }

@@ -1,6 +1,4 @@
 #include "Parameters.h"
-#include <algorithm>    // std::copy
-#include <iterator>
 
 namespace dctl {
 namespace search {

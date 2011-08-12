@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Setup.h"
+#include "Token.h"
 
 namespace dctl {
 
@@ -12,7 +12,7 @@ template
 <
         typename Board,
         typename Protocol, 
-        typename Setup = Setup<Protocol>
+        typename Content = typename Token<Protocol>::type
 >
 struct read
 {
@@ -22,7 +22,7 @@ struct read
 template
 <
         typename Protocol, 
-        typename Setup = Setup<Protocol>
+        typename Content = typename Token<Protocol>::type
 >
 struct write
 {

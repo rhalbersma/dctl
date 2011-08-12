@@ -1,10 +1,3 @@
 #pragma once
+#include "Methods.h"
 #include "Protocols.h"
-
-namespace dctl {
-namespace setup {
-
-template<typename> struct Setup;
-
-}       // namespace setup
-}       // namespace dctl

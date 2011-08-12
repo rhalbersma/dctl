@@ -167,7 +167,6 @@
     <ClInclude Include="src\capture\Value.h" />
     <ClInclude Include="src\capture\Value.hpp" />
     <ClInclude Include="src\capture\ValueInterface.h" />
-    <ClInclude Include="src\capture\ValueInterface.hpp" />
     <ClInclude Include="src\capture\Variants.h" />
     <ClInclude Include="src\dxp\BackAcknowledge.h" />
     <ClInclude Include="src\dxp\BackRequest.h" />
@@ -276,13 +275,15 @@
     <ClInclude Include="src\setup\DXP.h" />
     <ClInclude Include="src\setup\Diagram.h" />
     <ClInclude Include="src\setup\Diagram.hpp" />
+    <ClInclude Include="src\setup\Methods.h" />
+    <ClInclude Include="src\setup\Numbers.h" />
     <ClInclude Include="src\setup\PDN.h" />
     <ClInclude Include="src\setup\Protocols.h" />
     <ClInclude Include="src\setup\Setup.h" />
+    <ClInclude Include="src\setup\Token.h" />
     <ClInclude Include="src\setup\Token.hpp" />
     <ClInclude Include="src\setup\String.h" />
     <ClInclude Include="src\setup\String.hpp" />
-    <ClInclude Include="src\setup\Token.h" />
     <ClInclude Include="src\utils\Iota.hpp" />
     <ClInclude Include="src\walk\Root.h" />
     <ClInclude Include="src\walk\Root.hpp" />
@@ -306,6 +307,7 @@
     <ClCompile Include="src\capture\Killer.cpp" />
     <ClCompile Include="src\capture\Russian.cpp" />
     <ClCompile Include="src\capture\Spanish.cpp" />
+    <ClCompile Include="src\capture\ValueInterface.cpp" />
     <ClCompile Include="src\dxp\BackAcknowledge.cpp" />
     <ClCompile Include="src\dxp\BackRequest.cpp" />
     <ClCompile Include="src\dxp\Chat.cpp" />

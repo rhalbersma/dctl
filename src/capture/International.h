@@ -14,7 +14,7 @@ template<typename> class Value;
 template<>
 class Value<rules::International>
 : 
-        public ValueInterface<rules::International>
+        public ValueInterface
 {
 public:
         // constructors

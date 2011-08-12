@@ -1,7 +1,8 @@
 #include <functional>   // std::bind, std::placeholders
-#include <iomanip>
-#include <sstream>
+#include <iomanip>      // std::setw
+#include <sstream>      // std::stringstream
 #include "Content.h"
+#include "Numbers.h"
 #include "../node/Position.h"
 #include "../node/Side.h"
 #include "../utils/IntegerTypes.h"
@@ -10,13 +11,11 @@ namespace dctl {
 namespace setup {
 
 // position content in diagram layout
-template<typename Protocol, typename Setup> template<typename Board>
-std::string diagram<Protocol, Setup>::operator()(const Position<Board>& p) const
+template<typename Protocol, typename Content> template<typename Board>
+std::string diagram<Protocol, Content>::operator()(const Position<Board>& p) const
 {
-        return diagram<Board, bits>()(std::bind(content<Setup>, p.material(), std::placeholders::_1));
+        return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
 }
-
-struct bits {};
 
 // partial specialization to write bit numbers in diagram layout
 template<typename Board>
@@ -36,8 +35,6 @@ public:
 	        return diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
         }
 };
-
-struct squares {};
 
 // partial specialization to write square numbers in diagram layout
 template<typename Board>
