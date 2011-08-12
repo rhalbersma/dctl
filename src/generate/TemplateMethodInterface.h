@@ -11,6 +11,9 @@ template<typename Rules, typename Board>
 class TemplateMethodInterface
 {
 public:
+        // virtual destructor
+        virtual ~TemplateMethodInterface() {};
+
         // interface
         virtual void generate(const Position<Board>&, Stack&) const = 0;
         virtual void generate_captures(const Position<Board>&, Stack&) const = 0;
@@ -27,9 +30,6 @@ public:
         virtual bool detect_captures(const Position<Board>&) const = 0;
         virtual bool detect_reverse(const Position<Board>&) const = 0;        
         virtual bool detect_promotions(const Position<Board>&) const = 0;
-
-        // virtual destructor
-        virtual ~TemplateMethodInterface() {};
 };
 
 }       // namespace generate

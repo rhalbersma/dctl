@@ -7,13 +7,10 @@ namespace dxp { struct protocol; }
 
 namespace setup {
 
-// forward declaration of the primary template
-template<typename> struct Setup;
-
 template<>
-struct Setup<dxp::protocol>
+struct TokenSet<dxp::protocol>
 : 
-        public Token<'Z', 'W', 'e'> 
+        public TokenSetBase<'Z', 'W', 'e'> 
 {
 };
 

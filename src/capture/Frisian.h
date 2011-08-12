@@ -14,7 +14,7 @@ template<typename> class Value;
 template<>
 class Value<rules::Frisian>
 : 
-        public ValueInterface<rules::Frisian>
+        public ValueInterface
 {
 public:
         // constructors

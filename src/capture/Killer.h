@@ -14,7 +14,7 @@ template<typename> class Value;
 template<>
 class Value<rules::Killer>
 : 
-        public ValueInterface<rules::Killer>
+        public ValueInterface
 {
 public:
         // constructors

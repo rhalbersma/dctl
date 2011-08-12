@@ -7,13 +7,10 @@ namespace pdn { struct protocol; }
 
 namespace setup {
 
-// forward declaration of the primary template
-template<typename> struct Setup;
-
 template<>
-struct Setup<pdn::protocol>
+struct TokenSet<pdn::protocol>
 : 
-        public Token<'B', 'W', '.'>
+        public TokenSetBase<'B', 'W', '.'>
 {
         static const char KING  = 'K';
         static const char COLON = ':';

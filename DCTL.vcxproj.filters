@@ -444,9 +444,6 @@
     <ClInclude Include="src\notation\String.hpp">
       <Filter>Source Files\notation</Filter>
     </ClInclude>
-    <ClInclude Include="src\setup\Setup.h">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
     <ClInclude Include="src\setup\String.h">
       <Filter>Header Files\setup</Filter>
     </ClInclude>
@@ -534,12 +531,6 @@
     <ClInclude Include="src\setup\PDN.h">
       <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="src\setup\Token.h">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="src\setup\Token.hpp">
-      <Filter>Source Files\setup</Filter>
-    </ClInclude>
     <ClInclude Include="src\setup\Protocols.h">
       <Filter>Header Files\setup</Filter>
     </ClInclude>
@@ -609,8 +600,20 @@
     <ClInclude Include="src\capture\ValueInterface.h">
       <Filter>Header Files\capture</Filter>
     </ClInclude>
-    <ClInclude Include="src\capture\ValueInterface.hpp">
-      <Filter>Source Files\capture</Filter>
+    <ClInclude Include="src\setup\Token.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Setup.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Token.hpp">
+      <Filter>Source Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Methods.h">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\setup\Numbers.h">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -709,6 +712,9 @@
     </ClCompile>
     <ClCompile Include="src\bit\Lookup.cpp">
       <Filter>Source Files\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\capture\ValueInterface.cpp">
+      <Filter>Source Files\capture</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

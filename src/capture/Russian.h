@@ -1,6 +1,5 @@
 #pragma once
 #include "ValueInterface.h"
-#include "../utils/IntegerTypes.h"
 
 namespace dctl {
 
@@ -14,7 +13,7 @@ template<typename> class Value;
 template<>
 class Value<rules::Russian>
 : 
-        public ValueInterface<rules::Russian>
+        public ValueInterface
 {
 public:
         // constructors

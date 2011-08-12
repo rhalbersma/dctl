@@ -14,6 +14,7 @@ class TemplateMethod
         public TemplateMethodInterface<Rules, Board>
 {
 public:		
+        // constructors
         TemplateMethod() {};
 
         virtual void generate(const Position<Board>&, Stack&) const;

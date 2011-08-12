@@ -2,9 +2,15 @@ namespace dctl {
 namespace capture {
 
 template<typename Rules>
+bool Value<Rules>::do_is_large(BitBoard captured_pieces) const 
+{ 
+        return bit::count(captured_pieces) >= rules::large_capture<Rules>::value; 
+}
+
+template<typename Rules>
 bool operator<(const Value<Rules>&, const Value<Rules>&)
 {
-        // MUST be overriden for Rules instantiations with capture precedence semantics
+        // MUST be overriden for derived classes that implement capture precedence semantics
         return false;
 }
 

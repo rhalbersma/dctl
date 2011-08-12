@@ -1,6 +1,6 @@
 #pragma once
 #include <string>       // std::string
-#include "Setup.h"
+#include "Token.h"
 
 namespace dctl {
 
@@ -11,7 +11,7 @@ namespace setup {
 template
 <
         typename Protocol, 
-        typename Setup = Setup<Protocol>
+        typename Content = typename Token<Protocol>::type
 >
 class diagram
 {

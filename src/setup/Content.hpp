@@ -1,10 +1,9 @@
-#include "Setup.h"
 #include "../node/Material.h"
 
 namespace dctl {
 namespace setup {
 
-template<typename Setup>
+template<typename Token>
 std::string content(const Material& p, int b)
 {
         const BitBoard bb = BitBoard(1) << b;
@@ -12,16 +11,16 @@ std::string content(const Material& p, int b)
         std::stringstream sstr;
         if (p.pieces(Side::BLACK) & bb) {
                 if (p.kings() & bb)
-			sstr << Setup::UPPER[Side::BLACK];      // black king
+			sstr << Token::UPPER[Side::BLACK];      // black king
                 else
-                        sstr << Setup::LOWER[Side::BLACK];      // black man
+                        sstr << Token::LOWER[Side::BLACK];      // black man
         } else if (p.pieces(Side::WHITE) & bb) {
                 if (p.kings() & bb)
-                        sstr << Setup::UPPER[Side::WHITE];      // white king
+                        sstr << Token::UPPER[Side::WHITE];      // white king
                 else
-                        sstr << Setup::LOWER[Side::WHITE];      // white man
+                        sstr << Token::LOWER[Side::WHITE];      // white man
         } else
-                sstr << Setup::EMPTY;                           // empty square
+                sstr << Token::EMPTY;                           // empty square
         return sstr.str();
 }
 
