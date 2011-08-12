@@ -9,7 +9,9 @@ template<typename> class Position;
 namespace generate {
 
 template<bool Color, int Material, typename Rules, typename Board> 
-class TemplateMethod: public TemplateMethodInterface<Rules, Board>
+class TemplateMethod
+: 
+        public TemplateMethodInterface<Rules, Board>
 {
 public:		
         TemplateMethod() {};

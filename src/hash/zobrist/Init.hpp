@@ -11,13 +11,15 @@ namespace zobrist {
 
 // partial specialization for ab initio hashing of positions
 template<typename Board, typename Index>
-struct Init<Position<Board>, Index>: public std::unary_function<Position<Board>, Index>
+struct Init<Position<Board>, Index>
+: 
+        public std::unary_function<Position<Board>, Index>
 {
         Index operator()(const Position<Board>& p) const
         {
                 return (
-                        Init<Material  , Index>()(p.material())         ^
-                        Init<bool      , Index>()(p.active_color())     ^
+                        Init<Material  , Index>()(p.material())     ^
+                        Init<bool      , Index>()(p.active_color()) ^
                         Init<Restricted, Index>()(p.restricted())
                 );
         }
@@ -25,7 +27,9 @@ struct Init<Position<Board>, Index>: public std::unary_function<Position<Board>,
 
 // partial specialization for ab initio hashing of moves
 template<typename Index>
-struct Init<Move, Index>: public std::unary_function<Move, Index>
+struct Init<Move, Index>
+: 
+        public std::unary_function<Move, Index>
 {
         Index operator()(const Move& m) const
         {
@@ -38,7 +42,9 @@ struct Init<Move, Index>: public std::unary_function<Move, Index>
 
 // partial specialization for ab initio hashing of material
 template<typename Index>
-struct Init<Material, Index>: public std::unary_function<Material, Index>
+struct Init<Material, Index>
+: 
+        public std::unary_function<Material, Index>
 {
         Index operator()(const Material& p) const
         {
@@ -52,7 +58,9 @@ struct Init<Material, Index>: public std::unary_function<Material, Index>
 
 // partial specialization for ab initio hashing of side to move
 template<typename Index>
-struct Init<bool, Index>: public std::unary_function<bool, Index>
+struct Init<bool, Index>
+: 
+        public std::unary_function<bool, Index>
 {
         Index operator()(bool to_move) const
         {
@@ -62,7 +70,9 @@ struct Init<bool, Index>: public std::unary_function<bool, Index>
 
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
-struct Init<Restricted, Index>: public std::unary_function<Restricted, Index>
+struct Init<Restricted, Index>
+: 
+        public std::unary_function<Restricted, Index>
 {               
         Index operator()(const Restricted& restricted) const
         {
@@ -75,7 +85,9 @@ struct Init<Restricted, Index>: public std::unary_function<Restricted, Index>
 
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
-struct Init<KingMoves, Index>: public std::binary_function<KingMoves, bool, Index>
+struct Init<KingMoves, Index>
+: 
+        public std::binary_function<KingMoves, bool, Index>
 {               
         Index operator()(const KingMoves& restricted, bool color) const
         {

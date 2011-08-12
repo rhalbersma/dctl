@@ -6,7 +6,9 @@ namespace hash {
 namespace jenkins {
 
 template<typename Key, typename Index>
-struct Init: public std::unary_function<Key, Index>
+struct Init
+: 
+        public std::unary_function<Key, Index>
 {
         Index operator()(const Key&) const;
 };

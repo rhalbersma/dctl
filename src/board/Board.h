@@ -12,7 +12,10 @@ template
         typename Dimensions,                                    // height, width and parity
         typename Structure = Structure<>                        // DMZ, ghosts and internal rotation
 >
-class Board: public Dimensions, public Structure
+class Board
+: 
+        public Dimensions, 
+        public Structure
 {
 public:
         // reflection on template parameters

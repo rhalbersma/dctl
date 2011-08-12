@@ -7,7 +7,9 @@ namespace hash {
 namespace jenkins {
 
 template<typename Board, typename Index>
-struct Init<Position<Board>, Index>: public std::unary_function<Position<Board>, Index>
+struct Init<Position<Board>, Index>
+: 
+        public std::unary_function<Position<Board>, Index>
 {
         Index operator()(const Position<Board>& p) const
         {

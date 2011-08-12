@@ -7,7 +7,11 @@ namespace dctl {
 namespace capture {
 
 template<typename Rules>
-class Value: public ValueInterface<Rules> {};
+class Value
+: 
+        public ValueInterface<Rules> 
+{
+};
 
 template<typename Rules> bool operator< (const Value<Rules>&, const Value<Rules>&);
 template<typename Rules> bool operator> (const Value<Rules>&, const Value<Rules>&);

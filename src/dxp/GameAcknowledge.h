@@ -6,7 +6,9 @@
 namespace dctl {
 namespace dxp {
 
-class GameAcknowledge: public MessageInterface
+class GameAcknowledge
+: 
+        public MessageInterface
 {
 public:
         // typedefs

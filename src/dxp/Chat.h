@@ -6,7 +6,9 @@
 namespace dctl {
 namespace dxp {
 
-class Chat: public MessageInterface
+class Chat
+: 
+        public MessageInterface
 {
 public:
         // views

@@ -8,7 +8,9 @@ template
         typename Dimensions,    // dimensions
         int GHOST = 0           // ghost columns
 >
-class Grid: public Dimensions
+class Grid
+: 
+        public Dimensions
 {
 public:
         typedef Grid<Dimensions> BaseGrid;
@@ -44,7 +46,9 @@ public:
 
 // partial specialization for grids without ghost columns
 template<typename Dimensions>
-class Grid<Dimensions, 0>: public Dimensions
+class Grid<Dimensions, 0>
+: 
+        public Dimensions
 {
 private:
         enum {

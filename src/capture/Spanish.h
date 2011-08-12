@@ -12,7 +12,9 @@ namespace capture {
 template<typename> class Value;
 
 template<>
-class Value<rules::Spanish>: public ValueInterface<rules::Spanish>
+class Value<rules::Spanish>
+: 
+        public ValueInterface<rules::Spanish>
 {
 public:
         // constructors

@@ -6,7 +6,9 @@
 namespace dctl {
 namespace dxp {
 
-class BackRequest: public MessageInterface
+class BackRequest
+: 
+        public MessageInterface
 {
 public:
         // views
