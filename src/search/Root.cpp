@@ -12,7 +12,10 @@ namespace dctl {
 namespace search {
 
 // The fixture for testing class SearchEndgame.
-class SearchEndgame: public ::testing::Test {
+class SearchEndgame
+: 
+        public ::testing::Test 
+{
 protected:
         // You can remove any or all of the following functions if its body
         // is empty.

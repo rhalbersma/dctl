@@ -7,7 +7,10 @@ namespace bit {
 
 // The fixture for testing class SearchEndgame.
 template<typename T>
-class Bit: public ::testing::Test {
+class Bit
+: 
+        public ::testing::Test 
+{
 protected:
         // You can remove any or all of the following functions if its body
         // is empty.
