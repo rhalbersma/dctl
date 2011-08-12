@@ -5,8 +5,7 @@
 #include "../../../DCTL/src/node/Position.h"
 #include "../../../DCTL/src/board/Types.h"
 #include "../../../DCTL/src/rules/Rules.h"
-
-#include "../../../DCTL/src/setup/String.h"
+#include "../../../DCTL/src/setup/Setup.h"
 
 namespace dctl {
 namespace search {

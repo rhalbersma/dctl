@@ -2,8 +2,7 @@
 #include <string>
 #include "gtest/gtest.h"
 #include "../../../DCTL/src/board/Types.h"
-#include "../../../DCTL/src/setup/Diagram.h"
-#include "../../../DCTL/src/setup/String.h"
+#include "../../../DCTL/src/setup/Setup.h"
 
 namespace dctl {
 namespace setup {
@@ -29,7 +28,7 @@ TEST(Setup, Wieger)
         auto pos_w = setup::read<
                 board::International, 
                 dxp::protocol, 
-                setup::Token<'X', 'O', '.'> 
+                setup::TokenSetBase<'X', 'O', '.'> 
         >()(w);
 
         // write the above position as a diagram and a FEN string using the PDN protocol
