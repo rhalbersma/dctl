@@ -5,7 +5,7 @@ namespace dctl {
 
 template<typename> class Position;
 
-namespace generate {
+namespace successors {
 
 template<bool, int, int, typename Rules, typename Board>
 class Driver
@@ -24,8 +24,8 @@ public:
         static bool detect_promotions(const Position<Board>&);
 };
 
-}       // namespace generate
+}       // namespace successors
 }       // namespace dctl
 
-// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+// include template definitions inside header
 #include "Driver.hpp"

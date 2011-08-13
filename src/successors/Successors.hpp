@@ -1,4 +1,5 @@
 #include <cassert>
+#include "Generate.h"
 #include "../node/Position.h"
 
 namespace dctl {
@@ -112,15 +113,15 @@ bool Successors<Rules, Board>::promotions_invariant(const Position<Board>& p, in
 }
 
 template<typename Rules, typename Board>
-const generate::TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
+const successors::GenerateInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
 {
-        return FACTORY[state(p)];
+        return instance()[state(p)];
 }
 
 template<typename Rules, typename Board> template<bool Color>
-const generate::TemplateMethodInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
+const successors::GenerateInterface<Rules, Board>* Successors<Rules, Board>::select(const Position<Board>& p)
 {
-        return FACTORY[state<Color>(p)];
+        return instance()[state<Color>(p)];
 }
 
 template<typename Rules, typename Board>
@@ -145,34 +146,24 @@ int Successors<Rules, Board>::state(bool color, BitBoard kings, BitBoard men)
         );
 }
 
-template<typename Rules, typename Board> 
-const generate::TemplateMethodInterface<Rules, Board>* const Successors<Rules, Board>::FACTORY[] = {
-        &BLACK_NONE, &BLACK_PAWN, &BLACK_KING, &BLACK_BOTH, 
-        &WHITE_NONE, &WHITE_PAWN, &WHITE_KING, &WHITE_BOTH
-};
+template<typename Rules, typename Board>
+typename Successors<Rules, Board>::GeneratorArray& Successors<Rules, Board>::instance()
+{
+        static const successors::Generate<Side::BLACK, Material::NONE, Rules, Board> BLACK_NONE_;
+        static const successors::Generate<Side::BLACK, Material::PAWN, Rules, Board> BLACK_PAWN_;
+        static const successors::Generate<Side::BLACK, Material::KING, Rules, Board> BLACK_KING_;
+        static const successors::Generate<Side::BLACK, Material::BOTH, Rules, Board> BLACK_BOTH_;
+        static const successors::Generate<Side::WHITE, Material::NONE, Rules, Board> WHITE_NONE_;
+        static const successors::Generate<Side::WHITE, Material::PAWN, Rules, Board> WHITE_PAWN_;
+        static const successors::Generate<Side::WHITE, Material::KING, Rules, Board> WHITE_KING_;
+        static const successors::Generate<Side::WHITE, Material::BOTH, Rules, Board> WHITE_BOTH_;
 
-template<typename Rules, typename Board> 
-const generate::TemplateMethod<Side::BLACK, Material::NONE, Rules, Board> Successors<Rules, Board>::BLACK_NONE;
-
-template<typename Rules, typename Board> 
-const generate::TemplateMethod<Side::BLACK, Material::PAWN, Rules, Board> Successors<Rules, Board>::BLACK_PAWN;
-
-template<typename Rules, typename Board> 
-const generate::TemplateMethod<Side::BLACK, Material::KING, Rules, Board> Successors<Rules, Board>::BLACK_KING;
-
-template<typename Rules, typename Board> 
-const generate::TemplateMethod<Side::BLACK, Material::BOTH, Rules, Board> Successors<Rules, Board>::BLACK_BOTH;
-
-template<typename Rules, typename Board> 
-const generate::TemplateMethod<Side::WHITE, Material::NONE, Rules, Board> Successors<Rules, Board>::WHITE_NONE;
-
-template<typename Rules, typename Board> 
-const generate::TemplateMethod<Side::WHITE, Material::PAWN, Rules, Board> Successors<Rules, Board>::WHITE_PAWN;
-
-template<typename Rules, typename Board> 
-const generate::TemplateMethod<Side::WHITE, Material::KING, Rules, Board> Successors<Rules, Board>::WHITE_KING;
-
-template<typename Rules, typename Board> 
-const generate::TemplateMethod<Side::WHITE, Material::BOTH, Rules, Board> Successors<Rules, Board>::WHITE_BOTH;
+        // Meyers Singleton, see Modern C++ Design p.117
+        static const GeneratorArray singleton_ = {
+                &BLACK_NONE_, &BLACK_PAWN_, &BLACK_KING_, &BLACK_BOTH_, 
+                &WHITE_NONE_, &WHITE_PAWN_, &WHITE_KING_, &WHITE_BOTH_
+        };
+        return singleton_;
+}
 
 }       // namespace dctl

@@ -50,5 +50,5 @@ bool operator!=(const Material&, const Material&);      // inequality operator
 
 }       // namespace dctl
 
-// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+// include template definitions inside header
 #include "Material.hpp"

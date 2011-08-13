@@ -1,6 +1,6 @@
 #include <cassert>
 #include <iostream>
-#include "../generate/Successors.h"
+#include "../successors/Successors.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
 #include "../utils/Timer.h"
