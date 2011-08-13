@@ -2,7 +2,7 @@
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
 #include "gtest/gtest.h"
-#include "../../../DCTL/src/generate/Successors.h"
+#include "../../../DCTL/src/successors/Successors.h"
 #include "../../../DCTL/src/node/Position.h"
 #include "../../../DCTL/src/setup/Setup.h"
 #include "../../../DCTL/src/notation/String.h"
