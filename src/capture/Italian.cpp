@@ -4,7 +4,7 @@
 namespace dctl {
 namespace capture {
 
-Value<rules::Italian>::Value()
+Value<variant::Italian>::Value()
 :
         piece_order_(0),
         num_pieces_(0),
@@ -14,7 +14,7 @@ Value<rules::Italian>::Value()
 }
         
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
-bool Value<rules::Italian>::operator<(const Value<rules::Italian>& other) const
+bool Value<variant::Italian>::operator<(const Value<variant::Italian>& other) const
 {
                 // Art. 6.6
                 if (num_pieces_ < other.num_pieces_)
@@ -38,7 +38,7 @@ bool Value<rules::Italian>::operator<(const Value<rules::Italian>& other) const
                 return piece_order_ < other.piece_order_;
 }
 
-bool Value<rules::Italian>::operator==(const Value<rules::Italian>& other) const
+bool Value<variant::Italian>::operator==(const Value<variant::Italian>& other) const
 {
         return (
                 (piece_order_ == other.piece_order_) &&
@@ -48,12 +48,12 @@ bool Value<rules::Italian>::operator==(const Value<rules::Italian>& other) const
         );
 }
 
-bool Value<rules::Italian>::do_is_large(BitBoard) const
+bool Value<variant::Italian>::do_is_large(BitBoard) const
 {
-        return num_pieces_ >= rules::large_capture<rules::Italian>::value; 
+        return num_pieces_ >= rules::large_capture<variant::Italian>::value; 
 }
 
-void Value<rules::Italian>::do_increment(BitBoard target_sq, BitBoard king_targets)
+void Value<variant::Italian>::do_increment(BitBoard target_sq, BitBoard king_targets)
 {
         ++num_pieces_;
         if (target_sq & king_targets) {
@@ -62,7 +62,7 @@ void Value<rules::Italian>::do_increment(BitBoard target_sq, BitBoard king_targe
         }
 }
 
-void Value<rules::Italian>::do_decrement(BitBoard target_sq, BitBoard king_targets)
+void Value<variant::Italian>::do_decrement(BitBoard target_sq, BitBoard king_targets)
 {
         if (target_sq & king_targets) {
                 piece_order_ ^= BitBoard(1) << (8 * sizeof(BitBoard) - num_pieces_);
@@ -71,7 +71,7 @@ void Value<rules::Italian>::do_decrement(BitBoard target_sq, BitBoard king_targe
         --num_pieces_;
 }
 
-void Value<rules::Italian>::do_toggle_with_king()
+void Value<variant::Italian>::do_toggle_with_king()
 {
         with_king_ ^= TOGGLE;
 }

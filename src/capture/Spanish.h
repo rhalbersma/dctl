@@ -4,7 +4,7 @@
 
 namespace dctl {
 
-namespace rules { struct Spanish; }
+namespace variant { struct Spanish; }
 
 namespace capture {
 
@@ -12,7 +12,7 @@ namespace capture {
 template<typename> class Value;
 
 template<>
-class Value<rules::Spanish>
+class Value<variant::Spanish>
 : 
         public ValueInterface
 {
@@ -21,8 +21,8 @@ public:
         Value();
 
         // predicates
-        bool operator< (const Value<rules::Spanish>&) const;
-        bool operator==(const Value<rules::Spanish>&) const;
+        bool operator< (const Value<variant::Spanish>&) const;
+        bool operator==(const Value<variant::Spanish>&) const;
 
 private:
         // implementation

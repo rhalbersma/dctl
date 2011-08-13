@@ -118,6 +118,9 @@
     <Filter Include="Source Files\bit">
       <UniqueIdentifier>{c96d595a-6610-4975-9db7-1d979f7589ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\variant">
+      <UniqueIdentifier>{2b33804e-bb52-4062-aac1-656e790c5874}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\rules\Checkers.h">
@@ -136,9 +139,6 @@
       <Filter>Header Files\rules</Filter>
     </ClInclude>
     <ClInclude Include="src\rules\Killer.h">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rules\Pool.h">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
     <ClInclude Include="src\rules\Russian.h">
@@ -167,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="src\board\Types.h">
       <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rules\Variants.h">
-      <Filter>Header Files\rules</Filter>
     </ClInclude>
     <ClInclude Include="src\board\Grid.h">
       <Filter>Header Files\board</Filter>
@@ -462,9 +459,6 @@
     <ClInclude Include="src\notation\Types.h">
       <Filter>Header Files\notation</Filter>
     </ClInclude>
-    <ClInclude Include="src\notation\Variants.h">
-      <Filter>Header Files\notation</Filter>
-    </ClInclude>
     <ClInclude Include="src\notation\Thai.h">
       <Filter>Header Files\notation</Filter>
     </ClInclude>
@@ -533,9 +527,6 @@
     </ClInclude>
     <ClInclude Include="src\setup\Protocols.h">
       <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="src\capture\Variants.h">
-      <Filter>Header Files\capture</Filter>
     </ClInclude>
     <ClInclude Include="src\capture\Frisian.h">
       <Filter>Header Files\capture</Filter>
@@ -614,6 +605,39 @@
     </ClInclude>
     <ClInclude Include="src\setup\Numbers.h">
       <Filter>Header Files\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Checkers.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Czech.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Frisian.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\International.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Italian.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Killer.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Pool.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Russian.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Spanish.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Thai.h">
+      <Filter>Header Files\variant</Filter>
+    </ClInclude>
+    <ClInclude Include="src\variant\Variant.h">
+      <Filter>Header Files\variant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

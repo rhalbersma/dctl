@@ -167,7 +167,6 @@
     <ClInclude Include="src\capture\Value.h" />
     <ClInclude Include="src\capture\Value.hpp" />
     <ClInclude Include="src\capture\ValueInterface.h" />
-    <ClInclude Include="src\capture\Variants.h" />
     <ClInclude Include="src\dxp\BackAcknowledge.h" />
     <ClInclude Include="src\dxp\BackRequest.h" />
     <ClInclude Include="src\dxp\Chat.h" />
@@ -194,7 +193,6 @@
     <ClInclude Include="src\notation\String.hpp" />
     <ClInclude Include="src\notation\Thai.h" />
     <ClInclude Include="src\notation\Types.h" />
-    <ClInclude Include="src\notation\Variants.h" />
     <ClInclude Include="src\pdn\PDN.h" />
     <ClInclude Include="src\rules\Checkers.h" />
     <ClInclude Include="src\rules\Czech.h" />
@@ -203,8 +201,6 @@
     <ClInclude Include="src\rules\International.h" />
     <ClInclude Include="src\rules\Italian.h" />
     <ClInclude Include="src\rules\Killer.h" />
-    <ClInclude Include="src\rules\Pool.h" />
-    <ClInclude Include="src\rules\Variants.h" />
     <ClInclude Include="src\rules\Russian.h" />
     <ClInclude Include="src\rules\Spanish.h" />
     <ClInclude Include="src\rules\Thai.h" />
@@ -285,6 +281,17 @@
     <ClInclude Include="src\setup\String.h" />
     <ClInclude Include="src\setup\String.hpp" />
     <ClInclude Include="src\utils\Iota.hpp" />
+    <ClInclude Include="src\variant\Checkers.h" />
+    <ClInclude Include="src\variant\Czech.h" />
+    <ClInclude Include="src\variant\Frisian.h" />
+    <ClInclude Include="src\variant\International.h" />
+    <ClInclude Include="src\variant\Italian.h" />
+    <ClInclude Include="src\variant\Killer.h" />
+    <ClInclude Include="src\variant\Pool.h" />
+    <ClInclude Include="src\variant\Russian.h" />
+    <ClInclude Include="src\variant\Spanish.h" />
+    <ClInclude Include="src\variant\Thai.h" />
+    <ClInclude Include="src\variant\Variant.h" />
     <ClInclude Include="src\walk\Root.h" />
     <ClInclude Include="src\walk\Root.hpp" />
     <ClInclude Include="src\walk\Transposition.h" />

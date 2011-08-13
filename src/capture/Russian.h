@@ -3,7 +3,7 @@
 
 namespace dctl {
 
-namespace rules { struct Russian; }
+namespace variant { struct Russian; }
 
 namespace capture {
 
@@ -11,7 +11,7 @@ namespace capture {
 template<typename> class Value;
 
 template<>
-class Value<rules::Russian>
+class Value<variant::Russian>
 : 
         public ValueInterface
 {

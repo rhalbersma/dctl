@@ -5,7 +5,7 @@
 #include "../generate/Successors.h"
 #include "../node/Position.h"
 #include "../node/Side.h"
-#include "../rules/Rules.h"
+#include "../variant/International.h"
 
 namespace dctl {
 
@@ -110,7 +110,7 @@ int Evaluate::balance(const Position<Board>& p)
 template<bool Color, typename Board>
 int Evaluate::mobility(const Position<Board>& p)
 {
-        return Weight::MOBILITY * Successors<rules::International, Board>::template count_mobility<Color>(p);
+        return Weight::MOBILITY * Successors<variant::International, Board>::template count_mobility<Color>(p);
 }
 
 template<typename Board>
