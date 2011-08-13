@@ -2,9 +2,9 @@
 #include "../test_config.h"
 #include "../../../DCTL/src/walk/Root.h"
 #include "../../../DCTL/src/node/Position.h"
-#include "../../../DCTL/src/board/Types.h"
-#include "../../../DCTL/src/rules/Rules.h"
 #include "../../../DCTL/src/setup/Setup.h"
+#include "../../../DCTL/src/board/Types.h"
+#include "../../../DCTL/src/variant/Variant.h"
 
 namespace dctl {
 namespace walk {
@@ -54,15 +54,15 @@ TEST_F(Perft, International)
 
         auto i10 = Position<board::International>::initial();
         Root::clear_hash();
-        Root::perft<rules::International>(i10, 11);
+        Root::perft<variant::International>(i10, 11);
 
         auto random178(setup::read<board::International, pdn::protocol>()("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"));
         Root::clear_hash();
-        Root::perft<rules::International>(random178, 9);
+        Root::perft<variant::International>(random178, 9);
 
         auto Woldouby(setup::read<board::International, pdn::protocol>()("W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"));
         Root::clear_hash();
-        Root::perft<rules::International>(Woldouby, 15);
+        Root::perft<variant::International>(Woldouby, 15);
 }
 
 // The alternative game rules thread on the FMJD forum
@@ -73,7 +73,7 @@ TEST_F(Perft, Frisian)
 
         auto f10 = Position<board::Frisian>::initial();
         Root::clear_hash();
-        Root::perft<rules::Frisian>(f10, 11);
+        Root::perft<variant::Frisian>(f10, 11);
 }
 
 // The alternative game rules thread on the FMJD forum
@@ -85,45 +85,45 @@ TEST_F(Perft, ChessVariants)
         
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
         Root::clear_hash();
-        Root::perft<rules::Brazilian>(i8, 13); 
+        Root::perft<variant::Brazilian>(i8, 13); 
 
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-57.html
         Root::clear_hash();
-        Root::perft<rules::Pool>(i8, 13);
+        Root::perft<variant::Pool>(i8, 13);
 
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
         Root::clear_hash();
-        Root::perft<rules::Russian>(i8, 14);
+        Root::perft<variant::Russian>(i8, 14);
 
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
         Root::clear_hash();
-        Root::perft<rules::English>(i8, 14);   
+        Root::perft<variant::English>(i8, 14);   
 
         Root::clear_hash();
-        Root::perft<rules::Czech>(i8, 13);
+        Root::perft<variant::Czech>(i8, 13);
 
         std::cout << setup::diagram<board::Roman>()() << std::endl;
         auto r8 = Position<board::Roman>::initial();
 
         Root::clear_hash();
-        Root::perft<rules::Spanish>(r8, 13);
+        Root::perft<variant::Spanish>(r8, 13);
 
         Root::clear_hash();
-        Root::perft<rules::Italian>(r8, 13);
+        Root::perft<variant::Italian>(r8, 13);
 
         // Addional Italian test positions from email conversation with Ed Gilbert
         auto ITA_Ed_Gilbert_1 = setup::read<board::Roman, pdn::protocol>()("W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3");
         auto ITA_Ed_Gilbert_2 = setup::read<board::Roman, pdn::protocol>()("B:W30,21,22,17,20,K6:B25,28,9,5,1,3");
         Root::clear_hash();
-        Root::perft<rules::Italian>(ITA_Ed_Gilbert_1, 16);
+        Root::perft<variant::Italian>(ITA_Ed_Gilbert_1, 16);
         Root::clear_hash();
-        Root::perft<rules::Italian>(ITA_Ed_Gilbert_2, 12);
+        Root::perft<variant::Italian>(ITA_Ed_Gilbert_2, 12);
         
         auto t8 = Position<board::Thai>::initial();
         Root::clear_hash();
-        Root::perft<rules::Thai>(t8, 11);      // Thai initial position with 2 rows of men
+        Root::perft<variant::Thai>(t8, 11);      // Thai initial position with 2 rows of men
         Root::clear_hash();
-        Root::perft<rules::Thai>(i8, 13);      // Usual initial position with 3 rows of men
+        Root::perft<variant::Thai>(i8, 13);      // Usual initial position with 3 rows of men
 }
 
 // The rectangular board thread on the FMJD forum
@@ -134,19 +134,19 @@ TEST_F(Perft, Rectangular)
 
         auto iS = Position<board::Spantsireti>::initial();
         Root::clear_hash();
-        Root::perft<rules::International>(iS, 9);
+        Root::perft<variant::International>(iS, 9);
 
         std::cout << setup::diagram<board::Ktar11>()() << std::endl;
         
         auto iK11 = Position<board::Ktar11>::initial();
         Root::clear_hash();
-        Root::perft<rules::International>(iK11, 9);
+        Root::perft<variant::International>(iK11, 9);
                 
         std::cout << setup::diagram<board::Ktar12>()() << std::endl;
         
         auto iK12 = Position<board::Ktar12>::initial();
         Root::clear_hash();
-        Root::perft<rules::International>(iK12, 9);
+        Root::perft<variant::International>(iK12, 9);
 }
 
 #endif

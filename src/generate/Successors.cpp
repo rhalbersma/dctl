@@ -4,12 +4,10 @@
 #include "gtest/gtest.h"
 #include "../../../DCTL/src/generate/Successors.h"
 #include "../../../DCTL/src/node/Position.h"
-#include "../../../DCTL/src/board/Types.h"
-#include "../../../DCTL/src/rules/Rules.h"
-
-#include "../../../DCTL/src/setup/Diagram.h"
-#include "../../../DCTL/src/setup/String.h"
+#include "../../../DCTL/src/setup/Setup.h"
 #include "../../../DCTL/src/notation/String.h"
+#include "../../../DCTL/src/board/Types.h"
+#include "../../../DCTL/src/variant/Variant.h"
 
 namespace dctl {
 
@@ -49,14 +47,14 @@ TEST(Successors, Italian)
         for (auto i = 0; i < 9; ++i) {
                 Stack moves;
                 auto p = setup::read<board::Roman, pdn::protocol>()(position[i]);
-                Successors<rules::Italian, board::Roman>::generate(p, moves);
+                Successors<variant::Italian, board::Roman>::generate(p, moves);
 
                 // check the number of generated legal
                 EXPECT_EQ(size[i], moves.size());
 
                 // check all generated legal
                 for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
-                        std::string move_string = notation::write<rules::Italian>()(p, moves[j]);
+                        std::string move_string = notation::write<variant::Italian>()(p, moves[j]);
                         EXPECT_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string)); 
                 }
         }
