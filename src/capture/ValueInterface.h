@@ -7,9 +7,6 @@ namespace capture {
 class ValueInterface
 {
 public:
-        // virtual destructor
-        ~ValueInterface() {};
-
         // predicates
         bool is_large(BitBoard) const;
         bool is_promotion() const;
@@ -19,6 +16,10 @@ public:
         void decrement(BitBoard, BitBoard);
         void toggle_with_king();
         void toggle_promotion();
+
+protected:
+        // destructor
+        ~ValueInterface() {};
 
 private:
         // (pure) virtual implementation

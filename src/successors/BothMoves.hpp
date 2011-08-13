@@ -3,7 +3,7 @@
 #include "PawnMoves.h"
 
 namespace dctl {
-namespace generate {
+namespace successors {
 
 template<bool Color, typename Rules, typename Board> 
 void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
@@ -80,5 +80,5 @@ bool Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::detect_promotions
         );
 }
 
-}       // namespace generate
+}       // namespace successors
 }       // namespace dctl

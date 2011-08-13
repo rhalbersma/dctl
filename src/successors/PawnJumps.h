@@ -11,7 +11,7 @@ namespace capture { template<typename, typename> class State; }
 
 template<typename> class Position;
 
-namespace generate {
+namespace successors {
 
 template<bool Color, typename Rules, typename Board> 
 class Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>
@@ -73,8 +73,8 @@ private:
         template<int> static bool detect_dir(BitBoard, BitBoard, BitBoard);
 };
 
-}       // namespace generate
+}       // namespace successors
 }       // namespace dctl
 
-// include template definitions inside header because "export" keyword is not supported by most C++ compilers
+// include template definitions inside header
 #include "PawnJumps.hpp"

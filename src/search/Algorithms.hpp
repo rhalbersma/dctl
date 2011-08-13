@@ -2,7 +2,7 @@
 #include <cassert>
 #include <iterator>     // std::back_inserter
 #include <vector>       // std::vector
-#include "../generate/Successors.h"
+#include "../successors/Successors.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
 #include "../utils/Iota.h"
@@ -171,17 +171,17 @@ int Root::quiescence(const Position<Board>& p, int ply, int depth, int alpha, in
                 return draw();
 
         // check for legal move_stack
-        if (!generate::detect(p)) {
+        if (!successors::detect(p)) {
                 return loss_value(0);
         }
 
         // generate captures and promotions
         Stack move_stack;
-        generate::generate_captures_promotions(p, move_stack);
+        successors::generate_captures_promotions(p, move_stack);
 
         if (move_stack.empty())
         {
-                if (generate::detect_pending_captures_promotions(p)) {
+                if (successors::detect_pending_captures_promotions(p)) {
 
                 } else {
                         // return eval

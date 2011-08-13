@@ -2,7 +2,7 @@
 #include <iomanip>
 #include "Parameters.h"
 #include "../evaluate/Evaluate.h"
-#include "../generate/Successors.h"
+#include "../successors/Successors.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
 #include "../utils/Timer.h"

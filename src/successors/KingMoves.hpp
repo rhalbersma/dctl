@@ -6,7 +6,7 @@
 #include "../utils/Shift.h"
 
 namespace dctl {
-namespace generate {
+namespace successors {
 
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
@@ -173,5 +173,5 @@ bool Driver<Color, Material::KING, Move::MOVES, Rules, Board>::detect_promotions
         return false; 
 }
 
-}       // namespace generate
+}       // namespace successors
 }       // namespace dctl
