@@ -267,10 +267,10 @@
     <ClInclude Include="src\successors\BothMoves.hpp" />
     <ClInclude Include="src\successors\Driver.h" />
     <ClInclude Include="src\successors\Driver.hpp" />
-    <ClInclude Include="src\successors\Generate.h" />
-    <ClInclude Include="src\successors\Generate.hpp" />
-    <ClInclude Include="src\successors\GenerateInterface.h" />
-    <ClInclude Include="src\successors\GenerateInterface.hpp" />
+    <ClInclude Include="src\successors\Generator.h" />
+    <ClInclude Include="src\successors\Generator.hpp" />
+    <ClInclude Include="src\successors\GeneratorInterface.h" />
+    <ClInclude Include="src\successors\GeneratorInterface.hpp" />
     <ClInclude Include="src\successors\KingJumps.h" />
     <ClInclude Include="src\successors\KingJumps.hpp" />
     <ClInclude Include="src\successors\KingMoves.h" />

@@ -15,6 +15,8 @@ namespace successors {
 
 template<bool Color, typename Rules, typename Board> 
 class Driver<Color, Material::KING, Move::JUMPS, Rules, Board>
+:
+        private utils::nonconstructible // enforce static semantics
 {
 public:
         static void generate(const Position<Board>&, Stack&);

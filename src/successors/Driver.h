@@ -1,5 +1,6 @@
 #pragma once
 #include "../node/Stack.h"
+#include "../utils/TemplateTricks.h"
 
 namespace dctl {
 
@@ -9,6 +10,8 @@ namespace successors {
 
 template<bool, int, int, typename Rules, typename Board>
 class Driver
+:
+        private utils::nonconstructible // enforce static semantics
 {
 public:
         static void generate(const Position<Board>&, Stack&);

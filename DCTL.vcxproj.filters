@@ -594,12 +594,6 @@
     <ClInclude Include="src\successors\Driver.h">
       <Filter>Header Files\successors</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\Generate.h">
-      <Filter>Header Files\successors</Filter>
-    </ClInclude>
-    <ClInclude Include="src\successors\GenerateInterface.h">
-      <Filter>Header Files\successors</Filter>
-    </ClInclude>
     <ClInclude Include="src\successors\KingJumps.h">
       <Filter>Header Files\successors</Filter>
     </ClInclude>
@@ -624,12 +618,6 @@
     <ClInclude Include="src\successors\Driver.hpp">
       <Filter>Source Files\successors</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\Generate.hpp">
-      <Filter>Source Files\successors</Filter>
-    </ClInclude>
-    <ClInclude Include="src\successors\GenerateInterface.hpp">
-      <Filter>Source Files\successors</Filter>
-    </ClInclude>
     <ClInclude Include="src\successors\KingJumps.hpp">
       <Filter>Source Files\successors</Filter>
     </ClInclude>
@@ -640,6 +628,18 @@
       <Filter>Source Files\successors</Filter>
     </ClInclude>
     <ClInclude Include="src\successors\PawnMoves.hpp">
+      <Filter>Source Files\successors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successors\GeneratorInterface.h">
+      <Filter>Header Files\successors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successors\Generator.h">
+      <Filter>Header Files\successors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successors\GeneratorInterface.hpp">
+      <Filter>Source Files\successors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successors\Generator.hpp">
       <Filter>Source Files\successors</Filter>
     </ClInclude>
   </ItemGroup>

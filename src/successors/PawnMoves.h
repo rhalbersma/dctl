@@ -2,6 +2,7 @@
 #include "Driver.h"
 #include "../node/Stack.h"
 #include "../utils/IntegerTypes.h"
+#include "../utils/TemplateTricks.h"
 
 namespace dctl {
 
@@ -11,6 +12,8 @@ namespace successors {
 
 template<bool Color, typename Rules, typename Board> 
 class Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>
+:
+        private utils::nonconstructible // enforce static semantics
 {
 public:
         static void generate(const Position<Board>&, Stack&);
