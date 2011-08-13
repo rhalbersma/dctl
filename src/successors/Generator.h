@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/utility.hpp>
 #include "GeneratorInterface.h"
 #include "../node/Stack.h"
 
@@ -12,8 +11,7 @@ namespace successors {
 template<bool Color, int Material, typename Rules, typename Board> 
 class Generator
 : 
-        public GeneratorInterface<Rules, Board>,
-        private boost::noncopyable      // enforce singleton semantics
+        public GeneratorInterface<Rules, Board>
 {
 private:		
         virtual void do_generate(const Position<Board>&, Stack&) const;
