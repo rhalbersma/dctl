@@ -12,15 +12,15 @@ void Successors<Rules, Board>::generate(const Position<Board>& p, Stack& moves)
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_non_captures(const Position<Board>& p, Stack& moves)
+void Successors<Rules, Board>::generate_moves(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_non_captures(p, moves);
+        select(p)->generate_moves(p, moves);
 }
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate_captures(const Position<Board>& p, Stack& moves)
+void Successors<Rules, Board>::generate_jumps(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_captures(p, moves);
+        select(p)->generate_jumps(p, moves);
 }
 
 template<typename Rules, typename Board>
@@ -44,15 +44,15 @@ int Successors<Rules, Board>::count(const Position<Board>& p)
 }
 
 template<typename Rules, typename Board>
-int Successors<Rules, Board>::count_non_captures(const Position<Board>& p)
+int Successors<Rules, Board>::count_moves(const Position<Board>& p)
 {
-        return select(p)->count_non_captures(p);
+        return select(p)->count_moves(p);
 }
 
 template<typename Rules, typename Board>
-int Successors<Rules, Board>::count_captures(const Position<Board>& p)
+int Successors<Rules, Board>::count_jumps(const Position<Board>& p)
 {
-        return select(p)->count_captures(p);
+        return select(p)->count_jumps(p);
 }
 
 template<typename Rules, typename Board>
@@ -70,7 +70,7 @@ int Successors<Rules, Board>::count_promotions(const Position<Board>& p)
 template<typename Rules, typename Board> template<bool Color>
 int Successors<Rules, Board>::count_mobility(const Position<Board>& p)
 {
-        return select<Color>(p)->count_non_captures(p);
+        return select<Color>(p)->count_moves(p);
 }
 
 template<typename Rules, typename Board>
@@ -80,15 +80,15 @@ bool Successors<Rules, Board>::detect(const Position<Board>& p)
 }
 
 template<typename Rules, typename Board>
-bool Successors<Rules, Board>::detect_non_captures(const Position<Board>& p)
+bool Successors<Rules, Board>::detect_moves(const Position<Board>& p)
 {
-        return select(p)->detect_captures(p);
+        return select(p)->detect_moves(p);
 }
 
 template<typename Rules, typename Board>
-bool Successors<Rules, Board>::detect_captures(const Position<Board>& p)
+bool Successors<Rules, Board>::detect_jumps(const Position<Board>& p)
 {
-        return select(p)->detect_captures(p);
+        return select(p)->detect_jumps(p);
 }
 
 template<typename Rules, typename Board>

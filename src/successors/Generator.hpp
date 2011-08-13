@@ -12,13 +12,13 @@ void Generator<Color, Material, Rules, Board>::do_generate(const Position<Board>
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void Generator<Color, Material, Rules, Board>::do_generate_non_captures(const Position<Board>& p, Stack& moves) const 
+void Generator<Color, Material, Rules, Board>::do_generate_moves(const Position<Board>& p, Stack& moves) const 
 { 
         Driver<Color, Material, Move::MOVES, Rules, Board>::generate(p, moves);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-void Generator<Color, Material, Rules, Board>::do_generate_captures(const Position<Board>& p, Stack& moves) const 
+void Generator<Color, Material, Rules, Board>::do_generate_jumps(const Position<Board>& p, Stack& moves) const 
 { 
         Driver<Color, Material, Move::JUMPS, Rules, Board>::generate(p, moves);
 }
@@ -45,13 +45,13 @@ int Generator<Color, Material, Rules, Board>::do_count(const Position<Board>& p)
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-int Generator<Color, Material, Rules, Board>::do_count_non_captures(const Position<Board>& p) const
+int Generator<Color, Material, Rules, Board>::do_count_moves(const Position<Board>& p) const
 {
         return Driver<Color, Material, Move::MOVES, Rules, Board>::count(p);
 }
 
 template<bool Color, int Material, typename Rules, typename Board>
-int Generator<Color, Material, Rules, Board>::do_count_captures(const Position<Board>& p) const
+int Generator<Color, Material, Rules, Board>::do_count_jumps(const Position<Board>& p) const
 {
         return Driver<Color, Material, Move::JUMPS, Rules, Board>::count(p);
 }
@@ -78,13 +78,13 @@ bool Generator<Color, Material, Rules, Board>::do_detect(const Position<Board>& 
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-bool Generator<Color, Material, Rules, Board>::do_detect_non_captures(const Position<Board>& p) const 
+bool Generator<Color, Material, Rules, Board>::do_detect_moves(const Position<Board>& p) const 
 { 
-        return Driver<Color, Material, Move::JUMPS, Rules, Board>::detect(p);
+        return Driver<Color, Material, Move::MOVES, Rules, Board>::detect(p);
 }
 
 template<bool Color, int Material, typename Rules, typename Board> 
-bool Generator<Color, Material, Rules, Board>::do_detect_captures(const Position<Board>& p) const 
+bool Generator<Color, Material, Rules, Board>::do_detect_jumps(const Position<Board>& p) const 
 { 
         return Driver<Color, Material, Move::JUMPS, Rules, Board>::detect(p);
 }

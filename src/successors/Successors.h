@@ -17,20 +17,20 @@ class Successors
 public:
         // interface
         static void generate(const Position<Board>&, Stack&);
-        static void generate_non_captures(const Position<Board>&, Stack&);
-        static void generate_captures(const Position<Board>&, Stack&);
+        static void generate_moves(const Position<Board>&, Stack&);
+        static void generate_jumps(const Position<Board>&, Stack&);
         static void generate_reverse(const Position<Board>&, Stack&);
         static void generate_promotions(const Position<Board>&, Stack&);
 
         static int count(const Position<Board>&);
-        static int count_non_captures(const Position<Board>&);
-        static int count_captures(const Position<Board>&);
+        static int count_moves(const Position<Board>&);
+        static int count_jumps(const Position<Board>&);
         static int count_reverse(const Position<Board>&);
         static int count_promotions(const Position<Board>&);
 
         static bool detect(const Position<Board>&);
-        static bool detect_non_captures(const Position<Board>&);
-        static bool detect_captures(const Position<Board>&);
+        static bool detect_moves(const Position<Board>&);
+        static bool detect_jumps(const Position<Board>&);
         static bool detect_reverse(const Position<Board>&);
         static bool detect_promotions(const Position<Board>&);
 
