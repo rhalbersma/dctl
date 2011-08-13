@@ -4,33 +4,33 @@
 namespace dctl {
 namespace capture {
 
-Value<rules::Killer>::Value()
+Value<variant::Killer>::Value()
 :
         num_pieces_(0)
 {
 }
         
-bool Value<rules::Killer>::operator<(const Value<rules::Killer>& other) const
+bool Value<variant::Killer>::operator<(const Value<variant::Killer>& other) const
 {
         return num_pieces_ < other.num_pieces_;
 }
 
-bool Value<rules::Killer>::operator==(const Value<rules::Killer>& other) const
+bool Value<variant::Killer>::operator==(const Value<variant::Killer>& other) const
 {
         return num_pieces_ == other.num_pieces_;
 }
 
-bool Value<rules::Killer>::do_is_large(BitBoard) const
+bool Value<variant::Killer>::do_is_large(BitBoard) const
 {
-        return num_pieces_ >= rules::large_capture<rules::Killer>::value; 
+        return num_pieces_ >= rules::large_capture<variant::Killer>::value; 
 }
 
-void Value<rules::Killer>::do_increment(BitBoard, BitBoard)
+void Value<variant::Killer>::do_increment(BitBoard, BitBoard)
 {
         ++num_pieces_;
 }
 
-void Value<rules::Killer>::do_decrement(BitBoard, BitBoard)
+void Value<variant::Killer>::do_decrement(BitBoard, BitBoard)
 {
         --num_pieces_;
 }

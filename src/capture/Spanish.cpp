@@ -4,7 +4,7 @@
 namespace dctl {
 namespace capture {
 
-Value<rules::Spanish>::Value()
+Value<variant::Spanish>::Value()
 :
         num_pieces_(0),
         num_kings_(0)
@@ -12,7 +12,7 @@ Value<rules::Spanish>::Value()
 }
         
 // http://fpdamas.home.sapo.pt/regrasclass.htm
-bool Value<rules::Spanish>::operator<(const Value<rules::Spanish>& other) const
+bool Value<variant::Spanish>::operator<(const Value<variant::Spanish>& other) const
 {
         // 15 b)
         if (num_pieces_ < other.num_pieces_)
@@ -24,7 +24,7 @@ bool Value<rules::Spanish>::operator<(const Value<rules::Spanish>& other) const
         return num_kings_ < other.num_kings_;
 }
 
-bool Value<rules::Spanish>::operator==(const Value<rules::Spanish>& other) const
+bool Value<variant::Spanish>::operator==(const Value<variant::Spanish>& other) const
 {
         return (
                 (num_pieces_ == other.num_pieces_) &&
@@ -32,19 +32,19 @@ bool Value<rules::Spanish>::operator==(const Value<rules::Spanish>& other) const
         );
 }
 
-bool Value<rules::Spanish>::do_is_large(BitBoard) const
+bool Value<variant::Spanish>::do_is_large(BitBoard) const
 {
-        return num_pieces_ >= rules::large_capture<rules::Spanish>::value; 
+        return num_pieces_ >= rules::large_capture<variant::Spanish>::value; 
 }
         
-void Value<rules::Spanish>::do_increment(BitBoard target_sq, BitBoard king_targets)
+void Value<variant::Spanish>::do_increment(BitBoard target_sq, BitBoard king_targets)
 {
         ++num_pieces_;
         if (target_sq & king_targets)
                 ++num_kings_;
 }
 
-void Value<rules::Spanish>::do_decrement(BitBoard target_sq, BitBoard king_targets)
+void Value<variant::Spanish>::do_decrement(BitBoard target_sq, BitBoard king_targets)
 {
         if (target_sq & king_targets)
                 --num_kings_;

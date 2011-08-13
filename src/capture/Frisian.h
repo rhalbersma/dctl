@@ -4,7 +4,7 @@
 
 namespace dctl {
 
-namespace rules { struct Frisian; }
+namespace variant { struct Frisian; }
 
 namespace capture {
 
@@ -12,7 +12,7 @@ namespace capture {
 template<typename> class Value;
 
 template<>
-class Value<rules::Frisian>
+class Value<variant::Frisian>
 : 
         public ValueInterface
 {
@@ -21,8 +21,8 @@ public:
         Value();
 
         // predicates
-        bool operator< (const Value<rules::Frisian>&) const;
-        bool operator==(const Value<rules::Frisian>&) const;
+        bool operator< (const Value<variant::Frisian>&) const;
+        bool operator==(const Value<variant::Frisian>&) const;
 
 private:
         // implementation

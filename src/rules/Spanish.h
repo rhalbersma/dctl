@@ -2,18 +2,18 @@
 #include "Enum.h"
 
 namespace dctl {
-namespace rules {
 
-// http://fpdamas.home.sapo.pt/regrasclass.htm
-struct Spanish {};         
+namespace variant { struct Spanish; }         
+
+namespace rules {
 
 // move mechanics
 template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<Spanish>       { enum { value = DIRS_UP }; };
+template<> struct man_capture_directions<variant::Spanish>      { enum { value = DIRS_UP }; };
 
 // capture precedence
 template<typename> struct is_majority_precedence;
-template<> struct is_majority_precedence<Spanish>       { enum { value = true    }; };
+template<> struct is_majority_precedence<variant::Spanish>      { enum { value = true    }; };
 
 }       // namespace rules
 }       // namespace dctl

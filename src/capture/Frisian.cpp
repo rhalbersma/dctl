@@ -4,7 +4,7 @@
 namespace dctl {
 namespace capture {
 
-Value<rules::Frisian>::Value()
+Value<variant::Frisian>::Value()
 :
         num_pieces_(0),
         num_kings_(0),
@@ -13,7 +13,7 @@ Value<rules::Frisian>::Value()
 }
                
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
-bool Value<rules::Frisian>::operator<(const Value<rules::Frisian>& other) const
+bool Value<variant::Frisian>::operator<(const Value<variant::Frisian>& other) const
 {
         const int delta_kings = num_kings_ - other.num_kings_;
         const int delta_men = num_pieces_ - other.num_pieces_ - delta_kings;
@@ -39,7 +39,7 @@ bool Value<rules::Frisian>::operator<(const Value<rules::Frisian>& other) const
         return with_king_ < other.with_king_;
 }
 
-bool Value<rules::Frisian>::operator==(const Value<rules::Frisian>& other) const
+bool Value<variant::Frisian>::operator==(const Value<variant::Frisian>& other) const
 {
         return (
                 (num_pieces_ == other.num_pieces_) &&
@@ -48,26 +48,26 @@ bool Value<rules::Frisian>::operator==(const Value<rules::Frisian>& other) const
         );
 }
 
-bool Value<rules::Frisian>::do_is_large(BitBoard) const
+bool Value<variant::Frisian>::do_is_large(BitBoard) const
 {
-        return num_pieces_ >= rules::large_capture<rules::Frisian>::value; 
+        return num_pieces_ >= rules::large_capture<variant::Frisian>::value; 
 }
 
-void Value<rules::Frisian>::do_increment(BitBoard target_sq, BitBoard king_targets)
+void Value<variant::Frisian>::do_increment(BitBoard target_sq, BitBoard king_targets)
 {
         ++num_pieces_;
         if (target_sq & king_targets)
                 ++num_kings_;
 }
 
-void Value<rules::Frisian>::do_decrement(BitBoard target_sq, BitBoard king_targets)
+void Value<variant::Frisian>::do_decrement(BitBoard target_sq, BitBoard king_targets)
 {
         if (target_sq & king_targets)
                 --num_kings_;
         --num_pieces_;
 }
 
-void Value<rules::Frisian>::do_toggle_with_king()
+void Value<variant::Frisian>::do_toggle_with_king()
 {
         with_king_ ^= TOGGLE;
 }

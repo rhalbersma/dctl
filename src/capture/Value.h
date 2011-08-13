@@ -1,9 +1,5 @@
 #pragma once
-#include "Variants.h"
 #include "ValueInterface.h"
-#include "../rules/Rules.h"
-#include "../utils/IntegerTypes.h"
-#include "../bit/Bit.h"
 
 namespace dctl {
 namespace capture {
@@ -18,6 +14,8 @@ private:
         virtual bool do_is_large(BitBoard) const;
 };
 
+// these relational operator templates should not be defined on ValueInterface 
+// because non-template functions take precedence during overload resolution
 template<typename Rules> bool operator< (const Value<Rules>&, const Value<Rules>&);
 template<typename Rules> bool operator> (const Value<Rules>&, const Value<Rules>&);
 template<typename Rules> bool operator>=(const Value<Rules>&, const Value<Rules>&);

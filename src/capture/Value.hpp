@@ -1,3 +1,6 @@
+#include "../bit/Bit.h"
+#include "../rules/Rules.h"
+
 namespace dctl {
 namespace capture {
 

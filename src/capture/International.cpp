@@ -4,33 +4,33 @@
 namespace dctl {
 namespace capture {
 
-Value<rules::International>::Value()
+Value<variant::International>::Value()
 :
         num_pieces_(0)
 {
 }
         
-bool Value<rules::International>::operator<(const Value<rules::International>& other) const
+bool Value<variant::International>::operator<(const Value<variant::International>& other) const
 {
         return num_pieces_ < other.num_pieces_;
 }
 
-bool Value<rules::International>::operator==(const Value<rules::International>& other) const
+bool Value<variant::International>::operator==(const Value<variant::International>& other) const
 {
         return num_pieces_ == other.num_pieces_;
 }
 
-bool Value<rules::International>::do_is_large(BitBoard) const
+bool Value<variant::International>::do_is_large(BitBoard) const
 {
-        return num_pieces_ >= rules::large_capture<rules::International>::value; 
+        return num_pieces_ >= rules::large_capture<variant::International>::value; 
 }
 
-void Value<rules::International>::do_increment(BitBoard, BitBoard)
+void Value<variant::International>::do_increment(BitBoard, BitBoard)
 {
         ++num_pieces_;
 }
 
-void Value<rules::International>::do_decrement(BitBoard, BitBoard)
+void Value<variant::International>::do_decrement(BitBoard, BitBoard)
 {
         --num_pieces_;
 }

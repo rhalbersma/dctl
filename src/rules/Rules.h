@@ -1,6 +1,5 @@
 #pragma once
 #include "Enum.h"
-#include "Variants.h"
 
 namespace dctl {
 namespace rules {
