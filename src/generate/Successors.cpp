@@ -47,7 +47,7 @@ TEST(Successors, Italian)
         for (auto i = 0; i < 9; ++i) {
                 Stack moves;
                 auto p = setup::read<board::Roman, pdn::protocol>()(position[i]);
-                Successors<variant::Italian, board::Roman>::generate(p, moves);
+                Successors<variant::Italian, board::Roman>::generate_legal(p, moves);
 
                 // check the number of generated legal
                 EXPECT_EQ(size[i], moves.size());
