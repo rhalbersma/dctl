@@ -134,10 +134,10 @@
   <ItemGroup>
     <ClCompile Include="src\bit\Bit.cpp" />
     <ClCompile Include="src\dxp\Parser.cpp" />
-    <ClCompile Include="src\generate\Successors.cpp" />
     <ClCompile Include="src\search\Root.cpp" />
     <ClCompile Include="src\search\Score.cpp" />
     <ClCompile Include="src\setup\Setup.cpp" />
+    <ClCompile Include="src\successor\Successor.cpp" />
     <ClCompile Include="src\test_main.cpp" />
     <ClCompile Include="src\walk\Root.cpp" />
   </ItemGroup>

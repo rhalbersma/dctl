@@ -2,7 +2,7 @@
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
 #include "gtest/gtest.h"
-#include "../../../DCTL/src/successors/Successors.h"
+#include "../../../DCTL/src/successor/Successor.h"
 #include "../../../DCTL/src/node/Position.h"
 #include "../../../DCTL/src/setup/Setup.h"
 #include "../../../DCTL/src/notation/String.h"
@@ -11,7 +11,7 @@
 
 namespace dctl {
 
-TEST(Successors, Italian)
+TEST(Successor, Italian)
 {
         // Test positions from the official Italian rules: 
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
@@ -47,7 +47,7 @@ TEST(Successors, Italian)
         for (auto i = 0; i < 9; ++i) {
                 Stack moves;
                 auto p = setup::read<board::Roman, pdn::protocol>()(position[i]);
-                Successors<variant::Italian, board::Roman>::generate_legal(p, moves);
+                Successor<variant::Italian, board::Roman>::generate_legal(p, moves);
 
                 // check the number of generated legal
                 EXPECT_EQ(size[i], moves.size());

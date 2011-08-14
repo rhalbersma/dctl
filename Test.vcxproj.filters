@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\generate">
-      <UniqueIdentifier>{c32c176a-d5fd-4e7a-85e4-e8eb61648cbf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\search">
       <UniqueIdentifier>{46f28f37-070c-4069-a1ce-f7b5350fb5fc}</UniqueIdentifier>
     </Filter>
@@ -31,13 +28,13 @@
     <Filter Include="Source Files\bit">
       <UniqueIdentifier>{4215ad7f-5ebb-48a3-9319-70a09de46ee5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\successor">
+      <UniqueIdentifier>{c32c176a-d5fd-4e7a-85e4-e8eb61648cbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\test_main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\generate\Successors.cpp">
-      <Filter>Source Files\generate</Filter>
     </ClCompile>
     <ClCompile Include="src\search\Score.cpp">
       <Filter>Source Files\search</Filter>
@@ -56,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="src\bit\Bit.cpp">
       <Filter>Source Files\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\successor\Successor.cpp">
+      <Filter>Source Files\successor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
