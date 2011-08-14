@@ -23,7 +23,7 @@ TEST(Parser, MesanderExamples)
         };
 
         for (auto i = 0; i < 8; ++i) {
-                auto parsed = Parser<protocol>::find(message[i]);
+                auto parsed = Parser<protocol>::create_message(message[i]);
                 EXPECT_EQ(0, parsed->str().compare(message[i]));
         }
 }
