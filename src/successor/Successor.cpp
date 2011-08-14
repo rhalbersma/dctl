@@ -45,8 +45,8 @@ TEST(Successor, Italian)
         };
 
         for (auto i = 0; i < 9; ++i) {
-                Stack moves;
                 auto p = setup::read<board::Roman, pdn::protocol>()(position[i]);
+                Stack moves;
                 Successor<variant::Italian, board::Roman>::generate_legal(p, moves);
 
                 // check the number of generated legal
