@@ -8,7 +8,7 @@ namespace dxp {
 
 const std::string Chat::HEADER = "C";
 
-const bool Chat::REGISTERED = Parser<protocol>::insert(HEADER, create);
+const bool Chat::REGISTERED = Parser<protocol>::register_message(HEADER, create);
 
 std::unique_ptr<MessageInterface> Chat::create(const std::string& message)
 {

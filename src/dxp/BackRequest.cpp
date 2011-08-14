@@ -11,7 +11,7 @@ namespace dxp {
 
 const std::string BackRequest::HEADER = "B";
 
-const bool BackRequest::REGISTERED = Parser<protocol>::insert(HEADER, create);
+const bool BackRequest::REGISTERED = Parser<protocol>::register_message(HEADER, create);
 
 std::unique_ptr<MessageInterface> BackRequest::create(const std::string& message)
 {

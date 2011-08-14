@@ -8,6 +8,16 @@
 namespace dctl {
 namespace dxp {
 
+/*
+
+The Parser class is the <ConcreteCreator> in a <Factory Method Pattern> with 
+the MessageInterface class as the <Product> and classes derived from that as
+instances of a <ConcreteProduct>. 
+
+All derived message classes MUST register themselves with the factory.
+
+*/
+
 template<typename Protocol>
 class Parser
 : 
@@ -17,9 +27,9 @@ public:
         // typedefs
         typedef std::unique_ptr<MessageInterface> (*Creator)(const std::string&);
 
-        static std::unique_ptr<MessageInterface> find(const std::string&);
-        static bool insert(const std::string&, Creator);
-        static bool erase(const std::string&);
+        static std::unique_ptr<MessageInterface> create_message(const std::string&);
+        static bool register_message(const std::string&, Creator);
+        static bool unregister_message(const std::string&);
 
 private:
         // implementation

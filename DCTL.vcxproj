@@ -267,10 +267,10 @@
     <ClInclude Include="src\successor\BothMoves.hpp" />
     <ClInclude Include="src\successor\Driver.h" />
     <ClInclude Include="src\successor\Driver.hpp" />
-    <ClInclude Include="src\successor\Generator.h" />
-    <ClInclude Include="src\successor\Generator.hpp" />
-    <ClInclude Include="src\successor\GeneratorInterface.h" />
-    <ClInclude Include="src\successor\GeneratorInterface.hpp" />
+    <ClInclude Include="src\successor\State.h" />
+    <ClInclude Include="src\successor\State.hpp" />
+    <ClInclude Include="src\successor\StateInterface.h" />
+    <ClInclude Include="src\successor\StateInterface.hpp" />
     <ClInclude Include="src\successor\KingJumps.h" />
     <ClInclude Include="src\successor\KingJumps.hpp" />
     <ClInclude Include="src\successor\KingMoves.h" />
@@ -279,6 +279,8 @@
     <ClInclude Include="src\successor\PawnJumps.hpp" />
     <ClInclude Include="src\successor\PawnMoves.h" />
     <ClInclude Include="src\successor\PawnMoves.hpp" />
+    <ClInclude Include="src\successor\Selector.h" />
+    <ClInclude Include="src\successor\Selector.hpp" />
     <ClInclude Include="src\successor\Successor.h" />
     <ClInclude Include="src\successor\Successor.hpp" />
     <ClInclude Include="src\utils\Iota.hpp" />

@@ -11,7 +11,7 @@ namespace dxp {
 
 const std::string BackAcknowledge::HEADER = "K";
 
-const bool BackAcknowledge::REGISTERED = Parser<protocol>::insert(HEADER, create);
+const bool BackAcknowledge::REGISTERED = Parser<protocol>::register_message(HEADER, create);
 
 std::unique_ptr<MessageInterface> BackAcknowledge::create(const std::string& message)
 {

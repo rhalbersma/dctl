@@ -4,6 +4,16 @@
 namespace dctl {
 namespace dxp {
 
+/*
+
+The MessageInterface class is the <Product> in a <Factory Method Pattern> with 
+its derived classes derived as instances of a <ConcreteProduct>, and with the
+Parser class as the <ConcreteCreator>.
+
+All derived message classes MUST register themselves with the factory.
+
+*/
+
 class MessageInterface
 {
 public:

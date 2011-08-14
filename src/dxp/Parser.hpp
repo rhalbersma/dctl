@@ -4,7 +4,7 @@ namespace dctl {
 namespace dxp {
 
 template<typename Protocol>
-std::unique_ptr<MessageInterface> Parser<Protocol>::find(const std::string& message)
+std::unique_ptr<MessageInterface> Parser<Protocol>::create_message(const std::string& message)
 {
         Scanner<Protocol> scanner(message);
         auto i = instance().find(scanner.header());
@@ -12,13 +12,13 @@ std::unique_ptr<MessageInterface> Parser<Protocol>::find(const std::string& mess
 }
 
 template<typename Protocol>
-bool Parser<Protocol>::insert(const std::string& header, Creator creator)
+bool Parser<Protocol>::register_message(const std::string& header, Creator creator)
 {
         return instance().insert(CreatorMap::value_type(header, creator)).second;
 }
 
 template<typename Protocol>
-bool Parser<Protocol>::erase(const std::string& header)
+bool Parser<Protocol>::unregister_message(const std::string& header)
 {
         return instance().erase(header) == 1;
 }
