@@ -8,7 +8,7 @@
 
 namespace dctl {
 
-namespace successors { template<typename, typename> class Successors; }
+namespace successor { template<typename, typename> class Successor; }
 template<typename> class Position;
 class Timer;
 

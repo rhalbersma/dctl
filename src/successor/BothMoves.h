@@ -1,15 +1,17 @@
 #pragma once
+#include "Driver.h"
 #include "../node/Stack.h"
+#include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
 namespace dctl {
 
 template<typename> class Position;
 
-namespace successors {
+namespace successor {
 
-template<bool, int, int, typename Rules, typename Board>
-class Driver
+template<bool Color, typename Rules, typename Board> 
+class Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>
 :
         private utils::nonconstructible // enforce static semantics
 {
@@ -27,8 +29,8 @@ public:
         static bool detect_promotions(const Position<Board>&);
 };
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl
 
 // include template definitions inside header
-#include "Driver.hpp"
+#include "BothMoves.hpp"

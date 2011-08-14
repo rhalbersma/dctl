@@ -112,14 +112,14 @@
     <Filter Include="Header Files\variant">
       <UniqueIdentifier>{2b33804e-bb52-4062-aac1-656e790c5874}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\successors">
-      <UniqueIdentifier>{0474e3f4-afb4-4dd1-8554-2a1819948d56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\successors">
-      <UniqueIdentifier>{2856444e-4021-4335-8d96-cbec057a2cfb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\pdn">
       <UniqueIdentifier>{fb9e6f14-ee87-4547-a9ac-3e4d892722e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\successor">
+      <UniqueIdentifier>{2856444e-4021-4335-8d96-cbec057a2cfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\successor">
+      <UniqueIdentifier>{0474e3f4-afb4-4dd1-8554-2a1819948d56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -582,65 +582,65 @@
     <ClInclude Include="src\variant\Variant.h">
       <Filter>Header Files\variant</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\Successors.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\PawnJumps.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\BothJumps.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\PawnMoves.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\BothMoves.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\Successor.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\Driver.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\BothJumps.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\KingJumps.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\BothMoves.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\KingMoves.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\Driver.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\PawnJumps.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\Generator.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\PawnMoves.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\GeneratorInterface.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\Successors.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\KingJumps.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\BothJumps.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\KingMoves.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\BothMoves.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\Successor.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\Driver.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\BothJumps.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\KingJumps.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\BothMoves.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\KingMoves.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\Driver.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\PawnJumps.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\Generator.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\PawnMoves.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\GeneratorInterface.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\GeneratorInterface.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\KingJumps.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\Generator.h">
-      <Filter>Header Files\successors</Filter>
+    <ClInclude Include="src\successor\KingMoves.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\GeneratorInterface.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\PawnJumps.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successors\Generator.hpp">
-      <Filter>Source Files\successors</Filter>
+    <ClInclude Include="src\successor\PawnMoves.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

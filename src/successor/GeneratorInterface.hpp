@@ -1,5 +1,5 @@
 namespace dctl {
-namespace successors {
+namespace successor {
 
 template<typename Rules, typename Board> 
 void GeneratorInterface<Rules, Board>::generate_legal(const Position<Board>& p, Stack& moves) const 
@@ -91,5 +91,5 @@ bool GeneratorInterface<Rules, Board>::detect_promotions(const Position<Board>& 
         return do_detect_promotions(p);
 }
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl

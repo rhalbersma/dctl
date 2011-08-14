@@ -7,7 +7,7 @@
 #include "../node/Material.h"
 
 namespace dctl {
-namespace successors {
+namespace successor {
 
 template<bool Color, int Material, int MoveType, typename Rules, typename Board>
 void Driver<Color, Material, MoveType, Rules, Board>::generate(const Position<Board>&, Stack&) 
@@ -72,5 +72,5 @@ bool Driver<Color, Material, MoveType, Rules, Board>::detect_promotions(const Po
         return false; 
 }
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl

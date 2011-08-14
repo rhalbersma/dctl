@@ -5,7 +5,7 @@
 #include "../rules/Rules.h"
 
 namespace dctl {
-namespace successors {
+namespace successor {
 
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::BOTH, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
@@ -61,5 +61,5 @@ bool Driver<Color, Material::BOTH, Move::JUMPS, Rules, Board>::detect(const Posi
         );
 }
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl

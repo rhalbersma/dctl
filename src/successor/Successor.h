@@ -10,7 +10,7 @@ namespace dctl {
 template<typename> class Position;
 
 template<typename Rules, typename Board>
-class Successors
+class Successor
 :
         private utils::nonconstructible // enforce static semantics
 {
@@ -48,7 +48,7 @@ private:
         template<bool> static int state(const Position<Board>&);
         static int state(bool, BitBoard, BitBoard);
 
-        typedef const successors::GeneratorInterface<Rules, Board>* Generator;
+        typedef const successor::GeneratorInterface<Rules, Board>* Generator;
         static const Generator select(const Position<Board>&);
         template<bool> static const Generator select(const Position<Board>&);
 
@@ -60,4 +60,4 @@ private:
 }       // namespace dctl
 
 // include template definitions inside header
-#include "Successors.hpp"
+#include "Successor.hpp"

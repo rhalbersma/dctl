@@ -6,7 +6,7 @@
 #include "../utils/Shift.h"
 
 namespace dctl {
-namespace successors {
+namespace successor {
 
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
@@ -25,7 +25,7 @@ void Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_serial(B
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Stack& moves, Int2Type<true>)
 {
-        // loop could be empty if the single active king detected during Successors<Rules, Board>::select is restricted to move
+        // loop could be empty if the single active king detected during Successor<Rules, Board>::select is restricted to move
         while (active_kings) {
                 generate_dirs(bit::get_first(active_kings), not_occupied, moves);
                 bit::clear_first(active_kings);
@@ -36,7 +36,7 @@ void Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_serial(B
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_serial(BitBoard active_kings, BitBoard not_occupied, Stack& moves, Int2Type<false>)
 {
-        // loop cannot be empty because all active kings detected during Successors<Rules, Board>::select() are unrestricted to move
+        // loop cannot be empty because all active kings detected during Successor<Rules, Board>::select() are unrestricted to move
         assert(!bit::is_zero(active_kings));
         do {
                 generate_dirs(bit::get_first(active_kings), not_occupied, moves);
@@ -173,5 +173,5 @@ bool Driver<Color, Material::KING, Move::MOVES, Rules, Board>::detect_promotions
         return false; 
 }
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl

@@ -8,7 +8,7 @@
 #include "../utils/Shift.h"
 
 namespace dctl {
-namespace successors {
+namespace successor {
 
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::KING, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
@@ -357,5 +357,5 @@ bool Driver<Color, Material::KING, Move::JUMPS, Rules, Board>::detect_dir(BitBoa
         );
 }
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl

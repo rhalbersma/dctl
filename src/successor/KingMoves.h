@@ -3,15 +3,16 @@
 #include "../node/Stack.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
+#include "../rules/Rules.h"
 
 namespace dctl {
 
 template<typename> class Position;
 
-namespace successors {
+namespace successor {
 
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>
+class Driver<Color, Material::KING, Move::MOVES, Rules, Board>
 :
         private utils::nonconstructible // enforce static semantics
 {
@@ -30,24 +31,32 @@ public:
 
 private:
         // implementation
+        
+        // tag dispatching based on restrictions on consecutive moves with the same king
+        static void generate_serial(BitBoard, BitBoard, Stack&);
+        static void generate_serial(BitBoard, BitBoard, Stack&, Int2Type<false>);
+        static void generate_serial(BitBoard, BitBoard, Stack&, Int2Type<true >);
+        
         static void generate_dirs(BitBoard, BitBoard, Stack&);
-        static void generate_reverse_dirs(BitBoard, BitBoard, Stack&);
+        
+        // tag dispatching based on king range
         template<int> static void generate_dir(BitBoard, BitBoard, Stack&);
+        template<int> static void generate_dir(BitBoard, BitBoard, Stack&, Int2Type<rules::RANGE_1>);
+        template<int> static void generate_dir(BitBoard, BitBoard, Stack&, Int2Type<rules::RANGE_N>);
 
         static int count_dirs(BitBoard, BitBoard);
-        static int count_reverse_dirs(BitBoard, BitBoard);
+        
+        // tag dispatching based on king range
         template<int> static int count_dir(BitBoard, BitBoard);
+        template<int> static int count_dir(BitBoard, BitBoard, Int2Type<rules::RANGE_1>);
+        template<int> static int count_dir(BitBoard, BitBoard, Int2Type<rules::RANGE_N>);
 
         static bool detect_dirs(BitBoard, BitBoard);
-        static bool detect_reverse_dirs(BitBoard, BitBoard);
         template<int> static bool detect_dir(BitBoard, BitBoard);
-
-        static BitBoard promotion(BitBoard);
-        static BitBoard promotors(BitBoard);
 };
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl
 
 // include template definitions inside header
-#include "PawnMoves.hpp"
+#include "KingMoves.hpp"

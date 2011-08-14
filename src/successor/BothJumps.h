@@ -9,7 +9,7 @@ namespace dctl {
 
 namespace capture { template<typename, typename> class State; }
 
-namespace successors {
+namespace successor {
 
 template<bool Color, typename Rules, typename Board>
 class Driver<Color, Material::BOTH, Move::JUMPS, Rules, Board>
@@ -31,7 +31,7 @@ private:
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<true >);
 };
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl
 
 // include template definitions inside header
