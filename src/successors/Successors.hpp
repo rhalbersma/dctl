@@ -5,42 +5,44 @@
 namespace dctl {
 
 template<typename Rules, typename Board>
-void Successors<Rules, Board>::generate(const Position<Board>& p, Stack& moves)
+void Successors<Rules, Board>::generate_legal(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate(p, moves);
-        assert(invariant(p, moves.size()));
+        select(p)->generate_legal(p, moves);
+        assert(invariant_legal(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
 void Successors<Rules, Board>::generate_moves(const Position<Board>& p, Stack& moves)
 {
         select(p)->generate_moves(p, moves);
+        assert(invariant_moves(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
 void Successors<Rules, Board>::generate_jumps(const Position<Board>& p, Stack& moves)
 {
         select(p)->generate_jumps(p, moves);
+        assert(invariant_jumps(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
 void Successors<Rules, Board>::generate_reverse(const Position<Board>& p, Stack& moves)
 {
         select(p)->generate_reverse(p, moves);
-        assert(reverse_invariant(p, moves.size()));
+        assert(invariant_reverse(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
 void Successors<Rules, Board>::generate_promotions(const Position<Board>& p, Stack& moves)
 {
         select(p)->generate_promotions(p, moves);
-        assert(promotions_invariant(p, moves.size()));
+        assert(invariant_promotions(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
-int Successors<Rules, Board>::count(const Position<Board>& p)
+int Successors<Rules, Board>::count_legal(const Position<Board>& p)
 {
-        return select(p)->count(p);
+        return select(p)->count_legal(p);
 }
 
 template<typename Rules, typename Board>
@@ -74,9 +76,9 @@ int Successors<Rules, Board>::count_mobility(const Position<Board>& p)
 }
 
 template<typename Rules, typename Board>
-bool Successors<Rules, Board>::detect(const Position<Board>& p)
+bool Successors<Rules, Board>::detect_legal(const Position<Board>& p)
 {
-        return select(p)->detect(p);
+        return select(p)->detect_legal(p);
 }
 
 template<typename Rules, typename Board>
@@ -104,16 +106,34 @@ bool Successors<Rules, Board>::detect_promotions(const Position<Board>& p)
 }
 
 template<typename Rules, typename Board>
-bool Successors<Rules, Board>::invariant(const Position<Board>& p, int num_moves)
+bool Successors<Rules, Board>::invariant_legal(const Position<Board>& p, int num_legal)
 {
         return (
-                (count(p) == num_moves) && 
-                (detect(p) == (num_moves > 0))
+                (count_legal(p) == num_legal) && 
+                (detect_legal(p) == (num_legal > 0))
         );
 }
 
 template<typename Rules, typename Board>
-bool Successors<Rules, Board>::reverse_invariant(const Position<Board>& p, int num_reverse)
+bool Successors<Rules, Board>::invariant_moves(const Position<Board>& p, int num_moves)
+{
+        return (
+                (count_moves(p) == num_moves) && 
+                (detect_moves(p) == (num_moves > 0))
+        );
+}
+
+template<typename Rules, typename Board>
+bool Successors<Rules, Board>::invariant_jumps(const Position<Board>& p, int num_jumps)
+{
+        return (
+                (count_jumps(p) == num_jumps) && 
+                (detect_jumps(p) == (num_jumps > 0))
+        );
+}
+
+template<typename Rules, typename Board>
+bool Successors<Rules, Board>::invariant_reverse(const Position<Board>& p, int num_reverse)
 {
         return (
                 (count_reverse(p) == num_reverse) && 
@@ -122,7 +142,7 @@ bool Successors<Rules, Board>::reverse_invariant(const Position<Board>& p, int n
 }
 
 template<typename Rules, typename Board>
-bool Successors<Rules, Board>::promotions_invariant(const Position<Board>& p, int num_promotions)
+bool Successors<Rules, Board>::invariant_promotions(const Position<Board>& p, int num_promotions)
 {
         return (
                 (count_promotions(p) == num_promotions) && 

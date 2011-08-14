@@ -113,8 +113,6 @@ struct read<Board, dxp::protocol, Token>
 {
         Position<Board> operator()(const std::string& s) const
         {
-	        assert(s.length() == Board::ExternalGrid::SIZE + 1);
-
 	        BitBoard p_pieces[2] = {0, 0};
 	        BitBoard p_kings = 0;
 	        bool p_side = Side::BLACK;

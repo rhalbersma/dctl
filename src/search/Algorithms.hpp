@@ -48,7 +48,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0)
-                return !Successors<Rules, Board>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successors<Rules, Board>::detect_legal(p)? loss_value(0) : Evaluate::evaluate(p);
 
         assert(depth > 0);
         assert(alpha >= -infinity());
@@ -73,7 +73,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         // generate moves
         Stack moves;
         moves.reserve(32);
-        Successors<Rules, Board>::generate(p, moves);
+        Successors<Rules, Board>::generate_legal(p, moves);
 
         // without a valid move, the position is an immediate loss
         if (moves.empty()) {
@@ -208,7 +208,7 @@ int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& pare
 
         // generate moves
         Stack moves;
-        Successors<Rules, Board>::generate(p, moves);
+        Successors<Rules, Board>::generate_legal(p, moves);
 
         // search moves
         auto best_value = -infinity();
@@ -253,7 +253,7 @@ int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, in
 
         // generate moves
         Stack moves;
-        Successors<Rules, Board>::generate(p, moves);
+        Successors<Rules, Board>::generate_legal(p, moves);
 
         // search moves
         auto best_value = -infinity();

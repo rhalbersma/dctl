@@ -16,19 +16,19 @@ class Successors
 {
 public:
         // interface
-        static void generate(const Position<Board>&, Stack&);
+        static void generate_legal(const Position<Board>&, Stack&);
         static void generate_moves(const Position<Board>&, Stack&);
         static void generate_jumps(const Position<Board>&, Stack&);
         static void generate_reverse(const Position<Board>&, Stack&);
         static void generate_promotions(const Position<Board>&, Stack&);
 
-        static int count(const Position<Board>&);
+        static int count_legal(const Position<Board>&);
         static int count_moves(const Position<Board>&);
         static int count_jumps(const Position<Board>&);
         static int count_reverse(const Position<Board>&);
         static int count_promotions(const Position<Board>&);
 
-        static bool detect(const Position<Board>&);
+        static bool detect_legal(const Position<Board>&);
         static bool detect_moves(const Position<Board>&);
         static bool detect_jumps(const Position<Board>&);
         static bool detect_reverse(const Position<Board>&);
@@ -38,9 +38,11 @@ public:
 
 private:
         // implementation
-        static bool invariant(const Position<Board>&, int);
-        static bool reverse_invariant(const Position<Board>&, int);
-        static bool promotions_invariant(const Position<Board>&, int);
+        static bool invariant_legal(const Position<Board>&, int);
+        static bool invariant_moves(const Position<Board>&, int);
+        static bool invariant_jumps(const Position<Board>&, int);
+        static bool invariant_reverse(const Position<Board>&, int);
+        static bool invariant_promotions(const Position<Board>&, int);
 
         static int state(const Position<Board>&);
         template<bool> static int state(const Position<Board>&);
