@@ -1,5 +1,5 @@
 #include <cassert>
-#include "Generator.h"
+#include "Selector.h"
 #include "../node/Position.h"
 
 namespace dctl {
@@ -7,102 +7,102 @@ namespace dctl {
 template<typename Rules, typename Board>
 void Successor<Rules, Board>::generate_legal(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_legal(p, moves);
+        successor::Selector<Rules, Board>::find(state(p))->generate_legal(p, moves);
         assert(invariant_legal(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
 void Successor<Rules, Board>::generate_moves(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_moves(p, moves);
+        successor::Selector<Rules, Board>::find(state(p))->generate_moves(p, moves);
         assert(invariant_moves(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
 void Successor<Rules, Board>::generate_jumps(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_jumps(p, moves);
+        successor::Selector<Rules, Board>::find(state(p))->generate_jumps(p, moves);
         assert(invariant_jumps(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
 void Successor<Rules, Board>::generate_reverse(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_reverse(p, moves);
+        successor::Selector<Rules, Board>::find(state(p))->generate_reverse(p, moves);
         assert(invariant_reverse(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
 void Successor<Rules, Board>::generate_promotions(const Position<Board>& p, Stack& moves)
 {
-        select(p)->generate_promotions(p, moves);
+        successor::Selector<Rules, Board>::find(state(p))->generate_promotions(p, moves);
         assert(invariant_promotions(p, moves.size()));
 }
 
 template<typename Rules, typename Board>
 int Successor<Rules, Board>::count_legal(const Position<Board>& p)
 {
-        return select(p)->count_legal(p);
+        return successor::Selector<Rules, Board>::find(state(p))->count_legal(p);
 }
 
 template<typename Rules, typename Board>
 int Successor<Rules, Board>::count_moves(const Position<Board>& p)
 {
-        return select(p)->count_moves(p);
+        return successor::Selector<Rules, Board>::find(state(p))->count_moves(p);
 }
 
 template<typename Rules, typename Board>
 int Successor<Rules, Board>::count_jumps(const Position<Board>& p)
 {
-        return select(p)->count_jumps(p);
+        return successor::Selector<Rules, Board>::find(state(p))->count_jumps(p);
 }
 
 template<typename Rules, typename Board>
 int Successor<Rules, Board>::count_reverse(const Position<Board>& p)
 {
-        return select(p)->count_reverse(p);
+        return successor::Selector<Rules, Board>::find(state(p))->count_reverse(p);
 }
 
 template<typename Rules, typename Board>
 int Successor<Rules, Board>::count_promotions(const Position<Board>& p)
 {
-        return select(p)->count_promotions(p);
+        return successor::Selector<Rules, Board>::find(state(p))->count_promotions(p);
 }
 
 template<typename Rules, typename Board> template<bool Color>
 int Successor<Rules, Board>::count_mobility(const Position<Board>& p)
 {
-        return select<Color>(p)->count_moves(p);
+        return successor::Selector<Rules, Board>::find(state<Color>(p))->count_moves(p);
 }
 
 template<typename Rules, typename Board>
 bool Successor<Rules, Board>::detect_legal(const Position<Board>& p)
 {
-        return select(p)->detect_legal(p);
+        return successor::Selector<Rules, Board>::find(state(p))->detect_legal(p);
 }
 
 template<typename Rules, typename Board>
 bool Successor<Rules, Board>::detect_moves(const Position<Board>& p)
 {
-        return select(p)->detect_moves(p);
+        return successor::Selector<Rules, Board>::find(state(p))->detect_moves(p);
 }
 
 template<typename Rules, typename Board>
 bool Successor<Rules, Board>::detect_jumps(const Position<Board>& p)
 {
-        return select(p)->detect_jumps(p);
+        return successor::Selector<Rules, Board>::find(state(p))->detect_jumps(p);
 }
 
 template<typename Rules, typename Board>
 bool Successor<Rules, Board>::detect_reverse(const Position<Board>& p)
 {
-        return select(p)->detect_reverse(p);
+        return successor::Selector<Rules, Board>::find(state(p))->detect_reverse(p);
 }
 
 template<typename Rules, typename Board>
 bool Successor<Rules, Board>::detect_promotions(const Position<Board>& p)
 {
-        return select(p)->detect_promotions(p);
+        return successor::Selector<Rules, Board>::find(state(p))->detect_promotions(p);
 }
 
 template<typename Rules, typename Board>
@@ -170,38 +170,6 @@ int Successor<Rules, Board>::state(bool color, BitBoard kings, BitBoard men)
                 ((kings != 0) << 1) +
                 ((  men != 0) << 0)
         );
-}
-
-template<typename Rules, typename Board>
-typename const Successor<Rules, Board>::Generator Successor<Rules, Board>::select(const Position<Board>& p)
-{
-        return instance()[state(p)];
-}
-
-template<typename Rules, typename Board> template<bool Color>
-typename const Successor<Rules, Board>::Generator Successor<Rules, Board>::select(const Position<Board>& p)
-{
-        return instance()[state<Color>(p)];
-}
-
-template<typename Rules, typename Board>
-typename Successor<Rules, Board>::GeneratorArray& Successor<Rules, Board>::instance()
-{
-        static const successor::Generator<Side::BLACK, Material::NONE, Rules, Board> BLACK_NONE_;
-        static const successor::Generator<Side::BLACK, Material::PAWN, Rules, Board> BLACK_PAWN_;
-        static const successor::Generator<Side::BLACK, Material::KING, Rules, Board> BLACK_KING_;
-        static const successor::Generator<Side::BLACK, Material::BOTH, Rules, Board> BLACK_BOTH_;
-        static const successor::Generator<Side::WHITE, Material::NONE, Rules, Board> WHITE_NONE_;
-        static const successor::Generator<Side::WHITE, Material::PAWN, Rules, Board> WHITE_PAWN_;
-        static const successor::Generator<Side::WHITE, Material::KING, Rules, Board> WHITE_KING_;
-        static const successor::Generator<Side::WHITE, Material::BOTH, Rules, Board> WHITE_BOTH_;
-
-        // Meyers Singleton, see Modern C++ Design p.117
-        static const GeneratorArray singleton_ = {
-                &BLACK_NONE_, &BLACK_PAWN_, &BLACK_KING_, &BLACK_BOTH_, 
-                &WHITE_NONE_, &WHITE_PAWN_, &WHITE_KING_, &WHITE_BOTH_
-        };
-        return singleton_;
 }
 
 }       // namespace dctl

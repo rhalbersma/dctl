@@ -11,7 +11,7 @@ namespace dxp {
 
 const std::string GameEnd::HEADER = "E";
 
-const bool GameEnd::REGISTERED = Parser<protocol>::insert(HEADER, create);
+const bool GameEnd::REGISTERED = Parser<protocol>::register_message(HEADER, create);
 
 std::unique_ptr<MessageInterface> GameEnd::create(const std::string& message)
 {

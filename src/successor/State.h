@@ -1,5 +1,5 @@
 #pragma once
-#include "GeneratorInterface.h"
+#include "StateInterface.h"
 #include "../node/Stack.h"
 
 namespace dctl {
@@ -8,10 +8,20 @@ template<typename> class Position;
 
 namespace successor {
 
+/*
+
+The State class forms the <ConcreteState> in a <State Pattern>, with the 
+StateInterface class as the <State> and the Successor class as the <Context>.
+
+The State class also forms the <AbstractClass> in a <Template Method Pattern>,
+with the Driver class as the <ConcreteClass>.
+
+*/
+
 template<bool Color, int Material, typename Rules, typename Board> 
-class Generator
+class State
 : 
-        public GeneratorInterface<Rules, Board>
+        public StateInterface<Rules, Board>
 {
 private:		
         virtual void do_generate_legal(const Position<Board>&, Stack&) const;
@@ -37,4 +47,4 @@ private:
 }       // namespace dctl
 
 // include template definitions inside header
-#include "Generator.hpp"
+#include "State.hpp"

@@ -11,7 +11,7 @@ namespace dxp {
 
 const std::string GameAcknowledge::HEADER = "A";
 
-const bool GameAcknowledge::REGISTERED = Parser<protocol>::insert(HEADER, create);
+const bool GameAcknowledge::REGISTERED = Parser<protocol>::register_message(HEADER, create);
 
 std::unique_ptr<MessageInterface> GameAcknowledge::create(const std::string& message)
 {

@@ -18,7 +18,7 @@ const char GameRequest::SETUP[2] = {
         SPECIAL
 };
 
-const bool GameRequest::REGISTERED = Parser<protocol>::insert(HEADER, create);
+const bool GameRequest::REGISTERED = Parser<protocol>::register_message(HEADER, create);
 
 std::unique_ptr<MessageInterface> GameRequest::create(const std::string& message)
 {

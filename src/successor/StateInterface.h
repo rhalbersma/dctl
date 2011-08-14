@@ -7,8 +7,15 @@ template<typename> class Position;
 
 namespace successor {
 
+/*
+
+The StateInterface class forms the <State> in a <State Pattern>, with the 
+State class as the <ConcreteState> and the Successor class as the <Context>.
+
+*/
+
 template<typename Rules, typename Board> 
-class GeneratorInterface
+class StateInterface
 {
 public:
         // non-virtual interface
@@ -32,7 +39,7 @@ public:
 
 protected:
         // destructor
-        ~GeneratorInterface() {};
+        ~StateInterface() {};
 
 private:
         // pure virtual implementation
@@ -59,4 +66,4 @@ private:
 }       // namespace dctl
 
 // include template definitions inside header
-#include "GeneratorInterface.hpp"
+#include "StateInterface.hpp"

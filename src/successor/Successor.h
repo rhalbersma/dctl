@@ -1,13 +1,21 @@
 #pragma once
-#include "GeneratorInterface.h"
-#include "../node/Material.h"
-#include "../node/Side.h"
 #include "../node/Stack.h"
+#include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
 namespace dctl {
 
 template<typename> class Position;
+
+/*
+
+The Successor class forms the <Context> in a <State Pattern>, with the 
+StateInterface class as the <State> and the State class as the <ConcreteState>.
+
+The Successor class dispatches a pointer to a State object depending on the 
+position's side to move and the availability of kings and men among the pieces.
+
+*/
 
 template<typename Rules, typename Board>
 class Successor
@@ -47,14 +55,6 @@ private:
         static int state(const Position<Board>&);
         template<bool> static int state(const Position<Board>&);
         static int state(bool, BitBoard, BitBoard);
-
-        typedef const successor::GeneratorInterface<Rules, Board>* Generator;
-        static const Generator select(const Position<Board>&);
-        template<bool> static const Generator select(const Position<Board>&);
-
-        // representation
-        typedef const Generator GeneratorArray[8];
-        static GeneratorArray& instance();
 };
 
 }       // namespace dctl

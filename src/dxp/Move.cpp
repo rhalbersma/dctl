@@ -12,7 +12,7 @@ namespace dxp {
 
 const std::string Move::HEADER = "M";
 
-const bool Move::REGISTERED = Parser<protocol>::insert(HEADER, create);
+const bool Move::REGISTERED = Parser<protocol>::register_message(HEADER, create);
 
 std::unique_ptr<MessageInterface> Move::create(const std::string& message)
 {
