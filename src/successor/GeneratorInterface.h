@@ -5,7 +5,7 @@ namespace dctl {
 
 template<typename> class Position;
 
-namespace successors {
+namespace successor {
 
 template<typename Rules, typename Board> 
 class GeneratorInterface
@@ -55,7 +55,7 @@ private:
         virtual bool do_detect_promotions(const Position<Board>&) const = 0;
 };
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl
 
 // include template definitions inside header

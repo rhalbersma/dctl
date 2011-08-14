@@ -1,6 +1,6 @@
 #include <cassert>
 #include <iostream>
-#include "../successors/Successors.h"
+#include "../successor/Successor.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
 #include "../utils/Timer.h"
@@ -37,7 +37,7 @@ NodeCount Root::divide(const Position<Board>& p, int depth)
         
         Timer timer;
         Stack moves;
-        Successors<Rules, Board>::generate_legal(p, moves);
+        Successor<Rules, Board>::generate_legal(p, moves);
 
         announce(p, depth, moves.size());
         for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
@@ -73,7 +73,7 @@ NodeCount Root::leaf(const Position<Board>& p, int ply, int depth)
                 return 1;
 
         Stack moves;
-        Successors<Rules, Board>::generate_legal(p, moves);
+        Successor<Rules, Board>::generate_legal(p, moves);
         NodeCount leafs = 0;        
         for (auto m = moves.begin(); m != moves.end(); ++m) {
                 auto q(p);
@@ -90,7 +90,7 @@ NodeCount Root::bulk(const Position<Board>& p, int ply, int depth)
         statistics_.update(ply);
 
         Stack moves;
-        Successors<Rules, Board>::generate_legal(p, moves);
+        Successor<Rules, Board>::generate_legal(p, moves);
         if (depth == 1)
                 return moves.size();
         
@@ -110,10 +110,10 @@ NodeCount Root::count(const Position<Board>& p, int ply, int depth)
         statistics_.update(ply);
 
         if (depth == 1)
-                return Successors<Rules, Board>::count(p);
+                return Successor<Rules, Board>::count(p);
 
         Stack moves;
-        Successors<Rules, Board>::generate_legal(p, moves);
+        Successor<Rules, Board>::generate_legal(p, moves);
         NodeCount leafs = 0;
         for (auto m = moves.begin(); m != moves.end(); ++m) {
                 auto q(p);
@@ -137,7 +137,7 @@ NodeCount Root::hash(const Position<Board>& p, int ply, int depth)
                 return 1;
 
         Stack moves;
-        Successors<Rules, Board>::generate_legal(p, moves);
+        Successor<Rules, Board>::generate_legal(p, moves);
         NodeCount leafs = 0;
         for (auto m = moves.begin(); m != moves.end(); ++m) {
                 auto q(p);
@@ -161,10 +161,10 @@ NodeCount Root::fast(const Position<Board>& p, int ply, int depth)
 
         NodeCount leafs;
         if (depth == 1)
-                leafs = Successors<Rules, Board>::count(p);
+                leafs = Successor<Rules, Board>::count(p);
         else {
                 Stack moves;
-                Successors<Rules, Board>::generate_legal(p, moves);
+                Successor<Rules, Board>::generate_legal(p, moves);
                 leafs = 0;
                 for (auto m = moves.begin(); m != moves.end(); ++m) {
                         auto q(p);

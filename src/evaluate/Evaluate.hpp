@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <iostream>
 #include "Weight.h"
-#include "../successors/Successors.h"
+#include "../successor/Successor.h"
 #include "../node/Position.h"
 #include "../node/Side.h"
 #include "../variant/International.h"
@@ -110,7 +110,7 @@ int Evaluate::balance(const Position<Board>& p)
 template<bool Color, typename Board>
 int Evaluate::mobility(const Position<Board>& p)
 {
-        return Weight::MOBILITY * Successors<variant::International, Board>::template count_mobility<Color>(p);
+        return Weight::MOBILITY * Successor<variant::International, Board>::template count_mobility<Color>(p);
 }
 
 template<typename Board>

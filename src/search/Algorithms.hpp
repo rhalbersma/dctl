@@ -2,7 +2,7 @@
 #include <cassert>
 #include <iterator>     // std::back_inserter
 #include <vector>       // std::vector
-#include "../successors/Successors.h"
+#include "../successor/Successor.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
 #include "../utils/Iota.h"
@@ -48,7 +48,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0)
-                return !Successors<Rules, Board>::detect_legal(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successor<Rules, Board>::detect_legal(p)? loss_value(0) : Evaluate::evaluate(p);
 
         assert(depth > 0);
         assert(alpha >= -infinity());
@@ -73,7 +73,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         // generate moves
         Stack moves;
         moves.reserve(32);
-        Successors<Rules, Board>::generate_legal(p, moves);
+        Successor<Rules, Board>::generate_legal(p, moves);
 
         // without a valid move, the position is an immediate loss
         if (moves.empty()) {
@@ -171,17 +171,17 @@ int Root::quiescence(const Position<Board>& p, int ply, int depth, int alpha, in
                 return draw();
 
         // check for legal move_stack
-        if (!successors::detect(p)) {
+        if (!successor::detect(p)) {
                 return loss_value(0);
         }
 
         // generate captures and promotions
         Stack move_stack;
-        successors::generate_captures_promotions(p, move_stack);
+        successor::generate_captures_promotions(p, move_stack);
 
         if (move_stack.empty())
         {
-                if (successors::detect_pending_captures_promotions(p)) {
+                if (successor::detect_pending_captures_promotions(p)) {
 
                 } else {
                         // return eval
@@ -204,11 +204,11 @@ int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& pare
 
         // return evaluation in leaf nodes with valid moves
         if (depth == 0)
-                return !Successors<Rules, Board>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successor<Rules, Board>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
         Stack moves;
-        Successors<Rules, Board>::generate_legal(p, moves);
+        Successor<Rules, Board>::generate_legal(p, moves);
 
         // search moves
         auto best_value = -infinity();
@@ -249,11 +249,11 @@ int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, in
 
         // return evaluation in leaf nodes with valid moves
         if (depth == 0)
-                return !Successors<Rules, Board>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successor<Rules, Board>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
         Stack moves;
-        Successors<Rules, Board>::generate_legal(p, moves);
+        Successor<Rules, Board>::generate_legal(p, moves);
 
         // search moves
         auto best_value = -infinity();

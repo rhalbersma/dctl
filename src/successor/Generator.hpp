@@ -1,7 +1,7 @@
 #include "Driver.h"
 
 namespace dctl {
-namespace successors {
+namespace successor {
 
 template<bool Color, int Material, typename Rules, typename Board> 
 void Generator<Color, Material, Rules, Board>::do_generate_legal(const Position<Board>& p, Stack& moves) const 
@@ -101,5 +101,5 @@ bool Generator<Color, Material, Rules, Board>::do_detect_promotions(const Positi
         return Driver<Color, Material, Move::MOVES, Rules, Board>::detect_promotions(p);
 }
 
-}       // namespace successors
+}       // namespace successor
 }       // namespace dctl
