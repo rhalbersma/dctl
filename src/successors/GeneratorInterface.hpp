@@ -2,9 +2,9 @@ namespace dctl {
 namespace successors {
 
 template<typename Rules, typename Board> 
-void GeneratorInterface<Rules, Board>::generate(const Position<Board>& p, Stack& moves) const 
+void GeneratorInterface<Rules, Board>::generate_legal(const Position<Board>& p, Stack& moves) const 
 {
-        do_generate(p, moves);
+        do_generate_legal(p, moves);
 }
 
 template<typename Rules, typename Board> 
@@ -32,9 +32,9 @@ void GeneratorInterface<Rules, Board>::generate_promotions(const Position<Board>
 }
 
 template<typename Rules, typename Board>
-int GeneratorInterface<Rules, Board>::count(const Position<Board>& p) const
+int GeneratorInterface<Rules, Board>::count_legal(const Position<Board>& p) const
 {
-        return do_count(p);
+        return do_count_legal(p);
 }
 
 template<typename Rules, typename Board>
@@ -62,9 +62,9 @@ int GeneratorInterface<Rules, Board>::count_promotions(const Position<Board>& p)
 }
 
 template<typename Rules, typename Board> 
-bool GeneratorInterface<Rules, Board>::detect(const Position<Board>& p) const 
+bool GeneratorInterface<Rules, Board>::detect_legal(const Position<Board>& p) const 
 { 
-        return do_detect(p);
+        return do_detect_legal(p);
 }
 
 template<typename Rules, typename Board> 
