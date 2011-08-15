@@ -19,10 +19,10 @@ class Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>
         private utils::nonconstructible // enforce static semantics
 {
 public:
-        static void generate(const Position<Board>&, Stack&);
-        static void generate(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
-        static int count(const Position<Board>&);
-        static bool detect(const Position<Board>&);
+        static void generate_regular(const Position<Board>&, Stack&);
+        static void generate_regular(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
+        static int count_regular(const Position<Board>&);
+        static bool detect_regular(const Position<Board>&);
 
 private:
         // implementation

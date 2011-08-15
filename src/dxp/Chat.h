@@ -6,6 +6,16 @@
 namespace dctl {
 namespace dxp {
 
+/*
+
+The Chat class is a <ConcreteProduct> in a <Factory Method Pattern>
+with the Parser class as the <ConcreteCreator> and the MessageInterface class 
+as the <Product>.
+
+The Chat class registers itself with the factory.
+
+*/
+        
 class Chat
 : 
         public MessageInterface

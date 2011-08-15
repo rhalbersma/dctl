@@ -6,6 +6,16 @@
 namespace dctl {
 namespace dxp {
 
+/*
+
+The GameAcknowledge class is a <ConcreteProduct> in a <Factory Method Pattern>
+with the Parser class as the <ConcreteCreator> and the MessageInterface class 
+as the <Product>.
+
+The GameAcknowledge class registers itself with the factory.
+
+*/
+        
 class GameAcknowledge
 : 
         public MessageInterface

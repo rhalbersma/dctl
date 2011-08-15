@@ -6,13 +6,13 @@ namespace dctl {
 namespace successor {
 
 template<typename Rules, typename Board>
-typename Selector<Rules, Board>::StatePointer Selector<Rules, Board>::find(int state)
+typename Dispatcher<Rules, Board>::StatePointer Dispatcher<Rules, Board>::select(int state)
 {
         return instance()[state];
 }
 
 template<typename Rules, typename Board>
-typename Selector<Rules, Board>::StateArray& Selector<Rules, Board>::instance()
+typename Dispatcher<Rules, Board>::StateArray& Dispatcher<Rules, Board>::instance()
 {
         static const State<Side::BLACK, Material::NONE, Rules, Board> BLACK_NONE_;
         static const State<Side::BLACK, Material::PAWN, Rules, Board> BLACK_PAWN_;

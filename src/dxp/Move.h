@@ -7,6 +7,16 @@
 namespace dctl {
 namespace dxp {
 
+/*
+
+The Move class is a <ConcreteProduct> in a <Factory Method Pattern>
+with the Parser class as the <ConcreteCreator> and the MessageInterface class 
+as the <Product>.
+
+The Move class registers itself with the factory.
+
+*/
+        
 class Move
 : 
         public MessageInterface

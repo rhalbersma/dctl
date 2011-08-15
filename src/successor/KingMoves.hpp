@@ -9,7 +9,7 @@ namespace dctl {
 namespace successor {
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
+void Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_regular(const Position<Board>& p, Stack& moves)
 {
         generate_serial(unrestricted_kings<Rules>(p, Color), not_occupied(p), moves);
 }
@@ -89,7 +89,7 @@ void Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_promotio
 }
 
 template<bool Color, typename Rules, typename Board>
-int Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count(const Position<Board>& p)
+int Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count_regular(const Position<Board>& p)
 {
         return count_dirs(unrestricted_kings<Rules>(p, Color), not_occupied(p));
 }
@@ -129,7 +129,7 @@ int Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count_dir(BitBoard
 template<bool Color, typename Rules, typename Board>
 int Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count_reverse(const Position<Board>& p)
 {
-        return count(p);
+        return count_regular(p);
 }
 
 template<bool Color, typename Rules, typename Board>
@@ -139,7 +139,7 @@ int Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count_promotions(c
 }
 
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, Material::KING, Move::MOVES, Rules, Board>::detect(const Position<Board>& p)
+bool Driver<Color, Material::KING, Move::MOVES, Rules, Board>::detect_regular(const Position<Board>& p)
 {
         return detect_dirs(unrestricted_kings<Rules>(p, Color), not_occupied(p));
 }
@@ -164,7 +164,7 @@ bool Driver<Color, Material::KING, Move::MOVES, Rules, Board>::detect_dir(BitBoa
 template<bool Color, typename Rules, typename Board>
 bool Driver<Color, Material::KING, Move::MOVES, Rules, Board>::detect_reverse(const Position<Board>& p)
 {
-        return detect(p);
+        return detect_regular(p);
 }
 
 template<bool Color, typename Rules, typename Board>

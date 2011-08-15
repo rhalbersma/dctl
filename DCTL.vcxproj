@@ -279,8 +279,8 @@
     <ClInclude Include="src\successor\PawnJumps.hpp" />
     <ClInclude Include="src\successor\PawnMoves.h" />
     <ClInclude Include="src\successor\PawnMoves.hpp" />
-    <ClInclude Include="src\successor\Selector.h" />
-    <ClInclude Include="src\successor\Selector.hpp" />
+    <ClInclude Include="src\successor\Dispatcher.h" />
+    <ClInclude Include="src\successor\Dispatcher.hpp" />
     <ClInclude Include="src\successor\Successor.h" />
     <ClInclude Include="src\successor\Successor.hpp" />
     <ClInclude Include="src\utils\Iota.hpp" />

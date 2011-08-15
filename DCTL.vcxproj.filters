@@ -630,12 +630,6 @@
     <ClInclude Include="src\successor\PawnMoves.h">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successor\Selector.h">
-      <Filter>Header Files\successor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\successor\Selector.hpp">
-      <Filter>Source Files\successor</Filter>
-    </ClInclude>
     <ClInclude Include="src\successor\State.h">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
@@ -647,6 +641,12 @@
     </ClInclude>
     <ClInclude Include="src\successor\StateInterface.hpp">
       <Filter>Source Files\successor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successor\Dispatcher.hpp">
+      <Filter>Source Files\successor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successor\Dispatcher.h">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
