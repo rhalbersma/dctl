@@ -7,14 +7,14 @@ namespace successor {
 template<typename, typename> class StateInterface;
 
 template<typename Rules, typename Board> 
-class Selector
+class Dispatcher
 : 
         private boost::noncopyable      // enforce singleton semantics
 {
 public:
         // typedefs
         typedef const StateInterface<Rules, Board>* StatePointer;
-        static StatePointer find(int);
+        static StatePointer select(int);
 
 private:
         // implementation
@@ -26,4 +26,4 @@ private:
 }       // namespace dctl
 
 // include template definitions inside header
-#include "Selector.hpp"
+#include "Dispatcher.hpp"

@@ -12,14 +12,14 @@ namespace dctl {
 namespace successor {
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
+void Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>::generate_regular(const Position<Board>& p, Stack& moves)
 {
         capture::State<Rules, Board> capture(p);
-        generate(p, capture, moves);
+        generate_regular(p, capture, moves);
 }
 
 template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>::generate(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves)
+void Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>::generate_regular(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves)
 {
         generate_targets(p, capture, moves);
 }
@@ -231,15 +231,15 @@ bool Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>::scan(BitBoard jum
 }
 
 template<bool Color, typename Rules, typename Board>
-int Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>::count(const Position<Board>& p)
+int Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>::count_regular(const Position<Board>& p)
 {
         Stack moves;
-        generate(p, moves);
+        generate_regular(p, moves);
         return static_cast<int>(moves.size());
 }
 
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>::detect(const Position<Board>& p)
+bool Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>::detect_regular(const Position<Board>& p)
 {
         return detect_targets(p);
 }

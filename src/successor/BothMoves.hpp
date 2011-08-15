@@ -6,10 +6,10 @@ namespace dctl {
 namespace successor {
 
 template<bool Color, typename Rules, typename Board> 
-void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
+void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate_regular(const Position<Board>& p, Stack& moves)
 {
-        Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate(p, moves);
-        Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate(p, moves);     
+        Driver<Color, Material::KING, Move::MOVES, Rules, Board>::generate_regular(p, moves);
+        Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::generate_regular(p, moves);     
 }
 
 template<bool Color, typename Rules, typename Board> 
@@ -27,11 +27,11 @@ void Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::generate_promotio
 }
 
 template<bool Color, typename Rules, typename Board>
-int Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count(const Position<Board>& p)
+int Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count_regular(const Position<Board>& p)
 {     
         return (
-                Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count(p) + 
-                Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count(p)
+                Driver<Color, Material::KING, Move::MOVES, Rules, Board>::count_regular(p) + 
+                Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::count_regular(p)
         );
 }
 
@@ -54,11 +54,11 @@ int Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::count_promotions(c
 }
 
 template<bool Color, typename Rules, typename Board>
-bool Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::detect(const Position<Board>& p)
+bool Driver<Color, Material::BOTH, Move::MOVES, Rules, Board>::detect_regular(const Position<Board>& p)
 {
         return (
-                Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::detect(p) || 
-                Driver<Color, Material::KING, Move::MOVES, Rules, Board>::detect(p)
+                Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>::detect_regular(p) || 
+                Driver<Color, Material::KING, Move::MOVES, Rules, Board>::detect_regular(p)
         );
 }
 

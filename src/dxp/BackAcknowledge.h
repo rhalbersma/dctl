@@ -6,6 +6,16 @@
 namespace dctl {
 namespace dxp {
 
+/*
+
+The BackAcknowledge class is a <ConcreteProduct> in a <Factory Method Pattern>
+with the Parser class as the <ConcreteCreator> and the MessageInterface class 
+as the <Product>.
+
+The BackAcknowledge class registers itself with the factory.
+
+*/
+        
 class BackAcknowledge
 : 
         public MessageInterface

@@ -16,15 +16,15 @@ class Driver<Color, Material::PAWN, Move::MOVES, Rules, Board>
         private utils::nonconstructible // enforce static semantics
 {
 public:
-        static void generate(const Position<Board>&, Stack&);
+        static void generate_regular(const Position<Board>&, Stack&);
         static void generate_reverse(const Position<Board>&, Stack&);
         static void generate_promotions(const Position<Board>&, Stack&);
 
-        static int count(const Position<Board>&);
+        static int count_regular(const Position<Board>&);
         static int count_reverse(const Position<Board>&);
         static int count_promotions(const Position<Board>&);
         
-        static bool detect(const Position<Board>&);
+        static bool detect_regular(const Position<Board>&);
         static bool detect_reverse(const Position<Board>&);
         static bool detect_promotions(const Position<Board>&);
 
