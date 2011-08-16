@@ -4,6 +4,7 @@
 #include "gtest/gtest.h"
 #include "../../../DCTL/src/successor/Successor.h"
 #include "../../../DCTL/src/node/Position.h"
+#include "../../../DCTL/src/node/Selection.h"
 #include "../../../DCTL/src/setup/Setup.h"
 #include "../../../DCTL/src/notation/String.h"
 #include "../../../DCTL/src/board/Types.h"
@@ -47,7 +48,7 @@ TEST(Successor, Italian)
         for (auto i = 0; i < 9; ++i) {
                 auto p = setup::read<board::Roman, pdn::protocol>()(position[i]);
                 Stack moves;
-                Successor<variant::Italian, board::Roman, Legal>::generate(p, moves);
+                Successor<move::Legal, variant::Italian>::generate(p, moves);
 
                 // check the number of generated legal
                 EXPECT_EQ(size[i], moves.size());
