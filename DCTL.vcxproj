@@ -186,6 +186,7 @@
     <ClInclude Include="src\node\Move.hpp" />
     <ClInclude Include="src\node\Restricted.h" />
     <ClInclude Include="src\node\Restricted.hpp" />
+    <ClInclude Include="src\node\Selection.h" />
     <ClInclude Include="src\notation\Czech.h" />
     <ClInclude Include="src\notation\Notation.h" />
     <ClInclude Include="src\notation\Russian.h" />
@@ -327,6 +328,7 @@
     <ClCompile Include="src\dxp\MessageInterface.cpp" />
     <ClCompile Include="src\dxp\Move.cpp" />
     <ClCompile Include="src\node\Move.cpp" />
+    <ClCompile Include="src\node\Position.cpp" />
     <ClCompile Include="src\node\Restricted.cpp" />
     <ClCompile Include="src\evaluate\Weight.cpp" />
     <ClCompile Include="src\hash\jenkins\Mix.cpp" />

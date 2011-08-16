@@ -11,7 +11,7 @@ class Move
 {
 public:
         // typedefs
-        enum { JUMPS, MOVES };
+        enum { LEGAL, MOVES, JUMPS, REVERSE, PROMOTIONS };
 
         // constructors
         Move() {};

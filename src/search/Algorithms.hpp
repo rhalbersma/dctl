@@ -5,6 +5,7 @@
 #include "../successor/Successor.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
+#include "../node/Selection.h"
 #include "../utils/Iota.h"
 
 namespace dctl {
@@ -48,7 +49,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0)
-                return !Successor<Rules, Board, Legal>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successor<move::Legal, Rules>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
 
         assert(depth > 0);
         assert(alpha >= -infinity());
@@ -73,7 +74,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         // generate moves
         Stack moves;
         moves.reserve(32);
-        Successor<Rules, Board, Legal>::generate(p, moves);
+        Successor<move::Legal, Rules>::generate(p, moves);
 
         // without a valid move, the position is an immediate loss
         if (moves.empty()) {
@@ -121,7 +122,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
                 // TODO: futility pruning
 
-                auto q(p);
+                auto q = p;
                 q.attach(p);
                 q.template make<Rules>(moves[i]);
 
@@ -204,18 +205,18 @@ int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& pare
 
         // return evaluation in leaf nodes with valid moves
         if (depth == 0)
-                return !Successor<Rules, Board, Legal>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successor<move::Legal, Rules>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
         Stack moves;
-        Successor<Rules, Board, Legal>::generate(p, moves);
+        Successor<move::Legal, Rules>::generate(p, moves);
 
         // search moves
         auto best_value = -infinity();
         int value;
         Parameters child_node;
         for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
-                auto q(p);
+                auto q = p;
                 q.attach(p);
                 q.template make<Rules>(moves[i]);
 
@@ -249,18 +250,18 @@ int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, in
 
         // return evaluation in leaf nodes with valid moves
         if (depth == 0)
-                return !Successor<Rules, Board, Legal>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successor<move::Legal, Rules>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
 
         // generate moves
         Stack moves;
-        Successor<Rules, Board, Legal>::generate(p, moves);
+        Successor<move::Legal, Rules>::generate(p, moves);
 
         // search moves
         auto best_value = -infinity();
         int value;
         Parameters child_node;
         for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
-                auto q(p);
+                auto q = p;
                 q.attach(p);
                 q.template make<Rules>(moves[i]);
 

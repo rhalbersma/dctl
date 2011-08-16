@@ -65,11 +65,11 @@ void Root::report(int depth, int value, const Timer& timer, const Position<Board
 template<typename Rules, typename Board>
 void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
 {
-        auto q(p);
+        auto q = p;
 
         for (auto i = 0; i < static_cast<int>(pv.size()); ++i) {
                 Stack move_stack;
-                Successor<Rules, Board, Legal>::generate(q, move_stack);
+                Successor<move::Legal, Rules>::generate(q, move_stack);
 
                 TT.insert(q, Transposition(value, Transposition::exact(), pv.size() - i, pv[i]));
                 value = -stretch(value);
@@ -80,7 +80,7 @@ void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
         
         assert(
                 (value == Evaluate::evaluate(q)) || 
-                (value == loss_value(0) && !Successor<Rules, Board, Legal>::detect(q))
+                (value == loss_value(0) && !Successor<move::Legal, Rules>::detect(q))
                 // NOTE: with endgame databases, delayed losses can occur at the tips of the PV
         );
 }
@@ -88,11 +88,11 @@ void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
 template<typename Rules, typename Board>
 void Root::print_PV(const Position<Board>& p, const Sequence& pv)
 {
-        auto q(p);
+        auto q = p;
 
         for (auto i = 0; i < static_cast<int>(pv.size()); ++i) {
                 Stack moves;
-                Successor<Rules, Board, Legal>::generate(q, moves);
+                Successor<move::Legal, Rules>::generate(q, moves);
 
                 if (!(i % 2))                        
                         std::cout << std::setw(2) << std::right << ((i / 2) + 1) << ". ";

@@ -18,7 +18,7 @@ public:
         void toggle_promotion();
 
 protected:
-        // destructor
+        // non-virtual destructor
         ~ValueInterface() {};
 
 private:
