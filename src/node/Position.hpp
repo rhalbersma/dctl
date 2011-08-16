@@ -279,4 +279,16 @@ bool is_reversible_draw(const Position<Board>& p, Int2Type<true>)
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }
 
+template<typename Board>
+int state(const Position<Board>& p)
+{
+        return state(p.active_color(), active_kings(p), active_men(p));
+}
+
+template<bool Color, typename Board>
+int state(const Position<Board>& p)
+{
+        return state(Color, p.kings(Color), p.men(Color));
+}
+
 }       // namespace dctl

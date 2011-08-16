@@ -37,14 +37,14 @@ NodeCount Root::divide(const Position<Board>& p, int depth)
         
         Timer timer;
         Stack moves;
-        Successor<Rules, Board, Legal>::generate(p, moves);
+        Successor<move::Legal, Rules>::generate(p, moves);
 
         announce(p, depth, moves.size());
         for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
                 statistics_.reset();
                 print_move(notation::write<Rules>()(p, moves[i]), i);
 
-                auto q(p);
+                auto q = p;
                 q.attach(p);
                 q.template make<Rules>(moves[i]);
                 move_leafs = driver<Rules>(q, 0, depth - 1);
@@ -73,10 +73,10 @@ NodeCount Root::leaf(const Position<Board>& p, int ply, int depth)
                 return 1;
 
         Stack moves;
-        Successor<Rules, Board, Legal>::generate(p, moves);
+        Successor<move::Legal, Rules>::generate(p, moves);
         NodeCount leafs = 0;        
-        for (auto m = moves.begin(); m != moves.end(); ++m) {
-                auto q(p);
+        for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                auto q = p;
                 q.attach(p);
                 q.template make<Rules>(*m);
                 leafs += leaf<Rules>(q, ply + 1, depth - 1);
@@ -90,13 +90,13 @@ NodeCount Root::bulk(const Position<Board>& p, int ply, int depth)
         statistics_.update(ply);
 
         Stack moves;
-        Successor<Rules, Board, Legal>::generate(p, moves);
+        Successor<move::Legal, Rules>::generate(p, moves);
         if (depth == 1)
                 return moves.size();
         
         NodeCount leafs = 0;
-        for (auto m = moves.begin(); m != moves.end(); ++m) {
-                auto q(p);
+        for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                auto q = p;
                 q.attach(p);
                 q.template make<Rules>(*m);
                 leafs += bulk<Rules>(q, ply + 1, depth - 1);
@@ -110,13 +110,13 @@ NodeCount Root::count(const Position<Board>& p, int ply, int depth)
         statistics_.update(ply);
 
         if (depth == 1)
-                return Successor<Rules, Board, Legal>::count(p);
+                return Successor<move::Legal, Rules>::count(p);
 
         Stack moves;
-        Successor<Rules, Board, Legal>::generate(p, moves);
+        Successor<move::Legal, Rules>::generate(p, moves);
         NodeCount leafs = 0;
-        for (auto m = moves.begin(); m != moves.end(); ++m) {
-                auto q(p);
+        for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                auto q = p;
                 q.attach(p);
                 q.template make<Rules>(*m);
                 leafs += count<Rules>(q, ply + 1, depth - 1);
@@ -137,10 +137,10 @@ NodeCount Root::hash(const Position<Board>& p, int ply, int depth)
                 return 1;
 
         Stack moves;
-        Successor<Rules, Board, Legal>::generate(p, moves);
+        Successor<move::Legal, Rules>::generate(p, moves);
         NodeCount leafs = 0;
-        for (auto m = moves.begin(); m != moves.end(); ++m) {
-                auto q(p);
+        for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                auto q = p;
                 q.attach(p);
                 q.template make<Rules>(*m);
                 leafs += hash<Rules>(q, ply + 1, depth - 1);
@@ -161,13 +161,13 @@ NodeCount Root::fast(const Position<Board>& p, int ply, int depth)
 
         NodeCount leafs;
         if (depth == 1)
-                leafs = Successor<Rules, Board, Legal>::count(p);
+                leafs = Successor<move::Legal, Rules>::count(p);
         else {
                 Stack moves;
-                Successor<Rules, Board, Legal>::generate(p, moves);
+                Successor<move::Legal, Rules>::generate(p, moves);
                 leafs = 0;
-                for (auto m = moves.begin(); m != moves.end(); ++m) {
-                        auto q(p);
+                for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                        auto q = p;
                         q.attach(p);
                         q.template make<Rules>(*m);
                         leafs += fast<Rules>(q, ply + 1, depth - 1);

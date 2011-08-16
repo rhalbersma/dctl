@@ -98,6 +98,10 @@ template<typename, typename Board> bool is_reversible_draw(const Position<Board>
 template<typename, typename Board> bool is_reversible_draw(const Position<Board>&, Int2Type<false>);
 template<typename, typename Board> bool is_reversible_draw(const Position<Board>&, Int2Type<true >);
 
+template<typename Board> int state(const Position<Board>&);
+template<bool, typename Board> int state(const Position<Board>&);
+int state(bool, BitBoard, BitBoard);
+
 }       // namespace dctl
 
 // include template definitions inside header

@@ -648,6 +648,9 @@
     <ClInclude Include="src\successor\Dispatcher.h">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
+    <ClInclude Include="src\node\Selection.h">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\Timer.cpp">
@@ -748,6 +751,9 @@
     </ClCompile>
     <ClCompile Include="src\capture\ValueInterface.cpp">
       <Filter>Source Files\capture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\node\Position.cpp">
+      <Filter>Source Files\node</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
