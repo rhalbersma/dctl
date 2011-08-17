@@ -4,16 +4,16 @@
 namespace dctl {
 namespace successor {
 
-template<typename, typename> class StateInterface;
+template<typename> class StateInterface;
 
-template<typename Rules, typename Board> 
+template<typename Selection, typename Rules, typename Board> 
 class Dispatcher
 : 
         private boost::noncopyable      // enforce singleton semantics
 {
 public:
         // typedefs
-        typedef const StateInterface<Rules, Board>* StatePointer;
+        typedef const StateInterface<Board>* StatePointer;
         static StatePointer select(int);
 
 private:

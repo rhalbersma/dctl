@@ -69,7 +69,7 @@ void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
 
         for (auto i = 0; i < static_cast<int>(pv.size()); ++i) {
                 Stack move_stack;
-                Successor<move::Legal, Rules>::generate(q, move_stack);
+                Successor<successor::Legal, Rules>::generate(q, move_stack);
 
                 TT.insert(q, Transposition(value, Transposition::exact(), pv.size() - i, pv[i]));
                 value = -stretch(value);
@@ -80,7 +80,7 @@ void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
         
         assert(
                 (value == Evaluate::evaluate(q)) || 
-                (value == loss_value(0) && !Successor<move::Legal, Rules>::detect(q))
+                (value == loss_value(0) && !Successor<successor::Legal, Rules>::detect(q))
                 // NOTE: with endgame databases, delayed losses can occur at the tips of the PV
         );
 }
@@ -92,7 +92,7 @@ void Root::print_PV(const Position<Board>& p, const Sequence& pv)
 
         for (auto i = 0; i < static_cast<int>(pv.size()); ++i) {
                 Stack moves;
-                Successor<move::Legal, Rules>::generate(q, moves);
+                Successor<successor::Legal, Rules>::generate(q, moves);
 
                 if (!(i % 2))                        
                         std::cout << std::setw(2) << std::right << ((i / 2) + 1) << ". ";

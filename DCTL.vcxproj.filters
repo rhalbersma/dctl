@@ -594,9 +594,6 @@
     <ClInclude Include="src\successor\BothJumps.hpp">
       <Filter>Source Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\successor\BothMoves.hpp">
-      <Filter>Source Files\successor</Filter>
-    </ClInclude>
     <ClInclude Include="src\successor\Driver.hpp">
       <Filter>Source Files\successor</Filter>
     </ClInclude>
@@ -610,9 +607,6 @@
       <Filter>Header Files\successor</Filter>
     </ClInclude>
     <ClInclude Include="src\successor\BothJumps.h">
-      <Filter>Header Files\successor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\successor\BothMoves.h">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
     <ClInclude Include="src\successor\Driver.h">
@@ -648,8 +642,20 @@
     <ClInclude Include="src\successor\Dispatcher.h">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="src\node\Selection.h">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="src\successor\Selection.h">
+      <Filter>Header Files\successor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successor\Mobility.h">
+      <Filter>Header Files\successor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successor\Mobility.hpp">
+      <Filter>Source Files\successor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successor\BothMoves.h">
+      <Filter>Header Files\successor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\successor\BothMoves.hpp">
+      <Filter>Source Files\successor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

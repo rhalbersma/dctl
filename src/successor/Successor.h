@@ -1,6 +1,5 @@
 #pragma once
 #include "../node/Stack.h"
-#include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
 namespace dctl {
@@ -32,8 +31,6 @@ public:
         template<typename Board> static void generate(const Position<Board>&, Stack&);
         template<typename Board> static int count(const Position<Board>&);
         template<typename Board> static bool detect(const Position<Board>&);
-
-        template<bool, typename Board> static int mobility(const Position<Board>&);
 
 private:
         // implementation
