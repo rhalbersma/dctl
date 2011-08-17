@@ -1,5 +1,6 @@
 #pragma once
 #include "Driver.h"
+#include "Selection.h"
 #include "../node/Stack.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
@@ -7,30 +8,24 @@
 
 namespace dctl {
 
+namespace board { template<bool, typename> class Direction; }
 template<typename> class Position;
 
 namespace successor {
 
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::KING, Move::MOVES, Rules, Board>
+class Driver<Color, Material::KING, Moves, Rules, Board>
 :
         private utils::nonconstructible // enforce static semantics
 {
 public:
-        static void generate_regular(const Position<Board>&, Stack&);
-        static void generate_reverse(const Position<Board>&, Stack&);
-        static void generate_promotions(const Position<Board>&, Stack&);
-
-        static int count_regular(const Position<Board>&);
-        static int count_reverse(const Position<Board>&);
-        static int count_promotions(const Position<Board>&);
-        
-        static bool detect_regular(const Position<Board>&);
-        static bool detect_reverse(const Position<Board>&);
-        static bool detect_promotions(const Position<Board>&);
+        static void generate(const Position<Board>&, Stack&);
+        static int count(const Position<Board>&);       
+        static bool detect(const Position<Board>&);
 
 private:
-        // implementation
+        // typedefs
+        typedef board::Direction<Color, Board> Direction;
         
         // tag dispatching based on restrictions on consecutive moves with the same king
         static void generate_serial(BitBoard, BitBoard, Stack&);
@@ -53,6 +48,32 @@ private:
 
         static bool detect_dirs(BitBoard, BitBoard);
         template<int> static bool detect_dir(BitBoard, BitBoard);
+};
+
+template<bool Color, typename Rules, typename Board> 
+class Driver<Color, Material::KING, Reverse, Rules, Board>
+:
+        private utils::nonconstructible // enforce static semantics
+{
+public:
+        static void generate(const Position<Board>&, Stack&);
+        static int count(const Position<Board>&);
+        static bool detect(const Position<Board>&);
+
+private:
+        // typedefs
+        typedef Driver<Color, Material::KING, Moves, Rules, Board> Regular;
+};
+
+template<bool Color, typename Rules, typename Board> 
+class Driver<Color, Material::KING, Promotion, Rules, Board>
+:
+        private utils::nonconstructible // enforce static semantics
+{
+public:
+        static void generate(const Position<Board>&, Stack&);
+        static int count(const Position<Board>&);
+        static bool detect(const Position<Board>&);
 };
 
 }       // namespace successor

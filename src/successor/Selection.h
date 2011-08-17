@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace move {
+namespace successor {
 
 class Legal {};
 class Moves {};
@@ -9,5 +9,5 @@ class Jumps {};
 class Reverse {};
 class Promotion {};
 
-}       // namespace move
+}       // namespace successor
 }       // namespace dctl

@@ -1,5 +1,6 @@
 #pragma once
 #include "Driver.h"
+#include "Selection.h"
 #include "../node/Stack.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
@@ -7,25 +8,27 @@
 
 namespace dctl {
 
+namespace board { template<bool, typename> class Direction; }
 namespace capture { template<typename, typename> class State; }
-
 template<typename> class Position;
 
 namespace successor {
 
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::PAWN, Move::JUMPS, Rules, Board>
+class Driver<Color, Material::PAWN, Jumps, Rules, Board>
 :
         private utils::nonconstructible // enforce static semantics
 {
 public:
-        static void generate_regular(const Position<Board>&, Stack&);
-        static void generate_regular(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
-        static int count_regular(const Position<Board>&);
-        static bool detect_regular(const Position<Board>&);
+        static void generate(const Position<Board>&, Stack&);
+        static int count(const Position<Board>&);
+        static bool detect(const Position<Board>&);
+
+        static void generate(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
 
 private:
-        // implementation
+        // typedefs
+        typedef board::Direction<Color, Board> Direction;
         
         // tag dispatching based on whether men can capture kings
         static void generate_targets(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
