@@ -13,7 +13,7 @@ bool Value<Rules>::do_is_large(BitBoard captured_pieces) const
 template<typename Rules>
 bool operator<(const Value<Rules>&, const Value<Rules>&)
 {
-        // MUST be overriden for derived classes that implement capture precedence semantics
+        // MUST be overriden by derived classes that have capture precedence semantics
         return false;
 }
 

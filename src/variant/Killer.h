@@ -11,4 +11,3 @@ struct Killer {};
 
 #include "../rules/Killer.h"
 #include "../capture/Killer.h"
-

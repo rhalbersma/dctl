@@ -21,13 +21,10 @@ class Driver
         private utils::nonconstructible // enforce static semantics
 {
 public:
-        static void generate(const Position<Board>&, Stack&);
-        static int count(const Position<Board>&);       
-        static bool detect(const Position<Board>&);
+        static void generate(const Position<Board>&, Stack&) {}
+        static int count(const Position<Board>&) { return 0; }
+        static bool detect(const Position<Board>&) { return false; }
 };
 
 }       // namespace successor
 }       // namespace dctl
-
-// include template definitions inside header
-#include "Driver.hpp"

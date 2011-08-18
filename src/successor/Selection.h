@@ -4,8 +4,8 @@ namespace dctl {
 namespace successor {
 
 class Legal {};
-class Moves {};
 class Jumps {};
+class Moves {};
 class Reverse {};
 class Promotion {};
 

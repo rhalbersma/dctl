@@ -1,4 +1,5 @@
 namespace dctl {
+namespace utils {
 
 template <class ForwardIterator, class Size, class T>
 void iota_n (ForwardIterator first, Size n, T value)
@@ -7,4 +8,5 @@ void iota_n (ForwardIterator first, Size n, T value)
                 *first++ = value++;
 }
 
+}       // namespace utils
 }       // namespace dctl

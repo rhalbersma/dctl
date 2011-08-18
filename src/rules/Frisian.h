@@ -25,7 +25,7 @@ template<> struct is_majority_precedence<variant::Frisian>              { enum {
 template<typename> struct is_relative_king_precedence;
 template<> struct is_relative_king_precedence<variant::Frisian>         { enum { value = true     }; };
 
-// implementation of move generation
+// capture ambiguity
 template<typename> struct large_capture;
 template<> struct large_capture<variant::Frisian>                       { enum { value = 3        }; };
 

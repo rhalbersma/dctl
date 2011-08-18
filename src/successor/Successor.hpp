@@ -1,6 +1,6 @@
 #include <cassert>
 #include "Dispatcher.h"
-#include "../node/Position.h"
+#include "../node/State.h"
 
 namespace dctl {
 
