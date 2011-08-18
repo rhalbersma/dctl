@@ -44,7 +44,7 @@ protected:
 
         typedef std::pair<std::string, int> FEN_depth;
 
-        template<typename Board, typename Rules>
+        template<typename Rules, typename Board>
         void Run(const FEN_depth& test_case) 
         {
                 Root::clear_hash();
@@ -69,7 +69,7 @@ TEST_F(SearchEndgame, Frisian21)
 {
         FEN_depth test_case("W:WK46,28:BK43", 39);      // Walinga book
 
-        Run<board::Frisian, variant::Frisian>(test_case);
+        Run<variant::Frisian, board::Frisian>(test_case);
 }
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
@@ -83,7 +83,7 @@ TEST_F(SearchEndgame, International11)
         };
                 
         for (auto i = 0; i < 4; ++i)
-                Run<board::International, variant::International>(test_case[i]);
+                Run<variant::International, board::International>(test_case[i]);
 }
 
 TEST_F(SearchEndgame, International21)
@@ -105,7 +105,7 @@ TEST_F(SearchEndgame, International21)
         };
 
         for (auto i = 0; i < 13; ++i)
-                Run<board::International, variant::International>(test_case[i]);
+                Run<variant::International, board::International>(test_case[i]);
 }        
 
 TEST_F(SearchEndgame, International22)
@@ -123,7 +123,7 @@ TEST_F(SearchEndgame, International22)
         };
 
         for (auto i = 0; i < 9; ++i)
-                Run<board::International, variant::International>(test_case[i]);      
+                Run<variant::International, board::International>(test_case[i]);      
 }
 
 TEST_F(SearchEndgame, International31)
@@ -148,7 +148,7 @@ TEST_F(SearchEndgame, International31)
         };
         
         for (auto i = 0; i < 16; ++i)
-                Run<board::International, variant::International>(test_case[i]);
+                Run<variant::International, board::International>(test_case[i]);
 }
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        
@@ -162,7 +162,7 @@ TEST_F(SearchEndgame, Killer11)
         };
 
         for (auto i = 0; i < 4; ++i)
-                Run<board::International, variant::Killer>(test_case[i]);
+                Run<variant::Killer, board::International>(test_case[i]);
 }
 
 TEST_F(SearchEndgame, Killer21)
@@ -185,7 +185,7 @@ TEST_F(SearchEndgame, Killer21)
         };       
         
         for (auto i = 0; i < 14; ++i)
-                Run<board::International, variant::Killer>(test_case[i]);
+                Run<variant::Killer, board::International>(test_case[i]);
 }
 
 TEST_F(SearchEndgame, Killer22)
@@ -203,7 +203,7 @@ TEST_F(SearchEndgame, Killer22)
         };
 
         for (auto i = 0; i < 9; ++i)
-                Run<board::International, variant::Killer>(test_case[i]);
+                Run<variant::Killer, board::International>(test_case[i]);
 }
 
 TEST_F(SearchEndgame, Killer31)
@@ -228,7 +228,7 @@ TEST_F(SearchEndgame, Killer31)
         };
         
         for (auto i = 0; i < 16; ++i)
-                Run<board::International, variant::Killer>(test_case[i]);
+                Run<variant::Killer, board::International>(test_case[i]);
 }
 
 #endif
