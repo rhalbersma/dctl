@@ -1,6 +1,5 @@
 #include <cassert>
 #include "../node/Position.h"
-#include "../board/Board.h"
 #include "../board/Direction.h"
 #include "../bit/Bit.h"
 #include "../utils/Shift.h"
@@ -167,42 +166,6 @@ bool Driver<Color, Material::KING, Moves, Rules, Board>::detect_dir(
 )
 {
         return !bit::is_zero(Push<Board, Index>()(active_kings) & not_occupied);
-}
-
-template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::KING, Reverse, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
-{
-        Regular::generate(p, moves);
-}
-
-template<bool Color, typename Rules, typename Board>
-int Driver<Color, Material::KING, Reverse, Rules, Board>::count(const Position<Board>& p)
-{
-        return Regular::count(p);
-}
-
-template<bool Color, typename Rules, typename Board>
-bool Driver<Color, Material::KING, Reverse, Rules, Board>::detect(const Position<Board>& p)
-{
-        return Regular::detect(p);
-}
-
-template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::KING, Promotion, Rules, Board>::generate(const Position<Board>&, Stack&) 
-{ 
-        return;
-}
-
-template<bool Color, typename Rules, typename Board>
-int Driver<Color, Material::KING, Promotion, Rules, Board>::count(const Position<Board>&) 
-{ 
-        return 0; 
-}
-
-template<bool Color, typename Rules, typename Board>
-bool Driver<Color, Material::KING, Promotion, Rules, Board>::detect(const Position<Board>&) 
-{ 
-        return false; 
 }
 
 }       // namespace successor

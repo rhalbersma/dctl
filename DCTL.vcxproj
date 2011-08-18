@@ -184,8 +184,12 @@
     <ClInclude Include="src\dxp\Protocol.h" />
     <ClInclude Include="src\dxp\DXP.h" />
     <ClInclude Include="src\node\Move.hpp" />
+    <ClInclude Include="src\node\Promotion.h" />
+    <ClInclude Include="src\node\Promotion.hpp" />
     <ClInclude Include="src\node\Restricted.h" />
     <ClInclude Include="src\node\Restricted.hpp" />
+    <ClInclude Include="src\node\State.h" />
+    <ClInclude Include="src\node\State.hpp" />
     <ClInclude Include="src\notation\Czech.h" />
     <ClInclude Include="src\notation\Notation.h" />
     <ClInclude Include="src\notation\Russian.h" />
@@ -266,9 +270,14 @@
     <ClInclude Include="src\successor\BothMoves.h" />
     <ClInclude Include="src\successor\BothMoves.hpp" />
     <ClInclude Include="src\successor\Driver.h" />
-    <ClInclude Include="src\successor\Driver.hpp" />
+    <ClInclude Include="src\successor\KingReverse.h" />
+    <ClInclude Include="src\successor\KingReverse.hpp" />
     <ClInclude Include="src\successor\Mobility.h" />
     <ClInclude Include="src\successor\Mobility.hpp" />
+    <ClInclude Include="src\successor\Promotion.h" />
+    <ClInclude Include="src\successor\Promotion.hpp" />
+    <ClInclude Include="src\successor\PawnReverse.h" />
+    <ClInclude Include="src\successor\PawnReverse.hpp" />
     <ClInclude Include="src\successor\Selection.h" />
     <ClInclude Include="src\successor\State.h" />
     <ClInclude Include="src\successor\State.hpp" />
@@ -330,7 +339,7 @@
     <ClCompile Include="src\dxp\MessageInterface.cpp" />
     <ClCompile Include="src\dxp\Move.cpp" />
     <ClCompile Include="src\node\Move.cpp" />
-    <ClCompile Include="src\node\Position.cpp" />
+    <ClCompile Include="src\node\State.cpp" />
     <ClCompile Include="src\node\Restricted.cpp" />
     <ClCompile Include="src\evaluate\Weight.cpp" />
     <ClCompile Include="src\hash\jenkins\Mix.cpp" />

@@ -11,6 +11,7 @@ namespace capture {
 // forward declaration of the primary template
 template<typename> class Value;
 
+// explicit specialization for Killer draughts
 template<>
 class Value<variant::Killer>
 : 

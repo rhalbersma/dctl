@@ -1,6 +1,5 @@
 #pragma once
-#include "Driver.h"
-#include "Selection.h"
+#include "../node/Material.h"
 #include "../node/Stack.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
@@ -14,6 +13,11 @@ template<typename> class Position;
 
 namespace successor {
 
+// forward declaration of the primary template
+template<bool, int, typename, typename, typename> class Driver;
+class Jumps;
+
+// partial specialization for king jumps
 template<bool Color, typename Rules, typename Board> 
 class Driver<Color, Material::KING, Jumps, Rules, Board>
 :

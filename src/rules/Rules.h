@@ -93,7 +93,7 @@ template<typename> struct max_3v1_moves                         { enum { value =
 template<typename> struct max_2v1_moves                         { enum { value = 10 }; };       // (FMJD rule 6.4)
 
 //+----------------------------------------------------------------------------+
-//|      Implementation of move generation                                     |
+//|      Capture ambiguity                                                     |
 //+----------------------------------------------------------------------------+
 
 template<typename> struct is_check_capture_uniqueness           { enum { value = true }; };

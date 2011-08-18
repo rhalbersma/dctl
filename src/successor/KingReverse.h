@@ -1,18 +1,23 @@
 #pragma once
+#include "KingMoves.h"
 #include "../node/Material.h"
 #include "../node/Stack.h"
-#include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
 
 namespace dctl {
 
+namespace board { template<bool, typename> class Direction; }
 template<typename> class Position;
 
 namespace successor {
 
-template<bool Color, typename Selection, typename Rules, typename Board> 
- 
-class Driver<Color, Material::BOTH, Selection, Rules, Board>
+// forward declaration of the primary template
+template<bool, int, typename, typename, typename> class Driver;
+class Reverse;
+
+// partial specialization for reverse king moves
+template<bool Color, typename Rules, typename Board> 
+class Driver<Color, Material::KING, Reverse, Rules, Board>
 :
         private utils::nonconstructible // enforce static semantics
 {
@@ -20,10 +25,14 @@ public:
         static void generate(const Position<Board>&, Stack&);
         static int count(const Position<Board>&);
         static bool detect(const Position<Board>&);
+
+private:
+        // typedefs
+        typedef Driver<Color, Material::KING, Moves, Rules, Board> Regular;
 };
 
 }       // namespace successor
 }       // namespace dctl
 
 // include template definitions inside header
-#include "BothMoves.hpp"
+#include "KingReverse.hpp"

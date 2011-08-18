@@ -1,5 +1,14 @@
 #include "Driver.h"
 #include "Selection.h"
+#include "BothJumps.h"
+#include "BothMoves.h"
+#include "KingJumps.h"
+#include "KingMoves.h"
+#include "KingReverse.h"
+#include "PawnJumps.h"
+#include "PawnMoves.h"
+#include "PawnReverse.h"
+#include "Promotion.h"
 
 namespace dctl {
 namespace successor {

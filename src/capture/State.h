@@ -1,7 +1,6 @@
 #pragma once
 #include "Value.h"
 #include "../node/Stack.h"
-#include "../board/Board.h"
 #include "../rules/Rules.h"
 #include "../utils/IntegerTypes.h"
 #include "../utils/TemplateTricks.h"
@@ -9,7 +8,6 @@
 namespace dctl {
 
 template<typename> class Position; 
-class Material;
         
 namespace capture {
 
@@ -54,8 +52,6 @@ private:
         BitBoard captured_king_targets(BitBoard) const;
         BitBoard captured_king_targets(BitBoard, Int2Type<false>) const;
         BitBoard captured_king_targets(BitBoard, Int2Type<true >) const;
-
-        template<bool> BitBoard promotions(BitBoard) const;
 
         // tag dispatching on capture removal
         void make(BitBoard, Int2Type<rules::REMOVE_1>);

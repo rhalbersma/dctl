@@ -2,7 +2,6 @@
 #include "../capture/State.h"
 #include "../node/Position.h"
 #include "../board/Angle.h"
-#include "../board/Board.h"
 #include "../board/Direction.h"
 #include "../bit/Bit.h"
 #include "../utils/Shift.h"

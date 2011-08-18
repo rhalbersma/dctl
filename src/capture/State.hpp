@@ -1,6 +1,6 @@
 #include <cassert>
-#include "../node/Stack.h"
-#include "../board/Direction.h"
+#include "../node/Position.h"
+#include "../node/Promotion.h"
 #include "../bit/Bit.h"
 #include "../utils/Shift.h"
 
@@ -54,12 +54,6 @@ Value<Rules>& State<Rules, Board>::best()
         return best_;
 }
 
-template<typename Rules, typename Board> template<bool Color>
-BitBoard State<Rules, Board>::promotions(BitBoard dest_sq) const
-{
-        return dest_sq & Board::PROMOTION[Color][0];
-}
-
 template<typename Rules, typename Board>
 BitBoard State<Rules, Board>::captured_targets() const
 {
@@ -90,7 +84,7 @@ BitBoard State<Rules, Board>::captured_king_targets(BitBoard captured_pieces, In
 template<typename Rules, typename Board> template<bool Color>
 bool State<Rules, Board>::is_promotion(BitBoard dest_sq) const
 {
-        return !bit::is_zero(promotions<Color>(dest_sq));
+        return !bit::is_zero(promotion_sq<Color, Board>(dest_sq));
 }
 
 template<typename Rules, typename Board>
@@ -189,7 +183,7 @@ template<typename Rules, typename Board> template<bool Color>
 void State<Rules, Board>::add_man_capture(BitBoard dest_sq, Stack& move_stack, Int2Type<false>)
 {
         const BitBoard captured_pieces = captured_targets();
-        push<Color, Rules>(from_sq_ ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_king_targets(captured_pieces), move_stack);
+        push<Color, Rules>(from_sq_ ^ dest_sq, promotion_sq<Color, Board>(dest_sq), captured_pieces, captured_king_targets(captured_pieces), move_stack);
 }
 
 // partial specialization for man captures that can be ambiguous
@@ -198,7 +192,7 @@ void State<Rules, Board>::add_man_capture(BitBoard dest_sq, Stack& move_stack, I
 {
         const BitBoard captured_pieces = captured_targets();
         const bool ambiguous = !move_stack.empty() && current_.is_large(captured_pieces);
-        push<Color, Rules>(from_sq_ ^ dest_sq, promotions<Color>(dest_sq), captured_pieces, captured_king_targets(captured_pieces), move_stack);
+        push<Color, Rules>(from_sq_ ^ dest_sq, promotion_sq<Color, Board>(dest_sq), captured_pieces, captured_king_targets(captured_pieces), move_stack);
         if (ambiguous && non_unique_top<Rules>(move_stack))
                 pop(move_stack);
 }

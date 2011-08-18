@@ -20,7 +20,7 @@ template<> struct king_capture_halt<variant::Thai>              { enum { value =
 template<typename> struct capture_removal;
 template<> struct capture_removal<variant::Thai>                { enum { value = REMOVE_1 }; };
 
-// implementation of move generation
+// capture ambiguity
 template<typename> struct large_capture;
 template<> struct large_capture<variant::Thai>                  { enum { value = 3        }; };
 
