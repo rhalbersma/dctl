@@ -32,6 +32,7 @@ public:
 
 private:
         // typedefs
+        typedef Driver<Color, Material::KING, Jumps, Rules, Board> KingJumps;
         typedef board::Direction<Color, Board> Direction;
         
         // tag dispatching based on whether men can capture kings

@@ -28,9 +28,6 @@ public:
         static bool detect(const Position<Board>&);
 
 private:
-        // typedefs
-        typedef board::Direction<Color, Board> Direction;
-        
         // tag dispatching based on restrictions on consecutive moves with the same king
         static void generate_serial(BitBoard, BitBoard, Stack&);
         static void generate_serial(BitBoard, BitBoard, Stack&, Int2Type<false>);
@@ -52,6 +49,9 @@ private:
 
         static bool detect_dirs(BitBoard, BitBoard);
         template<int> static bool detect_dir(BitBoard, BitBoard);
+
+        // typedefs
+        typedef board::Direction<Color, Board> Direction;        
 };
 
 }       // namespace successor

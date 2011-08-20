@@ -32,9 +32,6 @@ public:
         template<int> static bool promote_en_passant(BitBoard, capture::State<Rules, Board>&, Stack&);
 
 private:
-        // typedefs
-        typedef board::Direction<Color, Board> Direction;
-        
         // tag dispatching based on relative king capture precedence
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<true >);
@@ -89,6 +86,9 @@ private:
         template<int> static bool detect_dir(BitBoard, BitBoard, BitBoard);
         template<int> static bool detect_dir(BitBoard, BitBoard, BitBoard, Int2Type<rules::RANGE_1>);
         template<int> static bool detect_dir(BitBoard, BitBoard, BitBoard, Int2Type<rules::RANGE_N>);
+
+        // typedefs
+        typedef board::Direction<Color, Board> Direction;        
 };
 
 }       // namespace successor

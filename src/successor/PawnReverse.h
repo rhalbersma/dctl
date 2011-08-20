@@ -1,5 +1,4 @@
 #pragma once
-#include "PawnMoves.h"
 #include "../node/Material.h"
 #include "../node/Stack.h"
 #include "../utils/IntegerTypes.h"
@@ -30,7 +29,7 @@ public:
 
 private:
         // typedefs
-        typedef Driver<!Color, Material::PAWN, Moves, Rules, Board> Regular;
+        typedef Driver<!Color, Material::PAWN, Moves, Rules, Board> PassivePawnMoves;
 
         // implementation
         static void generate_dirs(BitBoard, BitBoard, Stack&);

@@ -28,6 +28,10 @@ private:
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<false>);
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<true >);
+
+        // typedefs
+        typedef Driver<Color, Material::KING, Jumps, Rules, Board> KingJumps;
+        typedef Driver<Color, Material::PAWN, Jumps, Rules, Board> PawnJumps;
 };
 
 }       // namespace successor
