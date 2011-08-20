@@ -30,8 +30,7 @@ public:
 
 private:
         // typedefs
-        typedef Driver<Color, Material::PAWN, Moves, Rules, Board> Regular;
-        typedef board::Direction<Color, Board> Direction;
+        typedef Driver<!Color, Material::PAWN, Moves, Rules, Board> Regular;
 
         // implementation
         static void generate_dirs(BitBoard, BitBoard, Stack&);

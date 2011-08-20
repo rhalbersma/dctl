@@ -28,7 +28,7 @@ public:
 
 private:
         // typedefs
-        typedef Driver<Color, Material::KING, Moves, Rules, Board> Regular;
+        typedef Driver<Color, Material::KING, Moves, Rules, Board> Active;
 };
 
 }       // namespace successor
