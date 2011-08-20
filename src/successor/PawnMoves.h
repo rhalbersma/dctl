@@ -26,17 +26,17 @@ public:
         static int count(const Position<Board>&);
         static bool detect(const Position<Board>&);
 
+        static void generate_dirs(BitBoard, BitBoard, Stack&);
+        static int count_dirs(BitBoard, BitBoard);
+        static bool detect_dirs(BitBoard, BitBoard);
+
+private:
         // typedefs
         typedef board::Direction<Color, Board> Direction;
 
         // implementation
-        static void generate_dirs(BitBoard, BitBoard, Stack&);
         template<int> static void generate_dir(BitBoard, BitBoard, Stack&);
-
-        static int count_dirs(BitBoard, BitBoard);
         template<int> static int count_dir(BitBoard, BitBoard);
-
-        static bool detect_dirs(BitBoard, BitBoard);
         template<int> static bool detect_dir(BitBoard, BitBoard);
 };
 
