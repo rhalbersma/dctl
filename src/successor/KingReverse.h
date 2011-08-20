@@ -1,5 +1,4 @@
 #pragma once
-#include "KingMoves.h"
 #include "../node/Material.h"
 #include "../node/Stack.h"
 #include "../utils/TemplateTricks.h"
@@ -28,7 +27,7 @@ public:
 
 private:
         // typedefs
-        typedef Driver<Color, Material::KING, Moves, Rules, Board> Active;
+        typedef Driver<Color, Material::KING, Moves, Rules, Board> ActiveKingMoves;
 };
 
 }       // namespace successor

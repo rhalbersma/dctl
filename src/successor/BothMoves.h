@@ -20,6 +20,11 @@ public:
         static void generate(const Position<Board>&, Stack&);
         static int count(const Position<Board>&);
         static bool detect(const Position<Board>&);
+
+private:
+        // typedefs
+        typedef Driver<Color, Material::KING, Moves, Rules, Board> KingMoves;
+        typedef Driver<Color, Material::PAWN, Moves, Rules, Board> PawnMoves;
 };
 
 }       // namespace successor

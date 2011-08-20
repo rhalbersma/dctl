@@ -12,7 +12,13 @@ namespace successor {
 /*
 
 The State class forms the <ConcreteState> in a <State Pattern>, with the 
-StateInterface class as the <State> and the Successor class as the <Context>.
+StateInterface class as the <State>. Examples of the <Context> include the
+Successor and Mobility classes.
+
+The State class also forms the <ConcreteFlyWeight> in a <FlyWeight Pattern>, 
+with the StateInterface class as the <FlyWeight>, and the Dispatcher class 
+as the <FlyWeightFactory>. Exampls of the <Client> include the Successor and
+Mobility classes.
 
 The State class also forms the <AbstractClass> in a <Template Method Pattern>,
 with the Driver class as the <ConcreteClass>.

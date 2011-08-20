@@ -1,6 +1,4 @@
 #include <cassert>
-#include "KingJumps.h"
-#include "PawnJumps.h"
 #include "../capture/State.h"
 #include "../rules/Rules.h"
 
@@ -31,17 +29,17 @@ void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate_precede(const 
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate_precede(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<false>)
 {
-        Driver<Color, Material::KING, Jumps, Rules, Board>::generate(p, capture, moves);
-        Driver<Color, Material::PAWN, Jumps, Rules, Board>::generate(p, capture, moves);
+        KingJumps::generate(p, capture, moves);
+        PawnJumps::generate(p, capture, moves);
 }
 
 // partial specialization for absolute king capture precedence
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate_precede(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<true>)
 {
-        Driver<Color, Material::KING, Jumps, Rules, Board>::generate(p, capture, moves);
+        KingJumps::generate(p, capture, moves);
         if (moves.empty())
-                Driver<Color, Material::PAWN, Jumps, Rules, Board>::generate(p, capture, moves);
+                PawnJumps::generate(p, capture, moves);
 }
 
 template<bool Color, typename Rules, typename Board>
@@ -56,8 +54,8 @@ template<bool Color, typename Rules, typename Board>
 bool Driver<Color, Material::BOTH, Jumps, Rules, Board>::detect(const Position<Board>& p)
 {
         return (
-                Driver<Color, Material::PAWN, Jumps, Rules, Board>::detect(p) || 
-                Driver<Color, Material::KING, Jumps, Rules, Board>::detect(p)
+                PawnJumps::detect(p) || 
+                KingJumps::detect(p)
         );
 }
 

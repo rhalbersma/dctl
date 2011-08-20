@@ -1,5 +1,4 @@
 #include <cassert>
-#include "KingJumps.h"
 #include "../capture/State.h"
 #include "../node/Position.h"
 #include "../board/Angle.h"
@@ -172,7 +171,7 @@ bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::scan_next(
                 return scan_next<Index>(jumper, capture, moves, Int2Type<rules::PROMOTE_BR>());
         else {
                 capture.toggle_promotion();
-                const bool found_next = Driver<Color, Material::KING, Jumps, Rules, Board>::promote_en_passant<Index>(jumper, capture, moves);
+                const bool found_next = KingJumps::promote_en_passant<Index>(jumper, capture, moves);
                 capture.toggle_promotion();
                 return found_next;
         }

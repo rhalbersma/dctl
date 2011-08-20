@@ -789,12 +789,4 @@
       <Filter>Source Files\node</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="src\pdn\parser.y">
-      <Filter>Source Files\pdn</Filter>
-    </None>
-    <None Include="src\pdn\tokens.l">
-      <Filter>Source Files\pdn</Filter>
-    </None>
-  </ItemGroup>
 </Project>
