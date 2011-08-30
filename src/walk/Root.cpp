@@ -1,4 +1,5 @@
-#include "gtest/gtest.h"
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp> 
 #include "../test_config.h"
 #include "../../../DCTL/src/walk/Root.h"
 #include "../../../DCTL/src/node/Position.h"
@@ -9,46 +10,26 @@
 namespace dctl {
 namespace walk {
 
-// The fixture for testing class SearchEndgame.
-class Perft
-: 
-        public ::testing::Test 
-{
-protected:
-        // You can remove any or all of the following functions if its body
-        // is empty.
+#if INTEGRATION_TEST == 1
 
-        Perft() {
-        // You can do set-up work for each test here.
+struct FixtureHashTable
+{
+        FixtureHashTable() 
+        {
                 Root::resize_hash(24);
         }
 
-        virtual ~Perft() {
-        // You can do clean-up work that doesn't throw exceptions here.
+        ~FixtureHashTable() 
+        {
                 Root::resize_hash(0);
         }
-
-        // If the constructor and destructor are not enough for setting up
-        // and cleaning up each test, you can define the following methods:
-
-        virtual void SetUp() {
-        // Code here will be called immediately after the constructor (right
-        // before each test).
-        }
-
-        virtual void TearDown() {
-        // Code here will be called immediately after each test (right
-        // before the destructor).
-}
-
-// Objects declared here can be used by all tests in the test case for Foo.
 };
 
-#if INTEGRATION_TEST == 1
+BOOST_FIXTURE_TEST_SUITE(TestPerft, FixtureHashTable)
 
 // The original perft thread on the FMJD forum 
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
-TEST_F(Perft, International)
+BOOST_AUTO_TEST_CASE(International)
 {
         std::cout << setup::diagram<board::International>()() << std::endl;
 
@@ -67,7 +48,7 @@ TEST_F(Perft, International)
 
 // The alternative game rules thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
-TEST_F(Perft, Frisian)
+BOOST_AUTO_TEST_CASE(Frisian)
 {
         std::cout << setup::diagram<board::Frisian>()() << std::endl;
 
@@ -78,7 +59,7 @@ TEST_F(Perft, Frisian)
 
 // The alternative game rules thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
-TEST_F(Perft, ChessVariants)
+BOOST_AUTO_TEST_CASE(ChessVariants)
 {
         std::cout << setup::diagram<board::Checkers>()() << std::endl;
         auto i8 = Position<board::Checkers>::initial();
@@ -128,7 +109,7 @@ TEST_F(Perft, ChessVariants)
 
 // The rectangular board thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=3014
-TEST_F(Perft, Rectangular)
+BOOST_AUTO_TEST_CASE(Rectangular)
 {
         std::cout << setup::diagram<board::Spantsireti>()() << std::endl;
 
@@ -148,6 +129,8 @@ TEST_F(Perft, Rectangular)
         Root::clear_hash();
         Root::perft<variant::International>(iK12, 9);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 #endif
 

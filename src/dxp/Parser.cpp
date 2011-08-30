@@ -1,15 +1,19 @@
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp> 
 #include <string>
-#include "gtest/gtest.h"
 #include "../../../DCTL/src/dxp/Parser.h"
 #include "../../../DCTL/src/dxp/DXP.h"
 
 namespace dctl {
 namespace dxp {
 
+BOOST_AUTO_TEST_SUITE(TestParser)
+
 // Examples of DXP messages (Layer 2 Protocol)
 // http://www.mesander.nl/dxp/edxplg2.htm
-TEST(Parser, MesanderExamples)
+BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
+        // the element type of an array cannot be a type that contains 'auto'
         const std::string message[] = 
         {
                 "R01Tornado voor Windows 4.0        W060065A",
@@ -24,9 +28,11 @@ TEST(Parser, MesanderExamples)
 
         for (auto i = 0; i < 8; ++i) {
                 auto parsed = Parser<protocol>::create_message(message[i]);
-                EXPECT_EQ(0, parsed->str().compare(message[i]));
+                BOOST_REQUIRE_EQUAL(0, parsed->str().compare(message[i]));
         }
 }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace dxp
 }       // namespace dctl
