@@ -7,7 +7,7 @@ template<typename Board>
 void StateInterface<Board>::generate(const Position<Board>& p, Stack& moves) const 
 {
         do_generate(p, moves);
-        //assert(invariant(p, moves.size()));
+        assert(invariant(p, moves.size()));
 }
 
 template<typename Board>
@@ -23,7 +23,7 @@ bool StateInterface<Board>::detect(const Position<Board>& p) const
 }
 
 template<typename Board> 
-bool StateInterface<Board>::invariant(const Position<Board>& p, int number)
+bool StateInterface<Board>::invariant(const Position<Board>& p, int number) const
 {
         return (
                 (count(p) == number) && 
