@@ -104,7 +104,13 @@ void Connection<Protocol>::close()
 template<typename Protocol>
 void Connection<Protocol>::do_close()
 {
-        socket_.close();
+        boost::system::error_code ec;
+        acceptor_.close(ec);
+
+        socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+        socket_.close(ec);
+
+        io_service_.stop();
         stop_event_loop();
 }
 
@@ -155,7 +161,8 @@ void Connection<Protocol>::write(const std::string& message)
         io_service_.post(boost::bind(&Connection<Protocol>::do_write, this, message));
 }
 
-// by-value instead of by-reference, or <message> might go out of scope before being used in the io_service::run() thread
+// <message> is passed by-value instead of by-reference, or it might 
+// go out of scope before being used in the io_service::run() thread
 template<typename Protocol>
 void Connection<Protocol>::do_write(std::string message)
 {
