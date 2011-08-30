@@ -1,16 +1,17 @@
-#include <iostream>
-#include <string>
-#include "gtest/gtest.h"
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp> 
 #include "../../../DCTL/src/board/Types.h"
 #include "../../../DCTL/src/setup/Setup.h"
 
 namespace dctl {
 namespace setup {
 
-TEST(Setup, Wieger)
+BOOST_AUTO_TEST_SUITE(TestSetup)
+
+BOOST_AUTO_TEST_CASE(Wieger)
 {
         // Test position from email conversation with Wieger Wesselink
-        std::string w = "O    \
+        auto w = "O    \
             .   .   .   .   . \
           .   .   .   .   .   \
             .   .   x   x   x \
@@ -41,12 +42,10 @@ TEST(Setup, Wieger)
 
         // the two positions have been parsed through different protocols,
         // but they should have identical FEN strings 
-        EXPECT_EQ(FEN_w, FEN_r);     
-
-        std::cout << diag_w << std::endl;
-        std::cout << FEN_w << std::endl;
-        std::cout << FEN_r << std::endl; 
+        BOOST_REQUIRE_EQUAL(FEN_w, FEN_r);     
 }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace setup
 }       // namespace dctl

@@ -1,5 +1,6 @@
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp> 
 #include <utility>
-#include "gtest/gtest.h"
 #include "../test_config.h"
 #include "../../../DCTL/src/search/Root.h"
 #include "../../../DCTL/src/node/Position.h"
@@ -10,62 +11,35 @@
 namespace dctl {
 namespace search {
 
-// The fixture for testing class SearchEndgame.
-class SearchEndgame
-: 
-        public ::testing::Test 
-{
-protected:
-        // You can remove any or all of the following functions if its body
-        // is empty.
-
-        SearchEndgame() {
-        // You can do set-up work for each test here.
-                Root::resize_hash(27);
-        }
-
-        virtual ~SearchEndgame() {
-        // You can do clean-up work that doesn't throw exceptions here.
-                Root::resize_hash(0);
-        };
-
-        // If the constructor and destructor are not enough for setting up
-        // and cleaning up each test, you can define the following methods:
-
-        virtual void SetUp() {
-        // Code here will be called immediately after the constructor (right
-        // before each test).
-        }
-
-        virtual void TearDown() {
-        // Code here will be called immediately after each test (right
-        // before the destructor).
-        }
-
-        typedef std::pair<std::string, int> FEN_depth;
-
-        template<typename Rules, typename Board>
-        void Run(const FEN_depth& test_case) 
-        {
-                Root::clear_hash();
-                auto position = setup::read<Board, pdn::protocol>()(test_case.first);
-                auto value = Root::analyze<Rules>(position, test_case.second);
-                EXPECT_EQ(win_value(test_case.second), value);
-        }
-
-        // Objects declared here can be used by all tests in the test case for SearchEndgame.                
-};
-
 #if INTEGRATION_TEST == 1
 
-TEST_F(SearchEndgame, InternationalInitial)
+struct FixtureHashTable
 {
-        auto i10 = Position<board::International>::initial();
-        Root::clear_hash();
-        Root::analyze<variant::International>(i10, 15);
-}
+        FixtureHashTable() 
+        {
+                Root::resize_hash(24);
+        }
 
-TEST_F(SearchEndgame, Frisian21)
+        ~FixtureHashTable() 
+        {
+                Root::resize_hash(0);
+        }
+};
+
+BOOST_FIXTURE_TEST_SUITE(TestSearch, FixtureHashTable)
+
+typedef std::pair<std::string, int> FEN_depth;
+
+template<typename Rules, typename Board>
+void Run(const FEN_depth& test_case) 
+{
+        Root::clear_hash();
+        auto position = setup::read<Board, pdn::protocol>()(test_case.first);
+        auto value = Root::analyze<Rules>(position, test_case.second);
+        BOOST_CHECK_EQUAL(win_value(test_case.second), value);
+};
+
+BOOST_AUTO_TEST_CASE(Frisian21)
 {
         FEN_depth test_case("W:WK46,28:BK43", 39);      // Walinga book
 
@@ -73,7 +47,7 @@ TEST_F(SearchEndgame, Frisian21)
 }
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
-TEST_F(SearchEndgame, International11)
+BOOST_AUTO_TEST_CASE(International11)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W33:B2."  , 17),   // 1010
@@ -86,7 +60,7 @@ TEST_F(SearchEndgame, International11)
                 Run<variant::International, board::International>(test_case[i]);
 }
 
-TEST_F(SearchEndgame, International21)
+BOOST_AUTO_TEST_CASE(International21)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W40,44:B3."   , 23),       // 2010
@@ -108,7 +82,7 @@ TEST_F(SearchEndgame, International21)
                 Run<variant::International, board::International>(test_case[i]);
 }        
 
-TEST_F(SearchEndgame, International22)
+BOOST_AUTO_TEST_CASE(International22)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W33,46:B4,5."     , 39),   // 2020
@@ -126,7 +100,7 @@ TEST_F(SearchEndgame, International22)
                 Run<variant::International, board::International>(test_case[i]);      
 }
 
-TEST_F(SearchEndgame, International31)
+BOOST_AUTO_TEST_CASE(International31)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W12,13,16:B30."    , 23),  // 3010
@@ -152,7 +126,7 @@ TEST_F(SearchEndgame, International31)
 }
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        
-TEST_F(SearchEndgame, Killer11)
+BOOST_AUTO_TEST_CASE(Killer11)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W31:B5."   , 17),  // 1010
@@ -165,7 +139,7 @@ TEST_F(SearchEndgame, Killer11)
                 Run<variant::Killer, board::International>(test_case[i]);
 }
 
-TEST_F(SearchEndgame, Killer21)
+BOOST_AUTO_TEST_CASE(Killer21)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W41,46:B24."  , 63),       // 2010
@@ -188,7 +162,7 @@ TEST_F(SearchEndgame, Killer21)
                 Run<variant::Killer, board::International>(test_case[i]);
 }
 
-TEST_F(SearchEndgame, Killer22)
+BOOST_AUTO_TEST_CASE(Killer22)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W31,49:B9,14."    , 77),   // 2020
@@ -206,7 +180,7 @@ TEST_F(SearchEndgame, Killer22)
                 Run<variant::Killer, board::International>(test_case[i]);
 }
 
-TEST_F(SearchEndgame, Killer31)
+BOOST_AUTO_TEST_CASE(Killer31)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W37,43,46:B44."    , 69),  // 3010
@@ -230,6 +204,8 @@ TEST_F(SearchEndgame, Killer31)
         for (auto i = 0; i < 16; ++i)
                 Run<variant::Killer, board::International>(test_case[i]);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 #endif
 

@@ -33,29 +33,29 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\test_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\search\Score.cpp">
-      <Filter>Source Files\search</Filter>
-    </ClCompile>
-    <ClCompile Include="src\search\Root.cpp">
-      <Filter>Source Files\search</Filter>
-    </ClCompile>
-    <ClCompile Include="src\walk\Root.cpp">
-      <Filter>Source Files\walk</Filter>
-    </ClCompile>
     <ClCompile Include="src\setup\Setup.cpp">
       <Filter>Source Files\setup</Filter>
     </ClCompile>
     <ClCompile Include="src\dxp\Parser.cpp">
       <Filter>Source Files\dxp</Filter>
     </ClCompile>
+    <ClCompile Include="src\search\Score.cpp">
+      <Filter>Source Files\search</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\bit\Bit.cpp">
       <Filter>Source Files\bit</Filter>
     </ClCompile>
     <ClCompile Include="src\successor\Successor.cpp">
       <Filter>Source Files\successor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\walk\Root.cpp">
+      <Filter>Source Files\walk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\search\Root.cpp">
+      <Filter>Source Files\search</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,8 @@
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp> 
 #include <algorithm>    // std::find
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
-#include "gtest/gtest.h"
 #include "../../../DCTL/src/successor/Successor.h"
 #include "../../../DCTL/src/successor/Selection.h"
 #include "../../../DCTL/src/node/Position.h"
@@ -12,7 +13,9 @@
 
 namespace dctl {
 
-TEST(Successor, Italian)
+BOOST_AUTO_TEST_SUITE(TestSuccessor)
+
+BOOST_AUTO_TEST_CASE(Italian)
 {
         // Test positions from the official Italian rules: 
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
@@ -51,14 +54,16 @@ TEST(Successor, Italian)
                 Successor<successor::Legal, variant::Italian>::generate(p, moves);
 
                 // check the number of generated legal
-                EXPECT_EQ(size[i], moves.size());
+                BOOST_CHECK_EQUAL(size[i], static_cast<int>(moves.size()));
 
                 // check all generated legal
                 for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
                         std::string move_string = notation::write<variant::Italian>()(p, moves[j]);
-                        EXPECT_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string)); 
+                        BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string)); 
                 }
         }
 }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace dctl
