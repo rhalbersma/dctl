@@ -33,6 +33,9 @@ protected:
         ~StateInterface() {};
 
 private:
+        // invariant relating generate, count and detect
+        bool invariant(const Position<Board>&, int);
+
         // pure virtual implementation
         virtual void do_generate(const Position<Board>&, Stack&) const = 0;
         virtual int do_count(const Position<Board>&) const = 0;

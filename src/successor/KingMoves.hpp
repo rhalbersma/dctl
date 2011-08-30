@@ -77,7 +77,7 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dir(
         BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::RANGE_1>
 )
 {
-        if (BitBoard dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
+        if (auto dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
                 push<Color>(from_sq ^ dest_sq, moves);
 }
 
@@ -87,7 +87,7 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dir(
         BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::RANGE_N>
 )
 {
-        for (BitBoard dest_sq = Push<Board, Index>()(from_sq); dest_sq & not_occupied; PushAssign<Board, Index>()(dest_sq))
+        for (auto dest_sq = Push<Board, Index>()(from_sq); dest_sq & not_occupied; PushAssign<Board, Index>()(dest_sq))
                 push<Color>(from_sq ^ dest_sq, moves);
 }
 
