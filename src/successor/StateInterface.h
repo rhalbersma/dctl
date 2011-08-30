@@ -34,7 +34,7 @@ protected:
 
 private:
         // invariant relating generate, count and detect
-        bool invariant(const Position<Board>&, int);
+        bool invariant(const Position<Board>&, int) const;
 
         // pure virtual implementation
         virtual void do_generate(const Position<Board>&, Stack&) const = 0;
