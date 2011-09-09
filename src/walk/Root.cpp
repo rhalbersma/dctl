@@ -34,18 +34,17 @@ void Root::report(int depth, NodeCount leafs, const Timer& timer)
         std::cout << " hashfull ";
         std::cout << std::setw( 4) << std::right << hashfull;
 
-        std::cout << std::endl;
+        std::cout << "\n";
 }
 
 void Root::summary()
 {
-        std::cout << std::endl;
+        std::cout << "\n";
 }
 
 void Root::summary(NodeCount leafs)
 {
-        std::cout << std::endl << "Total leafs: " << leafs << std::endl;
-        std::cout << std::endl;
+        std::cout << "Total leafs: " << leafs << "\n\n";
 }
 
 void Root::print_move(const std::string& move, int i)

@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include <iomanip>
 #include <sstream>
 #include <boost/lexical_cast.hpp>
@@ -104,7 +104,7 @@ bool GameRequest::read_setup(char c)
         case SPECIAL: 
                 return true;
         default:
-                assert(false);
+                BOOST_ASSERT(false);
                 return false;
         }
 }

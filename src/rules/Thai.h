@@ -9,7 +9,7 @@ namespace rules {
 
 // capture mechanics
 template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<variant::Thai>         { enum { value = DIRS_UP  }; };
+template<> struct man_capture_directions<variant::Thai>         { enum { value = DIRS_up  }; };
 
 template<typename> struct is_capture_direction_reversal;
 template<> struct is_capture_direction_reversal<variant::Thai>  { enum { value = true     }; };

@@ -1,28 +1,38 @@
 #pragma once
+#include <tuple>
 
 namespace dctl {
 namespace board {
 
-template<typename Board, int = Board::ExternalGrid::SIZE- 1>
-class init_squares;
+template
+<
+        template<typename, typename, int> class, 
+        typename Board, 
+        typename, 
+        int = Board::ExternalGrid::size - 1
+>
+struct init_predicate;
 
-template<typename Board, bool, int = Board::ExternalGrid::SIZE- 1>
-class init_initial;
+template<typename>
+struct init_squares;
 
-template<typename Board, bool, int, int = Board::ExternalGrid::SIZE- 1>
-class init_row_mask;
+template<typename Board, bool>
+struct init_initial;
 
-template<typename Board, bool, int, int = Board::ExternalGrid::SIZE- 1>
-class init_col_mask;
+template<typename Board, bool, int>
+struct init_row_mask;
 
-template<typename Board, int, int = Board::ExternalGrid::SIZE- 1>
-class init_man_jump_group;
+template<typename Board, bool, int>
+struct init_col_mask;
 
-template<typename Board, int, int = Board::ExternalGrid::SIZE- 1>
-class init_jumpable;
+template<typename Board, int>
+struct init_man_jump_group;
+
+template<typename Board, int>
+struct init_jumpable;
 
 }       // namespace board
 }       // namespace dctl
 
-// include template definitions inside header since "export" keyword is not supported by most C++ compilers
+// include template definitions inside header
 #include "MetaTemplates.hpp"

@@ -2,6 +2,7 @@
 #include <deque>        // std::deque
 #include <string>       // std::string
 #include <boost/asio.hpp>
+#include <boost/config.hpp>
 #include "Protocol.h"
 
 namespace dctl {
@@ -50,10 +51,10 @@ private:
         void handle_write(const boost::system::error_code&);
 
         // representation
-        static const boost::asio::ip::tcp PROTOCOL = boost::asio::ip::tcp::v4();
-        static const boost::asio::ip::address_v4 LOOPBACK = boost::asio::ip::address_v4::loopback();
-        static const unsigned short PORT = port<Protocol>::value;
-        static const char TERMINATOR = terminator<Protocol>::value;
+        BOOST_STATIC_CONSTANT(auto, PROTOCOL = boost::asio::ip::tcp::v4());
+        BOOST_STATIC_CONSTANT(auto, LOOPBACK = boost::asio::ip::address_v4::loopback());
+        BOOST_STATIC_CONSTANT(unsigned short, PORT = port<Protocol>::value);
+        BOOST_STATIC_CONSTANT(auto, TERMINATOR = terminator<Protocol>::value);
 
         boost::asio::io_service io_service_;
         boost::asio::ip::tcp::acceptor acceptor_;

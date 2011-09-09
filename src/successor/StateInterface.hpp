@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 
 namespace dctl {
 namespace successor {
@@ -7,7 +7,7 @@ template<typename Board>
 void StateInterface<Board>::generate(const Position<Board>& p, Stack& moves) const 
 {
         do_generate(p, moves);
-        assert(invariant(p, moves.size()));
+        BOOST_ASSERT(invariant(p, moves.size()));
 }
 
 template<typename Board>

@@ -1,5 +1,5 @@
 #include <algorithm>    // std::for_each
-#include <cassert>
+#include <boost/assert.hpp>
 #include <iomanip>
 #include <sstream>
 #include <boost/lexical_cast.hpp>

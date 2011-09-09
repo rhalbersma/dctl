@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "../node/Position.h"
 #include "../node/Promotion.h"
 

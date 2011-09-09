@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "../capture/State.h"
 #include "../node/Position.h"
 #include "../board/Angle.h"
@@ -60,7 +60,7 @@ void Driver<Color, Material::KING, Jumps, Rules, Board>::generate_serial(
         BitBoard active_kings, capture::State<Rules, Board>& capture, Stack& moves
 )
 {
-        assert(!bit::is_zero(active_kings));
+        BOOST_ASSERT(!bit::is_zero(active_kings));
         BitBoard jumper;
         do {
                 jumper = bit::get_first(active_kings);
@@ -96,10 +96,10 @@ void Driver<Color, Material::KING, Jumps, Rules, Board>::generate_dirs(
         BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::DIRS_ORTH>
 )
 {
-        generate_dir<Direction::LEFT >(jumper, capture, moves);
-        generate_dir<Direction::RIGHT>(jumper, capture, moves);
-        generate_dir<Direction::UP   >(jumper, capture, moves);
-        generate_dir<Direction::DOWN >(jumper, capture, moves);
+        generate_dir<Direction::left >(jumper, capture, moves);
+        generate_dir<Direction::right>(jumper, capture, moves);
+        generate_dir<Direction::up   >(jumper, capture, moves);
+        generate_dir<Direction::down >(jumper, capture, moves);
 }
 
 // partial specialization for kings that capture in the 4 diagonal directions
@@ -108,10 +108,10 @@ void Driver<Color, Material::KING, Jumps, Rules, Board>::generate_dirs(
         BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::DIRS_DIAG>
 )
 {
-        generate_dir<Direction::LEFT_UP   >(jumper, capture, moves);
-        generate_dir<Direction::RIGHT_UP  >(jumper, capture, moves);
-        generate_dir<Direction::LEFT_DOWN >(jumper, capture, moves);
-        generate_dir<Direction::RIGHT_DOWN>(jumper, capture, moves);
+        generate_dir<Direction::left_up   >(jumper, capture, moves);
+        generate_dir<Direction::right_up  >(jumper, capture, moves);
+        generate_dir<Direction::left_down >(jumper, capture, moves);
+        generate_dir<Direction::right_down>(jumper, capture, moves);
 }
 
 template<bool Color, typename Rules, typename Board> template<int Index>
@@ -218,7 +218,7 @@ bool Driver<Color, Material::KING, Jumps, Rules, Board>::scan_reverse(
         BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves
 )
 {
-        return scan_dir<board::Rotate<Int2Type<Index>, board::Angle::D180>::value>(jumper, capture, moves);
+        return scan_dir<board::rotate<Int2Type<Index>, board::Angle::D180>::value>(jumper, capture, moves);
 }
 
 template<bool Color, typename Rules, typename Board> template<int Index>
@@ -226,7 +226,7 @@ bool Driver<Color, Material::KING, Jumps, Rules, Board>::scan_forward(
         BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves
 )
 {
-        assert(jumper & capture.path());
+        BOOST_ASSERT(jumper & capture.path());
         bool found_capture = false;
         do {
                 found_capture |= scan_dirs<Index>(jumper, capture, moves);
@@ -263,10 +263,10 @@ bool Driver<Color, Material::KING, Jumps, Rules, Board>::scan_dirs(
 )
 {
         return (
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R045>::value>(jumper, capture, moves) |
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::L045>::value>(jumper, capture, moves) |
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R135>::value>(jumper, capture, moves) |
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::L135>::value>(jumper, capture, moves)
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R045>::value>(jumper, capture, moves) |
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L045>::value>(jumper, capture, moves) |
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R135>::value>(jumper, capture, moves) |
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L135>::value>(jumper, capture, moves)
         );
 }
 
@@ -277,8 +277,8 @@ bool Driver<Color, Material::KING, Jumps, Rules, Board>::scan_dirs(
 )
 {
         return (
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R090>::value>(jumper, capture, moves) |
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::L090>::value>(jumper, capture, moves)
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R090>::value>(jumper, capture, moves) |
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L090>::value>(jumper, capture, moves)
         );
 }
 
@@ -378,10 +378,10 @@ bool Driver<Color, Material::KING, Jumps, Rules, Board>::detect_dirs(
 )
 {
         return (
-                detect_dir<Direction::LEFT >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::RIGHT>(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::UP   >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::DOWN >(active_kings, opponent_pieces, not_occupied)
+                detect_dir<Direction::left >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::right>(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::up   >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::down >(active_kings, opponent_pieces, not_occupied)
         );
 }
 
@@ -392,10 +392,10 @@ bool Driver<Color, Material::KING, Jumps, Rules, Board>::detect_dirs(
 )
 {
         return (
-                detect_dir<Direction::LEFT_UP   >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::RIGHT_UP  >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::LEFT_DOWN >(active_kings, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::RIGHT_DOWN>(active_kings, opponent_pieces, not_occupied)
+                detect_dir<Direction::left_up   >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::right_up  >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::left_down >(active_kings, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::right_down>(active_kings, opponent_pieces, not_occupied)
         );
 }
 

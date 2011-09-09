@@ -13,7 +13,7 @@ template<> struct is_long_king_range<variant::Italian>          { enum { value =
 
 // capture mechanics
 template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<variant::Italian>      { enum { value = DIRS_UP }; };
+template<> struct man_capture_directions<variant::Italian>      { enum { value = DIRS_up }; };
 
 template<typename> struct is_men_capture_kings;
 template<> struct is_men_capture_kings<variant::Italian>        { enum { value = false   }; };

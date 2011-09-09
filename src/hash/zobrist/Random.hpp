@@ -50,10 +50,10 @@ void generate_Zobrist()
 		if (i != 63)
 			std::cout << ",";
 		if (3 == (i % 4))
-			std::cout << std::endl;
+			std::cout << "\n";
 		else
 			std::cout << " ";
 	}
-	std::cout << std::endl;
+	std::cout << "\n";
 }
 */

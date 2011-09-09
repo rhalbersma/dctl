@@ -14,8 +14,8 @@ template<typename> struct is_long_king_range                    { enum { value =
 // restricted consecutive moves with the same king
 template<typename> struct is_restricted_same_king_moves         { enum { value = false }; };
 
-// maximum consecutive moves with the same king
-template<typename> struct max_same_king_moves                   { enum { value = 6 }; };
+// maximum consecutive moves with the same king                 // NO default: MUST be specialized if
+template<typename> struct max_same_king_moves;                  // is_restricted_same_king_moves == true 
 
 // promotion condition: on the back row or en-passant
 template<typename> struct promotion_condition                   { enum { value = PROMOTE_BR }; };
@@ -31,12 +31,12 @@ template<typename> struct king_capture_directions               { enum { value =
 template<typename> struct man_capture_directions                { enum { value = DIRS_DIAG }; };
 
 // man backwards capture
-template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != DIRS_UP }; };
+template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != DIRS_up }; };
 
 // relation between initial and intermediate capture directions
 template<int> struct scan_directions;
-template<> struct scan_directions<DIRS_UP  >                    { enum { value = SCAN_UP   }; };
-template<> struct scan_directions<DIRS_DOWN>                    { enum { value = SCAN_DOWN }; };
+template<> struct scan_directions<DIRS_up  >                    { enum { value = SCAN_up   }; };
+template<> struct scan_directions<DIRS_down>                    { enum { value = SCAN_down }; };
 template<> struct scan_directions<DIRS_DIAG>                    { enum { value = SCAN_SIDE }; };
 template<> struct scan_directions<DIRS_ORTH>                    { enum { value = SCAN_SIDE }; };
 template<> struct scan_directions<DIRS_ALL >                    { enum { value = SCAN_ALL  }; };

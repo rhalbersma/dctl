@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "../capture/State.h"
 #include "../node/Position.h"
 #include "../board/Angle.h"
@@ -81,10 +81,10 @@ void Driver<Color, Material::PAWN, Jumps, Rules, Board>::generate_dirs(
         BitBoard active_men, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::DIRS_ORTH>
 )
 {
-        generate_dir<Direction::LEFT >(active_men, capture, moves);
-        generate_dir<Direction::RIGHT>(active_men, capture, moves);
-        generate_dir<Direction::UP   >(active_men, capture, moves);
-        generate_dir<Direction::DOWN >(active_men, capture, moves);
+        generate_dir<Direction::left >(active_men, capture, moves);
+        generate_dir<Direction::right>(active_men, capture, moves);
+        generate_dir<Direction::up   >(active_men, capture, moves);
+        generate_dir<Direction::down >(active_men, capture, moves);
 }
 
 // partial specialization for men that capture in the 4 diagonal directions
@@ -93,28 +93,28 @@ void Driver<Color, Material::PAWN, Jumps, Rules, Board>::generate_dirs(
         BitBoard active_men, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::DIRS_DIAG>
 )
 {
-        generate_dirs(active_men, capture, moves, Int2Type<rules::DIRS_UP  >());
-        generate_dirs(active_men, capture, moves, Int2Type<rules::DIRS_DOWN>());
+        generate_dirs(active_men, capture, moves, Int2Type<rules::DIRS_up  >());
+        generate_dirs(active_men, capture, moves, Int2Type<rules::DIRS_down>());
 }
 
 // partial specialization for men that capture in the 2 forward diagonal directions
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::PAWN, Jumps, Rules, Board>::generate_dirs(
-        BitBoard active_men, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::DIRS_UP>
+        BitBoard active_men, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::DIRS_up>
 )
 {
-        generate_dir<Direction::LEFT_UP >(active_men, capture, moves);
-        generate_dir<Direction::RIGHT_UP>(active_men, capture, moves);
+        generate_dir<Direction::left_up >(active_men, capture, moves);
+        generate_dir<Direction::right_up>(active_men, capture, moves);
 }
 
 // partial specialization for men that capture in the 2 backward diagonal directions
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::PAWN, Jumps, Rules, Board>::generate_dirs(
-        BitBoard active_men, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::DIRS_DOWN>
+        BitBoard active_men, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::DIRS_down>
 )
 {
-        generate_dir<Direction::LEFT_DOWN >(active_men, capture, moves);
-        generate_dir<Direction::RIGHT_DOWN>(active_men, capture, moves);
+        generate_dir<Direction::left_down >(active_men, capture, moves);
+        generate_dir<Direction::right_down>(active_men, capture, moves);
 }
 
 template<bool Color, typename Rules, typename Board> template<int Index>
@@ -217,10 +217,10 @@ bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::scan_dirs(
 )
 {
         return (
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R045>::value>(jumper, capture, moves) |
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::L045>::value>(jumper, capture, moves) |
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R135>::value>(jumper, capture, moves) |
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::L135>::value>(jumper, capture, moves)
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R045>::value>(jumper, capture, moves) |
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L045>::value>(jumper, capture, moves) |
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R135>::value>(jumper, capture, moves) |
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L135>::value>(jumper, capture, moves)
         );
 }
 
@@ -231,27 +231,27 @@ bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::scan_dirs(
 )
 {
         return (
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::R090>::value>(jumper, capture, moves) |
-                scan_dir<board::Rotate<Int2Type<Index>, board::Angle::L090>::value>(jumper, capture, moves)
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R090>::value>(jumper, capture, moves) |
+                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L090>::value>(jumper, capture, moves)
         );
 }
 
 // partial specialization for scans in the 1 mirrored forward direction
 template<bool Color, typename Rules, typename Board> template<int Index>
 bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::scan_dirs(
-        BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::SCAN_UP>
+        BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::SCAN_up>
 )
 {
-        return scan_dir<board::MirrorUp<Index>::value>(jumper, capture, moves);
+        return scan_dir<board::mirror_up<Index>::value>(jumper, capture, moves);
 }
 
 // partial specialization for scans in the 1 mirrored backward direction
 template<bool Color, typename Rules, typename Board> template<int Index>
 bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::scan_dirs(
-        BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::SCAN_DOWN>
+        BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::SCAN_down>
 )
 {
-        return scan_dir<board::MirrorDown<Index>::value>(jumper, capture, moves);
+        return scan_dir<board::mirror_down<Index>::value>(jumper, capture, moves);
 }
 
 template<bool Color, typename Rules, typename Board> template<int Index>
@@ -350,10 +350,10 @@ bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::detect_dirs(
 )
 {
         return (
-                detect_dir<Direction::LEFT >(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::RIGHT>(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::UP   >(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::DOWN >(active_men, opponent_pieces, not_occupied)
+                detect_dir<Direction::left >(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::right>(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::up   >(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::down >(active_men, opponent_pieces, not_occupied)
         );
 }
 
@@ -364,32 +364,32 @@ bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::detect_dirs(
 )
 {
         return (
-                detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::DIRS_UP  >()) ||
-                detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::DIRS_DOWN>())
+                detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::DIRS_up  >()) ||
+                detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::DIRS_down>())
         );
 }
 
 // partial specialization for men that capture in the 2 forward diagonal directions
 template<bool Color, typename Rules, typename Board>
 bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::detect_dirs(
-        BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_UP>
+        BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_up>
 )
 {
         return (
-                detect_dir<Direction::LEFT_UP >(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::RIGHT_UP>(active_men, opponent_pieces, not_occupied)
+                detect_dir<Direction::left_up >(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::right_up>(active_men, opponent_pieces, not_occupied)
         );
 }
 
 // partial specialization for men that capture in the 2 backward diagonal directions
 template<bool Color, typename Rules, typename Board>
 bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::detect_dirs(
-        BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_DOWN>
+        BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::DIRS_down>
 )
 {
         return (
-                detect_dir<Direction::LEFT_DOWN >(active_men, opponent_pieces, not_occupied) ||
-                detect_dir<Direction::RIGHT_DOWN>(active_men, opponent_pieces, not_occupied)
+                detect_dir<Direction::left_down >(active_men, opponent_pieces, not_occupied) ||
+                detect_dir<Direction::right_down>(active_men, opponent_pieces, not_occupied)
         );
 }
 

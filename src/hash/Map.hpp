@@ -1,5 +1,5 @@
 #include <algorithm>    // std::count_if
-#include <cassert>
+#include <boost/assert.hpp>
 #include <cstring>      // std::memset
 #include <functional>   // std::bind, std::placeholders
 #include <type_traits>  // std::is_integral
@@ -35,8 +35,8 @@ template<typename Key, typename Value, template<typename, typename> class Hash, 
 void Map<Key, Value, Hash, Index, Replace>::resize(std::size_t log2_n)
 {
         map_.resize(Index(1) << log2_n);        // allocate all the entries
-        map_mask_ = map_.size() - 1;            // MODULO the number of entries
-        map_mask_ ^= BUCKET_MASK;               // MODULO the number of buckets
+        map_mask_ = map_.size() - 1;            // modulo the number of entries
+        map_mask_ ^= BUCKET_MASK;               // modulo the number of buckets
         clear();
 }
 
@@ -50,7 +50,7 @@ template<typename Key, typename Value, template<typename, typename> class Hash, 
 const Value* Map<Key, Value, Hash, Index, Replace>::find(const Key& key) const
 {
         const auto index = Hash<Key, Index>()(key);
-        return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
+        return find_entry<Key, Value, BUCKET_size>()(bucket_begin(index), key);
 }
 
 // tag dispatching based on the key's integer type trait
@@ -68,7 +68,7 @@ const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item, Int2T
 {
         const auto index = Hash<Item, Index>()(item);
         const auto key = FindSign<Item, Key>()(item);
-        return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
+        return find_entry<Key, Value, BUCKET_size>()(bucket_begin(index), key);
 }
 
 // partial specialization for integral keys
@@ -78,14 +78,14 @@ const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item, Int2T
 {
         const auto index = Hash<Item, Index>()(item);
         const auto key = ShiftSign<Index, Key>()(index);
-        return find_entry<Key, Value, BUCKET_SIZE>()(bucket_begin(index), key);
+        return find_entry<Key, Value, BUCKET_size>()(bucket_begin(index), key);
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 void Map<Key, Value, Hash, Index, Replace>::insert(const Key& key, const Value& value)
 {
         const auto index = Hash<Key, Index>()(key);
-        insert_entry<Key, Value, BUCKET_SIZE, Replace>()(bucket_begin(index), Entry(key, value));
+        insert_entry<Key, Value, BUCKET_size, Replace>()(bucket_begin(index), Entry(key, value));
 }
 
 // tag dispatching based on the key's integral type trait
@@ -103,7 +103,7 @@ void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value
 {
         const auto index = Hash<Item, Index>()(item);
         const auto key = FindSign<Item, Key>()(item);
-        insert_entry<Key, Value, BUCKET_SIZE, Replace>()(bucket_begin(index), Entry(key, value));
+        insert_entry<Key, Value, BUCKET_size, Replace>()(bucket_begin(index), Entry(key, value));
 }
 
 // partial specialization for integral keys
@@ -113,7 +113,7 @@ void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value
 {
         const auto index = Hash<Item, Index>()(item);
         const auto key = ShiftSign<Index, Key>()(index);
-        insert_entry<Key, Value, BUCKET_SIZE, Replace>()(bucket_begin(index), Entry(key, value));
+        insert_entry<Key, Value, BUCKET_size, Replace>()(bucket_begin(index), Entry(key, value));
 }
 
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>

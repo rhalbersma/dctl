@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include <functional>
 #include "Material.h"
 #include "Side.h"
@@ -10,14 +10,14 @@ namespace dctl {
 Material::Material(BitBoard)
 {
         init<Side::BLACK>(0, 0, 0);
-        assert(invariant());
+        BOOST_ASSERT(invariant());
 }
 
 // initialize with a set of bitboards
 Material::Material(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings)
 {
         init<Side::BLACK>(black_pieces, white_pieces, kings);
-        assert(invariant());
+        BOOST_ASSERT(invariant());
 }
 
 // black or white men
@@ -63,7 +63,7 @@ Material& Material::operator^=(const Material& other)
         pieces_[Side::WHITE] ^= other.pieces(Side::WHITE);
         kings_ ^= other.kings();
 
-        assert(invariant());
+        BOOST_ASSERT(invariant());
         return *this;
 }
 

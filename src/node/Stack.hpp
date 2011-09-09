@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "Predicates.h"
 #include "../bit/Bit.h"
 #include "../rules/Rules.h"
@@ -17,7 +17,7 @@ template<bool Color>
 void push(BitBoard delta, Stack& stack)
 {
         // necessary pre-conditions for king move semantics
-        assert(bit::is_double(delta));
+        BOOST_ASSERT(bit::is_double(delta));
 
         stack.push_back(
                 Move::create<Color>(
@@ -28,7 +28,7 @@ void push(BitBoard delta, Stack& stack)
         );
                 
         // post-condtions are the pieces invariant 
-        assert(top(stack).invariant());
+        BOOST_ASSERT(top(stack).invariant());
 }
 
 // add a man move
@@ -36,11 +36,11 @@ template<bool Color>
 void push(BitBoard delta, BitBoard promotion, Stack& stack)
 {
         // necessary pre-conditions for the pieces invariant
-        assert(bit::is_within(promotion, delta));
+        BOOST_ASSERT(bit::is_within(promotion, delta));
 
         // necessary pre-conditions for man move semantics
-        assert(bit::is_double(delta));
-        assert(!bit::is_multiple(promotion));
+        BOOST_ASSERT(bit::is_double(delta));
+        BOOST_ASSERT(!bit::is_multiple(promotion));
 
         stack.push_back(
                 Move::create<Color>(
@@ -51,7 +51,7 @@ void push(BitBoard delta, BitBoard promotion, Stack& stack)
         );
 
         // post-conditions are the pieces invariant 
-        assert(top(stack).invariant());
+        BOOST_ASSERT(top(stack).invariant());
 }
 
 // add a king capture
@@ -59,17 +59,17 @@ template<bool Color, typename Rules>
 void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Stack& stack)
 {
         // necessary pre-conditions for the pieces invariant 
-        assert(
+        BOOST_ASSERT(
                 bit::is_exclusive(delta, captured_pieces) || 
 
                 // EXCEPTION: for intersecting captures, delta overlaps with captured pieces
                 is_intersecting_capture<Rules>(delta, captured_pieces)
         );
-        assert(bit::is_within(captured_kings, captured_pieces));
+        BOOST_ASSERT(bit::is_within(captured_kings, captured_pieces));
 
         // necessary pre-conditions for king capture semantics
-        assert(bit::is_double(delta) || bit::is_zero(delta));
-        assert(!bit::is_zero(captured_pieces));
+        BOOST_ASSERT(bit::is_double(delta) || bit::is_zero(delta));
+        BOOST_ASSERT(!bit::is_zero(captured_pieces));
 
         stack.push_back(
                 Move::create<Color>(
@@ -80,7 +80,7 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
         );
 
         // post-conditions are the pieces invariants                        
-        assert(
+        BOOST_ASSERT(
                 (
                         bit::is_exclusive(top(stack).pieces(Side::BLACK), top(stack).pieces(Side::WHITE)) ||
 
@@ -96,19 +96,19 @@ template<bool Color, typename Rules>
 void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings, Stack& stack)
 {
         // necessary pre-conditions for the pieces invariant
-        assert(bit::is_exclusive(delta, captured_pieces));
-        assert(
+        BOOST_ASSERT(bit::is_exclusive(delta, captured_pieces));
+        BOOST_ASSERT(
                 bit::is_within(promotion, delta) ||
 
                 // EXCEPTION: for intersecting promotions, delta is empty, and promotion is non-empty
                 is_intersecting_promotion<Rules>(promotion, delta)
         );
-        assert(bit::is_within(captured_kings, captured_pieces));
+        BOOST_ASSERT(bit::is_within(captured_kings, captured_pieces));
 
         // necessary pre-conditions for man capture semantics
-        assert(bit::is_double(delta) || bit::is_zero(delta));
-        assert(!bit::is_multiple(promotion));
-        assert(!bit::is_zero(captured_pieces));
+        BOOST_ASSERT(bit::is_double(delta) || bit::is_zero(delta));
+        BOOST_ASSERT(!bit::is_multiple(promotion));
+        BOOST_ASSERT(!bit::is_zero(captured_pieces));
 
         stack.push_back(
                 Move::create<Color>(
@@ -119,7 +119,7 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
         );
 
         // post-conditions are the pieces invariants                        
-        assert(
+        BOOST_ASSERT(
                 bit::is_exclusive(top(stack).pieces(Side::BLACK), top(stack).pieces(Side::WHITE)) &&
                 (
                         bit::is_within(top(stack).kings(), top(stack).pieces()) ||

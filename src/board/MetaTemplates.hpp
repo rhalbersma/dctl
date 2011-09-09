@@ -1,127 +1,85 @@
+#include <boost/config.hpp>
 #include "Predicates.h"
 #include "../utils/IntegerTypes.h"
+#include "../utils/TemplateTricks.h"
 
 namespace dctl {
 namespace board {
 
-template<typename Board, int SQ>
-class init_squares
+template
+<
+        template<typename, typename, int> class Predicate, 
+        typename Board, 
+        typename Tuple, 
+        int SQ
+>
+struct init_predicate
 {
-private:
-        static const BitBoard mask = is_square<Board, SQ>::value? (BitBoard(1) << square_to_bit<Board, SQ>::value) : 0;
+        BOOST_STATIC_CONSTANT(auto, value = 
+                ((Predicate<Board, Tuple, SQ>::value? (BitBoard(1) << square_to_bit<Board, SQ>::value) : 0) ^ 
+                init_predicate<Predicate, Board, Tuple, SQ-1>::value)
+        );
+};
 
-public:
-        static const BitBoard value = mask ^ init_squares<Board, SQ-1>::value;
+template
+<
+        template<typename, typename, int> class Predicate, 
+        typename Board, 
+        typename Tuple
+>
+struct init_predicate<Predicate, Board, Tuple, 0>
+{
+        BOOST_STATIC_CONSTANT(auto, value = 
+                (Predicate<Board, Tuple, 0>::value? (BitBoard(1) << square_to_bit<Board, 0>::value) : 0)
+        );
 };
 
 template<typename Board>
-class init_squares<Board, 0>
+struct init_squares
 {
-private:
-        static const BitBoard mask = is_square<Board, 0>::value? (BitBoard(1) << square_to_bit<Board, 0>::value) : 0;
-
-public:
-        static const BitBoard value = mask;
-};
-
-template<typename Board, bool C, int SQ>
-class init_initial
-{
-private:
-        static const BitBoard mask = is_initial<Board, C, SQ>::value? (BitBoard(1) << square_to_bit<Board, SQ>::value) : 0;
-
-public:
-        static const BitBoard value = mask ^ init_initial<Board, C, SQ-1>::value;
+        BOOST_STATIC_CONSTANT(auto, value =
+                (init_predicate<is_square, Board, empty_tuple>::value)
+        );
 };
 
 template<typename Board, bool C>
-class init_initial<Board, C, 0>
+struct init_initial
 {
-private:
-        static const BitBoard mask = is_initial<Board, C, 0>::value? (BitBoard(1) << square_to_bit<Board, 0>::value) : 0;
-
-public:
-        static const BitBoard value = mask;
+        BOOST_STATIC_CONSTANT(auto, value =
+                (init_predicate<is_initial, Board, bool_tuple<C> >::value)
+        );
 };
 
-template<typename Board, bool C, int ROW, int SQ>
-class init_row_mask
+template<typename Board, bool C, int row>
+struct init_row_mask
 {
-private:
-        static const BitBoard mask = is_row_mask<Board, C, ROW, SQ>::value? (BitBoard(1) << square_to_bit<Board, SQ>::value) : 0;
-
-public:
-        static const BitBoard value = mask ^ init_row_mask<Board, C, ROW, SQ-1>::value;
+        BOOST_STATIC_CONSTANT(auto, value =
+                (init_predicate<is_row_mask, Board, bool_int_tuple<C, row> >::value)
+        );
 };
 
-template<typename Board, bool C, int ROW>
-class init_row_mask<Board, C, ROW, 0>
+template<typename Board, bool C, int col>
+struct init_col_mask
 {
-private:
-        static const BitBoard mask = is_row_mask<Board, C, ROW, 0>::value? (BitBoard(1) << square_to_bit<Board, 0>::value) : 0;
-
-public:
-        static const BitBoard value = mask;
-};
-
-template<typename Board, bool C, int COL, int SQ>
-class init_col_mask
-{
-private:
-        static const BitBoard mask = is_col_mask<Board, C, COL, SQ>::value? (BitBoard(1) << square_to_bit<Board, SQ>::value) : 0;
-
-public:
-        static const BitBoard value = mask ^ init_col_mask<Board, C, COL, SQ-1>::value;
-};
-
-template<typename Board, bool C, int COL>
-class init_col_mask<Board, C, COL, 0>
-{
-private:
-        static const BitBoard mask = is_col_mask<Board, C, COL, 0>::value? (BitBoard(1) << square_to_bit<Board, 0>::value) : 0;
-
-public:
-        static const BitBoard value = mask;
-};
-
-template<typename Board, int G, int SQ>
-class init_man_jump_group
-{
-private:
-        static const BitBoard mask = is_man_jump_group<Board, G, SQ>::value? (BitBoard(1) << square_to_bit<Board, SQ>::value) : 0;
-
-public:
-        static const BitBoard value = mask ^ init_man_jump_group<Board, G, SQ-1>::value;
+        BOOST_STATIC_CONSTANT(auto, value =
+                (init_predicate<is_col_mask, Board, bool_int_tuple<C, col> >::value)
+        );
 };
 
 template<typename Board, int G>
-class init_man_jump_group<Board, G, 0>
+struct init_man_jump_group
 {
-private:
-        static const BitBoard mask = is_man_jump_group<Board, G, 0>::value? (BitBoard(1) << square_to_bit<Board, 0>::value) : 0;
-
-public:
-        static const BitBoard value = mask;
-};
-
-template<typename Board, int I, int SQ>
-class init_jumpable
-{
-private:
-        static const BitBoard mask = is_jumpable<Board, I, SQ>::value? (BitBoard(1) << square_to_bit<Board, SQ>::value) : 0;
-
-public:
-        static const BitBoard value = mask ^ init_jumpable<Board, I, SQ-1>::value;
+        BOOST_STATIC_CONSTANT(auto, value =
+                (init_predicate<is_man_jump_group, Board, int_tuple<G> >::value)
+        );
 };
 
 template<typename Board, int I>
-class init_jumpable<Board, I, 0>
+struct init_jumpable
 {
-private:
-        static const BitBoard mask = is_jumpable<Board, I, 0>::value? (BitBoard(1) << square_to_bit<Board, 0>::value) : 0;
-
-public:
-        static const BitBoard value = mask;
+        BOOST_STATIC_CONSTANT(auto, value =
+                (init_predicate<is_jumpable, Board, int_tuple<I> >::value)
+        );
 };
 
 }       // namespace board

@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 
 namespace dctl {
 namespace dxp {
@@ -8,7 +8,7 @@ Scanner<Protocol>::Scanner(const std::string& message)
 :
         message_(message)
 {
-        assert(invariant());
+        BOOST_ASSERT(invariant());
 }
 
 template<typename Protocol>

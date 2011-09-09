@@ -1,4 +1,6 @@
 #pragma once
+#include <boost/config.hpp>
+#include "Angle.h"
 #include "../utils/TemplateTricks.h"
 
 namespace dctl {
@@ -22,19 +24,18 @@ template<bool Color, typename Board>
 class Direction
 { 
 private:                        
-        enum { A = (Angle::D180 * !Color) + Board::A_INV };
+        BOOST_STATIC_CONSTANT(auto, A = (Angle::D180 * !Color) + Board::inverse_angle);
 
 public:
-        enum {
-                RIGHT      = Rotate<Int2Type<Angle::D000>, A>::value,
-                RIGHT_UP   = Rotate<Int2Type<Angle::D045>, A>::value,
-                UP         = Rotate<Int2Type<Angle::D090>, A>::value,
-                LEFT_UP    = Rotate<Int2Type<Angle::D135>, A>::value,
-                LEFT       = Rotate<Int2Type<Angle::D180>, A>::value,
-                LEFT_DOWN  = Rotate<Int2Type<Angle::D225>, A>::value,
-                DOWN       = Rotate<Int2Type<Angle::D270>, A>::value,
-                RIGHT_DOWN = Rotate<Int2Type<Angle::D315>, A>::value
-        };
+        // NOTE: parenthesize rotate<..., ...> to avoid pre-processor argument splitting
+        BOOST_STATIC_CONSTANT(auto, right      = (rotate<Int2Type<Angle::D000>, A>::value));
+        BOOST_STATIC_CONSTANT(auto, right_up   = (rotate<Int2Type<Angle::D045>, A>::value));
+        BOOST_STATIC_CONSTANT(auto, up         = (rotate<Int2Type<Angle::D090>, A>::value));
+        BOOST_STATIC_CONSTANT(auto, left_up    = (rotate<Int2Type<Angle::D135>, A>::value));
+        BOOST_STATIC_CONSTANT(auto, left       = (rotate<Int2Type<Angle::D180>, A>::value));
+        BOOST_STATIC_CONSTANT(auto, left_down  = (rotate<Int2Type<Angle::D225>, A>::value));
+        BOOST_STATIC_CONSTANT(auto, down       = (rotate<Int2Type<Angle::D270>, A>::value));
+        BOOST_STATIC_CONSTANT(auto, right_down = (rotate<Int2Type<Angle::D315>, A>::value));
 };
 
 }       // namespace board

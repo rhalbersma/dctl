@@ -13,7 +13,7 @@ template<> struct is_long_king_range<variant::Checkers>        { enum { value = 
 
 // capture mechanics
 template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<variant::Checkers>    { enum { value = DIRS_UP }; };
+template<> struct man_capture_directions<variant::Checkers>    { enum { value = DIRS_up }; };
 
 }       // namespace rules
 }       // namespace dctl

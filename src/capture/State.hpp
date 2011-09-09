@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "../node/Position.h"
 #include "../node/Promotion.h"
 #include "../bit/Bit.h"
@@ -27,7 +27,7 @@ BitBoard State<Rules, Board>::targets() const
 template<typename Rules, typename Board> template<int Index>
 BitBoard State<Rules, Board>::path() const
 {
-        return path() & Board::JUMPABLE[Index];
+        return path() & Board::jumpable[Index];
 }
 
 template<typename Rules, typename Board>
@@ -227,7 +227,7 @@ void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Stack& move_stack, 
 template<typename Rules, typename Board> template<bool Color, int Index>
 void State<Rules, Board>::add_king_capture(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::HALT_N>)
 {
-        assert(dest_sq & path());
+        BOOST_ASSERT(dest_sq & path());
 
         const BitBoard captured_pieces = captured_targets();
         const BitBoard captured_kings = captured_king_targets(captured_pieces);

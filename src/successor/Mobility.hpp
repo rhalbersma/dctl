@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "Dispatcher.h"
 #include "../node/State.h"
 

@@ -4,16 +4,16 @@ namespace dctl {
 namespace board {
 
 template<typename, int>
-struct Rotate;
+struct rotate;
 
 template<int>
-struct Inverse;
+struct inverse;
 
 template<int>
-struct MirrorUp;
+struct mirror_up;
 
 template<int>
-struct MirrorDown;
+struct mirror_down;
 
 }       // namespace board
 }       // namespace dctl

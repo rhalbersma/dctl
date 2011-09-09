@@ -76,8 +76,8 @@ template<bool Color, typename Board>
 int Evaluate::tempo(const Position<Board>& p)
 {
         int score = 0;
-        for (auto i = 1; i < Board::HEIGHT; ++i)
-                score += Weight::TEMPO[i] * bit::count(p.pieces(Color) & Board::ROW_MASK[Color][i]);
+        for (auto i = 1; i < Board::height; ++i)
+                score += Weight::TEMPO[i] * bit::count(p.pieces(Color) & Board::row_mask[Color][i]);
         return score;
 }
 
@@ -85,11 +85,11 @@ template<bool Color, typename Board>
 int Evaluate::center(const Position<Board>& p)
 {
         int score = 0;
-        for (auto i = 1; i < Board::WIDTH / 2; ++i)
+        for (auto i = 1; i < Board::width / 2; ++i)
                 score += Weight::CENTER[i] *
                 (
-                        bit::count(p.pieces(Color) & Board::COL_MASK[ Color][i]) +
-                        bit::count(p.pieces(Color) & Board::COL_MASK[!Color][i])
+                        bit::count(p.pieces(Color) & Board::col_mask[ Color][i]) +
+                        bit::count(p.pieces(Color) & Board::col_mask[!Color][i])
                 );
         return score;
 }
@@ -98,11 +98,11 @@ template<bool Color, typename Board>
 int Evaluate::balance(const Position<Board>& p)
 {
         int score = 0;
-        for (auto i = 0; i < Board::WIDTH / 2; ++i)
+        for (auto i = 0; i < Board::width / 2; ++i)
                 score += Weight::BALANCE[i] *
                 (
-                        bit::count(p.pieces(Color) & Board::COL_MASK[ Color][i]) -
-                        bit::count(p.pieces(Color) & Board::COL_MASK[!Color][i])
+                        bit::count(p.pieces(Color) & Board::col_mask[ Color][i]) -
+                        bit::count(p.pieces(Color) & Board::col_mask[!Color][i])
                 );
         return -abs(score);
 }
@@ -116,20 +116,20 @@ int Evaluate::mobility(const Position<Board>& p)
 template<typename Board>
 void Evaluate::print_break_down(const Position<Board>& p)
 {
-        std::cout << "Term    " << " BLACK"                                 << " WHITE"                                 << " DELTA"                                       << std::endl;
+        std::cout << "Term    " << " BLACK"                                 << " WHITE"                                 << " DELTA"                                       << "\n";
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";
-        std::cout << std::endl;
-        std::cout << "Material" << std::setw(6) << material<Side::BLACK>(p) << std::setw(6) << material<Side::WHITE>(p) << std::setw(6) << delta_material<Side::BLACK>(p) << std::endl;
-        std::cout << "Tempo   " << std::setw(6) << tempo<Side::BLACK>(p)    << std::setw(6) << tempo<Side::WHITE>(p)    << std::setw(6) << delta_tempo<Side::BLACK>(p)    << std::endl;
-        std::cout << "Center  " << std::setw(6) << center<Side::BLACK>(p)   << std::setw(6) << center<Side::WHITE>(p)   << std::setw(6) << delta_center<Side::BLACK>(p)   << std::endl;
-        std::cout << "Balance " << std::setw(6) << balance<Side::BLACK>(p)  << std::setw(6) << balance<Side::WHITE>(p)  << std::setw(6) << delta_balance<Side::BLACK>(p)  << std::endl;
-        std::cout << "Mobility" << std::setw(6) << mobility<Side::BLACK>(p) << std::setw(6) << mobility<Side::WHITE>(p) << std::setw(6) << delta_mobility<Side::BLACK>(p) << std::endl;
+        std::cout<< "\n";
+        std::cout << "Material" << std::setw(6) << material<Side::BLACK>(p) << std::setw(6) << material<Side::WHITE>(p) << std::setw(6) << delta_material<Side::BLACK>(p) << "\n";
+        std::cout << "Tempo   " << std::setw(6) << tempo<Side::BLACK>(p)    << std::setw(6) << tempo<Side::WHITE>(p)    << std::setw(6) << delta_tempo<Side::BLACK>(p)    << "\n";
+        std::cout << "Center  " << std::setw(6) << center<Side::BLACK>(p)   << std::setw(6) << center<Side::WHITE>(p)   << std::setw(6) << delta_center<Side::BLACK>(p)   << "\n";
+        std::cout << "Balance " << std::setw(6) << balance<Side::BLACK>(p)  << std::setw(6) << balance<Side::WHITE>(p)  << std::setw(6) << delta_balance<Side::BLACK>(p)  << "\n";
+        std::cout << "Mobility" << std::setw(6) << mobility<Side::BLACK>(p) << std::setw(6) << mobility<Side::WHITE>(p) << std::setw(6) << delta_mobility<Side::BLACK>(p) << "\n";
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";
-        std::cout << std::endl;
-        std::cout << "Evaluate" << std::setw(6) << evaluate<Side::BLACK>(p) << std::setw(6) << evaluate<Side::WHITE>(p) << std::setw(6) << delta_evaluate<Side::BLACK>(p) << std::endl;
-        std::cout << std::endl;
+        std::cout<< "\n";
+        std::cout << "Evaluate" << std::setw(6) << evaluate<Side::BLACK>(p) << std::setw(6) << evaluate<Side::WHITE>(p) << std::setw(6) << delta_evaluate<Side::BLACK>(p) << "\n";
+        std::cout<< "\n";
 }
 
 }       // namespace dctl

@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/config.hpp>
 #include "Transform.h"
 
 namespace dctl {
@@ -8,19 +9,15 @@ template<typename G, int R, int C>
 struct Coordinates
 {
         typedef G grid;
-        enum { 
-                row = R, 
-                col = C 
-        };
+        BOOST_STATIC_CONSTANT(auto, row = R); 
+        BOOST_STATIC_CONSTANT(auto, col = C);
 };
 
 template<typename G, int SQ>
 struct Square
 {
         typedef G grid;
-        enum { 
-                square = SQ 
-        };
+        BOOST_STATIC_CONSTANT(auto, square = SQ);
 };
 
 template<typename>
@@ -31,10 +28,10 @@ class Square2Coordinates;
 
 // partial specialization for coordinates
 template<typename G, int R, int C, int I>
-struct Rotate<Coordinates<G, R, C>, I>;
+struct rotate<Coordinates<G, R, C>, I>;
 
 }       // namespace board
 }       // namespace dctl
 
-// include template definitions inside header since "export" keyword is not supported by most C++ compilers
+// include template definitions inside header
 #include "Coordinates.hpp"

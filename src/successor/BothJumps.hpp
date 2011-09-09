@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "../capture/State.h"
 #include "../rules/Rules.h"
 

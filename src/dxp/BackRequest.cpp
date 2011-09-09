@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include <iomanip>
 #include <sstream>
 #include <boost/lexical_cast.hpp>

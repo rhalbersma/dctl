@@ -11,14 +11,14 @@ std::string content(const Material& p, int b)
         std::stringstream sstr;
         if (p.pieces(Side::BLACK) & bb) {
                 if (p.kings() & bb)
-			sstr << Token::UPPER[Side::BLACK];      // black king
+			sstr << Token::upper[Side::BLACK];      // black king
                 else
-                        sstr << Token::LOWER[Side::BLACK];      // black man
+                        sstr << Token::lower[Side::BLACK];      // black man
         } else if (p.pieces(Side::WHITE) & bb) {
                 if (p.kings() & bb)
-                        sstr << Token::UPPER[Side::WHITE];      // white king
+                        sstr << Token::upper[Side::WHITE];      // white king
                 else
-                        sstr << Token::LOWER[Side::WHITE];      // white man
+                        sstr << Token::lower[Side::WHITE];      // white man
         } else
                 sstr << Token::EMPTY;                           // empty square
         return sstr.str();

@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/config.hpp>
 #include "ValueInterface.h"
 
 namespace dctl {
@@ -26,7 +27,7 @@ private:
         virtual bool do_is_promotion() const;
         virtual void do_toggle_promotion();
 
-        static const bool TOGGLE = true;
+        BOOST_STATIC_CONSTANT(auto, TOGGLE = true);
 
         // representation
         bool promotion_;

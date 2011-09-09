@@ -9,7 +9,7 @@ namespace search {
 namespace {
         const int INFINITY = SHRT_MAX;
         const int LOSS_0 = -(INFINITY - 1);
-        const int LOSS_THRESHOLD = LOSS_0 + MAX_GRAFTED_PLY / 2;
+        const int LOSS_THRESHOLD = LOSS_0 + MAX_MATE_MOVES / 2;
         const int WIN_1 = -LOSS_0;
         const int WIN_THRESHOLD = -LOSS_THRESHOLD;
         const int DRAW = 0;

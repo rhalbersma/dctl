@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "Timer.h"
 
 namespace dctl {
@@ -25,7 +25,7 @@ clock_t Timer::elapsed() const
 
 clock_t Timer::lap() const
 {
-        assert(!laps_.empty());
+        BOOST_ASSERT(!laps_.empty());
         const auto i = laps_.size() - 1;
         return laps_[i] - laps_[i - 1];
 }
