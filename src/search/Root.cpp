@@ -1,6 +1,5 @@
-#define BOOST_TEST_DYN_LINK
-#include <boost/test/unit_test.hpp> 
 #include <utility>
+#include <boost/test/unit_test.hpp> 
 #include "../test_config.h"
 #include "../../../DCTL/src/search/Root.h"
 #include "../../../DCTL/src/node/Position.h"
@@ -26,8 +25,6 @@ struct FixtureHashTable
         }
 };
 
-BOOST_FIXTURE_TEST_SUITE(TestSearch, FixtureHashTable)
-
 typedef std::pair<std::string, int> FEN_depth;
 
 template<typename Rules, typename Board>
@@ -38,6 +35,8 @@ void Run(const FEN_depth& test_case)
         auto value = Root::analyze<Rules>(position, test_case.second);
         BOOST_CHECK_EQUAL(win_value(test_case.second), value);
 };
+
+BOOST_FIXTURE_TEST_SUITE(TestSearch, FixtureHashTable)
 
 BOOST_AUTO_TEST_CASE(Frisian21)
 {

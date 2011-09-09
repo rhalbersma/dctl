@@ -1,6 +1,5 @@
-#define BOOST_TEST_DYN_LINK
-#include <boost/test/unit_test.hpp> 
 #include <string>
+#include <boost/test/unit_test.hpp> 
 #include "../../../DCTL/src/dxp/Parser.h"
 #include "../../../DCTL/src/dxp/DXP.h"
 
@@ -28,7 +27,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
 
         for (auto i = 0; i < 8; ++i) {
                 auto parsed = Parser<protocol>::create_message(message[i]);
-                BOOST_REQUIRE_EQUAL(0, parsed->str().compare(message[i]));
+                BOOST_CHECK_EQUAL(0, parsed->str().compare(message[i]));
         }
 }
 

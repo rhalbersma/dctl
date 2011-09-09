@@ -1,4 +1,3 @@
-#define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp> 
 #include "../test_config.h"
 #include "../../../DCTL/src/walk/Root.h"
@@ -31,7 +30,7 @@ BOOST_FIXTURE_TEST_SUITE(TestPerft, FixtureHashTable)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 BOOST_AUTO_TEST_CASE(International)
 {
-        std::cout << setup::diagram<board::International>()() << std::endl;
+        std::cout << setup::diagram<board::International>()();
 
         auto i10 = Position<board::International>::initial();
         Root::clear_hash();
@@ -50,7 +49,7 @@ BOOST_AUTO_TEST_CASE(International)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 BOOST_AUTO_TEST_CASE(Frisian)
 {
-        std::cout << setup::diagram<board::Frisian>()() << std::endl;
+        std::cout << setup::diagram<board::Frisian>()();
 
         auto f10 = Position<board::Frisian>::initial();
         Root::clear_hash();
@@ -61,7 +60,7 @@ BOOST_AUTO_TEST_CASE(Frisian)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 BOOST_AUTO_TEST_CASE(ChessVariants)
 {
-        std::cout << setup::diagram<board::Checkers>()() << std::endl;
+        std::cout << setup::diagram<board::Checkers>()();
         auto i8 = Position<board::Checkers>::initial();
         
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
@@ -83,7 +82,7 @@ BOOST_AUTO_TEST_CASE(ChessVariants)
         Root::clear_hash();
         Root::perft<variant::Czech>(i8, 13);
 
-        std::cout << setup::diagram<board::Roman>()() << std::endl;
+        std::cout << setup::diagram<board::Roman>()();
         auto r8 = Position<board::Roman>::initial();
 
         Root::clear_hash();
@@ -111,19 +110,19 @@ BOOST_AUTO_TEST_CASE(ChessVariants)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=3014
 BOOST_AUTO_TEST_CASE(Rectangular)
 {
-        std::cout << setup::diagram<board::Spantsireti>()() << std::endl;
+        std::cout << setup::diagram<board::Spantsireti>()();
 
         auto iS = Position<board::Spantsireti>::initial();
         Root::clear_hash();
         Root::perft<variant::International>(iS, 9);
 
-        std::cout << setup::diagram<board::Ktar11>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar11>()();
         
         auto iK11 = Position<board::Ktar11>::initial();
         Root::clear_hash();
         Root::perft<variant::International>(iK11, 9);
                 
-        std::cout << setup::diagram<board::Ktar12>()() << std::endl;
+        std::cout << setup::diagram<board::Ktar12>()();
         
         auto iK12 = Position<board::Ktar12>::initial();
         Root::clear_hash();
