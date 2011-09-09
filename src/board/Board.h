@@ -10,7 +10,7 @@ namespace board {
 template
 <
         typename Dimensions,                                    // height, width and parity
-        typename Structure = Structure<>                        // DMZ, ghosts and internal rotation
+        typename Structure = Structure<>                        // dmz, ghosts and internal rotation
 >
 class Board
 : 
@@ -23,20 +23,20 @@ public:
 
         // external and internal grids
         typedef Grid<Dimensions> ExternalGrid;
-        typedef Grid<typename Rotate<Dimensions, Structure::ANGLE>::type, Structure::GHOSTS> InternalGrid;
+        typedef Grid<typename rotate<Dimensions, Structure::angle>::type, Structure::ghosts> InternalGrid;
 
         // essential bitboard masks
-        static const BitBoard SQUARES;                          // bit mask of legal squares, excluding borders
+        static const BitBoard squares;                          // bit mask of legal squares, excluding borders
         static const BitBoard INITIAL[];                        // initial position
         static const BitBoard PROMOTION[][2];                   // promotion zones
-        static const BitBoard ROW_MASK[][12];                   // bit masks for the rows
-        static const BitBoard COL_MASK[][12];                   // bit masks for the columns
+        static const BitBoard row_mask[][12];                   // bit masks for the rows
+        static const BitBoard col_mask[][12];                   // bit masks for the columns
 
         // auxiliary bitboard masks
         static const BitBoard QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
         static const BitBoard DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
-        static const BitBoard MAN_JUMP_GROUP[];                 // families of squares reachable by jumping men
-        static const BitBoard JUMPABLE[];                       // squares from which a jump is possible in a direction
+        static const BitBoard man_jump_group[];                 // families of squares reachable by jumping men
+        static const BitBoard jumpable[];                       // squares from which a jump is possible in a direction
 
         // arrays of directions
         static const int SHIFT[];                               // the bitwise shifts for all 8 directions

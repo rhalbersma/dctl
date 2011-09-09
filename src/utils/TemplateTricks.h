@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/config.hpp>
 
 /*
 
@@ -18,7 +19,31 @@ namespace dctl {
 template<int V>
 struct Int2Type
 {
-        enum { value = V };
+        BOOST_STATIC_CONSTANT(auto, value = V);
+};
+
+// with C++0x variadic templates, the tuple clases below can be generalized
+struct empty_tuple 
+{
+};
+
+template<bool I> 
+struct bool_tuple 
+{
+        BOOST_STATIC_CONSTANT(auto, first = I);
+};
+
+template<int I> 
+struct int_tuple 
+{
+        BOOST_STATIC_CONSTANT(auto, first = I);
+};
+
+template<bool B, int I> 
+struct bool_int_tuple 
+{
+        BOOST_STATIC_CONSTANT(auto, first = B);
+        BOOST_STATIC_CONSTANT(auto, second = I);
 };
 
 namespace utils {

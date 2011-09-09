@@ -19,7 +19,7 @@ void Root::report(int depth, int value, const Timer& timer)
 
         std::cout << std::setw( 6) << std::right << timer.elapsed();
 
-        std::cout << std::endl;
+        std::cout << "\n";
 }
 */
 

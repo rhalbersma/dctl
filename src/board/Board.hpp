@@ -6,7 +6,7 @@ namespace dctl {
 namespace board {
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::SQUARES = init_squares<B>::value;
+const BitBoard Board<Dimensions, Structure>::squares = init_squares<B>::value;
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::INITIAL[] = {
@@ -27,7 +27,7 @@ const BitBoard Board<Dimensions, Structure>::PROMOTION[][2] = {
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::ROW_MASK[][12] = {
+const BitBoard Board<Dimensions, Structure>::row_mask[][12] = {
         {
                 init_row_mask<B, Side::BLACK,  0>::value,
                 init_row_mask<B, Side::BLACK,  1>::value,
@@ -59,7 +59,7 @@ const BitBoard Board<Dimensions, Structure>::ROW_MASK[][12] = {
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::COL_MASK[][12] = {
+const BitBoard Board<Dimensions, Structure>::col_mask[][12] = {
         {
                 init_col_mask<B, Side::BLACK,  0>::value,
                 init_col_mask<B, Side::BLACK,  1>::value,
@@ -92,8 +92,8 @@ const BitBoard Board<Dimensions, Structure>::COL_MASK[][12] = {
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
-        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (InternalGrid::LEFT_DOWN  << 1))),
-        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (InternalGrid::RIGHT_DOWN << 1)))
+        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (InternalGrid::left_down  << 1))),
+        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (InternalGrid::right_down << 1)))
 };
 
 template<typename Dimensions, typename Structure>
@@ -101,35 +101,35 @@ const BitBoard Board<Dimensions, Structure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::MAN_JUMP_GROUP[] = {
-        init_man_jump_group<B, InternalGrid::EDGE_LE + 0>::value,
-        init_man_jump_group<B, InternalGrid::EDGE_LE + 1>::value,
-        init_man_jump_group<B, InternalGrid::EDGE_LO + 0>::value,
-        init_man_jump_group<B, InternalGrid::EDGE_LO + 1>::value
+const BitBoard Board<Dimensions, Structure>::man_jump_group[] = {
+        init_man_jump_group<B, InternalGrid::edge_le + 0>::value,
+        init_man_jump_group<B, InternalGrid::edge_le + 1>::value,
+        init_man_jump_group<B, InternalGrid::edge_lo + 0>::value,
+        init_man_jump_group<B, InternalGrid::edge_lo + 1>::value
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::JUMPABLE[] = {
-        init_jumpable<B, Rotate<Int2Type<Angle::D000>, B::ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D045>, B::ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D090>, B::ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D135>, B::ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D180>, B::ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D225>, B::ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D270>, B::ANGLE>::value>::value,
-        init_jumpable<B, Rotate<Int2Type<Angle::D315>, B::ANGLE>::value>::value
+const BitBoard Board<Dimensions, Structure>::jumpable[] = {
+        init_jumpable<B, rotate<Int2Type<Angle::D000>, B::angle>::value>::value,
+        init_jumpable<B, rotate<Int2Type<Angle::D045>, B::angle>::value>::value,
+        init_jumpable<B, rotate<Int2Type<Angle::D090>, B::angle>::value>::value,
+        init_jumpable<B, rotate<Int2Type<Angle::D135>, B::angle>::value>::value,
+        init_jumpable<B, rotate<Int2Type<Angle::D180>, B::angle>::value>::value,
+        init_jumpable<B, rotate<Int2Type<Angle::D225>, B::angle>::value>::value,
+        init_jumpable<B, rotate<Int2Type<Angle::D270>, B::angle>::value>::value,
+        init_jumpable<B, rotate<Int2Type<Angle::D315>, B::angle>::value>::value
 };
 
 template<typename Dimensions, typename Structure>
 const int Board<Dimensions, Structure>::SHIFT[] = {
-        InternalGrid::RIGHT,
-        InternalGrid::RIGHT_UP,
-        InternalGrid::UP,
-        InternalGrid::LEFT_UP,
-        InternalGrid::LEFT,
-        InternalGrid::LEFT_DOWN,
-        InternalGrid::DOWN,
-        InternalGrid::RIGHT_DOWN
+        InternalGrid::right,
+        InternalGrid::right_up,
+        InternalGrid::up,
+        InternalGrid::left_up,
+        InternalGrid::left,
+        InternalGrid::left_down,
+        InternalGrid::down,
+        InternalGrid::right_down
 };
 
 template<typename Dimensions, typename Structure>
@@ -147,7 +147,7 @@ int Board<Dimensions, Structure>::begin()
 template<typename Dimensions, typename Structure>
 int Board<Dimensions, Structure>::end()
 {
-        return ExternalGrid::SIZE;
+        return ExternalGrid::size;
 }
 
 template<typename Dimensions, typename Structure>

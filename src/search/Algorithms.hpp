@@ -1,7 +1,7 @@
 #include <algorithm>    // std::generate
-#include <cassert>
 #include <iterator>     // std::back_inserter
 #include <vector>       // std::vector
+#include <boost/assert.hpp>
 #include "../successor/Successor.h"
 #include "../successor/Selection.h"
 #include "../node/Position.h"
@@ -51,9 +51,9 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         if (depth <= 0)
                 return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
 
-        assert(depth > 0);
-        assert(alpha >= -infinity());
-        assert(beta <= infinity());
+        BOOST_ASSERT(depth > 0);
+        BOOST_ASSERT(alpha >= -infinity());
+        BOOST_ASSERT(beta <= infinity());
 
         // mate distance pruning
         if (alpha >= win_value(1))
@@ -61,7 +61,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         if (beta <= loss_value(0))
                 return beta;
 
-        assert(
+        BOOST_ASSERT(
                 ( is_PV(ThisNode) && alpha <  beta - 1) ||
                 (!is_PV(ThisNode) && alpha == beta - 1)
         );
@@ -81,8 +81,8 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
                 const int value = loss_value(0);
 
                 // we can only have an upper bound or an exact value at this point
-                assert(value < beta);
-                const Transposition::Bound bound = (value <= alpha)? Transposition::upper() : Transposition::exact();
+                BOOST_ASSERT(value < beta);
+                const Transposition::Bound bound = (value <= alpha)? Transposition::upper_bound : Transposition::exact_value;
 
                 TT.insert(p, Transposition(value, bound, depth, Transposition::no_move()));
                 return value;
@@ -94,7 +94,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
                 if (IID_depth > 0) {
                         pvs<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
                         TT_entry = TT.find(p);
-                        assert(TT_entry);
+                        BOOST_ASSERT(TT_entry);
                 }
         }
 
@@ -149,13 +149,13 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         }
 
         // we must have found a best move with a finite value
-        assert(is_finite(best_value));
-        assert(best_move != Transposition::no_move());
+        BOOST_ASSERT(is_finite(best_value));
+        BOOST_ASSERT(best_move != Transposition::no_move());
 
         // determine the bound type of the value
         const Transposition::Bound bound = 
-                best_value <= original_alpha ? Transposition::upper() : 
-                best_value >= beta ? Transposition::lower() : Transposition::exact();
+                best_value <= original_alpha ? Transposition::upper_bound : 
+                best_value >= beta ? Transposition::lower_bound : Transposition::exact_value;
         TT.insert(p, Transposition(best_value, bound, depth, best_move));
         return best_value;
 }

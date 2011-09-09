@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include <iostream>
 #include "../successor/Successor.h"
 #include "../node/Position.h"
@@ -181,18 +181,17 @@ NodeCount Root::fast(const Position<Board>& p, int ply, int depth)
 template<typename Board>
 void Root::announce(const Position<Board>& p, int depth)
 {        
-        std::cout << setup::diagram<pdn::protocol>()(p) << std::endl;
-        std::cout << setup::write<pdn::protocol>()(p) << std::endl << std::endl;
-        std::cout << "Searching to nominal depth=" << depth << std::endl;
-        std::cout << std::endl;
+        std::cout << setup::diagram<pdn::protocol>()(p);
+        std::cout << setup::write<pdn::protocol>()(p) << "\n";
+        std::cout << "Searching to nominal depth=" << depth << "\n\n";
 }
 
 template<typename Board>
 void Root::announce(const Position<Board>& p, int depth, int num_moves)
 {
         announce(p, depth);
-        std::cout << "Found " << num_moves << " moves, searching each to nominal depth=" << depth - 1 << std::endl;
-        std::cout << std::endl;
+        std::cout << "Found " << num_moves << " moves, searching each to nominal depth=" << depth - 1 << "\n";
+        std::cout << "\n";
 }
 
 }       // namespace walk

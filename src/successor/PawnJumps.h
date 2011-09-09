@@ -45,8 +45,8 @@ private:
         static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_ALL >);
         static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_ORTH>);
         static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_DIAG>);
-        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_UP  >);
-        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_DOWN>);
+        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_up  >);
+        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_down>);
 
         template<int> static void generate_dir(BitBoard, capture::State<Rules, Board>&, Stack&);
         template<int> static void generate_next(BitBoard, capture::State<Rules, Board>&, Stack&);
@@ -61,8 +61,8 @@ private:
         template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_ALL >);
         template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_REST>);
         template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_SIDE>);
-        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_UP  >);
-        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_DOWN>);
+        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_up  >);
+        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_down>);
 
         template<int> static bool scan_dir(BitBoard, capture::State<Rules, Board>&, Stack&);
         template<int> static bool scan(BitBoard, capture::State<Rules, Board>&, Stack&);
@@ -77,8 +77,8 @@ private:
         static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_ALL >);
         static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_ORTH>);
         static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_DIAG>);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_UP  >);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_DOWN>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_up  >);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_down>);
 
         template<int> static bool detect_dir(BitBoard, BitBoard, BitBoard);
 };

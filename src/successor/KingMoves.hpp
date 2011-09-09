@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "../node/Position.h"
 #include "../board/Direction.h"
 #include "../bit/Bit.h"
@@ -30,7 +30,8 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_serial(
         BitBoard active_kings, BitBoard not_occupied, Stack& moves, Int2Type<true>
 )
 {
-        // loop could be empty if the single active king detected during Successor<Rules, Board>::select is restricted to move
+        // loop could be empty if the single active king detected during 
+        // Dispatcher<Selection, Rules, Board>::select is restricted to move
         while (active_kings) {
                 generate_dirs(bit::get_first(active_kings), not_occupied, moves);
                 bit::clear_first(active_kings);
@@ -43,8 +44,9 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_serial(
         BitBoard active_kings, BitBoard not_occupied, Stack& moves, Int2Type<false>
 )
 {
-        // loop cannot be empty because all active kings detected during Successor<Rules, Board>::select() are unrestricted to move
-        assert(!bit::is_zero(active_kings));
+        // loop cannot be empty because all active kings detected during 
+        // Dispatcher<Selection, Rules, Board>::select are unrestricted to move
+        BOOST_ASSERT(!bit::is_zero(active_kings));
         do {
                 generate_dirs(bit::get_first(active_kings), not_occupied, moves);
                 bit::clear_first(active_kings);
@@ -56,10 +58,10 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dirs(
         BitBoard from_sq, BitBoard not_occupied, Stack& moves
 )
 {
-        generate_dir<Direction::LEFT_DOWN >(from_sq, not_occupied, moves);
-        generate_dir<Direction::RIGHT_DOWN>(from_sq, not_occupied, moves);
-        generate_dir<Direction::LEFT_UP   >(from_sq, not_occupied, moves);
-        generate_dir<Direction::RIGHT_UP  >(from_sq, not_occupied, moves);
+        generate_dir<Direction::left_down >(from_sq, not_occupied, moves);
+        generate_dir<Direction::right_down>(from_sq, not_occupied, moves);
+        generate_dir<Direction::left_up   >(from_sq, not_occupied, moves);
+        generate_dir<Direction::right_up  >(from_sq, not_occupied, moves);
 }
 
 // tag dispatching based on king range
@@ -105,10 +107,10 @@ int Driver<Color, Material::KING, Moves, Rules, Board>::count_dirs(
 )
 {
         return (
-                count_dir<Direction::LEFT_DOWN >(active_kings, not_occupied) +
-                count_dir<Direction::RIGHT_DOWN>(active_kings, not_occupied) +
-                count_dir<Direction::LEFT_UP   >(active_kings, not_occupied) +
-                count_dir<Direction::RIGHT_UP  >(active_kings, not_occupied)
+                count_dir<Direction::left_down >(active_kings, not_occupied) +
+                count_dir<Direction::right_down>(active_kings, not_occupied) +
+                count_dir<Direction::left_up   >(active_kings, not_occupied) +
+                count_dir<Direction::right_up  >(active_kings, not_occupied)
         );
 }
 
@@ -153,10 +155,10 @@ bool Driver<Color, Material::KING, Moves, Rules, Board>::detect_dirs(
 )
 {
         return (
-                detect_dir<Direction::LEFT_DOWN >(active_kings, not_occupied) ||
-                detect_dir<Direction::RIGHT_DOWN>(active_kings, not_occupied) ||
-                detect_dir<Direction::LEFT_UP   >(active_kings, not_occupied) ||
-                detect_dir<Direction::RIGHT_UP  >(active_kings, not_occupied)
+                detect_dir<Direction::left_down >(active_kings, not_occupied) ||
+                detect_dir<Direction::right_down>(active_kings, not_occupied) ||
+                detect_dir<Direction::left_up   >(active_kings, not_occupied) ||
+                detect_dir<Direction::right_up  >(active_kings, not_occupied)
         );
 }
 

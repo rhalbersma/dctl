@@ -59,13 +59,13 @@ void DeBruijn<T>::generate_table()
                 table[b] = i;
         }
 
-        std::cout << "template<>" << std::endl;
+        std::cout << "template<>\n";
         std::cout << "const " << typeid(T).name() << " DeBruijn<" << typeid(T).name() << ">::SEQUENCE = ";
         std::cout << "0x" << std::hex << std::setw(NUM_BITS / 4) << std::setfill('0');
-        std::cout << static_cast<uint64_t>(sequence) << ";" << std::endl << std::endl;
+        std::cout << static_cast<uint64_t>(sequence) << ";\n\n";
         
-        std::cout << "template<>" << std::endl;
-        std::cout << "const int DeBruijn<" << typeid(T).name() << ">::TABLE[] = {" << std::endl;
+        std::cout << "template<>\n";
+        std::cout << "const int DeBruijn<" << typeid(T).name() << ">::TABLE[] = {\n";
         for (auto i = 0; i < NUM_BITS; ++i) {
                 if (i % 8 == 0)
                         for (auto j = 0; j < 8; ++j)
@@ -74,11 +74,11 @@ void DeBruijn<T>::generate_table()
                 if (i != NUM_BITS - 1)
                         std::cout << ",";
                 if (i % 8 == 7 || i == NUM_BITS - 1)
-                        std::cout << std::endl;
+                        std::cout << "\n";
                 else 
                         std::cout << " ";
         }
-        std::cout << "};" << std::endl << std::endl;
+        std::cout << "};" << "\n\n";
 }
 
 }       // namespace bit

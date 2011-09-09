@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/config.hpp>
 
 namespace dctl {
 namespace board {
@@ -14,34 +15,35 @@ class Grid
 {
 public:
         typedef Grid<Dimensions> BaseGrid;
+        
+        // diagonal directions
+        BOOST_STATIC_CONSTANT(auto, left_down = (Dimensions::width + GHOST) / 2);
+        BOOST_STATIC_CONSTANT(auto, right_down = left_down + 1);
 
-        enum {
-                // diagonal directions
-                LEFT_DOWN = (Dimensions::WIDTH + GHOST) / 2,
-                RIGHT_DOWN = LEFT_DOWN + 1,
+        // orthogonal directions
+        BOOST_STATIC_CONSTANT(auto, right = right_down - left_down);     // == 1 by construction
+        BOOST_STATIC_CONSTANT(auto, down = right_down + left_down);      // == 2 * ((width + GHOST) / 2) + 1
 
-                // orthogonal directions
-                RIGHT = RIGHT_DOWN - LEFT_DOWN, // == 1 by construction
-                DOWN = RIGHT_DOWN + LEFT_DOWN,  // == 2 * ((WIDTH + GHOST) / 2) + 1
-
-                // equivalent directions
-                LEFT_UP = RIGHT_DOWN,
-                RIGHT_UP = LEFT_DOWN,
-                LEFT = RIGHT,
-                UP = DOWN,
+        // equivalent directions
+        BOOST_STATIC_CONSTANT(auto, left_up = right_down);
+        BOOST_STATIC_CONSTANT(auto, right_up = left_down);
+        BOOST_STATIC_CONSTANT(auto, left = right);
+        BOOST_STATIC_CONSTANT(auto, up = down);
                
-                // range of row pairs
-                MODULO = DOWN,
+        // range of row pairs
+        BOOST_STATIC_CONSTANT(auto, modulo = down);
                 
-                // left (L) and right (R) edges of even (E) and odd (O) rows
-                EDGE_LE = BaseGrid::EDGE_LE,
-                EDGE_RE = BaseGrid::EDGE_RE,
-                EDGE_LO = LEFT_DOWN + Dimensions::PARITY,
-                EDGE_RO = EDGE_LO + BaseGrid::EDGE_RO - BaseGrid::EDGE_LO,
+        // left (l) and right (r) edges of even (e) and odd (o) rows
+        BOOST_STATIC_CONSTANT(auto, edge_le = BaseGrid::edge_le);
+        BOOST_STATIC_CONSTANT(auto, edge_re = BaseGrid::edge_re);
+        BOOST_STATIC_CONSTANT(auto, edge_lo = left_down + Dimensions::parity);
+        BOOST_STATIC_CONSTANT(auto, edge_ro = edge_lo + BaseGrid::edge_ro - BaseGrid::edge_lo);
 
-                // grid size 
-                SIZE = MODULO * ((Dimensions::HEIGHT - 1) / 2) + ((Dimensions::HEIGHT % 2)? EDGE_RE : EDGE_RO) + 1
-        };
+        // grid size 
+        BOOST_STATIC_CONSTANT(auto, size = 
+                modulo * ((Dimensions::height - 1) / 2) + 
+                ((Dimensions::height % 2)? edge_re : edge_ro) + 1
+        );
 };
 
 // partial specialization for grids without ghost columns
@@ -51,26 +53,25 @@ class Grid<Dimensions, 0>
         public Dimensions
 {
 private:
-        enum {
-                // range of even (E) and odd (O) rows
-                ROW_E = (Dimensions::WIDTH +  Dimensions::PARITY) / 2,
-                ROW_O = (Dimensions::WIDTH + !Dimensions::PARITY) / 2
-        };
+        // range of even (e) and odd (o) rows
+        BOOST_STATIC_CONSTANT(auto, row_e = (Dimensions::width +  Dimensions::parity) / 2);
+        BOOST_STATIC_CONSTANT(auto, row_o = (Dimensions::width + !Dimensions::parity) / 2);
 
 public:
-        enum {
-                // range of row pairs
-                MODULO = Dimensions::WIDTH,
+        // range of row pairs
+        BOOST_STATIC_CONSTANT(auto, modulo = Dimensions::width);
 
-                // left (L) and right (R) edges of even (E) and odd (O) rows
-                EDGE_LE = 0,
-                EDGE_RE = EDGE_LE + ROW_E - 1,
-                EDGE_LO = EDGE_RE + 1,
-                EDGE_RO = EDGE_LO + ROW_O - 1,
+        // left (l) and right (r) edges of even (e) and odd (o) rows
+        BOOST_STATIC_CONSTANT(auto, edge_le = 0);
+        BOOST_STATIC_CONSTANT(auto, edge_re = edge_le + row_e - 1);
+        BOOST_STATIC_CONSTANT(auto, edge_lo = edge_re + 1);
+        BOOST_STATIC_CONSTANT(auto, edge_ro = edge_lo + row_o - 1);
 
-                // == (H * W) / 2 + (H * W * P) % 2
-                SIZE = MODULO * ((Dimensions::HEIGHT - 1) / 2) + ((Dimensions::HEIGHT % 2)? EDGE_RE : EDGE_RO) + 1
-        };
+        // == (H * W) / 2 + (H * W * P) % 2
+        BOOST_STATIC_CONSTANT(auto, size = 
+                modulo * ((Dimensions::height - 1) / 2) + 
+                ((Dimensions::height % 2)? edge_re : edge_ro) + 1
+        );
 };
 
 }       // namespace board

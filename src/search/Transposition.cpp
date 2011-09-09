@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include <sstream>
 #include "Transposition.h"
 #include "Score.h"
@@ -22,7 +22,7 @@ Transposition::Transposition(int v, Bound t, int d, int m)
         rest_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
         rest_ ^= (m &  MOVE_MASK) <<  MOVE_SHIFT;
 
-        assert(invariant());
+        BOOST_ASSERT(invariant());
 }
 
 int Transposition::value() const
@@ -62,12 +62,12 @@ bool Transposition::is_cutoff(int beta) const
 
 bool Transposition::is_fail_low(int alpha) const
 {
-        return has_upper() && value() <= alpha;
+        return has_upper_bound() && value() <= alpha;
 }
 
 bool Transposition::is_fail_high(int beta) const
 {
-        return has_lower() && value() >= beta;
+        return has_lower_bound() && value() >= beta;
 }
 
 bool Transposition::is_finite() const
@@ -81,29 +81,29 @@ bool Transposition::has_move() const
         return move() != no_move();
 }
 
-bool Transposition::has_lower() const
+bool Transposition::has_lower_bound() const
 {
-        return (bound() & lower()) != 0;
+        return (bound() & lower_bound) != 0;
 }
 
-bool Transposition::has_upper() const
+bool Transposition::has_upper_bound() const
 {
-        return (bound() & upper()) != 0;
+        return (bound() & upper_bound) != 0;
 }
 
-bool Transposition::is_lower() const
+bool Transposition::is_lower_bound() const
 {
-        return bound() == lower();
+        return bound() == lower_bound;
 }
 
-bool Transposition::is_upper() const
+bool Transposition::is_upper_bound() const
 {
-        return bound() == upper();
+        return bound() == upper_bound;
 }
 
-bool Transposition::is_exact() const
+bool Transposition::is_exact_value() const
 {
-        return bound() == exact();
+        return bound() == exact_value;
 }
 
 bool Transposition::invariant() const
@@ -121,17 +121,17 @@ std::string Transposition::print_bound() const
 {
         std::stringstream sstr;
         switch(bound()) {
-        case LOWER:
+        case lower_bound:
                 sstr << ">=";
                 break;
-        case UPPER:
+        case upper_bound:
                 sstr << "<=";
                 break;
-        case EXACT:
+        case exact_value:
                 sstr << "==";
                 break;
         default:
-                assert(false);
+                BOOST_ASSERT(false);
                 break;
         }
         return sstr.str();
@@ -158,21 +158,6 @@ void Transposition::set_move(int m)
 {
         rest_ ^= (move() & MOVE_MASK) << MOVE_SHIFT;
         rest_ ^= (m      & MOVE_MASK) << MOVE_SHIFT;
-}
-
-Transposition::Bound Transposition::lower()
-{
-        return LOWER;
-}
-
-Transposition::Bound Transposition::upper()
-{
-        return UPPER;
-}
-
-Transposition::Bound Transposition::exact()
-{
-        return EXACT;
 }
 
 int Transposition::no_move()

@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>      // uint<X>_t with X = 8, 16, 32, 64
+#include <boost/config.hpp>
 
 namespace dctl {
 namespace bit {
@@ -22,10 +23,10 @@ private:
         template<typename T> static B block(T, int);
 
         // representation
-        static const int BITS_PER_BLOCK = 8 * sizeof(B);
-        static const int NUM_ENTRIES = 1 << BITS_PER_BLOCK;
-        static const int INDEX[];
-        static const int COUNT[];
+        BOOST_STATIC_CONSTANT(int, BITS_PER_BLOCK = 8 * sizeof(B));
+        BOOST_STATIC_CONSTANT(int, NUM_ENTRIES = 1 << BITS_PER_BLOCK);
+        BOOST_STATIC_CONSTANT(int, INDEX[]);
+        BOOST_STATIC_CONSTANT(int, COUNT[]);
 };
 
 }       // namespace bit

@@ -1,5 +1,7 @@
 #pragma once
+#include <boost/config.hpp>
 #include "Angle.h"
+#include "Transform.h"
 
 namespace dctl {
 namespace board {
@@ -13,10 +15,10 @@ template
 struct Structure
 {
         // reflection on template parameters
-        static const int DMZ = D;
-        static const int GHOSTS = G;
-        static const int ANGLE = A;
-        static const int A_INV = Inverse<A>::value;
+        BOOST_STATIC_CONSTANT(auto, dmz = D);
+        BOOST_STATIC_CONSTANT(auto, ghosts = G);
+        BOOST_STATIC_CONSTANT(auto, angle = A);
+        BOOST_STATIC_CONSTANT(auto, inverse_angle = inverse<A>::value);
 };
 
 }       // namespace board

@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/config.hpp>
 
 namespace dctl {
 namespace setup {
@@ -6,13 +7,13 @@ namespace setup {
 template<char B, char W, char E>
 struct TokenSetBase
 {
-        static const char BLACK = B;
-        static const char WHITE = W;
-        static const char EMPTY = E;
+        BOOST_STATIC_CONSTANT(auto, BLACK = B);
+        BOOST_STATIC_CONSTANT(auto, WHITE = W);
+        BOOST_STATIC_CONSTANT(auto, EMPTY = E);
 
-        static const char COLOR[];
-        static const char LOWER[];
-        static const char UPPER[];
+        static const char color[];
+        static const char lower[];
+        static const char upper[];
 };
 
 template<typename> struct TokenSet;

@@ -20,13 +20,13 @@ void Position<Board>::attach(const Position<Board>& other)
 template<typename Board> template<typename Rules>
 void Position<Board>::make(const Move& m)
 {
-        assert(is_pseudo_legal<Rules>(*this, m));
+        BOOST_ASSERT(is_pseudo_legal<Rules>(*this, m));
 
         make_irreversible<Rules>(m);
         make_incremental(m);
 
-        assert(material_invariant());
-        assert(hash_index_invariant());
+        BOOST_ASSERT(material_invariant());
+        BOOST_ASSERT(hash_index_invariant());
 }
 
 // tag dispatching based on restrictions on consecutive moves with the same king

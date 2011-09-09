@@ -11,6 +11,9 @@ namespace rules {
 template<typename> struct is_restricted_same_king_moves;
 template<> struct is_restricted_same_king_moves<variant::Frisian>       { enum { value = true     }; };
 
+template<typename> struct max_same_king_moves;
+template<> struct max_same_king_moves<variant::Frisian>                 { enum { value = 6        }; };
+
 // capture mechanics
 template<typename> struct man_capture_directions;
 template<> struct man_capture_directions<variant::Frisian>              { enum { value = DIRS_ALL }; };

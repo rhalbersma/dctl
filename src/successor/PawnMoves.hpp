@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "../node/Position.h"
 #include "../node/Promotion.h"
 #include "../board/Direction.h"
@@ -21,8 +21,8 @@ void Driver<Color, Material::PAWN, Moves, Rules, Board>::generate_dirs(
         BitBoard active_men, BitBoard not_occupied, Stack& moves
 )
 {
-        generate_dir<Direction::LEFT_UP >(active_men, not_occupied, moves);
-        generate_dir<Direction::RIGHT_UP>(active_men, not_occupied, moves);
+        generate_dir<Direction::left_up >(active_men, not_occupied, moves);
+        generate_dir<Direction::right_up>(active_men, not_occupied, moves);
 }
 
 template<bool Color, typename Rules, typename Board> template<int Index>
@@ -52,8 +52,8 @@ int Driver<Color, Material::PAWN, Moves, Rules, Board>::count_dirs(
 )
 {
         return (
-                count_dir<Direction::LEFT_UP >(active_men, not_occupied) +
-                count_dir<Direction::RIGHT_UP>(active_men, not_occupied)
+                count_dir<Direction::left_up >(active_men, not_occupied) +
+                count_dir<Direction::right_up>(active_men, not_occupied)
         );
 }
 
@@ -79,8 +79,8 @@ bool Driver<Color, Material::PAWN, Moves, Rules, Board>::detect_dirs(
 )
 {
         return (
-                detect_dir<Direction::LEFT_UP >(active_men, not_occupied) ||
-                detect_dir<Direction::RIGHT_UP>(active_men, not_occupied)
+                detect_dir<Direction::left_up >(active_men, not_occupied) ||
+                detect_dir<Direction::right_up>(active_men, not_occupied)
         );
 }
 

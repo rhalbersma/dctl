@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "../hash/Algorithms.h"
 #include "../bit/Bit.h"
 #include "../rules/Rules.h"
@@ -15,7 +15,7 @@ Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard
         to_move_(to_move)
 {       
         hash_index_ = hash::zobrist::Init<Position<Board>, HashIndex>()(*this);
-        assert(material_invariant());
+        BOOST_ASSERT(material_invariant());
 }
 
 // the initial position
@@ -85,7 +85,7 @@ bool Position<Board>::passive_color() const
 template<typename Board>
 bool Position<Board>::material_invariant() const
 {
-        return bit::is_within(pieces(), Board::SQUARES);
+        return bit::is_within(pieces(), Board::squares);
 }
 
 template<typename Board>
@@ -143,7 +143,7 @@ BitBoard Position<Board>::pieces() const
 template<typename Board>
 BitBoard not_occupied(const Position<Board>& p)
 {
-        return Board::SQUARES ^ p.pieces();
+        return Board::squares ^ p.pieces();
 }
 
 // men for the side to move

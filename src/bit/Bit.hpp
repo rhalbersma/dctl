@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "DeBruijn.h"
 #include "Lookup.h"
 
@@ -65,7 +65,7 @@ int find_first(T b)
 template<typename T>
 int index(T b)
 {
-	assert(is_single(b));
+	BOOST_ASSERT(is_single(b));
         return index_DeBruijn(b);
 }
 

@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "Restricted.h"
 #include "Side.h"
 #include "../bit/Bit.h"
@@ -10,7 +10,7 @@ KingMoves::KingMoves()
         king_(0),
         moves_(0)
 {
-        assert(invariant());
+        BOOST_ASSERT(invariant());
 }
 
 BitBoard KingMoves::king() const
@@ -28,27 +28,27 @@ void KingMoves::reset()
         king_ = 0;
         moves_ = 0;
 
-        assert(invariant());
+        BOOST_ASSERT(invariant());
 }
 
 void KingMoves::init(BitBoard dest)
 {
-        assert(bit::is_single(dest));
+        BOOST_ASSERT(bit::is_single(dest));
 
         king_ = dest;
         moves_ = 1;
 
-        assert(invariant());
+        BOOST_ASSERT(invariant());
 }
 
 void KingMoves::increment(BitBoard dest)
 {
-        assert(bit::is_single(dest));
+        BOOST_ASSERT(bit::is_single(dest));
 
         king_= dest;
         ++moves_;
 
-        assert(invariant());
+        BOOST_ASSERT(invariant());
 }
 
 bool KingMoves::invariant() const

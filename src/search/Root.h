@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>      // std::size_t
+#include <boost/config.hpp>
 #include "Transposition.h"
 #include "Score.h"
 #include "../node/Stack.h"
@@ -47,7 +48,7 @@ private:
         static bool is_PV(int);
 
         // implementation
-        static const int ROOT_ID_INCREMENT = 2;
+        BOOST_STATIC_CONSTANT(auto, ROOT_ID_INCREMENT = 2);
 
         // representation
         static Statistics statistics_;

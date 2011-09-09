@@ -1,3 +1,4 @@
+#include <boost/config.hpp>
 #include "Coordinates.h"
 #include "Grid.h"
 #include "Traits.h"
@@ -5,84 +6,109 @@
 namespace dctl {
 namespace board {
 
-template<typename Board, int SQ>
+template<typename Board, typename /*Tuple*/, int SQ>
 class is_square
 {
 public:
-        static const bool value = (SQ >= 0) && (SQ < Board::ExternalGrid::SIZE);
+        BOOST_STATIC_CONSTANT(auto, value = (SQ >= 0) && (SQ < Board::ExternalGrid::size));
 };
 
-template<typename Board, bool C, int SQ>
+template<typename Board, typename Tuple, int SQ>
 class is_initial
 {
 private:
-        enum {
-                ROW_MIN = C? (Board::HEIGHT - 1) - ((Board::HEIGHT - Board::DMZ) / 2 - 1) : 0,
-                ROW_MAX = C? (Board::HEIGHT - 1) : (Board::HEIGHT - Board::DMZ) / 2 - 1,
-                ROW = Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row
-        };
+        BOOST_STATIC_CONSTANT(auto, C = Tuple::first);
+
+        BOOST_STATIC_CONSTANT(auto, row_min = 
+                C? (Board::height - 1) - ((Board::height - Board::dmz) / 2 - 1) : 0
+        );        
+        BOOST_STATIC_CONSTANT(auto, row_max = 
+                C? (Board::height - 1) : (Board::height - Board::dmz) / 2 - 1
+        );
+
+        // NOTE: parenthesize Square2Coordinates<...> to avoid pre-processor argument splitting
+        BOOST_STATIC_CONSTANT(auto, row = 
+                (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row)
+        );
 
 public:
-        static const bool value = (ROW >= ROW_MIN) && (ROW <= ROW_MAX);
+        BOOST_STATIC_CONSTANT(auto, value = (row >= row_min) && (row <= row_max));
 };
 
-template<typename Board, bool C, int ROW, int SQ>
+template<typename Board, typename Tuple, int SQ>
 struct is_row_mask
 {
-        static const bool value = Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row == (C? (Board::HEIGHT - 1) - ROW : ROW);
+        BOOST_STATIC_CONSTANT(auto, C = Tuple::first);
+        BOOST_STATIC_CONSTANT(auto, row = Tuple::second);
+
+        // NOTE: parenthesize Square2Coordinates<...> to avoid pre-processor argument splitting
+        BOOST_STATIC_CONSTANT(auto, value = 
+                (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row == 
+                (C? (Board::height - 1) - row : row))
+        );
 };
 
-template<typename Board, bool C, int COL, int SQ>
+template<typename Board, typename Tuple, int SQ>
 struct is_col_mask
 {
-        static const bool value = Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col == (C? (Board::WIDTH - 1) - COL : COL);
+        BOOST_STATIC_CONSTANT(auto, C = Tuple::first);
+        BOOST_STATIC_CONSTANT(auto, col = Tuple::second);
+
+        // NOTE: parenthesize Square2Coordinates<...> to avoid pre-processor argument splitting
+        BOOST_STATIC_CONSTANT(auto, value = 
+                (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col == 
+                (C? (Board::width - 1) - col : col))
+        );
 };
 
-template<typename Board, int FROM, int DEST>
+template<typename Board, typename Tuple, int SQ>
 class is_man_jump_group
 {
 private:
+        BOOST_STATIC_CONSTANT(auto, FROM = Tuple::first);
+        BOOST_STATIC_CONSTANT(auto, DEST = SQ);
+
         typedef typename Board::ExternalGrid Grid;
-        enum {
-                FROM_ROW = Square2Coordinates< Square<Grid, FROM> >::type::row,
-                DEST_ROW = Square2Coordinates< Square<Grid, DEST> >::type::row,
-                FROM_COL = Square2Coordinates< Square<Grid, FROM> >::type::col,
-                DEST_COL = Square2Coordinates< Square<Grid, DEST> >::type::col,
-                R1 = (FROM_ROW - DEST_ROW) % 4,
-                C1 = (FROM_COL - DEST_COL) % 4,
-                R2 = (R1 + 2) % 4,
-                C2 = (C1 + 2) % 4
-        };
+
+        // NOTE: parenthesize Square2Coordinates<...> to avoid pre-processor argument splitting
+        BOOST_STATIC_CONSTANT(auto, from_row = (Square2Coordinates< Square<Grid, FROM> >::type::row));
+        BOOST_STATIC_CONSTANT(auto, dest_row = (Square2Coordinates< Square<Grid, DEST> >::type::row));
+        BOOST_STATIC_CONSTANT(auto, from_col = (Square2Coordinates< Square<Grid, FROM> >::type::col));
+        BOOST_STATIC_CONSTANT(auto, dest_col = (Square2Coordinates< Square<Grid, DEST> >::type::col));
+        BOOST_STATIC_CONSTANT(auto, R1 = (from_row - dest_row) % 4);
+        BOOST_STATIC_CONSTANT(auto, C1 = (from_col - dest_col) % 4);
+        BOOST_STATIC_CONSTANT(auto, R2 = (R1 + 2) % 4);
+        BOOST_STATIC_CONSTANT(auto, C2 = (C1 + 2) % 4);
 
 public:
         // a diagonal or orthogonal man capture between square <FROM> and square <DEST> is possible if 
-        static const bool value =
-        	(!R1 && !C1) || // BOTH row AND column numbers difference == 0 mod 4 (even number of captures)
-                (!R2 && !C2)    // BOTH row AND column numbers difference == 2 mod 4 (odd number of captures)
-        ;
+        // BOTH row AND column numbers difference == 0 mod 4 (even number of captures) OR
+        // BOTH row AND column numbers difference == 2 mod 4 (odd number of captures)
+        BOOST_STATIC_CONSTANT(auto, value = (!R1 && !C1) || (!R2 && !C2));
 };
 
-template<typename Board, int I, int SQ>
+template<typename Board, typename Tuple, int SQ>
 class is_jumpable
 {
 private:
+        BOOST_STATIC_CONSTANT(auto, I = Tuple::first);
+
         typedef typename Board::ExternalGrid Grid;
-        enum {
-                OFFSET = is_diagonal<I>::value? 2 : 4,
-                ROW_MIN = is_up<I>::value? OFFSET : 0,
-                ROW_MAX = (Board::HEIGHT - 1) - (is_down<I>::value? OFFSET : 0),
-                COL_MIN = is_left<I>::value? OFFSET : 0,
-                COL_MAX = (Board::WIDTH - 1) - (is_right<I>::value? OFFSET : 0),
-                ROW = Square2Coordinates< Square<Grid, SQ> >::type::row,
-                COL = Square2Coordinates< Square<Grid, SQ> >::type::col
-        };
+
+        BOOST_STATIC_CONSTANT(auto, offset = is_diagonal<I>::value? 2 : 4);
+        BOOST_STATIC_CONSTANT(auto, row_min = is_up<I>::value? offset : 0);
+        BOOST_STATIC_CONSTANT(auto, row_max = (Board::height - 1) - (is_down<I>::value? offset : 0));
+        BOOST_STATIC_CONSTANT(auto, col_min = is_left<I>::value? offset : 0);
+        BOOST_STATIC_CONSTANT(auto, col_max = (Board::width - 1) - (is_right<I>::value? offset : 0));
+        BOOST_STATIC_CONSTANT(auto, row = (Square2Coordinates< Square<Grid, SQ> >::type::row));
+        BOOST_STATIC_CONSTANT(auto, col = (Square2Coordinates< Square<Grid, SQ> >::type::col));
 
 public:
-        // a jump in direction <I> is possible if square <SQ> is within OFFSET of the edges being approached
-        static const bool value =
-	        (ROW >= ROW_MIN) && (ROW <= ROW_MAX) &&
-		(COL >= COL_MIN) && (COL <= COL_MAX)
-	;
+        // a jump in direction <I> is possible if square <SQ> is within offset of the edges being approached
+        BOOST_STATIC_CONSTANT(auto, value =
+	        (row >= row_min) && (row <= row_max) &&
+		(col >= col_min) && (col <= col_max)
+	);
 };
 
 template<typename Board, int SQ>
@@ -96,13 +122,14 @@ private:
         typedef typename Square2Coordinates< Square<E, SQ> >::type External;
 
         // rotated coordinates within the external grid
-        typedef typename Rotate<External, Board::ANGLE>::type Rotated;
+        typedef typename rotate<External, Board::angle>::type rotated;
 
 public:
         // bit coordintaes re-interpreted within the internal grid
-        enum { 
-                value = Coordinates2Square< Coordinates<I, Rotated::row, Rotated::col> >::type::square 
-        };
+        // NOTE: parenthesize Coordinates2Square<...> to avoid pre-processor argument splitting
+        BOOST_STATIC_CONSTANT(auto, value = 
+                (Coordinates2Square< Coordinates<I, rotated::row, rotated::col> >::type::square)
+        );
 };
 
 template<typename Board, int B>
@@ -116,13 +143,14 @@ private:
         typedef typename Square2Coordinates< Square<I, B> >::type Internal;
 
         // rotated coordinates within the external grid
-        typedef typename Rotate<Internal, Board::A_INV>::type Rotated;
+        typedef typename rotate<Internal, Board::inverse_angle>::type rotated;
 
 public:
         // square coordinates re-interpreted within the internal grid
-        enum { 
-                value = Coordinates2Square< Coordinates<E, Rotated::row, Rotated::col> >::type::square 
-        };
+        // NOTE: parenthesize Coordinates2Square<...> to avoid pre-processor argument splitting
+        BOOST_STATIC_CONSTANT(auto, value = 
+                (Coordinates2Square< Coordinates<E, rotated::row, rotated::col> >::type::square)
+        );
 };
 
 }       // namespace board

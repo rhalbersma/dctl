@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include <iomanip>
 #include <iostream>
 #include <typeinfo>
@@ -9,12 +9,12 @@ namespace bit {
 template<typename B> template<typename T>
 int Lookup<B>::index(T t)
 {
-        assert(is_single(t));
+        BOOST_ASSERT(is_single(t));
         const int NUM_BLOCKS = sizeof(T) / sizeof(B);	// auto would give unsigned type!
         for (auto i = 0; i < NUM_BLOCKS; ++i)               
                 if (B b = block(t, i))
                         return (i * BITS_PER_BLOCK) + INDEX[b];
-        assert(false);
+        BOOST_ASSERT(false);
         return 0;
 }
 
@@ -31,7 +31,7 @@ int Lookup<B>::count(T t)
 template<typename B> template<typename T>
 B Lookup<B>::block(T t, int i)
 {
-        assert(i >= 0 && i < (sizeof(T) / sizeof(B)));
+        BOOST_ASSERT(i >= 0 && i < (sizeof(T) / sizeof(B)));
         return static_cast<B>(t >> (i * BITS_PER_BLOCK));
 }
 
@@ -42,8 +42,8 @@ template<typename T> int count_Kernighan(T);    // number of set 1-bits
 template<typename B>
 void Lookup<B>::generate_index()
 {
-        std::cout << "template<>" << std::endl;
-        std::cout << "const int Lookup<" << typeid(B).name() << ">::INDEX[] = {" << std::endl;
+        std::cout << "template<>\n";
+        std::cout << "const int Lookup<" << typeid(B).name() << ">::INDEX[] = {\n";
         B i = 0; 
         do {
                 if (i % 16 == 0)
@@ -53,18 +53,18 @@ void Lookup<B>::generate_index()
                 if (i != NUM_ENTRIES - 1)
                         std::cout << ",";
                 if (i % 16 == 15 || i == NUM_ENTRIES - 1)
-                        std::cout << std::endl;
+                        std::cout << "\n";
                 else 
                         std::cout << " ";
         } while (++i);
-        std::cout << "};" << std::endl << std::endl;
+        std::cout << "};" << "\n\n";
 }
 
 template<typename B>
 void Lookup<B>::generate_count()
 {
-        std::cout << "template<>" << std::endl;
-        std::cout << "const int Lookup<" << typeid(B).name() << ">::COUNT[] = {" << std::endl;
+        std::cout << "template<>\n";
+        std::cout << "const int Lookup<" << typeid(B).name() << ">::COUNT[] = {\n";
         B i = 0; 
         do {
                 if (i % 16 == 0)
@@ -74,11 +74,11 @@ void Lookup<B>::generate_count()
                 if (i != NUM_ENTRIES - 1)
                         std::cout << ",";
                 if (i % 16 == 15 || i == NUM_ENTRIES - 1)
-                        std::cout << std::endl;
+                        std::cout << "\n";
                 else 
                         std::cout << " ";
         } while (++i);
-        std::cout << "};" << std::endl << std::endl;
+        std::cout << "};" << "\n\n";
 }
 
 }       // namespace bit

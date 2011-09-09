@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/config.hpp>
 #include "ValueInterface.h"
 #include "../utils/IntegerTypes.h"
 
@@ -32,7 +33,7 @@ private:
         virtual void do_decrement(BitBoard, BitBoard);        
         virtual void do_toggle_with_king();
 
-        static const bool TOGGLE = true;
+        BOOST_STATIC_CONSTANT(auto, TOGGLE = true);
 
         // representation
         BitBoard piece_order_;

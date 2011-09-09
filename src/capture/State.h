@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/config.hpp>
 #include "Value.h"
 #include "../node/Stack.h"
 #include "../rules/Rules.h"
@@ -76,7 +77,7 @@ private:
         template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Stack&, Int2Type<rules::PROMOTE_EP>);
 
         // implementation
-	static const bool TOGGLE = true;
+	BOOST_STATIC_CONSTANT(auto, TOGGLE = true);
 
         // representation
         BitBoard initial_targets_;      // targets at the start of a capture

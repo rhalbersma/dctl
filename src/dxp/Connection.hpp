@@ -133,7 +133,7 @@ void Connection<Protocol>::handle_read(const boost::system::error_code& error)
                 std::string message;
                 std::getline(read_buf_stream, message, TERMINATOR);
                 read_messages_.push_back(message);
-                std::cout << message << std::endl;
+                std::cout << message << "\n";
                 async_read_next();
         } else {
                 do_close();

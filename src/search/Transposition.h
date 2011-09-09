@@ -1,5 +1,6 @@
 #pragma once
 #include <string>       // std::string
+#include <boost/config.hpp>
 #include "../utils/IntegerTypes.h"
 
 namespace dctl {
@@ -9,7 +10,7 @@ class Transposition
 {
 public:
         // typedefs
-        enum Bound { LOWER = 1, UPPER = 2, EXACT = 3 };
+        enum Bound { lower_bound = 1, upper_bound = 2, exact_value = 3 };
 
         // constructors
 	Transposition();
@@ -38,32 +39,29 @@ public:
         // modifiers
         void set_move(int);
 
-        static Bound lower();
-        static Bound upper();
-        static Bound exact();
         static int no_move();
 
 private:
         // implementation
         bool is_finite() const;
-        bool has_lower() const;
-        bool has_upper() const;
-        bool is_lower() const;
-        bool is_upper() const;
-        bool is_exact() const;
+        bool has_lower_bound() const;
+        bool has_upper_bound() const;
+        bool is_lower_bound() const;
+        bool is_upper_bound() const;
+        bool is_exact_value() const;
         bool invariant() const;
 
-        static const int BOUND_BITS = 2;
-        static const int DEPTH_BITS = 7;
-        static const int MOVE_BITS = 7;
+        BOOST_STATIC_CONSTANT(auto, BOUND_BITS = 2);
+        BOOST_STATIC_CONSTANT(auto, DEPTH_BITS = 7);
+        BOOST_STATIC_CONSTANT(auto, MOVE_BITS = 7);
 
-        static const int BOUND_SHIFT = 0;
-        static const int DEPTH_SHIFT = BOUND_SHIFT + BOUND_BITS;
-        static const int MOVE_SHIFT = DEPTH_SHIFT + DEPTH_BITS;
+        BOOST_STATIC_CONSTANT(auto, BOUND_SHIFT = 0);
+        BOOST_STATIC_CONSTANT(auto, DEPTH_SHIFT = BOUND_SHIFT + BOUND_BITS);
+        BOOST_STATIC_CONSTANT(auto, MOVE_SHIFT = DEPTH_SHIFT + DEPTH_BITS);
 
-        static const int BOUND_MASK = ((1 << BOUND_BITS) - 1);
-        static const int DEPTH_MASK = ((1 << DEPTH_BITS) - 1);
-        static const int MOVE_MASK = ((1 << MOVE_BITS) - 1);
+        BOOST_STATIC_CONSTANT(auto, BOUND_MASK = ((1 << BOUND_BITS) - 1));
+        BOOST_STATIC_CONSTANT(auto, DEPTH_MASK = ((1 << DEPTH_BITS) - 1));
+        BOOST_STATIC_CONSTANT(auto, MOVE_MASK = ((1 << MOVE_BITS) - 1));
 
         // representation
          int16_t value_;        // value

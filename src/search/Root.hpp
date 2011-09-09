@@ -24,11 +24,9 @@ int Root::analyze(const Position<Board>& p, int depth)
 template<typename Board>
 void Root::announce(const Position<Board>& p, int depth)
 {
-        std::cout << std::endl;
-        std::cout << setup::diagram<pdn::protocol>()(p) << std::endl;
-        std::cout << setup::write<pdn::protocol>()(p) << std::endl << std::endl;
-        std::cout << "Searching to nominal depth=" << depth << std::endl;
-        std::cout << std::endl;
+        std::cout << setup::diagram<pdn::protocol>()(p);
+        std::cout << setup::write<pdn::protocol>()(p) << "\n";
+        std::cout << "Searching to nominal depth=" << depth << "\n\n";
 }
 
 // UCI format
@@ -58,7 +56,7 @@ void Root::report(int depth, int value, const Timer& timer, const Position<Board
         std::cout << " hashfull ";
         std::cout << std::setw( 4) << std::right << hashfull;
 
-        std::cout << std::endl;
+        std::cout << "\n";
         print_PV<Rules>(p, pv);
 }
 
@@ -71,14 +69,14 @@ void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
                 Stack move_stack;
                 Successor<successor::Legal, Rules>::generate(q, move_stack);
 
-                TT.insert(q, Transposition(value, Transposition::exact(), pv.size() - i, pv[i]));
+                TT.insert(q, Transposition(value, Transposition::exact_value, pv.size() - i, pv[i]));
                 value = -stretch(value);
 
                 q.template make<Rules>(move_stack[pv[i]]);
         }
-        TT.insert(q, Transposition(value, Transposition::exact(), 0, Transposition::no_move()));
+        TT.insert(q, Transposition(value, Transposition::exact_value, 0, Transposition::no_move()));
         
-        assert(
+        BOOST_ASSERT(
                 (value == Evaluate::evaluate(q)) || 
                 (value == loss_value(0) && !Successor<successor::Legal, Rules>::detect(q))
                 // NOTE: with endgame databases, delayed losses can occur at the tips of the PV
@@ -101,12 +99,12 @@ void Root::print_PV(const Position<Board>& p, const Sequence& pv)
                 //if (q.same_king_moves(!q.to_move()))
                         //std::cout << "^" << q.same_king_moves(!q.to_move());
                 if (i % 10 == 9)
-                        std::cout << std::endl;
+                        std::cout << "\n";
                 else
                         std::cout << " ";
 
         }
-        std::cout << std::endl << std::endl;
+        std::cout << "\n\n";
 }
 
 }       // namespace search

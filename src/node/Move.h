@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <boost/config.hpp>
 #include "Material.h"
 #include "Side.h"
 #include "../utils/IntegerTypes.h"
@@ -37,7 +38,7 @@ public:
 
 private:
         Material material_;
-        static const bool to_move_ = Side::PASS;
+        BOOST_STATIC_CONSTANT(auto, to_move_ = Side::PASS);
 };
 
 // predicates

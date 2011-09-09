@@ -58,8 +58,8 @@ private:
         typedef typename VectorMap::iterator map_iterator;
         typedef typename VectorMap::const_iterator const_map_iterator;
 
-        static const std::size_t BUCKET_SIZE = CACHE_LINE / sizeof(Entry);
-        static const std::size_t BUCKET_MASK = BUCKET_SIZE - 1;
+        static const std::size_t BUCKET_size = CACHE_LINE / sizeof(Entry);
+        static const std::size_t BUCKET_MASK = BUCKET_size - 1;
         
               map_iterator bucket_begin(Index);
         const_map_iterator bucket_begin(Index) const;

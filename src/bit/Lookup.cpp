@@ -5,7 +5,7 @@
 
 int main()
 {
-        using namespace dctl::bit;
+        using namespace ;
         Lookup<uint8_t>::generate_index();
         Lookup<uint8_t>::generate_count();
 }

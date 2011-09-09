@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 
 namespace dctl {
 namespace successor {

@@ -10,10 +10,10 @@ enum { RANGE_1, RANGE_N };
 enum { PROMOTE_BR, PROMOTE_EP };
 
 // initial capture directions
-enum { DIRS_UP, DIRS_DOWN, DIRS_DIAG, DIRS_ORTH, DIRS_ALL };
+enum { DIRS_up, DIRS_down, DIRS_DIAG, DIRS_ORTH, DIRS_ALL };
 
 // intermediate capture directions
-enum { SCAN_UP, SCAN_DOWN, SCAN_SIDE, SCAN_REST, SCAN_ALL };
+enum { SCAN_up, SCAN_down, SCAN_SIDE, SCAN_REST, SCAN_ALL };
 
 // king halt after final capture
 enum { HALT_1, HALT_N, HALT_K };

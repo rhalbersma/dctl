@@ -1,4 +1,4 @@
-#include <cassert>
+#include <boost/assert.hpp>
 #include "Chat.h"
 #include "Parser.h"
 #include "DXP.h"

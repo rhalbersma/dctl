@@ -14,7 +14,7 @@ bool read_color(char c)
 	case Token::WHITE:
 		return Side::WHITE;
         default:
-                assert(false);
+                BOOST_ASSERT(false);
                 return false;
 	}
 }
@@ -22,7 +22,7 @@ bool read_color(char c)
 template<typename Token>
 char write_color(bool color)
 {
-	return Token::COLOR[color];
+	return Token::color[color];
 }
 
 template<typename Board, typename Token>
@@ -63,7 +63,7 @@ struct read<Board, pdn::protocol, Token>
                                 if (isdigit(ch)) {
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
-                                        assert(Board::is_valid(sq - 1));
+                                        BOOST_ASSERT(Board::is_valid(sq - 1));
                                         auto b = Board::square2bit(sq - 1);     // convert square to bit
                                         auto bb = BitBoard(1) << b;             // create bitboard
                                         p_pieces[setup_color] ^= bb;
@@ -92,7 +92,7 @@ struct write<pdn::protocol, Token>
 		        auto c = i != 0;
 		        if (p.pieces(c)) {
 			        sstr << Token::COLON;                           // colon
-			        sstr << Token::COLOR[c];                        // color tag
+			        sstr << Token::color[c];                        // color tag
 		        }
 		        for (auto bb = p.pieces(c); bb; bit::clear_first(bb)) {
 			        if (p.kings() & bit::get_first(bb))
@@ -103,7 +103,7 @@ struct write<pdn::protocol, Token>
 				        sstr << Token::COMMA;			// comma separator
 		        }
 	        }
-	        sstr << Token::QUOTE;						// closing quotes
+	        sstr << Token::QUOTE << "\n";                                   // closing quotes
 	        return sstr.str();
         }
 };
@@ -136,7 +136,7 @@ struct read<Board, dxp::protocol, Token>
                         case Token::EMPTY:
                                 break;
                         default:
-                                assert(false);
+                                BOOST_ASSERT(false);
                                 break;
 		        }
                         if (isupper(ch))
@@ -158,6 +158,7 @@ struct write<dxp::protocol, Token>
 		        auto b = Board::square2bit(sq);                 // convert square to bit
 		        sstr << content<Token>(p.material(), b);        // bit content
 	        }
+                sstr << "\n";
 	        return sstr.str();
         }
 };

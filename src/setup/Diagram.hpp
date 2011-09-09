@@ -1,6 +1,7 @@
 #include <functional>   // std::bind, std::placeholders
 #include <iomanip>      // std::setw
 #include <sstream>      // std::stringstream
+#include <boost/config.hpp>
 #include "Content.h"
 #include "Numbers.h"
 #include "../node/Position.h"
@@ -60,33 +61,34 @@ public:
                         sstr << std::setw(2) << f(sq);                  // write square content 
 
                         if (is_end_row(sq))
-                                sstr << std::endl;                      // start of a new row
+                                sstr << "\n";                           // start of a new row
                         else
                                 sstr << std::setw(2) << WHITE_SPACE;    // space between squares
                 }
+                sstr << "\n";
                 return sstr.str();
         }
 
 private:
         static bool is_end_row(int sq)
         {
-                const auto r = sq % Board::ExternalGrid::MODULO;                // sq = MODULO * q + r 
-                const auto end_RE = r == Board::ExternalGrid::EDGE_RE;          // right of even rows
-                const auto end_RO = r == Board::ExternalGrid::EDGE_RO;          // right of odd rows
+                const auto r = sq % Board::ExternalGrid::modulo;                // sq = modulo * q + r 
+                const auto end_RE = r == Board::ExternalGrid::edge_re;          // right of even rows
+                const auto end_RO = r == Board::ExternalGrid::edge_ro;          // right of odd rows
 
                 return end_RE || end_RO;
         }
 
         static bool is_indent_row(int sq)
         {
-                const auto r = sq % Board::ExternalGrid::MODULO;                // sq = MODULO * q + r 
-                const auto indent_LE = r == Board::ExternalGrid::EDGE_LE;       // left of even rows
-                const auto indent_LO = r == Board::ExternalGrid::EDGE_LO;       // left of odd rows
+                const auto r = sq % Board::ExternalGrid::modulo;                // sq = modulo * q + r 
+                const auto indent_LE = r == Board::ExternalGrid::edge_le;       // left of even rows
+                const auto indent_LO = r == Board::ExternalGrid::edge_lo;       // left of odd rows
 
-                return Board::PARITY? indent_LO : indent_LE;
+                return Board::parity? indent_LO : indent_LE;
         }
 
-        static const char WHITE_SPACE = ' ';
+        BOOST_STATIC_CONSTANT(auto, WHITE_SPACE = ' ');
 };
 
 }       // namespace setup
