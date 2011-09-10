@@ -101,23 +101,23 @@ const BitBoard Board<Dimensions, Structure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::man_jump_group[] = {
-        init_man_jump_group<B, InternalGrid::edge_le + 0>::value,
-        init_man_jump_group<B, InternalGrid::edge_le + 1>::value,
-        init_man_jump_group<B, InternalGrid::edge_lo + 0>::value,
-        init_man_jump_group<B, InternalGrid::edge_lo + 1>::value
+const BitBoard Board<Dimensions, Structure>::jump_group[] = {
+        init_jump_group<B, InternalGrid::edge_le + 0>::value,
+        init_jump_group<B, InternalGrid::edge_le + 1>::value,
+        init_jump_group<B, InternalGrid::edge_lo + 0>::value,
+        init_jump_group<B, InternalGrid::edge_lo + 1>::value
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::jumpable[] = {
-        init_jumpable<B, rotate<Int2Type<Angle::D000>, B::angle>::value>::value,
-        init_jumpable<B, rotate<Int2Type<Angle::D045>, B::angle>::value>::value,
-        init_jumpable<B, rotate<Int2Type<Angle::D090>, B::angle>::value>::value,
-        init_jumpable<B, rotate<Int2Type<Angle::D135>, B::angle>::value>::value,
-        init_jumpable<B, rotate<Int2Type<Angle::D180>, B::angle>::value>::value,
-        init_jumpable<B, rotate<Int2Type<Angle::D225>, B::angle>::value>::value,
-        init_jumpable<B, rotate<Int2Type<Angle::D270>, B::angle>::value>::value,
-        init_jumpable<B, rotate<Int2Type<Angle::D315>, B::angle>::value>::value
+const BitBoard Board<Dimensions, Structure>::jump_start[] = {
+        init_jump_start<B, rotate<Angle<Degrees::D000>, B::angle>::type::index>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D045>, B::angle>::type::index>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D090>, B::angle>::type::index>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D135>, B::angle>::type::index>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D180>, B::angle>::type::index>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D225>, B::angle>::type::index>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D270>, B::angle>::type::index>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D315>, B::angle>::type::index>::value
 };
 
 template<typename Dimensions, typename Structure>

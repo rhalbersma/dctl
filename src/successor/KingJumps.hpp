@@ -218,7 +218,7 @@ bool Driver<Color, Material::KING, Jumps, Rules, Board>::scan_reverse(
         BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves
 )
 {
-        return scan_dir<board::rotate<Int2Type<Index>, board::Angle::D180>::value>(jumper, capture, moves);
+        return scan_dir<rotate<Angle<Index>, Degrees::D180>::type::index>(jumper, capture, moves);
 }
 
 template<bool Color, typename Rules, typename Board> template<int Index>
@@ -263,10 +263,10 @@ bool Driver<Color, Material::KING, Jumps, Rules, Board>::scan_dirs(
 )
 {
         return (
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R045>::value>(jumper, capture, moves) |
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L045>::value>(jumper, capture, moves) |
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R135>::value>(jumper, capture, moves) |
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L135>::value>(jumper, capture, moves)
+                scan_dir<rotate<Angle<Index>, Degrees::R045>::type::index>(jumper, capture, moves) |
+                scan_dir<rotate<Angle<Index>, Degrees::L045>::type::index>(jumper, capture, moves) |
+                scan_dir<rotate<Angle<Index>, Degrees::R135>::type::index>(jumper, capture, moves) |
+                scan_dir<rotate<Angle<Index>, Degrees::L135>::type::index>(jumper, capture, moves)
         );
 }
 
@@ -277,8 +277,8 @@ bool Driver<Color, Material::KING, Jumps, Rules, Board>::scan_dirs(
 )
 {
         return (
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R090>::value>(jumper, capture, moves) |
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L090>::value>(jumper, capture, moves)
+                scan_dir<rotate<Angle<Index>, Degrees::R090>::type::index>(jumper, capture, moves) |
+                scan_dir<rotate<Angle<Index>, Degrees::L090>::type::index>(jumper, capture, moves)
         );
 }
 

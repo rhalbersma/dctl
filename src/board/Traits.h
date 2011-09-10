@@ -7,82 +7,84 @@
 namespace dctl {
 namespace board {
 
-// direction indices are subject to arithmetic modulo 8, with the unit element equal to 1
+// indices for the 8 named directions from the white point of view
 /*                      
-             2
-          3  |  1
-           \ | / 
-            \|/
-        4---- ----0
-            /|\
-           / | \
-          5  |  7
-             6                     
+                  up = 2
+                     |
+        3 = left_up  |  right_up = 1
+                   \ | / 
+                    \|/
+       4 = left ----- ----- right = 0
+                    /|\
+                   / | \
+      5 = left_down  |  right_down = 7
+                     |
+                down = 6
 */
 
-template<int I> 
+template<int Index> 
 struct is_diagonal      
 {
-        // 1, 3, 5, 7
-        BOOST_STATIC_CONSTANT(auto, value = (I % 2) != 0); 
+        // right_up, left_up, left_down, right_down
+        BOOST_STATIC_CONSTANT(auto, value = (Index % 2) != 0); 
 };
 
-template<int I> 
+template<int Index> 
 struct is_orthogonal    
 { 
-        // 0, 2, 4, 6
-        BOOST_STATIC_CONSTANT(auto, value = !is_diagonal<I>::value); 
+        // right, up, left, down
+        BOOST_STATIC_CONSTANT(auto, value = !is_diagonal<Index>::value); 
 };
 
-template<int I> 
+template<int Index> 
 struct is_up            
 { 
-        // 1, 2, 3
-        BOOST_STATIC_CONSTANT(auto, value = !(I / 4) && (I % 4)); 
+        // right_up, up, left_up
+        BOOST_STATIC_CONSTANT(auto, value = !(Index / 4) && (Index % 4)); 
 };
 
-template<int I> 
+template<int Index> 
 struct is_down          
 { 
-        // 5, 6, 7
-        BOOST_STATIC_CONSTANT(auto, value = (I / 4) && (I % 4)); 
+        // left_down, down, right_down
+        BOOST_STATIC_CONSTANT(auto, value = (Index / 4) && (Index % 4)); 
 };
 
-template<int I> 
+template<int Index> 
 struct is_left         
 { 
-        // 3, 4, 5
-        // NOTE: parenthesize rotate<..., ...> to avoid pre-processor argument splitting
+        // left_up, left, left_down
+        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
-                (is_down<rotate<Int2Type<I>, Angle::L090>::value>::value)
+                (is_down<rotate<Angle<Index>, Degrees::L090>::type::index>::value)
         );
 };   
 
-template<int I> 
+template<int Index> 
 struct is_right          
 { 
-        // 0, 1, 7
-        // NOTE: parenthesize rotate<..., ...> to avoid pre-processor argument splitting
+        // right, right_up, right_down
+        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
-                (is_up<rotate<Int2Type<I>, Angle::L090>::value>::value)
+                (is_up<rotate<Angle<Index>, Degrees::L090>::type::index>::value)
         );
 };     
 
-template<int I> 
+template<int Index> 
 struct is_positive      
 { 
-        // 1, 2, 3, 4
+        // right_up, up, left_up, left
         BOOST_STATIC_CONSTANT(auto, value = 
-                is_up<I>::value || 
-                (is_left<I>::value && !is_down<I>::value)
+                is_up<Index>::value || 
+                (is_left<Index>::value && !is_down<Index>::value)
         ); 
 };
 
-template<int I> 
+template<int Index> 
 struct is_negative      
 { 
-        // 5, 6, 7, 0
-        BOOST_STATIC_CONSTANT(auto, value = !is_positive<I>::value); 
+        // right, left_down, down, right_down
+        BOOST_STATIC_CONSTANT(auto, value = !is_positive<Index>::value); 
 };  
 
 }       // namespace board

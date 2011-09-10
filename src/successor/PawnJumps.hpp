@@ -217,10 +217,10 @@ bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::scan_dirs(
 )
 {
         return (
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R045>::value>(jumper, capture, moves) |
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L045>::value>(jumper, capture, moves) |
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R135>::value>(jumper, capture, moves) |
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L135>::value>(jumper, capture, moves)
+                scan_dir<rotate<Angle<Index>, Degrees::R045>::type::index>(jumper, capture, moves) |
+                scan_dir<rotate<Angle<Index>, Degrees::L045>::type::index>(jumper, capture, moves) |
+                scan_dir<rotate<Angle<Index>, Degrees::R135>::type::index>(jumper, capture, moves) |
+                scan_dir<rotate<Angle<Index>, Degrees::L135>::type::index>(jumper, capture, moves)
         );
 }
 
@@ -231,8 +231,8 @@ bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::scan_dirs(
 )
 {
         return (
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::R090>::value>(jumper, capture, moves) |
-                scan_dir<board::rotate<Int2Type<Index>, board::Angle::L090>::value>(jumper, capture, moves)
+                scan_dir<rotate<Angle<Index>, Degrees::R090>::type::index>(jumper, capture, moves) |
+                scan_dir<rotate<Angle<Index>, Degrees::L090>::type::index>(jumper, capture, moves)
         );
 }
 
@@ -242,7 +242,7 @@ bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::scan_dirs(
         BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::SCAN_up>
 )
 {
-        return scan_dir<board::mirror_up<Index>::value>(jumper, capture, moves);
+        return scan_dir<mirror_up<Index>::value>(jumper, capture, moves);
 }
 
 // partial specialization for scans in the 1 mirrored backward direction
@@ -251,7 +251,7 @@ bool Driver<Color, Material::PAWN, Jumps, Rules, Board>::scan_dirs(
         BitBoard jumper, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<rules::SCAN_down>
 )
 {
-        return scan_dir<board::mirror_down<Index>::value>(jumper, capture, moves);
+        return scan_dir<mirror_down<Index>::value>(jumper, capture, moves);
 }
 
 template<bool Color, typename Rules, typename Board> template<int Index>

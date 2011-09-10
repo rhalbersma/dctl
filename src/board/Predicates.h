@@ -17,10 +17,10 @@ template<typename, typename, int>
 struct is_col_mask;
 
 template<typename, typename, int>
-class is_man_jump_group;
+class is_jump_group;
 
 template<typename, typename, int>
-class is_jumpable;
+class is_jump_start;
 
 template<typename, int>
 class square_to_bit;

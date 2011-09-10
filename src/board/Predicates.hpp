@@ -26,7 +26,7 @@ private:
                 C? (Board::height - 1) : (Board::height - Board::dmz) / 2 - 1
         );
 
-        // NOTE: parenthesize Square2Coordinates<...> to avoid pre-processor argument splitting
+        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, row = 
                 (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row)
         );
@@ -41,7 +41,7 @@ struct is_row_mask
         BOOST_STATIC_CONSTANT(auto, C = Tuple::first);
         BOOST_STATIC_CONSTANT(auto, row = Tuple::second);
 
-        // NOTE: parenthesize Square2Coordinates<...> to avoid pre-processor argument splitting
+        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
                 (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row == 
                 (C? (Board::height - 1) - row : row))
@@ -54,7 +54,7 @@ struct is_col_mask
         BOOST_STATIC_CONSTANT(auto, C = Tuple::first);
         BOOST_STATIC_CONSTANT(auto, col = Tuple::second);
 
-        // NOTE: parenthesize Square2Coordinates<...> to avoid pre-processor argument splitting
+        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
                 (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col == 
                 (C? (Board::width - 1) - col : col))
@@ -62,7 +62,7 @@ struct is_col_mask
 };
 
 template<typename Board, typename Tuple, int SQ>
-class is_man_jump_group
+class is_jump_group
 {
 private:
         BOOST_STATIC_CONSTANT(auto, FROM = Tuple::first);
@@ -70,11 +70,12 @@ private:
 
         typedef typename Board::ExternalGrid Grid;
 
-        // NOTE: parenthesize Square2Coordinates<...> to avoid pre-processor argument splitting
+        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, from_row = (Square2Coordinates< Square<Grid, FROM> >::type::row));
         BOOST_STATIC_CONSTANT(auto, dest_row = (Square2Coordinates< Square<Grid, DEST> >::type::row));
         BOOST_STATIC_CONSTANT(auto, from_col = (Square2Coordinates< Square<Grid, FROM> >::type::col));
         BOOST_STATIC_CONSTANT(auto, dest_col = (Square2Coordinates< Square<Grid, DEST> >::type::col));
+
         BOOST_STATIC_CONSTANT(auto, R1 = (from_row - dest_row) % 4);
         BOOST_STATIC_CONSTANT(auto, C1 = (from_col - dest_col) % 4);
         BOOST_STATIC_CONSTANT(auto, R2 = (R1 + 2) % 4);
@@ -88,7 +89,7 @@ public:
 };
 
 template<typename Board, typename Tuple, int SQ>
-class is_jumpable
+class is_jump_start
 {
 private:
         BOOST_STATIC_CONSTANT(auto, I = Tuple::first);
@@ -126,7 +127,7 @@ private:
 
 public:
         // bit coordintaes re-interpreted within the internal grid
-        // NOTE: parenthesize Coordinates2Square<...> to avoid pre-processor argument splitting
+        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
                 (Coordinates2Square< Coordinates<I, rotated::row, rotated::col> >::type::square)
         );
@@ -147,7 +148,7 @@ private:
 
 public:
         // square coordinates re-interpreted within the internal grid
-        // NOTE: parenthesize Coordinates2Square<...> to avoid pre-processor argument splitting
+        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
                 (Coordinates2Square< Coordinates<E, rotated::row, rotated::col> >::type::square)
         );

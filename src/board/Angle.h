@@ -1,10 +1,8 @@
 #pragma once
 #include <boost/config.hpp>
 #include "Transform.h"
-#include "../utils/TemplateTricks.h"
 
 namespace dctl {
-namespace board {
 
 // angles are subject to arithmetic modulo 360 degrees, 
 // with the unit element equal to 45 degrees anti-clockwise
@@ -22,21 +20,35 @@ namespace board {
                 D270 = R090
 */
 
+struct Degrees
+{
+        BOOST_STATIC_CONSTANT(auto, D000 =    0); 
+        BOOST_STATIC_CONSTANT(auto, D045 =    1); 
+        BOOST_STATIC_CONSTANT(auto, D090 =    2); 
+        BOOST_STATIC_CONSTANT(auto, D135 =    3); 
+        BOOST_STATIC_CONSTANT(auto, D180 =    4); 
+        BOOST_STATIC_CONSTANT(auto, D225 =    5); 
+        BOOST_STATIC_CONSTANT(auto, D270 =    6); 
+        BOOST_STATIC_CONSTANT(auto, D315 =    7);
+        BOOST_STATIC_CONSTANT(auto, D360 =    8); 
+        BOOST_STATIC_CONSTANT(auto, L045 = D045);       // counter-clockwise 
+        BOOST_STATIC_CONSTANT(auto, L090 = D090);       // counter-clockwise
+        BOOST_STATIC_CONSTANT(auto, L135 = D135);       // counter-clockwise
+        BOOST_STATIC_CONSTANT(auto, R135 = D225);       // clockwise
+        BOOST_STATIC_CONSTANT(auto, R090 = D270);       // clockwise
+        BOOST_STATIC_CONSTANT(auto, R045 = D315);       // clockwise
+};
+
+template<int Index>
 struct Angle
 {
-        enum {
-                D000 = 0, D045 =    1, D090 =    2, D135 =    3, 
-                D180 = 4, D225 =    5, D270 =    6, D315 =    7,
-                D360 = 8, L045 = D045, L090 = D090, L135 = D135, 
-                          R135 = D225, R090 = D270, R045 = D315 
-        };
+        BOOST_STATIC_CONSTANT(auto, index = Index);
 };
 
 // partial specialization for angles
-template<int A, int I>
-struct rotate<Int2Type<A>, I>;
+template<int Index, int Theta>
+struct rotate<Angle<Index>, Theta>;
 
-}       // namespace board
 }       // namespace dctl
 
 // include template definitions inside header
