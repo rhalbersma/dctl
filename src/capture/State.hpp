@@ -27,7 +27,7 @@ BitBoard State<Rules, Board>::targets() const
 template<typename Rules, typename Board> template<int Index>
 BitBoard State<Rules, Board>::path() const
 {
-        return path() & Board::jumpable[Index];
+        return path() & Board::jump_start[Index];
 }
 
 template<typename Rules, typename Board>

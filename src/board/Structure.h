@@ -10,7 +10,7 @@ template
 <
         int D = 2,              // "demilitarized" rows in the initial position
         int G = 2,              // number of ghost bit columns
-        int A = Angle::D000     // rotation from external to internal grid
+        int A = Degrees::D000     // rotation from external to internal grid
 >
 struct Structure
 {

@@ -44,33 +44,34 @@ public:
         > type;
 };
 
+}       // namespace board
+
 // partial specialization for identity rotations
-template<typename G, int R, int C>
-struct rotate<Coordinates<G, R, C>, Angle::D000>
+template<typename Grid, int Row, int Column>
+struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D000>
 {
-        typedef Coordinates<G, R, C> type;
+        typedef board::Coordinates<Grid, Row, Column> type;
 };
 
-// partial specialization for 90 degrees right rotations
-template<typename G, int R, int C>
-struct rotate<Coordinates<G, R, C>, Angle::D270>
+// partial specialization for 90 degrees right (clockwise) rotations
+template<typename Grid, int Row, int Column>
+struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D270>
 {
-        typedef Coordinates<G, (G::width - 1) - C, R> type;
+        typedef board::Coordinates<Grid, (Grid::width - 1) - Column, Row> type;
 };
 
-// partial specialization for 90 degrees left rotations
-template<typename G, int R, int C>
-struct rotate<Coordinates<G, R, C>, Angle::D090>
+// partial specialization for 90 degrees left (counter-clockwise) rotations
+template<typename Grid, int Row, int Column>
+struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D090>
 {
-        typedef Coordinates<G, C, (G::height - 1) - R> type;
+        typedef board::Coordinates<Grid, Column, (Grid::height - 1) - Row> type;
 };
 
 // partial specialization for 180 degrees rotations
-template<typename G, int R, int C>
-struct rotate<Coordinates<G, R, C>, Angle::D180>
+template<typename Grid, int Row, int Column>
+struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D180>
 {
-        typedef Coordinates<G, (G::height - 1) - R, (G::width - 1) - C> type;
+        typedef board::Coordinates<Grid, (Grid::height - 1) - Row, (Grid::width - 1) - Column> type;
 };
 
-}       // namespace board
 }       // namespace dctl

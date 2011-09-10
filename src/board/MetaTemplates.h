@@ -6,30 +6,39 @@ namespace board {
 
 template
 <
-        template<typename, typename, int> class, 
+        template<typename, typename, int> class Predicate, 
         typename Board, 
-        typename, 
-        int = Board::ExternalGrid::size - 1
+        typename Tuple, 
+        int SQ
+>
+struct test_predicate;
+
+template
+<
+        template<typename, typename, int> class Predicate, 
+        typename Board, 
+        typename Tuple, 
+        int SQ = Board::ExternalGrid::size - 1
 >
 struct init_predicate;
 
-template<typename>
+template<typename Board>
 struct init_squares;
 
-template<typename Board, bool>
+template<typename Board, bool Color>
 struct init_initial;
 
-template<typename Board, bool, int>
+template<typename Board, bool Color, int Row>
 struct init_row_mask;
 
-template<typename Board, bool, int>
+template<typename Board, bool Color, int Column>
 struct init_col_mask;
 
-template<typename Board, int>
-struct init_man_jump_group;
+template<typename Board, int Group>
+struct init_jump_group;
 
-template<typename Board, int>
-struct init_jumpable;
+template<typename Board, int Index>
+struct init_jump_start;
 
 }       // namespace board
 }       // namespace dctl

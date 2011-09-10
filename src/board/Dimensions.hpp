@@ -1,35 +1,33 @@
 #include "Angle.h"
 
 namespace dctl {
-namespace board {
 
 // partial specialization for identity rotations
 template<int H, int W, bool P>
-struct rotate<Dimensions<H, W, P>, Angle::D000>
+struct rotate<board::Dimensions<H, W, P>, Degrees::D000>
 {
-        typedef Dimensions<H, W, P> type;
+        typedef board::Dimensions<H, W, P> type;
 };
 
 // partial specialization for 90 degrees right rotations
 template<int H, int W, bool P>
-struct rotate<Dimensions<H, W, P>, Angle::D270>
+struct rotate<board::Dimensions<H, W, P>, Degrees::D270>
 {
-        typedef Dimensions<W, H, (W % 2) ^ !P> type;
+        typedef board::Dimensions<W, H, (W % 2) ^ !P> type;
 };
 
 // partial specialization for 90 degrees left rotations
 template<int H, int W, bool P>
-struct rotate<Dimensions<H, W, P>, Angle::D090>
+struct rotate<board::Dimensions<H, W, P>, Degrees::D090>
 {
-        typedef Dimensions<W, H, (H % 2) ^ !P> type;
+        typedef board::Dimensions<W, H, (H % 2) ^ !P> type;
 };
 
 // partial specialization for 180 degrees rotations
 template<int H, int W, bool P>
-struct rotate<Dimensions<H, W, P>, Angle::D180>
+struct rotate<board::Dimensions<H, W, P>, Degrees::D180>
 {
-        typedef Dimensions<H, W, (H % 2) ^ (W % 2) ^ (!!P)> type;
+        typedef board::Dimensions<H, W, (H % 2) ^ (W % 2) ^ (!!P)> type;
 };
 
-}       // namespace board
 }       // namespace dctl

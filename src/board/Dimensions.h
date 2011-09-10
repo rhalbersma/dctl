@@ -19,11 +19,12 @@ struct Dimensions
         BOOST_STATIC_CONSTANT(auto, parity = P);
 };
 
-// partial specialization for dimensions
-template<int H, int W, bool P, int I>
-struct rotate<Dimensions<H, W, P>, I>;
-
 }       // namespace board
+
+// partial specialization for dimensions
+template<int H, int W, bool P, int Angle>
+struct rotate<board::Dimensions<H, W, P>, Angle>;
+
 }       // namespace dctl
 
 // include template definitions inside header

@@ -26,11 +26,12 @@ class Coordinates2Square;
 template<typename>
 class Square2Coordinates;
 
-// partial specialization for coordinates
-template<typename G, int R, int C, int I>
-struct rotate<Coordinates<G, R, C>, I>;
-
 }       // namespace board
+
+// partial specialization for coordinates
+template<typename Grid, int Row, int Column, int Angle>
+struct rotate<board::Coordinates<Grid, Row, Column>, Angle>;
+
 }       // namespace dctl
 
 // include template definitions inside header

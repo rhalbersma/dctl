@@ -35,8 +35,8 @@ public:
         // auxiliary bitboard masks
         static const BitBoard QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
         static const BitBoard DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
-        static const BitBoard man_jump_group[];                 // families of squares reachable by jumping men
-        static const BitBoard jumpable[];                       // squares from which a jump is possible in a direction
+        static const BitBoard jump_group[];                     // families of squares reachable by jumping men
+        static const BitBoard jump_start[];                     // squares from which a jump is possible in a direction
 
         // arrays of directions
         static const int SHIFT[];                               // the bitwise shifts for all 8 directions

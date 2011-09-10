@@ -7,7 +7,7 @@ namespace board {
 template
 <
         typename Dimensions,    // dimensions
-        int GHOST = 0           // ghost columns
+        int G = 0               // ghost columns
 >
 class Grid
 : 
@@ -17,12 +17,12 @@ public:
         typedef Grid<Dimensions> BaseGrid;
         
         // diagonal directions
-        BOOST_STATIC_CONSTANT(auto, left_down = (Dimensions::width + GHOST) / 2);
+        BOOST_STATIC_CONSTANT(auto, left_down = (Dimensions::width + G) / 2);
         BOOST_STATIC_CONSTANT(auto, right_down = left_down + 1);
 
         // orthogonal directions
         BOOST_STATIC_CONSTANT(auto, right = right_down - left_down);     // == 1 by construction
-        BOOST_STATIC_CONSTANT(auto, down = right_down + left_down);      // == 2 * ((width + GHOST) / 2) + 1
+        BOOST_STATIC_CONSTANT(auto, down = right_down + left_down);      // == 2 * ((width + G) / 2) + 1
 
         // equivalent directions
         BOOST_STATIC_CONSTANT(auto, left_up = right_down);
