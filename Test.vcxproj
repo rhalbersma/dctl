@@ -14,6 +14,7 @@
     <ProjectGuid>{8D5ACEAA-2CF1-4277-89CD-4F7739821B9D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Test</RootNamespace>
+    <ProjectName>test</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -134,6 +135,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\bit\Bit.cpp" />
+    <ClCompile Include="src\board\Angle.cpp" />
+    <ClCompile Include="src\board\Dimensions.cpp" />
     <ClCompile Include="src\dxp\Parser.cpp" />
     <ClCompile Include="src\search\Root.cpp" />
     <ClCompile Include="src\search\Score.cpp" />
