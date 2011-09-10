@@ -31,6 +31,9 @@
     <Filter Include="Source Files\successor">
       <UniqueIdentifier>{c32c176a-d5fd-4e7a-85e4-e8eb61648cbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\board">
+      <UniqueIdentifier>{b69c33f8-16e2-415d-be82-af8fd21f01c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\setup\Setup.cpp">
@@ -56,6 +59,12 @@
     </ClCompile>
     <ClCompile Include="src\search\Root.cpp">
       <Filter>Source Files\search</Filter>
+    </ClCompile>
+    <ClCompile Include="src\board\Angle.cpp">
+      <Filter>Source Files\board</Filter>
+    </ClCompile>
+    <ClCompile Include="src\board\Dimensions.cpp">
+      <Filter>Source Files\board</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
