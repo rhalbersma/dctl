@@ -5,7 +5,7 @@
 #include "../board/Board.h"
 #include "../board/Direction.h"
 #include "../bit/Bit.h"
-#include "../utils/Shift.h"
+#include "../utility/Shift.h"
 
 namespace dctl {
 namespace successor {

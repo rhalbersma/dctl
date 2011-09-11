@@ -1,5 +1,5 @@
 #pragma once
-#include "../utils/TemplateTricks.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 
@@ -27,7 +27,7 @@ template
 >
 class Mobility
 :
-        private utils::nonconstructible // enforce static semantics
+        private utility::nonconstructible // enforce static semantics
 {
 public:
         // interface

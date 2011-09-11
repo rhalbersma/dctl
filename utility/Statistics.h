@@ -1,4 +1,4 @@
-#include "../utils/IntegerTypes.h"
+#include "../utility/IntegerTypes.h"
 
 namespace dctl {
 

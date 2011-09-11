@@ -2,7 +2,7 @@
 #include <boost/config.hpp>
 #include "Angle.h"
 #include "Transform.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 namespace board {

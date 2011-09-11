@@ -4,9 +4,9 @@
 #include <vector>       // std::vector
 #include "Algorithms.h"
 #include "Replace.h"
-#include "../utils/CacheAlign.h"
-#include "../utils/IntegerTypes.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/CacheAlign.h"
+#include "../utility/IntegerTypes.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 namespace hash {

@@ -1,7 +1,7 @@
 #include <boost/config.hpp>
 #include "Predicates.h"
-#include "../utils/IntegerTypes.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/IntegerTypes.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 namespace board {

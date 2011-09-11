@@ -1,6 +1,6 @@
 #pragma once
 #include "../node/Stack.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 
@@ -28,7 +28,7 @@ template
 >
 class Successor
 :
-        private utils::nonconstructible // enforce static semantics
+        private utility::nonconstructible // enforce static semantics
 {
 public:
         // interface
