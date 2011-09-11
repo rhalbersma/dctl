@@ -2,8 +2,8 @@
 #include <boost/test/test_case_template.hpp>
 #include <boost/mpl/list.hpp>
 #include <boost/type_traits/is_same.hpp>
-#include "../../../DCTL/src/board/Angle.h"
-#include "../../../DCTL/src/board/Transform.h"
+#include "../../src/board/Angle.h"
+#include "../../src/board/Transform.h"
 
 namespace dctl {
 

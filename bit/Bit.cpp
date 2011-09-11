@@ -1,8 +1,8 @@
 #include <boost/test/unit_test.hpp> 
 #include <boost/test/test_case_template.hpp>
 #include <boost/mpl/list.hpp>
-#include "../../../DCTL/src/bit/Bit.h"
-#include "../../../DCTL/src/utils/IntegerTypes.h"
+#include "../../src/bit/Bit.h"
+#include "../../src/utility/IntegerTypes.h"
 
 namespace dctl {
 namespace bit {

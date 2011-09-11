@@ -1,11 +1,11 @@
 #include <utility>
 #include <boost/test/unit_test.hpp> 
 #include "../test_config.h"
-#include "../../../DCTL/src/search/Root.h"
-#include "../../../DCTL/src/node/Position.h"
-#include "../../../DCTL/src/setup/Setup.h"
-#include "../../../DCTL/src/board/Types.h"
-#include "../../../DCTL/src/variant/Variant.h"
+#include "../../src/search/Root.h"
+#include "../../src/node/Position.h"
+#include "../../src/setup/Setup.h"
+#include "../../src/board/Types.h"
+#include "../../src/variant/Variant.h"
 
 namespace dctl {
 namespace search {

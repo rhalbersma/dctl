@@ -2,13 +2,13 @@
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
 #include <boost/test/unit_test.hpp> 
-#include "../../../DCTL/src/successor/Successor.h"
-#include "../../../DCTL/src/successor/Selection.h"
-#include "../../../DCTL/src/node/Position.h"
-#include "../../../DCTL/src/setup/Setup.h"
-#include "../../../DCTL/src/notation/String.h"
-#include "../../../DCTL/src/board/Types.h"
-#include "../../../DCTL/src/variant/Variant.h"
+#include "../../src/successor/Successor.h"
+#include "../../src/successor/Selection.h"
+#include "../../src/node/Position.h"
+#include "../../src/setup/Setup.h"
+#include "../../src/notation/String.h"
+#include "../../src/board/Types.h"
+#include "../../src/variant/Variant.h"
 
 namespace dctl {
 
