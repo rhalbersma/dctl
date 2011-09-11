@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp> 
-#include "../../../DCTL/src/search/Score.h"
-#include "../../../DCTL/src/utils/Ply.h"
+#include "../../src/search/Score.h"
+#include "../../src/utility/Ply.h"
 
 namespace dctl {
 namespace search {
