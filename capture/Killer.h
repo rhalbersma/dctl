@@ -1,6 +1,6 @@
 #pragma once
 #include "ValueInterface.h"
-#include "../utils/IntegerTypes.h"
+#include "../utility/IntegerTypes.h"
 
 namespace dctl {
 

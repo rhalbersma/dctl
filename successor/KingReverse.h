@@ -1,7 +1,7 @@
 #pragma once
 #include "../node/Material.h"
 #include "../node/Stack.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 
@@ -18,7 +18,7 @@ class Reverse;
 template<bool Color, typename Rules, typename Board> 
 class Driver<Color, Material::KING, Reverse, Rules, Board>
 :
-        private utils::nonconstructible // enforce static semantics
+        private utility::nonconstructible // enforce static semantics
 {
 public:
         static void generate(const Position<Board>&, Stack&);

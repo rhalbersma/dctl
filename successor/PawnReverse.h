@@ -1,8 +1,8 @@
 #pragma once
 #include "../node/Material.h"
 #include "../node/Stack.h"
-#include "../utils/IntegerTypes.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/IntegerTypes.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 
@@ -20,7 +20,7 @@ class Moves;
 template<bool Color, typename Rules, typename Board> 
 class Driver<Color, Material::PAWN, Reverse, Rules, Board>
 :
-        private utils::nonconstructible // enforce static semantics
+        private utility::nonconstructible // enforce static semantics
 {
 public:
         static void generate(const Position<Board>&, Stack&);

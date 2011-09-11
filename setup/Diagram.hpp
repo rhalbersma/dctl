@@ -6,7 +6,7 @@
 #include "Numbers.h"
 #include "../node/Position.h"
 #include "../node/Side.h"
-#include "../utils/IntegerTypes.h"
+#include "../utility/IntegerTypes.h"
 
 namespace dctl {
 namespace setup {

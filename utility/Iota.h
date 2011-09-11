@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace utils {
+namespace utility {
 
 /*
 
@@ -18,7 +18,7 @@ the C++0x draft does not contain a corresponding function template iota_n
 template <class ForwardIterator, class Size, class T>
 void iota_n(ForwardIterator first, Size n, T value);
 
-}       // namespace utils
+}       // namespace utility
 }       // namespace dctl
 
 // include template definitions inside header

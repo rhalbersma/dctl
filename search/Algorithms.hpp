@@ -6,7 +6,7 @@
 #include "../successor/Selection.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
-#include "../utils/Iota.h"
+#include "../utility/Iota.h"
 
 namespace dctl {
 namespace search {
@@ -101,7 +101,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         // move ordering
         std::vector<int> move_order;
         move_order.reserve(moves.size());                               // reserve enough room for all indices
-        utils::iota_n(std::back_inserter(move_order), moves.size(), 0); // generate indices [0, moves.size() - 1]
+        utility::iota_n(std::back_inserter(move_order), moves.size(), 0); // generate indices [0, moves.size() - 1]
 
         if (TT_entry && TT_entry->has_move()) {
                 const auto TT_move = TT_entry->move() % moves.size();

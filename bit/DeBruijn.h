@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/config.hpp>
-#include "../utils/IntegerTypes.h"
+#include "../utility/IntegerTypes.h"
 
 namespace dctl {
 namespace bit {

@@ -46,7 +46,7 @@ struct bool_int_tuple
         BOOST_STATIC_CONSTANT(auto, second = I);
 };
 
-namespace utils {
+namespace utility {
 
 /*
 
@@ -65,5 +65,5 @@ private:
         nonconstructible();
 };
 
-}       // namespace utils
+}       // namespace utility
 }       // namespace dctl

@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/config.hpp>
 #include "ValueInterface.h"
-#include "../utils/IntegerTypes.h"
+#include "../utility/IntegerTypes.h"
 
 namespace dctl {
 

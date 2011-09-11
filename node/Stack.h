@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>       // std::vector
 #include "Move.h"
-#include "../utils/IntegerTypes.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/IntegerTypes.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 

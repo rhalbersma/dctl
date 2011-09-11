@@ -2,7 +2,7 @@
 #include "Grid.h"
 #include "Structure.h"
 #include "Transform.h"
-#include "../utils/IntegerTypes.h"
+#include "../utility/IntegerTypes.h"
 
 namespace dctl {
 namespace board {

@@ -1,5 +1,5 @@
 #pragma once
-#include "../utils/IntegerTypes.h"
+#include "../utility/IntegerTypes.h"
 
 namespace dctl {
 namespace capture {

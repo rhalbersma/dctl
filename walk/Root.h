@@ -3,8 +3,8 @@
 #include "Transposition.h"
 #include "../hash/DualMap.h"
 #include "../node/Material.h"
-#include "../utils/IntegerTypes.h"
-#include "../utils/Statistics.h"
+#include "../utility/IntegerTypes.h"
+#include "../utility/Statistics.h"
 
 namespace dctl {
 

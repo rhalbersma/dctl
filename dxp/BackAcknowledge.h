@@ -22,7 +22,7 @@ class BackAcknowledge
 {
 public:
         // typedefs
-        enum AcceptanceCode { ACCEPT = 0, NOT_SupPORTED = 1, DECLINE = 2 };
+        enum AcceptanceCode { ACCEPT = 0, NOT_SUPPORTED = 1, DECLINE = 2 };
 
         // views
         AcceptanceCode acceptance_code() const;

@@ -3,8 +3,8 @@
 #include "Value.h"
 #include "../node/Stack.h"
 #include "../rules/Rules.h"
-#include "../utils/IntegerTypes.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/IntegerTypes.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 

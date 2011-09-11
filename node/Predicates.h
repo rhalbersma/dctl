@@ -1,6 +1,6 @@
 #pragma once
-#include "../utils/IntegerTypes.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/IntegerTypes.h"
+#include "../utility/TemplateTricks.h"
 #include "../rules/Rules.h"
 
 namespace dctl {

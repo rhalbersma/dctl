@@ -1,6 +1,6 @@
 #pragma once
 #include "../node/Stack.h"
-#include "../utils/TemplateTricks.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 
@@ -18,7 +18,7 @@ with the State class as the <AbstractClass>.
 template<bool Color, int Material, typename Selection, typename Rules, typename Board> 
 class Driver
 :
-        private utils::nonconstructible // enforce static semantics
+        private utility::nonconstructible // enforce static semantics
 {
 public:
         static void generate(const Position<Board>&, Stack&) {}

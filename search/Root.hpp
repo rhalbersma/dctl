@@ -5,7 +5,7 @@
 #include "../successor/Successor.h"
 #include "../node/Position.h"
 #include "../node/Stack.h"
-#include "../utils/Timer.h"
+#include "../utility/Timer.h"
 
 #include "../setup/Diagram.h"
 #include "../setup/String.h"
