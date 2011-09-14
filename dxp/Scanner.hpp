@@ -1,36 +1,52 @@
-#include <boost/assert.hpp>
+#pragma once
+#include <string>               // std::string
+#include <boost/assert.hpp>     // BOOST_ASSERT
+#include <boost/config.hpp>     // BOOST_STATIC_CONSTANT
+#include "Protocol.hpp"
 
 namespace dctl {
 namespace dxp {
 
 template<typename Protocol>
-Scanner<Protocol>::Scanner(const std::string& message)
-:
-        message_(message)
+class Scanner
 {
-        BOOST_ASSERT(invariant());
-}
+public:
+        // constructors
+        explicit Scanner(const std::string& message)
+        :
+                message_(message)
+        {
+                BOOST_ASSERT(invariant());
+        }
 
-template<typename Protocol>
-std::string Scanner<Protocol>::header() const
-{
-        return message_.substr(0, HEADER_LENGTH);
-}
+        // views
+        std::string header() const
+        {
+                return message_.substr(0, HEADER_LENGTH);
+        }
 
-template<typename Protocol>
-std::string Scanner<Protocol>::body() const
-{
-        return message_.substr(HEADER_LENGTH);
-}
+        std::string body() const
+        {
+                return message_.substr(HEADER_LENGTH);
+        }
 
-template<typename Protocol>
-bool Scanner<Protocol>::invariant() const
-{
-        return (
-                header().length() == HEADER_LENGTH &&
-                body().length() <= MAX_BODY_LENGTH
-        );
-}
+private:
+        // invariants
+        bool invariant() const
+        {
+                return (
+                        header().length() == HEADER_LENGTH &&
+                        body().length() <= MAX_BODY_LENGTH
+                );
+        }
+
+        // implementation
+        BOOST_STATIC_CONSTANT(auto, HEADER_LENGTH = header_length<Protocol>::value);
+        BOOST_STATIC_CONSTANT(auto, MAX_BODY_LENGTH = max_body_length<Protocol>::value);
+
+        // representation
+        std::string message_;
+};
 
 }       // namespace dxp
 }       // namespace dctl

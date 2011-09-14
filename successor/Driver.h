@@ -1,5 +1,5 @@
 #pragma once
-#include "../node/Stack.h"
+#include "../node/Stack.hpp"
 #include "../utility/TemplateTricks.h"
 
 namespace dctl {
@@ -21,7 +21,7 @@ class Driver
         private utility::nonconstructible // enforce static semantics
 {
 public:
-        static void generate(const Position<Board>&, Stack&) {}
+        static void generate(const Position<Board>&, Stack&) { /* no-op */ }
         static int count(const Position<Board>&) { return 0; }
         static bool detect(const Position<Board>&) { return false; }
 };

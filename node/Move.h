@@ -2,7 +2,7 @@
 #include <vector>
 #include <boost/config.hpp>
 #include "Material.h"
-#include "Side.h"
+#include "Side.hpp"
 #include "../utility/IntegerTypes.h"
 #include "../utility/Ply.h"
 
@@ -15,7 +15,7 @@ public:
         enum { LEGAL, MOVES, JUMPS, REVERSE, PROMOTIONS };
 
         // constructors
-        Move() {};
+        Move() { /* no-op */ }
         Move(const Material&);
 
         // create a new object from a set of bitboards
@@ -38,7 +38,7 @@ public:
 
 private:
         Material material_;
-        BOOST_STATIC_CONSTANT(auto, to_move_ = Side::PASS);
+        BOOST_STATIC_CONSTANT(auto, to_move_ = Side::pass);
 };
 
 // predicates

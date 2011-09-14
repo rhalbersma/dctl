@@ -1,50 +1,13 @@
-#include <boost/assert.hpp>
-#include "Chat.h"
-#include "Parser.h"
+#include "Chat.hpp"
+#include "Parser.hpp"
 #include "DXP.h"
 
 namespace dctl {
 namespace dxp {
 
-const std::string Chat::HEADER = "C";
+const std::string Chat::HEADER_ = "C";
 
-const bool Chat::REGISTERED = Parser<protocol>::register_message(HEADER, create);
-
-std::unique_ptr<MessageInterface> Chat::create(const std::string& message)
-{
-        return std::unique_ptr<Chat>(new Chat(message));
-}
-
-Chat::Chat(const std::string& message)
-: 
-        message_(message)
-{
-}
-
-std::string Chat::message() const
-{
-        return message_;
-}
-
-std::string Chat::str(const std::string& message)
-{
-        return HEADER + body(message);
-}
-
-std::string Chat::header() const
-{
-        return HEADER;
-}
-
-std::string Chat::body() const
-{
-        return body(message());
-}
-
-std::string Chat::body(const std::string& m)
-{
-        return m;
-}
+const bool Chat::REGISTERED_ = Parser<protocol>::register_message(HEADER_, create);
 
 }       // namespace dxp
 }       // namespace dctl

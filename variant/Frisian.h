@@ -10,4 +10,4 @@ struct Frisian {};
 }       // namespace dctl
 
 #include "../rules/Frisian.h"
-#include "../capture/Frisian.h"
+#include "../capture/Frisian.hpp"

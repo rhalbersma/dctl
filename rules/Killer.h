@@ -9,7 +9,7 @@ namespace rules {
 
 // capture mechanics
 template<typename> struct king_capture_halt;
-template<> struct king_capture_halt<variant::Killer>            { enum { value = HALT_K }; };
+template<> struct king_capture_halt<variant::Killer>            { enum { value = halt_1K }; };
 
 // capture precedence
 template<typename> struct is_majority_precedence;

@@ -10,5 +10,4 @@ struct Spanish {};
 }       // namespace dctl
 
 #include "../rules/Spanish.h"
-#include "../capture/Spanish.h"
-
+#include "../capture/Spanish.hpp"

@@ -1,6 +1,26 @@
-#include "Angle.h"
+#pragma once
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Angle.hpp"
+#include "Transform.hpp"
 
 namespace dctl {
+namespace board {
+
+template
+<
+        int H,          // height
+        int W,          // width
+        bool P = false  // parity (true for single corner at top-left square)
+>
+struct Dimensions
+{
+        // reflection on template parameters
+        BOOST_STATIC_CONSTANT(auto, height = H);
+        BOOST_STATIC_CONSTANT(auto, width = W);
+        BOOST_STATIC_CONSTANT(auto, parity = P);
+};
+
+}       // namespace board
 
 // partial specialization for identity rotations
 template<int H, int W, bool P>

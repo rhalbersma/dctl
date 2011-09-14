@@ -1,15 +1,45 @@
-#include <boost/assert.hpp>
+#pragma once
+#include <algorithm>                    // std::find
+#include <vector>                       // std::vector
+#include <boost/assert.hpp>             // BOOST_ASSERT
+#include "Move.h"
 #include "Predicates.h"
 #include "../bit/Bit.h"
 #include "../rules/Rules.h"
+#include "../utility/IntegerTypes.h"
+#include "../utility/TemplateTricks.h"
 
 namespace dctl {
 
-// tag dispatching based on duplicate capture checking
+typedef std::vector<Move> Stack;
+
+inline Stack::reference top(Stack& stack)
+{
+        return stack.back();
+}
+
+inline Stack::const_reference top(const Stack& stack)
+{
+        return stack.back();
+}
+
+// tag dispatching on duplicate capture checking
 template<typename Rules>
 bool non_unique_top(const Stack& stack)
 {
         return non_unique_top(stack, Int2Type<rules::is_check_capture_uniqueness<Rules>::value>());
+}
+
+// specialization for move generation without duplicate capture checking
+inline bool non_unique_top(const Stack&, Int2Type<false>)
+{
+        return false;
+}
+
+// specialization for move generation without duplicate capture checking
+inline bool non_unique_top(const Stack& stack, Int2Type<true>)
+{
+        return std::find(stack.begin(), stack.end(), top(stack)) != (stack.end() - 1);
 }
 
 // add a king move
@@ -82,7 +112,7 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
         // post-conditions are the pieces invariants                        
         BOOST_ASSERT(
                 (
-                        bit::is_exclusive(top(stack).pieces(Side::BLACK), top(stack).pieces(Side::WHITE)) ||
+                        bit::is_exclusive(top(stack).pieces(Side::black), top(stack).pieces(Side::white)) ||
 
                         // EXCEPTION: for intersecting captures, WHITE and BLACK pieces() overlap
                         is_intersecting_capture<Rules>(delta, captured_pieces)
@@ -120,7 +150,7 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
 
         // post-conditions are the pieces invariants                        
         BOOST_ASSERT(
-                bit::is_exclusive(top(stack).pieces(Side::BLACK), top(stack).pieces(Side::WHITE)) &&
+                bit::is_exclusive(top(stack).pieces(Side::black), top(stack).pieces(Side::white)) &&
                 (
                         bit::is_within(top(stack).kings(), top(stack).pieces()) ||
 
@@ -128,6 +158,11 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
                         is_intersecting_promotion<Rules>(promotion, delta)
                 )
         );
+}
+
+inline void pop(Stack& stack)
+{
+        return stack.pop_back();
 }
 
 }       // namespace dctl

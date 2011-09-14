@@ -1,6 +1,6 @@
 #include <boost/assert.hpp>
 #include "../node/Position.h"
-#include "../board/Direction.h"
+#include "../board/Direction.hpp"
 #include "../bit/Bit.h"
 #include "../utility/Shift.h"
 
@@ -15,7 +15,7 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate(
         generate_serial(unrestricted_kings<Rules>(p, Color), not_occupied(p), moves);
 }
 
-// tag dispatching based on restrictions on consecutive moves with the same king
+// tag dispatching on restrictions on consecutive moves with the same king
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::KING, Moves, Rules, Board>::generate_serial(
         BitBoard active_kings, BitBoard not_occupied, Stack& moves
@@ -64,7 +64,7 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dirs(
         generate_dir<Direction::right_up  >(from_sq, not_occupied, moves);
 }
 
-// tag dispatching based on king range
+// tag dispatching on king range
 template<bool Color, typename Rules, typename Board> template<int Index>
 void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dir(
         BitBoard from_sq, BitBoard not_occupied, Stack& moves
@@ -76,7 +76,7 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dir(
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<int Index>
 void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dir(
-        BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::RANGE_1>
+        BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::range_1>
 )
 {
         if (auto dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
@@ -86,7 +86,7 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dir(
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<int Index>
 void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dir(
-        BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::RANGE_N>
+        BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::range_N>
 )
 {
         for (auto dest_sq = Push<Board, Index>()(from_sq); dest_sq & not_occupied; PushAssign<Board, Index>()(dest_sq))
@@ -114,7 +114,7 @@ int Driver<Color, Material::KING, Moves, Rules, Board>::count_dirs(
         );
 }
 
-// tag dispatching based on king range
+// tag dispatching on king range
 template<bool Color, typename Rules, typename Board> template<int Index>
 int Driver<Color, Material::KING, Moves, Rules, Board>::count_dir(
         BitBoard active_kings, BitBoard not_occupied
@@ -126,7 +126,7 @@ int Driver<Color, Material::KING, Moves, Rules, Board>::count_dir(
 // partial specialization for short ranged kings
 template<bool Color, typename Rules, typename Board> template<int Index>
 int Driver<Color, Material::KING, Moves, Rules, Board>::count_dir(
-        BitBoard active_kings, BitBoard not_occupied, Int2Type<rules::RANGE_1>
+        BitBoard active_kings, BitBoard not_occupied, Int2Type<rules::range_1>
 )
 {
         return bit::count(Push<Board, Index>()(active_kings) & not_occupied);
@@ -135,7 +135,7 @@ int Driver<Color, Material::KING, Moves, Rules, Board>::count_dir(
 // partial specialization for long ranged kings
 template<bool Color, typename Rules, typename Board> template<int Index>
 int Driver<Color, Material::KING, Moves, Rules, Board>::count_dir(
-        BitBoard active_kings, BitBoard not_occupied, Int2Type<rules::RANGE_N>
+        BitBoard active_kings, BitBoard not_occupied, Int2Type<rules::range_N>
 )
 {
         return bit::count(active_kings ^ FloodFill<Board, Index>()(active_kings, not_occupied));

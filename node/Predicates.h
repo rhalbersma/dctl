@@ -26,21 +26,21 @@ template<typename, typename Board> bool is_pseudo_legal(const Position<Board>&, 
 
 template<typename, typename Board> bool is_intersecting_capture(const Position<Board>&, const Move&);
 
-// tag dispatching based on capture removal
-template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::REMOVE_1>);
-template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::REMOVE_N>);
+// tag dispatching on capture removal
+template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::remove_ep>);
+template<typename Board> bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::remove_af>);
 
 template<typename> bool is_intersecting_capture(BitBoard, BitBoard);
 
 // tag dispatching basd on capture removal
-bool is_intersecting_capture(BitBoard, BitBoard, Int2Type<rules::REMOVE_1>);        
-bool is_intersecting_capture(BitBoard, BitBoard, Int2Type<rules::REMOVE_N>);
+bool is_intersecting_capture(BitBoard, BitBoard, Int2Type<rules::remove_ep>);        
+bool is_intersecting_capture(BitBoard, BitBoard, Int2Type<rules::remove_af>);
 
 template<typename> bool is_intersecting_promotion(BitBoard, BitBoard);
 
-// tag dispatching based on promotion condition
-bool is_intersecting_promotion(BitBoard, BitBoard, Int2Type<rules::PROMOTE_BR>);
-bool is_intersecting_promotion(BitBoard, BitBoard, Int2Type<rules::PROMOTE_EP>);
+// tag dispatching on promotion condition
+bool is_intersecting_promotion(BitBoard, BitBoard, Int2Type<rules::promote_ep>);
+bool is_intersecting_promotion(BitBoard, BitBoard, Int2Type<rules::promote_af>);
 
 }       // namespace dctl
 

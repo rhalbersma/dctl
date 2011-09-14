@@ -13,5 +13,5 @@ typedef Russian Shashki;
 }       // namespace dctl
 
 #include "../rules/Russian.h"
-#include "../capture/Russian.h"
+#include "../capture/Russian.hpp"
 #include "../notation/Russian.h"

@@ -1,5 +1,5 @@
 #pragma once
-#include "../node/Stack.h"
+#include "../node/Stack.hpp"
 
 namespace dctl {
 
@@ -30,7 +30,7 @@ public:
 
 protected:
         // destructor
-        ~StateInterface() {};
+        ~StateInterface() { /* no-op */ }
 
 private:
         // invariant relating generate, count and detect

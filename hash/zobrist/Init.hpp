@@ -2,8 +2,8 @@
 #include "../../node/Position.h"
 #include "../../node/Move.h"
 #include "../../node/Material.h"
-#include "../../node/Restricted.h"
-#include "../../node/Side.h"
+#include "../../node/Restricted.hpp"
+#include "../../node/Side.hpp"
 
 namespace dctl {
 namespace hash {
@@ -49,8 +49,8 @@ struct Init<Material, Index>
         Index operator()(const Material& p) const
         {
                 return (
-        	        Random<Index>::xor_rand(p.pieces(Side::BLACK), Random<Index>::PIECES[Side::BLACK]) ^
-                        Random<Index>::xor_rand(p.pieces(Side::WHITE), Random<Index>::PIECES[Side::WHITE]) ^
+        	        Random<Index>::xor_rand(p.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
+                        Random<Index>::xor_rand(p.pieces(Side::white), Random<Index>::PIECES[Side::white]) ^
                         Random<Index>::xor_rand(p.kings()            , Random<Index>::KINGS              )
                 );
         }
@@ -77,8 +77,8 @@ struct Init<Restricted, Index>
         Index operator()(const Restricted& restricted) const
         {
                 return (
-                        Init<KingMoves, Index>()(restricted[Side::BLACK], Side::BLACK) ^
-                        Init<KingMoves, Index>()(restricted[Side::WHITE], Side::WHITE)
+                        Init<KingMoves, Index>()(restricted[Side::black], Side::black) ^
+                        Init<KingMoves, Index>()(restricted[Side::white], Side::white)
                 );
         }
 };

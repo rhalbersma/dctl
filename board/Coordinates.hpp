@@ -1,7 +1,25 @@
-#include "Angle.h"
+#pragma once
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Angle.hpp"
+#include "Transform.hpp"
 
 namespace dctl {
 namespace board {
+
+template<typename G, int R, int C>
+struct Coordinates
+{
+        typedef G grid;
+        BOOST_STATIC_CONSTANT(auto, row = R); 
+        BOOST_STATIC_CONSTANT(auto, col = C);
+};
+
+template<typename G, int SQ>
+struct Square
+{
+        typedef G grid;
+        BOOST_STATIC_CONSTANT(auto, square = SQ);
+};
 
 template<typename C>
 class Coordinates2Square

@@ -1,22 +1,34 @@
-#include <functional>   // std::bind, std::placeholders
-#include <iomanip>      // std::setw
-#include <sstream>      // std::stringstream
-#include <boost/config.hpp>
-#include "Content.h"
-#include "Numbers.h"
+#pragma once
+#include <functional>                   // std::bind, std::placeholders
+#include <iomanip>                      // std::setw
+#include <sstream>                      // std::stringstream
+#include <string>                       // std::string
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Content.hpp"
+#include "Numbers.hpp"
+#include "Token.hpp"
 #include "../node/Position.h"
-#include "../node/Side.h"
+#include "../node/Side.hpp"
 #include "../utility/IntegerTypes.h"
 
 namespace dctl {
 namespace setup {
 
-// position content in diagram layout
-template<typename Protocol, typename Content> template<typename Board>
-std::string diagram<Protocol, Content>::operator()(const Position<Board>& p) const
+template
+<
+        typename Protocol, 
+        typename Content = typename Token<Protocol>::type
+>
+class diagram
 {
-        return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
-}
+public:
+        // position content in diagram layout
+        template<typename Board> 
+        std::string operator()(const Position<Board>& p) const
+        {
+                return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
+        }
+};
 
 // partial specialization to write bit numbers in diagram layout
 template<typename Board>
@@ -90,6 +102,7 @@ private:
 
         BOOST_STATIC_CONSTANT(auto, WHITE_SPACE = ' ');
 };
+
 
 }       // namespace setup
 }       // namespace dctl

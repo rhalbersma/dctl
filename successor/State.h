@@ -1,7 +1,7 @@
 #pragma once
 #include "Selection.h"
 #include "StateInterface.h"
-#include "../node/Stack.h"
+#include "../node/Stack.hpp"
 
 namespace dctl {
 
@@ -17,7 +17,7 @@ Successor and Mobility classes.
 
 The State class also forms the <ConcreteFlyWeight> in a <FlyWeight Pattern>, 
 with the StateInterface class as the <FlyWeight>, and the Dispatcher class 
-as the <FlyWeightFactory>. Exampls of the <Client> include the Successor and
+as the <FlyWeightFactory>. Examples of the <Client> include the Successor and
 Mobility classes.
 
 The State class also forms the <AbstractClass> in a <Template Method Pattern>,

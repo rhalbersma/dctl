@@ -1,6 +1,6 @@
 #include <boost/assert.hpp>
 #include "../node/Position.h"
-#include "../board/Direction.h"
+#include "../board/Direction.hpp"
 
 namespace dctl {
 namespace successor {

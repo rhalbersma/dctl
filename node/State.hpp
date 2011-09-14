@@ -1,6 +1,9 @@
-#include "Position.h"
+#pragma once
+#include "../utility/IntegerTypes.h"
 
 namespace dctl {
+
+template<typename> class Position;
 
 template<typename Board>
 int state(const Position<Board>& p)
@@ -12,6 +15,15 @@ template<bool Color, typename Board>
 int state(const Position<Board>& p)
 {
         return state(Color, p.kings(Color), p.men(Color));
+}
+
+inline int state(bool color, BitBoard kings, BitBoard men)
+{
+        return (
+                ((color != 0) << 2) +
+                ((kings != 0) << 1) +
+                ((  men != 0) << 0)
+        );
 }
 
 }       // namespace dctl

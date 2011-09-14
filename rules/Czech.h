@@ -9,7 +9,7 @@ namespace rules {
 
 // capture mechanics
 template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<variant::Czech>       { enum { value = DIRS_up }; };
+template<> struct man_capture_directions<variant::Czech>       { enum { value = dirs_up }; };
 
 // capture precedence
 template<typename> struct is_absolute_king_precedence;

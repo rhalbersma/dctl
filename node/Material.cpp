@@ -1,7 +1,7 @@
 #include <boost/assert.hpp>
 #include <functional>
 #include "Material.h"
-#include "Side.h"
+#include "Side.hpp"
 #include "../bit/Bit.h"
 
 namespace dctl {
@@ -9,14 +9,14 @@ namespace dctl {
 // zero initialize
 Material::Material(BitBoard)
 {
-        init<Side::BLACK>(0, 0, 0);
+        init<Side::black>(0, 0, 0);
         BOOST_ASSERT(invariant());
 }
 
 // initialize with a set of bitboards
 Material::Material(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings)
 {
-        init<Side::BLACK>(black_pieces, white_pieces, kings);
+        init<Side::black>(black_pieces, white_pieces, kings);
         BOOST_ASSERT(invariant());
 }
 
@@ -53,14 +53,14 @@ BitBoard Material::kings() const
 // black and white pieces
 BitBoard Material::pieces() const
 {
-	return pieces(Side::BLACK) ^ pieces(Side::WHITE);
+	return pieces(Side::black) ^ pieces(Side::white);
 }
 
 // xor-assign the set bits of another piece set
 Material& Material::operator^=(const Material& other)
 {
-        pieces_[Side::BLACK] ^= other.pieces(Side::BLACK);
-        pieces_[Side::WHITE] ^= other.pieces(Side::WHITE);
+        pieces_[Side::black] ^= other.pieces(Side::black);
+        pieces_[Side::white] ^= other.pieces(Side::white);
         kings_ ^= other.kings();
 
         BOOST_ASSERT(invariant());
@@ -77,7 +77,7 @@ const Material operator^(const Material& left, const Material& right)
 bool Material::invariant() const
 {
         return (
-		bit::is_exclusive(pieces(Side::BLACK), pieces(Side::WHITE)) &&
+		bit::is_exclusive(pieces(Side::black), pieces(Side::white)) &&
                 bit::is_within(kings(), pieces())
         );
 }
@@ -85,8 +85,8 @@ bool Material::invariant() const
 bool operator==(const Material& left, const Material& right)
 {
         return (
-		(left.pieces(Side::BLACK) == right.pieces(Side::BLACK)) &&
-		(left.pieces(Side::WHITE) == right.pieces(Side::WHITE)) &&
+		(left.pieces(Side::black) == right.pieces(Side::black)) &&
+		(left.pieces(Side::white) == right.pieces(Side::white)) &&
                             (left.kings() == right.kings())
         );
 }

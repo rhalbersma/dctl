@@ -29,7 +29,7 @@ void Position<Board>::make(const Move& m)
         BOOST_ASSERT(hash_index_invariant());
 }
 
-// tag dispatching based on restrictions on consecutive moves with the same king
+// tag dispatching on restrictions on consecutive moves with the same king
 template<typename Board> template<typename Rules>
 void Position<Board>::make_irreversible(const Move& m)
 {

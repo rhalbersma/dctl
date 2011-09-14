@@ -10,7 +10,7 @@ public:
         enum { NONE, PAWN, KING, BOTH };
 
         // constructors
-        Material() {};                                  // no default initialization
+        Material() { /* no-op */ }                                 // no default initialization
         explicit Material(BitBoard);                    // zero initialize
         Material(BitBoard, BitBoard, BitBoard);         // initialize with a set of bitboards
 
