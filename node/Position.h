@@ -1,7 +1,7 @@
 #pragma once
 #include "Material.h"
-#include "Restricted.h"
-#include "Side.h"
+#include "Restricted.hpp"
+#include "Side.hpp"
 #include "../utility/IntegerTypes.h"
 #include "../utility/TemplateTricks.h"
 
@@ -14,7 +14,7 @@ class Position
 {
 public:
         // constructors
-        Position() {};                                          // trivial default constructor
+        Position() { /* no-op */ }                              // trivial default constructor
         Position(BitBoard, BitBoard, BitBoard, bool);           // initialize with a set of bitboards and a color
         static Position initial();                              // initial position
 
@@ -46,7 +46,7 @@ private:
         // implementation
         void detach();
 
-        // tag dispatching based on restrictions on consecutive moves with the same king
+        // tag dispatching on restrictions on consecutive moves with the same king
         template<typename> void make_irreversible(const Move&);
         template<typename> void make_irreversible(const Move&, Int2Type<false>);
         template<typename> void make_irreversible(const Move&, Int2Type<true >);
@@ -80,7 +80,7 @@ template<typename Board> BitBoard passive_men(const Position<Board>&);          
 template<typename Board> BitBoard passive_kings(const Position<Board>&);        // kings for the opposite side
 template<typename Board> BitBoard passive_pieces(const Position<Board>&);       // pieces for the opposite side
 
-// tag dispatching based on restrictions on consecutive moves with the same king
+// tag dispatching on restrictions on consecutive moves with the same king
 template<typename, typename Board> BitBoard unrestricted_kings(const Position<Board>&, bool);
 template<typename, typename Board> BitBoard unrestricted_kings(const Position<Board>&, bool, Int2Type<false>);
 template<typename, typename Board> BitBoard unrestricted_kings(const Position<Board>&, bool, Int2Type<true >);
@@ -93,7 +93,7 @@ template<typename Board> const KingMoves& passive_restricted(const Position<Boar
 template<typename, typename Board> bool is_draw(const Position<Board>&);
 template<typename Board> bool is_repetition_draw(const Position<Board>&);       
 
-// tag dispatching based on restrictions on consecutive reversible moves        
+// tag dispatching on restrictions on consecutive reversible moves        
 template<typename, typename Board> bool is_reversible_draw(const Position<Board>&);
 template<typename, typename Board> bool is_reversible_draw(const Position<Board>&, Int2Type<false>);
 template<typename, typename Board> bool is_reversible_draw(const Position<Board>&, Int2Type<true >);

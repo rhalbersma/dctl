@@ -4,7 +4,7 @@
 #include "Weight.h"
 #include "../successor/Mobility.h"
 #include "../node/Position.h"
-#include "../node/Side.h"
+#include "../node/Side.hpp"
 #include "../variant/International.h"
 
 namespace dctl {
@@ -12,7 +12,7 @@ namespace dctl {
 template<typename Board>
 int Evaluate::evaluate(const Position<Board>& p)
 {
-        return (p.active_color() == Side::WHITE)? delta_evaluate<Side::WHITE>(p) : delta_evaluate<Side::BLACK>(p);
+        return (p.active_color() == Side::white)? delta_evaluate<Side::white>(p) : delta_evaluate<Side::black>(p);
 }
 
 template<bool Color, typename Board>
@@ -120,15 +120,15 @@ void Evaluate::print_break_down(const Position<Board>& p)
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";
         std::cout<< "\n";
-        std::cout << "Material" << std::setw(6) << material<Side::BLACK>(p) << std::setw(6) << material<Side::WHITE>(p) << std::setw(6) << delta_material<Side::BLACK>(p) << "\n";
-        std::cout << "Tempo   " << std::setw(6) << tempo<Side::BLACK>(p)    << std::setw(6) << tempo<Side::WHITE>(p)    << std::setw(6) << delta_tempo<Side::BLACK>(p)    << "\n";
-        std::cout << "Center  " << std::setw(6) << center<Side::BLACK>(p)   << std::setw(6) << center<Side::WHITE>(p)   << std::setw(6) << delta_center<Side::BLACK>(p)   << "\n";
-        std::cout << "Balance " << std::setw(6) << balance<Side::BLACK>(p)  << std::setw(6) << balance<Side::WHITE>(p)  << std::setw(6) << delta_balance<Side::BLACK>(p)  << "\n";
-        std::cout << "Mobility" << std::setw(6) << mobility<Side::BLACK>(p) << std::setw(6) << mobility<Side::WHITE>(p) << std::setw(6) << delta_mobility<Side::BLACK>(p) << "\n";
+        std::cout << "Material" << std::setw(6) << material<Side::black>(p) << std::setw(6) << material<Side::white>(p) << std::setw(6) << delta_material<Side::black>(p) << "\n";
+        std::cout << "Tempo   " << std::setw(6) << tempo<Side::black>(p)    << std::setw(6) << tempo<Side::white>(p)    << std::setw(6) << delta_tempo<Side::black>(p)    << "\n";
+        std::cout << "Center  " << std::setw(6) << center<Side::black>(p)   << std::setw(6) << center<Side::white>(p)   << std::setw(6) << delta_center<Side::black>(p)   << "\n";
+        std::cout << "Balance " << std::setw(6) << balance<Side::black>(p)  << std::setw(6) << balance<Side::white>(p)  << std::setw(6) << delta_balance<Side::black>(p)  << "\n";
+        std::cout << "Mobility" << std::setw(6) << mobility<Side::black>(p) << std::setw(6) << mobility<Side::white>(p) << std::setw(6) << delta_mobility<Side::black>(p) << "\n";
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";
         std::cout<< "\n";
-        std::cout << "Evaluate" << std::setw(6) << evaluate<Side::BLACK>(p) << std::setw(6) << evaluate<Side::WHITE>(p) << std::setw(6) << delta_evaluate<Side::BLACK>(p) << "\n";
+        std::cout << "Evaluate" << std::setw(6) << evaluate<Side::black>(p) << std::setw(6) << evaluate<Side::white>(p) << std::setw(6) << delta_evaluate<Side::black>(p) << "\n";
         std::cout<< "\n";
 }
 

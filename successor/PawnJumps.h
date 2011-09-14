@@ -1,6 +1,6 @@
 #pragma once
 #include "../node/Material.h"
-#include "../node/Stack.h"
+#include "../node/Stack.hpp"
 #include "../utility/IntegerTypes.h"
 #include "../utility/TemplateTricks.h"
 #include "../rules/Rules.h"
@@ -35,50 +35,50 @@ private:
         typedef Driver<Color, Material::KING, Jumps, Rules, Board> KingJumps;
         typedef board::Direction<Color, Board> Direction;
         
-        // tag dispatching based on whether men can capture kings
+        // tag dispatching on whether men can capture kings
         static void generate_targets(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
         static void generate_targets(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<false>);
         static void generate_targets(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<true >);
 
-        // tag dispatching based on man capture directions
+        // tag dispatching on man capture directions
         static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&);
-        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_ALL >);
-        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_ORTH>);
-        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_DIAG>);
-        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_up  >);
-        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::DIRS_down>);
+        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::dirs_all >);
+        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::dirs_orth>);
+        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::dirs_diag>);
+        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::dirs_up  >);
+        static void generate_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::dirs_down>);
 
         template<int> static void generate_dir(BitBoard, capture::State<Rules, Board>&, Stack&);
         template<int> static void generate_next(BitBoard, capture::State<Rules, Board>&, Stack&);
 
-        // tag dispatching based on promotion condition
+        // tag dispatching on promotion condition
         template<int> static bool scan_next(BitBoard, capture::State<Rules, Board>&, Stack&);
-        template<int> static bool scan_next(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::PROMOTE_BR>);
-        template<int> static bool scan_next(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::PROMOTE_EP>);
+        template<int> static bool scan_next(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::promote_af>);
+        template<int> static bool scan_next(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::promote_ep>);
 
-        // tag dispatching based on man scan directions
+        // tag dispatching on man scan directions
         template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&);
-        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_ALL >);
-        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_REST>);
-        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_SIDE>);
-        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_up  >);
-        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::SCAN_down>);
+        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::scan_all >);
+        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::scan_orth>);
+        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::scan_diag>);
+        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::scan_up  >);
+        template<int> static bool scan_dirs(BitBoard, capture::State<Rules, Board>&, Stack&, Int2Type<rules::scan_down>);
 
         template<int> static bool scan_dir(BitBoard, capture::State<Rules, Board>&, Stack&);
         template<int> static bool scan(BitBoard, capture::State<Rules, Board>&, Stack&);
 
-        // tag dispatching based on whether men can capture kings
+        // tag dispatching on whether men can capture kings
         static bool detect_targets(const Position<Board>&);
         static bool detect_targets(const Position<Board>&, Int2Type<false>);
         static bool detect_targets(const Position<Board>&, Int2Type<true>);
 
-        // tag dispatching based on man capture directions
+        // tag dispatching on man capture directions
         static bool detect_dirs(BitBoard, BitBoard, BitBoard);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_ALL >);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_ORTH>);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_DIAG>);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_up  >);
-        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::DIRS_down>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::dirs_all >);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::dirs_orth>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::dirs_diag>);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::dirs_up  >);
+        static bool detect_dirs(BitBoard, BitBoard, BitBoard, Int2Type<rules::dirs_down>);
 
         template<int> static bool detect_dir(BitBoard, BitBoard, BitBoard);
 };

@@ -1,5 +1,6 @@
-#include <boost/config.hpp>
-#include "Predicates.h"
+#pragma once
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Predicates.hpp"
 #include "../utility/IntegerTypes.h"
 #include "../utility/TemplateTricks.h"
 
@@ -26,7 +27,7 @@ template
         template<typename, typename, int> class Predicate, 
         typename Board, 
         typename Tuple, 
-        int SQ
+        int SQ = Board::ExternalGrid::size - 1
 >
 struct init_predicate
 {

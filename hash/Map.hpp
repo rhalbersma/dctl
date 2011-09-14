@@ -53,7 +53,7 @@ const Value* Map<Key, Value, Hash, Index, Replace>::find(const Key& key) const
         return find_entry<Key, Value, BUCKET_size>()(bucket_begin(index), key);
 }
 
-// tag dispatching based on the key's integer type trait
+// tag dispatching on the key's integer type trait
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
 const Value* Map<Key, Value, Hash, Index, Replace>::find(const Item& item) const
@@ -88,7 +88,7 @@ void Map<Key, Value, Hash, Index, Replace>::insert(const Key& key, const Value& 
         insert_entry<Key, Value, BUCKET_size, Replace>()(bucket_begin(index), Entry(key, value));
 }
 
-// tag dispatching based on the key's integral type trait
+// tag dispatching on the key's integral type trait
 template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
 template<typename Item>
 void Map<Key, Value, Hash, Index, Replace>::insert(const Item& item, const Value& value)

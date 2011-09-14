@@ -3,7 +3,7 @@
 #include <string>       // std::string
 #include <boost/asio.hpp>
 #include <boost/config.hpp>
-#include "Protocol.h"
+#include "Protocol.hpp"
 
 namespace dctl {
 namespace dxp {

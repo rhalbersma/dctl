@@ -23,7 +23,7 @@ class Map
 {
 public:
         // constructors
-        Map() {};
+        Map() { /* no-op */ }
         explicit Map(std::size_t);
 
         // capacity
@@ -45,11 +45,11 @@ public:
         void insert(const Item&, const Value&);
 
 private:
-        // tag dispatching based on the key's integer type trait
+        // tag dispatching on the key's integer type trait
         template<typename Item> const Value* find(const Item&, Int2Type<false>) const;
         template<typename Item> const Value* find(const Item&, Int2Type<true >) const;
 
-        // tag dispatching based on the key's integer type trait
+        // tag dispatching on the key's integer type trait
         template<typename Item> void insert(const Item&, const Value&, Int2Type<false>);
         template<typename Item> void insert(const Item&, const Value&, Int2Type<true >);
 

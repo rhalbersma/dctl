@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/config.hpp>
-#include "Value.h"
-#include "../node/Stack.h"
+#include "Value.hpp"
+#include "../node/Stack.hpp"
 #include "../rules/Rules.h"
 #include "../utility/IntegerTypes.h"
 #include "../utility/TemplateTricks.h"
@@ -49,39 +49,39 @@ public:
 private:
         BitBoard captured_targets() const;
 
-        // tag dispatching based on whether men can capture kings
+        // tag dispatching on whether men can capture kings
         BitBoard captured_king_targets(BitBoard) const;
         BitBoard captured_king_targets(BitBoard, Int2Type<false>) const;
         BitBoard captured_king_targets(BitBoard, Int2Type<true >) const;
 
         // tag dispatching on capture removal
-        void make(BitBoard, Int2Type<rules::REMOVE_1>);
-        void make(BitBoard, Int2Type<rules::REMOVE_N>);
+        void make(BitBoard, Int2Type<rules::remove_ep>);
+        void make(BitBoard, Int2Type<rules::remove_af>);
 
         // tag dispatching on capture removal
-        void undo(BitBoard, Int2Type<rules::REMOVE_1>);
-        void undo(BitBoard, Int2Type<rules::REMOVE_N>);
+        void undo(BitBoard, Int2Type<rules::remove_ep>);
+        void undo(BitBoard, Int2Type<rules::remove_af>);
 
-        // tag dispatching based on ambiguity of man captures
+        // tag dispatching on ambiguity of man captures
         template<bool> void add_man_capture(BitBoard, Stack&, Int2Type<false>);
         template<bool> void add_man_capture(BitBoard, Stack&, Int2Type<true >);
 
-        // tag dispatching based on king halt after final capture
-        template<bool, int> void add_king_capture(BitBoard, Stack&, Int2Type<rules::HALT_K>);
-        template<bool, int> void add_king_capture(BitBoard, Stack&, Int2Type<rules::HALT_1>);
-        template<bool, int> void add_king_capture(BitBoard, Stack&, Int2Type<rules::HALT_N>);
+        // tag dispatching on king halt after final capture
+        template<bool, int> void add_king_capture(BitBoard, Stack&, Int2Type<rules::halt_1K>);
+        template<bool, int> void add_king_capture(BitBoard, Stack&, Int2Type<rules::halt_1 >);
+        template<bool, int> void add_king_capture(BitBoard, Stack&, Int2Type<rules::halt_N >);
 
-        // tag dispatching based on promotion condition
+        // tag dispatching on promotion condition
         template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, bool, Stack&);
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Stack&, Int2Type<rules::PROMOTE_BR>);
-        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Stack&, Int2Type<rules::PROMOTE_EP>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Stack&, Int2Type<rules::promote_ep>);
+        template<bool> void add_king_capture(BitBoard, BitBoard, BitBoard, Stack&, Int2Type<rules::promote_af>);
 
         // implementation
 	BOOST_STATIC_CONSTANT(auto, TOGGLE = true);
 
         // representation
-        BitBoard initial_targets_;      // targets at the start of a capture
-        BitBoard remaining_targets_;    // targets at the end of a capture
+        BitBoard initial_targets_;      // targets before a capture
+        BitBoard remaining_targets_;    // targets after a capture
         BitBoard not_occupied_;
         BitBoard king_targets_;
         BitBoard from_sq_;                                             

@@ -3,7 +3,7 @@
 #include <boost/config.hpp>
 #include "Transposition.h"
 #include "Score.h"
-#include "../node/Stack.h"
+#include "../node/Stack.hpp"
 #include "../hash/Map.h"
 #include "../utility/Ply.h"
 #include "../utility/IntegerTypes.h"

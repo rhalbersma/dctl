@@ -3,23 +3,26 @@
 namespace dctl {
 namespace rules {
 
-// king range
-enum { RANGE_1, RANGE_N };
+// initial king range
+enum { range_1, range_N };
 
-// promotion condition: on the back row or en-passant
-enum { PROMOTE_BR, PROMOTE_EP };
+// intermediate king range
+enum { turn_1, turn_N };
+
+// final king range
+enum { halt_1, halt_N, halt_1K };
 
 // initial capture directions
-enum { DIRS_up, DIRS_down, DIRS_DIAG, DIRS_ORTH, DIRS_ALL };
+enum { dirs_up, dirs_down, dirs_diag, dirs_orth, dirs_all };
 
 // intermediate capture directions
-enum { SCAN_up, SCAN_down, SCAN_SIDE, SCAN_REST, SCAN_ALL };
+enum { scan_up, scan_down, scan_diag, scan_orth, scan_all };
 
-// king halt after final capture
-enum { HALT_1, HALT_N, HALT_K };
+// capture removal: en-passant (in passing) or apres-fini (having finished)
+enum { remove_ep, remove_af };
 
-// capture removal: one by one or all at once
-enum { REMOVE_1, REMOVE_N };
+// promotion condition: en-passant (in passing) or apres-fini (having finished)
+enum { promote_ep, promote_af };
 
 }       // namespace rules
 }       // namespace dctl

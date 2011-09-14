@@ -1,5 +1,5 @@
 #include "../bit/Bit.h"
-#include "../board/Traits.h"
+#include "../board/Traits.hpp"
 
 namespace dctl {
 

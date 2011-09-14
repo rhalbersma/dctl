@@ -10,4 +10,4 @@ struct Killer {};
 }       // namespace dctl
 
 #include "../rules/Killer.h"
-#include "../capture/Killer.h"
+#include "../capture/Killer.hpp"

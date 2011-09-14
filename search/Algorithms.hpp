@@ -5,7 +5,7 @@
 #include "../successor/Successor.h"
 #include "../successor/Selection.h"
 #include "../node/Position.h"
-#include "../node/Stack.h"
+#include "../node/Stack.hpp"
 #include "../utility/Iota.h"
 
 namespace dctl {
@@ -15,7 +15,7 @@ namespace search {
 template<typename Rules, typename Board>
 int Root::iterative_deepening(const Position<Board>& p, int depth)
 {
-        int score = -infinity();                
+        auto score = -infinity();                
         int alpha, beta;
 
         Parameters root_node;       
@@ -78,11 +78,11 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
         // without a valid move, the position is an immediate loss
         if (moves.empty()) {
-                const int value = loss_value(0);
+                const auto value = loss_value(0);
 
                 // we can only have an upper bound or an exact value at this point
                 BOOST_ASSERT(value < beta);
-                const Transposition::Bound bound = (value <= alpha)? Transposition::upper_bound : Transposition::exact_value;
+                const auto bound = (value <= alpha)? Transposition::upper_bound : Transposition::exact_value;
 
                 TT.insert(p, Transposition(value, bound, depth, Transposition::no_move()));
                 return value;
@@ -90,7 +90,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
         // internal iterative deepening
         if (!(TT_entry && TT_entry->has_move())) {
-                const int IID_depth = is_PV(ThisNode)? depth - 2 : depth / 2;
+                const auto IID_depth = is_PV(ThisNode)? depth - 2 : depth / 2;
                 if (IID_depth > 0) {
                         pvs<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
                         TT_entry = TT.find(p);
@@ -153,7 +153,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         BOOST_ASSERT(best_move != Transposition::no_move());
 
         // determine the bound type of the value
-        const Transposition::Bound bound = 
+        const auto bound = 
                 best_value <= original_alpha ? Transposition::upper_bound : 
                 best_value >= beta ? Transposition::lower_bound : Transposition::exact_value;
         TT.insert(p, Transposition(best_value, bound, depth, best_move));

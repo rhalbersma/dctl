@@ -1,6 +1,6 @@
 #pragma once
 #include "../node/Material.h"
-#include "../node/Stack.h"
+#include "../node/Stack.hpp"
 #include "../utility/IntegerTypes.h"
 #include "../utility/TemplateTricks.h"
 
@@ -24,7 +24,7 @@ private:
         // implementation
         static void generate(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
 
-        // tag dispatching based on absolute king capture precedence
+        // tag dispatching on absolute king capture precedence
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&);
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<false>);
         static void generate_precede(const Position<Board>&, capture::State<Rules, Board>&, Stack&, Int2Type<true >);

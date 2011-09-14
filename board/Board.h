@@ -1,7 +1,7 @@
 #pragma once
-#include "Grid.h"
-#include "Structure.h"
-#include "Transform.h"
+#include "Grid.hpp"
+#include "Structure.hpp"
+#include "Transform.hpp"
 #include "../utility/IntegerTypes.h"
 
 namespace dctl {

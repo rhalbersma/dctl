@@ -1,12 +1,13 @@
-#include <boost/config.hpp>
-#include "Coordinates.h"
-#include "Grid.h"
-#include "Traits.h"
+#pragma once
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Coordinates.hpp"
+#include "Grid.hpp"
+#include "Traits.hpp"
 
 namespace dctl {
 namespace board {
 
-template<typename Board, typename /*Tuple*/, int SQ>
+template<typename Board, typename /* Tuple */, int SQ>
 class is_square
 {
 public:

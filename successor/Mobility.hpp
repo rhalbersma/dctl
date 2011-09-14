@@ -1,6 +1,6 @@
 #include <boost/assert.hpp>
 #include "Dispatcher.h"
-#include "../node/State.h"
+#include "../node/State.hpp"
 
 namespace dctl {
 

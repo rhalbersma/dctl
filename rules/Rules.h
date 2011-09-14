@@ -9,7 +9,7 @@ namespace rules {
 //+----------------------------------------------------------------------------+
 
 // king range
-template<typename> struct is_long_king_range                    { enum { value = RANGE_N }; };
+template<typename> struct is_long_king_range                    { enum { value = range_N }; };
 
 // restricted consecutive moves with the same king
 template<typename> struct is_restricted_same_king_moves         { enum { value = false }; };
@@ -17,29 +17,29 @@ template<typename> struct is_restricted_same_king_moves         { enum { value =
 // maximum consecutive moves with the same king                 // NO default: MUST be specialized if
 template<typename> struct max_same_king_moves;                  // is_restricted_same_king_moves == true 
 
-// promotion condition: on the back row or en-passant
-template<typename> struct promotion_condition                   { enum { value = PROMOTE_BR }; };
+// promotion condition: en-passent or apres-fini
+template<typename> struct promotion_condition                   { enum { value = promote_af }; };
 
 //+----------------------------------------------------------------------------+
 //|      Capture mechanics                                                     |
 //+----------------------------------------------------------------------------+
 
 // king capture directions
-template<typename> struct king_capture_directions               { enum { value = DIRS_DIAG }; };
+template<typename> struct king_capture_directions               { enum { value = dirs_diag }; };
 
 // man capture directions
-template<typename> struct man_capture_directions                { enum { value = DIRS_DIAG }; };
+template<typename> struct man_capture_directions                { enum { value = dirs_diag }; };
 
 // man backwards capture
-template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != DIRS_up }; };
+template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != dirs_up }; };
 
 // relation between initial and intermediate capture directions
 template<int> struct scan_directions;
-template<> struct scan_directions<DIRS_up  >                    { enum { value = SCAN_up   }; };
-template<> struct scan_directions<DIRS_down>                    { enum { value = SCAN_down }; };
-template<> struct scan_directions<DIRS_DIAG>                    { enum { value = SCAN_SIDE }; };
-template<> struct scan_directions<DIRS_ORTH>                    { enum { value = SCAN_SIDE }; };
-template<> struct scan_directions<DIRS_ALL >                    { enum { value = SCAN_ALL  }; };
+template<> struct scan_directions<dirs_up  >                    { enum { value = scan_up   }; };
+template<> struct scan_directions<dirs_down>                    { enum { value = scan_down }; };
+template<> struct scan_directions<dirs_diag>                    { enum { value = scan_diag }; };
+template<> struct scan_directions<dirs_orth>                    { enum { value = scan_diag }; };
+template<> struct scan_directions<dirs_all >                    { enum { value = scan_all  }; };
 
 // king capture scan directions
 template<typename Rules> struct king_scan_directions            { enum { value = scan_directions<king_capture_directions<Rules>::value>::value }; };
@@ -53,8 +53,8 @@ template<typename> struct is_capture_direction_reversal         { enum { value =
 // king halt after final capture
 template<typename Rules> struct king_capture_halt               { enum { value = is_long_king_range<Rules>::value }; };
 
-// capture removal: one by one or all at once
-template<typename> struct capture_removal                       { enum { value = REMOVE_N }; };
+// capture removal: en-passant or apres-fini
+template<typename> struct capture_removal                       { enum { value = remove_af }; };
 
 // men can capture kings
 template<typename> struct is_men_capture_kings                  { enum { value = true  }; };
@@ -66,10 +66,10 @@ template<typename> struct is_men_capture_kings                  { enum { value =
 // majority capture precedence
 template<typename> struct is_majority_precedence                { enum { value = false }; };
 
-// absolute king capture precedence (applied before any majority capture precedene rule)
+// absolute king capture precedence (applied before any majority capture precedence rule)
 template<typename> struct is_absolute_king_precedence           { enum { value = false }; };
 
-// relative king capture precedence (applied after any majority capture precedenc rule)
+// relative king capture precedence (applied after any majority capture precedence rule)
 template<typename> struct is_relative_king_precedence           { enum { value = false }; };
 
 //+----------------------------------------------------------------------------+

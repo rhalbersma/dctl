@@ -22,7 +22,7 @@ Position<Board>::Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard
 template<typename Board>
 Position<Board> Position<Board>::initial()
 {
-        return Position<Board>(Board::INITIAL[Side::BLACK], Board::INITIAL[Side::WHITE], 0, Side::WHITE);
+        return Position<Board>(Board::INITIAL[Side::black], Board::INITIAL[Side::white], 0, Side::white);
 }
 
 template<typename Board>
@@ -188,7 +188,7 @@ BitBoard passive_pieces(const Position<Board>& p)
         return p.pieces(p.passive_color());
 }
 
-// tag dispatching based on restrictions on consecutive moves with the same king
+// tag dispatching on restrictions on consecutive moves with the same king
 template<typename Rules, typename Board>
 BitBoard unrestricted_kings(const Position<Board>& p, bool color)
 {
@@ -258,7 +258,7 @@ bool is_repetition_draw(const Position<Board>& p)
         return false;
 }
 
-// tag dispatching based on restrictions on consecutive king moves by both sides
+// tag dispatching on restrictions on consecutive king moves by both sides
 template<typename Rules, typename Board>
 bool is_reversible_draw(const Position<Board>& p)
 {

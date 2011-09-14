@@ -1,3 +1,6 @@
+#pragma once
+#include "../utility/IntegerTypes.h"
+
 namespace dctl {
 
 template<bool Color, typename Board>

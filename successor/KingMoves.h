@@ -1,6 +1,6 @@
 #pragma once
 #include "../node/Material.h"
-#include "../node/Stack.h"
+#include "../node/Stack.hpp"
 #include "../utility/IntegerTypes.h"
 #include "../utility/TemplateTricks.h"
 #include "../rules/Rules.h"
@@ -28,24 +28,24 @@ public:
         static bool detect(const Position<Board>&);
 
 private:
-        // tag dispatching based on restrictions on consecutive moves with the same king
+        // tag dispatching on restrictions on consecutive moves with the same king
         static void generate_serial(BitBoard, BitBoard, Stack&);
         static void generate_serial(BitBoard, BitBoard, Stack&, Int2Type<false>);
         static void generate_serial(BitBoard, BitBoard, Stack&, Int2Type<true >);
         
         static void generate_dirs(BitBoard, BitBoard, Stack&);
         
-        // tag dispatching based on king range
+        // tag dispatching on king range
         template<int> static void generate_dir(BitBoard, BitBoard, Stack&);
-        template<int> static void generate_dir(BitBoard, BitBoard, Stack&, Int2Type<rules::RANGE_1>);
-        template<int> static void generate_dir(BitBoard, BitBoard, Stack&, Int2Type<rules::RANGE_N>);
+        template<int> static void generate_dir(BitBoard, BitBoard, Stack&, Int2Type<rules::range_1>);
+        template<int> static void generate_dir(BitBoard, BitBoard, Stack&, Int2Type<rules::range_N>);
 
         static int count_dirs(BitBoard, BitBoard);
         
-        // tag dispatching based on king range
+        // tag dispatching on king range
         template<int> static int count_dir(BitBoard, BitBoard);
-        template<int> static int count_dir(BitBoard, BitBoard, Int2Type<rules::RANGE_1>);
-        template<int> static int count_dir(BitBoard, BitBoard, Int2Type<rules::RANGE_N>);
+        template<int> static int count_dir(BitBoard, BitBoard, Int2Type<rules::range_1>);
+        template<int> static int count_dir(BitBoard, BitBoard, Int2Type<rules::range_N>);
 
         static bool detect_dirs(BitBoard, BitBoard);
         template<int> static bool detect_dir(BitBoard, BitBoard);

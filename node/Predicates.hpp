@@ -97,7 +97,7 @@ bool is_intersecting_capture(const Position<Board>& p, const Move& m)
 
 // partial specialization for piece by piece removal during a capture sequence
 template<typename Board>
-bool is_intersecting_capture(const Position<Board>& p, const Move& m, Int2Type<rules::REMOVE_1>)
+bool is_intersecting_capture(const Position<Board>& p, const Move& m, Int2Type<rules::remove_ep>)
 {
         // for intersecting captures, a man-capturing king can appear as a captured king
         return bit::is_single(moving_kings(p, m) & captured_kings(p, m) & passive_men(p));
@@ -105,7 +105,7 @@ bool is_intersecting_capture(const Position<Board>& p, const Move& m, Int2Type<r
 
 // partial specialization for complete removal after a capture sequence
 template<typename Board>
-bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::REMOVE_N>)
+bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::remove_af>)
 {
         return false;
 }
@@ -117,7 +117,7 @@ bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces)
         return is_intersecting_capture(delta, captured_pieces, Int2Type<rules::capture_removal<Rules>::value>());
 }
 
-// tag dispatching based on promotion condition
+// tag dispatching on promotion condition
 template<typename Rules>
 bool is_intersecting_promotion(BitBoard promotion, BitBoard delta)
 {

@@ -1,7 +1,7 @@
 #include <boost/assert.hpp>
 #include "../node/Position.h"
-#include "../node/Promotion.h"
-#include "../board/Direction.h"
+#include "../node/Promotion.hpp"
+#include "../board/Direction.hpp"
 #include "../bit/Bit.h"
 #include "../utility/Shift.h"
 

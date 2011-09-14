@@ -18,7 +18,7 @@ void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate(const Position
         generate_precede(p, capture, moves);
 }
 
-// tag dispatching based on absolute king capture precedence
+// tag dispatching on absolute king capture precedence
 template<bool Color, typename Rules, typename Board>
 void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate_precede(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves)
 {

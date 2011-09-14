@@ -1,29 +1,38 @@
-#include <cctype>
-#include "Diagram.h"
-#include "Protocols.h"
+#pragma once
+#include <cctype>                       // isdigit
+#include <sstream>                      // std::stringstream
+#include <string>                       // std::string
+#include "Diagram.hpp"
+#include "Protocols.hpp"
+#include "Token.hpp"
 
 namespace dctl {
+
+template<typename> class Position;
+
 namespace setup {
 
-template<typename Token>
-bool read_color(char c)
+template
+<
+        typename Board,
+        typename Protocol, 
+        typename Content = typename Token<Protocol>::type
+>
+struct read
 {
-	switch(c) {
-	case Token::BLACK:
-		return Side::BLACK;
-	case Token::WHITE:
-		return Side::WHITE;
-        default:
-                BOOST_ASSERT(false);
-                return false;
-	}
-}
+	Position<Board> operator()(const std::string&) const;
+};
 
-template<typename Token>
-char write_color(bool color)
+template
+<
+        typename Protocol, 
+        typename Content = typename Token<Protocol>::type
+>
+struct write
 {
-	return Token::color[color];
-}
+	template<typename Board> 
+        std::string operator()(const Position<Board>&) const;
+};
 
 template<typename Board, typename Token>
 struct read<Board, pdn::protocol, Token>
@@ -32,11 +41,11 @@ struct read<Board, pdn::protocol, Token>
         {      
                 BitBoard p_pieces[2] = {0, 0};
 	        BitBoard p_kings = 0;
-	        bool p_side = Side::BLACK;
+	        bool p_side = Side::black;
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return Position<Board>(p_pieces[Side::BLACK], p_pieces[Side::WHITE], p_kings, p_side);
+                        return Position<Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side);
 
                 bool setup_kings = false;
                 bool setup_color = p_side;
@@ -47,16 +56,16 @@ struct read<Board, pdn::protocol, Token>
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch(ch) {
-                        case Token::BLACK:
+                        case Token::black:
                                 // falling through
-                        case Token::WHITE:
+                        case Token::white:
                                 p_side = read_color<Token>(ch);
                                 break;                                
-                        case Token::COLON:
+                        case Token::colon:
                                 sstr >> ch;
                                 setup_color = read_color<Token>(ch);
                                 break;
-                        case Token::KING:                                       // setup kings
+                        case Token::king:                                       // setup kings
                                 setup_kings = true;
                                 break;
                         default:
@@ -74,7 +83,7 @@ struct read<Board, pdn::protocol, Token>
                                 break;
                         }
                 }
-                return Position<Board>(p_pieces[Side::BLACK], p_pieces[Side::WHITE], p_kings, p_side);
+                return Position<Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side);
         }
 };
 
@@ -85,25 +94,25 @@ struct write<pdn::protocol, Token>
         std::string operator()(const Position<Board>& p) const
         {
                 std::stringstream sstr;
-	        sstr << Token::QUOTE;					        // opening quotes
+	        sstr << Token::quote;					        // opening quotes
 	        sstr << write_color<Token>(p.active_color());			// side to move
 
                 for (auto i = 0; i < 2; ++i) {
 		        auto c = i != 0;
 		        if (p.pieces(c)) {
-			        sstr << Token::COLON;                           // colon
+			        sstr << Token::colon;                           // colon
 			        sstr << Token::color[c];                        // color tag
 		        }
 		        for (auto bb = p.pieces(c); bb; bit::clear_first(bb)) {
 			        if (p.kings() & bit::get_first(bb))
-				        sstr << Token::KING;			// king tag
+				        sstr << Token::king;			// king tag
                                 auto b = bit::find_first(bb);                   // bit index                        
 			        sstr << Board::bit2square(b) + 1;	        // square number
 			        if (bit::is_multiple(bb))                       // still pieces remaining
-				        sstr << Token::COMMA;			// comma separator
+				        sstr << Token::comma;			// comma separator
 		        }
 	        }
-	        sstr << Token::QUOTE << "\n";                                   // closing quotes
+	        sstr << Token::quote << "\n";                                   // closing quotes
 	        return sstr.str();
         }
 };
@@ -115,7 +124,7 @@ struct read<Board, dxp::protocol, Token>
         {
 	        BitBoard p_pieces[2] = {0, 0};
 	        BitBoard p_kings = 0;
-	        bool p_side = Side::BLACK;
+	        bool p_side = Side::black;
 
 	        std::stringstream sstr(s);
 	        char ch;
@@ -127,13 +136,13 @@ struct read<Board, dxp::protocol, Token>
 		        auto bb = BitBoard(1) << b;             // create bitboard
 		        sstr >> ch;
 		        switch(toupper(ch)) {
-		        case Token::BLACK:			
-			        p_pieces[Side::BLACK] ^= bb;    // black piece
+		        case Token::black:			
+			        p_pieces[Side::black] ^= bb;    // black piece
 			        break;
-		        case Token::WHITE:			
-			        p_pieces[Side::WHITE] ^= bb;    // white piece
+		        case Token::white:			
+			        p_pieces[Side::white] ^= bb;    // white piece
 			        break;
-                        case Token::EMPTY:
+                        case Token::empty:
                                 break;
                         default:
                                 BOOST_ASSERT(false);
@@ -142,7 +151,7 @@ struct read<Board, dxp::protocol, Token>
                         if (isupper(ch))
                                 p_kings ^= bb;                  // king
 	        }
-	        return Position<Board>(p_pieces[Side::BLACK], p_pieces[Side::WHITE], p_kings, p_side);
+	        return Position<Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side);
         }
 };
 
@@ -163,5 +172,28 @@ struct write<dxp::protocol, Token>
         }
 };
 
+template<typename Token>
+bool read_color(char c)
+{
+	switch(c) {
+	case Token::black:
+		return Side::black;
+	case Token::white:
+		return Side::white;
+        default:
+                BOOST_ASSERT(false);
+                return false;
+	}
+}
+
+template<typename Token>
+char write_color(bool color)
+{
+	return Token::color[color];
+}
+
 }       // namespace setup
 }       // namespace dctl
+
+// include template definitions inside header
+#include "String.hpp"

@@ -4,11 +4,11 @@
 #include "../evaluate/Evaluate.h"
 #include "../successor/Successor.h"
 #include "../node/Position.h"
-#include "../node/Stack.h"
+#include "../node/Stack.hpp"
 #include "../utility/Timer.h"
 
-#include "../setup/Diagram.h"
-#include "../setup/String.h"
+#include "../setup/Diagram.hpp"
+#include "../setup/String.hpp"
 #include "../notation/String.h"
 
 namespace dctl {

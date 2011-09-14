@@ -1,55 +1,13 @@
-#include <boost/assert.hpp>
-#include <iomanip>
-#include <sstream>
-#include <boost/lexical_cast.hpp>
-#include "BackAcknowledge.h"
-#include "Parser.h"
+#include "BackAcknowledge.hpp"
+#include "Parser.hpp"
 #include "DXP.h"
 
 namespace dctl {
 namespace dxp {
 
-const std::string BackAcknowledge::HEADER = "K";
+const std::string BackAcknowledge::HEADER_ = "K";
 
-const bool BackAcknowledge::REGISTERED = Parser<protocol>::register_message(HEADER, create);
-
-std::unique_ptr<MessageInterface> BackAcknowledge::create(const std::string& message)
-{
-        return std::unique_ptr<BackAcknowledge>(new BackAcknowledge(message));
-}
-
-BackAcknowledge::BackAcknowledge(const std::string& message)
-:
-        acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(0, 1).c_str())))
-{
-}
-
-BackAcknowledge::AcceptanceCode BackAcknowledge::acceptance_code() const
-{
-        return acceptance_code_;
-}
-
-std::string BackAcknowledge::str(AcceptanceCode a)
-{
-        return HEADER + body(a);
-}
-
-std::string BackAcknowledge::header() const
-{
-        return HEADER;
-}
-
-std::string BackAcknowledge::body() const
-{
-        return body(acceptance_code());
-}
-
-std::string BackAcknowledge::body(AcceptanceCode a)
-{
-        std::stringstream sstr;
-        sstr << std::setw(1) << a;
-        return sstr.str();
-}
+const bool BackAcknowledge::REGISTERED_ = Parser<protocol>::register_message(HEADER_, create);
 
 }       // namespace dxp
 }       // namespace dctl
