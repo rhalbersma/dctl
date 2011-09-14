@@ -2,8 +2,8 @@
 #include "../test_config.h"
 #include "../../src/walk/Root.h"
 #include "../../src/node/Position.h"
-#include "../../src/setup/Setup.h"
-#include "../../src/board/Types.h"
+#include "../../src/setup/Setup.hpp"
+#include "../../src/board/Types.hpp"
 #include "../../src/variant/Variant.h"
 
 namespace dctl {

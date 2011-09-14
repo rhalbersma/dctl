@@ -5,9 +5,9 @@
 #include "../../src/successor/Successor.h"
 #include "../../src/successor/Selection.h"
 #include "../../src/node/Position.h"
-#include "../../src/setup/Setup.h"
+#include "../../src/setup/Setup.hpp"
 #include "../../src/notation/String.h"
-#include "../../src/board/Types.h"
+#include "../../src/board/Types.hpp"
 #include "../../src/variant/Variant.h"
 
 namespace dctl {

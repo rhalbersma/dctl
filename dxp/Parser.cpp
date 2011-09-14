@@ -1,6 +1,6 @@
 #include <string>
 #include <boost/test/unit_test.hpp> 
-#include "../../src/dxp/Parser.h"
+#include "../../src/dxp/Parser.hpp"
 #include "../../src/dxp/DXP.h"
 
 namespace dctl {
