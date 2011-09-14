@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp> 
-#include "../../src/board/Types.h"
-#include "../../src/setup/Setup.h"
+#include "../../src/board/Types.hpp"
+#include "../../src/setup/Setup.hpp"
 
 namespace dctl {
 namespace setup {
