@@ -14,4 +14,4 @@ typedef Russian Shashki;
 
 #include "../rules/Russian.h"
 #include "../capture/Russian.hpp"
-#include "../notation/Russian.h"
+#include "../notation/Russian.hpp"

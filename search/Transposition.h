@@ -1,7 +1,7 @@
 #pragma once
 #include <string>       // std::string
 #include <boost/config.hpp>
-#include "../utility/IntegerTypes.h"
+#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 namespace search {

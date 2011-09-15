@@ -9,4 +9,4 @@ struct Thai {};
 }       // namespace dctl
 
 #include "../rules/Thai.h"
-#include "../notation/Thai.h"
+#include "../notation/Thai.hpp"

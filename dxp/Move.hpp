@@ -8,7 +8,7 @@
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
 #include "Parser.hpp"
-#include "DXP.h"
+#include "Protocol.hpp"
 
 namespace dctl {
 namespace dxp {
@@ -26,10 +26,15 @@ namespace dxp {
 
 */
         
-template<typename = void>
+template
+<
+        typename Protocol = protocol_v1,
+        template<typename> class Interface = MessageInterface, 
+        typename Factory = Parser
+>
 class Move_
 : 
-        public MessageInterface
+        public Interface<Protocol>
 {
 public:
         // views
@@ -70,7 +75,8 @@ public:
 
 private:
         // factory creation
-        static std::unique_ptr<MessageInterface> create(const std::string& message)
+        typedef Interface<Protocol> InterfaceVersion;
+        static std::unique_ptr<InterfaceVersion> create(const std::string& message)
         {
                 return std::unique_ptr<Move_>(new Move_(message));
         }
@@ -122,8 +128,10 @@ private:
         std::vector<int> captured_pieces_;       
 };
 
-template<typename T>
-bool Move_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+template<typename Protocol, template<typename> class Interface, typename Factory>
+bool Move_<Protocol, Interface, Factory>::registered_ = 
+        Factory::register_message(header(), create)
+;
 
 template class Move_<>;
 typedef Move_<> Move;

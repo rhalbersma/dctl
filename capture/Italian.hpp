@@ -2,7 +2,7 @@
 #include <boost/config.hpp>
 #include "ValueInterface.hpp"
 #include "../rules/Rules.h"
-#include "../utility/IntegerTypes.h"
+#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 

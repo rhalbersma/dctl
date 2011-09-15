@@ -1,8 +1,8 @@
 #pragma once
 #include "../node/Material.h"
 #include "../node/Stack.hpp"
-#include "../utility/IntegerTypes.h"
-#include "../utility/TemplateTricks.h"
+#include "../utility/IntegerTypes.hpp"
+#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 

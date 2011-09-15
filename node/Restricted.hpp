@@ -2,7 +2,7 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "../bit/Bit.h"
 #include "../rules/Rules.h"
-#include "../utility/IntegerTypes.h"
+#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 

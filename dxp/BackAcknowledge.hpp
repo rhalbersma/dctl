@@ -7,28 +7,33 @@
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
 #include "Parser.hpp"
-#include "DXP.h"
+#include "Protocol.hpp"
 
 namespace dctl {
 namespace dxp {
 
 /*
 
-        The BackAcknowledge class is a <ConcreteProduct> in a <Factory Method> 
+        The BackAcknowledge_ class is a <ConcreteProduct> in a <Factory Method> 
         design pattern, with the Parser class as the <ConcreteCreator> and the 
         MessageInterface class as the <Product>.
 
-        The BackAcknowledge class registers itself with the factory.
+        The BackAcknowledge_ class registers itself with the factory.
 
-        The format and semantics of BackAcknowledge are explained at:
+        The format and semantics of BackAcknowledge_ are explained at:
         http://www.mesander.nl/damexchange/ebackacc.htm
 
 */
         
-template<typename = void>
+template
+<
+        typename Protocol = protocol_v1,
+        template<typename> class Interface = MessageInterface, 
+        typename class Factory = Parser
+>
 class BackAcknowledge_
 : 
-        public MessageInterface
+        public Interface<Protocol>
 {
 public:
         // typedefs
@@ -52,7 +57,8 @@ public:
 
 private:
         // factory creation
-        static std::unique_ptr<MessageInterface> create(const std::string& message)
+        typedef Interface<Protocol> InterfaceVersion;
+        static std::unique_ptr<InterfaceVersion> create(const std::string& message)
         {
                 return std::unique_ptr<BackAcknowledge_>(new BackAcknowledge_(message));
         }
@@ -82,15 +88,17 @@ private:
                 return sstr.str();
         }
 
-        BOOST_STATIC_CONSTANT(char, HEADER_ = 'K');
+        BOOST_STATIC_CONSTANT(auto, HEADER_ ='K');
         static bool registered_;
 
         // representation
         AcceptanceCode acceptance_code_;
 };
 
-template<typename T>
-bool BackAcknowledge_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+template<typename Protocol, template<typename> class Interface, typename Factory>
+bool BackAcknowledge_<Protocol, Interface, Factory>::registered_ = 
+        Factory::register_message(header(), create)
+;
 
 template class BackAcknowledge_<>;
 typedef BackAcknowledge_<> BackAcknowledge;

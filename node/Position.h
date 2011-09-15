@@ -2,8 +2,8 @@
 #include "Material.h"
 #include "Restricted.hpp"
 #include "Side.hpp"
-#include "../utility/IntegerTypes.h"
-#include "../utility/TemplateTricks.h"
+#include "../utility/IntegerTypes.hpp"
+#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 

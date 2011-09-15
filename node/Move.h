@@ -3,8 +3,8 @@
 #include <boost/config.hpp>
 #include "Material.h"
 #include "Side.hpp"
-#include "../utility/IntegerTypes.h"
-#include "../utility/Ply.h"
+#include "../utility/IntegerTypes.hpp"
+#include "../utility/Ply.hpp"
 
 namespace dctl {
 

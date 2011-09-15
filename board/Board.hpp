@@ -1,6 +1,6 @@
 #include "MetaTemplates.hpp"
 #include "../node/Side.hpp"
-#include "../utility/TemplateTricks.h"
+#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 namespace board {
