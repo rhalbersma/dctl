@@ -1,7 +1,10 @@
 #pragma once
 #include <memory>                       // std::unique_ptr
 #include <string>                       // std::string
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "MessageInterface.hpp"
+#include "Parser.hpp"
+#include "DXP.h"
 
 namespace dctl {
 namespace dxp {
@@ -19,7 +22,8 @@ namespace dxp {
 
 */
         
-class Chat
+template<typename = void>
+class Chat_
 : 
         public MessageInterface
 {
@@ -30,32 +34,37 @@ public:
                 return text_;
         }
 
+        static std::string header()
+        {
+                return std::string(1, HEADER_);
+        }
+
         static std::string generate(const std::string& message)
         {
-                return HEADER_ + body(message);
+                return header() + body(message);
         }
 
 private:
         // factory creation
         static std::unique_ptr<MessageInterface> create(const std::string& message)
         {
-                return std::unique_ptr<Chat>(new Chat(message));
+                return std::unique_ptr<Chat_>(new Chat_(message));
         }
 
         // private constructor
-        explicit Chat(const std::string& message)
+        explicit Chat_(const std::string& message)
         : 
                 text_(message)
         {
         }
 
         // implementation
-        virtual std::string header() const
+        virtual std::string do_header() const
         {
-                return HEADER_;
+                return header();
         }
 
-        virtual std::string body() const
+        virtual std::string do_body() const
         {
                 return body(text());
         }
@@ -65,12 +74,18 @@ private:
                 return m;
         }
 
-        static const std::string HEADER_;
-        static const bool REGISTERED_;
+        BOOST_STATIC_CONSTANT(auto, HEADER_ = 'C');
+        static bool registered_;
 
         // representation
         std::string text_;
 };
+
+template<typename T>
+bool Chat_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+
+template class Chat_<>;
+typedef Chat_<> Chat;
 
 }       // namespace dxp
 }       // namespace dctl

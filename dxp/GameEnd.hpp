@@ -3,8 +3,11 @@
 #include <memory>                       // std::unique_ptr
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
+#include "Parser.hpp"
+#include "DXP.h"
 
 namespace dctl {
 namespace dxp {
@@ -21,8 +24,9 @@ namespace dxp {
         http://www.mesander.nl/damexchange/egameend.htm
 
 */
-        
-class GameEnd
+
+template<typename = void>
+class GameEnd_
 : 
         public MessageInterface
 {
@@ -42,20 +46,25 @@ public:
                 return stop_code_;
         }
 
+        static std::string header()
+        {
+                return std::string(1, HEADER_);
+        }
+
         static std::string generate(Reason r, StopCode s)
         {
-                return HEADER_ + body(r, s);
+                return header() + body(r, s);
         }
 
 private:
         // factory creation
         static std::unique_ptr<MessageInterface> create(const std::string& message)
         {
-                return std::unique_ptr<GameEnd>(new GameEnd(message));
+                return std::unique_ptr<GameEnd_>(new GameEnd_(message));
         }
 
         // private constructor
-        explicit GameEnd(const std::string& message)
+        explicit GameEnd_(const std::string& message)
         :
                 reason_(static_cast<Reason>(boost::lexical_cast<int>(message.substr(0, 1).c_str()))),
                 stop_code_(static_cast<StopCode>(boost::lexical_cast<int>(message.substr(1, 1).c_str())))
@@ -63,12 +72,12 @@ private:
         }
 
         // implementation
-        virtual std::string header() const
+        virtual std::string do_header() const
         {
-                return HEADER_;
+                return header();
         }
 
-        virtual std::string body() const
+        virtual std::string do_body() const
         {
                 return body(reason(), stop_code());
         }
@@ -81,13 +90,19 @@ private:
                 return sstr.str();
         }
 
-        static const std::string HEADER_;
-        static const bool REGISTERED_;
+        BOOST_STATIC_CONSTANT(auto, HEADER_ = 'E');
+        static bool registered_;
 
         // representation
         Reason reason_;
         StopCode stop_code_;
 };
+
+template<typename T>
+bool GameEnd_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+
+template class GameEnd_<>;
+typedef GameEnd_<> GameEnd;
 
 }       // namespace dxp
 }       // namespace dctl
