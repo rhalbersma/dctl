@@ -133,6 +133,7 @@ bool Move_<Protocol, Interface, Factory>::registered_ =
         Factory::register_message(header(), create)
 ;
 
+// explicit instantation
 template class Move_<>;
 typedef Move_<> Move;
 

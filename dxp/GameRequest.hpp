@@ -157,11 +157,13 @@ private:
         std::string position_;
 };
 
+// factory registration
 template<typename Protocol, template<typename> class Interface, typename Factory>
 bool GameRequest_<Protocol, Interface, Factory>::registered_ = 
         Factory::register_message(header(), create)
 ;
 
+// explicit instantation
 template class GameRequest_<>;
 typedef GameRequest_<> GameRequest;
 

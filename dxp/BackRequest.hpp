@@ -100,11 +100,13 @@ private:
         char side_to_move_;
 };
 
+// factory registration
 template<typename Protocol, template<typename> class Interface, typename Factory>
 bool BackRequest_<Protocol, Interface, Factory>::registered_ = 
         Factory::register_message(header(), create)
 ;
 
+// explicit instantation
 template class BackRequest_<>;
 typedef BackRequest_<> BackRequest;
 

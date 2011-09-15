@@ -104,11 +104,13 @@ private:
         StopCode stop_code_;
 };
 
+// factory registration
 template<typename Protocol, template<typename> class Interface, typename Factory>
 bool GameEnd_<Protocol, Interface, Factory>::registered_ = 
         Factory::register_message(header(), create)
 ;
 
+// explicit instantation
 template class GameEnd_<>;
 typedef GameEnd_<> GameEnd;
 

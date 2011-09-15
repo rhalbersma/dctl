@@ -87,11 +87,13 @@ private:
         std::string text_;
 };
 
+// factory registration
 template<typename Protocol, template<typename> class Interface, typename Factory>
 bool Chat_<Protocol, Interface, Factory>::registered_ = 
         Factory::register_message(header(), create)
 ;
 
+// explicit instantation
 template class Chat_<>;
 typedef Chat_<> Chat;
 

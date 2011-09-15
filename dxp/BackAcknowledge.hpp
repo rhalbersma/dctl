@@ -88,18 +88,20 @@ private:
                 return sstr.str();
         }
 
-        BOOST_STATIC_CONSTANT(auto, HEADER_ ='K');
+        BOOST_STATIC_CONSTANT(auto, HEADER_ = 'K');
         static bool registered_;
 
         // representation
         AcceptanceCode acceptance_code_;
 };
 
+// factory registration
 template<typename Protocol, template<typename> class Interface, typename Factory>
 bool BackAcknowledge_<Protocol, Interface, Factory>::registered_ = 
         Factory::register_message(header(), create)
 ;
 
+// explicit instantation
 template class BackAcknowledge_<>;
 typedef BackAcknowledge_<> BackAcknowledge;
 
