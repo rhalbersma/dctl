@@ -1,7 +1,9 @@
-#include <string>
-#include <boost/test/unit_test.hpp> 
+#include <string>                       // std::string
+#include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL 
+#include "../../src/dxp/Types.hpp"
 #include "../../src/dxp/Parser.hpp"
-#include "../../src/dxp/DXP.h"
+#include "../../src/dxp/Protocol.hpp"
+#include "../../src/dxp/Connection.hpp"
 
 namespace dctl {
 namespace dxp {
@@ -25,9 +27,14 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                 "K1"
         };
 
-        for (auto i = 0; i < 8; ++i) {
-                auto parsed = Parser<protocol>::create_message(message[i]);
-                BOOST_CHECK_EQUAL(0, parsed->str().compare(message[i]));
+        for (auto i = 0; i < 8; ++i) {                
+                if (auto parsed = Parser::create_message(message[i]))
+                        // the message type did get registered, compare the original and the parsed message
+                        BOOST_CHECK_EQUAL(message[i], parsed->str());
+                else {
+                        // the message type did not get registered, do not dereference a nullptr
+                        BOOST_CHECK(false);
+                }
         }
 }
 

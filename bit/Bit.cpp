@@ -2,7 +2,7 @@
 #include <boost/test/test_case_template.hpp>
 #include <boost/mpl/list.hpp>
 #include "../../src/bit/Bit.h"
-#include "../../src/utility/IntegerTypes.h"
+#include "../../src/utility/IntegerTypes.hpp"
 
 namespace dctl {
 namespace bit {
