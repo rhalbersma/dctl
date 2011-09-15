@@ -6,7 +6,7 @@
 #include "../../src/successor/Selection.h"
 #include "../../src/node/Position.h"
 #include "../../src/setup/Setup.hpp"
-#include "../../src/notation/String.h"
+#include "../../src/notation/String.hpp"
 #include "../../src/board/Types.hpp"
 #include "../../src/variant/Variant.h"
 
