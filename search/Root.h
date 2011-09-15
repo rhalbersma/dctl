@@ -5,9 +5,9 @@
 #include "Score.h"
 #include "../node/Stack.hpp"
 #include "../hash/Map.h"
-#include "../utility/Ply.h"
-#include "../utility/IntegerTypes.h"
-#include "../utility/Statistics.h"
+#include "../utility/Ply.hpp"
+#include "../utility/IntegerTypes.hpp"
+#include "../utility/Statistics.hpp"
 
 namespace dctl {
 

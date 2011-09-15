@@ -2,7 +2,7 @@
 #include "../node/Position.h"
 #include "../node/Promotion.hpp"
 #include "../bit/Bit.h"
-#include "../utility/Shift.h"
+#include "../utility/Shift.hpp"
 
 namespace dctl {
 namespace capture { 

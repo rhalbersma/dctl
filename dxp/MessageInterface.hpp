@@ -17,6 +17,7 @@ namespace dxp {
 
 */
 
+template<typename Protocol>
 class MessageInterface
 {
 public:

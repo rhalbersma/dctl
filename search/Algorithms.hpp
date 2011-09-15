@@ -6,7 +6,7 @@
 #include "../successor/Selection.h"
 #include "../node/Position.h"
 #include "../node/Stack.hpp"
-#include "../utility/Iota.h"
+#include "../utility/Iota.hpp"
 
 namespace dctl {
 namespace search {

@@ -1,7 +1,7 @@
 #include <climits>
 #include <sstream>
 #include "Score.h"
-#include "../utility/Ply.h"
+#include "../utility/Ply.hpp"
 
 namespace dctl {
 namespace search {

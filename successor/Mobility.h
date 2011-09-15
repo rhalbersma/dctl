@@ -1,5 +1,5 @@
 #pragma once
-#include "../utility/TemplateTricks.h"
+#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 

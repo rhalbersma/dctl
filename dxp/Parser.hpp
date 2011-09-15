@@ -4,8 +4,8 @@
 #include <string>               // std::string
 #include <boost/utility.hpp>    // boost::noncopyable            
 #include "MessageInterface.hpp"
+#include "Protocol.hpp"
 #include "Scanner.hpp"
-#include <iostream>
 
 namespace dctl {
 namespace dxp {
@@ -20,25 +20,30 @@ namespace dxp {
 
 */
 
-template<typename Protocol>
-class Parser
+template
+<
+        typename Protocol = protocol_v1,
+        template<typename> class Interface = MessageInterface
+>
+class Factory
 : 
         private boost::noncopyable      // enforce singleton semantics
 {
 public:
         // typedefs
-        typedef std::unique_ptr<MessageInterface> (*Creator)(const std::string&);
+        typedef Interface<Protocol> InterfaceVersion;
+        typedef Scanner<Protocol> ScannerVersion;
+        typedef std::unique_ptr<InterfaceVersion> (*Creator)(const std::string&);
 
-        static std::unique_ptr<MessageInterface> create_message(const std::string& message)
+        static std::unique_ptr<InterfaceVersion> create_message(const std::string& message)
         {
-                Scanner<Protocol> scanner(message);
+                ScannerVersion scanner(message);
                 auto i = instance().find(scanner.header());
                 return (i != instance().end())? (i->second)(scanner.body()) : nullptr;
         }
 
         static bool register_message(const std::string& header, Creator creator)
         {
-                std::cout << "Registering message type with header: " << header << "\n";
                 return instance().insert(CreatorMap::value_type(header, creator)).second;
         }
 
@@ -57,6 +62,8 @@ private:
                 return singleton_;
         }
 };
+
+typedef Factory<> Parser;
 
 }       // namespace dxp
 }       // namespace dctl

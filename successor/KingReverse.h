@@ -1,7 +1,7 @@
 #pragma once
 #include "../node/Material.h"
 #include "../node/Stack.hpp"
-#include "../utility/TemplateTricks.h"
+#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 

@@ -10,4 +10,4 @@ struct Czech {};
 }       // namespace dctl
 
 #include "../rules/Czech.h"
-#include "../notation/Czech.h"
+#include "../notation/Czech.hpp"

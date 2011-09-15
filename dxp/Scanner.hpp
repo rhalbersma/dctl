@@ -1,8 +1,8 @@
 #pragma once
-#include <string>               // std::string
-#include <boost/assert.hpp>     // BOOST_ASSERT
-#include <boost/config.hpp>     // BOOST_STATIC_CONSTANT
-#include "Protocol.hpp"
+#include <string>                       // std::string
+#include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Traits.hpp"
 
 namespace dctl {
 namespace dxp {

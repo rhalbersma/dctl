@@ -1,7 +1,7 @@
 #include <iomanip>
 #include <iostream>
 #include "Root.h"
-#include "../utility/Timer.h"
+#include "../utility/Timer.hpp"
 
 namespace dctl {
 namespace walk {

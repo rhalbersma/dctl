@@ -9,7 +9,7 @@
 #include "Token.hpp"
 #include "../node/Position.h"
 #include "../node/Side.hpp"
-#include "../utility/IntegerTypes.h"
+#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 namespace setup {

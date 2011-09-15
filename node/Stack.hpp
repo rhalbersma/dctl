@@ -6,8 +6,8 @@
 #include "Predicates.h"
 #include "../bit/Bit.h"
 #include "../rules/Rules.h"
-#include "../utility/IntegerTypes.h"
-#include "../utility/TemplateTricks.h"
+#include "../utility/IntegerTypes.hpp"
+#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 

@@ -5,11 +5,11 @@
 #include "../successor/Successor.h"
 #include "../node/Position.h"
 #include "../node/Stack.hpp"
-#include "../utility/Timer.h"
+#include "../utility/Timer.hpp"
 
 #include "../setup/Diagram.hpp"
 #include "../setup/String.hpp"
-#include "../notation/String.h"
+#include "../notation/String.hpp"
 
 namespace dctl {
 namespace search {

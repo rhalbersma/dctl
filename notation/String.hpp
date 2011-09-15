@@ -1,10 +1,41 @@
-#include <iomanip>
-#include <sstream>
-#include "../node/Predicates.h"
+#pragma once
+#include <iomanip>                      // std::left, std::right, std::setw
+#include <sstream>                      // std::stringsream
+#include <string>                       // std::string
+#include "Notation.hpp"
 #include "../bit/Bit.h"
+#include "../node/Predicates.h"
 
 namespace dctl {
+
+template<typename> class Position;
+class Move;
+        
 namespace notation {
+
+template
+<
+        typename Rules,
+        typename Format = typename Format<Rules>::type,
+        typename Separator = typename Separator<Rules>::type
+>
+struct read
+{
+	template<typename Board> 
+        const Move operator()(const Position<Board>&, const std::string&) const;
+};
+
+template
+<
+        typename Rules, 
+        typename Format = typename Format<Rules>::type,
+        typename Separator = typename Separator<Rules>::type
+>
+struct write
+{
+	template<typename Board> 
+        const std::string operator()(const Position<Board>&, const Move&) const;
+};
 
 // partial specialization for numeric notation
 template<typename Rules, typename Separator>
@@ -25,3 +56,6 @@ struct write<Rules, numeric, Separator>
 
 }       // namespace notation
 }       // namespace dctl
+
+// include template definitions inside header
+#include "String.hpp"

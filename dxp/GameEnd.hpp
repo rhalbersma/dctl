@@ -7,7 +7,7 @@
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
 #include "Parser.hpp"
-#include "DXP.h"
+#include "Protocol.hpp"
 
 namespace dctl {
 namespace dxp {
@@ -25,10 +25,15 @@ namespace dxp {
 
 */
 
-template<typename = void>
+template
+<
+        typename Protocol = protocol_v1,
+        template<typename> class Interface = MessageInterface, 
+        typename Factory = Parser
+>
 class GameEnd_
 : 
-        public MessageInterface
+        public Interface<Protocol>
 {
 public:
         // typedefs
@@ -58,7 +63,8 @@ public:
 
 private:
         // factory creation
-        static std::unique_ptr<MessageInterface> create(const std::string& message)
+        typedef Interface<Protocol> InterfaceVersion;
+        static std::unique_ptr<InterfaceVersion> create(const std::string& message)
         {
                 return std::unique_ptr<GameEnd_>(new GameEnd_(message));
         }
@@ -98,8 +104,10 @@ private:
         StopCode stop_code_;
 };
 
-template<typename T>
-bool GameEnd_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+template<typename Protocol, template<typename> class Interface, typename Factory>
+bool GameEnd_<Protocol, Interface, Factory>::registered_ = 
+        Factory::register_message(header(), create)
+;
 
 template class GameEnd_<>;
 typedef GameEnd_<> GameEnd;

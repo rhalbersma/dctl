@@ -1,9 +1,14 @@
+#pragma once
 #include "../bit/Bit.h"
 #include "../board/Traits.hpp"
 
 namespace dctl {
 
 namespace { enum { L, R }; }
+
+// template function object for uniform left/right bitwise shift
+template<bool>
+struct Shift;
 
 // specialization for bitwise shift-left
 template<>
@@ -27,6 +32,10 @@ struct Shift<R>
         }
 };
 
+// template function object for uniform left/right bitwise shift-assignment
+template<bool>
+struct ShiftAssign;
+
 // specialization for bitwise shift-left assignment
 template<>
 struct ShiftAssign<L>
@@ -49,34 +58,58 @@ struct ShiftAssign<R>
         }
 };
 
-template<typename Board, int I> template<typename T> 
-T Push<Board, I>::operator()(T square) const
+// template function object for uniform left/right bitwise shift
+template<typename Board, int Index>
+struct Push
 {
-        return Shift<board::is_positive<I>::value>()(square, Board::SHIFT[I]);
-}
+        template<typename T> 
+        T operator()(T square) const
+        {
+                return Shift<board::is_positive<Index>::value>()(square, Board::SHIFT[Index]);
+        }
+};
 
-template<typename Board, int I> template<typename T> 
-T Pull<Board, I>::operator()(T square) const
+// template function object for uniform left/right bitwise shift
+template<typename Board, int Index>
+struct Pull
 {
-        return Shift<board::is_negative<I>::value>()(square, Board::SHIFT[I]);
-}
+        template<typename T> 
+        T operator()(T square) const
+        {
+                return Shift<board::is_negative<Index>::value>()(square, Board::SHIFT[Index]);
+        }
+};
 
-template<typename Board, int I> template<typename T> 
-void PushAssign<Board, I>::operator()(T& square) const
+// template function object for uniform left/right bitwise shift-assignment
+template<typename Board, int Index>
+struct PushAssign
 {
-        ShiftAssign<board::is_positive<I>::value>()(square, Board::SHIFT[I]);
-}
+        template<typename T> 
+        void operator()(T& square) const
+        {
+                ShiftAssign<board::is_positive<Index>::value>()(square, Board::SHIFT[Index]);
+        }
+};
 
-template<typename Board, int I> template<typename T> 
-void PullAssign<Board, I>::operator()(T& square) const
+// template function object for uniform left/right bitwise shift-assignment
+template<typename Board, int Index>
+struct PullAssign
 {
-        ShiftAssign<board::is_negative<I>::value>()(square, Board::SHIFT[I]);
-}
+        template<typename T> 
+        void operator()(T& square) const
+        {
+                ShiftAssign<board::is_negative<Index>::value>()(square, Board::SHIFT[Index]);
+        }
+};
 
-template<typename Board, int I> template<typename T> 
-T FloodFill<Board, I>::operator()(T generator, T propagator) const
+template<typename Board, int Index>
+struct FloodFill
 {
-        return bit::flood_fill<board::is_positive<I>::value>(generator, propagator, Board::SHIFT[I]);
-}
+        template<typename T> 
+        T operator()(T generator, T propagator) const
+        {
+                return bit::flood_fill<board::is_positive<Index>::value>(generator, propagator, Board::SHIFT[Index]);
+        }
+};
 
 }       // namespace dctl
