@@ -103,11 +103,13 @@ private:
         AcceptanceCode acceptance_code_;
 };
 
+// factory registration
 template<typename Protocol, template<typename> class Interface, typename Factory>
 bool GameAcknowledge_<Protocol, Interface, Factory>::registered_ = 
         Factory::register_message(header(), create)
 ;
 
+// explicit instantation
 template class GameAcknowledge_<>;
 typedef GameAcknowledge_<> GameAcknowledge;
 
