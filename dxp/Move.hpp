@@ -4,9 +4,11 @@
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
 #include <vector>                       // std::vector
-#include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
+#include "Parser.hpp"
+#include "DXP.h"
 
 namespace dctl {
 namespace dxp {
@@ -24,7 +26,8 @@ namespace dxp {
 
 */
         
-class Move
+template<typename = void>
+class Move_
 : 
         public MessageInterface
 {
@@ -55,20 +58,25 @@ public:
                 return captured_pieces_;
         }
 
+        static std::string header()
+        {
+                return std::string(1, HEADER_);
+        }
+
         static std::string generate(int s, int f, int d, int n, const std::vector<int>& c)
         {
-                return HEADER_ + body(s, f, d, n, c);
+                return header() + body(s, f, d, n, c);
         }
 
 private:
         // factory creation
         static std::unique_ptr<MessageInterface> create(const std::string& message)
         {
-                return std::unique_ptr<Move>(new Move(message));
+                return std::unique_ptr<Move_>(new Move_(message));
         }
 
         // private constructor
-        explicit Move(const std::string& message)
+        explicit Move_(const std::string& message)
         :
                 seconds_(boost::lexical_cast<int>(message.substr(0, 4).c_str())),
                 from_sq_(boost::lexical_cast<int>(message.substr(4, 2).c_str())),
@@ -80,12 +88,12 @@ private:
         }
 
         // implementation
-        virtual std::string header() const
+        virtual std::string do_header() const
         {
-                return HEADER_;
+                return header();
         }
 
-        virtual std::string body() const
+        virtual std::string do_body() const
         {
                 return body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces());
         }
@@ -103,8 +111,8 @@ private:
                 return sstr.str();
         }
 
-        static const std::string HEADER_;
-        static const bool REGISTERED_;
+        BOOST_STATIC_CONSTANT(auto, HEADER_ = 'M');
+        static bool registered_;
 
         // representation
         int seconds_;
@@ -113,6 +121,12 @@ private:
         int num_captured_;
         std::vector<int> captured_pieces_;       
 };
+
+template<typename T>
+bool Move_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+
+template class Move_<>;
+typedef Move_<> Move;
 
 }       // namespace dxp
 }       // namespace dctl

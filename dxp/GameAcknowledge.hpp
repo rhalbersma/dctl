@@ -3,8 +3,11 @@
 #include <memory>                       // std::unique_ptr
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
+#include "Parser.hpp"
+#include "DXP.h"
 
 namespace dctl {
 namespace dxp {
@@ -22,7 +25,8 @@ namespace dxp {
 
 */
         
-class GameAcknowledge
+template<typename = void>
+class GameAcknowledge_
 : 
         public MessageInterface
 {
@@ -41,20 +45,25 @@ public:
                 return acceptance_code_;
         }
 
+        static std::string header()
+        {
+                return std::string(1, HEADER_);
+        }
+
         static std::string generate(const std::string& n, AcceptanceCode a)
         {
-                return HEADER_ + body(n, a);
+                return header() + body(n, a);
         }
 
 private:
         // factory creation
         static std::unique_ptr<MessageInterface> create(const std::string& message)
         {
-                return std::unique_ptr<GameAcknowledge>(new GameAcknowledge(message));
+                return std::unique_ptr<GameAcknowledge_>(new GameAcknowledge_(message));
         }
 
         // private constructor
-        explicit GameAcknowledge(const std::string& message)
+        explicit GameAcknowledge_(const std::string& message)
         :
                 name_follower_(message.substr(0, 32)),
                 acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(32, 1).c_str())))
@@ -62,12 +71,12 @@ private:
         }
 
         // implementation
-        virtual std::string header() const
+        virtual std::string do_header() const
         {
-                return HEADER_;
+                return header();
         }
 
-        virtual std::string body() const
+        virtual std::string do_body() const
         {
                 return body(name_follower(), acceptance_code());
         }
@@ -80,13 +89,19 @@ private:
                 return sstr.str();
         }
 
-        static const std::string HEADER_;
-        static const bool REGISTERED_;
+        BOOST_STATIC_CONSTANT(auto, HEADER_ = 'A');
+        static bool registered_;
 
         // representation
         std::string name_follower_;
         AcceptanceCode acceptance_code_;
 };
+
+template<typename T>
+bool GameAcknowledge_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+
+template class GameAcknowledge_<>;
+typedef GameAcknowledge_<> GameAcknowledge;
 
 }       // namespace dxp
 }       // namespace dctl

@@ -3,8 +3,11 @@
 #include <memory>                       // std::unique_ptr
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
+#include "Parser.hpp"
+#include "DXP.h"
 
 namespace dctl {
 namespace dxp {
@@ -21,8 +24,9 @@ namespace dxp {
         http://www.mesander.nl/damexchange/ebackreq.htm
 
 */
-        
-class BackRequest
+  
+template<typename Dummy = void>
+class BackRequest_
 : 
         public MessageInterface
 {
@@ -38,20 +42,25 @@ public:
                 return side_to_move_;
         }
 
+        static std::string header()
+        {
+                return std::string(1, HEADER_);
+        }
+
         static std::string generate(int m, char c)
         {
-                return HEADER_ + body(m, c);
+                return header() + body(m, c);
         }
 
 private:
         // factory creation
         static std::unique_ptr<MessageInterface> create(const std::string& message)
         {
-                return std::unique_ptr<BackRequest>(new BackRequest(message));
+                return std::unique_ptr<BackRequest_>(new BackRequest_(message));
         }
 
         // private constructor
-        explicit BackRequest(const std::string& message)
+        explicit BackRequest_(const std::string& message)
         :
                 move_number_(boost::lexical_cast<int>(message.substr(0, 3).c_str())),
                 side_to_move_(*(message.substr(3, 1)).begin())
@@ -59,12 +68,12 @@ private:
         }
 
         // implementation
-        virtual std::string header() const
+        virtual std::string do_header() const
         {
-                return HEADER_;
+                return header();
         }
 
-        virtual std::string body() const
+        virtual std::string do_body() const
         {
                 return body(move_number(), side_to_move());
         }
@@ -77,13 +86,19 @@ private:
                 return sstr.str();
         }
 
-        static const std::string HEADER_;
-        static const bool REGISTERED_;
+        BOOST_STATIC_CONSTANT(auto, HEADER_ = 'B');
+        static bool registered_;
 
         // representation
         int move_number_;
         char side_to_move_;
 };
+
+template<typename T>
+bool BackRequest_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+
+template class BackRequest_<>;
+typedef BackRequest_<> BackRequest;
 
 }       // namespace dxp
 }       // namespace dctl

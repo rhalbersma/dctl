@@ -5,17 +5,18 @@
 #include <boost/utility.hpp>    // boost::noncopyable            
 #include "MessageInterface.hpp"
 #include "Scanner.hpp"
+#include <iostream>
 
 namespace dctl {
 namespace dxp {
 
 /*
 
-The Parser class is the <ConcreteCreator> in a <Factory Method>
-design pattern, with the MessageInterface class as the <Product>, 
-and classes derived from that as instances of a <ConcreteProduct>. 
+        The Parser class is the <ConcreteCreator> in a <Factory Method>
+        design pattern, with the MessageInterface class as the <Product>, 
+        and classes derived from that as instances of a <ConcreteProduct>. 
 
-All derived message classes MUST register themselves with the factory.
+        All derived message classes MUST register themselves with the factory.
 
 */
 
@@ -37,6 +38,7 @@ public:
 
         static bool register_message(const std::string& header, Creator creator)
         {
+                std::cout << "Registering message type with header: " << header << "\n";
                 return instance().insert(CreatorMap::value_type(header, creator)).second;
         }
 

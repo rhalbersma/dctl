@@ -3,6 +3,7 @@
 #include <memory>                       // std::unique_ptr
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
 #include "Parser.hpp"
@@ -24,7 +25,8 @@ namespace dxp {
 
 */
         
-class BackAcknowledge
+template<typename = void>
+class BackAcknowledge_
 : 
         public MessageInterface
 {
@@ -38,32 +40,37 @@ public:
                 return acceptance_code_;
         }
 
+        static std::string header()
+        {
+                return std::string(1, HEADER_);
+        }
+
         static std::string generate(AcceptanceCode a)
         {
-                return HEADER_ + body(a);
+                return header() + body(a);
         }
 
 private:
         // factory creation
         static std::unique_ptr<MessageInterface> create(const std::string& message)
         {
-                return std::unique_ptr<BackAcknowledge>(new BackAcknowledge(message));
+                return std::unique_ptr<BackAcknowledge_>(new BackAcknowledge_(message));
         }
 
         // private constructor
-        explicit BackAcknowledge(const std::string& message)
+        explicit BackAcknowledge_(const std::string& message)
         :
                 acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(0, 1).c_str())))
         {
         }
 
         // implementation
-        virtual std::string header() const
+        virtual std::string do_header() const
         {
-                return HEADER_;
+                return header();
         }
 
-        virtual std::string body() const
+        virtual std::string do_body() const
         {
                 return body(acceptance_code());
         }
@@ -75,12 +82,18 @@ private:
                 return sstr.str();
         }
 
-        static const std::string HEADER_;
-        static const bool REGISTERED_;
+        BOOST_STATIC_CONSTANT(char, HEADER_ = 'K');
+        static bool registered_;
 
         // representation
         AcceptanceCode acceptance_code_;
 };
+
+template<typename T>
+bool BackAcknowledge_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+
+template class BackAcknowledge_<>;
+typedef BackAcknowledge_<> BackAcknowledge;
 
 }       // namespace dxp
 }       // namespace dctl

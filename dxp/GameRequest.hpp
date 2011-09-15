@@ -4,8 +4,11 @@
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
+#include "Parser.hpp"
+#include "DXP.h"
 
 namespace dctl {
 namespace dxp {
@@ -23,7 +26,8 @@ namespace dxp {
 
 */
 
-class GameRequest
+template<typename = void>
+class GameRequest_
 : 
         public MessageInterface
 {
@@ -59,20 +63,25 @@ public:
                 return position_;
         }
 
+        static std::string header()
+        {
+                return std::string(1, HEADER_);
+        }
+
         static std::string generate(const std::string& n, char c, int min, int mov, bool s, const std::string& p)
         {
-                return HEADER_ + body(n, c, min, mov, s, p);
+                return header() + body(n, c, min, mov, s, p);
         }
 
 private:
         // factory creation
         static std::unique_ptr<MessageInterface> create(const std::string& message)
         {
-                return std::unique_ptr<GameRequest>(new GameRequest(message));
+                return std::unique_ptr<GameRequest_>(new GameRequest_(message));
         }
 
         // private constructor
-        explicit GameRequest(const std::string& message)
+        explicit GameRequest_(const std::string& message)
         :
                 name_initiator_(message.substr(2, 32)),
                 color_follower_(*(message.substr(34, 1)).begin()),
@@ -85,12 +94,12 @@ private:
         }
 
         // implementation
-        virtual std::string header() const
+        virtual std::string do_header() const
         {
-                return HEADER_;
+                return header();
         }
 
-        virtual std::string body() const
+        virtual std::string do_body() const
         {
                 return body(name_initiator(), color_follower(), minutes(), moves(), setup(), position());
         }
@@ -109,13 +118,6 @@ private:
                 return sstr.str();
         }
 
-        static const int PROTOCOL_version = 1;
-        static const std::string HEADER_;
-        static const bool REGISTERED_;
-        static const char INITIAL = 'A';
-        static const char SPECIAL = 'B';
-        static const char SETUP[2];
-
         static bool read_setup(char c)
         {
                 switch(c) {                
@@ -131,9 +133,15 @@ private:
 
         static char write_setup(bool b)
         {
-                return SETUP[b];
+                return (!b)? INITIAL : SPECIAL;
         }
 
+        BOOST_STATIC_CONSTANT(auto, PROTOCOL_version = 1);
+        BOOST_STATIC_CONSTANT(auto, INITIAL = 'A');
+        BOOST_STATIC_CONSTANT(auto, SPECIAL = 'B');        
+        BOOST_STATIC_CONSTANT(auto, HEADER_ = 'R');
+        static bool registered_;        
+        
         // representation
         std::string name_initiator_;
         char color_follower_;
@@ -142,6 +150,12 @@ private:
         bool setup_;
         std::string position_;
 };
+
+template<typename T>
+bool GameRequest_<T>::registered_ = Parser<protocol>::register_message(header(), create);
+
+template class GameRequest_<>;
+typedef GameRequest_<> GameRequest;
 
 }       // namespace dxp
 }       // namespace dctl

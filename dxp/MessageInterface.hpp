@@ -26,13 +26,13 @@ public:
         // non-virtual interface
         std::string str() const 
         { 
-                return header() + body(); 
+                return do_header() + do_body(); 
         }
 
 private:
         // pure virtual implementation
-        virtual std::string header() const = 0;
-        virtual std::string body() const = 0;
+        virtual std::string do_header() const = 0;
+        virtual std::string do_body() const = 0;
 };
 
 }       // namespace dxp
