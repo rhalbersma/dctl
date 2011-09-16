@@ -4,12 +4,12 @@
 #include "../../src/node/Position.h"
 #include "../../src/setup/Setup.hpp"
 #include "../../src/board/Types.hpp"
-#include "../../src/variant/Variant.h"
+#include "../../src/variant/Variant.hpp"
 
 namespace dctl {
 namespace walk {
 
-#if INTEGRATION_TEST == 1
+#if INTEGRATION_TEST == 0
 
 struct FixtureHashTable
 {
