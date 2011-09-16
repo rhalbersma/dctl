@@ -1,5 +1,5 @@
 #pragma once
-#include "../bit/Bit.h"
+#include "../bit/Bit.hpp"
 #include "../board/Traits.hpp"
 
 namespace dctl {

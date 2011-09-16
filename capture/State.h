@@ -2,7 +2,7 @@
 #include <boost/config.hpp>
 #include "Value.hpp"
 #include "../node/Stack.hpp"
-#include "../rules/Rules.h"
+#include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/TemplateTricks.hpp"
 

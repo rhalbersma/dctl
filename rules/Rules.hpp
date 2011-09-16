@@ -1,5 +1,5 @@
 #pragma once
-#include "Enum.h"
+#include "Enum.hpp"
 
 namespace dctl {
 namespace rules {
@@ -9,7 +9,7 @@ namespace rules {
 //+----------------------------------------------------------------------------+
 
 // king range
-template<typename> struct is_long_king_range                    { enum { value = range_N }; };
+template<typename> struct is_long_king_range                    { enum { value = range_1 }; };
 
 // restricted consecutive moves with the same king
 template<typename> struct is_restricted_same_king_moves         { enum { value = false }; };
@@ -17,18 +17,18 @@ template<typename> struct is_restricted_same_king_moves         { enum { value =
 // maximum consecutive moves with the same king                 // NO default: MUST be specialized if
 template<typename> struct max_same_king_moves;                  // is_restricted_same_king_moves == true 
 
-// promotion condition: en-passent or apres-fini
-template<typename> struct promotion_condition                   { enum { value = promote_af }; };
-
 //+----------------------------------------------------------------------------+
 //|      Capture mechanics                                                     |
 //+----------------------------------------------------------------------------+
+
+// men can capture kings
+template<typename> struct is_men_capture_kings                  { enum { value = true  }; };
 
 // king capture directions
 template<typename> struct king_capture_directions               { enum { value = dirs_diag }; };
 
 // man capture directions
-template<typename> struct man_capture_directions                { enum { value = dirs_diag }; };
+template<typename> struct man_capture_directions                { enum { value = dirs_up }; };
 
 // man backwards capture
 template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != dirs_up }; };
@@ -56,8 +56,8 @@ template<typename Rules> struct king_capture_halt               { enum { value =
 // capture removal: en-passant or apres-fini
 template<typename> struct capture_removal                       { enum { value = remove_af }; };
 
-// men can capture kings
-template<typename> struct is_men_capture_kings                  { enum { value = true  }; };
+// promotion condition: en-passent or apres-fini
+template<typename> struct promotion_condition                   { enum { value = promote_af }; };
 
 //+----------------------------------------------------------------------------+
 //|      Capture precedence                                                    |

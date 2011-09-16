@@ -5,7 +5,7 @@
 #include "../successor/Mobility.h"
 #include "../node/Position.h"
 #include "../node/Side.hpp"
-#include "../variant/International.h"
+#include "../variant/International.hpp"
 
 namespace dctl {
 

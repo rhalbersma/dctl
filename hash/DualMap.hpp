@@ -1,55 +1,73 @@
-#include "DualMap.h"
+#pragma once
+#include <cstddef>                      // std::size_t
+#include <boost/assert.hpp>             // BOOST_ASSERT
+#include "Functions.hpp"
+#include "Map.hpp"
+#include "Replace.hpp"
 #include "../node/Position.h"
 
-namespace dctl {
+namespace dctl { 
 namespace hash {
 
-template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-DualMap<Key, Value, Hash, Index, Replace>::DualMap(std::size_t log2_n)
+template
+<
+        typename Key,
+        typename Value,
+        template<typename, typename> class Hash = zobrist::Find,
+        typename Index = HashIndex,
+        typename Replace = EmptyOldUnderCutShallowestOfN
+>
+class DualMap
 {
-        resize(log2_n);
-}
+public:
+        // constructors
+        explicit DualMap(std::size_t log2_n)
+        {
+                resize(log2_n);
+        }
 
-template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-std::size_t DualMap<Key, Value, Hash, Index, Replace>::available() const
-{
-        return dual_map_[0].available() + dual_map_[1].available();
-}
+        // capacity
+        std::size_t available() const
+        {
+                return dual_map_[0].available() + dual_map_[1].available();
+        }
 
-template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-std::size_t DualMap<Key, Value, Hash, Index, Replace>::size() const
-{
-        return dual_map_[0].size() + dual_map_[1].size();
-}
+        std::size_t size() const
+        {
+                return dual_map_[0].size() + dual_map_[1].size();
+        }
 
-template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-void DualMap<Key, Value, Hash, Index, Replace>::resize(std::size_t log2_n)
-{
-        BOOST_ASSERT(log2_n > 0);
-        dual_map_[0].resize(log2_n - 1);
-        dual_map_[1].resize(log2_n - 1);
-}
+        void resize(std::size_t log2_n)
+        {
+                BOOST_ASSERT(log2_n > 0);
+                dual_map_[0].resize(log2_n - 1);
+                dual_map_[1].resize(log2_n - 1);
+        }
 
-template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-void DualMap<Key, Value, Hash, Index, Replace>::clear()
-{
-        dual_map_[0].clear();
-        dual_map_[1].clear();
-}
+        void clear()
+        {
+                dual_map_[0].clear();
+                dual_map_[1].clear();
+        }
 
-template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-template<typename Board>
-const Value* DualMap<Key, Value, Hash, Index, Replace>::find(const Position<Board>& p) const
-{
-        return dual_map_[p.active_color()].find(p);
-}
+        // views
+        template<typename Board> 
+        const Value* find(const Position<Board>& p) const
+        {
+                return dual_map_[p.active_color()].find(p);
+        }
 
-template<typename Key, typename Value, template<typename, typename> class Hash, typename Index, typename Replace>
-template<typename Board>
-void DualMap<Key, Value, Hash, Index, Replace>::insert(const Position<Board>& p, const Value& value)
-{
-        dual_map_[p.active_color()].insert(p, value);
-}
+        // modifiers
+        template<typename Board> 
+        void insert(const Position<Board>& p, const Value& value)
+        {
+                dual_map_[p.active_color()].insert(p, value);
+        }
+
+private:
+        // representation
+        Map<Key, Value, Hash, Index, Replace> dual_map_[2];
+};
 
 }       // namespace hash
 }       // namespace dctl

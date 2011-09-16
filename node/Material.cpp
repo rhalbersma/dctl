@@ -2,7 +2,7 @@
 #include <functional>
 #include "Material.h"
 #include "Side.hpp"
-#include "../bit/Bit.h"
+#include "../bit/Bit.hpp"
 
 namespace dctl {
 

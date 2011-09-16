@@ -1,8 +1,14 @@
+#pragma once
+#include <functional>                   // std::unary_function
 #include "../../node/Position.h"
 
 namespace dctl {
 namespace hash {
 namespace zobrist {
+
+// primary template
+template<typename Key, typename Index>
+struct Find;
 
 // partial specialization for retrieval of pre-computed indices of positions
 template<typename Board, typename Index>

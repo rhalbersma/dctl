@@ -3,7 +3,7 @@
 #include "../node/Stack.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/TemplateTricks.hpp"
-#include "../rules/Rules.h"
+#include "../rules/Rules.hpp"
 
 namespace dctl {
 

@@ -9,5 +9,5 @@ struct Spanish {};
 }       // namespace variant
 }       // namespace dctl
 
-#include "../rules/Spanish.h"
+#include "../rules/Spanish.hpp"
 #include "../capture/Spanish.hpp"

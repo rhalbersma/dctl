@@ -1,7 +1,7 @@
 #include <boost/assert.hpp>
-#include "../hash/Algorithms.h"
-#include "../bit/Bit.h"
-#include "../rules/Rules.h"
+#include "../hash/Functions.hpp"
+#include "../bit/Bit.hpp"
+#include "../rules/Rules.hpp"
 
 namespace dctl {
 

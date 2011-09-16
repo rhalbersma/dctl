@@ -1,6 +1,6 @@
 #include <boost/assert.hpp>
 #include "../capture/State.h"
-#include "../rules/Rules.h"
+#include "../rules/Rules.hpp"
 
 namespace dctl {
 namespace successor {

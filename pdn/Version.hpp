@@ -3,7 +3,8 @@
 namespace dctl {
 namespace pdn {
 
-struct protocol {};
+struct v2 {};
+typedef v2 protocol;
 
 }       // namespace pdn
 }       // namespace dctl

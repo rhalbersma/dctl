@@ -1,4 +1,6 @@
-#include "Random.h"
+#pragma once
+#include <functional>                   // std::unary_function
+#include "Random.hpp"
 #include "../../node/Position.h"
 #include "../../node/Move.h"
 #include "../../node/Material.h"
@@ -8,6 +10,10 @@
 namespace dctl {
 namespace hash {
 namespace zobrist {
+
+// primary template
+template<typename Key, typename Index>
+struct Init;
 
 // partial specialization for ab initio hashing of positions
 template<typename Board, typename Index>

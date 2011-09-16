@@ -1,7 +1,7 @@
 #pragma once
 #include <cstddef>      // std::size_t
 #include "Transposition.h"
-#include "../hash/DualMap.h"
+#include "../hash/DualMap.hpp"
 #include "../node/Material.h"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/Statistics.hpp"

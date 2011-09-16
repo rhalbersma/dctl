@@ -4,8 +4,8 @@
 #include <string>               // std::string
 #include <boost/utility.hpp>    // boost::noncopyable            
 #include "MessageInterface.hpp"
-#include "Protocol.hpp"
 #include "Scanner.hpp"
+#include "Version.hpp"
 
 namespace dctl {
 namespace dxp {
@@ -22,7 +22,7 @@ namespace dxp {
 
 template
 <
-        typename Protocol = protocol_v1,
+        typename Protocol = protocol,
         template<typename> class Interface = MessageInterface
 >
 class Factory

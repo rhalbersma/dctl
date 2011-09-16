@@ -8,7 +8,7 @@
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
 #include "Parser.hpp"
-#include "Protocol.hpp"
+#include "Version.hpp"
 
 namespace dctl {
 namespace dxp {
@@ -28,7 +28,7 @@ namespace dxp {
 
 template
 <
-        typename Protocol = protocol_v1,
+        typename Protocol = protocol,
         template<typename> class Interface = MessageInterface, 
         typename Factory = Parser
 >

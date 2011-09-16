@@ -4,8 +4,8 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "Move.h"
 #include "Predicates.h"
-#include "../bit/Bit.h"
-#include "../rules/Rules.h"
+#include "../bit/Bit.hpp"
+#include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/TemplateTricks.hpp"
 

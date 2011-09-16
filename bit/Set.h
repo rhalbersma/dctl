@@ -4,7 +4,7 @@
 namespace dctl {
 namespace bit {
 
-template<typename T, typename T, std::size_t N>
+template<typename T, std::size_t N>
 class Set
 {
 public:

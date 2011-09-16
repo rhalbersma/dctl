@@ -4,7 +4,7 @@
 #include "Transposition.h"
 #include "Score.h"
 #include "../node/Stack.hpp"
-#include "../hash/Map.h"
+#include "../hash/Map.hpp"
 #include "../utility/Ply.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/Statistics.hpp"
