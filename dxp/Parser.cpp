@@ -1,9 +1,9 @@
 #include <string>                       // std::string
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL 
-#include "../../src/dxp/Types.hpp"
+//#include "../../src/dxp/Connection.hpp"
 #include "../../src/dxp/Parser.hpp"
-#include "../../src/dxp/Protocol.hpp"
-#include "../../src/dxp/Connection.hpp"
+#include "../../src/dxp/Types.hpp"
+#include "../../src/dxp/Version.hpp"
 
 namespace dctl {
 namespace dxp {

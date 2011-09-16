@@ -5,7 +5,7 @@
 #include "../../src/node/Position.h"
 #include "../../src/setup/Setup.hpp"
 #include "../../src/board/Types.hpp"
-#include "../../src/variant/Variant.h"
+#include "../../src/variant/Variant.hpp"
 
 namespace dctl {
 namespace search {
