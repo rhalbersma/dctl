@@ -13,7 +13,7 @@ int main()
 }
 */
 
-#include "DeBruijn.h"
+#include "DeBruijn.hpp"
 
 namespace dctl {
 namespace bit {

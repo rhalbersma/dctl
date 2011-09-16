@@ -3,7 +3,8 @@
 namespace dctl {
 namespace dxp {
 
-struct protocol_v1 {};
+struct v1 {};
+typedef v1 protocol;
 
 }       // namespace dxp
 }       // namespace dctl

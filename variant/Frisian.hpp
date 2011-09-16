@@ -9,5 +9,5 @@ struct Frisian {};
 }       // namespace variant
 }       // namespace dctl
 
-#include "../rules/Frisian.h"
+#include "../rules/Frisian.hpp"
 #include "../capture/Frisian.hpp"

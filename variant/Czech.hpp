@@ -9,5 +9,5 @@ struct Czech {};
 }       // namespace variant
 }       // namespace dctl
 
-#include "../rules/Czech.h"
+#include "../rules/Czech.hpp"
 #include "../notation/Czech.hpp"

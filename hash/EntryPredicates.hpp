@@ -1,23 +1,41 @@
+#pragma once
+#include <functional>                   // std::binary_function
+
 namespace dctl {
 namespace hash {
 
 template<typename Entry, typename Key>
-bool key_equal_to<Entry, Key>::operator()(const Entry& entry, const Key& key) const
+struct key_equal_to
+: 
+        public std::binary_function<Entry, Key, bool>
 {
-        return entry.first == key;
-}
+        bool operator()(const Entry& entry, const Key& key) const
+        {
+                return entry.first == key;
+        }
+};
 
 template<typename Entry>
-bool depth_compare<Entry>::operator()(const Entry& left, const Entry& right) const
+struct depth_compare
+: 
+        public std::binary_function<Entry, Entry, bool>
 {
-        return left.second.depth() < right.second.depth();
-}
+        bool operator()(const Entry& left, const Entry& right) const
+        {
+                return left.second.depth() < right.second.depth();
+        }
+};
 
 template<typename Entry>
-bool leafs_compare<Entry>::operator()(const Entry& left, const Entry& right) const
+struct leafs_compare
+: 
+        public std::binary_function<Entry, Entry, bool>
 {
-        return left.second.leafs() < right.second.leafs();
-}
+        bool operator()(const Entry& left, const Entry& right) const
+        {
+                return left.second.leafs() < right.second.leafs();
+        }
+};
 
 }       // namespace hash
 }       // namespace dctl

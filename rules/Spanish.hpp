@@ -1,5 +1,5 @@
 #pragma once
-#include "Enum.h"
+#include "Enum.hpp"
 
 namespace dctl {
 
@@ -8,8 +8,8 @@ namespace variant { struct Spanish; }
 namespace rules {
 
 // move mechanics
-template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<variant::Spanish>      { enum { value = dirs_up }; };
+template<typename> struct is_long_king_range;
+template<> struct is_long_king_range<variant::Spanish>          { enum { value = range_N }; };
 
 // capture precedence
 template<typename> struct is_majority_precedence;

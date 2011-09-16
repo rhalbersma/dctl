@@ -3,7 +3,7 @@
 #include <sstream>                      // std::stringsream
 #include <string>                       // std::string
 #include "Notation.hpp"
-#include "../bit/Bit.h"
+#include "../bit/Bit.hpp"
 #include "../node/Predicates.h"
 
 namespace dctl {

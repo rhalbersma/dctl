@@ -4,7 +4,7 @@
 #include "../board/Angle.hpp"
 #include "../board/Board.h"
 #include "../board/Direction.hpp"
-#include "../bit/Bit.h"
+#include "../bit/Bit.hpp"
 #include "../utility/Shift.hpp"
 
 namespace dctl {

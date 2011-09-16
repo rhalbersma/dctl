@@ -9,5 +9,5 @@ struct Killer {};
 }       // namespace variant
 }       // namespace dctl
 
-#include "../rules/Killer.h"
+#include "../rules/Killer.hpp"
 #include "../capture/Killer.hpp"

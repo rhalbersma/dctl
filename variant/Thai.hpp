@@ -8,5 +8,5 @@ struct Thai {};
 }       // namespace variant
 }       // namespace dctl
 
-#include "../rules/Thai.h"
+#include "../rules/Thai.hpp"
 #include "../notation/Thai.hpp"

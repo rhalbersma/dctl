@@ -9,5 +9,4 @@ struct Pool {};
 }       // namespace variant
 }       // namespace dctl
 
-// Pool checkers has the default template implementation because this requires
-// the least amount of redefinitions for other variants
+#include "../rules/Pool.hpp"

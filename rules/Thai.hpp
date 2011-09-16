@@ -1,5 +1,5 @@
 #pragma once
-#include "Enum.h"
+#include "Enum.hpp"
 
 namespace dctl {
 
@@ -7,10 +7,11 @@ namespace variant { struct Thai; }
 
 namespace rules {
 
-// capture mechanics
-template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<variant::Thai>         { enum { value = dirs_up   }; };
+// move mechanics
+template<typename> struct is_long_king_range;
+template<> struct is_long_king_range<variant::Thai>             { enum { value = range_N   }; };
 
+// capture mechanics
 template<typename> struct is_capture_direction_reversal;
 template<> struct is_capture_direction_reversal<variant::Thai>  { enum { value = true      }; };
 

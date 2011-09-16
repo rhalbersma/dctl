@@ -8,12 +8,12 @@
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>             // boost::thread
 #include "Traits.hpp"
-#include "Protocol.hpp"
+#include "Version.hpp"
 
 namespace dctl {
 namespace dxp {
 
-template<typename Protocol = protocol_v1>
+template<typename Protocol = protocol>
 class Connection
 {
 public:

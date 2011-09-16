@@ -2,7 +2,7 @@
 #include "../node/Position.h"
 #include "../node/Promotion.hpp"
 #include "../board/Direction.hpp"
-#include "../bit/Bit.h"
+#include "../bit/Bit.hpp"
 #include "../utility/Shift.hpp"
 
 namespace dctl {

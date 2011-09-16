@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include "../bit/Bit.h"
-#include "../rules/Rules.h"
+#include "../bit/Bit.hpp"
+#include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {

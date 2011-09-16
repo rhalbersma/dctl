@@ -1,4 +1,6 @@
-#include "Mix.h"
+#pragma once
+#include <functional>
+#include "Mix.hpp"
 #include "../../node/Position.h"
 #include "../../node/Side.hpp"
 
@@ -6,6 +8,11 @@ namespace dctl {
 namespace hash {
 namespace jenkins {
 
+// primary template
+template<typename Key, typename Index>
+struct Init;
+
+// partial specialization for ab initio hashing of positions
 template<typename Board, typename Index>
 struct Init<Position<Board>, Index>
 : 
@@ -27,3 +34,6 @@ struct Init<Position<Board>, Index>
 }       // namespace jenkins
 }       // namespace hash
 }       // namespace dctl
+
+// include template definitions inside header
+#include "Init.hpp"

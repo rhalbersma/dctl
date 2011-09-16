@@ -14,5 +14,5 @@ typedef International Canadian;         // 12x12 board
 }       // namespace variant
 }       // namespace dctl
 
-#include "../rules/International.h"
+#include "../rules/International.hpp"
 #include "../capture/International.hpp"

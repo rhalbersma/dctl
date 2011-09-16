@@ -1,8 +1,8 @@
 #pragma once
 #include <boost/config.hpp>
 #include "ValueInterface.hpp"
-#include "../bit/Bit.h"
-#include "../rules/Rules.h"
+#include "../bit/Bit.hpp"
+#include "../rules/Rules.hpp"
 
 namespace dctl {
 
