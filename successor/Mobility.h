@@ -27,7 +27,7 @@ template
 >
 class Mobility
 :
-        private utility::nonconstructible // enforce static semantics
+        private nonconstructible // enforce static semantics
 {
 public:
         // interface

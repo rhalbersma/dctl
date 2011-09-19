@@ -14,7 +14,7 @@ template<bool Color, typename Selection, typename Rules, typename Board>
  
 class Driver<Color, Material::BOTH, Selection, Rules, Board>
 :
-        private utility::nonconstructible // enforce static semantics
+        private nonconstructible // enforce static semantics
 {
 public:
         static void generate(const Position<Board>&, Stack&);

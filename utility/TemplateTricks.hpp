@@ -22,40 +22,16 @@ struct Int2Type
         BOOST_STATIC_CONSTANT(auto, value = V);
 };
 
-// with C++0x variadic templates, the tuple clases below can be generalized
-struct empty_tuple 
-{
-};
-
-template<bool I> 
-struct bool_tuple 
-{
-        BOOST_STATIC_CONSTANT(auto, first = I);
-};
-
-template<int I> 
-struct int_tuple 
-{
-        BOOST_STATIC_CONSTANT(auto, first = I);
-};
-
-template<bool B, int I> 
-struct bool_int_tuple 
-{
-        BOOST_STATIC_CONSTANT(auto, first = B);
-        BOOST_STATIC_CONSTANT(auto, second = I);
-};
-
-namespace utility {
-
 /*
 
-The class nonconstructible privately declares -but does not define- the 
-default constructor (which prevents derived classes from being copied).
+        The class nonconstructible privately declares -but does not define- 
+        the default constructor. This prevents derived classes from being 
+        constructed.
 
-The class nonconstructible was inspired by the boost::noncopyable class 
-which privately declares -but does not define- the copy constructor and 
-assignment operator (which prevents derived classes from being copied).
+        The class nonconstructible was inspired by the boost::noncopyable,
+        which privately declares -but does not define- the copy constructor 
+        and the assignment operator. This prevents derived classes from being 
+        copied.
 
 */
 
@@ -65,5 +41,4 @@ private:
         nonconstructible();
 };
 
-}       // namespace utility
 }       // namespace dctl

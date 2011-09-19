@@ -26,8 +26,8 @@ typedef Board< Dimensions<10, 10>, Structure<2, 2> > Frisian;
 // rectangular boards always have opposite coloring,
 // can have at most 1 ghost column when larger than 10x10,
 // and require internal rotations for 12x10 to fit within 64-bits
-typedef Board< Dimensions<10,  8, true>                               > Spantsireti;
-typedef Board< Dimensions<11, 10, true>, Structure<3, 1>              > Ktar11;
+typedef Board< Dimensions<10,  8, true>                                 > Spantsireti;
+typedef Board< Dimensions<11, 10, true>, Structure<3, 1>                > Ktar11;
 typedef Board< Dimensions<12, 10, true>, Structure<2, 1, Degrees::R090> > Ktar12;
 
 }       // namespace board

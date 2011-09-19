@@ -1,6 +1,6 @@
 #pragma once
 #include "Selection.h"
-#include "StateInterface.h"
+#include "StateInterface.hpp"
 #include "../node/Stack.hpp"
 
 namespace dctl {
@@ -25,7 +25,14 @@ with the Driver class as the <ConcreteClass>.
 
 */
 
-template<bool Color, int Material, typename Selection, typename Rules, typename Board> 
+template
+<
+        bool Color, 
+        int Material, 
+        typename Selection, 
+        typename Rules, 
+        typename Board
+> 
 class State
 : 
         public StateInterface<Board>
