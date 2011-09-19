@@ -20,7 +20,7 @@ class Moves;
 template<bool Color, typename Rules, typename Board> 
 class Driver<Color, Material::KING, Moves, Rules, Board>
 :
-        private utility::nonconstructible // enforce static semantics
+        private nonconstructible // enforce static semantics
 {
 public:
         static void generate(const Position<Board>&, Stack&);

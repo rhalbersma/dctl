@@ -21,7 +21,10 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_serial(
         BitBoard active_kings, BitBoard not_occupied, Stack& moves
 )
 {
-        generate_serial(active_kings, not_occupied, moves, Int2Type<rules::is_restricted_same_king_moves<Rules>::value>());
+        generate_serial(
+                active_kings, not_occupied, moves, 
+                Int2Type<rules::is_restricted_same_king_moves<Rules>::value>()
+        );
 }
 
 // partial specialization for restricted consecutive moves with the same king
@@ -70,7 +73,10 @@ void Driver<Color, Material::KING, Moves, Rules, Board>::generate_dir(
         BitBoard from_sq, BitBoard not_occupied, Stack& moves
 )
 {
-        return generate_dir<Index>(from_sq, not_occupied, moves, Int2Type<rules::is_long_king_range<Rules>::value>());
+        return generate_dir<Index>(
+                from_sq, not_occupied, moves, 
+                Int2Type<rules::is_long_king_range<Rules>::value>()
+        );
 }
 
 // partial specialization for short ranged kings
@@ -120,7 +126,10 @@ int Driver<Color, Material::KING, Moves, Rules, Board>::count_dir(
         BitBoard active_kings, BitBoard not_occupied
 )
 {
-        return count_dir<Index>(active_kings, not_occupied, Int2Type<rules::is_long_king_range<Rules>::value>());
+        return count_dir<Index>(
+                active_kings, not_occupied, 
+                Int2Type<rules::is_long_king_range<Rules>::value>()
+        );
 }
 
 // partial specialization for short ranged kings

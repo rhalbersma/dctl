@@ -3,7 +3,6 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <iomanip>                      // std::dec, std::setfill, std::setw
 #include <iostream>                     // std::cout
-#include <typeinfo>                     // typeid
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -152,8 +151,6 @@ const int Lookup_<Block>::COUNT[] = {
          4,  5,  5,  6,  5,  6,  6,  7,  5,  6,  6,  7,  6,  7,  7,  8
 };
 
-// explicit instantation
-template class Lookup_<>;
 typedef Lookup_<> Lookup;
 
 }       // namespace bit

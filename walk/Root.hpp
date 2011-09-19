@@ -1,6 +1,6 @@
 #include <boost/assert.hpp>
 #include <iostream>
-#include "../successor/Successor.h"
+#include "../successor/Successor.hpp"
 #include "../node/Position.h"
 #include "../node/Stack.hpp"
 #include "../utility/Timer.hpp"

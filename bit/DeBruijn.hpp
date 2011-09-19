@@ -167,5 +167,6 @@ const int DeBruijn<unsigned __int64, Dummy>::TABLE[] = {
 // explicit instantation
 template class DeBruijn<unsigned __int64>;
 */
+
 }       // namespace bit
 }       // namespace dctl

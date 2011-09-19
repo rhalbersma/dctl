@@ -2,7 +2,7 @@
 #include <iterator>     // std::back_inserter
 #include <vector>       // std::vector
 #include <boost/assert.hpp>
-#include "../successor/Successor.h"
+#include "../successor/Successor.hpp"
 #include "../successor/Selection.h"
 #include "../node/Position.h"
 #include "../node/Stack.hpp"
