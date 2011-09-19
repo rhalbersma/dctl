@@ -9,7 +9,7 @@
 namespace dctl {
 namespace walk {
 
-#if INTEGRATION_TEST == 0
+#if INTEGRATION_TEST == 1
 
 struct FixtureHashTable
 {
