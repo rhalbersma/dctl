@@ -1,23 +1,45 @@
+#pragma once
+#include "../node/Material.h"
+#include "../node/Stack.hpp"
+#include "../utility/TemplateTricks.hpp"
+
 namespace dctl {
+
+namespace board { template<bool, typename> class Direction; }
+template<typename> class Position;
+
 namespace successor {
 
-template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::KING, Reverse, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
-{
-        ActiveKingMoves::generate(p, moves);
-}
+// forward declaration of the primary template
+template<bool, int, typename, typename, typename> class Driver;
+class Reverse;
 
-template<bool Color, typename Rules, typename Board>
-int Driver<Color, Material::KING, Reverse, Rules, Board>::count(const Position<Board>& p)
+// partial specialization for reverse king moves
+template<bool Color, typename Rules, typename Board> 
+class Driver<Color, Material::KING, Reverse, Rules, Board>
+:
+        private nonconstructible // enforce static semantics
 {
-        return ActiveKingMoves::count(p);
-}
+public:
+        static void generate(const Position<Board>& p, Stack& moves)
+        {
+                ActiveKingMoves::generate(p, moves);
+        }
 
-template<bool Color, typename Rules, typename Board>
-bool Driver<Color, Material::KING, Reverse, Rules, Board>::detect(const Position<Board>& p)
-{
-        return ActiveKingMoves::detect(p);
-}
+        static int count(const Position<Board>& p)
+        {
+                return ActiveKingMoves::count(p);
+        }
+
+        static bool detect(const Position<Board>& p)
+        {
+                return ActiveKingMoves::detect(p);
+        }
+
+private:
+        // typedefs
+        typedef Driver<Color, Material::KING, Moves, Rules, Board> ActiveKingMoves;
+};
 
 }       // namespace successor
 }       // namespace dctl

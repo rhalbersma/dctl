@@ -1,5 +1,5 @@
 #pragma once
-#include "Dispatcher.h"
+#include "Dispatcher.hpp"
 #include "../node/Stack.hpp"
 #include "../node/State.hpp"
 #include "../utility/TemplateTricks.hpp"

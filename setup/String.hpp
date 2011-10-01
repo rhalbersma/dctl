@@ -74,7 +74,7 @@ struct read<Board, pdn::protocol, Token>
                                         sstr >> sq;                             // read square
                                         BOOST_ASSERT(Board::is_valid(sq - 1));
                                         auto b = Board::square2bit(sq - 1);     // convert square to bit
-                                        auto bb = BitBoard(1) << b;             // create bitboard
+                                        auto bb = bit::singlet<BitBoard>(b);    // create bitboard
                                         p_pieces[setup_color] ^= bb;
                                         if (setup_kings)
                                                 p_kings ^= bb;
@@ -133,7 +133,7 @@ struct read<Board, dxp::protocol, Token>
 
                 for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
                         auto b = Board::square2bit(sq);         // convert square to bit
-		        auto bb = BitBoard(1) << b;             // create bitboard
+		        auto bb = bit::singlet<BitBoard>(b);    // create bitboard
 		        sstr >> ch;
 		        switch(toupper(ch)) {
 		        case Token::black:			

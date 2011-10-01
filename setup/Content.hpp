@@ -8,7 +8,7 @@ namespace setup {
 template<typename Token>
 std::string content(const Material& p, int b)
 {
-        const BitBoard bb = BitBoard(1) << b;
+        const BitBoard bb = bit::singlet<BitBoard>(b);
 
         std::stringstream sstr;
         if (p.pieces(Side::black) & bb) {

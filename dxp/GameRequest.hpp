@@ -7,8 +7,7 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
-#include "Parser.hpp"
-#include "Version.hpp"
+#include "Mixin.hpp"
 
 namespace dctl {
 namespace dxp {
@@ -19,22 +18,16 @@ namespace dxp {
         design pattern, with the Parser class as the <ConcreteCreator> and 
         the MessageInterface class as the <Product>.
 
-        The GameRequest class registers itself with the factory.
+        The GameRequest class MUST be registered with a factory.
 
         The format and semantics of GameRequest are defined at:
         http://www.mesander.nl/damexchange/egamereq.htm
 
 */
 
-template
-<
-        typename Protocol = protocol,
-        template<typename> class Interface = MessageInterface, 
-        typename Factory = Parser
->
-class GameRequest_
+class GameRequest
 : 
-        public Interface<Protocol>
+        public MessageInterface
 {
 public:
         // views
@@ -68,26 +61,15 @@ public:
                 return position_;
         }
 
-        static std::string header()
-        {
-                return std::string(1, HEADER_);
-        }
-
         static std::string generate(const std::string& n, char c, int min, int mov, bool s, const std::string& p)
         {
                 return header() + body(n, c, min, mov, s, p);
         }
 
-private:
-        // factory creation
-        typedef Interface<Protocol> InterfaceVersion;
-        static std::unique_ptr<InterfaceVersion> create(const std::string& message)
-        {
-                return std::unique_ptr<GameRequest_>(new GameRequest_(message));
-        }
+        // factory creation (NOTE: makes constructor private)
+        MIXIN_FACTORY_CREATION(GameRequest)
 
-        // private constructor
-        explicit GameRequest_(const std::string& message)
+        explicit GameRequest(const std::string& message)
         :
                 name_initiator_(message.substr(2, 32)),
                 color_follower_(*(message.substr(34, 1)).begin()),
@@ -99,11 +81,9 @@ private:
                         position_ = message.substr(42);
         }
 
+private:
         // implementation
-        virtual std::string do_header() const
-        {
-                return header();
-        }
+        MIXIN_MESSAGE_HEADER('R')
 
         virtual std::string do_body() const
         {
@@ -145,8 +125,6 @@ private:
         BOOST_STATIC_CONSTANT(auto, PROTOCOL_version = 1);
         BOOST_STATIC_CONSTANT(auto, INITIAL = 'A');
         BOOST_STATIC_CONSTANT(auto, SPECIAL = 'B');        
-        BOOST_STATIC_CONSTANT(auto, HEADER_ = 'R');
-        static bool registered_;        
         
         // representation
         std::string name_initiator_;
@@ -156,16 +134,6 @@ private:
         bool setup_;
         std::string position_;
 };
-
-// factory registration
-template<typename Protocol, template<typename> class Interface, typename Factory>
-bool GameRequest_<Protocol, Interface, Factory>::registered_ = 
-        Factory::register_message(header(), create)
-;
-
-// explicit instantation
-template class GameRequest_<>;
-typedef GameRequest_<> GameRequest;
 
 }       // namespace dxp
 }       // namespace dctl

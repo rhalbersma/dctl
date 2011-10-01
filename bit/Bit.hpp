@@ -7,6 +7,18 @@
 namespace dctl {
 namespace bit {
 
+template<typename T>
+T singlet(int i)
+{
+        return T(1) << i;
+}
+
+template<typename T>
+T reverse_singlet(int i)
+{
+        return T(1) << (num_bits<T>::value - i);
+}
+
 // 0 bits set to 1
 template<typename T>
 bool is_zero(T b)
@@ -98,7 +110,7 @@ template<typename T>
 int index_loop(T b)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i)
-                if (b & (T(1) << i))
+                if (b & singlet<T>(i))
                         return i;
         return 0;
 }

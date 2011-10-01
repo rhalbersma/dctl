@@ -1,20 +1,21 @@
 #pragma once
-#include <map>                  // std::map
-#include <memory>               // std::unique_ptr
-#include <string>               // std::string
-#include <boost/utility.hpp>    // boost::noncopyable            
+#include <memory>
+#include <string>
+#include <boost/mpl/for_each.hpp>
+#include <boost/mpl/identity.hpp>
+#include <boost/utility.hpp>
+#include "Factory.hpp"
 #include "MessageInterface.hpp"
-#include "Scanner.hpp"
-#include "Version.hpp"
+#include "Types.hpp"
 
 namespace dctl {
 namespace dxp {
 
 /*
 
-        The Parser class is the <ConcreteCreator> in a <Factory Method>
-        design pattern, with the MessageInterface class as the <Product>, 
-        and classes derived from that as instances of a <ConcreteProduct>. 
+        The Factory class is the <ConcreteCreator> in a <Factory Method>
+        design pattern, with the Product class as the <Product>, and classes 
+        derived from that as instances of a <ConcreteProduct>. 
 
         All derived message classes MUST register themselves with the factory.
 
@@ -22,48 +23,71 @@ namespace dxp {
 
 template
 <
-        typename Protocol = protocol,
-        template<typename> class Interface = MessageInterface
+        typename ConcreteProducts,
+        typename Product,
+        typename ProductPointer = std::unique_ptr<Product>,
+        typename Input = std::string,
+        typename Factory = Factory<Product, ProductPointer, Input>
 >
-class Factory
-: 
-        private boost::noncopyable      // enforce singleton semantics
+class Parser
 {
 public:
-        // typedefs
-        typedef Interface<Protocol> InterfaceVersion;
-        typedef Scanner<Protocol> ScannerVersion;
-        typedef std::unique_ptr<InterfaceVersion> (*Creator)(const std::string&);
-
-        static std::unique_ptr<InterfaceVersion> create_message(const std::string& message)
+        Parser()
         {
-                ScannerVersion scanner(message);
-                auto i = instance().find(scanner.header());
-                return (i != instance().end())? (i->second)(scanner.body()) : nullptr;
+                boost::mpl::for_each<ConcreteProducts, boost::mpl::make_identity<> >(
+                        call_register_class<Factory>(factory_)
+                );
+        }       
+
+        ~Parser()
+        {
+                boost::mpl::for_each<ConcreteProducts, boost::mpl::make_identity<> >(
+                        call_unregister_class<Factory>(factory_)
+                );
         }
 
-        static bool register_message(const std::string& header, Creator creator)
+        ProductPointer parse(const Input& input) const
         {
-                return instance().insert(CreatorMap::value_type(header, creator)).second;
-        }
-
-        static bool unregister_message(const std::string& header)
-        {
-                return instance().erase(header) == 1;
+                return factory_.create_object(input);
         }
 
 private:
-        // implementation
-        typedef std::map<std::string, Creator> CreatorMap;
-        static CreatorMap& instance()
-        {
-                // Meyers Singleton, see Modern C++ Design p.117
-                static CreatorMap singleton_;
-                return singleton_;
-        }
+        Factory factory_;
 };
 
-typedef Factory<> Parser;
+template<typename Factory>
+class call_register_class
+{
+public:
+        call_register_class(Factory& f): factory_(f) {}
+
+        template<typename T>
+        void operator()(boost::mpl::identity<T>) const
+        {
+                T::register_class(factory_);
+        }
+
+private:
+        call_register_class& operator=(const call_register_class&);
+        Factory& factory_;
+};
+
+template<typename Factory>
+class call_unregister_class
+{
+public:
+        call_unregister_class(Factory& f): factory_(f) {}
+
+        template<typename T>
+        void operator()(boost::mpl::identity<T>) const
+        {
+                T::unregister_class(factory_);
+        }
+
+private:
+        call_unregister_class& operator=(const call_unregister_class&);
+        Factory& factory_;
+};
 
 }       // namespace dxp
 }       // namespace dctl
