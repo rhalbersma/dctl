@@ -1,20 +1,27 @@
-#include <string>                       // std::string
-#include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL 
+#include <string>                               // std::string
+#include <boost/mpl/list.hpp>                   // boost::mpl::list
+#include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL 
 //#include "../../src/dxp/Connection.hpp"
+#include "../../src/dxp/MessageInterface.hpp"
 #include "../../src/dxp/Parser.hpp"
 #include "../../src/dxp/Types.hpp"
-#include "../../src/dxp/Version.hpp"
 
 namespace dctl {
 namespace dxp {
 
 BOOST_AUTO_TEST_SUITE(TestParser)
 
-// Examples of DXP messages (Layer 2 Protocol)
-// http://www.mesander.nl/dxp/edxplg2.htm
 BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
-        // the element type of an array cannot be a type that contains 'auto'
+        Parser<
+                boost::mpl::list<
+                        GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
+                >,
+                MessageInterface
+        > p;
+
+        // Examples of DXP messages (Layer 2 Protocol)
+        // http://www.mesander.nl/dxp/edxplg2.htm
         const std::string message[] = 
         {
                 "R01Tornado voor Windows 4.0        W060065A",
@@ -28,11 +35,11 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
         };
 
         for (auto i = 0; i < 8; ++i) {                
-                if (auto parsed = Parser::create_message(message[i]))
-                        // the message type did get registered, compare the original and the parsed message
+                if (auto parsed = p.parse(message[i]))
+                        // if the message type did get registered, compare the original and the parsed message
                         BOOST_CHECK_EQUAL(message[i], parsed->str());
                 else {
-                        // the message type did not get registered, do not dereference a nullptr
+                        // if the message type did not get registered, do not dereference a nullptr
                         BOOST_CHECK(false);
                 }
         }
