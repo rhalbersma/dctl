@@ -13,8 +13,8 @@ public:
         Transposition(NodeCount, int);
 
         // views
-        NodeCount leafs() const;                // leaf node count
-        int depth() const;                      // remaining depth to search
+        NodeCount leafs() const;                        // leaf node count
+        int depth() const;                              // remaining depth to search
 
 private:
         // implementation
@@ -28,7 +28,7 @@ private:
         BOOST_STATIC_CONSTANT(auto, DEPTH_MASK = ((NodeCount(1) << DEPTH_BITS) - 1));
 
         // representation
-        NodeCount entry_;                       // leaf node count and depth
+        NodeCount entry_;                               // leaf node count and depth
 };
 
 }       // namespace walk

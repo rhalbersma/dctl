@@ -48,7 +48,7 @@ public:
  
                         // if the new prefix did not occur before, add a one bit to the sequence
                         if (prefer_one)
-                                sequence ^= T(1) << i;
+                                sequence ^= singlet<T>(i);
                 }
 
                 return sequence;
@@ -61,7 +61,7 @@ public:
 
                 int table[NUM_BITS];
                 for (auto i = 0; i < NUM_BITS; ++i) {
-                        T b = T(1) << i;
+                        T b = singlet<T>(i);
                         b *= sequence;
                         b >>= SHIFT;
                         table[b] = i;

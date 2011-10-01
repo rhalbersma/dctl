@@ -219,6 +219,3 @@ private:
 
 }       // namespace dxp
 }       // namespace dctl
-
-// include template definitions inside header
-#include "Connection.hpp"

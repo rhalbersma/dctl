@@ -77,14 +77,14 @@ private:
                 ++num_pieces_;
                 if (target_sq & king_targets) {
                         ++num_kings_;
-                        piece_order_ ^= BitBoard(1) << (8 * sizeof(BitBoard) - num_pieces_);
+                        piece_order_ ^= bit::reverse_singlet<BitBoard>(num_pieces_);
                 }
         }
 
         virtual void do_decrement(BitBoard target_sq, BitBoard king_targets)
         {
                 if (target_sq & king_targets) {
-                        piece_order_ ^= BitBoard(1) << (8 * sizeof(BitBoard) - num_pieces_);
+                        piece_order_ ^= bit::reverse_singlet<BitBoard>(num_pieces_);
                         --num_kings_;
                 }
                 --num_pieces_;

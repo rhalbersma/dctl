@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <iostream>
 #include "Weight.h"
-#include "../successor/Mobility.h"
+#include "../successor/Mobility.hpp"
 #include "../node/Position.h"
 #include "../node/Side.hpp"
 #include "../variant/International.hpp"

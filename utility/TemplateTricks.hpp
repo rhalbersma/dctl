@@ -22,11 +22,16 @@ struct Int2Type
         BOOST_STATIC_CONSTANT(auto, value = V);
 };
 
+template<typename T>
+struct Type2Type
+{
+};
+
 /*
 
         The class nonconstructible privately declares -but does not define- 
-        the default constructor. This prevents derived classes from being 
-        constructed.
+        the default constructor and the destructor. This prevents derived 
+        classes from being constructed or deleted.
 
         The class nonconstructible was inspired by the boost::noncopyable,
         which privately declares -but does not define- the copy constructor 
@@ -39,6 +44,7 @@ class nonconstructible
 {
 private:
         nonconstructible();
+        //~nonconstructible();
 };
 
 }       // namespace dctl

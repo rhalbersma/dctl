@@ -92,8 +92,8 @@ const BitBoard Board<Dimensions, Structure>::col_mask[][12] = {
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
-        (BitBoard(1) << 1) ^ (BitBoard(1) << (1 + (InternalGrid::left_down  << 1))),
-        (BitBoard(1) << 0) ^ (BitBoard(1) << (0 + (InternalGrid::right_down << 1)))
+        (bit::singlet<BitBoard>(1)) ^ (bit::singlet<BitBoard>(1 + (InternalGrid::left_down  << 1))),
+        (bit::singlet<BitBoard>(0)) ^ (bit::singlet<BitBoard>(0 + (InternalGrid::right_down << 1)))
 };
 
 template<typename Dimensions, typename Structure>

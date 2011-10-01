@@ -1,14 +1,13 @@
 #pragma once
+#include <algorithm>                    // std::for_each
 #include <iomanip>                      // std::setfill, std::setw
 #include <memory>                       // std::unique_ptr
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
 #include <vector>                       // std::vector
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
-#include "Parser.hpp"
-#include "Version.hpp"
+#include "Mixin.hpp"
 
 namespace dctl {
 namespace dxp {
@@ -19,22 +18,16 @@ namespace dxp {
         design pattern, with the Parser class as the <ConcreteCreator> 
         and the MessageInterface class as the <Product>.
 
-        The Move class registers itself with the factory.
+        The Move class MUST be registered with a factory.
 
         The format and semantics of Move are defined at:
         http://www.mesander.nl/damexchange/emove.htm
 
 */
         
-template
-<
-        typename Protocol = protocol,
-        template<typename> class Interface = MessageInterface, 
-        typename Factory = Parser
->
-class Move_
+class Move
 : 
-        public Interface<Protocol>
+        public MessageInterface
 {
 public:
         // views
@@ -63,26 +56,15 @@ public:
                 return captured_pieces_;
         }
 
-        static std::string header()
-        {
-                return std::string(1, HEADER_);
-        }
-
         static std::string generate(int s, int f, int d, int n, const std::vector<int>& c)
         {
                 return header() + body(s, f, d, n, c);
         }
 
-private:
-        // factory creation
-        typedef Interface<Protocol> InterfaceVersion;
-        static std::unique_ptr<InterfaceVersion> create(const std::string& message)
-        {
-                return std::unique_ptr<Move_>(new Move_(message));
-        }
+        // factory creation (NOTE: makes constructor private)
+        MIXIN_FACTORY_CREATION(Move)
 
-        // private constructor
-        explicit Move_(const std::string& message)
+        explicit Move(const std::string& message)
         :
                 seconds_(boost::lexical_cast<int>(message.substr(0, 4).c_str())),
                 from_sq_(boost::lexical_cast<int>(message.substr(4, 2).c_str())),
@@ -93,11 +75,9 @@ private:
                         captured_pieces_.push_back(boost::lexical_cast<int>(message.substr(10 + 2 * i, 2).c_str()));
         }
 
+private:
         // implementation
-        virtual std::string do_header() const
-        {
-                return header();
-        }
+        MIXIN_MESSAGE_HEADER('M')
 
         virtual std::string do_body() const
         {
@@ -117,9 +97,6 @@ private:
                 return sstr.str();
         }
 
-        BOOST_STATIC_CONSTANT(auto, HEADER_ = 'M');
-        static bool registered_;
-
         // representation
         int seconds_;
         int from_sq_;
@@ -127,15 +104,6 @@ private:
         int num_captured_;
         std::vector<int> captured_pieces_;       
 };
-
-template<typename Protocol, template<typename> class Interface, typename Factory>
-bool Move_<Protocol, Interface, Factory>::registered_ = 
-        Factory::register_message(header(), create)
-;
-
-// explicit instantation
-template class Move_<>;
-typedef Move_<> Move;
 
 }       // namespace dxp
 }       // namespace dctl
