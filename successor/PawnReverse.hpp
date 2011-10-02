@@ -46,6 +46,3 @@ private:
 
 }       // namespace successor
 }       // namespace dctl
-
-// include template definitions inside header
-#include "PawnReverse.hpp"

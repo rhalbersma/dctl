@@ -1,6 +1,7 @@
 #pragma once
 #include "../bit/Bit.hpp"
 #include "../board/Traits.hpp"
+#include "../rules/Rules.hpp"
 
 namespace dctl {
 
@@ -109,6 +110,32 @@ struct FloodFill
         T operator()(T generator, T propagator) const
         {
                 return bit::flood_fill<board::is_positive<Index>::value>(generator, propagator, Board::SHIFT[Index]);
+        }
+};
+
+// primary template
+template<typename Selection, typename Board, int Index, int Range>
+struct Destinations;
+
+namespace successor { class Moves; }
+
+template<typename Board, int Index>
+struct Destinations<successor::Moves, Board, Index, rules::range_1>
+{
+        template<typename T> 
+        T operator()(T active_pieces, T not_occupied) const
+        {
+                return Push<Board, Index>()(active_pieces) & not_occupied;
+        }
+};
+
+template<typename Board, int Index>
+struct Destinations<successor::Moves, Board, Index, rules::range_N>
+{
+        template<typename T> 
+        T operator()(T active_pieces, T not_occupied) const
+        {
+                return active_pieces ^ FloodFill<Board, Index>()(active_pieces, not_occupied);
         }
 };
 

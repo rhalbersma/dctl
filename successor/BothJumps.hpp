@@ -1,63 +1,80 @@
-#include <boost/assert.hpp>
+#pragma once
 #include "../capture/State.h"
+#include "../node/Material.h"
+#include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
+#include "../utility/IntegerTypes.hpp"
+#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
+
+namespace capture { template<typename, typename> class State; }
+
 namespace successor {
 
-template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate(const Position<Board>& p, Stack& moves)
+template<bool Color, typename Rules, typename Board> 
+class Driver<Color, Material::BOTH, Jumps, Rules, Board>
+:
+        private nonconstructible // enforce static semantics
 {
-        capture::State<Rules, Board> capture(p);
-        generate(p, capture, moves);
-}
+public:
+        static void generate(const Position<Board>& p, Stack& moves)
+        {
+                capture::State<Rules, Board> capture(p);
+                generate_precede(p, capture, moves);
+        }
 
-template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves)
-{
-        generate_precede(p, capture, moves);
-}
+        static int count(const Position<Board>& p)
+        {
+                Stack moves;
+                generate(p, moves);
+                return static_cast<int>(moves.size());
+        }
 
-// tag dispatching on absolute king capture precedence
-template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate_precede(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves)
-{
-        generate_precede(p, capture, moves, Int2Type<rules::is_absolute_king_precedence<Rules>::value>());
-}
+        static bool detect(const Position<Board>& p)
+        {
+                return (
+                        PawnJumps::detect(p) || 
+                        KingJumps::detect(p)
+                );
+        }
 
-// partial specialization for no absolute king capture precedence
-template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate_precede(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<false>)
-{
-        KingJumps::generate(p, capture, moves);
-        PawnJumps::generate(p, capture, moves);
-}
+private:
+        // tag dispatching on absolute king capture precedence
+        static void generate_precede(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves)
+        {
+                generate_precede(
+                        p, capture, moves, 
+                        Int2Type<rules::is_absolute_king_precedence<Rules>::value>()
+                );
+        }
 
-// partial specialization for absolute king capture precedence
-template<bool Color, typename Rules, typename Board>
-void Driver<Color, Material::BOTH, Jumps, Rules, Board>::generate_precede(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<true>)
-{
-        KingJumps::generate(p, capture, moves);
-        if (moves.empty())
+        // partial specialization for no absolute king capture precedence
+        static void generate_precede(
+                const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<false>
+        )
+        {
+                KingJumps::generate(p, capture, moves);
                 PawnJumps::generate(p, capture, moves);
-}
+        }
 
-template<bool Color, typename Rules, typename Board>
-int Driver<Color, Material::BOTH, Jumps, Rules, Board>::count(const Position<Board>& p)
-{
-        Stack moves;
-        generate(p, moves);
-        return static_cast<int>(moves.size());
-}
+        // partial specialization for absolute king capture precedence
+        static void generate_precede(
+                const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<true>
+        )
+        {
+                KingJumps::generate(p, capture, moves);
+                if (moves.empty())
+                        PawnJumps::generate(p, capture, moves);
+        }
 
-template<bool Color, typename Rules, typename Board>
-bool Driver<Color, Material::BOTH, Jumps, Rules, Board>::detect(const Position<Board>& p)
-{
-        return (
-                PawnJumps::detect(p) || 
-                KingJumps::detect(p)
-        );
-}
+        // typedefs
+        typedef Driver<Color, Material::KING, Jumps, Rules, Board> KingJumps;
+        typedef Driver<Color, Material::PAWN, Jumps, Rules, Board> PawnJumps;
+};
 
 }       // namespace successor
 }       // namespace dctl
+
+// include template definitions inside header
+#include "BothJumps.hpp"
