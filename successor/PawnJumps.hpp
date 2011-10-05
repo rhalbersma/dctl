@@ -3,7 +3,7 @@
 #include "../board/Angle.hpp"
 #include "../board/Board.h"
 #include "../board/Direction.hpp"
-#include "../capture/State.h"
+#include "../capture/State.hpp"
 #include "../node/Material.h"
 #include "../node/Position.h"
 #include "../node/Stack.hpp"
@@ -318,8 +318,8 @@ private:
         )
         {
                 return (
-                        scan_dirs<Index>(jumper, capture, moves, Int2Type<rules::scan_orth >())
-                        scan_dirs<Index>(jumper, capture, moves, Int2Type<rules::scan_diag>()) |
+                        scan_dirs<Index>(jumper, capture, moves, Int2Type<rules::scan_orth>()) |
+                        scan_dirs<Index>(jumper, capture, moves, Int2Type<rules::scan_diag>())
                 );
         }
         
