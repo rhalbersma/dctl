@@ -19,6 +19,7 @@ class Root
 public:
         template<typename, typename B> static NodeCount perft(const Position<B>&, int);
         template<typename, typename B> static NodeCount divide(const Position<B>&, int);
+        template<typename, typename B> static NodeCount test(const Position<B>&, int);
 
         static void resize_hash(std::size_t);
         static void clear_hash();

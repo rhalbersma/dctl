@@ -13,10 +13,10 @@ template<typename> class Position;
         with the StateInterface class as the <State> and the State class 
         as the <ConcreteState>.
 
-        The Mobility class also forms a <Client> in a <FlyWeight Pattern>, 
-        with the StateInterface class as the <FlyWeight>, the State class 
-        as the <ConcreteFlyWeight>, and the Dispatcher class as the 
-        <FlyWeightFactory>. 
+        The Mobility class also forms a <Client> in a <FlyWeight> design
+        pattern, with the StateInterface class as the <FlyWeight>, the 
+        State class as the <ConcreteFlyWeight>, and the Dispatcher class 
+        as the <FlyWeightFactory>. 
 
         A particular position's state is determined by its side to move 
         and the availability of kings and men among its pieces. 

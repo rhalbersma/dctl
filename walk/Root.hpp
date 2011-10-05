@@ -59,6 +59,12 @@ NodeCount Root::divide(const Position<Board>& p, int depth)
 }
 
 template<typename Rules, typename Board>
+NodeCount Root::test(const Position<Board>& p, int depth)
+{
+        return driver<Rules>(p, 0, depth);
+}
+
+template<typename Rules, typename Board>
 NodeCount Root::driver(const Position<Board>& p, int ply, int depth)
 {
         return (depth == 0)? leaf<Rules>(p, ply, depth) : fast<Rules>(p, ply, depth);

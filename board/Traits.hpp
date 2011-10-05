@@ -56,7 +56,7 @@ struct is_left
         // left_up, left, left_down
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
-                (is_down<rotate<Angle<Index>, Degrees::L090>::type::index>::value)
+                (is_down<rotate<Angle<Index>, Degrees::L090>::type::value>::value)
         );
 };   
 
@@ -66,7 +66,7 @@ struct is_right
         // right, right_up, right_down
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
-                (is_up<rotate<Angle<Index>, Degrees::L090>::type::index>::value)
+                (is_up<rotate<Angle<Index>, Degrees::L090>::type::value>::value)
         );
 };     
 

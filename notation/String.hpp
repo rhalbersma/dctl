@@ -4,7 +4,7 @@
 #include <string>                       // std::string
 #include "Notation.hpp"
 #include "../bit/Bit.hpp"
-#include "../node/Predicates.h"
+#include "../node/Predicates.hpp"
 
 namespace dctl {
 

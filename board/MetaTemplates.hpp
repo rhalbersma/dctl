@@ -20,8 +20,8 @@ struct init_predicate
 {
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
-                (test_predicate<Predicate, Board, ArgsTuple, SQ  >::value) ^
-                (init_predicate<Predicate, Board, ArgsTuple, SQ-1>::value)
+                (test_predicate<Predicate, Board, ArgsTuple, SQ    >::value) ^
+                (init_predicate<Predicate, Board, ArgsTuple, SQ - 1>::value)
         );
 };
 

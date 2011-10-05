@@ -64,7 +64,7 @@ public:
 
         // unary predicates
         template<bool Color> 
-        bool is_promotion(BitBoard dest_sq) const
+        bool is_promotion_sq(BitBoard dest_sq) const
         {
                 return !bit::is_zero(promotion_sq<Color, Board>(dest_sq));
         }
@@ -226,7 +226,7 @@ private:
         // partial specialization for kings that halt immediately if the final capture is a king, 
         // and slide through otherwise
         template<bool Color, int Index> 
-        void add_king_capture(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_1K>) const
+        void add_king_capture(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_1FK>) const
         {
                 if (king_targets_ & Pull<Board, Index>()(dest_sq))
                         add_king_capture<Color, Index>(dest_sq, move_stack, Int2Type<rules::halt_1>());
