@@ -1,5 +1,5 @@
 #include "Move.h"
-#include "Predicates.h"
+#include "Predicates.hpp"
 
 namespace dctl {
 

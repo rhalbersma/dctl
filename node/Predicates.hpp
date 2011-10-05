@@ -1,3 +1,4 @@
+#pragma once
 #include "Position.h"
 #include "Move.h"
 
@@ -95,7 +96,7 @@ bool is_intersecting_capture(const Position<Board>& p, const Move& m)
         return is_intersecting_capture(p, m, Int2Type<rules::capture_removal<Rules>::value>());
 }
 
-// partial specialization for piece by piece removal during a capture sequence
+// partial specialization for en-passant capture removal
 template<typename Board>
 bool is_intersecting_capture(const Position<Board>& p, const Move& m, Int2Type<rules::remove_ep>)
 {
@@ -103,7 +104,7 @@ bool is_intersecting_capture(const Position<Board>& p, const Move& m, Int2Type<r
         return bit::is_single(moving_kings(p, m) & captured_kings(p, m) & passive_men(p));
 }
 
-// partial specialization for complete removal after a capture sequence
+// partial specialization for apres-fini capture removal
 template<typename Board>
 bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::remove_af>)
 {
@@ -114,14 +115,56 @@ bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules
 template<typename Rules>
 bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces)
 {
-        return is_intersecting_capture(delta, captured_pieces, Int2Type<rules::capture_removal<Rules>::value>());
+        return is_intersecting_capture(
+                delta, captured_pieces, 
+                Int2Type<rules::capture_removal<Rules>::value>()
+        );
+}
+
+// specialization for en-passant capture removal (Thai draughts)
+inline bool is_intersecting_capture(
+        BitBoard delta, BitBoard captured_pieces, Int2Type<rules::remove_ep>
+)
+{
+        // [FEN "W:WK26:B9,12,18,19"] 
+        // white has to capture 26x12, landing on a square it also captured on
+        return bit::is_single(delta & captured_pieces) && bit::is_multiple(captured_pieces); 
+}
+
+// specialization for apres-fini capture removal
+inline bool is_intersecting_capture(
+        BitBoard /* delta */, BitBoard /* captured_pieces */, Int2Type<rules::remove_af>
+)
+{
+        return false; 
 }
 
 // tag dispatching on promotion condition
 template<typename Rules>
 bool is_intersecting_promotion(BitBoard promotion, BitBoard delta)
 {
-        return is_intersecting_promotion(promotion, delta, Int2Type<rules::promotion_condition<Rules>::value>());
+        return is_intersecting_promotion(
+                promotion, delta, 
+                Int2Type<rules::promotion_condition<Rules>::value>()
+        );
+}
+
+// specialization for en-passant promotion (Russian draughts)
+inline bool is_intersecting_promotion(
+        BitBoard promotion, BitBoard delta, Int2Type<rules::promote_ep>
+)
+{
+        // [FEN "W:W15:B10,13,20,23"] 
+        // white has to capture 15x15, promoting on its original square
+        return bit::is_single(promotion) && bit::is_zero(delta);
+}
+
+// specialization for apres-fini promotion
+inline bool is_intersecting_promotion(
+        BitBoard /* promotion */, BitBoard /* delta */, Int2Type<rules::promote_af>
+)
+{
+        return false;
 }
 
 }       // namespace dctl

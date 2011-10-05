@@ -110,14 +110,14 @@ const BitBoard Board<Dimensions, Structure>::jump_group[] = {
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::jump_start[] = {
-        init_jump_start<B, rotate<Angle<Degrees::D000>, B::angle>::type::index>::value,
-        init_jump_start<B, rotate<Angle<Degrees::D045>, B::angle>::type::index>::value,
-        init_jump_start<B, rotate<Angle<Degrees::D090>, B::angle>::type::index>::value,
-        init_jump_start<B, rotate<Angle<Degrees::D135>, B::angle>::type::index>::value,
-        init_jump_start<B, rotate<Angle<Degrees::D180>, B::angle>::type::index>::value,
-        init_jump_start<B, rotate<Angle<Degrees::D225>, B::angle>::type::index>::value,
-        init_jump_start<B, rotate<Angle<Degrees::D270>, B::angle>::type::index>::value,
-        init_jump_start<B, rotate<Angle<Degrees::D315>, B::angle>::type::index>::value
+        init_jump_start<B, rotate<Angle<Degrees::D000>, B::angle>::type::value>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D045>, B::angle>::type::value>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D090>, B::angle>::type::value>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D135>, B::angle>::type::value>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D180>, B::angle>::type::value>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D225>, B::angle>::type::value>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D270>, B::angle>::type::value>::value,
+        init_jump_start<B, rotate<Angle<Degrees::D315>, B::angle>::type::value>::value
 };
 
 template<typename Dimensions, typename Structure>

@@ -279,7 +279,7 @@ private:
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::promote_ep>
         )
         {
-                if (!capture.is_promotion<Color>(jumper))
+                if (!capture.is_promotion_sq<Color>(jumper))
                         return scan_next<Index>(jumper, capture, moves, Int2Type<rules::promote_af>());
                 else {
                         capture.toggle_promotion();
@@ -330,10 +330,10 @@ private:
         )
         {
                 return (
-                        scan_dir<rotate<Angle<Index>, Degrees::R045>::type::index>(jumper, capture, moves) |
-                        scan_dir<rotate<Angle<Index>, Degrees::L045>::type::index>(jumper, capture, moves) |
-                        scan_dir<rotate<Angle<Index>, Degrees::R135>::type::index>(jumper, capture, moves) |
-                        scan_dir<rotate<Angle<Index>, Degrees::L135>::type::index>(jumper, capture, moves)
+                        scan_dir<rotate<Angle<Index>, Degrees::R045>::type::value>(jumper, capture, moves) |
+                        scan_dir<rotate<Angle<Index>, Degrees::L045>::type::value>(jumper, capture, moves) |
+                        scan_dir<rotate<Angle<Index>, Degrees::R135>::type::value>(jumper, capture, moves) |
+                        scan_dir<rotate<Angle<Index>, Degrees::L135>::type::value>(jumper, capture, moves)
                 );
         }
         
@@ -344,8 +344,8 @@ private:
         )
         {
                 return (
-                        scan_dir<rotate<Angle<Index>, Degrees::R090>::type::index>(jumper, capture, moves) |
-                        scan_dir<rotate<Angle<Index>, Degrees::L090>::type::index>(jumper, capture, moves)
+                        scan_dir<rotate<Angle<Index>, Degrees::R090>::type::value>(jumper, capture, moves) |
+                        scan_dir<rotate<Angle<Index>, Degrees::L090>::type::value>(jumper, capture, moves)
                 );
         }
         

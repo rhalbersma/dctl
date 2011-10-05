@@ -42,7 +42,7 @@ struct Degrees
 template<int Index>
 struct Angle
 {
-        BOOST_STATIC_CONSTANT(auto, index = Index);
+        BOOST_STATIC_CONSTANT(auto, value = Index);
 };
 
 // partial specialization for angles
@@ -73,14 +73,14 @@ struct mirror_up
 };
 
 // mirrored backward direction index (orthogonal to the original)
-template<int I>
+template<int Index>
 struct mirror_down
 {
 private:
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, L = (rotate<Angle<I>, Degrees::L090>::type::index));
+        BOOST_STATIC_CONSTANT(auto, L = (rotate<Angle<Index>, Degrees::L090>::type::value));
         BOOST_STATIC_CONSTANT(auto, ML = mirror_up<L>::value);
-        BOOST_STATIC_CONSTANT(auto, RML = (rotate<Angle<ML>, Degrees::R090>::type::index));
+        BOOST_STATIC_CONSTANT(auto, RML = (rotate<Angle<ML>, Degrees::R090>::type::value));
 
 public:
         // M' == R M L

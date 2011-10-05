@@ -10,7 +10,7 @@ enum { range_1, range_N };
 enum { turn_1, turn_N };
 
 // final king range
-enum { halt_1, halt_N, halt_1K };
+enum { halt_1, halt_N, halt_1FK };
 
 // initial capture directions
 enum { dirs_up, dirs_down, dirs_diag, dirs_orth, dirs_all };

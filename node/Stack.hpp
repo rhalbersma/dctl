@@ -3,7 +3,7 @@
 #include <vector>                       // std::vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "Move.h"
-#include "Predicates.h"
+#include "Predicates.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
