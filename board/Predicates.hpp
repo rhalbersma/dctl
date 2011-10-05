@@ -46,7 +46,7 @@ struct is_row_mask
 
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, color = (boost::mpl::at<ArgsTuple, get_color>::type::value));
-        BOOST_STATIC_CONSTANT(auto, row = (boost::mpl::at<ArgsTuple,  get_row>::type::value));
+        BOOST_STATIC_CONSTANT(auto, row = (boost::mpl::at<ArgsTuple, get_row>::type::value));
         BOOST_STATIC_CONSTANT(auto, value = 
                 (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row == 
                 (color? (Board::height - 1) - row : row))
@@ -61,7 +61,7 @@ struct is_col_mask
 
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, color = (boost::mpl::at<ArgsTuple, get_color>::type::value));
-        BOOST_STATIC_CONSTANT(auto, col = (boost::mpl::at<ArgsTuple,  get_column>::type::value));
+        BOOST_STATIC_CONSTANT(auto, col = (boost::mpl::at<ArgsTuple, get_column>::type::value));
         BOOST_STATIC_CONSTANT(auto, value = 
                 (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col == 
                 (color? (Board::width - 1) - col : col))

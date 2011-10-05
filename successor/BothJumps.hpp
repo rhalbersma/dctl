@@ -1,5 +1,5 @@
 #pragma once
-#include "../capture/State.h"
+#include "../capture/State.hpp"
 #include "../node/Material.h"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"

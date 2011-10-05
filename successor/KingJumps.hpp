@@ -3,7 +3,7 @@
 #include "../bit/Bit.hpp"
 #include "../board/Angle.hpp"
 #include "../board/Direction.hpp"
-#include "../capture/State.h"
+#include "../capture/State.hpp"
 #include "../node/Material.h"
 #include "../node/Position.h"
 #include "../node/Stack.hpp"
