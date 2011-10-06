@@ -9,7 +9,7 @@ template
         typename Dimensions,    // dimensions
         int G = 0               // ghost columns
 >
-class Grid
+struct Grid
 : 
         public Dimensions
 {

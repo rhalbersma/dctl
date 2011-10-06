@@ -14,7 +14,7 @@ struct ShiftSign
         {
                 static_assert(std::is_integral<Index>::value, "Bitwise shift only applicable to integer types.");
                 static_assert(std::is_integral<Key>::value, "Bitwise shift only applicable to integer types.");
-                static_assert(sizeof(Index) >= sizeof(Key), "Hash key cannot be of larger type than the hash index.");
+                static_assert(sizeof(Index) > sizeof(Key), "Hash key cannot be of larger type than the hash index.");
 
                 return static_cast<Key>(index >> 8 * (sizeof(Index) - sizeof(Key)));
         }

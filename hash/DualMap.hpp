@@ -4,7 +4,7 @@
 #include "Functions.hpp"
 #include "Map.hpp"
 #include "Replace.hpp"
-#include "../node/Position.h"
+#include "../node/Position.hpp"
 
 namespace dctl { 
 namespace hash {

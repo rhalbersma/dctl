@@ -4,8 +4,8 @@
 #include "../board/Board.h"
 #include "../board/Direction.hpp"
 #include "../capture/State.hpp"
-#include "../node/Material.h"
-#include "../node/Position.h"
+#include "../node/Material.hpp"
+#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -21,13 +21,13 @@ class Jumps;
 
 // partial specialization for pawn jumps
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::PAWN, Jumps, Rules, Board>
+class Driver<Color, Material::pawn, Jumps, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
 public:
         // typedefs
-        typedef Driver<Color, Material::KING, Jumps, Rules, Board> KingJumps;
+        typedef Driver<Color, Material::king, Jumps, Rules, Board> KingJumps;
         typedef board::Direction<Color, Board> Direction;
         typedef capture::State<Rules, Board> State;
 

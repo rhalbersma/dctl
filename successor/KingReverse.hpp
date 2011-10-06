@@ -1,12 +1,12 @@
 #pragma once
-#include "../node/Material.h"
+#include "../node/Move.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
-namespace board { template<bool, typename> class Direction; }
-template<typename> class Position;
+namespace board { template<bool, typename> struct Direction; }
+template<typename> struct Position;
 
 namespace successor {
 
@@ -16,7 +16,7 @@ class Reverse;
 
 // partial specialization for reverse king moves
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::KING, Reverse, Rules, Board>
+class Driver<Color, Material::king, Reverse, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
@@ -38,7 +38,7 @@ public:
 
 private:
         // typedefs
-        typedef Driver<Color, Material::KING, Moves, Rules, Board> ActiveKingMoves;
+        typedef Driver<Color, Material::king, Moves, Rules, Board> ActiveKingMoves;
 };
 
 }       // namespace successor

@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/utility.hpp>    // boost::noncopyable
 #include "State.hpp"
-#include "../node/Material.h"
+#include "../node/Material.hpp"
 #include "../node/Side.hpp"
 
 namespace dctl {
@@ -41,19 +41,19 @@ private:
         typedef const StatePointer StateArray[8];
         static StateArray& instance()
         {
-                static const State<Side::black, Material::NONE, Selection, Rules, Board> BLACK_NONE_;
-                static const State<Side::black, Material::PAWN, Selection, Rules, Board> BLACK_PAWN_;
-                static const State<Side::black, Material::KING, Selection, Rules, Board> BLACK_KING_;
-                static const State<Side::black, Material::BOTH, Selection, Rules, Board> BLACK_BOTH_;
-                static const State<Side::white, Material::NONE, Selection, Rules, Board> WHITE_NONE_;
-                static const State<Side::white, Material::PAWN, Selection, Rules, Board> WHITE_PAWN_;
-                static const State<Side::white, Material::KING, Selection, Rules, Board> WHITE_KING_;
-                static const State<Side::white, Material::BOTH, Selection, Rules, Board> WHITE_BOTH_;
+                static const State<Side::black, Material::none, Selection, Rules, Board> black_none;
+                static const State<Side::black, Material::pawn, Selection, Rules, Board> black_pawn;
+                static const State<Side::black, Material::king, Selection, Rules, Board> black_king;
+                static const State<Side::black, Material::both, Selection, Rules, Board> black_both;
+                static const State<Side::white, Material::none, Selection, Rules, Board> white_none;
+                static const State<Side::white, Material::pawn, Selection, Rules, Board> white_pawn;
+                static const State<Side::white, Material::king, Selection, Rules, Board> white_king;
+                static const State<Side::white, Material::both, Selection, Rules, Board> white_both;
 
                 // Meyers Singleton, see Modern C++ Design p.117
                 static const StateArray singleton_ = {
-                        &BLACK_NONE_, &BLACK_PAWN_, &BLACK_KING_, &BLACK_BOTH_, 
-                        &WHITE_NONE_, &WHITE_PAWN_, &WHITE_KING_, &WHITE_BOTH_
+                        &black_none, &black_pawn, &black_king, &black_both, 
+                        &white_none, &white_pawn, &white_king, &white_both
                 };
                 return singleton_;
         }

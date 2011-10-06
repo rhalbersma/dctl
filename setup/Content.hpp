@@ -1,12 +1,12 @@
 #pragma once
 #include <string>                       // std::string
-#include "../node/Material.h"
+#include "../node/Move.hpp"
 
 namespace dctl {
 namespace setup {
 
 template<typename Token>
-std::string content(const Material& p, int b)
+std::string content(const Move& p, int b)
 {
         const BitBoard bb = bit::singlet<BitBoard>(b);
 

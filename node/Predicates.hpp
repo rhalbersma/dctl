@@ -1,6 +1,10 @@
 #pragma once
-#include "Position.h"
-#include "Move.h"
+#include "Position.hpp"
+#include "Move.hpp"
+#include "../bit/Bit.hpp"
+#include "../rules/Rules.hpp"
+#include "../utility/IntegerTypes.hpp"
+#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
@@ -93,12 +97,17 @@ bool is_pseudo_legal(const Position<Board>& p, const Move& m)
 template<typename Rules, typename Board>
 bool is_intersecting_capture(const Position<Board>& p, const Move& m)
 {
-        return is_intersecting_capture(p, m, Int2Type<rules::capture_removal<Rules>::value>());
+        return is_intersecting_capture(
+                p, m, 
+                Int2Type<rules::capture_removal<Rules>::value>()
+        );
 }
 
 // partial specialization for en-passant capture removal
 template<typename Board>
-bool is_intersecting_capture(const Position<Board>& p, const Move& m, Int2Type<rules::remove_ep>)
+bool is_intersecting_capture(
+        const Position<Board>& p, const Move& m, Int2Type<rules::remove_ep>
+)
 {
         // for intersecting captures, a man-capturing king can appear as a captured king
         return bit::is_single(moving_kings(p, m) & captured_kings(p, m) & passive_men(p));
@@ -106,7 +115,9 @@ bool is_intersecting_capture(const Position<Board>& p, const Move& m, Int2Type<r
 
 // partial specialization for apres-fini capture removal
 template<typename Board>
-bool is_intersecting_capture(const Position<Board>&, const Move&, Int2Type<rules::remove_af>)
+bool is_intersecting_capture(
+        const Position<Board>& /* p */, const Move& /* m */, Int2Type<rules::remove_af>
+)
 {
         return false;
 }

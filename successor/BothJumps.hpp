@@ -1,6 +1,6 @@
 #pragma once
 #include "../capture/State.hpp"
-#include "../node/Material.h"
+#include "../node/Material.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -13,7 +13,7 @@ namespace capture { template<typename, typename> class State; }
 namespace successor {
 
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::BOTH, Jumps, Rules, Board>
+class Driver<Color, Material::both, Jumps, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
@@ -69,8 +69,8 @@ private:
         }
 
         // typedefs
-        typedef Driver<Color, Material::KING, Jumps, Rules, Board> KingJumps;
-        typedef Driver<Color, Material::PAWN, Jumps, Rules, Board> PawnJumps;
+        typedef Driver<Color, Material::king, Jumps, Rules, Board> KingJumps;
+        typedef Driver<Color, Material::pawn, Jumps, Rules, Board> PawnJumps;
 };
 
 }       // namespace successor

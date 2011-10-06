@@ -4,7 +4,7 @@
 #include "Value.hpp"
 #include "../bit/Bit.hpp"
 #include "../node/Promotion.hpp"
-#include "../node/Position.h"
+#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"

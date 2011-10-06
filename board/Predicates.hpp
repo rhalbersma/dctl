@@ -10,14 +10,14 @@ namespace dctl {
 namespace board {
 
 template<typename Board, typename /* ArgsTuple */, int SQ>
-class is_square
+struct is_square
 {
 public:
         BOOST_STATIC_CONSTANT(auto, value = (SQ >= 0) && (SQ < Board::ExternalGrid::size));
 };
 
 template<typename Board, typename ArgsTuple, int SQ>
-class is_initial
+struct is_initial
 {
 private:
         typedef boost::mpl::integral_c<bool, 0> get_color;
@@ -69,7 +69,7 @@ struct is_col_mask
 };
 
 template<typename Board, typename ArgsTuple, int SQ>
-class is_jump_group
+struct is_jump_group
 {
 private:
         typedef boost::mpl::integral_c<int, 0> get_from_sq;
@@ -97,7 +97,7 @@ public:
 };
 
 template<typename Board, typename ArgsTuple, int SQ>
-class is_jump_start
+struct is_jump_start
 {
 private:
         typedef boost::mpl::integral_c<int, 0> get_index;
@@ -124,7 +124,7 @@ public:
 };
 
 template<typename Board, int SQ>
-class square_to_bit
+struct square_to_bit
 {
 private:
         typedef typename Board::ExternalGrid E;
@@ -145,7 +145,7 @@ public:
 };
 
 template<typename Board, int B>
-class bit_to_square
+struct bit_to_square
 {
 private:
         typedef typename Board::InternalGrid I;
