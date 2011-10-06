@@ -1,7 +1,7 @@
 #pragma once
-#include <functional>
+#include <functional>                   // std::unary_function
 #include "Mix.hpp"
-#include "../../node/Position.h"
+#include "../../node/Position.hpp"
 #include "../../node/Side.hpp"
 
 namespace dctl {
@@ -20,20 +20,17 @@ struct Init<Position<Board>, Index>
 {
         Index operator()(const Position<Board>& p) const
         {
-                Index index_ = 0;
+                Index index = 0;
 
-                Mix<Index>::mix(index_, p.active_color());
-                Mix<Index>::mix(index_, p.pieces(Side::black));
-                Mix<Index>::mix(index_, p.pieces(Side::white));
-                Mix<Index>::mix(index_, p.kings());
+                Mix<Index>::mix(index, p.active_color());
+                Mix<Index>::mix(index, p.pieces(Side::black));
+                Mix<Index>::mix(index, p.pieces(Side::white));
+                Mix<Index>::mix(index, p.kings());
                 
-                return index_;
+                return index;
         }
 };
 
 }       // namespace jenkins
 }       // namespace hash
 }       // namespace dctl
-
-// include template definitions inside header
-#include "Init.hpp"

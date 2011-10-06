@@ -2,7 +2,7 @@
 #include <algorithm>                    // std::find
 #include <vector>                       // std::vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include "Move.h"
+#include "Move.hpp"
 #include "Predicates.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
@@ -27,7 +27,10 @@ inline Stack::const_reference top(const Stack& stack)
 template<typename Rules>
 bool non_unique_top(const Stack& stack)
 {
-        return non_unique_top(stack, Int2Type<rules::is_check_capture_uniqueness<Rules>::value>());
+        return non_unique_top(
+                stack, 
+                Int2Type<rules::is_check_capture_uniqueness<Rules>::value>()
+        );
 }
 
 // specialization for move generation without duplicate capture checking

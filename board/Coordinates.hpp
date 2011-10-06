@@ -22,7 +22,7 @@ struct Square
 };
 
 template<typename C>
-class Coordinates2Square
+struct Coordinates2Square
 {
 private:
         typedef typename C::grid G;
@@ -42,7 +42,7 @@ public:
 };
 
 template<typename SQ>
-class Square2Coordinates
+struct Square2Coordinates
 {
 private:
         typedef typename SQ::grid G;

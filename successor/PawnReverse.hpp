@@ -1,14 +1,14 @@
 #pragma once
-#include "../node/Material.h"
-#include "../node/Position.h"
+#include "../node/Material.hpp"
+#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
-namespace board { template<bool, typename> class Direction; }
-template<typename> class Position;
+namespace board { template<bool, typename> struct Direction; }
+template<typename> struct Position;
 
 namespace successor {
 
@@ -19,7 +19,7 @@ class Moves;
 
 // partial specialization for reverse pawn moves
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::PAWN, Reverse, Rules, Board>
+class Driver<Color, Material::pawn, Reverse, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
@@ -41,7 +41,7 @@ public:
 
 private:
         // typedefs
-        typedef Driver<!Color, Material::PAWN, Moves, Rules, Board> PassivePawnMoves;
+        typedef Driver<!Color, Material::pawn, Moves, Rules, Board> PassivePawnMoves;
 };
 
 }       // namespace successor

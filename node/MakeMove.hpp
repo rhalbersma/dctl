@@ -1,4 +1,4 @@
-#include "Move.h"
+#include "Move.hpp"
 #include "Predicates.hpp"
 
 namespace dctl {
@@ -105,9 +105,10 @@ void Position<Board>::make_passive_king_moves(const Move& m)
 template<typename Board>
 void Position<Board>::make_incremental(const Move& m)
 {
-        material_ ^= m.material();
-        to_move_ ^= m.to_move();
+        material_ ^= m;
+        to_move_ ^= Side::pass;
         hash_index_ ^= hash::zobrist::Init<Move, HashIndex>()(m);
+        hash_index_ ^= hash::zobrist::Init<bool, HashIndex>()(Side::pass);
 }
 
 }       // namespace dctl

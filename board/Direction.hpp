@@ -39,7 +39,7 @@ namespace board {
 
 // indices for the 8 named directions from the black and white point of view
 template<bool Color, typename Board> 
-class Direction
+struct Direction
 { 
 private:                        
         BOOST_STATIC_CONSTANT(auto, A = (Color? Degrees::D000 : Degrees::D180) + Board::inverse_angle);

@@ -8,7 +8,7 @@
 
 namespace dctl {
 
-template<typename> class Position;
+template<typename> struct Position;
 
 namespace setup {
 

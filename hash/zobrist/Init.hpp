@@ -1,9 +1,7 @@
 #pragma once
 #include <functional>                   // std::unary_function
 #include "Random.hpp"
-#include "../../node/Position.h"
-#include "../../node/Move.h"
-#include "../../node/Material.h"
+#include "../../node/Move.hpp"
 #include "../../node/Restricted.hpp"
 #include "../../node/Side.hpp"
 
@@ -15,22 +13,6 @@ namespace zobrist {
 template<typename Key, typename Index>
 struct Init;
 
-// partial specialization for ab initio hashing of positions
-template<typename Board, typename Index>
-struct Init<Position<Board>, Index>
-: 
-        public std::unary_function<Position<Board>, Index>
-{
-        Index operator()(const Position<Board>& p) const
-        {
-                return (
-                        Init<Material  , Index>()(p.material())     ^
-                        Init<bool      , Index>()(p.active_color()) ^
-                        Init<Restricted, Index>()(p.restricted())
-                );
-        }
-};
-
 // partial specialization for ab initio hashing of moves
 template<typename Index>
 struct Init<Move, Index>
@@ -40,24 +22,9 @@ struct Init<Move, Index>
         Index operator()(const Move& m) const
         {
                 return (
-                        Init<Material, Index>()(m.material()) ^
-                        Init<bool    , Index>()(m.to_move())
-                );
-        }
-};
-
-// partial specialization for ab initio hashing of material
-template<typename Index>
-struct Init<Material, Index>
-: 
-        public std::unary_function<Material, Index>
-{
-        Index operator()(const Material& p) const
-        {
-                return (
-        	        Random<Index>::xor_rand(p.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
-                        Random<Index>::xor_rand(p.pieces(Side::white), Random<Index>::PIECES[Side::white]) ^
-                        Random<Index>::xor_rand(p.kings()            , Random<Index>::KINGS              )
+        	        Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
+                        Random<Index>::xor_rand(m.pieces(Side::white), Random<Index>::PIECES[Side::white]) ^
+                        Random<Index>::xor_rand(m.kings()            , Random<Index>::KINGS              )
                 );
         }
 };
@@ -68,9 +35,9 @@ struct Init<bool, Index>
 : 
         public std::unary_function<bool, Index>
 {
-        Index operator()(bool to_move) const
+        Index operator()(bool color) const
         {
-                return Random<Index>::xor_rand(to_move, Random<Index>::SIDE);
+                return Random<Index>::xor_rand(color, Random<Index>::SIDE);
         }
 };
 

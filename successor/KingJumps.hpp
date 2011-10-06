@@ -4,8 +4,8 @@
 #include "../board/Angle.hpp"
 #include "../board/Direction.hpp"
 #include "../capture/State.hpp"
-#include "../node/Material.h"
-#include "../node/Position.h"
+#include "../node/Material.hpp"
+#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -21,7 +21,7 @@ class Jumps;
 
 // partial specialization for king jumps
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::KING, Jumps, Rules, Board>
+class Driver<Color, Material::king, Jumps, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {

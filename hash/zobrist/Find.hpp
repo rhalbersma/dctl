@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>                   // std::unary_function
-#include "../../node/Position.h"
+#include "../../node/Position.hpp"
 
 namespace dctl {
 namespace hash {

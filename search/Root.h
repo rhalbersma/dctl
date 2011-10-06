@@ -1,8 +1,8 @@
 #pragma once
 #include <cstddef>      // std::size_t
 #include <boost/config.hpp>
-#include "Transposition.h"
-#include "Score.h"
+#include "Transposition.hpp"
+#include "Score.hpp"
 #include "../node/Stack.hpp"
 #include "../hash/Map.hpp"
 #include "../utility/Ply.hpp"
@@ -12,7 +12,7 @@
 namespace dctl {
 
 namespace successor { template<typename, typename> class Successor; }
-template<typename> class Position;
+template<typename> struct Position;
 class Timer;
 
 namespace search {

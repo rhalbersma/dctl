@@ -1,8 +1,8 @@
 #pragma once
 #include "../bit/Bit.hpp"
 #include "../board/Direction.hpp"
-#include "../node/Material.h"
-#include "../node/Position.h"
+#include "../node/Material.hpp"
+#include "../node/Position.hpp"
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -11,7 +11,7 @@
 
 namespace dctl {
 
-namespace board { template<bool, typename> class Direction; }
+namespace board { template<bool, typename> struct Direction; }
 
 namespace successor {
 
@@ -21,7 +21,7 @@ class Moves;
 
 // partial specialization for pawn moves
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::PAWN, Moves, Rules, Board>
+class Driver<Color, Material::pawn, Moves, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {

@@ -7,7 +7,7 @@
 #include "Content.hpp"
 #include "Numbers.hpp"
 #include "Token.hpp"
-#include "../node/Position.h"
+#include "../node/Position.hpp"
 #include "../node/Side.hpp"
 #include "../utility/IntegerTypes.hpp"
 

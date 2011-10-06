@@ -8,8 +8,8 @@
 
 namespace dctl {
 
-template<typename> class Position;
-class Move;
+template<typename> struct Position;
+struct Move;
         
 namespace notation {
 

@@ -1,9 +1,8 @@
 #pragma once
+#include "Position.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
-
-template<typename> class Position;
 
 template<typename Board>
 int state(const Position<Board>& p)

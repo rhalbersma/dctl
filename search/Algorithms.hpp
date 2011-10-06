@@ -4,7 +4,7 @@
 #include <boost/assert.hpp>
 #include "../successor/Selection.hpp"
 #include "../successor/Successor.hpp"
-#include "../node/Position.h"
+#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/Iota.hpp"
 

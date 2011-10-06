@@ -4,7 +4,7 @@
 
 namespace dctl {
 
-template<typename> class Position;
+template<typename> struct Position;
 
 namespace successor {
 
@@ -18,7 +18,7 @@ namespace successor {
 template
 <
         bool Color, 
-        int Material, 
+        int Move, 
         typename Selection, 
         typename Rules, 
         typename Board

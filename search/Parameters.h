@@ -1,5 +1,5 @@
 #pragma once
-#include "../node/Move.h"
+#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 namespace search {

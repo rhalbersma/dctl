@@ -1,15 +1,15 @@
 #pragma once
 #include <cstddef>      // std::size_t
-#include "Transposition.h"
+#include "Transposition.hpp"
 #include "../hash/DualMap.hpp"
-#include "../node/Material.h"
+#include "../node/Move.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/Statistics.hpp"
 
 namespace dctl {
 
 namespace successor { template<typename, typename> class Successor; }
-template<typename> class Position;
+template<typename> struct Position;
 class Timer;
 
 namespace walk {
@@ -46,7 +46,7 @@ private:
         // 32-byte hash entries: 24-byte piece lists signature, 8-byte (59-bit leafs, 5-bit depth) content
         // 2-way buckets on 64-byte cache lines, 2 * 2^23 buckets (= 1 Gb)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
-        typedef hash::DualMap<Material, Transposition> TranspositionTable;
+        typedef hash::DualMap<Move, Transposition> TranspositionTable;
         static TranspositionTable TT;
 };
 

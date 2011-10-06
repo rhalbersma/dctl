@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Weight.h"
 #include "../successor/Mobility.hpp"
-#include "../node/Position.h"
+#include "../node/Position.hpp"
 #include "../node/Side.hpp"
 #include "../variant/International.hpp"
 
@@ -120,7 +120,7 @@ void Evaluate::print_break_down(const Position<Board>& p)
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";
         std::cout<< "\n";
-        std::cout << "Material" << std::setw(6) << material<Side::black>(p) << std::setw(6) << material<Side::white>(p) << std::setw(6) << delta_material<Side::black>(p) << "\n";
+        std::cout << "Move" << std::setw(6) << material<Side::black>(p) << std::setw(6) << material<Side::white>(p) << std::setw(6) << delta_material<Side::black>(p) << "\n";
         std::cout << "Tempo   " << std::setw(6) << tempo<Side::black>(p)    << std::setw(6) << tempo<Side::white>(p)    << std::setw(6) << delta_tempo<Side::black>(p)    << "\n";
         std::cout << "Center  " << std::setw(6) << center<Side::black>(p)   << std::setw(6) << center<Side::white>(p)   << std::setw(6) << delta_center<Side::black>(p)   << "\n";
         std::cout << "Balance " << std::setw(6) << balance<Side::black>(p)  << std::setw(6) << balance<Side::white>(p)  << std::setw(6) << delta_balance<Side::black>(p)  << "\n";

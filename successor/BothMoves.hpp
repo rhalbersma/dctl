@@ -1,17 +1,17 @@
 #pragma once
-#include "../node/Material.h"
+#include "../node/Material.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
-template<typename> class Position;
+template<typename> struct Position;
 
 namespace successor {
 
 template<bool Color, typename Selection, typename Rules, typename Board> 
-class Driver<Color, Material::BOTH, Selection, Rules, Board>
+class Driver<Color, Material::both, Selection, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
@@ -40,8 +40,8 @@ public:
 
 private:
         // typedefs
-        typedef Driver<Color, Material::KING, Moves, Rules, Board> KingMoves;
-        typedef Driver<Color, Material::PAWN, Moves, Rules, Board> PawnMoves;
+        typedef Driver<Color, Material::king, Moves, Rules, Board> KingMoves;
+        typedef Driver<Color, Material::pawn, Moves, Rules, Board> PawnMoves;
 };
 
 }       // namespace successor
