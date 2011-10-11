@@ -13,15 +13,8 @@ BOOST_AUTO_TEST_SUITE(TestParser)
 
 BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
-        Parser<
-                boost::mpl::list<
-                        GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
-                >,
-                MessageInterface
-        > p;
-
-        // Examples of DXP messages (Layer 2 Protocol)
-        // http://www.mesander.nl/dxp/edxplg2.htm
+        // Examples of DXP messages (Layer 2 protocol description)
+        // http://www.mesander.nl/damexchange/edxplg2.htm
         const std::string message[] = 
         {
                 "R01Tornado voor Windows 4.0        W060065A",
@@ -33,6 +26,13 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                 "B005Z",
                 "K1"
         };
+
+        Parser<
+                boost::mpl::list<
+                        GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
+                >,
+                MessageInterface
+        > p;
 
         for (auto i = 0; i < 8; ++i) {                
                 if (auto parsed = p.parse(message[i]))
