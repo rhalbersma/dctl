@@ -1,5 +1,5 @@
 #include <boost/test/unit_test.hpp> 
-#include "../../src/search/Score.h"
+#include "../../src/search/Score.hpp"
 #include "../../src/utility/Ply.hpp"
 
 namespace dctl {

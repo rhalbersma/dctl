@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp> 
 #include "../test_config.h"
 #include "../../src/search/Root.h"
-#include "../../src/node/Position.h"
+#include "../../src/node/Position.hpp"
 #include "../../src/setup/Setup.hpp"
 #include "../../src/board/Types.hpp"
 #include "../../src/variant/Variant.hpp"

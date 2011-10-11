@@ -2,9 +2,9 @@
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
 #include <boost/test/unit_test.hpp> 
+#include "../../src/successor/Selection.hpp"
 #include "../../src/successor/Successor.hpp"
-#include "../../src/successor/Selection.h"
-#include "../../src/node/Position.h"
+#include "../../src/node/Position.hpp"
 #include "../../src/setup/Setup.hpp"
 #include "../../src/notation/String.hpp"
 #include "../../src/board/Types.hpp"
