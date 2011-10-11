@@ -26,9 +26,9 @@ int Root::iterative_deepening(const Position<Board>& p, int depth)
                 alpha = -infinity();
                 beta = infinity();
                 score = pvs<PV, Rules>(p, 0, i, alpha, beta, root_node);
-                insert_PV<Rules>(p, root_node.PV(), score);
+                insert_pv<Rules>(p, root_node.pv(), score);
                 timer.split();
-                report<Rules>(i, score, timer, p, root_node.PV());
+                report<Rules>(i, score, timer, p, root_node.pv());
         }
 
         return score;
@@ -62,8 +62,8 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
                 return beta;
 
         BOOST_ASSERT(
-                ( is_PV(ThisNode) && alpha <  beta - 1) ||
-                (!is_PV(ThisNode) && alpha == beta - 1)
+                ( is_pv(ThisNode) && alpha <  beta - 1) ||
+                (!is_pv(ThisNode) && alpha == beta - 1)
         );
 
         // TT cut-off for exact win/loss scores or for deep enough heuristic scores
@@ -90,7 +90,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
         // internal iterative deepening
         if (!(TT_entry && TT_entry->has_move())) {
-                const auto IID_depth = is_PV(ThisNode)? depth - 2 : depth / 2;
+                const auto IID_depth = is_pv(ThisNode)? depth - 2 : depth / 2;
                 if (IID_depth > 0) {
                         pvs<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
                         TT_entry = TT.find(p);
@@ -126,22 +126,22 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
                 q.attach(p);
                 q.template make<Rules>(moves[i]);
 
-                if (is_PV(ThisNode) && s == 0)
+                if (is_pv(ThisNode) && s == 0)
                         value = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 else {
                         // TODO: late move reductions
 
                         value = -squeeze(pvs<ZW, Rules>(q, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
-                        if (is_PV(ThisNode) && value > alpha && value < beta)
+                        if (is_pv(ThisNode) && value > alpha && value < beta)
                                 value = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 }
 
                 if (value > best_value) {
                         best_value = value;
                         best_move = i; 
-                        if (is_PV(ThisNode) && best_value > alpha) {
+                        if (is_pv(ThisNode) && best_value > alpha) {
                                 alpha = best_value;
-                                parent_node.set_PV(best_move, child_node.PV());
+                                parent_node.set_pv(best_move, child_node.pv());
                         }
                         if (best_value >= beta)
                                 break;                      
@@ -224,7 +224,7 @@ int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& pare
 
                 if (value > best_value) {
                         best_value = value;
-                        parent_node.set_PV(i, child_node.PV());
+                        parent_node.set_pv(i, child_node.pv());
                 }
         }
 
@@ -271,7 +271,7 @@ int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, in
                         best_value = value;
                         if (best_value > alpha) {
                                 alpha = best_value;
-                                parent_node.set_PV(i, child_node.PV());
+                                parent_node.set_pv(i, child_node.pv());
                         }
                         if (best_value >= beta)
                                 break;                      

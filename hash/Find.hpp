@@ -1,10 +1,9 @@
 #pragma once
 #include <functional>                   // std::unary_function
-#include "../../node/Position.hpp"
+#include "../node/Position.hpp"
 
 namespace dctl {
 namespace hash {
-namespace zobrist {
 
 // primary template
 template<typename Key, typename Index>
@@ -22,6 +21,5 @@ struct Find<Position<Board>, Index>
         }
 };
 
-}       // namespace zobrist
 }       // namespace hash
 }       // namespace dctl

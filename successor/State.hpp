@@ -38,7 +38,7 @@ namespace successor {
 template
 <
         bool Color, 
-        int Move, 
+        int Material, 
         typename Selection, 
         typename Rules, 
         typename Board
@@ -50,46 +50,46 @@ class State
 private:		
         virtual void do_generate(const Position<Board>& p, Stack& moves) const 
         { 
-                Driver<Color, Move, Selection, Rules, Board>::generate(p, moves);
+                Driver<Color, Material, Selection, Rules, Board>::generate(p, moves);
         }
 
         virtual int do_count(const Position<Board>& p) const
         {
-                return Driver<Color, Move, Selection, Rules, Board>::count(p);
+                return Driver<Color, Material, Selection, Rules, Board>::count(p);
         }
 
         virtual bool do_detect(const Position<Board>& p) const 
         { 
-                return Driver<Color, Move, Selection, Rules, Board>::detect(p);
+                return Driver<Color, Material, Selection, Rules, Board>::detect(p);
         }
 };
 
-template<bool Color, int Move, typename Rules, typename Board> 
-class State<Color, Move, Legal, Rules, Board>
+template<bool Color, int Material, typename Rules, typename Board> 
+class State<Color, Material, Legal, Rules, Board>
 : 
         public StateInterface<Board>
 {
 private:		
         virtual void do_generate(const Position<Board>& p, Stack& moves) const 
         {
-                Driver<Color, Move, Jumps, Rules, Board>::generate(p, moves);
+                Driver<Color, Material, Jumps, Rules, Board>::generate(p, moves);
                 if (moves.empty())
-                        Driver<Color, Move, Moves, Rules, Board>::generate(p, moves);
+                        Driver<Color, Material, Moves, Rules, Board>::generate(p, moves);
         }
 
         virtual int do_count(const Position<Board>& p) const
         {
-                auto num_moves = Driver<Color, Move, Jumps, Rules, Board>::count(p);
+                auto num_moves = Driver<Color, Material, Jumps, Rules, Board>::count(p);
                 if (!num_moves)
-                        num_moves += Driver<Color, Move, Moves, Rules, Board>::count(p);
+                        num_moves += Driver<Color, Material, Moves, Rules, Board>::count(p);
                 return num_moves;
         }
 
         virtual bool do_detect(const Position<Board>& p) const 
         { 
                 return (
-                        Driver<Color, Move, Moves, Rules, Board>::detect(p) || 
-                        Driver<Color, Move, Jumps, Rules, Board>::detect(p)
+                        Driver<Color, Material, Moves, Rules, Board>::detect(p) || 
+                        Driver<Color, Material, Jumps, Rules, Board>::detect(p)
                 );
         }
 };

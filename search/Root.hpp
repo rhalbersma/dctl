@@ -1,6 +1,6 @@
 #include <iostream>
 #include <iomanip>
-#include "Parameters.h"
+#include "Parameters.hpp"
 #include "../evaluate/Evaluate.h"
 #include "../successor/Successor.hpp"
 #include "../node/Position.hpp"
@@ -57,11 +57,11 @@ void Root::report(int depth, int value, const Timer& timer, const Position<Board
         std::cout << std::setw( 4) << std::right << hashfull;
 
         std::cout << "\n";
-        print_PV<Rules>(p, pv);
+        print_pv<Rules>(p, pv);
 }
 
 template<typename Rules, typename Board>
-void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
+void Root::insert_pv(const Position<Board>& p, const Sequence& pv, int value)
 {
         auto q = p;
 
@@ -79,12 +79,12 @@ void Root::insert_PV(const Position<Board>& p, const Sequence& pv, int value)
         BOOST_ASSERT(
                 (value == Evaluate::evaluate(q)) || 
                 (value == loss_value(0) && !Successor<successor::Legal, Rules>::detect(q))
-                // NOTE: with endgame databases, delayed losses can occur at the tips of the PV
+                // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
         );
 }
 
 template<typename Rules, typename Board>
-void Root::print_PV(const Position<Board>& p, const Sequence& pv)
+void Root::print_pv(const Position<Board>& p, const Sequence& pv)
 {
         auto q = p;
 

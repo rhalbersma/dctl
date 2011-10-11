@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>                   // std::unary_function
-#include "Mix.hpp"
+#include "Random.hpp"
 #include "../../node/Position.hpp"
 #include "../../node/Side.hpp"
 
@@ -22,10 +22,10 @@ struct Init<Position<Board>, Index>
         {
                 Index index = 0;
 
-                Mix<Index>::mix(index, p.active_color());
-                Mix<Index>::mix(index, p.pieces(Side::black));
-                Mix<Index>::mix(index, p.pieces(Side::white));
-                Mix<Index>::mix(index, p.kings());
+                Random<Index>::mix(index, p.active_color());
+                Random<Index>::mix(index, p.pieces(Side::black));
+                Random<Index>::mix(index, p.pieces(Side::white));
+                Random<Index>::mix(index, p.kings());
                 
                 return index;
         }

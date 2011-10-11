@@ -8,8 +8,8 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "FindInsert.hpp"
 #include "Functions.hpp"
+#include "KeySign.hpp"
 #include "Replace.hpp"
-#include "Sign.hpp"
 #include "../utility/CacheAlign.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/TemplateTricks.hpp"
@@ -21,7 +21,7 @@ template
 <
         typename Key,
         typename Value,
-        template<typename, typename> class Hash = zobrist::Find,
+        template<typename, typename> class Hash = Find,
         typename Index = HashIndex,
         typename Replace = EmptyOldUnderCutShallowestOfN
 >
@@ -69,11 +69,14 @@ public:
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
+        // tag dispatching on the key's integral type trait
         template<typename Item>
         const Value* find(const Item& item) const
         {
-                // tag dispatching on the key's integer type trait
-                return find(item, Int2Type<std::is_integral<Key>::value>());
+                return find(
+                        item, 
+                        Int2Type<std::is_integral<Key>::value>()
+                );
         }
 
         // modifiers
@@ -83,11 +86,14 @@ public:
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 
+        // tag dispatching on the key's integral type trait
         template<typename Item>
         void insert(const Item& item, const Value& value)
         {
-                // tag dispatching on the key's integer type trait
-                insert(item, value, Int2Type<std::is_integral<Key>::value>());
+                insert(
+                        item, value, 
+                        Int2Type<std::is_integral<Key>::value>()
+                );
         }
 
 private:
@@ -96,7 +102,7 @@ private:
         const Value* find(const Item& item, Int2Type<false>) const
         {
                 const auto index = Hash<Item, Index>()(item);
-                const auto key = FindSign<Item, Key>()(item);
+                const auto key = FindKey<Item, Key>()(item);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
@@ -105,7 +111,7 @@ private:
         const Value* find(const Item& item, Int2Type<true>) const
         {
                 const auto index = Hash<Item, Index>()(item);
-                const auto key = ShiftSign<Index, Key>()(index);
+                const auto key = ShiftKey<Index, Key>()(index);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
@@ -114,7 +120,7 @@ private:
         void insert(const Item& item, const Value& value, Int2Type<false>)
         {
                 const auto index = Hash<Item, Index>()(item);
-                const auto key = FindSign<Item, Key>()(item);
+                const auto key = FindKey<Item, Key>()(item);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
         
@@ -123,7 +129,7 @@ private:
         void insert(const Item& item, const Value& value, Int2Type<true>)
         {
                 const auto index = Hash<Item, Index>()(item);
-                const auto key = ShiftSign<Index, Key>()(index);
+                const auto key = ShiftKey<Index, Key>()(index);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 

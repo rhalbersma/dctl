@@ -1,6 +1,5 @@
 #pragma once
 #include <cstdint>                      // uint<X>_t for X = 8, 16, 32, 64
-#include <vector>
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 
 namespace dctl {
@@ -29,8 +28,5 @@ template<> struct exp2_typeof<3>        { typedef uint8_t  type; };
 template<> struct exp2_typeof<4>        { typedef uint16_t type; };
 template<> struct exp2_typeof<5>        { typedef uint32_t type; };
 template<> struct exp2_typeof<6>        { typedef uint64_t type; };
-
-typedef std::vector<int> Sequence;
-typedef std::vector<int> Order;
 
 }       // namespace dctl

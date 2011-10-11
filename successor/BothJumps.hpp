@@ -75,6 +75,3 @@ private:
 
 }       // namespace successor
 }       // namespace dctl
-
-// include template definitions inside header
-#include "BothJumps.hpp"
