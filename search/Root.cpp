@@ -23,7 +23,7 @@ void Root::report(int depth, int value, const Timer& timer)
 }
 */
 
-bool Root::is_PV(int node)
+bool Root::is_pv(int node)
 {
         return node == PV;
 }

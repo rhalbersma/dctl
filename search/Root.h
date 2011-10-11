@@ -1,8 +1,9 @@
 #pragma once
-#include <cstddef>      // std::size_t
-#include <boost/config.hpp>
+#include <cstddef>                      // std::size_t
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Transposition.hpp"
 #include "Score.hpp"
+#include "Parameters.hpp"
 #include "../node/Stack.hpp"
 #include "../hash/Map.hpp"
 #include "../utility/Ply.hpp"
@@ -42,10 +43,10 @@ private:
         template<typename B> static void announce(const Position<B>&, int);
         template<typename, typename B> static void report(int, int, const Timer&, const Position<B>&, const Sequence&);
 
-        template<typename, typename B> static void insert_PV(const Position<B>&, const Sequence&, int);
-        template<typename, typename B> static void print_PV(const Position<B>&, const Sequence&);
+        template<typename, typename B> static void insert_pv(const Position<B>&, const Sequence&, int);
+        template<typename, typename B> static void print_pv(const Position<B>&, const Sequence&);
 
-        static bool is_PV(int);
+        static bool is_pv(int);
 
         // implementation
         BOOST_STATIC_CONSTANT(auto, ROOT_ID_INCREMENT = 2);

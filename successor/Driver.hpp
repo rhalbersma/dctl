@@ -18,7 +18,7 @@ namespace successor {
 template
 <
         bool Color, 
-        int Move, 
+        int Material, 
         typename Selection, 
         typename Rules, 
         typename Board

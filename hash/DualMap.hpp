@@ -13,7 +13,7 @@ template
 <
         typename Key,
         typename Value,
-        template<typename, typename> class Hash = zobrist::Find,
+        template<typename, typename> class Hash = Find,
         typename Index = HashIndex,
         typename Replace = EmptyOldUnderCutShallowestOfN
 >

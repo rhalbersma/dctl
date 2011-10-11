@@ -56,6 +56,3 @@ struct write<Rules, numeric, Separator>
 
 }       // namespace notation
 }       // namespace dctl
-
-// include template definitions inside header
-#include "String.hpp"

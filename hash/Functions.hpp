@@ -1,4 +1,4 @@
 #pragma once
-#include "zobrist/Find.hpp"
+#include "Find.hpp"
 #include "zobrist/Init.hpp"
 #include "jenkins/Init.hpp"

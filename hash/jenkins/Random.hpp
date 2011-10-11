@@ -9,40 +9,40 @@ template
 <
         typename Index = uint64_t
 >
-class Mix
+struct Random
 {
 public:
         // xor with a random number conditional on the boolean
-        static void mix(Index& index_, bool color)
+        static void mix(Index& index, bool color)
         {
-                index_ = (0 - color) & SIDE;
+                index = (0 - color) & SIDE;
         }                  
 	
         // apply a sequence of bitwise shifts
-        static void mix(Index& index_, BitBoard b)
+        static void mix(Index& index, BitBoard b)
         {
-                add_shift_L(index_, ADD_SHIFT_L[0], b);
-                xor_shift_R(index_, XOR_SHIFT_R[0]);
+                add_shift_L(index, ADD_SHIFT_L[0], b);
+                xor_shift_R(index, XOR_SHIFT_R[0]);
                 for (auto i = 1; i < NUM_MIX; ++i) {
-                        add_shift_L(index_, ADD_SHIFT_L[i]);
-                        xor_shift_R(index_, XOR_SHIFT_R[i]);
+                        add_shift_L(index, ADD_SHIFT_L[i]);
+                        xor_shift_R(index, XOR_SHIFT_R[i]);
                 }
         }              
 
 private:
-        static void add_shift_L(Index& index_, int s, BitBoard b)
+        static void add_shift_L(Index& index, int s, BitBoard b)
         {
-                index_ += (b << s) - b;
+                index += (b << s) - b;
         }
 
-        static void add_shift_L(Index& index_, int s)
+        static void add_shift_L(Index& index, int s)
         {
-                index_ += (index_ << s);
+                index += (index << s);
         }
 
-        static void xor_shift_R(Index& index_, int s)
+        static void xor_shift_R(Index& index, int s)
         {
-                index_ ^= (index_ >> s);
+                index ^= (index >> s);
         }
 
         static const Index SIDE;                        // random number used in the mixing with the side to move
@@ -52,16 +52,16 @@ private:
 };
 
 template<typename Index> 
-const Index Mix<Index>::SIDE = 0xd2d84a61;
+const Index Random<Index>::SIDE = 0xd2d84a61;
 
 template<typename Index> 
-const int Mix<Index>::ADD_SHIFT_L[NUM_MIX] = { 25, 4,  8, 26 };
+const int Random<Index>::ADD_SHIFT_L[NUM_MIX] = { 25, 4,  8, 26 };
 
 template<typename Index> 
-const int Mix<Index>::XOR_SHIFT_R[NUM_MIX] = { 23, 6, 10, 31 };
+const int Random<Index>::XOR_SHIFT_R[NUM_MIX] = { 23, 6, 10, 31 };
 
 // explicit instantation
-template class Mix<>;
+template struct Random<>;
 
 }       // namespace jenkins
 }       // namespace hash

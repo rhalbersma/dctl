@@ -194,6 +194,3 @@ char write_color(bool color)
 
 }       // namespace setup
 }       // namespace dctl
-
-// include template definitions inside header
-#include "String.hpp"

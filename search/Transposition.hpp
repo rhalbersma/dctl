@@ -184,7 +184,7 @@ private:
                 return bound() == exact_value;
         }
         
-        bool nvariant() const
+        bool invariant() const
         {
                 return is_finite();             
         }
