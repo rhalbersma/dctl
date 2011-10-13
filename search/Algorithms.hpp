@@ -49,7 +49,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0)
-                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate<Rules>::evaluate(p);
 
         BOOST_ASSERT(depth > 0);
         BOOST_ASSERT(alpha >= -infinity());
@@ -205,7 +205,7 @@ int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& pare
 
         // return evaluation in leaf nodes with valid moves
         if (depth == 0)
-                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate<Rules>::evaluate(p);
 
         // generate moves
         Stack moves;
@@ -250,7 +250,7 @@ int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, in
 
         // return evaluation in leaf nodes with valid moves
         if (depth == 0)
-                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate::evaluate(p);
+                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate<Rules>::evaluate(p);
 
         // generate moves
         Stack moves;

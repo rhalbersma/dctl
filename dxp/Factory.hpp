@@ -21,8 +21,8 @@ template
         typename Product,
         typename ProductPointer = std::unique_ptr<Product>,
         typename Input = std::string,
-        typename Identifier = std::string,
-        typename Parameter = std::string,
+        typename Identifier = Input,
+        typename Parameter = Input,
         typename Creator = ProductPointer (*)(const Parameter&),
         typename Lookup = std::map<Identifier, Creator>
 >
