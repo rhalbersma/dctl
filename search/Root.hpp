@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include "Parameters.hpp"
-#include "../evaluate/Evaluate.h"
+#include "../evaluate/Evaluate.hpp"
 #include "../successor/Successor.hpp"
 #include "../node/Position.hpp"
 #include "../node/Stack.hpp"
@@ -77,7 +77,7 @@ void Root::insert_pv(const Position<Board>& p, const Sequence& pv, int value)
         TT.insert(q, Transposition(value, Transposition::exact_value, 0, Transposition::no_move()));
         
         BOOST_ASSERT(
-                (value == Evaluate::evaluate(q)) || 
+                (value == Evaluate<Rules>::evaluate(q)) || 
                 (value == loss_value(0) && !Successor<successor::Legal, Rules>::detect(q))
                 // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
         );

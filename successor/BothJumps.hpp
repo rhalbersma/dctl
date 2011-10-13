@@ -4,6 +4,7 @@
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
+#include "../utility/NonConstructible.hpp"
 #include "../utility/TemplateTricks.hpp"
 
 namespace dctl {

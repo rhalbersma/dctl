@@ -2,7 +2,7 @@
 #include "Dispatcher.hpp"
 #include "../node/Stack.hpp"
 #include "../node/State.hpp"
-#include "../utility/TemplateTricks.hpp"
+#include "../utility/NonConstructible.hpp"
 
 namespace dctl {
 

@@ -6,6 +6,7 @@
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/IntegerTypes.hpp"
+#include "../utility/NonConstructible.hpp"
 #include "../utility/Shift.hpp"
 #include "../utility/TemplateTricks.hpp"
 
