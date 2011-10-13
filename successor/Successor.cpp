@@ -16,9 +16,9 @@ BOOST_AUTO_TEST_SUITE(TestSuccessor)
 
 BOOST_AUTO_TEST_CASE(Italian)
 {
+        // Positions from the official Italian rules: 
+        // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
-                // Positions from the official Italian rules: 
-                // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
                 "W:W30:B27",                    // Art. 5.6  (man capture directions)
                 "W:W31:B12,20,28",              // Art. 5.7  (man capture continuation)
                 "W:WK22:B18,19,27",             // Art. 5.8  (king capture directions)
@@ -65,9 +65,9 @@ BOOST_AUTO_TEST_CASE(Italian)
 
 BOOST_AUTO_TEST_CASE(Spanish)
 {
+        // Positions from the official Italian rules: 
+        // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
-                // Positions from the official Italian rules: 
-                // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
                 "W:W30:B27",                    // Art. 5.6  (man capture directions)
                 "W:W31:B12,20,28",              // Art. 5.7  (man capture continuation)
                 "W:WK22:B18,19,27",             // Art. 5.8  (king capture directions)
