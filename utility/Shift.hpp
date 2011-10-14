@@ -117,7 +117,7 @@ struct FloodFill
 template<typename Selection, typename Board, int Index, int Range>
 struct Destinations;
 
-namespace successor { class Moves; }
+namespace successor { struct Moves; }
 
 template<typename Board, int Index>
 struct Destinations<successor::Moves, Board, Index, rules::range_1>

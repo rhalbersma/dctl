@@ -4,7 +4,7 @@ namespace dctl {
 namespace variant {
 
 // http://www.shashist.ru/kodeks/kodeks2004.doc
-struct Russian {};
+struct Russian;
 
 // aliases for the rules of checkers
 typedef Russian Shashki;

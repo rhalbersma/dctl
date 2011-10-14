@@ -19,7 +19,7 @@ namespace successor {
 
 // forward declaration of the primary template
 template<bool, int, typename, typename, typename> class Driver;
-class Moves;
+struct Moves;
 
 // partial specialization for king moves
 template<bool Color, typename Rules, typename Board> 

@@ -13,7 +13,7 @@ namespace search {
 
 // iterative deepening with no move ordering at the root
 template<typename Rules, typename Board>
-int Root::iterative_deepening(const Position<Board>& p, int depth)
+int Root<Rules, Board>::iterative_deepening(const Position<Board>& p, int depth)
 {
         auto score = -infinity();                
         int alpha, beta;
@@ -25,18 +25,18 @@ int Root::iterative_deepening(const Position<Board>& p, int depth)
                 statistics_.reset();
                 alpha = -infinity();
                 beta = infinity();
-                score = pvs<PV, Rules>(p, 0, i, alpha, beta, root_node);
-                insert_pv<Rules>(p, root_node.pv(), score);
+                score = pvs<PV>(p, 0, i, alpha, beta, root_node);
+                insert_pv(p, root_node.pv(), score);
                 timer.split();
-                report<Rules>(i, score, timer, p, root_node.pv());
+                report(i, score, timer, p, root_node.pv());
         }
 
         return score;
 }
 
 // principal variation search (PVS)
-template<int ThisNode, typename Rules, typename Board>
-int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
+template<typename Rules, typename Board> template<int ThisNode>
+int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         //if (is_interrupted())
         //        return alpha;
@@ -92,7 +92,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
         if (!(TT_entry && TT_entry->has_move())) {
                 const auto IID_depth = is_pv(ThisNode)? depth - 2 : depth / 2;
                 if (IID_depth > 0) {
-                        pvs<ThisNode, Rules>(p, ply, IID_depth, alpha, beta, parent_node);
+                        pvs<ThisNode>(p, ply, IID_depth, alpha, beta, parent_node);
                         TT_entry = TT.find(p);
                         BOOST_ASSERT(TT_entry);
                 }
@@ -127,13 +127,13 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
                 q.template make<Rules>(moves[i]);
 
                 if (is_pv(ThisNode) && s == 0)
-                        value = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                        value = -squeeze(pvs<PV>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 else {
                         // TODO: late move reductions
 
-                        value = -squeeze(pvs<ZW, Rules>(q, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
+                        value = -squeeze(pvs<ZW>(q, ply + 1, depth - 1, -stretch(alpha + 1), -stretch(alpha), child_node));
                         if (is_pv(ThisNode) && value > alpha && value < beta)
-                                value = -squeeze(pvs<PV, Rules>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
+                                value = -squeeze(pvs<PV>(q, ply + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
                 }
 
                 if (value > best_value) {
@@ -163,7 +163,7 @@ int Root::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta,
 /*
 // principal variation search (PVS) with TT cut-offs, TT move ordering and IID
 template<int ThisNode, typename Rules, typename Board>
-int Root::quiescence(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
+int Root<Rules, Board>::quiescence(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 
@@ -195,7 +195,7 @@ int Root::quiescence(const Position<Board>& p, int ply, int depth, int alpha, in
 
 // negamax
 template<typename Rules, typename Board>
-int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& parent_node)
+int Root<Rules, Board>::negamax(const Position<Board>& p, int ply, int depth, Parameters& parent_node)
 {
         statistics_.update(ply);
 
@@ -234,7 +234,7 @@ int Root::negamax(const Position<Board>& p, int ply, int depth, Parameters& pare
 
 // alpha-beta
 template<typename Rules, typename Board>
-int Root::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
+int Root<Rules, Board>::alpha_beta(const Position<Board>& p, int ply, int depth, int alpha, int beta, Parameters& parent_node)
 {
         statistics_.update(ply);
 

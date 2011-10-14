@@ -13,7 +13,7 @@ namespace successor {
 
 // forward declaration of the primary template
 template<bool, int, typename, typename, typename> class Driver;
-class Reverse;
+struct Reverse;
 
 // partial specialization for reverse king moves
 template<bool Color, typename Rules, typename Board> 

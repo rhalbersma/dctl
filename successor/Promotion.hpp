@@ -16,8 +16,8 @@ namespace successor {
 
 // forward declaration of the primary template
 template<bool, int, typename, typename, typename> class Driver;
-class Promotions;
-class Moves;
+struct Promotions;
+struct Moves;
 
 // partial specialization for pawn promotions
 template<bool Color, typename Rules, typename Board> 

@@ -4,7 +4,7 @@ namespace dctl {
 namespace variant {
 
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
-struct Frisian {};
+struct Frisian;
 
 }       // namespace variant
 }       // namespace dctl
