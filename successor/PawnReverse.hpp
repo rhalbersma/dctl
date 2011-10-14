@@ -15,8 +15,8 @@ namespace successor {
 
 // forward declaration of the primary template
 template<bool, int, typename, typename, typename> class Driver;
-class Reverse;
-class Moves;
+struct Reverse;
+struct Moves;
 
 // partial specialization for reverse pawn moves
 template<bool Color, typename Rules, typename Board> 

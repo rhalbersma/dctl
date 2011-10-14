@@ -3,7 +3,7 @@
 namespace dctl {
 namespace variant {
 
-struct Thai {};
+struct Thai;
 
 }       // namespace variant
 }       // namespace dctl

@@ -4,7 +4,7 @@ namespace dctl {
 namespace variant {
 
 // http://www.damweb.cz/pravidla/cdfull.html
-struct Czech {};
+struct Czech;
 
 }       // namespace variant
 }       // namespace dctl

@@ -3,11 +3,11 @@
 namespace dctl {
 namespace successor {
 
-class Legal {};
-class Jumps {};
-class Moves {};
-class Reverse {};
-class Promotion {};
+struct Legal;
+struct Jumps;
+struct Moves;
+struct Reverse;
+struct Promotion;
 
 }       // namespace successor
 }       // namespace dctl

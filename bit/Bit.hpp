@@ -87,7 +87,7 @@ template<typename T>
 int index(T b)
 {
 	BOOST_ASSERT(is_single(b));
-        return index_DeBruijn(b);
+        return index_lookup(b);
 }
 
 // Leiserson, Prokop and Randall, 1998

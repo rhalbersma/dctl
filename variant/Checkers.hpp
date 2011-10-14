@@ -4,7 +4,7 @@ namespace dctl {
 namespace variant {
 
 // http://www.usacheckers.com/rulesofcheckers.php
-struct Checkers {};
+struct Checkers;
 
 // aliases for the rules of checkers
 typedef Checkers English;

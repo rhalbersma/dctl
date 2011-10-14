@@ -148,11 +148,12 @@ const int DeBruijn<unsigned int>::TABLE[] = {
 
 // explicit instantation
 template class DeBruijn<unsigned int>;
-
+*/
+/*
 template<typename Dummy>
 const unsigned __int64 DeBruijn<unsigned __int64, Dummy>::SEQUENCE = 0x03f79d71b4cb0a89;
 
-template<unsigned __int64, typename Dummy>
+template<typename Dummy>
 const int DeBruijn<unsigned __int64, Dummy>::TABLE[] = {
          0,  1, 48,  2, 57, 49, 28,  3,
         61, 58, 50, 42, 38, 29, 17,  4,
@@ -164,9 +165,7 @@ const int DeBruijn<unsigned __int64, Dummy>::TABLE[] = {
         25, 14, 19,  9, 13,  8,  7,  6
 };
 
-// explicit instantation
 template class DeBruijn<unsigned __int64>;
 */
-
 }       // namespace bit
 }       // namespace dctl
