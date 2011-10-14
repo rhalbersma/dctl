@@ -1,7 +1,7 @@
 #include <utility>
 #include <boost/test/unit_test.hpp> 
-#include "../test_config.h"
-#include "../../src/search/Root.h"
+#include "../test_config.hpp"
+#include "../../src/search/Root.hpp"
 #include "../../src/node/Position.hpp"
 #include "../../src/setup/Setup.hpp"
 #include "../../src/board/Types.hpp"
@@ -12,41 +12,46 @@ namespace search {
 
 #if INTEGRATION_TEST == 1
 
-struct FixtureHashTable
-{
-        FixtureHashTable() 
-        {
-                Root::resize_hash(24);
-        }
-
-        ~FixtureHashTable() 
-        {
-                Root::resize_hash(0);
-        }
-};
-
-typedef std::pair<std::string, int> FEN_depth;
-
 template<typename Rules, typename Board>
-void Run(const FEN_depth& test_case) 
+struct Fixture
 {
-        Root::clear_hash();
-        auto position = setup::read<Board, pdn::protocol>()(test_case.first);
-        auto value = Root::analyze<Rules>(position, test_case.second);
-        BOOST_CHECK_EQUAL(win_value(test_case.second), value);
+        Fixture() 
+        {
+                root_.resize_hash(24);
+        }
+
+        ~Fixture() 
+        {
+                root_.resize_hash(0);
+        }
+
+        typedef std::pair<std::string, int> FEN_depth;
+
+        void run(const FEN_depth& test_case) 
+        {
+                root_.clear_hash();
+                auto position = setup::read<Board, pdn::protocol>()(test_case.first);
+                auto value = root_.analyze(position, test_case.second);
+                BOOST_CHECK_EQUAL(win_value(test_case.second), value);
+        };
+
+        Root<Rules, Board> root_;
 };
 
-BOOST_FIXTURE_TEST_SUITE(TestSearch, FixtureHashTable)
+BOOST_AUTO_TEST_SUITE(TestRoot)
 
-BOOST_AUTO_TEST_CASE(Frisian21)
+typedef Fixture<variant::Frisian, board::Frisian> FixtureFrisian;
+BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
 {
         FEN_depth test_case("W:WK46,28:BK43", 39);      // Walinga book
 
-        Run<variant::Frisian, board::Frisian>(test_case);
+        run(test_case);
 }
 
+typedef Fixture<variant::International, board::International> FixtureInternational;
+        
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
-BOOST_AUTO_TEST_CASE(International11)
+BOOST_FIXTURE_TEST_CASE(International11, FixtureInternational)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W33:B2."  , 17),   // 1010
@@ -56,10 +61,10 @@ BOOST_AUTO_TEST_CASE(International11)
         };
                 
         for (auto i = 0; i < 4; ++i)
-                Run<variant::International, board::International>(test_case[i]);
+                run(test_case[i]);
 }
 
-BOOST_AUTO_TEST_CASE(International21)
+BOOST_FIXTURE_TEST_CASE(International21, FixtureInternational)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W40,44:B3."   , 23),       // 2010
@@ -78,10 +83,10 @@ BOOST_AUTO_TEST_CASE(International21)
         };
 
         for (auto i = 0; i < 13; ++i)
-                Run<variant::International, board::International>(test_case[i]);
+                run(test_case[i]);
 }        
 
-BOOST_AUTO_TEST_CASE(International22)
+BOOST_FIXTURE_TEST_CASE(International22, FixtureInternational)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W33,46:B4,5."     , 39),   // 2020
@@ -96,10 +101,10 @@ BOOST_AUTO_TEST_CASE(International22)
         };
 
         for (auto i = 0; i < 9; ++i)
-                Run<variant::International, board::International>(test_case[i]);      
+                run(test_case[i]);      
 }
 
-BOOST_AUTO_TEST_CASE(International31)
+BOOST_FIXTURE_TEST_CASE(International31, FixtureInternational)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W12,13,16:B30."    , 23),  // 3010
@@ -121,11 +126,13 @@ BOOST_AUTO_TEST_CASE(International31)
         };
         
         for (auto i = 0; i < 16; ++i)
-                Run<variant::International, board::International>(test_case[i]);
+                run(test_case[i]);
 }
 
+typedef Fixture<variant::Killer, board::International> FixtureKiller;
+
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        
-BOOST_AUTO_TEST_CASE(Killer11)
+BOOST_FIXTURE_TEST_CASE(Killer11, FixtureKiller)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W31:B5."   , 17),  // 1010
@@ -135,10 +142,10 @@ BOOST_AUTO_TEST_CASE(Killer11)
         };
 
         for (auto i = 0; i < 4; ++i)
-                Run<variant::Killer, board::International>(test_case[i]);
+                run(test_case[i]);
 }
 
-BOOST_AUTO_TEST_CASE(Killer21)
+BOOST_FIXTURE_TEST_CASE(Killer21, FixtureKiller)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W41,46:B24."  , 63),       // 2010
@@ -158,10 +165,10 @@ BOOST_AUTO_TEST_CASE(Killer21)
         };       
         
         for (auto i = 0; i < 14; ++i)
-                Run<variant::Killer, board::International>(test_case[i]);
+                run(test_case[i]);
 }
 
-BOOST_AUTO_TEST_CASE(Killer22)
+BOOST_FIXTURE_TEST_CASE(Killer22, FixtureKiller)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W31,49:B9,14."    , 77),   // 2020
@@ -176,10 +183,10 @@ BOOST_AUTO_TEST_CASE(Killer22)
         };
 
         for (auto i = 0; i < 9; ++i)
-                Run<variant::Killer, board::International>(test_case[i]);
+                run(test_case[i]);
 }
 
-BOOST_AUTO_TEST_CASE(Killer31)
+BOOST_FIXTURE_TEST_CASE(Killer31, FixtureKiller)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W37,43,46:B44."    , 69),  // 3010
@@ -201,7 +208,7 @@ BOOST_AUTO_TEST_CASE(Killer31)
         };
         
         for (auto i = 0; i < 16; ++i)
-                Run<variant::Killer, board::International>(test_case[i]);
+                run(test_case[i]);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -20,14 +20,14 @@ typedef boost::mpl::list<
         Dimensions<12, 10, true>
 > DimensionsList;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Inverse, T, DimensionsList)
+BOOST_AUTO_TEST_CASE_TEMPLATE(TestInverse, T, DimensionsList)
 {
         BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::R090>::type, Degrees::L090>::type>::value));
         BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::L090>::type, Degrees::R090>::type>::value));
         BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::D180>::type, Degrees::D180>::type>::value));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Square, T, DimensionsList)
+BOOST_AUTO_TEST_CASE_TEMPLATE(TestSquare, T, DimensionsList)
 {
         BOOST_CHECK((boost::is_same<rotate<T, Degrees::D180>::type, rotate<rotate<T, Degrees::L090>::type, Degrees::L090>::type>::value));
         BOOST_CHECK((boost::is_same<rotate<T, Degrees::D180>::type, rotate<rotate<T, Degrees::R090>::type, Degrees::R090>::type>::value));
