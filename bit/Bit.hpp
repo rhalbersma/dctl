@@ -16,7 +16,7 @@ T singlet(int i)
 template<typename T>
 T reverse_singlet(int i)
 {
-        return T(1) << (num_bits<T>::value - i);
+        return T(1) << (num_bits<T>::value - 1 - i);
 }
 
 // 0 bits set to 1
@@ -87,7 +87,7 @@ template<typename T>
 int index(T b)
 {
 	BOOST_ASSERT(is_single(b));
-        return index_lookup(b);
+        return index_DeBruijn(b);
 }
 
 // Leiserson, Prokop and Randall, 1998
@@ -95,7 +95,7 @@ int index(T b)
 template<typename T>
 int index_DeBruijn(T b)
 {
-        return DeBruijn<T>::index(b);
+        return debruijn::Index<T>()(b);
 }
 
 // index of a set 1-bit

@@ -40,7 +40,6 @@ struct Random
         static const Index RESTRICTED_MOVES[2][8];
 };
 
-
 template<typename Index>
 const Index Random<Index>::PIECES[2][64] = {
 	{
