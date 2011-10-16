@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsMultiple, T, UnsignedIntegerTypes)
         }
         BOOST_CHECK(is_multiple(T(~0)));
 }
-/*
+
 BOOST_AUTO_TEST_CASE_TEMPLATE(IndexDeBruijn, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IndexDeBruijn, T, UnsignedIntegerTypes)
                 BOOST_CHECK_EQUAL(i, index_DeBruijn(b));
         }
 }
-*/
+
 BOOST_AUTO_TEST_CASE_TEMPLATE(IndexLookup, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
