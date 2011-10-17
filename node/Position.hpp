@@ -8,8 +8,8 @@
 #include "../bit/Bit.hpp"
 #include "../hash/zobrist/Init.hpp"
 #include "../rules/Rules.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
@@ -154,10 +154,10 @@ private:
         // implementation
         void detach();
 
-        // tag dispatching on restrictions on consecutive moves with the same king
         template<typename Rules> 
         void make_irreversible(const Move& m)
         {
+                // tag dispatching on restrictions on consecutive moves with the same king
                 make_irreversible<Rules>(
                         m, 
                         Int2Type<rules::is_restricted_same_king_moves<Rules>::value>()
@@ -197,16 +197,17 @@ private:
         template<typename Rules> 
         void make_active_king_moves(const Move& m)
         {
+                typedef hash::zobrist::Init<KingMoves, HashIndex> Hash;
                 KingMoves& restricted = restricted_[active_color()];
 
                 if (active_kings(*this) && active_men(*this)) {
-                        hash_index_ ^= hash::zobrist::Init<KingMoves, HashIndex>()(restricted, active_color());
+                        hash_index_ ^= Hash()(restricted, active_color());
                         if (is_reversible(*this, m) && !is_max<Rules>(restricted.moves())) {
                                 if (restricted.king() & from_sq(*this, m))
                                         restricted.increment(dest_sq(*this, m));               
                                 else
                                         restricted.init(dest_sq(*this, m));
-                                hash_index_ ^= hash::zobrist::Init<KingMoves, HashIndex>()(restricted, active_color());
+                                hash_index_ ^= Hash()(restricted, active_color());
                         } else
                                 restricted.reset();
                 } 
@@ -215,6 +216,7 @@ private:
         template<typename Rules> 
         void make_passive_king_moves(const Move& m)
         {
+                typedef hash::zobrist::Init<KingMoves, HashIndex> Hash;
                 KingMoves& restricted = restricted_[passive_color()];
 
                 if (
@@ -224,7 +226,7 @@ private:
                                 bit::is_within(passive_men(*this), captured_pieces(*this, m))
                         )
                 ) {
-                        hash_index_ ^= hash::zobrist::Init<KingMoves, HashIndex>()(restricted, passive_color());
+                        hash_index_ ^= Hash()(restricted, passive_color());
                         restricted.reset();
                 }
         }
@@ -316,11 +318,11 @@ BitBoard passive_pieces(const Position<Board>& p)
         return p.pieces(p.passive_color());
 }       
 
-// tag dispatching on restrictions on consecutive moves with the same king
 template<typename Rules, typename Board> 
 BitBoard unrestricted_kings(const Position<Board>& p, bool color)
 {
-        return unrestricted_kings<Rules>(
+        // tag dispatching on restrictions on consecutive moves with the same king
+        return unrestricted_kings_dispatch<Rules>(
                 p, color, 
                 Int2Type<rules::is_restricted_same_king_moves<Rules>::value>()
         );
@@ -328,14 +330,14 @@ BitBoard unrestricted_kings(const Position<Board>& p, bool color)
 
 // partial specialization for unrestricted consecutive moves with the same king
 template<typename Rules, typename Board> 
-BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<false>)
+BitBoard unrestricted_kings_dispatch(const Position<Board>& p, bool color, Int2Type<false>)
 {
         return p.kings(color);
 }
 
 // partial specialization for restricted consecutive moves with the same king
 template<typename Rules, typename Board> 
-BitBoard unrestricted_kings(const Position<Board>& p, bool color, Int2Type<true>)
+BitBoard unrestricted_kings_dispatch(const Position<Board>& p, bool color, Int2Type<true>)
 {
         if (p.kings(color) && p.men(color) && is_max<Rules>(p.restricted(color).moves()))
                 return p.kings(color) ^ p.restricted(color).king();
@@ -386,24 +388,26 @@ bool is_repetition_draw(const Position<Board>& p)
         return false;
 }       
 
-// tag dispatching on restrictions on consecutive reversible moves        
 template<typename Rules, typename Board> 
 bool is_reversible_draw(const Position<Board>& p)
 {
-        return is_reversible_draw<Rules>(
+        // tag dispatching on restrictions on consecutive reversible moves        
+        return is_reversible_draw_dispatch<Rules>(
                 p, 
                 Int2Type<rules::is_restricted_reversible_moves<Rules>::value>()
         );
 }
 
+// partial specialization for no restrictions on consecutive reversible moves
 template<typename Rules, typename Board> 
-bool is_reversible_draw(const Position<Board>&, Int2Type<false>)
+bool is_reversible_draw_dispatch(const Position<Board>&, Int2Type<false>)
 {
         return false;
 }
 
+// partial specialization for a maximum of consecutive reversible moves
 template<typename Rules, typename Board> 
-bool is_reversible_draw(const Position<Board>& p, Int2Type<true>)
+bool is_reversible_draw_dispatch(const Position<Board>& p, Int2Type<true>)
 {
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }

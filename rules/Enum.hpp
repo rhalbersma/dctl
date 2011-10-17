@@ -16,7 +16,7 @@ enum { halt_1, halt_N, halt_1FK };
 enum { dirs_up, dirs_down, dirs_diag, dirs_orth, dirs_all };
 
 // intermediate capture directions
-enum { scan_up, scan_down, scan_diag, scan_orth, scan_all };
+enum { turn_up, turn_down, turn_diag, turn_orth, turn_all };
 
 // capture removal: en-passant (in passing) or apres-fini (having finished)
 enum { remove_ep, remove_af };

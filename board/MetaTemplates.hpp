@@ -3,8 +3,8 @@
 #include <boost/mpl/integral_c.hpp>
 #include <boost/mpl/vector.hpp>
 #include "Predicates.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 namespace board {
@@ -16,12 +16,12 @@ template
         typename ArgsTuple, 
         int SQ = Board::ExternalGrid::size - 1
 >
-struct init_predicate
+struct Init
 {
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
-                (test_predicate<Predicate, Board, ArgsTuple, SQ    >::value) ^
-                (init_predicate<Predicate, Board, ArgsTuple, SQ - 1>::value)
+                (Test<Predicate, Board, ArgsTuple, SQ    >::value) ^
+                (Init<Predicate, Board, ArgsTuple, SQ - 1>::value)
         );
 };
 
@@ -31,11 +31,11 @@ template
         typename Board, 
         typename ArgsTuple
 >
-struct init_predicate<Predicate, Board, ArgsTuple, 0>
+struct Init<Predicate, Board, ArgsTuple, 0>
 {
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
-                (test_predicate<Predicate, Board, ArgsTuple, 0>::value)
+                (Test<Predicate, Board, ArgsTuple, 0>::value)
         );
 };
 
@@ -46,7 +46,7 @@ template
         typename ArgsTuple, 
         int SQ
 >
-struct test_predicate
+struct Test
 {
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
@@ -61,7 +61,7 @@ struct init_squares
 
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
-                (init_predicate<is_square, Board, ArgsTuple>::value)
+                (Init<is_square, Board, ArgsTuple>::value)
         );
 };
 
@@ -74,7 +74,7 @@ struct init_initial
 
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
-                (init_predicate<is_initial, Board, ArgsTuple>::value)
+                (Init<is_initial, Board, ArgsTuple>::value)
         );
 };
 
@@ -88,7 +88,7 @@ struct init_row_mask
 
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
-                (init_predicate<is_row_mask, Board, ArgsTuple>::value)
+                (Init<is_row_mask, Board, ArgsTuple>::value)
         );
 };
 
@@ -102,7 +102,7 @@ struct init_col_mask
 
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
-                (init_predicate<is_col_mask, Board, ArgsTuple>::value)
+                (Init<is_col_mask, Board, ArgsTuple>::value)
         );
 };
 
@@ -115,7 +115,7 @@ struct init_jump_group
 
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
-                (init_predicate<is_jump_group, Board, ArgsTuple>::value)
+                (Init<is_jump_group, Board, ArgsTuple>::value)
         );
 };
 
@@ -128,7 +128,7 @@ struct init_jump_start
 
         // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
-                (init_predicate<is_jump_start, Board, ArgsTuple>::value)
+                (Init<is_jump_start, Board, ArgsTuple>::value)
         );
 };
 

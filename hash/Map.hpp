@@ -11,8 +11,8 @@
 #include "KeySign.hpp"
 #include "Replace.hpp"
 #include "../utility/CacheAlign.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 namespace hash {
@@ -69,11 +69,11 @@ public:
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
-        // tag dispatching on the key's integral type trait
         template<typename Item>
         const Value* find(const Item& item) const
         {
-                return find(
+                // tag dispatching on the key's integral type trait
+                return find_dispatch(
                         item, 
                         Int2Type<std::is_integral<Key>::value>()
                 );
@@ -86,11 +86,11 @@ public:
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 
-        // tag dispatching on the key's integral type trait
         template<typename Item>
         void insert(const Item& item, const Value& value)
         {
-                insert(
+                // tag dispatching on the key's integral type trait
+                insert_dispatch(
                         item, value, 
                         Int2Type<std::is_integral<Key>::value>()
                 );
@@ -99,7 +99,7 @@ public:
 private:
         // partial specialization for non-integral keys
         template<typename Item> 
-        const Value* find(const Item& item, Int2Type<false>) const
+        const Value* find_dispatch(const Item& item, Int2Type<false>) const
         {
                 const auto index = Hash<Item, Index>()(item);
                 const auto key = FindKey<Item, Key>()(item);
@@ -108,7 +108,7 @@ private:
 
         // partial specialization for integral keys
         template<typename Item> 
-        const Value* find(const Item& item, Int2Type<true>) const
+        const Value* find_dispatch(const Item& item, Int2Type<true>) const
         {
                 const auto index = Hash<Item, Index>()(item);
                 const auto key = ShiftKey<Index, Key>()(index);
@@ -117,7 +117,7 @@ private:
 
         // partial specialization for non-integral keys
         template<typename Item> 
-        void insert(const Item& item, const Value& value, Int2Type<false>)
+        void insert_dispatch(const Item& item, const Value& value, Int2Type<false>)
         {
                 const auto index = Hash<Item, Index>()(item);
                 const auto key = FindKey<Item, Key>()(item);
@@ -126,7 +126,7 @@ private:
         
         // partial specialization for integral keys
         template<typename Item> 
-        void insert(const Item& item, const Value& value, Int2Type<true>)
+        void insert_dispatch(const Item& item, const Value& value, Int2Type<true>)
         {
                 const auto index = Hash<Item, Index>()(item);
                 const auto key = ShiftKey<Index, Key>()(index);

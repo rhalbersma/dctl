@@ -1,8 +1,8 @@
 #pragma once
 #include "../node/Move.hpp"
 #include "../node/Stack.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/NonConstructible.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 

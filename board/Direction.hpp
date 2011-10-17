@@ -2,7 +2,7 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Angle.hpp"
 #include "Transform.hpp"
-#include "../utility/TemplateTricks.hpp"
+#include "../utility/Int2Type.hpp"
 
 namespace dctl {
 namespace board {

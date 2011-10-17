@@ -3,9 +3,9 @@
 #include "../node/Position.hpp"
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/NonConstructible.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
@@ -26,24 +26,23 @@ class Driver<Color, Material::pawn, Promotion, Rules, Board>
         private nonconstructible // enforce static semantics
 {
 public:
+        // typedefs
+        typedef Driver<Color, Material::pawn, Moves, Rules, Board> ActivePawnMoves;
+
         static void generate(const Position<Board>& p, Stack& moves)
         {
-                ActivePawnMoves::generate_dirs(promoting_men<Color, Board>(p.men(Color)), not_occupied(p), moves);
+                ActivePawnMoves::generate(promoting_men<Color>(p), not_occupied(p), moves);
         }
 
         static int count(const Position<Board>& p)
         {
-                return ActivePawnMoves::count_dirs(promoting_men<Color, Board>(p.men(Color)), not_occupied(p));
+                return ActivePawnMoves::count(promoting_men<Color>(p), not_occupied(p));
         }
 
         static bool detect(const Position<Board>& p)
         {
-                return ActivePawnMoves::detect_dirs(promoting_men<Color, Board>(p.men(Color)), not_occupied(p));
+                return ActivePawnMoves::detect(promoting_men<Color>(p), not_occupied(p));
         }
-
-private:
-        // typedefs
-        typedef Driver<Color, Material::pawn, Moves, Rules, Board> ActivePawnMoves;
 };
 
 }       // namespace successor

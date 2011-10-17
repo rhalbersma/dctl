@@ -3,9 +3,9 @@
 #include "../node/Material.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/NonConstructible.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
@@ -22,7 +22,7 @@ public:
         static void generate(const Position<Board>& p, Stack& moves)
         {
                 capture::State<Rules, Board> capture(p);
-                generate_precede(p, capture, moves);
+                generate(p, capture, moves);
         }
 
         static int count(const Position<Board>& p)
@@ -41,17 +41,17 @@ public:
         }
 
 private:
-        // tag dispatching on absolute king capture precedence
-        static void generate_precede(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves)
+        static void generate(const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves)
         {
-                generate_precede(
+                // tag dispatching on absolute king capture precedence
+                generate_dispatch(
                         p, capture, moves, 
                         Int2Type<rules::is_absolute_king_precedence<Rules>::value>()
                 );
         }
 
         // partial specialization for no absolute king capture precedence
-        static void generate_precede(
+        static void generate_dispatch(
                 const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<false>
         )
         {
@@ -60,7 +60,7 @@ private:
         }
 
         // partial specialization for absolute king capture precedence
-        static void generate_precede(
+        static void generate_dispatch(
                 const Position<Board>& p, capture::State<Rules, Board>& capture, Stack& moves, Int2Type<true>
         )
         {
