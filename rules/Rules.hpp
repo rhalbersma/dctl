@@ -34,18 +34,18 @@ template<typename> struct man_capture_directions                { enum { value =
 template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != dirs_up }; };
 
 // relation between initial and intermediate capture directions
-template<int> struct scan_directions;
-template<> struct scan_directions<dirs_up  >                    { enum { value = scan_up   }; };
-template<> struct scan_directions<dirs_down>                    { enum { value = scan_down }; };
-template<> struct scan_directions<dirs_diag>                    { enum { value = scan_diag }; };
-template<> struct scan_directions<dirs_orth>                    { enum { value = scan_diag }; };
-template<> struct scan_directions<dirs_all >                    { enum { value = scan_all  }; };
+template<int> struct turn_directions;
+template<> struct turn_directions<dirs_up  >                    { enum { value = turn_up   }; };
+template<> struct turn_directions<dirs_down>                    { enum { value = turn_down }; };
+template<> struct turn_directions<dirs_diag>                    { enum { value = turn_diag }; };
+template<> struct turn_directions<dirs_orth>                    { enum { value = turn_diag }; };
+template<> struct turn_directions<dirs_all >                    { enum { value = turn_all  }; };
 
 // king capture scan directions
-template<typename Rules> struct king_scan_directions            { enum { value = scan_directions<king_capture_directions<Rules>::value>::value }; };
+template<typename Rules> struct king_turn_directions            { enum { value = turn_directions<king_capture_directions<Rules>::value>::value }; };
 
 // man capture scan directions
-template<typename Rules> struct man_scan_directions             { enum { value = scan_directions<man_capture_directions<Rules>::value>::value  }; };
+template<typename Rules> struct man_turn_directions             { enum { value = turn_directions<man_capture_directions<Rules>::value>::value  }; };
 
 // capture direction reversal
 template<typename> struct is_capture_direction_reversal         { enum { value = false }; };

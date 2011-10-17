@@ -8,10 +8,10 @@
 #include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/NonConstructible.hpp"
 #include "../utility/Shift.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 namespace successor {
@@ -40,7 +40,7 @@ public:
 
         static void generate(const Position<Board>& p, State& capture, Stack& moves)
         {
-                generate_targets(p, capture, moves);
+                select_targets(p, capture, moves);
         }
 
         static int count(const Position<Board>& p)
@@ -52,185 +52,187 @@ public:
 
         static bool detect(const Position<Board>& p)
         {
-                return detect_targets(p);
+                return detect(p.men(Color), targets(p), not_occupied(p));
         }
 
 private:        
-        // tag dispatching on whether men can capture kings
-        static void generate_targets(const Position<Board>& p, State& capture, Stack& moves)
+        static void select_targets(const Position<Board>& p, State& capture, Stack& moves)
         {
-                generate_targets(
+                // tag dispatching on whether men can capture kings
+                select_targets_dispatch(
                         p, capture, moves, 
                         Int2Type<rules::is_men_capture_kings<Rules>::value>()
                 );
         }
         
         // partial specialization for men that cannot capture kings
-        static void generate_targets(
+        static void select_targets_dispatch(
                 const Position<Board>& p, State& capture, Stack& moves, Int2Type<false>
         )
         {
                 capture.toggle_king_targets();
-                generate_targets(p, capture, moves, Int2Type<true>());
+                select_targets_dispatch(p, capture, moves, Int2Type<true>());
                 capture.toggle_king_targets();
         }
 
         // partial specialization for men that can capture kings
-        static void generate_targets(
+        static void select_targets_dispatch(
                 const Position<Board>& p, State& capture, Stack& moves, Int2Type<true>
         )
         {
-                generate_dirs(p.men(Color), capture, moves);
+                generate(p.men(Color), capture, moves);
         }
 
-        // tag dispatching on whether men can capture kings
-        static bool detect_targets(const Position<Board>& p)
+        static BitBoard targets(const Position<Board>& p)
         {
-                return detect_targets(p, Int2Type<rules::is_men_capture_kings<Rules>::value>());
+                // tag dispatching on whether men can capture kings
+                return targets_dispatch(
+                        p, Int2Type<rules::is_men_capture_kings<Rules>::value>()
+                );
         }
 
         // partial specialization for men that cannot capture kings
-        static bool detect_targets(
+        static BitBoard targets_dispatch(
                 const Position<Board>& p, Int2Type<false>
         )
         {
-                return detect_dirs(p.men(Color), p.men(!Color), not_occupied(p));
+                return p.men(!Color);
         }
 
         // partial specialization for men that can capture kings
-        static bool detect_targets(
+        static BitBoard targets_dispatch(
                 const Position<Board>& p, Int2Type<true>
         )
         {
-                return detect_dirs(p.men(Color), p.pieces(!Color), not_occupied(p));
+                return p.pieces(!Color);
         }
 
-        // tag dispatching on man capture directions
-        static void generate_dirs(BitBoard active_men, State& capture, Stack& moves)
+        static void generate(BitBoard active_men, State& capture, Stack& moves)
         {
-                generate_dirs(
+                // tag dispatching on man capture directions
+                generate_dispatch(
                         active_men, capture, moves, 
                         Int2Type<rules::man_capture_directions<Rules>::value>()
                 );
         }
 
         // partial specialization for men that capture in the 8 orthogonal and diagonal directions
-        static void generate_dirs(
+        static void generate_dispatch(
                 BitBoard active_men, State& capture, Stack& moves, Int2Type<rules::dirs_all>
         )
         {
-                generate_dirs(active_men, capture, moves, Int2Type<rules::dirs_orth>());
-                generate_dirs(active_men, capture, moves, Int2Type<rules::dirs_diag>());
+                generate_dispatch(active_men, capture, moves, Int2Type<rules::dirs_orth>());
+                generate_dispatch(active_men, capture, moves, Int2Type<rules::dirs_diag>());
         }
 
         // partial specialization for men that capture in the 4 orthogonal directions
-        static void generate_dirs(
+        static void generate_dispatch(
                 BitBoard active_men, State& capture, Stack& moves, Int2Type<rules::dirs_orth>
         )
         {
-                generate_dir<Direction::left >(active_men, capture, moves);
-                generate_dir<Direction::right>(active_men, capture, moves);
-                generate_dir<Direction::up   >(active_men, capture, moves);
-                generate_dir<Direction::down >(active_men, capture, moves);
+                generate<Direction::left >(active_men, capture, moves);
+                generate<Direction::right>(active_men, capture, moves);
+                generate<Direction::up   >(active_men, capture, moves);
+                generate<Direction::down >(active_men, capture, moves);
         }
 
         // partial specialization for men that capture in the 4 diagonal directions
-        static void generate_dirs(
+        static void generate_dispatch(
                 BitBoard active_men, State& capture, Stack& moves, Int2Type<rules::dirs_diag>
         )
         {
-                generate_dirs(active_men, capture, moves, Int2Type<rules::dirs_up  >());
-                generate_dirs(active_men, capture, moves, Int2Type<rules::dirs_down>());
+                generate_dispatch(active_men, capture, moves, Int2Type<rules::dirs_up  >());
+                generate_dispatch(active_men, capture, moves, Int2Type<rules::dirs_down>());
         }
 
         // partial specialization for men that capture in the 2 forward diagonal directions
-        static void generate_dirs(
+        static void generate_dispatch(
                 BitBoard active_men, State& capture, Stack& moves, Int2Type<rules::dirs_up>
         )
         {
-                generate_dir<Direction::left_up >(active_men, capture, moves);
-                generate_dir<Direction::right_up>(active_men, capture, moves);
+                generate<Direction::left_up >(active_men, capture, moves);
+                generate<Direction::right_up>(active_men, capture, moves);
         }
 
         // partial specialization for men that capture in the 2 backward diagonal directions
-        static void generate_dirs(
+        static void generate_dispatch(
                 BitBoard active_men, State& capture, Stack& moves, Int2Type<rules::dirs_down>
         )
         {
-                generate_dir<Direction::left_down >(active_men, capture, moves);
-                generate_dir<Direction::right_down>(active_men, capture, moves);
+                generate<Direction::left_down >(active_men, capture, moves);
+                generate<Direction::right_down>(active_men, capture, moves);
         }
 
-        // tag dispatching on man capture directions
-        static bool detect_dirs(
+        static bool detect(
                 BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied
         )
         {
-                return detect_dirs(
+                // tag dispatching on man capture directions
+                return detect_dispatch(
                         active_men, opponent_pieces, not_occupied, 
                         Int2Type<rules::man_capture_directions<Rules>::value>()
                 );
         }
 
         // partial specialization for men that capture in the 8 orthogonal and diagonal directions
-        static bool detect_dirs(
+        static bool detect_dispatch(
                 BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_all>
         )
         {
                 return (
-                        detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_orth>()) ||
-                        detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_diag>())
+                        detect_dispatch(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_orth>()) ||
+                        detect_dispatch(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_diag>())
                 );
         }
         
         // partial specialization for men that capture in the 4 orthogonal directions
-        static bool detect_dirs(
+        static bool detect_dispatch(
                 BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_orth>
         )
         {
                 return (
-                        detect_dir<Direction::left >(active_men, opponent_pieces, not_occupied) ||
-                        detect_dir<Direction::right>(active_men, opponent_pieces, not_occupied) ||
-                        detect_dir<Direction::up   >(active_men, opponent_pieces, not_occupied) ||
-                        detect_dir<Direction::down >(active_men, opponent_pieces, not_occupied)
+                        detect<Direction::left >(active_men, opponent_pieces, not_occupied) ||
+                        detect<Direction::right>(active_men, opponent_pieces, not_occupied) ||
+                        detect<Direction::up   >(active_men, opponent_pieces, not_occupied) ||
+                        detect<Direction::down >(active_men, opponent_pieces, not_occupied)
                 );
         }
         
         // partial specialization for men that capture in the 4 diagonal directions
-        static bool detect_dirs(
+        static bool detect_dispatch(
                 BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_diag>
         )
         {
                 return (
-                        detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_up  >()) ||
-                        detect_dirs(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_down>())
+                        detect_dispatch(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_up  >()) ||
+                        detect_dispatch(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_down>())
                 );
         }
         
         // partial specialization for men that capture in the 2 forward diagonal directions
-        static bool detect_dirs(
+        static bool detect_dispatch(
                 BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_up>
         )
         {
                 return (
-                        detect_dir<Direction::left_up >(active_men, opponent_pieces, not_occupied) ||
-                        detect_dir<Direction::right_up>(active_men, opponent_pieces, not_occupied)
+                        detect<Direction::left_up >(active_men, opponent_pieces, not_occupied) ||
+                        detect<Direction::right_up>(active_men, opponent_pieces, not_occupied)
                 );
         }
         
         // partial specialization for men that capture in the 2 backward diagonal directions
-        static bool detect_dirs(
+        static bool detect_dispatch(
                 BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_down>
         )
         {
                 return (
-                        detect_dir<Direction::left_down >(active_men, opponent_pieces, not_occupied) ||
-                        detect_dir<Direction::right_down>(active_men, opponent_pieces, not_occupied)
+                        detect<Direction::left_down >(active_men, opponent_pieces, not_occupied) ||
+                        detect<Direction::right_down>(active_men, opponent_pieces, not_occupied)
                 );
         }
 
         template<int Index> 
-        static void generate_dir(BitBoard active_men, State& capture, Stack& moves)
+        static void generate(BitBoard active_men, State& capture, Stack& moves)
         {
                 BitBoard jumper, target;
                 for (
@@ -264,11 +266,11 @@ private:
 	        }
         }
 
-        // tag dispatching on promotion condition
         template<int Index>
         static bool scan_next(BitBoard jumper, State& capture, Stack& moves)
         {
-                return scan_next<Index>(
+                // tag dispatching on promotion condition
+                return scan_next_dispatch<Index>(
                         jumper, capture, moves, 
                         Int2Type<rules::promotion_condition<Rules>::value>()
                 );
@@ -276,7 +278,7 @@ private:
         
         // partial specialization for men that promote en-passant
         template<int Index>
-        static bool scan_next(
+        static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::promote_ep>
         )
         {
@@ -292,91 +294,91 @@ private:
 
         // partial specialization for men that promote apres-fini
         template<int Index>
-        static bool scan_next(
+        static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::promote_af>
         )
         {
                 return (
-                        scan_dirs<Index>(jumper, capture, moves) |
-                        scan_dir<Index>(jumper, capture, moves)
+                        turn<Index>(jumper, capture, moves) |
+                        scan<Index>(jumper, capture, moves)
                 );
         }
         
-        // tag dispatching on man scan directions
         template<int Index>
-        static bool scan_dirs(BitBoard jumper, State& capture, Stack& moves)
+        static bool turn(BitBoard jumper, State& capture, Stack& moves)
         {
-                return scan_dirs<Index>(
+                // tag dispatching on man turn directions
+                return turn_dispatch<Index>(
                         jumper, capture, moves, 
-                        Int2Type<rules::man_scan_directions<Rules>::value>()
+                        Int2Type<rules::man_turn_directions<Rules>::value>()
                 );
         }
         
-        // partial specialization for scans in all the 6 non-parallel orthogonal and diagonal directions
+        // partial specialization for turns in all the 6 non-parallel orthogonal and diagonal directions
         template<int Index>
-        static bool scan_dirs(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::scan_all>
+        static bool turn_dispatch(
+                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_all>
         )
         {
                 return (
-                        scan_dirs<Index>(jumper, capture, moves, Int2Type<rules::scan_orth>()) |
-                        scan_dirs<Index>(jumper, capture, moves, Int2Type<rules::scan_diag>())
+                        turn_dispatch<Index>(jumper, capture, moves, Int2Type<rules::turn_orth>()) |
+                        turn_dispatch<Index>(jumper, capture, moves, Int2Type<rules::turn_diag>())
                 );
         }
         
-        // partial specialization for scans in the remaining 4 diagonal or orthogonal directions
+        // partial specialization for turns in the remaining 4 diagonal or orthogonal directions
         template<int Index>
-                static bool scan_dirs(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::scan_orth>
+        static bool turn_dispatch(
+                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_orth>
         )
         {
                 return (
-                        scan_dir<rotate<Angle<Index>, Degrees::R045>::type::value>(jumper, capture, moves) |
-                        scan_dir<rotate<Angle<Index>, Degrees::L045>::type::value>(jumper, capture, moves) |
-                        scan_dir<rotate<Angle<Index>, Degrees::R135>::type::value>(jumper, capture, moves) |
-                        scan_dir<rotate<Angle<Index>, Degrees::L135>::type::value>(jumper, capture, moves)
+                        scan<rotate<Angle<Index>, Degrees::R045>::type::value>(jumper, capture, moves) |
+                        scan<rotate<Angle<Index>, Degrees::L045>::type::value>(jumper, capture, moves) |
+                        scan<rotate<Angle<Index>, Degrees::R135>::type::value>(jumper, capture, moves) |
+                        scan<rotate<Angle<Index>, Degrees::L135>::type::value>(jumper, capture, moves)
                 );
         }
         
-        // partial specialization for scans in the 2 sideways directions
+        // partial specialization for turns in the 2 sideways directions
         template<int Index>
-        static bool scan_dirs(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::scan_diag>
+        static bool turn_dispatch(
+                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_diag>
         )
         {
                 return (
-                        scan_dir<rotate<Angle<Index>, Degrees::R090>::type::value>(jumper, capture, moves) |
-                        scan_dir<rotate<Angle<Index>, Degrees::L090>::type::value>(jumper, capture, moves)
+                        scan<rotate<Angle<Index>, Degrees::R090>::type::value>(jumper, capture, moves) |
+                        scan<rotate<Angle<Index>, Degrees::L090>::type::value>(jumper, capture, moves)
                 );
         }
         
-        // partial specialization for scans in the 1 mirrored forward direction
+        // partial specialization for turns in the 1 mirrored forward direction
         template<int Index>
-        static bool scan_dirs(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::scan_up>
+        static bool turn_dispatch(
+                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_up>
         )
         {
-                return scan_dir<mirror_up<Index>::value>(jumper, capture, moves);
+                return scan<mirror_up<Index>::value>(jumper, capture, moves);
         }
         
-        // partial specialization for scans in the 1 mirrored backward direction
+        // partial specialization for turns in the 1 mirrored backward direction
         template<int Index>
-        static bool scan_dirs(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::scan_down>
+        static bool turn_dispatch(
+                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_down>
         )
         {
-                return scan_dir<mirror_down<Index>::value>(jumper, capture, moves);
+                return scan<mirror_down<Index>::value>(jumper, capture, moves);
         }
 
         template<int Index>
-        static bool scan_dir(BitBoard jumper, State& capture, Stack& moves)
+        static bool scan(BitBoard jumper, State& capture, Stack& moves)
         {
                 PushAssign<Board, Index>()(jumper);
-                return scan<Index>(jumper, capture, moves);
+                return jump<Index>(jumper, capture, moves);
         }
         
         template<int Index>
-        static bool scan(
+        static bool jump(
                 BitBoard jumper, State& capture, Stack& moves
         )
         {
@@ -390,7 +392,7 @@ private:
         }
 
         template<int Index>
-        static bool detect_dir(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied)
+        static bool detect(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied)
         {
                 return !bit::is_zero(
                         Push<Board, Index>()(active_men) & 

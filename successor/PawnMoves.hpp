@@ -5,10 +5,10 @@
 #include "../node/Position.hpp"
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/NonConstructible.hpp"
 #include "../utility/Shift.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
@@ -27,50 +27,50 @@ class Driver<Color, Material::pawn, Moves, Rules, Board>
         private nonconstructible // enforce static semantics
 {
 public:
+        // typedefs
+        typedef board::Direction<Color, Board> Direction;
+
         static void generate(const Position<Board>& p, Stack& moves)
         {
-                generate_dirs(p.men(Color), not_occupied(p), moves);
+                generate(p.men(Color), not_occupied(p), moves);
         }
 
         static int count(const Position<Board>& p)
         {
-                return count_dirs(p.men(Color), not_occupied(p));
+                return count(p.men(Color), not_occupied(p));
         }
 
         static bool detect(const Position<Board>& p)
         {
-                return detect_dirs(p.men(Color), not_occupied(p));
+                return detect(p.men(Color), not_occupied(p));
         }
 
-        // typedefs
-        typedef board::Direction<Color, Board> Direction;
-
-        static void generate_dirs(BitBoard active_men, BitBoard not_occupied, Stack& moves)
+        static void generate(BitBoard active_men, BitBoard not_occupied, Stack& moves)
         {
-                generate_dir<Direction::left_up >(active_men, not_occupied, moves);
-                generate_dir<Direction::right_up>(active_men, not_occupied, moves);
+                generate<Direction::left_up >(active_men, not_occupied, moves);
+                generate<Direction::right_up>(active_men, not_occupied, moves);
         }
 
-        static int count_dirs(BitBoard active_men, BitBoard not_occupied)
+        static int count(BitBoard active_men, BitBoard not_occupied)
         {
                 return (
-                        count_dir<Direction::left_up >(active_men, not_occupied) +
-                        count_dir<Direction::right_up>(active_men, not_occupied)
+                        count<Direction::left_up >(active_men, not_occupied) +
+                        count<Direction::right_up>(active_men, not_occupied)
                 );
         }
 
-        static bool detect_dirs(BitBoard active_men, BitBoard not_occupied)
+        static bool detect(BitBoard active_men, BitBoard not_occupied)
         {
                 return (
-                        detect_dir<Direction::left_up >(active_men, not_occupied) ||
-                        detect_dir<Direction::right_up>(active_men, not_occupied)
+                        detect<Direction::left_up >(active_men, not_occupied) ||
+                        detect<Direction::right_up>(active_men, not_occupied)
                 );
         }
 
 private:
         // implementation
         template<int Index> 
-        static void generate_dir(BitBoard active_men, BitBoard not_occupied, Stack& moves)
+        static void generate(BitBoard active_men, BitBoard not_occupied, Stack& moves)
         {
                 BitBoard from_sq, dest_sq;
                 for (
@@ -89,7 +89,7 @@ private:
         }
 
         template<int Index> 
-        static int count_dir(BitBoard active_men, BitBoard not_occupied)
+        static int count(BitBoard active_men, BitBoard not_occupied)
         {
                 return bit::count(
                         Destinations<Moves, Board, Index, rules::range_1>()(active_men, not_occupied)
@@ -97,7 +97,7 @@ private:
         }
 
         template<int Index> 
-        static bool detect_dir(BitBoard active_men, BitBoard not_occupied)
+        static bool detect(BitBoard active_men, BitBoard not_occupied)
         {
                 return !bit::is_zero(
                         Destinations<Moves, Board, Index, rules::range_1>()(active_men, not_occupied)

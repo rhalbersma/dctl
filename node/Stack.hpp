@@ -6,8 +6,8 @@
 #include "Predicates.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
@@ -23,24 +23,24 @@ inline Stack::const_reference top(const Stack& stack)
         return stack.back();
 }
 
-// tag dispatching on duplicate capture checking
 template<typename Rules>
 bool non_unique_top(const Stack& stack)
 {
-        return non_unique_top(
+        // tag dispatching on duplicate capture checking
+        return non_unique_top_dispatch(
                 stack, 
                 Int2Type<rules::is_check_capture_uniqueness<Rules>::value>()
         );
 }
 
 // specialization for move generation without duplicate capture checking
-inline bool non_unique_top(const Stack&, Int2Type<false>)
+inline bool non_unique_top_dispatch(const Stack&, Int2Type<false>)
 {
         return false;
 }
 
 // specialization for move generation without duplicate capture checking
-inline bool non_unique_top(const Stack& stack, Int2Type<true>)
+inline bool non_unique_top_dispatch(const Stack& stack, Int2Type<true>)
 {
         return std::find(stack.begin(), stack.end(), top(stack)) != (stack.end() - 1);
 }

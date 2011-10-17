@@ -3,8 +3,8 @@
 #include "Move.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
@@ -93,11 +93,11 @@ bool is_pseudo_legal(const Position<Board>& p, const Move& m)
         );
 }
 
-// tag dispatching on capture removal
 template<typename Rules, typename Board>
 bool is_intersecting_capture(const Position<Board>& p, const Move& m)
 {
-        return is_intersecting_capture(
+        // tag dispatching on capture removal
+        return is_intersecting_capture_dispatch(
                 p, m, 
                 Int2Type<rules::capture_removal<Rules>::value>()
         );
@@ -105,7 +105,7 @@ bool is_intersecting_capture(const Position<Board>& p, const Move& m)
 
 // partial specialization for en-passant capture removal
 template<typename Board>
-bool is_intersecting_capture(
+bool is_intersecting_capture_dispatch(
         const Position<Board>& p, const Move& m, Int2Type<rules::remove_ep>
 )
 {
@@ -115,25 +115,25 @@ bool is_intersecting_capture(
 
 // partial specialization for apres-fini capture removal
 template<typename Board>
-bool is_intersecting_capture(
+bool is_intersecting_capture_dispatch(
         const Position<Board>& /* p */, const Move& /* m */, Int2Type<rules::remove_af>
 )
 {
         return false;
 }
 
-// tag dispatching on capture removal
 template<typename Rules>
 bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces)
 {
-        return is_intersecting_capture(
+        // tag dispatching on capture removal
+        return is_intersecting_capture_dispatch(
                 delta, captured_pieces, 
                 Int2Type<rules::capture_removal<Rules>::value>()
         );
 }
 
 // specialization for en-passant capture removal (Thai draughts)
-inline bool is_intersecting_capture(
+inline bool is_intersecting_capture_dispatch(
         BitBoard delta, BitBoard captured_pieces, Int2Type<rules::remove_ep>
 )
 {
@@ -143,25 +143,25 @@ inline bool is_intersecting_capture(
 }
 
 // specialization for apres-fini capture removal
-inline bool is_intersecting_capture(
+inline bool is_intersecting_capture_dispatch(
         BitBoard /* delta */, BitBoard /* captured_pieces */, Int2Type<rules::remove_af>
 )
 {
         return false; 
 }
 
-// tag dispatching on promotion condition
 template<typename Rules>
 bool is_intersecting_promotion(BitBoard promotion, BitBoard delta)
 {
-        return is_intersecting_promotion(
+        // tag dispatching on promotion condition
+        return is_intersecting_promotion_dispatch(
                 promotion, delta, 
                 Int2Type<rules::promotion_condition<Rules>::value>()
         );
 }
 
 // specialization for en-passant promotion (Russian draughts)
-inline bool is_intersecting_promotion(
+inline bool is_intersecting_promotion_dispatch(
         BitBoard promotion, BitBoard delta, Int2Type<rules::promote_ep>
 )
 {
@@ -171,7 +171,7 @@ inline bool is_intersecting_promotion(
 }
 
 // specialization for apres-fini promotion
-inline bool is_intersecting_promotion(
+inline bool is_intersecting_promotion_dispatch(
         BitBoard /* promotion */, BitBoard /* delta */, Int2Type<rules::promote_af>
 )
 {

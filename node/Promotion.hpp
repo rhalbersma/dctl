@@ -1,4 +1,5 @@
 #pragma once
+#include "Position.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -10,9 +11,9 @@ BitBoard promotion_sq(BitBoard dest_sq)
 }
 
 template<bool Color, typename Board>
-BitBoard promoting_men(BitBoard active_men)
+BitBoard promoting_men(const Position<Board>& p)
 {
-        return active_men & Board::PROMOTION[Color][1];
+        return p.men(Color) & Board::PROMOTION[Color][1];
 }
 
 }       // namespace dctl

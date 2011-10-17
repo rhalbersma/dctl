@@ -2,9 +2,9 @@
 #include "../node/Material.hpp"
 #include "../node/Position.hpp"
 #include "../node/Stack.hpp"
+#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/NonConstructible.hpp"
-#include "../utility/TemplateTricks.hpp"
 
 namespace dctl {
 
@@ -25,24 +25,23 @@ class Driver<Color, Material::pawn, Reverse, Rules, Board>
         private nonconstructible // enforce static semantics
 {
 public:
+        // typedefs
+        typedef Driver<!Color, Material::pawn, Moves, Rules, Board> PassivePawnMoves;
+
         static void generate(const Position<Board>& p, Stack& moves)
         {
-                PassivePawnMoves::generate_dirs(p.men(Color), not_occupied(p), moves);
+                PassivePawnMoves::generate(p.men(Color), not_occupied(p), moves);
         }
 
         static int count(const Position<Board>& p)
         {
-                return PassivePawnMoves::count_dirs(p.men(Color), not_occupied(p));
+                return PassivePawnMoves::count(p.men(Color), not_occupied(p));
         }
 
         static bool detect(const Position<Board>& p)
         {
-                return PassivePawnMoves::detect_dirs(p.men(Color), not_occupied(p));
+                return PassivePawnMoves::detect(p.men(Color), not_occupied(p));
         }
-
-private:
-        // typedefs
-        typedef Driver<!Color, Material::pawn, Moves, Rules, Board> PassivePawnMoves;
 };
 
 }       // namespace successor
