@@ -10,7 +10,7 @@
 namespace dctl {
 namespace walk {
 
-#if INTEGRATION_TEST == 1
+#if INTEGRATION_TEST == 0
 
 template<typename Rules, typename Board>
 struct Fixture
@@ -35,7 +35,7 @@ struct Fixture
 
 BOOST_AUTO_TEST_SUITE(TestPerft)
 
-
+/*
 // The original perft thread on the FMJD forum 
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 
@@ -70,7 +70,7 @@ BOOST_FIXTURE_TEST_CASE(InternationalWoldouby, FixtureInternational)
         for (auto i = 0; i < 15; ++i)
                 run(p, i + 1, leafs[i]);
 }
-
+*/
 /*
 typedef Fixture<variant::Frisian, board::Frisian> FixtureFrisian;
 
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(ChessVariants)
 {
         std::cout << setup::diagram<board::Checkers>()();
         auto i8 = Position<board::Checkers>::initial();
-       
+
         // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
         root_.clear_hash();
         root_.perft<variant::Brazilian>(i8, 13); 
@@ -131,14 +131,36 @@ BOOST_AUTO_TEST_CASE(ChessVariants)
         root_.perft<variant::Italian>(ITA_Ed_Gilbert_1, 16);
         root_.clear_hash();
         root_.perft<variant::Italian>(ITA_Ed_Gilbert_2, 12);
-        
-        auto t8 = Position<board::Thai>::initial();
-        root_.clear_hash();
-        root_.perft<variant::Thai>(t8, 11);      // Thai initial position with 2 rows of men
+
         root_.clear_hash();
         root_.perft<variant::Thai>(i8, 13);      // Usual initial position with 3 rows of men
 }
+*/
+typedef Fixture<variant::Thai, board::Thai> FixtureThaiNative;
 
+// The alternative game rules thread on the FMJD forum
+// http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+BOOST_FIXTURE_TEST_CASE(ThaiNative, FixtureThaiNative)
+{
+        std::cout << setup::diagram<board::Thai>()();
+        auto p = Position<board::Thai>::initial();
+        root_.clear_hash();
+        root_.perft(p, 11);      // Thai initial position with 2 rows of men
+}
+
+typedef Fixture<variant::Thai, board::Checkers> FixtureThaiCheckers;
+
+// The alternative game rules thread on the FMJD forum
+// http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+BOOST_FIXTURE_TEST_CASE(ThaiCheckers, FixtureThaiCheckers)
+{
+        std::cout << setup::diagram<board::Checkers>()();
+        auto p = Position<board::Checkers>::initial();
+        root_.clear_hash();
+        root_.perft(p, 13);      // Usual initial position with 3 rows of men
+}
+
+/*
 // The rectangular board thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=3014
 BOOST_AUTO_TEST_CASE(Rectangular)
