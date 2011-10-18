@@ -20,11 +20,11 @@ public:
         static int evaluate(const Position<Board>& p)
         {
                 int score = 0;
-                score += material(p);
+                score += material(p);/*
                 score += tempo(p);
                 score += center(p);
                 score += balance(p);
-                score += mobility(p);
+                score += mobility(p);*/
                 return score;
         }
         
