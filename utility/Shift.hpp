@@ -120,7 +120,7 @@ struct Destinations;
 namespace successor { struct Moves; }
 
 template<typename Board, int Index>
-struct Destinations<successor::Moves, Board, Index, rules::range_1>
+struct Destinations<successor::Moves, Board, Index, rules::scan_1>
 {
         template<typename T> 
         T operator()(T active_pieces, T not_occupied) const
@@ -130,7 +130,7 @@ struct Destinations<successor::Moves, Board, Index, rules::range_1>
 };
 
 template<typename Board, int Index>
-struct Destinations<successor::Moves, Board, Index, rules::range_N>
+struct Destinations<successor::Moves, Board, Index, rules::scan_N>
 {
         template<typename T> 
         T operator()(T active_pieces, T not_occupied) const

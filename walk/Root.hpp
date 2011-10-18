@@ -27,13 +27,7 @@ template
 >
 class Root
 {
-public:
-        Root()
-        :
-                TT(0)
-        {
-        }
-                
+public:               
         NodeCount perft(const Position<Board>& p, int depth)
         {
                 NodeCount leafs = 0;
@@ -247,9 +241,9 @@ private:
                         return TT_entry->leafs();
 
                 NodeCount leafs;
-                if (depth == 1)
+                if (depth == 1) {
                         leafs = Successor<successor::Legal, Rules>::count(p);
-                else {
+                } else {
                         Stack moves;
                         Successor<successor::Legal, Rules>::generate(p, moves);
                         leafs = 0;

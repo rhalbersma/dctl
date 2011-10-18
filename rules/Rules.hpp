@@ -9,7 +9,7 @@ namespace rules {
 //+----------------------------------------------------------------------------+
 
 // king range
-template<typename> struct is_long_king_range                    { enum { value = range_1 }; };
+template<typename> struct king_scan_range                       { enum { value = scan_1 }; };
 
 // restricted consecutive moves with the same king
 template<typename> struct is_restricted_same_king_moves         { enum { value = false }; };
@@ -33,7 +33,7 @@ template<typename> struct man_capture_directions                { enum { value =
 // man backwards capture
 template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != dirs_up }; };
 
-// relation between initial and intermediate capture directions
+// intermediate capture directions
 template<int> struct turn_directions;
 template<> struct turn_directions<dirs_up  >                    { enum { value = turn_up   }; };
 template<> struct turn_directions<dirs_down>                    { enum { value = turn_down }; };
@@ -41,17 +41,20 @@ template<> struct turn_directions<dirs_diag>                    { enum { value =
 template<> struct turn_directions<dirs_orth>                    { enum { value = turn_diag }; };
 template<> struct turn_directions<dirs_all >                    { enum { value = turn_all  }; };
 
-// king capture scan directions
+// king capture turn directions
 template<typename Rules> struct king_turn_directions            { enum { value = turn_directions<king_capture_directions<Rules>::value>::value }; };
 
-// man capture scan directions
+// man capture turn directions
 template<typename Rules> struct man_turn_directions             { enum { value = turn_directions<man_capture_directions<Rules>::value>::value  }; };
 
 // capture direction reversal
 template<typename> struct is_capture_direction_reversal         { enum { value = false }; };
 
-// king halt after final capture
-template<typename Rules> struct king_capture_halt               { enum { value = is_long_king_range<Rules>::value }; };
+// king landing range after intermediate captures
+template<typename Rules> struct king_capture_land               { enum { value = king_scan_range<Rules>::value }; };
+
+// king landing range after the final capture
+template<typename Rules> struct king_capture_halt               { enum { value = king_capture_land<Rules>::value }; };
 
 // capture removal: en-passant or apres-fini
 template<typename> struct capture_removal                       { enum { value = remove_af }; };

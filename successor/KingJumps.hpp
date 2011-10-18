@@ -218,39 +218,8 @@ private:
         template<int Index> 
         static bool scan_next(BitBoard jumper, State& capture, Stack& moves)
         {
-                // tag dispatching on king range
-                return scan_next_dispatch<Index>(
-                        jumper, capture, moves, 
-                        Int2Type<rules::is_long_king_range<Rules>::value>()
-                );
-        }
-        
-        // partial specialization for short ranged kings
-        template<int Index> 
-        static bool scan_next_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::range_1>
-        )
-        {
-                return (
-                        turn<Index>(jumper, capture, moves) |
-                        scan<Index>(jumper, capture, moves)
-                );
-        }
-        
-        // partial specialization for long ranged kings
-        template<int Index> 
-        static bool scan_next_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::range_N>
-        )
-        {
-                return scan_long<Index>(jumper, capture, moves);
-        }
-
-        template<int Index> 
-        static bool scan_long(BitBoard jumper, State& capture, Stack& moves)
-        {
                 // tag dispatching on king capture direction reversal
-                return scan_long_dispatch<Index>(
+                return scan_next_dispatch<Index>(
                         jumper, capture, moves, 
                         Int2Type<rules::is_capture_direction_reversal<Rules>::value>()
                 );
@@ -258,33 +227,58 @@ private:
         
         // partial specialization for kings that cannot reverse their capture direction
         template<int Index> 
-        static bool scan_long_dispatch(
+        static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<false>
         )
         {
-                return scan_forward<Index>(jumper, capture, moves);
+                return land<Index>(jumper, capture, moves);
         }
         
         // partial specialization for kings that can reverse their capture direction
         template<int Index> 
-        static bool scan_long_dispatch(
+        static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<true>
         )
         {
                 return (
-                        scan_reverse<Index>(jumper, capture, moves) |
-                        scan_forward<Index>(jumper, capture, moves)
+                        reverse<Index>(jumper, capture, moves) |
+                        scan_next_dispatch<Index>(jumper, capture, moves, Int2Type<false>())
                 );
         }
 
         template<int Index> 
-        static bool scan_reverse(BitBoard jumper, State& capture, Stack& moves)
+        static bool reverse(BitBoard jumper, State& capture, Stack& moves)
         {
                 return scan<rotate<Angle<Index>, Degrees::D180>::type::value>(jumper, capture, moves);
         }
-        
+
         template<int Index> 
-        static bool scan_forward(BitBoard jumper, State& capture, Stack& moves)
+        static bool land(BitBoard jumper, State& capture, Stack& moves)
+        {
+                // tag dispatching on king capture landing range after intermediate captures
+                return land_dispatch<Index>(
+                        jumper, capture, moves, 
+                        Int2Type<rules::king_capture_land<Rules>::value>()
+                );
+        }
+
+        // partial specialization for kings that can only land on the immediately adjacent square
+        template<int Index> 
+        static bool land_dispatch(
+                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::land_1>
+        )
+        {
+                return (
+                        turn<Index>(jumper, capture, moves) |
+                        scan<Index>(jumper, capture, moves)
+                );
+        }
+
+        // partial specialization for kings that can land on any square in line width the current direction
+        template<int Index> 
+        static bool land_dispatch(
+                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::land_N>
+        )
         {
                 BOOST_ASSERT(jumper & capture.path());
                 bool found_capture = false;
@@ -356,14 +350,14 @@ private:
                 // tag dispatching on king range
                 slide_dispatch<Index>(
                         jumper, path, 
-                        Int2Type<rules::is_long_king_range<Rules>::value>()
+                        Int2Type<rules::king_scan_range<Rules>::value>()
                 );
         }
         
         // partial specialization for short ranged kings
         template<int Index> 
         static void slide_dispatch(
-                BitBoard& jumper, BitBoard /* path */, Int2Type<rules::range_1>
+                BitBoard& jumper, BitBoard /* path */, Int2Type<rules::scan_1>
         )
         {
                 PushAssign<Board, Index>()(jumper);
@@ -372,9 +366,10 @@ private:
         // partial specialization for long ranged kings
         template<int Index> 
         static void slide_dispatch(
-                BitBoard& jumper, BitBoard path, Int2Type<rules::range_N>
+                BitBoard& jumper, BitBoard path, Int2Type<rules::scan_N>
         )
         {
+                BOOST_ASSERT(jumper & path);
                 do PushAssign<Board, Index>()(jumper); while (jumper & path);
         }
 
@@ -396,14 +391,14 @@ private:
                 // tag dispatching on king range
                 return detect_dispatch<Index>(
                         active_kings, opponent_pieces, not_occupied, 
-                        Int2Type<rules::is_long_king_range<Rules>::value>()
+                        Int2Type<rules::king_scan_range<Rules>::value>()
                 );
         }
         
         // partial specialization for short ranged kings
         template<int Index> 
         static bool detect_dispatch(
-                BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::range_1>
+                BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::scan_1>
         )
         {
                 return !bit::is_zero(
@@ -416,7 +411,7 @@ private:
         // partial specialization for long ranged kings
         template<int Index> 
         static bool detect_dispatch(
-                BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::range_N>
+                BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::scan_N>
         )
         {
                 return !bit::is_zero(

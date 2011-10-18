@@ -117,14 +117,14 @@ private:
                 // tag dispatching on king range
                 return generate_dispatch<Index>(
                         from_sq, not_occupied, moves, 
-                        Int2Type<rules::is_long_king_range<Rules>::value>()
+                        Int2Type<rules::king_scan_range<Rules>::value>()
                 );
         }
 
         // partial specialization for short ranged kings
         template<int Index> 
         static void generate_dispatch(
-                BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::range_1>
+                BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::scan_1>
         )
         {
                 if (auto dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
@@ -134,7 +134,7 @@ private:
         // partial specialization for long ranged kings
         template<int Index> 
         static void generate_dispatch(
-                BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::range_N>
+                BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::scan_N>
         )
         {
                 for (
@@ -151,7 +151,7 @@ private:
                 return bit::count(
                         Destinations<
                                 Moves, Board, Index, 
-                                rules::is_long_king_range<Rules>::value
+                                rules::king_scan_range<Rules>::value
                         >()(active_kings, not_occupied)
                 );
         }
@@ -162,7 +162,7 @@ private:
                 return !bit::is_zero(
                         Destinations<
                                 Moves, Board, Index, 
-                                rules::range_1
+                                rules::scan_1
                         >()(active_kings, not_occupied)
                 );
         }

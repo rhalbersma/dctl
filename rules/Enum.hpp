@@ -3,14 +3,14 @@
 namespace dctl {
 namespace rules {
 
-// initial king range
-enum { range_1, range_N };
+// king range
+enum { scan_1, scan_N };
 
-// intermediate king range
-enum { turn_1, turn_N };
+// king landing range after intermediate captures
+enum { land_1, land_N };
 
-// final king range
-enum { halt_1, halt_N, halt_1FK };
+// king landing range after the final capture
+enum { halt_1, halt_N, halt_1K };
 
 // initial capture directions
 enum { dirs_up, dirs_down, dirs_diag, dirs_orth, dirs_all };

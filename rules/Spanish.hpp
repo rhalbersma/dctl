@@ -8,8 +8,8 @@ namespace variant { struct Spanish; }
 namespace rules {
 
 // move mechanics
-template<typename> struct is_long_king_range;
-template<> struct is_long_king_range<variant::Spanish>          { enum { value = range_N }; };
+template<typename> struct king_scan_range;
+template<> struct king_scan_range<variant::Spanish>             { enum { value = scan_N }; };
 
 // capture precedence
 template<typename> struct is_majority_precedence;
