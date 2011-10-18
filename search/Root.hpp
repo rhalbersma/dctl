@@ -35,7 +35,6 @@ public:
 
         Root()
         :
-                TT(0),
                 interrupted_(false)
         {
         }

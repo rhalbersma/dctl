@@ -8,8 +8,8 @@ namespace variant { struct Frisian; }
 namespace rules {
 
 // move mechanics
-template<typename> struct is_long_king_range;
-template<> struct is_long_king_range<variant::Frisian>                  { enum { value = range_N  }; };
+template<typename> struct king_scan_range;
+template<> struct king_scan_range<variant::Frisian>                     { enum { value = scan_N  }; };
 
 template<typename> struct is_restricted_same_king_moves;
 template<> struct is_restricted_same_king_moves<variant::Frisian>       { enum { value = true     }; };

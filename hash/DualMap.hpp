@@ -21,6 +21,11 @@ class DualMap
 {
 public:
         // constructors
+        DualMap()
+        {
+                resize(1);
+        }
+
         explicit DualMap(std::size_t log2_n)
         {
                 resize(log2_n);

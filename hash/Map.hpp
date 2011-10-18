@@ -29,7 +29,11 @@ class Map
 {
 public:
         // constructors
-        Map() { /* no-op */ }
+        Map() 
+        {
+                resize(0);
+        }
+
         explicit Map(std::size_t log2_n)
         {
                 resize(log2_n);

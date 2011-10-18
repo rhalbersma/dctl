@@ -32,7 +32,7 @@ public:
 
         bool invariant() const
         {
-                return initial_targets == remaining_targets && !from_sq
+                return initial_targets_ == remaining_targets_ && !from_sq_;
         }
 
         // views
@@ -107,6 +107,7 @@ public:
         {
                 not_occupied_ ^= jump_sq;
                 from_sq_ = BitBoard(0);
+                BOOST_ASSERT(invariant());
         }
 
         void make(BitBoard target_sq)
@@ -125,7 +126,6 @@ public:
                         target_sq, 
                         Int2Type<rules::capture_removal<Rules>::value>()
                 );
-                BOOST_ASSERT(invariant());
         }
 
         template<bool Color> 
@@ -183,7 +183,7 @@ private:
         void make_dispatch(BitBoard target_sq, Int2Type<rules::remove_ep>)
         {
                 not_occupied_ ^= target_sq;
-                make(target_sq, Int2Type<rules::remove_af>());
+                make_dispatch(target_sq, Int2Type<rules::remove_af>());
         }
 
         // specialization for apres-fini capture removal
@@ -196,7 +196,7 @@ private:
         // specialization for en-passant capture removal
         void undo_dispatch(BitBoard target_sq, Int2Type<rules::remove_ep>)
         {
-                undo(target_sq, Int2Type<rules::remove_af>());
+                undo_dispatch(target_sq, Int2Type<rules::remove_af>());
                 not_occupied_ ^= target_sq;
         }
 
@@ -233,7 +233,7 @@ private:
         // partial specialization for kings that halt immediately if the final capture is a king, 
         // and slide through otherwise
         template<bool Color, int Index> 
-        void add_king_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_1FK>) const
+        void add_king_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_1K>) const
         {
                 if (king_targets_ & Pull<Board, Index>()(dest_sq))
                         add_king_capture_dispatch<Color, Index>(dest_sq, move_stack, Int2Type<rules::halt_1>());
