@@ -10,14 +10,14 @@
 namespace dctl {
 namespace search {
 
-#if INTEGRATION_TEST == 1
+#if INTEGRATION_TEST == 0
 
 template<typename Rules, typename Board>
 struct Fixture
 {
         Fixture() 
         {
-                root_.resize_hash(24);
+                root_.resize_hash(27);
         }
 
         ~Fixture() 
@@ -40,6 +40,19 @@ struct Fixture
 
 BOOST_AUTO_TEST_SUITE(TestRoot)
 
+typedef Fixture<variant::International, board::Mini> FixtureMini;
+BOOST_FIXTURE_TEST_CASE(MiniInitial, FixtureMini)
+{
+        std::cout << setup::diagram<board::Mini>()();
+        FEN_depth test_case("W:B1,2,3,4,5,6:W13,14,15,16,17,18", 59);
+
+        run(test_case);
+        for(;;);
+}
+/*
+
+typedef Fixture<variant::International, board::International> FixtureInternational;
+        
 typedef Fixture<variant::Frisian, board::Frisian> FixtureFrisian;
 BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
 {
@@ -48,8 +61,6 @@ BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
         run(test_case);
 }
 
-typedef Fixture<variant::International, board::International> FixtureInternational;
-        
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 BOOST_FIXTURE_TEST_CASE(International11, FixtureInternational)
 {
@@ -210,7 +221,7 @@ BOOST_FIXTURE_TEST_CASE(Killer31, FixtureKiller)
         for (auto i = 0; i < 16; ++i)
                 run(test_case[i]);
 }
-
+*/
 BOOST_AUTO_TEST_SUITE_END()
 
 #endif
