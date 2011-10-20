@@ -9,7 +9,7 @@ namespace rules {
 
 // move mechanics
 template<typename> struct king_scan_range;
-template<> struct king_scan_range<variant::Frisian>                     { enum { value = scan_N  }; };
+template<> struct king_scan_range<variant::Frisian>                     { enum { value = scan_N   }; };
 
 template<typename> struct is_restricted_same_king_moves;
 template<> struct is_restricted_same_king_moves<variant::Frisian>       { enum { value = true     }; };

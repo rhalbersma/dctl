@@ -5,7 +5,7 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Transposition.hpp"
 #include "Score.hpp"
-#include "Parameters.hpp"
+#include "Variation.hpp"
 #include "../evaluate/Evaluate.hpp"
 #include "../node/Position.hpp"
 #include "../node/Stack.hpp"
@@ -66,10 +66,10 @@ public:
 
 private:
         int iterative_deepening(const Position<Board>&, int);        
-        int negamax(const Position<Board>&, int, int, Parameters&);      
-        int alpha_beta(const Position<Board>&, int, int, int, int, Parameters&);
-        template<typename int> int pvs(const Position<Board>&, int, int, int, int, Parameters&);
-        template<typename int> int quiescence(const Position<Board>&, int, int, int, int, Parameters&);
+        int negamax(const Position<Board>&, int, int, Variation&);      
+        int alpha_beta(const Position<Board>&, int, int, int, int, Variation&);
+        template<typename int> int pvs(const Position<Board>&, int, int, int, int, Variation&);
+        template<typename int> int quiescence(const Position<Board>&, int, int, int, int, Variation&);
 
         void announce(const Position<Board>& p, int depth)
         {
@@ -107,49 +107,55 @@ private:
                 print_pv(p, pv);
         }
 
-        void insert_pv(const Position<Board>& p, const Sequence& pv, int value)
+        void insert_pv(const Position<Board>& p, const Sequence& pv, int value, int ply = 0)
         {
-                auto q = p;
-
-                for (auto i = 0; i < static_cast<int>(pv.size()); ++i) {
-                        Stack move_stack;
-                        Successor<successor::Legal, Rules>::generate(q, move_stack);
-
-                        TT.insert(q, Transposition(value, Transposition::exact_value, pv.size() - i, pv[i]));
-                        value = -stretch(value);
-
-                        q.template make<Rules>(move_stack[pv[i]]);
+                const auto depth = static_cast<int>(pv.size()) - ply;
+                if (depth == 0) {
+                        BOOST_ASSERT(
+                                (value == Evaluate<Rules>::evaluate(p)) ||
+                                (value == draw_value() && is_draw<Rules>(p)) ||
+                                (value == loss_value(0) && !Successor<successor::Legal, Rules>::detect(p))
+                                // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
+                        );
+                        TT.insert(p, Transposition(value, Transposition::exact_value, depth, Transposition::no_move()));
+                        return;
                 }
-                TT.insert(q, Transposition(value, Transposition::exact_value, 0, Transposition::no_move()));
-        
-                BOOST_ASSERT(
-                        (value == Evaluate<Rules>::evaluate(q)) || 
-                        (value == loss_value(0) && !Successor<successor::Legal, Rules>::detect(q))
-                        // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
-                );
+
+                Stack moves;
+                Successor<successor::Legal, Rules>::generate(p, moves);
+                const auto index = pv[ply] % moves.size();
+                const auto best_move = moves[index];
+                TT.insert(p, Transposition(value, Transposition::exact_value, depth, index));
+
+                auto q = p;
+                q.attach(p);
+                q.template make<Rules>(best_move);
+                insert_pv(q, pv, -stretch(value), ply + 1);
         }
         
-        void print_pv(const Position<Board>& p, const Sequence& pv)
+        void print_pv(const Position<Board>& p, const Sequence& pv, int ply = 0)
         {
-                auto q = p;
-
-                for (auto i = 0; i < static_cast<int>(pv.size()); ++i) {
-                        Stack moves;
-                        Successor<successor::Legal, Rules>::generate(q, moves);
-
-                        if (!(i % 2))                        
-                                std::cout << std::setw(2) << std::right << ((i / 2) + 1) << ". ";
-                        std::cout << notation::write<Rules>()(q, moves[pv[i]]);
-                        q.template make<Rules>(moves[pv[i]]);
-                        //if (q.same_king_moves(!q.to_move()))
-                                //std::cout << "^" << q.same_king_moves(!q.to_move());
-                        if (i % 10 == 9)
-                                std::cout << "\n";
-                        else
-                                std::cout << " ";
-
+                const auto depth = static_cast<int>(pv.size()) - ply;
+                if (depth == 0) {
+                        std::cout << '\n';
+                        std::cout << setup::diagram<pdn::protocol>()(p);
+                        return;
                 }
-                std::cout << "\n\n";
+
+                Stack moves;
+                Successor<successor::Legal, Rules>::generate(p, moves);
+                const auto best_move = moves[pv[ply] % moves.size()];
+
+                if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
+                std::cout << notation::write<Rules>()(p, best_move);
+                std::cout << ((ply % 10 == 9)? '\n' : ' ');
+
+                auto q = p;
+                q.attach(p);
+                q.template make<Rules>(best_move);
+                //if (q.same_king_moves(!q.to_move()))
+                        //std::cout << "^" << q.same_king_moves(!q.to_move());
+                print_pv(q, pv, ply + 1);
         }
 
         bool is_pv(int node)

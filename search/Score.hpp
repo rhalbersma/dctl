@@ -7,44 +7,55 @@
 namespace dctl {
 namespace search {
 
-enum {
-        INFINITY = SHRT_MAX,
-        LOSS_0 = -(INFINITY - 1),
-        LOSS_THRESHOLD = LOSS_0 + MAX_MATE_MOVES / 2,
-        WIN_1 = -LOSS_0,
-        WIN_THRESHOLD = -LOSS_THRESHOLD,
-        DRAW = 0
-};
-
 // views
 inline int infinity()
 {
-        return INFINITY;
+        return SHRT_MAX;
+}
+
+inline int loss_min()
+{
+        return -(infinity() - 1);
+}
+
+inline int loss_max()
+{
+        return loss_min() + MAX_MATE_MOVES;
+}
+
+inline int win_min()
+{
+        return -loss_min();
+}
+
+inline int win_max()
+{
+        return -loss_max();
 }
 
 inline int loss_value(int ply)
 {
-        return LOSS_0 + ply / 2;
+        return loss_min() + ply;
 }
 
 inline int win_value(int ply)
 {
-        return WIN_1 - ply / 2;
+        return win_min() - ply;
 }
 
 inline int loss_ply(int value)
 {
-        return 2 * (value - LOSS_0);
+        return value - loss_min();
 }
 
 inline int win_ply(int value)
 {
-        return 2 * (WIN_1 - value) + 1;
+        return win_min() - value;
 }
 
-inline int draw()
+inline int draw_value()
 {
-        return DRAW;
+        return 0;
 }
 
 // predicates
@@ -60,12 +71,12 @@ inline bool is_infinite(int value)
 
 inline bool is_loss(int value)
 {
-        return value >= LOSS_0 && value < LOSS_THRESHOLD;
+        return value >= loss_min() && value <= loss_max();
 }
 
 inline bool is_win(int value)
 {
-        return value > WIN_THRESHOLD && value <= WIN_1;
+        return value >= win_max() && value <= win_min();
 }
 
 inline bool is_mate(int value)
@@ -76,12 +87,12 @@ inline bool is_mate(int value)
 // modifiers
 inline int stretch(int value)
 {
-        return value - is_loss(value);
+        return value - is_loss(value) + is_win(value);
 }
 
 inline int squeeze(int value)
 {
-        return value - is_win(value);
+        return value + is_loss(value) - is_win(value);
 }
 
 inline std::string print(int value)

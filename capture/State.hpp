@@ -278,7 +278,7 @@ private:
         void add_king_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::promote_ep>) const
         {
                 if (!is_promotion())
-                        add_king_capture<Color>(dest_sq, move_stack, Int2Type<rules::promote_af>());
+                        add_king_capture_dispatch<Color>(dest_sq, move_stack, Int2Type<rules::promote_af>());
                 else
                         push<Color, Rules>(
                                 from_sq_ ^ dest_sq, 

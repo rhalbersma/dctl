@@ -283,7 +283,7 @@ private:
         )
         {
                 if (!capture.is_promotion_sq<Color>(jumper))
-                        return scan_next<Index>(jumper, capture, moves, Int2Type<rules::promote_af>());
+                        return scan_next_dispatch<Index>(jumper, capture, moves, Int2Type<rules::promote_af>());
                 else {
                         capture.toggle_promotion();
                         const bool found_next = KingJumps::promote_en_passant<Index>(jumper, capture, moves);
