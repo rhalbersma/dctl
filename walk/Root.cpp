@@ -10,7 +10,7 @@
 namespace dctl {
 namespace walk {
 
-#if INTEGRATION_TEST == 0
+#if INTEGRATION_TEST == 1
 
 template<typename Rules, typename Board>
 struct Fixture
@@ -35,7 +35,6 @@ struct Fixture
 
 BOOST_AUTO_TEST_SUITE(TestPerft)
 
-/*
 // The original perft thread on the FMJD forum 
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 
@@ -70,7 +69,7 @@ BOOST_FIXTURE_TEST_CASE(InternationalWoldouby, FixtureInternational)
         for (auto i = 0; i < 15; ++i)
                 run(p, i + 1, leafs[i]);
 }
-*/
+
 /*
 typedef Fixture<variant::Frisian, board::Frisian> FixtureFrisian;
 
