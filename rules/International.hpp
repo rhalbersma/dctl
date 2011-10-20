@@ -8,7 +8,7 @@ namespace rules {
 
 // move mechanics
 template<typename> struct king_scan_range;
-template<> struct king_scan_range<variant::International>               { enum { value = scan_N   }; };
+template<> struct king_scan_range<variant::International>               { enum { value = scan_N    }; };
 
 // capture mechanics
 template<typename> struct man_capture_directions;

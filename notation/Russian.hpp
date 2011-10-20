@@ -8,7 +8,7 @@ namespace notation {
 
 struct algebraic;
 template<typename> struct Format;
-template<> struct Format<variant::Russian>      { typedef algebraic type; };
+//template<> struct Format<variant::Russian>      { typedef algebraic type; };
 
 template<char, char> struct Token;
 template<typename> struct Separator;

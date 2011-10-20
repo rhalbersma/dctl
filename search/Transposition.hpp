@@ -151,6 +151,15 @@ public:
                 return MOVE_MASK;
         }
 
+        static Bound bound_type(int value, int alpha, int beta)
+        {
+                return (
+                        value <= alpha ? Transposition::upper_bound : 
+                        value >= beta  ? Transposition::lower_bound : 
+                                         Transposition::exact_value
+                );
+        }
+
 private:
         // implementation
         bool is_finite() const

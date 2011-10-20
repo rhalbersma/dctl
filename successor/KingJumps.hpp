@@ -369,7 +369,6 @@ private:
                 BitBoard& jumper, BitBoard path, Int2Type<rules::scan_N>
         )
         {
-                BOOST_ASSERT(jumper & path);
                 do PushAssign<Board, Index>()(jumper); while (jumper & path);
         }
 
