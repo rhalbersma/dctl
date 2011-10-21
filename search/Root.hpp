@@ -114,10 +114,10 @@ private:
                         BOOST_ASSERT(
                                 (value == Evaluate<Rules>::evaluate(p)) ||
                                 (value == draw_value() && is_draw<Rules>(p)) ||
-                                (value == loss_value(0) && !Successor<successor::Legal, Rules>::detect(p))
+                                (value == loss_min() && !Successor<successor::Legal, Rules>::detect(p))
                                 // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
                         );
-                        TT.insert(p, Transposition(value, Transposition::exact_value, depth, Transposition::no_move()));
+                        TT.insert(p, Transposition(value, Bound::exact, depth, Transposition::no_move()));
                         return;
                 }
 
@@ -125,7 +125,7 @@ private:
                 Successor<successor::Legal, Rules>::generate(p, moves);
                 const auto index = pv[ply] % moves.size();
                 const auto best_move = moves[index];
-                TT.insert(p, Transposition(value, Transposition::exact_value, depth, index));
+                TT.insert(p, Transposition(value, Bound::exact, depth, index));
 
                 auto q = p;
                 q.attach(p);

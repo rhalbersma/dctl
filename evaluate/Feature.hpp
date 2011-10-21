@@ -17,10 +17,10 @@ template
 class Feature
 {
 public:
-        static int evaluate(const Position<Board>& /*p*/)
+        static int evaluate(const Position<Board>& p)
         {
-                int score = 0;/*
-                score += material(p);
+                int score = 0;
+                score += material(p);/*
                 score += tempo(p);
                 score += center(p);
                 score += balance(p);
