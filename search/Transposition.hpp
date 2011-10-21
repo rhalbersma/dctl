@@ -1,8 +1,7 @@
 #pragma once
-#include <sstream>                      // std::stringstream
-#include <string>                       // std::string
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Bound.hpp"
 #include "Score.hpp"
 #include "../utility/IntegerTypes.hpp"
 
@@ -12,9 +11,6 @@ namespace search {
 class Transposition
 {
 public:
-        // typedefs
-        enum Bound { lower_bound = 1, upper_bound = 2, exact_value = 3 };
-
         // constructors
 	Transposition()
         :
@@ -23,16 +19,14 @@ public:
         {
         }
 
-	Transposition(int v, Bound t, int d, int m)
+	Transposition(int v, int t, int d, int m)
         :
                 value_(static_cast<int16_t>(v)),
                 rest_(0)
         {
-                rest_ ^= (t & BOUND_MASK) << BOUND_SHIFT;
+                rest_ ^= (t &  TYPE_MASK) <<  TYPE_SHIFT;
                 rest_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
                 rest_ ^= (m &  MOVE_MASK) <<  MOVE_SHIFT;
-
-                BOOST_ASSERT(invariant());
         }
 
 	// value
@@ -48,9 +42,9 @@ public:
         }           
 	
         // upper or lower bound, or exact
-        Bound bound() const
+        int type() const
         {
-                return static_cast<Bound>((rest_ & (BOUND_MASK << BOUND_SHIFT)) >> BOUND_SHIFT);
+                return static_cast<int>((rest_ & (TYPE_MASK << TYPE_SHIFT)) >> TYPE_SHIFT);
         }                   
 	
         // remaining depth to search
@@ -95,40 +89,7 @@ public:
                 return move() != no_move();
         }                  
 
-        // output
-        std::string print_value() const
-        {
-                std::stringstream sstr(print(value()));
-                return sstr.str();
-        }
-        
-        std::string print_bound() const
-        {
-                std::stringstream sstr;
-                switch(bound()) {
-                case lower_bound:
-                        sstr << ">=";
-                        break;
-                case upper_bound:
-                        sstr << "<=";
-                        break;
-                case exact_value:
-                        sstr << "==";
-                        break;
-                default:
-                        BOOST_ASSERT(false);
-                        break;
-                }
-                return sstr.str();
-        }
-        
-        std::string print_depth() const
-        {
-                std::stringstream sstr;
-                sstr << depth();
-                return sstr.str();
-        }
-        
+        // output      
         std::string print_move() const
         {
                 std::stringstream sstr;
@@ -151,62 +112,42 @@ public:
                 return MOVE_MASK;
         }
 
-        static Bound bound_type(int value, int alpha, int beta)
-        {
-                return (
-                        value <= alpha ? Transposition::upper_bound : 
-                        value >= beta  ? Transposition::lower_bound : 
-                                         Transposition::exact_value
-                );
-        }
-
 private:
         // implementation
-        bool is_finite() const
-        {
-                // delegate to is_finite() from the enclosing namespace scope "search"
-                return search::is_finite(value());
-        }
-
         bool has_lower_bound() const
         {
-                return (bound() & lower_bound) != 0;
+                return (type() & Bound::lower) != 0;
         }
         
         bool has_upper_bound() const
         {
-                return (bound() & upper_bound) != 0;
+                return (type() & Bound::upper) != 0;
         }
         
         bool is_lower_bound() const
         {
-                return bound() == lower_bound;
+                return type() == Bound::lower;
         }
         
         bool is_upper_bound() const
         {
-                return bound() == upper_bound;
+                return type() == Bound::upper;
         }
         
         bool is_exact_value() const
         {
-                return bound() == exact_value;
+                return type() == Bound::exact;
         }
         
-        bool invariant() const
-        {
-                return is_finite();             
-        }
-
-        BOOST_STATIC_CONSTANT(auto, BOUND_BITS = 2);
+        BOOST_STATIC_CONSTANT(auto, TYPE_BITS = 2);
         BOOST_STATIC_CONSTANT(auto, DEPTH_BITS = 7);
         BOOST_STATIC_CONSTANT(auto, MOVE_BITS = 7);
 
-        BOOST_STATIC_CONSTANT(auto, BOUND_SHIFT = 0);
-        BOOST_STATIC_CONSTANT(auto, DEPTH_SHIFT = BOUND_SHIFT + BOUND_BITS);
+        BOOST_STATIC_CONSTANT(auto, TYPE_SHIFT = 0);
+        BOOST_STATIC_CONSTANT(auto, DEPTH_SHIFT = TYPE_SHIFT + TYPE_BITS);
         BOOST_STATIC_CONSTANT(auto, MOVE_SHIFT = DEPTH_SHIFT + DEPTH_BITS);
 
-        BOOST_STATIC_CONSTANT(auto, BOUND_MASK = ((1 << BOUND_BITS) - 1));
+        BOOST_STATIC_CONSTANT(auto, TYPE_MASK = ((1 << TYPE_BITS) - 1));
         BOOST_STATIC_CONSTANT(auto, DEPTH_MASK = ((1 << DEPTH_BITS) - 1));
         BOOST_STATIC_CONSTANT(auto, MOVE_MASK = ((1 << MOVE_BITS) - 1));
 

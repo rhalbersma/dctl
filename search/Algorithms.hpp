@@ -49,16 +49,16 @@ int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int al
         // check for a legal draw
         if (is_draw<Rules>(p)) {
                 const auto value = draw_value();
-                const auto bound = Transposition::bound_type(value, alpha, beta);
-                TT.insert(p, Transposition(value, bound, depth, Transposition::no_move()));
-                if (bound == Transposition::exact_value)
+                const auto type = Bound::type(value, alpha, beta);
+                TT.insert(p, Transposition(value, type, depth, Transposition::no_move()));
+                if (type == Bound::exact)
                         refutation.clear();
                 return value;
         }
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0)
-                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate<Rules>::evaluate(p);
+                return !Successor<successor::Legal, Rules>::detect(p)? loss_min() : Evaluate<Rules>::evaluate(p);
 
         // mate distance pruning
         if (alpha >= win_value(1))
@@ -83,13 +83,13 @@ int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int al
 
         // without a valid move, the position is an immediate loss
         if (moves.empty()) {
-                const auto value = loss_value(0);
+                const auto value = loss_min();
+                const auto type = Bound::type(value, alpha, beta);
+                TT.insert(p, Transposition(value, type, depth, Transposition::no_move()));
 
                 // we can only have an upper bound or an exact value at this point
-                BOOST_ASSERT(value < beta);
-                const auto bound = (value <= alpha)? Transposition::upper_bound : Transposition::exact_value;
+                BOOST_ASSERT(type != Bound::lower);
 
-                TT.insert(p, Transposition(value, bound, depth, Transposition::no_move()));
                 return value;
         }
         
@@ -158,8 +158,8 @@ int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int al
         BOOST_ASSERT(best_move != Transposition::no_move());
 
         // determine the bound type of the value
-        const auto bound = Transposition::bound_type(best_value, original_alpha, beta);
-        TT.insert(p, Transposition(best_value, bound, depth, best_move));
+        const auto type = Bound::type(best_value, original_alpha, beta);
+        TT.insert(p, Transposition(best_value, type, depth, best_move));
         return best_value;
 }
 
