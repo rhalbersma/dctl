@@ -1,4 +1,5 @@
-#include <utility>
+#include <string>                       // std::string
+#include <utility>                      // std::pair
 #include <boost/test/unit_test.hpp> 
 #include "../test_config.hpp"
 #include "../../src/search/Root.hpp"
@@ -12,7 +13,7 @@ namespace search {
 
 #if INTEGRATION_TEST == 0
 
-template<typename Rules, typename Board>
+template<typename Rules, typename Board, typename Objective = Regular>
 struct Fixture
 {
         Fixture() 
@@ -35,12 +36,13 @@ struct Fixture
                 BOOST_CHECK_EQUAL(win_value(test_case.second), value);
         };
 
-        Root<Rules, Board> root_;
+        Root<Rules, Board, Objective> root_;
 };
 
 BOOST_AUTO_TEST_SUITE(TestRoot)
 
-typedef Fixture<variant::International, board::Mini> FixtureMini;
+/*
+typedef Fixture<variant::Russian, board::Mini> FixtureMini;
 BOOST_FIXTURE_TEST_CASE(MiniInitial, FixtureMini)
 {
         std::cout << setup::diagram<board::Mini>()();
@@ -49,9 +51,6 @@ BOOST_FIXTURE_TEST_CASE(MiniInitial, FixtureMini)
         run(test_case);
         for(;;);
 }
-/*
-
-typedef Fixture<variant::International, board::International> FixtureInternational;
         
 typedef Fixture<variant::Frisian, board::Frisian> FixtureFrisian;
 BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
@@ -60,6 +59,9 @@ BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
 
         run(test_case);
 }
+*/
+
+typedef Fixture<variant::International, board::International> FixtureInternational;
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 BOOST_FIXTURE_TEST_CASE(International11, FixtureInternational)
@@ -221,7 +223,7 @@ BOOST_FIXTURE_TEST_CASE(Killer31, FixtureKiller)
         for (auto i = 0; i < 16; ++i)
                 run(test_case[i]);
 }
-*/
+
 BOOST_AUTO_TEST_SUITE_END()
 
 #endif
