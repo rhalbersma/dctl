@@ -3,8 +3,10 @@
 #include <iostream>
 #include <iomanip>
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include "Transposition.hpp"
+#include "Bound.hpp"
+#include "Objective.hpp"
 #include "Score.hpp"
+#include "Transposition.hpp"
 #include "Variation.hpp"
 #include "../evaluate/Evaluate.hpp"
 #include "../node/Position.hpp"
@@ -25,7 +27,8 @@ namespace search {
 template
 <
         typename Rules,
-        typename Board
+        typename Board,
+        typename Objective
 >
 class Root
 {

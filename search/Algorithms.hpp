@@ -12,8 +12,8 @@ namespace dctl {
 namespace search {
 
 // iterative deepening with no move ordering at the root
-template<typename Rules, typename Board>
-int Root<Rules, Board>::iterative_deepening(const Position<Board>& p, int depth)
+template<typename Rules, typename Board, typename Objective>
+int Root<Rules, Board, Objective>::iterative_deepening(const Position<Board>& p, int depth)
 {
         auto score = -infinity();                
         int alpha, beta;
@@ -35,20 +35,35 @@ int Root<Rules, Board>::iterative_deepening(const Position<Board>& p, int depth)
 }
 
 // principal variation search (PVS)
-template<typename Rules, typename Board> template<int NodeType>
-int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int alpha, int beta, Variation& refutation)
+template<typename Rules, typename Board, typename Objective> template<int NodeType>
+int Root<Rules, Board, Objective>::pvs(
+        const Position<Board>& p, int ply, int depth, int alpha, int beta, Variation& refutation
+)
 {
-        BOOST_ASSERT(alpha >= -infinity());
-        BOOST_ASSERT(beta  <=  infinity());
-
+        statistics_.update(ply);
+        
         if (is_interrupted())
                 return alpha;
 
-        statistics_.update(ply);
-        
+        // -INF <= alpha < beta <= +INF
+        BOOST_ASSERT(alpha >= -infinity());
+        BOOST_ASSERT(alpha <   beta);
+        BOOST_ASSERT(beta  <=  infinity());
+
+        // mate distance pruning
+        if (alpha >= MinimalWin<Objective>()())
+                return alpha;
+        if (beta <= MinimalLoss<Objective>()())
+                return beta;
+
+        BOOST_ASSERT(
+                ( is_pv(NodeType) && alpha <  beta - 1) ||
+                (!is_pv(NodeType) && alpha == beta - 1)
+        );
+
         // check for a legal draw
         if (is_draw<Rules>(p)) {
-                const auto value = draw_value();
+                const auto value = draw_value();        // TODO treat first/second player loss
                 const auto type = Bound::type(value, alpha, beta);
                 TT.insert(p, Transposition(value, type, depth, Transposition::no_move()));
                 if (type == Bound::exact)
@@ -56,20 +71,9 @@ int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int al
                 return value;
         }
 
-        // return evaluation in leaf nodes with valid moves
+        // return evaluation in leaf nodes with valid moves (TODO treat regular/suicide wins
         if (depth <= 0)
-                return !Successor<successor::Legal, Rules>::detect(p)? loss_min() : Evaluate<Rules>::evaluate(p);
-
-        // mate distance pruning
-        if (alpha >= win_value(1))
-                return alpha;
-        if (beta <= loss_value(0))
-                return beta;
-
-        BOOST_ASSERT(
-                ( is_pv(NodeType) && alpha <  beta - 1) ||
-                (!is_pv(NodeType) && alpha == beta - 1)
-        );
+                return !Successor<successor::Legal, Rules>::detect(p)? MinimalLoss<Objective>()() : Evaluate<Rules>::evaluate(p);
 
         // TT cut-off for exact win/loss scores or for deep enough heuristic scores
         auto TT_entry = TT.find(p);
@@ -83,7 +87,7 @@ int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int al
 
         // without a valid move, the position is an immediate loss
         if (moves.empty()) {
-                const auto value = loss_min();
+                const auto value = MinimalLoss<Objective>()();
                 const auto type = Bound::type(value, alpha, beta);
                 TT.insert(p, Transposition(value, type, depth, Transposition::no_move()));
 
@@ -92,7 +96,11 @@ int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int al
 
                 return value;
         }
-        
+                
+        std::vector<int> move_order;
+        move_order.reserve(moves.size());                               // reserve enough room for all indices
+        iota_n(std::back_inserter(move_order), moves.size(), 0);        // generate indices [0, moves.size() - 1]
+
         // internal iterative deepening (IID)
         if (!(TT_entry && TT_entry->has_move())) {
                 const auto IID_depth = is_pv(NodeType)? depth - 2 : depth / 2;
@@ -102,12 +110,8 @@ int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int al
                         BOOST_ASSERT(TT_entry);
                 }
         }
-        
-        // move ordering
-        std::vector<int> move_order;
-        move_order.reserve(moves.size());                               // reserve enough room for all indices
-        iota_n(std::back_inserter(move_order), moves.size(), 0);        // generate indices [0, moves.size() - 1]
 
+        // move ordering
         if (TT_entry && TT_entry->has_move()) {
                 const auto TT_move = TT_entry->move() % moves.size();
                 std::swap(move_order[0], move_order[TT_move]);
@@ -157,7 +161,6 @@ int Root<Rules, Board>::pvs(const Position<Board>& p, int ply, int depth, int al
         BOOST_ASSERT(is_finite(best_value));
         BOOST_ASSERT(best_move != Transposition::no_move());
 
-        // determine the bound type of the value
         const auto type = Bound::type(best_value, original_alpha, beta);
         TT.insert(p, Transposition(best_value, type, depth, best_move));
         return best_value;
