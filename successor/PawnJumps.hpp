@@ -276,22 +276,6 @@ private:
                 );
         }
         
-        // partial specialization for men that promote en-passant
-        template<int Index>
-        static bool scan_next_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::promote_ep>
-        )
-        {
-                if (!capture.is_promotion_sq<Color>(jumper))
-                        return scan_next_dispatch<Index>(jumper, capture, moves, Int2Type<rules::promote_af>());
-                else {
-                        capture.toggle_promotion();
-                        const bool found_next = KingJumps::promote_en_passant<Index>(jumper, capture, moves);
-                        capture.toggle_promotion();
-                        return found_next;
-                }
-        }
-
         // partial specialization for men that promote apres-fini
         template<int Index>
         static bool scan_next_dispatch(
@@ -304,6 +288,22 @@ private:
                 );
         }
         
+        // partial specialization for men that promote en-passant
+        template<int Index>
+        static bool scan_next_dispatch(
+                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::promote_ep>
+        )
+        {
+                if (!capture.is_promotion_sq<Color>(jumper))
+                        return scan_next_dispatch<Index>(jumper, capture, moves, Int2Type<rules::promote_af>());
+                else {
+                        capture.toggle_promotion();
+                        const auto found_next = KingJumps::promote_en_passant<Index>(jumper, capture, moves);
+                        capture.toggle_promotion();
+                        return found_next;
+                }
+        }
+
         template<int Index>
         static bool turn(BitBoard jumper, State& capture, Stack& moves)
         {

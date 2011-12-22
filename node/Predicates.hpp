@@ -103,6 +103,15 @@ bool is_intersecting_capture(const Position<Board>& p, const Move& m)
         );
 }
 
+// partial specialization for apres-fini capture removal
+template<typename Board>
+bool is_intersecting_capture_dispatch(
+        const Position<Board>& /* p */, const Move& /* m */, Int2Type<rules::remove_af>
+)
+{
+        return false;
+}
+
 // partial specialization for en-passant capture removal
 template<typename Board>
 bool is_intersecting_capture_dispatch(
@@ -111,15 +120,6 @@ bool is_intersecting_capture_dispatch(
 {
         // for intersecting captures, a man-capturing king can appear as a captured king
         return bit::is_single(moving_kings(p, m) & captured_kings(p, m) & passive_men(p));
-}
-
-// partial specialization for apres-fini capture removal
-template<typename Board>
-bool is_intersecting_capture_dispatch(
-        const Position<Board>& /* p */, const Move& /* m */, Int2Type<rules::remove_af>
-)
-{
-        return false;
 }
 
 template<typename Rules>
@@ -132,6 +132,14 @@ bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces)
         );
 }
 
+// specialization for apres-fini capture removal
+inline bool is_intersecting_capture_dispatch(
+        BitBoard /* delta */, BitBoard /* captured_pieces */, Int2Type<rules::remove_af>
+)
+{
+        return false; 
+}
+
 // specialization for en-passant capture removal (Thai draughts)
 inline bool is_intersecting_capture_dispatch(
         BitBoard delta, BitBoard captured_pieces, Int2Type<rules::remove_ep>
@@ -140,14 +148,6 @@ inline bool is_intersecting_capture_dispatch(
         // [FEN "W:WK26:B9,12,18,19"] 
         // white has to capture 26x12, landing on a square it also captured on
         return bit::is_single(delta & captured_pieces) && bit::is_multiple(captured_pieces); 
-}
-
-// specialization for apres-fini capture removal
-inline bool is_intersecting_capture_dispatch(
-        BitBoard /* delta */, BitBoard /* captured_pieces */, Int2Type<rules::remove_af>
-)
-{
-        return false; 
 }
 
 template<typename Rules>

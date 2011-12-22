@@ -22,8 +22,8 @@ public:
         explicit State(const Position<Board>& p)
         :
                 initial_targets_(passive_pieces(p)),
-	        remaining_targets_(initial_targets_),
-	        not_occupied_(not_occupied(p)),
+                remaining_targets_(initial_targets_),
+		not_occupied_(not_occupied(p)),
                 king_targets_(passive_kings(p)),
                 from_sq_(0)
         {
@@ -32,7 +32,11 @@ public:
 
         bool invariant() const
         {
-                return initial_targets_ == remaining_targets_ && !from_sq_;
+                return (                
+                        !from_sq_ &&
+                        initial_targets_ == remaining_targets_ && 
+                        current_ <= best_
+                );
         }
 
         // views
@@ -168,48 +172,62 @@ private:
         }
 
         // specialization for men that cannot capture kings
-        BitBoard captured_king_targets_dispatch(Int2Type<false>) const
+        BitBoard captured_king_targets_dispatch(
+                Int2Type<false>
+        ) const
         {
                 return BitBoard(0);
         }
 
         // specialization for men that can capture kings
-        BitBoard captured_king_targets_dispatch(Int2Type<true>) const
+        BitBoard captured_king_targets_dispatch(
+                Int2Type<true>
+        ) const
         {
                 return captured_kings();
         }
 
-        // specialization for en-passant capture removal
-        void make_dispatch(BitBoard target_sq, Int2Type<rules::remove_ep>)
-        {
-                not_occupied_ ^= target_sq;
-                make_dispatch(target_sq, Int2Type<rules::remove_af>());
-        }
-
         // specialization for apres-fini capture removal
-        void make_dispatch(BitBoard target_sq, Int2Type<rules::remove_af>)
+        void make_dispatch(
+                BitBoard target_sq, Int2Type<rules::remove_af>
+        )
         {
                 remaining_targets_ ^= target_sq;
                 current_.increment(target_sq, king_targets_);
         }
 
         // specialization for en-passant capture removal
-        void undo_dispatch(BitBoard target_sq, Int2Type<rules::remove_ep>)
+        void make_dispatch(
+                BitBoard target_sq, Int2Type<rules::remove_ep>
+        )
         {
-                undo_dispatch(target_sq, Int2Type<rules::remove_af>());
                 not_occupied_ ^= target_sq;
+                make_dispatch(target_sq, Int2Type<rules::remove_af>());
         }
 
         // specialization for apres-fini capture removal
-        void undo_dispatch(BitBoard target_sq, Int2Type<rules::remove_af>)
+        void undo_dispatch(
+                BitBoard target_sq, Int2Type<rules::remove_af>
+        )
         {
                 current_.decrement(target_sq, king_targets_);
                 remaining_targets_ ^= target_sq;
         }
 
+        // specialization for en-passant capture removal
+        void undo_dispatch(
+                BitBoard target_sq, Int2Type<rules::remove_ep>
+        )
+        {
+                undo_dispatch(target_sq, Int2Type<rules::remove_af>());
+                not_occupied_ ^= target_sq;
+        }
+
         // partial specialization for man captures that are unambiguous
         template<bool Color> 
-        void add_man_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<false>) const
+        void add_man_capture_dispatch(
+                BitBoard dest_sq, Stack& move_stack, Int2Type<false>
+        ) const
         {
                 push<Color, Rules>(
                         from_sq_ ^ dest_sq, 
@@ -222,9 +240,11 @@ private:
 
         // partial specialization for man captures that can be ambiguous
         template<bool Color> 
-        void add_man_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<true>) const
+        void add_man_capture_dispatch(
+                BitBoard dest_sq, Stack& move_stack, Int2Type<true>
+        ) const
         {
-                const bool ambiguous = !move_stack.empty() && current_.is_large(captured_pieces());               
+                const auto ambiguous = !move_stack.empty() && current_.is_large(captured_pieces());               
                 add_man_capture_dispatch<Color>(dest_sq, move_stack, Int2Type<false>());              
                 if (ambiguous && non_unique_top<Rules>(move_stack))
                         pop(move_stack);
@@ -233,7 +253,9 @@ private:
         // partial specialization for kings that halt immediately if the final capture is a king, 
         // and slide through otherwise
         template<bool Color, int Index> 
-        void add_king_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_1K>) const
+        void add_king_capture_dispatch(
+                BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_1K>
+        ) const
         {
                 if (king_targets_ & Pull<Board, Index>()(dest_sq))
                         add_king_capture_dispatch<Color, Index>(dest_sq, move_stack, Int2Type<rules::halt_1>());
@@ -243,18 +265,22 @@ private:
         
         // partial specialization for kings that halt immediately after the final capture
         template<bool Color, int Index> 
-        void add_king_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_1>) const
+        void add_king_capture_dispatch(
+                BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_1>
+        ) const
         {
-                const bool ambiguous = !move_stack.empty() && current_.is_large(captured_pieces());
+                const auto ambiguous = !move_stack.empty() && current_.is_large(captured_pieces());
                 add_king_capture<Color>(dest_sq, ambiguous, move_stack);
         }
         
         // partial specialization for kings that slide through after the final capture
         template<bool Color, int Index> 
-        void add_king_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_N>) const
+        void add_king_capture_dispatch(
+                BitBoard dest_sq, Stack& move_stack, Int2Type<rules::halt_N>
+        ) const
         {
                 BOOST_ASSERT(dest_sq & path());
-                const bool ambiguous = !move_stack.empty() && current_.is_large(captured_pieces());
+                const auto ambiguous = !move_stack.empty() && current_.is_large(captured_pieces());
                 do {
                         add_king_capture<Color>(dest_sq, ambiguous, move_stack);
                         PushAssign<Board, Index>()(dest_sq);
@@ -273,9 +299,26 @@ private:
                         pop(move_stack);
         }
         
+        // partial specialization for men that promote apres-fini
+        template<bool Color> 
+        void add_king_capture_dispatch(
+                BitBoard dest_sq, Stack& move_stack, 
+                Int2Type<rules::promote_af>
+        ) const
+        {
+                push<Color, Rules>(
+                        from_sq_ ^ dest_sq, 
+                        captured_pieces(), 
+                        captured_kings(), 
+                        move_stack
+                );
+        }
+
         // partial specialization for men that promote en-passant
         template<bool Color> 
-        void add_king_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::promote_ep>) const
+        void add_king_capture_dispatch(
+                BitBoard dest_sq, Stack& move_stack, Int2Type<rules::promote_ep>
+        ) const
         {
                 if (!is_promotion())
                         add_king_capture_dispatch<Color>(dest_sq, move_stack, Int2Type<rules::promote_af>());
@@ -289,18 +332,6 @@ private:
                         );
         }
         
-        // partial specialization for men that promote apres-fini
-        template<bool Color> 
-        void add_king_capture_dispatch(BitBoard dest_sq, Stack& move_stack, Int2Type<rules::promote_af>) const
-        {
-                push<Color, Rules>(
-                        from_sq_ ^ dest_sq, 
-                        captured_pieces(), 
-                        captured_kings(), 
-                        move_stack
-                );
-        }
-
         // implementation
 	BOOST_STATIC_CONSTANT(auto, TOGGLE = true);
 

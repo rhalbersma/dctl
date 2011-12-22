@@ -39,17 +39,17 @@ public:
 
 private:
         // implementation
-        virtual bool do_is_large(BitBoard /* captured_pieces */ ) const
+        virtual bool do_is_large(BitBoard /* captured_pieces */) const
         {
                 return num_pieces_ >= rules::large_capture<variant::International>::value; 
         }
 
-        virtual void do_increment(BitBoard, BitBoard)
+        virtual void do_increment(BitBoard /* target_sq */, BitBoard /* king_targets */)
         {
                 ++num_pieces_;
         }
 
-        virtual void do_decrement(BitBoard, BitBoard)
+        virtual void do_decrement(BitBoard /* target_sq */, BitBoard /* king_targets */)
         {
                 --num_pieces_;
         }      

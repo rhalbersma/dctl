@@ -56,10 +56,10 @@ template<typename Rules> struct king_capture_land               { enum { value =
 // king landing range after the final capture
 template<typename Rules> struct king_capture_halt               { enum { value = king_capture_land<Rules>::value }; };
 
-// capture removal: en-passant or apres-fini
+// capture removal: apres-fini or en-passant
 template<typename> struct capture_removal                       { enum { value = remove_af }; };
 
-// promotion condition: en-passent or apres-fini
+// promotion condition: apres-fini or en-passant
 template<typename> struct promotion_condition                   { enum { value = promote_af }; };
 
 //+----------------------------------------------------------------------------+

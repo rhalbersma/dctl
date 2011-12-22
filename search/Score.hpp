@@ -61,7 +61,7 @@ inline int draw_value()
 // predicates
 inline bool is_finite(int value)
 {
-        return value > -infinity() && value < infinity();
+        return -infinity() < value && value < infinity();
 }
 
 inline bool is_infinite(int value)
@@ -71,12 +71,12 @@ inline bool is_infinite(int value)
 
 inline bool is_loss(int value)
 {
-        return value >= loss_min() && value <= loss_max();
+        return loss_min() <= value && value < loss_max();
 }
 
 inline bool is_win(int value)
 {
-        return value >= win_max() && value <= win_min();
+        return win_max() < value && value <= win_min();
 }
 
 inline bool is_mate(int value)

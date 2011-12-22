@@ -50,16 +50,16 @@ int Root<Rules, Board, Objective>::pvs(
         BOOST_ASSERT(alpha <   beta);
         BOOST_ASSERT(beta  <=  infinity());
 
+        BOOST_ASSERT(
+                ( is_pv(NodeType) && alpha <  beta - 1) ||
+                (!is_pv(NodeType) && alpha == beta - 1)
+        );
+
         // mate distance pruning
         if (alpha >= MinimalWin<Objective>()())
                 return alpha;
         if (beta <= MinimalLoss<Objective>()())
                 return beta;
-
-        BOOST_ASSERT(
-                ( is_pv(NodeType) && alpha <  beta - 1) ||
-                (!is_pv(NodeType) && alpha == beta - 1)
-        );
 
         // check for a legal draw
         if (is_draw<Rules>(p)) {

@@ -20,9 +20,10 @@ private:
 };
 
 template<typename Rules>
-bool operator<(const Value<Rules>& /* left */, const Value<Rules>& /* right */ )
+bool operator<(const Value<Rules>& /* left */, const Value<Rules>& /* right */)
 {
-        // MUST be overriden by derived classes that have capture precedence semantics
+        // MUST be overriden by template specializations for Rules instances 
+        // that have capture precedence semantics
         return false;
 }
 
