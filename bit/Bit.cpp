@@ -13,7 +13,7 @@ typedef boost::mpl::list<uint8_t, uint16_t, uint32_t, uint64_t> UnsignedIntegerT
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, UnsignedIntegerTypes)
 {
-        T b(0);
+        const auto b = T(0);
         BOOST_CHECK( is_zero(b));
         BOOST_CHECK(!is_single(b));
         BOOST_CHECK(!is_double(b));
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, UnsignedIntegerTypes)
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
-                T b = bit::singlet<T>(i);
+                const auto b = singlet<T>(i);
                 BOOST_CHECK(!is_zero(b));
                 BOOST_CHECK( is_single(b));
                 BOOST_CHECK(!is_double(b));
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 for (auto j = 0; j < num_bits<T>::value; ++j) {                                
-                        T b = bit::singlet<T>(i) ^ bit::singlet<T>(j);
+                        const auto b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j) {
                                 BOOST_CHECK(is_zero(b));
                         } else {
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsMultiple, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 for (auto j = 0; j < num_bits<T>::value - i; ++j) {
-                        T b = (bit::singlet<T>(i) - T(1)) << j;
+                        const auto b = (singlet<T>(i) - T(1)) << j;
                         switch (i) {
                         case 0:
                                 BOOST_CHECK(is_zero(b));
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsMultiple, T, UnsignedIntegerTypes)
 BOOST_AUTO_TEST_CASE_TEMPLATE(IndexDeBruijn, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
-                T b = bit::singlet<T>(i);               
+                const auto b = singlet<T>(i);               
                 BOOST_CHECK_EQUAL(i, index_DeBruijn(b));
         }
 }
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IndexDeBruijn, T, UnsignedIntegerTypes)
 BOOST_AUTO_TEST_CASE_TEMPLATE(IndexLookup, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
-                T b = bit::singlet<T>(i);               
+                const auto b = singlet<T>(i);               
                 BOOST_CHECK_EQUAL(i, index_lookup(b));
         }
 }
@@ -96,13 +96,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(CountKernighan, T, UnsignedIntegerTypes)
         BOOST_CHECK_EQUAL(0, count_loop(T(0)));
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
-                T b = bit::singlet<T>(i);
+                const auto b = singlet<T>(i);
                 BOOST_CHECK_EQUAL(1, count_loop(b));                
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 for (auto j = 0; j < num_bits<T>::value; ++j) {                                
-                        T b = bit::singlet<T>(i) ^ bit::singlet<T>(j);
+                        const auto b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j)
                                 BOOST_CHECK_EQUAL(0, count_loop(b));
                         else
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(CountKernighan, T, UnsignedIntegerTypes)
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
-                T b = bit::singlet<T>(i) - 1;
+                const auto b = singlet<T>(i) - 1;
                 BOOST_CHECK_EQUAL(i, count_loop(b));
         }
 
@@ -123,13 +123,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(CountLookup, T, UnsignedIntegerTypes)
         BOOST_CHECK_EQUAL(0, count_lookup(T(0)));
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
-                T b = bit::singlet<T>(i);
+                const auto b = singlet<T>(i);
                 BOOST_CHECK_EQUAL(1, count_lookup(b));                
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 for (auto j = 0; j < num_bits<T>::value; ++j) {                                
-                        T b = bit::singlet<T>(i) ^ bit::singlet<T>(j);
+                        const auto b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j)
                                 BOOST_CHECK_EQUAL(0, count_lookup(b));
                         else
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(CountLookup, T, UnsignedIntegerTypes)
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
-                T b = bit::singlet<T>(i) - 1;
+                const auto b = singlet<T>(i) - 1;
                 BOOST_CHECK_EQUAL(i, count_lookup(b));
         }
 

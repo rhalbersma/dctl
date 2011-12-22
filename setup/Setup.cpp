@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_SUITE(TestSetup)
 BOOST_AUTO_TEST_CASE(Wieger)
 {
         // Test position from email conversation with Wieger Wesselink
-        auto w = "O    \
+        const auto w = "O    \
             .   .   .   .   . \
           .   .   .   .   .   \
             .   .   x   x   x \
@@ -25,19 +25,19 @@ BOOST_AUTO_TEST_CASE(Wieger)
         
         // parse the above diagram into a position using the DamExchange protocol
         // with a modified character set (default is <'Z', 'W', 'E'>)
-        auto pos_w = setup::read<
+        const auto pos_w = setup::read<
                 board::International, 
                 dxp::protocol, 
                 setup::TokenSetBase<'X', 'O', '.'> 
         >()(w);
 
         // write the above position as a diagram and a FEN string using the PDN protocol
-        auto diag_w = setup::diagram<pdn::protocol>()(pos_w);
-        auto FEN_w = setup::write<pdn::protocol>()(pos_w);        
+        const auto diag_w = setup::diagram<pdn::protocol>()(pos_w);
+        const auto FEN_w = setup::write<pdn::protocol>()(pos_w);        
 
         // convert the new FEN string to a new position and back into a new FEN string
-        auto pos_r = setup::read<board::International, pdn::protocol>()(FEN_w);
-        auto FEN_r = setup::write<pdn::protocol>()(pos_r);
+        const auto pos_r = setup::read<board::International, pdn::protocol>()(FEN_w);
+        const auto FEN_r = setup::write<pdn::protocol>()(pos_r);
 
         // the two positions have been parsed through different protocols,
         // but they should have identical FEN strings 
