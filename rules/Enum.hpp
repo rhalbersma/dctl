@@ -18,11 +18,11 @@ enum { dirs_up, dirs_down, dirs_diag, dirs_orth, dirs_all };
 // intermediate capture directions
 enum { turn_up, turn_down, turn_diag, turn_orth, turn_all };
 
-// capture removal: en-passant (in passing) or apres-fini (having finished)
-enum { remove_ep, remove_af };
+// capture removal: apres-fini (having finished) or en-passant (in passing)
+enum { remove_af, remove_ep };
 
-// promotion condition: en-passant (in passing) or apres-fini (having finished)
-enum { promote_ep, promote_af };
+// promotion condition: apres-fini (having finished) or en-passant (in passing)
+enum { promote_af, promote_ep };
 
 }       // namespace rules
 }       // namespace dctl

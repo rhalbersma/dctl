@@ -34,7 +34,7 @@ bool non_unique_top(const Stack& stack)
 }
 
 // specialization for move generation without duplicate capture checking
-inline bool non_unique_top_dispatch(const Stack&, Int2Type<false>)
+inline bool non_unique_top_dispatch(const Stack& /* stack */, Int2Type<false>)
 {
         return false;
 }

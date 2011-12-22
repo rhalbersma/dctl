@@ -41,23 +41,26 @@ public:
 
 protected:
         // non-virtual destructor
-        ~ValueInterface() { /* no-op */ }
+        ~ValueInterface() 
+        { 
+                /* no-op */ 
+        }
 
 private:
         // (pure) virtual implementation
-        virtual bool do_is_large(BitBoard) const = 0;
+        virtual bool do_is_large(BitBoard /* captured_pieces */) const = 0;
         
         virtual bool do_is_promotion() const 
         { 
                 return false; 
         }
         
-        virtual void do_increment(BitBoard, BitBoard) 
+        virtual void do_increment(BitBoard /* target_sq */, BitBoard /* king_targets */) 
         { 
                 /* no-op */ 
         }
         
-        virtual void do_decrement(BitBoard, BitBoard)
+        virtual void do_decrement(BitBoard /* target_sq */, BitBoard /* king_targets */)
         { 
                 /* no-op */ 
         }

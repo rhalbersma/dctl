@@ -67,7 +67,7 @@ public:
 
 private:
         // implementation
-        virtual bool do_is_large(BitBoard /* captured_pieces */ ) const
+        virtual bool do_is_large(BitBoard /* captured_pieces */) const
         {
                 return num_pieces_ >= rules::large_capture<variant::Frisian>::value; 
         }
