@@ -100,8 +100,6 @@ private:
 	        pieces_[ Color] = active_pieces;
 	        pieces_[!Color] = passive_pieces;
                 kings_ = kings;
-
-                BOOST_ASSERT(invariant());
         }                
 
         // representation
