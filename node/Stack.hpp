@@ -117,7 +117,7 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
                 (
                         bit::is_exclusive(top(stack).pieces(Side::black), top(stack).pieces(Side::white)) ||
 
-                        // EXCEPTION: for intersecting captures, WHITE and BLACK pieces() overlap
+                        // EXCEPTION: for intersecting captures, black and white pieces() overlap
                         is_intersecting_capture<Rules>(delta, captured_pieces)
                 ) &&
                 bit::is_within(top(stack).kings(), top(stack).pieces())
