@@ -11,7 +11,7 @@
 namespace dctl {
 namespace search {
 
-#if INTEGRATION_TEST == 0
+#if INTEGRATION_TEST == 1
 
 template<typename Rules, typename Board, typename Objective = Regular>
 struct Fixture
