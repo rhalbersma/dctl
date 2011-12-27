@@ -11,7 +11,7 @@
 namespace dctl {
 namespace search {
 
-#if INTEGRATION_TEST == 1
+#if INTEGRATION_TEST == 0
 
 template<typename Rules, typename Board, typename Objective = Regular>
 struct Fixture
@@ -31,8 +31,8 @@ struct Fixture
         void run(const FEN_depth& test_case) 
         {
                 root_.clear_hash();
-                auto position = setup::read<Board, pdn::protocol>()(test_case.first);
-                auto value = root_.analyze(position, test_case.second);
+                const auto position = setup::read<Board, pdn::protocol>()(test_case.first);
+                const auto value = root_.analyze(position, test_case.second);
                 BOOST_CHECK_EQUAL(win_value(test_case.second), value);
         };
 
@@ -41,17 +41,16 @@ struct Fixture
 
 BOOST_AUTO_TEST_SUITE(TestRoot)
 
-typedef Fixture<variant::Russian, board::Mini> FixtureMini;
+typedef Fixture<variant::Killer, board::Mini> FixtureMini;
 BOOST_FIXTURE_TEST_CASE(MiniInitial, FixtureMini)
 {
         std::cout << setup::diagram<board::Mini>()();
-        FEN_depth test_case("W:B1,2,3,4,5,6:W13,14,15,16,17,18", 19);
+        FEN_depth test_case("W:B1,2,3,4,5,6:W13,14,15,16,17,18", 60);
 
         run(test_case);
         for(;;);
 }
-        
-/*
+/*       
 typedef Fixture<variant::Frisian, board::Frisian> FixtureFrisian;
 BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
 {
@@ -59,7 +58,7 @@ BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
 
         run(test_case);
 }
-
+*/
 typedef Fixture<variant::International, board::International> FixtureInternational;
 
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
@@ -222,7 +221,6 @@ BOOST_FIXTURE_TEST_CASE(Killer31, FixtureKiller)
         for (auto i = 0; i < 16; ++i)
                 run(test_case[i]);
 }
-*/
 
 BOOST_AUTO_TEST_SUITE_END()
 
