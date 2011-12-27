@@ -61,7 +61,7 @@ public:
                         auto q = p;
                         q.attach(p);
                         q.template make<Rules>(moves[i]);
-                        move_leafs = driver(q, 0, depth - 1);
+                        move_leafs = driver(q, depth - 1, 0);
                         leafs += move_leafs;              
                 
                         timer.split();
@@ -145,12 +145,12 @@ private:
                 std::cout << std::setw(2) << (i + 1) << "." << move << " ";
         }
  
-        NodeCount driver(const Position<Board>& p, int ply, int depth)
+        NodeCount driver(const Position<Board>& p, int depth, int ply)
         {
-                return (depth == 0)? leaf(p, ply, depth) : fast(p, ply, depth);
+                return (depth == 0)? leaf(p, depth, ply) : fast(p, depth, ply);
         }
         
-        NodeCount leaf(const Position<Board>& p, int ply, int depth)
+        NodeCount leaf(const Position<Board>& p, int depth, int ply)
         {        
                 statistics_.update(ply);
 
@@ -164,12 +164,12 @@ private:
                         auto q = p;
                         q.attach(p);
                         q.template make<Rules>(*m);
-                        leafs += leaf(q, ply + 1, depth - 1);
+                        leafs += leaf(q, depth - 1, ply + 1);
                 }
                 return leafs;
         }
         
-        NodeCount bulk(const Position<Board>& p, int ply, int depth)
+        NodeCount bulk(const Position<Board>& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -183,12 +183,12 @@ private:
                         auto q = p;
                         q.attach(p);
                         q.template make<Rules>(*m);
-                        leafs += bulk(q, ply + 1, depth - 1);
+                        leafs += bulk(q, depth - 1, ply + 1);
                 }
                 return leafs;
         }
         
-        NodeCount count(const Position<Board>& p, int ply, int depth)
+        NodeCount count(const Position<Board>& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -202,12 +202,12 @@ private:
                         auto q = p;
                         q.attach(p);
                         q.template make<Rules>(*m);
-                        leafs += count(q, ply + 1, depth - 1);
+                        leafs += count(q, depth - 1, ply + 1);
                 }
                 return leafs;
         }
         
-        NodeCount hash(const Position<Board>& p, int ply, int depth)
+        NodeCount hash(const Position<Board>& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -225,14 +225,14 @@ private:
                         auto q = p;
                         q.attach(p);
                         q.template make<Rules>(*m);
-                        leafs += hash(q, ply + 1, depth - 1);
+                        leafs += hash(q, depth - 1, ply + 1);
                 }
 
                 TT.insert(p, Transposition(leafs, depth));
                 return leafs;
         }
         
-        NodeCount fast(const Position<Board>& p, int ply, int depth)
+        NodeCount fast(const Position<Board>& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -251,7 +251,7 @@ private:
                                 auto q = p;
                                 q.attach(p);
                                 q.template make<Rules>(*m);
-                                leafs += fast(q, ply + 1, depth - 1);
+                                leafs += fast(q, depth - 1, ply + 1);
                         }
                 }
 

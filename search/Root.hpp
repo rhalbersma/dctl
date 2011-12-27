@@ -167,7 +167,7 @@ private:
         }
 
         // implementation
-        BOOST_STATIC_CONSTANT(auto, ROOT_ID_INCREMENT = 2);
+        BOOST_STATIC_CONSTANT(auto, ROOT_ID_INCREMENT = 1);
 
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content
         // 8-way buckets on 64-byte cache lines, (1 Gb = 2^27 entries) 
