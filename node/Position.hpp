@@ -252,7 +252,10 @@ private:
         // post-conditions for the constructors and modifiers
         bool material_invariant() const
         {
-                return bit::is_within(pieces(), Board::squares);
+                return (
+                        material_.invariant() &&
+                        bit::is_within(pieces(), Board::squares)
+                );
         }
 
         bool hash_index_invariant() const

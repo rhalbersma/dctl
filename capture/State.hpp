@@ -33,9 +33,7 @@ public:
         bool invariant() const
         {
                 return (                
-                        !from_sq_ &&
-                        initial_targets_ == remaining_targets_ && 
-                        current_ <= best_
+                         bit::is_zero(from_sq_) && initial_targets_ == remaining_targets_
                 );
         }
 
@@ -244,8 +242,8 @@ private:
                 BitBoard dest_sq, Stack& move_stack, Int2Type<true>
         ) const
         {
-                const auto ambiguous = !move_stack.empty() && current_.is_large(captured_pieces());               
-                add_man_capture_dispatch<Color>(dest_sq, move_stack, Int2Type<false>());              
+                const auto ambiguous = !move_stack.empty() && current_.is_large(captured_pieces());
+                add_man_capture_dispatch<Color>(dest_sq, move_stack, Int2Type<false>());
                 if (ambiguous && non_unique_top<Rules>(move_stack))
                         pop(move_stack);
         }
@@ -340,7 +338,7 @@ private:
         BitBoard remaining_targets_;    // targets after a capture
         BitBoard not_occupied_;
         BitBoard king_targets_;
-        BitBoard from_sq_;                                             
+        BitBoard from_sq_;
         Value<Rules> current_;
         Value<Rules> best_;
 };

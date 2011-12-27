@@ -85,11 +85,14 @@ inline bool is_mate(int value)
 }
 
 // modifiers
+
+// loss and win values are "stretched" one step towards the edges of the [-INF, +INF] interval
 inline int stretch(int value)
 {
         return value - is_loss(value) + is_win(value);
 }
 
+// loss and win values are "squeezed" one step towards the center of the [-INF, +INF] interval
 inline int squeeze(int value)
 {
         return value + is_loss(value) - is_win(value);

@@ -28,7 +28,7 @@ public:
                 BOOST_ASSERT(invariant());
         }        
 
-        // create a new object from a set of bitboards
+        // create from a set of bitboards
         template<bool Color>
         static Move create(BitBoard active_pieces, BitBoard passive_pieces, BitBoard kings)
         {
@@ -88,7 +88,6 @@ public:
                 pieces_[Side::black] ^= other.pieces(Side::black);
                 pieces_[Side::white] ^= other.pieces(Side::white);
                 kings_ ^= other.kings();
-                BOOST_ASSERT(invariant());
                 return *this;
         }          
 
