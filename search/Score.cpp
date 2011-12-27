@@ -16,10 +16,8 @@ BOOST_AUTO_TEST_CASE(IsLoss)
         BOOST_CHECK_EQUAL(-infinity() + 1, loss_min());
 
         // scores in the interval [loss_min, loss_max) are losses
-        for (auto v = loss_min(); v < loss_max(); ++v) {
-                BOOST_CHECK(is_finite(v));
-      
-        }
+        for (auto v = loss_min(); v < loss_max(); ++v)
+                BOOST_CHECK(is_loss(v));
 
         // all other scores in the [loss_max, +INF] interval are not losses
         for (auto v = loss_max(); v <= infinity(); ++v)
@@ -95,10 +93,6 @@ BOOST_AUTO_TEST_CASE(PlyValueInverse)
 
 BOOST_AUTO_TEST_CASE(Stretch)
 {       
-        // infinite scores are invariant
-        BOOST_CHECK_EQUAL(-infinity(), stretch(loss_value(0)));
-        BOOST_CHECK_EQUAL( infinity(), stretch( win_value(0)));
-
         // loss and win values are "stretched" one step towards the edges of the [-INF, +INF] interval
         for (auto i = 1; i < MAX_MATE_MOVES; ++i) {
                 BOOST_CHECK_EQUAL(loss_value(i - 1), stretch(loss_value(i)));
@@ -108,14 +102,14 @@ BOOST_AUTO_TEST_CASE(Stretch)
         // heuristic scores are invariant
         for (auto v = loss_max(); v <= win_max(); ++v)
                 BOOST_CHECK_EQUAL(v, stretch(v));
+
+        // infinite scores are invariant
+        BOOST_CHECK_EQUAL(-infinity(), stretch(loss_value(0)));
+        BOOST_CHECK_EQUAL( infinity(), stretch( win_value(0)));
 }
 
 BOOST_AUTO_TEST_CASE(Squeeze)
 {       
-        // infinite scores are invariant
-        BOOST_CHECK_EQUAL(-infinity(), squeeze(-infinity()));
-        BOOST_CHECK_EQUAL( infinity(), squeeze( infinity()));
-
         // loss and win values are "squeezed" one step towards the center of the [-INF, +INF] interval
         for (auto i = 0; i < MAX_MATE_MOVES; ++i) {
                 BOOST_CHECK_EQUAL(loss_value(i + 1), squeeze(loss_value(i)));
@@ -125,6 +119,10 @@ BOOST_AUTO_TEST_CASE(Squeeze)
         // heuristic scores are invariant
         for (auto v = loss_max(); v <= win_max(); ++v)
                 BOOST_CHECK_EQUAL(v, squeeze(v));
+
+        // infinite scores are invariant
+        BOOST_CHECK_EQUAL(-infinity(), squeeze(-infinity()));
+        BOOST_CHECK_EQUAL( infinity(), squeeze( infinity()));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
