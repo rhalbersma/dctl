@@ -47,6 +47,11 @@ public:
                 return iterative_deepening(p, depth);
         }
 
+        int solve(const Position<Board>& p, int depth)
+        {
+                return proof_verify(p, depth);
+        }
+
         void resize_hash(std::size_t s)
         {
                 return TT.resize(s);
@@ -69,10 +74,11 @@ public:
 
 private:
         int iterative_deepening(const Position<Board>&, int);        
+        int proof_verify(const Position<Board>&, int);        
         int negamax(const Position<Board>&, int, int, Variation&);      
         int alpha_beta(const Position<Board>&, int, int, int, int, Variation&);
         template<typename int> int pvs(const Position<Board>&, int, int, int, int, Variation&);
-        template<typename int> int quiescence(const Position<Board>&, int, int, int, int, Variation&);
+        template<typename int> int verify(const Position<Board>&, int, int, int, int, Variation&);
 
         void announce(const Position<Board>& p, int depth)
         {

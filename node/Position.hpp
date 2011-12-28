@@ -28,6 +28,7 @@ public:
                 parent_(nullptr),
                 material_(black_pieces, white_pieces, kings),
                 reversible_moves_(0),
+                distance_to_root_(0),
                 to_move_(to_move)
         {       
                 hash_index_ = hash::zobrist::Init<Position<Board>, HashIndex>()(*this);
@@ -74,6 +75,11 @@ public:
         PlyCount reversible_moves() const
         {
                 return reversible_moves_;
+        }
+
+        PlyCount distance_to_root() const
+        {
+                return distance_to_root_;
         }
 
         // side to move
@@ -177,6 +183,7 @@ private:
         void make_irreversible(const Move& m, Int2Type<false>)
         {
                 make_reversible_moves(m);
+                make_distance_to_root();
         }
 
         void make_reversible_moves(const Move& m)
@@ -187,6 +194,11 @@ private:
                         reversible_moves_ = 0;
         }
         
+        void make_distance_to_root()
+        {
+                ++distance_to_root_;
+        }
+
         template<typename Rules> 
         void make_restricted(const Move& m)
         {
@@ -269,6 +281,7 @@ private:
         Move material_;
         Restricted restricted_;
         PlyCount reversible_moves_;
+        PlyCount distance_to_root_;
         bool to_move_;
 };
 
@@ -362,58 +375,6 @@ const KingMoves& active_restricted(const Position<Board>& p)
 
 template<typename Board> 
 const KingMoves& passive_restricted(const Position<Board>&);
-
-template<typename Rules, typename Board> 
-bool is_draw(const Position<Board>& p)
-{
-        return (
-                is_repetition_draw(p) || 
-                is_reversible_draw<Rules>(p)
-        );
-}
-
-template<typename Board> 
-bool is_repetition_draw(const Position<Board>& p)
-{
-        // a repetition draw needs at least 4 reversible moves
-        if (p.reversible_moves() < 4)
-                return false;
-
-        // find the parent position at 4 ply above the current position
-        auto q = grand_parent(*grand_parent(p));
-
-        // compare the ancestor hash indices with the current hash index
-        for (auto i = 4; i <= p.reversible_moves(); i += 2) {
-                if (q->hash_index() == p.hash_index())
-                        return true;
-                q = grand_parent(*q);
-        }
-        return false;
-}       
-
-template<typename Rules, typename Board> 
-bool is_reversible_draw(const Position<Board>& p)
-{
-        // tag dispatching on restrictions on consecutive reversible moves        
-        return is_reversible_draw_dispatch<Rules>(
-                p, 
-                Int2Type<rules::is_restricted_reversible_moves<Rules>::value>()
-        );
-}
-
-// partial specialization for no restrictions on consecutive reversible moves
-template<typename Rules, typename Board> 
-bool is_reversible_draw_dispatch(const Position<Board>&, Int2Type<false>)
-{
-        return false;
-}
-
-// partial specialization for a maximum of consecutive reversible moves
-template<typename Rules, typename Board> 
-bool is_reversible_draw_dispatch(const Position<Board>& p, Int2Type<true>)
-{
-        return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
-}
 
 namespace hash {
 namespace zobrist {
