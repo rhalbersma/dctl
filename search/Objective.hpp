@@ -24,8 +24,8 @@ struct HeuristicDraw;
 
 template
 <
-        typename TerminalDetection = NoMovesLeft,
-        typename TerminalScoring = Misere,
+        typename TerminalDetection = Kingscourt,
+        typename TerminalScoring = Regular,
         typename CycleScoring = HeuristicDraw
 >
 struct GameObjective
