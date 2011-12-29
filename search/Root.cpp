@@ -12,7 +12,7 @@
 namespace dctl {
 namespace search {
 
-#if INTEGRATION_TEST == 0
+#if INTEGRATION_TEST == 1
 
 template<typename Rules, typename Board, typename Objective = GameObjective<> >
 struct Fixture
@@ -42,15 +42,6 @@ struct Fixture
 
 BOOST_AUTO_TEST_SUITE(TestRoot)
 
-typedef Fixture<variant::International, board::Mini> FixtureMini;
-BOOST_FIXTURE_TEST_CASE(MiniInitial, FixtureMini)
-{
-        std::cout << setup::diagram<board::Mini>()();
-        FEN_depth test_case("W:B1,2,3,4,5,6:W13,14,15,16,17,18", 75);
-
-        run(test_case);
-        for(;;);
-}
 /*       
 typedef Fixture<variant::Frisian, board::Frisian> FixtureFrisian;
 BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
