@@ -74,7 +74,7 @@ public:
         
         NodeCount test(const Position<Board>& p, int depth)
         {
-                return driver(p, 0, depth);
+                return driver(p, depth, 0);
         }
 
         void resize_hash(std::size_t s)
