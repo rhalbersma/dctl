@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(Wieger)
         const auto pos_w = setup::read<
                 board::International, 
                 dxp::protocol, 
-                setup::TokenSetBase<'X', 'O', '.'> 
+                setup::TokenInterface<'X', 'O', '.'> 
         >()(w);
 
         // write the above position as a diagram and a FEN string using the PDN protocol

@@ -16,7 +16,7 @@
 namespace dctl {
 namespace search {
 
-#if INTEGRATION_TEST == 0
+#if INTEGRATION_TEST == 1
 
 typedef std::pair<std::string, int> FEN_depth;
 
@@ -25,7 +25,7 @@ struct Fixture
 {
         Fixture() 
         {
-                root_.resize_hash(26);
+                root_.resize_hash(27);
         }
 
         ~Fixture() 
@@ -49,6 +49,7 @@ BOOST_AUTO_TEST_SUITE(TestRoot)
 
 typedef boost::mpl::list
 <
+        variant::Frisian,
         variant::Checkers,
         variant::Italian,
         variant::Czech,
@@ -57,15 +58,14 @@ typedef boost::mpl::list
         variant::Pool,
         variant::Russian,
         variant::International,
-        variant::Killer,
-        variant::Frisian
+        variant::Killer
 > RulesTypes;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(MiniInitial, R, RulesTypes)
 {
         typedef board::Mini B;
         typedef NoMovesLeft TD;
-        typedef Regular TS;
+        typedef Misere TS;
 
         typedef GameObjective<TD, TS, FirstPlayerWin> obj_1;
         typedef GameObjective<TD, TS, SecondPlayerWin> obj_2;
@@ -78,15 +78,19 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(MiniInitial, R, RulesTypes)
 
         std::cout << "Solving the initial position in 6x6 draughts with rules: " << typeid(R).name() << "\n";
 
-        std::cout << "Trying the draw rule: " << typeid(FirstPlayerWin).name() << "\n";
-        auto fix_1 = std::unique_ptr<F1>(new F1);
-        const auto v1 = fix_1->run(test_case);
+        if (test_case.second == 75) {
+                std::cout << "Trying the draw rule: " << typeid(FirstPlayerWin).name() << "\n";
+                auto fix_1 = std::unique_ptr<F1>(new F1);
+                fix_1->run(test_case);
+        }
 
-        std::cout << "Trying the draw rule: " << typeid(SecondPlayerWin).name() << "\n";
-        auto fix_2 = std::unique_ptr<F2>(new F2);
-        const auto v2 = fix_2->run(test_case);
+        if (test_case.second == 75) {
+                std::cout << "Trying the draw rule: " << typeid(SecondPlayerWin).name() << "\n";
+                auto fix_2 = std::unique_ptr<F2>(new F2);
+                fix_2->run(test_case);
+        }
 
-        BOOST_CHECK_GE(v1, v2);
+        //BOOST_CHECK_GE(v1, v2);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
