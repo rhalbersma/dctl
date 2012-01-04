@@ -4,7 +4,7 @@
 #include <string>                       // std::string
 #include "Diagram.hpp"
 #include "Protocols.hpp"
-#include "Token.hpp"
+#include "TokenInterface.hpp"
 
 namespace dctl {
 

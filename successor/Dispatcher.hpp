@@ -12,7 +12,7 @@ template<typename> class StateInterface;
 /*
 
         The Dispatcher class forms the <FlyWeightFactory> in a <FlyWeight>
-        design Pattern, with the StateInterface class as the <FlyWeight>, 
+        Design Pattern, with the StateInterface class as the <FlyWeight>, 
         and the State class as the <ConcreteFlyWeight>. Examples of 
         the <Client> include the Successor and Mobility classes.
 

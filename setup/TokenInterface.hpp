@@ -1,5 +1,5 @@
 #pragma once
-#include <cctype>                       // toupper, tolower
+#include <cctype>                       // tolower, toupper
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 
 namespace dctl {
@@ -15,7 +15,7 @@ struct Token
 };
 
 template<char B, char W, char E>
-struct TokenSetBase
+struct TokenInterface
 {
         BOOST_STATIC_CONSTANT(auto, black = B);
         BOOST_STATIC_CONSTANT(auto, white = W);
@@ -27,19 +27,19 @@ struct TokenSetBase
 };
 
 template<char B, char W, char E>
-const char TokenSetBase<B, W, E>::color[] = {
+const char TokenInterface<B, W, E>::color[] = {
         black,
         white
 };
 
 template<char B, char W, char E>
-const char TokenSetBase<B, W, E>::lower[] = {
+const char TokenInterface<B, W, E>::lower[] = {
         static_cast<char>(tolower(black)),
         static_cast<char>(tolower(white))
 };
 
 template<char B, char W, char E>
-const char TokenSetBase<B, W, E>::upper[] = {
+const char TokenInterface<B, W, E>::upper[] = {
         static_cast<char>(toupper(black)),
         static_cast<char>(toupper(white))
 };

@@ -13,7 +13,7 @@ namespace dxp {
 /*
 
         The BackRequest class is a <ConcreteProduct> in a <Factory Method>
-        design pattern, with the Parser class as the <ConcreteCreator> and 
+        Design Pattern, with the Parser class as the <ConcreteCreator> and 
         the MessageInterface class as the <Product>.
 
         The BackRequest class MUST be registered with a factory.
@@ -45,7 +45,7 @@ public:
         }
 
         // factory creation (NOTE: makes constructor private)
-        MIXIN_FACTORY_CREATION(BackRequest)
+        MIXIN_HEADER_FACTORY_CREATION('B', BackRequest)
 
         explicit BackRequest(const std::string& message)
         :
@@ -56,8 +56,6 @@ public:
 
 private:
         // implementation
-        MIXIN_MESSAGE_HEADER('B')
-
         virtual std::string do_body() const
         {
                 return body(move_number(), side_to_move());

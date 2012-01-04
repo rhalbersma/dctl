@@ -11,7 +11,7 @@ namespace successor {
 /*
 
         The Driver class forms the <ConcreteClass> in a <Template Method>
-        design pattern, with the State class as the <AbstractClass>.
+        Design Pattern, with the State class as the <AbstractClass>.
 
 */
 

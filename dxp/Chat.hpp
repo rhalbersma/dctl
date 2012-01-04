@@ -11,7 +11,7 @@ namespace dxp {
 /*
 
         The Chat class is a <ConcreteProduct> in a <Factory Method>
-        design pattern, with the Parser class as the <ConcreteCreator> 
+        Design Pattern, with the Parser class as the <ConcreteCreator> 
         and the MessageInterface class as the <Product>.
 
         The Chat class MUST be registered with a factory.
@@ -38,7 +38,7 @@ public:
         }
 
         // factory registration (NOTE: makes constructor private)
-        MIXIN_FACTORY_CREATION(Chat)
+        MIXIN_HEADER_FACTORY_CREATION('C', Chat)
 
         explicit Chat(const std::string& message)
         : 
@@ -48,8 +48,6 @@ public:
 
 private:
         // implementation
-        MIXIN_MESSAGE_HEADER('C')
-
         virtual std::string do_body() const
         {
                 return body(text());

@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/config.hpp>
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {

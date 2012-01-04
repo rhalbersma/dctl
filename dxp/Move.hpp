@@ -15,7 +15,7 @@ namespace dxp {
 /*
 
         The Move class is a <ConcreteProduct> in a <Factory Method>
-        design pattern, with the Parser class as the <ConcreteCreator> 
+        Design Pattern, with the Parser class as the <ConcreteCreator> 
         and the MessageInterface class as the <Product>.
 
         The Move class MUST be registered with a factory.
@@ -62,7 +62,7 @@ public:
         }
 
         // factory creation (NOTE: makes constructor private)
-        MIXIN_FACTORY_CREATION(Move)
+        MIXIN_HEADER_FACTORY_CREATION('M', Move)
 
         explicit Move(const std::string& message)
         :
@@ -77,8 +77,6 @@ public:
 
 private:
         // implementation
-        MIXIN_MESSAGE_HEADER('M')
-
         virtual std::string do_body() const
         {
                 return body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces());

@@ -4,10 +4,10 @@ namespace dctl {
 namespace dxp {
 
 /*----------------------------------------------------------------------------*/
-// Boiler-plate code for enforcing factory creation
+// Boiler-plate code for enforcing factory creation and defining a header
 /*----------------------------------------------------------------------------*/
 
-#define MIXIN_FACTORY_CREATION(ConcreteProduct)                                         \
+#define MIXIN_HEADER_FACTORY_CREATION(Header, ConcreteProduct)                          \
 public:                                                                                 \
         template<typename Factory>                                                      \
         static bool registered(const Factory& factory)                                  \
@@ -31,31 +31,22 @@ private:                                                                        
         static std::unique_ptr<MessageInterface> create(const std::string& message)     \
         {                                                                               \
                 return std::unique_ptr<ConcreteProduct>(new ConcreteProduct(message));  \
-        }                                                                               
-
-/*----------------------------------------------------------------------------*/
-// END OF MIXIN_FACTORY_CREATION
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-// Boiler-plate code for defining a header
-/*----------------------------------------------------------------------------*/
-
-#define MIXIN_MESSAGE_HEADER(Header)                    \
-        virtual std::string do_header() const           \
-        {                                               \
-                return header();                        \
-        }                                               \
-                                                        \
-        static std::string header()                     \
-        {                                               \
-                return std::string(1, header_);         \
-        }                                               \
-                                                        \
+        }                                                                               \
+                                                                                        \
+        virtual std::string do_header() const                                           \
+        {                                                                               \
+                return header();                                                        \
+        }                                                                               \
+                                                                                        \
+        static std::string header()                                                     \
+        {                                                                               \
+                return std::string(1, header_);                                         \
+        }                                                                               \
+                                                                                        \
         BOOST_STATIC_CONSTANT(auto, header_ = Header);
 
 /*----------------------------------------------------------------------------*/
-// END OF MIXIN_MESSAGE_HEADER
+// END OF MIXIN_HEADER_FACTORY_CREATION
 /*----------------------------------------------------------------------------*/
 
 }       // namespace dxp

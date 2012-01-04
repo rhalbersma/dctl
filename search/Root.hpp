@@ -76,9 +76,8 @@ private:
         int iterative_deepening(const Position<Board>&, int);        
         int proof_verify(const Position<Board>&, int);        
         int negamax(const Position<Board>&, int, int, Variation&);      
-        int alpha_beta(const Position<Board>&, int, int, int, int, Variation&);
-        template<typename int> int pvs(const Position<Board>&, int, int, int, int, Variation&);
         template<typename int> int verify(const Position<Board>&, int, int, int, int, Variation&);
+        template<typename int> int pvs(const Position<Board>&, int, int, int, int, Variation&);
 
         void announce(const Position<Board>& p, int depth)
         {
@@ -103,7 +102,7 @@ private:
                 std::cout << " time ";
                 std::cout << std::setw( 6) << timer.elapsed();
 
-                const double nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.lap());
+                const double nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.elapsed());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;

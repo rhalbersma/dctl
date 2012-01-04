@@ -26,9 +26,6 @@ class Driver<Color, Material::pawn, Promotion, Rules, Board>
         private nonconstructible // enforce static semantics
 {
 public:
-        // typedefs
-        typedef Driver<Color, Material::pawn, Moves, Rules, Board> ActivePawnMoves;
-
         static void generate(const Position<Board>& p, Stack& moves)
         {
                 ActivePawnMoves::generate(promoting_men<Color>(p), not_occupied(p), moves);
@@ -43,6 +40,10 @@ public:
         {
                 return ActivePawnMoves::detect(promoting_men<Color>(p), not_occupied(p));
         }
+
+private:
+        // typedefs
+        typedef Driver<Color, Material::pawn, Moves, Rules, Board> ActivePawnMoves;
 };
 
 }       // namespace successor

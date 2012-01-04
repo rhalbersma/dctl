@@ -10,7 +10,7 @@ template<typename> struct Position;
 
 /*
 
-        The Successor class forms a <Context> in a <State> design pattern, 
+        The Successor class forms a <Context> in a <State> Design Pattern, 
         with the StateInterface class as the <State> and the State class 
         as the <ConcreteState>.
 

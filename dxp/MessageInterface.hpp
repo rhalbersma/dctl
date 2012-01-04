@@ -9,7 +9,7 @@ namespace dxp {
 /*
 
         The MessageInterface class is the <Product> in a <Factory Method>
-        design pattern, with object instances of its derived classes as  
+        Design Pattern, with object instances of its derived classes as  
         <ConcreteProduct>, and with the Parser class as the <ConcreteCreator>.
 
         All derived message classes MUST be registered with a factory.

@@ -127,7 +127,7 @@ private:
                 BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::scan_1>
         )
         {
-                if (auto dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
+                if (const auto dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
                         push<Color>(from_sq ^ dest_sq, moves);
         }
 

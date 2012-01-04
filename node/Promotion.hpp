@@ -11,6 +11,12 @@ BitBoard promotion_sq(BitBoard dest_sq)
 }
 
 template<bool Color, typename Board>
+BitBoard promotion_squares(const Position<Board>& p)
+{
+        return not_occupied(p) & Board::PROMOTION[Color][0];
+}
+
+template<bool Color, typename Board>
 BitBoard promoting_men(const Position<Board>& p)
 {
         return p.men(Color) & Board::PROMOTION[Color][1];
