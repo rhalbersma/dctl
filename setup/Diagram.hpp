@@ -6,7 +6,7 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Content.hpp"
 #include "Numbers.hpp"
-#include "Token.hpp"
+#include "TokenInterface.hpp"
 #include "../node/Position.hpp"
 #include "../node/Side.hpp"
 #include "../utility/IntegerTypes.hpp"

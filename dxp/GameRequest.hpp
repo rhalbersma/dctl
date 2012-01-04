@@ -15,7 +15,7 @@ namespace dxp {
 /*
 
         The GameRequest class is a <ConcreteProduct> in a <Factory Method>
-        design pattern, with the Parser class as the <ConcreteCreator> and 
+        Design Pattern, with the Parser class as the <ConcreteCreator> and 
         the MessageInterface class as the <Product>.
 
         The GameRequest class MUST be registered with a factory.
@@ -67,7 +67,7 @@ public:
         }
 
         // factory creation (NOTE: makes constructor private)
-        MIXIN_FACTORY_CREATION(GameRequest)
+        MIXIN_HEADER_FACTORY_CREATION('R', GameRequest)
 
         explicit GameRequest(const std::string& message)
         :
@@ -83,8 +83,6 @@ public:
 
 private:
         // implementation
-        MIXIN_MESSAGE_HEADER('R')
-
         virtual std::string do_body() const
         {
                 return body(name_initiator(), color_follower(), minutes(), moves(), setup(), position());

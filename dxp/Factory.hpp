@@ -9,7 +9,7 @@ namespace dxp {
 /*
 
         The Factory class is the <ConcreteCreator> in a <Factory Method>
-        design pattern, with the Product class as the <Product>, and classes 
+        Design Pattern, with the Product class as the <Product>, and classes 
         derived from that as instances of a <ConcreteProduct>. 
 
         All derived classes MUST be registered with a factory.

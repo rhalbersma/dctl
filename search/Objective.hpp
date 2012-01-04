@@ -1,10 +1,10 @@
 #pragma once
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Score.hpp"
 #include "../bit/Bit.hpp"
 #include "../node/Position.hpp"
 #include "../successor/Selection.hpp"
 #include "../successor/Successor.hpp"
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 
 namespace dctl {
 namespace search {

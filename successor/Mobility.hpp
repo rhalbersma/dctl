@@ -9,12 +9,12 @@ template<typename> struct Position;
 
 /*
 
-        The Mobility class forms a <Context> in a <State> design pattern,
+        The Mobility class forms a <Context> in a <State> Design Pattern,
         with the StateInterface class as the <State> and the State class 
         as the <ConcreteState>.
 
-        The Mobility class also forms a <Client> in a <FlyWeight> design
-        pattern, with the StateInterface class as the <FlyWeight>, the 
+        The Mobility class also forms a <Client> in a <FlyWeight> Design
+        Pattern, with the StateInterface class as the <FlyWeight>, the 
         State class as the <ConcreteFlyWeight>, and the Dispatcher class 
         as the <FlyWeightFactory>. 
 

@@ -6,18 +6,18 @@ namespace dctl {
 namespace setup {
 
 template<typename Token>
-std::string content(const Move& p, int b)
+std::string content(const Move& p, int i)
 {
-        const BitBoard bb = bit::singlet<BitBoard>(b);
+        const auto b = bit::singlet<BitBoard>(i);
 
         std::stringstream sstr;
-        if (p.pieces(Side::black) & bb) {
-                if (p.kings() & bb)
+        if (p.pieces(Side::black) & b) {
+                if (p.kings() & b)
 			sstr << Token::upper[Side::black];      // black king
                 else
                         sstr << Token::lower[Side::black];      // black man
-        } else if (p.pieces(Side::white) & bb) {
-                if (p.kings() & bb)
+        } else if (p.pieces(Side::white) & b) {
+                if (p.kings() & b)
                         sstr << Token::upper[Side::white];      // white king
                 else
                         sstr << Token::lower[Side::white];      // white man

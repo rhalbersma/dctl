@@ -13,7 +13,7 @@ namespace dxp {
 /*
 
         The BackAcknowledge_ class is a <ConcreteProduct> in a <Factory Method> 
-        design pattern, with the Parser class as the <ConcreteCreator> and the 
+        Design Pattern, with the Parser class as the <ConcreteCreator> and the 
         MessageInterface class as the <Product>.
 
         The BackAcknowledge_ class MUST be registered with a factory.
@@ -43,7 +43,7 @@ public:
         }
 
         // factory creation (NOTE: makes constructor private)
-        MIXIN_FACTORY_CREATION(BackAcknowledge)
+        MIXIN_HEADER_FACTORY_CREATION('K', BackAcknowledge)
 
         explicit BackAcknowledge(const std::string& message)
         :
@@ -53,8 +53,6 @@ public:
 
 private:
         // implementation
-        MIXIN_MESSAGE_HEADER('K')
-
         virtual std::string do_body() const
         {
                 return body(acceptance_code());

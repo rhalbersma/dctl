@@ -16,9 +16,9 @@ struct Bound
         static int type(int value, int alpha, int beta)
         {
                 return (
+                        value >= beta  ? lower : 
                         value <= alpha ? upper : 
-                        value <  beta  ? exact : 
-                                         lower
+                                         exact
                 );
         }
 

@@ -14,7 +14,7 @@ namespace dxp {
 /*
 
         The GameEnd class is a <ConcreteProduct> in a <Factory Method>
-        design pattern, with the Parser class as the <ConcreteCreator> 
+        Design Pattern, with the Parser class as the <ConcreteCreator> 
         and the MessageInterface class as the <Product>.
 
         The GameEnd class MUST be registered with a factory.
@@ -50,7 +50,7 @@ public:
         }
 
         // factory creation (NOTE: makes constructor private)
-        MIXIN_FACTORY_CREATION(GameEnd)
+        MIXIN_HEADER_FACTORY_CREATION('E', GameEnd)
 
         explicit GameEnd(const std::string& message)
         :
@@ -61,8 +61,6 @@ public:
 
 private:
         // implementation
-        MIXIN_MESSAGE_HEADER('E')
-
         virtual std::string do_body() const
         {
                 return body(reason(), stop_code());

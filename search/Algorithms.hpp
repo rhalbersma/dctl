@@ -21,8 +21,8 @@ int Root<Rules, Board, Objective>::iterative_deepening(const Position<Board>& p,
         Variation pv;       
         Timer timer;
         announce(p, depth);
+        statistics_.reset();
         for (auto i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
-                statistics_.reset();
                 alpha = -infinity();
                 beta = infinity();
                 score = pvs<PV>(p, alpha, beta, i, 0, pv);
@@ -45,9 +45,8 @@ int Root<Rules, Board, Objective>::proof_verify(const Position<Board>& p, int de
         announce(p, depth);
 
         // find proof-candidate
-        int i;
-        for (i = 1; !is_mate(score) && i <= depth; i += ROOT_ID_INCREMENT) {
-                statistics_.reset();
+        statistics_.reset();
+        for (auto i = 1; !is_mate(score) && i <= depth; i += ROOT_ID_INCREMENT) {
                 score = pvs<PV>(p, -infinity(), infinity(), i, 0, pv);
                 insert_pv(p, pv.sequence(), score);
                 timer.split();
@@ -56,9 +55,10 @@ int Root<Rules, Board, Objective>::proof_verify(const Position<Board>& p, int de
 
         std::cout << "Found proof-candidate, verifying without transposition cutoffs" << "\n\n";
         statistics_.reset();
-        score = verify<PV>(p, -infinity(), infinity(), i - 1, 0, pv);
+        const auto verify_depth = is_loss(score)? loss_ply(score) : win_ply(score);
+        score = verify<PV>(p, -infinity(), infinity(), verify_depth, 0, pv);
         timer.split();
-        report(i - 1, score, timer, p, pv.sequence());
+        report(verify_depth, score, timer, p, pv.sequence());
 
         return score;
 }
@@ -75,11 +75,7 @@ int Root<Rules, Board, Objective>::pvs(
                 return alpha;
 
         // -INF <= alpha < beta <= +INF
-        BOOST_ASSERT(
-                -infinity() <= alpha && 
-                      alpha <  beta  && 
-                      beta  <= infinity()
-        );
+        BOOST_ASSERT(-infinity() <= alpha && alpha < beta && beta <= infinity());
 
         // alpha < beta implies alpha <= beta - 1, 
         // with the strict inequality if and only if is_pv(NodeType)
@@ -198,20 +194,12 @@ int Root<Rules, Board, Objective>::verify(
 )
 {
         statistics_.update(ply);
-        
+
         if (is_interrupted())
                 return alpha;
-
+                
         // -INF <= alpha < beta <= +INF
-        BOOST_ASSERT(
-                -infinity() <= alpha && 
-                      alpha <  beta  && 
-                      beta  <= infinity()
-        );
-
-        // alpha < beta implies alpha <= beta - 1, 
-        // with the strict inequality if and only if is_pv(NodeType)
-        BOOST_ASSERT(is_pv(NodeType) == (alpha <  beta - 1));
+        BOOST_ASSERT(-infinity() <= alpha && alpha < beta && beta <= infinity());
 
         // alpha < beta <= +INF implies alpha <= win_min 
         // with equality, any finite score will fail low
@@ -297,13 +285,13 @@ int Root<Rules, Board, Objective>::verify(
                 q.template make<Rules>(moves[i]);
 
                 if (is_pv(NodeType) && s == 0)
-                        value = -squeeze(pvs<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
+                        value = -squeeze(verify<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
                 else {
                         // TODO: late move reductions
 
-                        value = -squeeze(pvs<ZW>(q, -stretch(alpha + 1), -stretch(alpha), depth - 1, ply + 1, continuation));
+                        value = -squeeze(verify<ZW>(q, -stretch(alpha + 1), -stretch(alpha), depth - 1, ply + 1, continuation));
                         if (is_pv(NodeType) && alpha < value && value < beta)
-                                value = -squeeze(pvs<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
+                                value = -squeeze(verify<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
                 }
 
                 if (value > best_value) {
@@ -404,55 +392,6 @@ int Root<Rules, Board>::negamax(
         return std::max(loss_value(0), best_value);
 }
 
-// alpha-beta
-template<typename Rules, typename Board>
-int Root<Rules, Board>::alpha_beta(const Position<Board>& p, int alpha, int beta, Variation& parent_node, int depth, int ply)
-{
-        statistics_.update(ply);
-
-        // check for a legal draw
-        if (p.template is_draw<Rules>())
-                return draw_value();
-
-        // mate distance pruning
-        if (alpha >= win_value(1))
-                return alpha;
-        if (beta <= loss_value(0))
-                return beta;
-
-        // return evaluation in leaf nodes with valid moves
-        if (depth == 0)
-                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate<Rules>::evaluate(p);
-
-        // generate moves
-        Stack moves;
-        Successor<successor::Legal, Rules>::generate(p, moves);
-
-        // search moves
-        auto best_value = -infinity();
-        int value;
-        Variation child_node;
-        for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
-                auto q = p;
-                q.attach(p);
-                q.template make<Rules>(moves[i]);
-
-                value = -squeeze(alpha_beta<Rules>(p, ply  + 1, depth - 1, -stretch(beta), -stretch(alpha), child_node));
-
-                if (value > best_value) {
-                        best_value = value;
-                        if (best_value > alpha) {
-                                alpha = best_value;
-                                parent_node.set_pv(i, child_node.pv());
-                        }
-                        if (best_value >= beta)
-                                break;                      
-                }
-        }
-
-        // without a valid move, the position is an immediate loss
-        return std::max(loss_value(0), best_value);
-}
 */
 }       // namespace search
 }       // namespace dctl

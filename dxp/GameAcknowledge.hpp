@@ -13,7 +13,7 @@ namespace dxp {
 /*
 
         The GameAcknowledge class is a <ConcreteProduct> in a <Factory Method>
-        design pattern, with the Parser class as the <ConcreteCreator> and the 
+        Design Pattern, with the Parser class as the <ConcreteCreator> and the 
         MessageInterface class as the <Product>.
 
         The GameAcknowledge class MUST be registered with a factory.
@@ -48,7 +48,7 @@ public:
         }
 
         // factory creation (NOTE: makes constructor private)
-        MIXIN_FACTORY_CREATION(GameAcknowledge)
+        MIXIN_HEADER_FACTORY_CREATION('A', GameAcknowledge)
 
         explicit GameAcknowledge(const std::string& message)
         :
@@ -59,8 +59,6 @@ public:
 
 private:
         // implementation
-        MIXIN_MESSAGE_HEADER('A')
-
         virtual std::string do_body() const
         {
                 return body(name_follower(), acceptance_code());

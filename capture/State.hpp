@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/assert.hpp>                     // BOOST_ASSERT
-#include <boost/config.hpp>                     // BOOST_STATIC_CONST
+#include <boost/config.hpp>                     // BOOST_STATIC_CONSTANT
 #include "Value.hpp"
 #include "../bit/Bit.hpp"
 #include "../node/Promotion.hpp"

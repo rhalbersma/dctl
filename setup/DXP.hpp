@@ -1,5 +1,5 @@
 #pragma once
-#include "Token.hpp"
+#include "TokenInterface.hpp"
 
 namespace dctl {
  
@@ -10,7 +10,7 @@ namespace setup {
 template<>
 struct TokenSet<dxp::protocol>
 : 
-        public TokenSetBase<'Z', 'W', 'e'> 
+        public TokenInterface<'Z', 'W', 'e'> 
 {
 };
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/config.hpp>
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "ValueInterface.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
