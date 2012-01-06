@@ -9,7 +9,13 @@ namespace bit {
 
 BOOST_AUTO_TEST_SUITE(TestBit)
 
-typedef boost::mpl::list<uint8_t, uint16_t, uint32_t, uint64_t> UnsignedIntegerTypes;
+typedef boost::mpl::list
+<
+        uint8_t, 
+        uint16_t, 
+        uint32_t, 
+        uint64_t
+> UnsignedIntegerTypes;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, UnsignedIntegerTypes)
 {
