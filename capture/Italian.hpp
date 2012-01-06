@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "../utility/IntegerTypes.hpp"
 
