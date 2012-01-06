@@ -76,9 +76,9 @@ private:
                 const Position<Board>& p, State& capture, Stack& moves, Int2Type<true>
         )
         {
-                capture.toggle_with_king();
+                capture.current_toggle_with_king();
                 generate_precede(p, capture, moves, Int2Type<false>());
-                capture.toggle_with_king();
+                capture.current_toggle_with_king();
         }
         
         // partial specialization for no relative king capture precedence

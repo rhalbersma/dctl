@@ -31,7 +31,7 @@ class Factory
 public:
         ProductPointer create_object(const Input& input) const
         {
-                auto i = lookup_.find(Product::identifier(input));
+                const auto i = lookup_.find(Product::identifier(input));
                 return (i != lookup_.end())? (i->second)(Product::parameter(input)) : nullptr;
         }
 

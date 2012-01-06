@@ -1,6 +1,4 @@
 #pragma once
-#include "ValueInterface.hpp"
-#include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -10,13 +8,11 @@ namespace variant { struct Spanish; }
 namespace capture {
 
 // forward declaration of the primary template
-template<typename> class Value;
+template<typename> struct Value;
 
 // explicit specialization for Spanish draughts
 template<>
-class Value<variant::Spanish>
-: 
-        public ValueInterface
+struct Value<variant::Spanish>
 {
 public:
         // constructors
@@ -25,6 +21,7 @@ public:
                 num_pieces_(0),
                 num_kings_(0)
         {
+                BOOST_ASSERT(invariant());
         }
 
         // predicates
@@ -48,31 +45,57 @@ public:
                 );
         }
 
-private:
-        // implementation
-        virtual bool do_is_large(BitBoard /* captured_pieces */) const
+        int count() const
         {
-                return num_pieces_ >= rules::large_capture<variant::Spanish>::value; 
+                return num_pieces_; 
         }
 
-        virtual void do_increment(BitBoard target_sq, BitBoard king_targets)
+        // modifiers
+        void do_increment(BitBoard target_sq, BitBoard king_targets)
         {
                 ++num_pieces_;
                 if (target_sq & king_targets)
                         ++num_kings_;
+                BOOST_ASSERT(invariant());
         }
 
-        virtual void do_decrement(BitBoard target_sq, BitBoard king_targets)
+        void do_decrement(BitBoard target_sq, BitBoard king_targets)
         {
                 if (target_sq & king_targets)
                         --num_kings_;
                 --num_pieces_;
+                BOOST_ASSERT(invariant());
         }       
+
+private:
+        // implementation
+        bool invariant() const
+        {
+                return num_kings_ <= num_pieces_;
+        }
 
         // representation
         PieceCount num_pieces_;
         PieceCount num_kings_;
 };
-        
+
+template<typename Rules>
+void increment(Value<Rules>&, BitBoard, BitBoard);
+
+template<> inline
+void increment(Value<variant::Spanish>& v, BitBoard target_sq, BitBoard king_targets)
+{
+        v.do_increment(target_sq, king_targets);
+}
+ 
+template<typename Rules>
+void decrement(Value<Rules>&, BitBoard, BitBoard);
+
+template<> inline
+void decrement(Value<variant::Spanish>& v, BitBoard target_sq, BitBoard king_targets)
+{
+        v.do_decrement(target_sq, king_targets);
+}
+
 }       // namespace capture
 }       // namespace dctl

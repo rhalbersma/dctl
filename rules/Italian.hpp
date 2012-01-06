@@ -15,6 +15,9 @@ template<> struct is_men_capture_kings<variant::Italian>        { enum { value =
 template<typename> struct is_majority_precedence;
 template<> struct is_majority_precedence<variant::Italian>      { enum { value = true    }; };
 
+template<typename> struct is_qualified_majority;
+template<> struct is_qualified_majority<variant::Italian>       { enum { value = true    }; };
+
 template<typename> struct is_relative_king_precedence;
 template<> struct is_relative_king_precedence<variant::Italian> { enum { value = true    }; };
 

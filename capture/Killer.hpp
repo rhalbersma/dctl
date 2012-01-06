@@ -1,6 +1,4 @@
 #pragma once
-#include "ValueInterface.hpp"
-#include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -10,13 +8,11 @@ namespace variant { struct Killer; }
 namespace capture {
 
 // forward declaration of the primary template
-template<typename> class Value;
+template<typename> struct Value;
 
 // explicit specialization for Killer draughts
 template<>
-class Value<variant::Killer>
-: 
-        public ValueInterface
+struct Value<variant::Killer>
 {
 public:
         // constructors
@@ -37,26 +33,44 @@ public:
                 return num_pieces_ == other.num_pieces_;
         }
 
-private:
-        // implementation
-        virtual bool do_is_large(BitBoard /* captured_pieces */) const
+        int count() const
         {
-                return num_pieces_ >= rules::large_capture<variant::Killer>::value; 
+                return num_pieces_; 
         }
 
-        virtual void do_increment(BitBoard /* target_sq */, BitBoard /* king_targets */)
+        // modifiers
+        void do_increment()
         {
                 ++num_pieces_;
         }
 
-        virtual void do_decrement(BitBoard /* target_sq */, BitBoard /* king_targets */)
+        void do_decrement()
         {
                 --num_pieces_;
         }      
 
+private:
         // representation
         PieceCount num_pieces_;
 };
-        
+
+template<typename Rules>
+void increment(Value<Rules>&, BitBoard, BitBoard);
+
+template<> inline
+void increment(Value<variant::Killer>& v)
+{
+        v.do_increment();
+}
+ 
+template<typename Rules>
+void decrement(Value<Rules>&, BitBoard, BitBoard);
+
+template<> inline
+void decrement(Value<variant::Killer>& v)
+{
+        v.do_decrement();
+}
+
 }       // namespace capture
 }       // namespace dctl

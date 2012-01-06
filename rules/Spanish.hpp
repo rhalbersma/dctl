@@ -15,5 +15,8 @@ template<> struct king_scan_range<variant::Spanish>             { enum { value =
 template<typename> struct is_majority_precedence;
 template<> struct is_majority_precedence<variant::Spanish>      { enum { value = true    }; };
 
+template<typename> struct is_qualified_majority;
+template<> struct is_qualified_majority<variant::Spanish>       { enum { value = true    }; };
+
 }       // namespace rules
 }       // namespace dctl

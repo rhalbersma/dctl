@@ -28,6 +28,9 @@ template<> struct king_capture_directions<variant::Frisian>             { enum {
 template<typename> struct is_majority_precedence;
 template<> struct is_majority_precedence<variant::Frisian>              { enum { value = true     }; };
 
+template<typename> struct is_qualified_majority;
+template<> struct is_qualified_majority<variant::Frisian>               { enum { value = true     }; };
+
 template<typename> struct is_relative_king_precedence;
 template<> struct is_relative_king_precedence<variant::Frisian>         { enum { value = true     }; };
 

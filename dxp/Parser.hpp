@@ -59,7 +59,11 @@ template<typename Factory>
 class call_register_class
 {
 public:
-        call_register_class(Factory& f): factory_(f) {}
+        explicit call_register_class(Factory& f)
+        : 
+                factory_(f) 
+        {
+        }
 
         template<typename T>
         void operator()(boost::mpl::identity<T>) const
@@ -76,7 +80,11 @@ template<typename Factory>
 class call_unregister_class
 {
 public:
-        call_unregister_class(Factory& f): factory_(f) {}
+        explicit call_unregister_class(Factory& f)
+        : 
+                factory_(f) 
+        {
+        }
 
         template<typename T>
         void operator()(boost::mpl::identity<T>) const
