@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
         > p;
 
         for (auto i = 0; i < 8; ++i) {                
-                if (auto parsed = p.parse(message[i]))
+                if (const auto parsed = p.parse(message[i]))
                         // if the message type did get registered, compare the original and the parsed message
                         BOOST_CHECK_EQUAL(message[i], parsed->str());
                 else {
