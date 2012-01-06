@@ -297,9 +297,9 @@ private:
                 if (!capture.is_promotion_sq<Color>(jumper))
                         return scan_next_dispatch<Index>(jumper, capture, moves, Int2Type<rules::promote_af>());
                 else {
-                        capture.toggle_promotion();
+                        capture.current_toggle_promotion();
                         const auto found_next = KingJumps::promote_en_passant<Index>(jumper, capture, moves);
-                        capture.toggle_promotion();
+                        capture.current_toggle_promotion();
                         return found_next;
                 }
         }

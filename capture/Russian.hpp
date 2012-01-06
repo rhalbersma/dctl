@@ -1,8 +1,5 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include "ValueInterface.hpp"
-#include "../bit/Bit.hpp"
-#include "../rules/Rules.hpp"
 
 namespace dctl {
 
@@ -11,13 +8,11 @@ namespace variant { struct Russian; }
 namespace capture {
 
 // forward declaration of the primary template
-template<typename> class Value;
+template<typename> struct Value;
 
 // explicit specialization for Russian draughts
 template<>
-class Value<variant::Russian>
-: 
-        public ValueInterface
+struct Value<variant::Russian>
 {
 public:
         // constructors
@@ -27,28 +22,43 @@ public:
         {
         }
 
-private:
-        // implementation
-        virtual bool do_is_large(BitBoard captured_pieces) const
-        {
-                return bit::count(captured_pieces) >= rules::large_capture<variant::Russian>::value;
-        }
-
-        virtual bool do_is_promotion() const
+        // predicates
+        bool do_is_promotion() const
         {
                 return promotion_;
         }
 
-        virtual void do_toggle_promotion()
+        // modifiers
+        void do_toggle_promotion()
         {
-                promotion_ ^= TOGGLE;
+                promotion_ ^= toggle;
         } 
 
-        BOOST_STATIC_CONSTANT(auto, TOGGLE = true);
+private:
+        // implementation
+        BOOST_STATIC_CONSTANT(auto, toggle = true);
 
         // representation
         bool promotion_;
 };
-        
+
+template<typename Rules>
+bool is_promotion(const Value<Rules>&);
+
+template<> inline
+bool is_promotion(const Value<variant::Russian>& v)
+{
+        return v.do_is_promotion();
+}
+
+template<typename Rules>
+void toggle_promotion(Value<Rules>&);
+
+template<> inline
+void toggle_promotion(Value<variant::Russian>& v)
+{
+        v.do_toggle_promotion();
+}
+
 }       // namespace capture
 }       // namespace dctl

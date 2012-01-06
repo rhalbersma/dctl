@@ -75,6 +75,13 @@ T except_first(T b)
         return b & (b - T(1));
 }
 
+// clear the least significant 1-bit
+template<typename T>
+void clear_first(T& b)
+{
+        b &= b - T(1);
+}
+
 // index of the least significant 1-bit
 template<typename T>
 int find_first(T b)
@@ -158,13 +165,6 @@ T fill_loop(T generator, T propagator, int dir)
                 generator = Shift<Sign>()(generator, dir) & propagator;
         }
         return flood;
-}
-
-// clear the least significant 1-bit
-template<typename T>
-void clear_first(T& b)
-{
-        b &= b - T(1);
 }
 
 }       // namespace bit

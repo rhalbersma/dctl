@@ -1,29 +1,18 @@
 #pragma once
-#include "ValueInterface.hpp"
-#include "../bit/Bit.hpp"
-#include "../rules/Rules.hpp"
 
 namespace dctl {
 namespace capture {
 
-template<typename Rules>
-class Value
-: 
-        public ValueInterface 
+// primary template
+template<typename Rules> 
+struct Value 
 {
-private:
-        // implementation
-        virtual bool do_is_large(BitBoard captured_pieces) const 
-        { 
-                return bit::count(captured_pieces) >= rules::large_capture<Rules>::value; 
-        }
+        /* empty */
 };
 
 template<typename Rules>
 bool operator<(const Value<Rules>& /* left */, const Value<Rules>& /* right */)
 {
-        // MUST be overriden by template specializations for Rules instances 
-        // that have capture precedence semantics
         return false;
 }
 
@@ -60,6 +49,48 @@ bool operator!=(const Value<Rules>& left, const Value<Rules>& right)
 {
         // false by default
         return !(left == right);
+}
+
+template<typename Rules>
+bool is_promotion(const Value<Rules>& /* v */)
+{
+        return false;
+}
+
+template<typename Rules>
+void increment(Value<Rules>& /* v */)
+{
+        /* no-op */
+}
+
+template<typename Rules>
+void increment(Value<Rules>& /* v */, BitBoard /* target_sq */, BitBoard /* king_targets */)
+{
+        /* no-op */
+}
+
+template<typename Rules>
+void decrement(Value<Rules>& /* v */)
+{
+        /* no-op */
+}
+
+template<typename Rules>
+void decrement(Value<Rules>& /* v */, BitBoard /* target_sq */, BitBoard /* king_targets */)
+{
+        /* no-op */   
+}
+
+template<typename Rules>
+void toggle_with_king(Value<Rules>& /* v */)
+{
+        /* no-op */
+}
+
+template<typename Rules>
+void toggle_promotion(Value<Rules>& /* v */)
+{
+        /* no-op */   
 }
 
 }       // namespace capture

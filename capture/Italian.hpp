@@ -1,7 +1,5 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include "ValueInterface.hpp"
-#include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -11,13 +9,11 @@ namespace variant { struct Italian; }
 namespace capture {
 
 // forward declaration of the primary template
-template<typename> class Value;
+template<typename> struct Value;
 
 // explicit specialization for Italian draughts
 template<>
-class Value<variant::Italian>
-: 
-        public ValueInterface
+struct Value<variant::Italian>
 {
 public:
         // constructors
@@ -28,6 +24,7 @@ public:
                 num_kings_(0),
                 with_king_(false)
         {
+                BOOST_ASSERT(invariant());
         }
 
         // predicates
@@ -65,37 +62,48 @@ public:
                 );
         }
 
-private:
-        // implementation
-        virtual bool do_is_large(BitBoard /* captured_pieces */) const
+        int count() const
         {
-                return num_pieces_ >= rules::large_capture<variant::Italian>::value; 
+                return num_pieces_; 
         }
 
-        virtual void do_increment(BitBoard target_sq, BitBoard king_targets)
+        // modifiers
+        void do_increment(BitBoard target_sq, BitBoard king_targets)
         {
                 ++num_pieces_;
                 if (target_sq & king_targets) {
                         ++num_kings_;
                         piece_order_ ^= bit::reverse_singlet<BitBoard>(num_pieces_);
                 }
+                BOOST_ASSERT(invariant());
         }
 
-        virtual void do_decrement(BitBoard target_sq, BitBoard king_targets)
+        void do_decrement(BitBoard target_sq, BitBoard king_targets)
         {
                 if (target_sq & king_targets) {
                         piece_order_ ^= bit::reverse_singlet<BitBoard>(num_pieces_);
                         --num_kings_;
                 }
                 --num_pieces_;
+                BOOST_ASSERT(invariant());
         }
 
-        virtual void do_toggle_with_king()
+        void do_toggle_with_king()
         {
-                with_king_ ^= TOGGLE;
+                with_king_ ^= toggle;
         }
 
-        BOOST_STATIC_CONSTANT(auto, TOGGLE = true);
+private:
+        // implementation
+        bool invariant() const
+        {
+                return (
+                        (num_kings_ <= num_pieces_) &&
+                        (bit::count(piece_order_) == num_pieces_)
+                );
+        }
+
+        BOOST_STATIC_CONSTANT(auto, toggle = true);
 
         // representation
         BitBoard piece_order_;
@@ -103,6 +111,33 @@ private:
         PieceCount num_kings_;
         bool with_king_;
 };
-        
+     
+template<typename Rules>
+void increment(Value<Rules>&, BitBoard, BitBoard);
+
+template<> inline
+void increment(Value<variant::Italian>& v, BitBoard target_sq, BitBoard king_targets)
+{
+        v.do_increment(target_sq, king_targets);
+}
+ 
+template<typename Rules>
+void decrement(Value<Rules>&, BitBoard, BitBoard);
+
+template<> inline
+void decrement(Value<variant::Italian>& v, BitBoard target_sq, BitBoard king_targets)
+{
+        v.do_decrement(target_sq, king_targets);
+}
+
+template<typename Rules>
+void toggle_with_king(Value<Rules>&);
+
+template<> inline
+void toggle_with_king(Value<variant::Italian>& v)
+{
+        v.do_toggle_with_king();
+}
+
 }       // namespace capture
 }       // namespace dctl

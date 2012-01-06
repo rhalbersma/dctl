@@ -18,8 +18,8 @@ struct find_entry
 
         const Value* operator()(ConstIterator bucket_begin, const Key& key) const
         {
-                auto bucket_end = bucket_begin + N;
-                auto entry = std::find_if(
+                const auto bucket_end = bucket_begin + N;
+                const auto entry = std::find_if(
                         bucket_begin, bucket_end, 
                         std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, key)
                 );
@@ -41,7 +41,7 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutSmallestOfN>
 
         void operator()(Iterator bucket_begin, const Entry& entry) const
         {
-                auto bucket_end = bucket_begin + N;
+                const auto bucket_end = bucket_begin + N;
 
                 // replace any empty or old entry
                 Key empty_or_old[] = { Key(0), entry.first };

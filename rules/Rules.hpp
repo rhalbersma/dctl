@@ -69,6 +69,9 @@ template<typename> struct promotion_condition                   { enum { value =
 // majority capture precedence
 template<typename> struct is_majority_precedence                { enum { value = false }; };
 
+// qualified majority
+template<typename> struct is_qualified_majority                 { enum { value = false }; };
+
 // absolute king capture precedence (applied before any majority capture precedence rule)
 template<typename> struct is_absolute_king_precedence           { enum { value = false }; };
 
