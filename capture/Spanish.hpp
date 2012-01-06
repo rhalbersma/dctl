@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/assert.hpp>             // BOOST_ASSERT
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
