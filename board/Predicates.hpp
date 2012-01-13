@@ -22,7 +22,7 @@ struct is_initial
 private:
         typedef boost::mpl::integral_c<bool, 0> get_color;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, color = (boost::mpl::at<ArgsTuple, get_color>::type::value));
         BOOST_STATIC_CONSTANT(auto, row_min = 
                 color? (Board::height - 1) - ((Board::height - Board::dmz) / 2 - 1) : 0
@@ -44,7 +44,7 @@ struct is_row_mask
         typedef boost::mpl::integral_c<bool, 0> get_color;
         typedef boost::mpl::integral_c<int, 1> get_row;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, color = (boost::mpl::at<ArgsTuple, get_color>::type::value));
         BOOST_STATIC_CONSTANT(auto, row = (boost::mpl::at<ArgsTuple, get_row>::type::value));
         BOOST_STATIC_CONSTANT(auto, value = 
@@ -59,7 +59,7 @@ struct is_col_mask
         typedef boost::mpl::integral_c<bool, 0> get_color;
         typedef boost::mpl::integral_c<int, 1> get_column;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, color = (boost::mpl::at<ArgsTuple, get_color>::type::value));
         BOOST_STATIC_CONSTANT(auto, col = (boost::mpl::at<ArgsTuple, get_column>::type::value));
         BOOST_STATIC_CONSTANT(auto, value = 
@@ -75,7 +75,7 @@ private:
         typedef boost::mpl::integral_c<int, 0> get_from_sq;
         typedef typename Board::ExternalGrid Grid;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, from_sq = (boost::mpl::at<ArgsTuple, get_from_sq>::type::value));
         BOOST_STATIC_CONSTANT(auto, dest_sq = SQ);
 
@@ -103,7 +103,7 @@ private:
         typedef boost::mpl::integral_c<int, 0> get_index;
         typedef typename Board::ExternalGrid Grid;
         
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, index = (boost::mpl::at<ArgsTuple, get_index>::type::value));
         BOOST_STATIC_CONSTANT(auto, offset = is_diagonal<index>::value? 2 : 4);
         
@@ -138,9 +138,9 @@ private:
 
 public:
         // bit coordintaes re-interpreted within the internal grid
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
-                (Coordinates2Square< Coordinates<I, rotated::row, rotated::col> >::type::square)
+                (Coordinates2Square< Coordinates<I, rotated::row, rotated::col> >::type::value)
         );
 };
 
@@ -159,9 +159,9 @@ private:
 
 public:
         // square coordinates re-interpreted within the internal grid
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
-                (Coordinates2Square< Coordinates<E, rotated::row, rotated::col> >::type::square)
+                (Coordinates2Square< Coordinates<E, rotated::row, rotated::col> >::type::value)
         );
 };
 

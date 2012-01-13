@@ -18,7 +18,7 @@ template
 >
 struct Init
 {
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
                 (Test<Predicate, Board, ArgsTuple, SQ    >::value) ^
                 (Init<Predicate, Board, ArgsTuple, SQ - 1>::value)
@@ -33,7 +33,7 @@ template
 >
 struct Init<Predicate, Board, ArgsTuple, 0>
 {
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
                 (Test<Predicate, Board, ArgsTuple, 0>::value)
         );
@@ -48,7 +48,7 @@ template
 >
 struct Test
 {
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value = 
                 (Predicate<Board, ArgsTuple, SQ>::value? (BitBoard(1) << square_to_bit<Board, SQ>::value) : 0)
         );
@@ -59,7 +59,7 @@ struct init_squares
 {
         typedef boost::mpl::vector<> ArgsTuple;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
                 (Init<is_square, Board, ArgsTuple>::value)
         );
@@ -72,7 +72,7 @@ struct init_initial
                 boost::mpl::integral_c<bool, Color>
         > ArgsTuple;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
                 (Init<is_initial, Board, ArgsTuple>::value)
         );
@@ -86,7 +86,7 @@ struct init_row_mask
                 boost::mpl::integral_c<int, Row>
         > ArgsTuple;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
                 (Init<is_row_mask, Board, ArgsTuple>::value)
         );
@@ -100,7 +100,7 @@ struct init_col_mask
                 boost::mpl::integral_c<int, Column>
         > ArgsTuple;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
                 (Init<is_col_mask, Board, ArgsTuple>::value)
         );
@@ -113,7 +113,7 @@ struct init_jump_group
                 boost::mpl::integral_c<int, Group>
         > ArgsTuple;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
                 (Init<is_jump_group, Board, ArgsTuple>::value)
         );
@@ -126,7 +126,7 @@ struct init_jump_start
                 boost::mpl::integral_c<int, Index>
         > ArgsTuple;
 
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, value =
                 (Init<is_jump_start, Board, ArgsTuple>::value)
         );

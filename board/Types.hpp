@@ -1,5 +1,5 @@
 #pragma once
-#include "Angle.hpp"
+#include "Degrees.hpp"
 #include "Board.h"
 #include "Dimensions.hpp"
 #include "Structure.hpp"

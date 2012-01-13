@@ -49,7 +49,7 @@ bool is_multiple(T b)
 
 // a contained within b
 template<typename T>
-bool is_within(T a, T b)
+bool is_subset_of(T a, T b)
 {
         return is_zero(a & ~b);
 }

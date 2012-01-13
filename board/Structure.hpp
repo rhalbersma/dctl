@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Angle.hpp"
+#include "Degrees.hpp"
 #include "Transform.hpp"
 
 namespace dctl {
@@ -14,11 +15,13 @@ template
 >
 struct Structure
 {
+        BOOST_STATIC_ASSERT(D > 0 && G > 0 && !mod_090<A>::value);
+
         // reflection on template parameters
         BOOST_STATIC_CONSTANT(auto, dmz = D);
         BOOST_STATIC_CONSTANT(auto, ghosts = G);
-        BOOST_STATIC_CONSTANT(auto, angle = A);
-        BOOST_STATIC_CONSTANT(auto, inverse_angle = inverse<A>::value);
+        BOOST_STATIC_CONSTANT(auto, angle = mod_360<A>::value);
+        BOOST_STATIC_CONSTANT(auto, inverse_angle = inverse<angle>::type::value);
 };
 
 }       // namespace board
