@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "../bit/Bit.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -100,7 +101,8 @@ private:
         {
                 return (
                         (num_kings_ <= num_pieces_) &&
-                        (bit::count(piece_order_) == num_pieces_)
+                        (num_kings_ == bit::count(piece_order_)) &&
+                        (!num_kings_ || with_king_)
                 );
         }
 
@@ -108,8 +110,8 @@ private:
 
         // representation
         BitBoard piece_order_;
-        PieceCount num_pieces_;
-        PieceCount num_kings_;
+        int num_pieces_;
+        int num_kings_;
         bool with_king_;
 };
      

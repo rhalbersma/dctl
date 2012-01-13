@@ -1,5 +1,4 @@
 #pragma once
-#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 
@@ -51,7 +50,7 @@ public:
 
 private:
         // representation
-        PieceCount num_pieces_;
+        int num_pieces_;
 };
 
 template<typename Rules>

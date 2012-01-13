@@ -1,7 +1,6 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 
@@ -100,8 +99,8 @@ private:
         BOOST_STATIC_CONSTANT(auto, toggle = true);
 
         // representation
-        PieceCount num_pieces_;
-        PieceCount num_kings_;
+        int num_pieces_;
+        int num_kings_;
         bool with_king_;
 };
 

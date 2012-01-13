@@ -4,7 +4,6 @@
 
 namespace dctl {
 
-typedef uint8_t PieceCount;
 typedef uint8_t MoveCount;
 typedef uint8_t PlyCount;
 typedef uint64_t NodeCount;

@@ -234,8 +234,8 @@ private:
                 if (
                         restricted.moves() && is_capture(*this, m) &&
                         (
-                                bit::is_within(restricted.king() , captured_pieces(*this, m)) ||
-                                bit::is_within(passive_men(*this), captured_pieces(*this, m))
+                                bit::is_subset_of(restricted.king() , captured_pieces(*this, m)) ||
+                                bit::is_subset_of(passive_men(*this), captured_pieces(*this, m))
                         )
                 ) {
                         hash_index_ ^= Hash()(restricted, passive_color());
@@ -266,7 +266,7 @@ private:
         {
                 return (
                         material_.invariant() &&
-                        bit::is_within(pieces(), Board::squares)
+                        bit::is_subset_of(pieces(), Board::squares)
                 );
         }
 

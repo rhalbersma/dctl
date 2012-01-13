@@ -82,10 +82,10 @@ bool is_pseudo_legal(const Position<Board>& p, const Move& m)
                 !(bit::is_multiple(from_sq(p, m)) || bit::is_multiple(dest_sq(p, m))) &&
                 
                 // only capture existing pieces
-                bit::is_within(captured_pieces(p, m), passive_pieces(p)) &&            
+                bit::is_subset_of(captured_pieces(p, m), passive_pieces(p)) &&            
                 (
                         // only capture existing kings
-                        bit::is_within(captured_kings(p, m), passive_kings(p)) ||
+                        bit::is_subset_of(captured_kings(p, m), passive_kings(p)) ||
 
                         // EXCEPTION: for intersecting captures, a man-capturing king can appear as a captured king
                         is_intersecting_capture<Rules>(p, m)                            

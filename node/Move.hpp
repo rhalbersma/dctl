@@ -42,7 +42,7 @@ public:
         {
                 return (
 		        bit::is_exclusive(pieces(Side::black), pieces(Side::white)) &&
-                        bit::is_within(kings(), pieces())
+                        bit::is_subset_of(kings(), pieces())
                 );
         }
 
