@@ -1,31 +1,32 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Angle.hpp"
+#include "Degrees.hpp"
 #include "Transform.hpp"
 
 namespace dctl {
 namespace board {
 
-template<typename G, int R, int C>
+template<typename Grid, int R, int C>
 struct Coordinates
 {
-        typedef G grid;
+        typedef Grid type;
         BOOST_STATIC_CONSTANT(auto, row = R); 
         BOOST_STATIC_CONSTANT(auto, col = C);
 };
 
-template<typename G, int SQ>
+template<typename Grid, int N>
 struct Square
 {
-        typedef G grid;
-        BOOST_STATIC_CONSTANT(auto, square = SQ);
+        typedef Grid type;
+        BOOST_STATIC_CONSTANT(auto, value = N);
 };
 
 template<typename C>
 struct Coordinates2Square
 {
 private:
-        typedef typename C::grid G;
+        typedef typename C::type G;
 
         BOOST_STATIC_CONSTANT(auto, P = C::row % 2);                    // row parity
         BOOST_STATIC_CONSTANT(auto, Q = C::row / 2);                    // number of row pairs
@@ -45,10 +46,10 @@ template<typename SQ>
 struct Square2Coordinates
 {
 private:
-        typedef typename SQ::grid G;
+        typedef typename SQ::type G;
 
-        BOOST_STATIC_CONSTANT(auto, Q = SQ::square / G::modulo);        // number of row pairs                     
-        BOOST_STATIC_CONSTANT(auto, R0 = SQ::square % G::modulo);       // left edge of the zeroth row
+        BOOST_STATIC_CONSTANT(auto, Q = SQ::value / G::modulo);         // number of row pairs                     
+        BOOST_STATIC_CONSTANT(auto, R0 = SQ::value % G::modulo);        // left edge of the zeroth row
         BOOST_STATIC_CONSTANT(auto, R1 = R0 - G::edge_lo);              // left edge of the first row
         BOOST_STATIC_CONSTANT(auto, P = R1 >= 0);                       // R0 is in the zeroth or first row
         BOOST_STATIC_CONSTANT(auto, R = P? R1 : R0);                    // squares from the left edge
@@ -64,6 +65,18 @@ public:
 
 }       // namespace board
 
+// reduce to a template specialiation for 0 <= N < 360 degrees
+template<typename Grid, int Row, int Column, int N>
+struct rotate<board::Coordinates<Grid, Row, Column>, N>
+{
+        // rotations of Coordinates have to be a multiple of 90 degrees
+        BOOST_STATIC_ASSERT(!mod_090<N>::value);
+        typedef typename rotate<
+                board::Coordinates<Grid, Row, Column>, 
+                mod_360<N>::value
+        >::type type;
+};
+
 // partial specialization for identity rotations
 template<typename Grid, int Row, int Column>
 struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D000>
@@ -71,18 +84,18 @@ struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D000>
         typedef board::Coordinates<Grid, Row, Column> type;
 };
 
-// partial specialization for 90 degrees right (clockwise) rotations
+// partial specialization for 90 degrees left rotations
 template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D270>
-{
-        typedef board::Coordinates<Grid, (Grid::width - 1) - Column, Row> type;
-};
-
-// partial specialization for 90 degrees left (counter-clockwise) rotations
-template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D090>
+struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::L090>
 {
         typedef board::Coordinates<Grid, Column, (Grid::height - 1) - Row> type;
+};
+
+// partial specialization for 90 degrees right rotations
+template<typename Grid, int Row, int Column>
+struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::R090>
+{
+        typedef board::Coordinates<Grid, (Grid::width - 1) - Column, Row> type;
 };
 
 // partial specialization for 180 degrees rotations

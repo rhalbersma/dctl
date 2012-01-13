@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 
 namespace dctl {
 namespace board {
@@ -14,6 +15,8 @@ struct Grid
         public Dimensions
 {
 public:
+        BOOST_STATIC_ASSERT(G > 0);
+
         typedef Grid<Dimensions> BaseGrid;
         
         // diagonal directions
@@ -21,8 +24,8 @@ public:
         BOOST_STATIC_CONSTANT(auto, right_down = left_down + 1);
 
         // orthogonal directions
-        BOOST_STATIC_CONSTANT(auto, right = right_down - left_down);     // == 1 by construction
-        BOOST_STATIC_CONSTANT(auto, down = right_down + left_down);      // == 2 * ((width + G) / 2) + 1
+        BOOST_STATIC_CONSTANT(auto, right = right_down - left_down);     
+        BOOST_STATIC_CONSTANT(auto, down = right_down + left_down);      
 
         // equivalent directions
         BOOST_STATIC_CONSTANT(auto, left_up = right_down);
@@ -67,10 +70,15 @@ public:
         BOOST_STATIC_CONSTANT(auto, edge_lo = edge_re + 1);
         BOOST_STATIC_CONSTANT(auto, edge_ro = edge_lo + row_o - 1);
 
-        // == (H * W) / 2 + (H * W * P) % 2
+        // grid size
         BOOST_STATIC_CONSTANT(auto, size = 
                 modulo * ((Dimensions::height - 1) / 2) + 
                 ((Dimensions::height % 2)? edge_re : edge_ro) + 1
+        );
+
+        // equivalent grid size
+        BOOST_STATIC_ASSERT(size == (Dimensions::height * Dimensions::width) / 2 + 
+                (Dimensions::parity * Dimensions::height * Dimensions::width) % 2
         );
 };
 

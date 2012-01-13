@@ -45,7 +45,7 @@ private:
         BOOST_STATIC_CONSTANT(auto, A = (Color? Degrees::D000 : Degrees::D180) + Board::inverse_angle);
 
 public:
-        // NOTE: parenthesize multiple argument template rvalues to avoid pre-processor argument splitting
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
         BOOST_STATIC_CONSTANT(auto, right      = (rotate<Angle<Degrees::D000>, A>::type::value));
         BOOST_STATIC_CONSTANT(auto, right_up   = (rotate<Angle<Degrees::D045>, A>::type::value));
         BOOST_STATIC_CONSTANT(auto, up         = (rotate<Angle<Degrees::D090>, A>::type::value));

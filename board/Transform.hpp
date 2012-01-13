@@ -2,16 +2,16 @@
 
 namespace dctl {
 
-template<typename Object, int Angle>
+template<typename, int>
 struct rotate;
 
-template<int Index>
+template<int>
 struct inverse;
 
-template<int Index>
+template<int>
 struct mirror_up;
 
-template<int Index>
+template<int>
 struct mirror_down;
 
 }       // namespace dctl
