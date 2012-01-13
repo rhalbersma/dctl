@@ -10,21 +10,22 @@
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/Shift.hpp"
+#include <boost/utility.hpp>    // boost::noncopyable
 
 namespace dctl {       
 namespace capture {
 
 template<typename Rules, typename Board>
-class State
+class State: private boost::noncopyable
 {
 public:
         // constructors
         explicit State(const Position<Board>& p)
         :
+                king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
                 remaining_targets_(initial_targets_),
 		not_occupied_(not_occupied(p)),
-                king_targets_(passive_kings(p)),
                 from_sq_(0)
         {
                 BOOST_ASSERT(invariant());
@@ -33,12 +34,14 @@ public:
         bool invariant() const
         {
                 return (
-                        !is_multiple(from_sq_) && 
-                        bit::is_within(remaining_targets_, initial_targets_)
+                        bit::is_subset_of(king_targets_, initial_targets_) &&
+                        bit::is_subset_of(remaining_targets_, initial_targets_) &&
+                        bit::is_exclusive(not_occupied_, initial_targets_) &&
+                        !bit::is_multiple(from_sq_)
                 );
         }
 
-        // views
+        // views6
         template<int Index> 
         BitBoard targets() const
         {
@@ -400,10 +403,10 @@ private:
         }
 
         // representation
-        BitBoard initial_targets_;      // targets before a capture
-        BitBoard remaining_targets_;    // targets after a capture
+        const BitBoard king_targets_;
+        mutable BitBoard initial_targets_;      // targets before a capture
+        BitBoard remaining_targets_;            // targets after a capture
         BitBoard not_occupied_;
-        BitBoard king_targets_;
         BitBoard from_sq_;
         Value<Rules> current_;
         Value<Rules> best_;

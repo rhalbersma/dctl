@@ -18,37 +18,32 @@ bool operator<(const Value<Rules>& /* left */, const Value<Rules>& /* right */)
 
 template<typename Rules>
 bool operator>(const Value<Rules>& left, const Value<Rules>& right)
-{
-        // false by default
-        return right < left;
+{        
+        return right < left;                            // false by default
 }
 
 template<typename Rules>
 bool operator>=(const Value<Rules>& left, const Value<Rules>& right)
-{
-        // true by default
-        return !(left < right);
+{        
+        return !(left < right);                         // true by default
 }
 
 template<typename Rules>
 bool operator<=(const Value<Rules>& left, const Value<Rules>& right)
-{
-        // true by default
-        return !(right < left);
+{        
+        return !(right < left);                         // true by default
 }
 
 template<typename Rules>
 bool operator==(const Value<Rules>& left, const Value<Rules>& right)
-{
-        // true by default
-        return !(left < right) && !(right < left);
+{        
+        return !(left < right) && !(right < left);      // true by default
 }
 
 template<typename Rules>
 bool operator!=(const Value<Rules>& left, const Value<Rules>& right)
-{
-        // false by default
-        return !(left == right);
+{        
+        return !(left == right);                        // false by default
 }
 
 template<typename Rules>

@@ -69,7 +69,7 @@ template<bool Color>
 void push(BitBoard delta, BitBoard promotion, Stack& stack)
 {
         // necessary pre-conditions for the pieces invariant
-        BOOST_ASSERT(bit::is_within(promotion, delta));
+        BOOST_ASSERT(bit::is_subset_of(promotion, delta));
 
         // necessary pre-conditions for man move semantics
         BOOST_ASSERT(bit::is_double(delta));
@@ -98,7 +98,7 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
                 // EXCEPTION: for intersecting captures, delta overlaps with captured pieces
                 is_intersecting_capture<Rules>(delta, captured_pieces)
         );
-        BOOST_ASSERT(bit::is_within(captured_kings, captured_pieces));
+        BOOST_ASSERT(bit::is_subset_of(captured_kings, captured_pieces));
 
         // necessary pre-conditions for king capture semantics
         BOOST_ASSERT(bit::is_double(delta) || bit::is_zero(delta));
@@ -120,7 +120,7 @@ void push(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings, Sta
                         // EXCEPTION: for intersecting captures, black and white pieces() overlap
                         is_intersecting_capture<Rules>(delta, captured_pieces)
                 ) &&
-                bit::is_within(top(stack).kings(), top(stack).pieces())
+                bit::is_subset_of(top(stack).kings(), top(stack).pieces())
         );
 }
 
@@ -131,12 +131,12 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
         // necessary pre-conditions for the pieces invariant
         BOOST_ASSERT(bit::is_exclusive(delta, captured_pieces));
         BOOST_ASSERT(
-                bit::is_within(promotion, delta) ||
+                bit::is_subset_of(promotion, delta) ||
 
                 // EXCEPTION: for intersecting promotions, delta is empty, and promotion is non-empty
                 is_intersecting_promotion<Rules>(promotion, delta)
         );
-        BOOST_ASSERT(bit::is_within(captured_kings, captured_pieces));
+        BOOST_ASSERT(bit::is_subset_of(captured_kings, captured_pieces));
 
         // necessary pre-conditions for man capture semantics
         BOOST_ASSERT(bit::is_double(delta) || bit::is_zero(delta));
@@ -155,7 +155,7 @@ void push(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard
         BOOST_ASSERT(
                 bit::is_exclusive(top(stack).pieces(Side::black), top(stack).pieces(Side::white)) &&
                 (
-                        bit::is_within(top(stack).kings(), top(stack).pieces()) ||
+                        bit::is_subset_of(top(stack).kings(), top(stack).pieces()) ||
 
                         // EXCEPTION: for intersecting promotions, kings() is non-empty, and occupied() is empty
                         is_intersecting_promotion<Rules>(promotion, delta)

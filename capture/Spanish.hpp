@@ -1,6 +1,5 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 
@@ -76,8 +75,8 @@ private:
         }
 
         // representation
-        PieceCount num_pieces_;
-        PieceCount num_kings_;
+        int num_pieces_;
+        int num_kings_;
 };
 
 template<typename Rules>
