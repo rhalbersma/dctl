@@ -1,40 +1,105 @@
 #include <boost/test/unit_test.hpp> 
 #include <boost/test/test_case_template.hpp>
-#include <boost/mpl/list.hpp>
-#include <boost/type_traits/is_same.hpp>
+
+#include <type_traits>                          // std::is_same
+#include <boost/mpl/list.hpp>                   // boost::mpl::list
+#include "Transform.hpp"
 #include "../../src/board/Angle.hpp"
-#include "../../src/board/Transform.hpp"
+#include "../../src/board/Degrees.hpp"
 
 namespace dctl {
 
 BOOST_AUTO_TEST_SUITE(TestAngle)
 
 typedef boost::mpl::list<
-        Angle<0>, Angle<1>, Angle<2>, Angle<3>, Angle<4>, Angle<5>, Angle<6>, Angle<7>
+        angle<degrees::D000>, 
+        angle<degrees::D045>, 
+        angle<degrees::D090>, 
+        angle<degrees::D135>, 
+        angle<degrees::D180>, 
+        angle<degrees::D225>, 
+        angle<degrees::D270>, 
+        angle<degrees::D315>
 > AngleList;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Inverse, T, AngleList)
+template<typename A1, typename A2>
+struct is_zero_angle_commutator
+:
+        std::is_same<
+                typename rotate< A1, A2 >::type,
+                typename rotate< A2, A1 >::type
+        >              
+{};
+
+template<typename T1>
+struct check_zero_angle_commutator
 {
-        BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::R045>::type, Degrees::L045>::type>::value));
-        BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::L045>::type, Degrees::R045>::type>::value));
-        BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::R090>::type, Degrees::L090>::type>::value));
-        BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::L090>::type, Degrees::R090>::type>::value));
-        BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::R135>::type, Degrees::L135>::type>::value));
-        BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::L135>::type, Degrees::R135>::type>::value));
-        BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::D180>::type, Degrees::D180>::type>::value));
-        BOOST_CHECK((boost::is_same<T, rotate<rotate<T, Degrees::D360>::type, Degrees::D360>::type>::value));
+        template<typename T2>
+        void operator()(boost::mpl::identity<T2>)
+        {
+                BOOST_CHECK((is_zero_angle_commutator< T1, T2 >::value));
+        }
+};
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(ZeroAngleCommutator, T, AngleList)
+{
+        boost::mpl::for_each<AngleList, boost::mpl::make_identity<> >(
+                check_zero_angle_commutator<T>() 
+        );
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Square, T, AngleList)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsInverseRotate, T, AngleList)
 {
-        BOOST_CHECK((boost::is_same<rotate<T, Degrees::L090>::type, rotate<rotate<T, Degrees::L045>::type, Degrees::L045>::type>::value));
-        BOOST_CHECK((boost::is_same<rotate<T, Degrees::R090>::type, rotate<rotate<T, Degrees::R045>::type, Degrees::R045>::type>::value));
-        BOOST_CHECK((boost::is_same<rotate<T, Degrees::D180>::type, rotate<rotate<T, Degrees::L090>::type, Degrees::L090>::type>::value));
-        BOOST_CHECK((boost::is_same<rotate<T, Degrees::D180>::type, rotate<rotate<T, Degrees::R090>::type, Degrees::R090>::type>::value));
-        BOOST_CHECK((boost::is_same<rotate<T, Degrees::R090>::type, rotate<rotate<T, Degrees::L135>::type, Degrees::L135>::type>::value));
-        BOOST_CHECK((boost::is_same<rotate<T, Degrees::L090>::type, rotate<rotate<T, Degrees::R135>::type, Degrees::R135>::type>::value));
-        BOOST_CHECK((boost::is_same<rotate<T, Degrees::D360>::type, rotate<rotate<T, Degrees::D180>::type, Degrees::D180>::type>::value));
-        BOOST_CHECK((boost::is_same<rotate<T, Degrees::D360>::type, rotate<rotate<T, Degrees::D360>::type, Degrees::D360>::type>::value));
+        // the identity and rotations over 180 degrees are their own inverse
+        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::D000>, angle<degrees::D000> >::value));
+        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::D180>, angle<degrees::D180> >::value));
+
+        // left and right rotations are each other's inverse
+        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::L045>, angle<degrees::R045> >::value));
+        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::L090>, angle<degrees::R090> >::value));
+        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::L135>, angle<degrees::R135> >::value));
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsSquareRotate, T, AngleList)
+{
+        BOOST_CHECK((is_square_rotate<T, angle<degrees::L090>, angle<degrees::L045> >::value));
+        BOOST_CHECK((is_square_rotate<T, angle<degrees::L090>, angle<degrees::R135> >::value));
+        BOOST_CHECK((is_square_rotate<T, angle<degrees::R090>, angle<degrees::R045> >::value));
+        BOOST_CHECK((is_square_rotate<T, angle<degrees::R090>, angle<degrees::L135> >::value));
+        BOOST_CHECK((is_square_rotate<T, angle<degrees::D180>, angle<degrees::L090> >::value));
+        BOOST_CHECK((is_square_rotate<T, angle<degrees::D180>, angle<degrees::R090> >::value));
+        BOOST_CHECK((is_square_rotate<T, angle<degrees::D000>, angle<degrees::D180> >::value));
+        BOOST_CHECK((is_square_rotate<T, angle<degrees::D000>, angle<degrees::D000> >::value));
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(InverseIdemPotent, T, AngleList)
+{
+        BOOST_CHECK((
+                std::is_same<
+                        T, 
+                        typename inverse< inverse< T > >::type
+                >::value
+        ));
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(MirrorUpIdemPotent, T, AngleList)
+{
+        BOOST_CHECK((
+                std::is_same<
+                        T, 
+                        typename mirror_up< mirror_up< T > >::type
+                >::value
+        ));
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(MirrorDownIdemPotent, T, AngleList)
+{
+        BOOST_CHECK((
+                std::is_same<
+                        T, 
+                        typename mirror_down< mirror_down< T > >::type
+                >::value
+        ));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

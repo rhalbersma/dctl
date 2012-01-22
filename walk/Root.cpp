@@ -10,7 +10,7 @@
 namespace dctl {
 namespace walk {
 
-#if INTEGRATION_TEST == 0
+#if INTEGRATION_TEST == 1
 
 template<typename Rules, typename Board>
 struct Fixture
