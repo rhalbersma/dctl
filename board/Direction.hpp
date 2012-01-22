@@ -42,18 +42,19 @@ template<bool Color, typename Board>
 struct Direction
 { 
 private:                        
-        BOOST_STATIC_CONSTANT(auto, A = (Color? Degrees::D000 : Degrees::D180) + Board::inverse_angle);
+        BOOST_STATIC_CONSTANT(auto, N = (Color? degrees::D000 : degrees::D180) + Board::inverse_angle::value );
+        typedef angle< N > A;
 
 public:
         // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, right      = (rotate<Angle<Degrees::D000>, A>::type::value));
-        BOOST_STATIC_CONSTANT(auto, right_up   = (rotate<Angle<Degrees::D045>, A>::type::value));
-        BOOST_STATIC_CONSTANT(auto, up         = (rotate<Angle<Degrees::D090>, A>::type::value));
-        BOOST_STATIC_CONSTANT(auto, left_up    = (rotate<Angle<Degrees::D135>, A>::type::value));
-        BOOST_STATIC_CONSTANT(auto, left       = (rotate<Angle<Degrees::D180>, A>::type::value));
-        BOOST_STATIC_CONSTANT(auto, left_down  = (rotate<Angle<Degrees::D225>, A>::type::value));
-        BOOST_STATIC_CONSTANT(auto, down       = (rotate<Angle<Degrees::D270>, A>::type::value));
-        BOOST_STATIC_CONSTANT(auto, right_down = (rotate<Angle<Degrees::D315>, A>::type::value));
+        BOOST_STATIC_CONSTANT(auto, right      = (rotate<angle<degrees::D000>, A>::type::value));
+        BOOST_STATIC_CONSTANT(auto, right_up   = (rotate<angle<degrees::D045>, A>::type::value));
+        BOOST_STATIC_CONSTANT(auto, up         = (rotate<angle<degrees::D090>, A>::type::value));
+        BOOST_STATIC_CONSTANT(auto, left_up    = (rotate<angle<degrees::D135>, A>::type::value));
+        BOOST_STATIC_CONSTANT(auto, left       = (rotate<angle<degrees::D180>, A>::type::value));
+        BOOST_STATIC_CONSTANT(auto, left_down  = (rotate<angle<degrees::D225>, A>::type::value));
+        BOOST_STATIC_CONSTANT(auto, down       = (rotate<angle<degrees::D270>, A>::type::value));
+        BOOST_STATIC_CONSTANT(auto, right_down = (rotate<angle<degrees::D315>, A>::type::value));
 };
 
 }       // namespace board

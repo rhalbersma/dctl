@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include "Angle.hpp"
 #include "Degrees.hpp"
+#include "Modular.hpp"
 #include "Transform.hpp"
 
 namespace dctl {
@@ -67,40 +67,40 @@ public:
 
 // reduce to a template specialiation for 0 <= N < 360 degrees
 template<typename Grid, int Row, int Column, int N>
-struct rotate<board::Coordinates<Grid, Row, Column>, N>
+struct rotate<board::Coordinates<Grid, Row, Column>, angle<N> >
 {
         // rotations of Coordinates have to be a multiple of 90 degrees
-        BOOST_STATIC_ASSERT(!mod_090<N>::value);
+        BOOST_STATIC_ASSERT(is_div_090< angle<N> >::value);
         typedef typename rotate<
                 board::Coordinates<Grid, Row, Column>, 
-                mod_360<N>::value
+                mod_360< boost::mpl::int_<N> >
         >::type type;
 };
 
 // partial specialization for identity rotations
 template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D000>
+struct rotate<board::Coordinates<Grid, Row, Column>, angle<degrees::D000> >
 {
         typedef board::Coordinates<Grid, Row, Column> type;
 };
 
 // partial specialization for 90 degrees left rotations
 template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::L090>
+struct rotate<board::Coordinates<Grid, Row, Column>, angle<degrees::L090> >
 {
         typedef board::Coordinates<Grid, Column, (Grid::height - 1) - Row> type;
 };
 
 // partial specialization for 90 degrees right rotations
 template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::R090>
+struct rotate<board::Coordinates<Grid, Row, Column>, angle<degrees::R090> >
 {
         typedef board::Coordinates<Grid, (Grid::width - 1) - Column, Row> type;
 };
 
 // partial specialization for 180 degrees rotations
 template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, Degrees::D180>
+struct rotate<board::Coordinates<Grid, Row, Column>, angle<degrees::D180> >
 {
         typedef board::Coordinates<Grid, (Grid::height - 1) - Row, (Grid::width - 1) - Column> type;
 };

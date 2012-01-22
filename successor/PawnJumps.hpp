@@ -333,10 +333,10 @@ private:
         )
         {
                 return (
-                        scan<rotate<Angle<Index>, Degrees::R045>::type::value>(jumper, capture, moves) |
-                        scan<rotate<Angle<Index>, Degrees::L045>::type::value>(jumper, capture, moves) |
-                        scan<rotate<Angle<Index>, Degrees::R135>::type::value>(jumper, capture, moves) |
-                        scan<rotate<Angle<Index>, Degrees::L135>::type::value>(jumper, capture, moves)
+                        scan<rotate<angle<Index>, degrees::R045>::type::value>(jumper, capture, moves) |
+                        scan<rotate<angle<Index>, degrees::L045>::type::value>(jumper, capture, moves) |
+                        scan<rotate<angle<Index>, degrees::R135>::type::value>(jumper, capture, moves) |
+                        scan<rotate<angle<Index>, degrees::L135>::type::value>(jumper, capture, moves)
                 );
         }
         
@@ -347,8 +347,8 @@ private:
         )
         {
                 return (
-                        scan<rotate<Angle<Index>, Degrees::R090>::type::value>(jumper, capture, moves) |
-                        scan<rotate<Angle<Index>, Degrees::L090>::type::value>(jumper, capture, moves)
+                        scan<rotate<angle<Index>, degrees::R090>::type::value>(jumper, capture, moves) |
+                        scan<rotate<angle<Index>, degrees::L090>::type::value>(jumper, capture, moves)
                 );
         }
         
@@ -358,7 +358,7 @@ private:
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_up>
         )
         {
-                return scan<mirror_up<Index>::value>(jumper, capture, moves);
+                return scan<mirror_up< angle<Index> >::type::value>(jumper, capture, moves);
         }
         
         // partial specialization for turns in the 1 mirrored backward direction
@@ -367,7 +367,7 @@ private:
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_down>
         )
         {
-                return scan<mirror_down<Index>::value>(jumper, capture, moves);
+                return scan<mirror_down< angle<Index> >::type::value>(jumper, capture, moves);
         }
 
         template<int Index>

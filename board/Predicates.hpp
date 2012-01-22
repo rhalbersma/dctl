@@ -2,6 +2,9 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/integral_c.hpp>
+#include "Angle.hpp"
+#include "Dimensions.hpp"
+#include "Transform.hpp"
 #include "Coordinates.hpp"
 #include "Grid.hpp"
 #include "Traits.hpp"
@@ -134,7 +137,7 @@ private:
         typedef typename Square2Coordinates< Square<E, SQ> >::type External;
 
         // rotated coordinates within the external grid
-        typedef typename rotate<External, Board::angle>::type rotated;
+        typedef typename rotate<External, typename Board::full_angle >::type rotated;
 
 public:
         // bit coordintaes re-interpreted within the internal grid
@@ -155,7 +158,7 @@ private:
         typedef typename Square2Coordinates< Square<I, B> >::type Internal;
 
         // rotated coordinates within the external grid
-        typedef typename rotate<Internal, Board::inverse_angle>::type rotated;
+        typedef typename rotate<Internal, typename Board::inverse_angle >::type rotated;
 
 public:
         // square coordinates re-interpreted within the internal grid

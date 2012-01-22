@@ -23,7 +23,7 @@ public:
 
         // external and internal grids
         typedef Grid<Dimensions> ExternalGrid;
-        typedef Grid<typename rotate<Dimensions, Structure::angle>::type, Structure::ghosts> InternalGrid;
+        typedef Grid<typename rotate<Dimensions, typename Structure::full_angle >::type, Structure::ghosts> InternalGrid;
 
         // essential bitboard masks
         static const BitBoard squares;                          // bit mask of legal squares, excluding borders
