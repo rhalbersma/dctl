@@ -12,6 +12,8 @@
 
 namespace dctl {
 
+#if INTEGRATION_TEST == 1
+
 BOOST_AUTO_TEST_SUITE(TestSuccessor)
 
 BOOST_AUTO_TEST_CASE(Italian)
@@ -113,5 +115,7 @@ BOOST_AUTO_TEST_CASE(Spanish)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+#endif
 
 }       // namespace dctl

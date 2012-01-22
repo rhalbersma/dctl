@@ -5,6 +5,8 @@
 namespace dctl {
 namespace setup {
 
+#if INTEGRATION_TEST == 1
+
 BOOST_AUTO_TEST_SUITE(TestSetup)
 
 BOOST_AUTO_TEST_CASE(Wieger)
@@ -44,6 +46,8 @@ BOOST_AUTO_TEST_CASE(Wieger)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+#endif
 
 }       // namespace setup
 }       // namespace dctl
