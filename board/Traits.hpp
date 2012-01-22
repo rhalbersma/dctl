@@ -1,9 +1,12 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
+#include <boost/mpl/arithmetic.hpp>     // boost::mpl:: divides, modulus
+#include <boost/mpl/comparison.hpp>     // boost::mpl:: equal_to, not_equal_to
+#include <boost/mpl/int.hpp>            // boost::mpl:: int_
+#include <boost/mpl/logical.hpp>        // boost::mpl:: not_, and_, or_
+#include "Angle.hpp"
 #include "Degrees.hpp"
+#include "Traits_fwd.hpp"
 #include "Transform.hpp"
-#include "../utility/Int2Type.hpp"
 
 namespace dctl {
 namespace board {
@@ -24,85 +27,98 @@ namespace board {
 */
 
 template<int N> 
-struct is_diagonal      
-{
-        BOOST_STATIC_ASSERT(Degrees::D000 <= N && N < Degrees::D360);
-
-        // right_up, left_up, left_down, right_down
-        BOOST_STATIC_CONSTANT(auto, value = (N % 2) != 0); 
-};
-
-template<int N> 
-struct is_orthogonal    
-{
-        BOOST_STATIC_ASSERT(Degrees::D000 <= N && N < Degrees::D360);
-
+struct is_orthogonal< angle<N> >
+: 
         // right, up, left, down
-        BOOST_STATIC_CONSTANT(auto, value = !is_diagonal<N>::value); 
-};
+        is_div_090< angle<N> > 
+{}; 
 
 template<int N> 
-struct is_up            
-{ 
-        BOOST_STATIC_ASSERT(Degrees::D000 <= N && N < Degrees::D360);
+struct is_diagonal< angle<N> >      
+:
+        // right_up, left_up, left_down, right_down
+        boost::mpl::not_< is_orthogonal< angle<N> > > 
+{};
 
+template<int N> 
+struct is_up< angle<N> >            
+:
         // right_up, up, left_up
-        BOOST_STATIC_CONSTANT(auto, value = !(N / 4) && (N % 4)); 
-};
+        boost::mpl::and_<                 
+                boost::mpl::equal_to<
+                        boost::mpl::divides< 
+                                boost::mpl::int_<N>, 
+                                boost::mpl::int_<degrees::D180>
+                        >,
+                        boost::mpl::int_<0>
+                >,
+                boost::mpl::not_equal_to<
+                        boost::mpl::modulus<
+                                boost::mpl::int_<N>, 
+                                boost::mpl::int_<degrees::D180>                        
+                        >,
+                        boost::mpl::int_<0>
+                >
+        >
+{};
 
 template<int N> 
-struct is_down          
-{ 
-        BOOST_STATIC_ASSERT(Degrees::D000 <= N && N < Degrees::D360);
-
+struct is_down< angle<N> >
+:
         // left_down, down, right_down
-        BOOST_STATIC_CONSTANT(auto, value = (N / 4) && (N % 4)); 
-};
+        boost::mpl::and_<                 
+                boost::mpl::not_equal_to<
+                        boost::mpl::divides< 
+                                boost::mpl::int_<N>, 
+                                boost::mpl::int_<degrees::D180>
+                        >,
+                        boost::mpl::int_<0>
+                >,
+                boost::mpl::not_equal_to<
+                        boost::mpl::modulus<
+                                boost::mpl::int_<N>, 
+                                boost::mpl::int_<degrees::D180>                        
+                        >,
+                        boost::mpl::int_<0>
+                >
+        >
+{};
 
 template<int N> 
-struct is_left         
-{ 
-        BOOST_STATIC_ASSERT(Degrees::D000 <= N && N < Degrees::D360);
-
+struct is_left< angle<N> >
+:
         // left_up, left, left_down
-        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, value = 
-                (is_down<rotate<Angle<N>, Degrees::L090>::type::value>::value)
-        );
-};   
+        is_down< rotate< angle<N>, angle<degrees::L090> > >
+{};   
 
 template<int N> 
-struct is_right          
-{ 
-        BOOST_STATIC_ASSERT(Degrees::D000 <= N && N < Degrees::D360);
-
+struct is_right< angle<N> >          
+:
         // right, right_up, right_down
-        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, value = 
-                (is_up<rotate<Angle<N>, Degrees::L090>::type::value>::value)
-        );
-};     
+        is_up< rotate< angle<N>, angle<degrees::L090> > >
+{};
 
 template<int N> 
-struct is_positive      
-{ 
-        BOOST_STATIC_ASSERT(Degrees::D000 <= N && N < Degrees::D360);
-
+struct is_positive< angle<N> >
+:
         // right_up, up, left_up, left
-        BOOST_STATIC_CONSTANT(auto, value = 
-                is_up<N>::value || 
-                (is_left<N>::value && !is_down<N>::value)
-        ); 
-};
+        boost::mpl::or_<
+                is_up< angle<N> >,
+                boost::mpl::and_<
+                        is_left< angle<N> >,
+                        boost::mpl::not_< 
+                                is_down< angle<N> >                         
+                        >
+                >
+        >
+{};
 
 template<int N> 
-struct is_negative      
-{ 
-        BOOST_STATIC_ASSERT(Degrees::D000 <= N && N < Degrees::D360);
-
+struct is_negative< angle<N> >      
+: 
         // right, left_down, down, right_down
-        BOOST_STATIC_CONSTANT(auto, value = !is_positive<N>::value); 
-};  
+        boost::mpl::not_< is_positive< angle<N> > > 
+{};  
 
 }       // namespace board
 }       // namespace dctl
