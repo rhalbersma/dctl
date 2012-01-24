@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
-#include <boost/mpl/arithmetic.hpp>     // boost::mpl:: modulus, plus
-#include <boost/mpl/comparison.hpp>     // boost::mpl:: less
-#include <boost/mpl/eval_if.hpp>        // boost::mpl:: eval_if
-#include <boost/mpl/int.hpp>            // boost::mpl:: int_
+#include <boost/mpl/arithmetic.hpp>     // modulus, plus
+#include <boost/mpl/comparison.hpp>     // less
+#include <boost/mpl/eval_if.hpp>        // eval_if
+#include <boost/mpl/int.hpp>            // int_
 
 namespace dctl {
 

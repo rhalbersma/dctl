@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/mpl/int.hpp>            // boost::mpl:: int_
+#include <boost/mpl/int.hpp>            // int_
 #include "Degrees.hpp"
 #include "Modular.hpp"
 #include "Transform.hpp"
@@ -8,8 +8,17 @@
 namespace dctl {
 
 template<int N>
+struct angle_tag
+:
+        boost::mpl::int_<N>
+{};
+
+template<int N>
 struct angle
 {
+        // tag-dispatching for integral constants
+        typedef typename boost::mpl::int_<N>::tag tag;
+
         // angles are subject to arithmetic modulo 360 degrees
         BOOST_STATIC_CONSTANT(auto, value = 
         (        
@@ -48,13 +57,13 @@ template<int N>
 struct mirror_down< angle<N> >
 :
         rotate<
+                angle<degrees::R090>,
                 mirror_up<
                         rotate<
-                                angle<N>, 
-                                angle<degrees::L090>
+                                angle<degrees::L090>,
+                                angle<N> 
                         >
-                >,
-                angle<degrees::R090>
+                >
         >
 {};
 
