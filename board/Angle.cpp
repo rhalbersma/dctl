@@ -72,6 +72,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsSquareRotate, T, AngleList)
         BOOST_CHECK((is_square_rotate<T, angle<degrees::D000>, angle<degrees::D000> >::value));
 }
 
+BOOST_AUTO_TEST_CASE_TEMPLATE(InversePositive, T, AngleList)
+{
+        BOOST_CHECK_GE(inverse<T>::value, 0);
+}
+
 BOOST_AUTO_TEST_CASE_TEMPLATE(InverseIdemPotent, T, AngleList)
 {
         BOOST_CHECK((
