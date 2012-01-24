@@ -1,32 +1,41 @@
 #pragma once
-#include <boost/mpl/comparison.hpp>     // equal_to
-#include <boost/mpl/int.hpp>            // int_
-#include <boost/mpl/modulus.hpp>        // modulus
-#include "Degrees.hpp"
+#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
+#include <boost/mpl/arithmetic.hpp>     // boost::mpl:: modulus, plus
+#include <boost/mpl/comparison.hpp>     // boost::mpl:: less
+#include <boost/mpl/eval_if.hpp>        // boost::mpl:: eval_if
+#include <boost/mpl/int.hpp>            // boost::mpl:: int_
 
 namespace dctl {
 
-// numerical metafunction
-template<typename T>
-struct mod_360
-: 
-        boost::mpl::modulus< 
-                boost::mpl::int_<T::value>, 
-                boost::mpl::int_<degrees::D360> 
-        > 
-{};
-
-// predicate metafunction
-template<typename T>
-struct is_div_090
-: 
-        boost::mpl::equal_to<
-                boost::mpl::modulus< 
-                        boost::mpl::int_<T::value>, 
-                        boost::mpl::int_<degrees::D090> 
+template<
+        typename Numerator, 
+        typename Denominator
+>
+struct abs_modulus
+:
+        boost::mpl::modulus<
+                boost::mpl::eval_if<
+                        boost::mpl::less<
+                                Numerator,
+                                boost::mpl::int_<0>
+                        >,
+                        boost::mpl::plus<
+                                boost::mpl::modulus<
+                                        Numerator, 
+                                        Denominator
+                                >,
+                                Denominator
+                        >,
+                        Numerator
                 >,
-                boost::mpl::int_<0>
+                Denominator
         >
-{};
+{
+        // the remainder is non-negative and less than the denominator
+        BOOST_STATIC_ASSERT(
+                0 <= (abs_modulus<Numerator, Denominator>::value) &&
+                (abs_modulus<Numerator, Denominator>::value) < Denominator::value
+        );
+};
 
 }       // namespace dctl
