@@ -7,18 +7,18 @@
 namespace dctl {
 namespace board {
 
-template<typename Grid, int R, int C>
+template<typename G, int R, int C>
 struct Coordinates
 {
-        typedef Grid type;
+        typedef G grid;
         BOOST_STATIC_CONSTANT(auto, row = R); 
         BOOST_STATIC_CONSTANT(auto, col = C);
 };
 
-template<typename Grid, int N>
+template<typename G, int N>
 struct Square
 {
-        typedef Grid type;
+        typedef G grid;
         BOOST_STATIC_CONSTANT(auto, value = N);
 };
 
@@ -26,7 +26,7 @@ template<typename C>
 struct Coordinates2Square
 {
 private:
-        typedef typename C::type G;
+        typedef typename C::grid G;
 
         BOOST_STATIC_CONSTANT(auto, P = C::row % 2);                    // row parity
         BOOST_STATIC_CONSTANT(auto, Q = C::row / 2);                    // number of row pairs
@@ -46,7 +46,7 @@ template<typename SQ>
 struct Square2Coordinates
 {
 private:
-        typedef typename SQ::type G;
+        typedef typename SQ::grid G;
 
         BOOST_STATIC_CONSTANT(auto, Q = SQ::value / G::modulo);         // number of row pairs                     
         BOOST_STATIC_CONSTANT(auto, R0 = SQ::value % G::modulo);        // left edge of the zeroth row
@@ -65,44 +65,32 @@ public:
 
 }       // namespace board
 
-// reduce to a template specialiation for 0 <= N < 360 degrees
-template<typename Grid, int Row, int Column, int N>
-struct rotate<board::Coordinates<Grid, Row, Column>, angle<N> >
-{
-        // rotations of Coordinates have to be a multiple of 90 degrees
-        BOOST_STATIC_ASSERT(is_div_090< angle<N> >::value);
-        typedef typename rotate<
-                board::Coordinates<Grid, Row, Column>, 
-                mod_360< boost::mpl::int_<N> >
-        >::type type;
-};
-
 // partial specialization for identity rotations
 template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, angle<degrees::D000> >
-{
-        typedef board::Coordinates<Grid, Row, Column> type;
-};
+struct rotate< board::Coordinates<Grid, Row, Column>, angle<degrees::D000> >
+:
+        board::Coordinates<Grid, Row, Column>
+{};
 
 // partial specialization for 90 degrees left rotations
 template<typename Grid, int Row, int Column>
 struct rotate<board::Coordinates<Grid, Row, Column>, angle<degrees::L090> >
-{
-        typedef board::Coordinates<Grid, Column, (Grid::height - 1) - Row> type;
-};
+:
+        board::Coordinates<Grid, Column, (Grid::height - 1) - Row>
+{};
 
 // partial specialization for 90 degrees right rotations
 template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, angle<degrees::R090> >
-{
-        typedef board::Coordinates<Grid, (Grid::width - 1) - Column, Row> type;
-};
+struct rotate< board::Coordinates<Grid, Row, Column>, angle<degrees::R090> >
+:
+        board::Coordinates<Grid, (Grid::width - 1) - Column, Row>
+{};
 
 // partial specialization for 180 degrees rotations
 template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, angle<degrees::D180> >
-{
-        typedef board::Coordinates<Grid, (Grid::height - 1) - Row, (Grid::width - 1) - Column> type;
-};
+struct rotate< board::Coordinates<Grid, Row, Column>, angle<degrees::D180> >
+:
+        board::Coordinates<Grid, (Grid::height - 1) - Row, (Grid::width - 1) - Column>
+{};
 
 }       // namespace dctl

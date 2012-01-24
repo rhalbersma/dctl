@@ -1,22 +1,26 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/mpl/int.hpp>            // boost::mpl::int_
-#include <boost/mpl/integral_c_tag.hpp> // boost::mpl::integral_c_tag
-#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
+#include <boost/mpl/int.hpp>            // boost::mpl:: int_
 #include "Degrees.hpp"
 #include "Modular.hpp"
 #include "Transform.hpp"
-#include <boost/mpl/identity.hpp>
 
 namespace dctl {
 
 template<int N>
 struct angle
 {
-        BOOST_STATIC_CONSTANT(auto, value = mod_360< boost::mpl::int_<N> >::value);
-
+        // angles are subject to arithmetic modulo 360 degrees
+        BOOST_STATIC_CONSTANT(auto, value = 
+        (        
+                abs_modulus< 
+                        boost::mpl::int_<N>, 
+                        boost::mpl::int_<degrees::D360> 
+                >::value
+        ));
+        
         // lazily evaluable metadata == nullary metafunction
-        typedef angle<N> type;
+        typedef angle<value> type;      
 };
 
 template<int N1, int N2>

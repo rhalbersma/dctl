@@ -10,6 +10,8 @@ namespace dctl {
         rotations are denoted as <L><XXX>, where <XXX> runs from 45 until 135.
         Clockwise rotations are similarly denoted as <R><XXX>. 
 
+        +++ BLACK POINT OF VIEW +++
+
                 D090 = L090
                      |
         D135 = L135  |  D045 = L045
@@ -21,7 +23,10 @@ namespace dctl {
         D225 = R135  |  D315 = R045
                      |
                 D270 = R090
+
+        +++ WHITE POINT OF VIEW +++
 */
+
 struct degrees
 {
         BOOST_STATIC_CONSTANT(auto, D000 =    0); 

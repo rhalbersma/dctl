@@ -30,7 +30,13 @@ template<int N>
 struct is_orthogonal< angle<N> >
 : 
         // right, up, left, down
-        is_div_090< angle<N> > 
+        boost::mpl::equal_to<
+                boost::mpl::modulus< 
+                        boost::mpl::int_<N>, 
+                        boost::mpl::int_<degrees::D090> 
+                >,
+                boost::mpl::int_<0>
+        >
 {}; 
 
 template<int N> 
