@@ -1,9 +1,9 @@
 #include <boost/test/unit_test.hpp> 
 #include <boost/test/test_case_template.hpp>
-
-#include <type_traits>                          // std::is_same
-#include <boost/mpl/list.hpp>                   // boost::mpl::list
-#include "Transform.hpp"
+#include <boost/mpl/list.hpp>                   // list
+#include <boost/mpl/placeholders.hpp>           // _1
+using namespace boost::mpl::placeholders;
+#include "Transform.hpp"                        // rotate, inverse, mirror_up, mirror_down
 #include "../../src/board/Angle.hpp"
 #include "../../src/board/Degrees.hpp"
 
@@ -22,89 +22,24 @@ typedef boost::mpl::list<
         angle<degrees::D315>
 > AngleList;
 
-template<typename A1, typename A2>
-struct is_zero_angle_commutator
-:
-        std::is_same<
-                typename rotate< A1, A2 >::type,
-                typename rotate< A2, A1 >::type
-        >              
-{};
-
-template<typename T1>
-struct check_zero_angle_commutator
+BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, AngleList)
 {
-        template<typename T2>
-        void operator()(boost::mpl::identity<T2>)
-        {
-                BOOST_CHECK((is_zero_angle_commutator< T1, T2 >::value));
-        }
-};
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(ZeroAngleCommutator, T, AngleList)
-{
-        boost::mpl::for_each<AngleList, boost::mpl::make_identity<> >(
-                check_zero_angle_commutator<T>() 
-        );
+        check_right_action<T, AngleList>()();
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsInverseRotate, T, AngleList)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentInverse, T, AngleList)
 {
-        // the identity and rotations over 180 degrees are their own inverse
-        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::D000>, angle<degrees::D000> >::value));
-        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::D180>, angle<degrees::D180> >::value));
-
-        // left and right rotations are each other's inverse
-        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::L045>, angle<degrees::R045> >::value));
-        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::L090>, angle<degrees::R090> >::value));
-        BOOST_CHECK((is_inverse_rotate<T, angle<degrees::L135>, angle<degrees::R135> >::value));
+        BOOST_CHECK((is_idempotent< inverse<_1> , T>::value));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsSquareRotate, T, AngleList)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentMirrorUp, T, AngleList)
 {
-        BOOST_CHECK((is_square_rotate<T, angle<degrees::L090>, angle<degrees::L045> >::value));
-        BOOST_CHECK((is_square_rotate<T, angle<degrees::L090>, angle<degrees::R135> >::value));
-        BOOST_CHECK((is_square_rotate<T, angle<degrees::R090>, angle<degrees::R045> >::value));
-        BOOST_CHECK((is_square_rotate<T, angle<degrees::R090>, angle<degrees::L135> >::value));
-        BOOST_CHECK((is_square_rotate<T, angle<degrees::D180>, angle<degrees::L090> >::value));
-        BOOST_CHECK((is_square_rotate<T, angle<degrees::D180>, angle<degrees::R090> >::value));
-        BOOST_CHECK((is_square_rotate<T, angle<degrees::D000>, angle<degrees::D180> >::value));
-        BOOST_CHECK((is_square_rotate<T, angle<degrees::D000>, angle<degrees::D000> >::value));
+        BOOST_CHECK((is_idempotent< mirror_up<_1>, T>::value));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(InversePositive, T, AngleList)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentMirrorDown, T, AngleList)
 {
-        BOOST_CHECK_GE(inverse<T>::value, 0);
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(InverseIdemPotent, T, AngleList)
-{
-        BOOST_CHECK((
-                std::is_same<
-                        T, 
-                        typename inverse< inverse< T > >::type
-                >::value
-        ));
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(MirrorUpIdemPotent, T, AngleList)
-{
-        BOOST_CHECK((
-                std::is_same<
-                        T, 
-                        typename mirror_up< mirror_up< T > >::type
-                >::value
-        ));
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(MirrorDownIdemPotent, T, AngleList)
-{
-        BOOST_CHECK((
-                std::is_same<
-                        T, 
-                        typename mirror_down< mirror_down< T > >::type
-                >::value
-        ));
+        BOOST_CHECK((is_idempotent< mirror_down<_1>, T>::value));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

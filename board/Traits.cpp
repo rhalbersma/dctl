@@ -1,9 +1,11 @@
 #include <boost/test/unit_test.hpp> 
 #include <boost/test/test_case_template.hpp>
+
 #include <boost/mpl/list.hpp>                   // boost::mpl::list
+
+#include "../../src/board/Traits.hpp"
 #include "../../src/board/Angle.hpp"
 #include "../../src/board/Degrees.hpp"
-#include "../../src/board/Traits.hpp"
 
 namespace dctl {
 namespace board {
