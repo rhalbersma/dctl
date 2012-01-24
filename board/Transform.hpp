@@ -2,28 +2,28 @@
 
 namespace dctl {
 
-template<typename T, typename A>
+template<typename X, typename G>
 struct rotate
 :
-        rotate<typename T::type, typename A::type>
+        rotate<typename X::type, typename G::type>
 {};
 
-template<typename T>
+template<typename G>
 struct inverse
 :
-        inverse<typename T::type>
+        inverse<typename G::type>
 {};
 
-template<typename T>
+template<typename G>
 struct mirror_up
 :
-        mirror_up<typename T::type>
+        mirror_up<typename G::type>
 {};
 
-template<typename T>
+template<typename G>
 struct mirror_down
 :
-        mirror_down<typename T::type>
+        mirror_down<typename G::type>
 {};
 
 }       // namespace dctl

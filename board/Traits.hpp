@@ -12,7 +12,10 @@ namespace dctl {
 namespace board {
 
 // indices for the 8 named directions from the white point of view
-/*                      
+/*
+
+        +++ BLACK POINT OF VIEW +++
+        
                   up = 2
                      |
         3 = left_up  |  right_up = 1
@@ -24,6 +27,9 @@ namespace board {
       5 = left_down  |  right_down = 7
                      |
                 down = 6
+
+        +++ WHITE POINT OF VIEW +++
+
 */
 
 template<int N> 

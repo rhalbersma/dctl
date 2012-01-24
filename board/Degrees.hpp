@@ -5,7 +5,7 @@
 namespace dctl {
 
 /*
-        degrees are denoted as <D><XXX>, where XXX is exactly three characters 
+        Degrees are denoted as <D><XXX>, where XXX is exactly three characters 
         long, running from 000 until 360 in steps of 45. Counterclockwise 
         rotations are denoted as <L><XXX>, where <XXX> runs from 45 until 135.
         Clockwise rotations are similarly denoted as <R><XXX>. 
