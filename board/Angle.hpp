@@ -57,13 +57,13 @@ template<int N>
 struct mirror_down< angle<N> >
 :
         rotate<
-                angle<degrees::R090>,
                 mirror_up<
                         rotate<
-                                angle<degrees::L090>,
-                                angle<N> 
+                                angle<N>, 
+                                angle<degrees::L090>
                         >
-                >
+                >,
+                angle<degrees::R090>
         >
 {};
 
