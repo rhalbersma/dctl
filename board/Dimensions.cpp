@@ -5,8 +5,7 @@
 
 #include "Transform.hpp"
 #include "../../src/board/Dimensions.hpp"
-#include "../../src/board/Angle.hpp"
-#include "../../src/board/Degrees.hpp"
+#include "../../src/board/Group.hpp"
 
 namespace dctl {
 namespace board {
@@ -23,16 +22,11 @@ typedef boost::mpl::list<
         Dimensions<12, 10, true>
 > DimensionsList;
 
-typedef boost::mpl::list<
-        angle<degrees::D000>, 
-        angle<degrees::D090>, 
-        angle<degrees::D180>, 
-        angle<degrees::D270> 
-> AngleList;
-
 BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, DimensionsList)
 {
-        check_right_action<T, AngleList>()();
+        check_right_action<T, group::C1>()();
+        check_right_action<T, group::C2>()();
+        check_right_action<T, group::C4>()();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
