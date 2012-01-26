@@ -24,9 +24,9 @@ typedef boost::mpl::list<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, DimensionsList)
 {
-        check_right_action<T, group::C1>()();
-        check_right_action<T, group::C2>()();
-        check_right_action<T, group::C4>()();
+        is_right_action<T, group::C1>()();
+        is_right_action<T, group::C2>()();
+        is_right_action<T, group::C4>()();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

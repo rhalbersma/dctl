@@ -17,232 +17,264 @@
 namespace dctl {
 
 template<typename G>
-struct check_axioms
+struct is_axioms
 {
         void operator()()
         {
-                check_closure< G >()();
-                check_associativity< G >()();
-                check_identity< G >()();
-                check_inverse< G >()();
+                is_closure< G >()();
+                is_associativity< G >()();
+                is_identity< G >()();
+                is_inverse< G >()();
         }
 };
 
 template<typename G>
-struct check_closure
+struct is_closure
 {
         void operator()()
         {
-                boost::mpl::for_each<G, boost::mpl::make_identity<> >(
-                        check_element_closure<G>()
+                typedef typename group::set<G>::type S;
+
+                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
+                        is_element_closure<G>()
                 );
         }
 };
 
 template<typename G>
-struct check_element_closure
+struct is_element_closure
 {
         template<typename A>
         void operator()(boost::mpl::identity<A>)
         {
-                boost::mpl::for_each<G, boost::mpl::make_identity<> >(
-                        check_pair_closure<G, A>()
+                typedef typename group::set<G>::type S;
+
+                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
+                        is_pair_closure<G, A>()
                 );
         }
 };
 
 template<typename G, typename A>
-struct check_pair_closure
+struct is_pair_closure
 {
         template<typename B>
         void operator()(boost::mpl::identity<B>)
         {
-                BOOST_CHECK((boost::mpl::contains<G, typename rotate<A, B>::type>::value));
+                typedef typename group::set<G>::type S;
+                typedef typename group::plus<G>::type Op;
+
+                BOOST_CHECK((
+                        boost::mpl::contains< 
+                                S, typename boost::mpl::apply< Op, A, B >::type
+                        >::value
+                ));
         }
 };
 
 template<typename G>
-struct check_associativity
+struct is_associativity
 {
         void operator()()
         {
-                boost::mpl::for_each<G, boost::mpl::make_identity<> >(
-                        check_element_associativity<G>()
+                typedef typename group::set<G>::type S;
+
+                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
+                        is_element_associativity<G>()
                 );
         }
 };
 
 template<typename G>
-struct check_element_associativity
+struct is_element_associativity
 {
         template<typename A>
         void operator()(boost::mpl::identity<A>)
         {
-                boost::mpl::for_each<G, boost::mpl::make_identity<> >(
-                        check_pair_associativity<G, A>()
+                typedef typename group::set<G>::type S;
+
+                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
+                        is_pair_associativity<G, A>()
                 );
         }
 };
 
 template<typename G, typename A>
-struct check_pair_associativity
+struct is_pair_associativity
 {
         template<typename B>
         void operator()(boost::mpl::identity<B>)
         {
-                boost::mpl::for_each<G, boost::mpl::make_identity<> >(
-                        check_triplet_associativity<A, B>()
+                typedef typename group::set<G>::type S;
+
+                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
+                        is_triplet_associativity<G, A, B>()
                 );
         }
 };
 
-template<typename A, typename B>
-struct check_triplet_associativity
+template<typename G, typename A, typename B>
+struct is_triplet_associativity
 {
         template<typename C>
         void operator()(boost::mpl::identity<C>)
         {
+                typedef typename group::plus<G>::type Op;
+
                 BOOST_CHECK((
                         std::is_same<
-                                typename rotate< A, rotate< B, C > >::type,
-                                typename rotate< rotate< A, B >, C >::type
+                                typename boost::mpl::apply<
+                                        Op, A, typename boost::mpl::apply< Op, B, C >::type 
+                                >::type,
+                                typename boost::mpl::apply< 
+                                        Op, typename boost::mpl::apply< Op, A, B >::type, C 
+                                >::type
                         >::value                        
                 ));                
         }
 };
 
 template<typename G>
-struct check_identity
+struct is_identity
 {
         void operator()()
         {
-                boost::mpl::for_each<G, boost::mpl::make_identity<> >(
-                        check_identity_element<G>()
+                typedef typename group::set<G>::type S;
+
+                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
+                        is_identity_element<G>()
                 );
         }
 };
 
 template<typename G>
-struct check_identity_element
+struct is_identity_element
 {
         template<typename A>
         void operator()(boost::mpl::identity<A>)
         {
-                typedef typename group_identity<G>::type E;
+                typedef typename group::set<G>::type S;
+                typedef typename group::plus<G>::type Op;
+                typedef typename group::identity<G>::type E;
 
-                BOOST_CHECK((boost::mpl::contains<G, E>::value));
-                BOOST_CHECK((std::is_same<typename rotate< A, E >::type, A>::value));
-                BOOST_CHECK((std::is_same<typename rotate< E, A >::type, A>::value));
+                BOOST_CHECK((boost::mpl::contains<S, E>::value));
+                BOOST_CHECK((std::is_same<typename boost::mpl::apply< Op, A, E >::type, A>::value));
+                BOOST_CHECK((std::is_same<typename boost::mpl::apply< Op, E, A >::type, A>::value));
         }
 };
 
 template<typename G>
-struct check_inverse
+struct is_inverse
 {
         void operator()()
         {
-                boost::mpl::for_each<G, boost::mpl::make_identity<> >(
-                        check_inverse_element<G>()
+                typedef typename group::set<G>::type S;
+
+                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
+                        is_inverse_element<G>()
                 );
         }
 };
 
 template<typename G>
-struct check_inverse_element
+struct is_inverse_element
 {
         template<typename A>
         void operator()(boost::mpl::identity<A>)
         {
+                typedef typename group::set<G>::type S;
+                typedef typename group::plus<G>::type Op;
+                typedef typename group::identity<G>::type E;
                 typedef typename inverse<A>::type I;
-                typedef typename group_identity<G>::type E;
 
-                BOOST_CHECK((boost::mpl::contains<G, I>::value));
-                BOOST_CHECK((std::is_same<typename rotate< A, I >::type, E>::value));
-                BOOST_CHECK((std::is_same<typename rotate< I, A >::type, E>::value));
+                BOOST_CHECK((boost::mpl::contains<S, I>::value));
+                BOOST_CHECK((std::is_same<typename boost::mpl::apply< Op, A, I >::type, E>::value));
+                BOOST_CHECK((std::is_same<typename boost::mpl::apply< Op, I, A >::type, E>::value));
         }
 };
 
 template<typename X, typename G>
-struct check_right_action
+struct is_right_action
 {
         void operator()()
         {
-                check_right_associativity< X, G >()();
-                check_right_identity< X, G >()();
+                is_right_associativity< X, G >()();
+                is_right_identity< X, G >()();
         }
 };
 
 template<typename X, typename G>
-struct check_right_associativity
+struct is_right_associativity
 {
         void operator()()
         {
-                boost::mpl::for_each<G, boost::mpl::make_identity<> >(
-                        check_element_right_associativity<X, G>()
+                typedef typename group::set<G>::type S;
+
+                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
+                        is_element_right_associativity<X, G>()
                 );
         }
 };
 
 template<typename X, typename G>
-struct check_element_right_associativity
+struct is_element_right_associativity
 {
         template<typename A>
         void operator()(boost::mpl::identity<A>)
         {
-                boost::mpl::for_each<G, boost::mpl::make_identity<> >(
-                        check_pair_right_associativity<X, A>()
+                typedef typename group::set<G>::type S;
+
+                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
+                        is_pair_right_associativity<X, G, A>()
                 );
         }
 };
 
-template<typename X, typename A>
-struct check_pair_right_associativity
+template<typename X, typename G, typename A>
+struct is_pair_right_associativity
 {
         template<typename B>
         void operator()(boost::mpl::identity<B>)
         {
+                typedef typename group::plus<G>::type Op;
+
                 BOOST_CHECK((
                         std::is_same<
-                                typename rotate< X, rotate< A, B > >::type,
-                                typename rotate< rotate< X, A >, B >::type
+                                typename boost::mpl::apply< 
+                                        Op, X, typename boost::mpl::apply< Op, A, B >::type 
+                                >::type,
+                                typename boost::mpl::apply<
+                                        Op, typename boost::mpl::apply< Op, X, A >::type, B 
+                                >::type
                         >::value                        
                 ));
         }
 };
 
 template<typename X, typename G>
-struct check_right_identity
+struct is_right_identity
 {
         void operator()()
         {
+                typedef typename group::plus<G>::type Op;
+                typedef typename group::identity<G>::type E;
+
                 BOOST_CHECK((
                         std::is_same<
-                                typename rotate< X, group_identity<G> >::type,
+                                typename boost::mpl::apply< Op, X, E >::type,
                                 X
                         >::value                        
                 ));
         }
 };
 
-template<typename G>
-struct group_identity
-:
-        boost::mpl::deref<
-                typename boost::mpl::find_if<
-                        G,
-                        boost::mpl::equal_to<
-                                boost::mpl::placeholders::_1,
-                                boost::mpl::int_<0>
-                        >
-                >::type
-        >::type
-{};
-
 template<typename F, typename X>
 struct is_idempotent
 :
         std::is_same<
-                typename boost::mpl::apply< F, typename boost::mpl::apply< F, X >::type >::type,
+                typename boost::mpl::apply< 
+                        F, typename boost::mpl::apply< F, X >::type 
+                >::type,
                 X
         >              
 {};
