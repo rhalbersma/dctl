@@ -11,8 +11,11 @@
 #include <boost/mpl/identity.hpp>               // identity, make_identity
 #include <boost/mpl/int.hpp>                    // int_
 #include <boost/mpl/logical.hpp>                // not_
+#include <boost/mpl/fold.hpp>
 #include <boost/mpl/placeholders.hpp>           // _1
+using namespace boost::mpl::placeholders;
 #include "../../src/board/Transform.hpp"        // rotate
+#include "../../src/board/Group.hpp"        // rotate
 
 namespace dctl {
 
@@ -23,8 +26,8 @@ struct is_axioms
         {
                 is_closure< G >()();
                 is_associativity< G >()();
-                is_identity< G >()();
-                is_inverse< G >()();
+                BOOST_CHECK(is_identity< G >::type::value);
+                BOOST_CHECK(is_inverse< G >::type::value);
         }
 };
 
@@ -134,64 +137,58 @@ struct is_triplet_associativity
         }
 };
 
-template<typename G>
-struct is_identity
+template<typename G, typename A>
+struct is_identity_element
 {
-        void operator()()
-        {
-                typedef typename group::set<G>::type S;
+        typedef typename group::set<G>::type S;
+        typedef typename group::plus<G>::type Op;
+        typedef typename group::identity<G>::type E;
 
-                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
-                        is_identity_element<G>()
-                );
-        }
+        typedef typename boost::mpl::and_<
+                boost::mpl::contains< S, E >, 
+                std::is_same<typename boost::mpl::apply< Op, A, E >::type, A>,
+                std::is_same<typename boost::mpl::apply< Op, E, A >::type, A>
+        >::type type;
 };
 
 template<typename G>
-struct is_identity_element
-{
-        template<typename A>
-        void operator()(boost::mpl::identity<A>)
-        {
-                typedef typename group::set<G>::type S;
-                typedef typename group::plus<G>::type Op;
-                typedef typename group::identity<G>::type E;
+struct is_identity
+:
+        boost::mpl::fold<
+                typename group::set<G>::type,
+                boost::mpl::true_,
+                boost::mpl::and_<
+                        _1, is_identity_element< G, _2 >
+                >
+        >
+{};
 
-                BOOST_CHECK((boost::mpl::contains<S, E>::value));
-                BOOST_CHECK((std::is_same<typename boost::mpl::apply< Op, A, E >::type, A>::value));
-                BOOST_CHECK((std::is_same<typename boost::mpl::apply< Op, E, A >::type, A>::value));
-        }
+template<typename G, typename A>
+struct is_inverse_element
+{
+        typedef typename group::set<G>::type S;
+        typedef typename group::plus<G>::type Op;
+        typedef typename group::identity<G>::type E;
+        typedef typename inverse<A>::type I;
+
+        typedef typename boost::mpl::and_<
+                boost::mpl::contains< S, I >,
+                std::is_same<typename boost::mpl::apply< Op, A, I >::type, E>,
+                std::is_same<typename boost::mpl::apply< Op, I, A >::type, E>
+        >::type type;
 };
 
 template<typename G>
 struct is_inverse
-{
-        void operator()()
-        {
-                typedef typename group::set<G>::type S;
-
-                boost::mpl::for_each<S, boost::mpl::make_identity<> >(
-                        is_inverse_element<G>()
-                );
-        }
-};
-
-template<typename G>
-struct is_inverse_element
-{
-        template<typename A>
-        void operator()(boost::mpl::identity<A>)
-        {
-                typedef typename group::set<G>::type S;
-                typedef typename group::plus<G>::type Op;
-                typedef typename group::identity<G>::type E;
-                typedef typename inverse<A>::type I;
-
-                BOOST_CHECK((boost::mpl::contains<S, I>::value));
-                BOOST_CHECK((std::is_same<typename boost::mpl::apply< Op, A, I >::type, E>::value));
-                BOOST_CHECK((std::is_same<typename boost::mpl::apply< Op, I, A >::type, E>::value));
-        }
-};
+:
+        boost::mpl::fold<
+                typename group::set<G>::type,
+                boost::mpl::true_,
+                boost::mpl::and_<
+                        _1, is_inverse_element< G, _2 >
+                >
+        >
+{};
 
 template<typename X, typename G>
 struct is_right_action
