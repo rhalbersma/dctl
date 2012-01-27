@@ -1,9 +1,8 @@
 #pragma once
-#include <boost/mpl/at.hpp>
+#include <boost/mpl/at.hpp>             // at
 #include <boost/mpl/list.hpp>           // list
-#include <boost/mpl/placeholders.hpp>
-using namespace boost::mpl::placeholders;
-#include <boost/mpl/vector.hpp>
+#include <boost/mpl/quote.hpp>          // quote2
+#include <boost/mpl/vector.hpp>         // vector
 #include "Angle.hpp"
 #include "Degrees.hpp"
 #include "Transform.hpp"
@@ -43,7 +42,7 @@ typedef Group<
         boost::mpl::list<
                 angle<degrees::D000> 
         >,
-        rotate<_1, _2>,
+        boost::mpl::quote2< rotate >,
         angle<degrees::D000>
 > C1;
 
@@ -52,7 +51,7 @@ typedef Group<
                 angle<degrees::D000>, 
                 angle<degrees::D180>
         > ,
-        rotate<_1, _2>,
+        boost::mpl::quote2< rotate >,
         angle<degrees::D000>
 > C2;
 
@@ -63,7 +62,7 @@ typedef Group<
                 angle<degrees::D180>, 
                 angle<degrees::D270>
         > ,
-        rotate<_1, _2>,
+        boost::mpl::quote2< rotate >,
         angle<degrees::D000>
 > C4;
 
@@ -78,7 +77,7 @@ typedef Group<
                 angle<degrees::D270>, 
                 angle<degrees::D315>
         > ,
-        rotate<_1, _2>,
+        boost::mpl::quote2< rotate >,
         angle<degrees::D000>
 > C8;
 
