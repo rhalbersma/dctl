@@ -1,7 +1,9 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/int.hpp>            // int_
+#include <boost/mpl/quote.hpp>          // quote1, quote2
 #include "Degrees.hpp"
+#include "Group.hpp"
 #include "Modular.hpp"
 #include "Transform.hpp"
 
@@ -16,9 +18,6 @@ struct angle_tag
 template<int N>
 struct angle
 {
-        // tag-dispatching for integral constants
-        typedef typename boost::mpl::int_<N>::tag tag;
-
         // angles are subject to arithmetic modulo 360 degrees
         BOOST_STATIC_CONSTANT(auto, value = 
         (        
