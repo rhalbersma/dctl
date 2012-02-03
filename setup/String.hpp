@@ -56,8 +56,7 @@ struct read<Board, pdn::protocol, Token>
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch(ch) {
-                        case Token::black:
-                                // falling through
+                        case Token::black:      
                         case Token::white:
                                 p_side = read_color<Token>(ch);
                                 break;                                

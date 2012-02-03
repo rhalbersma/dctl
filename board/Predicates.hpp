@@ -137,7 +137,7 @@ private:
         typedef typename Square2Coordinates< Square<E, SQ> >::type External;
 
         // rotated coordinates within the external grid
-        typedef typename rotate<External, typename Board::full_angle >::type rotated;
+        typedef typename rotate<External, typename Board::full_angle >::type::grid rotated;
 
 public:
         // bit coordintaes re-interpreted within the internal grid
@@ -158,7 +158,7 @@ private:
         typedef typename Square2Coordinates< Square<I, B> >::type Internal;
 
         // rotated coordinates within the external grid
-        typedef typename rotate<Internal, typename Board::inverse_angle >::type rotated;
+        typedef typename rotate<Internal, typename Board::inverse_angle >::type::grid rotated;
 
 public:
         // square coordinates re-interpreted within the internal grid

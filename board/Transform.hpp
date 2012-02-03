@@ -1,29 +1,11 @@
 #pragma once
+#include "../utility/Lazy.hpp"
 
 namespace dctl {
 
-template<typename X, typename G>
-struct rotate
-:
-        rotate<typename X::type, typename G::type>
-{};
-
-template<typename G>
-struct inverse
-:
-        inverse<typename G::type>
-{};
-
-template<typename G>
-struct mirror_up
-:
-        mirror_up<typename G::type>
-{};
-
-template<typename G>
-struct mirror_down
-:
-        mirror_down<typename G::type>
-{};
+LAZY_BINARY_METAFUNCTION(rotate)
+LAZY_UNARY_METAFUNCTION(inverse)
+LAZY_UNARY_METAFUNCTION(mirror_up)
+LAZY_UNARY_METAFUNCTION(mirror_down)
 
 }       // namespace dctl

@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
-#include "Angle.hpp"
-#include "Degrees.hpp"
-#include "Transform.hpp"
+#include "Angle.hpp"                    // angle
+#include "Degrees.hpp"                  // D000, L090, R090, D180
+#include "Transform.hpp"                // rotate
 
 namespace dctl {
 namespace board {

@@ -1,12 +1,11 @@
 #pragma once
-#include <boost/mpl/arithmetic.hpp>     // boost::mpl:: divides, modulus
-#include <boost/mpl/comparison.hpp>     // boost::mpl:: equal_to, not_equal_to
-#include <boost/mpl/int.hpp>            // boost::mpl:: int_
-#include <boost/mpl/logical.hpp>        // boost::mpl:: not_, and_, or_
-#include "Angle.hpp"
-#include "Degrees.hpp"
+#include <boost/mpl/arithmetic.hpp>     // divides, modulus
+#include <boost/mpl/comparison.hpp>     // equal_to, not_equal_to
+#include <boost/mpl/int.hpp>            // int_
+#include <boost/mpl/logical.hpp>        // not_, and_, or_
+#include "Angle.hpp"                    // angle, rotate
+#include "Degrees.hpp"                  // L090, D090, D180 
 #include "Traits_fwd.hpp"
-#include "Transform.hpp"
 
 namespace dctl {
 namespace board {
