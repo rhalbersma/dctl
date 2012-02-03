@@ -13,6 +13,8 @@
 namespace dctl {
 namespace dxp {
 
+namespace asio = boost::asio;
+
 template<typename Protocol = protocol>
 class Connection
 {
@@ -31,39 +33,39 @@ public:
         // connect to default port and host
         void connect()
         {
-                do_connect(boost::asio::ip::tcp::endpoint(LOOPBACK, PORT));
+                do_connect(asio::ip::tcp::endpoint(LOOPBACK, PORT));
         }
                                          
         // connect to user supplied port on default host
         void connect(unsigned short port)
         {
-                do_connect(boost::asio::ip::tcp::endpoint(LOOPBACK, port));
+                do_connect(asio::ip::tcp::endpoint(LOOPBACK, port));
         }
 
         // connect to default port on user supplied host
         void connect(const std::string& host)
         {
-                do_connect(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(host), PORT));
+                do_connect(asio::ip::tcp::endpoint(asio::ip::address::from_string(host), PORT));
         }
                      
         
         // connect to user supplied port and host
         void connect(const std::string& host, unsigned short port)
         {
-                do_connect(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(host), port));
+                do_connect(asio::ip::tcp::endpoint(asio::ip::address::from_string(host), port));
         }       
 
         // acceptors
         // accept on default port
         void accept()
         {
-                do_accept(boost::asio::ip::tcp::endpoint(PROTOCOL, PORT));
+                do_accept(asio::ip::tcp::endpoint(PROTOCOL, PORT));
         }                                                                     
         
         // accept on user supplied port
         void accept(unsigned short port)
         {
-                do_accept(boost::asio::ip::tcp::endpoint(PROTOCOL, port));
+                do_accept(asio::ip::tcp::endpoint(PROTOCOL, port));
         }                            
 
         void close()
@@ -86,24 +88,24 @@ public:
 
 private:
         // implementation
-        void do_connect(const boost::asio::ip::tcp::endpoint& endpoint)
+        void do_connect(const asio::ip::tcp::endpoint& endpoint)
         {
                 socket_.async_connect(
                         endpoint,
-                        boost::bind(&Connection<Protocol>::handle_open, this, boost::asio::placeholders::error)
+                        boost::bind(&Connection<Protocol>::handle_open, this, asio::placeholders::error)
                 );
                 start_event_loop();
         }
 
-        void do_accept(const boost::asio::ip::tcp::endpoint& endpoint)
+        void do_accept(const asio::ip::tcp::endpoint& endpoint)
         {
                 acceptor_.open(endpoint.protocol());
-                acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
+                acceptor_.set_option(asio::ip::tcp::acceptor::reuse_address(true));
                 acceptor_.bind(endpoint);
                 acceptor_.listen();
                 acceptor_.async_accept(
                         socket_,
-                        boost::bind(&Connection<Protocol>::handle_open, this, boost::asio::placeholders::error)
+                        boost::bind(&Connection<Protocol>::handle_open, this, asio::placeholders::error)
                 );
                 start_event_loop();
         }
@@ -120,7 +122,7 @@ private:
                 boost::system::error_code ec;
                 acceptor_.close(ec);
 
-                socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+                socket_.shutdown(asio::ip::tcp::socket::shutdown_both, ec);
                 socket_.close(ec);
 
                 io_service_.stop();
@@ -129,7 +131,7 @@ private:
 
         void start_event_loop()
         {
-                io_service_thread_ = boost::thread((boost::bind(&boost::asio::io_service::run, &io_service_)));
+                io_service_thread_ = boost::thread((boost::bind(&asio::io_service::run, &io_service_)));
         }
 
         void stop_event_loop()
@@ -139,11 +141,11 @@ private:
 
         void async_read_next()
         {
-                boost::asio::async_read_until(
+                asio::async_read_until(
                         socket_,
                         read_buf_,
                         TERMINATOR,
-                        boost::bind(&Connection<Protocol>::handle_read, this, boost::asio::placeholders::error)
+                        boost::bind(&Connection<Protocol>::handle_read, this, asio::placeholders::error)
                 );
         }
 
@@ -180,10 +182,10 @@ private:
 
         void async_write_next()
         {
-                boost::asio::async_write(
+                asio::async_write(
                         socket_,
-                        boost::asio::buffer(write_messages_.front().c_str(), write_messages_.front().length() + 1),
-                        boost::bind(&Connection<Protocol>::handle_write, this, boost::asio::placeholders::error)
+                        asio::buffer(write_messages_.front().c_str(), write_messages_.front().length() + 1),
+                        boost::bind(&Connection<Protocol>::handle_write, this, asio::placeholders::error)
                 );
         }
 
@@ -200,17 +202,17 @@ private:
         }
 
         // representation
-        BOOST_STATIC_CONSTANT(auto, PROTOCOL = boost::asio::ip::tcp::v4());
-        BOOST_STATIC_CONSTANT(auto, LOOPBACK = boost::asio::ip::address_v4::loopback());
+        BOOST_STATIC_CONSTANT(auto, PROTOCOL = asio::ip::tcp::v4());
+        BOOST_STATIC_CONSTANT(auto, LOOPBACK = asio::ip::address_v4::loopback());
         BOOST_STATIC_CONSTANT(unsigned short, PORT = port<Protocol>::value);
         BOOST_STATIC_CONSTANT(auto, TERMINATOR = terminator<Protocol>::value);
 
-        boost::asio::io_service io_service_;
-        boost::asio::ip::tcp::acceptor acceptor_;
-        boost::asio::ip::tcp::socket socket_;
+        asio::io_service io_service_;
+        asio::ip::tcp::acceptor acceptor_;
+        asio::ip::tcp::socket socket_;
 
         boost::thread io_service_thread_;
-        boost::asio::streambuf read_buf_;
+        asio::streambuf read_buf_;
 
         typedef std::deque<std::string> MessageQueue;
         MessageQueue read_messages_;

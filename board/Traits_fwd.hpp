@@ -1,55 +1,17 @@
 #pragma once
+#include "../utility/Lazy.hpp"
 
 namespace dctl {
 namespace board {
 
-template<typename T> 
-struct is_orthogonal
-:
-        is_orthogonal<typename T::type>
-{};
-
-template<typename T> 
-struct is_diagonal
-:
-        is_diagonal<typename T::type>
-{};
-
-template<typename T> 
-struct is_up
-:
-        is_up<typename T::type>
-{};
-
-template<typename T> 
-struct is_down
-:
-        is_down<typename T::type>
-{};
-
-template<typename T> 
-struct is_left
-:
-        is_left<typename T::type>
-{};
-
-template<typename T> 
-struct is_right
-:
-        is_right<typename T::type>
-{};
-
-template<typename T> 
-struct is_positive
-:
-        is_positive<typename T::type>
-{};
-
-template<typename T> 
-struct is_negative
-:
-        is_negative<typename T::type>
-{};
+LAZY_UNARY_METAFUNCTION(is_orthogonal)
+LAZY_UNARY_METAFUNCTION(is_diagonal)
+LAZY_UNARY_METAFUNCTION(is_up)
+LAZY_UNARY_METAFUNCTION(is_down)
+LAZY_UNARY_METAFUNCTION(is_left)
+LAZY_UNARY_METAFUNCTION(is_right)
+LAZY_UNARY_METAFUNCTION(is_positive)
+LAZY_UNARY_METAFUNCTION(is_negative)
 
 }       // namespace board
 }       // namespace dctl

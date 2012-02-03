@@ -13,6 +13,9 @@ struct Coordinates
         typedef G grid;
         BOOST_STATIC_CONSTANT(auto, row = R); 
         BOOST_STATIC_CONSTANT(auto, col = C);
+
+        // lazily evaluable metadata == nullary metafunction
+        typedef Coordinates<G, R, C> type;
 };
 
 template<typename G, int N>
@@ -20,6 +23,9 @@ struct Square
 {
         typedef G grid;
         BOOST_STATIC_CONSTANT(auto, value = N);
+
+        // lazily evaluable metadata == nullary metafunction
+        typedef Square<G, N> type;
 };
 
 template<typename C>

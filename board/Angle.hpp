@@ -1,11 +1,9 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/int.hpp>            // int_
-#include <boost/mpl/quote.hpp>          // quote1, quote2
-#include "Degrees.hpp"
-#include "Group.hpp"
-#include "Modular.hpp"
-#include "Transform.hpp"
+#include "Degrees.hpp"                  // L090, R090, D090, D180, D360
+#include "Modular.hpp"                  // abs_modulus
+#include "Transform.hpp"                // rotate, inverse, mirror_up, mirror_down
 
 namespace dctl {
 
@@ -18,7 +16,7 @@ struct angle_tag
 template<int N>
 struct angle
 {
-        // angles are subject to arithmetic modulo 360 degrees
+        // nullary metadata subject to arithmetic modulo 360 degrees
         BOOST_STATIC_CONSTANT(auto, value = 
         (        
                 abs_modulus< 
@@ -34,13 +32,13 @@ struct angle
 template<int N1, int N2>
 struct rotate< angle<N1>, angle<N2> >
 :
-        angle<N1 + N2> 
+        angle< N1 + N2 > 
 {};
 
 template<int N>
 struct inverse< angle<N> >
 :
-        angle<-N>
+        angle< -N >
 {};
 
 template<int N>
