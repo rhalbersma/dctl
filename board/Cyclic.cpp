@@ -6,7 +6,7 @@
 namespace dctl {
 namespace group {
 
-BOOST_AUTO_TEST_SUITE(TestCyclicGroup)
+BOOST_AUTO_TEST_SUITE(TestCyclic)
 
 BOOST_AUTO_TEST_CASE(Axioms)
 {
