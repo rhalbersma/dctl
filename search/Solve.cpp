@@ -78,13 +78,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(MiniInitial, R, RulesTypes)
 
         std::cout << "Solving the initial position in 6x6 draughts with rules: " << typeid(R).name() << "\n";
 
-        if (test_case.second == 75) {
+        // block for scoping fix_1
+        {
                 std::cout << "Trying the draw rule: " << typeid(FirstPlayerWin).name() << "\n";
                 auto fix_1 = std::unique_ptr<F1>(new F1);
                 fix_1->run(test_case);
         }
 
-        if (test_case.second == 75) {
+        // block for scoping fix_2
+        {
                 std::cout << "Trying the draw rule: " << typeid(SecondPlayerWin).name() << "\n";
                 auto fix_2 = std::unique_ptr<F2>(new F2);
                 fix_2->run(test_case);

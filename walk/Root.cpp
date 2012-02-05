@@ -10,7 +10,7 @@
 namespace dctl {
 namespace walk {
 
-#if INTEGRATION_TEST == 1
+#if INTEGRATION_TEST == 0
 
 template<typename Rules, typename Board>
 struct Fixture
@@ -79,7 +79,7 @@ BOOST_FIXTURE_TEST_CASE(FrisianInitial, FrisianFixture)
         for (auto i = 0; i < 11; ++i)
                 run(p, i + 1, leafs[i]);
 }
-
+/*
 // The alternative game rules thread on the Shashki forum
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
 typedef Fixture<variant::Brazilian, board::Checkers> BrazilianFixture;
@@ -156,7 +156,7 @@ BOOST_FIXTURE_TEST_CASE(ItalianInitial, ItalianFixture)
         for (auto i = 0; i < 13; ++i)
                 run(p, i + 1, leafs[i]);
 }
-
+*/
 /*
 // The alternative game rules thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE(ChessVariants)
 
 }
 */
-
+/*
 // The alternative game rules thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 typedef Fixture<variant::Thai, board::Thai> ThaiFixtureNative;
@@ -198,7 +198,7 @@ BOOST_FIXTURE_TEST_CASE(ThaiCheckers, ThaiFixtureCheckers)
         for (auto i = 0; i < 13; ++i)
                 run(p, i + 1, leafs[i]);
 }
-
+*/
 /*
 // The rectangular board thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=3014
