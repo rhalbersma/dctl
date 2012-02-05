@@ -12,7 +12,7 @@
 
 namespace dctl {
 
-#if INTEGRATION_TEST == 1
+#if INTEGRATION_TEST == 0
 
 BOOST_AUTO_TEST_SUITE(TestSuccessor)
 
