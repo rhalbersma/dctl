@@ -249,7 +249,7 @@ private:
         template<int Index> 
         static bool reverse(BitBoard jumper, State& capture, Stack& moves)
         {
-                return scan<rotate<angle<Index>, degrees::D180>::type::value>(jumper, capture, moves);
+                return scan< rotate< angle<Index>, angle<degrees::D180> >::value >(jumper, capture, moves);
         }
 
         template<int Index> 
@@ -318,10 +318,10 @@ private:
         )
         {
                 return (
-                        scan<rotate<angle<Index>, degrees::R045>::type::value>(jumper, capture, moves) |
-                        scan<rotate<angle<Index>, degrees::L045>::type::value>(jumper, capture, moves) |
-                        scan<rotate<angle<Index>, degrees::R135>::type::value>(jumper, capture, moves) |
-                        scan<rotate<angle<Index>, degrees::L135>::type::value>(jumper, capture, moves)
+                        scan< rotate< angle<Index>, angle<degrees::R045> >::value >(jumper, capture, moves) |
+                        scan< rotate< angle<Index>, angle<degrees::L045> >::value >(jumper, capture, moves) |
+                        scan< rotate< angle<Index>, angle<degrees::R135> >::value >(jumper, capture, moves) |
+                        scan< rotate< angle<Index>, angle<degrees::L135> >::value >(jumper, capture, moves)
                 );
         }
         
@@ -332,8 +332,8 @@ private:
         )
         {
                 return (
-                        scan<rotate<angle<Index>, degrees::R090>::type::value>(jumper, capture, moves) |
-                        scan<rotate<angle<Index>, degrees::L090>::type::value>(jumper, capture, moves)
+                        scan< rotate< angle<Index>, angle<degrees::R090> >::value >(jumper, capture, moves) |
+                        scan< rotate< angle<Index>, angle<degrees::L090> >::value >(jumper, capture, moves)
                 );
         }
 

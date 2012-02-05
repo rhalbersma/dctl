@@ -1,5 +1,6 @@
 #pragma once
 #include "../bit/Bit.hpp"
+#include "../board/Angle.hpp"
 #include "../board/Traits.hpp"
 #include "../rules/Rules.hpp"
 
@@ -66,7 +67,7 @@ struct Push
         template<typename T> 
         T operator()(T square) const
         {
-                return Shift<board::is_positive<Index>::value>()(square, Board::SHIFT[Index]);
+                return Shift<board::is_positive< angle<Index> >::value>()(square, Board::SHIFT[Index]);
         }
 };
 
@@ -77,7 +78,7 @@ struct Pull
         template<typename T> 
         T operator()(T square) const
         {
-                return Shift<board::is_negative<Index>::value>()(square, Board::SHIFT[Index]);
+                return Shift<board::is_negative< angle<Index> >::value>()(square, Board::SHIFT[Index]);
         }
 };
 
@@ -88,7 +89,7 @@ struct PushAssign
         template<typename T> 
         void operator()(T& square) const
         {
-                ShiftAssign<board::is_positive<Index>::value>()(square, Board::SHIFT[Index]);
+                ShiftAssign<board::is_positive< angle<Index> >::value>()(square, Board::SHIFT[Index]);
         }
 };
 
@@ -99,7 +100,7 @@ struct PullAssign
         template<typename T> 
         void operator()(T& square) const
         {
-                ShiftAssign<board::is_negative<Index>::value>()(square, Board::SHIFT[Index]);
+                ShiftAssign<board::is_negative< angle<Index> >::value>()(square, Board::SHIFT[Index]);
         }
 };
 
@@ -109,7 +110,7 @@ struct FloodFill
         template<typename T> 
         T operator()(T generator, T propagator) const
         {
-                return bit::flood_fill<board::is_positive<Index>::value>(generator, propagator, Board::SHIFT[Index]);
+                return bit::flood_fill<board::is_positive< angle<Index> >::value>(generator, propagator, Board::SHIFT[Index]);
         }
 };
 

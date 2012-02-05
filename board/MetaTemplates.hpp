@@ -123,7 +123,7 @@ template<typename Board, int Index>
 struct init_jump_start
 {
         typedef boost::mpl::vector<
-                boost::mpl::integral_c<int, Index>
+                angle<Index>
         > ArgsTuple;
 
         // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting

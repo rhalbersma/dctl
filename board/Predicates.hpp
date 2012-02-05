@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/mpl/at.hpp>
-#include <boost/mpl/integral_c.hpp>
+#include <boost/mpl/at.hpp>             // at
+#include <boost/mpl/int.hpp>           // int_
 #include "Angle.hpp"
 #include "Dimensions.hpp"
 #include "Transform.hpp"
@@ -103,11 +103,10 @@ template<typename Board, typename ArgsTuple, int SQ>
 struct is_jump_start
 {
 private:
-        typedef boost::mpl::integral_c<int, 0> get_index;
-        typedef typename Board::ExternalGrid Grid;
-        
-        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, index = (boost::mpl::at<ArgsTuple, get_index>::type::value));
+        typedef typename Board::ExternalGrid Grid;        
+        typedef typename boost::mpl::at<ArgsTuple, boost::mpl::int_<0> >::type index;
+
+        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting        
         BOOST_STATIC_CONSTANT(auto, offset = is_diagonal<index>::value? 2 : 4);
         
         BOOST_STATIC_CONSTANT(auto, row_min = is_up<index>::value? offset : 0);
@@ -137,7 +136,7 @@ private:
         typedef typename Square2Coordinates< Square<E, SQ> >::type External;
 
         // rotated coordinates within the external grid
-        typedef typename rotate<External, typename Board::full_angle >::type::grid rotated;
+        typedef typename rotate<External, typename Board::full_angle >::type rotated;
 
 public:
         // bit coordintaes re-interpreted within the internal grid
@@ -158,7 +157,7 @@ private:
         typedef typename Square2Coordinates< Square<I, B> >::type Internal;
 
         // rotated coordinates within the external grid
-        typedef typename rotate<Internal, typename Board::inverse_angle >::type::grid rotated;
+        typedef typename rotate<Internal, typename Board::inverse_angle >::type rotated;
 
 public:
         // square coordinates re-interpreted within the internal grid

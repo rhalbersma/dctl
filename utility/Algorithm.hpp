@@ -7,7 +7,7 @@ namespace dctl {
 template<class OutputIterator, class Size, class Assignable>
 void iota_n (OutputIterator first, Size n, Assignable value)
 {
-        std::for_each(first, first + n, [=]() { 
+        std::for_each(first, std::advance(first, n), [=]() { 
                 *first++ = value++;
         });
 }
