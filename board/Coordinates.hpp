@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Angle.hpp"
 #include "Degrees.hpp"
 #include "Modular.hpp"
 #include "Transform.hpp"
