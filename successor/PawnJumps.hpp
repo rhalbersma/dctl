@@ -358,7 +358,7 @@ private:
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_up>
         )
         {
-                return scan< mirror_up< angle<Index> >::value >(jumper, capture, moves);
+                return scan< mirror< angle<Index>, angle<Direction::up> >::value >(jumper, capture, moves);
         }
         
         // partial specialization for turns in the 1 mirrored backward direction
@@ -367,7 +367,7 @@ private:
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_down>
         )
         {
-                return scan< mirror_down< angle<Index> >::value >(jumper, capture, moves);
+                return scan< mirror< angle<Index>, angle<Direction::down> >::value >(jumper, capture, moves);
         }
 
         template<int Index>

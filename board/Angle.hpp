@@ -3,7 +3,7 @@
 #include <boost/mpl/int.hpp>            // int_
 #include "Degrees.hpp"                  // L090, R090, D090, D180, D360
 #include "Modular.hpp"                  // abs_modulus
-#include "Transform.hpp"                // rotate, inverse, mirror_up, mirror_down
+#include "Transform.hpp"                // inverse, rotate, mirror
 
 namespace dctl {
 
@@ -29,38 +29,29 @@ struct angle
         typedef angle<value> type;      
 };
 
-template<int N1, int N2>
-struct rotate< angle<N1>, angle<N2> >
-:
-        angle< N1 + N2 > 
-{};
-
 template<int N>
 struct inverse< angle<N> >
 :
         angle< -N >
 {};
 
-template<int N>
-struct mirror_up< angle<N> >
-:       
-        angle<
-                (angle<N>::value + degrees::D090) % degrees::D180 + 
-                (angle<N>::value / degrees::D180) * degrees::D180
-        >
+template<int N1, int N2>
+struct rotate< angle<N1>, angle<N2> >
+:
+        angle< N1 + N2 > 
 {};
 
-template<int N>
-struct mirror_down< angle<N> >
-:
+template<int N1, int N2>
+struct mirror< angle<N1>, angle<N2> >
+:       
         rotate<
-                mirror_up<
+                inverse<
                         rotate<
-                                angle<N>, 
-                                angle<degrees::L090>
+                                angle<N1>, 
+                                inverse< angle<N2> >
                         >
                 >,
-                angle<degrees::R090>
+                angle<N2>
         >
 {};
 
