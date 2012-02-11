@@ -6,7 +6,7 @@
 #include <boost/mpl/fold.hpp>           // fold
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/lambda.hpp>         // lambda, _1, _2
-#include <boost/mpl/logical.hpp>        // not_
+#include <boost/mpl/logical.hpp>        // and_, not_, true_
 #include <boost/mpl/vector.hpp>         // vector
 
 namespace dctl {

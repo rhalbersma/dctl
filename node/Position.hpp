@@ -17,11 +17,12 @@ template<typename Board>
 struct Position
 {
 public:
+        /*
         Position() 
         { 
-                /* no-op */ 
+                // no-op
         }
-
+*/
         // initialize with a set of bitboards and a color
         Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
         :

@@ -1,24 +1,17 @@
 #pragma once
 #include <iomanip>                      // std::setfill, std::setw
-#include <memory>                       // std::unique_ptr
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
-#include "Mixin.hpp"
+#include "../factory/mixin.hpp"
 
 namespace dctl {
 namespace dxp {
 
 /*
-
-        The GameRequest class is a <ConcreteProduct> in a <Factory Method>
-        Design Pattern, with the Parser class as the <ConcreteCreator> and 
-        the MessageInterface class as the <Product>.
-
-        The GameRequest class MUST be registered with a factory.
 
         The format and semantics of GameRequest are defined at:
         http://www.mesander.nl/damexchange/egamereq.htm
@@ -27,9 +20,26 @@ namespace dxp {
 
 class GameRequest
 : 
-        public MessageInterface
+        public MessageInterface,
+        public mixin::IdentifierCreateObject<'R', GameRequest, MessageInterface>
 {
 public:
+        // constants and typedefs
+        BOOST_STATIC_CONSTANT(auto, protocol_version = 1);         
+        enum SetupCode { initial = 'A', special = 'B' };
+
+        explicit GameRequest(const std::string& message)
+        :
+                name_initiator_(message.substr(2, 32)),
+                color_follower_(*(message.substr(34, 1)).begin()),
+                minutes_(boost::lexical_cast<int>(message.substr(35, 3).c_str())),
+                moves_(boost::lexical_cast<int>(message.substr(38, 3).c_str())),
+                setup_code_(static_cast<SetupCode>(boost::lexical_cast<char>(*(message.substr(41, 1)).begin())))
+        {
+                if (setup_code() == special)
+                        position_ = message.substr(42);
+        }
+
         // views
         const std::string& name_initiator() const
         {
@@ -51,9 +61,9 @@ public:
                 return moves_;
         }
 
-        bool setup() const
+        SetupCode setup_code() const
         {
-                return setup_;
+                return setup_code_;
         }
 
         const std::string& position() const
@@ -61,75 +71,44 @@ public:
                 return position_;
         }
 
-        static std::string generate(const std::string& n, char c, int min, int mov, bool s, const std::string& p)
+        // output
+        static std::string str(const std::string& n, char c, int min, int mov, SetupCode s, std::string p)
         {
-                return header() + body(n, c, min, mov, s, p);
-        }
-
-        // factory creation (NOTE: makes constructor private)
-        MIXIN_HEADER_FACTORY_CREATION('R', GameRequest)
-
-        explicit GameRequest(const std::string& message)
-        :
-                name_initiator_(message.substr(2, 32)),
-                color_follower_(*(message.substr(34, 1)).begin()),
-                minutes_(boost::lexical_cast<int>(message.substr(35, 3).c_str())),
-                moves_(boost::lexical_cast<int>(message.substr(38, 3).c_str())),
-                setup_(read_setup(*(message.substr(41, 1)).begin()))
-        {
-                if (setup())
-                        position_ = message.substr(42);
+                return identifier() + body(n, c, min, mov, s, p);
         }
 
 private:
         // implementation
-        virtual std::string do_body() const
+        virtual std::string do_header() const
         {
-                return body(name_initiator(), color_follower(), minutes(), moves(), setup(), position());
+                return identifier();
         }
 
-        static std::string body(const std::string& n, char c, int min, int mov, bool s, const std::string& p)
+        virtual std::string do_body() const
+        {
+                return body(name_initiator(), color_follower(), minutes(), moves(), setup_code(), position());
+        }
+
+        static std::string body(const std::string& n, char c, int min, int mov, SetupCode s, std::string p)
         {
                 std::stringstream sstr;
-                sstr << std::setw( 2) << std::setfill('0') << PROTOCOL_version;
+                sstr << std::setw( 2) << std::setfill('0') << protocol_version;
                 sstr << std::setw(32) << n << std::setfill(' ');
                 sstr << std::setw( 1) << c;
                 sstr << std::setw( 3) << std::setfill('0') << min;
                 sstr << std::setw( 3) << std::setfill('0') << mov;
-                sstr << std::setw( 1) << write_setup(s);
-                if (s)
+                sstr << std::setw( 1) << static_cast<char>(s);
+                if (s == special)
                         sstr << std::setw(51) << p;
                 return sstr.str();
         }
-
-        static bool read_setup(char c)
-        {
-                switch(c) {                
-                case INITIAL: 
-                        return false;
-                case SPECIAL: 
-                        return true;
-                default:
-                        BOOST_ASSERT(false);
-                        return false;
-                }
-        }
-
-        static char write_setup(bool b)
-        {
-                return (!b)? INITIAL : SPECIAL;
-        }
-
-        BOOST_STATIC_CONSTANT(auto, PROTOCOL_version = 1);
-        BOOST_STATIC_CONSTANT(auto, INITIAL = 'A');
-        BOOST_STATIC_CONSTANT(auto, SPECIAL = 'B');        
-        
+       
         // representation
         std::string name_initiator_;
         char color_follower_;
         int minutes_;
         int moves_;
-        bool setup_;
+        SetupCode setup_code_;
         std::string position_;
 };
 

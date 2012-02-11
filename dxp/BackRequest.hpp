@@ -1,22 +1,15 @@
 #pragma once
 #include <iomanip>                      // std::setfill, std::setw
-#include <memory>                       // std::unique_ptr
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
-#include "Mixin.hpp"
+#include "../factory/mixin.hpp"
 
 namespace dctl {
 namespace dxp {
 
 /*
-
-        The BackRequest class is a <ConcreteProduct> in a <Factory Method>
-        Design Pattern, with the Parser class as the <ConcreteCreator> and 
-        the MessageInterface class as the <Product>.
-
-        The BackRequest class MUST be registered with a factory.
 
         The format and semantics of BackRequest are explained at:
         http://www.mesander.nl/damexchange/ebackreq.htm
@@ -25,9 +18,17 @@ namespace dxp {
   
 class BackRequest
 : 
-        public MessageInterface
+        public MessageInterface,
+        public mixin::IdentifierCreateObject<'B', BackRequest, MessageInterface>
 {
 public:
+        explicit BackRequest(const std::string& message)
+        :
+                move_number_(boost::lexical_cast<int>(message.substr(0, 3).c_str())),
+                side_to_move_(*(message.substr(3, 1)).begin())
+        {
+        }
+
         // views
         int move_number() const
         {
@@ -39,23 +40,18 @@ public:
                 return side_to_move_;
         }
 
-        static std::string generate(int m, char c)
+        static std::string str(int m, char c)
         {
-                return header() + body(m, c);
-        }
-
-        // factory creation (NOTE: makes constructor private)
-        MIXIN_HEADER_FACTORY_CREATION('B', BackRequest)
-
-        explicit BackRequest(const std::string& message)
-        :
-                move_number_(boost::lexical_cast<int>(message.substr(0, 3).c_str())),
-                side_to_move_(*(message.substr(3, 1)).begin())
-        {
+                return identifier() + body(m, c);
         }
 
 private:
         // implementation
+        virtual std::string do_header() const
+        {
+                return identifier();
+        }
+
         virtual std::string do_body() const
         {
                 return body(move_number(), side_to_move());

@@ -1,22 +1,15 @@
 #pragma once
 #include <iomanip>                      // std::setfill, std::setw
-#include <memory>                       // std::unique_ptr
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
-#include "Mixin.hpp"
+#include "../factory/mixin.hpp"
 
 namespace dctl {
 namespace dxp {
 
 /*
-
-        The GameAcknowledge class is a <ConcreteProduct> in a <Factory Method>
-        Design Pattern, with the Parser class as the <ConcreteCreator> and the 
-        MessageInterface class as the <Product>.
-
-        The GameAcknowledge class MUST be registered with a factory.
 
         The format and semantics of GameAcknowledge are defined at:
         http://www.mesander.nl/damexchange/egameacc.htm
@@ -25,11 +18,19 @@ namespace dxp {
         
 class GameAcknowledge
 : 
-        public MessageInterface
+        public MessageInterface,
+        public mixin::IdentifierCreateObject<'A', GameAcknowledge, MessageInterface>
 {
 public:
         // typedefs
         enum AcceptanceCode { accept = 0, decline_version = 1, decline_game = 2, decline_always = 3 };
+
+        explicit GameAcknowledge(const std::string& message)
+        :
+                name_follower_(message.substr(0, 32)),
+                acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(32, 1).c_str())))
+        {
+        }
 
         // views
         const std::string& name_follower() const
@@ -44,21 +45,16 @@ public:
 
         static std::string generate(const std::string& n, AcceptanceCode a)
         {
-                return header() + body(n, a);
-        }
-
-        // factory creation (NOTE: makes constructor private)
-        MIXIN_HEADER_FACTORY_CREATION('A', GameAcknowledge)
-
-        explicit GameAcknowledge(const std::string& message)
-        :
-                name_follower_(message.substr(0, 32)),
-                acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(32, 1).c_str())))
-        {
+                return identifier() + body(n, a);
         }
 
 private:
         // implementation
+        virtual std::string do_header() const
+        {
+                return identifier();
+        }
+
         virtual std::string do_body() const
         {
                 return body(name_follower(), acceptance_code());
