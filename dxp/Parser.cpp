@@ -1,10 +1,10 @@
 #include <string>                               // std::string
-#include <boost/mpl/list.hpp>                   // boost::mpl::list
+#include <boost/mpl/vector.hpp>                   // boost::mpl::list
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL 
 //#include "../../src/dxp/Connection.hpp"
 #include "../../src/dxp/MessageInterface.hpp"
-#include "../../src/dxp/Parser.hpp"
 #include "../../src/dxp/Types.hpp"
+#include "../../src/factory/Factory.hpp"
 
 namespace dctl {
 namespace dxp {
@@ -27,20 +27,18 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                 "K1"
         };
 
-        Parser<
-                boost::mpl::list<
+        Factory<
+                boost::mpl::vector<
                         GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
                 >,
                 MessageInterface
-        > p;
+        > parser;
 
         for (auto i = 0; i < 8; ++i) {                
-                if (const auto parsed = p.parse(message[i]))
-                        // if the message type did get registered, compare the original and the parsed message
-                        BOOST_CHECK_EQUAL(message[i], parsed->str());
+                if (const auto decoded = parser.create(message[i]))
+                        BOOST_CHECK_EQUAL(message[i], decoded->str());
                 else {
-                        // if the message type did not get registered, do not dereference a nullptr
-                        BOOST_CHECK(false);
+                        BOOST_ASSERT(!"Unregistered message type (cannot dereference a nullptr)");
                 }
         }
 }
