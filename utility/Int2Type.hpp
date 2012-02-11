@@ -10,7 +10,7 @@
         This is because different template instantiations are distinct types,
         so Int2Type<0> is different from Int2Type<1> and so on.
 
-        This "tag dispatching" simulates partial specialization of function templates.
+        This can simulate partial specialization of function templates.
 
 */
 
@@ -20,6 +20,12 @@ template<int V>
 struct Int2Type
 {
         BOOST_STATIC_CONSTANT(auto, value = V);
+};
+
+template<typename T>
+struct Type2Type
+{
+        typedef T type;
 };
 
 }       // namespace dctl

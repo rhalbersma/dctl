@@ -1,24 +1,17 @@
 #pragma once
 #include <algorithm>                    // std::for_each
 #include <iomanip>                      // std::setfill, std::setw
-#include <memory>                       // std::unique_ptr
 #include <sstream>                      // std::stringstream
 #include <string>                       // std::string
 #include <vector>                       // std::vector
 #include <boost/lexical_cast.hpp>       // boost::lexical_cast
 #include "MessageInterface.hpp"
-#include "Mixin.hpp"
+#include "../factory/mixin.hpp"
 
 namespace dctl {
 namespace dxp {
 
 /*
-
-        The Move class is a <ConcreteProduct> in a <Factory Method>
-        Design Pattern, with the Parser class as the <ConcreteCreator> 
-        and the MessageInterface class as the <Product>.
-
-        The Move class MUST be registered with a factory.
 
         The format and semantics of Move are defined at:
         http://www.mesander.nl/damexchange/emove.htm
@@ -27,9 +20,21 @@ namespace dxp {
         
 class Move
 : 
-        public MessageInterface
+        public MessageInterface,
+        public mixin::IdentifierCreateObject<'M', Move, MessageInterface>
 {
 public:
+        explicit Move(const std::string& message)
+        :
+                seconds_(boost::lexical_cast<int>(message.substr(0, 4).c_str())),
+                from_sq_(boost::lexical_cast<int>(message.substr(4, 2).c_str())),
+                dest_sq_(boost::lexical_cast<int>(message.substr(6, 2).c_str())),
+                num_captured_(boost::lexical_cast<int>(message.substr(8, 2).c_str()))
+        {
+                for (auto i = 0; i < num_captured(); ++i)
+                        captured_pieces_.push_back(boost::lexical_cast<int>(message.substr(10 + 2 * i, 2).c_str()));
+        }
+
         // views
         int seconds() const
         {
@@ -56,27 +61,19 @@ public:
                 return captured_pieces_;
         }
 
-        static std::string generate(int s, int f, int d, int n, const std::vector<int>& c)
+        // output
+        static std::string str(int s, int f, int d, int n, const std::vector<int>& c)
         {
-                return header() + body(s, f, d, n, c);
-        }
-
-        // factory creation (NOTE: makes constructor private)
-        MIXIN_HEADER_FACTORY_CREATION('M', Move)
-
-        explicit Move(const std::string& message)
-        :
-                seconds_(boost::lexical_cast<int>(message.substr(0, 4).c_str())),
-                from_sq_(boost::lexical_cast<int>(message.substr(4, 2).c_str())),
-                dest_sq_(boost::lexical_cast<int>(message.substr(6, 2).c_str())),
-                num_captured_(boost::lexical_cast<int>(message.substr(8, 2).c_str()))
-        {
-                for (auto i = 0; i < num_captured(); ++i)
-                        captured_pieces_.push_back(boost::lexical_cast<int>(message.substr(10 + 2 * i, 2).c_str()));
+                return identifier() + body(s, f, d, n, c);
         }
 
 private:
         // implementation
+        virtual std::string do_header() const
+        {
+                return identifier();
+        }
+
         virtual std::string do_body() const
         {
                 return body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces());
