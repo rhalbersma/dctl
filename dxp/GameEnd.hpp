@@ -19,7 +19,7 @@ namespace dxp {
 class GameEnd
 : 
         public MessageInterface,
-        public mixin::IdentifierCreateObject<'E', GameEnd, MessageInterface>
+        public mixin::IdentifierCreate<'E', GameEnd, MessageInterface>
 {
 public:
         // typedefs

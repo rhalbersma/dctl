@@ -16,7 +16,7 @@ T singlet(int i)
 template<typename T>
 T reverse_singlet(int i)
 {
-        return T(1) << (num_bits<T>::value - 1 - i);
+        return singlet<T>(num_bits<T>::value - 1 - i);
 }
 
 // 0 bits set to 1

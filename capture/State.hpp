@@ -1,6 +1,6 @@
 #pragma once
-#include <boost/assert.hpp>                     // BOOST_ASSERT
-#include <boost/config.hpp>                     // BOOST_STATIC_CONSTANT
+#include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Value.hpp"
 #include "../bit/Bit.hpp"
 #include "../node/Promotion.hpp"
@@ -10,13 +10,15 @@
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/Shift.hpp"
-#include <boost/utility.hpp>    // boost::noncopyable
+#include <boost/utility.hpp>            // noncopyable
 
 namespace dctl {       
 namespace capture {
 
 template<typename Rules, typename Board>
-class State: private boost::noncopyable
+class State
+: 
+        private boost::noncopyable
 {
 public:
         // constructors

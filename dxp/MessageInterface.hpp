@@ -32,7 +32,7 @@ public:
                 return do_header() + do_body(); 
         }
 
-protected:
+private:
         bool invariant() const
         {
                 return (
@@ -41,7 +41,6 @@ protected:
                 );
         }
 
-private:
         // pure virtual implementation
         virtual std::string do_header() const = 0;
         virtual std::string do_body() const = 0;

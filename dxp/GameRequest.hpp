@@ -21,7 +21,7 @@ namespace dxp {
 class GameRequest
 : 
         public MessageInterface,
-        public mixin::IdentifierCreateObject<'R', GameRequest, MessageInterface>
+        public mixin::IdentifierCreate<'R', GameRequest, MessageInterface>
 {
 public:
         // constants and typedefs
