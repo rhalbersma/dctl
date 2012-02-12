@@ -15,7 +15,7 @@ template
         typename Value,
         template<typename, typename> class Hash = Find,
         typename Index = HashIndex,
-        typename Replace = EmptyOldUnderCutShallowestOfN
+        typename Replace = EmptyOldUnderCutSmallestOfN
 >
 class DualMap
 {

@@ -1,9 +1,7 @@
 #pragma once
-#include <algorithm>                    // std::find_if, std::get_first_of, std::min_element
-#include <functional>                   // std::bind
-#include <utility>                      // std::pair
-#include <vector>                       // std::vector
-#include "EntryPredicates.hpp"
+#include <algorithm>                    // find_if, get_first_of, min_element
+#include <utility>                      // pair
+#include <vector>                       // vector
 #include "Replace.hpp"
 
 namespace dctl {
@@ -19,11 +17,11 @@ struct find_entry
         const Value* operator()(ConstIterator bucket_begin, const Key& key) const
         {
                 const auto bucket_end = bucket_begin + N;
-                const auto entry = std::find_if(
-                        bucket_begin, bucket_end, 
-                        std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, key)
-                );
-                return (entry != bucket_end)? &(entry->second) : nullptr;
+                const auto it = std::find_if(
+                        bucket_begin, bucket_end, [&](const Entry& entry){ 
+                        return entry.first == key;
+                });
+                return (it != bucket_end)? &(it->second) : nullptr;
         }
 };
 
@@ -45,13 +43,12 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutSmallestOfN>
 
                 // replace any empty or old entry
                 Key empty_or_old[] = { Key(0), entry.first };
-                auto replace = std::find_first_of(
-                        bucket_begin, bucket_end, 
-                        empty_or_old, empty_or_old + 2, 
-                        key_equal_to<Entry, Key>()
-                );
-                if (replace != bucket_end) {
-                        *replace = entry;
+                auto it = std::find_first_of(
+                        bucket_begin, bucket_end, empty_or_old, empty_or_old + 2, [](const Entry& entry, const Key& key) { 
+                        return entry.first == key; 
+                });
+                if (it != bucket_end) {
+                        *it = entry;
                         return;
                 }
 
@@ -62,11 +59,11 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutSmallestOfN>
                 }
 
                 // replace the smallest entry
-                replace = std::min_element(
-                        bucket_begin, bucket_end, 
-                        leafs_compare<Entry>()
-                );
-                *replace = entry;
+                it = std::min_element(
+                        bucket_begin, bucket_end, [](const Entry& lhs, const Entry& rhs) { 
+                        return lhs.second.leafs() < rhs.second.leafs();
+                });
+                *it = entry;
         }
 };
 
@@ -84,13 +81,12 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutShallowestOfN>
 
                 // replace any empty or old entry
                 Key empty_or_old[] = { Key(0), entry.first };
-                auto replace = std::find_first_of(
-                        bucket_begin, bucket_end, 
-                        empty_or_old, empty_or_old + 2, 
-                        key_equal_to<Entry, Key>()
-                );
-                if (replace != bucket_end) {
-                        *replace = entry;
+                auto it = std::find_first_of(
+                        bucket_begin, bucket_end, empty_or_old, empty_or_old + 2, [](const Entry& entry, const Key& key) { 
+                        return entry.first == key; 
+                });
+                if (it != bucket_end) {
+                        *it = entry;
                         return;
                 }
 
@@ -101,11 +97,11 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutShallowestOfN>
                 }
 
                 // replace the shallowest entry
-                replace = std::min_element(
-                        bucket_begin, bucket_end, 
-                        depth_compare<Entry>()
-                );
-                *replace = entry;
+                it = std::min_element(
+                        bucket_begin, bucket_end, [](const Entry& lhs, const Entry& rhs) { 
+                        return lhs.second.depth() < rhs.second.depth(); 
+                });
+                *it = entry;
         }
 };
 

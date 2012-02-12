@@ -1,7 +1,6 @@
 #pragma once
 #include <algorithm>                    // std::count_if, std::fill_n
 #include <cstddef>                      // std::size_t
-#include <functional>                   // std::bind, std::placeholders
 #include <type_traits>                  // std::is_integral
 #include <utility>                      // std::pair
 #include <vector>                       // std::vector
@@ -42,10 +41,12 @@ public:
         // capacity
         std::size_t available() const
         {
-                return static_cast<size_t>(std::count_if(
-                        map_.begin(), map_.end(), 
-                        std::bind(key_equal_to<Entry, Key>(), std::placeholders::_1, Key(0))
-                ));
+                return static_cast<size_t>(
+                        std::count_if(
+                                map_.begin(), map_.end(), [](const Entry& entry) { 
+                                return entry.first == Key(0);
+                        })
+                );
         }
 
         std::size_t size() const
