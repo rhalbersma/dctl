@@ -5,14 +5,15 @@
 #include <type_traits>                  // is_base_of
 #include <boost/config.hpp>             // BOOST_STATIC_ASSERT
 #include <boost/mpl/identity.hpp>       // identity
+#include "mixin.hpp"                    // has_identifier_create
 
 namespace dctl {
 
 template
 <
-        typename AbstractProduct,
-        typename AbstractProductPointer = std::unique_ptr<AbstractProduct>,
-        typename Creator = AbstractProductPointer (*)(const std::string&),
+        typename Base,
+        typename BasePointer = std::unique_ptr<Base>,
+        typename Creator = BasePointer (*)(const std::string&),
         typename Lookup = std::map<std::string, Creator>
 >
 struct Registry
@@ -24,18 +25,22 @@ public:
                 return (it != lookup_.end())? it->second : nullptr;
         }
 
-        template<typename ConcreteProduct>
-        bool insert(boost::mpl::identity<ConcreteProduct>)
+        template<typename Derived>
+        bool insert(boost::mpl::identity<Derived>)
         {
-                BOOST_STATIC_ASSERT((std::is_base_of<AbstractProduct, ConcreteProduct>::value));
-                return insert(ConcreteProduct::identifier(), ConcreteProduct::create_object);
+                BOOST_STATIC_ASSERT((std::is_base_of<Base, Derived>::value));
+                BOOST_STATIC_ASSERT((mixin::has_identifier_create<Derived>::value));
+
+                return insert(Derived::identifier(), Derived::create);
         }
 
-        template<typename ConcreteProduct>
-        bool erase(boost::mpl::identity<ConcreteProduct>)
+        template<typename Derived>
+        bool erase(boost::mpl::identity<Derived>)
         {
-                BOOST_STATIC_ASSERT((std::is_base_of<AbstractProduct, ConcreteProduct>::value));
-                return erase(ConcreteProduct::identifier());
+                BOOST_STATIC_ASSERT((std::is_base_of<Base, Derived>::value));
+                BOOST_STATIC_ASSERT((mixin::has_identifier_create<Derived>::value));
+
+                return erase(Derived::identifier());
         }
 
 private:

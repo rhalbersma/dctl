@@ -21,7 +21,7 @@ namespace dxp {
 class Move
 : 
         public MessageInterface,
-        public mixin::IdentifierCreateObject<'M', Move, MessageInterface>
+        public mixin::IdentifierCreate<'M', Move, MessageInterface>
 {
 public:
         explicit Move(const std::string& message)

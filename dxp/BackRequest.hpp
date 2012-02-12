@@ -19,7 +19,7 @@ namespace dxp {
 class BackRequest
 : 
         public MessageInterface,
-        public mixin::IdentifierCreateObject<'B', BackRequest, MessageInterface>
+        public mixin::IdentifierCreate<'B', BackRequest, MessageInterface>
 {
 public:
         explicit BackRequest(const std::string& message)

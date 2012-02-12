@@ -19,7 +19,7 @@ namespace dxp {
 class BackAcknowledge
 :
         public MessageInterface,
-        public mixin::IdentifierCreateObject<'K', BackAcknowledge, MessageInterface>
+        public mixin::IdentifierCreate<'K', BackAcknowledge, MessageInterface>
 {
 public:
         // typedefs

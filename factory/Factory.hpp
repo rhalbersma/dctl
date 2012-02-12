@@ -2,12 +2,11 @@
 #include <memory>                       // unique_ptr
 #include <string>                       // string
 #include <boost/config.hpp>             // BOOST_STATIC_ASSERT
-#include <boost/mpl/fold.hpp>           // fold
 #include <boost/mpl/for_each.hpp>       // for_each
 #include <boost/mpl/identity.hpp>       // identity, make_identity
-#include <boost/mpl/lambda.hpp>         // lambda, _1, _2
-#include <boost/mpl/logical.hpp>        // and_, true_
+#include "mixin.hpp"                    // has_header_body
 #include "Registry.hpp"                 // Registry
+#include "../utility/type_traits.hpp"   // is_base_of_all
 
 namespace dctl {
 
@@ -15,37 +14,16 @@ template
 <
         typename ConcreteProducts,
         typename AbstractProduct,
-        size_t HeaderLength = 1,
-        size_t MaxBodyLength = 126,
         typename AbstractProductPointer = std::unique_ptr<AbstractProduct>,
         typename Creator = AbstractProductPointer (*)(const std::string&),
         typename Lookup = std::map<std::string, Creator>,
-        typename Registry = Registry<
-                AbstractProduct, AbstractProductPointer, Creator, Lookup
-        >
+        typename Registry = Registry<AbstractProduct, AbstractProductPointer, Creator, Lookup>
 >
 struct Factory
 {
 public:
-        BOOST_STATIC_ASSERT((
-                boost::mpl::fold<
-                        ConcreteProducts,
-                        boost::mpl::true_,
-                        boost::mpl::lambda<
-                                boost::mpl::and_<
-                                        boost::mpl::_1,
-                                        std::is_base_of< AbstractProduct, boost::mpl::_2 >
-                                >
-                        >                
-                >::type::value
-        ));
-
-        BOOST_STATIC_ASSERT((
-                std::is_base_of< 
-                        mixin::HeaderBody< HeaderLength, MaxBodyLength >, 
-                        AbstractProduct 
-                >::value
-        ));
+        // all ConcreteProducts must be derived from AbstractProduct
+        BOOST_STATIC_ASSERT((is_base_of_all<AbstractProduct, ConcreteProducts>::type::value));
 
         Factory()
         {
@@ -63,6 +41,9 @@ public:
 
         AbstractProductPointer create(const std::string& input) const
         {
+                // AbstractProduct must have header / body functionality mixed in 
+                BOOST_STATIC_ASSERT((mixin::has_header_body<AbstractProduct>::value));
+
                 const auto fun = registry_.find(AbstractProduct::header(input));
                 return fun? (fun)(AbstractProduct::body(input)) : nullptr;
         }
@@ -80,7 +61,9 @@ private:
                 }
 
         private:
+                // suppress warning about the compiler-generated assignment operator
                 call_insert& operator=(const call_insert&);
+
                 Registry& registry_;
         };
 
@@ -96,7 +79,9 @@ private:
                 }
 
         private:
+                // suppress warning about the compiler-generated assignment operator
                 call_erase& operator=(const call_erase&);
+
                 Registry& registry_;
         };
 

@@ -16,7 +16,7 @@ namespace dxp {
 class Chat
 : 
         public MessageInterface,
-        public mixin::IdentifierCreateObject<'C', Chat, MessageInterface>
+        public mixin::IdentifierCreate<'C', Chat, MessageInterface>
 {
 public:
         explicit Chat(const std::string& message)

@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>                       // unique_ptr
 #include <string>                       // string
+#include <type_traits>                  // is_base_of
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 
 namespace dctl {
@@ -13,7 +14,6 @@ template
 >
 struct HeaderBody
 {
-public:
         static std::string header(const std::string& input)
         {
                 return input.substr(0, HeaderLength);
@@ -24,7 +24,6 @@ public:
                 return input.substr(HeaderLength);
         }
 
-protected:
         BOOST_STATIC_CONSTANT(auto, header_length_ = HeaderLength);
         BOOST_STATIC_CONSTANT(auto, max_body_length_ = MaxBodyLength);
 };
@@ -32,15 +31,14 @@ protected:
 template
 <
         char Identifier,
-        typename ConcreteProduct,
-        typename AbstractProduct
+        typename Derived,
+        typename Base
 >
-struct IdentifierCreateObject
+struct IdentifierCreate
 {
-public:
-        static std::unique_ptr<AbstractProduct> create_object(const std::string& parameter)
+        static std::unique_ptr<Base> create(const std::string& parameter)
         {
-                return std::unique_ptr<ConcreteProduct>(new ConcreteProduct(parameter));
+                return std::unique_ptr<Derived>(new Derived(parameter));
         }
 
         static std::string identifier()
@@ -48,9 +46,21 @@ public:
                 return std::string(1, identifier_);
         }
 
-protected:
+        typedef Base base;
         BOOST_STATIC_CONSTANT(auto, identifier_ = Identifier);
 };
+
+template<typename T>
+struct has_header_body
+:
+        std::is_base_of< HeaderBody< T::header_length_, T::max_body_length_ >, T >
+{};
+
+template<typename T>
+struct has_identifier_create
+:
+        std::is_base_of< IdentifierCreate< T::identifier_, T, typename T::base >, T >
+{};
 
 }       // namespace mixin
 }       // namespace dctl
