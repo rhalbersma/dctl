@@ -1,4 +1,5 @@
 #pragma once
+#include "Selection.hpp"
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include "../bit/Bit.hpp"
 #include "../board/Angle.hpp"
@@ -17,12 +18,11 @@ namespace dctl {
 namespace successor {
 
 // forward declaration of the primary template
-template<bool, int, typename, typename, typename> class Driver;
-struct Jumps;
+template<bool, int, typename, typename, typename> struct Driver;
 
 // partial specialization for king jumps
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::king, Jumps, Rules, Board>
+struct Driver<Color, Material::king, Jumps, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {

@@ -22,4 +22,10 @@ BitBoard promoting_men(const Position<Board>& p)
         return p.men(Color) & Board::PROMOTION[Color][1];
 }
 
+template<bool Color, typename Board>
+BitBoard non_promoting_men(const Position<Board>& p)
+{
+        return p.men(Color) & ~Board::PROMOTION[Color][1];
+}
+
 }       // namespace dctl

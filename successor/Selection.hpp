@@ -8,6 +8,8 @@ struct Jumps;
 struct Moves;
 struct Reverse;
 struct Promotion;
+struct NonPromotion;
+struct Conversion;
 
 }       // namespace successor
 }       // namespace dctl

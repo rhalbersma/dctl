@@ -1,4 +1,5 @@
 #pragma once
+#include "Selection.hpp"
 #include "../node/Material.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/Int2Type.hpp"
@@ -11,8 +12,11 @@ template<typename> struct Position;
 
 namespace successor {
 
-template<bool Color, typename Selection, typename Rules, typename Board> 
-class Driver<Color, Material::both, Selection, Rules, Board>
+// forward declaration of the primary template
+template<bool, int, typename, typename, typename> struct Driver;
+
+template<bool Color, typename Rules, typename Board> 
+struct Driver<Color, Material::both, Moves, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {

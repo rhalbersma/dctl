@@ -1,16 +1,19 @@
 #pragma once
-#include "Selection.hpp"
 #include "StateInterface.hpp"
-#include "Driver.hpp"
-#include "BothJumps.hpp"
-#include "BothMoves.hpp"
-#include "KingJumps.hpp"
-#include "KingMoves.hpp"
-#include "PawnJumps.hpp"
-#include "PawnMoves.hpp"
-#include "KingReverse.hpp"
-#include "PawnReverse.hpp"
-#include "Promotion.hpp"
+#include "Selection.hpp"
+#include "Driver.hpp"                   // primary template
+#include "Legal.hpp"                    // partially specialized on selection
+#include "Conversion.hpp"               // partially specialized on selection
+#include "BothJumps.hpp"                // partially specialized on material and selection
+#include "BothMoves.hpp"                // partially specialized on material and selection
+#include "BothReverse.hpp"              // partially specialized on material and selection
+#include "KingJumps.hpp"                // partially specialized on material and selection
+#include "KingMoves.hpp"                // partially specialized on material and selection
+#include "KingReverse.hpp"              // partially specialized on material and selection
+#include "PawnJumps.hpp"                // partially specialized on material and selection
+#include "PawnMoves.hpp"                // partially specialized on material and selection
+#include "PawnReverse.hpp"              // partially specialized on material and selection
+#include "PawnPromotion.hpp"            // partially specialized on material and selection
 #include "../node/Stack.hpp"
 
 namespace dctl {
@@ -29,9 +32,6 @@ namespace successor {
         Design Pattern, with the StateInterface class as the <FlyWeight>, 
         and the Dispatcher class as the <FlyWeightFactory>. Examples of 
         the <Client> include the Successor and Mobility classes.
-
-        The State class also forms the <AbstractClass> in a <Template Method>
-        Design Pattern, with the Driver class as the <ConcreteClass>.
 
 */
 
@@ -61,36 +61,6 @@ private:
         virtual bool do_detect(const Position<Board>& p) const 
         { 
                 return Driver<Color, Material, Selection, Rules, Board>::detect(p);
-        }
-};
-
-template<bool Color, int Material, typename Rules, typename Board> 
-class State<Color, Material, Legal, Rules, Board>
-: 
-        public StateInterface<Board>
-{
-private:		
-        virtual void do_generate(const Position<Board>& p, Stack& moves) const 
-        {
-                Driver<Color, Material, Jumps, Rules, Board>::generate(p, moves);
-                if (moves.empty())
-                        Driver<Color, Material, Moves, Rules, Board>::generate(p, moves);
-        }
-
-        virtual int do_count(const Position<Board>& p) const
-        {
-                auto num_moves = Driver<Color, Material, Jumps, Rules, Board>::count(p);
-                if (!num_moves)
-                        num_moves += Driver<Color, Material, Moves, Rules, Board>::count(p);
-                return num_moves;
-        }
-
-        virtual bool do_detect(const Position<Board>& p) const 
-        { 
-                return (
-                        Driver<Color, Material, Moves, Rules, Board>::detect(p) || 
-                        Driver<Color, Material, Jumps, Rules, Board>::detect(p)
-                );
         }
 };
 

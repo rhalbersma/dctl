@@ -8,13 +8,6 @@ template<typename> struct Position;
 
 namespace successor {
 
-/*
-
-        The Driver class forms the <ConcreteClass> in a <Template Method>
-        Design Pattern, with the State class as the <AbstractClass>.
-
-*/
-
 template
 <
         bool Color, 
@@ -23,7 +16,7 @@ template
         typename Rules, 
         typename Board
 > 
-class Driver
+struct Driver
 :
         private nonconstructible // enforce static semantics
 {

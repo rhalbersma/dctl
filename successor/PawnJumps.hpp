@@ -1,4 +1,5 @@
 #pragma once
+#include "Selection.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Angle.hpp"
 #include "../board/Board.h"
@@ -17,12 +18,11 @@ namespace dctl {
 namespace successor {
 
 // forward declaration of the primary template
-template<bool, int, typename, typename, typename> class Driver;
-struct Jumps;
+template<bool, int, typename, typename, typename> struct Driver;
 
 // partial specialization for pawn jumps
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::pawn, Jumps, Rules, Board>
+struct Driver<Color, Material::pawn, Jumps, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
