@@ -1,4 +1,5 @@
 #pragma once
+#include "Selection.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Direction.hpp"
 #include "../node/Material.hpp"
@@ -11,19 +12,14 @@
 #include "../utility/Shift.hpp"
 
 namespace dctl {
-
-namespace board { template<bool, typename> struct Direction; }
-template<typename> struct Position;
-
 namespace successor {
 
 // forward declaration of the primary template
-template<bool, int, typename, typename, typename> class Driver;
-struct Moves;
+template<bool, int, typename, typename, typename> struct Driver;
 
 // partial specialization for king moves
 template<bool Color, typename Rules, typename Board> 
-class Driver<Color, Material::king, Moves, Rules, Board>
+struct Driver<Color, Material::king, Moves, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
