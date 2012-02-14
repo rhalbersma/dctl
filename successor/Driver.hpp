@@ -1,11 +1,10 @@
 #pragma once
-#include "../node/Stack.hpp"
+#include "Driver_fwd.hpp"
+#include "../node/Position_fwd.hpp"
+#include "../node/Stack_fwd.hpp"
 #include "../utility/NonConstructible.hpp"
 
 namespace dctl {
-
-template<typename> struct Position;
-
 namespace successor {
 
 template
@@ -20,7 +19,6 @@ struct Driver
 :
         private nonconstructible // enforce static semantics
 {
-public:
         static void generate(const Position<Board>&, Stack&) 
         { 
                 /* no-op */ 

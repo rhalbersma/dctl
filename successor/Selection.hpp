@@ -1,15 +1,8 @@
 #pragma once
-
-namespace dctl {
-namespace successor {
-
-struct Legal;
-struct Jumps;
-struct Moves;
-struct Reverse;
-struct Promotion;
-struct NonPromotion;
-struct Conversion;
-
-}       // namespace successor
-}       // namespace dctl
+#include "Selection_fwd.hpp"
+#include "Legal.hpp"
+#include "Conversion.hpp"
+#include "Jumps.hpp"
+#include "Moves.hpp"
+#include "Reverse.hpp"
+#include "Promotion.hpp"

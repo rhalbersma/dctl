@@ -3,7 +3,7 @@
 #include "Score.hpp"
 #include "../bit/Bit.hpp"
 #include "../node/Position.hpp"
-#include "../successor/Selection.hpp"
+#include "../successor/Selection_fwd.hpp"
 #include "../successor/Successor.hpp"
 
 namespace dctl {
@@ -52,7 +52,7 @@ struct is_terminal<NoMovesLeft, Rules>
         template<typename Board>
         bool operator()(const Position<Board>& p) const
         {
-                return !Successor<successor::Legal, Rules>::detect(p);
+                return !Successor<select::Legal, Rules>::detect(p);
         }
 };
 

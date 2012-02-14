@@ -1,10 +1,11 @@
 #pragma once
-#include "Selection.hpp"
+#include "Driver_fwd.hpp"
+#include "Selection_fwd.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Direction.hpp"
 #include "../node/Material.hpp"
 #include "../node/Position.hpp"
-#include "../node/Stack.hpp"
+#include "../node/Stack_fwd.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -14,12 +15,9 @@
 namespace dctl {
 namespace successor {
 
-// forward declaration of the primary template
-template<bool, int, typename, typename, typename> struct Driver;
-
 // partial specialization for king moves
 template<bool Color, typename Rules, typename Board> 
-struct Driver<Color, Material::king, Moves, Rules, Board>
+struct Driver<Color, Material::king, select::Moves, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
@@ -146,7 +144,7 @@ private:
         {
                 return bit::count(
                         Destinations<
-                                Moves, Board, Index, 
+                                select::Moves, Board, Index, 
                                 rules::king_scan_range<Rules>::value
                         >()(active_kings, not_occupied)
                 );
@@ -157,7 +155,7 @@ private:
         {
                 return !bit::is_zero(
                         Destinations<
-                                Moves, Board, Index, 
+                                select::Moves, Board, Index, 
                                 rules::scan_1
                         >()(active_kings, not_occupied)
                 );

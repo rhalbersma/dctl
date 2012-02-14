@@ -1,23 +1,19 @@
 #pragma once
-#include "Selection.hpp"
+#include "Driver_fwd.hpp"
+#include "PawnMoves.hpp"
+#include "Selection_fwd.hpp"
 #include "../node/Material.hpp"
 #include "../node/Position.hpp"
 #include "../node/Promotion.hpp"
-#include "../node/Stack.hpp"
+#include "../node/Stack_fwd.hpp"
 #include "../utility/NonConstructible.hpp"
 
 namespace dctl {
-
-template<typename> struct Position;
-
 namespace successor {
-
-// forward declaration of the primary template
-template<bool, int, typename, typename, typename> struct Driver;
 
 // partial specialization for pawn promotions
 template<bool Color, typename Rules, typename Board> 
-struct Driver<Color, Material::pawn, Promotion, Rules, Board>
+struct Driver<Color, Material::pawn, select::Promotions, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
@@ -39,7 +35,7 @@ public:
 
 private:
         // typedefs
-        typedef Driver<Color, Material::pawn, Moves, Rules, Board> ActivePawnMoves;
+        typedef Driver<Color, Material::pawn, select::Moves, Rules, Board> ActivePawnMoves;
 };
 
 }       // namespace successor

@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <functional>                           // std::unary_function
+#include "Position_fwd.hpp"
 #include "Move.hpp"
 #include "Restricted.hpp"
 #include "Side.hpp"

@@ -2,7 +2,7 @@
 #include <iterator>                     // std::back_inserter
 #include <vector>                       // std::vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include "../successor/Selection.hpp"
+#include "../successor/Selection_fwd.hpp"
 #include "../successor/Successor.hpp"
 #include "../node/Position.hpp"
 #include "../node/Stack.hpp"
@@ -115,7 +115,7 @@ int Root<Rules, Board, Objective>::pvs(
         // generate moves
         Stack moves;
         moves.reserve(32);
-        Successor<successor::Legal, Rules>::generate(p, moves);
+        Successor<select::Legal, Rules>::generate(p, moves);
         BOOST_ASSERT(!moves.empty());
 
         std::vector<int> move_order;
@@ -240,7 +240,7 @@ int Root<Rules, Board, Objective>::verify(
         // generate moves
         Stack moves;
         moves.reserve(32);
-        Successor<successor::Legal, Rules>::generate(p, moves);
+        Successor<select::Legal, Rules>::generate(p, moves);
         BOOST_ASSERT(!moves.empty());
 
         std::vector<int> move_order;

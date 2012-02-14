@@ -1,25 +1,11 @@
 #pragma once
 #include "StateInterface.hpp"
+#include "Driver.hpp"
 #include "Selection.hpp"
-#include "Driver.hpp"                   // primary template
-#include "Legal.hpp"                    // partially specialized on selection
-#include "Conversion.hpp"               // partially specialized on selection
-#include "BothJumps.hpp"                // partially specialized on material and selection
-#include "BothMoves.hpp"                // partially specialized on material and selection
-#include "BothReverse.hpp"              // partially specialized on material and selection
-#include "KingJumps.hpp"                // partially specialized on material and selection
-#include "KingMoves.hpp"                // partially specialized on material and selection
-#include "KingReverse.hpp"              // partially specialized on material and selection
-#include "PawnJumps.hpp"                // partially specialized on material and selection
-#include "PawnMoves.hpp"                // partially specialized on material and selection
-#include "PawnReverse.hpp"              // partially specialized on material and selection
-#include "PawnPromotion.hpp"            // partially specialized on material and selection
-#include "../node/Stack.hpp"
+#include "../node/Position_fwd.hpp"
+#include "../node/Stack_fwd.hpp"
 
 namespace dctl {
-
-template<typename> struct Position;
-
 namespace successor {
 
 /*
