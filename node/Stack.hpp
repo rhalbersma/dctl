@@ -1,8 +1,7 @@
 #pragma once
 #include <algorithm>                    // std::find
-#include <vector>                       // std::vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include "Move.hpp"
+#include "Stack_fwd.hpp"
 #include "Predicates.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
@@ -10,8 +9,6 @@
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
-
-typedef std::vector<Move> Stack;
 
 inline Stack::reference top(Stack& stack)
 {

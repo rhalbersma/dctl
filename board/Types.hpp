@@ -1,8 +1,8 @@
 #pragma once
-#include "Degrees.hpp"
-#include "Board.h"
+#include "Board.hpp"
 #include "Dimensions.hpp"
 #include "Structure.hpp"
+#include "Degrees.hpp"
 
 namespace dctl {
 namespace board {

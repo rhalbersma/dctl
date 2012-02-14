@@ -1,11 +1,10 @@
 #pragma once
 #include "Dispatcher.hpp"
+#include "../node/Position_fwd.hpp"
 #include "../node/State.hpp"
 #include "../utility/NonConstructible.hpp"
 
 namespace dctl {
-
-template<typename> struct Position;
 
 /*
 
@@ -30,12 +29,10 @@ template
         typename Selection,
         typename Rules
 >
-class Mobility
+struct Mobility
 :
         private nonconstructible // enforce static semantics
 {
-public:
-        // interface
         template<bool Color, typename Board> 
         static int count(const Position<Board>& p)
         {

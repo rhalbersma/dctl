@@ -1,11 +1,12 @@
 #pragma once
-#include "Selection.hpp"
+#include "Driver_fwd.hpp"
+#include "Selection_fwd.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Direction.hpp"
 #include "../node/Material.hpp"
 #include "../node/Position.hpp"
 #include "../node/Promotion.hpp"
-#include "../node/Stack.hpp"
+#include "../node/Stack_fwd.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/NonConstructible.hpp"
@@ -14,19 +15,17 @@
 namespace dctl {
 namespace successor {
 
-// forward declaration of the primary template
-template<bool, int, typename, typename, typename> struct Driver;
-
 // partial specialization for pawn moves
 template<bool Color, typename Rules, typename Board> 
-struct Driver<Color, Material::pawn, Moves, Rules, Board>
+struct Driver<Color, Material::pawn, select::Moves, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
-public:
+private:
         // typedefs
         typedef board::Direction<Color, Board> Direction;
 
+public:
         static void generate(const Position<Board>& p, Stack& moves)
         {
                 generate(p.men(Color), not_occupied(p), moves);
@@ -89,7 +88,7 @@ private:
         static int count(BitBoard active_men, BitBoard not_occupied)
         {
                 return bit::count(
-                        Destinations<Moves, Board, Index, rules::scan_1>()(active_men, not_occupied)
+                        Destinations<select::Moves, Board, Index, rules::scan_1>()(active_men, not_occupied)
                 );
         }
 
@@ -97,7 +96,7 @@ private:
         static bool detect(BitBoard active_men, BitBoard not_occupied)
         {
                 return !bit::is_zero(
-                        Destinations<Moves, Board, Index, rules::scan_1>()(active_men, not_occupied)
+                        Destinations<select::Moves, Board, Index, rules::scan_1>()(active_men, not_occupied)
                 );
         }
 };

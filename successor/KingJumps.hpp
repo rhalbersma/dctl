@@ -1,6 +1,7 @@
 #pragma once
-#include "Selection.hpp"
 #include <boost/assert.hpp>                     // BOOST_ASSERT
+#include "Driver_fwd.hpp"
+#include "Selection_fwd.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Angle.hpp"
 #include "../board/Direction.hpp"
@@ -17,20 +18,18 @@
 namespace dctl {
 namespace successor {
 
-// forward declaration of the primary template
-template<bool, int, typename, typename, typename> struct Driver;
-
 // partial specialization for king jumps
 template<bool Color, typename Rules, typename Board> 
-struct Driver<Color, Material::king, Jumps, Rules, Board>
+struct Driver<Color, Material::king, select::Jumps, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
-public:
+private:
         // typedefs
         typedef board::Direction<Color, Board> Direction;
         typedef capture::State<Rules, Board> State;
 
+public:
         static void generate(const Position<Board>& p, Stack& moves)
         {
                 State capture(p);

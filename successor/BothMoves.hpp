@@ -1,25 +1,28 @@
 #pragma once
-#include "Selection.hpp"
+#include "Driver_fwd.hpp"
+#include "KingMoves.hpp"
+#include "PawnMoves.hpp"
+#include "Selection_fwd.hpp"
 #include "../node/Material.hpp"
-#include "../node/Stack.hpp"
+#include "../node/Position_fwd.hpp"
+#include "../node/Stack_fwd.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/NonConstructible.hpp"
 
 namespace dctl {
-
-template<typename> struct Position;
-
 namespace successor {
 
-// forward declaration of the primary template
-template<bool, int, typename, typename, typename> struct Driver;
-
 template<bool Color, typename Rules, typename Board> 
-struct Driver<Color, Material::both, Moves, Rules, Board>
+struct Driver<Color, Material::both, select::Moves, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
+private:
+        // typedefs
+        typedef Driver<Color, Material::king, select::Moves, Rules, Board> KingMoves;
+        typedef Driver<Color, Material::pawn, select::Moves, Rules, Board> PawnMoves;
+
 public:
         static void generate(const Position<Board>& p, Stack& moves)
         {
@@ -42,11 +45,6 @@ public:
                         KingMoves::detect(p)
                 );
         }
-
-private:
-        // typedefs
-        typedef Driver<Color, Material::king, Moves, Rules, Board> KingMoves;
-        typedef Driver<Color, Material::pawn, Moves, Rules, Board> PawnMoves;
 };
 
 }       // namespace successor

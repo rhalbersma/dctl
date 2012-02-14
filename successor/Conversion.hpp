@@ -1,36 +1,39 @@
 #pragma once
-#include "Selection.hpp"
+#include "Driver_fwd.hpp"
+#include "Jumps.hpp"
+#include "Promotion.hpp"
+#include "Selection_fwd.hpp"
+#include "../node/Position_fwd.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/NonConstructible.hpp"
 
 namespace dctl {
-
-template<typename> struct Position;
-
 namespace successor {
-
-// forward declaration of the primary template
-template<bool, int, typename, typename, typename> struct Driver;
 
 // partial specialization for legal successors
 template<bool Color, int Material, typename Rules, typename Board> 
-struct Driver<Color, Material, Conversion, Rules, Board>
+struct Driver<Color, Material, select::Conversion, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
+private:
+        // typedefs
+        typedef Driver<Color, Material, select::Jumps, Rules, Board> DoJumps;
+        typedef Driver<Color, Material, select::Promotions, Rules, Board> DoPromotions;
+
 public:
         static void generate(const Position<Board>& p, Stack& moves)
         {
                 DoJumps::generate(p, moves);
                 if (moves.empty())
-                        DoPromotion::generate(p, moves);
+                        DoPromotions::generate(p, moves);
         }
 
         static int count(const Position<Board>& p)
         {
                 auto num_moves = DoJumps::count(p);
                 if (!num_moves)
-                        num_moves += DoPromotion::count(p);
+                        num_moves += DoPromotions::count(p);
                 return num_moves;
         }
 
@@ -38,14 +41,9 @@ public:
         {
                 return (
                         DoJumps::detect(p) ||
-                        DoPromotion::detect(p)
+                        DoPromotions::detect(p)
                 );
         }
-
-private:
-        // typedefs
-        typedef Driver<Color, Material, Jumps, Rules, Board> DoJumps;
-        typedef Driver<Color, Material, Promotion, Rules, Board> DoPromotion;
 };
 
 }       // namespace successor

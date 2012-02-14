@@ -70,7 +70,7 @@ public:
         
         static int mobility(const Position<Board>& p)
         {
-                return Weight<Rules, Board>::mobility * Mobility<successor::Moves, Rules>::template count<Color>(p);
+                return Weight<Rules, Board>::mobility * Mobility<select::Moves, Rules>::template count<Color>(p);
         }
 };
 

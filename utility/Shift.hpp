@@ -3,8 +3,11 @@
 #include "../board/Angle.hpp"
 #include "../board/Traits.hpp"
 #include "../rules/Rules.hpp"
+#include "../successor/Selection_fwd.hpp"
 
 namespace dctl {
+
+// TODO <dir> argument of Shift function can be made a template parameter in C++11 (using constexpr)
 
 namespace { enum { L, R }; }
 
@@ -118,10 +121,8 @@ struct FloodFill
 template<typename Selection, typename Board, int Index, int Range>
 struct Destinations;
 
-namespace successor { struct Moves; }
-
 template<typename Board, int Index>
-struct Destinations<successor::Moves, Board, Index, rules::scan_1>
+struct Destinations<select::Moves, Board, Index, rules::scan_1>
 {
         template<typename T> 
         T operator()(T active_pieces, T not_occupied) const
@@ -131,7 +132,7 @@ struct Destinations<successor::Moves, Board, Index, rules::scan_1>
 };
 
 template<typename Board, int Index>
-struct Destinations<successor::Moves, Board, Index, rules::scan_N>
+struct Destinations<select::Moves, Board, Index, rules::scan_N>
 {
         template<typename T> 
         T operator()(T active_pieces, T not_occupied) const

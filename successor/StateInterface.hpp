@@ -1,11 +1,9 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include "../node/Position_fwd.hpp"
 #include "../node/Stack.hpp"
 
 namespace dctl {
-
-template<typename> struct Position;
-
 namespace successor {
 
 /*
