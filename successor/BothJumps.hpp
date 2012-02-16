@@ -2,7 +2,7 @@
 #include "Driver_fwd.hpp"
 #include "KingJumps.hpp"
 #include "PawnJumps.hpp"
-#include "Selection_fwd.hpp"
+#include "Selection.hpp"
 #include "../capture/State.hpp"
 #include "../node/Material.hpp"
 #include "../node/Position_fwd.hpp"
