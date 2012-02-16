@@ -3,7 +3,7 @@
 #include "../board/Angle.hpp"
 #include "../board/Traits.hpp"
 #include "../rules/Rules.hpp"
-#include "../successor/Selection_fwd.hpp"
+#include "../successor/Selection.hpp"
 
 namespace dctl {
 

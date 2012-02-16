@@ -1,7 +1,6 @@
 #pragma once
 #include "StateInterface.hpp"
 #include "Driver.hpp"
-#include "Selection.hpp"
 #include "../node/Position_fwd.hpp"
 #include "../node/Stack_fwd.hpp"
 

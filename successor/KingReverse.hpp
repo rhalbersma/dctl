@@ -1,7 +1,7 @@
 #pragma once
 #include "Driver_fwd.hpp"
 #include "KingMoves.hpp"
-#include "Selection_fwd.hpp"
+#include "Selection.hpp"
 #include "../node/Material.hpp"
 
 namespace dctl {

@@ -1,7 +1,7 @@
 #pragma once
 #include "Driver_fwd.hpp"
 #include "KingJumps.hpp"
-#include "Selection_fwd.hpp"
+#include "Selection.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Angle.hpp"
 #include "../board/Board.hpp"

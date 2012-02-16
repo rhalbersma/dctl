@@ -1,8 +1,12 @@
 #pragma once
 #include "Driver_fwd.hpp"
-#include "Jumps.hpp"
-#include "Promotion.hpp"
-#include "Selection_fwd.hpp"
+#include "Primary.hpp"
+#include "BothJumps.hpp"
+#include "BothPromotion.hpp"
+#include "KingJumps.hpp"
+#include "PawnJumps.hpp"
+#include "PawnPromotion.hpp"
+#include "Selection.hpp"
 #include "../node/Position_fwd.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/NonConstructible.hpp"
@@ -18,7 +22,7 @@ struct Driver<Color, Material, select::Conversion, Rules, Board>
 {
 private:
         // typedefs
-        typedef Driver<Color, Material, select::Jumps, Rules, Board> DoJumps;
+        typedef Driver<Color, Material, select::Jumps     , Rules, Board> DoJumps;
         typedef Driver<Color, Material, select::Promotions, Rules, Board> DoPromotions;
 
 public:

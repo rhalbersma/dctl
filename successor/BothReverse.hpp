@@ -2,7 +2,7 @@
 #include "Driver_fwd.hpp"
 #include "KingReverse.hpp"
 #include "PawnReverse.hpp"
-#include "Selection_fwd.hpp"
+#include "Selection.hpp"
 #include "../node/Material.hpp"
 #include "../node/Position_fwd.hpp"
 #include "../node/Stack_fwd.hpp"

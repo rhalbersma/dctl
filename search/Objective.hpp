@@ -3,7 +3,7 @@
 #include "Score.hpp"
 #include "../bit/Bit.hpp"
 #include "../node/Position.hpp"
-#include "../successor/Selection_fwd.hpp"
+#include "../successor/Selection.hpp"
 #include "../successor/Successor.hpp"
 
 namespace dctl {

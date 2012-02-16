@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include "Driver_fwd.hpp"
-#include "Selection_fwd.hpp"
+#include "Selection.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Angle.hpp"
 #include "../board/Direction.hpp"

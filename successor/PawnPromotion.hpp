@@ -1,7 +1,7 @@
 #pragma once
 #include "Driver_fwd.hpp"
 #include "PawnMoves.hpp"
-#include "Selection_fwd.hpp"
+#include "Selection.hpp"
 #include "../node/Material.hpp"
 #include "../node/Position.hpp"
 #include "../node/Promotion.hpp"
@@ -17,6 +17,10 @@ struct Driver<Color, Material::pawn, select::Promotions, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
+private:
+        // typedefs
+        typedef Driver<Color, Material::pawn, select::Moves, Rules, Board> ActivePawnMoves;
+
 public:
         static void generate(const Position<Board>& p, Stack& moves)
         {
@@ -32,10 +36,6 @@ public:
         {
                 return ActivePawnMoves::detect(promoting_men<Color>(p), not_occupied(p));
         }
-
-private:
-        // typedefs
-        typedef Driver<Color, Material::pawn, select::Moves, Rules, Board> ActivePawnMoves;
 };
 
 }       // namespace successor

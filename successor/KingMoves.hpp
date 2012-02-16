@@ -1,6 +1,6 @@
 #pragma once
 #include "Driver_fwd.hpp"
-#include "Selection_fwd.hpp"
+#include "Selection.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Direction.hpp"
 #include "../node/Material.hpp"
