@@ -17,5 +17,4 @@ class nonconstructible
 {
 private:
         nonconstructible();
-        //~nonconstructible();
 };

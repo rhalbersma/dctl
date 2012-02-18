@@ -21,6 +21,10 @@ struct Driver<Color, Material::king, select::Moves, Rules, Board>
 :
         private nonconstructible // enforce static semantics
 {
+private:
+        // typedefs
+        typedef board::Direction<Color, Board> Direction;        
+
 public:
         static void generate(const Position<Board>& p, Stack& moves)
         {
@@ -74,9 +78,6 @@ private:
                 }
         }
         
-        // typedefs
-        typedef board::Direction<Color, Board> Direction;        
-
         static void generate(BitBoard from_sq, BitBoard not_occupied, Stack& moves)
         {
                 generate<Direction::left_down >(from_sq, not_occupied, moves);
@@ -143,10 +144,7 @@ private:
         static int count(BitBoard active_kings, BitBoard not_occupied)
         {
                 return bit::count(
-                        Destinations<
-                                select::Moves, Board, Index, 
-                                rules::king_scan_range<Rules>::value
-                        >()(active_kings, not_occupied)
+                        Sink<Board, Index, rules::king_scan_range<Rules>::value>()(active_kings, not_occupied)
                 );
         }
 
@@ -154,10 +152,7 @@ private:
         static bool detect(BitBoard active_kings, BitBoard not_occupied)
         {
                 return !bit::is_zero(
-                        Destinations<
-                                select::Moves, Board, Index, 
-                                rules::scan_1
-                        >()(active_kings, not_occupied)
+                        Sink<Board, Index, rules::scan_1>()(active_kings, not_occupied)
                 );
         }
 };

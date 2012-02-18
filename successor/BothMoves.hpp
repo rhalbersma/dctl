@@ -40,6 +40,7 @@ public:
 
         static bool detect(const Position<Board>& p)
         {
+                // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (
                         PawnMoves::detect(p) || 
                         KingMoves::detect(p)

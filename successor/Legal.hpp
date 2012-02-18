@@ -45,8 +45,8 @@ public:
         static bool detect(const Position<Board>& p) 
         { 
                 return (
-                        DoJumps::detect(p) || 
-                        DoMoves::detect(p)
+                        DoMoves::detect(p) ||
+                        DoJumps::detect(p) 
                 );
         }
 };

@@ -10,6 +10,7 @@
 #include "../node/Material.hpp"
 #include "../node/Position.hpp"
 #include "../node/Stack.hpp"
+#include "../node/Targets.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -52,7 +53,7 @@ public:
 
         static bool detect(const Position<Board>& p)
         {
-                return detect(p.men(Color), targets(p), not_occupied(p));
+                return detect(p.men(Color), targets<Color, Rules>(p), not_occupied(p));
         }
 
 private:        
@@ -81,30 +82,6 @@ private:
         )
         {
                 generate(p.men(Color), capture, moves);
-        }
-
-        static BitBoard targets(const Position<Board>& p)
-        {
-                // tag dispatching on whether men can capture kings
-                return targets_dispatch(
-                        p, Int2Type<rules::is_men_capture_kings<Rules>::value>()
-                );
-        }
-
-        // partial specialization for men that cannot capture kings
-        static BitBoard targets_dispatch(
-                const Position<Board>& p, Int2Type<false>
-        )
-        {
-                return p.men(!Color);
-        }
-
-        // partial specialization for men that can capture kings
-        static BitBoard targets_dispatch(
-                const Position<Board>& p, Int2Type<true>
-        )
-        {
-                return p.pieces(!Color);
         }
 
         static void generate(BitBoard active_men, State& capture, Stack& moves)
@@ -164,70 +141,70 @@ private:
         }
 
         static bool detect(
-                BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied
+                BitBoard active_men, BitBoard passive_pieces, BitBoard not_occupied
         )
         {
                 // tag dispatching on man capture directions
                 return detect_dispatch(
-                        active_men, opponent_pieces, not_occupied, 
+                        active_men, passive_pieces, not_occupied, 
                         Int2Type<rules::man_capture_directions<Rules>::value>()
                 );
         }
 
         // partial specialization for men that capture in the 8 orthogonal and diagonal directions
         static bool detect_dispatch(
-                BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_all>
+                BitBoard active_men, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_all>
         )
         {
                 return (
-                        detect_dispatch(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_orth>()) ||
-                        detect_dispatch(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_diag>())
+                        detect_dispatch(active_men, passive_pieces, not_occupied, Int2Type<rules::dirs_orth>()) ||
+                        detect_dispatch(active_men, passive_pieces, not_occupied, Int2Type<rules::dirs_diag>())
                 );
         }
         
         // partial specialization for men that capture in the 4 orthogonal directions
         static bool detect_dispatch(
-                BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_orth>
+                BitBoard active_men, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_orth>
         )
         {
                 return (
-                        detect<Direction::left >(active_men, opponent_pieces, not_occupied) ||
-                        detect<Direction::right>(active_men, opponent_pieces, not_occupied) ||
-                        detect<Direction::up   >(active_men, opponent_pieces, not_occupied) ||
-                        detect<Direction::down >(active_men, opponent_pieces, not_occupied)
+                        detect<Direction::left >(active_men, passive_pieces, not_occupied) ||
+                        detect<Direction::right>(active_men, passive_pieces, not_occupied) ||
+                        detect<Direction::up   >(active_men, passive_pieces, not_occupied) ||
+                        detect<Direction::down >(active_men, passive_pieces, not_occupied)
                 );
         }
         
         // partial specialization for men that capture in the 4 diagonal directions
         static bool detect_dispatch(
-                BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_diag>
+                BitBoard active_men, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_diag>
         )
         {
                 return (
-                        detect_dispatch(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_up  >()) ||
-                        detect_dispatch(active_men, opponent_pieces, not_occupied, Int2Type<rules::dirs_down>())
+                        detect_dispatch(active_men, passive_pieces, not_occupied, Int2Type<rules::dirs_up  >()) ||
+                        detect_dispatch(active_men, passive_pieces, not_occupied, Int2Type<rules::dirs_down>())
                 );
         }
         
         // partial specialization for men that capture in the 2 forward diagonal directions
         static bool detect_dispatch(
-                BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_up>
+                BitBoard active_men, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_up>
         )
         {
                 return (
-                        detect<Direction::left_up >(active_men, opponent_pieces, not_occupied) ||
-                        detect<Direction::right_up>(active_men, opponent_pieces, not_occupied)
+                        detect<Direction::left_up >(active_men, passive_pieces, not_occupied) ||
+                        detect<Direction::right_up>(active_men, passive_pieces, not_occupied)
                 );
         }
         
         // partial specialization for men that capture in the 2 backward diagonal directions
         static bool detect_dispatch(
-                BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_down>
+                BitBoard active_men, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_down>
         )
         {
                 return (
-                        detect<Direction::left_down >(active_men, opponent_pieces, not_occupied) ||
-                        detect<Direction::right_down>(active_men, opponent_pieces, not_occupied)
+                        detect<Direction::left_down >(active_men, passive_pieces, not_occupied) ||
+                        detect<Direction::right_down>(active_men, passive_pieces, not_occupied)
                 );
         }
 
@@ -392,12 +369,10 @@ private:
         }
 
         template<int Index>
-        static bool detect(BitBoard active_men, BitBoard opponent_pieces, BitBoard not_occupied)
+        static bool detect(BitBoard active_men, BitBoard passive_pieces, BitBoard not_occupied)
         {
                 return !bit::is_zero(
-                        Push<Board, Index>()(active_men) & 
-                        opponent_pieces & 
-                        Pull<Board, Index>()(not_occupied)
+                        Sandwich<Board, Index, rules::scan_1>()(active_men, passive_pieces, not_occupied)
                 );
         }
 };
