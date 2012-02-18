@@ -10,9 +10,10 @@ namespace mixin {
 template
 <
         size_t HeaderLength,
-        size_t MaxBodyLength
+        size_t MaxBodyLength,
+        char Terminator
 >
-struct HeaderBody
+struct HeaderBodyTerminator
 {
         static std::string header(const std::string& input)
         {
@@ -24,8 +25,14 @@ struct HeaderBody
                 return input.substr(HeaderLength);
         }
 
+        static char terminator()
+        {
+                return terminator_;
+        }
+
         BOOST_STATIC_CONSTANT(auto, header_length_ = HeaderLength);
         BOOST_STATIC_CONSTANT(auto, max_body_length_ = MaxBodyLength);
+        BOOST_STATIC_CONSTANT(auto, terminator_ = Terminator);
 };
 
 template
@@ -35,15 +42,17 @@ template
         typename Base
 >
 struct IdentifierCreate
+:
+        public Base
 {
-        static std::unique_ptr<Base> create(const std::string& parameter)
-        {
-                return std::unique_ptr<Base>(new Derived(parameter));
-        }
-
         static std::string identifier()
         {
                 return std::string(1, identifier_);
+        }        
+        
+        static std::unique_ptr<Base> create(const std::string& parameter)
+        {
+                return std::unique_ptr<Base>(new Derived(parameter));
         }
 
         typedef Base base;
@@ -51,15 +60,29 @@ struct IdentifierCreate
 };
 
 template<typename T>
-struct has_header_body
+struct has_header_body_terminator
 :
-        std::is_base_of< HeaderBody< T::header_length_, T::max_body_length_ >, T >
+        std::is_base_of< 
+                HeaderBodyTerminator< 
+                        T::header_length_, 
+                        T::max_body_length_, 
+                        T::terminator_
+                >, 
+                T 
+        >
 {};
 
 template<typename T>
 struct has_identifier_create
 :
-        std::is_base_of< IdentifierCreate< T::identifier_, T, typename T::base >, T >
+        std::is_base_of< 
+                IdentifierCreate< 
+                        T::identifier_, 
+                        T, 
+                        typename T::base 
+                >, 
+                T 
+        >
 {};
 
 }       // namespace mixin

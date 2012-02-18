@@ -15,7 +15,6 @@ namespace dxp {
         
 class Chat
 : 
-        public MessageInterface,
         public mixin::IdentifierCreate<'C', Chat, MessageInterface>
 {
 public:

@@ -28,7 +28,6 @@ public:
         template<typename Derived>
         bool insert(boost::mpl::identity<Derived>)
         {
-                BOOST_STATIC_ASSERT((std::is_base_of<Base, Derived>::value));
                 BOOST_STATIC_ASSERT((mixin::has_identifier_create<Derived>::value));
 
                 return insert(Derived::identifier(), Derived::create);
@@ -37,7 +36,6 @@ public:
         template<typename Derived>
         bool erase(boost::mpl::identity<Derived>)
         {
-                BOOST_STATIC_ASSERT((std::is_base_of<Base, Derived>::value));
                 BOOST_STATIC_ASSERT((mixin::has_identifier_create<Derived>::value));
 
                 return erase(Derived::identifier());

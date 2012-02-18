@@ -18,7 +18,6 @@ namespace dxp {
         
 class GameAcknowledge
 : 
-        public MessageInterface,
         public mixin::IdentifierCreate<'A', GameAcknowledge, MessageInterface>
 {
 public:
