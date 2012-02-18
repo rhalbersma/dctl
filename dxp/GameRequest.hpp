@@ -20,7 +20,6 @@ namespace dxp {
 
 class GameRequest
 : 
-        public MessageInterface,
         public mixin::IdentifierCreate<'R', GameRequest, MessageInterface>
 {
 public:

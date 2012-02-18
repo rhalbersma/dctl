@@ -18,7 +18,6 @@ namespace dxp {
   
 class BackRequest
 : 
-        public MessageInterface,
         public mixin::IdentifierCreate<'B', BackRequest, MessageInterface>
 {
 public:

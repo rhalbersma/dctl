@@ -16,7 +16,7 @@ namespace dxp {
 
 class MessageInterface
 :
-        public mixin::HeaderBody< 1, 126 >
+        public mixin::HeaderBodyTerminator< 1, 126, '\0' >
 {
 public:
         // virtual destructor

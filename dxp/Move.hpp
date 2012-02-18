@@ -20,7 +20,6 @@ namespace dxp {
         
 class Move
 : 
-        public MessageInterface,
         public mixin::IdentifierCreate<'M', Move, MessageInterface>
 {
 public:

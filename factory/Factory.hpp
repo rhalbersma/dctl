@@ -42,7 +42,7 @@ public:
         AbstractProductPointer create(const std::string& input) const
         {
                 // AbstractProduct must have header / body functionality mixed in 
-                BOOST_STATIC_ASSERT((mixin::has_header_body<AbstractProduct>::value));
+                BOOST_STATIC_ASSERT((mixin::has_header_body_terminator<AbstractProduct>::value));
 
                 const auto fun = registry_.find(AbstractProduct::header(input));
                 return fun? (fun)(AbstractProduct::body(input)) : nullptr;
