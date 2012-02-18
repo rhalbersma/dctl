@@ -1,5 +1,5 @@
-#include <string>                               // std::string
-#include <boost/mpl/vector.hpp>                   // boost::mpl::list
+#include <string>                               // string
+#include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL 
 //#include "../../src/dxp/Connection.hpp"
 #include "../../src/dxp/MessageInterface.hpp"
@@ -32,13 +32,13 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                         GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
                 >,
                 MessageInterface
-        > parser;
+        > factory;
 
         for (auto i = 0; i < 8; ++i) {                
-                if (const auto decoded = parser.create(message[i]))
-                        BOOST_CHECK_EQUAL(message[i], decoded->str());
+                if (const auto parsed = factory.create(message[i]))
+                        BOOST_CHECK_EQUAL(message[i], parsed->str());
                 else {
-                        BOOST_ASSERT(!"Unregistered message type (cannot dereference a nullptr)");
+                        BOOST_CHECK(!"Unregistered message type (cannot dereference a nullptr)");
                 }
         }
 }
