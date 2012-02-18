@@ -38,7 +38,7 @@ struct IdentifierCreate
 {
         static std::unique_ptr<Base> create(const std::string& parameter)
         {
-                return std::unique_ptr<Derived>(new Derived(parameter));
+                return std::unique_ptr<Base>(new Derived(parameter));
         }
 
         static std::string identifier()

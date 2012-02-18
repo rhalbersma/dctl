@@ -88,7 +88,7 @@ private:
         static int count(BitBoard active_men, BitBoard not_occupied)
         {
                 return bit::count(
-                        Destinations<select::Moves, Board, Index, rules::scan_1>()(active_men, not_occupied)
+                        Sink<Board, Index, rules::scan_1>()(active_men, not_occupied)
                 );
         }
 
@@ -96,7 +96,7 @@ private:
         static bool detect(BitBoard active_men, BitBoard not_occupied)
         {
                 return !bit::is_zero(
-                        Destinations<select::Moves, Board, Index, rules::scan_1>()(active_men, not_occupied)
+                        Sink<Board, Index, rules::scan_1>()(active_men, not_occupied)
                 );
         }
 };

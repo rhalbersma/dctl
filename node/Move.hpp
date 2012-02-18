@@ -107,7 +107,7 @@ private:
 };
 
 // xor the set bits of two piece sets
-inline const Move operator^(const Move& left, const Move& right)
+inline Move operator^(const Move& left, const Move& right)
 {
         return Move(left) ^= right;
 }     

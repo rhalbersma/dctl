@@ -141,49 +141,49 @@ private:
                 generate<Direction::right_down>(jumper, capture, moves);
         }
 
-        static bool detect(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied)
+        static bool detect(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied)
         {
                 // tag dispatching on king capture directions
                 return detect_dispatch(
-                        active_kings, opponent_pieces, not_occupied, 
+                        active_kings, passive_pieces, not_occupied, 
                         Int2Type<rules::king_capture_directions<Rules>::value>()
                 );
         }
         
         // partial specialization for kings that capture in the 8 orthogonal and diagonal directions
         static bool detect_dispatch(
-                BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_all>
+                BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_all>
         )
         {
                 return (
-                        detect_dispatch(active_kings, opponent_pieces, not_occupied, Int2Type<rules::dirs_orth>()) ||
-                        detect_dispatch(active_kings, opponent_pieces, not_occupied, Int2Type<rules::dirs_diag>())
+                        detect_dispatch(active_kings, passive_pieces, not_occupied, Int2Type<rules::dirs_orth>()) ||
+                        detect_dispatch(active_kings, passive_pieces, not_occupied, Int2Type<rules::dirs_diag>())
                 );
         }
         
         // partial specialization for kings that capture in the 4 orthogonal directions
         static bool detect_dispatch(
-                BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_orth>
+                BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_orth>
         )
         {
                 return (
-                        detect<Direction::left >(active_kings, opponent_pieces, not_occupied) ||
-                        detect<Direction::right>(active_kings, opponent_pieces, not_occupied) ||
-                        detect<Direction::up   >(active_kings, opponent_pieces, not_occupied) ||
-                        detect<Direction::down >(active_kings, opponent_pieces, not_occupied)
+                        detect<Direction::left >(active_kings, passive_pieces, not_occupied) ||
+                        detect<Direction::right>(active_kings, passive_pieces, not_occupied) ||
+                        detect<Direction::up   >(active_kings, passive_pieces, not_occupied) ||
+                        detect<Direction::down >(active_kings, passive_pieces, not_occupied)
                 );
         }
         
         // partial specialization for kings that capture in the 4 diagonal directions
         static bool detect_dispatch(
-                BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::dirs_diag>
+                BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_diag>
         )
         {
                 return (
-                        detect<Direction::left_up   >(active_kings, opponent_pieces, not_occupied) ||
-                        detect<Direction::right_up  >(active_kings, opponent_pieces, not_occupied) ||
-                        detect<Direction::left_down >(active_kings, opponent_pieces, not_occupied) ||
-                        detect<Direction::right_down>(active_kings, opponent_pieces, not_occupied)
+                        detect<Direction::left_up   >(active_kings, passive_pieces, not_occupied) ||
+                        detect<Direction::right_up  >(active_kings, passive_pieces, not_occupied) ||
+                        detect<Direction::left_down >(active_kings, passive_pieces, not_occupied) ||
+                        detect<Direction::right_down>(active_kings, passive_pieces, not_occupied)
                 );
         }
 
@@ -384,38 +384,12 @@ private:
         }
 
         template<int Index> 
-        static bool detect(BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied)
+        static bool detect(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied)
         {
-                // tag dispatching on king range
-                return detect_dispatch<Index>(
-                        active_kings, opponent_pieces, not_occupied, 
-                        Int2Type<rules::king_scan_range<Rules>::value>()
-                );
-        }
-        
-        // partial specialization for short ranged kings
-        template<int Index> 
-        static bool detect_dispatch(
-                BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::scan_1>
-        )
-        {
+                // partial specialiations of Sandwich for king range
                 return !bit::is_zero(
-                        Push<Board, Index>()(active_kings) & 
-                        opponent_pieces & 
-                        Pull<Board, Index>()(not_occupied)
-                );
-        }
-        
-        // partial specialization for long ranged kings
-        template<int Index> 
-        static bool detect_dispatch(
-                BitBoard active_kings, BitBoard opponent_pieces, BitBoard not_occupied, Int2Type<rules::scan_N>
-        )
-        {
-                return !bit::is_zero(
-                        Push<Board, Index>()(FloodFill<Board, Index>()(active_kings, not_occupied)) & 
-                        opponent_pieces & 
-                        Pull<Board, Index>()(not_occupied)
+                        Sandwich<Board, Index, rules::king_scan_range<Rules>::value>()
+                        (active_kings, passive_pieces, not_occupied)
                 );
         }
 };

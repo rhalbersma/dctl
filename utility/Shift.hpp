@@ -118,26 +118,58 @@ struct FloodFill
 };
 
 // primary template
-template<typename Selection, typename Board, int Index, int Range>
-struct Destinations;
+template<typename Board, int Index, int Range>
+struct Sink;
 
 template<typename Board, int Index>
-struct Destinations<select::Moves, Board, Index, rules::scan_1>
+struct Sink<Board, Index, rules::scan_1>
 {
         template<typename T> 
-        T operator()(T active_pieces, T not_occupied) const
+        T operator()(T from, T dest) const
         {
-                return Push<Board, Index>()(active_pieces) & not_occupied;
+                return Push<Board, Index>()(from) & dest;
         }
 };
 
 template<typename Board, int Index>
-struct Destinations<select::Moves, Board, Index, rules::scan_N>
+struct Sink<Board, Index, rules::scan_N>
 {
         template<typename T> 
-        T operator()(T active_pieces, T not_occupied) const
+        T operator()(T from, T dest) const
         {
-                return active_pieces ^ FloodFill<Board, Index>()(active_pieces, not_occupied);
+                return from ^ FloodFill<Board, Index>()(from, dest);
+        }
+};
+
+// primary template
+template<typename Board, int Index, int Range>
+struct Sandwich;
+
+template<typename Board, int Index>
+struct Sandwich<Board, Index, rules::scan_1>
+{
+        template<typename T> 
+        T operator()(T from, T past, T dest) const
+        {
+                return (
+                        Push<Board, Index>()(from) & 
+                        past & 
+                        Pull<Board, Index>()(dest)
+                );
+        }
+};
+
+template<typename Board, int Index>
+struct Sandwich<Board, Index, rules::scan_N>
+{
+        template<typename T> 
+        T operator()(T from, T past, T dest) const
+        {
+                return (
+                        Push<Board, Index>()(FloodFill<Board, Index>()(from, dest)) & 
+                        past & 
+                        Pull<Board, Index>()(dest)
+                );
         }
 };
 
