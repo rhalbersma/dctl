@@ -1,9 +1,9 @@
 #pragma once
-#include <algorithm>                    // std::count_if, std::fill_n
-#include <cstddef>                      // std::size_t
-#include <type_traits>                  // std::is_integral
-#include <utility>                      // std::pair
-#include <vector>                       // std::vector
+#include <algorithm>                    // count_if, fill_n
+#include <cstddef>                      // size_t
+#include <type_traits>                  // is_integral
+#include <utility>                      // pair
+#include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "FindInsert.hpp"
 #include "Functions.hpp"
