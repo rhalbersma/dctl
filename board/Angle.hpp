@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/int.hpp>            // int_
-#include "Degrees.hpp"                  // L090, R090, D090, D180, D360
+#include "Degrees.hpp"                  // D360
 #include "Modular.hpp"                  // abs_modulus
 #include "Transform.hpp"                // inverse, rotate, mirror
 

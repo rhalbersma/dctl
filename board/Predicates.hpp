@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/at.hpp>             // at
-#include <boost/mpl/int.hpp>           // int_
+#include <boost/mpl/int.hpp>            // int_
 #include "Angle.hpp"
 #include "Dimensions.hpp"
 #include "Transform.hpp"
