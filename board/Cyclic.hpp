@@ -1,15 +1,15 @@
 #pragma once
-#include <boost/mpl/list.hpp>           // list
 #include <boost/mpl/quote.hpp>          // quote1, quote2
-#include "Group.hpp"
+#include <boost/mpl/vector.hpp>         // vector
 #include "Angle.hpp"
 #include "Degrees.hpp"
+#include "Transform.hpp"
+#include "../group/primitives.hpp"
 
 namespace dctl {
-namespace group {
 
-typedef Group<
-        boost::mpl::list<
+typedef group::tuple<
+        boost::mpl::vector<
                 angle<degrees::D000> 
         >,
         boost::mpl::quote2< rotate >,
@@ -17,8 +17,8 @@ typedef Group<
         boost::mpl::quote1< inverse >
 > C1;
 
-typedef Group<
-        boost::mpl::list<
+typedef group::tuple<
+        boost::mpl::vector<
                 angle<degrees::D000>, 
                 angle<degrees::D180>
         >,
@@ -27,8 +27,8 @@ typedef Group<
         boost::mpl::quote1< inverse >
 > C2;
 
-typedef Group<
-        boost::mpl::list<
+typedef group::tuple<
+        boost::mpl::vector<
                 angle<degrees::D000>, 
                 angle<degrees::D090>, 
                 angle<degrees::D180>, 
@@ -39,8 +39,8 @@ typedef Group<
         boost::mpl::quote1< inverse >
 > C4;
 
-typedef Group<
-        boost::mpl::list<
+typedef group::tuple<
+        boost::mpl::vector<
                 angle<degrees::D000>, 
                 angle<degrees::D045>, 
                 angle<degrees::D090>, 
@@ -55,5 +55,4 @@ typedef Group<
         boost::mpl::quote1< inverse >
 > C8;
 
-}       // namespace group
 }       // namespace dctl

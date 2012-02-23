@@ -1,6 +1,5 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 
 namespace dctl {
 

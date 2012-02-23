@@ -1,8 +1,8 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <iomanip>                      // std::dec, std::setfill, std::setw
-#include <iostream>                     // std::cout
+#include <iomanip>                      // dec, setfill, setw
+#include <iostream>                     // cout
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {

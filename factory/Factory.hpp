@@ -1,51 +1,53 @@
 #pragma once
 #include <memory>                       // unique_ptr
 #include <string>                       // string
-#include <boost/config.hpp>             // BOOST_STATIC_ASSERT
+#include <type_traits>                  // is_base_of
+#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/mpl/for_each.hpp>       // for_each
 #include <boost/mpl/identity.hpp>       // identity, make_identity
-#include "mixin.hpp"                    // has_header_body
+#include <boost/mpl/placeholders.hpp>   // _1
+#include "mixin.hpp"                    // has_header_body_terminator
 #include "Registry.hpp"                 // Registry
-#include "../utility/type_traits.hpp"   // is_base_of_all
+#include "../mpl/algorithm.hpp"         // all_of
 
 namespace dctl {
 
 template
 <
-        typename ConcreteProducts,
-        typename AbstractProduct,
-        typename AbstractProductPointer = std::unique_ptr<AbstractProduct>,
-        typename Creator = AbstractProductPointer (*)(const std::string&),
+        typename DerivedSequence,
+        typename Base,
+        typename BasePointer = std::unique_ptr<Base>,
+        typename Creator = BasePointer (*)(const std::string&),
         typename Lookup = std::map<std::string, Creator>,
-        typename Registry = Registry<AbstractProduct, AbstractProductPointer, Creator, Lookup>
+        typename Registry = Registry<Base, BasePointer, Creator, Lookup>
 >
 struct Factory
 {
 public:
-        // all ConcreteProducts must be derived from AbstractProduct
-        BOOST_STATIC_ASSERT((is_base_of_all<AbstractProduct, ConcreteProducts>::type::value));
+        // Base must have header / body / terminator functionality mixed in 
+        BOOST_MPL_ASSERT((mixin::has_header_body_terminator<Base>));
+
+        // all DerivedSequence must be derived from Base
+        BOOST_MPL_ASSERT((mpl::all_of<DerivedSequence, std::is_base_of< Base, boost::mpl::_1 > >));
 
         Factory()
         {
-                boost::mpl::for_each<ConcreteProducts, boost::mpl::make_identity<> >(
+                boost::mpl::for_each<DerivedSequence, boost::mpl::make_identity<> >(
                         call_insert(registry_)
                 );
         }       
 
         ~Factory()
         {
-                boost::mpl::for_each<ConcreteProducts, boost::mpl::make_identity<> >(
+                boost::mpl::for_each<DerivedSequence, boost::mpl::make_identity<> >(
                         call_erase(registry_)
                 );
         }
 
-        AbstractProductPointer create(const std::string& input) const
+        BasePointer create(const std::string& input) const
         {
-                // AbstractProduct must have header / body functionality mixed in 
-                BOOST_STATIC_ASSERT((mixin::has_header_body_terminator<AbstractProduct>::value));
-
-                const auto fun = registry_.find(AbstractProduct::header(input));
-                return fun? (fun)(AbstractProduct::body(input)) : nullptr;
+                const auto fun = registry_.find(Base::header(input));
+                return fun? (fun)(Base::body(input)) : nullptr;
         }
 
 private:

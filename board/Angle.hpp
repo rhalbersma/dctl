@@ -8,12 +8,6 @@
 namespace dctl {
 
 template<int N>
-struct angle_tag
-:
-        boost::mpl::int_<N>
-{};
-
-template<int N>
 struct angle
 {
         // nullary metadata subject to arithmetic modulo 360 degrees
