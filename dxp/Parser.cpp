@@ -1,7 +1,6 @@
 #include <string>                               // string
+#include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL
 #include <boost/mpl/vector.hpp>                 // vector
-#include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL 
-//#include "../../src/dxp/Connection.hpp"
 #include "../../src/dxp/MessageInterface.hpp"
 #include "../../src/dxp/Types.hpp"
 #include "../../src/factory/Factory.hpp"
@@ -27,19 +26,20 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                 "K1"
         };
 
+        typedef boost::mpl::vector<
+                GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
+        > Messages;
+
         Factory<
-                boost::mpl::vector<
-                        GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
-                >,
+                Messages,
                 MessageInterface
         > factory;
 
         for (auto i = 0; i < 8; ++i) {                
                 if (const auto parsed = factory.create(message[i]))
                         BOOST_CHECK_EQUAL(message[i], parsed->str());
-                else {
+                else
                         BOOST_CHECK(!"Unregistered message type (cannot dereference a nullptr)");
-                }
         }
 }
 

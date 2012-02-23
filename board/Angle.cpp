@@ -4,25 +4,26 @@
 #include "../../src/board/Angle.hpp"
 #include "../../src/board/Degrees.hpp"
 #include "../../src/board/Cyclic.hpp"
-#include "../../src/board/Group.hpp"
 #include "../../src/board/Traits.hpp"
+#include "../../src/group/action.hpp"
+#include "../../src/group/primitives.hpp"
+#include "../../src/mpl/type_traits.hpp"
 
 namespace dctl {
-namespace group {
 
 BOOST_AUTO_TEST_SUITE(TestAngle)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentInverse, T, set<C8>::type)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentInverse, T, group::set<C8>::type)
 {
-        BOOST_CHECK((is_idempotent< boost::mpl::quote1< inverse >, T >::value));
+        BOOST_CHECK((mpl::is_idempotent< boost::mpl::quote1< inverse >, T >::value));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, set<C8>::type)
+BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, group::set<C8>::type)
 {
-        BOOST_CHECK((is_right_action< T, C1 >::value));
-        BOOST_CHECK((is_right_action< T, C2 >::value));
-        BOOST_CHECK((is_right_action< T, C4 >::value));
-        BOOST_CHECK((is_right_action< T, C8 >::value));
+        BOOST_CHECK((group::is_right_action< T, C1 >::value));
+        BOOST_CHECK((group::is_right_action< T, C2 >::value));
+        BOOST_CHECK((group::is_right_action< T, C4 >::value));
+        BOOST_CHECK((group::is_right_action< T, C8 >::value));
 }
 
 BOOST_AUTO_TEST_CASE(MirrorUp)
@@ -39,5 +40,4 @@ BOOST_AUTO_TEST_CASE(MirrorDown)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace group
 }       // namespace dctl
