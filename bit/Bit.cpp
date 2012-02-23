@@ -34,6 +34,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, UnsignedIntegerTypes)
                 BOOST_CHECK( is_single(b));
                 BOOST_CHECK(!is_double(b));
                 BOOST_CHECK(!is_multiple(b));
+
+                const auto r = reverse_singlet<T>(i);
+                BOOST_CHECK(!is_zero(r));
+                BOOST_CHECK( is_single(r));
+                BOOST_CHECK(!is_double(r));
+                BOOST_CHECK(!is_multiple(r));
         }
 }
 
