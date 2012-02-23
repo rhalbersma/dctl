@@ -3,9 +3,10 @@
 #include <boost/mpl/comparison.hpp>     // equal_to, not_equal_to
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // not_, and_, or_
+#include "Traits_fwd.hpp"
 #include "Angle.hpp"                    // angle, rotate
 #include "Degrees.hpp"                  // L090, D090, D180 
-#include "Traits_fwd.hpp"
+#include "Transform.hpp"                // rotate
 
 namespace dctl {
 namespace board {
@@ -31,10 +32,10 @@ namespace board {
 
 */
 
+// right, up, left, down
 template<int N> 
 struct is_orthogonal< angle<N> >
 : 
-        // right, up, left, down
         boost::mpl::equal_to<
                 boost::mpl::modulus< 
                         boost::mpl::int_<N>, 
@@ -44,17 +45,17 @@ struct is_orthogonal< angle<N> >
         >
 {}; 
 
+// right_up, left_up, left_down, right_down
 template<int N> 
 struct is_diagonal< angle<N> >      
 :
-        // right_up, left_up, left_down, right_down
         boost::mpl::not_< is_orthogonal< angle<N> > > 
 {};
 
+// right_up, up, left_up
 template<int N> 
 struct is_up< angle<N> >            
 :
-        // right_up, up, left_up
         boost::mpl::and_<                 
                 boost::mpl::equal_to<
                         boost::mpl::divides< 
@@ -73,10 +74,10 @@ struct is_up< angle<N> >
         >
 {};
 
+// left_down, down, right_down
 template<int N> 
 struct is_down< angle<N> >
 :
-        // left_down, down, right_down
         boost::mpl::and_<                 
                 boost::mpl::not_equal_to<
                         boost::mpl::divides< 
@@ -95,24 +96,24 @@ struct is_down< angle<N> >
         >
 {};
 
+// left_up, left, left_down
 template<int N> 
 struct is_left< angle<N> >
 :
-        // left_up, left, left_down
         is_down< rotate< angle<N>, angle<degrees::L090> > >
 {};   
 
+// right, right_up, right_down
 template<int N> 
 struct is_right< angle<N> >          
 :
-        // right, right_up, right_down
         is_up< rotate< angle<N>, angle<degrees::L090> > >
 {};
 
+// right_up, up, left_up, left
 template<int N> 
 struct is_positive< angle<N> >
 :
-        // right_up, up, left_up, left
         boost::mpl::or_<
                 is_up< angle<N> >,
                 boost::mpl::and_<
@@ -124,10 +125,10 @@ struct is_positive< angle<N> >
         >
 {};
 
+// right, left_down, down, right_down
 template<int N> 
 struct is_negative< angle<N> >      
 : 
-        // right, left_down, down, right_down
         boost::mpl::not_< is_positive< angle<N> > > 
 {};  
 
