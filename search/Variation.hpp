@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>                       // std::vector
+#include <vector>                       // vector
 #include <boost/assert.hpp>
 
 namespace dctl {

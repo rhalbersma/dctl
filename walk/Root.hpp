@@ -1,5 +1,5 @@
 #pragma once
-#include <cstddef>      // std::size_t
+#include <cstddef>                      // size_t
 #include <iomanip>
 #include <iostream>
 #include <boost/assert.hpp>

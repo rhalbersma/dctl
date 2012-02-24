@@ -1,14 +1,12 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Value_fwd.hpp"
 
 namespace dctl {
 
 namespace variant { struct Russian; }
 
 namespace capture {
-
-// forward declaration of the primary template
-template<typename> struct Value;
 
 // explicit specialization for Russian draughts
 template<>

@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include "Move_fwd.hpp"
 #include "Side.hpp"
 #include "../bit/Bit.hpp"
 #include "../utility/IntegerTypes.hpp"

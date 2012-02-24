@@ -1,6 +1,6 @@
 #pragma once
-#include <sstream>                      // std::stringstream
-#include <string>                       // std::string
+#include <sstream>                      // stringstream
+#include <string>                       // string
 #include <boost/assert.hpp>             // BOOST_ASSERT
 
 namespace dctl {

@@ -1,6 +1,6 @@
 #pragma once
-#include <iomanip>                      // std::setfill, std::setw
-#include <iostream>                     // std::cout
+#include <iomanip>                      // setfill, setw
+#include <iostream>                     // cout
 #include <typeinfo>                     // typeid
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "../utility/IntegerTypes.hpp"

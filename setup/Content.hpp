@@ -1,5 +1,5 @@
 #pragma once
-#include <string>                       // std::string
+#include <string>                       // string
 #include "../node/Move.hpp"
 
 namespace dctl {

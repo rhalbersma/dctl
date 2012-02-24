@@ -1,12 +1,12 @@
 #pragma once
-#include <deque>                        // std::deque
+#include <deque>                        // deque
 #include <iomanip>
 #include <iostream>
-#include <string>                       // std::string
+#include <string>                       // string
 #include <boost/asio.hpp>
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/bind.hpp>
-#include <boost/thread.hpp>             // boost::thread
+#include <boost/thread.hpp>             // thread
 #include "Traits.hpp"
 #include "Version.hpp"
 

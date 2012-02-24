@@ -1,7 +1,7 @@
 #pragma once
 #include <climits>                      // SHRT_MAX
-#include <sstream>                      // std::stringstream
-#include <string>                       // std::string
+#include <sstream>                      // stringstream
+#include <string>                       // string
 #include "../utility/Ply.hpp"
 
 namespace dctl {

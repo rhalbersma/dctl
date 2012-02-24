@@ -1,16 +1,15 @@
 #pragma once
-#include <iomanip>                      // std::left, std::right, std::setw
-#include <sstream>                      // std::stringsream
-#include <string>                       // std::string
+#include <iomanip>                      // left, right, setw
+#include <sstream>                      // stringsream
+#include <string>                       // string
 #include "Notation.hpp"
 #include "../bit/Bit.hpp"
+#include "../node/Move_fwd.hpp"
+#include "../node/Position_fwd.hpp"
 #include "../node/Predicates.hpp"
 
 namespace dctl {
 
-template<typename> struct Position;
-struct Move;
-        
 namespace notation {
 
 template

@@ -6,8 +6,6 @@
 
 namespace dctl { 
         
-template<typename> struct Position;
-
 template
 <
         bool Color,

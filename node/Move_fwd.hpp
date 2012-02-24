@@ -2,7 +2,6 @@
 
 namespace dctl {
 
-template<typename>
-struct Position;
+struct Move;
 
 }       // namespace dctl

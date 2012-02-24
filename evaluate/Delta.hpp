@@ -1,10 +1,9 @@
 #pragma once
 #include "Feature.hpp"
+#include "../node/Position_fwd.hpp"
 
 namespace dctl { 
         
-template<typename> struct Position;
-
 template
 <
         bool Color,

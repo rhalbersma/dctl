@@ -1,10 +1,10 @@
 #pragma once
-#include <algorithm>                    // std::for_each
-#include <iomanip>                      // std::setfill, std::setw
-#include <sstream>                      // std::stringstream
-#include <string>                       // std::string
-#include <vector>                       // std::vector
-#include <boost/lexical_cast.hpp>       // boost::lexical_cast
+#include <algorithm>                    // for_each
+#include <iomanip>                      // setfill, setw
+#include <sstream>                      // stringstream
+#include <string>                       // string
+#include <vector>                       // vector
+#include <boost/lexical_cast.hpp>       // lexical_cast
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
 
