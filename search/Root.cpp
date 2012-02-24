@@ -1,5 +1,5 @@
-#include <string>                       // std::string
-#include <utility>                      // std::pair
+#include <string>                       // string
+#include <utility>                      // pair
 #include <boost/test/unit_test.hpp> 
 #include "../test_config.hpp"
 #include "../../src/search/Root.hpp"
