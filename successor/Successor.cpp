@@ -1,6 +1,6 @@
-#include <algorithm>    // std::find
-#include <cstddef>      // std::size_t
-#include <string>       // std::string
+#include <algorithm>                    // find
+#include <cstddef>                      // size_t
+#include <string>                       // string
 #include <boost/test/unit_test.hpp> 
 #include "../../src/successor/Selection.hpp"
 #include "../../src/successor/Successor.hpp"

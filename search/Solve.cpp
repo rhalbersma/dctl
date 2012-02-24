@@ -1,7 +1,7 @@
-#include <memory>                       // std::unique_ptr
-#include <string>                       // std::string
+#include <memory>                       // unique_ptr
+#include <string>                       // string
 #include <typeinfo>                     // typeid
-#include <utility>                      // std::pair
+#include <utility>                      // pair
 #include <boost/test/unit_test.hpp> 
 #include <boost/test/test_case_template.hpp>
 #include <boost/mpl/list.hpp>
