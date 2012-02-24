@@ -1,11 +1,11 @@
 #pragma once
-#include "primitives.hpp"
 #include <type_traits>                  // is_same
 #include <boost/mpl/apply.hpp>          // apply
 #include <boost/mpl/contains.hpp>       // contains
 #include <boost/mpl/fold.hpp>           // fold
 #include <boost/mpl/lambda.hpp>         // lambda, _1, _2
 #include <boost/mpl/logical.hpp>        // and_, not_, true_
+#include "primitives.hpp"
 
 namespace dctl {
 namespace group {
