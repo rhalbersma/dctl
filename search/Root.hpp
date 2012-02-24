@@ -1,5 +1,5 @@
 #pragma once
-#include <cstddef>                      // std::size_t
+#include <cstddef>                      // size_t
 #include <iostream>
 #include <iomanip>
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT

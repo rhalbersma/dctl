@@ -1,8 +1,8 @@
 #pragma once
-#include <iomanip>                      // std::setw
-#include <sstream>                      // std::stringstream
-#include <string>                       // std::string
-#include <boost/lexical_cast.hpp>       // boost::lexical_cast
+#include <iomanip>                      // setw
+#include <sstream>                      // stringstream
+#include <string>                       // string
+#include <boost/lexical_cast.hpp>       // lexical_cast
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
 

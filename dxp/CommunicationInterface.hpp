@@ -1,5 +1,5 @@
 #pragma once
-#include <string>                       // std::string
+#include <string>                       // string
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 
 namespace dctl {

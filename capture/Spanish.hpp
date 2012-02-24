@@ -1,14 +1,12 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include "Value_fwd.hpp"
 
 namespace dctl {
 
 namespace variant { struct Spanish; }
 
 namespace capture {
-
-// forward declaration of the primary template
-template<typename> struct Value;
 
 // explicit specialization for Spanish draughts
 template<>

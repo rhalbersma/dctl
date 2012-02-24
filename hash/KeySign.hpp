@@ -1,6 +1,6 @@
 #pragma once
-#include <functional>                   // std::unary_function
-#include <type_traits>                  // std::is_integral
+#include <functional>                   // unary_function
+#include <type_traits>                  // is_integral
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {

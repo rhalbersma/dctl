@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Value_fwd.hpp"
 #include "../bit/Bit.hpp"
 #include "../utility/IntegerTypes.hpp"
 
@@ -9,9 +10,6 @@ namespace dctl {
 namespace variant { struct Italian; }
 
 namespace capture {
-
-// forward declaration of the primary template
-template<typename> struct Value;
 
 // explicit specialization for Italian draughts
 template<>

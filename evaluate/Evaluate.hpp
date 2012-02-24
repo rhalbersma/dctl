@@ -8,8 +8,6 @@
 
 namespace dctl { 
         
-template<typename> struct Position;
-
 template
 <
         typename Rules

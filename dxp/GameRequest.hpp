@@ -1,10 +1,10 @@
 #pragma once
-#include <iomanip>                      // std::setfill, std::setw
-#include <sstream>                      // std::stringstream
-#include <string>                       // std::string
+#include <iomanip>                      // setfill, setw
+#include <sstream>                      // stringstream
+#include <string>                       // string
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/lexical_cast.hpp>       // boost::lexical_cast
+#include <boost/lexical_cast.hpp>       // lexical_cast
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
 

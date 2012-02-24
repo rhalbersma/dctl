@@ -1,15 +1,13 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Value_fwd.hpp"
 
 namespace dctl {
 
 namespace variant { struct Frisian; }
 
 namespace capture {
-
-// forward declaration of the primary template
-template<typename> struct Value;
 
 // explicit specialization for Frisian draughts
 template<>

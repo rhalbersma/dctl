@@ -1,15 +1,13 @@
 #pragma once
 #include <cctype>                       // isdigit
-#include <sstream>                      // std::stringstream
-#include <string>                       // std::string
+#include <sstream>                      // stringstream
+#include <string>                       // string
 #include "Diagram.hpp"
 #include "Protocols.hpp"
 #include "TokenInterface.hpp"
+#include "../node/Position_fwd.hpp"
 
 namespace dctl {
-
-template<typename> struct Position;
-
 namespace setup {
 
 template

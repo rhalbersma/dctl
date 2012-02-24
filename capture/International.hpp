@@ -1,13 +1,11 @@
 #pragma once
+#include "Value_fwd.hpp"
 
 namespace dctl {
 
 namespace variant { struct International; }
 
 namespace capture {
-
-// forward declaration of the primary template
-template<typename> struct Value;
 
 // explicit specialization for International draughts
 template<>

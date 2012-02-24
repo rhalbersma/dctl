@@ -1,8 +1,8 @@
 #pragma once
-#include <functional>                   // std::bind, std::placeholders
-#include <iomanip>                      // std::setw
-#include <sstream>                      // std::stringstream
-#include <string>                       // std::string
+#include <functional>                   // bind, placeholders
+#include <iomanip>                      // setw
+#include <sstream>                      // stringstream
+#include <string>                       // string
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Content.hpp"
 #include "Numbers.hpp"

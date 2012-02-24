@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>                       // std::vector
+#include <vector>                       // vector
 #include "Move.hpp"
 
 namespace dctl {

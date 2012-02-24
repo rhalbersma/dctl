@@ -1,5 +1,5 @@
 #pragma once
-#include <functional>                   // std::unary_function
+#include <functional>                   // unary_function
 #include "Random.hpp"
 #include "../../node/Move.hpp"
 #include "../../node/Restricted.hpp"

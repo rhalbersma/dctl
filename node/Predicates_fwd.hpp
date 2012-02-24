@@ -1,12 +1,11 @@
 #pragma once
+#include "Position_fwd.hpp"
+#include "Move_fwd.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
-
-template<typename> struct Position;
-struct Move;
 
 template<typename Board>
 BitBoard from_sq(const Position<Board>& p, const Move& m);

@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/utility.hpp>    // boost::noncopyable
+#include <boost/utility.hpp>    // noncopyable
 #include "State.hpp"
 #include "../node/Material.hpp"
 #include "../node/Side.hpp"

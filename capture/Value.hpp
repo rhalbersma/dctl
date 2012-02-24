@@ -1,4 +1,5 @@
 #pragma once
+#include "Value_fwd.hpp"
 
 namespace dctl {
 namespace capture {
