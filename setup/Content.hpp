@@ -1,5 +1,5 @@
 #pragma once
-#include <string>                       // string
+#include <sstream>                      // stringstream
 #include "../node/Move.hpp"
 
 namespace dctl {
