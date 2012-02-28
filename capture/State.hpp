@@ -11,6 +11,7 @@
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/Shift.hpp"
 #include <boost/utility.hpp>            // noncopyable
+#include <iostream>
 
 namespace dctl {       
 namespace capture {
@@ -36,14 +37,12 @@ public:
         bool invariant() const
         {
                 return (
-                        bit::is_subset_of(king_targets_, initial_targets_) &&
                         bit::is_subset_of(remaining_targets_, initial_targets_) &&
-                        bit::is_exclusive(not_occupied_, initial_targets_) &&
                         !bit::is_multiple(from_sq_)
                 );
         }
 
-        // views6
+        // views
         template<int Index> 
         BitBoard targets() const
         {
@@ -81,6 +80,11 @@ public:
         bool is_promotion_sq(BitBoard dest_sq) const
         {
                 return !bit::is_zero(promotion_sq<Color, Board>(dest_sq));
+        }
+
+        bool is_captured_king(BitBoard target_sq) const
+        {
+                return !bit::is_zero(target_sq & king_targets_);
         }
         
         // modifiers before a capture
@@ -197,7 +201,7 @@ private:
         )
         {
                 remaining_targets_ ^= target_sq;
-                current_increment(target_sq);
+                increment(current_, is_captured_king(target_sq));
         }
 
         // specialization for en-passant capture removal
@@ -214,7 +218,7 @@ private:
                 BitBoard target_sq, Int2Type<rules::remove_af>
         )
         {
-                current_decrement(target_sq);
+                decrement(current_, is_captured_king(target_sq));
                 remaining_targets_ ^= target_sq;
         }
 
@@ -225,50 +229,6 @@ private:
         {
                 undo_dispatch(target_sq, Int2Type<rules::remove_af>());
                 not_occupied_ ^= target_sq;
-        }
-
-        void current_increment(BitBoard target_sq)
-        {
-                current_increment_dispatch(
-                        target_sq,
-                        Int2Type<rules::is_qualified_majority<Rules>::value>()
-                );
-        }
-
-        void current_increment_dispatch(
-                BitBoard /* target_sq */, Int2Type<false>
-        )
-        {
-                increment(current_);
-        }
-
-        void current_increment_dispatch(
-                BitBoard target_sq, Int2Type<true>
-        )
-        {
-                increment(current_, target_sq, king_targets_);
-        }
-
-        void current_decrement(BitBoard target_sq)
-        {
-                current_decrement_dispatch(
-                        target_sq,
-                        Int2Type<rules::is_qualified_majority<Rules>::value>()
-                );
-        }
-
-        void current_decrement_dispatch(
-                BitBoard /* target_sq */, Int2Type<false>
-        )
-        {
-                decrement(current_);
-        }
-
-        void current_decrement_dispatch(
-                BitBoard target_sq, Int2Type<true>
-        )
-        {
-                decrement(current_, target_sq, king_targets_);
         }
 
         // partial specialization for man captures that are unambiguous
