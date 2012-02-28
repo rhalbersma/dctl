@@ -21,13 +21,13 @@ public:
         }
 
         // predicates
-        bool do_is_promotion() const
+        bool is_promotion() const
         {
                 return promotion_;
         }
 
         // modifiers
-        void do_toggle_promotion()
+        void toggle_promotion()
         {
                 promotion_ ^= toggle;
         } 
@@ -39,24 +39,6 @@ private:
         // representation
         bool promotion_;
 };
-
-template<typename Rules>
-bool is_promotion(const Value<Rules>&);
-
-template<> inline
-bool is_promotion(const Value<variant::Russian>& v)
-{
-        return v.do_is_promotion();
-}
-
-template<typename Rules>
-void toggle_promotion(Value<Rules>&);
-
-template<> inline
-void toggle_promotion(Value<variant::Russian>& v)
-{
-        v.do_toggle_promotion();
-}
 
 }       // namespace capture
 }       // namespace dctl

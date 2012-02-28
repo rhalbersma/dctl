@@ -12,6 +12,11 @@ template
 >
 class Delta
 {
+private:
+        // typedefs
+        typedef Feature< Color, Rules, Board> Active;
+        typedef Feature<!Color, Rules, Board> Passive;
+
 public:
         static int evaluate(const Position<Board>& p)
         {
@@ -43,9 +48,6 @@ private:
         {
                 return Active::mobility(p) - Passive::mobility(p);
         }
-
-        typedef Feature< Color, Rules, Board> Active;
-        typedef Feature<!Color, Rules, Board> Passive;
 };
 
 }       // namespace dctl

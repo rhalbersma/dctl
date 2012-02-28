@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/assert.hpp>             // BOOST_ASSERT
 #include "Value_fwd.hpp"
 
 namespace dctl {
@@ -17,6 +18,7 @@ public:
         :
                 num_pieces_(0)
         {
+                BOOST_ASSERT(invariant());
         }
 
         // predicates
@@ -36,38 +38,28 @@ public:
         }
 
         // modifiers
-        void do_increment()
+        void increment()
         {
                 ++num_pieces_;
+                BOOST_ASSERT(invariant());
         }
 
-        void do_decrement()
+        void decrement()
         {
                 --num_pieces_;
+                BOOST_ASSERT(invariant());
         }      
 
 private:
+        // implementation
+        bool invariant() const
+        {
+                return 0 <= num_pieces_;
+        }
+
         // representation
         int num_pieces_;
 };
    
-template<typename Rules>
-void increment(Value<Rules>&);
-
-template<> inline
-void increment(Value<variant::International>& v)
-{
-        v.do_increment();
-}
- 
-template<typename Rules>
-void decrement(Value<Rules>&);
-
-template<> inline
-void decrement(Value<variant::International>& v)
-{
-        v.do_decrement();
-}
-
 }       // namespace capture
 }       // namespace dctl

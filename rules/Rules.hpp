@@ -72,6 +72,9 @@ template<typename> struct is_majority_precedence                { enum { value =
 // qualified majority
 template<typename> struct is_qualified_majority                 { enum { value = false }; };
 
+// capture precedence type
+template<typename Rules> struct precedence_type                 { enum { value = is_majority_precedence<Rules>::value + is_qualified_majority<Rules>::value }; };
+
 // absolute king capture precedence (applied before any majority capture precedence rule)
 template<typename> struct is_absolute_king_precedence           { enum { value = false }; };
 
