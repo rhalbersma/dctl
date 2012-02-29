@@ -1,7 +1,9 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/at.hpp>             // at
+#include <boost/mpl/comparison.hpp>     // and_
 #include <boost/mpl/int.hpp>            // int_
+#include <boost/mpl/logical.hpp>        // less, less_equal
 #include "Angle.hpp"
 #include "Dimensions.hpp"
 #include "Transform.hpp"
@@ -14,10 +16,18 @@ namespace board {
 
 template<typename Board, typename /* ArgsTuple */, int SQ>
 struct is_square
-{
-public:
-        BOOST_STATIC_CONSTANT(auto, value = (SQ >= 0) && (SQ < Board::ExternalGrid::size));
-};
+:
+        boost::mpl::and_<
+                boost::mpl::less_equal<
+                        boost::mpl::int_<0>,
+                        boost::mpl::int_<SQ> 
+                >,
+                boost::mpl::less<
+                        boost::mpl::int_<SQ>,
+                        boost::mpl::int_<Board::ExternalGrid::size>
+                >
+        >
+{};
 
 template<typename Board, typename ArgsTuple, int SQ>
 struct is_initial
