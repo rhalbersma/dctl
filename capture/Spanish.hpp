@@ -25,21 +25,17 @@ public:
         // predicates
         bool operator<(const Value<variant::Spanish>& other) const
         {
-                // 15 b)
-                if (num_pieces_ < other.num_pieces_)
-                        return true;
-                if (num_pieces_ > other.num_pieces_)
-                        return false;
-
-                // 15 c)
-                return num_kings_ < other.num_kings_;
+                return (
+                        ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) && 
+                        ( num_kings_  < other.num_kings_  ))
+                );
         }
 
         bool operator==(const Value<variant::Spanish>& other) const
         {
                 return (
-                        (num_pieces_ == other.num_pieces_) &&
-                         (num_kings_ == other.num_kings_)
+                        ( num_pieces_ == other.num_pieces_ ) &&
+                        ( num_kings_  == other.num_kings_  )
                 );
         }
 

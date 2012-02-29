@@ -27,36 +27,29 @@ public:
         // predicates
         bool operator<(const Value<variant::Frisian>& other) const
         {
-                const int delta_kings = num_kings_ - other.num_kings_;
-                const int delta_men = num_pieces_ - other.num_pieces_ - delta_kings;
+                const auto delta_kings = num_kings_ - other.num_kings_;
+                const auto delta_men = num_pieces_ - other.num_pieces_ - delta_kings;
 
                 // Art. 11
-                if (delta_kings * delta_men >= 0) {
-                        // delta_kings and delta_men have equal sign when both are non-zero
-                        if (delta_men + delta_kings < 0)
-                                return true;
-                        if (delta_men + delta_kings > 0)
-                                return false;
-                } else {
+                if (delta_kings * delta_men < 0) {
                         // delta_kings and delta_men are both non-zero and have opposite sign
-                        if (delta_kings > 0)
-                                // [n] kings are worth more than [2 n - 1] men
-                                return delta_men + 2 * delta_kings - 1 < 0;
-                        else
-                                // [n] kings are worth less than [2 n] men
-                                return delta_men + 2 * delta_kings     < 0;
+                        // [2 n - 1] men < [n] kings < [2 n] men
+                        return delta_men + 2 * delta_kings - (delta_kings > 0) <  0;
+                } else {
+                        // delta_kings or delta_men is zero or they have equal sign
+                        return (
+                                ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
+                                ( with_king_  < other.with_king_  ))
+                        );
                 }
-
-                // Art. 12
-                return with_king_ < other.with_king_;
         }
 
         bool operator==(const Value<variant::Frisian>& other) const
         {
                 return (
-                        (num_pieces_ == other.num_pieces_) &&
-                         (num_kings_ == other.num_kings_) &&
-                         (with_king_ == other.with_king_)
+                        ( num_pieces_ == other.num_pieces_ ) &&
+                        ( num_kings_  == other.num_kings_  ) &&
+                        ( with_king_  == other.with_king_  )
                 );
         }
 
