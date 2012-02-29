@@ -30,35 +30,21 @@ public:
         // predicates
         bool operator<(const Value<variant::Italian>& other) const
         {
-                // Art. 6.6
-                if (num_pieces_ < other.num_pieces_)
-                        return true;
-                if (num_pieces_ > other.num_pieces_)
-                        return false;
-
-                // Art. 6.7
-                if (with_king_ < other.with_king_)
-                        return true;
-                if (with_king_ > other.with_king_)
-                        return false;
-
-                // Art. 6.8
-                if (num_kings_ < other.num_kings_)
-                        return true;
-                if (num_kings_ > other.num_kings_)
-                        return false;
-
-                // Art. 6.9
-                return piece_order_ < other.piece_order_;
+                return ( 
+                         ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
+                        (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
+                        (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
+                        (( piece_order_ < other.piece_order_ )))))))
+                );
         }
 
         bool operator==(const Value<variant::Italian>& other) const
         {
                 return (
-                        (piece_order_ == other.piece_order_) &&
-                         (num_pieces_ == other.num_pieces_) &&
-                          (num_kings_ == other.num_kings_) &&
-                          (with_king_ == other.with_king_)
+                        ( num_pieces_  == other.num_pieces_  ) &&
+                        ( with_king_   == other.with_king_   ) &&
+                        ( num_kings_   == other.num_kings_   ) &&
+                        ( piece_order_ == other.piece_order_ )
                 );
         }
 
@@ -99,8 +85,7 @@ private:
         bool invariant() const
         {
                 return (
-                        (0 <= num_kings_) &&
-                        (num_kings_ <= num_pieces_) &&
+                        (0 <= num_kings_) && (num_kings_ <= num_pieces_) &&
                         (num_kings_ == bit::count(piece_order_)) &&
                         (!num_kings_ || with_king_)
                 );
