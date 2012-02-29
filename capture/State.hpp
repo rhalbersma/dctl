@@ -29,17 +29,11 @@ public:
                 initial_targets_(passive_pieces(p)),
                 remaining_targets_(initial_targets_),
 		not_occupied_(not_occupied(p)),
-                from_sq_(0)
+                from_sq_(0),
+                current_(),
+                best_()
         {
                 BOOST_ASSERT(invariant());
-        }
-
-        bool invariant() const
-        {
-                return (
-                        bit::is_subset_of(remaining_targets_, initial_targets_) &&
-                        !bit::is_multiple(from_sq_)
-                );
         }
 
         // views
@@ -82,11 +76,6 @@ public:
                 return !bit::is_zero(promotion_sq<Color, Board>(dest_sq));
         }
 
-        bool is_captured_king(BitBoard target_sq) const
-        {
-                return !bit::is_zero(target_sq & king_targets_);
-        }
-        
         // modifiers before a capture
         void toggle_king_targets()
         {
@@ -151,7 +140,7 @@ public:
         template<bool Color, int Index> 
         void add_king_capture(BitBoard dest_sq, Stack& moves) const
         {
-                const auto ambiguous = !moves.empty() && current_is_large();
+                const auto ambiguous = !moves.empty() && is_large(current_, captured_pieces());
 
                 // tag dispatching on king halt after final capture
                 add_king_capture_dispatch<Color, Index>(
@@ -161,6 +150,19 @@ public:
         }
 
 private:
+        bool invariant() const
+        {
+                return (
+                        bit::is_subset_of(remaining_targets_, initial_targets_) &&
+                        !bit::is_multiple(from_sq_)
+                );
+        }
+
+        bool is_captured_king(BitBoard target_sq) const
+        {
+                return !bit::is_zero(target_sq & king_targets_);
+        }
+        
         BitBoard captured_pieces() const
         {
                 return initial_targets_ ^ remaining_targets_;
@@ -252,7 +254,7 @@ private:
                 BitBoard dest_sq, Stack& moves, Int2Type<true>
         ) const
         {
-                const auto ambiguous = !moves.empty() && current_is_large();
+                const auto ambiguous = !moves.empty() && is_large(current_, captured_pieces());
                 add_man_capture_dispatch<Color>(dest_sq, moves, Int2Type<false>());
                 if (ambiguous && non_unique_top<Rules>(moves))
                         pop(moves);
@@ -336,32 +338,6 @@ private:
                                 captured_kings(), 
                                 moves
                         );
-        }
-
-        bool current_is_large() const
-        {
-                return current_count() >= rules::large_capture<Rules>::value;
-        }
-
-        int current_count() const
-        {
-                return current_count_dispatch(
-                        Int2Type<rules::is_majority_precedence<Rules>::value>()        
-                );
-        }
-
-        int current_count_dispatch(
-                Int2Type<false>
-        ) const
-        {
-                return bit::count(captured_pieces());
-        }
-
-        int current_count_dispatch(
-                Int2Type<true>
-        ) const
-        {
-                return current_.count();
         }
 
         // representation

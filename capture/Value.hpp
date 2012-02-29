@@ -1,5 +1,6 @@
 #pragma once
 #include "Value_fwd.hpp"
+#include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 
@@ -50,6 +51,21 @@ bool operator!=(const Value<Rules>& left, const Value<Rules>& right)
 }
 
 template<typename Rules>
+bool is_large(const Value<Rules>& v, BitBoard captured_pieces)
+{
+        return count(v, captured_pieces) >= rules::large_capture<Rules>::value;
+}
+
+template<typename Rules>
+int count(const Value<Rules>& v, BitBoard captured_pieces)
+{
+        return dispatch::count(
+                v, captured_pieces,
+                Int2Type<rules::is_majority_precedence<Rules>::value>()        
+        );
+}
+
+template<typename Rules>
 void increment(Value<Rules>& v, bool is_captured_king)
 {
         dispatch::increment(
@@ -95,6 +111,18 @@ void toggle_with_king(Value<Rules>& v)
 }
 
 namespace dispatch {
+
+template<typename Rules>
+int count(const Value<Rules>& /* v */, BitBoard captured_pieces, Int2Type<false>)
+{
+        return bit::count(captured_pieces);
+}
+
+template<typename Rules>
+int count(const Value<Rules>& v, BitBoard /* captured_pieces */, Int2Type<true>)
+{
+        return v.count();
+}
 
 template<typename Rules>
 void increment(
