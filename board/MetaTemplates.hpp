@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/mpl/apply.hpp>          // apply1
+#include <boost/mpl/apply.hpp>          // apply
 #include <boost/mpl/bitxor.hpp>         // bitxor_
 #include <boost/mpl/bool.hpp>           // bool_
 #include <boost/mpl/eval_if.hpp>        // eval_if_
@@ -8,7 +8,6 @@
 #include <boost/mpl/prior.hpp>          // prior
 #include <boost/mpl/shift_left.hpp>     // shift_left
 #include "Predicates.hpp"
-#include "Angle.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -18,7 +17,7 @@ template<typename Board, typename Predicate, typename Square>
 struct Test
 :
         boost::mpl::eval_if< typename 
-                boost::mpl::apply1< Predicate, Square>::type,
+                boost::mpl::apply< Predicate, Square >::type,
                 boost::mpl::shift_left<
                         boost::mpl::integral_c<BitBoard, 1>,
                         boost::mpl::int_< square_to_bit<Board, Square::value>::value >
