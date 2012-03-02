@@ -1,111 +1,89 @@
 #pragma once
-#include <boost/mpl/bitxor.hpp>
-#include <boost/mpl/eval_if.hpp>
-#include <boost/mpl/int.hpp>
-#include <boost/mpl/integral_c.hpp>
-#include <boost/mpl/shift_left.hpp>
-#include <boost/mpl/vector.hpp>
+#include <boost/mpl/apply.hpp>          // apply1
+#include <boost/mpl/bitxor.hpp>         // bitxor_
+#include <boost/mpl/bool.hpp>           // bool_
+#include <boost/mpl/eval_if.hpp>        // eval_if_
+#include <boost/mpl/int.hpp>            // int_
+#include <boost/mpl/integral_c.hpp>     // integral_c
+#include <boost/mpl/prior.hpp>          // prior
+#include <boost/mpl/shift_left.hpp>     // shift_left
 #include "Predicates.hpp"
+#include "Angle.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 namespace board {
 
-template
-<
-        template<typename, typename, int> class Predicate, 
-        typename Board, 
-        typename ArgsTuple, 
-        int SQ
->
+template<typename Board, typename Predicate, typename Square>
 struct Test
 :
-        boost::mpl::eval_if<
-                Predicate<Board, ArgsTuple, SQ>,
+        boost::mpl::eval_if< typename 
+                boost::mpl::apply1< Predicate, Square>::type,
                 boost::mpl::shift_left<
                         boost::mpl::integral_c<BitBoard, 1>,
-                        boost::mpl::int_< square_to_bit<Board, SQ>::value >
+                        boost::mpl::int_< square_to_bit<Board, Square::value>::value >
                 >,
                 boost::mpl::integral_c<BitBoard, 0>
         >
 {};
 
-template<template<typename, typename, int> class, typename Board, typename, int = Board::ExternalGrid::size - 1> struct Init;
-
 template
 <
-        template<typename, typename, int> class Predicate, 
-        typename Board, 
-        typename ArgsTuple
->
-struct Init<Predicate, Board, ArgsTuple, 0>
+        typename Board,
+        typename Predicate, 
+        typename Square = boost::mpl::int_<Board::ExternalGrid::size - 1>
+> 
+struct Init;
+
+template<typename Board, typename Predicate>
+struct Init<Board, Predicate, boost::mpl::int_<0> >
 :
-        Test<Predicate, Board, ArgsTuple, 0>
+        Test< Board, Predicate, boost::mpl::int_<0> >
 {};
 
-template
-<
-        template<typename, typename, int> class Predicate, 
-        typename Board, 
-        typename ArgsTuple, 
-        int SQ
->
+template<typename Board, typename Predicate, typename Square>
 struct Init
 :
         boost::mpl::bitxor_<
-                Test<Predicate, Board, ArgsTuple, SQ    >,
-                Init<Predicate, Board, ArgsTuple, SQ - 1>
+                Init< Board, Predicate, typename boost::mpl::prior<Square>::type >,
+                Test< Board, Predicate, Square >
         >
 {};
 
 template<typename Board>
 struct init_squares
 :
-        Init< is_square, Board, boost::mpl::vector<> >
+        Init< Board, is_square< Board, boost::mpl::_1 > >
 {};
 
 template<typename Board, bool Color>
 struct init_initial
 :
-        Init< 
-                is_initial, Board, boost::mpl::vector< 
-                        boost::mpl::integral_c<bool, Color> 
-                > 
-        >        
+        Init< Board, is_initial< Board, boost::mpl::bool_<Color>, boost::mpl::_1 > >
 {};
 
 template<typename Board, bool Color, int Row>
 struct init_row_mask
 :
-        Init<
-                is_row_mask, Board, boost::mpl::vector<
-                        boost::mpl::integral_c<bool, Color>,
-                        boost::mpl::integral_c<int, Row>
-                >
-        >
+        Init< Board, is_row_mask< Board, boost::mpl::bool_<Color>, boost::mpl::int_<Row>, boost::mpl::_1 > >
 {};
 
 template<typename Board, bool Color, int Column>
 struct init_col_mask
 :
-        Init<
-                is_col_mask, Board, boost::mpl::vector<
-                        boost::mpl::integral_c<bool, Color>,
-                        boost::mpl::integral_c<int, Column>
-                >
-        >
+        Init< Board, is_col_mask< Board, boost::mpl::bool_<Color>, boost::mpl::int_<Column>, boost::mpl::_1 > >
 {};
 
 template<typename Board, int Group>
 struct init_jump_group
 :
-        Init< is_jump_group, Board, boost::mpl::vector< boost::mpl::integral_c<int, Group> > >
+        Init< Board, is_jump_group< Board, boost::mpl::int_<Group>, boost::mpl::_1 > >
 {};
 
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct init_jump_start
 :
-        Init< is_jump_start, Board, boost::mpl::vector< angle<Index> > >
+        Init< Board, is_jump_start< Board, Index, boost::mpl::_1 > >
 {};
 
 }       // namespace board

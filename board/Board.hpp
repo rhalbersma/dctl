@@ -60,8 +60,8 @@ const BitBoard Board<Dimensions, Structure>::squares = init_squares<B>::value;
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::INITIAL[] = {
-	init_initial<B, Side::black>::value,
-        init_initial<B, Side::white>::value
+	init_initial< B, Side::black >::value,
+        init_initial< B, Side::white >::value
 };
 
 template<typename Dimensions, typename Structure>
@@ -152,22 +152,22 @@ const BitBoard Board<Dimensions, Structure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::jump_group[] = {
-        init_jump_group<B, InternalGrid::edge_le + 0>::value,
-        init_jump_group<B, InternalGrid::edge_le + 1>::value,
-        init_jump_group<B, InternalGrid::edge_lo + 0>::value,
-        init_jump_group<B, InternalGrid::edge_lo + 1>::value
+        init_jump_group< B, InternalGrid::edge_le + 0 >::value,
+        init_jump_group< B, InternalGrid::edge_le + 1 >::value,
+        init_jump_group< B, InternalGrid::edge_lo + 0 >::value,
+        init_jump_group< B, InternalGrid::edge_lo + 1 >::value
 };
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::jump_start[] = {
-        init_jump_start<B, rotate< angle<degrees::D000>, B::full_angle >::value>::value,
-        init_jump_start<B, rotate< angle<degrees::D045>, B::full_angle >::value>::value,
-        init_jump_start<B, rotate< angle<degrees::D090>, B::full_angle >::value>::value,
-        init_jump_start<B, rotate< angle<degrees::D135>, B::full_angle >::value>::value,
-        init_jump_start<B, rotate< angle<degrees::D180>, B::full_angle >::value>::value,
-        init_jump_start<B, rotate< angle<degrees::D225>, B::full_angle >::value>::value,
-        init_jump_start<B, rotate< angle<degrees::D270>, B::full_angle >::value>::value,
-        init_jump_start<B, rotate< angle<degrees::D315>, B::full_angle >::value>::value
+        init_jump_start< B, rotate< angle<degrees::D000>, B::full_angle > >::value,
+        init_jump_start< B, rotate< angle<degrees::D045>, B::full_angle > >::value,
+        init_jump_start< B, rotate< angle<degrees::D090>, B::full_angle > >::value,
+        init_jump_start< B, rotate< angle<degrees::D135>, B::full_angle > >::value,
+        init_jump_start< B, rotate< angle<degrees::D180>, B::full_angle > >::value,
+        init_jump_start< B, rotate< angle<degrees::D225>, B::full_angle > >::value,
+        init_jump_start< B, rotate< angle<degrees::D270>, B::full_angle > >::value,
+        init_jump_start< B, rotate< angle<degrees::D315>, B::full_angle > >::value
 };
 
 template<typename Dimensions, typename Structure>
