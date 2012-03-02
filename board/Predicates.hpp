@@ -14,83 +14,65 @@
 namespace dctl {
 namespace board {
 
-template<typename Board, typename /* ArgsTuple */, int SQ>
+template<typename Board, typename SQ>
 struct is_square
 :
         boost::mpl::and_<
                 boost::mpl::less_equal<
                         boost::mpl::int_<0>,
-                        boost::mpl::int_<SQ> 
+                        SQ 
                 >,
                 boost::mpl::less<
-                        boost::mpl::int_<SQ>,
+                        SQ,
                         boost::mpl::int_<Board::ExternalGrid::size>
                 >
         >
 {};
 
-template<typename Board, typename ArgsTuple, int SQ>
+template<typename Board, typename Color, typename SQ>
 struct is_initial
 {
 private:
-        typedef boost::mpl::integral_c<bool, 0> get_color;
-
-        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, color = (boost::mpl::at<ArgsTuple, get_color>::type::value));
         BOOST_STATIC_CONSTANT(auto, row_min = 
-                color? (Board::height - 1) - ((Board::height - Board::dmz) / 2 - 1) : 0
+                Color::value? (Board::height - 1) - ((Board::height - Board::dmz) / 2 - 1) : 0
         );        
         BOOST_STATIC_CONSTANT(auto, row_max = 
-                color? (Board::height - 1) : (Board::height - Board::dmz) / 2 - 1
+                Color::value? (Board::height - 1) : (Board::height - Board::dmz) / 2 - 1
         );
         BOOST_STATIC_CONSTANT(auto, row = 
-                (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row)
+                (Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row)
         );
 
 public:
-        BOOST_STATIC_CONSTANT(auto, value = (row >= row_min) && (row <= row_max));
+        BOOST_STATIC_CONSTANT(auto, value = (row_min <= row) && (row <= row_max));
 };
 
-template<typename Board, typename ArgsTuple, int SQ>
+template<typename Board, typename Color, typename Row, typename SQ>
 struct is_row_mask
 {
-        typedef boost::mpl::integral_c<bool, 0> get_color;
-        typedef boost::mpl::integral_c<int, 1> get_row;
-
-        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, color = (boost::mpl::at<ArgsTuple, get_color>::type::value));
-        BOOST_STATIC_CONSTANT(auto, row = (boost::mpl::at<ArgsTuple, get_row>::type::value));
         BOOST_STATIC_CONSTANT(auto, value = 
-                (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row == 
-                (color? (Board::height - 1) - row : row))
+                (Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row == 
+                (Color::value? (Board::height - 1) - Row::value : Row::value))
         );
 };
 
-template<typename Board, typename ArgsTuple, int SQ>
+template<typename Board, typename Color, typename Column, typename SQ>
 struct is_col_mask
 {
-        typedef boost::mpl::integral_c<bool, 0> get_color;
-        typedef boost::mpl::integral_c<int, 1> get_column;
-
-        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, color = (boost::mpl::at<ArgsTuple, get_color>::type::value));
-        BOOST_STATIC_CONSTANT(auto, col = (boost::mpl::at<ArgsTuple, get_column>::type::value));
         BOOST_STATIC_CONSTANT(auto, value = 
-                (Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col == 
-                (color? (Board::width - 1) - col : col))
+                (Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::col == 
+                (Color::value? (Board::width - 1) - Column::value : Column::value))
         );
 };
 
-template<typename Board, typename ArgsTuple, int SQ>
+template<typename Board, typename Group, typename SQ>
 struct is_jump_group
 {
 private:
-        typedef boost::mpl::integral_c<int, 0> get_from_sq;
         typedef typename Board::ExternalGrid Grid;
 
-        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, from_sq = (boost::mpl::at<ArgsTuple, get_from_sq>::type::value));
-        BOOST_STATIC_CONSTANT(auto, dest_sq = SQ);
+        BOOST_STATIC_CONSTANT(auto, from_sq = Group::value);
+        BOOST_STATIC_CONSTANT(auto, dest_sq = SQ::value);
 
         BOOST_STATIC_CONSTANT(auto, from_row = (Square2Coordinates< Square<Grid, from_sq> >::type::row));
         BOOST_STATIC_CONSTANT(auto, dest_row = (Square2Coordinates< Square<Grid, dest_sq> >::type::row));
@@ -109,29 +91,27 @@ public:
         BOOST_STATIC_CONSTANT(auto, value = (!R1 && !C1) || (!R2 && !C2));
 };
 
-template<typename Board, typename ArgsTuple, int SQ>
+template<typename Board, typename Index, typename SQ>
 struct is_jump_start
 {
 private:
         typedef typename Board::ExternalGrid Grid;        
-        typedef typename boost::mpl::at<ArgsTuple, boost::mpl::int_<0> >::type index;
 
-        // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting        
-        BOOST_STATIC_CONSTANT(auto, offset = is_diagonal<index>::value? 2 : 4);
+        BOOST_STATIC_CONSTANT(auto, offset = is_diagonal<Index>::value? 2 : 4);
         
-        BOOST_STATIC_CONSTANT(auto, row_min = is_up<index>::value? offset : 0);
-        BOOST_STATIC_CONSTANT(auto, row_max = (Board::height - 1) - (is_down<index>::value? offset : 0));
-        BOOST_STATIC_CONSTANT(auto, col_min = is_left<index>::value? offset : 0);
-        BOOST_STATIC_CONSTANT(auto, col_max = (Board::width - 1) - (is_right<index>::value? offset : 0));
+        BOOST_STATIC_CONSTANT(auto, row_min = is_up<Index>::value? offset : 0);
+        BOOST_STATIC_CONSTANT(auto, row_max = (Board::height - 1) - (is_down<Index>::value? offset : 0));
+        BOOST_STATIC_CONSTANT(auto, col_min = is_left<Index>::value? offset : 0);
+        BOOST_STATIC_CONSTANT(auto, col_max = (Board::width - 1) - (is_right<Index>::value? offset : 0));
 
-        BOOST_STATIC_CONSTANT(auto, row = (Square2Coordinates< Square<Grid, SQ> >::type::row));
-        BOOST_STATIC_CONSTANT(auto, col = (Square2Coordinates< Square<Grid, SQ> >::type::col));
+        BOOST_STATIC_CONSTANT(auto, row = (Square2Coordinates< Square<Grid, SQ::value> >::type::row));
+        BOOST_STATIC_CONSTANT(auto, col = (Square2Coordinates< Square<Grid, SQ::value> >::type::col));
 
 public:
-        // a jump in direction <I> is possible if square <SQ> is within offset of the edges being approached
+        // a jump in direction <Index> is possible if square <SQ> is within offset of the edges being approached
         BOOST_STATIC_CONSTANT(auto, value =
-	        (row >= row_min) && (row <= row_max) &&
-		(col >= col_min) && (col <= col_max)
+	        (row_min <= row) && (row <= row_max) &&
+		(col_min <= col) && (col <= col_max)
 	);
 };
 
