@@ -50,9 +50,16 @@ BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
 
         run(test_case);
 }
+*/
 
 typedef Fixture<variant::International, board::International> FixtureInternational;
+BOOST_FIXTURE_TEST_CASE(International11, FixtureInternational)
+{
+        const auto p = Position<board::International>::initial();
+        root_.analyze(p, 15);
+}
 
+/*
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 BOOST_FIXTURE_TEST_CASE(International11, FixtureInternational)
 {

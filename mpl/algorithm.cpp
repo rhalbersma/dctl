@@ -1,7 +1,6 @@
 #include <string>                       // string
 #include <type_traits>                  // is_base_of, is_pod
-#include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT, BOOST_MPL_ASSERT_NOT
+#include <boost/test/unit_test.hpp>     // BOOST_CHECK
 #include <boost/mpl/placeholders.hpp>   // _1
 #include <boost/mpl/vector.hpp>         // vector
 #include "../../src/mpl/algorithm.hpp"  // all_of, none_of, any_of
@@ -28,35 +27,35 @@ typedef boost::mpl::vector<E> independent_types;
 
 BOOST_AUTO_TEST_CASE(TestAllOf)
 {
-        BOOST_MPL_ASSERT    (( all_of< pod_types,     std::is_pod< boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT_NOT(( all_of< mixed_types,   std::is_pod< boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT_NOT(( all_of< non_pod_types, std::is_pod< boost::mpl::_1 > > ));
+        BOOST_CHECK(( all_of< pod_types,     std::is_pod< boost::mpl::_1 > >::value));
+        BOOST_CHECK((!all_of< mixed_types,   std::is_pod< boost::mpl::_1 > >::value));
+        BOOST_CHECK((!all_of< non_pod_types, std::is_pod< boost::mpl::_1 > >::value));
 
-        BOOST_MPL_ASSERT    (( all_of< derived_types,     std::is_base_of< B, boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT_NOT(( all_of< both_types,        std::is_base_of< B, boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT_NOT(( all_of< independent_types, std::is_base_of< B, boost::mpl::_1 > > ));
+        BOOST_CHECK(( all_of< derived_types,     std::is_base_of< B, boost::mpl::_1 > >::value));
+        BOOST_CHECK((!all_of< both_types,        std::is_base_of< B, boost::mpl::_1 > >::value));
+        BOOST_CHECK((!all_of< independent_types, std::is_base_of< B, boost::mpl::_1 > >::value));
 }
 
 BOOST_AUTO_TEST_CASE(TestNoneOf)
 {
-        BOOST_MPL_ASSERT_NOT(( none_of< pod_types,     std::is_pod< boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT_NOT(( none_of< mixed_types,   std::is_pod< boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT    (( none_of< non_pod_types, std::is_pod< boost::mpl::_1 > > ));
+        BOOST_CHECK((!none_of< pod_types,     std::is_pod< boost::mpl::_1 > >::value));
+        BOOST_CHECK((!none_of< mixed_types,   std::is_pod< boost::mpl::_1 > >::value));
+        BOOST_CHECK(( none_of< non_pod_types, std::is_pod< boost::mpl::_1 > >::value));
 
-        BOOST_MPL_ASSERT_NOT(( none_of< derived_types,     std::is_base_of< B, boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT_NOT(( none_of< both_types,        std::is_base_of< B, boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT    (( none_of< independent_types, std::is_base_of< B, boost::mpl::_1 > > ));
+        BOOST_CHECK((!none_of< derived_types,     std::is_base_of< B, boost::mpl::_1 > >::value));
+        BOOST_CHECK((!none_of< both_types,        std::is_base_of< B, boost::mpl::_1 > >::value));
+        BOOST_CHECK(( none_of< independent_types, std::is_base_of< B, boost::mpl::_1 > >::value));
 }
 
 BOOST_AUTO_TEST_CASE(TestAnyOf)
 {
-        BOOST_MPL_ASSERT    (( any_of< pod_types,     std::is_pod< boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT    (( any_of< mixed_types,   std::is_pod< boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT_NOT(( any_of< non_pod_types, std::is_pod< boost::mpl::_1 > > ));
+        BOOST_CHECK(( any_of< pod_types,     std::is_pod< boost::mpl::_1 > >::value));
+        BOOST_CHECK(( any_of< mixed_types,   std::is_pod< boost::mpl::_1 > >::value));
+        BOOST_CHECK((!any_of< non_pod_types, std::is_pod< boost::mpl::_1 > >::value));
 
-        BOOST_MPL_ASSERT    (( any_of< derived_types,     std::is_base_of< B, boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT    (( any_of< both_types,        std::is_base_of< B, boost::mpl::_1 > > ));
-        BOOST_MPL_ASSERT_NOT(( any_of< independent_types, std::is_base_of< B, boost::mpl::_1 > > ));
+        BOOST_CHECK(( any_of< derived_types,     std::is_base_of< B, boost::mpl::_1 > >::value));
+        BOOST_CHECK(( any_of< both_types,        std::is_base_of< B, boost::mpl::_1 > >::value));
+        BOOST_CHECK((!any_of< independent_types, std::is_base_of< B, boost::mpl::_1 > >::value));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
