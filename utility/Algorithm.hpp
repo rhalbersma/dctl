@@ -5,11 +5,10 @@
 namespace dctl {
 
 template<class OutputIterator, class Size, class Assignable>
-void iota_n (OutputIterator first, Size n, Assignable value)
+void iota_n(OutputIterator first, Size n, Assignable value)
 {
-        std::for_each(first, std::next(first, n), [=]() {
+        for (Size i = 0; i != n; ++i)
                 *first++ = value++;
-        });
 }
 
 template<class ForwardIterator>

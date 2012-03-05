@@ -214,42 +214,42 @@ int Board<Dimensions, Structure>::bit2square(int b)
 
 template<typename Dimensions, typename Structure>
 const int Board<Dimensions, Structure>::SQUARE2BIT[] = {
-        square_to_bit<B,  0>::value, square_to_bit<B,  1>::value, square_to_bit<B,  2>::value, square_to_bit<B,  3>::value,
-        square_to_bit<B,  4>::value, square_to_bit<B,  5>::value, square_to_bit<B,  6>::value, square_to_bit<B,  7>::value,
-        square_to_bit<B,  8>::value, square_to_bit<B,  9>::value, square_to_bit<B, 10>::value, square_to_bit<B, 11>::value,
-        square_to_bit<B, 12>::value, square_to_bit<B, 13>::value, square_to_bit<B, 14>::value, square_to_bit<B, 15>::value,
-        square_to_bit<B, 16>::value, square_to_bit<B, 17>::value, square_to_bit<B, 18>::value, square_to_bit<B, 19>::value,
-        square_to_bit<B, 20>::value, square_to_bit<B, 21>::value, square_to_bit<B, 22>::value, square_to_bit<B, 23>::value,
-        square_to_bit<B, 24>::value, square_to_bit<B, 25>::value, square_to_bit<B, 26>::value, square_to_bit<B, 27>::value,
-        square_to_bit<B, 28>::value, square_to_bit<B, 29>::value, square_to_bit<B, 30>::value, square_to_bit<B, 31>::value,
-        square_to_bit<B, 32>::value, square_to_bit<B, 33>::value, square_to_bit<B, 34>::value, square_to_bit<B, 35>::value,
-        square_to_bit<B, 36>::value, square_to_bit<B, 37>::value, square_to_bit<B, 38>::value, square_to_bit<B, 39>::value,
-        square_to_bit<B, 40>::value, square_to_bit<B, 41>::value, square_to_bit<B, 42>::value, square_to_bit<B, 43>::value,
-        square_to_bit<B, 44>::value, square_to_bit<B, 45>::value, square_to_bit<B, 46>::value, square_to_bit<B, 47>::value,
-        square_to_bit<B, 48>::value, square_to_bit<B, 49>::value, square_to_bit<B, 50>::value, square_to_bit<B, 51>::value,
-        square_to_bit<B, 52>::value, square_to_bit<B, 53>::value, square_to_bit<B, 54>::value, square_to_bit<B, 55>::value,
-        square_to_bit<B, 56>::value, square_to_bit<B, 57>::value, square_to_bit<B, 58>::value, square_to_bit<B, 59>::value,
-        square_to_bit<B, 60>::value, square_to_bit<B, 61>::value, square_to_bit<B, 62>::value, square_to_bit<B, 63>::value
+        square_to_bit<B,  0>::type::value, square_to_bit<B,  1>::type::value, square_to_bit<B,  2>::type::value, square_to_bit<B,  3>::type::value,
+        square_to_bit<B,  4>::type::value, square_to_bit<B,  5>::type::value, square_to_bit<B,  6>::type::value, square_to_bit<B,  7>::type::value,
+        square_to_bit<B,  8>::type::value, square_to_bit<B,  9>::type::value, square_to_bit<B, 10>::type::value, square_to_bit<B, 11>::type::value,
+        square_to_bit<B, 12>::type::value, square_to_bit<B, 13>::type::value, square_to_bit<B, 14>::type::value, square_to_bit<B, 15>::type::value,
+        square_to_bit<B, 16>::type::value, square_to_bit<B, 17>::type::value, square_to_bit<B, 18>::type::value, square_to_bit<B, 19>::type::value,
+        square_to_bit<B, 20>::type::value, square_to_bit<B, 21>::type::value, square_to_bit<B, 22>::type::value, square_to_bit<B, 23>::type::value,
+        square_to_bit<B, 24>::type::value, square_to_bit<B, 25>::type::value, square_to_bit<B, 26>::type::value, square_to_bit<B, 27>::type::value,
+        square_to_bit<B, 28>::type::value, square_to_bit<B, 29>::type::value, square_to_bit<B, 30>::type::value, square_to_bit<B, 31>::type::value,
+        square_to_bit<B, 32>::type::value, square_to_bit<B, 33>::type::value, square_to_bit<B, 34>::type::value, square_to_bit<B, 35>::type::value,
+        square_to_bit<B, 36>::type::value, square_to_bit<B, 37>::type::value, square_to_bit<B, 38>::type::value, square_to_bit<B, 39>::type::value,
+        square_to_bit<B, 40>::type::value, square_to_bit<B, 41>::type::value, square_to_bit<B, 42>::type::value, square_to_bit<B, 43>::type::value,
+        square_to_bit<B, 44>::type::value, square_to_bit<B, 45>::type::value, square_to_bit<B, 46>::type::value, square_to_bit<B, 47>::type::value,
+        square_to_bit<B, 48>::type::value, square_to_bit<B, 49>::type::value, square_to_bit<B, 50>::type::value, square_to_bit<B, 51>::type::value,
+        square_to_bit<B, 52>::type::value, square_to_bit<B, 53>::type::value, square_to_bit<B, 54>::type::value, square_to_bit<B, 55>::type::value,
+        square_to_bit<B, 56>::type::value, square_to_bit<B, 57>::type::value, square_to_bit<B, 58>::type::value, square_to_bit<B, 59>::type::value,
+        square_to_bit<B, 60>::type::value, square_to_bit<B, 61>::type::value, square_to_bit<B, 62>::type::value, square_to_bit<B, 63>::type::value
 };
 
 template<typename Dimensions, typename Structure>
 const int Board<Dimensions, Structure>::BIT2SQUARE[] = {
-        bit_to_square<B,  0>::value, bit_to_square<B,  1>::value, bit_to_square<B,  2>::value, bit_to_square<B,  3>::value,
-        bit_to_square<B,  4>::value, bit_to_square<B,  5>::value, bit_to_square<B,  6>::value, bit_to_square<B,  7>::value,
-        bit_to_square<B,  8>::value, bit_to_square<B,  9>::value, bit_to_square<B, 10>::value, bit_to_square<B, 11>::value,
-        bit_to_square<B, 12>::value, bit_to_square<B, 13>::value, bit_to_square<B, 14>::value, bit_to_square<B, 15>::value,
-        bit_to_square<B, 16>::value, bit_to_square<B, 17>::value, bit_to_square<B, 18>::value, bit_to_square<B, 19>::value,
-        bit_to_square<B, 20>::value, bit_to_square<B, 21>::value, bit_to_square<B, 22>::value, bit_to_square<B, 23>::value,
-        bit_to_square<B, 24>::value, bit_to_square<B, 25>::value, bit_to_square<B, 26>::value, bit_to_square<B, 27>::value,
-        bit_to_square<B, 28>::value, bit_to_square<B, 29>::value, bit_to_square<B, 30>::value, bit_to_square<B, 31>::value,
-        bit_to_square<B, 32>::value, bit_to_square<B, 33>::value, bit_to_square<B, 34>::value, bit_to_square<B, 35>::value,
-        bit_to_square<B, 36>::value, bit_to_square<B, 37>::value, bit_to_square<B, 38>::value, bit_to_square<B, 39>::value,
-        bit_to_square<B, 40>::value, bit_to_square<B, 41>::value, bit_to_square<B, 42>::value, bit_to_square<B, 43>::value,
-        bit_to_square<B, 44>::value, bit_to_square<B, 45>::value, bit_to_square<B, 46>::value, bit_to_square<B, 47>::value,
-        bit_to_square<B, 48>::value, bit_to_square<B, 49>::value, bit_to_square<B, 50>::value, bit_to_square<B, 51>::value,
-        bit_to_square<B, 52>::value, bit_to_square<B, 53>::value, bit_to_square<B, 54>::value, bit_to_square<B, 55>::value,
-        bit_to_square<B, 56>::value, bit_to_square<B, 57>::value, bit_to_square<B, 58>::value, bit_to_square<B, 59>::value,
-        bit_to_square<B, 60>::value, bit_to_square<B, 61>::value, bit_to_square<B, 62>::value, bit_to_square<B, 63>::value
+        bit_to_square<B,  0>::type::value, bit_to_square<B,  1>::type::value, bit_to_square<B,  2>::type::value, bit_to_square<B,  3>::type::value,
+        bit_to_square<B,  4>::type::value, bit_to_square<B,  5>::type::value, bit_to_square<B,  6>::type::value, bit_to_square<B,  7>::type::value,
+        bit_to_square<B,  8>::type::value, bit_to_square<B,  9>::type::value, bit_to_square<B, 10>::type::value, bit_to_square<B, 11>::type::value,
+        bit_to_square<B, 12>::type::value, bit_to_square<B, 13>::type::value, bit_to_square<B, 14>::type::value, bit_to_square<B, 15>::type::value,
+        bit_to_square<B, 16>::type::value, bit_to_square<B, 17>::type::value, bit_to_square<B, 18>::type::value, bit_to_square<B, 19>::type::value,
+        bit_to_square<B, 20>::type::value, bit_to_square<B, 21>::type::value, bit_to_square<B, 22>::type::value, bit_to_square<B, 23>::type::value,
+        bit_to_square<B, 24>::type::value, bit_to_square<B, 25>::type::value, bit_to_square<B, 26>::type::value, bit_to_square<B, 27>::type::value,
+        bit_to_square<B, 28>::type::value, bit_to_square<B, 29>::type::value, bit_to_square<B, 30>::type::value, bit_to_square<B, 31>::type::value,
+        bit_to_square<B, 32>::type::value, bit_to_square<B, 33>::type::value, bit_to_square<B, 34>::type::value, bit_to_square<B, 35>::type::value,
+        bit_to_square<B, 36>::type::value, bit_to_square<B, 37>::type::value, bit_to_square<B, 38>::type::value, bit_to_square<B, 39>::type::value,
+        bit_to_square<B, 40>::type::value, bit_to_square<B, 41>::type::value, bit_to_square<B, 42>::type::value, bit_to_square<B, 43>::type::value,
+        bit_to_square<B, 44>::type::value, bit_to_square<B, 45>::type::value, bit_to_square<B, 46>::type::value, bit_to_square<B, 47>::type::value,
+        bit_to_square<B, 48>::type::value, bit_to_square<B, 49>::type::value, bit_to_square<B, 50>::type::value, bit_to_square<B, 51>::type::value,
+        bit_to_square<B, 52>::type::value, bit_to_square<B, 53>::type::value, bit_to_square<B, 54>::type::value, bit_to_square<B, 55>::type::value,
+        bit_to_square<B, 56>::type::value, bit_to_square<B, 57>::type::value, bit_to_square<B, 58>::type::value, bit_to_square<B, 59>::type::value,
+        bit_to_square<B, 60>::type::value, bit_to_square<B, 61>::type::value, bit_to_square<B, 62>::type::value, bit_to_square<B, 63>::type::value
 };
 
 }       // namespace board

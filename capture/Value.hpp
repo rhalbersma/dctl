@@ -59,7 +59,7 @@ bool is_large(const Value<Rules>& v, BitBoard captured_pieces)
 template<typename Rules>
 int count(const Value<Rules>& v, BitBoard captured_pieces)
 {
-        return dispatch::count(
+        return aux::count(
                 v, captured_pieces,
                 Int2Type<rules::is_majority_precedence<Rules>::value>()        
         );
@@ -68,7 +68,7 @@ int count(const Value<Rules>& v, BitBoard captured_pieces)
 template<typename Rules>
 void increment(Value<Rules>& v, bool is_captured_king)
 {
-        dispatch::increment(
+        aux::increment(
                 v, is_captured_king,
                 Int2Type<rules::precedence_type<Rules>::value>()
         );
@@ -77,7 +77,7 @@ void increment(Value<Rules>& v, bool is_captured_king)
 template<typename Rules>
 void decrement(Value<Rules>& v, bool is_captured_king)
 {
-        dispatch::decrement(
+        aux::decrement(
                 v, is_captured_king,
                 Int2Type<rules::precedence_type<Rules>::value>()
         );
@@ -86,7 +86,7 @@ void decrement(Value<Rules>& v, bool is_captured_king)
 template<typename Rules>
 bool is_promotion(const Value<Rules>& v)
 {
-        return dispatch::is_promotion(
+        return aux::is_promotion(
                 v, 
                 Int2Type<rules::promotion_condition<Rules>::value>()
         );
@@ -95,7 +95,7 @@ bool is_promotion(const Value<Rules>& v)
 template<typename Rules>
 void toggle_promotion(Value<Rules>& v)
 {
-        dispatch::toggle_promotion(
+        aux::toggle_promotion(
                 v,
                 Int2Type<rules::promotion_condition<Rules>::value>()
         );
@@ -104,13 +104,13 @@ void toggle_promotion(Value<Rules>& v)
 template<typename Rules>
 void toggle_with_king(Value<Rules>& v)
 {
-        dispatch::toggle_with_king(
+        aux::toggle_with_king(
                 v,
                 Int2Type<rules::is_relative_king_precedence<Rules>::value>()
         );
 }
 
-namespace dispatch {
+namespace aux {
 
 template<typename Rules>
 int count(const Value<Rules>& /* v */, BitBoard captured_pieces, Int2Type<false>)
@@ -208,6 +208,6 @@ void toggle_with_king(Value<Rules>& v, Int2Type<true>)
         v.toggle_with_king();
 }
 
-}       // namespace dispatch
+}       // namespace aux
 }       // namespace capture
 }       // namespace dctl

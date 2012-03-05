@@ -1,5 +1,5 @@
 #pragma once
-#include <algorithm>                    // find
+#include <algorithm>                    // std::find
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "Stack_fwd.hpp"
 #include "Predicates.hpp"
