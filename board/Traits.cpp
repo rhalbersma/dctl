@@ -1,4 +1,4 @@
-#include <boost/test/unit_test.hpp> 
+#include <boost/test/unit_test.hpp>
 #include <boost/test/test_case_template.hpp>
 #include <boost/mpl/vector.hpp>                 // vector
 #include "../../src/board/Traits.hpp"
@@ -11,9 +11,9 @@ namespace board {
 BOOST_AUTO_TEST_SUITE(TestTraits)
 
 typedef boost::mpl::vector<
-        angle<degrees::D000>, 
-        angle<degrees::D090>, 
-        angle<degrees::D180>, 
+        angle<degrees::D000>,
+        angle<degrees::D090>,
+        angle<degrees::D180>,
         angle<degrees::D270>
 > OrthogonalAngles;
 
@@ -24,9 +24,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsOrthogonal, T, OrthogonalAngles)
 }
 
 typedef boost::mpl::vector<
-        angle<degrees::D045>, 
-        angle<degrees::D135>, 
-        angle<degrees::D225>, 
+        angle<degrees::D045>,
+        angle<degrees::D135>,
+        angle<degrees::D225>,
         angle<degrees::D315>
 > DiagonalAngles;
 
@@ -37,8 +37,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsDiagonal, T, DiagonalAngles)
 }
 
 typedef boost::mpl::vector<
-        angle<degrees::D045>, 
-        angle<degrees::D090>, 
+        angle<degrees::D045>,
+        angle<degrees::D090>,
         angle<degrees::D135>
 > UpAngles;
 
@@ -49,8 +49,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsUp, T, UpAngles)
 }
 
 typedef boost::mpl::vector<
-        angle<degrees::D225>, 
-        angle<degrees::D270>, 
+        angle<degrees::D225>,
+        angle<degrees::D270>,
         angle<degrees::D315>
 > DownAngles;
 
@@ -61,8 +61,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsDown, T, DownAngles)
 }
 
 typedef boost::mpl::vector<
-        angle<degrees::D135>, 
-        angle<degrees::D180>, 
+        angle<degrees::D135>,
+        angle<degrees::D180>,
         angle<degrees::D225>
 > LeftAngles;
 
@@ -73,8 +73,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsLeft, T, LeftAngles)
 }
 
 typedef boost::mpl::vector<
-        angle<degrees::D315>, 
-        angle<degrees::D000>, 
+        angle<degrees::D315>,
+        angle<degrees::D000>,
         angle<degrees::D045>
 > RightAngles;
 
@@ -85,8 +85,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsRight, T, RightAngles)
 }
 
 typedef boost::mpl::vector<
-        angle<degrees::D045>, 
-        angle<degrees::D090>, 
+        angle<degrees::D045>,
+        angle<degrees::D090>,
         angle<degrees::D135>,
         angle<degrees::D180>
 > PositiveAngles;
@@ -98,8 +98,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsPositive, T, PositiveAngles)
 }
 
 typedef boost::mpl::vector<
-        angle<degrees::D225>, 
-        angle<degrees::D270>, 
+        angle<degrees::D225>,
+        angle<degrees::D270>,
         angle<degrees::D315>,
         angle<degrees::D000>
 > NegativeAngles;

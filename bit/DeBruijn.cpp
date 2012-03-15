@@ -1,4 +1,4 @@
-#include <boost/test/unit_test.hpp> 
+#include <boost/test/unit_test.hpp>
 #include "../../src/bit/DeBruijn.hpp"
 #include "../../src/utility/IntegerTypes.hpp"
 

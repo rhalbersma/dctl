@@ -1,4 +1,4 @@
-#include <boost/test/unit_test.hpp> 
+#include <boost/test/unit_test.hpp>
 #include "../test_config.hpp"
 #include "../../src/walk/Root.hpp"
 #include "../../src/node/Position.hpp"
@@ -15,16 +15,16 @@ namespace walk {
 template<typename Rules, typename Board>
 struct Fixture
 {
-        Fixture() 
+        Fixture()
         {
                 root_.resize_hash(24);
         }
 
-        ~Fixture() 
+        ~Fixture()
         {
         }
 
-        void run(const Position<Board>& position, int depth, NodeCount leafs) 
+        void run(const Position<Board>& position, int depth, NodeCount leafs)
         {
                 root_.clear_hash();
                 BOOST_CHECK_EQUAL(leafs, root_.test(position, depth));
@@ -36,16 +36,14 @@ private:
 
 BOOST_AUTO_TEST_SUITE(TestPerft)
 
-BOOST_STATIC_CONSTANT(int, N = 7);
+BOOST_STATIC_CONSTANT(int, N = 0);
 
-// The original perft thread on the FMJD forum 
+// The original perft thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 typedef Fixture<variant::International, board::International> InternationalFixture;
 
 BOOST_FIXTURE_TEST_CASE(InternationalInitial, InternationalFixture)
 {
-        std::cout << setup::diagram<board::International>()();
-
         const auto p = Position<board::International>::initial();
         const NodeCount leafs[] = { 9, 81, 658, 4265, 27117, 167140, 1049442, 6483961, 41022423, 258895763, 1665861398 };
         for (auto i = 0; i < 11 - N; ++i)
@@ -63,7 +61,7 @@ BOOST_FIXTURE_TEST_CASE(InternationalRandom178, InternationalFixture)
 }
 
 BOOST_FIXTURE_TEST_CASE(InternationalWoldouby, InternationalFixture)
-{        
+{
         const auto p = setup::read<board::International, pdn::protocol>()(
                 "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
         );
@@ -221,13 +219,13 @@ BOOST_AUTO_TEST_CASE(Rectangular)
         root_.perft<variant::International>(iS, 9);
 
         std::cout << setup::diagram<board::Ktar11>()();
-        
+
         auto iK11 = Position<board::Ktar11>::initial();
         root_.clear_hash();
         root_.perft<variant::International>(iK11, 9);
-                
+
         std::cout << setup::diagram<board::Ktar12>()();
-        
+
         auto iK12 = Position<board::Ktar12>::initial();
         root_.clear_hash();
         root_.perft<variant::International>(iK12, 9);

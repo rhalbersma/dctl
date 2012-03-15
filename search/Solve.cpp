@@ -2,7 +2,7 @@
 #include <string>                       // string
 #include <typeinfo>                     // typeid
 #include <utility>                      // pair
-#include <boost/test/unit_test.hpp> 
+#include <boost/test/unit_test.hpp>
 #include <boost/test/test_case_template.hpp>
 #include <boost/mpl/list.hpp>
 #include "../test_config.hpp"
@@ -23,17 +23,17 @@ typedef std::pair<std::string, int> FEN_depth;
 template<typename Rules, typename Board, typename Objective = GameObjective<> >
 struct Fixture
 {
-        Fixture() 
+        Fixture()
         {
                 root_.resize_hash(27);
         }
 
-        ~Fixture() 
+        ~Fixture()
         {
                 root_.resize_hash(0);
         }
 
-        int run(const FEN_depth& test_case) 
+        int run(const FEN_depth& test_case)
         {
                 root_.clear_hash();
                 const auto position = setup::read<Board, pdn::protocol>()(test_case.first);

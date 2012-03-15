@@ -1,6 +1,6 @@
 #include <string>                       // string
 #include <utility>                      // pair
-#include <boost/test/unit_test.hpp> 
+#include <boost/test/unit_test.hpp>
 #include "../test_config.hpp"
 #include "../../src/search/Root.hpp"
 #include "../../src/search/Objective.hpp"
@@ -17,19 +17,19 @@ namespace search {
 template<typename Rules, typename Board, typename Objective = GameObjective<> >
 struct Fixture
 {
-        Fixture() 
+        Fixture()
         {
                 root_.resize_hash(27);
         }
 
-        ~Fixture() 
+        ~Fixture()
         {
                 root_.resize_hash(0);
         }
 
         typedef std::pair<std::string, int> FEN_depth;
 
-        void run(const FEN_depth& test_case) 
+        void run(const FEN_depth& test_case)
         {
                 root_.clear_hash();
                 const auto position = setup::read<Board, pdn::protocol>()(test_case.first);
@@ -42,7 +42,7 @@ struct Fixture
 
 BOOST_AUTO_TEST_SUITE(TestRoot)
 
-/*       
+/*
 typedef Fixture<variant::Frisian, board::Frisian> FixtureFrisian;
 BOOST_FIXTURE_TEST_CASE(Frisian21, FixtureFrisian)
 {
@@ -69,7 +69,7 @@ BOOST_FIXTURE_TEST_CASE(International11, FixtureInternational)
                 FEN_depth("W:W10:BK46.",  3),   // 1001
                 FEN_depth("W:WK10:BK5.",  3)    // 0101
         };
-                
+
         for (auto i = 0; i < 4; ++i)
                 run(test_case[i]);
 }
@@ -84,7 +84,7 @@ BOOST_FIXTURE_TEST_CASE(International21, FixtureInternational)
                 FEN_depth("W:WK2,6:BK50."  ,  9),       // 1101
                 FEN_depth("W:WK1,K7:BK50." ,  7),       // 0201
                 FEN_depth("W:W21:B3,4."    , 33),       // 1020
-                FEN_depth("W:W23:B5,6"     , 29),       // David & Goliath    
+                FEN_depth("W:W23:B5,6"     , 29),       // David & Goliath
                 FEN_depth("W:WK38:B4,18."  , 27),       // 0120
                 FEN_depth("W:W18:B5,K23."  , 17),       // 1011
                 FEN_depth("W:WK26:B23,K42.",  9),       // 0111
@@ -94,7 +94,7 @@ BOOST_FIXTURE_TEST_CASE(International21, FixtureInternational)
 
         for (auto i = 0; i < 13; ++i)
                 run(test_case[i]);
-}        
+}
 
 BOOST_FIXTURE_TEST_CASE(International22, FixtureInternational)
 {
@@ -111,7 +111,7 @@ BOOST_FIXTURE_TEST_CASE(International22, FixtureInternational)
         };
 
         for (auto i = 0; i < 9; ++i)
-                run(test_case[i]);      
+                run(test_case[i]);
 }
 
 BOOST_FIXTURE_TEST_CASE(International31, FixtureInternational)
@@ -132,16 +132,16 @@ BOOST_FIXTURE_TEST_CASE(International31, FixtureInternational)
                 FEN_depth("W:W8:B5,K13,K23."    , 17),  // 1012
                 FEN_depth("W:WK1:BK18,24,K44."  ,  9),  // 0112
                 FEN_depth("W:W23:BK10,K19,K46." ,  3),  // 1003
-                FEN_depth("W:WK49:BK23,K43,K46.",  3)   // 0103       
+                FEN_depth("W:WK49:BK23,K43,K46.",  3)   // 0103
         };
-        
+
         for (auto i = 0; i < 16; ++i)
                 run(test_case[i]);
 }
 
 typedef Fixture<variant::Killer, board::International> FixtureKiller;
 
-// http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html        
+// http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html
 BOOST_FIXTURE_TEST_CASE(Killer11, FixtureKiller)
 {
         FEN_depth test_case[] = {
@@ -159,21 +159,21 @@ BOOST_FIXTURE_TEST_CASE(Killer21, FixtureKiller)
 {
         FEN_depth test_case[] = {
                 FEN_depth("W:W41,46:B24."  , 63),       // 2010
-                FEN_depth("B:W23:B5,6"     , 57),       // David & Goliath with black to move    
+                FEN_depth("B:W23:B5,6"     , 57),       // David & Goliath with black to move
                 FEN_depth("W:WK37,46:B41." , 47),       // 1110
                 FEN_depth("W:WK7,K30:B45." ,  9),       // 0210
                 FEN_depth("W:W21,46:BK47." , 57),       // 2001
                 FEN_depth("W:WK1,46:BK47." , 49),       // 1101
                 FEN_depth("W:WK5,K14:BK33.", 15),       // 0201
                 FEN_depth("W:W21:B3,4."    , 33),       // 1020
-                FEN_depth("W:W23:B5,6"     , 29),       // David & Goliath    
+                FEN_depth("W:W23:B5,6"     , 29),       // David & Goliath
                 FEN_depth("W:WK38:B3,18."  , 27),       // 0120
                 FEN_depth("W:W18:B5,K23."  , 17),       // 1011
                 FEN_depth("W:WK16:B24,K43.",  9),       // 0111
                 FEN_depth("W:W14:BK10,K46.",  3),       // 1002
                 FEN_depth("W:WK10:BK5,K41.",  3)        // 0102
-        };       
-        
+        };
+
         for (auto i = 0; i < 14; ++i)
                 run(test_case[i]);
 }
@@ -214,9 +214,9 @@ BOOST_FIXTURE_TEST_CASE(Killer31, FixtureKiller)
                 FEN_depth("W:W6:B5,K11,K22."    , 17),  // 1012
                 FEN_depth("W:WK1:B24,K29,K44."  ,  9),  // 0112
                 FEN_depth("W:W23:BK10,K19,K46." ,  3),  // 1003
-                FEN_depth("W:WK48:BK10,K42,K46.",  3)   // 0103       
+                FEN_depth("W:WK48:BK10,K42,K46.",  3)   // 0103
         };
-        
+
         for (auto i = 0; i < 16; ++i)
                 run(test_case[i]);
 }

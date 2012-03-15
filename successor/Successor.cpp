@@ -1,7 +1,7 @@
 #include <algorithm>                    // find
 #include <cstddef>                      // size_t
 #include <string>                       // string
-#include <boost/test/unit_test.hpp> 
+#include <boost/test/unit_test.hpp>
 #include "../../src/successor/Selection.hpp"
 #include "../../src/successor/Successor.hpp"
 #include "../../src/node/Position.hpp"
@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(TestSuccessor)
 
 BOOST_AUTO_TEST_CASE(Italian)
 {
-        // Positions from the official Italian rules: 
+        // Positions from the official Italian rules:
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
                 "W:W30:B27",                    // Art. 5.6  (man capture directions)
@@ -60,14 +60,14 @@ BOOST_AUTO_TEST_CASE(Italian)
                 // check all generated legal moves
                 for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
                         const auto move_string = notation::write<variant::Italian>()(p, moves[j]);
-                        BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string)); 
+                        BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string));
                 }
         }
 }
 
 BOOST_AUTO_TEST_CASE(Spanish)
 {
-        // Positions from the official Italian rules: 
+        // Positions from the official Italian rules:
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
                 "W:W30:B27",                    // Art. 5.6  (man capture directions)
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(Spanish)
                 // check all generated legal moves
                 for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
                         const auto move_string = notation::write<variant::Spanish>()(p, moves[j]);
-                        BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string)); 
+                        BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string));
                 }
         }
 }
