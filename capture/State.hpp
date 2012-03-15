@@ -13,12 +13,12 @@
 #include <boost/utility.hpp>            // noncopyable
 #include <iostream>
 
-namespace dctl {       
+namespace dctl {
 namespace capture {
 
 template<typename Rules, typename Board>
 class State
-: 
+:
         private boost::noncopyable
 {
 public:
@@ -28,7 +28,7 @@ public:
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
                 remaining_targets_(initial_targets_),
-		not_occupied_(not_occupied(p)),
+                not_occupied_(not_occupied(p)),
                 from_sq_(0),
                 current_(),
                 best_()
@@ -37,18 +37,18 @@ public:
         }
 
         // views
-        template<int Index> 
+        template<int Index>
         BitBoard targets() const
         {
                 return remaining_targets_ & Pull<Board, Index>()(path());
         }
-        
-        template<int Index> 
+
+        template<int Index>
         BitBoard path() const
         {
                 return path() & Board::jump_start[Index];
         }
-        
+
         BitBoard path() const
         {
                 return not_occupied_;
@@ -58,7 +58,7 @@ public:
         {
                 return current_;
         }
-        
+
         const Value<Rules>& best() const
         {
                 return best_;
@@ -70,7 +70,7 @@ public:
         }
 
         // unary predicates
-        template<bool Color> 
+        template<bool Color>
         bool is_promotion_sq(BitBoard dest_sq) const
         {
                 return !bit::is_zero(promotion_sq<Color, Board>(dest_sq));
@@ -81,7 +81,7 @@ public:
         {
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
-        
+
         void current_toggle_with_king()
         {
                 toggle_with_king(current_);
@@ -111,9 +111,9 @@ public:
         {
                 // tag dispatching on capture removal
                 make_dispatch(
-                        target_sq, 
+                        target_sq,
                         Int2Type<rules::capture_removal<Rules>::value>()
-                );                                
+                );
                 BOOST_ASSERT(invariant());
         }
 
@@ -121,30 +121,30 @@ public:
         {
                 // tag dispatching on capture removal
                 undo_dispatch(
-                        target_sq, 
+                        target_sq,
                         Int2Type<rules::capture_removal<Rules>::value>()
                 );
                 BOOST_ASSERT(invariant());
         }
 
-        template<bool Color> 
+        template<bool Color>
         void add_man_capture(BitBoard dest_sq, Stack& moves) const
         {
                 // tag dispatching on ambiguity of man captures
                 add_man_capture_dispatch<Color>(
-                        dest_sq, moves, 
+                        dest_sq, moves,
                         Int2Type<rules::is_ambiguous_man_capture<Rules>::value>()
                 );
         }
-        
-        template<bool Color, int Index> 
+
+        template<bool Color, int Index>
         void add_king_capture(BitBoard dest_sq, Stack& moves) const
         {
                 const auto ambiguous = !moves.empty() && is_large(current_, captured_pieces());
 
                 // tag dispatching on king halt after final capture
                 add_king_capture_dispatch<Color, Index>(
-                        dest_sq, ambiguous, moves, 
+                        dest_sq, ambiguous, moves,
                         Int2Type<rules::king_capture_halt<Rules>::value>()
                 );
         }
@@ -162,7 +162,7 @@ private:
         {
                 return !bit::is_zero(target_sq & king_targets_);
         }
-        
+
         BitBoard captured_pieces() const
         {
                 return initial_targets_ ^ remaining_targets_;
@@ -175,13 +175,13 @@ private:
 
         BitBoard captured_king_targets() const
         {
-                // tag dispatching on whether men can capture kings
+                // tag dispatching on whether pawns can capture kings
                 return captured_king_targets_dispatch(
-                        Int2Type<rules::is_men_capture_kings<Rules>::value>()
+                        Int2Type<rules::is_pawns_capture_kings<Rules>::value>()
                 );
         }
 
-        // specialization for men that cannot capture kings
+        // specialization for pawns that cannot capture kings
         BitBoard captured_king_targets_dispatch(
                 Int2Type<false>
         ) const
@@ -189,7 +189,7 @@ private:
                 return BitBoard(0);
         }
 
-        // specialization for men that can capture kings
+        // specialization for pawns that can capture kings
         BitBoard captured_king_targets_dispatch(
                 Int2Type<true>
         ) const
@@ -234,35 +234,36 @@ private:
         }
 
         // partial specialization for man captures that are unambiguous
-        template<bool Color> 
+        template<bool Color>
         void add_man_capture_dispatch(
                 BitBoard dest_sq, Stack& moves, Int2Type<false>
         ) const
         {
-                push<Color, Rules>(
-                        from_sq_ ^ dest_sq, 
-                        promotion_sq<Color, Board>(dest_sq), 
-                        captured_pieces(), 
-                        captured_king_targets(), 
-                        moves
+                moves.push_back(
+                        Move::create<Color, Rules>(
+                                from_sq_ ^ dest_sq,
+                                promotion_sq<Color, Board>(dest_sq),
+                                captured_pieces(),
+                                captured_king_targets()
+                        )
                 );
         }
 
         // partial specialization for man captures that can be ambiguous
-        template<bool Color> 
+        template<bool Color>
         void add_man_capture_dispatch(
                 BitBoard dest_sq, Stack& moves, Int2Type<true>
         ) const
         {
                 const auto ambiguous = !moves.empty() && is_large(current_, captured_pieces());
                 add_man_capture_dispatch<Color>(dest_sq, moves, Int2Type<false>());
-                if (ambiguous && non_unique_top<Rules>(moves))
-                        pop(moves);
+                if (ambiguous)
+                        unique_back<Rules>(moves);
         }
 
-        // partial specialization for kings that halt immediately if the final capture is a king, 
+        // partial specialization for kings that halt immediately if the final capture is a king,
         // and slide through otherwise
-        template<bool Color, int Index> 
+        template<bool Color, int Index>
         void add_king_capture_dispatch(
                 BitBoard dest_sq, bool ambiguous, Stack& moves, Int2Type<rules::halt_1K>
         ) const
@@ -272,18 +273,18 @@ private:
                 else
                         add_king_capture_dispatch<Color, Index>(dest_sq, ambiguous, moves, Int2Type<rules::halt_N>());
         }
-        
+
         // partial specialization for kings that halt immediately after the final capture
-        template<bool Color, int Index> 
+        template<bool Color, int Index>
         void add_king_capture_dispatch(
                 BitBoard dest_sq, bool ambiguous, Stack& moves, Int2Type<rules::halt_1>
         ) const
         {
                 add_king_capture<Color>(dest_sq, ambiguous, moves);
         }
-        
+
         // partial specialization for kings that slide through after the final capture
-        template<bool Color, int Index> 
+        template<bool Color, int Index>
         void add_king_capture_dispatch(
                 BitBoard dest_sq, bool ambiguous, Stack& moves, Int2Type<rules::halt_N>
         ) const
@@ -295,35 +296,36 @@ private:
                 } while (dest_sq & path());
         }
 
-        template<bool Color> 
+        template<bool Color>
         void add_king_capture(BitBoard dest_sq, bool ambiguous, Stack& moves) const
         {
                 // tag dispatching on promotion condition
                 add_king_capture_dispatch<Color>(
-                        dest_sq, moves, 
+                        dest_sq, moves,
                         Int2Type<rules::promotion_condition<Rules>::value>()
                 );
-                if (ambiguous && non_unique_top<Rules>(moves))
-                        pop(moves);
+                if (ambiguous)
+                        unique_back<Rules>(moves);
         }
-        
-        // partial specialization for men that promote apres-fini
-        template<bool Color> 
+
+        // partial specialization for pawns that promote apres-fini
+        template<bool Color>
         void add_king_capture_dispatch(
-                BitBoard dest_sq, Stack& moves, 
+                BitBoard dest_sq, Stack& moves,
                 Int2Type<rules::promote_af>
         ) const
         {
-                push<Color, Rules>(
-                        from_sq_ ^ dest_sq, 
-                        captured_pieces(), 
-                        captured_kings(), 
-                        moves
+                moves.push_back(
+                        Move::create<Color, Rules>(
+                                from_sq_ ^ dest_sq,
+                                captured_pieces(),
+                                captured_kings()
+                        )
                 );
         }
 
-        // partial specialization for men that promote en-passant
-        template<bool Color> 
+        // partial specialization for pawns that promote en-passant
+        template<bool Color>
         void add_king_capture_dispatch(
                 BitBoard dest_sq, Stack& moves, Int2Type<rules::promote_ep>
         ) const
@@ -331,18 +333,19 @@ private:
                 if (!is_promotion(current_))
                         add_king_capture_dispatch<Color>(dest_sq, moves, Int2Type<rules::promote_af>());
                 else
-                        push<Color, Rules>(
-                                from_sq_ ^ dest_sq, 
-                                dest_sq, 
-                                captured_pieces(), 
-                                captured_kings(), 
-                                moves
+                        moves.push_back(
+                                Move::create<Color, Rules>(
+                                        from_sq_ ^ dest_sq,
+                                        dest_sq,
+                                        captured_pieces(),
+                                        captured_kings()
+                                )
                         );
         }
 
         // representation
         const BitBoard king_targets_;
-        mutable BitBoard initial_targets_;      // targets before a capture
+        BitBoard initial_targets_;      // targets before a capture
         BitBoard remaining_targets_;            // targets after a capture
         BitBoard not_occupied_;
         BitBoard from_sq_;
