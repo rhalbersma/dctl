@@ -19,7 +19,7 @@
         struct iota_n
         :
                 boost::mpl::push_front< typename
-                        iota_n< 
+                        iota_n<
                                 N - 1, typename
                                 boost::mpl::next<Value>::type
                         >::type,

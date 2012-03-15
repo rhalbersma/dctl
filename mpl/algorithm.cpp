@@ -17,8 +17,8 @@ typedef boost::mpl::vector<P> pod_types;
 typedef boost::mpl::vector<P, N> mixed_types;
 typedef boost::mpl::vector<N> non_pod_types;
 
-struct B {}; 
-struct D: B {}; 
+struct B {};
+struct D: B {};
 struct E {};
 
 typedef boost::mpl::vector<B, D> derived_types;

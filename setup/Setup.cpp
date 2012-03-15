@@ -1,4 +1,4 @@
-#include <boost/test/unit_test.hpp> 
+#include <boost/test/unit_test.hpp>
 #include "../../src/board/Types.hpp"
 #include "../../src/setup/Setup.hpp"
 
@@ -24,17 +24,17 @@ BOOST_AUTO_TEST_CASE(Wieger)
             .   .   .   o   o \
           .   .   .   .   .   \
         ";
-        
+
         // parse the above diagram into a position using the DamExchange protocol
         // with a modified character set (default is <'Z', 'W', 'E'>)
         const auto pos_w = setup::read<
-                board::International, 
-                dxp::protocol, 
-                TokenInterface<'X', 'O', '.'> 
+                board::International,
+                dxp::protocol,
+                TokenInterface<'X', 'O', '.'>
         >()(w);
 
         // write the above position as a FEN string using the PDN protocol
-        const auto FEN_w = write<pdn::protocol>()(pos_w);        
+        const auto FEN_w = write<pdn::protocol>()(pos_w);
 
         // convert the new FEN string to a new position and back into a new FEN string
         const auto pos_r = read<board::International, pdn::protocol>()(FEN_w);
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(Wieger)
 
         // the two positions have been parsed through different protocols,
         // but they should have identical FEN strings
-        BOOST_REQUIRE_EQUAL(FEN_w, FEN_r);     
+        BOOST_REQUIRE_EQUAL(FEN_w, FEN_r);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

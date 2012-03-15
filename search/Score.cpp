@@ -1,4 +1,4 @@
-#include <boost/test/unit_test.hpp> 
+#include <boost/test/unit_test.hpp>
 #include "../../src/search/Score.hpp"
 #include "../../src/utility/Ply.hpp"
 
@@ -28,18 +28,18 @@ BOOST_AUTO_TEST_CASE(FiniteLoss)
 {
         // scores in the interval [loss_min, loss_max) are finite
         for (auto v = loss_min(); v < loss_max(); ++v)
-                BOOST_CHECK(is_finite(v));     
+                BOOST_CHECK(is_finite(v));
 }
 
 BOOST_AUTO_TEST_CASE(NegativeLoss)
 {
         // scores in the interval [loss_min, loss_max) are negative
         for (auto v = loss_min(); v < loss_max(); ++v)
-                BOOST_CHECK_LT(v, 0);     
+                BOOST_CHECK_LT(v, 0);
 }
 
 BOOST_AUTO_TEST_CASE(IsWin)
-{       
+{
         // infinity is not a win
         BOOST_CHECK(!is_win(infinity()));
 
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(PlyValueInverse)
 }
 
 BOOST_AUTO_TEST_CASE(Stretch)
-{       
+{
         // loss and win values are "stretched" one step towards the edges of the [-INF, +INF] interval
         for (auto i = 1; i < MAX_MATE_MOVES; ++i) {
                 BOOST_CHECK_EQUAL(loss_value(i - 1), stretch(loss_value(i)));
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(Stretch)
 }
 
 BOOST_AUTO_TEST_CASE(Squeeze)
-{       
+{
         // loss and win values are "squeezed" one step towards the center of the [-INF, +INF] interval
         for (auto i = 0; i < MAX_MATE_MOVES; ++i) {
                 BOOST_CHECK_EQUAL(loss_value(i + 1), squeeze(loss_value(i)));
