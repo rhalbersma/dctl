@@ -59,32 +59,4 @@ bool is_intersecting_capture(
         const Position<Board>& /* p */, const Move& /* m */, Int2Type<rules::remove_af>
 );
 
-// tag dispatching on capture removal
-template<typename Rules>
-bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces);
-
-// specialization for en-passant capture removal (Thai draughts)
-bool is_intersecting_capture(
-        BitBoard delta, BitBoard captured_pieces, Int2Type<rules::remove_ep>
-);
-
-// specialization for apres-fini capture removal
-bool is_intersecting_capture(
-        BitBoard /* delta */, BitBoard /* captured_pieces */, Int2Type<rules::remove_af>
-);
-
-// tag dispatching on promotion condition
-template<typename Rules>
-bool is_intersecting_promotion(BitBoard promotion, BitBoard delta);
-
-// specialization for en-passant promotion (Russian draughts)
-bool is_intersecting_promotion(
-        BitBoard promotion, BitBoard delta, Int2Type<rules::promote_ep>
-);
-
-// specialization for apres-fini promotion
-bool is_intersecting_promotion(
-        BitBoard /* promotion */, BitBoard /* delta */, Int2Type<rules::promote_af>
-);
-
 }       // namespace dctl

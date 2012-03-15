@@ -16,7 +16,7 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for pawn moves
-template<bool Color, typename Rules, typename Board> 
+template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::pawn, select::Moves, Rules, Board>
 :
         private nonconstructible // enforce static semantics
@@ -28,75 +28,76 @@ private:
 public:
         static void generate(const Position<Board>& p, Stack& moves)
         {
-                generate(p.men(Color), not_occupied(p), moves);
+                generate(p.pawns(Color), not_occupied(p), moves);
         }
 
         static int count(const Position<Board>& p)
         {
-                return count(p.men(Color), not_occupied(p));
+                return count(p.pawns(Color), not_occupied(p));
         }
 
         static bool detect(const Position<Board>& p)
         {
-                return detect(p.men(Color), not_occupied(p));
+                return detect(p.pawns(Color), not_occupied(p));
         }
 
-        static void generate(BitBoard active_men, BitBoard not_occupied, Stack& moves)
+        static void generate(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
-                generate<Direction::left_up >(active_men, not_occupied, moves);
-                generate<Direction::right_up>(active_men, not_occupied, moves);
+                generate<Direction::left_up >(active_pawns, not_occupied, moves);
+                generate<Direction::right_up>(active_pawns, not_occupied, moves);
         }
 
-        static int count(BitBoard active_men, BitBoard not_occupied)
+        static int count(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return (
-                        count<Direction::left_up >(active_men, not_occupied) +
-                        count<Direction::right_up>(active_men, not_occupied)
+                        count<Direction::left_up >(active_pawns, not_occupied) +
+                        count<Direction::right_up>(active_pawns, not_occupied)
                 );
         }
 
-        static bool detect(BitBoard active_men, BitBoard not_occupied)
+        static bool detect(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return (
-                        detect<Direction::left_up >(active_men, not_occupied) ||
-                        detect<Direction::right_up>(active_men, not_occupied)
+                        detect<Direction::left_up >(active_pawns, not_occupied) ||
+                        detect<Direction::right_up>(active_pawns, not_occupied)
                 );
         }
 
 private:
         // implementation
-        template<int Index> 
-        static void generate(BitBoard active_men, BitBoard not_occupied, Stack& moves)
+        template<int Index>
+        static void generate(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
                 BitBoard from_sq, dest_sq;
                 for (
-                        active_men &= Pull<Board, Index>()(not_occupied); 
-                        active_men; 
-                        bit::clear_first(active_men)
+                        active_pawns &= Pull<Board, Index>()(not_occupied);
+                        active_pawns;
+                        bit::clear_first(active_pawns)
                 ) {
-                        from_sq = bit::get_first(active_men);
+                        from_sq = bit::get_first(active_pawns);
                         dest_sq = Push<Board, Index>()(from_sq);
-                        push<Color>(
-                                from_sq ^ dest_sq, 
-                                promotion_sq<Color, Board>(dest_sq), 
-                                moves
+                        moves.push_back(
+                                Move::create<Color>(
+                                        from_sq ^ dest_sq,
+                                        promotion_sq<Color, Board>(dest_sq)
+                                )
                         );
                 }
         }
 
-        template<int Index> 
-        static int count(BitBoard active_men, BitBoard not_occupied)
+        template<int Index>
+        static int count(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return bit::count(
-                        Sink<Board, Index, rules::scan_1>()(active_men, not_occupied)
+                        Sink<Board, Index, rules::scan_1>()(active_pawns, not_occupied)
                 );
         }
 
-        template<int Index> 
-        static bool detect(BitBoard active_men, BitBoard not_occupied)
+        template<int Index>
+        static bool detect(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return !bit::is_zero(
-                        Sink<Board, Index, rules::scan_1>()(active_men, not_occupied)
+                        Sink<Board, Index, rules::scan_1>()(active_pawns, not_occupied)
                 );
         }
 };
