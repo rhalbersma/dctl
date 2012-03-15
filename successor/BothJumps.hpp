@@ -15,7 +15,7 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Rules, typename Board> 
+template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::both, select::Jumps, Rules, Board>
 :
         private nonconstructible // enforce static semantics
@@ -44,7 +44,7 @@ public:
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (
-                        PawnJumps::detect(p) || 
+                        PawnJumps::detect(p) ||
                         KingJumps::detect(p)
                 );
         }
@@ -54,7 +54,7 @@ private:
         {
                 // tag dispatching on absolute king capture precedence
                 generate_dispatch(
-                        p, capture, moves, 
+                        p, capture, moves,
                         Int2Type<rules::is_absolute_king_precedence<Rules>::value>()
                 );
         }

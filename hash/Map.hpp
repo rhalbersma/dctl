@@ -28,7 +28,7 @@ class Map
 {
 public:
         // constructors
-        Map() 
+        Map()
         {
                 resize(0);
         }
@@ -43,7 +43,7 @@ public:
         {
                 return static_cast<size_t>(
                         std::count_if(
-                                map_.begin(), map_.end(), [](const Entry& entry) { 
+                                map_.begin(), map_.end(), [](const Entry& entry) {
                                 return entry.first == Key(0);
                         })
                 );
@@ -79,7 +79,7 @@ public:
         {
                 // tag dispatching on the key's integral type trait
                 return find_dispatch(
-                        item, 
+                        item,
                         Int2Type<std::is_integral<Key>::value>()
                 );
         }
@@ -96,14 +96,14 @@ public:
         {
                 // tag dispatching on the key's integral type trait
                 insert_dispatch(
-                        item, value, 
+                        item, value,
                         Int2Type<std::is_integral<Key>::value>()
                 );
         }
 
 private:
         // partial specialization for non-integral keys
-        template<typename Item> 
+        template<typename Item>
         const Value* find_dispatch(const Item& item, Int2Type<false>) const
         {
                 const auto index = Hash<Item, Index>()(item);
@@ -112,7 +112,7 @@ private:
         }
 
         // partial specialization for integral keys
-        template<typename Item> 
+        template<typename Item>
         const Value* find_dispatch(const Item& item, Int2Type<true>) const
         {
                 const auto index = Hash<Item, Index>()(item);
@@ -121,16 +121,16 @@ private:
         }
 
         // partial specialization for non-integral keys
-        template<typename Item> 
+        template<typename Item>
         void insert_dispatch(const Item& item, const Value& value, Int2Type<false>)
         {
                 const auto index = Hash<Item, Index>()(item);
                 const auto key = FindKey<Item, Key>()(item);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
-        
+
         // partial specialization for integral keys
-        template<typename Item> 
+        template<typename Item>
         void insert_dispatch(const Item& item, const Value& value, Int2Type<true>)
         {
                 const auto index = Hash<Item, Index>()(item);
@@ -145,15 +145,15 @@ private:
 
         static const std::size_t bucket_size = CACHE_LINE / sizeof(Entry);
         static const std::size_t bucket_mask = bucket_size - 1;
-        
+
         map_iterator bucket_begin(Index index)
         {
-	        return map_.begin() + static_cast<std::size_t>(index & map_mask_);
+                return map_.begin() + static_cast<std::size_t>(index & map_mask_);
         }
 
         const_map_iterator bucket_begin(Index index) const
         {
-	        return map_.begin() + static_cast<std::size_t>(index & map_mask_);
+                return map_.begin() + static_cast<std::size_t>(index & map_mask_);
         }
 
         // representation

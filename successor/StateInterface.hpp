@@ -9,21 +9,21 @@ namespace successor {
 /*
 
         The StateInterface class forms the <State> in a <State>
-        Design Pattern, with the State class as the <ConcreteState>. 
+        Design Pattern, with the State class as the <ConcreteState>.
         Examples of the <Context> include the Successor and Mobility classes.
 
         The StateInterface class also forms the <FlyWeight> in a <FlyWeight>
-        Design Pattern, with the State class as the <ConcreteFlyWeight>, and 
+        Design Pattern, with the State class as the <ConcreteFlyWeight>, and
         the Dispatcher class as the <FlyWeightFactory>.
 
 */
 
-template<typename Board> 
+template<typename Board>
 class StateInterface
 {
 public:
         // non-virtual interface
-        void generate(const Position<Board>& p, Stack& moves) const 
+        void generate(const Position<Board>& p, Stack& moves) const
         {
                 do_generate(p, moves);
                 BOOST_ASSERT(invariant(p, moves.size()));
@@ -34,16 +34,16 @@ public:
                 return do_count(p);
         }
 
-        bool detect(const Position<Board>& p) const 
-        { 
+        bool detect(const Position<Board>& p) const
+        {
                 return do_detect(p);
         }
 
 protected:
         // non-virtual destructor
-        ~StateInterface() 
-        { 
-                /* no-op */ 
+        ~StateInterface()
+        {
+                // no-op
         }
 
 private:
@@ -51,7 +51,7 @@ private:
         bool invariant(const Position<Board>& p, int number) const
         {
                 return (
-                        (count(p) == number) && 
+                        (count(p) == number) &&
                         (detect(p) == (number > 0))
                 );
         }

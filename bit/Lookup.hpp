@@ -9,7 +9,7 @@ namespace dctl {
 namespace bit {
 
 // forward declarations
-template<typename T> T get_first(T);	// least significant 1-bit
+template<typename T> T get_first(T);        // least significant 1-bit
 template<typename T> int index_loop(T); // index of a set 1-bit
 template<typename T> int count_loop(T); // number of set 1-bits
 
@@ -20,19 +20,19 @@ template
 class Lookup_
 {
 public:
-        template<typename T> 
+        template<typename T>
         static int index(T t)
         {
                 BOOST_ASSERT(is_single(t));
                 const int num_blocks = sizeof(T) / sizeof(Block);       // auto would give unsigned type!
-                for (auto i = 0; i < num_blocks; ++i)               
+                for (auto i = 0; i < num_blocks; ++i)
                         if (auto b = block(t, i))
                                 return (i * BITS_PER_BLOCK) + INDEX[b];
                 BOOST_ASSERT(false);
                 return 0;
         }
-        
-        template<typename T> 
+
+        template<typename T>
         static int count(T t)
         {
                 const int num_blocks = sizeof(T) / sizeof(Block);       // auto would give unsigned type!
@@ -46,7 +46,7 @@ public:
         {
                 std::cout << "template<typename Block>\n";
                 std::cout << "const int Lookup_<Block>::INDEX[] = {\n";
-                Block i(0); 
+                Block i(0);
                 do {
                         if (i % 16 == 0)
                                 for (auto j = 0; j < 8; ++j)
@@ -56,7 +56,7 @@ public:
                                 std::cout << ",";
                         if (i % 16 == 15 || i == NUM_ENTRIES - 1)
                                 std::cout << "\n";
-                        else 
+                        else
                                 std::cout << " ";
                 } while (++i);
                 std::cout << "};" << "\n\n";
@@ -66,7 +66,7 @@ public:
         {
                 std::cout << "template<typename Block>\n";
                 std::cout << "const int Lookup_<Block>::COUNT[] = {\n";
-                Block i(0); 
+                Block i(0);
                 do {
                         if (i % 16 == 0)
                                 for (auto j = 0; j < 8; ++j)
@@ -76,7 +76,7 @@ public:
                                 std::cout << ",";
                         if (i % 16 == 15 || i == NUM_ENTRIES - 1)
                                 std::cout << "\n";
-                        else 
+                        else
                                 std::cout << " ";
                 } while (++i);
                 std::cout << "};" << "\n\n";
@@ -84,7 +84,7 @@ public:
 
 private:
         // implementation
-        template<typename T> 
+        template<typename T>
         static Block block(T t, int i)
         {
                 BOOST_ASSERT(i >= 0 && i < (sizeof(T) / sizeof(Block)));

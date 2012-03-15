@@ -27,14 +27,14 @@ template
 >
 class Root
 {
-public:               
+public:
         NodeCount perft(const Position<Board>& p, int depth)
         {
                 NodeCount leafs = 0;
-        
+
                 Timer timer;
                 announce(p, depth);
-                for (auto i = 1; i <= depth; ++i) {                        
+                for (auto i = 1; i <= depth; ++i) {
                         statistics_.reset();
                         leafs = driver(p, 0, i);
                         timer.split();
@@ -43,12 +43,12 @@ public:
                 summary();
                 return leafs;
         }
-        
+
         NodeCount divide(const Position<Board>& p, int depth)
         {
                 NodeCount leafs = 0;
-                NodeCount move_leafs;                
-        
+                NodeCount move_leafs;
+
                 Timer timer;
                 Stack moves;
                 Successor<select::Legal, Rules>::generate(p, moves);
@@ -62,8 +62,8 @@ public:
                         q.attach(p);
                         q.template make<Rules>(moves[i]);
                         move_leafs = driver(q, depth - 1, 0);
-                        leafs += move_leafs;              
-                
+                        leafs += move_leafs;
+
                         timer.split();
                         Root::report(depth - 1, move_leafs, timer);
                 }
@@ -71,7 +71,7 @@ public:
 
                 return leafs;
         }
-        
+
         NodeCount test(const Position<Board>& p, int depth)
         {
                 return driver(p, depth, 0);
@@ -81,7 +81,7 @@ public:
         {
                 return TT.resize(s);
         }
-        
+
         void clear_hash()
         {
                 return TT.clear();
@@ -89,12 +89,12 @@ public:
 
 private:
         void announce(const Position<Board>& p, int depth)
-        {        
+        {
                 std::cout << setup::diagram<pdn::protocol>()(p);
                 std::cout << setup::write<pdn::protocol>()(p) << "\n";
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
-        
+
         void announce(const Position<Board>& p, int depth, int num_moves)
         {
                 announce(p, depth);
@@ -129,29 +129,29 @@ private:
 
                 std::cout << "\n";
         }
-        
+
         void summary()
         {
                 std::cout << "\n";
         }
-        
+
         void summary(NodeCount leafs)
         {
                 std::cout << "Total leafs: " << leafs << "\n\n";
         }
-        
+
         void print_move(const std::string& move, int i)
         {
                 std::cout << std::setw(2) << (i + 1) << "." << move << " ";
         }
- 
+
         NodeCount driver(const Position<Board>& p, int depth, int ply)
         {
                 return (depth == 0)? leaf(p, depth, ply) : fast(p, depth, ply);
         }
-        
+
         NodeCount leaf(const Position<Board>& p, int depth, int ply)
-        {        
+        {
                 statistics_.update(ply);
 
                 if (depth == 0)
@@ -159,7 +159,7 @@ private:
 
                 Stack moves;
                 Successor<select::Legal, Rules>::generate(p, moves);
-                NodeCount leafs = 0;        
+                NodeCount leafs = 0;
                 for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
                         auto q = p;
                         q.attach(p);
@@ -168,7 +168,7 @@ private:
                 }
                 return leafs;
         }
-        
+
         NodeCount bulk(const Position<Board>& p, int depth, int ply)
         {
                 statistics_.update(ply);
@@ -177,7 +177,7 @@ private:
                 Successor<select::Legal, Rules>::generate(p, moves);
                 if (depth == 1)
                         return moves.size();
-        
+
                 NodeCount leafs = 0;
                 for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
                         auto q = p;
@@ -187,7 +187,7 @@ private:
                 }
                 return leafs;
         }
-        
+
         NodeCount count(const Position<Board>& p, int depth, int ply)
         {
                 statistics_.update(ply);
@@ -206,7 +206,7 @@ private:
                 }
                 return leafs;
         }
-        
+
         NodeCount hash(const Position<Board>& p, int depth, int ply)
         {
                 statistics_.update(ply);
@@ -231,7 +231,7 @@ private:
                 TT.insert(p, Transposition(leafs, depth));
                 return leafs;
         }
-        
+
         NodeCount fast(const Position<Board>& p, int depth, int ply)
         {
                 statistics_.update(ply);
@@ -258,7 +258,7 @@ private:
                 TT.insert(p, Transposition(leafs, depth));
                 return leafs;
         }
-        
+
         // 32-byte hash entries: 24-byte piece lists signature, 8-byte (59-bit leafs, 5-bit depth) content
         // 2-way buckets on 64-byte cache lines, 2 * 2^23 buckets (= 1 Gb)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices

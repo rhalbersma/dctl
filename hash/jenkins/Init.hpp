@@ -15,7 +15,7 @@ struct Init;
 // partial specialization for ab initio hashing of positions
 template<typename Board, typename Index>
 struct Init<Position<Board>, Index>
-: 
+:
         public std::unary_function<Position<Board>, Index>
 {
         Index operator()(const Position<Board>& p) const
@@ -26,7 +26,7 @@ struct Init<Position<Board>, Index>
                 Random<Index>::mix(index, p.pieces(Side::black));
                 Random<Index>::mix(index, p.pieces(Side::white));
                 Random<Index>::mix(index, p.kings());
-                
+
                 return index;
         }
 };

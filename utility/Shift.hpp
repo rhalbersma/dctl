@@ -19,7 +19,7 @@ struct Shift;
 template<>
 struct Shift<L>
 {
-        template<typename T> 
+        template<typename T>
         T operator()(T square, int dir) const
         {
                 return square << dir;
@@ -30,7 +30,7 @@ struct Shift<L>
 template<>
 struct Shift<R>
 {
-        template<typename T> 
+        template<typename T>
         T operator()(T square, int dir) const
         {
                 return square >> dir;
@@ -45,7 +45,7 @@ struct ShiftAssign;
 template<>
 struct ShiftAssign<L>
 {
-        template<typename T> 
+        template<typename T>
         void operator()(T& square, int dir) const
         {
                 square <<= dir;
@@ -56,7 +56,7 @@ struct ShiftAssign<L>
 template<>
 struct ShiftAssign<R>
 {
-        template<typename T> 
+        template<typename T>
         void operator()(T& square, int dir) const
         {
                 square >>= dir;
@@ -67,7 +67,7 @@ struct ShiftAssign<R>
 template<typename Board, int Index>
 struct Push
 {
-        template<typename T> 
+        template<typename T>
         T operator()(T square) const
         {
                 return Shift<board::is_positive< angle<Index> >::value>()(square, Board::SHIFT[Index]);
@@ -78,7 +78,7 @@ struct Push
 template<typename Board, int Index>
 struct Pull
 {
-        template<typename T> 
+        template<typename T>
         T operator()(T square) const
         {
                 return Shift<board::is_negative< angle<Index> >::value>()(square, Board::SHIFT[Index]);
@@ -89,7 +89,7 @@ struct Pull
 template<typename Board, int Index>
 struct PushAssign
 {
-        template<typename T> 
+        template<typename T>
         void operator()(T& square) const
         {
                 ShiftAssign<board::is_positive< angle<Index> >::value>()(square, Board::SHIFT[Index]);
@@ -100,7 +100,7 @@ struct PushAssign
 template<typename Board, int Index>
 struct PullAssign
 {
-        template<typename T> 
+        template<typename T>
         void operator()(T& square) const
         {
                 ShiftAssign<board::is_negative< angle<Index> >::value>()(square, Board::SHIFT[Index]);
@@ -110,7 +110,7 @@ struct PullAssign
 template<typename Board, int Index>
 struct FloodFill
 {
-        template<typename T> 
+        template<typename T>
         T operator()(T generator, T propagator) const
         {
                 return bit::flood_fill<board::is_positive< angle<Index> >::value>(generator, propagator, Board::SHIFT[Index]);
@@ -124,7 +124,7 @@ struct Sink;
 template<typename Board, int Index>
 struct Sink<Board, Index, rules::scan_1>
 {
-        template<typename T> 
+        template<typename T>
         T operator()(T from, T dest) const
         {
                 return Push<Board, Index>()(from) & dest;
@@ -134,7 +134,7 @@ struct Sink<Board, Index, rules::scan_1>
 template<typename Board, int Index>
 struct Sink<Board, Index, rules::scan_N>
 {
-        template<typename T> 
+        template<typename T>
         T operator()(T from, T dest) const
         {
                 return from ^ FloodFill<Board, Index>()(from, dest);
@@ -148,12 +148,12 @@ struct Sandwich;
 template<typename Board, int Index>
 struct Sandwich<Board, Index, rules::scan_1>
 {
-        template<typename T> 
+        template<typename T>
         T operator()(T from, T past, T dest) const
         {
                 return (
-                        Push<Board, Index>()(from) & 
-                        past & 
+                        Push<Board, Index>()(from) &
+                        past &
                         Pull<Board, Index>()(dest)
                 );
         }
@@ -162,12 +162,12 @@ struct Sandwich<Board, Index, rules::scan_1>
 template<typename Board, int Index>
 struct Sandwich<Board, Index, rules::scan_N>
 {
-        template<typename T> 
+        template<typename T>
         T operator()(T from, T past, T dest) const
         {
                 return (
-                        Push<Board, Index>()(FloodFill<Board, Index>()(from, dest)) & 
-                        past & 
+                        Push<Board, Index>()(FloodFill<Board, Index>()(from, dest)) &
+                        past &
                         Pull<Board, Index>()(dest)
                 );
         }

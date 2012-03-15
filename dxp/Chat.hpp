@@ -12,14 +12,14 @@ namespace dxp {
         http://www.mesander.nl/damexchange/echat.htm
 
 */
-        
+
 class Chat
-: 
+:
         public mixin::IdentifierCreate<'C', Chat, MessageInterface>
 {
 public:
         explicit Chat(const std::string& message)
-        : 
+        :
                 text_(message)
         {
         }

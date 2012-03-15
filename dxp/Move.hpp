@@ -17,9 +17,9 @@ namespace dxp {
         http://www.mesander.nl/damexchange/emove.htm
 
 */
-        
+
 class Move
-: 
+:
         public mixin::IdentifierCreate<'M', Move, MessageInterface>
 {
 public:
@@ -79,14 +79,14 @@ private:
         }
 
         static std::string body(int s, int f, int d, int n, const std::vector<int>& c)
-        { 
+        {
                 std::stringstream sstr;
                 sstr << std::setw( 4) << std::setfill('0') << s;
                 sstr << std::setw( 2) << std::setfill('0') << f;
                 sstr << std::setw( 2) << std::setfill('0') << d;
                 sstr << std::setw( 2) << std::setfill('0') << n;
-                std::for_each(c.cbegin(), c.cend(), [&sstr](int x) { 
-                        sstr << std::setw(2) << std::setfill('0') << x; 
+                std::for_each(c.cbegin(), c.cend(), [&sstr](int x) {
+                        sstr << std::setw(2) << std::setfill('0') << x;
                 });
                 return sstr.str();
         }
@@ -96,7 +96,7 @@ private:
         int from_sq_;
         int dest_sq_;
         int num_captured_;
-        std::vector<int> captured_pieces_;       
+        std::vector<int> captured_pieces_;
 };
 
 }       // namespace dxp

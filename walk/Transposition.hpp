@@ -28,12 +28,12 @@ public:
         {
                 return (entry_ & (LEAFS_MASK << LEAFS_SHIFT)) >> LEAFS_SHIFT;
         }
-        
+
         // remaining depth to search
         int depth() const
         {
                 return static_cast<int>((entry_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT);
-        }                              
+        }
 
 private:
         // implementation

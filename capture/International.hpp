@@ -32,9 +32,10 @@ public:
                 return num_pieces_ == other.num_pieces_;
         }
 
+        // views
         int count() const
         {
-                return num_pieces_; 
+                return num_pieces_;
         }
 
         // modifiers
@@ -48,7 +49,7 @@ public:
         {
                 --num_pieces_;
                 BOOST_ASSERT(invariant());
-        }      
+        }
 
 private:
         // implementation
@@ -60,6 +61,6 @@ private:
         // representation
         int num_pieces_;
 };
-   
+
 }       // namespace capture
 }       // namespace dctl

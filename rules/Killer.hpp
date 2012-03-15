@@ -4,7 +4,7 @@
 namespace dctl {
 
 namespace variant { struct Killer; }
-        
+
 namespace rules {
 
 // move mechanics

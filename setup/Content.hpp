@@ -13,7 +13,7 @@ std::string content(const Move& p, int i)
         std::stringstream sstr;
         if (p.pieces(Side::black) & b) {
                 if (p.kings() & b)
-			sstr << Token::upper[Side::black];      // black king
+                        sstr << Token::upper[Side::black];      // black king
                 else
                         sstr << Token::lower[Side::black];      // black man
         } else if (p.pieces(Side::white) & b) {

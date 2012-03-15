@@ -35,7 +35,7 @@ public:
         {
                 do_connect(asio::ip::tcp::endpoint(LOOPBACK, PORT));
         }
-                                         
+
         // connect to user supplied port on default host
         void connect(unsigned short port)
         {
@@ -47,26 +47,26 @@ public:
         {
                 do_connect(asio::ip::tcp::endpoint(asio::ip::address::from_string(host), PORT));
         }
-                     
-        
+
+
         // connect to user supplied port and host
         void connect(const std::string& host, unsigned short port)
         {
                 do_connect(asio::ip::tcp::endpoint(asio::ip::address::from_string(host), port));
-        }       
+        }
 
         // acceptors
         // accept on default port
         void accept()
         {
                 do_accept(asio::ip::tcp::endpoint(PROTOCOL, PORT));
-        }                                                                     
-        
+        }
+
         // accept on user supplied port
         void accept(unsigned short port)
         {
                 do_accept(asio::ip::tcp::endpoint(PROTOCOL, port));
-        }                            
+        }
 
         void close()
         {
@@ -114,7 +114,7 @@ private:
         {
                 if (!error) {
                         async_read_next();
-                } 
+                }
         }
 
         void do_close()
@@ -162,14 +162,14 @@ private:
                         do_close();
                 }
         }
-        
+
         void do_read(std::string& message)
         {
                 message = read_messages_.front();
                 read_messages_.pop_front();
         }
 
-        // <message> is passed by-value instead of by-reference, or it might 
+        // <message> is passed by-value instead of by-reference, or it might
         // go out of scope before being used in the io_service::run() thread
         void do_write(std::string message)
         {

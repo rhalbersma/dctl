@@ -13,7 +13,7 @@ namespace dctl {
 namespace dxp {
 
 class Acceptor
-:       
+:
         public ConnectionInterface
 {
 public:
@@ -30,15 +30,15 @@ public:
         void accept(unsigned short port)
         {
                 do_accept(boost::asio::ip::tcp::endpoint(PROTOCOL, port));
-        }                            
+        }
 
 private:
         // accept on default port
         virtual void do_open()
         {
                 do_accept(boost::asio::ip::tcp::endpoint(PROTOCOL, port_));
-        }                                                                     
-        
+        }
+
         void do_accept(const boost::asio::ip::tcp::endpoint& endpoint)
         {
                 acceptor_.open(endpoint.protocol());
@@ -56,7 +56,7 @@ private:
         {
                 if (!error) {
                         async_read_next();
-                } 
+                }
         }
 
         virtual void do_close()
@@ -85,7 +85,7 @@ private:
         void stop_event_loop()
         {
                 io_service_thread_.join();
-        } 
+        }
 
         // representation
         BOOST_STATIC_CONSTANT(auto, PROTOCOL = boost::asio::ip::tcp::v4());

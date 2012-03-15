@@ -8,78 +8,93 @@ namespace dctl {
 namespace search {
 
 // views
-inline int infinity()
+inline
+int infinity()
 {
         return SHRT_MAX;
 }
 
-inline int loss_min()
+inline
+int loss_min()
 {
         return -(infinity() - 1);
 }
 
-inline int loss_max()
+inline
+int loss_max()
 {
         return loss_min() + MAX_MATE_MOVES;
 }
 
-inline int win_min()
+inline
+int win_min()
 {
         return -loss_min();
 }
 
-inline int win_max()
+inline
+int win_max()
 {
         return -loss_max();
 }
 
-inline int loss_value(int ply)
+inline
+int loss_value(int ply)
 {
         return loss_min() + ply;
 }
 
-inline int win_value(int ply)
+inline
+int win_value(int ply)
 {
         return win_min() - ply;
 }
 
-inline int loss_ply(int value)
+inline
+int loss_ply(int value)
 {
         return value - loss_min();
 }
 
-inline int win_ply(int value)
+inline
+int win_ply(int value)
 {
         return win_min() - value;
 }
 
-inline int draw_value()
+inline
+int draw_value()
 {
         return 0;
 }
 
 // predicates
-inline bool is_finite(int value)
+inline
+bool is_finite(int value)
 {
         return -infinity() < value && value < infinity();
 }
 
-inline bool is_infinite(int value)
+inline
+bool is_infinite(int value)
 {
         return !is_finite(value);
 }
 
-inline bool is_loss(int value)
+inline
+bool is_loss(int value)
 {
         return loss_min() <= value && value < loss_max();
 }
 
-inline bool is_win(int value)
+inline
+bool is_win(int value)
 {
         return win_max() < value && value <= win_min();
 }
 
-inline bool is_mate(int value)
+inline
+bool is_mate(int value)
 {
         return is_loss(value) || is_win(value);
 }
@@ -87,18 +102,21 @@ inline bool is_mate(int value)
 // modifiers
 
 // loss and win values are "stretched" one step towards the edges of the [-INF, +INF] interval
-inline int stretch(int value)
+inline
+int stretch(int value)
 {
         return value - is_loss(value) + is_win(value);
 }
 
 // loss and win values are "squeezed" one step towards the center of the [-INF, +INF] interval
-inline int squeeze(int value)
+inline
+int squeeze(int value)
 {
         return value + is_loss(value) - is_win(value);
 }
 
-inline std::string print(int value)
+inline
+std::string print(int value)
 {
         std::stringstream sstr;
 

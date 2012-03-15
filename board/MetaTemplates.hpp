@@ -5,6 +5,7 @@
 #include <boost/mpl/eval_if.hpp>        // eval_if_
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/integral_c.hpp>     // integral_c
+#include <boost/mpl/placeholders.hpp>   // _1
 #include <boost/mpl/prior.hpp>          // prior
 #include <boost/mpl/shift_left.hpp>     // shift_left
 #include "Predicates.hpp"
@@ -16,7 +17,7 @@ namespace board {
 template<typename Board, typename Predicate, typename Square>
 struct Test
 :
-        boost::mpl::eval_if< typename 
+        boost::mpl::eval_if< typename
                 boost::mpl::apply< Predicate, Square >::type,
                 boost::mpl::shift_left<
                         boost::mpl::integral_c<BitBoard, 1>,
@@ -29,9 +30,9 @@ struct Test
 template
 <
         typename Board,
-        typename Predicate, 
+        typename Predicate,
         typename Square = boost::mpl::int_<Board::ExternalGrid::size - 1>
-> 
+>
 struct Init;
 
 template<typename Board, typename Predicate>
@@ -48,6 +49,16 @@ struct Init
                 Test< Board, Predicate, Square >
         >
 {};
+
+/*
+
+template<typename Board, type_1 Arg_1, ..., type_n Arg_n>
+struct init_Pred
+:
+        Init< Board, Pred< Board, boost::mpl::type_1<Arg_1>, ...,  boost::mpl::type_n<Arg_n>, boost::mpl::_1> >
+{}
+
+*/
 
 template<typename Board>
 struct init_squares

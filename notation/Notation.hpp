@@ -5,10 +5,10 @@
 namespace dctl {
 namespace notation {
 
-template<typename> 
-struct Format        
-{ 
-        typedef numeric type; 
+template<typename>
+struct Format
+{
+        typedef numeric type;
 };
 
 template<char M, char J>
@@ -18,10 +18,10 @@ struct Token
         BOOST_STATIC_CONSTANT(auto, jump = J);
 };
 
-template<typename> 
-struct Separator     
-{ 
-        typedef Token<'-', 'x'> type; 
+template<typename>
+struct Separator
+{
+        typedef Token<'-', 'x'> type;
 };
 
 }       // namespace notation

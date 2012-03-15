@@ -64,7 +64,7 @@ private:
         {
                 return (
                         !bit::is_multiple(king()) &&
-                        (king() == 0) == (moves() == 0)
+                        (!king() == !moves())
                 );
         }
 

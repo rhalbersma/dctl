@@ -13,7 +13,7 @@ void iota_n(OutputIterator first, Size n, Assignable value)
 
 template<class ForwardIterator>
 void insertion_sort(ForwardIterator first, ForwardIterator last)
-{    
+{
         std::for_each(first, last, [=](ForwardIterator it) {
                 std::rotate(std::upper_bound(first, it, *it), it, std::next(it));
         });
@@ -21,7 +21,7 @@ void insertion_sort(ForwardIterator first, ForwardIterator last)
 
 template<class ForwardIterator>
 void selection_sort(ForwardIterator first, ForwardIterator last)
-{    
+{
         std::for_each(first, last, [=](ForwardIterator it) {
                 std::iter_swap(std::min_element(it, last), it);
         });

@@ -19,12 +19,12 @@ namespace dxp {
 */
 
 class GameRequest
-: 
+:
         public mixin::IdentifierCreate<'R', GameRequest, MessageInterface>
 {
 public:
         // constants and typedefs
-        BOOST_STATIC_CONSTANT(auto, protocol_version = 1);         
+        BOOST_STATIC_CONSTANT(auto, protocol_version = 1);
         enum SetupCode { initial = 'A', special = 'B' };
 
         explicit GameRequest(const std::string& message)
@@ -101,7 +101,7 @@ private:
                         sstr << std::setw(51) << p;
                 return sstr.str();
         }
-       
+
         // representation
         std::string name_initiator_;
         char color_follower_;

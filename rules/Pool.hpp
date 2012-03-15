@@ -4,7 +4,7 @@
 namespace dctl {
 
 namespace variant { struct Pool; }
-        
+
 namespace rules {
 
 // move mechanics

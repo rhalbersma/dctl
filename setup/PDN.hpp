@@ -3,14 +3,14 @@
 #include "TokenInterface.hpp"
 
 namespace dctl {
- 
+
 namespace pdn { struct protocol; }
 
 namespace setup {
 
 template<>
 struct TokenSet<pdn::protocol>
-: 
+:
         public TokenInterface<'B', 'W', '.'>
 {
         BOOST_STATIC_CONSTANT(auto, king  = 'K');

@@ -73,9 +73,9 @@ public:
         }
 
 private:
-        int iterative_deepening(const Position<Board>&, int);        
-        int proof_verify(const Position<Board>&, int);        
-        int negamax(const Position<Board>&, int, int, Variation&);      
+        int iterative_deepening(const Position<Board>&, int);
+        int proof_verify(const Position<Board>&, int);
+        int negamax(const Position<Board>&, int, int, Variation&);
         template<typename int> int verify(const Position<Board>&, int, int, int, int, Variation&);
         template<typename int> int pvs(const Position<Board>&, int, int, int, int, Variation&);
 
@@ -85,7 +85,7 @@ private:
                 std::cout << setup::write<pdn::protocol>()(p) << "\n";
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
-        
+
         void report(int depth, int value, const Timer& timer, const Position<Board>& p, const Sequence& pv)
         {
                 std::cout << "info";
@@ -140,7 +140,7 @@ private:
                 q.template make<Rules>(best_move);
                 insert_pv(q, pv, -stretch(value), ply + 1);
         }
-        
+
         void print_pv(const Position<Board>& p, const Sequence& pv, int ply = 0)
         {
                 const auto depth = static_cast<int>(pv.size()) - ply;
@@ -175,7 +175,7 @@ private:
         BOOST_STATIC_CONSTANT(auto, ROOT_ID_INCREMENT = 2);
 
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content
-        // 8-way buckets on 64-byte cache lines, (1 Gb = 2^27 entries) 
+        // 8-way buckets on 64-byte cache lines, (1 Gb = 2^27 entries)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
         typedef hash::Map<uint32_t, Transposition> TranspositionTable;
         TranspositionTable TT;

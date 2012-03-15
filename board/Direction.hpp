@@ -8,14 +8,14 @@ namespace dctl {
 namespace board {
 
 // indices for the 8 named directions from the black point of view
-/*                
+/*
 
         +++ WHITE POINT OF VIEW +++
 
                   up = 6
                      |
         7 = left_up  |  right_up = 5
-                   \ | / 
+                   \ | /
                     \|/
        0 = left ----- ----- right = 4
                     /|\
@@ -25,18 +25,18 @@ namespace board {
                 down = 2
 
         +++ BLACK POINT OF VIEW +++
-                
+
 */
 
 // indices for the 8 named directions from the white point of view
-/*                      
+/*
 
         +++ BLACK POINT OF VIEW +++
 
                   up = 2
                      |
         3 = left_up  |  right_up = 1
-                   \ | / 
+                   \ | /
                     \|/
        4 = left ----- ----- right = 0
                     /|\
@@ -46,17 +46,17 @@ namespace board {
                 down = 6
 
         +++ WHITE POINT OF VIEW +++
-                
+
 */
 
 // indices for the 8 named directions from the black and white point of view
 template<
-        bool Color, 
+        bool Color,
         typename Board
-> 
+>
 struct Direction
-{ 
-private:                        
+{
+private:
         BOOST_STATIC_CONSTANT(auto, N = (Color? degrees::D000 : degrees::D180) + Board::inverse_angle::value );
         typedef angle< N > A;
 

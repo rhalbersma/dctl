@@ -3,7 +3,7 @@
 namespace dctl {
 namespace capture {
 
-template<typename> 
+template<typename>
 struct Value;
 
 }       // namespace capture

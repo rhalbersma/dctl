@@ -12,7 +12,7 @@ template<typename G, int R, int C>
 struct Coordinates
 {
         typedef G grid;
-        BOOST_STATIC_CONSTANT(auto, row = R); 
+        BOOST_STATIC_CONSTANT(auto, row = R);
         BOOST_STATIC_CONSTANT(auto, col = C);
 
         // lazily evaluable metadata == nullary metafunction
@@ -42,7 +42,7 @@ private:
         BOOST_STATIC_CONSTANT(auto, R = (L + S) % G::modulo);           // squares from the left edge
 
 public:
-        typedef Square 
+        typedef Square
         <
                 G,
                 G::modulo * Q + R
@@ -55,7 +55,7 @@ struct Square2Coordinates
 private:
         typedef typename SQ::grid G;
 
-        BOOST_STATIC_CONSTANT(auto, Q = SQ::value / G::modulo);         // number of row pairs                     
+        BOOST_STATIC_CONSTANT(auto, Q = SQ::value / G::modulo);         // number of row pairs
         BOOST_STATIC_CONSTANT(auto, R0 = SQ::value % G::modulo);        // left edge of the zeroth row
         BOOST_STATIC_CONSTANT(auto, R1 = R0 - G::edge_lo);              // left edge of the first row
         BOOST_STATIC_CONSTANT(auto, P = R1 >= 0);                       // R0 is in the zeroth or first row

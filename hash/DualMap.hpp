@@ -6,7 +6,7 @@
 #include "Replace.hpp"
 #include "../node/Position.hpp"
 
-namespace dctl { 
+namespace dctl {
 namespace hash {
 
 template
@@ -56,14 +56,14 @@ public:
         }
 
         // views
-        template<typename Board> 
+        template<typename Board>
         const Value* find(const Position<Board>& p) const
         {
                 return dual_map_[p.active_color()].find(p);
         }
 
         // modifiers
-        template<typename Board> 
+        template<typename Board>
         void insert(const Position<Board>& p, const Value& value)
         {
                 dual_map_[p.active_color()].insert(p, value);

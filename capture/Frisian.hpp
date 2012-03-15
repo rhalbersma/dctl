@@ -28,15 +28,15 @@ public:
         bool operator<(const Value<variant::Frisian>& other) const
         {
                 const auto delta_kings = num_kings_ - other.num_kings_;
-                const auto delta_men = num_pieces_ - other.num_pieces_ - delta_kings;
+                const auto delta_pawns = num_pieces_ - other.num_pieces_ - delta_kings;
 
                 // Art. 11
-                if (delta_kings * delta_men < 0) {
-                        // delta_kings and delta_men are both non-zero and have opposite sign
-                        // [2 n - 1] men < [n] kings < [2 n] men
-                        return delta_men + 2 * delta_kings - (delta_kings > 0) <  0;
+                if (delta_kings * delta_pawns < 0) {
+                        // delta_kings and delta_pawns are both non-zero and have opposite sign
+                        // [2 n - 1] pawns < [n] kings < [2 n] pawns
+                        return delta_pawns + 2 * delta_kings - (delta_kings > 0) <  0;
                 } else {
-                        // delta_kings or delta_men is zero or they have equal sign
+                        // delta_kings or delta_pawns is zero or they have equal sign
                         return (
                                 ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
                                 ( with_king_  < other.with_king_  ))
@@ -53,9 +53,10 @@ public:
                 );
         }
 
+        // views
         int count() const
         {
-                return num_pieces_; 
+                return num_pieces_;
         }
 
         // modifiers
@@ -78,7 +79,7 @@ public:
                 with_king_ ^= toggle;
                 BOOST_ASSERT(invariant());
         }
-        
+
 private:
         // implementation
         bool invariant() const

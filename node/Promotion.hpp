@@ -17,15 +17,15 @@ BitBoard promotion_squares(const Position<Board>& p)
 }
 
 template<bool Color, typename Board>
-BitBoard promoting_men(const Position<Board>& p)
+BitBoard promoting_pawns(const Position<Board>& p)
 {
-        return p.men(Color) & Board::PROMOTION[Color][1];
+        return p.pawns(Color) & Board::PROMOTION[Color][1];
 }
 
 template<bool Color, typename Board>
-BitBoard non_promoting_men(const Position<Board>& p)
+BitBoard non_promoting_pawns(const Position<Board>& p)
 {
-        return p.men(Color) & ~Board::PROMOTION[Color][1];
+        return p.pawns(Color) & ~Board::PROMOTION[Color][1];
 }
 
 }       // namespace dctl

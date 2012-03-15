@@ -20,19 +20,19 @@ template
 >
 struct read
 {
-	template<typename Board> 
+        template<typename Board>
         const Move operator()(const Position<Board>&, const std::string&) const;
 };
 
 template
 <
-        typename Rules, 
+        typename Rules,
         typename Format = typename Format<Rules>::type,
         typename Separator = typename Separator<Rules>::type
 >
 struct write
 {
-	template<typename Board> 
+        template<typename Board>
         const std::string operator()(const Position<Board>&, const Move&) const;
 };
 

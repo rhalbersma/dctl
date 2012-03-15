@@ -7,17 +7,17 @@ namespace dctl {
 
 struct Bound
 {
-        enum { 
+        enum {
                 lower = 1,
-                upper = 2, 
+                upper = 2,
                 exact = lower ^ upper
         };
 
         static int type(int value, int alpha, int beta)
         {
                 return (
-                        value >= beta  ? lower : 
-                        value <= alpha ? upper : 
+                        value >= beta  ? lower :
+                        value <= alpha ? upper :
                                          exact
                 );
         }

@@ -12,20 +12,20 @@ template<typename> class StateInterface;
 /*
 
         The Dispatcher class forms the <FlyWeightFactory> in a <FlyWeight>
-        Design Pattern, with the StateInterface class as the <FlyWeight>, 
-        and the State class as the <ConcreteFlyWeight>. Examples of 
+        Design Pattern, with the StateInterface class as the <FlyWeight>,
+        and the State class as the <ConcreteFlyWeight>. Examples of
         the <Client> include the Successor and Mobility classes.
 
 */
 
 template
 <
-        typename Selection, 
-        typename Rules, 
+        typename Selection,
+        typename Rules,
         typename Board
-> 
+>
 class Dispatcher
-: 
+:
         private boost::noncopyable      // enforce singleton semantics
 {
 public:
@@ -52,7 +52,7 @@ private:
 
                 // Meyers Singleton, see Modern C++ Design p.117
                 static const StateArray singleton_ = {
-                        &black_none, &black_pawn, &black_king, &black_both, 
+                        &black_none, &black_pawn, &black_king, &black_both,
                         &white_none, &white_pawn, &white_king, &white_both
                 };
                 return singleton_;

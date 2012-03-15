@@ -13,4 +13,4 @@ typedef Checkers American;
 }       // namespace variant
 }       // namespace dctl
 
-// Checkers has the default template implementation 
+// Checkers has the default template implementation

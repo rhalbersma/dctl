@@ -30,7 +30,7 @@ public:
         void toggle_promotion()
         {
                 promotion_ ^= toggle;
-        } 
+        }
 
 private:
         // implementation

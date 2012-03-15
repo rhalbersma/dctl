@@ -13,7 +13,7 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Rules, typename Board> 
+template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::both, select::Moves, Rules, Board>
 :
         private nonconstructible // enforce static semantics
@@ -31,9 +31,9 @@ public:
         }
 
         static int count(const Position<Board>& p)
-        {     
+        {
                 return (
-                        KingMoves::count(p) + 
+                        KingMoves::count(p) +
                         PawnMoves::count(p)
                 );
         }
@@ -42,7 +42,7 @@ public:
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (
-                        PawnMoves::detect(p) || 
+                        PawnMoves::detect(p) ||
                         KingMoves::detect(p)
                 );
         }

@@ -6,8 +6,8 @@
 #include "Weight.hpp"
 #include "../node/Position.hpp"
 
-namespace dctl { 
-        
+namespace dctl {
+
 template
 <
         typename Rules
@@ -15,16 +15,16 @@ template
 class Evaluate
 {
 public:
-        template<typename Board> 
+        template<typename Board>
         static int evaluate(const Position<Board>& p)
         {
-                return (p.active_color() == Side::white)? 
-                        Delta<Side::white, Rules, Board>::evaluate(p) : 
+                return (p.active_color() == Side::white)?
+                        Delta<Side::white, Rules, Board>::evaluate(p) :
                         Delta<Side::black, Rules, Board>::evaluate(p)
                 ;
         }
-        
-        template<typename Board> 
+
+        template<typename Board>
         static void print_break_down(const Position<Board>& p)
         {
                 std::cout << "Term    " << " BLACK"                                                                         << " WHITE"                                         << " DELTA"                                                      << "\n";

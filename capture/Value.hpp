@@ -8,8 +8,8 @@ namespace dctl {
 namespace capture {
 
 // primary template
-template<typename Rules> 
-struct Value 
+template<typename Rules>
+struct Value
 {
         /* empty */
 };
@@ -22,31 +22,31 @@ bool operator<(const Value<Rules>& /* left */, const Value<Rules>& /* right */)
 
 template<typename Rules>
 bool operator>(const Value<Rules>& left, const Value<Rules>& right)
-{        
+{
         return right < left;                            // false by default
 }
 
 template<typename Rules>
 bool operator>=(const Value<Rules>& left, const Value<Rules>& right)
-{        
+{
         return !(left < right);                         // true by default
 }
 
 template<typename Rules>
 bool operator<=(const Value<Rules>& left, const Value<Rules>& right)
-{        
+{
         return !(right < left);                         // true by default
 }
 
 template<typename Rules>
 bool operator==(const Value<Rules>& left, const Value<Rules>& right)
-{        
+{
         return !(left < right) && !(right < left);      // true by default
 }
 
 template<typename Rules>
 bool operator!=(const Value<Rules>& left, const Value<Rules>& right)
-{        
+{
         return !(left == right);                        // false by default
 }
 
@@ -61,7 +61,7 @@ int count(const Value<Rules>& v, BitBoard captured_pieces)
 {
         return aux::count(
                 v, captured_pieces,
-                Int2Type<rules::is_majority_precedence<Rules>::value>()        
+                Int2Type<rules::is_majority_precedence<Rules>::value>()
         );
 }
 
@@ -87,7 +87,7 @@ template<typename Rules>
 bool is_promotion(const Value<Rules>& v)
 {
         return aux::is_promotion(
-                v, 
+                v,
                 Int2Type<rules::promotion_condition<Rules>::value>()
         );
 }
@@ -125,49 +125,37 @@ int count(const Value<Rules>& v, BitBoard /* captured_pieces */, Int2Type<true>)
 }
 
 template<typename Rules>
-void increment(
-        Value<Rules>& /* v */, bool /* is_captured_king */, Int2Type<rules::precede_0>
-)
+void increment(Value<Rules>& /* v */, bool /* is_captured_king */, Int2Type<rules::precede_0>)
 {
-        /* no-op */
+        // no-op
 }
 
 template<typename Rules>
-void increment(
-        Value<Rules>& v, bool /* is_captured_king */, Int2Type<rules::precede_1>
-)
+void increment(Value<Rules>& v, bool /* is_captured_king */, Int2Type<rules::precede_1>)
 {
         v.increment();
 }
 
 template<typename Rules>
-void increment(
-        Value<Rules>& v, bool is_captured_king, Int2Type<rules::precede_Q>
-)
+void increment(Value<Rules>& v, bool is_captured_king, Int2Type<rules::precede_Q>)
 {
         v.increment(is_captured_king);
 }
 
 template<typename Rules>
-void decrement(
-        Value<Rules>& /* v */, bool /* is_captured_king */, Int2Type<rules::precede_0>
-)
+void decrement(Value<Rules>& /* v */, bool /* is_captured_king */, Int2Type<rules::precede_0>)
 {
-        /* no-op */
+        // no-op
 }
 
 template<typename Rules>
-void decrement(
-        Value<Rules>& v, bool /* is_captured_king */, Int2Type<rules::precede_1>
-)
+void decrement(Value<Rules>& v, bool /* is_captured_king */, Int2Type<rules::precede_1>)
 {
         v.decrement();
 }
 
 template<typename Rules>
-void decrement(
-        Value<Rules>& v, bool is_captured_king, Int2Type<rules::precede_Q>
-)
+void decrement(Value<Rules>& v, bool is_captured_king, Int2Type<rules::precede_Q>)
 {
         v.decrement(is_captured_king);
 }
@@ -187,7 +175,7 @@ bool is_promotion(const Value<Rules>& v, Int2Type<rules::promote_ep>)
 template<typename Rules>
 void toggle_promotion(Value<Rules>& /* v */, Int2Type<rules::promote_af>)
 {
-        /* no-op */   
+        // no-op
 }
 
 template<typename Rules>
@@ -199,7 +187,7 @@ void toggle_promotion(Value<Rules>& v, Int2Type<rules::promote_ep>)
 template<typename Rules>
 void toggle_with_king(Value<Rules>& /* v */, Int2Type<false>)
 {
-        /* no-op */
+        // no-op
 }
 
 template<typename Rules>
