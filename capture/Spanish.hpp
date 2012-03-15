@@ -26,7 +26,7 @@ public:
         bool operator<(const Value<variant::Spanish>& other) const
         {
                 return (
-                        ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) && 
+                        ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
                         ( num_kings_  < other.num_kings_  ))
                 );
         }
@@ -39,9 +39,10 @@ public:
                 );
         }
 
+        // views
         int count() const
         {
-                return num_pieces_; 
+                return num_pieces_;
         }
 
         // modifiers
@@ -57,7 +58,7 @@ public:
                 --num_pieces_;
                 num_kings_ -= is_captured_king;
                 BOOST_ASSERT(invariant());
-        }       
+        }
 
 private:
         // implementation

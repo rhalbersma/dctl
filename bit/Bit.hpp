@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include "DeBruijn.hpp"   
+#include "DeBruijn.hpp"
 #include "Lookup.hpp"
 #include "../utility/IntegerTypes.hpp"
 
@@ -93,7 +93,7 @@ int find_first(T b)
 template<typename T>
 int index(T b)
 {
-	BOOST_ASSERT(is_single(b));
+        BOOST_ASSERT(is_single(b));
         return index_DeBruijn(b);
 }
 
@@ -126,7 +126,7 @@ int index_loop(T b)
 template<typename T>
 int count(T b)
 {
-        return count_lookup(b);        
+        return count_lookup(b);
 }
 
 // number of set 1-bits
@@ -154,7 +154,7 @@ T flood_fill(T generator, T propagator, int dir)
         return fill_loop<Sign>(generator, propagator, dir);
 }
 
-// Chess Programming Wiki, "Fill Loop" algorithm 
+// Chess Programming Wiki, "Fill Loop" algorithm
 // http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
 template<bool Sign, typename T>
 T fill_loop(T generator, T propagator, int dir)

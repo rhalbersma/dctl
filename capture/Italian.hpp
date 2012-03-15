@@ -30,7 +30,7 @@ public:
         // predicates
         bool operator<(const Value<variant::Italian>& other) const
         {
-                return ( 
+                return (
                          ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
                         (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
                         (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
@@ -48,9 +48,10 @@ public:
                 );
         }
 
+        // views
         int count() const
         {
-                return num_pieces_; 
+                return num_pieces_;
         }
 
         // modifiers
@@ -99,6 +100,6 @@ private:
         int num_kings_;
         bool with_king_;
 };
-     
+
 }       // namespace capture
 }       // namespace dctl

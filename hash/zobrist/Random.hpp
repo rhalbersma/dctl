@@ -26,12 +26,12 @@ struct Random
         {
                 return s? random[s - 1] : 0;
         }
-        
+
         // xor with a random number conditional on a boolean
         static Index xor_rand(bool to_move, Index random)
         {
                 return to_move? random : 0;
-        }             
+        }
 
         static const Index PIECES[2][64];
         static const Index KINGS[64];
@@ -42,7 +42,7 @@ struct Random
 
 template<typename Index>
 const Index Random<Index>::PIECES[2][64] = {
-	{
+        {
                 0x9904662fb3c24ae1, 0xc59adcabb4a95f90, 0x9dbe36bc60dda6e9, 0xb1766ba9896d953c,
                 0x772183cf804c8124, 0xe881b24726834db7, 0x7a9bce6cd689074d, 0x8c8879aee145a6a6,
                 0xfba07e96bb3ec509, 0x8764a787f72e9ad4, 0xbd7f9fe5bfface45, 0xb442698375c4830a,
@@ -59,8 +59,8 @@ const Index Random<Index>::PIECES[2][64] = {
                 0xd9d5d74902c45579, 0xe50a5236d3929643, 0x5de79b3d2fa293d3, 0x81450273a905e8f5,
                 0x572c0d16531ebb97, 0x72714a566f3b282d, 0x0f585bf26e66a668, 0x4209221ab23cc325,
                 0x8f4c2250380a53b1, 0xb1ad50294e88a528, 0x18d195358754bf0b, 0x77f2f9632097b0f1
-	},	
-	{
+        },
+        {
                 0x5883b366994a80c1, 0xb19c33f0373f3ee9, 0x87f34c29f24346c2, 0x5f4a942fcb4d2fe7,
                 0x9be47e74672a8390, 0x80e51474486cec6c, 0x198cd717b6a701e1, 0x0b5393bf8dec8871,
                 0xf9fc4ae954712f0c, 0xbcd699d1e1b2ce38, 0xae68c4a26854b382, 0x922f5b5d843c36c2,
@@ -77,7 +77,7 @@ const Index Random<Index>::PIECES[2][64] = {
                 0x584843803a1319fe, 0xca7a2e086c020b93, 0xf13660e3d6b9a753, 0x02486ca28457d67e,
                 0xa32df6356767d3d3, 0x1192b173832d7cbe, 0x5f84f74aa1fb5707, 0xd5f42c6f8332e7a6,
                 0x40f929f032349b32, 0x47c1204b1c26c101, 0xfc22ecd596636bdb, 0xd9f91fe9836c480b
-	}	
+        }
 };
 
 template<typename Index>
@@ -105,7 +105,7 @@ const Index Random<Index>::SIDE = 0x461aea9b6bcff19a;
 
 template<typename Index>
 const Index Random<Index>::RESTRICTED_KING[2][64] = {
-	{
+        {
                 0x30d1f0b5b2955a21, 0x4bb531b53a827011, 0x14e30ca35ed706bb, 0x3003989830651c20,
                 0xf0ebb5758217ac45, 0x3cc52df5fed45159, 0xc7a1bbfa85130ced, 0x5249dd6013c22fd9,
                 0xb0bf1a0dcf5c72ed, 0x544f46a80eae6c4e, 0xae33fb0866fe053c, 0x62f0ab639cc097b0,
@@ -122,8 +122,8 @@ const Index Random<Index>::RESTRICTED_KING[2][64] = {
                 0x72d080da82aa3a36, 0xf22d80768d9e68c5, 0xac797512531ee405, 0x3d7947c39feb82f2,
                 0x107e8b662dc7b474, 0x84c445d3efac113f, 0x4868eb7bf3a11454, 0xe21be0ef8b9ce8b6,
                 0x69218b19e28e551b, 0x4eeb9e3f86bb939d, 0xbccddca4c4a46fa7, 0x4636718fab0139b8
-	},	
-	{
+        },
+        {
                 0x4f30ff6dae984c22, 0xd21c8655a66ebe61, 0xb3adcf4f6c46795c, 0x7fb88799e0de1e2f,
                 0x27bfea726266490f, 0x3592056a52921c11, 0xebd5b9d2e9a0d7e5, 0x2c45020fee316df5,
                 0x80b5cf7f4154eb49, 0xb8a6335464656380, 0xcb25d851778d1439, 0x5c9540af9c0e0565,
@@ -140,19 +140,19 @@ const Index Random<Index>::RESTRICTED_KING[2][64] = {
                 0x1176629db0326c69, 0x35c10f33460ab528, 0xc57d7d3a4ead27b8, 0xf576e5d5516d1a5c,
                 0x355d4218201f7b59, 0x5724bd370b793daf, 0xdb3007f4bbf2a383, 0x7d28ba3a685065c4,
                 0xc42ce943fcfd6e02, 0xbb51e832baf23ee1, 0x9d3722745216b122, 0x683dcdcf0901fccb
-	}	
+        }
 };
 
 template<typename Index>
 const Index Random<Index>::RESTRICTED_MOVES[2][8] = {
-	{
+        {
                 0xd0155d45da58e0ae, 0x51a0ad8a6b634382, 0xfd6508b01ff7ef6a, 0x2f88513a4e1f888b,
-                0x1329e62c4cc57a77, 0x7bd2096bab82649f, 0xdedadb0490930d7f, 0xce75c4bf3922ae01	
-        },	
-	{
+                0x1329e62c4cc57a77, 0x7bd2096bab82649f, 0xdedadb0490930d7f, 0xce75c4bf3922ae01
+        },
+        {
                 0x461aea9b6bcff19a, 0x76eeb59691183dcd, 0x0cd539696fc3be4b, 0x48f1c8ebd63806ee,
-                0x3c34cbca92129b0a, 0xb0cd7c360fecb3b0, 0xbe011375b2271932, 0x1c302ddde8bbe6fb                
-        }	
+                0x3c34cbca92129b0a, 0xb0cd7c360fecb3b0, 0xbe011375b2271932, 0x1c302ddde8bbe6fb
+        }
 };
 
 // explicit instantation
@@ -177,16 +177,16 @@ Index rand64()
 
 void generate_Zobrist()
 {
-	for (auto i = 0; i < 64; ++i) {
-		std::cout << "0x" << std::hex << std::right << std::setfill('0') << std::setw(16);
-		std::cout << rand64();
-		if (i != 63)
-			std::cout << ",";
-		if (3 == (i % 4))
-			std::cout << "\n";
-		else
-			std::cout << " ";
-	}
-	std::cout << "\n";
+        for (auto i = 0; i < 64; ++i) {
+                std::cout << "0x" << std::hex << std::right << std::setfill('0') << std::setw(16);
+                std::cout << rand64();
+                if (i != 63)
+                        std::cout << ",";
+                if (3 == (i % 4))
+                        std::cout << "\n";
+                else
+                        std::cout << " ";
+        }
+        std::cout << "\n";
 }
 */

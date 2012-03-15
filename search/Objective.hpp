@@ -33,13 +33,13 @@ struct GameObjective
         template<typename Rules, typename Board>
         static int value(const Position<Board>& p)
         {
-                if (is_cycle(p)) 
-                        return cycle<CycleScoring>::value(p); 
-                                                             
+                if (is_cycle(p))
+                        return cycle<CycleScoring>::value(p);
+
                 if (is_terminal<TerminalDetection, Rules>()(p))
                         return terminal<TerminalScoring>::value();
 
-                return -infinity(); 
+                return -infinity();
         }
 };
 
@@ -90,16 +90,16 @@ struct terminal<Misere>
         }
 };
 
-template<typename Rules, typename Board> 
+template<typename Rules, typename Board>
 bool is_draw(const Position<Board>& p)
 {
         return (
-                is_cycle(p) || 
+                is_cycle(p) ||
                 is_no_progress<Rules>(p)
         );
 }
 
-template<typename Board> 
+template<typename Board>
 bool is_cycle(const Position<Board>& p)
 {
         // a cycle needs at least 4 reversible moves
@@ -116,27 +116,27 @@ bool is_cycle(const Position<Board>& p)
                 q = grand_parent(*q);
         }
         return false;
-}       
+}
 
-template<typename Rules, typename Board> 
+template<typename Rules, typename Board>
 bool is_no_progress(const Position<Board>& p)
 {
-        // tag dispatching on restrictions on consecutive reversible moves        
+        // tag dispatching on restrictions on consecutive reversible moves
         return is_no_progress_dispatch<Rules>(
-                p, 
+                p,
                 Int2Type<rules::is_restricted_reversible_moves<Rules>::value>()
         );
 }
 
 // partial specialization for no restrictions on consecutive reversible moves
-template<typename Rules, typename Board> 
+template<typename Rules, typename Board>
 bool is_no_progress_dispatch(const Position<Board>&, Int2Type<false>)
 {
         return false;
 }
 
 // partial specialization for a maximum of consecutive reversible moves
-template<typename Rules, typename Board> 
+template<typename Rules, typename Board>
 bool is_no_progress_dispatch(const Position<Board>& p, Int2Type<true>)
 {
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;

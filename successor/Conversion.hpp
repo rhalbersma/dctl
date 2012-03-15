@@ -15,7 +15,7 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for legal successors
-template<bool Color, int Material, typename Rules, typename Board> 
+template<bool Color, int Material, typename Rules, typename Board>
 struct Driver<Color, Material, select::Conversion, Rules, Board>
 :
         private nonconstructible // enforce static semantics
@@ -41,7 +41,7 @@ public:
                 return num_moves;
         }
 
-        static bool detect(const Position<Board>& p) 
+        static bool detect(const Position<Board>& p)
         {
                 return (
                         DoJumps::detect(p) ||

@@ -4,7 +4,7 @@ namespace dctl {
 namespace variant {
 
 // http://fpdamas.home.sapo.pt/regrasclass.htm
-struct Spanish;         
+struct Spanish;
 
 }       // namespace variant
 }       // namespace dctl

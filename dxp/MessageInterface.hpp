@@ -20,16 +20,16 @@ class MessageInterface
 {
 public:
         // virtual destructor
-        virtual ~MessageInterface() 
-        { 
-                /* no-op */ 
+        virtual ~MessageInterface()
+        {
+                // no-op
         }
 
         // non-virtual interface
-        std::string str() const 
+        std::string str() const
         {
                 BOOST_ASSERT(invariant());
-                return do_header() + do_body(); 
+                return do_header() + do_body();
         }
 
 private:

@@ -8,9 +8,9 @@ class ConnectionInterface
 {
 public:
         // virtual destructor
-        virtual ~ConnectionInterface() 
+        virtual ~ConnectionInterface()
         {
-                /* no-op */
+                // no-op
         }
 
         // non-virtual interface
@@ -18,7 +18,7 @@ public:
         {
                 do_open();
         }
-                                              
+
         void close()
         {
                 do_close();

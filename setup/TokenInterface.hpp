@@ -5,7 +5,7 @@
 namespace dctl {
 namespace setup {
 
-template<typename> 
+template<typename>
 struct TokenSet;
 
 template<typename Protocol>

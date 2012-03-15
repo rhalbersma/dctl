@@ -15,7 +15,7 @@ namespace dxp {
         http://www.mesander.nl/damexchange/ebackacc.htm
 
 */
-        
+
 class BackAcknowledge
 :
         public mixin::IdentifierCreate<'K', BackAcknowledge, MessageInterface>

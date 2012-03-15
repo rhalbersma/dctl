@@ -18,7 +18,7 @@ public:
                 b *= Sequence<T>::value;
                 b >>= shift;
                 return Table<T>::value[b];
-        }               
+        }
 
 private:
         BOOST_STATIC_CONSTANT(auto, N = log2_sizeof<T>::value);         // log base-2 of number of bits
@@ -130,20 +130,20 @@ struct Graph
         BOOST_STATIC_CONSTANT(int, num_vertices = 1 << N);
         BOOST_STATIC_CONSTANT(uint64_t, all_vertices = (uint64_t(1) << num_vertices) - 1);
 
-        static NodeCount Eulerian(int vertex = 0, bool branch = 0, int depth = edge_mask, Edge sequence = 0, Edge tour = 0, Edge nodes = 0) 
+        static NodeCount Eulerian(int vertex = 0, bool branch = 0, int depth = edge_mask, Edge sequence = 0, Edge tour = 0, Edge nodes = 0)
         {
                 sequence = (sequence << 1) | Edge(branch);      // shift-feedback register
                 int edge = sequence & edge_mask;                // the last N+1 bits of the sequence
-                        
-                auto visited = Edge(1) << edge;                 // the index of the edge        
+
+                auto visited = Edge(1) << edge;                 // the index of the edge
                 if (tour & visited) return 1;                   // Eulerian tours visit each edge exactly once
-                
+
                 if (!depth) {
                         //std::cout << "sequence: " << std::hex << uint64_t(sequence >> N) << '\n';
                         return 1;
                 }
 
-                tour |= visited;                                // add the current edge to the tour                
+                tour |= visited;                                // add the current edge to the tour
                 vertex = edge >> 1;                             // the last N bits of the sequence
                 nodes |= Edge(1) << vertex;
                 /*
@@ -177,7 +177,7 @@ struct Graph
 
 int main()
 {
-        using namespace dctl::bit; 
+        using namespace dctl::bit;
         DeBruijn<uint8_t >::generate_table();
         DeBruijn<uint16_t>::generate_table();
         DeBruijn<uint32_t>::generate_table();
@@ -210,15 +210,15 @@ int main()
                                         break;
                                 }
                         }
- 
+
                         // if the new prefix did not occur before, add a one bit to the sequence
                         if (prefer_one)
                                 sequence ^= singlet<T>(i);
                 }
 
                 return sequence;
-        }                   
-        
+        }
+
         // compute the prefix table and print to stdout
         static void generate_table()
         {
@@ -236,7 +236,7 @@ int main()
                 std::cout << "const " << typeid(T).name() << " DeBruijn<" << typeid(T).name() << ">::SEQUENCE = ";
                 std::cout << "0x" << std::hex << std::setw(NUM_BITS / 4) << std::setfill('0');
                 std::cout << static_cast<uint64_t>(sequence) << ";\n\n";
-        
+
                 std::cout << "template<>\n";
                 std::cout << "const int DeBruijn<" << typeid(T).name() << ">::TABLE[] = {\n";
                 for (auto i = 0; i < NUM_BITS; ++i) {
@@ -248,9 +248,9 @@ int main()
                                 std::cout << ",";
                         if (i % 8 == 7 || i == NUM_BITS - 1)
                                 std::cout << "\n";
-                        else 
+                        else
                                 std::cout << " ";
                 }
                 std::cout << "};" << "\n\n";
-        }    
+        }
 */

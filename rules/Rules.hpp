@@ -15,14 +15,14 @@ template<typename> struct king_scan_range                       { enum { value =
 template<typename> struct is_restricted_same_king_moves         { enum { value = false }; };
 
 // maximum consecutive moves with the same king                 // NO default: MUST be specialized if
-template<typename> struct max_same_king_moves;                  // is_restricted_same_king_moves == true 
+template<typename> struct max_same_king_moves;                  // is_restricted_same_king_moves == true
 
 //+----------------------------------------------------------------------------+
 //|      Capture mechanics                                                     |
 //+----------------------------------------------------------------------------+
 
-// men can capture kings
-template<typename> struct is_men_capture_kings                  { enum { value = true  }; };
+// pawns can capture kings
+template<typename> struct is_pawns_capture_kings                  { enum { value = true  }; };
 
 // king capture directions
 template<typename> struct king_capture_directions               { enum { value = dirs_diag }; };
@@ -31,7 +31,7 @@ template<typename> struct king_capture_directions               { enum { value =
 template<typename> struct man_capture_directions                { enum { value = dirs_up }; };
 
 // man backwards capture
-template<typename Rules> struct is_men_capture_backwards        { enum { value = man_capture_directions<Rules>::value != dirs_up }; };
+template<typename Rules> struct is_pawns_capture_backwards        { enum { value = man_capture_directions<Rules>::value != dirs_up }; };
 
 // intermediate capture directions
 template<int> struct turn_directions;
@@ -94,7 +94,7 @@ template<typename> struct max_repetitions                       { enum { value =
 // restricted consecutive non-conversion moves
 template<typename> struct is_restricted_reversible_moves        { enum { value = true }; };
 
-// maximum allowed consecutive non-conversion moves 
+// maximum allowed consecutive non-conversion moves
 template<typename> struct max_reversible_moves                  { enum { value = 50 }; };       // (FMJD rule 6.2)
 
 // other drawing rules
@@ -110,7 +110,7 @@ template<typename> struct is_check_capture_uniqueness           { enum { value =
 // smallest value for which non-unique capture sequences can occur
 template<typename> struct large_capture                         { enum { value = 4 }; };
 
-template<typename Rules> struct is_ambiguous_man_capture        { enum { value = is_men_capture_backwards<Rules>::value || promotion_condition<Rules>::value }; };
+template<typename Rules> struct is_ambiguous_man_capture        { enum { value = is_pawns_capture_backwards<Rules>::value || promotion_condition<Rules>::value }; };
 
 }       // namespace rules
 }       // namespace dctl

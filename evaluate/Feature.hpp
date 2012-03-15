@@ -4,8 +4,8 @@
 #include "../successor/Mobility.hpp"
 #include "../node/Position.hpp"
 
-namespace dctl { 
-        
+namespace dctl {
+
 template
 <
         bool Color,
@@ -25,7 +25,7 @@ public:
                 score += mobility(p);
                 return score;
         }
-        
+
         static int material(const Position<Board>& p)
         {
                 return (
@@ -33,7 +33,7 @@ public:
                         Weight<Rules, Board>::material[1] * bit::count(p.kings(Color))
                 );
         }
-        
+
         static int tempo(const Position<Board>& p)
         {
                 int score = 0;
@@ -41,7 +41,7 @@ public:
                         score += Weight<Rules, Board>::tempo[i] * bit::count(p.pieces(Color) & Board::row_mask[Color][i]);
                 return score;
         }
-        
+
         static int center(const Position<Board>& p)
         {
                 int score = 0;
@@ -53,7 +53,7 @@ public:
                         );
                 return score;
         }
-        
+
         static int balance(const Position<Board>& p)
         {
                 int score = 0;
@@ -65,7 +65,7 @@ public:
                         );
                 return -abs(score);
         }
-        
+
         static int mobility(const Position<Board>& p)
         {
                 return Weight<Rules, Board>::mobility * Mobility<select::Moves, Rules>::template count<Color>(p);

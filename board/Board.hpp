@@ -15,8 +15,8 @@ template
         typename Structure = Structure<>                        // dmz, ghosts and internal rotation
 >
 class Board
-: 
-        public Dimensions, 
+:
+        public Dimensions,
         public Structure
 {
 public:
@@ -37,7 +37,7 @@ public:
         // auxiliary bitboard masks
         static const BitBoard QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
         static const BitBoard DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
-        static const BitBoard jump_group[];                     // families of squares reachable by jumping men
+        static const BitBoard jump_group[];                     // families of squares reachable by jumping pawns
         static const BitBoard jump_start[];                     // squares from which a jump is possible in a direction
 
         // arrays of directions
@@ -60,7 +60,7 @@ const BitBoard Board<Dimensions, Structure>::squares = init_squares<B>::value;
 
 template<typename Dimensions, typename Structure>
 const BitBoard Board<Dimensions, Structure>::INITIAL[] = {
-	init_initial< B, Side::black >::value,
+        init_initial< B, Side::black >::value,
         init_initial< B, Side::white >::value
 };
 

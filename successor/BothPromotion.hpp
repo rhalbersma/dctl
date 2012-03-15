@@ -7,7 +7,7 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Rules, typename Board> 
+template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::both, select::Promotions, Rules, Board>
 :
         Driver<Color, Material::pawn, select::Promotions, Rules, Board>

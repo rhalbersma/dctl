@@ -16,13 +16,13 @@ struct Init;
 // partial specialization for ab initio hashing of moves
 template<typename Index>
 struct Init<Move, Index>
-: 
+:
         public std::unary_function<Move, Index>
 {
         Index operator()(const Move& m) const
         {
                 return (
-        	        Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
+                        Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
                         Random<Index>::xor_rand(m.pieces(Side::white), Random<Index>::PIECES[Side::white]) ^
                         Random<Index>::xor_rand(m.kings()            , Random<Index>::KINGS              )
                 );
@@ -32,7 +32,7 @@ struct Init<Move, Index>
 // partial specialization for ab initio hashing of side to move
 template<typename Index>
 struct Init<bool, Index>
-: 
+:
         public std::unary_function<bool, Index>
 {
         Index operator()(bool color) const
@@ -44,9 +44,9 @@ struct Init<bool, Index>
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
 struct Init<Restricted, Index>
-: 
+:
         public std::unary_function<Restricted, Index>
-{               
+{
         Index operator()(const Restricted& restricted) const
         {
                 return (
@@ -59,9 +59,9 @@ struct Init<Restricted, Index>
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
 struct Init<KingMoves, Index>
-: 
+:
         public std::binary_function<KingMoves, bool, Index>
-{               
+{
         Index operator()(const KingMoves& restricted, bool color) const
         {
                 return (

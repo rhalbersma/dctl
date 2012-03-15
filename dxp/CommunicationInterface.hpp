@@ -9,9 +9,9 @@ class CommunicationInterface
 {
 public:
         // virtual destructor
-        virtual ~CommunicationInterface() 
+        virtual ~CommunicationInterface()
         {
-                /* no-op */
+                // no-op
         }
 
         // non-virtual interface

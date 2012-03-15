@@ -16,8 +16,8 @@ public:
         static void mix(Index& index, bool color)
         {
                 index = (0 - color) & SIDE;
-        }                  
-	
+        }
+
         // apply a sequence of bitwise shifts
         static void mix(Index& index, BitBoard b)
         {
@@ -27,7 +27,7 @@ public:
                         add_shift_L(index, ADD_SHIFT_L[i]);
                         xor_shift_R(index, XOR_SHIFT_R[i]);
                 }
-        }              
+        }
 
 private:
         static void add_shift_L(Index& index, int s, BitBoard b)
@@ -51,13 +51,13 @@ private:
         static const int XOR_SHIFT_R[NUM_MIX];          // shift lengths used in the exclusive-OR steps
 };
 
-template<typename Index> 
+template<typename Index>
 const Index Random<Index>::SIDE = 0xd2d84a61;
 
-template<typename Index> 
+template<typename Index>
 const int Random<Index>::ADD_SHIFT_L[NUM_MIX] = { 25, 4,  8, 26 };
 
-template<typename Index> 
+template<typename Index>
 const int Random<Index>::XOR_SHIFT_R[NUM_MIX] = { 23, 6, 10, 31 };
 
 // explicit instantation

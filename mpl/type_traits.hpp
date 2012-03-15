@@ -11,13 +11,13 @@ namespace mpl {
 template<typename F, typename X>
 struct is_idempotent
 :
-        std::is_same< typename 
-                boost::mpl::apply< 
-                        F, typename 
-                        boost::mpl::apply< F, X >::type 
+        std::is_same< typename
+                boost::mpl::apply<
+                        F, typename
+                        boost::mpl::apply< F, X >::type
                 >::type,
                 X
-        >              
+        >
 {};
 
 // Value lies within the range [Min, Max), i.e. Min <= Value < Max

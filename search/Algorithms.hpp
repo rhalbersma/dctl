@@ -15,10 +15,10 @@ namespace search {
 template<typename Rules, typename Board, typename Objective>
 int Root<Rules, Board, Objective>::iterative_deepening(const Position<Board>& p, int depth)
 {
-        auto score = -infinity();                
+        auto score = -infinity();
         int alpha, beta;
 
-        Variation pv;       
+        Variation pv;
         Timer timer;
         announce(p, depth);
         statistics_.reset();
@@ -38,9 +38,9 @@ int Root<Rules, Board, Objective>::iterative_deepening(const Position<Board>& p,
 template<typename Rules, typename Board, typename Objective>
 int Root<Rules, Board, Objective>::proof_verify(const Position<Board>& p, int depth)
 {
-        auto score = -infinity();                
+        auto score = -infinity();
 
-        Variation pv;       
+        Variation pv;
         Timer timer;
         announce(p, depth);
 
@@ -70,18 +70,18 @@ int Root<Rules, Board, Objective>::pvs(
 )
 {
         statistics_.update(ply);
-        
+
         if (is_interrupted())
                 return alpha;
 
         // -INF <= alpha < beta <= +INF
         BOOST_ASSERT(-infinity() <= alpha && alpha < beta && beta <= infinity());
 
-        // alpha < beta implies alpha <= beta - 1, 
+        // alpha < beta implies alpha <= beta - 1,
         // with the strict inequality if and only if is_pv(NodeType)
         BOOST_ASSERT(is_pv(NodeType) == (alpha <  beta - 1));
 
-        // alpha < beta <= +INF implies alpha <= win_min 
+        // alpha < beta <= +INF implies alpha <= win_min
         // with equality, any finite score will fail low
         if (alpha == win_min())
                 return alpha;
@@ -144,7 +144,7 @@ int Root<Rules, Board, Objective>::pvs(
         auto best_move = Transposition::no_move();
         int value;
         int i;
-                
+
         Variation continuation;
         for (auto s = 0; s < static_cast<int>(move_order.size()); ++s) {
                 i = move_order[s];
@@ -168,13 +168,13 @@ int Root<Rules, Board, Objective>::pvs(
 
                 if (value > best_value) {
                         best_value = value;
-                        best_move = i; 
+                        best_move = i;
                         if (best_value >= beta)
                                 break;
                         if (best_value > alpha) {
                                 alpha = best_value;
                                 refutation.set(best_move, continuation.sequence());
-                        }                    
+                        }
                 }
         }
 
@@ -197,11 +197,11 @@ int Root<Rules, Board, Objective>::verify(
 
         if (is_interrupted())
                 return alpha;
-                
+
         // -INF <= alpha < beta <= +INF
         BOOST_ASSERT(-infinity() <= alpha && alpha < beta && beta <= infinity());
 
-        // alpha < beta <= +INF implies alpha <= win_min 
+        // alpha < beta <= +INF implies alpha <= win_min
         // with equality, any finite score will fail low
         if (alpha == win_min())
                 return alpha;
@@ -272,7 +272,7 @@ int Root<Rules, Board, Objective>::verify(
         auto best_move = Transposition::no_move();
         int value;
         int i;
-                
+
         Variation continuation;
         for (auto s = 0; s < static_cast<int>(move_order.size()); ++s) {
                 i = move_order[s];
@@ -296,13 +296,13 @@ int Root<Rules, Board, Objective>::verify(
 
                 if (value > best_value) {
                         best_value = value;
-                        best_move = i; 
+                        best_move = i;
                         if (best_value >= beta)
                                 break;
                         if (best_value > alpha) {
                                 alpha = best_value;
                                 refutation.set(best_move, continuation.sequence());
-                        }                    
+                        }
                 }
         }
 
@@ -384,7 +384,7 @@ int Root<Rules, Board>::negamax(
                 if (value > best_value) {
                         best_value = value;
                         best_move = i;
-                        refutation.set(best_move, continuation.sequence());                
+                        refutation.set(best_move, continuation.sequence());
                 }
         }
 

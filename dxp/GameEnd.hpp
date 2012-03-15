@@ -17,12 +17,12 @@ namespace dxp {
 */
 
 class GameEnd
-: 
+:
         public mixin::IdentifierCreate<'E', GameEnd, MessageInterface>
 {
 public:
         // typedefs
-        enum Reason { forfeit = 0, resign = 1, claim_draw = 2, claim_win = 3 }; 
+        enum Reason { forfeit = 0, resign = 1, claim_draw = 2, claim_win = 3 };
         enum StopCode { stop_game = 0, stop_always = 1 };
 
         explicit GameEnd(const std::string& message)

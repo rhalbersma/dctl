@@ -8,7 +8,7 @@
 namespace dctl {
 
 template<
-        typename Numerator, 
+        typename Numerator,
         typename Denominator
 >
 struct abs_modulus
@@ -21,7 +21,7 @@ struct abs_modulus
                         >,
                         boost::mpl::plus<
                                 boost::mpl::modulus<
-                                        Numerator, 
+                                        Numerator,
                                         Denominator
                                 >,
                                 Denominator

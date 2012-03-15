@@ -15,9 +15,9 @@ namespace dxp {
         http://www.mesander.nl/damexchange/ebackreq.htm
 
 */
-  
+
 class BackRequest
-: 
+:
         public mixin::IdentifierCreate<'B', BackRequest, MessageInterface>
 {
 public:

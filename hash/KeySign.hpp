@@ -8,7 +8,7 @@ namespace hash {
 
 template<typename Item, typename Key>
 struct FindKey
-: 
+:
         public std::unary_function<Item, Key>
 {
         const Key& operator()(const Item& item) const
@@ -21,7 +21,7 @@ struct FindKey
 
 template<typename Index, typename Key>
 struct ShiftKey
-: 
+:
         public std::unary_function<Index, Key>
 {
         Key operator()(Index index) const

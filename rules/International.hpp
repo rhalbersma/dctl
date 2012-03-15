@@ -2,7 +2,7 @@
 
 namespace dctl {
 
-namespace variant { struct International; }   
+namespace variant { struct International; }
 
 namespace rules {
 

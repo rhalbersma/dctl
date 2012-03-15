@@ -24,7 +24,7 @@ template
 struct Factory
 {
 public:
-        // Base must have header / body / terminator functionality mixed in 
+        // Base must have header / body / terminator functionality mixed in
         BOOST_MPL_ASSERT((mixin::has_header_body_terminator<Base>));
 
         // all DerivedSequence must be derived from Base
@@ -35,7 +35,7 @@ public:
                 boost::mpl::for_each<DerivedSequence, boost::mpl::make_identity<> >(
                         call_insert(registry_)
                 );
-        }       
+        }
 
         ~Factory()
         {
@@ -54,6 +54,7 @@ private:
         // TODO: refactor into polymorphic lambda expresssion whenever C++11 supports this
         struct call_insert
         {
+        public:
                 explicit call_insert(Registry& r): registry_(r) {};
 
                 template<typename T>
@@ -72,6 +73,7 @@ private:
         // TODO: refactor into polymorphic lambda expresssion whenever C++11 supports this
         struct call_erase
         {
+        public:
                 explicit call_erase(Registry& r): registry_(r) {};
 
                 template<typename T>

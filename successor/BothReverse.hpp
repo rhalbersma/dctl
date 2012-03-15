@@ -13,7 +13,7 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Rules, typename Board> 
+template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::both, select::Reverse, Rules, Board>
 :
         private nonconstructible // enforce static semantics
@@ -31,9 +31,9 @@ public:
         }
 
         static int count(const Position<Board>& p)
-        {     
+        {
                 return (
-                        KingReverse::count(p) + 
+                        KingReverse::count(p) +
                         PawnReverse::count(p)
                 );
         }
@@ -41,7 +41,7 @@ public:
         static bool detect(const Position<Board>& p)
         {
                 return (
-                        PawnReverse::detect(p) || 
+                        PawnReverse::detect(p) ||
                         KingReverse::detect(p)
                 );
         }
