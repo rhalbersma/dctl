@@ -9,7 +9,7 @@ namespace dctl {
 namespace bit {
 
 // forward declarations
-template<typename T> T get_first(T);        // least significant 1-bit
+template<typename T> T get_first(T);    // least significant 1-bit
 template<typename T> int index_loop(T); // index of a set 1-bit
 template<typename T> int count_loop(T); // number of set 1-bits
 

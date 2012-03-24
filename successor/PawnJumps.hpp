@@ -355,9 +355,7 @@ private:
         }
 
         template<int Index>
-        static bool jump(
-                BitBoard jumper, State& capture, Stack& moves
-        )
+        static bool jump(BitBoard jumper, State& capture, Stack& moves)
         {
                 if (jumper & capture.template targets<Index>()) {
                         capture.make(jumper);

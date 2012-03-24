@@ -13,10 +13,12 @@ namespace successor {
         Design Pattern, with the StateInterface class as the <State>.
         Examples of the <Context> include the Successor and Mobility classes.
 
-        The State class also forms the <ConcreteFlyWeight> in a <FlyWeight>
-        Design Pattern, with the StateInterface class as the <FlyWeight>,
-        and the Dispatcher class as the <FlyWeightFactory>. Examples of
-        the <Client> include the Successor and Mobility classes.
+        FlyWeight Design Pattern
+        ------------------------
+        FlyWeight               : StateInterface
+        ConcreteFlyWeight       : State
+        FlyWeightFactory        : Dispatcher
+        Client                  : Successor, Mobility
 
 */
 

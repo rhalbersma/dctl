@@ -2,7 +2,7 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "DeBruijn.hpp"
 #include "Lookup.hpp"
-#include "../utility/IntegerTypes.hpp"
+//#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 namespace bit {
