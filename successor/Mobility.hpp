@@ -12,10 +12,12 @@ namespace dctl {
         with the StateInterface class as the <State> and the State class
         as the <ConcreteState>.
 
-        The Mobility class also forms a <Client> in a <FlyWeight> Design
-        Pattern, with the StateInterface class as the <FlyWeight>, the
-        State class as the <ConcreteFlyWeight>, and the Dispatcher class
-        as the <FlyWeightFactory>.
+        FlyWeight Design Pattern
+        ------------------------
+        FlyWeight               : StateInterface
+        ConcreteFlyWeight       : State
+        FlyWeightFactory        : Dispatcher
+        Client                  : Successor, Mobility
 
         A particular position's state is determined by its side to move
         and the availability of kings and pawns among its pieces.

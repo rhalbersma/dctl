@@ -1,5 +1,6 @@
 #pragma once
-#include <boost/utility.hpp>    // noncopyable
+#include <boost/utility.hpp>            // noncopyable
+#include "StateInterface_fwd.hpp"
 #include "State.hpp"
 #include "../node/Material.hpp"
 #include "../node/Side.hpp"
@@ -7,14 +8,14 @@
 namespace dctl {
 namespace successor {
 
-template<typename> class StateInterface;
-
 /*
 
-        The Dispatcher class forms the <FlyWeightFactory> in a <FlyWeight>
-        Design Pattern, with the StateInterface class as the <FlyWeight>,
-        and the State class as the <ConcreteFlyWeight>. Examples of
-        the <Client> include the Successor and Mobility classes.
+        FlyWeight Design Pattern
+        ------------------------
+        FlyWeight               : StateInterface
+        ConcreteFlyWeight       : State
+        FlyWeightFactory        : Dispatcher
+        Client                  : Successor, Mobility
 
 */
 
@@ -24,23 +25,28 @@ template
         typename Rules,
         typename Board
 >
-class Dispatcher
+struct Dispatcher
 :
         private boost::noncopyable      // enforce singleton semantics
 {
-public:
         // typedefs
-        typedef const StateInterface<Board>* StatePointer;
-        static StatePointer select(int state)
-        {
-                return instance()[state];
-        }
+        typedef StateInterface<Board> const * BaseConstPointer;
 
-private:
-        // implementation
-        typedef const StatePointer StateArray[8];
-        static StateArray& instance()
+        static BaseConstPointer select(int state /* partial intrinsic state encoding */ )
         {
+                // TODO: rewrite using C++11 template aliases
+                /*
+
+                template<bool Color, int Material> 
+                using Derived = State<Color, Material, Selection, Rules, Board>;
+
+                static const Derived<Side::black, Material::none> black_none;
+                ...
+                static const Derived<Side::black, Material::none> white_both;
+
+                */
+
+                // full intrinsic state representations
                 static const State<Side::black, Material::none, Selection, Rules, Board> black_none;
                 static const State<Side::black, Material::pawn, Selection, Rules, Board> black_pawn;
                 static const State<Side::black, Material::king, Selection, Rules, Board> black_king;
@@ -50,12 +56,13 @@ private:
                 static const State<Side::white, Material::king, Selection, Rules, Board> white_king;
                 static const State<Side::white, Material::both, Selection, Rules, Board> white_both;
 
-                // Meyers Singleton, see Modern C++ Design p.117
-                static const StateArray singleton_ = {
+                // "Meyers Singleton", Effective C++ 3rd ed., Item 4 (p. 31-32)
+                static BaseConstPointer const singleton_[] = {
                         &black_none, &black_pawn, &black_king, &black_both,
                         &white_none, &white_pawn, &white_king, &white_both
                 };
-                return singleton_;
+
+                return singleton_[state];
         }
 };
 

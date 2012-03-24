@@ -60,8 +60,7 @@ public:
         }
 
 private:
-        static void generate_precede(
-        const Position<Board>& p, State& capture, Stack& moves)
+        static void generate_precede(const Position<Board>& p, State& capture, Stack& moves)
         {
                 // tag dispatching on relative king capture precedence
                 generate_precede(
