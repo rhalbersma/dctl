@@ -10,11 +10,12 @@ BOOST_AUTO_TEST_SUITE(TestIsenberg)
 
 BOOST_AUTO_TEST_CASE(Generate)
 {
+        /*
         std::cout << std::dec << bit::debruijn::Graph<2>::Eulerian() << '\n';
         std::cout << std::dec << bit::debruijn::Graph<3>::Eulerian() << '\n';
         std::cout << std::dec << bit::debruijn::Graph<4>::Eulerian() << '\n';
         //std::cout << std::dec << bit::debruijn::Graph<5>::Eulerian() << '\n';
-
+        */
 }
 
 BOOST_AUTO_TEST_SUITE_END()
