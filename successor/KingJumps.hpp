@@ -272,7 +272,7 @@ private:
                 );
         }
 
-        // partial specialization for kings that can land on any square in line width the current direction
+        // partial specialization for kings that can land on any square along the current direction
         template<int Index>
         static bool land_dispatch(
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::land_N>
