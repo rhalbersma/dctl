@@ -34,8 +34,9 @@ struct Dispatcher
 
         static BaseConstPointer select(int state /* partial intrinsic state encoding */ )
         {
-                // TODO: rewrite using C++11 template aliases
                 /*
+
+                TODO: suppress outside template parameters using C++11 template aliases
 
                 template<bool Color, int Material> 
                 using Derived = State<Color, Material, Selection, Rules, Board>;
