@@ -33,7 +33,7 @@ template
 >
 class Successor
 :
-        private nonconstructible // enforce static semantics
+        private nonconstructible        // enforce static semantics
 {
 public:
         // interface

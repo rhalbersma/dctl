@@ -6,7 +6,7 @@
 
 namespace dctl {
 
-class KingMoves
+struct KingMoves
 {
 public:
         // constructors
@@ -34,27 +34,22 @@ public:
         {
                 king_ = 0;
                 moves_ = 0;
-
                 BOOST_ASSERT(invariant());
         }
 
         void init(BitBoard dest)
         {
                 BOOST_ASSERT(bit::is_single(dest));
-
                 king_ = dest;
                 moves_ = 1;
-
                 BOOST_ASSERT(invariant());
         }
 
         void increment(BitBoard dest)
         {
                 BOOST_ASSERT(bit::is_single(dest));
-
                 king_= dest;
                 ++moves_;
-
                 BOOST_ASSERT(invariant());
         }
 

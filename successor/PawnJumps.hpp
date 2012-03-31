@@ -24,7 +24,7 @@ namespace successor {
 template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::pawn, select::Jumps, Rules, Board>
 :
-        private nonconstructible // enforce static semantics
+        private nonconstructible        // enforce static semantics
 {
 private:
         // typedefs

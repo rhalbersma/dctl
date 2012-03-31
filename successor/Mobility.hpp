@@ -33,7 +33,7 @@ template
 >
 struct Mobility
 :
-        private nonconstructible // enforce static semantics
+        private nonconstructible        // enforce static semantics
 {
         template<bool Color, typename Board>
         static int count(const Position<Board>& p)
