@@ -17,7 +17,7 @@ template
 >
 struct Driver
 :
-        private nonconstructible // enforce static semantics
+        private nonconstructible        // enforce static semantics
 {
         static void generate(const Position<Board>&, Stack&)
         {
