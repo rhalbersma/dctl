@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>                   // unary_function
 #include "Random.hpp"
+#include "../../node/Material.hpp"
 #include "../../node/Move.hpp"
 #include "../../node/Restricted.hpp"
 #include "../../node/Side.hpp"
@@ -12,6 +13,22 @@ namespace zobrist {
 // primary template
 template<typename Key, typename Index>
 struct Init;
+
+// partial specialization for ab initio hashing of material
+template<typename Index>
+struct Init<Material, Index>
+:
+        public std::unary_function<Material, Index>
+{
+        Index operator()(const Material& m) const
+        {
+                return (
+                        Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
+                        Random<Index>::xor_rand(m.pieces(Side::white), Random<Index>::PIECES[Side::white]) ^
+                        Random<Index>::xor_rand(m.kings()            , Random<Index>::KINGS              )
+                );
+        }
+};
 
 // partial specialization for ab initio hashing of moves
 template<typename Index>

@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "Move_fwd.hpp"
+#include "PiecesInterface.hpp"
 #include "Side.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
@@ -10,6 +11,9 @@
 namespace dctl {
 
 struct Move
+:
+        // Curiously Recurring Template Pattern (CRTP)
+        public PiecesInterface<Move>
 {
 public:
         // default constructor
@@ -92,43 +96,7 @@ public:
                 return tmp;
         }
 
-        // black or white pawns
-        BitBoard pawns(bool color) const
-        {
-                return pieces(color) & ~kings();
-        }
-
-        // black or white kings
-        BitBoard kings(bool color) const
-        {
-                return pieces(color) & kings();
-        }
-
-        // black or white pieces
-        BitBoard pieces(bool color) const
-        {
-                return pieces_[color];
-        }
-
-        // black and white pawns
-        BitBoard pawns() const
-        {
-                return pieces() & ~kings();
-        }
-
-        // black and white kings
-        BitBoard kings() const
-        {
-                return kings_;
-        }
-
-        // black and white pieces
-        BitBoard pieces() const
-        {
-                return pieces(Side::black) ^ pieces(Side::white);
-        }
-
-        // xor-assign the set bits of another piece set
+       // xor-assign the set bits of another piece set
         Move& operator^=(const Move& other)
         {
                 pieces_[Side::black] ^= other.pieces(Side::black);
@@ -139,6 +107,53 @@ public:
         }
 
 private:
+        friend struct PiecesInterface<Move>;
+
+        // black or white pawns
+        BitBoard do_pawns(bool color) const
+        {
+                return do_pieces(color) & ~do_kings();
+        }
+
+        // black or white kings
+        BitBoard do_kings(bool color) const
+        {
+                return do_pieces(color) & do_kings();
+        }
+
+        // black or white pieces
+        BitBoard do_pieces(bool color) const
+        {
+                return pieces_[color];
+        }
+
+        // black and white pawns
+        BitBoard do_pawns() const
+        {
+                return do_pieces() & ~do_kings();
+        }
+
+        // black and white kings
+        BitBoard do_kings() const
+        {
+                return kings_;
+        }
+
+        // black and white pieces
+        BitBoard do_pieces() const
+        {
+                return do_pieces(Side::black) ^ do_pieces(Side::white);
+        }
+
+        bool equal(const Move& other) const
+        {
+                return (
+                        (pieces(Side::black) == other.pieces(Side::black)) &&
+                        (pieces(Side::white) == other.pieces(Side::white)) &&
+                                    (kings() == other.kings())
+                );
+        }
+
         // king move
         static bool pre_condition(BitBoard delta)
         {
@@ -248,22 +263,6 @@ inline
 Move operator^(const Move& left, const Move& right)
 {
         return Move(left) ^= right;
-}
-
-inline
-bool operator==(const Move& left, const Move& right)
-{
-        return (
-                (left.pieces(Side::black) == right.pieces(Side::black)) &&
-                (left.pieces(Side::white) == right.pieces(Side::white)) &&
-                            (left.kings() == right.kings())
-        );
-}
-
-inline
-bool operator!=(const Move& left, const Move& right)
-{
-        return !(left == right);
 }
 
 template<typename Rules>
