@@ -54,12 +54,12 @@ public:
                 return hash_index_;
         }
 
-        const Move& material() const
+        const Material& material() const
         {
                 return material_;
         }
 
-        const Move& key() const
+        const Material& key() const
         {
                 return material();
         }
@@ -280,7 +280,7 @@ private:
         // representation
         const Position<Board>* parent_;
         HashIndex hash_index_;
-        Move material_;
+        Material material_;
         Restricted restricted_;
         PlyCount reversible_moves_;
         PlyCount distance_to_root_;
@@ -394,7 +394,7 @@ struct Init<Position<Board>, Index>
         Index operator()(const Position<Board>& p) const
         {
                 return (
-                        Init<Move      , Index>()(p.material())     ^
+                        Init<Material  , Index>()(p.material())     ^
                         Init<bool      , Index>()(p.active_color()) ^
                         Init<Restricted, Index>()(p.restricted())
                 );
