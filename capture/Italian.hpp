@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Value_fwd.hpp"
+#include "OrderInterface.hpp"
 #include "../bit/Bit.hpp"
 #include "../utility/IntegerTypes.hpp"
 
@@ -14,6 +14,8 @@ namespace capture {
 // explicit specialization for Italian draughts
 template<>
 struct Value<variant::Italian>
+:
+        public OrderInterface< Value<variant::Italian> >
 {
 public:
         // constructors
@@ -25,27 +27,6 @@ public:
                 with_king_(false)
         {
                 BOOST_ASSERT(invariant());
-        }
-
-        // predicates
-        bool operator<(const Value<variant::Italian>& other) const
-        {
-                return (
-                         ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
-                        (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
-                        (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
-                        (( piece_order_ < other.piece_order_ )))))))
-                );
-        }
-
-        bool operator==(const Value<variant::Italian>& other) const
-        {
-                return (
-                        ( num_pieces_  == other.num_pieces_  ) &&
-                        ( with_king_   == other.with_king_   ) &&
-                        ( num_kings_   == other.num_kings_   ) &&
-                        ( piece_order_ == other.piece_order_ )
-                );
         }
 
         // views
@@ -77,12 +58,34 @@ public:
 
         void toggle_with_king()
         {
-                with_king_ ^= toggle;
+                with_king_ ^= true;
                 BOOST_ASSERT(invariant());
         }
 
 private:
-        // implementation
+        friend struct OrderInterface< Value<variant::Italian> >;
+
+        // predicates
+        bool less(const Value<variant::Italian>& other) const
+        {
+                return (
+                         ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
+                        (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
+                        (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
+                        (( piece_order_ < other.piece_order_ )))))))
+                );
+        }
+
+        bool equal(const Value<variant::Italian>& other) const
+        {
+                return (
+                        ( num_pieces_  == other.num_pieces_  ) &&
+                        ( with_king_   == other.with_king_   ) &&
+                        ( num_kings_   == other.num_kings_   ) &&
+                        ( piece_order_ == other.piece_order_ )
+                );
+        }
+
         bool invariant() const
         {
                 return (
@@ -91,8 +94,6 @@ private:
                         (!num_kings_ || with_king_)
                 );
         }
-
-        BOOST_STATIC_CONSTANT(auto, toggle = true);
 
         // representation
         BitBoard piece_order_;

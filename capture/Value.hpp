@@ -1,5 +1,6 @@
 #pragma once
 #include "Value_fwd.hpp"
+#include "OrderInterface.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
@@ -10,45 +11,23 @@ namespace capture {
 // primary template
 template<typename Rules>
 struct Value
+:
+        public OrderInterface< Value<Rules> >
 {
-        /* empty */
+private:
+        friend struct OrderInterface< Value<Rules> >;
+
+        // predicates
+        bool less(const Value<Rules>& /* other */) const
+        {
+                return false;
+        }
+
+        bool equal(const Value<Rules>& /* other */) const
+        {
+                return true;
+        }
 };
-
-template<typename Rules>
-bool operator<(const Value<Rules>& /* left */, const Value<Rules>& /* right */)
-{
-        return false;
-}
-
-template<typename Rules>
-bool operator>(const Value<Rules>& left, const Value<Rules>& right)
-{
-        return right < left;                            // false by default
-}
-
-template<typename Rules>
-bool operator>=(const Value<Rules>& left, const Value<Rules>& right)
-{
-        return !(left < right);                         // true by default
-}
-
-template<typename Rules>
-bool operator<=(const Value<Rules>& left, const Value<Rules>& right)
-{
-        return !(right < left);                         // true by default
-}
-
-template<typename Rules>
-bool operator==(const Value<Rules>& left, const Value<Rules>& right)
-{
-        return !(left < right) && !(right < left);      // true by default
-}
-
-template<typename Rules>
-bool operator!=(const Value<Rules>& left, const Value<Rules>& right)
-{
-        return !(left == right);                        // false by default
-}
 
 template<typename Rules>
 bool is_large(const Value<Rules>& v, BitBoard captured_pieces)

@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "Value_fwd.hpp"
+#include "OrderInterface.hpp"
 
 namespace dctl {
 
@@ -11,6 +12,8 @@ namespace capture {
 // explicit specialization for Killer draughts
 template<>
 struct Value<variant::Killer>
+:
+        public OrderInterface< Value<variant::Killer> >
 {
 public:
         // constructors
@@ -19,17 +22,6 @@ public:
                 num_pieces_(0)
         {
                 BOOST_ASSERT(invariant());
-        }
-
-        // predicates
-        bool operator<(const Value<variant::Killer>& other) const
-        {
-                return num_pieces_ < other.num_pieces_;
-        }
-
-        bool operator==(const Value<variant::Killer>& other) const
-        {
-                return num_pieces_ == other.num_pieces_;
         }
 
         // views
@@ -52,7 +44,19 @@ public:
         }
 
 private:
-        // implementation
+        friend struct OrderInterface< Value<variant::Killer> >;
+
+        // predicates
+        bool less(const Value<variant::Killer>& other) const
+        {
+                return num_pieces_ < other.num_pieces_;
+        }
+
+        bool equal(const Value<variant::Killer>& other) const
+        {
+                return num_pieces_ == other.num_pieces_;
+        }
+
         bool invariant() const
         {
                 return 0 <= num_pieces_;
