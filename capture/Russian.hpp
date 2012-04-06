@@ -1,6 +1,6 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Value_fwd.hpp"
+#include "OrderInterface.hpp"
 
 namespace dctl {
 
@@ -11,6 +11,8 @@ namespace capture {
 // explicit specialization for Russian draughts
 template<>
 struct Value<variant::Russian>
+:
+        public OrderInterface< Value<variant::Russian> >
 {
 public:
         // constructors
@@ -20,7 +22,6 @@ public:
         {
         }
 
-        // predicates
         bool is_promotion() const
         {
                 return promotion_;
@@ -29,12 +30,22 @@ public:
         // modifiers
         void toggle_promotion()
         {
-                promotion_ ^= toggle;
+                promotion_ ^= true;
         }
 
 private:
-        // implementation
-        BOOST_STATIC_CONSTANT(auto, toggle = true);
+        friend struct OrderInterface< Value<variant::Russian> >;
+
+        // predicates
+        bool less(const Value<variant::Russian>& /* other */) const
+        {
+                return false;
+        }
+
+        bool equal(const Value<variant::Russian>& /* other */) const
+        {
+                return true;
+        }
 
         // representation
         bool promotion_;

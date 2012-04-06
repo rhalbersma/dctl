@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "Value_fwd.hpp"
+#include "OrderInterface.hpp"
 
 namespace dctl {
 
@@ -11,6 +12,8 @@ namespace capture {
 // explicit specialization for Spanish draughts
 template<>
 struct Value<variant::Spanish>
+:
+        public OrderInterface< Value<variant::Spanish> >
 {
 public:
         // constructors
@@ -20,23 +23,6 @@ public:
                 num_kings_(0)
         {
                 BOOST_ASSERT(invariant());
-        }
-
-        // predicates
-        bool operator<(const Value<variant::Spanish>& other) const
-        {
-                return (
-                        ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
-                        ( num_kings_  < other.num_kings_  ))
-                );
-        }
-
-        bool operator==(const Value<variant::Spanish>& other) const
-        {
-                return (
-                        ( num_pieces_ == other.num_pieces_ ) &&
-                        ( num_kings_  == other.num_kings_  )
-                );
         }
 
         // views
@@ -61,7 +47,25 @@ public:
         }
 
 private:
-        // implementation
+        friend struct OrderInterface< Value<variant::Spanish> >;
+
+        // predicates
+        bool less(const Value<variant::Spanish>& other) const
+        {
+                return (
+                        ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
+                        ( num_kings_  < other.num_kings_  ))
+                );
+        }
+
+        bool equal(const Value<variant::Spanish>& other) const
+        {
+                return (
+                        ( num_pieces_ == other.num_pieces_ ) &&
+                        ( num_kings_  == other.num_kings_  )
+                );
+        }
+
         bool invariant() const
         {
                 return (0 <= num_kings_) && (num_kings_ <= num_pieces_);
