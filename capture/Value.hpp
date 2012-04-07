@@ -1,10 +1,9 @@
 #pragma once
+#include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
-#include "../utility/TotalOrderInterface.hpp"
-#include "../utility/TotalOrderTrivialImpl.hpp"
 
 namespace dctl {
 namespace capture {
@@ -14,11 +13,19 @@ template<typename Rules>
 struct Value
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public TotalOrderInterface< Value<Rules> >,
-        private TotalOrderTrivialImpl< Value<Rules> >
+        private boost::totally_ordered< Value<Rules> >
 {
-private:
-        friend struct TotalOrderInterface< Value<Rules> >;
+        // predicates
+        bool operator<(const Value<Rules>& /* other */) const
+        {
+                return false;
+        }
+
+        bool operator==(const Value<Rules>& /* other */) const
+        {
+
+                return true;
+        }
 };
 
 template<typename Rules>

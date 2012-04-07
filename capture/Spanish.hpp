@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"
-#include "../utility/TotalOrderInterface.hpp"
 
 namespace dctl {
 
@@ -14,7 +14,7 @@ template<>
 struct Value<variant::Spanish>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public TotalOrderInterface< Value<variant::Spanish> >
+        private boost::totally_ordered< Value<variant::Spanish> >
 {
 public:
         // constructors
@@ -26,6 +26,22 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
+        // predicates
+        bool operator<(const Value<variant::Spanish>& other) const
+        {
+                return (
+                        ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
+                        ( num_kings_  < other.num_kings_  ))
+                );
+        }
+
+        bool operator==(const Value<variant::Spanish>& other) const
+        {
+                return (
+                        ( num_pieces_ == other.num_pieces_ ) &&
+                        ( num_kings_  == other.num_kings_  )
+                );
+        }
         // views
         int count() const
         {
@@ -48,24 +64,6 @@ public:
         }
 
 private:
-        friend struct TotalOrderInterface< Value<variant::Spanish> >;
-
-        // predicates
-        bool less(const Value<variant::Spanish>& other) const
-        {
-                return (
-                        ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
-                        ( num_kings_  < other.num_kings_  ))
-                );
-        }
-
-        bool equal(const Value<variant::Spanish>& other) const
-        {
-                return (
-                        ( num_pieces_ == other.num_pieces_ ) &&
-                        ( num_kings_  == other.num_kings_  )
-                );
-        }
 
         bool invariant() const
         {

@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/operators.hpp>          // equality_comparable
 #include "PiecesInterface.hpp"
 #include "Move.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -8,7 +9,8 @@ namespace dctl {
 struct Material
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public PiecesInterface<Material>
+        public PiecesInterface<Material>,
+        private boost::equality_comparable<Material>
 {
         enum {
                 none = 0,
@@ -35,6 +37,15 @@ struct Material
         {
                 init<Side::black>(black_pieces, white_pieces, kings);
                 BOOST_ASSERT(invariant());
+        }
+
+        bool operator==(const Material& other) const
+        {
+                return (
+                        (pieces(Side::black) == other.pieces(Side::black)) &&
+                        (pieces(Side::white) == other.pieces(Side::white)) &&
+                                    (kings() == other.kings())
+                );
         }
 
         // xor-assign the set bits of another piece set
@@ -84,15 +95,6 @@ private:
         BitBoard do_pieces() const
         {
                 return do_pieces(Side::black) ^ do_pieces(Side::white);
-        }
-
-        bool equal(const Material& other) const
-        {
-                return (
-                        (pieces(Side::black) == other.pieces(Side::black)) &&
-                        (pieces(Side::white) == other.pieces(Side::white)) &&
-                                    (kings() == other.kings())
-                );
         }
 
         // logical consistency of the representation

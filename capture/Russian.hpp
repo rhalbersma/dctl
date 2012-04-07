@@ -1,7 +1,6 @@
 #pragma once
+#include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"
-#include "../utility/TotalOrderInterface.hpp"
-#include "../utility/TotalOrderTrivialImpl.hpp"
 
 namespace dctl {
 
@@ -14,8 +13,7 @@ template<>
 struct Value<variant::Russian>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public TotalOrderInterface< Value<variant::Russian> >,
-        private TotalOrderTrivialImpl< Value<variant::Russian> >
+        private boost::totally_ordered< Value<variant::Russian> >
 {
 public:
         // constructors
@@ -23,6 +21,18 @@ public:
         :
                 promotion_(false)
         {
+        }
+
+        // predicates
+        bool operator<(const Value<variant::Russian>& /* other */) const
+        {
+                return false;
+        }
+
+        bool operator==(const Value<variant::Russian>& /* other */) const
+        {
+
+                return true;
         }
 
         bool is_promotion() const
@@ -37,8 +47,6 @@ public:
         }
 
 private:
-        friend struct TotalOrderInterface< Value<variant::Russian> >;
-
         // representation
         bool promotion_;
 };

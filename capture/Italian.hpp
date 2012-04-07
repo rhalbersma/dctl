@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"
 #include "../bit/Bit.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/TotalOrderInterface.hpp"
 
 namespace dctl {
 
@@ -16,7 +16,7 @@ template<>
 struct Value<variant::Italian>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public TotalOrderInterface< Value<variant::Italian> >
+        private boost::totally_ordered< Value<variant::Italian> >
 {
 public:
         // constructors
@@ -28,6 +28,27 @@ public:
                 with_king_(false)
         {
                 BOOST_ASSERT(invariant());
+        }
+
+        // predicates
+        bool operator<(const Value<variant::Italian>& other) const
+        {
+                return (
+                         ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
+                        (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
+                        (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
+                        (( piece_order_ < other.piece_order_ )))))))
+                );
+        }
+
+        bool operator==(const Value<variant::Italian>& other) const
+        {
+                return (
+                        ( num_pieces_  == other.num_pieces_  ) &&
+                        ( with_king_   == other.with_king_   ) &&
+                        ( num_kings_   == other.num_kings_   ) &&
+                        ( piece_order_ == other.piece_order_ )
+                );
         }
 
         // views
@@ -64,29 +85,6 @@ public:
         }
 
 private:
-        friend struct TotalOrderInterface< Value<variant::Italian> >;
-
-        // predicates
-        bool less(const Value<variant::Italian>& other) const
-        {
-                return (
-                         ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
-                        (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
-                        (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
-                        (( piece_order_ < other.piece_order_ )))))))
-                );
-        }
-
-        bool equal(const Value<variant::Italian>& other) const
-        {
-                return (
-                        ( num_pieces_  == other.num_pieces_  ) &&
-                        ( with_king_   == other.with_king_   ) &&
-                        ( num_kings_   == other.num_kings_   ) &&
-                        ( piece_order_ == other.piece_order_ )
-                );
-        }
-
         bool invariant() const
         {
                 return (
