@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/operators.hpp>          // equality_comparable, xorable
 #include "Move_fwd.hpp"
 #include "PiecesInterface.hpp"
 #include "Side.hpp"
@@ -13,7 +14,9 @@ namespace dctl {
 struct Move
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public PiecesInterface<Move>
+        public PiecesInterface<Move>,
+        private boost::equality_comparable<Move, 
+        boost::xorable<Move> >
 {
 public:
         // default constructor
@@ -96,7 +99,16 @@ public:
                 return tmp;
         }
 
-       // xor-assign the set bits of another piece set
+        bool operator==(const Move& other) const
+        {
+                return (
+                        (pieces(Side::black) == other.pieces(Side::black)) &&
+                        (pieces(Side::white) == other.pieces(Side::white)) &&
+                                    (kings() == other.kings())
+                );
+        }
+
+        // xor-assign the set bits of another piece set
         Move& operator^=(const Move& other)
         {
                 pieces_[Side::black] ^= other.pieces(Side::black);
@@ -143,15 +155,6 @@ private:
         BitBoard do_pieces() const
         {
                 return do_pieces(Side::black) ^ do_pieces(Side::white);
-        }
-
-        bool equal(const Move& other) const
-        {
-                return (
-                        (pieces(Side::black) == other.pieces(Side::black)) &&
-                        (pieces(Side::white) == other.pieces(Side::white)) &&
-                                    (kings() == other.kings())
-                );
         }
 
         // king move
@@ -257,13 +260,6 @@ private:
         BitBoard pieces_[2];    // black and white pieces
         BitBoard kings_;        // kings
 };
-
-// xor the set bits of two piece sets
-inline
-Move operator^(const Move& left, const Move& right)
-{
-        return Move(left) ^= right;
-}
 
 template<typename Rules>
 bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces)

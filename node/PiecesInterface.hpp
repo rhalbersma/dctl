@@ -3,7 +3,7 @@
 
 namespace dctl {
 
-template<typename Implementation>
+template<typename Impl>
 struct PiecesInterface
 {
 public:
@@ -43,27 +43,15 @@ public:
                 return self().do_pieces();
         }
 
-        // delegate to a derived class
-        bool operator==(const PiecesInterface<Implementation>& other) const
-        {
-                return self().equal(down_cast(other));
-        }
-
-        // delegate to the operator==
-        bool operator!=(const PiecesInterface<Implementation>& other) const
-        {
-                return !(*this == other);
-        }
-
 private:
         // cast a base reference to a derived reference (i.e. "down" the class hierarchy)
-        const Implementation& down_cast(const PiecesInterface<Implementation>& other) const
+        const Impl& down_cast(const PiecesInterface<Impl>& other) const
         {
-                return static_cast<const Implementation&>(other);
+                return static_cast<const Impl&>(other);
         }
 
         // cast the this pointer to a derived reference
-        const Implementation& self() const
+        const Impl& self() const
         {
                 return down_cast(*this);
         }
