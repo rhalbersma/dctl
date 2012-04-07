@@ -20,6 +20,7 @@ namespace dxp {
 
 class Move
 :
+        // Curiously Recurring Template Pattern (CRTP)
         public mixin::IdentifierCreate<'M', Move, MessageInterface>
 {
 public:

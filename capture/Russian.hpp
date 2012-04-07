@@ -1,6 +1,7 @@
 #pragma once
 #include "Value_fwd.hpp"
-#include "OrderInterface.hpp"
+#include "../utility/TotalOrderInterface.hpp"
+#include "../utility/TotalOrderTrivialImpl.hpp"
 
 namespace dctl {
 
@@ -12,7 +13,9 @@ namespace capture {
 template<>
 struct Value<variant::Russian>
 :
-        public OrderInterface< Value<variant::Russian> >
+        // Curiously Recurring Template Pattern (CRTP)
+        public TotalOrderInterface< Value<variant::Russian> >,
+        private TotalOrderTrivialImpl< Value<variant::Russian> >
 {
 public:
         // constructors
@@ -34,18 +37,7 @@ public:
         }
 
 private:
-        friend struct OrderInterface< Value<variant::Russian> >;
-
-        // predicates
-        bool less(const Value<variant::Russian>& /* other */) const
-        {
-                return false;
-        }
-
-        bool equal(const Value<variant::Russian>& /* other */) const
-        {
-                return true;
-        }
+        friend struct TotalOrderInterface< Value<variant::Russian> >;
 
         // representation
         bool promotion_;

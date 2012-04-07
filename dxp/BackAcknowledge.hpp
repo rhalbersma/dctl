@@ -18,6 +18,7 @@ namespace dxp {
 
 class BackAcknowledge
 :
+        // Curiously Recurring Template Pattern (CRTP)
         public mixin::IdentifierCreate<'K', BackAcknowledge, MessageInterface>
 {
 public:

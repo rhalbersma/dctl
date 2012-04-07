@@ -1,9 +1,10 @@
 #pragma once
 #include "Value_fwd.hpp"
-#include "OrderInterface.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
+#include "../utility/TotalOrderInterface.hpp"
+#include "../utility/TotalOrderTrivialImpl.hpp"
 
 namespace dctl {
 namespace capture {
@@ -12,21 +13,12 @@ namespace capture {
 template<typename Rules>
 struct Value
 :
-        public OrderInterface< Value<Rules> >
+        // Curiously Recurring Template Pattern (CRTP)
+        public TotalOrderInterface< Value<Rules> >,
+        private TotalOrderTrivialImpl< Value<Rules> >
 {
 private:
-        friend struct OrderInterface< Value<Rules> >;
-
-        // predicates
-        bool less(const Value<Rules>& /* other */) const
-        {
-                return false;
-        }
-
-        bool equal(const Value<Rules>& /* other */) const
-        {
-                return true;
-        }
+        friend struct TotalOrderInterface< Value<Rules> >;
 };
 
 template<typename Rules>
