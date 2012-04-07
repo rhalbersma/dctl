@@ -18,6 +18,7 @@ namespace dxp {
 
 class BackRequest
 :
+        // Curiously Recurring Template Pattern (CRTP)
         public mixin::IdentifierCreate<'B', BackRequest, MessageInterface>
 {
 public:

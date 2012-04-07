@@ -20,18 +20,14 @@ namespace aux {
 
 // specialization for move generation without duplicate capture checking
 inline
-void unique_back(Stack& /* stack */,
-        Int2Type<false>
-)
+void unique_back(Stack& /* stack */, Int2Type<false>)
 {
         // no-op
 }
 
 // specialization for move generation with duplicate capture checking
 inline
-void unique_back(Stack& stack,
-        Int2Type<true>
-)
+void unique_back(Stack& stack, Int2Type<true>)
 {
         if (std::find(stack.begin(), stack.end(), stack.back()) != stack.end() - 1)
                 stack.pop_back();

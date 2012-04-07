@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "Value_fwd.hpp"
-#include "OrderInterface.hpp"
+#include "../utility/TotalOrderInterface.hpp"
 
 namespace dctl {
 
@@ -13,7 +13,8 @@ namespace capture {
 template<>
 struct Value<variant::Spanish>
 :
-        public OrderInterface< Value<variant::Spanish> >
+        // Curiously Recurring Template Pattern (CRTP)
+        public TotalOrderInterface< Value<variant::Spanish> >
 {
 public:
         // constructors
@@ -47,7 +48,7 @@ public:
         }
 
 private:
-        friend struct OrderInterface< Value<variant::Spanish> >;
+        friend struct TotalOrderInterface< Value<variant::Spanish> >;
 
         // predicates
         bool less(const Value<variant::Spanish>& other) const
