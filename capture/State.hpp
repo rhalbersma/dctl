@@ -442,8 +442,8 @@ private:
 
         // representation
         const BitBoard king_targets_;
-        BitBoard initial_targets_;      // targets before a capture
-        BitBoard remaining_targets_;            // targets after a capture
+        BitBoard initial_targets_;
+        BitBoard remaining_targets_;
         BitBoard not_occupied_;
         BitBoard from_sq_;
         Value<Rules> current_;
