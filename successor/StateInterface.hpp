@@ -43,7 +43,8 @@ public:
         }
 
 protected:
-        // non-virtual destructor
+        // disable deletion of Derived* through Base* 
+        // enable deletion of Base* through Derived*
         ~StateInterface()
         {
                 // no-op

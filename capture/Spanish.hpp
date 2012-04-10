@@ -64,7 +64,6 @@ public:
         }
 
 private:
-
         bool invariant() const
         {
                 return (0 <= num_kings_) && (num_kings_ <= num_pieces_);

@@ -31,7 +31,6 @@ public:
 
         bool operator==(const Value<variant::Russian>& /* other */) const
         {
-
                 return true;
         }
 

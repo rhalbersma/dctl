@@ -74,9 +74,9 @@ private:
                 const Position<Board>& p, State& capture, Stack& moves, Int2Type<true>
         )
         {
-                capture.current_toggle_with_king();
+                capture.toggle_with_king();
                 generate_precede(p, capture, moves, Int2Type<false>());
-                capture.current_toggle_with_king();
+                capture.toggle_with_king();
         }
 
         // partial specialization for no relative king capture precedence
@@ -203,13 +203,13 @@ private:
                 PushAssign<Board, Index>()(jumper);
                 if (
                         !scan_next<Index>(jumper, capture, moves) &&
-                        (capture.current() >= capture.best())
+                        capture.is_improvement()
                 ) {
-                        if (capture.current() != capture.best()) {
-                                capture.best() = capture.current();
+                        if (capture.improvement_is_strict()) {
+                                capture.improve();
                                 moves.clear();
                         }
-                        capture.template add_king_capture<Color, Index>(jumper, moves);
+                        capture.template add_king_jump<Color, Index>(jumper, moves);
                 }
         }
 
