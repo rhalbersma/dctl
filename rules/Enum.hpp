@@ -24,8 +24,8 @@ enum { remove_af, remove_ep };
 // promotion condition: apres-fini (having finished) or en-passant (in passing)
 enum { promote_af, promote_ep };
 
-// majority capture precedence: none, single, qualified
-enum { precede_0, precede_1, precede_Q };
+// majority capture precedence: none, quantity, quality
+enum { precede_0, precede_N, precede_Q };
 
 }       // namespace rules
 }       // namespace dctl

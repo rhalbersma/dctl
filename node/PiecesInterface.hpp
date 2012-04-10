@@ -43,6 +43,14 @@ public:
                 return self().do_pieces();
         }
 
+protected:
+        // disable deletion of Derived* through Base* 
+        // enable deletion of Base* through Derived*
+        ~PiecesInterface()
+        {
+                // no-op
+        }
+
 private:
         // cast a base reference to a derived reference (i.e. "down" the class hierarchy)
         const Impl& down_cast(const PiecesInterface<Impl>& other) const

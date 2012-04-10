@@ -233,13 +233,13 @@ private:
                 PushAssign<Board, Index>()(jumper);
                 if (
                         !scan_next<Index>(jumper, capture, moves) &&
-                        (capture.current() >= capture.best())
+                        capture.is_improvement()
                 ) {
-                        if (capture.current() != capture.best()) {
-                                capture.best() = capture.current();
+                        if (capture.improvement_is_strict()) {
+                                capture.improve();
                                 moves.clear();
                         }
-                        capture.template add_man_capture<Color>(jumper, moves);
+                        capture.template add_pawn_jump<Color>(jumper, moves);
                 }
         }
 
@@ -274,9 +274,9 @@ private:
                 if (!capture.is_promotion_sq<Color>(jumper))
                         return scan_next_dispatch<Index>(jumper, capture, moves, Int2Type<rules::promote_af>());
                 else {
-                        capture.current_toggle_promotion();
+                        capture.toggle_promotion();
                         const auto found_next = KingJumps::promote_en_passant<Index>(jumper, capture, moves);
-                        capture.current_toggle_promotion();
+                        capture.toggle_promotion();
                         return found_next;
                 }
         }

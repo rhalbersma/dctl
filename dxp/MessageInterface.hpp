@@ -19,7 +19,7 @@ class MessageInterface
         public mixin::HeaderBodyTerminator< 1, 126, '\0' >
 {
 public:
-        // virtual destructor
+        // enable deletion of a Derived* through a Base*
         virtual ~MessageInterface()
         {
                 // no-op
