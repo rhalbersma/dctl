@@ -114,6 +114,7 @@ public:
 
         bool is_improvement() const
         {
+                BOOST_ASSERT(totally_ordered(best_, current_));
                 return best_ <= current_;
         }
 
@@ -141,7 +142,7 @@ public:
         template<bool Color, int Index>
         void add_king_jump(BitBoard dest_sq, Stack& moves) const
         {
-                const auto ambiguous = !moves.empty() && is_large();
+                const auto ambiguous = is_ambiguous(moves);
 
                 // tag dispatching on king halt after final capture
                 add_king_jump_dispatch<Color, Index>(
@@ -277,7 +278,7 @@ private:
                                 from_sq_ ^ dest_sq,
                                 promotion_sq<Color, Board>(dest_sq),
                                 captured_pieces(),
-                                captured_king_targets()
+                                pawn_captured_kings()
                         )
                 );
         }
@@ -288,7 +289,7 @@ private:
                 BitBoard dest_sq, Stack& moves, Int2Type<true>
         ) const
         {
-                const auto ambiguous = !moves.empty() && is_large();
+                const auto ambiguous = is_ambiguous(moves);
                 add_pawn_jump_dispatch<Color>(dest_sq, moves, Int2Type<false>());
                 if (ambiguous)
                         unique_back<Rules>(moves);
@@ -375,6 +376,11 @@ private:
                         );
         }
 
+        bool is_ambiguous(const Stack& moves) const
+        {
+                return !moves.empty() && is_large();
+        }
+
         bool is_large() const
         {
                 return count() >= rules::large_capture<Rules>::value;
@@ -410,16 +416,16 @@ private:
                 return captured_pieces() & king_targets_;
         }
 
-        BitBoard captured_king_targets() const
+        BitBoard pawn_captured_kings() const
         {
                 // tag dispatching on whether pawns can capture kings
-                return captured_king_targets_dispatch(
+                return pawn_captured_kings_dispatch(
                         Int2Type<rules::is_pawns_capture_kings<Rules>::value>()
                 );
         }
 
         // specialization for pawns that cannot capture kings
-        BitBoard captured_king_targets_dispatch(
+        BitBoard pawn_captured_kings_dispatch(
                 Int2Type<false>
         ) const
         {
@@ -427,7 +433,7 @@ private:
         }
 
         // specialization for pawns that can capture kings
-        BitBoard captured_king_targets_dispatch(
+        BitBoard pawn_captured_kings_dispatch(
                 Int2Type<true>
         ) const
         {

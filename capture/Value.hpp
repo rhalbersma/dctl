@@ -24,5 +24,13 @@ struct Value
         }
 };
 
+template<typename Rules>
+bool totally_ordered(const Value<Rules>& left, const Value<Rules>& right)
+{
+        const auto equivalent = !((left < right) || (right < left));
+        const auto equal = left == right;
+        return equivalent == equal;
+}
+
 }       // namespace capture
 }       // namespace dctl
