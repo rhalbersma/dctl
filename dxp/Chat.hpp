@@ -16,7 +16,7 @@ namespace dxp {
 class Chat
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::IdentifierCreate<'C', Chat, MessageInterface>
+        public mixin::FactoryCreate<'C', Chat, MessageInterface>
 {
 public:
         explicit Chat(const std::string& message)

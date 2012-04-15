@@ -27,7 +27,7 @@ template
 >
 struct Dispatcher
 :
-        private boost::noncopyable      // enforce singleton semantics
+        private boost::noncopyable
 {
         // typedefs
         typedef StateInterface<Board> const * BaseConstPointer;
@@ -39,11 +39,11 @@ struct Dispatcher
                 TODO: suppress outside template parameters using C++11 template aliases
 
                 template<bool Color, int Material> 
-                using Derived = State<Color, Material, Selection, Rules, Board>;
+                using Delegate = State<Color, Material, Selection, Rules, Board>;
 
-                static const Derived<Side::black, Material::none> black_none;
+                static const Delegate<Side::black, Material::none> black_none;
                 ...
-                static const Derived<Side::black, Material::none> white_both;
+                static const Delegate<Side::black, Material::none> white_both;
 
                 */
 

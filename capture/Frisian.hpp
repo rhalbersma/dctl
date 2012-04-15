@@ -28,7 +28,7 @@ public:
         }
 
         // predicates
-        bool operator<(const Value<variant::Frisian>& other) const
+        bool operator<(const Value& other) const
         {
                 const auto delta_kings = num_kings_ - other.num_kings_;
                 const auto delta_pawns = num_pieces_ - other.num_pieces_ - delta_kings;
@@ -47,7 +47,7 @@ public:
                 }
         }
 
-        bool operator==(const Value<variant::Frisian>& other) const
+        bool operator==(const Value& other) const
         {
                 return (
                         ( num_pieces_ == other.num_pieces_ ) &&

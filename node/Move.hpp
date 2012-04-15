@@ -11,29 +11,30 @@
 
 namespace dctl {
 
-struct Move
+template<typename T>
+struct Move_
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public PiecesInterface<Move>,
-        private boost::equality_comparable<Move, 
-        boost::xorable<Move> >
+        public PiecesInterface< T, Move_ >,
+        private boost::equality_comparable< Move_<T>, 
+        boost::xorable< Move_<T> > >
 {
 public:
         // default constructor
-        Move()
+        Move_()
         {
                 // no-op
         }
 
         // zero initialize
-        explicit Move(BitBoard /* MUST be zero */)
+        explicit Move_(T /* MUST be zero */)
         {
                 init<Side::black>(0, 0, 0);
                 BOOST_ASSERT(invariant());
         }
 
         // initialize with a set of bitboards
-        Move(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings)
+        Move_(T black_pieces, T white_pieces, T kings)
         {
                 init<Side::black>(black_pieces, white_pieces, kings);
                 BOOST_ASSERT(invariant());
@@ -41,10 +42,10 @@ public:
 
         // king move
         template<bool Color>
-        static Move create(BitBoard delta)
+        static Move_ create(T delta)
         {
                 BOOST_ASSERT(pre_condition(delta));
-                Move tmp;
+                Move_ tmp;
                 tmp.init<Color>(
                         delta,  // move a king between the from and destination squares
                         0,
@@ -56,10 +57,10 @@ public:
 
         // pawn move
         template<bool Color>
-        static Move create(BitBoard delta, BitBoard promotion)
+        static Move_ create(T delta, T promotion)
         {
                 BOOST_ASSERT(pre_condition(delta, promotion));
-                Move tmp;
+                Move_ tmp;
                 tmp.init<Color>(
                         delta,          // move a pawn between the from and destination squares
                         0,
@@ -71,10 +72,10 @@ public:
 
         // king jump
         template<bool Color, typename Rules>
-        static Move create(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
+        static Move_ create(T delta, T captured_pieces, T captured_kings)
         {
                 BOOST_ASSERT(pre_condition<Rules>(delta, captured_pieces, captured_kings));
-                Move tmp;
+                Move_ tmp;
                 tmp.init<Color>(
                         delta,                  // move a king between the from and destination square
                         captured_pieces,        // remove the captured pieces
@@ -86,10 +87,10 @@ public:
 
         // pawn jump
         template<bool Color, typename Rules>
-        static Move create(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
+        static Move_ create(T delta, T promotion, T captured_pieces, T captured_kings)
         {
                 BOOST_ASSERT(pre_condition<Rules>(delta, promotion, captured_pieces, captured_kings));
-                Move tmp;
+                Move_ tmp;
                 tmp.init<Color>(
                         delta,                          // move a pawn between the from and destination squares
                         captured_pieces,                // remove the captured pieces
@@ -99,7 +100,7 @@ public:
                 return tmp;
         }
 
-        bool operator==(const Move& other) const
+        bool operator==(const Move_& other) const
         {
                 return (
                         (pieces(Side::black) == other.pieces(Side::black)) &&
@@ -109,7 +110,7 @@ public:
         }
 
         // xor-assign the set bits of another piece set
-        Move& operator^=(const Move& other)
+        Move_& operator^=(const Move_& other)
         {
                 pieces_[Side::black] ^= other.pieces(Side::black);
                 pieces_[Side::white] ^= other.pieces(Side::white);
@@ -119,52 +120,52 @@ public:
         }
 
 private:
-        friend struct PiecesInterface<Move>;
+        friend struct PiecesInterface< T, ::dctl::Move_ >;
 
         // black or white pawns
-        BitBoard do_pawns(bool color) const
+        T do_pawns(bool color) const
         {
                 return do_pieces(color) & ~do_kings();
         }
 
         // black or white kings
-        BitBoard do_kings(bool color) const
+        T do_kings(bool color) const
         {
                 return do_pieces(color) & do_kings();
         }
 
         // black or white pieces
-        BitBoard do_pieces(bool color) const
+        T do_pieces(bool color) const
         {
                 return pieces_[color];
         }
 
         // black and white pawns
-        BitBoard do_pawns() const
+        T do_pawns() const
         {
                 return do_pieces() & ~do_kings();
         }
 
         // black and white kings
-        BitBoard do_kings() const
+        T do_kings() const
         {
                 return kings_;
         }
 
         // black and white pieces
-        BitBoard do_pieces() const
+        T do_pieces() const
         {
                 return do_pieces(Side::black) ^ do_pieces(Side::white);
         }
 
         // king move
-        static bool pre_condition(BitBoard delta)
+        static bool pre_condition(T delta)
         {
                 return bit::is_double(delta);
         }
 
         // pawn move
-        static bool pre_condition(BitBoard delta, BitBoard promotion)
+        static bool pre_condition(T delta, T promotion)
         {
                 return (
                         bit::is_double(delta) &&
@@ -175,7 +176,7 @@ private:
 
         // king jump
         template<typename Rules>
-        static bool pre_condition(BitBoard delta, BitBoard captured_pieces, BitBoard captured_kings)
+        static bool pre_condition(T delta, T captured_pieces, T captured_kings)
         {
                 return (
                         (bit::is_double(delta) || bit::is_zero(delta)) &&
@@ -192,7 +193,7 @@ private:
 
         // pawn jump
         template<typename Rules>
-        static bool pre_condition(BitBoard delta, BitBoard promotion, BitBoard captured_pieces, BitBoard captured_kings)
+        static bool pre_condition(T delta, T promotion, T captured_pieces, T captured_kings)
         {
                 return (
                         (bit::is_double(delta) || bit::is_zero(delta)) &&
@@ -217,7 +218,7 @@ private:
 
         // logical consistency of a king jump
         template<typename Rules>
-        bool king_jump_invariant(BitBoard delta, BitBoard captured_pieces) const
+        bool king_jump_invariant(T delta, T captured_pieces) const
         {
                 return (
                         (side_invariant() || is_intersecting_capture<Rules>(delta, captured_pieces)) &&
@@ -227,7 +228,7 @@ private:
 
         // logical consistency of a pawn jump
         template<typename Rules>
-        bool pawn_jump_invariant(BitBoard delta, BitBoard promotion) const
+        bool pawn_jump_invariant(T delta, T promotion) const
         {
                 return (
                         side_invariant() &&
@@ -249,7 +250,7 @@ private:
 
         // initialize with a set of bitboards
         template<bool Color>
-        void init(BitBoard active_pieces, BitBoard passive_pieces, BitBoard kings)
+        void init(T active_pieces, T passive_pieces, T kings)
         {
                 pieces_[ Color] = active_pieces;
                 pieces_[!Color] = passive_pieces;
@@ -257,22 +258,22 @@ private:
         }
 
         // representation
-        BitBoard pieces_[2];    // black and white pieces
-        BitBoard kings_;        // kings
+        T pieces_[2];    // black and white pieces
+        T kings_;        // kings
 };
 
-template<typename Rules>
-bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces)
+template<typename Rules, typename T>
+bool is_intersecting_capture(T delta, T captured_pieces)
 {
         // tag dispatching on capture removal
         return aux::is_intersecting_capture(
                 delta, captured_pieces,
-                Int2Type<rules::capture_removal<Rules>::value>()
+                Int2Type<rules::jump_removal<Rules>::value>()
         );
 }
 
-template<typename Rules>
-bool is_intersecting_promotion(BitBoard promotion, BitBoard delta)
+template<typename Rules, typename T>
+bool is_intersecting_promotion(T promotion, T delta)
 {
         // tag dispatching on promotion condition
         return aux::is_intersecting_promotion(
@@ -284,8 +285,9 @@ bool is_intersecting_promotion(BitBoard promotion, BitBoard delta)
 namespace aux {
 
 // specialization for apres-fini capture removal
-inline
-bool is_intersecting_capture(BitBoard /* delta */, BitBoard /* captured_pieces */,
+template<typename T>
+bool is_intersecting_capture(
+        T /* delta */, T /* captured_pieces */,
         Int2Type<rules::remove_af>
 )
 {
@@ -293,8 +295,9 @@ bool is_intersecting_capture(BitBoard /* delta */, BitBoard /* captured_pieces *
 }
 
 // specialization for en-passant capture removal
-inline
-bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces,
+template<typename T>
+bool is_intersecting_capture(
+        T delta, T captured_pieces,
         Int2Type<rules::remove_ep>
 )
 {
@@ -304,8 +307,9 @@ bool is_intersecting_capture(BitBoard delta, BitBoard captured_pieces,
 }
 
 // specialization for apres-fini promotion
-inline
-bool is_intersecting_promotion(BitBoard /* promotion */, BitBoard /* delta */,
+template<typename T>
+bool is_intersecting_promotion(
+        T /* promotion */, T /* delta */,
         Int2Type<rules::promote_af>
 )
 {
@@ -313,8 +317,9 @@ bool is_intersecting_promotion(BitBoard /* promotion */, BitBoard /* delta */,
 }
 
 // specialization for en-passant promotion
-inline
-bool is_intersecting_promotion(BitBoard promotion, BitBoard delta,
+template<typename T>
+bool is_intersecting_promotion(
+        T promotion, T delta,
         Int2Type<rules::promote_ep>
 )
 {

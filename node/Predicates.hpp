@@ -99,7 +99,7 @@ bool is_intersecting_capture(const Position<Board>& p, const Move& m)
         // tag dispatching on capture removal
         return aux::is_intersecting_capture(
                 p, m,
-                Int2Type<rules::capture_removal<Rules>::value>()
+                Int2Type<rules::jump_removal<Rules>::value>()
         );
 }
 

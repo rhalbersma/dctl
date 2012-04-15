@@ -105,7 +105,7 @@ private:
                 // tag dispatching on king capture directions
                 generate_dispatch(
                         jumper, capture, moves,
-                        Int2Type<rules::king_capture_directions<Rules>::value>()
+                        Int2Type<rules::king_jump_directions<Rules>::value>()
                 );
         }
 
@@ -145,7 +145,7 @@ private:
                 // tag dispatching on king capture directions
                 return detect_dispatch(
                         active_kings, passive_pieces, not_occupied,
-                        Int2Type<rules::king_capture_directions<Rules>::value>()
+                        Int2Type<rules::king_jump_directions<Rules>::value>()
                 );
         }
 
@@ -219,7 +219,7 @@ private:
                 // tag dispatching on king capture direction reversal
                 return scan_next_dispatch<Index>(
                         jumper, capture, moves,
-                        Int2Type<rules::is_capture_direction_reversal<Rules>::value>()
+                        Int2Type<rules::is_jump_direction_reversal<Rules>::value>()
                 );
         }
 
@@ -256,7 +256,7 @@ private:
                 // tag dispatching on king capture landing range after intermediate captures
                 return land_dispatch<Index>(
                         jumper, capture, moves,
-                        Int2Type<rules::king_capture_land<Rules>::value>()
+                        Int2Type<rules::king_jump_land<Rules>::value>()
                 );
         }
 

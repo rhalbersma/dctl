@@ -12,11 +12,11 @@ template<typename> struct king_scan_range;
 template<> struct king_scan_range<variant::Killer>              { enum { value = scan_N    }; };
 
 // capture mechanics
-template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<variant::Killer>       { enum { value = dirs_diag }; };
+template<typename> struct pawn_jump_directions;
+template<> struct pawn_jump_directions<variant::Killer>         { enum { value = dirs_diag }; };
 
-template<typename> struct king_capture_halt;
-template<> struct king_capture_halt<variant::Killer>            { enum { value = halt_1K   }; };
+template<typename> struct king_jump_halt;
+template<> struct king_jump_halt<variant::Killer>               { enum { value = halt_1K   }; };
 
 // capture precedence
 template<typename> struct is_majority_precedence;

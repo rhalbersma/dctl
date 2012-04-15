@@ -19,7 +19,7 @@ namespace dxp {
 class GameAcknowledge
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::IdentifierCreate<'A', GameAcknowledge, MessageInterface>
+        public mixin::FactoryCreate<'A', GameAcknowledge, MessageInterface>
 {
 public:
         // typedefs

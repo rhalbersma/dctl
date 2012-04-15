@@ -13,19 +13,19 @@ struct Value
         private boost::totally_ordered< Value<Rules> >
 {
         // predicates
-        bool operator<(const Value<Rules>& /* other */) const
+        bool operator<(const Value& /* other */) const
         {
                 return false;
         }
 
-        bool operator==(const Value<Rules>& /* other */) const
+        bool operator==(const Value& /* other */) const
         {
                 return true;
         }
 };
 
 template<typename Rules>
-bool totally_ordered(const Value<Rules>& left, const Value<Rules>& right)
+bool is_totally_ordered(const Value<Rules>& left, const Value<Rules>& right)
 {
         const auto equivalent = !((left < right) || (right < left));
         const auto equal = left == right;

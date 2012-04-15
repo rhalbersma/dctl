@@ -38,7 +38,8 @@ struct Mobility
         template<bool Color, typename Board>
         static int count(const Position<Board>& p)
         {
-                return successor::Dispatcher<Selection, Rules, Board>::select(state<Color>(p))->count(p);
+                typedef successor::Dispatcher<Selection, Rules, Board> Delegate;
+                return Delegate::select(state<Color>(p))->count(p);
         }
 };
 

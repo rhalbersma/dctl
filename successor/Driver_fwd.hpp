@@ -5,6 +5,8 @@
 namespace dctl {
 namespace successor {
 
+// TODO: suppress outside template parameters using C++11 template aliases
+
 // primary template
 template<bool, int, typename Rules, typename Board, typename> struct Driver;
 

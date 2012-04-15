@@ -37,26 +37,27 @@ struct HeaderBodyTerminator
 
 template
 <
-        char Identifier,
+        char ID,
         typename Derived,
-        typename Base
+        typename Base,
+        typename Identifier = std::string
 >
-struct IdentifierCreate
+struct FactoryCreate
 :
         public Base
 {
-        static std::string identifier()
+        static Identifier identifier()
         {
-                return std::string(1, identifier_);
+                return Identifier(1, identifier_);
         }
 
         static std::unique_ptr<Base> create(const std::string& parameter)
         {
-                return std::unique_ptr<Base>(new Derived(parameter));
+                return std::unique_ptr<Derived>(new Derived(parameter));
         }
 
         typedef Base base;
-        BOOST_STATIC_CONSTANT(auto, identifier_ = Identifier);
+        BOOST_STATIC_CONSTANT(auto, identifier_ = ID);
 };
 
 template<typename T>
@@ -73,10 +74,10 @@ struct has_header_body_terminator
 {};
 
 template<typename T>
-struct has_identifier_create
+struct has_factory_create
 :
         std::is_base_of<
-                IdentifierCreate<
+                FactoryCreate<
                         T::identifier_,
                         T,
                         typename T::base

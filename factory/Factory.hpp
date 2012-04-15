@@ -1,4 +1,5 @@
 #pragma once
+#include <map>                          // map
 #include <memory>                       // unique_ptr
 #include <string>                       // string
 #include <type_traits>                  // is_base_of
@@ -17,9 +18,9 @@ template
         typename DerivedSequence,
         typename Base,
         typename BasePointer = std::unique_ptr<Base>,
-        typename Creator = BasePointer (*)(const std::string&),
-        typename Lookup = std::map<std::string, Creator>,
-        typename Registry = Registry<Base, BasePointer, Creator, Lookup>
+        typename Input = std::string,
+        typename Identifier = std::string,
+        typename Creator = BasePointer (*)(const Identifier&)
 >
 struct Factory
 {
@@ -44,13 +45,15 @@ public:
                 );
         }
 
-        BasePointer create(const std::string& input) const
+        BasePointer create(const Input& input) const
         {
                 const auto fun = registry_.find(Base::header(input));
                 return fun? (fun)(Base::body(input)) : nullptr;
         }
 
 private:
+        typedef Registry<Base, BasePointer, Identifier, Creator> Registry;
+
         // TODO: refactor into polymorphic lambda expresssion whenever C++11 supports this
         struct call_insert
         {

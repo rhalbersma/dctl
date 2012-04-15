@@ -5,7 +5,6 @@
 #include <boost/utility.hpp>            // noncopyable
 #include "Value.hpp"
 #include "../bit/Bit.hpp"
-#include "../node/Promotion.hpp"
 #include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
@@ -44,7 +43,7 @@ public:
 
         void toggle_king_targets()
         {
-                BOOST_STATIC_ASSERT(!rules::is_pawns_capture_kings<Rules>::value);
+                BOOST_STATIC_ASSERT(!rules::is_pawns_jump_kings<Rules>::value);
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
 
@@ -84,7 +83,7 @@ public:
                 // tag dispatching on capture removal
                 make_dispatch(
                         target_sq,
-                        Int2Type<rules::capture_removal<Rules>::value>()
+                        Int2Type<rules::jump_removal<Rules>::value>()
                 );
                 BOOST_ASSERT(invariant());
         }
@@ -94,16 +93,9 @@ public:
                 // tag dispatching on capture removal
                 undo_dispatch(
                         target_sq,
-                        Int2Type<rules::capture_removal<Rules>::value>()
+                        Int2Type<rules::jump_removal<Rules>::value>()
                 );
                 BOOST_ASSERT(invariant());
-        }
-
-        template<bool Color>
-        bool is_promotion_sq(BitBoard dest_sq) const
-        {
-                BOOST_STATIC_ASSERT(rules::promotion_condition<Rules>::value == rules::promote_ep);
-                return !bit::is_zero(promotion_sq<Color, Board>(dest_sq));
         }
 
         void toggle_promotion()
@@ -114,13 +106,13 @@ public:
 
         bool is_improvement() const
         {
-                BOOST_ASSERT(totally_ordered(best_, current_));
+                BOOST_ASSERT(is_totally_ordered(best_, current_));
                 return best_ <= current_;
         }
 
         bool improvement_is_strict() const
         {
-                BOOST_ASSERT(best_ <= current_);
+                BOOST_ASSERT(is_improvement());
                 return best_ != current_;
         }
 
@@ -135,7 +127,7 @@ public:
                 // tag dispatching on ambiguity of man captures
                 add_pawn_jump_dispatch<Color>(
                         dest_sq, moves,
-                        Int2Type<rules::is_ambiguous_man_capture<Rules>::value>()
+                        Int2Type<rules::is_ambiguous_pawn_jump<Rules>::value>()
                 );
         }
 
@@ -147,7 +139,7 @@ public:
                 // tag dispatching on king halt after final capture
                 add_king_jump_dispatch<Color, Index>(
                         dest_sq, ambiguous, moves,
-                        Int2Type<rules::king_capture_halt<Rules>::value>()
+                        Int2Type<rules::king_jump_halt<Rules>::value>()
                 );
         }
 
@@ -292,7 +284,7 @@ private:
                 const auto ambiguous = is_ambiguous(moves);
                 add_pawn_jump_dispatch<Color>(dest_sq, moves, Int2Type<false>());
                 if (ambiguous)
-                        unique_back<Rules>(moves);
+                        unique_back(moves);
         }
 
         // partial specialization for kings that halt immediately if the final capture is a king,
@@ -339,7 +331,7 @@ private:
                         Int2Type<rules::promotion_condition<Rules>::value>()
                 );
                 if (ambiguous)
-                        unique_back<Rules>(moves);
+                        unique_back(moves);
         }
 
         // partial specialization for pawns that promote apres-fini
@@ -374,6 +366,12 @@ private:
                                         captured_kings()
                                 )
                         );
+        }
+
+        bool is_promotion() const
+        {
+                BOOST_STATIC_ASSERT(rules::promotion_condition<Rules>::value == rules::promote_ep);
+                return current_.is_promotion();
         }
 
         bool is_ambiguous(const Stack& moves) const
@@ -420,7 +418,7 @@ private:
         {
                 // tag dispatching on whether pawns can capture kings
                 return pawn_captured_kings_dispatch(
-                        Int2Type<rules::is_pawns_capture_kings<Rules>::value>()
+                        Int2Type<rules::is_pawns_jump_kings<Rules>::value>()
                 );
         }
 
@@ -438,12 +436,6 @@ private:
         ) const
         {
                 return captured_kings();
-        }
-
-        bool is_promotion() const
-        {
-                BOOST_STATIC_ASSERT(rules::promotion_condition<Rules>::value == rules::promote_ep);
-                return current_.is_promotion();
         }
 
         // representation

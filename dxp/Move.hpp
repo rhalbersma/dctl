@@ -21,7 +21,7 @@ namespace dxp {
 class Move
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::IdentifierCreate<'M', Move, MessageInterface>
+        public mixin::FactoryCreate<'M', Move, MessageInterface>
 {
 public:
         explicit Move(const std::string& message)
