@@ -21,7 +21,7 @@ namespace dxp {
 class GameRequest
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::IdentifierCreate<'R', GameRequest, MessageInterface>
+        public mixin::FactoryCreate<'R', GameRequest, MessageInterface>
 {
 public:
         // constants and typedefs

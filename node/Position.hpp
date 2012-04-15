@@ -236,7 +236,7 @@ private:
                 if (
                         restricted.moves() && is_capture(*this, m) &&
                         (
-                                bit::is_subset_of(restricted.king() , captured_pieces(*this, m)) ||
+                                bit::is_subset_of(restricted.king()   , captured_pieces(*this, m)) ||
                                 bit::is_subset_of(passive_pawns(*this), captured_pieces(*this, m))
                         )
                 ) {

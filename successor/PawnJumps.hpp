@@ -62,7 +62,7 @@ private:
                 // tag dispatching on whether pawns can capture kings
                 select_targets_dispatch(
                         p, capture, moves,
-                        Int2Type<rules::is_pawns_capture_kings<Rules>::value>()
+                        Int2Type<rules::is_pawns_jump_kings<Rules>::value>()
                 );
         }
 
@@ -89,7 +89,7 @@ private:
                 // tag dispatching on man capture directions
                 generate_dispatch(
                         active_pawns, capture, moves,
-                        Int2Type<rules::man_capture_directions<Rules>::value>()
+                        Int2Type<rules::pawn_jump_directions<Rules>::value>()
                 );
         }
 
@@ -147,7 +147,7 @@ private:
                 // tag dispatching on man capture directions
                 return detect_dispatch(
                         active_pawns, passive_pieces, not_occupied,
-                        Int2Type<rules::man_capture_directions<Rules>::value>()
+                        Int2Type<rules::pawn_jump_directions<Rules>::value>()
                 );
         }
 
@@ -271,7 +271,7 @@ private:
                 BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::promote_ep>
         )
         {
-                if (!capture.is_promotion_sq<Color>(jumper))
+                if (!is_promotion_sq<Color, Board>(jumper))
                         return scan_next_dispatch<Index>(jumper, capture, moves, Int2Type<rules::promote_af>());
                 else {
                         capture.toggle_promotion();
@@ -287,7 +287,7 @@ private:
                 // tag dispatching on man turn directions
                 return turn_dispatch<Index>(
                         jumper, capture, moves,
-                        Int2Type<rules::man_turn_directions<Rules>::value>()
+                        Int2Type<rules::pawn_turn_directions<Rules>::value>()
                 );
         }
 

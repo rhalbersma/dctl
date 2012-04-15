@@ -8,8 +8,8 @@ namespace variant { struct Italian; }
 namespace rules {
 
 // capture mechanics
-template<typename> struct is_pawns_capture_kings;
-template<> struct is_pawns_capture_kings<variant::Italian>        { enum { value = false   }; };
+template<typename> struct is_pawns_jump_kings;
+template<> struct is_pawns_jump_kings<variant::Italian>         { enum { value = false   }; };
 
 // capture precedence
 template<typename> struct is_majority_precedence;

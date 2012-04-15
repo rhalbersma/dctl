@@ -22,16 +22,16 @@ template<typename> struct max_same_king_moves;                  // is_restricted
 //+----------------------------------------------------------------------------+
 
 // pawns can capture kings
-template<typename> struct is_pawns_capture_kings                  { enum { value = true  }; };
+template<typename> struct is_pawns_jump_kings                   { enum { value = true  }; };
 
 // king capture directions
-template<typename> struct king_capture_directions               { enum { value = dirs_diag }; };
+template<typename> struct king_jump_directions                  { enum { value = dirs_diag }; };
 
 // man capture directions
-template<typename> struct man_capture_directions                { enum { value = dirs_up }; };
+template<typename> struct pawn_jump_directions                  { enum { value = dirs_up }; };
 
 // man backwards capture
-template<typename Rules> struct is_pawns_capture_backwards        { enum { value = man_capture_directions<Rules>::value != dirs_up }; };
+template<typename Rules> struct is_pawns_jump_backwards         { enum { value = pawn_jump_directions<Rules>::value != dirs_up }; };
 
 // intermediate capture directions
 template<int> struct turn_directions;
@@ -42,22 +42,22 @@ template<> struct turn_directions<dirs_orth>                    { enum { value =
 template<> struct turn_directions<dirs_all >                    { enum { value = turn_all  }; };
 
 // king capture turn directions
-template<typename Rules> struct king_turn_directions            { enum { value = turn_directions<king_capture_directions<Rules>::value>::value }; };
+template<typename Rules> struct king_turn_directions            { enum { value = turn_directions<king_jump_directions<Rules>::value>::value }; };
 
 // man capture turn directions
-template<typename Rules> struct man_turn_directions             { enum { value = turn_directions<man_capture_directions<Rules>::value>::value  }; };
+template<typename Rules> struct pawn_turn_directions            { enum { value = turn_directions<pawn_jump_directions<Rules>::value>::value  }; };
 
 // capture direction reversal
-template<typename> struct is_capture_direction_reversal         { enum { value = false }; };
+template<typename> struct is_jump_direction_reversal            { enum { value = false }; };
 
 // king landing range after intermediate captures
-template<typename Rules> struct king_capture_land               { enum { value = king_scan_range<Rules>::value }; };
+template<typename Rules> struct king_jump_land                  { enum { value = king_scan_range<Rules>::value }; };
 
 // king landing range after the final capture
-template<typename Rules> struct king_capture_halt               { enum { value = king_capture_land<Rules>::value }; };
+template<typename Rules> struct king_jump_halt                  { enum { value = king_jump_land<Rules>::value }; };
 
 // capture removal: apres-fini or en-passant
-template<typename> struct capture_removal                       { enum { value = remove_af }; };
+template<typename> struct jump_removal                          { enum { value = remove_af }; };
 
 // promotion condition: apres-fini or en-passant
 template<typename> struct promotion_condition                   { enum { value = promote_af }; };
@@ -105,12 +105,12 @@ template<typename> struct max_2v1_moves                         { enum { value =
 //|      Capture ambiguity                                                     |
 //+----------------------------------------------------------------------------+
 
-template<typename> struct is_check_capture_uniqueness           { enum { value = true }; };
+template<typename> struct is_check_jump_uniqueness              { enum { value = true }; };
 
 // smallest value for which non-unique capture sequences can occur
 template<typename> struct large_capture                         { enum { value = 4 }; };
 
-template<typename Rules> struct is_ambiguous_man_capture        { enum { value = is_pawns_capture_backwards<Rules>::value || promotion_condition<Rules>::value }; };
+template<typename Rules> struct is_ambiguous_pawn_jump          { enum { value = is_pawns_jump_backwards<Rules>::value || promotion_condition<Rules>::value }; };
 
 }       // namespace rules
 }       // namespace dctl

@@ -9,11 +9,11 @@ namespace rules {
 
 // move mechanics
 template<typename> struct king_scan_range;
-template<> struct king_scan_range<variant::Pool>        { enum { value = scan_N    }; };
+template<> struct king_scan_range<variant::Pool>                { enum { value = scan_N    }; };
 
 // capture mechanics
-template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<variant::Pool> { enum { value = dirs_diag }; };
+template<typename> struct pawn_jump_directions;
+template<> struct pawn_jump_directions<variant::Pool>           { enum { value = dirs_diag }; };
 
 }       // namespace rules
 }       // namespace dctl

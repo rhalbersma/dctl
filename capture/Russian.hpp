@@ -24,12 +24,12 @@ public:
         }
 
         // predicates
-        bool operator<(const Value<variant::Russian>& /* other */) const
+        bool operator<(const Value& /* other */) const
         {
                 return false;
         }
 
-        bool operator==(const Value<variant::Russian>& /* other */) const
+        bool operator==(const Value& /* other */) const
         {
                 return true;
         }

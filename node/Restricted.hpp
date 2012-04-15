@@ -30,13 +30,6 @@ public:
         }
 
         // modifiers
-        void reset()
-        {
-                king_ = 0;
-                moves_ = 0;
-                BOOST_ASSERT(invariant());
-        }
-
         void init(BitBoard dest)
         {
                 BOOST_ASSERT(bit::is_single(dest));
@@ -50,6 +43,14 @@ public:
                 BOOST_ASSERT(bit::is_single(dest));
                 king_= dest;
                 ++moves_;
+                BOOST_ASSERT(invariant());
+        }
+
+        void reset()
+        {
+                BOOST_ASSERT(true);
+                king_ = 0;
+                moves_ = 0;
                 BOOST_ASSERT(invariant());
         }
 

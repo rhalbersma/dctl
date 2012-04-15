@@ -18,11 +18,11 @@ template<typename> struct max_same_king_moves;
 template<> struct max_same_king_moves<variant::Frisian>                 { enum { value = 6        }; };
 
 // capture mechanics
-template<typename> struct man_capture_directions;
-template<> struct man_capture_directions<variant::Frisian>              { enum { value = dirs_all }; };
+template<typename> struct pawn_jump_directions;
+template<> struct pawn_jump_directions<variant::Frisian>                { enum { value = dirs_all }; };
 
-template<typename> struct king_capture_directions;
-template<> struct king_capture_directions<variant::Frisian>             { enum { value = dirs_all }; };
+template<typename> struct king_jump_directions;
+template<> struct king_jump_directions<variant::Frisian>                { enum { value = dirs_all }; };
 
 // capture precedence
 template<typename> struct is_majority_precedence;

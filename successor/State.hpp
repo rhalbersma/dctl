@@ -35,19 +35,22 @@ class State
         public StateInterface<Board>
 {
 private:
+        // typedefs
+        typedef Driver<Color, Material, Selection, Rules, Board> Delegate;
+
         virtual void do_generate(const Position<Board>& p, Stack& moves) const
         {
-                Driver<Color, Material, Selection, Rules, Board>::generate(p, moves);
+                Delegate::generate(p, moves);
         }
 
         virtual int do_count(const Position<Board>& p) const
         {
-                return Driver<Color, Material, Selection, Rules, Board>::count(p);
+                return Delegate::count(p);
         }
 
         virtual bool do_detect(const Position<Board>& p) const
         {
-                return Driver<Color, Material, Selection, Rules, Board>::detect(p);
+                return Delegate::detect(p);
         }
 };
 

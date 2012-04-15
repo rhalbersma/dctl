@@ -9,7 +9,7 @@ template<bool Color, typename Rules, typename Board>
 static BitBoard targets(const Position<Board>& p)
 {
         // tag dispatching on whether pawns can capture kings
-        return aux::targets<Color>(p, Int2Type<rules::is_pawns_capture_kings<Rules>::value>());
+        return aux::targets<Color>(p, Int2Type<rules::is_pawns_jump_kings<Rules>::value>());
 }
 
 namespace aux {

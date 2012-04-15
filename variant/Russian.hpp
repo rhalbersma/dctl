@@ -6,7 +6,7 @@ namespace variant {
 // http://www.shashist.ru/kodeks/kodeks2004.doc
 struct Russian;
 
-// aliases for the rules of checkers
+// alias for the Russian rules
 typedef Russian Shashki;
 
 }       // namespace variant
