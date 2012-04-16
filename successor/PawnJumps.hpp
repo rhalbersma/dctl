@@ -68,17 +68,22 @@ private:
 
         // partial specialization for pawns that cannot capture kings
         static void select_targets_dispatch(
-                const Position<Board>& p, State& capture, Stack& moves, Int2Type<false>
+                const Position<Board>& p, State& capture, Stack& moves, 
+                Int2Type<false>
         )
         {
                 capture.toggle_king_targets();
-                select_targets_dispatch(p, capture, moves, Int2Type<true>());
+                select_targets_dispatch(
+                        p, capture, moves, 
+                        Int2Type<true>()
+                );
                 capture.toggle_king_targets();
         }
 
         // partial specialization for pawns that can capture kings
         static void select_targets_dispatch(
-                const Position<Board>& p, State& capture, Stack& moves, Int2Type<true>
+                const Position<Board>& p, State& capture, Stack& moves, 
+                Int2Type<true>
         )
         {
                 generate(p.pawns(Color), capture, moves);
@@ -95,7 +100,8 @@ private:
 
         // partial specialization for pawns that capture in the 8 orthogonal and diagonal directions
         static void generate_dispatch(
-                BitBoard active_pawns, State& capture, Stack& moves, Int2Type<rules::dirs_all>
+                BitBoard active_pawns, State& capture, Stack& moves, 
+                Int2Type<rules::dirs_all>
         )
         {
                 generate_dispatch(active_pawns, capture, moves, Int2Type<rules::dirs_orth>());
@@ -104,7 +110,8 @@ private:
 
         // partial specialization for pawns that capture in the 4 orthogonal directions
         static void generate_dispatch(
-                BitBoard active_pawns, State& capture, Stack& moves, Int2Type<rules::dirs_orth>
+                BitBoard active_pawns, State& capture, Stack& moves, 
+                Int2Type<rules::dirs_orth>
         )
         {
                 generate<Direction::left >(active_pawns, capture, moves);
@@ -115,7 +122,8 @@ private:
 
         // partial specialization for pawns that capture in the 4 diagonal directions
         static void generate_dispatch(
-                BitBoard active_pawns, State& capture, Stack& moves, Int2Type<rules::dirs_diag>
+                BitBoard active_pawns, State& capture, Stack& moves, 
+                Int2Type<rules::dirs_diag>
         )
         {
                 generate_dispatch(active_pawns, capture, moves, Int2Type<rules::dirs_up  >());
@@ -124,7 +132,8 @@ private:
 
         // partial specialization for pawns that capture in the 2 forward diagonal directions
         static void generate_dispatch(
-                BitBoard active_pawns, State& capture, Stack& moves, Int2Type<rules::dirs_up>
+                BitBoard active_pawns, State& capture, Stack& moves, 
+                Int2Type<rules::dirs_up>
         )
         {
                 generate<Direction::left_up >(active_pawns, capture, moves);
@@ -133,7 +142,8 @@ private:
 
         // partial specialization for pawns that capture in the 2 backward diagonal directions
         static void generate_dispatch(
-                BitBoard active_pawns, State& capture, Stack& moves, Int2Type<rules::dirs_down>
+                BitBoard active_pawns, State& capture, Stack& moves, 
+                Int2Type<rules::dirs_down>
         )
         {
                 generate<Direction::left_down >(active_pawns, capture, moves);
@@ -153,7 +163,8 @@ private:
 
         // partial specialization for pawns that capture in the 8 orthogonal and diagonal directions
         static bool detect_dispatch(
-                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_all>
+                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
+                Int2Type<rules::dirs_all>
         )
         {
                 return (
@@ -164,7 +175,8 @@ private:
 
         // partial specialization for pawns that capture in the 4 orthogonal directions
         static bool detect_dispatch(
-                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_orth>
+                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
+                Int2Type<rules::dirs_orth>
         )
         {
                 return (
@@ -177,7 +189,8 @@ private:
 
         // partial specialization for pawns that capture in the 4 diagonal directions
         static bool detect_dispatch(
-                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_diag>
+                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
+                Int2Type<rules::dirs_diag>
         )
         {
                 return (
@@ -188,7 +201,8 @@ private:
 
         // partial specialization for pawns that capture in the 2 forward diagonal directions
         static bool detect_dispatch(
-                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_up>
+                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
+                Int2Type<rules::dirs_up>
         )
         {
                 return (
@@ -199,7 +213,8 @@ private:
 
         // partial specialization for pawns that capture in the 2 backward diagonal directions
         static bool detect_dispatch(
-                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_down>
+                BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
+                Int2Type<rules::dirs_down>
         )
         {
                 return (
@@ -256,7 +271,8 @@ private:
         // partial specialization for pawns that promote apres-fini
         template<int Index>
         static bool scan_next_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::promote_af>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::promote_af>
         )
         {
                 return (
@@ -268,11 +284,15 @@ private:
         // partial specialization for pawns that promote en-passant
         template<int Index>
         static bool scan_next_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::promote_ep>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::promote_ep>
         )
         {
                 if (!is_promotion_sq<Color, Board>(jumper))
-                        return scan_next_dispatch<Index>(jumper, capture, moves, Int2Type<rules::promote_af>());
+                        return scan_next_dispatch<Index>(
+                                jumper, capture, moves, 
+                                Int2Type<rules::promote_af>()
+                        );
                 else {
                         capture.toggle_promotion();
                         const auto found_next = KingJumps::promote_en_passant<Index>(jumper, capture, moves);
@@ -294,7 +314,8 @@ private:
         // partial specialization for turns in all the 6 non-parallel orthogonal and diagonal directions
         template<int Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_all>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::turn_all>
         )
         {
                 return (
@@ -306,7 +327,8 @@ private:
         // partial specialization for turns in the remaining 4 diagonal or orthogonal directions
         template<int Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_orth>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::turn_orth>
         )
         {
                 return (
@@ -320,7 +342,8 @@ private:
         // partial specialization for turns in the 2 sideways directions
         template<int Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_diag>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::turn_diag>
         )
         {
                 return (
@@ -332,7 +355,8 @@ private:
         // partial specialization for turns in the 1 mirrored forward direction
         template<int Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_up>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::turn_up>
         )
         {
                 return scan< mirror< angle<Index>, angle<Direction::up> >::value >(jumper, capture, moves);

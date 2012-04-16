@@ -19,7 +19,8 @@ struct Value<variant::Italian>
         private boost::totally_ordered< Value<variant::Italian> >
 {
 public:
-        // constructors
+        // structors
+
         Value()
         :
                 piece_order_(0),
@@ -30,34 +31,8 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        // predicates
-        bool operator<(const Value& other) const
-        {
-                return (
-                         ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
-                        (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
-                        (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
-                        (( piece_order_ < other.piece_order_ )))))))
-                );
-        }
-
-        bool operator==(const Value& other) const
-        {
-                return (
-                        ( num_pieces_  == other.num_pieces_  ) &&
-                        ( with_king_   == other.with_king_   ) &&
-                        ( num_kings_   == other.num_kings_   ) &&
-                        ( piece_order_ == other.piece_order_ )
-                );
-        }
-
-        // views
-        int count() const
-        {
-                return num_pieces_;
-        }
-
         // modifiers
+
         void increment(bool is_captured_king)
         {
                 if (is_captured_king) {
@@ -84,6 +59,35 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
+        // queries
+
+        int count() const
+        {
+                return num_pieces_;
+        }
+
+        // predicates
+
+        bool operator<(const Value& other) const
+        {
+                return (
+                         ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
+                        (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
+                        (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
+                        (( piece_order_ < other.piece_order_ )))))))
+                );
+        }
+
+        bool operator==(const Value& other) const
+        {
+                return (
+                        ( num_pieces_  == other.num_pieces_  ) &&
+                        ( with_king_   == other.with_king_   ) &&
+                        ( num_kings_   == other.num_kings_   ) &&
+                        ( piece_order_ == other.piece_order_ )
+                );
+        }
+
 private:
         bool invariant() const
         {
@@ -95,6 +99,7 @@ private:
         }
 
         // representation
+
         BitBoard piece_order_;
         int num_pieces_;
         int num_kings_;

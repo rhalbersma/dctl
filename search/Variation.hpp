@@ -11,7 +11,7 @@ typedef std::vector<int> Order;
 class Variation
 {
 public:
-        // views
+        // queries
         const Sequence& sequence() const
         {
                 return sequence_;

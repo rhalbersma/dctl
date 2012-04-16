@@ -27,7 +27,7 @@ template
 class Map
 {
 public:
-        // constructors
+        // structors
         Map()
         {
                 resize(0);
@@ -67,7 +67,7 @@ public:
                 std::fill_n(map_.begin(), map_.size(), Entry(Key(0), Value()));
         }
 
-        // views
+        // queries
         const Value* find(const Key& key) const
         {
                 const auto index = Hash<Key, Index>()(key);

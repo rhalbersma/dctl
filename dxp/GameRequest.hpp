@@ -40,7 +40,7 @@ public:
                         position_ = message.substr(42);
         }
 
-        // views
+        // queries
         const std::string& name_initiator() const
         {
                 return name_initiator_;

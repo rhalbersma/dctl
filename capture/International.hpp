@@ -17,7 +17,8 @@ struct Value<variant::International>
         private boost::totally_ordered< Value<variant::International> >
 {
 public:
-        // constructors
+        // structors
+
         Value()
         :
                 num_pieces_(0)
@@ -25,24 +26,8 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        // predicates
-        bool operator<(const Value& other) const
-        {
-                return num_pieces_ < other.num_pieces_;
-        }
-
-        bool operator==(const Value& other) const
-        {
-                return num_pieces_ == other.num_pieces_;
-        }
-
-        // views
-        int count() const
-        {
-                return num_pieces_;
-        }
-
         // modifiers
+
         void increment()
         {
                 ++num_pieces_;
@@ -55,6 +40,25 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
+        // queries
+
+        int count() const
+        {
+                return num_pieces_;
+        }
+
+        // predicates
+
+        bool operator<(const Value& other) const
+        {
+                return num_pieces_ < other.num_pieces_;
+        }
+
+        bool operator==(const Value& other) const
+        {
+                return num_pieces_ == other.num_pieces_;
+        }
+
 private:
         bool invariant() const
         {
@@ -62,6 +66,7 @@ private:
         }
 
         // representation
+
         int num_pieces_;
 };
 

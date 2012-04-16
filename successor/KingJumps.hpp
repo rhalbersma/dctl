@@ -226,7 +226,8 @@ private:
         // partial specialization for kings that cannot reverse their capture direction
         template<int Index>
         static bool scan_next_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<false>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<false>
         )
         {
                 return land<Index>(jumper, capture, moves);
@@ -235,12 +236,16 @@ private:
         // partial specialization for kings that can reverse their capture direction
         template<int Index>
         static bool scan_next_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<true>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<true>
         )
         {
                 return (
                         reverse<Index>(jumper, capture, moves) |
-                        scan_next_dispatch<Index>(jumper, capture, moves, Int2Type<false>())
+                        scan_next_dispatch<Index>(
+                                jumper, capture, moves, 
+                                Int2Type<false>()
+                        )
                 );
         }
 
@@ -263,7 +268,8 @@ private:
         // partial specialization for kings that can only land on the immediately adjacent square
         template<int Index>
         static bool land_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::land_1>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::land_1>
         )
         {
                 return (
@@ -275,7 +281,8 @@ private:
         // partial specialization for kings that can land on any square along the current direction
         template<int Index>
         static bool land_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::land_N>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::land_N>
         )
         {
                 BOOST_ASSERT(jumper & capture.path());
@@ -300,7 +307,8 @@ private:
         // partial specialization for turns in all the 6 non-parallel orthogonal and diagonal directions
         template<int Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_all>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::turn_all>
         )
         {
                 return (
@@ -312,7 +320,8 @@ private:
         // partial specialization for turns in the remaining 4 diagonal or orthogonal directions
         template<int Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_orth>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::turn_orth>
         )
         {
                 return (
@@ -326,7 +335,8 @@ private:
         // partial specialization for turns in the 2 sideways directions
         template<int Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, Stack& moves, Int2Type<rules::turn_diag>
+                BitBoard jumper, State& capture, Stack& moves, 
+                Int2Type<rules::turn_diag>
         )
         {
                 return (
@@ -355,7 +365,8 @@ private:
         // partial specialization for short ranged kings
         template<int Index>
         static void slide_dispatch(
-                BitBoard& jumper, BitBoard /* path */, Int2Type<rules::scan_1>
+                BitBoard& jumper, BitBoard /* path */, 
+                Int2Type<rules::scan_1>
         )
         {
                 PushAssign<Board, Index>()(jumper);
@@ -364,7 +375,8 @@ private:
         // partial specialization for long ranged kings
         template<int Index>
         static void slide_dispatch(
-                BitBoard& jumper, BitBoard path, Int2Type<rules::scan_N>
+                BitBoard& jumper, BitBoard path, 
+                Int2Type<rules::scan_N>
         )
         {
                 do PushAssign<Board, Index>()(jumper); while (jumper & path);

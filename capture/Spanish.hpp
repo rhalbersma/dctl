@@ -17,7 +17,8 @@ struct Value<variant::Spanish>
         private boost::totally_ordered< Value<variant::Spanish> >
 {
 public:
-        // constructors
+        // structors
+
         Value()
         :
                 num_pieces_(0),
@@ -26,7 +27,31 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
+        // modifiers
+
+        void increment(bool is_captured_king)
+        {
+                num_kings_ += is_captured_king;
+                ++num_pieces_;
+                BOOST_ASSERT(invariant());
+        }
+
+        void decrement(bool is_captured_king)
+        {
+                --num_pieces_;
+                num_kings_ -= is_captured_king;
+                BOOST_ASSERT(invariant());
+        }
+
+        // queries
+
+        int count() const
+        {
+                return num_pieces_;
+        }
+
         // predicates
+
         bool operator<(const Value& other) const
         {
                 return (
@@ -42,26 +67,6 @@ public:
                         ( num_kings_  == other.num_kings_  )
                 );
         }
-        // views
-        int count() const
-        {
-                return num_pieces_;
-        }
-
-        // modifiers
-        void increment(bool is_captured_king)
-        {
-                num_kings_ += is_captured_king;
-                ++num_pieces_;
-                BOOST_ASSERT(invariant());
-        }
-
-        void decrement(bool is_captured_king)
-        {
-                --num_pieces_;
-                num_kings_ -= is_captured_king;
-                BOOST_ASSERT(invariant());
-        }
 
 private:
         bool invariant() const
@@ -70,6 +75,7 @@ private:
         }
 
         // representation
+
         int num_pieces_;
         int num_kings_;
 };

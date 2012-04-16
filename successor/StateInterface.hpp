@@ -26,6 +26,7 @@ class StateInterface
 {
 public:
         // non-virtual interface
+
         void generate(const Position<Board>& p, Stack& moves) const
         {
                 do_generate(p, moves);
@@ -61,6 +62,7 @@ private:
         }
 
         // pure virtual implementation
+
         virtual void do_generate(const Position<Board>&, Stack&) const = 0;
         virtual int do_count(const Position<Board>&) const = 0;
         virtual bool do_detect(const Position<Board>&) const = 0;

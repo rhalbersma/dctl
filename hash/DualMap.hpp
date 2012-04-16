@@ -20,7 +20,7 @@ template
 class DualMap
 {
 public:
-        // constructors
+        // structors
         DualMap()
         {
                 resize(1);
@@ -55,7 +55,7 @@ public:
                 dual_map_[1].clear();
         }
 
-        // views
+        // queries
         template<typename Board>
         const Value* find(const Position<Board>& p) const
         {

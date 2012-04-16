@@ -53,7 +53,8 @@ private:
 
         // partial specialization for unrestricted consecutive moves with the same king
         static void serialize_dispatch(
-                BitBoard active_kings, BitBoard not_occupied, Stack& moves, Int2Type<false>
+                BitBoard active_kings, BitBoard not_occupied, Stack& moves, 
+                Int2Type<false>
         )
         {
                 // loop cannot be empty because all active kings detected during
@@ -67,7 +68,8 @@ private:
 
         // partial specialization for restricted consecutive moves with the same king
         static void serialize_dispatch(
-                BitBoard active_kings, BitBoard not_occupied, Stack& moves, Int2Type<true>
+                BitBoard active_kings, BitBoard not_occupied, Stack& moves, 
+                Int2Type<true>
         )
         {
                 // loop could be empty if the single active king detected during
@@ -119,7 +121,8 @@ private:
         // partial specialization for short ranged kings
         template<int Index>
         static void generate_dispatch(
-                BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::scan_1>
+                BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
+                Int2Type<rules::scan_1>
         )
         {
                 if (const auto dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
@@ -129,7 +132,8 @@ private:
         // partial specialization for long ranged kings
         template<int Index>
         static void generate_dispatch(
-                BitBoard from_sq, BitBoard not_occupied, Stack& moves, Int2Type<rules::scan_N>
+                BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
+                Int2Type<rules::scan_N>
         )
         {
                 for (

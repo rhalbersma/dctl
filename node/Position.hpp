@@ -43,7 +43,7 @@ public:
                 return Position<Board>(Board::INITIAL[Side::black], Board::INITIAL[Side::white], 0, Side::white);
         }
 
-        // views
+        // queries
         const Position<Board>* parent() const
         {
                 return parent_;

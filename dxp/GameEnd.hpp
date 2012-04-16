@@ -33,7 +33,7 @@ public:
         {
         }
 
-        // views
+        // queries
         Reason reason() const
         {
                 return reason_;

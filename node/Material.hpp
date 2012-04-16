@@ -20,6 +20,8 @@ struct Material_
                 both = pawn ^ king
         };
 
+        // structors
+
         // default constructor
         Material_()
         {
@@ -40,14 +42,7 @@ struct Material_
                 BOOST_ASSERT(invariant());
         }
 
-        bool operator==(const Material_& other) const
-        {
-                return (
-                        (pieces(Side::black) == other.pieces(Side::black)) &&
-                        (pieces(Side::white) == other.pieces(Side::white)) &&
-                                    (kings() == other.kings())
-                );
-        }
+        // modifiers
 
         // xor-assign the set bits of another piece set
         Material_& operator^=(const Move& m)
@@ -59,7 +54,31 @@ struct Material_
                 return *this;
         }
 
+        // predicates
+
+        bool operator==(const Material_& other) const
+        {
+                return (
+                        (pieces(Side::black) == other.pieces(Side::black)) &&
+                        (pieces(Side::white) == other.pieces(Side::white)) &&
+                                    (kings() == other.kings())
+                );
+        }
+
 private:
+        // modifiers
+
+        // initialize with a set of bitboards
+        template<bool Color>
+        void init(T active_pieces, T passive_pieces, T kings)
+        {
+                pieces_[ Color] = active_pieces;
+                pieces_[!Color] = passive_pieces;
+                kings_ = kings;
+        }
+
+        // queries
+
         friend struct PiecesInterface< T, ::dctl::Material_ >;
 
         // black or white pawns
@@ -116,16 +135,8 @@ private:
                 return bit::is_subset_of(kings(), pieces());
         }
 
-        // initialize with a set of bitboards
-        template<bool Color>
-        void init(T active_pieces, T passive_pieces, T kings)
-        {
-                pieces_[ Color] = active_pieces;
-                pieces_[!Color] = passive_pieces;
-                kings_ = kings;
-        }
-
         // representation
+
         T pieces_[2];    // black and white pieces
         T kings_;        // kings
 };

@@ -16,14 +16,30 @@ struct Value<variant::Russian>
         private boost::totally_ordered< Value<variant::Russian> >
 {
 public:
-        // constructors
+        // structors
+
         Value()
         :
                 promotion_(false)
         {
         }
 
+        // modifiers
+
+        void toggle_promotion()
+        {
+                promotion_ ^= true;
+        }
+
+        // queries
+
+        bool is_promotion() const
+        {
+                return promotion_;
+        }
+
         // predicates
+
         bool operator<(const Value& /* other */) const
         {
                 return false;
@@ -34,19 +50,9 @@ public:
                 return true;
         }
 
-        bool is_promotion() const
-        {
-                return promotion_;
-        }
-
-        // modifiers
-        void toggle_promotion()
-        {
-                promotion_ ^= true;
-        }
-
 private:
         // representation
+
         bool promotion_;
 };
 
