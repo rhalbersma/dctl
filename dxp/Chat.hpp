@@ -25,7 +25,7 @@ public:
         {
         }
 
-        // views
+        // queries
         std::string text() const
         {
                 return text_;

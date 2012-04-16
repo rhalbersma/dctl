@@ -18,7 +18,7 @@ class Acceptor
 {
 public:
 
-        // constructors
+        // structors
         Acceptor()
         :
                 socket_(io_service_),

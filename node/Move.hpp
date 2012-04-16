@@ -20,6 +20,8 @@ struct Move_
         boost::xorable< Move_<T> > >
 {
 public:
+        // structors
+
         // default constructor
         Move_()
         {
@@ -100,14 +102,7 @@ public:
                 return tmp;
         }
 
-        bool operator==(const Move_& other) const
-        {
-                return (
-                        (pieces(Side::black) == other.pieces(Side::black)) &&
-                        (pieces(Side::white) == other.pieces(Side::white)) &&
-                                    (kings() == other.kings())
-                );
-        }
+        // modifiers
 
         // xor-assign the set bits of another piece set
         Move_& operator^=(const Move_& other)
@@ -119,7 +114,31 @@ public:
                 return *this;
         }
 
+        // predicates
+
+        bool operator==(const Move_& other) const
+        {
+                return (
+                        (pieces(Side::black) == other.pieces(Side::black)) &&
+                        (pieces(Side::white) == other.pieces(Side::white)) &&
+                                    (kings() == other.kings())
+                );
+        }
+
 private:
+        // modifiers
+
+        // initialize with a set of bitboards
+        template<bool Color>
+        void init(T active_pieces, T passive_pieces, T kings)
+        {
+                pieces_[ Color] = active_pieces;
+                pieces_[!Color] = passive_pieces;
+                kings_ = kings;
+        }
+
+        // queries
+
         friend struct PiecesInterface< T, ::dctl::Move_ >;
 
         // black or white pawns
@@ -248,16 +267,8 @@ private:
                 return bit::is_subset_of(kings(), pieces());
         }
 
-        // initialize with a set of bitboards
-        template<bool Color>
-        void init(T active_pieces, T passive_pieces, T kings)
-        {
-                pieces_[ Color] = active_pieces;
-                pieces_[!Color] = passive_pieces;
-                kings_ = kings;
-        }
-
         // representation
+
         T pieces_[2];    // black and white pieces
         T kings_;        // kings
 };

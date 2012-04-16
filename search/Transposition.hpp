@@ -11,7 +11,7 @@ namespace search {
 class Transposition
 {
 public:
-        // constructors
+        // structors
         Transposition()
         :
                 value_(0),

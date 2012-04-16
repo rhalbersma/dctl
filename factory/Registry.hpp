@@ -27,14 +27,14 @@ public:
         template<typename Derived>
         bool insert(boost::mpl::identity<Derived>)
         {
-                BOOST_STATIC_ASSERT((mixin::has_factory_create<Derived>::value));
+                BOOST_STATIC_ASSERT(mixin::has_factory_create<Derived>::value);
                 return insert(Derived::identifier(), Derived::create);
         }
 
         template<typename Derived>
         bool erase(boost::mpl::identity<Derived>)
         {
-                BOOST_STATIC_ASSERT((mixin::has_factory_create<Derived>::value));
+                BOOST_STATIC_ASSERT(mixin::has_factory_create<Derived>::value);
                 return erase(Derived::identifier());
         }
 

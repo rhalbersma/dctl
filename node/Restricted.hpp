@@ -9,7 +9,7 @@ namespace dctl {
 struct KingMoves
 {
 public:
-        // constructors
+        // structors
         KingMoves()
         :
                 king_(0),
@@ -18,7 +18,7 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        // views
+        // queries
         BitBoard king() const
         {
                 return king_;

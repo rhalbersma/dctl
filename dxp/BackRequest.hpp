@@ -29,7 +29,7 @@ public:
         {
         }
 
-        // views
+        // queries
         int move_number() const
         {
                 return move_number_;

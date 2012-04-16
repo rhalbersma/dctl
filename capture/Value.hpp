@@ -13,6 +13,7 @@ struct Value
         private boost::totally_ordered< Value<Rules> >
 {
         // predicates
+
         bool operator<(const Value& /* other */) const
         {
                 return false;

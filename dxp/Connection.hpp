@@ -20,7 +20,7 @@ class Connection
 {
 public:
 
-        // constructors
+        // structors
         Connection()
         :
                 socket_(io_service_),

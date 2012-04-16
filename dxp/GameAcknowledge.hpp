@@ -32,7 +32,7 @@ public:
         {
         }
 
-        // views
+        // queries
         const std::string& name_follower() const
         {
                 return name_follower_;

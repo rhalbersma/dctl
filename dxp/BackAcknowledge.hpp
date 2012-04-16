@@ -31,7 +31,7 @@ public:
         {
         }
 
-        // views
+        // queries
         AcceptanceCode acceptance_code() const
         {
                 return acceptance_code_;

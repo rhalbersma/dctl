@@ -10,9 +10,12 @@ template
 >
 struct PiecesInterface
 :
+        // enable static polymorphism
         private enable_crtp< Impl<T> >
 {
 public:
+        // queries
+
         // black or white pawns
         T pawns(bool color) const
         {

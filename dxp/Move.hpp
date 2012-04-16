@@ -35,7 +35,7 @@ public:
                         captured_pieces_.push_back(boost::lexical_cast<int>(message.substr(10 + 2 * i, 2).c_str()));
         }
 
-        // views
+        // queries
         int seconds() const
         {
                 return seconds_;

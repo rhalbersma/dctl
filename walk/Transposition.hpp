@@ -8,7 +8,7 @@ namespace walk {
 class Transposition
 {
 public:
-        // constructors
+        // structors
         Transposition()
         :
                 entry_(0)

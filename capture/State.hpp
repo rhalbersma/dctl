@@ -21,7 +21,8 @@ class State
         private boost::noncopyable
 {
 public:
-        // constructors
+        // structors
+
         explicit State(const Position<Board>& p)
         :
                 king_targets_(passive_kings(p)),
@@ -35,34 +36,7 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        void toggle_with_king()
-        {              
-                BOOST_STATIC_ASSERT(rules::is_relative_king_precedence<Rules>::value);
-                current_.toggle_with_king();
-        }
-
-        void toggle_king_targets()
-        {
-                BOOST_STATIC_ASSERT(!rules::is_pawns_jump_kings<Rules>::value);
-                initial_targets_ = remaining_targets_ ^= king_targets_;
-        }
-
-        template<int Index>
-        BitBoard targets() const
-        {
-                return remaining_targets_ & Pull<Board, Index>()(path());
-        }
-
-        template<int Index>
-        BitBoard path() const
-        {
-                return path() & Board::jump_start[Index];
-        }
-
-        BitBoard path() const
-        {
-                return not_occupied_;
-        }
+        // modifiers 
 
         void launch(BitBoard jump_sq)
         {
@@ -98,10 +72,47 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
+        void toggle_with_king()
+        {              
+                BOOST_STATIC_ASSERT(rules::is_relative_king_precedence<Rules>::value);
+                current_.toggle_with_king();
+        }
+
+        void toggle_king_targets()
+        {
+                BOOST_STATIC_ASSERT(!rules::is_pawns_jump_kings<Rules>::value);
+                initial_targets_ = remaining_targets_ ^= king_targets_;
+        }
+
         void toggle_promotion()
         {
                 BOOST_STATIC_ASSERT(rules::promotion_condition<Rules>::value == rules::promote_ep);
                 current_.toggle_promotion();
+        }
+
+        void improve()
+        {
+                BOOST_ASSERT(rules::is_majority_precedence<Rules>::value);
+                best_ = current_;
+        }
+
+        // queries
+
+        template<int Index>
+        BitBoard targets() const
+        {
+                return remaining_targets_ & Pull<Board, Index>()(path());
+        }
+
+        template<int Index>
+        BitBoard path() const
+        {
+                return path() & Board::jump_start[Index];
+        }
+
+        BitBoard path() const
+        {
+                return not_occupied_;
         }
 
         bool is_improvement() const
@@ -114,11 +125,6 @@ public:
         {
                 BOOST_ASSERT(is_improvement());
                 return best_ != current_;
-        }
-
-        void improve()
-        {
-                best_ = current_;
         }
 
         template<bool Color>
@@ -144,53 +150,50 @@ public:
         }
 
 private:
-        bool invariant() const
-        {
-                return (
-                        bit::is_subset_of(remaining_targets_, initial_targets_) &&
-                        !bit::is_multiple(from_sq_)
-                );
-        }
+        // modifiers
 
         // specialization for apres-fini capture removal
         void make_dispatch(
-                BitBoard target_sq, Int2Type<rules::remove_af>
+                BitBoard target_sq, 
+                Int2Type<rules::remove_af>
         )
         {
+                BOOST_STATIC_ASSERT(rules::jump_removal<Rules>::value == rules::remove_af);
                 remaining_targets_ ^= target_sq;
                 increment(is_captured_king(target_sq));
         }
 
         // specialization for en-passant capture removal
         void make_dispatch(
-                BitBoard target_sq, Int2Type<rules::remove_ep>
+                BitBoard target_sq, 
+                Int2Type<rules::remove_ep>
         )
         {
+                BOOST_STATIC_ASSERT(rules::jump_removal<Rules>::value == rules::remove_ep);
                 not_occupied_ ^= target_sq;
                 make_dispatch(target_sq, Int2Type<rules::remove_af>());
         }
 
         // specialization for apres-fini capture removal
         void undo_dispatch(
-                BitBoard target_sq, Int2Type<rules::remove_af>
+                BitBoard target_sq, 
+                Int2Type<rules::remove_af>
         )
         {
+                BOOST_STATIC_ASSERT(rules::jump_removal<Rules>::value == rules::remove_af);
                 decrement(is_captured_king(target_sq));
                 remaining_targets_ ^= target_sq;
         }
 
         // specialization for en-passant capture removal
         void undo_dispatch(
-                BitBoard target_sq, Int2Type<rules::remove_ep>
+                BitBoard target_sq, 
+                Int2Type<rules::remove_ep>
         )
         {
+                BOOST_STATIC_ASSERT(rules::jump_removal<Rules>::value == rules::remove_ep);
                 undo_dispatch(target_sq, Int2Type<rules::remove_af>());
                 not_occupied_ ^= target_sq;
-        }
-
-        bool is_captured_king(BitBoard target_sq) const
-        {
-                return !bit::is_zero(target_sq & king_targets_);
         }
 
         void increment(bool is_captured_king)
@@ -204,25 +207,31 @@ private:
 
         // specialization for no capture precedence
         void increment_dispatch(
-                bool /* is_captured_king */, Int2Type<rules::precede_0>
+                bool /* is_captured_king */, 
+                Int2Type<rules::precede_0>
         )
         {
+                BOOST_STATIC_ASSERT(rules::precedence_type<Rules>::value == rules::precede_0);
                 // no-op
         }
 
         // specialization for quantity precedence
         void increment_dispatch(
-                bool /* is_captured_king */, Int2Type<rules::precede_N>
+                bool /* is_captured_king */, 
+                Int2Type<rules::precede_N>
         )
         {
+                BOOST_STATIC_ASSERT(rules::precedence_type<Rules>::value == rules::precede_N);
                 current_.increment();
         }
 
         // specialization for quality precedence
         void increment_dispatch(
-                bool is_captured_king, Int2Type<rules::precede_Q>
+                bool is_captured_king, 
+                Int2Type<rules::precede_Q>
         )
         {
+                BOOST_STATIC_ASSERT(rules::precedence_type<Rules>::value == rules::precede_Q);
                 current_.increment(is_captured_king);
         }
 
@@ -237,32 +246,41 @@ private:
 
         // specialization for no capture precedence
         void decrement_dispatch(
-                bool /* is_captured_king */, Int2Type<rules::precede_0>
+                bool /* is_captured_king */, 
+                Int2Type<rules::precede_0>
         )
         {
+                BOOST_STATIC_ASSERT(rules::precedence_type<Rules>::value == rules::precede_0);
                 // no-op
         }
 
         // specialization for quantity precedence
         void decrement_dispatch(
-                bool /* is_captured_king */, Int2Type<rules::precede_N>
+                bool /* is_captured_king */, 
+                Int2Type<rules::precede_N>
         )
         {
+                BOOST_STATIC_ASSERT(rules::precedence_type<Rules>::value == rules::precede_N);
                 current_.decrement();
         }
 
         // specialization for quality precedence
         void decrement_dispatch(
-                bool is_captured_king, Int2Type<rules::precede_Q>
+                bool is_captured_king, 
+                Int2Type<rules::precede_Q>
         )
         {
+                BOOST_STATIC_ASSERT(rules::precedence_type<Rules>::value == rules::precede_Q);
                 current_.decrement(is_captured_king);
         }
+
+        // queries
 
         // partial specialization for man captures that are unambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(
-                BitBoard dest_sq, Stack& moves, Int2Type<false>
+                BitBoard dest_sq, Stack& moves, 
+                Int2Type<false>
         ) const
         {
                 moves.push_back(
@@ -278,7 +296,8 @@ private:
         // partial specialization for man captures that can be ambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(
-                BitBoard dest_sq, Stack& moves, Int2Type<true>
+                BitBoard dest_sq, Stack& moves, 
+                Int2Type<true>
         ) const
         {
                 const auto ambiguous = is_ambiguous(moves);
@@ -291,19 +310,27 @@ private:
         // and slide through otherwise
         template<bool Color, int Index>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, bool ambiguous, Stack& moves, Int2Type<rules::halt_1K>
+                BitBoard dest_sq, bool ambiguous, Stack& moves, 
+                Int2Type<rules::halt_1K>
         ) const
         {
                 if (king_targets_ & Pull<Board, Index>()(dest_sq))
-                        add_king_jump_dispatch<Color, Index>(dest_sq, ambiguous, moves, Int2Type<rules::halt_1>());
+                        add_king_jump_dispatch<Color, Index>(
+                                dest_sq, ambiguous, moves, 
+                                Int2Type<rules::halt_1>()
+                        );
                 else
-                        add_king_jump_dispatch<Color, Index>(dest_sq, ambiguous, moves, Int2Type<rules::halt_N>());
+                        add_king_jump_dispatch<Color, Index>(
+                                dest_sq, ambiguous, moves, 
+                                Int2Type<rules::halt_N>()
+                        );
         }
 
         // partial specialization for kings that halt immediately after the final capture
         template<bool Color, int Index>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, bool ambiguous, Stack& moves, Int2Type<rules::halt_1>
+                BitBoard dest_sq, bool ambiguous, Stack& moves, 
+                Int2Type<rules::halt_1>
         ) const
         {
                 add_king_jump<Color>(dest_sq, ambiguous, moves);
@@ -312,7 +339,8 @@ private:
         // partial specialization for kings that slide through after the final capture
         template<bool Color, int Index>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, bool ambiguous, Stack& moves, Int2Type<rules::halt_N>
+                BitBoard dest_sq, bool ambiguous, Stack& moves, 
+                Int2Type<rules::halt_N>
         ) const
         {
                 BOOST_ASSERT(dest_sq & path());
@@ -337,7 +365,8 @@ private:
         // partial specialization for pawns that promote apres-fini
         template<bool Color>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, Stack& moves, Int2Type<rules::promote_af>
+                BitBoard dest_sq, Stack& moves, 
+                Int2Type<rules::promote_af>
         ) const
         {
                 moves.push_back(
@@ -352,11 +381,15 @@ private:
         // partial specialization for pawns that promote en-passant
         template<bool Color>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, Stack& moves, Int2Type<rules::promote_ep>
+                BitBoard dest_sq, Stack& moves, 
+                Int2Type<rules::promote_ep>
         ) const
         {
                 if (!is_promotion())
-                        add_king_jump_dispatch<Color>(dest_sq, moves, Int2Type<rules::promote_af>());
+                        add_king_jump_dispatch<Color>(
+                                dest_sq, moves, 
+                                Int2Type<rules::promote_af>()
+                        );
                 else
                         moves.push_back(
                                 Move::create<Color, Rules>(
@@ -366,6 +399,19 @@ private:
                                         captured_kings()
                                 )
                         );
+        }
+
+        bool invariant() const
+        {
+                return (
+                        bit::is_subset_of(remaining_targets_, initial_targets_) &&
+                        !bit::is_multiple(from_sq_)
+                );
+        }
+
+        bool is_captured_king(BitBoard target_sq) const
+        {
+                return !bit::is_zero(target_sq & king_targets_);
         }
 
         bool is_promotion() const
@@ -393,14 +439,20 @@ private:
         }
 
         // specialization for no majority capture precedence
-        int count_dispatch(Int2Type<false>) const
+        int count_dispatch(
+                Int2Type<false>
+        ) const
         {
+                BOOST_STATIC_ASSERT(!rules::is_majority_precedence<Rules>::value);
                 return bit::count(captured_pieces());
         }
 
         // specialization for majority capture precedence
-        int count_dispatch(Int2Type<true>) const
+        int count_dispatch(
+                Int2Type<true>
+        ) const
         {
+                BOOST_STATIC_ASSERT(rules::is_majority_precedence<Rules>::value);
                 return current_.count();
         }
 
@@ -427,6 +479,7 @@ private:
                 Int2Type<false>
         ) const
         {
+                BOOST_STATIC_ASSERT(!rules::is_pawns_jump_kings<Rules>::value);
                 return BitBoard(0);
         }
 
@@ -435,10 +488,12 @@ private:
                 Int2Type<true>
         ) const
         {
+                BOOST_STATIC_ASSERT(rules::is_pawns_jump_kings<Rules>::value);
                 return captured_kings();
         }
 
         // representation
+
         const BitBoard king_targets_;
         BitBoard initial_targets_;
         BitBoard remaining_targets_;
