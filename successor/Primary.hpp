@@ -1,7 +1,7 @@
 #pragma once
 #include "Driver_fwd.hpp"
 #include "../node/Position_fwd.hpp"
-#include "../node/Stack_fwd.hpp"
+#include "../node/Stack.hpp"
 #include "../utility/NonConstructible.hpp"
 
 namespace dctl {

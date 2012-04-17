@@ -29,8 +29,8 @@ private:
 public:
         static void generate(const Position<Board>& p, Stack& moves)
         {
-                State capture(p);
-                generate(p, capture, moves);
+                State capture(p, moves);
+                generate(p, capture);
         }
 
         static int count(const Position<Board>& p)
@@ -50,32 +50,32 @@ public:
         }
 
 private:
-        static void generate(const Position<Board>& p, State& capture, Stack& moves)
+        static void generate(const Position<Board>& p, State& capture)
         {
                 // tag dispatching on absolute king capture precedence
                 generate_dispatch(
-                        p, capture, moves,
+                        p, capture,
                         Int2Type<rules::is_absolute_king_precedence<Rules>::value>()
                 );
         }
 
         // partial specialization for no absolute king capture precedence
         static void generate_dispatch(
-                const Position<Board>& p, State& capture, Stack& moves, Int2Type<false>
+                const Position<Board>& p, State& capture, Int2Type<false>
         )
         {
-                KingJumps::generate(p, capture, moves);
-                PawnJumps::generate(p, capture, moves);
+                KingJumps::generate(p, capture);
+                PawnJumps::generate(p, capture);
         }
 
         // partial specialization for absolute king capture precedence
         static void generate_dispatch(
-                const Position<Board>& p, State& capture, Stack& moves, Int2Type<true>
+                const Position<Board>& p, State& capture, Int2Type<true>
         )
         {
-                KingJumps::generate(p, capture, moves);
-                if (moves.empty())
-                        PawnJumps::generate(p, capture, moves);
+                KingJumps::generate(p, capture);
+                if (capture.empty())
+                        PawnJumps::generate(p, capture);
         }
 };
 

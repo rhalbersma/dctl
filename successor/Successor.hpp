@@ -1,7 +1,7 @@
 #pragma once
 #include "Dispatcher.hpp"
 #include "../node/Position_fwd.hpp"
-#include "../node/Stack_fwd.hpp"
+#include "../node/Stack.hpp"
 #include "../node/State.hpp"
 #include "../utility/NonConstructible.hpp"
 

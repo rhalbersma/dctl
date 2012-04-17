@@ -5,7 +5,7 @@
 #include "../board/Direction.hpp"
 #include "../node/Material.hpp"
 #include "../node/Position.hpp"
-#include "../node/Stack_fwd.hpp"
+#include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"

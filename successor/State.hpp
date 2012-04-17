@@ -2,7 +2,7 @@
 #include "StateInterface.hpp"
 #include "Driver.hpp"
 #include "../node/Position_fwd.hpp"
-#include "../node/Stack_fwd.hpp"
+#include "../node/Stack.hpp"
 
 namespace dctl {
 namespace successor {
