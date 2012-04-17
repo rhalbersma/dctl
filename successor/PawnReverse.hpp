@@ -4,7 +4,7 @@
 #include "Selection.hpp"
 #include "../node/Material.hpp"
 #include "../node/Position.hpp"
-#include "../node/Stack_fwd.hpp"
+#include "../node/Stack.hpp"
 #include "../utility/NonConstructible.hpp"
 
 namespace dctl {

@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>                    // find
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
@@ -18,12 +19,13 @@ namespace capture {
 template<typename Rules, typename Board>
 class State
 :
+        // enforce reference semantics
         private boost::noncopyable
 {
 public:
         // structors
 
-        explicit State(const Position<Board>& p)
+        explicit State(const Position<Board>& p, Stack& m)
         :
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
@@ -31,7 +33,8 @@ public:
                 not_occupied_(not_occupied(p)),
                 from_sq_(0),
                 current_(),
-                best_()
+                best_(),
+                moves_(m)
         {
                 BOOST_ASSERT(invariant());
         }
@@ -94,6 +97,29 @@ public:
         {
                 BOOST_ASSERT(rules::is_majority_precedence<Rules>::value);
                 best_ = current_;
+                moves_.clear();
+        }
+
+        template<bool Color>
+        void add_pawn_jump(BitBoard dest_sq) const // modifies Stack& moves_
+        {
+                // tag dispatching on ambiguity of man captures
+                add_pawn_jump_dispatch<Color>(
+                        dest_sq,
+                        Int2Type<rules::is_ambiguous_pawn_jump<Rules>::value>()
+                );
+        }
+
+        template<bool Color, int Index>
+        void add_king_jump(BitBoard dest_sq) const // modifies Stack& moves_
+        {
+                const auto ambiguous = is_ambiguous();
+
+                // tag dispatching on king halt after final capture
+                add_king_jump_dispatch<Color, Index>(
+                        dest_sq, ambiguous,
+                        Int2Type<rules::king_jump_halt<Rules>::value>()
+                );
         }
 
         // queries
@@ -127,26 +153,9 @@ public:
                 return best_ != current_;
         }
 
-        template<bool Color>
-        void add_pawn_jump(BitBoard dest_sq, Stack& moves) const
+        bool empty() const
         {
-                // tag dispatching on ambiguity of man captures
-                add_pawn_jump_dispatch<Color>(
-                        dest_sq, moves,
-                        Int2Type<rules::is_ambiguous_pawn_jump<Rules>::value>()
-                );
-        }
-
-        template<bool Color, int Index>
-        void add_king_jump(BitBoard dest_sq, Stack& moves) const
-        {
-                const auto ambiguous = is_ambiguous(moves);
-
-                // tag dispatching on king halt after final capture
-                add_king_jump_dispatch<Color, Index>(
-                        dest_sq, ambiguous, moves,
-                        Int2Type<rules::king_jump_halt<Rules>::value>()
-                );
+                return moves_.empty();
         }
 
 private:
@@ -158,7 +167,6 @@ private:
                 Int2Type<rules::remove_af>
         )
         {
-                BOOST_STATIC_ASSERT(rules::jump_removal<Rules>::value == rules::remove_af);
                 remaining_targets_ ^= target_sq;
                 increment(is_captured_king(target_sq));
         }
@@ -171,7 +179,10 @@ private:
         {
                 BOOST_STATIC_ASSERT(rules::jump_removal<Rules>::value == rules::remove_ep);
                 not_occupied_ ^= target_sq;
-                make_dispatch(target_sq, Int2Type<rules::remove_af>());
+                make_dispatch(
+                        target_sq, 
+                        Int2Type<rules::remove_af>()
+                );
         }
 
         // specialization for apres-fini capture removal
@@ -180,7 +191,6 @@ private:
                 Int2Type<rules::remove_af>
         )
         {
-                BOOST_STATIC_ASSERT(rules::jump_removal<Rules>::value == rules::remove_af);
                 decrement(is_captured_king(target_sq));
                 remaining_targets_ ^= target_sq;
         }
@@ -192,7 +202,10 @@ private:
         )
         {
                 BOOST_STATIC_ASSERT(rules::jump_removal<Rules>::value == rules::remove_ep);
-                undo_dispatch(target_sq, Int2Type<rules::remove_af>());
+                undo_dispatch(
+                        target_sq, 
+                        Int2Type<rules::remove_af>()
+                );
                 not_occupied_ ^= target_sq;
         }
 
@@ -212,7 +225,6 @@ private:
         )
         {
                 BOOST_STATIC_ASSERT(rules::precedence_type<Rules>::value == rules::precede_0);
-                // no-op
         }
 
         // specialization for quantity precedence
@@ -251,7 +263,6 @@ private:
         )
         {
                 BOOST_STATIC_ASSERT(rules::precedence_type<Rules>::value == rules::precede_0);
-                // no-op
         }
 
         // specialization for quantity precedence
@@ -274,16 +285,20 @@ private:
                 current_.decrement(is_captured_king);
         }
 
-        // queries
+        void unique_back() const // modifies Stack& moves_
+        {
+                if (std::find(moves_.begin(), moves_.end(), moves_.back()) != moves_.end() - 1)
+                        moves_.pop_back();
+        }
 
         // partial specialization for man captures that are unambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(
-                BitBoard dest_sq, Stack& moves, 
+                BitBoard dest_sq, 
                 Int2Type<false>
-        ) const
+        ) const // modifies Stack& moves_
         {
-                moves.push_back(
+                moves_.push_back(
                         Move::create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
                                 promotion_sq<Color, Board>(dest_sq),
@@ -296,32 +311,32 @@ private:
         // partial specialization for man captures that can be ambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(
-                BitBoard dest_sq, Stack& moves, 
+                BitBoard dest_sq, 
                 Int2Type<true>
-        ) const
+        ) const // modifies Stack& moves_
         {
-                const auto ambiguous = is_ambiguous(moves);
-                add_pawn_jump_dispatch<Color>(dest_sq, moves, Int2Type<false>());
+                const auto ambiguous = is_ambiguous();
+                add_pawn_jump_dispatch<Color>(dest_sq, Int2Type<false>());
                 if (ambiguous)
-                        unique_back(moves);
+                        unique_back();
         }
 
         // partial specialization for kings that halt immediately if the final capture is a king,
         // and slide through otherwise
         template<bool Color, int Index>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, bool ambiguous, Stack& moves, 
+                BitBoard dest_sq, bool ambiguous, 
                 Int2Type<rules::halt_1K>
-        ) const
+        ) const // modifies Stack& moves_
         {
                 if (king_targets_ & Pull<Board, Index>()(dest_sq))
                         add_king_jump_dispatch<Color, Index>(
-                                dest_sq, ambiguous, moves, 
+                                dest_sq, ambiguous, 
                                 Int2Type<rules::halt_1>()
                         );
                 else
                         add_king_jump_dispatch<Color, Index>(
-                                dest_sq, ambiguous, moves, 
+                                dest_sq, ambiguous, 
                                 Int2Type<rules::halt_N>()
                         );
         }
@@ -329,47 +344,47 @@ private:
         // partial specialization for kings that halt immediately after the final capture
         template<bool Color, int Index>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, bool ambiguous, Stack& moves, 
+                BitBoard dest_sq, bool ambiguous, 
                 Int2Type<rules::halt_1>
-        ) const
+        ) const // modifies Stack& moves_
         {
-                add_king_jump<Color>(dest_sq, ambiguous, moves);
+                add_king_jump<Color>(dest_sq, ambiguous);
         }
 
         // partial specialization for kings that slide through after the final capture
         template<bool Color, int Index>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, bool ambiguous, Stack& moves, 
+                BitBoard dest_sq, bool ambiguous, 
                 Int2Type<rules::halt_N>
-        ) const
+        ) const // modifies Stack& moves_
         {
                 BOOST_ASSERT(dest_sq & path());
                 do {
-                        add_king_jump<Color>(dest_sq, ambiguous, moves);
+                        add_king_jump<Color>(dest_sq, ambiguous);
                         PushAssign<Board, Index>()(dest_sq);
                 } while (dest_sq & path());
         }
 
         template<bool Color>
-        void add_king_jump(BitBoard dest_sq, bool ambiguous, Stack& moves) const
+        void add_king_jump(BitBoard dest_sq, bool ambiguous) const // modifies Stack& moves_
         {
                 // tag dispatching on promotion condition
                 add_king_jump_dispatch<Color>(
-                        dest_sq, moves,
+                        dest_sq,
                         Int2Type<rules::promotion_condition<Rules>::value>()
                 );
                 if (ambiguous)
-                        unique_back(moves);
+                        unique_back();
         }
 
         // partial specialization for pawns that promote apres-fini
         template<bool Color>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, Stack& moves, 
+                BitBoard dest_sq, 
                 Int2Type<rules::promote_af>
-        ) const
+        ) const // modifies Stack& moves_
         {
-                moves.push_back(
+                moves_.push_back(
                         Move::create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
                                 captured_pieces(),
@@ -381,17 +396,17 @@ private:
         // partial specialization for pawns that promote en-passant
         template<bool Color>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, Stack& moves, 
+                BitBoard dest_sq, 
                 Int2Type<rules::promote_ep>
-        ) const
+        ) const // modifies Stack& moves_
         {
                 if (!is_promotion())
                         add_king_jump_dispatch<Color>(
-                                dest_sq, moves, 
+                                dest_sq, 
                                 Int2Type<rules::promote_af>()
                         );
                 else
-                        moves.push_back(
+                        moves_.push_back(
                                 Move::create<Color, Rules>(
                                         from_sq_ ^ dest_sq,
                                         dest_sq,
@@ -400,6 +415,8 @@ private:
                                 )
                         );
         }
+
+        // queries
 
         bool invariant() const
         {
@@ -420,9 +437,9 @@ private:
                 return current_.is_promotion();
         }
 
-        bool is_ambiguous(const Stack& moves) const
+        bool is_ambiguous() const
         {
-                return !moves.empty() && is_large();
+                return !moves_.empty() && is_large();
         }
 
         bool is_large() const
@@ -501,6 +518,7 @@ private:
         BitBoard from_sq_;
         Value<Rules> current_;
         Value<Rules> best_;
+        Stack& moves_;
 };
 
 }       // namespace capture

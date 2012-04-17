@@ -6,7 +6,7 @@
 #include "../node/Material.hpp"
 #include "../node/Position.hpp"
 #include "../node/Promotion.hpp"
-#include "../node/Stack_fwd.hpp"
+#include "../node/Stack.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/NonConstructible.hpp"
