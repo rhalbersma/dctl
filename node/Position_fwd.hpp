@@ -2,7 +2,7 @@
 
 namespace dctl {
 
-template<typename>
+template<typename, typename>
 struct Position;
 
 }       // namespace dctl

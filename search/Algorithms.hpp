@@ -4,7 +4,6 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "../successor/Selection.hpp"
 #include "../successor/Successor.hpp"
-#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/algorithm.hpp"
 
@@ -12,8 +11,9 @@ namespace dctl {
 namespace search {
 
 // iterative deepening with no move ordering at the root
-template<typename Rules, typename Board, typename Objective>
-int Root<Rules, Board, Objective>::iterative_deepening(const Position<Board>& p, int depth)
+template<typename Objective>
+template<typename Position>
+int Root<Objective>::iterative_deepening(const Position& p, int depth)
 {
         auto score = -infinity();
         int alpha, beta;
@@ -35,8 +35,9 @@ int Root<Rules, Board, Objective>::iterative_deepening(const Position<Board>& p,
 }
 
 // iterative deepening with no move ordering at the root
-template<typename Rules, typename Board, typename Objective>
-int Root<Rules, Board, Objective>::proof_verify(const Position<Board>& p, int depth)
+template<typename Objective>
+template<typename Position>
+int Root<Objective>::proof_verify(const Position& p, int depth)
 {
         auto score = -infinity();
 
@@ -64,10 +65,9 @@ int Root<Rules, Board, Objective>::proof_verify(const Position<Board>& p, int de
 }
 
 // principal variation search (PVS)
-template<typename Rules, typename Board, typename Objective> template<int NodeType>
-int Root<Rules, Board, Objective>::pvs(
-        const Position<Board>& p, int alpha, int beta, int depth, int ply, Variation& refutation
-)
+template<typename Objective> 
+template<int NodeType, typename Position>
+int Root<Objective>::pvs(const Position& p, int alpha, int beta, int depth, int ply, Variation& refutation)
 {
         statistics_.update(ply);
 
@@ -92,7 +92,7 @@ int Root<Rules, Board, Objective>::pvs(
                 return beta;
 
         // terminal positions
-        const auto terminal_value = Objective::value<Rules>(p);
+        const auto terminal_value = Objective::value(p);
         if (is_finite(terminal_value)) {
                 if (depth > 0) {
                         const auto type = Bound::type(terminal_value, alpha, beta);
@@ -105,7 +105,7 @@ int Root<Rules, Board, Objective>::pvs(
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0 || ply >= MAX_PLY)
-                return Evaluate<Rules>::evaluate(p);
+                return Evaluate::evaluate(p);
 
         // TT cut-off for exact win/loss scores or for deep enough heuristic scores
         auto TT_entry = TT.find(p);
@@ -115,7 +115,7 @@ int Root<Rules, Board, Objective>::pvs(
         // generate moves
         Stack moves;
         moves.reserve(32);
-        Successor<select::Legal, Rules>::generate(p, moves);
+        Successor<select::Legal>::generate(p, moves);
         BOOST_ASSERT(!moves.empty());
 
         std::vector<int> move_order;
@@ -154,7 +154,7 @@ int Root<Rules, Board, Objective>::pvs(
 
                 auto q = p;
                 q.attach(p);
-                q.template make<Rules>(moves[i]);
+                q.make(moves[i]);
 
                 if (is_pv(NodeType) && s == 0)
                         value = -squeeze(pvs<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
@@ -188,10 +188,9 @@ int Root<Rules, Board, Objective>::pvs(
 }
 
 // principal variation search (PVS)
-template<typename Rules, typename Board, typename Objective> template<int NodeType>
-int Root<Rules, Board, Objective>::verify(
-        const Position<Board>& p, int alpha, int beta, int depth, int ply, Variation& refutation
-)
+template<typename Objective> 
+template<int NodeType, typename Position>
+int Root<Objective>::verify(const Position& p, int alpha, int beta, int depth, int ply, Variation& refutation)
 {
         statistics_.update(ply);
 
@@ -212,7 +211,7 @@ int Root<Rules, Board, Objective>::verify(
                 return beta;
 
         // terminal positions
-        const auto terminal_value = Objective::value<Rules>(p);
+        const auto terminal_value = Objective::value(p);
         if (is_finite(terminal_value)) {
                 /*
                 if (depth > 0) {
@@ -227,7 +226,7 @@ int Root<Rules, Board, Objective>::verify(
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0 || ply >= MAX_PLY)
-                return Evaluate<Rules>::evaluate(p);
+                return Evaluate::evaluate(p);
 
         auto TT_entry = TT.find(p);
 
@@ -240,7 +239,7 @@ int Root<Rules, Board, Objective>::verify(
         // generate moves
         Stack moves;
         moves.reserve(32);
-        Successor<select::Legal, Rules>::generate(p, moves);
+        Successor<select::Legal>::generate(p, moves);
         BOOST_ASSERT(!moves.empty());
 
         std::vector<int> move_order;
@@ -282,7 +281,7 @@ int Root<Rules, Board, Objective>::verify(
 
                 auto q = p;
                 q.attach(p);
-                q.template make<Rules>(moves[i]);
+                q.make(moves[i]);
 
                 if (is_pv(NodeType) && s == 0)
                         value = -squeeze(verify<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
@@ -377,7 +376,7 @@ int Root<Rules, Board>::negamax(
         for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
                 auto q = p;
                 q.attach(p);
-                q.template make<Rules>(moves[i]);
+                q.make(moves[i]);
 
                 value = -squeeze(negamax<Rules>(q, depth - 1, ply + 1, child_node));
 

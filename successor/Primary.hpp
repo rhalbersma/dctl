@@ -1,6 +1,5 @@
 #pragma once
 #include "Driver_fwd.hpp"
-#include "../node/Position_fwd.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/NonConstructible.hpp"
 
@@ -19,17 +18,20 @@ struct Driver
 :
         private nonconstructible        // enforce static semantics
 {
-        static void generate(const Position<Board>&, Stack&)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>&, Stack&)
         {
                 // no-op
         }
 
-        static int count(const Position<Board>&)
+        template<template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>&)
         {
                 return 0;
         }
 
-        static bool detect(const Position<Board>&)
+        template<template<typename, typename> class Position>
+        static bool detect(const Position<Rules, Board>&)
         {
                 return false;
         }

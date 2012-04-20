@@ -27,14 +27,16 @@ private:
         typedef Driver<Color, Material, select::Moves, Rules, Board> DoMoves;
 
 public:
-        static void generate(const Position<Board>& p, Stack& moves)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, Stack& moves)
         {
                 DoJumps::generate(p, moves);
                 if (moves.empty())
                         DoMoves::generate(p, moves);
         }
 
-        static int count(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>& p)
         {
                 auto num_moves = DoJumps::count(p);
                 if (!num_moves)
@@ -42,7 +44,8 @@ public:
                 return num_moves;
         }
 
-        static bool detect(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static bool detect(const Position<Rules, Board>& p)
         {
                 return (
                         DoMoves::detect(p) ||

@@ -2,20 +2,18 @@
 #include <cstdlib>                      // abs
 #include "Weight.hpp"
 #include "../successor/Mobility.hpp"
-#include "../node/Position.hpp"
 
 namespace dctl {
 
 template
 <
-        bool Color,
-        typename Rules,
-        typename Board
+        bool Color
 >
 class Feature
 {
 public:
-        static int evaluate(const Position<Board>& p)
+        template<typename Position>
+        static int evaluate(const Position& p)
         {
                 int score = 0;
                 score += material(p);
@@ -26,7 +24,8 @@ public:
                 return score;
         }
 
-        static int material(const Position<Board>& p)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        static int material(const Position<Rules, Board>& p)
         {
                 return (
                         Weight<Rules, Board>::material[0] * bit::count(p.pieces(Color)) +
@@ -34,7 +33,8 @@ public:
                 );
         }
 
-        static int tempo(const Position<Board>& p)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        static int tempo(const Position<Rules, Board>& p)
         {
                 int score = 0;
                 for (auto i = 1; i < Board::height; ++i)
@@ -42,7 +42,8 @@ public:
                 return score;
         }
 
-        static int center(const Position<Board>& p)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        static int center(const Position<Rules, Board>& p)
         {
                 int score = 0;
                 for (auto i = 1; i < Board::width / 2; ++i)
@@ -54,7 +55,8 @@ public:
                 return score;
         }
 
-        static int balance(const Position<Board>& p)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        static int balance(const Position<Rules, Board>& p)
         {
                 int score = 0;
                 for (auto i = 0; i < Board::width / 2; ++i)
@@ -66,9 +68,10 @@ public:
                 return -abs(score);
         }
 
-        static int mobility(const Position<Board>& p)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        static int mobility(const Position<Rules, Board>& p)
         {
-                return Weight<Rules, Board>::mobility * Mobility<select::Moves, Rules>::template count<Color>(p);
+                return Weight<Rules, Board>::mobility * Mobility<select::Moves>::template count<Color>(p);
         }
 };
 

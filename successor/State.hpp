@@ -28,27 +28,29 @@ template
         int Material,
         typename Selection,
         typename Rules,
-        typename Board
+        typename Board,
+        template<typename, typename> class Position
 >
 class State
 :
-        public StateInterface<Board>
+        public StateInterface< Position<Rules, Board> >
 {
 private:
         // typedefs
         typedef Driver<Color, Material, Selection, Rules, Board> Delegate;
+        typedef Position<Rules, Board> PositionType;
 
-        virtual void do_generate(const Position<Board>& p, Stack& moves) const
+        virtual void do_generate(const PositionType& p, Stack& moves) const
         {
                 Delegate::generate(p, moves);
         }
 
-        virtual int do_count(const Position<Board>& p) const
+        virtual int do_count(const PositionType& p) const
         {
                 return Delegate::count(p);
         }
 
-        virtual bool do_detect(const Position<Board>& p) const
+        virtual bool do_detect(const PositionType& p) const
         {
                 return Delegate::detect(p);
         }

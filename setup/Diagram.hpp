@@ -7,7 +7,6 @@
 #include "Content.hpp"
 #include "Numbers.hpp"
 #include "TokenInterface.hpp"
-#include "../node/Position.hpp"
 #include "../node/Side.hpp"
 #include "../utility/IntegerTypes.hpp"
 
@@ -23,8 +22,8 @@ class diagram
 {
 public:
         // position content in diagram layout
-        template<typename Board>
-        std::string operator()(const Position<Board>& p) const
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        std::string operator()(const Position<Rules, Board>& p) const
         {
                 return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
         }
@@ -102,7 +101,6 @@ private:
 
         BOOST_STATIC_CONSTANT(auto, WHITE_SPACE = ' ');
 };
-
 
 }       // namespace setup
 }       // namespace dctl

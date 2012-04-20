@@ -7,7 +7,6 @@
 #include "../board/Direction.hpp"
 #include "../capture/State.hpp"
 #include "../node/Material.hpp"
-#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
@@ -30,13 +29,15 @@ private:
         typedef capture::State<Rules, Board> State;
 
 public:
-        static void generate(const Position<Board>& p, Stack& moves)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, Stack& moves)
         {
                 State capture(p, moves);
                 generate(p, capture);
         }
 
-        static void generate(const Position<Board>& p, State& capture)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, State& capture)
         {
                 generate_precede(p, capture);
         }
@@ -47,20 +48,23 @@ public:
                 return scan_next<Index>(jumper, capture);
         }
 
-        static int count(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>& p)
         {
                 Stack moves;
                 generate(p, moves);
                 return static_cast<int>(moves.size());
         }
 
-        static bool detect(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static bool detect(const Position<Rules, Board>& p)
         {
                 return detect(p.kings(Color), p.pieces(!Color), not_occupied(p));
         }
 
 private:
-        static void generate_precede(const Position<Board>& p, State& capture)
+        template<template<typename, typename> class Position>
+        static void generate_precede(const Position<Rules, Board>& p, State& capture)
         {
                 // tag dispatching on relative king capture precedence
                 generate_precede(
@@ -70,18 +74,22 @@ private:
         }
 
         // partial specialization for relative king capture precedence
+        template<template<typename, typename> class Position>
         static void generate_precede(
-                const Position<Board>& p, State& capture, Int2Type<true>
+                const Position<Rules, Board>& p, State& capture, Int2Type<true>
         )
         {
                 capture.toggle_with_king();
-                generate_precede(p, capture, Int2Type<false>());
+                generate_precede(
+                        p, capture, Int2Type<false>()
+                );
                 capture.toggle_with_king();
         }
 
         // partial specialization for no relative king capture precedence
+        template<template<typename, typename> class Position>
         static void generate_precede(
-                const Position<Board>& p, State& capture, Int2Type<false>
+                const Position<Rules, Board>& p, State& capture, Int2Type<false>
         )
         {
                 serialize(p.kings(Color), capture);

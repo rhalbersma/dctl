@@ -1,50 +1,53 @@
 #pragma once
 #include "Feature.hpp"
-#include "../node/Position_fwd.hpp"
 
 namespace dctl {
 
 template
 <
-        bool Color,
-        typename Rules,
-        typename Board
+        bool Color
 >
 class Delta
 {
 private:
         // typedefs
-        typedef Feature< Color, Rules, Board> Active;
-        typedef Feature<!Color, Rules, Board> Passive;
+        typedef Feature< Color> Active;
+        typedef Feature<!Color> Passive;
 
 public:
-        static int evaluate(const Position<Board>& p)
+        template<typename Position>
+        static int evaluate(const Position& p)
         {
                 return Active::evaluate(p) - Passive::evaluate(p);
         }
 
 private:
-        static int material(const Position<Board>& p)
+        template<typename Position>
+        static int material(const Position& p)
         {
                 return Active::material(p) - Passive::material(p);
         }
 
-        static int tempo(const Position<Board>& p)
+        template<typename Position>
+        static int tempo(const Position& p)
         {
                 return Active::tempo(p) - Passive::tempo(p);
         }
 
-        static int center(const Position<Board>& p)
+        template<typename Position>
+        static int center(const Position& p)
         {
                 return Active::center(p) - Passive::center(p);
         }
 
-        static int balance(const Position<Board>& p)
+        template<typename Position>
+        static int balance(const Position& p)
         {
                 return Active::balance(p) - Passive::balance(p);
         }
 
-        static int mobility(const Position<Board>& p)
+        template<typename Position>
+        static int mobility(const Position& p)
         {
                 return Active::mobility(p) - Passive::mobility(p);
         }

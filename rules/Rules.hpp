@@ -45,7 +45,7 @@ template<> struct turn_directions<dirs_all >                    { enum { value =
 template<typename Rules> struct king_turn_directions            { enum { value = turn_directions<king_jump_directions<Rules>::value>::value }; };
 
 // man capture turn directions
-template<typename Rules> struct pawn_turn_directions            { enum { value = turn_directions<pawn_jump_directions<Rules>::value>::value  }; };
+template<typename Rules> struct pawn_turn_directions            { enum { value = turn_directions<pawn_jump_directions<Rules>::value>::value }; };
 
 // capture direction reversal
 template<typename> struct is_jump_direction_reversal            { enum { value = false }; };

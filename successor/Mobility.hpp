@@ -1,6 +1,5 @@
 #pragma once
 #include "Dispatcher.hpp"
-#include "../node/Position_fwd.hpp"
 #include "../node/State.hpp"
 #include "../utility/NonConstructible.hpp"
 
@@ -28,17 +27,16 @@ namespace dctl {
 
 template
 <
-        typename Selection,
-        typename Rules
+        typename Selection
 >
 struct Mobility
 :
         private nonconstructible        // enforce static semantics
 {
-        template<bool Color, typename Board>
-        static int count(const Position<Board>& p)
+        template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>& p)
         {
-                typedef successor::Dispatcher<Selection, Rules, Board> Delegate;
+                typedef successor::Dispatcher<Selection, Rules, Board, Position> Delegate;
                 return Delegate::select(state<Color>(p))->count(p);
         }
 };

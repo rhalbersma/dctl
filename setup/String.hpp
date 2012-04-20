@@ -12,30 +12,24 @@ namespace setup {
 
 template
 <
+        typename Rules,
         typename Board,
         typename Protocol,
         typename Content = typename Token<Protocol>::type
 >
-struct read
-{
-        Position<Board> operator()(const std::string&) const;
-};
+struct read;
 
 template
 <
         typename Protocol,
         typename Content = typename Token<Protocol>::type
 >
-struct write
-{
-        template<typename Board>
-        std::string operator()(const Position<Board>&) const;
-};
+struct write;
 
-template<typename Board, typename Token>
-struct read<Board, pdn::protocol, Token>
+template<typename Rules, typename Board, typename Token>
+struct read<Rules, Board, pdn::protocol, Token>
 {
-        Position<Board> operator()(const std::string& s) const
+        Position<Rules, Board> operator()(const std::string& s) const
         {
                 BitBoard p_pieces[2] = {0, 0};
                 BitBoard p_kings = 0;
@@ -43,7 +37,7 @@ struct read<Board, pdn::protocol, Token>
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return Position<Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side);
+                        return Position<Rules, Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side);
 
                 bool setup_kings = false;
                 bool setup_color = p_side;
@@ -80,15 +74,15 @@ struct read<Board, pdn::protocol, Token>
                                 break;
                         }
                 }
-                return Position<Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side);
+                return Position<Rules, Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side);
         }
 };
 
 template<typename Token>
 struct write<pdn::protocol, Token>
 {
-        template<typename Board>
-        std::string operator()(const Position<Board>& p) const
+        template<typename Rules, typename Board>
+        std::string operator()(const Position<Rules, Board>& p) const
         {
                 std::stringstream sstr;
                 sstr << Token::quote;                                                // opening quotes
@@ -114,10 +108,10 @@ struct write<pdn::protocol, Token>
         }
 };
 
-template<typename Board, typename Token>
-struct read<Board, dxp::protocol, Token>
+template<typename Rules, typename Board, typename Token>
+struct read<Rules, Board, dxp::protocol, Token>
 {
-        Position<Board> operator()(const std::string& s) const
+        Position<Rules, Board> operator()(const std::string& s) const
         {
                 BitBoard p_pieces[2] = {0, 0};
                 BitBoard p_kings = 0;
@@ -148,15 +142,15 @@ struct read<Board, dxp::protocol, Token>
                         if (isupper(ch))
                                 p_kings ^= bb;                  // king
                 }
-                return Position<Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side);
+                return Position<Rules, Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side);
         }
 };
 
 template<typename Token>
 struct write<dxp::protocol, Token>
 {
-        template<typename Board>
-        std::string operator()(const Position<Board>& p) const
+        template<typename Rules, typename Board>
+        std::string operator()(const Position<Rules, Board>& p) const
         {
                 std::stringstream sstr;
                 sstr << write_color<Token>(p.active_color());                // side to move

@@ -1,6 +1,4 @@
 #pragma once
-#include "Position.hpp"
-#include "Move.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
@@ -8,74 +6,74 @@
 
 namespace dctl {
 
-template<typename Board>
-BitBoard from_sq(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+BitBoard from_sq(const Position& p, const Move& m)
 {
         return moving_pieces(p, m) & active_pieces(p);
 }
 
-template<typename Board>
-BitBoard dest_sq(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+BitBoard dest_sq(const Position& p, const Move& m)
 {
         return moving_pieces(p, m) & not_occupied(p);
 }
 
-template<typename Board>
-BitBoard moving_pieces(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+BitBoard moving_pieces(const Position& p, const Move& m)
 {
         return m.pieces(p.active_color());
 }
 
-template<typename Board>
-BitBoard moving_kings(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+BitBoard moving_kings(const Position& p, const Move& m)
 {
         return m.kings(p.active_color());
 }
 
-template<typename Board>
-BitBoard captured_pieces(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+BitBoard captured_pieces(const Position& p, const Move& m)
 {
         return m.pieces(p.passive_color());
 }
 
-template<typename Board>
-BitBoard captured_kings(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+BitBoard captured_kings(const Position& p, const Move& m)
 {
         return m.kings(p.passive_color());
 }
 
-template<typename Board>
-bool is_connected(const Position<Board>& p, const Move& m1, const Move& m2)
+template<typename Position, typename Move>
+bool is_connected(const Position& p, const Move& m1, const Move& m2)
 {
         return false;
 }
 
-template<typename Board>
-bool is_reversible(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+bool is_reversible(const Position& p, const Move& m)
 {
         return is_with_king(p, m) && !is_capture(p, m);
 }
 
-template<typename Board>
-bool is_promotion(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+bool is_promotion(const Position& p, const Move& m)
 {
         return bit::is_single(moving_kings(p, m));
 }
 
-template<typename Board>
-bool is_with_king(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+bool is_with_king(const Position& p, const Move& m)
 {
         return !bit::is_zero(moving_kings(p, m) & active_kings(p));
 }
 
-template<typename Board>
-bool is_capture(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+bool is_capture(const Position& p, const Move& m)
 {
         return !bit::is_zero(captured_pieces(p, m));
 }
 
-template<typename Rules, typename Board>
-bool is_pseudo_legal(const Position<Board>& p, const Move& m)
+template<typename Position, typename Move>
+bool is_pseudo_legal(const Position& p, const Move& m)
 {
         return (
                 // cannot move multiple pieces
@@ -88,13 +86,13 @@ bool is_pseudo_legal(const Position<Board>& p, const Move& m)
                         bit::is_subset_of(captured_kings(p, m), passive_kings(p)) ||
 
                         // EXCEPTION: for intersecting captures, a man-capturing king can appear as a captured king
-                        is_intersecting_capture<Rules>(p, m)
+                        is_intersecting_capture(p, m)
                 )
         );
 }
 
-template<typename Rules, typename Board>
-bool is_intersecting_capture(const Position<Board>& p, const Move& m)
+template<typename Rules, typename Board, template<typename, typename> class Position, typename Move>
+bool is_intersecting_capture(const Position<Rules, Board>& p, const Move& m)
 {
         // tag dispatching on capture removal
         return aux::is_intersecting_capture(
@@ -106,15 +104,15 @@ bool is_intersecting_capture(const Position<Board>& p, const Move& m)
 namespace aux {
 
 // partial specialization for apres-fini capture removal
-template<typename Board>
-bool is_intersecting_capture(const Position<Board>& /* p */, const Move& /* m */, Int2Type<rules::remove_af>)
+template<typename Position, typename Move>
+bool is_intersecting_capture(const Position& /* p */, const Move& /* m */, Int2Type<rules::remove_af>)
 {
         return false;
 }
 
 // partial specialization for en-passant capture removal
-template<typename Board>
-bool is_intersecting_capture(const Position<Board>& p, const Move& m, Int2Type<rules::remove_ep>)
+template<typename Position, typename Move>
+bool is_intersecting_capture(const Position& p, const Move& m, Int2Type<rules::remove_ep>)
 {
         // for intersecting captures, a man-capturing king can appear as a captured king
         return bit::is_single(moving_kings(p, m) & captured_kings(p, m) & passive_pawns(p));
