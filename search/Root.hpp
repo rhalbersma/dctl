@@ -9,7 +9,6 @@
 #include "Transposition.hpp"
 #include "Variation.hpp"
 #include "../evaluate/Evaluate.hpp"
-#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../hash/Map.hpp"
 #include "../successor/Successor.hpp"
@@ -26,8 +25,6 @@ namespace search {
 
 template
 <
-        typename Rules,
-        typename Board,
         typename Objective
 >
 class Root
@@ -42,12 +39,14 @@ public:
         {
         }
 
-        int analyze(const Position<Board>& p, int depth)
+        template<typename Position>
+        int analyze(const Position& p, int depth)
         {
                 return iterative_deepening(p, depth);
         }
 
-        int solve(const Position<Board>& p, int depth)
+        template<typename Position>
+        int solve(const Position& p, int depth)
         {
                 return proof_verify(p, depth);
         }
@@ -73,20 +72,22 @@ public:
         }
 
 private:
-        int iterative_deepening(const Position<Board>&, int);
-        int proof_verify(const Position<Board>&, int);
-        int negamax(const Position<Board>&, int, int, Variation&);
-        template<typename int> int verify(const Position<Board>&, int, int, int, int, Variation&);
-        template<typename int> int pvs(const Position<Board>&, int, int, int, int, Variation&);
+        template<typename Position> int iterative_deepening(const Position&, int);
+        template<typename Position> int proof_verify(const Position&, int);
+        template<typename Position> int negamax(const Position&, int, int, Variation&);
+        template<typename int, typename Position> int verify(const Position&, int, int, int, int, Variation&);
+        template<typename int, typename Position> int pvs(const Position&, int, int, int, int, Variation&);
 
-        void announce(const Position<Board>& p, int depth)
+        template<typename Position>
+        void announce(const Position& p, int depth)
         {
                 std::cout << setup::diagram<pdn::protocol>()(p);
                 std::cout << setup::write<pdn::protocol>()(p) << "\n";
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
-        void report(int depth, int value, const Timer& timer, const Position<Board>& p, const Sequence& pv)
+        template<typename Position>
+        void report(int depth, int value, const Timer& timer, const Position& p, const Sequence& pv)
         {
                 std::cout << "info";
 
@@ -115,14 +116,15 @@ private:
                 print_pv(p, pv);
         }
 
-        void insert_pv(const Position<Board>& p, const Sequence& pv, int value, int ply = 0)
+        template<typename Position>
+        void insert_pv(const Position& p, const Sequence& pv, int value, int ply = 0)
         {
                 const auto depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         BOOST_ASSERT(
-                                (value == Evaluate<Rules>::evaluate(p)) ||
-                                (value == draw_value() && is_draw<Rules>(p)) ||
-                                (value == loss_min() && !Successor<select::Legal, Rules>::detect(p))
+                                (value == Evaluate::evaluate(p)) ||
+                                (value == draw_value() && is_draw(p)) ||
+                                (value == loss_min() && !Successor<select::Legal>::detect(p))
                                 // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
                         );
                         TT.insert(p, Transposition(value, Bound::exact, depth, Transposition::no_move()));
@@ -130,18 +132,19 @@ private:
                 }
 
                 Stack moves;
-                Successor<select::Legal, Rules>::generate(p, moves);
+                Successor<select::Legal>::generate(p, moves);
                 const auto index = pv[ply] % moves.size();
                 const auto best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
 
                 auto q = p;
                 q.attach(p);
-                q.template make<Rules>(best_move);
+                q.make(best_move);
                 insert_pv(q, pv, -stretch(value), ply + 1);
         }
 
-        void print_pv(const Position<Board>& p, const Sequence& pv, int ply = 0)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        void print_pv(const Position<Rules, Board>& p, const Sequence& pv, int ply = 0)
         {
                 const auto depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
@@ -151,7 +154,7 @@ private:
                 }
 
                 Stack moves;
-                Successor<select::Legal, Rules>::generate(p, moves);
+                Successor<select::Legal>::generate(p, moves);
                 const auto best_move = moves[pv[ply] % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
@@ -160,7 +163,7 @@ private:
 
                 auto q = p;
                 q.attach(p);
-                q.template make<Rules>(best_move);
+                q.make(best_move);
                 //if (q.same_king_moves(!q.to_move()))
                         //std::cout << "^" << q.same_king_moves(!q.to_move());
                 print_pv(q, pv, ply + 1);

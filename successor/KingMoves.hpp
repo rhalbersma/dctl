@@ -4,7 +4,6 @@
 #include "../bit/Bit.hpp"
 #include "../board/Direction.hpp"
 #include "../node/Material.hpp"
-#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
@@ -19,24 +18,28 @@ namespace successor {
 template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::king, select::Moves, Rules, Board>
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
 private:
         // typedefs
         typedef board::Direction<Color, Board> Direction;
 
 public:
-        static void generate(const Position<Board>& p, Stack& moves)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, Stack& moves)
         {
                 serialize(unrestricted_kings<Rules>(p, Color), not_occupied(p), moves);
         }
 
-        static int count(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>& p)
         {
                 return count(unrestricted_kings<Rules>(p, Color), not_occupied(p));
         }
 
-        static bool detect(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static bool detect(const Position<Rules, Board>& p)
         {
                 return detect(unrestricted_kings<Rules>(p, Color), not_occupied(p));
         }

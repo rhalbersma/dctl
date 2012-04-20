@@ -4,7 +4,6 @@
 #include "PawnReverse.hpp"
 #include "Selection.hpp"
 #include "../node/Material.hpp"
-#include "../node/Position_fwd.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -24,13 +23,15 @@ private:
         typedef Driver<Color, Material::pawn, select::Reverse, Rules, Board> PawnReverse;
 
 public:
-        static void generate(const Position<Board>& p, Stack& moves)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, Stack& moves)
         {
                 KingReverse::generate(p, moves);
                 PawnReverse::generate(p, moves);
         }
 
-        static int count(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>& p)
         {
                 return (
                         KingReverse::count(p) +
@@ -38,7 +39,8 @@ public:
                 );
         }
 
-        static bool detect(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static bool detect(const Position<Rules, Board>& p)
         {
                 return (
                         PawnReverse::detect(p) ||

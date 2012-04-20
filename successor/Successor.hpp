@@ -1,6 +1,5 @@
 #pragma once
 #include "Dispatcher.hpp"
-#include "../node/Position_fwd.hpp"
 #include "../node/Stack.hpp"
 #include "../node/State.hpp"
 #include "../utility/NonConstructible.hpp"
@@ -28,8 +27,7 @@ namespace dctl {
 
 template
 <
-        typename Selection,
-        typename Rules
+        typename Selection
 >
 class Successor
 :
@@ -37,22 +35,22 @@ class Successor
 {
 public:
         // interface
-        template<typename Board>
-        static void generate(const Position<Board>& p, Stack& moves)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, Stack& moves)
         {
-                successor::Dispatcher<Selection, Rules, Board>::select(state(p))->generate(p, moves);
+                successor::Dispatcher<Selection, Rules, Board, Position>::select(state(p))->generate(p, moves);
         }
 
-        template<typename Board>
-        static int count(const Position<Board>& p)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>& p)
         {
-                return successor::Dispatcher<Selection, Rules, Board>::select(state(p))->count(p);
+                return successor::Dispatcher<Selection, Rules, Board, Position>::select(state(p))->count(p);
         }
 
-        template<typename Board>
-        static bool detect(const Position<Board>& p)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        static bool detect(const Position<Rules, Board>& p)
         {
-                return successor::Dispatcher<Selection, Rules, Board>::select(state(p))->detect(p);
+                return successor::Dispatcher<Selection, Rules, Board, Position>::select(state(p))->detect(p);
         }
 };
 

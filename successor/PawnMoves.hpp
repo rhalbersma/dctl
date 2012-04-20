@@ -4,7 +4,6 @@
 #include "../bit/Bit.hpp"
 #include "../board/Direction.hpp"
 #include "../node/Material.hpp"
-#include "../node/Position.hpp"
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/Int2Type.hpp"
@@ -26,17 +25,20 @@ private:
         typedef board::Direction<Color, Board> Direction;
 
 public:
-        static void generate(const Position<Board>& p, Stack& moves)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, Stack& moves)
         {
                 generate(p.pawns(Color), not_occupied(p), moves);
         }
 
-        static int count(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>& p)
         {
                 return count(p.pawns(Color), not_occupied(p));
         }
 
-        static bool detect(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static bool detect(const Position<Rules, Board>& p)
         {
                 return detect(p.pawns(Color), not_occupied(p));
         }

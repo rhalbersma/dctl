@@ -5,11 +5,9 @@
 #include "Notation.hpp"
 #include "../bit/Bit.hpp"
 #include "../node/Move_fwd.hpp"
-#include "../node/Position_fwd.hpp"
 #include "../node/Predicates.hpp"
 
 namespace dctl {
-
 namespace notation {
 
 template
@@ -18,11 +16,7 @@ template
         typename Format = typename Format<Rules>::type,
         typename Separator = typename Separator<Rules>::type
 >
-struct read
-{
-        template<typename Board>
-        const Move operator()(const Position<Board>&, const std::string&) const;
-};
+struct read;
 
 template
 <
@@ -30,18 +24,14 @@ template
         typename Format = typename Format<Rules>::type,
         typename Separator = typename Separator<Rules>::type
 >
-struct write
-{
-        template<typename Board>
-        const std::string operator()(const Position<Board>&, const Move&) const;
-};
+struct write;
 
 // partial specialization for numeric notation
 template<typename Rules, typename Separator>
 struct write<Rules, numeric, Separator>
 {
-        template<typename Board>
-        const std::string operator()(const Position<Board>& p, const Move& m) const
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        const std::string operator()(const Position<Rules, Board>& p, const Move& m) const
         {
                 std::stringstream sstr;
                 sstr << std::setw(2) << std::right << Board::bit2square(bit::find_first(from_sq(p, m))) + 1;

@@ -6,7 +6,6 @@
 #include <boost/utility.hpp>            // noncopyable
 #include "Value.hpp"
 #include "../bit/Bit.hpp"
-#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
@@ -25,7 +24,8 @@ class State
 public:
         // structors
 
-        explicit State(const Position<Board>& p, Stack& m)
+        template<template<typename, typename> class Position>
+        explicit State(const Position<Rules, Board>& p, Stack& m)
         :
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),

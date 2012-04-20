@@ -6,7 +6,6 @@
 #include "Transposition.hpp"
 #include "../hash/DualMap.hpp"
 #include "../node/Material.hpp"
-#include "../node/Position.hpp"
 #include "../node/Stack.hpp"
 #include "../successor/Successor.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -20,15 +19,11 @@
 namespace dctl {
 namespace walk {
 
-template
-<
-        typename Rules,
-        typename Board
->
 class Root
 {
 public:
-        NodeCount perft(const Position<Board>& p, int depth)
+        template<typename Position>
+        NodeCount perft(const Position& p, int depth)
         {
                 NodeCount leafs = 0;
 
@@ -44,14 +39,15 @@ public:
                 return leafs;
         }
 
-        NodeCount divide(const Position<Board>& p, int depth)
+        template<typename Rules, typename Board, template<typename, typename> class Position>
+        NodeCount divide(const Position<Rules, Board>& p, int depth)
         {
                 NodeCount leafs = 0;
                 NodeCount move_leafs;
 
                 Timer timer;
                 Stack moves;
-                Successor<select::Legal, Rules>::generate(p, moves);
+                Successor<select::Legal>::generate(p, moves);
 
                 announce(p, depth, moves.size());
                 for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
@@ -60,7 +56,7 @@ public:
 
                         auto q = p;
                         q.attach(p);
-                        q.template make<Rules>(moves[i]);
+                        q.make(moves[i]);
                         move_leafs = driver(q, depth - 1, 0);
                         leafs += move_leafs;
 
@@ -72,7 +68,8 @@ public:
                 return leafs;
         }
 
-        NodeCount test(const Position<Board>& p, int depth)
+        template<typename Position>
+        NodeCount test(const Position& p, int depth)
         {
                 return driver(p, depth, 0);
         }
@@ -88,14 +85,16 @@ public:
         }
 
 private:
-        void announce(const Position<Board>& p, int depth)
+        template<typename Position>
+        void announce(const Position& p, int depth)
         {
                 std::cout << setup::diagram<pdn::protocol>()(p);
                 std::cout << setup::write<pdn::protocol>()(p) << "\n";
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
-        void announce(const Position<Board>& p, int depth, int num_moves)
+        template<typename Position>
+        void announce(const Position& p, int depth, int num_moves)
         {
                 announce(p, depth);
                 std::cout << "Found " << num_moves << " moves, searching each to nominal depth=" << depth - 1 << "\n";
@@ -145,12 +144,14 @@ private:
                 std::cout << std::setw(2) << (i + 1) << "." << move << " ";
         }
 
-        NodeCount driver(const Position<Board>& p, int depth, int ply)
+        template<typename Position>
+        NodeCount driver(const Position& p, int depth, int ply)
         {
                 return (depth == 0)? leaf(p, depth, ply) : fast(p, depth, ply);
         }
 
-        NodeCount leaf(const Position<Board>& p, int depth, int ply)
+        template<typename Position>
+        NodeCount leaf(const Position& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -158,23 +159,24 @@ private:
                         return 1;
 
                 Stack moves;
-                Successor<select::Legal, Rules>::generate(p, moves);
+                Successor<select::Legal>::generate(p, moves);
                 NodeCount leafs = 0;
                 for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
                         auto q = p;
                         q.attach(p);
-                        q.template make<Rules>(*m);
+                        q.make(*m);
                         leafs += leaf(q, depth - 1, ply + 1);
                 }
                 return leafs;
         }
 
-        NodeCount bulk(const Position<Board>& p, int depth, int ply)
+        template<typename Position>
+        NodeCount bulk(const Position& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
                 Stack moves;
-                Successor<select::Legal, Rules>::generate(p, moves);
+                Successor<select::Legal>::generate(p, moves);
                 if (depth == 1)
                         return moves.size();
 
@@ -182,32 +184,34 @@ private:
                 for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
                         auto q = p;
                         q.attach(p);
-                        q.template make<Rules>(*m);
+                        q.make(*m);
                         leafs += bulk(q, depth - 1, ply + 1);
                 }
                 return leafs;
         }
 
-        NodeCount count(const Position<Board>& p, int depth, int ply)
+        template<typename Position>
+        NodeCount count(const Position& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
                 if (depth == 1)
-                        return Successor<select::Legal, Rules>::count(p);
+                        return Successor<select::Legal>::count(p);
 
                 Stack moves;
-                Successor<select::Legal, Rules>::generate(p, moves);
+                Successor<select::Legal>::generate(p, moves);
                 NodeCount leafs = 0;
                 for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
                         auto q = p;
                         q.attach(p);
-                        q.template make<Rules>(*m);
+                        q.make(*m);
                         leafs += count(q, depth - 1, ply + 1);
                 }
                 return leafs;
         }
 
-        NodeCount hash(const Position<Board>& p, int depth, int ply)
+        template<typename Position>
+        NodeCount hash(const Position& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -219,12 +223,12 @@ private:
                         return 1;
 
                 Stack moves;
-                Successor<select::Legal, Rules>::generate(p, moves);
+                Successor<select::Legal>::generate(p, moves);
                 NodeCount leafs = 0;
                 for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
                         auto q = p;
                         q.attach(p);
-                        q.template make<Rules>(*m);
+                        q.make(*m);
                         leafs += hash(q, depth - 1, ply + 1);
                 }
 
@@ -232,7 +236,8 @@ private:
                 return leafs;
         }
 
-        NodeCount fast(const Position<Board>& p, int depth, int ply)
+        template<typename Position>
+        NodeCount fast(const Position& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -242,15 +247,15 @@ private:
 
                 NodeCount leafs;
                 if (depth == 1) {
-                        leafs = Successor<select::Legal, Rules>::count(p);
+                        leafs = Successor<select::Legal>::count(p);
                 } else {
                         Stack moves;
-                        Successor<select::Legal, Rules>::generate(p, moves);
+                        Successor<select::Legal>::generate(p, moves);
                         leafs = 0;
                         for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
                                 auto q = p;
                                 q.attach(p);
-                                q.template make<Rules>(*m);
+                                q.make(*m);
                                 leafs += fast(q, depth - 1, ply + 1);
                         }
                 }

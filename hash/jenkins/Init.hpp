@@ -1,7 +1,6 @@
 #pragma once
 #include <functional>                   // unary_function
 #include "Random.hpp"
-#include "../../node/Position.hpp"
 #include "../../node/Side.hpp"
 
 namespace dctl {
@@ -13,12 +12,12 @@ template<typename Key, typename Index>
 struct Init;
 
 // partial specialization for ab initio hashing of positions
-template<typename Board, typename Index>
-struct Init<Position<Board>, Index>
+template<typename Rules, typename Board, template<typename, typename> class Position, typename Index>
+struct Init<Position<Rules, Board>, Index>
 :
-        public std::unary_function<Position<Board>, Index>
+        public std::unary_function<Position<Rules, Board>, Index>
 {
-        Index operator()(const Position<Board>& p) const
+        Index operator()(const Position<Rules, Board>& p) const
         {
                 Index index = 0;
 

@@ -1,17 +1,16 @@
 #pragma once
-#include "Position.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 
-template<typename Board>
-int state(const Position<Board>& p)
+template<typename Position>
+int state(const Position& p)
 {
         return state(p.active_color(), active_kings(p), active_pawns(p));
 }
 
-template<bool Color, typename Board>
-int state(const Position<Board>& p)
+template<bool Color, typename Position>
+int state(const Position& p)
 {
         return state(Color, p.kings(Color), p.pawns(Color));
 }

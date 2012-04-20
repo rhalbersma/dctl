@@ -1,6 +1,5 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include "../node/Position_fwd.hpp"
 #include "../node/Stack.hpp"
 
 namespace dctl {
@@ -21,24 +20,24 @@ namespace successor {
 
 */
 
-template<typename Board>
+template<typename Position>
 class StateInterface
 {
 public:
         // non-virtual interface
 
-        void generate(const Position<Board>& p, Stack& moves) const
+        void generate(const Position& p, Stack& moves) const
         {
                 do_generate(p, moves);
                 BOOST_ASSERT(invariant(p, moves.size()));
         }
 
-        int count(const Position<Board>& p) const
+        int count(const Position& p) const
         {
                 return do_count(p);
         }
 
-        bool detect(const Position<Board>& p) const
+        bool detect(const Position& p) const
         {
                 return do_detect(p);
         }
@@ -53,7 +52,7 @@ protected:
 
 private:
         // invariant relating generate, count and detect
-        bool invariant(const Position<Board>& p, int number) const
+        bool invariant(const Position& p, int number) const
         {
                 return (
                         (count(p) == number) &&
@@ -63,9 +62,9 @@ private:
 
         // pure virtual implementation
 
-        virtual void do_generate(const Position<Board>&, Stack&) const = 0;
-        virtual int do_count(const Position<Board>&) const = 0;
-        virtual bool do_detect(const Position<Board>&) const = 0;
+        virtual void do_generate(const Position&, Stack&) const = 0;
+        virtual int do_count(const Position&) const = 0;
+        virtual bool do_detect(const Position&) const = 0;
 };
 
 }       // namespace successor

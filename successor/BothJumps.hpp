@@ -5,7 +5,6 @@
 #include "Selection.hpp"
 #include "../capture/State.hpp"
 #include "../node/Material.hpp"
-#include "../node/Position_fwd.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
@@ -27,20 +26,23 @@ private:
         typedef capture::State<Rules, Board> State;
 
 public:
-        static void generate(const Position<Board>& p, Stack& moves)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, Stack& moves)
         {
                 State capture(p, moves);
                 generate(p, capture);
         }
 
-        static int count(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>& p)
         {
                 Stack moves;
                 generate(p, moves);
                 return static_cast<int>(moves.size());
         }
 
-        static bool detect(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static bool detect(const Position<Rules, Board>& p)
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (
@@ -50,7 +52,8 @@ public:
         }
 
 private:
-        static void generate(const Position<Board>& p, State& capture)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, State& capture)
         {
                 // tag dispatching on absolute king capture precedence
                 generate_dispatch(
@@ -60,8 +63,9 @@ private:
         }
 
         // partial specialization for no absolute king capture precedence
+        template<template<typename, typename> class Position>
         static void generate_dispatch(
-                const Position<Board>& p, State& capture, Int2Type<false>
+                const Position<Rules, Board>& p, State& capture, Int2Type<false>
         )
         {
                 KingJumps::generate(p, capture);
@@ -69,8 +73,9 @@ private:
         }
 
         // partial specialization for absolute king capture precedence
+        template<template<typename, typename> class Position>
         static void generate_dispatch(
-                const Position<Board>& p, State& capture, Int2Type<true>
+                const Position<Rules, Board>& p, State& capture, Int2Type<true>
         )
         {
                 KingJumps::generate(p, capture);

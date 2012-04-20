@@ -2,7 +2,6 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include "Score.hpp"
 #include "../bit/Bit.hpp"
-#include "../node/Position.hpp"
 #include "../successor/Selection.hpp"
 #include "../successor/Successor.hpp"
 
@@ -24,47 +23,47 @@ struct HeuristicDraw;
 
 template
 <
-        typename TerminalDetection = Kingscourt,
+        typename TerminalDetection = NoMovesLeft,
         typename TerminalScoring = Regular,
         typename CycleScoring = HeuristicDraw
 >
 struct GameObjective
 {
-        template<typename Rules, typename Board>
-        static int value(const Position<Board>& p)
+        template<typename Position>
+        static int value(const Position& p)
         {
                 if (is_cycle(p))
                         return cycle<CycleScoring>::value(p);
 
-                if (is_terminal<TerminalDetection, Rules>()(p))
+                if (is_terminal<TerminalDetection>()(p))
                         return terminal<TerminalScoring>::value();
 
                 return -infinity();
         }
 };
 
-template<typename, typename>
+template<typename>
 struct is_terminal;
 
-template<typename Rules>
-struct is_terminal<NoMovesLeft, Rules>
+template<>
+struct is_terminal<NoMovesLeft>
 {
-        template<typename Board>
-        bool operator()(const Position<Board>& p) const
+        template<typename Position>
+        bool operator()(const Position& p) const
         {
-                return !Successor<select::Legal, Rules>::detect(p);
+                return !Successor<select::Legal>::detect(p);
         }
 };
 
-template<typename Rules>
-struct is_terminal<Kingscourt, Rules>
+template<>
+struct is_terminal<Kingscourt>
 {
-        template<typename Board>
-        bool operator()(const Position<Board>& p) const
+        template<typename Position>
+        bool operator()(const Position& p) const
         {
                 return (
                         (bit::count(active_kings(p)) - bit::count(passive_kings(p)) < 0) ||
-                        is_terminal<NoMovesLeft, Rules>()(p)
+                        is_terminal<NoMovesLeft>()(p)
                 );
         }
 };
@@ -90,8 +89,8 @@ struct terminal<Misere>
         }
 };
 
-template<typename Rules, typename Board>
-bool is_draw(const Position<Board>& p)
+template<typename Rules, typename Board, template<typename, typename> class Position>
+bool is_draw(const Position<Rules, Board>& p)
 {
         return (
                 is_cycle(p) ||
@@ -99,8 +98,8 @@ bool is_draw(const Position<Board>& p)
         );
 }
 
-template<typename Board>
-bool is_cycle(const Position<Board>& p)
+template<typename Position>
+bool is_cycle(const Position& p)
 {
         // a cycle needs at least 4 reversible moves
         if (p.reversible_moves() < 4)
@@ -118,8 +117,8 @@ bool is_cycle(const Position<Board>& p)
         return false;
 }
 
-template<typename Rules, typename Board>
-bool is_no_progress(const Position<Board>& p)
+template<typename Rules, typename Board, template<typename, typename> class Position>
+bool is_no_progress(const Position<Rules, Board>& p)
 {
         // tag dispatching on restrictions on consecutive reversible moves
         return is_no_progress_dispatch<Rules>(
@@ -129,15 +128,15 @@ bool is_no_progress(const Position<Board>& p)
 }
 
 // partial specialization for no restrictions on consecutive reversible moves
-template<typename Rules, typename Board>
-bool is_no_progress_dispatch(const Position<Board>&, Int2Type<false>)
+template<typename Position>
+bool is_no_progress_dispatch(const Position& /* p */, Int2Type<false>)
 {
         return false;
 }
 
 // partial specialization for a maximum of consecutive reversible moves
-template<typename Rules, typename Board>
-bool is_no_progress_dispatch(const Position<Board>& p, Int2Type<true>)
+template<typename Rules, typename Board, template<typename, typename> class Position>
+bool is_no_progress_dispatch(const Position<Rules, Board>& p, Int2Type<true>)
 {
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }
@@ -148,8 +147,8 @@ struct cycle;
 template<>
 struct cycle<HeuristicDraw>
 {
-        template<typename Board>
-        static int value(const Position<Board>& /* p */)
+        template<typename Position>
+        static int value(const Position& /* p */)
         {
                 return draw_value();
         }
@@ -158,8 +157,8 @@ struct cycle<HeuristicDraw>
 template<>
 struct cycle<FirstPlayerWin>
 {
-        template<typename Board>
-        static int value(const Position<Board>& p)
+        template<typename Position>
+        static int value(const Position& p)
         {
                 return (p.distance_to_root() % 2)? loss_min() : win_min();
         }
@@ -168,8 +167,8 @@ struct cycle<FirstPlayerWin>
 template<>
 struct cycle<SecondPlayerWin>
 {
-        template<typename Board>
-        static int value(const Position<Board>& p)
+        template<typename Position>
+        static int value(const Position& p)
         {
                 return -cycle<FirstPlayerWin>::value(p);
         }

@@ -3,7 +3,6 @@
 #include "PawnMoves.hpp"
 #include "Selection.hpp"
 #include "../node/Material.hpp"
-#include "../node/Position.hpp"
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/NonConstructible.hpp"
@@ -22,17 +21,20 @@ private:
         typedef Driver<Color, Material::pawn, select::Moves, Rules, Board> ActivePawnMoves;
 
 public:
-        static void generate(const Position<Board>& p, Stack& moves)
+        template<template<typename, typename> class Position>
+        static void generate(const Position<Rules, Board>& p, Stack& moves)
         {
                 ActivePawnMoves::generate(promoting_pawns<Color>(p), not_occupied(p), moves);
         }
 
-        static int count(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static int count(const Position<Rules, Board>& p)
         {
                 return ActivePawnMoves::count(promoting_pawns<Color>(p), not_occupied(p));
         }
 
-        static bool detect(const Position<Board>& p)
+        template<template<typename, typename> class Position>
+        static bool detect(const Position<Rules, Board>& p)
         {
                 return ActivePawnMoves::detect(promoting_pawns<Color>(p), not_occupied(p));
         }
