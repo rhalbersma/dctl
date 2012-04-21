@@ -1,6 +1,6 @@
 #pragma once
-#include <type_traits>
-#include <boost/static_assert.hpp>
+#include <type_traits>                  // is_base_of
+#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 
 namespace dctl {
 
@@ -31,6 +31,7 @@ protected:
 
 private:
         // typedefs
+
         typedef enable_crtp Base;
 
         // cast a Base& to a Derived& (i.e. "down" the class hierarchy)
