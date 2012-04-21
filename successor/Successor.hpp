@@ -2,7 +2,7 @@
 #include "Dispatcher.hpp"
 #include "../node/Stack.hpp"
 #include "../node/State.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 
 namespace dctl {
 
@@ -29,12 +29,12 @@ template
 <
         typename Selection
 >
-class Successor
+struct Successor
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
 public:
-        // interface
         template<typename Rules, typename Board, template<typename, typename> class Position>
         static void generate(const Position<Rules, Board>& p, Stack& moves)
         {

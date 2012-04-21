@@ -8,7 +8,7 @@
 #include "../node/Stack.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 #include "../utility/Shift.hpp"
 
 namespace dctl {
@@ -18,10 +18,12 @@ namespace successor {
 template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::pawn, select::Moves, Rules, Board>
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
 private:
         // typedefs
+
         typedef board::Direction<Color, Board> Direction;
 
 public:
@@ -66,7 +68,6 @@ public:
         }
 
 private:
-        // implementation
         template<int Index>
         static void generate(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {

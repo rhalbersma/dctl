@@ -11,7 +11,7 @@
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 #include "../utility/Shift.hpp"
 
 namespace dctl {
@@ -21,10 +21,12 @@ namespace successor {
 template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::king, select::Jumps, Rules, Board>
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
 private:
         // typedefs
+
         typedef board::Direction<Color, Board> Direction;
         typedef capture::State<Rules, Board> State;
 
@@ -76,12 +78,14 @@ private:
         // partial specialization for relative king capture precedence
         template<template<typename, typename> class Position>
         static void generate_precede(
-                const Position<Rules, Board>& p, State& capture, Int2Type<true>
+                const Position<Rules, Board>& p, State& capture, 
+                Int2Type<true>
         )
         {
                 capture.toggle_with_king();
                 generate_precede(
-                        p, capture, Int2Type<false>()
+                        p, capture, 
+                        Int2Type<false>()
                 );
                 capture.toggle_with_king();
         }
@@ -89,7 +93,8 @@ private:
         // partial specialization for no relative king capture precedence
         template<template<typename, typename> class Position>
         static void generate_precede(
-                const Position<Rules, Board>& p, State& capture, Int2Type<false>
+                const Position<Rules, Board>& p, State& capture, 
+                Int2Type<false>
         )
         {
                 serialize(p.kings(Color), capture);
@@ -119,7 +124,8 @@ private:
 
         // partial specialization for kings that capture in the 8 orthogonal and diagonal directions
         static void generate_dispatch(
-                BitBoard jumper, State& capture, Int2Type<rules::dirs_all>
+                BitBoard jumper, State& capture, 
+                Int2Type<rules::dirs_all>
         )
         {
                 generate_dispatch(jumper, capture, Int2Type<rules::dirs_orth>());
@@ -128,7 +134,8 @@ private:
 
         // partial specialization for kings that capture in the 4 orthogonal directions
         static void generate_dispatch(
-                BitBoard jumper, State& capture, Int2Type<rules::dirs_orth>
+                BitBoard jumper, State& capture, 
+                Int2Type<rules::dirs_orth>
         )
         {
                 generate<Direction::left >(jumper, capture);
@@ -139,7 +146,8 @@ private:
 
         // partial specialization for kings that capture in the 4 diagonal directions
         static void generate_dispatch(
-                BitBoard jumper, State& capture, Int2Type<rules::dirs_diag>
+                BitBoard jumper, State& capture, 
+                Int2Type<rules::dirs_diag>
         )
         {
                 generate<Direction::left_up   >(jumper, capture);
@@ -159,7 +167,8 @@ private:
 
         // partial specialization for kings that capture in the 8 orthogonal and diagonal directions
         static bool detect_dispatch(
-                BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_all>
+                BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, 
+                Int2Type<rules::dirs_all>
         )
         {
                 return (
@@ -170,7 +179,8 @@ private:
 
         // partial specialization for kings that capture in the 4 orthogonal directions
         static bool detect_dispatch(
-                BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_orth>
+                BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, 
+                Int2Type<rules::dirs_orth>
         )
         {
                 return (
@@ -183,7 +193,8 @@ private:
 
         // partial specialization for kings that capture in the 4 diagonal directions
         static bool detect_dispatch(
-                BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, Int2Type<rules::dirs_diag>
+                BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, 
+                Int2Type<rules::dirs_diag>
         )
         {
                 return (

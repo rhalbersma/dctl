@@ -4,7 +4,7 @@
 #include "Selection.hpp"
 #include "../node/Material.hpp"
 #include "../node/Stack.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -13,10 +13,12 @@ namespace successor {
 template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::pawn, select::Reverse, Rules, Board>
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
 private:
         // typedefs
+
         typedef Driver<!Color, Material::pawn, select::Moves, Rules, Board> PassivePawnMoves;
 
 public:

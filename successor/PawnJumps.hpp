@@ -13,7 +13,7 @@
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 #include "../utility/Shift.hpp"
 
 namespace dctl {
@@ -23,10 +23,12 @@ namespace successor {
 template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::pawn, select::Jumps, Rules, Board>
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
 private:
         // typedefs
+
         typedef Driver<Color, Material::king, select::Jumps, Rules, Board> KingJumps;
         typedef board::Direction<Color, Board> Direction;
         typedef capture::State<Rules, Board> State;

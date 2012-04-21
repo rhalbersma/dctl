@@ -1,20 +1,30 @@
 #pragma once
+#include <boost/utility.hpp>            // noncopyable
+
+namespace dctl {
 
 /*
 
-        The class nonconstructible privately declares -but does not define-
-        the default constructor and the destructor. This prevents derived
-        classes from being constructed or deleted.
+        The class nonconstructible declares -but does not define- 
+        a protected destructor. This prevents derived classes from 
+        being constructed or deleted.
 
-        The class nonconstructible was inspired by the boost::noncopyable,
+        The class nonconstructible was inspired by boost::noncopyable, 
         which privately declares -but does not define- the copy constructor
-        and the assignment operator. This prevents derived classes from being
-        copied.
+        and the assignment operator. This prevents derived classes from 
+        being copied or assigned to.
 
 */
 
-class nonconstructible
+struct nonconstructible
+:
+        // prevent value semantics
+        private boost::noncopyable
 {
-private:
-        nonconstructible();
+protected:
+        // structors
+
+        ~nonconstructible();
 };
+
+}       // namespace dctl

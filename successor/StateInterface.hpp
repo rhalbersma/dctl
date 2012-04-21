@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/utility.hpp>            // noncopyable
 #include "../node/Stack.hpp"
 
 namespace dctl {
@@ -22,6 +23,9 @@ namespace successor {
 
 template<typename Position>
 class StateInterface
+:
+        // enforce reference semantics
+        private boost::noncopyable
 {
 public:
         // non-virtual interface

@@ -1,7 +1,7 @@
 #pragma once
 #include "Driver_fwd.hpp"
 #include "../node/Stack.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -16,12 +16,13 @@ template
 >
 struct Driver
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
         template<template<typename, typename> class Position>
         static void generate(const Position<Rules, Board>&, Stack&)
         {
-                // no-op
+                return;
         }
 
         template<template<typename, typename> class Position>
