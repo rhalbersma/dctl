@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
-#include "Value_fwd.hpp"
+#include "Value_fwd.hpp"                // Value (primary template)
 
 namespace dctl {
 

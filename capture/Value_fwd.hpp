@@ -3,6 +3,7 @@
 namespace dctl {
 namespace capture {
 
+// primary template
 template<typename>
 struct Value;
 

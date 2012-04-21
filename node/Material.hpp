@@ -45,7 +45,7 @@ struct Material_
         // modifiers
 
         // xor-assign the set bits of another piece set
-        Material_& operator^=(const Move& m)
+        Material_& operator^=(const Move_<T>& m)
         {
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);

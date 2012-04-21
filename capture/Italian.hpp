@@ -1,8 +1,8 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
-#include "Value_fwd.hpp"
-#include "../bit/Bit.hpp"
+#include "Value_fwd.hpp"                // Value (primary template)
+#include "../bit/Bit.hpp"               // count, reverse_singlet
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
