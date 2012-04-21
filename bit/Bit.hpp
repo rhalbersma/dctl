@@ -2,7 +2,6 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "DeBruijn.hpp"
 #include "Lookup.hpp"
-//#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 namespace bit {
@@ -94,7 +93,7 @@ template<typename T>
 int index(T b)
 {
         BOOST_ASSERT(is_single(b));
-        return index_DeBruijn(b);
+        return index_lookup(b);
 }
 
 // Leiserson, Prokop and Randall, 1998
@@ -145,26 +144,6 @@ int count_loop(T b)
         for (; b; clear_first(b))
                 ++count;
         return count;
-}
-
-// direction-wise flood-fill generator over propagator
-template<bool Sign, typename T>
-T flood_fill(T generator, T propagator, int dir)
-{
-        return fill_loop<Sign>(generator, propagator, dir);
-}
-
-// Chess Programming Wiki, "Fill Loop" algorithm
-// http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
-template<bool Sign, typename T>
-T fill_loop(T generator, T propagator, int dir)
-{
-        T flood(0);
-        while (generator) {
-                flood |= generator;
-                generator = Shift<Sign>()(generator, dir) & propagator;
-        }
-        return flood;
 }
 
 }       // namespace bit

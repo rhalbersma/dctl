@@ -7,50 +7,28 @@
 namespace dctl {
 namespace board {
 
-// indices for the 8 named directions from the black point of view
 /*
 
-        +++ WHITE POINT OF VIEW +++
+     +++ PASSIVE COLOR POINT OF VIEW +++
 
-                  up = 6
+                    up
                      |
-        7 = left_up  |  right_up = 5
+            left_up  |  right_up
                    \ | /
                     \|/
-       0 = left ----- ----- right = 4
+           left ----- ----- right
                     /|\
                    / | \
-      1 = left_down  |  right_down = 3
+          left_down  |  right_down
                      |
-                down = 2
+                   down 
 
-        +++ BLACK POINT OF VIEW +++
+      +++ ACTIVE COLOR POINT OF VIEW +++
 
 */
 
-// indices for the 8 named directions from the white point of view
-/*
-
-        +++ BLACK POINT OF VIEW +++
-
-                  up = 2
-                     |
-        3 = left_up  |  right_up = 1
-                   \ | /
-                    \|/
-       4 = left ----- ----- right = 0
-                    /|\
-                   / | \
-      5 = left_down  |  right_down = 7
-                     |
-                down = 6
-
-        +++ WHITE POINT OF VIEW +++
-
-*/
-
-// indices for the 8 named directions from the black and white point of view
-template<
+template
+<
         bool Color,
         typename Board
 >

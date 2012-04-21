@@ -3,13 +3,13 @@
 #include "Selection.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Direction.hpp"
+#include "../board/Shift.hpp"
 #include "../node/Material.hpp"
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/nonconstructible.hpp"
-#include "../utility/Shift.hpp"
 
 namespace dctl {
 namespace successor {

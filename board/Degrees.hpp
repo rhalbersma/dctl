@@ -4,12 +4,11 @@
 namespace dctl {
 
 /*
+
         Degrees are denoted as <D><XXX>, where XXX is exactly three characters
         long, running from 000 until 360 in steps of 45. Counterclockwise
         rotations are denoted as <L><XXX>, where <XXX> runs from 45 until 135.
         Clockwise rotations are similarly denoted as <R><XXX>.
-
-        +++ BLACK POINT OF VIEW +++
 
                 D090 = L090
                      |
@@ -23,7 +22,6 @@ namespace dctl {
                      |
                 D270 = R090
 
-        +++ WHITE POINT OF VIEW +++
 */
 
 struct degrees
