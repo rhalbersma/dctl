@@ -11,6 +11,7 @@
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
+#include "../utility/total_order.hpp"
 
 namespace dctl {
 namespace capture {
