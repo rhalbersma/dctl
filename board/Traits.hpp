@@ -11,28 +11,27 @@
 namespace dctl {
 namespace board {
 
-// indices for the 8 named directions from the white point of view
 /*
 
-        +++ BLACK POINT OF VIEW +++
+         <-- LEAST SIGNIFICANT BITS
 
-                  up = 2
+                D090 = L090
                      |
-        3 = left_up  |  right_up = 1
+        D135 = L135  |  D045 = L045
                    \ | /
                     \|/
-       4 = left ----- ----- right = 0
+           D180 ----- ----- D000 = D360
                     /|\
                    / | \
-      5 = left_down  |  right_down = 7
+        D225 = R135  |  D315 = R045
                      |
-                down = 6
+                D270 = R090
 
-        +++ WHITE POINT OF VIEW +++
+          MOST SIGNIFICANT BITS -->
 
 */
 
-// right, up, left, down
+// 0, 2, 4, 6
 template<int N>
 struct is_orthogonal< angle<N> >
 :
@@ -45,14 +44,14 @@ struct is_orthogonal< angle<N> >
         >
 {};
 
-// right_up, left_up, left_down, right_down
+// 1, 3, 5, 7
 template<int N>
 struct is_diagonal< angle<N> >
 :
         boost::mpl::not_< is_orthogonal< angle<N> > >
 {};
 
-// right_up, up, left_up
+// 1, 2, 3
 template<int N>
 struct is_up< angle<N> >
 :
@@ -74,7 +73,7 @@ struct is_up< angle<N> >
         >
 {};
 
-// left_down, down, right_down
+// 5, 6, 7
 template<int N>
 struct is_down< angle<N> >
 :
@@ -96,21 +95,21 @@ struct is_down< angle<N> >
         >
 {};
 
-// left_up, left, left_down
+// 3, 4, 5
 template<int N>
 struct is_left< angle<N> >
 :
         is_down< rotate< angle<N>, angle<degrees::L090> > >
 {};
 
-// right, right_up, right_down
+// 0, 1, 7
 template<int N>
 struct is_right< angle<N> >
 :
         is_up< rotate< angle<N>, angle<degrees::L090> > >
 {};
 
-// right_up, up, left_up, left
+// 1, 2, 3, 4
 template<int N>
 struct is_positive< angle<N> >
 :
@@ -125,7 +124,7 @@ struct is_positive< angle<N> >
         >
 {};
 
-// right, left_down, down, right_down
+// 0, 5, 6, 7
 template<int N>
 struct is_negative< angle<N> >
 :

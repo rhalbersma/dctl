@@ -174,18 +174,6 @@ const BitBoard Board<Dimensions, Structure>::jump_start[] = {
 };
 
 template<typename Dimensions, typename Structure>
-const int Board<Dimensions, Structure>::SHIFT[] = {
-        InternalGrid::right,
-        InternalGrid::right_up,
-        InternalGrid::up,
-        InternalGrid::left_up,
-        InternalGrid::left,
-        InternalGrid::left_down,
-        InternalGrid::down,
-        InternalGrid::right_down
-};
-
-template<typename Dimensions, typename Structure>
 bool Board<Dimensions, Structure>::is_valid(int sq)
 {
         return sq >= begin() && sq < end();

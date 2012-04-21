@@ -4,8 +4,8 @@
 #include "Selection.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Angle.hpp"
-#include "../board/Board.hpp"
 #include "../board/Direction.hpp"
+#include "../board/Shift.hpp"
 #include "../capture/State.hpp"
 #include "../node/Material.hpp"
 #include "../node/Stack.hpp"
@@ -14,7 +14,6 @@
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/nonconstructible.hpp"
-#include "../utility/Shift.hpp"
 
 namespace dctl {
 namespace successor {

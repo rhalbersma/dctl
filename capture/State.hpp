@@ -6,11 +6,11 @@
 #include <boost/utility.hpp>            // noncopyable
 #include "Value.hpp"
 #include "../bit/Bit.hpp"
+#include "../board/Shift.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/Shift.hpp"
 
 namespace dctl {
 namespace capture {
