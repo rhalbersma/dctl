@@ -1,7 +1,7 @@
 #pragma once
 #include "Dispatcher.hpp"
 #include "../node/State.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 
 namespace dctl {
 
@@ -31,8 +31,10 @@ template
 >
 struct Mobility
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
+public:
         template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
         static int count(const Position<Rules, Board>& p)
         {

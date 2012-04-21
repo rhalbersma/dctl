@@ -8,7 +8,7 @@
 #include "../rules/Rules.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 #include "../utility/Shift.hpp"
 
 namespace dctl {
@@ -23,6 +23,7 @@ struct Driver<Color, Material::king, select::Moves, Rules, Board>
 {
 private:
         // typedefs
+
         typedef board::Direction<Color, Board> Direction;
 
 public:

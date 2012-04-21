@@ -37,8 +37,11 @@ class State
 {
 private:
         // typedefs
+
         typedef Driver<Color, Material, Selection, Rules, Board> Delegate;
         typedef Position<Rules, Board> PositionType;
+
+        // virtual implemenation
 
         virtual void do_generate(const PositionType& p, Stack& moves) const
         {

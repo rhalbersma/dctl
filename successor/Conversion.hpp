@@ -8,7 +8,7 @@
 #include "PawnPromotion.hpp"
 #include "Selection.hpp"
 #include "../node/Stack.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -17,10 +17,12 @@ namespace successor {
 template<bool Color, int Material, typename Rules, typename Board>
 struct Driver<Color, Material, select::Conversion, Rules, Board>
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
 private:
         // typedefs
+
         typedef Driver<Color, Material, select::Jumps     , Rules, Board> DoJumps;
         typedef Driver<Color, Material, select::Promotions, Rules, Board> DoPromotions;
 

@@ -7,7 +7,7 @@
 #include "../node/Stack.hpp"
 #include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/NonConstructible.hpp"
+#include "../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -15,10 +15,12 @@ namespace successor {
 template<bool Color, typename Rules, typename Board>
 struct Driver<Color, Material::both, select::Reverse, Rules, Board>
 :
-        private nonconstructible        // enforce static semantics
+        // enforce static semantics
+        private nonconstructible
 {
 private:
         // typedefs
+
         typedef Driver<Color, Material::king, select::Reverse, Rules, Board> KingReverse;
         typedef Driver<Color, Material::pawn, select::Reverse, Rules, Board> PawnReverse;
 

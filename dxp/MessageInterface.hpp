@@ -2,6 +2,7 @@
 #include <string>                       // string
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include <boost/utility.hpp>            // noncopyable
 #include "../factory/mixin.hpp"
 
 namespace dctl {
@@ -16,7 +17,8 @@ namespace dxp {
 
 class MessageInterface
 :
-        public mixin::HeaderBodyTerminator< 1, 126, '\0' >
+        public mixin::HeaderBodyTerminator< 1, 126, '\0' >,
+        private boost::noncopyable
 {
 public:
         // enable deletion of a Derived* through a Base*

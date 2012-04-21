@@ -1,9 +1,9 @@
 #pragma once
-#include <boost/utility.hpp>            // noncopyable
 #include "StateInterface_fwd.hpp"
 #include "State.hpp"
 #include "../node/Material.hpp"
 #include "../node/Side.hpp"
+#include "../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -28,9 +28,11 @@ template
 >
 struct Dispatcher
 :
-        private boost::noncopyable
+        // enforce static semantics
+        private nonconstructible
 {
         // typedefs
+
         typedef StateInterface< Position<Rules, Board> > const * BaseConstPointer;
 
         static BaseConstPointer select(int state /* partial intrinsic state encoding */ )
