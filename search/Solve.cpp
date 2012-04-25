@@ -20,7 +20,7 @@ namespace search {
 
 typedef std::pair<std::string, int> FEN_depth;
 
-template<typename Rules, typename Board, typename Objective = GameObjective<> >
+template<typename Rules, typename Board, typename Objective>
 struct Fixture
 {
         Fixture()
@@ -36,13 +36,13 @@ struct Fixture
         int run(const FEN_depth& test_case)
         {
                 root_.clear_hash();
-                const auto position = setup::read<Board, pdn::protocol>()(test_case.first);
+                const auto position = setup::read<Rules, Board, pdn::protocol>()(test_case.first);
                 const auto value = root_.solve(position, test_case.second);
                 //BOOST_CHECK_EQUAL(win_value(test_case.second), value);
                 return value;
         };
 
-        Root<Rules, Board, Objective> root_;
+        Root<Objective> root_;
 };
 
 BOOST_AUTO_TEST_SUITE(TestRoot)
