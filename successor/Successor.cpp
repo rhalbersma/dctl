@@ -50,9 +50,9 @@ BOOST_AUTO_TEST_CASE(Italian)
         };
 
         for (auto i = 0; i < 9; ++i) {
-                const auto p = setup::read<board::Roman, pdn::protocol>()(position[i]);
+                const auto p = setup::read<variant::Italian, board::Roman, pdn::protocol>()(position[i]);
                 Stack moves;
-                Successor<select::Legal, variant::Italian>::generate(p, moves);
+                Successor<select::Legal>::generate(p, moves);
 
                 // check the number of generated legal moves
                 BOOST_CHECK_EQUAL(size[i], static_cast<int>(moves.size()));
@@ -99,9 +99,9 @@ BOOST_AUTO_TEST_CASE(Spanish)
         };
 
         for (auto i = 0; i < 9; ++i) {
-                const auto p = setup::read<board::Roman, pdn::protocol>()(position[i]);
+                const auto p = setup::read<variant::Spanish, board::Roman, pdn::protocol>()(position[i]);
                 Stack moves;
-                Successor<select::Legal, variant::Spanish>::generate(p, moves);
+                Successor<select::Legal>::generate(p, moves);
 
                 // check the number of generated legal moves
                 BOOST_CHECK_EQUAL(size[i], static_cast<int>(moves.size()));
