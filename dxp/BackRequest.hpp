@@ -1,10 +1,12 @@
 #pragma once
 #include <iomanip>                      // setfill, setw
+#include <memory>                       // unique_ptr
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <boost/lexical_cast.hpp>       // lexical_cast
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
+#include "../utility/make_unique.hpp"   // make_unique
 
 namespace dctl {
 namespace dxp {
@@ -21,7 +23,11 @@ class BackRequest
         // Curiously Recurring Template Pattern (CRTP)
         public mixin::FactoryCreate<'B', BackRequest, MessageInterface>
 {
-public:
+private:
+        friend std::unique_ptr<BackRequest> dctl::make_unique<BackRequest, std::string>(const std::string&);
+
+        // structors
+
         explicit BackRequest(const std::string& message)
         :
                 move_number_(boost::lexical_cast<int>(message.substr(0, 3).c_str())),
@@ -29,7 +35,9 @@ public:
         {
         }
 
+public:
         // queries
+
         int move_number() const
         {
                 return move_number_;
@@ -40,13 +48,16 @@ public:
                 return side_to_move_;
         }
 
+        // output
+
         static std::string str(int m, char c)
         {
                 return identifier() + body(m, c);
         }
 
 private:
-        // implementation
+        // virtual implementation
+
         virtual std::string do_header() const
         {
                 return identifier();
@@ -66,6 +77,7 @@ private:
         }
 
         // representation
+
         int move_number_;
         char side_to_move_;
 };
