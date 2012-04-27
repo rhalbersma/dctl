@@ -1,12 +1,10 @@
 #pragma once
 #include <iomanip>                      // setfill, setw
-#include <memory>                       // unique_ptr
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <boost/lexical_cast.hpp>       // lexical_cast
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
-#include "../utility/make_unique.hpp"   // make_unique
 
 namespace dctl {
 namespace dxp {
@@ -28,9 +26,6 @@ public:
 
         enum AcceptanceCode { accept = 0, decline_version = 1, decline_game = 2, decline_always = 3 };
 
-private:
-        friend std::unique_ptr<GameAcknowledge> dctl::make_unique<GameAcknowledge, std::string>(const std::string&);
-
         // structors
 
         explicit GameAcknowledge(const std::string& message)
@@ -40,7 +35,6 @@ private:
         {
         }
 
-public:
         // queries
 
         const std::string& name_follower() const

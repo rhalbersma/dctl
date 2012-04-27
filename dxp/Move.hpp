@@ -1,14 +1,12 @@
 #pragma once
 #include <algorithm>                    // for_each
 #include <iomanip>                      // setfill, setw
-#include <memory>                       // unique_ptr
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <vector>                       // vector
 #include <boost/lexical_cast.hpp>       // lexical_cast
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
-#include "../utility/make_unique.hpp"   // make_unique
 
 namespace dctl {
 namespace dxp {
@@ -25,9 +23,7 @@ class Move
         // Curiously Recurring Template Pattern (CRTP)
         public mixin::FactoryCreate<'M', Move, MessageInterface>
 {
-private:
-        friend std::unique_ptr<Move> dctl::make_unique<Move, std::string>(const std::string&);
-
+public:
         // structors
 
         explicit Move(const std::string& message)
@@ -41,7 +37,6 @@ private:
                         captured_pieces_.push_back(boost::lexical_cast<int>(message.substr(10 + 2 * i, 2).c_str()));
         }
 
-public:
         // queries
 
         int seconds() const
