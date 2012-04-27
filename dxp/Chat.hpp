@@ -1,9 +1,7 @@
 #pragma once
-#include <memory>                       // unique_ptr
 #include <string>                       // string
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
-#include "../utility/make_unique.hpp"   // make_unique
 
 namespace dctl {
 namespace dxp {
@@ -20,9 +18,7 @@ class Chat
         // Curiously Recurring Template Pattern (CRTP)
         public mixin::FactoryCreate<'C', Chat, MessageInterface>
 {
-private:
-        friend std::unique_ptr<Chat> dctl::make_unique<Chat, std::string>(const std::string&);
-
+public:
         // structors
 
         explicit Chat(const std::string& message)
@@ -31,7 +27,6 @@ private:
         {
         }
 
-public:
         // queries
 
         std::string text() const

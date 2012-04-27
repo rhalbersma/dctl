@@ -1,12 +1,10 @@
 #pragma once
 #include <iomanip>                      // setfill, setw
-#include <memory>                       // unique_ptr
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <boost/lexical_cast.hpp>       // lexical_cast
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
-#include "../utility/make_unique.hpp"   // make_unique
 
 namespace dctl {
 namespace dxp {
@@ -28,9 +26,6 @@ public:
 
         enum AcceptanceCode { accept = 0, not_supported = 1, decline = 2 };
 
-private:
-        friend std::unique_ptr<BackAcknowledge> dctl::make_unique<BackAcknowledge, std::string>(const std::string&);
-
         // structors
 
         explicit BackAcknowledge(const std::string& message)
@@ -39,7 +34,6 @@ private:
         {
         }
 
-public:
         // queries
 
         AcceptanceCode acceptance_code() const

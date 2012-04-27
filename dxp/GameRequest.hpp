@@ -1,6 +1,5 @@
 #pragma once
 #include <iomanip>                      // setfill, setw
-#include <memory>                       // unique_ptr
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <boost/assert.hpp>             // BOOST_ASSERT
@@ -8,7 +7,6 @@
 #include <boost/lexical_cast.hpp>       // lexical_cast
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
-#include "../utility/make_unique.hpp"   // make_unique
 
 namespace dctl {
 namespace dxp {
@@ -31,12 +29,9 @@ public:
         BOOST_STATIC_CONSTANT(auto, protocol_version = 1);
         enum SetupCode { initial = 'A', special = 'B' };
 
-private:
-       friend std::unique_ptr<GameRequest> dctl::make_unique<GameRequest, std::string>(const std::string&);
+        // structors
 
-       // structors
-
-       explicit GameRequest(const std::string& message)
+        explicit GameRequest(const std::string& message)
         :
                 name_initiator_(message.substr(2, 32)),
                 color_follower_(*(message.substr(34, 1)).begin()),
@@ -48,7 +43,6 @@ private:
                         position_ = message.substr(42);
         }
 
-public:
         // queries
 
         const std::string& name_initiator() const

@@ -1,12 +1,10 @@
 #pragma once
 #include <iomanip>                      // setw
-#include <memory>                       // unique_ptr
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <boost/lexical_cast.hpp>       // lexical_cast
 #include "MessageInterface.hpp"
 #include "../factory/mixin.hpp"
-#include "../utility/make_unique.hpp"   // make_unique
 
 namespace dctl {
 namespace dxp {
@@ -29,9 +27,6 @@ public:
         enum Reason { forfeit = 0, resign = 1, claim_draw = 2, claim_win = 3 };
         enum StopCode { stop_game = 0, stop_always = 1 };
 
-private:
-        friend std::unique_ptr<GameEnd> dctl::make_unique<GameEnd, std::string>(const std::string&);
-
         // structors
 
         explicit GameEnd(const std::string& message)
@@ -41,7 +36,6 @@ private:
         {
         }
 
-public:
         // queries
 
         Reason reason() const
