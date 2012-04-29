@@ -43,9 +43,6 @@ public:
         static const BitBoard jump_group[];                     // families of squares reachable by jumping pawns
         static const BitBoard jump_start[];                     // squares from which a jump is possible in a direction
 
-        // arrays of directions
-        static const int SHIFT[];                               // the bitwise shifts for all 8 directions
-
         static bool is_valid(int);
         static int begin();
         static int end();

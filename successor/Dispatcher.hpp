@@ -1,4 +1,5 @@
 #pragma once
+#include <array>                        // array
 #include "StateInterface_fwd.hpp"
 #include "State.hpp"
 #include "../node/Material.hpp"
@@ -61,7 +62,7 @@ struct Dispatcher
                 static const State<Side::white, Material::both, Selection, Rules, Board, Position> white_both;
 
                 // "Meyers Singleton", Effective C++ 3rd ed., Item 4 (p. 31-32)
-                static BaseConstPointer const singleton_[] = {
+                static std::array<BaseConstPointer, 8> const singleton_ = {
                         &black_none, &black_pawn, &black_king, &black_both,
                         &white_none, &white_pawn, &white_king, &white_both
                 };

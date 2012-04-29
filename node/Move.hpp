@@ -1,4 +1,5 @@
 #pragma once
+#include <array>                        // array
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // equality_comparable, xorable
 #include "Move_fwd.hpp"
@@ -269,8 +270,8 @@ private:
 
         // representation
 
-        T pieces_[2];    // black and white pieces
-        T kings_;        // kings
+        std::array<T, 2> pieces_;       // black and white pieces
+        T kings_;                       // kings
 };
 
 template<typename Rules, typename T>
