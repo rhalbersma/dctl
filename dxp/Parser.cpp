@@ -1,3 +1,4 @@
+#include <iterator>                             // begin, end
 #include <string>                               // string
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL
 #include <boost/mpl/vector.hpp>                 // vector
@@ -14,7 +15,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm
-        const std::string message[] =
+        const std::string messages[] =
         {
                 "R01Tornado voor Windows 4.0        W060065A",
                 "ATornado voor Windows 4.0        0",
@@ -35,9 +36,9 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                 MessageInterface
         > factory;
 
-        for (auto i = 0; i < 8; ++i) {
-                if (const auto parsed = factory.create(message[i]))
-                        BOOST_CHECK_EQUAL(message[i], parsed->str());
+        for (auto it = std::begin(messages); it != std::end(messages); ++it) {
+                if (const auto parsed = factory.create(*it))
+                        BOOST_CHECK_EQUAL(*it, parsed->str());
                 else
                         BOOST_CHECK(!"Unregistered message type (cannot dereference a nullptr)");
         }
