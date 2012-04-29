@@ -27,7 +27,7 @@ public:
         explicit BackRequest(const std::string& message)
         :
                 move_number_(boost::lexical_cast<int>(message.substr(0, 3).c_str())),
-                side_to_move_(*(message.substr(3, 1)).begin())
+                side_to_move_(*(std::begin(message.substr(3, 1))))
         {
         }
 

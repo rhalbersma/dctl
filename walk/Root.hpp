@@ -2,6 +2,7 @@
 #include <cstddef>                      // size_t
 #include <iomanip>
 #include <iostream>
+#include <iterator>                     // begin, end
 #include <boost/assert.hpp>
 #include "Transposition.hpp"
 #include "../hash/DualMap.hpp"
@@ -161,7 +162,7 @@ private:
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
                 NodeCount leafs = 0;
-                for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
                         q.attach(p);
                         q.make(*m);
@@ -181,7 +182,7 @@ private:
                         return moves.size();
 
                 NodeCount leafs = 0;
-                for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
                         q.attach(p);
                         q.make(*m);
@@ -201,7 +202,7 @@ private:
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
                 NodeCount leafs = 0;
-                for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
                         q.attach(p);
                         q.make(*m);
@@ -225,7 +226,7 @@ private:
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
                 NodeCount leafs = 0;
-                for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
                         q.attach(p);
                         q.make(*m);
@@ -252,7 +253,7 @@ private:
                         Stack moves;
                         Successor<select::Legal>::generate(p, moves);
                         leafs = 0;
-                        for (auto m = moves.cbegin(); m != moves.cend(); ++m) {
+                        for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                                 auto q = p;
                                 q.attach(p);
                                 q.make(*m);

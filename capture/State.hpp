@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>                    // find
+#include <iterator>                     // begin, end
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
@@ -288,7 +289,7 @@ private:
 
         void unique_back() const // modifies Stack& moves_
         {
-                if (std::find(moves_.begin(), moves_.end(), moves_.back()) != moves_.end() - 1)
+                if (std::find(std::begin(moves_), std::end(moves_), moves_.back()) != std::end(moves_) - 1)
                         moves_.pop_back();
         }
 

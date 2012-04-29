@@ -34,10 +34,10 @@ public:
         explicit GameRequest(const std::string& message)
         :
                 name_initiator_(message.substr(2, 32)),
-                color_follower_(*(message.substr(34, 1)).begin()),
+                color_follower_(*(std::begin(message.substr(34, 1)))),
                 minutes_(boost::lexical_cast<int>(message.substr(35, 3).c_str())),
                 moves_(boost::lexical_cast<int>(message.substr(38, 3).c_str())),
-                setup_code_(static_cast<SetupCode>(boost::lexical_cast<char>(*(message.substr(41, 1)).begin())))
+                setup_code_(static_cast<SetupCode>(boost::lexical_cast<char>(*(std::begin(message.substr(41, 1))))))
         {
                 if (setup_code() == special)
                         position_ = message.substr(42);
