@@ -1,4 +1,5 @@
 #pragma once
+#include <array>                        // array
 #include <boost/operators.hpp>          // equality_comparable
 #include "PiecesInterface.hpp"
 #include "Move.hpp"
@@ -137,8 +138,8 @@ private:
 
         // representation
 
-        T pieces_[2];    // black and white pieces
-        T kings_;        // kings
+        std::array<T, 2> pieces_;       // black and white pieces
+        T kings_;                       // kings
 };
 
 typedef Material_<BitBoard> Material;
