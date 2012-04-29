@@ -43,7 +43,7 @@ public:
         {
                 return static_cast<size_t>(
                         std::count_if(
-                                map_.begin(), map_.end(), [](const Entry& entry) {
+                                std::begin(map_), std::end(map_), [](const Entry& entry) {
                                 return entry.first == Key(0);
                         })
                 );
@@ -64,7 +64,7 @@ public:
 
         void clear()
         {
-                std::fill_n(map_.begin(), map_.size(), Entry(Key(0), Value()));
+                std::fill_n(std::begin(map_), map_.size(), Entry(Key(0), Value()));
         }
 
         // queries
@@ -148,12 +148,12 @@ private:
 
         map_iterator bucket_begin(Index index)
         {
-                return map_.begin() + static_cast<std::size_t>(index & map_mask_);
+                return std::begin(map_) + static_cast<std::size_t>(index & map_mask_);
         }
 
         const_map_iterator bucket_begin(Index index) const
         {
-                return map_.begin() + static_cast<std::size_t>(index & map_mask_);
+                return std::begin(map_) + static_cast<std::size_t>(index & map_mask_);
         }
 
         // representation

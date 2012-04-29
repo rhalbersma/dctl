@@ -21,7 +21,7 @@ public:
         Creator find(const Identifier& id) const
         {
                 const auto it = lookup_.find(id);
-                return (it != lookup_.end())? it->second : nullptr;
+                return (it != std::end(lookup_))? it->second : nullptr;
         }
 
         template<typename Derived>

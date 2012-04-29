@@ -91,7 +91,7 @@ private:
                 sstr << std::setw( 2) << std::setfill('0') << f;
                 sstr << std::setw( 2) << std::setfill('0') << d;
                 sstr << std::setw( 2) << std::setfill('0') << n;
-                std::for_each(c.cbegin(), c.cend(), [&sstr](int x) {
+                std::for_each(std::begin(c), std::end(c), [&sstr](int x) {
                         sstr << std::setw(2) << std::setfill('0') << x;
                 });
                 return sstr.str();

@@ -19,7 +19,7 @@ public:
 
         int first_move() const
         {
-                return *sequence_.begin();
+                return *std::begin(sequence_);
         }
 
         // modifiers
@@ -32,7 +32,7 @@ public:
         {
                 clear();
                 sequence_.push_back(first_move);
-                sequence_.insert(sequence_.end(), continuation.begin(), continuation.end());
+                sequence_.insert(std::end(sequence_), std::begin(continuation), std::end(continuation));
         }
 
 private:
