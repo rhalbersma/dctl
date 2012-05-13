@@ -27,11 +27,11 @@ struct Fixture
         BOOST_STATIC_CONSTANT(auto, R = 7);
 
         template<typename Position, std::size_t N>
-        void run(const Position& p, const NodeCount (&leafs)[N])
+        void run(Position const& p, const NodeCount (&leafs)[N])
         {
                 for (auto it = std::begin(leafs); it != std::prev(std::end(leafs), R); ++it) {
                         root_.clear_hash();
-                        const auto depth = std::distance(std::begin(leafs), it) + 1;
+                        auto const depth = std::distance(std::begin(leafs), it) + 1;
                         BOOST_CHECK_EQUAL(*it, root_.test(p, depth));
                 }
         };
@@ -47,14 +47,14 @@ BOOST_AUTO_TEST_SUITE(TestPerft)
 
 BOOST_FIXTURE_TEST_CASE(InternationalInitial, Fixture)
 {
-        const auto p = Position<variant::International, board::International>::initial();
+        auto const p = Position<variant::International, board::International>::initial();
         const NodeCount leafs[] = { 9, 81, 658, 4265, 27117, 167140, 1049442, 6483961, 41022423, 258895763, 1665861398 };
         run(p, leafs);
 }
 
 BOOST_FIXTURE_TEST_CASE(InternationalRandom178, Fixture)
 {
-        const auto p = setup::read<variant::International, board::International, pdn::protocol>()(
+        auto const p = setup::read<variant::International, board::International, pdn::protocol>()(
                 "B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"
         );
         const NodeCount leafs[] = { 14, 55, 1168, 5432, 87195, 629010, 9041010, 86724219, 1216917193 };
@@ -63,7 +63,7 @@ BOOST_FIXTURE_TEST_CASE(InternationalRandom178, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(InternationalWoldouby, Fixture)
 {
-        const auto p = setup::read<variant::International, board::International, pdn::protocol>()(
+        auto const p = setup::read<variant::International, board::International, pdn::protocol>()(
                 "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
         );
         const NodeCount leafs[] = { 6, 12, 30, 73, 215, 590, 1944, 6269, 22369, 88050, 377436, 1910989, 9872645, 58360286, 346184885 };
@@ -75,7 +75,7 @@ BOOST_FIXTURE_TEST_CASE(InternationalWoldouby, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(FrisianInitial, Fixture)
 {
-        const auto p = Position<variant::Frisian, board::International>::initial();
+        auto const p = Position<variant::Frisian, board::International>::initial();
         const NodeCount leafs[] = { 9, 81, 658, 3874, 21265, 102431, 540126, 2825779, 15605069, 85817725, 491186430 };
         run(p, leafs);
 }
@@ -85,7 +85,7 @@ BOOST_FIXTURE_TEST_CASE(FrisianInitial, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(BrazilianInitial, Fixture)
 {
-        const auto p = Position<variant::Brazilian, board::Checkers>::initial();
+        auto const p = Position<variant::Brazilian, board::Checkers>::initial();
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7473, 37628, 187302, 907830 , 4431766, 21560022, 105491257, 511882477, 2481546396 };
         run(p, leafs);
 }
@@ -95,7 +95,7 @@ BOOST_FIXTURE_TEST_CASE(BrazilianInitial, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(PoolInitial, Fixture)
 {
-        const auto p = Position<variant::Pool, board::Checkers>::initial();
+        auto const p = Position<variant::Pool, board::Checkers>::initial();
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7482, 37986, 190146, 929896 , 4570534, 22435955, 110833952, 544005148, 2668385616 };
         run(p, leafs);
 }
@@ -105,7 +105,7 @@ BOOST_FIXTURE_TEST_CASE(PoolInitial, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(RussianInitial, Fixture)
 {
-        const auto p = Position<variant::Russian, board::Checkers>::initial();
+        auto const p = Position<variant::Russian, board::Checkers>::initial();
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7482, 37986, 190146, 929899 , 4570586, 22444032, 110917189, 544770444, 2673979569 };
         run(p, leafs);
 }
@@ -115,7 +115,7 @@ BOOST_FIXTURE_TEST_CASE(RussianInitial, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(CheckersInitial, Fixture)
 {
-        const auto p = Position<variant::Checkers, board::Checkers>::initial();
+        auto const p = Position<variant::Checkers, board::Checkers>::initial();
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7361, 36768, 179740, 845931, 3963680, 18391564, 85242128, 388617999, 1766564893 };
         run(p, leafs);
 }
@@ -125,7 +125,7 @@ BOOST_FIXTURE_TEST_CASE(CheckersInitial, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(CzechInitial, Fixture)
 {
-        const auto p = Position<variant::Czech, board::Checkers>::initial();
+        auto const p = Position<variant::Czech, board::Checkers>::initial();
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7361, 36768, 179740, 845931, 3963671, 18368918, 84967210, 386262109, 1749707352 };
         run(p, leafs);
 }
@@ -135,7 +135,7 @@ BOOST_FIXTURE_TEST_CASE(CzechInitial, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(SpanishInitial, Fixture)
 {
-        const auto p = Position<variant::Spanish, board::Roman>::initial();
+        auto const p = Position<variant::Spanish, board::Roman>::initial();
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7361, 36473, 177532, 828783, 3860866, 17743464, 81383200, 365728331, 1637958247 };
         run(p, leafs);
 }
@@ -145,7 +145,7 @@ BOOST_FIXTURE_TEST_CASE(SpanishInitial, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(ItalianInitial, Fixture)
 {
-        const auto p = Position<variant::Italian, board::Roman>::initial();
+        auto const p = Position<variant::Italian, board::Roman>::initial();
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7361, 36473, 177532, 828783, 3860875, 17761384, 81647058, 367911475, 1655211086 };
         run(p, leafs);
 }
@@ -156,7 +156,7 @@ BOOST_FIXTURE_TEST_CASE(ItalianInitial, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(ItalianGilbert1, Fixture)
 {
-        const auto p = setup::read<variant::Italian, board::Roman, pdn::protocol>()(
+        auto const p = setup::read<variant::Italian, board::Roman, pdn::protocol>()(
                 "W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3"
         );
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7361, 36473, 177532, 828783, 3860875, 17761384, 81647058, 367911475, 1655211086 };
@@ -165,7 +165,7 @@ BOOST_FIXTURE_TEST_CASE(ItalianGilbert1, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(ItalianGilbert2, Fixture)
 {
-        const auto p = setup::read<variant::Italian, board::Roman, pdn::protocol>()(
+        auto const p = setup::read<variant::Italian, board::Roman, pdn::protocol>()(
                 "B:W30,21,22,17,20,K6:B25,28,9,5,1,3"
         );
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7361, 36473, 177532, 828783, 3860875, 17761384, 81647058, 367911475, 1655211086 };
@@ -179,7 +179,7 @@ BOOST_FIXTURE_TEST_CASE(ItalianGilbert2, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(ThaiNative, FixtureNative)
 {
-        const auto p = Position<variant::Thai, board::Thai>::initial();
+        auto const p = Position<variant::Thai, board::Thai>::initial();
         const NodeCount leafs[] = { 7, 49, 392, 3136, 26592, 218695, 1820189, 14533014, 114530830, 861842812, 6304986761 };
         run(p, leafs);
 }
@@ -189,7 +189,7 @@ BOOST_FIXTURE_TEST_CASE(ThaiNative, FixtureNative)
 
 BOOST_FIXTURE_TEST_CASE(ThaiCheckers, ThaiFixtureCheckers)
 {
-        const auto p = Position<variant::Thai, board::Checkers>::initial();
+        auto const p = Position<variant::Thai, board::Checkers>::initial();
         const NodeCount leafs[] = { 7, 49, 302, 1469, 7361, 36768, 179740, 845931, 3963648, 18363523, 84892793, 385713660, 1745666630 };
         run(p, leafs);
 }

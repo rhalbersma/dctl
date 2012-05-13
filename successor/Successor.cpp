@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(Italian)
         };
 
         for (auto i = 0; i < 9; ++i) {
-                const auto p = setup::read<variant::Italian, board::Roman, pdn::protocol>()(position[i]);
+                auto const p = setup::read<variant::Italian, board::Roman, pdn::protocol>()(position[i]);
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
 
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(Italian)
 
                 // check all generated legal moves
                 for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
-                        const auto move_string = notation::write<variant::Italian>()(p, moves[j]);
+                        auto const move_string = notation::write<variant::Italian>()(p, moves[j]);
                         BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string));
                 }
         }
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(Spanish)
         };
 
         for (auto i = 0; i < 9; ++i) {
-                const auto p = setup::read<variant::Spanish, board::Roman, pdn::protocol>()(position[i]);
+                auto const p = setup::read<variant::Spanish, board::Roman, pdn::protocol>()(position[i]);
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
 
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(Spanish)
 
                 // check all generated legal moves
                 for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
-                        const auto move_string = notation::write<variant::Spanish>()(p, moves[j]);
+                        auto const move_string = notation::write<variant::Spanish>()(p, moves[j]);
                         BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string));
                 }
         }

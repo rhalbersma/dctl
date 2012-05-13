@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
         > factory;
 
         for (auto it = std::begin(messages); it != std::end(messages); ++it) {
-                if (const auto parsed = factory.create(*it))
+                if (auto const parsed = factory.create(*it))
                         BOOST_CHECK_EQUAL(*it, parsed->str());
                 else
                         BOOST_CHECK(!"Unregistered message type (cannot dereference a nullptr)");
