@@ -36,8 +36,8 @@ struct Fixture
         int run(const FEN_depth& test_case)
         {
                 root_.clear_hash();
-                const auto position = setup::read<Rules, Board, pdn::protocol>()(test_case.first);
-                const auto value = root_.solve(position, test_case.second);
+                auto const position = setup::read<Rules, Board, pdn::protocol>()(test_case.first);
+                auto const value = root_.solve(position, test_case.second);
                 //BOOST_CHECK_EQUAL(win_value(test_case.second), value);
                 return value;
         };
