@@ -59,10 +59,10 @@ public:
 
         // predicates
 
-        bool operator<(const Value& other) const
+        bool operator<(Value const& other) const
         {
-                const auto delta_kings = num_kings_ - other.num_kings_;
-                const auto delta_pawns = num_pieces_ - other.num_pieces_ - delta_kings;
+                auto const delta_kings = num_kings_ - other.num_kings_;
+                auto const delta_pawns = num_pieces_ - other.num_pieces_ - delta_kings;
 
                 // Art. 11
                 if (delta_kings * delta_pawns < 0) {
@@ -78,7 +78,7 @@ public:
                 }
         }
 
-        bool operator==(const Value& other) const
+        bool operator==(Value const& other) const
         {
                 return (
                         ( num_pieces_ == other.num_pieces_ ) &&

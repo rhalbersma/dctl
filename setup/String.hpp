@@ -82,7 +82,7 @@ template<typename Token>
 struct write<pdn::protocol, Token>
 {
         template<typename Rules, typename Board>
-        std::string operator()(const Position<Rules, Board>& p) const
+        std::string operator()(Position<Rules, Board> const& p) const
         {
                 std::stringstream sstr;
                 sstr << Token::quote;                                                // opening quotes
@@ -150,7 +150,7 @@ template<typename Token>
 struct write<dxp::protocol, Token>
 {
         template<typename Rules, typename Board>
-        std::string operator()(const Position<Rules, Board>& p) const
+        std::string operator()(Position<Rules, Board> const& p) const
         {
                 std::stringstream sstr;
                 sstr << write_color<Token>(p.active_color());                // side to move

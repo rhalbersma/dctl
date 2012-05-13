@@ -12,7 +12,7 @@ namespace search {
 // iterative deepening with no move ordering at the root
 template<typename Objective>
 template<typename Position>
-int Root<Objective>::iterative_deepening(const Position& p, int depth)
+int Root<Objective>::iterative_deepening(Position const& p, int depth)
 {
         auto score = -infinity();
         int alpha, beta;
@@ -36,7 +36,7 @@ int Root<Objective>::iterative_deepening(const Position& p, int depth)
 // iterative deepening with no move ordering at the root
 template<typename Objective>
 template<typename Position>
-int Root<Objective>::proof_verify(const Position& p, int depth)
+int Root<Objective>::proof_verify(Position const& p, int depth)
 {
         auto score = -infinity();
 
@@ -55,7 +55,7 @@ int Root<Objective>::proof_verify(const Position& p, int depth)
 
         std::cout << "Found proof-candidate, verifying without transposition cutoffs" << "\n\n";
         statistics_.reset();
-        const auto verify_depth = is_loss(score)? loss_ply(score) : win_ply(score);
+        auto const verify_depth = is_loss(score)? loss_ply(score) : win_ply(score);
         score = verify<PV>(p, -infinity(), infinity(), verify_depth, 0, pv);
         timer.split();
         report(verify_depth, score, timer, p, pv.sequence());
@@ -66,7 +66,7 @@ int Root<Objective>::proof_verify(const Position& p, int depth)
 // principal variation search (PVS)
 template<typename Objective> 
 template<int NodeType, typename Position>
-int Root<Objective>::pvs(const Position& p, int alpha, int beta, int depth, int ply, Variation& refutation)
+int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int ply, Variation& refutation)
 {
         statistics_.update(ply);
 
@@ -91,10 +91,10 @@ int Root<Objective>::pvs(const Position& p, int alpha, int beta, int depth, int 
                 return beta;
 
         // terminal positions
-        const auto terminal_value = Objective::value(p);
+        auto const terminal_value = Objective::value(p);
         if (is_finite(terminal_value)) {
                 if (depth > 0) {
-                        const auto type = Bound::type(terminal_value, alpha, beta);
+                        auto const type = Bound::type(terminal_value, alpha, beta);
                         TT.insert(p, Transposition(terminal_value, type, depth, Transposition::no_move()));
                         if (type == Bound::exact)
                                 refutation.clear();
@@ -123,7 +123,7 @@ int Root<Objective>::pvs(const Position& p, int alpha, int beta, int depth, int 
 
         // internal iterative deepening (IID)
         if (!(TT_entry && TT_entry->has_move())) {
-                const auto IID_depth = is_pv(NodeType)? depth - 2 : depth / 2;
+                auto const IID_depth = is_pv(NodeType)? depth - 2 : depth / 2;
                 if (IID_depth > 0) {
                         pvs<NodeType>(p, alpha, beta, IID_depth, ply, refutation);
                         TT_entry = TT.find(p);
@@ -133,12 +133,12 @@ int Root<Objective>::pvs(const Position& p, int alpha, int beta, int depth, int 
 
         // move ordering
         if (TT_entry && TT_entry->has_move()) {
-                const auto TT_move = TT_entry->move() % moves.size();
+                auto const TT_move = TT_entry->move() % moves.size();
                 std::swap(move_order[0], move_order[TT_move]);
         }
 
         // search moves
-        const auto original_alpha = alpha;
+        auto const original_alpha = alpha;
         auto best_value = -infinity();
         auto best_move = Transposition::no_move();
         int value;
@@ -181,7 +181,7 @@ int Root<Objective>::pvs(const Position& p, int alpha, int beta, int depth, int 
         BOOST_ASSERT(is_finite(best_value));
         BOOST_ASSERT(best_move != Transposition::no_move());
 
-        const auto type = Bound::type(best_value, original_alpha, beta);
+        auto const type = Bound::type(best_value, original_alpha, beta);
         TT.insert(p, Transposition(best_value, type, depth, best_move));
         return best_value;
 }
@@ -189,7 +189,7 @@ int Root<Objective>::pvs(const Position& p, int alpha, int beta, int depth, int 
 // principal variation search (PVS)
 template<typename Objective> 
 template<int NodeType, typename Position>
-int Root<Objective>::verify(const Position& p, int alpha, int beta, int depth, int ply, Variation& refutation)
+int Root<Objective>::verify(Position const& p, int alpha, int beta, int depth, int ply, Variation& refutation)
 {
         statistics_.update(ply);
 
@@ -210,11 +210,11 @@ int Root<Objective>::verify(const Position& p, int alpha, int beta, int depth, i
                 return beta;
 
         // terminal positions
-        const auto terminal_value = Objective::value(p);
+        auto const terminal_value = Objective::value(p);
         if (is_finite(terminal_value)) {
                 /*
                 if (depth > 0) {
-                        const auto type = Bound::type(terminal_value, alpha, beta);
+                        auto const type = Bound::type(terminal_value, alpha, beta);
                         TT.insert(p, Transposition(terminal_value, type, depth, Transposition::no_move()));
                         if (type == Bound::exact)
                                 refutation.clear();
@@ -248,7 +248,7 @@ int Root<Objective>::verify(const Position& p, int alpha, int beta, int depth, i
         /*
         // internal iterative deepening (IID)
         if (!(TT_entry && TT_entry->has_move())) {
-                const auto IID_depth = is_pv(NodeType)? depth - 2 : depth / 2;
+                auto const IID_depth = is_pv(NodeType)? depth - 2 : depth / 2;
                 if (IID_depth > 0) {
                         pvs<NodeType>(p, alpha, beta, IID_depth, ply, refutation);
                         TT_entry = TT.find(p);
@@ -258,13 +258,13 @@ int Root<Objective>::verify(const Position& p, int alpha, int beta, int depth, i
         */
         // move ordering
         if (TT_entry && TT_entry->has_move()) {
-                const auto TT_move = TT_entry->move() % moves.size();
+                auto const TT_move = TT_entry->move() % moves.size();
                 std::swap(move_order[0], move_order[TT_move]);
         }
 
         // search moves
         /*
-        const auto original_alpha = alpha;
+        auto const original_alpha = alpha;
         */
         auto best_value = -infinity();
         auto best_move = Transposition::no_move();
@@ -308,7 +308,7 @@ int Root<Objective>::verify(const Position& p, int alpha, int beta, int depth, i
         BOOST_ASSERT(is_finite(best_value));
         BOOST_ASSERT(best_move != Transposition::no_move());
         /*
-        const auto type = Bound::type(best_value, original_alpha, beta);
+        auto const type = Bound::type(best_value, original_alpha, beta);
         TT.insert(p, Transposition(best_value, type, depth, best_move));
         */
         return best_value;

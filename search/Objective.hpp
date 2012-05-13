@@ -30,7 +30,7 @@ template
 struct GameObjective
 {
         template<typename Position>
-        static int value(const Position& p)
+        static int value(Position const& p)
         {
                 if (is_cycle(p))
                         return cycle<CycleScoring>::value(p);
@@ -49,7 +49,7 @@ template<>
 struct is_terminal<NoMovesLeft>
 {
         template<typename Position>
-        bool operator()(const Position& p) const
+        bool operator()(Position const& p) const
         {
                 return !Successor<select::Legal>::detect(p);
         }
@@ -59,7 +59,7 @@ template<>
 struct is_terminal<Kingscourt>
 {
         template<typename Position>
-        bool operator()(const Position& p) const
+        bool operator()(Position const& p) const
         {
                 return (
                         (bit::count(active_kings(p)) - bit::count(passive_kings(p)) < 0) ||
@@ -90,7 +90,7 @@ struct terminal<Misere>
 };
 
 template<typename Rules, typename Board, template<typename, typename> class Position>
-bool is_draw(const Position<Rules, Board>& p)
+bool is_draw(Position<Rules, Board> const& p)
 {
         return (
                 is_cycle(p) ||
@@ -99,7 +99,7 @@ bool is_draw(const Position<Rules, Board>& p)
 }
 
 template<typename Position>
-bool is_cycle(const Position& p)
+bool is_cycle(Position const& p)
 {
         // a cycle needs at least 4 reversible moves
         if (p.reversible_moves() < 4)
@@ -118,7 +118,7 @@ bool is_cycle(const Position& p)
 }
 
 template<typename Rules, typename Board, template<typename, typename> class Position>
-bool is_no_progress(const Position<Rules, Board>& p)
+bool is_no_progress(Position<Rules, Board> const& p)
 {
         // tag dispatching on restrictions on consecutive reversible moves
         return is_no_progress_dispatch<Rules>(
@@ -129,14 +129,14 @@ bool is_no_progress(const Position<Rules, Board>& p)
 
 // partial specialization for no restrictions on consecutive reversible moves
 template<typename Position>
-bool is_no_progress_dispatch(const Position& /* p */, Int2Type<false>)
+bool is_no_progress_dispatch(Position const& /* p */, Int2Type<false>)
 {
         return false;
 }
 
 // partial specialization for a maximum of consecutive reversible moves
 template<typename Rules, typename Board, template<typename, typename> class Position>
-bool is_no_progress_dispatch(const Position<Rules, Board>& p, Int2Type<true>)
+bool is_no_progress_dispatch(Position<Rules, Board> const& p, Int2Type<true>)
 {
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }
@@ -148,7 +148,7 @@ template<>
 struct cycle<HeuristicDraw>
 {
         template<typename Position>
-        static int value(const Position& /* p */)
+        static int value(Position const& /* p */)
         {
                 return draw_value();
         }
@@ -158,7 +158,7 @@ template<>
 struct cycle<FirstPlayerWin>
 {
         template<typename Position>
-        static int value(const Position& p)
+        static int value(Position const& p)
         {
                 return (p.distance_to_root() % 2)? loss_min() : win_min();
         }
@@ -168,7 +168,7 @@ template<>
 struct cycle<SecondPlayerWin>
 {
         template<typename Position>
-        static int value(const Position& p)
+        static int value(Position const& p)
         {
                 return -cycle<FirstPlayerWin>::value(p);
         }

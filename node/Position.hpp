@@ -58,12 +58,12 @@ public:
                 return hash_index_;
         }
 
-        const Material& material() const
+        Material const& material() const
         {
                 return material_;
         }
 
-        const Material& key() const
+        Material const& key() const
         {
                 return material();
         }
@@ -137,14 +137,14 @@ public:
         }
 
         // make a move in a copy from another position
-        void copy_make(const Position& other, const Move& move)
+        void copy_make(Position const& other, Move const& move)
         {
                 *this = other;          // copy the position
                 attach(other);          // attach the position
                 make<Rules>(move);      // make the move
         }
 
-        void make(const Move& m)
+        void make(Move const& m)
         {
                 BOOST_ASSERT(is_pseudo_legal(*this, m));
 
@@ -155,7 +155,7 @@ public:
                 BOOST_ASSERT(hash_index_invariant());
         }
 
-        void attach(const Position& other)
+        void attach(Position const& other)
         {
                 parent_ = &other;       // link the pointers
         }
@@ -164,7 +164,7 @@ private:
         // implementation
         void detach();
 
-        void make_irreversible(const Move& m)
+        void make_irreversible(Move const& m)
         {
                 // tag dispatching on restrictions on consecutive moves with the same king
                 make_irreversible(
@@ -174,20 +174,20 @@ private:
         }
 
         // partial specialization for restricted consecutive moves with the same king
-        void make_irreversible(const Move& m, Int2Type<true>)
+        void make_irreversible(Move const& m, Int2Type<true>)
         {
                 make_irreversible(m, Int2Type<false>());
                 make_restricted(m);
         }
 
         // partial specialization for unrestricted consecutive moves with the same king
-        void make_irreversible(const Move& m, Int2Type<false>)
+        void make_irreversible(Move const& m, Int2Type<false>)
         {
                 make_reversible_moves(m);
                 make_distance_to_root();
         }
 
-        void make_reversible_moves(const Move& m)
+        void make_reversible_moves(Move const& m)
         {
                 if (is_reversible(*this, m))
                         ++reversible_moves_;
@@ -200,13 +200,13 @@ private:
                 ++distance_to_root_;
         }
 
-        void make_restricted(const Move& m)
+        void make_restricted(Move const& m)
         {
                 make_active_king_moves(m);
                 make_passive_king_moves(m);
         }
 
-        void make_active_king_moves(const Move& m)
+        void make_active_king_moves(Move const& m)
         {
                 typedef hash::zobrist::Init<KingMoves, HashIndex> Hash;
                 KingMoves& restricted = restricted_[active_color()];
@@ -224,7 +224,7 @@ private:
                 }
         }
 
-        void make_passive_king_moves(const Move& m)
+        void make_passive_king_moves(Move const& m)
         {
                 typedef hash::zobrist::Init<KingMoves, HashIndex> Hash;
                 KingMoves& restricted = restricted_[passive_color()];
@@ -241,13 +241,13 @@ private:
                 }
         }
 
-        void make_incremental(const Move& m)
+        void make_incremental(Move const& m)
         {
                 make_material(m);
                 make_to_move();
         }
 
-        void make_material(const Move& m)
+        void make_material(Move const& m)
         {
                 material_ ^= m;
                 hash_index_ ^= hash::zobrist::Init<Move, HashIndex>()(m);
@@ -285,55 +285,55 @@ private:
 
 // unoccupied squares
 template<typename Rules, typename Board>
-BitBoard not_occupied(const Position<Rules, Board>& p)
+BitBoard not_occupied(Position<Rules, Board> const& p)
 {
         return Board::squares ^ p.pieces();
 }
 
 // pawns for the side to move
 template<typename Position>
-BitBoard active_pawns(const Position& p)
+BitBoard active_pawns(Position const& p)
 {
         return p.pawns(p.active_color());
 }
 
 // kings for the side to move
 template<typename Position>
-BitBoard active_kings(const Position& p)
+BitBoard active_kings(Position const& p)
 {
         return p.kings(p.active_color());
 }
 
 // pieces for the side to move
 template<typename Position>
-BitBoard active_pieces(const Position& p)
+BitBoard active_pieces(Position const& p)
 {
         return p.pieces(p.active_color());
 }
 
 // pawns for the opposite side
 template<typename Position>
-BitBoard passive_pawns(const Position& p)
+BitBoard passive_pawns(Position const& p)
 {
         return p.pawns(p.passive_color());
 }
 
 // kings for the opposite side
 template<typename Position>
-BitBoard passive_kings(const Position& p)
+BitBoard passive_kings(Position const& p)
 {
         return p.kings(p.passive_color());
 }
 
 // pieces for the opposite side
 template<typename Position>
-BitBoard passive_pieces(const Position& p)
+BitBoard passive_pieces(Position const& p)
 {
         return p.pieces(p.passive_color());
 }
 
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings(const Position<Rules, Board>& p, bool color)
+BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color)
 {
         // tag dispatching on restrictions on consecutive moves with the same king
         return unrestricted_kings_dispatch(
@@ -344,14 +344,14 @@ BitBoard unrestricted_kings(const Position<Rules, Board>& p, bool color)
 
 // partial specialization for unrestricted consecutive moves with the same king
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings_dispatch(const Position<Rules, Board>& p, bool color, Int2Type<false>)
+BitBoard unrestricted_kings_dispatch(Position<Rules, Board> const& p, bool color, Int2Type<false>)
 {
         return p.kings(color);
 }
 
 // partial specialization for restricted consecutive moves with the same king
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings_dispatch(const Position<Rules, Board>& p, bool color, Int2Type<true>)
+BitBoard unrestricted_kings_dispatch(Position<Rules, Board> const& p, bool color, Int2Type<true>)
 {
         if (p.kings(color) && p.pawns(color) && is_max<Rules>(p.restricted(color).moves()))
                 return p.kings(color) ^ p.restricted(color).king();
@@ -360,19 +360,19 @@ BitBoard unrestricted_kings_dispatch(const Position<Rules, Board>& p, bool color
 }
 
 template<typename Position>
-const Position* grand_parent(const Position& p)
+const Position* grand_parent(Position const& p)
 {
         return p.parent() ? p.parent()->parent() : nullptr;
 }
 
 template<typename Position>
-const KingMoves& active_restricted(const Position& p)
+const KingMoves& active_restricted(Position const& p)
 {
         return p.restricted()[p.active_color()];
 }
 
 template<typename Position>
-const KingMoves& passive_restricted(const Position&);
+const KingMoves& passive_restricted(Position const&);
 
 namespace hash {
 namespace zobrist {
@@ -387,7 +387,7 @@ struct Init<Position<Rules, Board>, Index>
 :
         public std::unary_function<Position<Rules, Board>, Index>
 {
-        Index operator()(const Position<Rules, Board>& p) const
+        Index operator()(Position<Rules, Board> const& p) const
         {
                 return (
                         Init<Material  , Index>()(p.material())     ^

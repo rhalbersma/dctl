@@ -40,12 +40,12 @@ public:
 
         // predicates
 
-        bool operator<(const Value& /* other */) const
+        bool operator<(Value const& /* other */) const
         {
                 return false;
         }
 
-        bool operator==(const Value& /* other */) const
+        bool operator==(Value const& /* other */) const
         {
                 return true;
         }

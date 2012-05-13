@@ -36,19 +36,19 @@ struct Successor
 {
 public:
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        static void generate(const Position<Rules, Board>& p, Stack& moves)
+        static void generate(Position<Rules, Board> const& p, Stack& moves)
         {
                 successor::Dispatcher<Selection, Rules, Board, Position>::select(state(p))->generate(p, moves);
         }
 
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        static int count(const Position<Rules, Board>& p)
+        static int count(Position<Rules, Board> const& p)
         {
                 return successor::Dispatcher<Selection, Rules, Board, Position>::select(state(p))->count(p);
         }
 
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        static bool detect(const Position<Rules, Board>& p)
+        static bool detect(Position<Rules, Board> const& p)
         {
                 return successor::Dispatcher<Selection, Rules, Board, Position>::select(state(p))->detect(p);
         }

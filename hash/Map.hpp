@@ -70,7 +70,7 @@ public:
         // queries
         const Value* find(const Key& key) const
         {
-                const auto index = Hash<Key, Index>()(key);
+                auto const index = Hash<Key, Index>()(key);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
@@ -85,14 +85,14 @@ public:
         }
 
         // modifiers
-        void insert(const Key& key, const Value& value)
+        void insert(const Key& key, Value const& value)
         {
-                const auto index = Hash<Key, Index>()(key);
+                auto const index = Hash<Key, Index>()(key);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 
         template<typename Item>
-        void insert(const Item& item, const Value& value)
+        void insert(const Item& item, Value const& value)
         {
                 // tag dispatching on the key's integral type trait
                 insert_dispatch(
@@ -106,8 +106,8 @@ private:
         template<typename Item>
         const Value* find_dispatch(const Item& item, Int2Type<false>) const
         {
-                const auto index = Hash<Item, Index>()(item);
-                const auto key = FindKey<Item, Key>()(item);
+                auto const index = Hash<Item, Index>()(item);
+                auto const key = FindKey<Item, Key>()(item);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
@@ -115,26 +115,26 @@ private:
         template<typename Item>
         const Value* find_dispatch(const Item& item, Int2Type<true>) const
         {
-                const auto index = Hash<Item, Index>()(item);
-                const auto key = ShiftKey<Index, Key>()(index);
+                auto const index = Hash<Item, Index>()(item);
+                auto const key = ShiftKey<Index, Key>()(index);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
         // partial specialization for non-integral keys
         template<typename Item>
-        void insert_dispatch(const Item& item, const Value& value, Int2Type<false>)
+        void insert_dispatch(const Item& item, Value const& value, Int2Type<false>)
         {
-                const auto index = Hash<Item, Index>()(item);
-                const auto key = FindKey<Item, Key>()(item);
+                auto const index = Hash<Item, Index>()(item);
+                auto const key = FindKey<Item, Key>()(item);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 
         // partial specialization for integral keys
         template<typename Item>
-        void insert_dispatch(const Item& item, const Value& value, Int2Type<true>)
+        void insert_dispatch(const Item& item, Value const& value, Int2Type<true>)
         {
-                const auto index = Hash<Item, Index>()(item);
-                const auto key = ShiftKey<Index, Key>()(index);
+                auto const index = Hash<Item, Index>()(item);
+                auto const key = ShiftKey<Index, Key>()(index);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 

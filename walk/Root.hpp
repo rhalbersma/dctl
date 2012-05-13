@@ -24,7 +24,7 @@ class Root
 {
 public:
         template<typename Position>
-        NodeCount perft(const Position& p, int depth)
+        NodeCount perft(Position const& p, int depth)
         {
                 NodeCount leafs = 0;
 
@@ -41,7 +41,7 @@ public:
         }
 
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        NodeCount divide(const Position<Rules, Board>& p, int depth)
+        NodeCount divide(Position<Rules, Board> const& p, int depth)
         {
                 NodeCount leafs = 0;
                 NodeCount move_leafs;
@@ -70,7 +70,7 @@ public:
         }
 
         template<typename Position>
-        NodeCount test(const Position& p, int depth)
+        NodeCount test(Position const& p, int depth)
         {
                 return driver(p, depth, 0);
         }
@@ -87,7 +87,7 @@ public:
 
 private:
         template<typename Position>
-        void announce(const Position& p, int depth)
+        void announce(Position const& p, int depth)
         {
                 std::cout << setup::diagram<pdn::protocol>()(p);
                 std::cout << setup::write<pdn::protocol>()(p) << "\n";
@@ -95,14 +95,14 @@ private:
         }
 
         template<typename Position>
-        void announce(const Position& p, int depth, int num_moves)
+        void announce(Position const& p, int depth, int num_moves)
         {
                 announce(p, depth);
                 std::cout << "Found " << num_moves << " moves, searching each to nominal depth=" << depth - 1 << "\n";
                 std::cout << "\n";
         }
 
-        void report(int depth, NodeCount leafs, const Timer& timer)
+        void report(int depth, NodeCount leafs, Timer const& timer)
         {
                 std::cout << "info";
 
@@ -146,13 +146,13 @@ private:
         }
 
         template<typename Position>
-        NodeCount driver(const Position& p, int depth, int ply)
+        NodeCount driver(Position const& p, int depth, int ply)
         {
                 return (depth == 0)? leaf(p, depth, ply) : fast(p, depth, ply);
         }
 
         template<typename Position>
-        NodeCount leaf(const Position& p, int depth, int ply)
+        NodeCount leaf(Position const& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -172,7 +172,7 @@ private:
         }
 
         template<typename Position>
-        NodeCount bulk(const Position& p, int depth, int ply)
+        NodeCount bulk(Position const& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -192,7 +192,7 @@ private:
         }
 
         template<typename Position>
-        NodeCount count(const Position& p, int depth, int ply)
+        NodeCount count(Position const& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -212,7 +212,7 @@ private:
         }
 
         template<typename Position>
-        NodeCount hash(const Position& p, int depth, int ply)
+        NodeCount hash(Position const& p, int depth, int ply)
         {
                 statistics_.update(ply);
 
@@ -238,7 +238,7 @@ private:
         }
 
         template<typename Position>
-        NodeCount fast(const Position& p, int depth, int ply)
+        NodeCount fast(Position const& p, int depth, int ply)
         {
                 statistics_.update(ply);
 

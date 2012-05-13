@@ -20,19 +20,19 @@ struct Driver
         private nonconstructible
 {
         template<template<typename, typename> class Position>
-        static void generate(const Position<Rules, Board>&, Stack&)
+        static void generate(Position<Rules, Board> const&, Stack&)
         {
                 return;
         }
 
         template<template<typename, typename> class Position>
-        static int count(const Position<Rules, Board>&)
+        static int count(Position<Rules, Board> const&)
         {
                 return 0;
         }
 
         template<template<typename, typename> class Position>
-        static bool detect(const Position<Rules, Board>&)
+        static bool detect(Position<Rules, Board> const&)
         {
                 return false;
         }

@@ -20,7 +20,7 @@ struct Registry
 public:
         Creator find(const Identifier& id) const
         {
-                const auto it = lookup_.find(id);
+                auto const it = lookup_.find(id);
                 return (it != std::end(lookup_))? it->second : nullptr;
         }
 

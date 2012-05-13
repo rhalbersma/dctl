@@ -5,7 +5,7 @@
 namespace dctl {
 
 template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
-static BitBoard targets(const Position<Rules, Board>& p)
+static BitBoard targets(Position<Rules, Board> const& p)
 {
         // tag dispatching on whether pawns can capture kings
         return aux::targets<Color>(p, Int2Type<rules::is_pawns_jump_kings<Rules>::value>());
@@ -15,14 +15,14 @@ namespace aux {
 
 // partial specialization for pawns that cannot capture kings
 template<bool Color, typename Position>
-static BitBoard targets(const Position& p, Int2Type<false>)
+static BitBoard targets(Position const& p, Int2Type<false>)
 {
         return p.pawns(!Color);
 }
 
 // partial specialization for pawns that can capture kings
 template<bool Color, typename Position>
-static BitBoard targets(const Position& p, Int2Type<true>)
+static BitBoard targets(Position const& p, Int2Type<true>)
 {
         return p.pieces(!Color);
 }

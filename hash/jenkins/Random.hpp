@@ -46,19 +46,19 @@ private:
         }
 
         static const Index SIDE;                        // random number used in the mixing with the side to move
-        static const int NUM_MIX = 4;                   // number of mixing steps
-        static const int ADD_SHIFT_L[NUM_MIX];          // shift lengths used in the addition steps
-        static const int XOR_SHIFT_R[NUM_MIX];          // shift lengths used in the exclusive-OR steps
+        static int const NUM_MIX = 4;                   // number of mixing steps
+        static int const ADD_SHIFT_L[NUM_MIX];          // shift lengths used in the addition steps
+        static int const XOR_SHIFT_R[NUM_MIX];          // shift lengths used in the exclusive-OR steps
 };
 
 template<typename Index>
 const Index Random<Index>::SIDE = 0xd2d84a61;
 
 template<typename Index>
-const int Random<Index>::ADD_SHIFT_L[NUM_MIX] = { 25, 4,  8, 26 };
+int const Random<Index>::ADD_SHIFT_L[NUM_MIX] = { 25, 4,  8, 26 };
 
 template<typename Index>
-const int Random<Index>::XOR_SHIFT_R[NUM_MIX] = { 23, 6, 10, 31 };
+int const Random<Index>::XOR_SHIFT_R[NUM_MIX] = { 23, 6, 10, 31 };
 
 // explicit instantation
 template struct Random<>;

@@ -11,7 +11,7 @@ class Evaluate
 {
 public:
         template<typename Position>
-        static int evaluate(const Position& p)
+        static int evaluate(Position const& p)
         {
                 return (p.active_color() == Side::white)?
                         Delta<Side::white>::evaluate(p) :
@@ -20,7 +20,7 @@ public:
         }
 
         template<typename Position>
-        static void print_break_down(const Position& p)
+        static void print_break_down(Position const& p)
         {
                 std::cout << "Term    " << " BLACK"                                                                         << " WHITE"                                         << " DELTA"                                                      << "\n";
                 for (auto i = 0; i < 26; ++i)

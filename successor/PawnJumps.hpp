@@ -34,20 +34,20 @@ private:
 
 public:
         template<template<typename, typename> class Position>
-        static void generate(const Position<Rules, Board>& p, Stack& moves)
+        static void generate(Position<Rules, Board> const& p, Stack& moves)
         {
                 State capture(p, moves);
                 generate(p, capture);
         }
 
         template<template<typename, typename> class Position>
-        static void generate(const Position<Rules, Board>& p, State& capture)
+        static void generate(Position<Rules, Board> const& p, State& capture)
         {
                 select_targets(p, capture);
         }
 
         template<template<typename, typename> class Position>
-        static int count(const Position<Rules, Board>& p)
+        static int count(Position<Rules, Board> const& p)
         {
                 Stack moves;
                 generate(p, moves);
@@ -55,14 +55,14 @@ public:
         }
 
         template<template<typename, typename> class Position>
-        static bool detect(const Position<Rules, Board>& p)
+        static bool detect(Position<Rules, Board> const& p)
         {
                 return detect(p.pawns(Color), targets<Color>(p), not_occupied(p));
         }
 
 private:
         template<template<typename, typename> class Position>
-        static void select_targets(const Position<Rules, Board>& p, State& capture)
+        static void select_targets(Position<Rules, Board> const& p, State& capture)
         {
                 // tag dispatching on whether pawns can capture kings
                 select_targets_dispatch(
@@ -74,7 +74,7 @@ private:
         // partial specialization for pawns that cannot capture kings
         template<template<typename, typename> class Position>
         static void select_targets_dispatch(
-                const Position<Rules, Board>& p, State& capture, 
+                Position<Rules, Board> const& p, State& capture, 
                 Int2Type<false>
         )
         {
@@ -89,7 +89,7 @@ private:
         // partial specialization for pawns that can capture kings
         template<template<typename, typename> class Position>
         static void select_targets_dispatch(
-                const Position<Rules, Board>& p, State& capture, 
+                Position<Rules, Board> const& p, State& capture, 
                 Int2Type<true>
         )
         {
@@ -300,7 +300,7 @@ private:
                         );
                 else {
                         capture.toggle_promotion();
-                        const auto found_next = KingJumps::promote_en_passant<Index>(jumper, capture);
+                        auto const found_next = KingJumps::promote_en_passant<Index>(jumper, capture);
                         capture.toggle_promotion();
                         return found_next;
                 }

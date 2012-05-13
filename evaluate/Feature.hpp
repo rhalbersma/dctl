@@ -13,7 +13,7 @@ class Feature
 {
 public:
         template<typename Position>
-        static int evaluate(const Position& p)
+        static int evaluate(Position const& p)
         {
                 int score = 0;
                 score += material(p);
@@ -25,7 +25,7 @@ public:
         }
 
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        static int material(const Position<Rules, Board>& p)
+        static int material(Position<Rules, Board> const& p)
         {
                 return (
                         Weight<Rules, Board>::material[0] * bit::count(p.pieces(Color)) +
@@ -34,7 +34,7 @@ public:
         }
 
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        static int tempo(const Position<Rules, Board>& p)
+        static int tempo(Position<Rules, Board> const& p)
         {
                 int score = 0;
                 for (auto i = 1; i < Board::height; ++i)
@@ -43,7 +43,7 @@ public:
         }
 
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        static int center(const Position<Rules, Board>& p)
+        static int center(Position<Rules, Board> const& p)
         {
                 int score = 0;
                 for (auto i = 1; i < Board::width / 2; ++i)
@@ -56,7 +56,7 @@ public:
         }
 
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        static int balance(const Position<Rules, Board>& p)
+        static int balance(Position<Rules, Board> const& p)
         {
                 int score = 0;
                 for (auto i = 0; i < Board::width / 2; ++i)
@@ -69,7 +69,7 @@ public:
         }
 
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        static int mobility(const Position<Rules, Board>& p)
+        static int mobility(Position<Rules, Board> const& p)
         {
                 return Weight<Rules, Board>::mobility * Mobility<select::Moves>::template count<Color>(p);
         }

@@ -51,8 +51,8 @@ public:
 
 private:
         // square to bit and bit to square conversion tables
-        static const int SQUARE2BIT[];                          // convert a square to a bit
-        static const int BIT2SQUARE[];                          // convert a bit to a square
+        static int const SQUARE2BIT[];                          // convert a square to a bit
+        static int const BIT2SQUARE[];                          // convert a bit to a square
 };
 
 template<typename Dimensions, typename Structure>
@@ -201,7 +201,7 @@ int Board<Dimensions, Structure>::bit2square(int b)
 }
 
 template<typename Dimensions, typename Structure>
-const int Board<Dimensions, Structure>::SQUARE2BIT[] = {
+int const Board<Dimensions, Structure>::SQUARE2BIT[] = {
         square_to_bit<Board,  0>::type::value, square_to_bit<Board,  1>::type::value, square_to_bit<Board,  2>::type::value, square_to_bit<Board,  3>::type::value,
         square_to_bit<Board,  4>::type::value, square_to_bit<Board,  5>::type::value, square_to_bit<Board,  6>::type::value, square_to_bit<Board,  7>::type::value,
         square_to_bit<Board,  8>::type::value, square_to_bit<Board,  9>::type::value, square_to_bit<Board, 10>::type::value, square_to_bit<Board, 11>::type::value,
@@ -221,7 +221,7 @@ const int Board<Dimensions, Structure>::SQUARE2BIT[] = {
 };
 
 template<typename Dimensions, typename Structure>
-const int Board<Dimensions, Structure>::BIT2SQUARE[] = {
+int const Board<Dimensions, Structure>::BIT2SQUARE[] = {
         bit_to_square<Board,  0>::type::value, bit_to_square<Board,  1>::type::value, bit_to_square<Board,  2>::type::value, bit_to_square<Board,  3>::type::value,
         bit_to_square<Board,  4>::type::value, bit_to_square<Board,  5>::type::value, bit_to_square<Board,  6>::type::value, bit_to_square<Board,  7>::type::value,
         bit_to_square<Board,  8>::type::value, bit_to_square<Board,  9>::type::value, bit_to_square<Board, 10>::type::value, bit_to_square<Board, 11>::type::value,
