@@ -16,19 +16,19 @@ BitBoard promotion_sq(BitBoard dest_sq)
 }
 
 template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
-BitBoard promotion_squares(const Position<Rules, Board>& p)
+BitBoard promotion_squares(Position<Rules, Board> const& p)
 {
         return not_occupied(p) & Board::PROMOTION[Color][0];
 }
 
 template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
-BitBoard promoting_pawns(const Position<Rules, Board>& p)
+BitBoard promoting_pawns(Position<Rules, Board> const& p)
 {
         return p.pawns(Color) & Board::PROMOTION[Color][1];
 }
 
 template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
-BitBoard non_promoting_pawns(const Position<Rules, Board>& p)
+BitBoard non_promoting_pawns(Position<Rules, Board> const& p)
 {
         return p.pawns(Color) & ~Board::PROMOTION[Color][1];
 }

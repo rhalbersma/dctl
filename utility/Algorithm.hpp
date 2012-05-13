@@ -15,7 +15,7 @@ template<class ForwardIterator>
 void insertion_sort(ForwardIterator first, ForwardIterator last)
 {
         std::for_each(first, last, [](ForwardIterator it) {
-                const auto insertion = std::upper_bound(first, it, *it);
+                auto const insertion = std::upper_bound(first, it, *it);
                 std::rotate(insertion, it, std::next(it));
         });
 }
@@ -24,7 +24,7 @@ template<class ForwardIterator>
 void selection_sort(ForwardIterator first, ForwardIterator last)
 {
         std::for_each(first, last, [](ForwardIterator it) {
-                const auto selection = std::min_element(it, last);
+                auto const selection = std::min_element(it, last);
                 std::iter_swap(selection, it);
         });
 }

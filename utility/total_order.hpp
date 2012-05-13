@@ -5,8 +5,8 @@ namespace dctl {
 template<typename T>
 bool is_totally_ordered(const T& left, const T& right)
 {
-        const auto equivalent = !((left < right) || (right < left));
-        const auto equal = left == right;
+        auto const equivalent = !((left < right) || (right < left));
+        auto const equal = left == right;
         return equivalent == equal;
 }
 

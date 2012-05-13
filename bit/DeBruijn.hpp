@@ -42,11 +42,11 @@ struct Sequence<unsigned char, _>
 template<typename _>
 struct Table<unsigned char, _>
 {
-        static const int value[];
+        static int const value[];
 };
 
 template<typename _>
-const int Table<unsigned char, _>::value[] = {
+int const Table<unsigned char, _>::value[] = {
          0,  1,  6,  2,  7,  5,  4,  3
 };
 
@@ -60,11 +60,11 @@ struct Sequence<unsigned short, _>
 template<typename _>
 struct Table<unsigned short, _>
 {
-        static const int value[];
+        static int const value[];
 };
 
 template<typename _>
-const int Table<unsigned short, _>::value[] = {
+int const Table<unsigned short, _>::value[] = {
          0,  1, 11,  2, 14, 12,  8,  3,
         15, 10, 13,  7,  9,  6,  5,  4
 };
@@ -79,11 +79,11 @@ struct Sequence<unsigned int, _>
 template<typename _>
 struct Table<unsigned int, _>
 {
-        static const int value[];
+        static int const value[];
 };
 
 template<typename _>
-const int Table<unsigned int, _>::value[] = {
+int const Table<unsigned int, _>::value[] = {
          0,  1, 23,  2, 29, 24, 14,  3,
         30, 27, 25, 18, 20, 15, 10,  4,
         31, 22, 28, 13, 26, 17, 19,  9,
@@ -100,11 +100,11 @@ struct Sequence<unsigned __int64, _>
 template<typename _>
 struct Table<unsigned __int64, _>
 {
-        static const int value[];
+        static int const value[];
 };
 
 template<typename _>
-const int Table<unsigned __int64, _>::value[] = {
+int const Table<unsigned __int64, _>::value[] = {
          0,  1, 48,  2, 57, 49, 28,  3,
         61, 58, 50, 42, 38, 29, 17,  4,
         62, 55, 59, 36, 53, 51, 43, 22,
@@ -222,7 +222,7 @@ int main()
         // compute the prefix table and print to stdout
         static void generate_table()
         {
-                const auto sequence = generate_sequence();
+                auto const sequence = generate_sequence();
 
                 int table[NUM_BITS];
                 for (auto i = 0; i < NUM_BITS; ++i) {
@@ -238,7 +238,7 @@ int main()
                 std::cout << static_cast<uint64_t>(sequence) << ";\n\n";
 
                 std::cout << "template<>\n";
-                std::cout << "const int DeBruijn<" << typeid(T).name() << ">::TABLE[] = {\n";
+                std::cout << "int const DeBruijn<" << typeid(T).name() << ">::TABLE[] = {\n";
                 for (auto i = 0; i < NUM_BITS; ++i) {
                         if (i % 8 == 0)
                                 for (auto j = 0; j < 8; ++j)

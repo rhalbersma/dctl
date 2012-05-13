@@ -33,7 +33,7 @@ public:
         clock_t Timer::lap() const
         {
                 BOOST_ASSERT(!laps_.empty());
-                const auto i = laps_.size() - 1;
+                auto const i = laps_.size() - 1;
                 return laps_[i] - laps_[i - 1];
         }
 

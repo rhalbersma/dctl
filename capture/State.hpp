@@ -27,7 +27,7 @@ public:
         // structors
 
         template<template<typename, typename> class Position>
-        explicit State(const Position<Rules, Board>& p, Stack& m)
+        explicit State(Position<Rules, Board> const& p, Stack& m)
         :
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
@@ -115,7 +115,7 @@ public:
         template<bool Color, int Index>
         void add_king_jump(BitBoard dest_sq) const // modifies Stack& moves_
         {
-                const auto ambiguous = is_ambiguous();
+                auto const ambiguous = is_ambiguous();
 
                 // tag dispatching on king halt after final capture
                 add_king_jump_dispatch<Color, Index>(
@@ -317,7 +317,7 @@ private:
                 Int2Type<true>
         ) const // modifies Stack& moves_
         {
-                const auto ambiguous = is_ambiguous();
+                auto const ambiguous = is_ambiguous();
                 add_pawn_jump_dispatch<Color>(dest_sq, Int2Type<false>());
                 if (ambiguous)
                         unique_back();

@@ -6,55 +6,55 @@
 namespace dctl {
 
 template<typename Position, typename Move>
-BitBoard from_sq(const Position& p, const Move& m);
+BitBoard from_sq(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-BitBoard dest_sq(const Position& p, const Move& m);
+BitBoard dest_sq(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-BitBoard moving_pieces(const Position& p, const Move& m);
+BitBoard moving_pieces(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-BitBoard moving_kings(const Position& p, const Move& m);
+BitBoard moving_kings(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-BitBoard captured_pieces(const Position& p, const Move& m);
+BitBoard captured_pieces(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-BitBoard captured_kings(const Position& p, const Move& m);
+BitBoard captured_kings(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-bool is_connected(const Position& p, const Move& m1, const Move& m2);
+bool is_connected(Position const& p, Move const& m1, Move const& m2);
 
 template<typename Position, typename Move>
-bool is_reversible(const Position& p, const Move& m);
+bool is_reversible(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-bool is_promotion(const Position& p, const Move& m);
+bool is_promotion(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-bool is_with_king(const Position& p, const Move& m);
+bool is_with_king(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-bool is_capture(const Position& p, const Move& m);
+bool is_capture(Position const& p, Move const& m);
 
 template<typename Position, typename Move>
-bool is_pseudo_legal(const Position& p, const Move& m);
+bool is_pseudo_legal(Position const& p, Move const& m);
 
 // tag dispatching on capture removal
 template<typename Rules, typename Board, template<typename, typename> class Position, typename Move>
-bool is_intersecting_capture(const Position<Rules, Board>& p, const Move& m);
+bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m);
 
 // partial specialization for en-passant capture removal
 template<typename Position, typename Move>
 bool is_intersecting_capture(
-        const Position& p, const Move& m, Int2Type<rules::remove_ep>
+        Position const& p, Move const& m, Int2Type<rules::remove_ep>
 );
 
 // partial specialization for apres-fini capture removal
 template<typename Position, typename Move>
 bool is_intersecting_capture(
-        const Position& /* p */, const Move& /* m */, Int2Type<rules::remove_af>
+        Position const& /* p */, Move const& /* m */, Int2Type<rules::remove_af>
 );
 
 }       // namespace dctl

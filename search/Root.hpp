@@ -40,13 +40,13 @@ public:
         }
 
         template<typename Position>
-        int analyze(const Position& p, int depth)
+        int analyze(Position const& p, int depth)
         {
                 return iterative_deepening(p, depth);
         }
 
         template<typename Position>
-        int solve(const Position& p, int depth)
+        int solve(Position const& p, int depth)
         {
                 return proof_verify(p, depth);
         }
@@ -72,14 +72,14 @@ public:
         }
 
 private:
-        template<typename Position> int iterative_deepening(const Position&, int);
-        template<typename Position> int proof_verify(const Position&, int);
-        template<typename Position> int negamax(const Position&, int, int, Variation&);
-        template<typename int, typename Position> int verify(const Position&, int, int, int, int, Variation&);
-        template<typename int, typename Position> int pvs(const Position&, int, int, int, int, Variation&);
+        template<typename Position> int iterative_deepening(Position const&, int);
+        template<typename Position> int proof_verify(Position const&, int);
+        template<typename Position> int negamax(Position const&, int, int, Variation&);
+        template<typename int, typename Position> int verify(Position const&, int, int, int, int, Variation&);
+        template<typename int, typename Position> int pvs(Position const&, int, int, int, int, Variation&);
 
         template<typename Position>
-        void announce(const Position& p, int depth)
+        void announce(Position const& p, int depth)
         {
                 std::cout << setup::diagram<pdn::protocol>()(p);
                 std::cout << setup::write<pdn::protocol>()(p) << "\n";
@@ -87,7 +87,7 @@ private:
         }
 
         template<typename Position>
-        void report(int depth, int value, const Timer& timer, const Position& p, const Sequence& pv)
+        void report(int depth, int value, Timer const& timer, Position const& p, Sequence const& pv)
         {
                 std::cout << "info";
 
@@ -103,12 +103,12 @@ private:
                 std::cout << " time ";
                 std::cout << std::setw( 6) << timer.elapsed();
 
-                const double nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.elapsed());
+                double const nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.elapsed());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
 
-                const double hashfull = 1000 * (static_cast<double>((TT.size() - TT.available())) / TT.size());
+                double const hashfull = 1000 * (static_cast<double>((TT.size() - TT.available())) / TT.size());
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
 
@@ -117,9 +117,9 @@ private:
         }
 
         template<typename Position>
-        void insert_pv(const Position& p, const Sequence& pv, int value, int ply = 0)
+        void insert_pv(Position const& p, Sequence const& pv, int value, int ply = 0)
         {
-                const auto depth = static_cast<int>(pv.size()) - ply;
+                auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         BOOST_ASSERT(
                                 (value == Evaluate::evaluate(p)) ||
@@ -133,8 +133,8 @@ private:
 
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
-                const auto index = pv[ply] % moves.size();
-                const auto best_move = moves[index];
+                auto const index = pv[ply] % moves.size();
+                auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
 
                 auto q = p;
@@ -144,9 +144,9 @@ private:
         }
 
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        void print_pv(const Position<Rules, Board>& p, const Sequence& pv, int ply = 0)
+        void print_pv(Position<Rules, Board> const& p, Sequence const& pv, int ply = 0)
         {
-                const auto depth = static_cast<int>(pv.size()) - ply;
+                auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         std::cout << '\n';
                         std::cout << setup::diagram<pdn::protocol>()(p);
@@ -155,7 +155,7 @@ private:
 
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
-                const auto best_move = moves[pv[ply] % moves.size()];
+                auto const best_move = moves[pv[ply] % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
                 std::cout << notation::write<Rules>()(p, best_move);

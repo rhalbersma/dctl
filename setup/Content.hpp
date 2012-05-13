@@ -6,9 +6,9 @@ namespace dctl {
 namespace setup {
 
 template<typename Token>
-std::string content(const Material& m, int i)
+std::string content(Material const& m, int i)
 {
-        const auto b = bit::singlet<BitBoard>(i);
+        auto const b = bit::singlet<BitBoard>(i);
 
         std::stringstream sstr;
         if (m.pieces(Side::black) & b) {

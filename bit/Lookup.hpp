@@ -24,7 +24,7 @@ public:
         static int index(T t)
         {
                 BOOST_ASSERT(is_single(t));
-                const int num_blocks = sizeof(T) / sizeof(Block);       // auto would give unsigned type!
+                int const num_blocks = sizeof(T) / sizeof(Block);       // auto would give unsigned type!
                 for (auto i = 0; i < num_blocks; ++i)
                         if (auto b = block(t, i))
                                 return (i * BITS_PER_BLOCK) + INDEX[b];
@@ -35,7 +35,7 @@ public:
         template<typename T>
         static int count(T t)
         {
-                const int num_blocks = sizeof(T) / sizeof(Block);       // auto would give unsigned type!
+                int const num_blocks = sizeof(T) / sizeof(Block);       // auto would give unsigned type!
                 auto count = 0;
                 for (auto i = 0; i < num_blocks; ++i)
                         count += COUNT[block(t, i)];
@@ -45,7 +45,7 @@ public:
         static void generate_index()
         {
                 std::cout << "template<typename Block>\n";
-                std::cout << "const int Lookup_<Block>::INDEX[] = {\n";
+                std::cout << "int const Lookup_<Block>::INDEX[] = {\n";
                 Block i(0);
                 do {
                         if (i % 16 == 0)
@@ -65,7 +65,7 @@ public:
         static void generate_count()
         {
                 std::cout << "template<typename Block>\n";
-                std::cout << "const int Lookup_<Block>::COUNT[] = {\n";
+                std::cout << "int const Lookup_<Block>::COUNT[] = {\n";
                 Block i(0);
                 do {
                         if (i % 16 == 0)
@@ -94,8 +94,8 @@ private:
         // representation
         BOOST_STATIC_CONSTANT(int, BITS_PER_BLOCK = num_bits<Block>::value);
         BOOST_STATIC_CONSTANT(int, NUM_ENTRIES = 1 << BITS_PER_BLOCK);
-        static const int INDEX[];
-        static const int COUNT[];
+        static int const INDEX[];
+        static int const COUNT[];
 };
 
 // The remainder of this file has been copied from the output of the following main program:
@@ -112,7 +112,7 @@ int main()
 */
 
 template<typename Block>
-const int Lookup_<Block>::INDEX[] = {
+int const Lookup_<Block>::INDEX[] = {
          0,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
          4,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
          5,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
@@ -132,7 +132,7 @@ const int Lookup_<Block>::INDEX[] = {
 };
 
 template<typename Block>
-const int Lookup_<Block>::COUNT[] = {
+int const Lookup_<Block>::COUNT[] = {
          0,  1,  1,  2,  1,  2,  2,  3,  1,  2,  2,  3,  2,  3,  3,  4,
          1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
          1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,

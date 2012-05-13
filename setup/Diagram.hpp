@@ -23,7 +23,7 @@ class diagram
 public:
         // position content in diagram layout
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        std::string operator()(const Position<Rules, Board>& p) const
+        std::string operator()(Position<Rules, Board> const& p) const
         {
                 return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
         }
@@ -83,18 +83,18 @@ public:
 private:
         static bool is_end_row(int sq)
         {
-                const auto r = sq % Board::ExternalGrid::modulo;                // sq = modulo * q + r
-                const auto end_RE = r == Board::ExternalGrid::edge_re;          // right of even rows
-                const auto end_RO = r == Board::ExternalGrid::edge_ro;          // right of odd rows
+                auto const r = sq % Board::ExternalGrid::modulo;                // sq = modulo * q + r
+                auto const end_RE = r == Board::ExternalGrid::edge_re;          // right of even rows
+                auto const end_RO = r == Board::ExternalGrid::edge_ro;          // right of odd rows
 
                 return end_RE || end_RO;
         }
 
         static bool is_indent_row(int sq)
         {
-                const auto r = sq % Board::ExternalGrid::modulo;                // sq = modulo * q + r
-                const auto indent_LE = r == Board::ExternalGrid::edge_le;       // left of even rows
-                const auto indent_LO = r == Board::ExternalGrid::edge_lo;       // left of odd rows
+                auto const r = sq % Board::ExternalGrid::modulo;                // sq = modulo * q + r
+                auto const indent_LE = r == Board::ExternalGrid::edge_le;       // left of even rows
+                auto const indent_LO = r == Board::ExternalGrid::edge_lo;       // left of odd rows
 
                 return Board::parity? indent_LO : indent_LE;
         }

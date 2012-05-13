@@ -20,7 +20,7 @@ struct Init<Material, Index>
 :
         public std::unary_function<Material, Index>
 {
-        Index operator()(const Material& m) const
+        Index operator()(Material const& m) const
         {
                 return (
                         Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
@@ -36,7 +36,7 @@ struct Init<Move, Index>
 :
         public std::unary_function<Move, Index>
 {
-        Index operator()(const Move& m) const
+        Index operator()(Move const& m) const
         {
                 return (
                         Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^

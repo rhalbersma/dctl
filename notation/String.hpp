@@ -31,7 +31,7 @@ template<typename Rules, typename Separator>
 struct write<Rules, numeric, Separator>
 {
         template<typename Rules, typename Board, template<typename, typename> class Position>
-        const std::string operator()(const Position<Rules, Board>& p, const Move& m) const
+        const std::string operator()(Position<Rules, Board> const& p, Move const& m) const
         {
                 std::stringstream sstr;
                 sstr << std::setw(2) << std::right << Board::bit2square(bit::find_first(from_sq(p, m))) + 1;

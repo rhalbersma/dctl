@@ -12,7 +12,7 @@ class Variation
 {
 public:
         // queries
-        const Sequence& sequence() const
+        Sequence const& sequence() const
         {
                 return sequence_;
         }
@@ -28,7 +28,7 @@ public:
                 sequence_.clear();
         }
 
-        void set(int first_move, const Sequence& continuation)
+        void set(int first_move, Sequence const& continuation)
         {
                 clear();
                 sequence_.push_back(first_move);

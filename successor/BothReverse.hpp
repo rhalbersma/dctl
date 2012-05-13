@@ -26,14 +26,14 @@ private:
 
 public:
         template<template<typename, typename> class Position>
-        static void generate(const Position<Rules, Board>& p, Stack& moves)
+        static void generate(Position<Rules, Board> const& p, Stack& moves)
         {
                 KingReverse::generate(p, moves);
                 PawnReverse::generate(p, moves);
         }
 
         template<template<typename, typename> class Position>
-        static int count(const Position<Rules, Board>& p)
+        static int count(Position<Rules, Board> const& p)
         {
                 return (
                         KingReverse::count(p) +
@@ -42,7 +42,7 @@ public:
         }
 
         template<template<typename, typename> class Position>
-        static bool detect(const Position<Rules, Board>& p)
+        static bool detect(Position<Rules, Board> const& p)
         {
                 return (
                         PawnReverse::detect(p) ||

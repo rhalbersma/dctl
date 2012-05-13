@@ -17,7 +17,7 @@ struct Init<Position<Rules, Board>, Index>
 :
         public std::unary_function<Position<Rules, Board>, Index>
 {
-        Index operator()(const Position<Rules, Board>& p) const
+        Index operator()(Position<Rules, Board> const& p) const
         {
                 Index index = 0;
 

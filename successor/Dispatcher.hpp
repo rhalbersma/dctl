@@ -51,19 +51,19 @@ private:
 public:
         // typedefs
 
-        typedef StateInterface< Position<Rules, Board> > const * BaseConstPointer;
+        typedef StateInterface< Position<Rules, Board> > const* BaseConstPointer;
 
         static BaseConstPointer select(int state /* partial intrinsic state encoding */ )
         {
                 // full intrinsic state representations
-                static const Delegate<Side::black, Material::none> black_none;
-                static const Delegate<Side::black, Material::pawn> black_pawn;
-                static const Delegate<Side::black, Material::king> black_king;
-                static const Delegate<Side::black, Material::both> black_both;
-                static const Delegate<Side::white, Material::none> white_none;
-                static const Delegate<Side::white, Material::pawn> white_pawn;
-                static const Delegate<Side::white, Material::king> white_king;
-                static const Delegate<Side::white, Material::both> white_both;
+                static Delegate<Side::black, Material::none> const black_none;
+                static Delegate<Side::black, Material::pawn> const black_pawn;
+                static Delegate<Side::black, Material::king> const black_king;
+                static Delegate<Side::black, Material::both> const black_both;
+                static Delegate<Side::white, Material::none> const white_none;
+                static Delegate<Side::white, Material::pawn> const white_pawn;
+                static Delegate<Side::white, Material::king> const white_king;
+                static Delegate<Side::white, Material::both> const white_both;
 
                 // "Meyers Singleton", Effective C++ 3rd ed., Item 4 (p. 31-32)
                 static BaseConstPointer const singleton_[] = {

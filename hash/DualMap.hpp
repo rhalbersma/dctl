@@ -56,14 +56,14 @@ public:
 
         // queries
         template<typename Position>
-        const Value* find(const Position& p) const
+        const Value* find(Position const& p) const
         {
                 return dual_map_[p.active_color()].find(p);
         }
 
         // modifiers
         template<typename Position>
-        void insert(const Position& p, const Value& value)
+        void insert(Position const& p, Value const& value)
         {
                 dual_map_[p.active_color()].insert(p, value);
         }

@@ -29,14 +29,14 @@ private:
 
 public:
         template<template<typename, typename> class Position>
-        static void generate(const Position<Rules, Board>& p, Stack& moves)
+        static void generate(Position<Rules, Board> const& p, Stack& moves)
         {
                 State capture(p, moves);
                 generate(p, capture);
         }
 
         template<template<typename, typename> class Position>
-        static int count(const Position<Rules, Board>& p)
+        static int count(Position<Rules, Board> const& p)
         {
                 Stack moves;
                 generate(p, moves);
@@ -44,7 +44,7 @@ public:
         }
 
         template<template<typename, typename> class Position>
-        static bool detect(const Position<Rules, Board>& p)
+        static bool detect(Position<Rules, Board> const& p)
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (
@@ -55,7 +55,7 @@ public:
 
 private:
         template<template<typename, typename> class Position>
-        static void generate(const Position<Rules, Board>& p, State& capture)
+        static void generate(Position<Rules, Board> const& p, State& capture)
         {
                 // tag dispatching on absolute king capture precedence
                 generate_dispatch(
@@ -67,7 +67,7 @@ private:
         // partial specialization for no absolute king capture precedence
         template<template<typename, typename> class Position>
         static void generate_dispatch(
-                const Position<Rules, Board>& p, State& capture, Int2Type<false>
+                Position<Rules, Board> const& p, State& capture, Int2Type<false>
         )
         {
                 KingJumps::generate(p, capture);
@@ -77,7 +77,7 @@ private:
         // partial specialization for absolute king capture precedence
         template<template<typename, typename> class Position>
         static void generate_dispatch(
-                const Position<Rules, Board>& p, State& capture, Int2Type<true>
+                Position<Rules, Board> const& p, State& capture, Int2Type<true>
         )
         {
                 KingJumps::generate(p, capture);

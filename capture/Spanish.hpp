@@ -52,7 +52,7 @@ public:
 
         // predicates
 
-        bool operator<(const Value& other) const
+        bool operator<(Value const& other) const
         {
                 return (
                         ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
@@ -60,7 +60,7 @@ public:
                 );
         }
 
-        bool operator==(const Value& other) const
+        bool operator==(Value const& other) const
         {
                 return (
                         ( num_pieces_ == other.num_pieces_ ) &&

@@ -32,14 +32,14 @@ private:
 
 public:
         template<template<typename, typename> class Position>
-        static void generate(const Position<Rules, Board>& p, Stack& moves)
+        static void generate(Position<Rules, Board> const& p, Stack& moves)
         {
                 State capture(p, moves);
                 generate(p, capture);
         }
 
         template<template<typename, typename> class Position>
-        static void generate(const Position<Rules, Board>& p, State& capture)
+        static void generate(Position<Rules, Board> const& p, State& capture)
         {
                 generate_precede(p, capture);
         }
@@ -51,7 +51,7 @@ public:
         }
 
         template<template<typename, typename> class Position>
-        static int count(const Position<Rules, Board>& p)
+        static int count(Position<Rules, Board> const& p)
         {
                 Stack moves;
                 generate(p, moves);
@@ -59,14 +59,14 @@ public:
         }
 
         template<template<typename, typename> class Position>
-        static bool detect(const Position<Rules, Board>& p)
+        static bool detect(Position<Rules, Board> const& p)
         {
                 return detect(p.kings(Color), p.pieces(!Color), not_occupied(p));
         }
 
 private:
         template<template<typename, typename> class Position>
-        static void generate_precede(const Position<Rules, Board>& p, State& capture)
+        static void generate_precede(Position<Rules, Board> const& p, State& capture)
         {
                 // tag dispatching on relative king capture precedence
                 generate_precede(
@@ -78,7 +78,7 @@ private:
         // partial specialization for relative king capture precedence
         template<template<typename, typename> class Position>
         static void generate_precede(
-                const Position<Rules, Board>& p, State& capture, 
+                Position<Rules, Board> const& p, State& capture, 
                 Int2Type<true>
         )
         {
@@ -93,7 +93,7 @@ private:
         // partial specialization for no relative king capture precedence
         template<template<typename, typename> class Position>
         static void generate_precede(
-                const Position<Rules, Board>& p, State& capture, 
+                Position<Rules, Board> const& p, State& capture, 
                 Int2Type<false>
         )
         {
