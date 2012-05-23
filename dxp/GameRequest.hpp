@@ -31,7 +31,7 @@ public:
 
         // structors
 
-        explicit GameRequest(const std::string& message)
+        explicit GameRequest(std::string const& message)
         :
                 name_initiator_(message.substr(2, 32)),
                 color_follower_(*(std::begin(message.substr(34, 1)))),
@@ -45,7 +45,7 @@ public:
 
         // queries
 
-        const std::string& name_initiator() const
+        std::string const& name_initiator() const
         {
                 return name_initiator_;
         }
@@ -70,14 +70,14 @@ public:
                 return setup_code_;
         }
 
-        const std::string& position() const
+        std::string const& position() const
         {
                 return position_;
         }
 
         // output
 
-        static std::string str(const std::string& n, char c, int min, int mov, SetupCode s, std::string p)
+        static std::string str(std::string const& n, char c, int min, int mov, SetupCode s, std::string p)
         {
                 return identifier() + body(n, c, min, mov, s, p);
         }
@@ -95,7 +95,7 @@ private:
                 return body(name_initiator(), color_follower(), minutes(), moves(), setup_code(), position());
         }
 
-        static std::string body(const std::string& n, char c, int min, int mov, SetupCode s, std::string p)
+        static std::string body(std::string const& n, char c, int min, int mov, SetupCode s, std::string p)
         {
                 std::stringstream sstr;
                 sstr << std::setw( 2) << std::setfill('0') << protocol_version;

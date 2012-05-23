@@ -1,5 +1,7 @@
 #pragma once
-#include <boost/assert.hpp>                     // BOOST_ASSERT
+#include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/identity.hpp>       // identity
 #include "Driver_fwd.hpp"
 #include "Selection.hpp"
 #include "../bit/Bit.hpp"
@@ -9,8 +11,7 @@
 #include "../capture/State.hpp"
 #include "../node/Material.hpp"
 #include "../node/Stack.hpp"
-#include "../rules/Rules.hpp"
-#include "../utility/Int2Type.hpp"
+#include "../rules/Enum.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/nonconstructible.hpp"
 
@@ -71,7 +72,7 @@ private:
                 // tag dispatching on relative king capture precedence
                 generate_precede(
                         p, capture,
-                        Int2Type<rules::is_relative_king_precedence<Rules>::value>()
+                        boost::mpl::identity<typename Rules::is_relative_king_precedence>()
                 );
         }
 
@@ -79,13 +80,13 @@ private:
         template<template<typename, typename> class Position>
         static void generate_precede(
                 Position<Rules, Board> const& p, State& capture, 
-                Int2Type<true>
+                boost::mpl::identity<boost::mpl::true_>
         )
         {
                 capture.toggle_with_king();
                 generate_precede(
                         p, capture, 
-                        Int2Type<false>()
+                        boost::mpl::identity<boost::mpl::false_>()
                 );
                 capture.toggle_with_king();
         }
@@ -94,7 +95,7 @@ private:
         template<template<typename, typename> class Position>
         static void generate_precede(
                 Position<Rules, Board> const& p, State& capture, 
-                Int2Type<false>
+                boost::mpl::identity<boost::mpl::false_>
         )
         {
                 serialize(p.kings(Color), capture);
@@ -118,24 +119,24 @@ private:
                 // tag dispatching on king capture directions
                 generate_dispatch(
                         jumper, capture,
-                        Int2Type<rules::king_jump_directions<Rules>::value>()
+                        boost::mpl::identity<typename Rules::king_jump_directions>()
                 );
         }
 
         // partial specialization for kings that capture in the 8 orthogonal and diagonal directions
         static void generate_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<rules::dirs_all>
+                boost::mpl::identity<rules::directions::all>
         )
         {
-                generate_dispatch(jumper, capture, Int2Type<rules::dirs_orth>());
-                generate_dispatch(jumper, capture, Int2Type<rules::dirs_diag>());
+                generate_dispatch(jumper, capture, boost::mpl::identity<rules::directions::orth>());
+                generate_dispatch(jumper, capture, boost::mpl::identity<rules::directions::diag>());
         }
 
         // partial specialization for kings that capture in the 4 orthogonal directions
         static void generate_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<rules::dirs_orth>
+                boost::mpl::identity<rules::directions::orth>
         )
         {
                 generate<Direction::left >(jumper, capture);
@@ -147,7 +148,7 @@ private:
         // partial specialization for kings that capture in the 4 diagonal directions
         static void generate_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<rules::dirs_diag>
+                boost::mpl::identity<rules::directions::diag>
         )
         {
                 generate<Direction::left_up   >(jumper, capture);
@@ -161,26 +162,26 @@ private:
                 // tag dispatching on king capture directions
                 return detect_dispatch(
                         active_kings, passive_pieces, not_occupied,
-                        Int2Type<rules::king_jump_directions<Rules>::value>()
+                        boost::mpl::identity<typename Rules::king_jump_directions>()
                 );
         }
 
         // partial specialization for kings that capture in the 8 orthogonal and diagonal directions
         static bool detect_dispatch(
                 BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, 
-                Int2Type<rules::dirs_all>
+                boost::mpl::identity<rules::directions::all>
         )
         {
                 return (
-                        detect_dispatch(active_kings, passive_pieces, not_occupied, Int2Type<rules::dirs_orth>()) ||
-                        detect_dispatch(active_kings, passive_pieces, not_occupied, Int2Type<rules::dirs_diag>())
+                        detect_dispatch(active_kings, passive_pieces, not_occupied, boost::mpl::identity<rules::directions::orth>()) ||
+                        detect_dispatch(active_kings, passive_pieces, not_occupied, boost::mpl::identity<rules::directions::diag>())
                 );
         }
 
         // partial specialization for kings that capture in the 4 orthogonal directions
         static bool detect_dispatch(
                 BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, 
-                Int2Type<rules::dirs_orth>
+                boost::mpl::identity<rules::directions::orth>
         )
         {
                 return (
@@ -194,7 +195,7 @@ private:
         // partial specialization for kings that capture in the 4 diagonal directions
         static bool detect_dispatch(
                 BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, 
-                Int2Type<rules::dirs_diag>
+                boost::mpl::identity<rules::directions::diag>
         )
         {
                 return (
@@ -236,7 +237,7 @@ private:
                 // tag dispatching on king capture direction reversal
                 return scan_next_dispatch<Index>(
                         jumper, capture,
-                        Int2Type<rules::is_jump_direction_reversal<Rules>::value>()
+                        boost::mpl::identity<typename Rules::is_jump_direction_reversal>()
                 );
         }
 
@@ -244,7 +245,7 @@ private:
         template<int Index>
         static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<false>
+                boost::mpl::identity<boost::mpl::false_>
         )
         {
                 return land<Index>(jumper, capture);
@@ -254,14 +255,14 @@ private:
         template<int Index>
         static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<true>
+                boost::mpl::identity<boost::mpl::true_>
         )
         {
                 return (
                         reverse<Index>(jumper, capture) |
                         scan_next_dispatch<Index>(
                                 jumper, capture, 
-                                Int2Type<false>()
+                                boost::mpl::identity<boost::mpl::false_>()
                         )
                 );
         }
@@ -278,7 +279,7 @@ private:
                 // tag dispatching on king capture landing range after intermediate captures
                 return land_dispatch<Index>(
                         jumper, capture,
-                        Int2Type<rules::king_jump_land<Rules>::value>()
+                        boost::mpl::identity<typename Rules::land_range>()
                 );
         }
 
@@ -286,7 +287,7 @@ private:
         template<int Index>
         static bool land_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<rules::land_1>
+                boost::mpl::identity<rules::range::distance_1>
         )
         {
                 return (
@@ -299,7 +300,7 @@ private:
         template<int Index>
         static bool land_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<rules::land_N>
+                boost::mpl::identity<rules::range::distance_N>
         )
         {
                 BOOST_ASSERT(jumper & capture.path());
@@ -317,7 +318,7 @@ private:
                 // tag dispatching on king turn directions
                 return turn_dispatch<Index>(
                         jumper, capture,
-                        Int2Type<rules::king_turn_directions<Rules>::value>()
+                        boost::mpl::identity<typename Rules::king_turn_directions>()
                 );
         }
 
@@ -325,12 +326,12 @@ private:
         template<int Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<rules::turn_all>
+                boost::mpl::identity<rules::directions::all>
         )
         {
                 return (
-                        turn_dispatch<Index>(jumper, capture, Int2Type<rules::turn_orth>()) |
-                        turn_dispatch<Index>(jumper, capture, Int2Type<rules::turn_diag>())
+                        turn_dispatch<Index>(jumper, capture, boost::mpl::identity<rules::directions::orth>()) |
+                        turn_dispatch<Index>(jumper, capture, boost::mpl::identity<rules::directions::diag>())
                 );
         }
 
@@ -338,7 +339,7 @@ private:
         template<int Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<rules::turn_orth>
+                boost::mpl::identity<rules::directions::orth>
         )
         {
                 return (
@@ -353,7 +354,7 @@ private:
         template<int Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
-                Int2Type<rules::turn_diag>
+                boost::mpl::identity<rules::directions::diag>
         )
         {
                 return (
@@ -375,7 +376,7 @@ private:
                 // tag dispatching on king range
                 slide_dispatch<Index>(
                         jumper, path,
-                        Int2Type<rules::king_scan_range<Rules>::value>()
+                        boost::mpl::identity<typename Rules::king_range>()
                 );
         }
 
@@ -383,7 +384,7 @@ private:
         template<int Index>
         static void slide_dispatch(
                 BitBoard& jumper, BitBoard /* path */, 
-                Int2Type<rules::scan_1>
+                boost::mpl::identity<rules::range::distance_1>
         )
         {
                 PushAssign<Board, Index>()(jumper);
@@ -393,7 +394,7 @@ private:
         template<int Index>
         static void slide_dispatch(
                 BitBoard& jumper, BitBoard path, 
-                Int2Type<rules::scan_N>
+                boost::mpl::identity<rules::range::distance_N>
         )
         {
                 do PushAssign<Board, Index>()(jumper); while (jumper & path);
@@ -416,7 +417,7 @@ private:
         {
                 // partial specialiations of Sandwich for king range
                 return !bit::is_zero(
-                        Sandwich<Board, Index, rules::king_scan_range<Rules>::value>()
+                        Sandwich<Board, Index, typename Rules::king_range>()
                         (active_kings, passive_pieces, not_occupied)
                 );
         }

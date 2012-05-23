@@ -29,7 +29,7 @@ public:
 
         // structors
 
-        explicit GameEnd(const std::string& message)
+        explicit GameEnd(std::string const& message)
         :
                 reason_(static_cast<Reason>(boost::lexical_cast<int>(message.substr(0, 1).c_str()))),
                 stop_code_(static_cast<StopCode>(boost::lexical_cast<int>(message.substr(1, 1).c_str())))

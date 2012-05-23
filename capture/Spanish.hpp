@@ -5,16 +5,16 @@
 
 namespace dctl {
 
-namespace variant { struct Spanish; }
+namespace rules { struct Spanish; }
 
 namespace capture {
 
 // explicit specialization for Spanish draughts
 template<>
-struct Value<variant::Spanish>
+struct Value<rules::Spanish>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<variant::Spanish> >
+        private boost::totally_ordered< Value<rules::Spanish> >
 {
 public:
         // structors

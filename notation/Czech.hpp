@@ -2,13 +2,13 @@
 
 namespace dctl {
 
-namespace variant { struct Czech; }
+namespace rules { struct Czech; }
 
 namespace notation {
 
 struct algebraic;
 template<typename> struct Format;
-//template<> struct Format<variant::Czech>        { typedef algebraic type; };
+//template<> struct Format<rules::Czech>        { typedef algebraic type; };
 
 }       // namespace notation
 }       // namespace dctl

@@ -11,7 +11,7 @@ struct FindKey
 :
         public std::unary_function<Item, Key>
 {
-        const Key& operator()(const Item& item) const
+        Key const& operator()(Item const& item) const
         {
                 static_assert(!std::is_integral<Item>::value, "Only bitwise shift applicable to integer types.");
 

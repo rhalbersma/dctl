@@ -1,22 +1,26 @@
 #pragma once
+#include "Rules.hpp"
+#include "Enum.hpp"
 
 namespace dctl {
-
-namespace variant { struct International; }
-
 namespace rules {
 
-// move mechanics
-template<typename> struct king_scan_range;
-template<> struct king_scan_range<variant::International>               { enum { value = scan_N    }; };
+// http://www.fmjd.org/docs/Annex%201%20official%20FMJD%20rules%20of%20international%20draughts.doc
+struct International
+: 
+        Rules< 
+                king_range<range::distance_N>,
+                pawn_jump_directions<directions::diag>,
+                jump_precedence<precedence::quantity>
+        > 
+{};
 
-// capture mechanics
-template<typename> struct pawn_jump_directions;
-template<> struct pawn_jump_directions<variant::International>          { enum { value = dirs_diag }; };
-
-// capture precedence
-template<typename> struct is_majority_precedence;
-template<> struct is_majority_precedence<variant::International>        { enum { value = true      }; };
+// aliases for the international rules
+typedef International Brazilian;        //  8x8  board
+typedef International Polish;           // 10x10 board
+typedef International Canadian;         // 12x12 board
 
 }       // namespace rules
 }       // namespace dctl
+
+#include "../capture/International.hpp"

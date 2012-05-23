@@ -75,7 +75,7 @@ struct is_col_mask
         >
 {};
 
-namespace aux {
+namespace detail {
 
 // a diagonal or orthogonal man jump between square <FROM> and square <DEST> is possible if
 // BOTH row AND column numbers difference == 0 mod 4 (even number of jumps) OR
@@ -134,19 +134,19 @@ struct is_jump_group
         >
 {};
 
-}       // namespace aux
+}       // namespace detail
 
 template<typename Board, typename Group, typename SQ>
 struct is_jump_group
 :
-        aux::is_jump_group<
+        detail::is_jump_group<
                 typename Board::ExternalGrid,
                 Group,
                 SQ
         >
 {};
 
-namespace aux {
+namespace detail {
 
 template<typename Board, typename Index, typename SQ, typename Grid, typename Offset>
 struct is_jump_start
@@ -173,12 +173,12 @@ struct is_jump_start
         >
 {};
 
-}       // namespace aux
+}       // namespace detail
 
 template<typename Board, typename Index, typename SQ>
 struct is_jump_start
 :
-        aux::is_jump_start<
+        detail::is_jump_start<
                 Board, Index, SQ,
                 typename Board::ExternalGrid,
                 boost::mpl::eval_if<
@@ -189,7 +189,7 @@ struct is_jump_start
         >
 {};
 
-namespace aux {
+namespace detail {
 
 template<typename FromGrid, typename DestGrid, typename Angle, int Index>
 struct transform
@@ -209,12 +209,12 @@ struct transform
         >
 {};
 
-}       // namespace aux
+}       // namespace detail
 
 template<typename Board, int SQ>
 struct square_to_bit
 :
-        aux::transform<
+        detail::transform<
                 typename Board::ExternalGrid,
                 typename Board::InternalGrid,
                 typename Board::full_angle,
@@ -225,7 +225,7 @@ struct square_to_bit
 template<typename Board, int B>
 struct bit_to_square
 :
-        aux::transform<
+        detail::transform<
                 typename Board::InternalGrid,
                 typename Board::ExternalGrid,
                 typename Board::inverse_angle,

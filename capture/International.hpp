@@ -5,16 +5,16 @@
 
 namespace dctl {
 
-namespace variant { struct International; }
+namespace rules { struct International; }
 
 namespace capture {
 
 // explicit specialization for International draughts
 template<>
-struct Value<variant::International>
+struct Value<rules::International>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<variant::International> >
+        private boost::totally_ordered< Value<rules::International> >
 {
 public:
         // structors

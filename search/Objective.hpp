@@ -4,6 +4,7 @@
 #include "../bit/Bit.hpp"
 #include "../successor/Selection.hpp"
 #include "../successor/Successor.hpp"
+#include "../utility/Int2Type.hpp"
 
 namespace dctl {
 namespace search {

@@ -43,9 +43,10 @@ public:
         {
                 return static_cast<size_t>(
                         std::count_if(
-                                std::begin(map_), std::end(map_), [](const Entry& entry) {
-                                return entry.first == Key(0);
-                        })
+                                std::begin(map_), std::end(map_), 
+                                [](Entry const& e) 
+                                { return e.first == Key(0); }
+                        )
                 );
         }
 
@@ -68,14 +69,14 @@ public:
         }
 
         // queries
-        const Value* find(const Key& key) const
+        const Value* find(Key const& key) const
         {
                 auto const index = Hash<Key, Index>()(key);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
         template<typename Item>
-        const Value* find(const Item& item) const
+        const Value* find(Item const& item) const
         {
                 // tag dispatching on the key's integral type trait
                 return find_dispatch(
@@ -85,14 +86,14 @@ public:
         }
 
         // modifiers
-        void insert(const Key& key, Value const& value)
+        void insert(Key const& key, Value const& value)
         {
                 auto const index = Hash<Key, Index>()(key);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 
         template<typename Item>
-        void insert(const Item& item, Value const& value)
+        void insert(Item const& item, Value const& value)
         {
                 // tag dispatching on the key's integral type trait
                 insert_dispatch(
@@ -104,7 +105,7 @@ public:
 private:
         // partial specialization for non-integral keys
         template<typename Item>
-        const Value* find_dispatch(const Item& item, Int2Type<false>) const
+        const Value* find_dispatch(Item const& item, Int2Type<false>) const
         {
                 auto const index = Hash<Item, Index>()(item);
                 auto const key = FindKey<Item, Key>()(item);
@@ -113,7 +114,7 @@ private:
 
         // partial specialization for integral keys
         template<typename Item>
-        const Value* find_dispatch(const Item& item, Int2Type<true>) const
+        const Value* find_dispatch(Item const& item, Int2Type<true>) const
         {
                 auto const index = Hash<Item, Index>()(item);
                 auto const key = ShiftKey<Index, Key>()(index);
@@ -122,7 +123,7 @@ private:
 
         // partial specialization for non-integral keys
         template<typename Item>
-        void insert_dispatch(const Item& item, Value const& value, Int2Type<false>)
+        void insert_dispatch(Item const& item, Value const& value, Int2Type<false>)
         {
                 auto const index = Hash<Item, Index>()(item);
                 auto const key = FindKey<Item, Key>()(item);
@@ -131,7 +132,7 @@ private:
 
         // partial specialization for integral keys
         template<typename Item>
-        void insert_dispatch(const Item& item, Value const& value, Int2Type<true>)
+        void insert_dispatch(Item const& item, Value const& value, Int2Type<true>)
         {
                 auto const index = Hash<Item, Index>()(item);
                 auto const key = ShiftKey<Index, Key>()(index);

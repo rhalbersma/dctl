@@ -1,22 +1,26 @@
 #pragma once
+#include "Rules.hpp"
 #include "Enum.hpp"
 
 namespace dctl {
-
-namespace variant { struct Russian; }
-
 namespace rules {
 
-// move mechanics
-template<typename> struct king_scan_range;
-template<> struct king_scan_range<variant::Russian>             { enum { value = scan_N     }; };
+// http://www.shashist.ru/kodeks/kodeks2004.doc
+struct Russian
+: 
+        Rules<
+                king_range<range::distance_N>,
+                pawn_jump_directions<directions::diag>,
+                jump_precedence<precedence::none>,
+                pawn_promotion<promotion::en_passant> 
+        > 
+{};
 
-// capture mechanics
-template<typename> struct pawn_jump_directions;
-template<> struct pawn_jump_directions<variant::Russian>        { enum { value = dirs_diag  }; };
-
-template<typename> struct promotion_condition;
-template<> struct promotion_condition<variant::Russian>         { enum { value = promote_ep }; };
+// alias for the Russian rules
+typedef Russian Shashki;
 
 }       // namespace rules
 }       // namespace dctl
+
+#include "../capture/Russian.hpp"
+#include "../notation/Russian.hpp"

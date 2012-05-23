@@ -28,7 +28,7 @@ public:
 
         // structors
 
-        explicit BackAcknowledge(const std::string& message)
+        explicit BackAcknowledge(std::string const& message)
         :
                 acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(0, 1).c_str())))
         {

@@ -24,7 +24,7 @@ class BackRequest
 public:
         // structors
 
-        explicit BackRequest(const std::string& message)
+        explicit BackRequest(std::string const& message)
         :
                 move_number_(boost::lexical_cast<int>(message.substr(0, 3).c_str())),
                 side_to_move_(*(std::begin(message.substr(3, 1))))

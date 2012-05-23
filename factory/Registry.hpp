@@ -13,12 +13,12 @@ template
         typename Base,
         typename BasePointer = std::unique_ptr<Base>,
         typename Identifier = std::string,
-        typename Creator = BasePointer (*)(const Identifier&)
+        typename Creator = BasePointer (*)(Identifier const&)
 >
 struct Registry
 {
 public:
-        Creator find(const Identifier& id) const
+        Creator find(Identifier const& id) const
         {
                 auto const it = lookup_.find(id);
                 return (it != std::end(lookup_))? it->second : nullptr;
@@ -40,12 +40,12 @@ public:
 
 private:
         // implementation
-        bool insert(const Identifier& id, Creator fun)
+        bool insert(Identifier const& id, Creator fun)
         {
                 return lookup_.insert(Lookup::value_type(id, fun)).second;
         }
 
-        bool erase(const Identifier& id)
+        bool erase(Identifier const& id)
         {
                 return lookup_.erase(id) == 1;
         }

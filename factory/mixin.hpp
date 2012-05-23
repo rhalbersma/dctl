@@ -16,12 +16,12 @@ template
 >
 struct HeaderBodyTerminator
 {
-        static std::string header(const std::string& input)
+        static std::string header(std::string const& input)
         {
                 return input.substr(0, HeaderLength);
         }
 
-        static std::string body(const std::string& input)
+        static std::string body(std::string const& input)
         {
                 return input.substr(HeaderLength);
         }
@@ -52,7 +52,7 @@ struct FactoryCreate
                 return Identifier(1, identifier_);
         }
 
-        static std::unique_ptr<Base> create(const std::string& parameter)
+        static std::unique_ptr<Base> create(std::string const& parameter)
         {
                 return make_unique<Derived>(parameter);
         }

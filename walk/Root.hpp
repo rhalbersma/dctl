@@ -140,7 +140,7 @@ private:
                 std::cout << "Total leafs: " << leafs << "\n\n";
         }
 
-        void print_move(const std::string& move, int i)
+        void print_move(std::string const& move, int i)
         {
                 std::cout << std::setw(2) << (i + 1) << "." << move << " ";
         }

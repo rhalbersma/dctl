@@ -1,7 +1,6 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "../bit/Bit.hpp"
-#include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -75,7 +74,7 @@ typedef KingMoves Restricted[2];
 template<typename Rules>
 bool is_max(PlyCount moves)
 {
-        return moves == rules::max_same_king_moves<Rules>::value;
+        return moves == Rules::max_same_king_moves::value;
 }
 
 }       // namespace dctl

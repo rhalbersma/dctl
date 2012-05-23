@@ -43,14 +43,14 @@ public:
         }
 
         // connect to default port on user supplied host
-        void connect(const std::string& host)
+        void connect(std::string const& host)
         {
                 do_connect(asio::ip::tcp::endpoint(asio::ip::address::from_string(host), PORT));
         }
 
 
         // connect to user supplied port and host
-        void connect(const std::string& host, unsigned short port)
+        void connect(std::string const& host, unsigned short port)
         {
                 do_connect(asio::ip::tcp::endpoint(asio::ip::address::from_string(host), port));
         }
@@ -80,7 +80,7 @@ public:
                 io_service_.post(boost::bind(&Connection<Protocol>::do_read, this, message));
         }
 
-        void write(const std::string& message)
+        void write(std::string const& message)
         {
                 // do_write() will only be called in a thread in which io_service::run() is currently being invoked.
                 io_service_.post(boost::bind(&Connection<Protocol>::do_write, this, message));

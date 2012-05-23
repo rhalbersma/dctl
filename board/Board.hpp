@@ -37,7 +37,7 @@ public:
         static const BitBoard row_mask[][12];                   // bit masks for the rows
         static const BitBoard col_mask[][12];                   // bit masks for the columns
 
-        // auxiliary bitboard masks
+        // detaililiary bitboard masks
         static const BitBoard QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
         static const BitBoard DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
         static const BitBoard jump_group[];                     // families of squares reachable by jumping pawns

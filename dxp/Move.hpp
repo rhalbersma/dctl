@@ -26,7 +26,7 @@ class Move
 public:
         // structors
 
-        explicit Move(const std::string& message)
+        explicit Move(std::string const& message)
         :
                 seconds_(boost::lexical_cast<int>(message.substr(0, 4).c_str())),
                 from_sq_(boost::lexical_cast<int>(message.substr(4, 2).c_str())),

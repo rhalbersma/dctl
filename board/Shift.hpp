@@ -5,11 +5,11 @@
 namespace dctl {
 
 // primary template
-template<typename Board, int Index, int Range>
+template<typename Board, int Index, typename Range>
 struct Sink;
 
 template<typename Board, int Index>
-struct Sink<Board, Index, rules::scan_1>
+struct Sink<Board, Index, rules::range::distance_1>
 {
         template<typename T>
         T operator()(T from, T dest) const
@@ -19,7 +19,7 @@ struct Sink<Board, Index, rules::scan_1>
 };
 
 template<typename Board, int Index>
-struct Sink<Board, Index, rules::scan_N>
+struct Sink<Board, Index, rules::range::distance_N>
 {
         template<typename T>
         T operator()(T from, T dest) const
@@ -29,11 +29,11 @@ struct Sink<Board, Index, rules::scan_N>
 };
 
 // primary template
-template<typename Board, int Index, int Range>
+template<typename Board, int Index, typename Range>
 struct Sandwich;
 
 template<typename Board, int Index>
-struct Sandwich<Board, Index, rules::scan_1>
+struct Sandwich<Board, Index, rules::range::distance_1>
 {
         template<typename T>
         T operator()(T from, T past, T dest) const
@@ -47,7 +47,7 @@ struct Sandwich<Board, Index, rules::scan_1>
 };
 
 template<typename Board, int Index>
-struct Sandwich<Board, Index, rules::scan_N>
+struct Sandwich<Board, Index, rules::range::distance_N>
 {
         template<typename T>
         T operator()(T from, T past, T dest) const

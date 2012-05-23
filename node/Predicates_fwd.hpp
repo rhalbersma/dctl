@@ -1,6 +1,5 @@
 #pragma once
-#include "../rules/Rules.hpp"
-#include "../utility/Int2Type.hpp"
+#include "../rules/Enum.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -48,13 +47,15 @@ bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m);
 // partial specialization for en-passant capture removal
 template<typename Position, typename Move>
 bool is_intersecting_capture(
-        Position const& p, Move const& m, Int2Type<rules::remove_ep>
+        Position const& p, Move const& m, 
+        boost::mpl::identity<rules::removal::en_passant>
 );
 
 // partial specialization for apres-fini capture removal
 template<typename Position, typename Move>
 bool is_intersecting_capture(
-        Position const& /* p */, Move const& /* m */, Int2Type<rules::remove_af>
+        Position const& /* p */, Move const& /* m */, 
+        boost::mpl::identity<rules::removal::apres_fini>
 );
 
 }       // namespace dctl

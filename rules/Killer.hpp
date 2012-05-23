@@ -1,26 +1,22 @@
 #pragma once
+#include "Rules.hpp"
 #include "Enum.hpp"
 
 namespace dctl {
-
-namespace variant { struct Killer; }
-
 namespace rules {
 
-// move mechanics
-template<typename> struct king_scan_range;
-template<> struct king_scan_range<variant::Killer>              { enum { value = scan_N    }; };
-
-// capture mechanics
-template<typename> struct pawn_jump_directions;
-template<> struct pawn_jump_directions<variant::Killer>         { enum { value = dirs_diag }; };
-
-template<typename> struct king_jump_halt;
-template<> struct king_jump_halt<variant::Killer>               { enum { value = halt_1K   }; };
-
-// capture precedence
-template<typename> struct is_majority_precedence;
-template<> struct is_majority_precedence<variant::Killer>       { enum { value = true      }; };
+// http://www.mindsports.nl/index.php/arena/draughts/382-killer-draughts-rules
+struct Killer
+: 
+        Rules< 
+                king_range<range::distance_N>,
+                pawn_jump_directions<directions::diag>,
+                jump_precedence<precedence::quantity>,
+                halt_range<range::distance_1K>
+        > 
+{};
 
 }       // namespace rules
 }       // namespace dctl
+
+#include "../capture/Killer.hpp"

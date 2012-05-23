@@ -28,7 +28,7 @@ public:
 
         // structors
 
-        explicit GameAcknowledge(const std::string& message)
+        explicit GameAcknowledge(std::string const& message)
         :
                 name_follower_(message.substr(0, 32)),
                 acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(32, 1).c_str())))
@@ -37,7 +37,7 @@ public:
 
         // queries
 
-        const std::string& name_follower() const
+        std::string const& name_follower() const
         {
                 return name_follower_;
         }
@@ -47,7 +47,7 @@ public:
                 return acceptance_code_;
         }
 
-        static std::string generate(const std::string& n, AcceptanceCode a)
+        static std::string generate(std::string const& n, AcceptanceCode a)
         {
                 return identifier() + body(n, a);
         }
@@ -65,7 +65,7 @@ private:
                 return body(name_follower(), acceptance_code());
         }
 
-        static std::string body(const std::string& n, AcceptanceCode a)
+        static std::string body(std::string const& n, AcceptanceCode a)
         {
                 std::stringstream sstr;
                 sstr << std::setw(32) << n << std::setfill(' ');

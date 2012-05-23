@@ -1,14 +1,14 @@
 #pragma once
 #include <array>                        // array
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/mpl/identity.hpp>       // identity
 #include <boost/operators.hpp>          // equality_comparable, xorable
 #include "Move_fwd.hpp"
 #include "PiecesInterface.hpp"
 #include "Side.hpp"
 #include "../bit/Bit.hpp"
-#include "../rules/Rules.hpp"
+#include "../rules/Enum.hpp"
 #include "../utility/IntegerTypes.hpp"
-#include "../utility/Int2Type.hpp"
 
 namespace dctl {
 
@@ -278,9 +278,9 @@ template<typename Rules, typename T>
 bool is_intersecting_capture(T delta, T captured_pieces)
 {
         // tag dispatching on capture removal
-        return aux::is_intersecting_capture(
+        return detail::is_intersecting_capture(
                 delta, captured_pieces,
-                Int2Type<rules::jump_removal<Rules>::value>()
+                boost::mpl::identity<typename Rules::jump_removal>()
         );
 }
 
@@ -288,19 +288,19 @@ template<typename Rules, typename T>
 bool is_intersecting_promotion(T promotion, T delta)
 {
         // tag dispatching on promotion condition
-        return aux::is_intersecting_promotion(
+        return detail::is_intersecting_promotion(
                 promotion, delta,
-                Int2Type<rules::promotion_condition<Rules>::value>()
+                boost::mpl::identity<typename Rules::pawn_promotion>()
         );
 }
 
-namespace aux {
+namespace detail {
 
 // specialization for apres-fini capture removal
 template<typename T>
 bool is_intersecting_capture(
         T /* delta */, T /* captured_pieces */,
-        Int2Type<rules::remove_af>
+        boost::mpl::identity<rules::removal::apres_fini>
 )
 {
         return false;
@@ -310,7 +310,7 @@ bool is_intersecting_capture(
 template<typename T>
 bool is_intersecting_capture(
         T delta, T captured_pieces,
-        Int2Type<rules::remove_ep>
+        boost::mpl::identity<rules::removal::en_passant>
 )
 {
         // [FEN "W:WK25:B8,9,20,23,24"] (Thai draughts)
@@ -322,7 +322,7 @@ bool is_intersecting_capture(
 template<typename T>
 bool is_intersecting_promotion(
         T /* promotion */, T /* delta */,
-        Int2Type<rules::promote_af>
+        boost::mpl::identity<rules::promotion::apres_fini>
 )
 {
         return false;
@@ -332,7 +332,7 @@ bool is_intersecting_promotion(
 template<typename T>
 bool is_intersecting_promotion(
         T promotion, T delta,
-        Int2Type<rules::promote_ep>
+        boost::mpl::identity<rules::promotion::en_passant>
 )
 {
         // [FEN "W:W15:B10,13,20,23"] (Russian draughts)
@@ -340,5 +340,5 @@ bool is_intersecting_promotion(
         return bit::is_single(promotion) && bit::is_zero(delta);
 }
 
-}       // namespace aux
+}       // namespace detail
 }       // namespace dctl
