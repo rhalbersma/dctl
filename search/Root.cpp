@@ -7,12 +7,12 @@
 #include "../../src/node/Position.hpp"
 #include "../../src/setup/Setup.hpp"
 #include "../../src/board/Types.hpp"
-#include "../../src/variant/Variant.hpp"
+#include "../../src/rules/Types.hpp"
 
 namespace dctl {
 namespace search {
 
-#if INTEGRATION_TEST == 0
+#if INTEGRATION_TEST == 1
 
 template<typename Objective>
 struct Fixture
@@ -50,12 +50,12 @@ typedef GameObjective<NoMovesLeft> DefaultObjective;
 BOOST_FIXTURE_TEST_CASE(Frisian21, Fixture<DefaultObjective>)
 {
         FEN_depth test_case("W:WK46,28:BK43", 39);      // Walinga book
-        run<variant::Frisian, board::Frisian>(test_case);
+        run<rules::Frisian, board::Frisian>(test_case);
 }
 
 BOOST_FIXTURE_TEST_CASE(InternationalInitial, Fixture<DefaultObjective>)
 {
-        auto const p = Position<variant::International, board::International>::initial();
+        auto const p = Position<rules::International, board::International>::initial();
         root_.analyze(p, 15);
 }
 */
@@ -68,7 +68,7 @@ BOOST_FIXTURE_TEST_CASE(International11, Fixture<DefaultObjective>)
                 FEN_depth("W:W10:BK46.",  3),   // 1001
                 FEN_depth("W:WK10:BK5.",  3)    // 0101
         };
-        run<variant::International, board::International>(tests);
+        run<rules::International, board::International>(tests);
 }
 
 BOOST_FIXTURE_TEST_CASE(International21, Fixture<DefaultObjective>)
@@ -88,7 +88,7 @@ BOOST_FIXTURE_TEST_CASE(International21, Fixture<DefaultObjective>)
                 FEN_depth("W:W14:BK10,K46.",  3),       // 1002
                 FEN_depth("W:WK10:BK5,K23.",  3)        // 0102
         };
-        run<variant::International, board::International>(tests);
+        run<rules::International, board::International>(tests);
 }
 /*
 BOOST_FIXTURE_TEST_CASE(International22, Fixture<DefaultObjective>)
@@ -104,7 +104,7 @@ BOOST_FIXTURE_TEST_CASE(International22, Fixture<DefaultObjective>)
                 FEN_depth("W:W6,K22:BK17,K50." ,  9),   // 1102
                 FEN_depth("W:WK6,K22:BK17,K50.",  9)    // 0202
         };
-        run<variant::International, board::International>(tests);
+        run<rules::International, board::International>(tests);
 }
 
 BOOST_FIXTURE_TEST_CASE(International31, Fixture<DefaultObjective>)
@@ -127,7 +127,7 @@ BOOST_FIXTURE_TEST_CASE(International31, Fixture<DefaultObjective>)
                 FEN_depth("W:W23:BK10,K19,K46." ,  3),  // 1003
                 FEN_depth("W:WK49:BK23,K43,K46.",  3)   // 0103
         };
-        run<variant::International, board::International>(tests);
+        run<rules::International, board::International>(tests);
 }
 */
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html
@@ -139,7 +139,7 @@ BOOST_FIXTURE_TEST_CASE(Killer11, Fixture<DefaultObjective>)
                 FEN_depth("W:W10:BK46." ,  3),  // 1001
                 FEN_depth("W:WK10:BK46.",  3)   // 0101
         };
-        run<variant::Killer, board::International>(tests);
+        run<rules::Killer, board::International>(tests);
 }
 
 BOOST_FIXTURE_TEST_CASE(Killer21, Fixture<DefaultObjective>)
@@ -161,7 +161,7 @@ BOOST_FIXTURE_TEST_CASE(Killer21, Fixture<DefaultObjective>)
                 FEN_depth("W:W14:BK10,K46.",  3),       // 1002
                 FEN_depth("W:WK10:BK5,K41.",  3)        // 0102
         };
-        run<variant::Killer, board::International>(tests);
+        run<rules::Killer, board::International>(tests);
 }
 /*
 BOOST_FIXTURE_TEST_CASE(Killer22, Fixture<DefaultObjective>)
@@ -177,7 +177,7 @@ BOOST_FIXTURE_TEST_CASE(Killer22, Fixture<DefaultObjective>)
                 FEN_depth("W:WK37,46:BK41,K43.", 53),   // 1102
                 FEN_depth("W:WK5,K23:BK19,K50.", 17)    // 0202
         };
-        run<variant::Killer, board::International>(tests);
+        run<rules::Killer, board::International>(tests);
 }
 
 BOOST_FIXTURE_TEST_CASE(Killer31, Fixture<DefaultObjective>)
@@ -200,7 +200,7 @@ BOOST_FIXTURE_TEST_CASE(Killer31, Fixture<DefaultObjective>)
                 FEN_depth("W:W23:BK10,K19,K46." ,  3),  // 1003
                 FEN_depth("W:WK48:BK10,K42,K46.",  3)   // 0103
         };
-        run<variant::Killer, board::International>(tests);
+        run<rules::Killer, board::International>(tests);
 }
 */
 BOOST_AUTO_TEST_SUITE_END()

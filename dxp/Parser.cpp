@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                 if (auto const parsed = factory.create(*it))
                         BOOST_CHECK_EQUAL(*it, parsed->str());
                 else
-                        BOOST_CHECK(!"Unregistered message type (cannot dereference a nullptr)");
+                        BOOST_CHECK(!"Factory creation of unregistered message type attempted (cannot dereference a nullptr)");
         }
 }
 
