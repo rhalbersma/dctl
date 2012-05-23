@@ -8,7 +8,7 @@
 #include "../../src/setup/Setup.hpp"
 #include "../../src/notation/String.hpp"
 #include "../../src/board/Types.hpp"
-#include "../../src/variant/Variant.hpp"
+#include "../../src/rules/Types.hpp"
 
 namespace dctl {
 
@@ -21,8 +21,8 @@ BOOST_AUTO_TEST_CASE(Italian)
         // Positions from the official Italian rules:
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
-                "W:W30:B27",                    // Art. 5.6  (man capture directions)
-                "W:W31:B12,20,28",              // Art. 5.7  (man capture continuation)
+                "W:W30:B27",                    // Art. 5.6  (pawn capture directions)
+                "W:W31:B12,20,28",              // Art. 5.7  (pawn capture continuation)
                 "W:WK22:B18,19,27",             // Art. 5.8  (king capture directions)
                 "W:WK27:B5,6,13,15,21,23",      // Art. 5.9  (king capture continuation)
                 "W:WK21,31:B10,18,27",          // Art. 6.6  (capture most number of pieces)
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(Italian)
         };
 
         for (auto i = 0; i < 9; ++i) {
-                auto const p = setup::read<variant::Italian, board::Roman, pdn::protocol>()(position[i]);
+                auto const p = setup::read<rules::Italian, board::Roman, pdn::protocol>()(position[i]);
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
 
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(Italian)
 
                 // check all generated legal moves
                 for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
-                        auto const move_string = notation::write<variant::Italian>()(p, moves[j]);
+                        auto const move_string = notation::write<rules::Italian>()(p, moves[j]);
                         BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string));
                 }
         }
@@ -70,8 +70,8 @@ BOOST_AUTO_TEST_CASE(Spanish)
         // Positions from the official Italian rules:
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
-                "W:W30:B27",                    // Art. 5.6  (man capture directions)
-                "W:W31:B12,20,28",              // Art. 5.7  (man capture continuation)
+                "W:W30:B27",                    // Art. 5.6  (pawn capture directions)
+                "W:W31:B12,20,28",              // Art. 5.7  (pawn capture continuation)
                 "W:WK22:B18,19,27",             // Art. 5.8  (king capture directions)
                 "W:WK27:B5,6,13,15,21,23",      // Art. 5.9  (king capture continuation)
                 "W:WK21,31:B10,18,27",          // Art. 6.6  (capture most number of pieces)
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(Spanish)
         };
 
         for (auto i = 0; i < 9; ++i) {
-                auto const p = setup::read<variant::Spanish, board::Roman, pdn::protocol>()(position[i]);
+                auto const p = setup::read<rules::Spanish, board::Roman, pdn::protocol>()(position[i]);
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
 
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(Spanish)
 
                 // check all generated legal moves
                 for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
-                        auto const move_string = notation::write<variant::Spanish>()(p, moves[j]);
+                        auto const move_string = notation::write<rules::Spanish>()(p, moves[j]);
                         BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string));
                 }
         }

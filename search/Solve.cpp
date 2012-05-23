@@ -11,7 +11,7 @@
 #include "../../src/node/Position.hpp"
 #include "../../src/setup/Setup.hpp"
 #include "../../src/board/Types.hpp"
-#include "../../src/variant/Variant.hpp"
+#include "../../src/rules/Types.hpp"
 
 namespace dctl {
 namespace search {
@@ -49,16 +49,16 @@ BOOST_AUTO_TEST_SUITE(TestRoot)
 
 typedef boost::mpl::list
 <
-        variant::Frisian,
-        variant::Checkers,
-        variant::Italian,
-        variant::Czech,
-        variant::Thai,
-        variant::Spanish,
-        variant::Pool,
-        variant::Russian,
-        variant::International,
-        variant::Killer
+        rules::Frisian,
+        rules::Checkers,
+        rules::Italian,
+        rules::Czech,
+        rules::Thai,
+        rules::Spanish,
+        rules::Pool,
+        rules::Russian,
+        rules::International,
+        rules::Killer
 > RulesTypes;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(MiniInitial, R, RulesTypes)
