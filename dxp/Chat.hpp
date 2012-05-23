@@ -21,7 +21,7 @@ class Chat
 public:
         // structors
 
-        explicit Chat(const std::string& message)
+        explicit Chat(std::string const& message)
         :
                 text_(message)
         {
@@ -36,7 +36,7 @@ public:
 
         // output
 
-        static std::string str(const std::string& message)
+        static std::string str(std::string const& message)
         {
                 return identifier() + body(message);
         }
@@ -54,7 +54,7 @@ private:
                 return body(text());
         }
 
-        static std::string body(const std::string& m)
+        static std::string body(std::string const& m)
         {
                 return m;
         }

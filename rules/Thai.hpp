@@ -1,29 +1,23 @@
 #pragma once
+#include "Rules.hpp"
 #include "Enum.hpp"
 
 namespace dctl {
-
-namespace variant { struct Thai; }
-
 namespace rules {
 
-// move mechanics
-template<typename> struct king_scan_range;
-template<> struct king_scan_range<variant::Thai>                { enum { value = scan_N    }; };
-
-// capture mechanics
-template<typename> struct is_jump_direction_reversal;
-template<> struct is_jump_direction_reversal<variant::Thai>     { enum { value = true      }; };
-
-template<typename> struct king_jump_land;
-template<> struct king_jump_land<variant::Thai>                 { enum { value = land_1    }; };
-
-template<typename> struct jump_removal;
-template<> struct jump_removal<variant::Thai>                   { enum { value = remove_ep }; };
-
-// capture ambiguity
-template<typename> struct large_capture;
-template<> struct large_capture<variant::Thai>                  { enum { value = 3         }; };
+struct Thai
+: 
+        Rules<
+                king_range<range::distance_N>,
+                pawn_jump_directions<directions::up>,
+                jump_precedence<precedence::none>,
+                land_range<range::distance_1>,
+                is_jump_direction_reversal<boost::mpl::true_>,
+                jump_removal<removal::en_passant>
+        > 
+{};
 
 }       // namespace rules
 }       // namespace dctl
+
+#include "../notation/Thai.hpp"

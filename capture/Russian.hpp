@@ -4,16 +4,16 @@
 
 namespace dctl {
 
-namespace variant { struct Russian; }
+namespace rules { struct Russian; }
 
 namespace capture {
 
 // explicit specialization for Russian draughts
 template<>
-struct Value<variant::Russian>
+struct Value<rules::Russian>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<variant::Russian> >
+        private boost::totally_ordered< Value<rules::Russian> >
 {
 public:
         // structors

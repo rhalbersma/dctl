@@ -5,16 +5,16 @@
 
 namespace dctl {
 
-namespace variant { struct Frisian; }
+namespace rules { struct Frisian; }
 
 namespace capture {
 
 // explicit specialization for Frisian draughts
 template<>
-struct Value<variant::Frisian>
+struct Value<rules::Frisian>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<variant::Frisian> >
+        private boost::totally_ordered< Value<rules::Frisian> >
 {
 public:
         // structors

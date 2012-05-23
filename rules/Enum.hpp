@@ -4,28 +4,39 @@ namespace dctl {
 namespace rules {
 
 // king range
-enum { scan_1, scan_N };
+namespace range {
+        struct distance_1 {};
+        struct distance_N {};
+        struct distance_1K {};
+}        
 
-// king landing range after intermediate captures
-enum { land_1, land_N };
+// capture directions
+namespace directions {
+        struct up {};
+        struct down {};
+        struct diag {};
+        struct orth {};
+        struct all {};
+}
 
-// king landing range after the final capture
-enum { halt_1, halt_N, halt_1K };
+// capture removal
+namespace removal {
+        struct apres_fini {};   // having finished
+        struct en_passant {};   // in passing
+}
 
-// initial capture directions
-enum { dirs_up, dirs_down, dirs_diag, dirs_orth, dirs_all };
-
-// intermediate capture directions
-enum { turn_up, turn_down, turn_diag, turn_orth, turn_all };
-
-// capture removal: apres-fini (having finished) or en-passant (in passing)
-enum { remove_af, remove_ep };
-
-// promotion condition: apres-fini (having finished) or en-passant (in passing)
-enum { promote_af, promote_ep };
+// pawn promotion
+namespace promotion {
+        struct apres_fini {};   // having finished
+        struct en_passant {};   // in passing
+}
 
 // majority capture precedence: none, quantity, quality
-enum { precede_0, precede_N, precede_Q };
+namespace precedence {
+        struct none {};
+        struct quantity {};
+        struct quality {};
+}
 
 }       // namespace rules
 }       // namespace dctl

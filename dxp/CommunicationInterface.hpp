@@ -20,7 +20,7 @@ public:
                 do_read(message);
         }
 
-        void write(const std::string& message)
+        void write(std::string const& message)
         {
                 do_write(message);
         }
@@ -28,7 +28,7 @@ public:
 private:
         // pure virtual implementation
         virtual void do_read(std::string&) = 0;
-        virtual void do_write(const std::string&) = 0;
+        virtual void do_write(std::string const&) = 0;
 
         // representation
         BOOST_STATIC_CONSTANT(auto, terminator_ = '\0');

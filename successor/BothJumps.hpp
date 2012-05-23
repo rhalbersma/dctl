@@ -1,4 +1,6 @@
 #pragma once
+#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/identity.hpp>       // identity
 #include "Driver_fwd.hpp"
 #include "KingJumps.hpp"
 #include "PawnJumps.hpp"
@@ -6,9 +8,6 @@
 #include "../capture/State.hpp"
 #include "../node/Material.hpp"
 #include "../node/Stack.hpp"
-#include "../rules/Rules.hpp"
-#include "../utility/Int2Type.hpp"
-#include "../utility/IntegerTypes.hpp"
 #include "../utility/nonconstructible.hpp"
 
 namespace dctl {
@@ -60,14 +59,15 @@ private:
                 // tag dispatching on absolute king capture precedence
                 generate_dispatch(
                         p, capture,
-                        Int2Type<rules::is_absolute_king_precedence<Rules>::value>()
+                        boost::mpl::identity<typename Rules::is_absolute_king_precedence>()
                 );
         }
 
         // partial specialization for no absolute king capture precedence
         template<template<typename, typename> class Position>
         static void generate_dispatch(
-                Position<Rules, Board> const& p, State& capture, Int2Type<false>
+                Position<Rules, Board> const& p, State& capture, 
+                boost::mpl::identity<boost::mpl::false_>
         )
         {
                 KingJumps::generate(p, capture);
@@ -77,7 +77,8 @@ private:
         // partial specialization for absolute king capture precedence
         template<template<typename, typename> class Position>
         static void generate_dispatch(
-                Position<Rules, Board> const& p, State& capture, Int2Type<true>
+                Position<Rules, Board> const& p, State& capture, 
+                boost::mpl::identity<boost::mpl::true_>
         )
         {
                 KingJumps::generate(p, capture);

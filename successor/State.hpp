@@ -1,7 +1,6 @@
 #pragma once
 #include "StateInterface.hpp"
 #include "Driver.hpp"
-#include "../node/Position_fwd.hpp"
 #include "../node/Stack.hpp"
 
 namespace dctl {
@@ -43,17 +42,17 @@ private:
 
         // virtual implemenation
 
-        virtual void do_generate(const PositionType& p, Stack& moves) const
+        virtual void do_generate(PositionType const& p, Stack& moves) const
         {
                 Delegate::generate(p, moves);
         }
 
-        virtual int do_count(const PositionType& p) const
+        virtual int do_count(PositionType const& p) const
         {
                 return Delegate::count(p);
         }
 
-        virtual bool do_detect(const PositionType& p) const
+        virtual bool do_detect(PositionType const& p) const
         {
                 return Delegate::detect(p);
         }

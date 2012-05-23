@@ -11,7 +11,7 @@ template
 struct enable_crtp
 {
 public:
-        const Derived& self() const
+        Derived const& self() const
         {
                 return down_cast(*this);
         }
@@ -35,10 +35,10 @@ private:
         typedef enable_crtp Base;
 
         // cast a Base& to a Derived& (i.e. "down" the class hierarchy)
-        const Derived& down_cast(const Base& other) const
+        Derived const& down_cast(Base const& other) const
         {
                 BOOST_STATIC_ASSERT((std::is_base_of<Base, Derived>::value));
-                return static_cast<const Derived&>(other);
+                return static_cast<Derived const&>(other);
         }
 
         // cast a Base& to a Derived& (i.e. "down" the class hierarchy)
@@ -46,7 +46,7 @@ private:
         {
                 // write the non-const version in terms of the const version
                 // Effective C++ 3rd ed., Item 3 (p. 24-25)
-                return const_cast<Derived&>(down_cast(static_cast<const Base&>(other)));
+                return const_cast<Derived&>(down_cast(static_cast<Base const&>(other)));
         }
 };
 

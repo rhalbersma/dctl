@@ -1,19 +1,22 @@
 #pragma once
+#include "Rules.hpp"
 #include "Enum.hpp"
 
 namespace dctl {
-
-namespace variant { struct Czech; }
-
 namespace rules {
 
-// move mechanics
-template<typename> struct king_scan_range;
-template<> struct king_scan_range<variant::Czech>               { enum { value = scan_N  }; };
-
-// capture precedence
-template<typename> struct is_absolute_king_precedence;
-template<> struct is_absolute_king_precedence<variant::Czech>   { enum { value = true    }; };
+// http://www.damweb.cz/pravidla/cdfull.html
+struct Czech
+: 
+        Rules<
+                king_range<range::distance_N>,
+                pawn_jump_directions<directions::up>,
+                jump_precedence<precedence::none>,
+                is_absolute_king_precedence<boost::mpl::true_>
+        > 
+{};
 
 }       // namespace rules
 }       // namespace dctl
+
+#include "../notation/Czech.hpp"

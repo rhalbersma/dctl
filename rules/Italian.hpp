@@ -1,25 +1,23 @@
 #pragma once
+#include "Rules.hpp"
 #include "Enum.hpp"
 
 namespace dctl {
-
-namespace variant { struct Italian; }
-
 namespace rules {
 
-// capture mechanics
-template<typename> struct is_pawns_jump_kings;
-template<> struct is_pawns_jump_kings<variant::Italian>         { enum { value = false   }; };
-
-// capture precedence
-template<typename> struct is_majority_precedence;
-template<> struct is_majority_precedence<variant::Italian>      { enum { value = true    }; };
-
-template<typename> struct is_qualified_majority;
-template<> struct is_qualified_majority<variant::Italian>       { enum { value = true    }; };
-
-template<typename> struct is_relative_king_precedence;
-template<> struct is_relative_king_precedence<variant::Italian> { enum { value = true    }; };
+// http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
+struct Italian
+: 
+        Rules<
+                king_range<range::distance_1>,
+                pawn_jump_directions<directions::up>,
+                jump_precedence<precedence::quality>,
+                is_pawns_jump_kings<boost::mpl::false_>,
+                is_relative_king_precedence<boost::mpl::true_>
+        > 
+{};
 
 }       // namespace rules
 }       // namespace dctl
+
+#include "../capture/Italian.hpp"

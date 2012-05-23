@@ -1,7 +1,7 @@
 #pragma once
+#include <boost/mpl/identity.hpp>       // identity
 #include "../bit/Bit.hpp"
-#include "../rules/Rules.hpp"
-#include "../utility/Int2Type.hpp"
+#include "../rules/Enum.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -95,28 +95,34 @@ template<typename Rules, typename Board, template<typename, typename> class Posi
 bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m)
 {
         // tag dispatching on capture removal
-        return aux::is_intersecting_capture(
+        return detail::is_intersecting_capture(
                 p, m,
-                Int2Type<rules::jump_removal<Rules>::value>()
+                boost::mpl::identity<typename Rules::jump_removal>()
         );
 }
 
-namespace aux {
+namespace detail {
 
 // partial specialization for apres-fini capture removal
 template<typename Position, typename Move>
-bool is_intersecting_capture(Position const& /* p */, Move const& /* m */, Int2Type<rules::remove_af>)
+bool is_intersecting_capture(
+        Position const& /* p */, Move const& /* m */, 
+        boost::mpl::identity<rules::removal::apres_fini>
+)
 {
         return false;
 }
 
 // partial specialization for en-passant capture removal
 template<typename Position, typename Move>
-bool is_intersecting_capture(Position const& p, Move const& m, Int2Type<rules::remove_ep>)
+bool is_intersecting_capture(
+        Position const& p, Move const& m, 
+        boost::mpl::identity<rules::removal::en_passant>
+)
 {
         // for intersecting captures, a man-capturing king can appear as a captured king
         return bit::is_single(moving_kings(p, m) & captured_kings(p, m) & passive_pawns(p));
 }
 
-}       // namespace aux
+}       // namespace detail
 }       // namespace dctl

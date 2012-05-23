@@ -5,16 +5,16 @@
 
 namespace dctl {
 
-namespace variant { struct Killer; }
+namespace rules { struct Killer; }
 
 namespace capture {
 
 // explicit specialization for Killer draughts
 template<>
-struct Value<variant::Killer>
+struct Value<rules::Killer>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<variant::Killer> >
+        private boost::totally_ordered< Value<rules::Killer> >
 {
 public:
         // structors

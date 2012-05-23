@@ -7,16 +7,16 @@
 
 namespace dctl {
 
-namespace variant { struct Italian; }
+namespace rules { struct Italian; }
 
 namespace capture {
 
 // explicit specialization for Italian draughts
 template<>
-struct Value<variant::Italian>
+struct Value<rules::Italian>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<variant::Italian> >
+        private boost::totally_ordered< Value<rules::Italian> >
 {
 public:
         // structors

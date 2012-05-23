@@ -1,4 +1,6 @@
 #pragma once
+#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/identity.hpp>       // identity
 #include "Driver_fwd.hpp"
 #include "Selection.hpp"
 #include "../bit/Bit.hpp"
@@ -6,8 +8,7 @@
 #include "../board/Shift.hpp"
 #include "../node/Material.hpp"
 #include "../node/Stack.hpp"
-#include "../rules/Rules.hpp"
-#include "../utility/Int2Type.hpp"
+#include "../rules/Enum.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/nonconstructible.hpp"
 
@@ -51,14 +52,14 @@ private:
                 // tag dispatching on restrictions on consecutive moves with the same king
                 serialize_dispatch(
                         active_kings, not_occupied, moves,
-                        Int2Type<rules::is_restricted_same_king_moves<Rules>::value>()
+                        boost::mpl::identity<typename Rules::is_restricted_same_king_moves>()
                 );
         }
 
         // partial specialization for unrestricted consecutive moves with the same king
         static void serialize_dispatch(
                 BitBoard active_kings, BitBoard not_occupied, Stack& moves, 
-                Int2Type<false>
+                boost::mpl::identity<boost::mpl::false_>
         )
         {
                 // loop cannot be empty because all active kings detected during
@@ -73,7 +74,7 @@ private:
         // partial specialization for restricted consecutive moves with the same king
         static void serialize_dispatch(
                 BitBoard active_kings, BitBoard not_occupied, Stack& moves, 
-                Int2Type<true>
+                boost::mpl::identity<boost::mpl::true_>
         )
         {
                 // loop could be empty if the single active king detected during
@@ -118,7 +119,7 @@ private:
                 // tag dispatching on king range
                 return generate_dispatch<Index>(
                         from_sq, not_occupied, moves,
-                        Int2Type<rules::king_scan_range<Rules>::value>()
+                        boost::mpl::identity<typename Rules::king_range>()
                 );
         }
 
@@ -126,7 +127,7 @@ private:
         template<int Index>
         static void generate_dispatch(
                 BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
-                Int2Type<rules::scan_1>
+                boost::mpl::identity<rules::range::distance_1>
         )
         {
                 if (auto const dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
@@ -137,7 +138,7 @@ private:
         template<int Index>
         static void generate_dispatch(
                 BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
-                Int2Type<rules::scan_N>
+                boost::mpl::identity<rules::range::distance_N>
         )
         {
                 for (
@@ -152,7 +153,7 @@ private:
         static int count(BitBoard active_kings, BitBoard not_occupied)
         {
                 return bit::count(
-                        Sink<Board, Index, rules::king_scan_range<Rules>::value>()(active_kings, not_occupied)
+                        Sink<Board, Index, typename Rules::king_range>()(active_kings, not_occupied)
                 );
         }
 
@@ -160,7 +161,7 @@ private:
         static bool detect(BitBoard active_kings, BitBoard not_occupied)
         {
                 return !bit::is_zero(
-                        Sink<Board, Index, rules::scan_1>()(active_kings, not_occupied)
+                        Sink<Board, Index, rules::range::distance_1>()(active_kings, not_occupied)
                 );
         }
 };

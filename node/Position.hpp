@@ -1,6 +1,8 @@
 #pragma once
-#include <boost/assert.hpp>                     // BOOST_ASSERT
-#include <functional>                           // unary_function
+#include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/identity.hpp>       // identity
+#include <functional>                   // unary_function
 #include "Position_fwd.hpp"
 #include "Move.hpp"
 #include "Restricted.hpp"
@@ -8,8 +10,7 @@
 #include "Predicates_fwd.hpp"
 #include "../bit/Bit.hpp"
 #include "../hash/zobrist/Init.hpp"
-#include "../rules/Rules.hpp"
-#include "../utility/Int2Type.hpp"
+#include "../rules/Enum.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -48,7 +49,7 @@ public:
         }
 
         // queries
-        const Position* parent() const
+        Position const* parent() const
         {
                 return parent_;
         }
@@ -68,12 +69,12 @@ public:
                 return material();
         }
 
-        const Restricted& restricted() const
+        Restricted const& restricted() const
         {
                 return restricted_;
         }
 
-        const KingMoves& restricted(bool color) const
+        KingMoves const& restricted(bool color) const
         {
                 return restricted_[color];
         }
@@ -169,19 +170,28 @@ private:
                 // tag dispatching on restrictions on consecutive moves with the same king
                 make_irreversible(
                         m,
-                        Int2Type<rules::is_restricted_same_king_moves<Rules>::value>()
+                        boost::mpl::identity<typename Rules::is_restricted_same_king_moves>()
                 );
         }
 
         // partial specialization for restricted consecutive moves with the same king
-        void make_irreversible(Move const& m, Int2Type<true>)
+        void make_irreversible(
+                Move const& m, 
+                boost::mpl::identity<boost::mpl::true_>
+        )
         {
-                make_irreversible(m, Int2Type<false>());
+                make_irreversible(
+                        m, 
+                        boost::mpl::identity<boost::mpl::false_>()
+                );
                 make_restricted(m);
         }
 
         // partial specialization for unrestricted consecutive moves with the same king
-        void make_irreversible(Move const& m, Int2Type<false>)
+        void make_irreversible(
+                Move const& m, 
+                boost::mpl::identity<boost::mpl::false_>
+        )
         {
                 make_reversible_moves(m);
                 make_distance_to_root();
@@ -274,7 +284,7 @@ private:
         }
 
         // representation
-        const Position* parent_;
+        Position const* parent_;
         HashIndex hash_index_;
         Material material_;
         Restricted restricted_;
@@ -336,22 +346,30 @@ template<typename Rules, typename Board>
 BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color)
 {
         // tag dispatching on restrictions on consecutive moves with the same king
-        return unrestricted_kings_dispatch(
+        return detail::unrestricted_kings(
                 p, color,
-                Int2Type<rules::is_restricted_same_king_moves<Rules>::value>()
+                boost::mpl::identity<typename Rules::is_restricted_same_king_moves>()
         );
 }
 
+namespace detail {
+
 // partial specialization for unrestricted consecutive moves with the same king
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings_dispatch(Position<Rules, Board> const& p, bool color, Int2Type<false>)
+BitBoard unrestricted_kings(
+        Position<Rules, Board> const& p, bool color, 
+        boost::mpl::identity<boost::mpl::false_>
+)
 {
         return p.kings(color);
 }
 
 // partial specialization for restricted consecutive moves with the same king
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings_dispatch(Position<Rules, Board> const& p, bool color, Int2Type<true>)
+BitBoard unrestricted_kings(
+        Position<Rules, Board> const& p, bool color, 
+        boost::mpl::identity<boost::mpl::true_>
+)
 {
         if (p.kings(color) && p.pawns(color) && is_max<Rules>(p.restricted(color).moves()))
                 return p.kings(color) ^ p.restricted(color).king();
@@ -359,20 +377,22 @@ BitBoard unrestricted_kings_dispatch(Position<Rules, Board> const& p, bool color
                 return p.kings(color);
 }
 
+}       // namespace detail
+
 template<typename Position>
-const Position* grand_parent(Position const& p)
+Position const* grand_parent(Position const& p)
 {
         return p.parent() ? p.parent()->parent() : nullptr;
 }
 
 template<typename Position>
-const KingMoves& active_restricted(Position const& p)
+KingMoves const& active_restricted(Position const& p)
 {
         return p.restricted()[p.active_color()];
 }
 
 template<typename Position>
-const KingMoves& passive_restricted(Position const&);
+KingMoves const& passive_restricted(Position const&);
 
 namespace hash {
 namespace zobrist {

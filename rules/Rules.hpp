@@ -1,85 +1,18 @@
 #pragma once
+#include <type_traits>                  // is_same
+#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/eval_if.hpp>        // eval_if
+#include <boost/mpl/identity.hpp>       // identity
+#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/logical.hpp>        // and_, not_, or_
+
+#define BOOST_PARAMETER_MAX_ARITY 13    // will be infinite with C++11 variadic templates
+#include <boost/parameter.hpp>
+
 #include "Enum.hpp"
 
 namespace dctl {
 namespace rules {
-
-//+----------------------------------------------------------------------------+
-//|      Move mechanics                                                        |
-//+----------------------------------------------------------------------------+
-
-// king range
-template<typename> struct king_scan_range                       { enum { value = scan_1 }; };
-
-// restricted consecutive moves with the same king
-template<typename> struct is_restricted_same_king_moves         { enum { value = false }; };
-
-// maximum consecutive moves with the same king                 // NO default: MUST be specialized if
-template<typename> struct max_same_king_moves;                  // is_restricted_same_king_moves == true
-
-//+----------------------------------------------------------------------------+
-//|      Capture mechanics                                                     |
-//+----------------------------------------------------------------------------+
-
-// pawns can capture kings
-template<typename> struct is_pawns_jump_kings                   { enum { value = true  }; };
-
-// king capture directions
-template<typename> struct king_jump_directions                  { enum { value = dirs_diag }; };
-
-// man capture directions
-template<typename> struct pawn_jump_directions                  { enum { value = dirs_up }; };
-
-// man backwards capture
-template<typename Rules> struct is_pawns_jump_backwards         { enum { value = pawn_jump_directions<Rules>::value != dirs_up }; };
-
-// intermediate capture directions
-template<int> struct turn_directions;
-template<> struct turn_directions<dirs_up  >                    { enum { value = turn_up   }; };
-template<> struct turn_directions<dirs_down>                    { enum { value = turn_down }; };
-template<> struct turn_directions<dirs_diag>                    { enum { value = turn_diag }; };
-template<> struct turn_directions<dirs_orth>                    { enum { value = turn_diag }; };
-template<> struct turn_directions<dirs_all >                    { enum { value = turn_all  }; };
-
-// king capture turn directions
-template<typename Rules> struct king_turn_directions            { enum { value = turn_directions<king_jump_directions<Rules>::value>::value }; };
-
-// man capture turn directions
-template<typename Rules> struct pawn_turn_directions            { enum { value = turn_directions<pawn_jump_directions<Rules>::value>::value }; };
-
-// capture direction reversal
-template<typename> struct is_jump_direction_reversal            { enum { value = false }; };
-
-// king landing range after intermediate captures
-template<typename Rules> struct king_jump_land                  { enum { value = king_scan_range<Rules>::value }; };
-
-// king landing range after the final capture
-template<typename Rules> struct king_jump_halt                  { enum { value = king_jump_land<Rules>::value }; };
-
-// capture removal: apres-fini or en-passant
-template<typename> struct jump_removal                          { enum { value = remove_af }; };
-
-// promotion condition: apres-fini or en-passant
-template<typename> struct promotion_condition                   { enum { value = promote_af }; };
-
-//+----------------------------------------------------------------------------+
-//|      Capture precedence                                                    |
-//+----------------------------------------------------------------------------+
-
-// majority capture precedence
-template<typename> struct is_majority_precedence                { enum { value = false }; };
-
-// qualified majority
-template<typename> struct is_qualified_majority                 { enum { value = false }; };
-
-// capture precedence type
-template<typename Rules> struct precedence_type                 { enum { value = is_majority_precedence<Rules>::value + is_qualified_majority<Rules>::value }; };
-
-// absolute king capture precedence (applied before any majority capture precedence rule)
-template<typename> struct is_absolute_king_precedence           { enum { value = false }; };
-
-// relative king capture precedence (applied after any majority capture precedence rule)
-template<typename> struct is_relative_king_precedence           { enum { value = false }; };
 
 //+----------------------------------------------------------------------------+
 //|      Drawing rules                                                         |
@@ -107,10 +40,174 @@ template<typename> struct max_2v1_moves                         { enum { value =
 
 template<typename> struct is_check_jump_uniqueness              { enum { value = true }; };
 
-// smallest value for which non-unique capture sequences can occur
-template<typename> struct large_capture                         { enum { value = 4 }; };
+// intermediate capture directions
+template<typename T> 
+struct turn_directions
+:
+        boost::mpl::identity<T>
+{};
 
-template<typename Rules> struct is_ambiguous_pawn_jump          { enum { value = is_pawns_jump_backwards<Rules>::value || promotion_condition<Rules>::value }; };
+template<> 
+struct turn_directions<directions::orth>
+:
+        boost::mpl::identity<directions::diag>
+{};
+
+BOOST_PARAMETER_TEMPLATE_KEYWORD(king_range)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(pawn_jump_directions)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(jump_precedence)
+
+BOOST_PARAMETER_TEMPLATE_KEYWORD(is_restricted_same_king_moves)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(max_same_king_moves)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(land_range)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(halt_range)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(is_pawns_jump_kings)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(is_jump_direction_reversal)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(jump_removal)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(pawn_promotion)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(is_absolute_king_precedence)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(is_relative_king_precedence)
+
+typedef boost::parameter::parameters<
+        // required parameters
+
+        boost::parameter::required<tag::king_range>,
+        boost::parameter::required<tag::pawn_jump_directions>,
+        boost::parameter::required<tag::jump_precedence>,
+
+        // optional parameters
+
+        boost::parameter::optional<tag::is_restricted_same_king_moves>,
+        boost::parameter::optional<tag::max_same_king_moves>,
+        boost::parameter::optional<tag::land_range>,
+        boost::parameter::optional<tag::halt_range>,
+        boost::parameter::optional<tag::is_pawns_jump_kings>,
+        boost::parameter::optional<tag::is_jump_direction_reversal>,
+        boost::parameter::optional<tag::jump_removal>,
+        boost::parameter::optional<tag::pawn_promotion>,
+        boost::parameter::optional<tag::is_absolute_king_precedence>,
+        boost::parameter::optional<tag::is_relative_king_precedence>
+> Signature;
+
+template
+<
+        class A0 = boost::parameter::void_,
+        class A1 = boost::parameter::void_,
+        class A2 = boost::parameter::void_,
+        class A3 = boost::parameter::void_,
+        class A4 = boost::parameter::void_,
+        class A5 = boost::parameter::void_,
+        class A6 = boost::parameter::void_,
+        class A7 = boost::parameter::void_,
+        class A8 = boost::parameter::void_,
+        class A9 = boost::parameter::void_,
+        class A10 = boost::parameter::void_,
+        class A11 = boost::parameter::void_,
+        class A12 = boost::parameter::void_
+>
+struct Rules
+{
+        // create argument pack
+        typedef typename Signature::bind<
+                A0, A1, A2, A3, A4, A5, A6, A7, 
+                A8, A9, A10, A11, A12
+        >::type args;
+
+        // extract required parameters
+
+        typedef typename boost::parameter::value_type<
+                args, tag::king_range
+        >::type king_range;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::pawn_jump_directions
+        >::type pawn_jump_directions;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::jump_precedence
+        >::type jump_precedence;
+
+        // extract optional parameters
+
+        typedef typename boost::parameter::value_type<
+                args, tag::is_restricted_same_king_moves, boost::mpl::false_
+        >::type is_restricted_same_king_moves;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::max_same_king_moves, boost::mpl::int_<0>
+        >::type max_same_king_moves;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::land_range, king_range
+        >::type land_range;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::halt_range, land_range
+        >::type halt_range;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::is_pawns_jump_kings, boost::mpl::true_
+        >::type is_pawns_jump_kings;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::is_jump_direction_reversal, boost::mpl::false_
+        >::type is_jump_direction_reversal;        
+        
+        typedef typename boost::parameter::value_type<
+                args, tag::jump_removal, removal::apres_fini
+        >::type jump_removal;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::pawn_promotion, promotion::apres_fini
+        >::type pawn_promotion;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::is_absolute_king_precedence, boost::mpl::false_
+        >::type is_absolute_king_precedence;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::is_relative_king_precedence, boost::mpl::false_
+        >::type is_relative_king_precedence;
+
+        // compute auxiliary parameters
+
+        typedef typename boost::mpl::eval_if<
+                std::is_same<pawn_jump_directions, directions::all>,
+                boost::mpl::identity<directions::all>,
+                boost::mpl::identity<directions::diag>
+        >::type king_jump_directions;
+
+        typedef typename turn_directions<
+                king_jump_directions
+        >::type king_turn_directions;
+
+        typedef typename turn_directions<
+                pawn_jump_directions
+        >::type pawn_turn_directions;
+
+        typedef typename boost::mpl::or_<
+                boost::mpl::not_<
+                        std::is_same<pawn_jump_directions, directions::up> 
+                >,  
+                std::is_same<pawn_promotion, promotion::en_passant>
+        >::type is_ambiguous_pawn_jump;
+
+        typedef typename boost::mpl::eval_if<
+                boost::mpl::or_<
+                        boost::mpl::and_<
+                                std::is_same<jump_removal, removal::apres_fini>,
+                                std::is_same<is_jump_direction_reversal, boost::mpl::true_>
+                        >,
+                        std::is_same<pawn_jump_directions, directions::all>
+                >,
+                boost::mpl::int_<3>,
+                boost::mpl::int_<4>
+        >::type large_jump;
+
+        typedef typename boost::mpl::not_<
+                std::is_same<jump_precedence, precedence::none> 
+        >::type is_majority_precedence;
+};
 
 }       // namespace rules
 }       // namespace dctl

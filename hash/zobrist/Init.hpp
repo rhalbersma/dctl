@@ -64,7 +64,7 @@ struct Init<Restricted, Index>
 :
         public std::unary_function<Restricted, Index>
 {
-        Index operator()(const Restricted& restricted) const
+        Index operator()(Restricted const& restricted) const
         {
                 return (
                         Init<KingMoves, Index>()(restricted[Side::black], Side::black) ^
@@ -79,7 +79,7 @@ struct Init<KingMoves, Index>
 :
         public std::binary_function<KingMoves, bool, Index>
 {
-        Index operator()(const KingMoves& restricted, bool color) const
+        Index operator()(KingMoves const& restricted, bool color) const
         {
                 return (
                         Random<Index>::xor_rand(restricted.king(),  Random<Index>::RESTRICTED_KING[color] ) ^

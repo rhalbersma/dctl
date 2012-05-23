@@ -1,19 +1,19 @@
 #pragma once
+#include "Rules.hpp"
 #include "Enum.hpp"
 
 namespace dctl {
-
-namespace variant { struct Pool; }
-
 namespace rules {
 
-// move mechanics
-template<typename> struct king_scan_range;
-template<> struct king_scan_range<variant::Pool>                { enum { value = scan_N    }; };
-
-// capture mechanics
-template<typename> struct pawn_jump_directions;
-template<> struct pawn_jump_directions<variant::Pool>           { enum { value = dirs_diag }; };
+// http://americanpoolcheckers.us/americanpoolcheckers/index.php?option=com_content&view=article&id=48:the-apca-playing-rules&catid=37:documents&Itemid=56
+struct Pool
+: 
+        Rules< 
+                king_range<range::distance_N>,
+                pawn_jump_directions<directions::diag>,
+                jump_precedence<precedence::none>
+        > 
+{};
 
 }       // namespace rules
 }       // namespace dctl

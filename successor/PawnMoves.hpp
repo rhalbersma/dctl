@@ -7,7 +7,7 @@
 #include "../node/Material.hpp"
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
-#include "../utility/Int2Type.hpp"
+#include "../rules/Enum.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/nonconstructible.hpp"
 
@@ -92,7 +92,7 @@ private:
         static int count(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return bit::count(
-                        Sink<Board, Index, rules::scan_1>()(active_pawns, not_occupied)
+                        Sink<Board, Index, rules::range::distance_1>()(active_pawns, not_occupied)
                 );
         }
 
@@ -100,7 +100,7 @@ private:
         static bool detect(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return !bit::is_zero(
-                        Sink<Board, Index, rules::scan_1>()(active_pawns, not_occupied)
+                        Sink<Board, Index, rules::range::distance_1>()(active_pawns, not_occupied)
                 );
         }
 };

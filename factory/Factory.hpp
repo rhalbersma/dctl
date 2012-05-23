@@ -20,7 +20,7 @@ template
         typename BasePointer = std::unique_ptr<Base>,
         typename Input = std::string,
         typename Identifier = std::string,
-        typename Creator = BasePointer (*)(const Identifier&)
+        typename Creator = BasePointer (*)(Identifier const&)
 >
 struct Factory
 {
@@ -45,7 +45,7 @@ public:
                 );
         }
 
-        BasePointer create(const Input& input) const
+        BasePointer create(Input const& input) const
         {
                 auto const fun = registry_.find(Base::header(input));
                 return fun? (fun)(Base::body(input)) : nullptr;

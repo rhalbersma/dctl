@@ -5,8 +5,6 @@
 #include "Selection.hpp"
 #include "../node/Material.hpp"
 #include "../node/Stack.hpp"
-#include "../utility/Int2Type.hpp"
-#include "../utility/IntegerTypes.hpp"
 #include "../utility/nonconstructible.hpp"
 
 namespace dctl {

@@ -29,7 +29,7 @@ struct write;
 template<typename Rules, typename Board, typename Token>
 struct read<Rules, Board, pdn::protocol, Token>
 {
-        Position<Rules, Board> operator()(const std::string& s) const
+        Position<Rules, Board> operator()(std::string const& s) const
         {
                 BitBoard p_pieces[2] = {0, 0};
                 BitBoard p_kings = 0;
@@ -111,7 +111,7 @@ struct write<pdn::protocol, Token>
 template<typename Rules, typename Board, typename Token>
 struct read<Rules, Board, dxp::protocol, Token>
 {
-        Position<Rules, Board> operator()(const std::string& s) const
+        Position<Rules, Board> operator()(std::string const& s) const
         {
                 BitBoard p_pieces[2] = {0, 0};
                 BitBoard p_kings = 0;
