@@ -113,7 +113,7 @@ public:
                 );
         }
 
-        template<bool Color, int Index>
+        template<bool Color, typename Index>
         void add_king_jump(BitBoard dest_sq) const // modifies Stack& moves_
         {
                 auto const ambiguous = is_ambiguous();
@@ -127,16 +127,16 @@ public:
 
         // queries
 
-        template<int Index>
+        template<typename Index>
         BitBoard targets() const
         {
                 return remaining_targets_ & Pull<Board, Index>()(path());
         }
 
-        template<int Index>
+        template<typename Index>
         BitBoard path() const
         {
-                return path() & Board::jump_start[Index];
+                return path() & Board::jump_start[Index::value];
         }
 
         BitBoard path() const
@@ -326,7 +326,7 @@ private:
 
         // partial specialization for kings that halt immediately if the final capture is a king,
         // and slide through otherwise
-        template<bool Color, int Index>
+        template<bool Color, typename Index>
         void add_king_jump_dispatch(
                 BitBoard dest_sq, bool ambiguous, 
                 boost::mpl::identity<rules::range::distance_1K>
@@ -345,7 +345,7 @@ private:
         }
 
         // partial specialization for kings that halt immediately after the final capture
-        template<bool Color, int Index>
+        template<bool Color, typename Index>
         void add_king_jump_dispatch(
                 BitBoard dest_sq, bool ambiguous, 
                 boost::mpl::identity<rules::range::distance_1>
@@ -355,7 +355,7 @@ private:
         }
 
         // partial specialization for kings that slide through after the final capture
-        template<bool Color, int Index>
+        template<bool Color, typename Index>
         void add_king_jump_dispatch(
                 BitBoard dest_sq, bool ambiguous, 
                 boost::mpl::identity<rules::range::distance_N>

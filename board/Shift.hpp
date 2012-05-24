@@ -5,10 +5,10 @@
 namespace dctl {
 
 // primary template
-template<typename Board, int Index, typename Range>
+template<typename Board, typename Index, typename Range>
 struct Sink;
 
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct Sink<Board, Index, rules::range::distance_1>
 {
         template<typename T>
@@ -18,7 +18,7 @@ struct Sink<Board, Index, rules::range::distance_1>
         }
 };
 
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct Sink<Board, Index, rules::range::distance_N>
 {
         template<typename T>
@@ -29,10 +29,10 @@ struct Sink<Board, Index, rules::range::distance_N>
 };
 
 // primary template
-template<typename Board, int Index, typename Range>
+template<typename Board, typename Index, typename Range>
 struct Sandwich;
 
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct Sandwich<Board, Index, rules::range::distance_1>
 {
         template<typename T>
@@ -46,7 +46,7 @@ struct Sandwich<Board, Index, rules::range::distance_1>
         }
 };
 
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct Sandwich<Board, Index, rules::range::distance_N>
 {
         template<typename T>
@@ -60,70 +60,70 @@ struct Sandwich<Board, Index, rules::range::distance_N>
         }
 };
 
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct FloodFill
 {
         template<typename T>
         T operator()(T generator, T propagator) const
         {
                 return board::flood_fill<
-                        board::is_positive< angle<Index> >::value,
+                        board::is_positive< Index >::value,
                         board::shift_size<Board, Index>::value
                 >(generator, propagator);
         }
 };
 
 // template function object for uniform left/right bitwise shift
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct Push
 {
         template<typename T>
         T operator()(T square) const
         {
                 return board::Shift<
-                        board::is_positive< angle<Index> >::value,
+                        board::is_positive< Index >::value,
                         board::shift_size<Board, Index>::value
                 >()(square);
         }
 };
 
 // template function object for uniform left/right bitwise shift
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct Pull
 {
         template<typename T>
         T operator()(T square) const
         {
                 return board::Shift<
-                        board::is_negative< angle<Index> >::value,
+                        board::is_negative< Index >::value,
                         board::shift_size<Board, Index>::value
                 >()(square);
         }
 };
 
 // template function object for uniform left/right bitwise shift-assignment
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct PushAssign
 {
         template<typename T>
         void operator()(T& square) const
         {
                 board::ShiftAssign<
-                        board::is_positive< angle<Index> >::value,
+                        board::is_positive< Index >::value,
                         board::shift_size<Board, Index>::value
                 >()(square);
         }
 };
 
 // template function object for uniform left/right bitwise shift-assignment
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct PullAssign
 {
         template<typename T>
         void operator()(T& square) const
         {
                 board::ShiftAssign<
-                        board::is_negative< angle<Index> >::value,
+                        board::is_negative< Index >::value,
                         board::shift_size<Board, Index>::value
                 >()(square);
         }
@@ -131,17 +131,17 @@ struct PullAssign
 
 namespace board {
 
-template<typename Board, int Index>
+template<typename Board, typename Index>
 struct shift_size;
 
-template<typename Board> struct shift_size<Board, 0> { BOOST_STATIC_CONSTANT(auto, value = Board::InternalGrid::right      ); };
-template<typename Board> struct shift_size<Board, 1> { BOOST_STATIC_CONSTANT(auto, value = Board::InternalGrid::right_up   ); };
-template<typename Board> struct shift_size<Board, 2> { BOOST_STATIC_CONSTANT(auto, value = Board::InternalGrid::up         ); };
-template<typename Board> struct shift_size<Board, 3> { BOOST_STATIC_CONSTANT(auto, value = Board::InternalGrid::left_up    ); };
-template<typename Board> struct shift_size<Board, 4> { BOOST_STATIC_CONSTANT(auto, value = Board::InternalGrid::left       ); };
-template<typename Board> struct shift_size<Board, 5> { BOOST_STATIC_CONSTANT(auto, value = Board::InternalGrid::left_down  ); };
-template<typename Board> struct shift_size<Board, 6> { BOOST_STATIC_CONSTANT(auto, value = Board::InternalGrid::down       ); };
-template<typename Board> struct shift_size<Board, 7> { BOOST_STATIC_CONSTANT(auto, value = Board::InternalGrid::right_down ); };
+template<typename Board> struct shift_size<Board, angle<0> >: angle<Board::InternalGrid::right     > {};
+template<typename Board> struct shift_size<Board, angle<1> >: angle<Board::InternalGrid::right_up  > {};
+template<typename Board> struct shift_size<Board, angle<2> >: angle<Board::InternalGrid::up        > {};
+template<typename Board> struct shift_size<Board, angle<3> >: angle<Board::InternalGrid::left_up   > {};
+template<typename Board> struct shift_size<Board, angle<4> >: angle<Board::InternalGrid::left      > {};
+template<typename Board> struct shift_size<Board, angle<5> >: angle<Board::InternalGrid::left_down > {};
+template<typename Board> struct shift_size<Board, angle<6> >: angle<Board::InternalGrid::down      > {};
+template<typename Board> struct shift_size<Board, angle<7> >: angle<Board::InternalGrid::right_down> {};
 
 // direction-wise flood-fill generator over propagator
 template<bool Sign, size_t N, typename T>

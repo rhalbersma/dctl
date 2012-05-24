@@ -47,28 +47,28 @@ public:
 
         static void generate(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
-                generate<Direction::left_up >(active_pawns, not_occupied, moves);
-                generate<Direction::right_up>(active_pawns, not_occupied, moves);
+                generate<typename Direction::left_up >(active_pawns, not_occupied, moves);
+                generate<typename Direction::right_up>(active_pawns, not_occupied, moves);
         }
 
         static int count(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return (
-                        count<Direction::left_up >(active_pawns, not_occupied) +
-                        count<Direction::right_up>(active_pawns, not_occupied)
+                        count<typename Direction::left_up >(active_pawns, not_occupied) +
+                        count<typename Direction::right_up>(active_pawns, not_occupied)
                 );
         }
 
         static bool detect(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return (
-                        detect<Direction::left_up >(active_pawns, not_occupied) ||
-                        detect<Direction::right_up>(active_pawns, not_occupied)
+                        detect<typename Direction::left_up >(active_pawns, not_occupied) ||
+                        detect<typename Direction::right_up>(active_pawns, not_occupied)
                 );
         }
 
 private:
-        template<int Index>
+        template<typename Index>
         static void generate(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
                 BitBoard from_sq, dest_sq;
@@ -88,7 +88,7 @@ private:
                 }
         }
 
-        template<int Index>
+        template<typename Index>
         static int count(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return bit::count(
@@ -96,7 +96,7 @@ private:
                 );
         }
 
-        template<int Index>
+        template<typename Index>
         static bool detect(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return !bit::is_zero(
