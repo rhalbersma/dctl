@@ -45,7 +45,7 @@ public:
                 generate_precede(p, capture);
         }
 
-        template<int Index>
+        template<typename Index>
         static bool promote_en_passant(BitBoard jumper, State& capture)
         {
                 return scan_next<Index>(jumper, capture);
@@ -139,10 +139,10 @@ private:
                 boost::mpl::identity<rules::directions::orth>
         )
         {
-                generate<Direction::left >(jumper, capture);
-                generate<Direction::right>(jumper, capture);
-                generate<Direction::up   >(jumper, capture);
-                generate<Direction::down >(jumper, capture);
+                generate<typename Direction::left >(jumper, capture);
+                generate<typename Direction::right>(jumper, capture);
+                generate<typename Direction::up   >(jumper, capture);
+                generate<typename Direction::down >(jumper, capture);
         }
 
         // partial specialization for kings that capture in the 4 diagonal directions
@@ -151,10 +151,10 @@ private:
                 boost::mpl::identity<rules::directions::diag>
         )
         {
-                generate<Direction::left_up   >(jumper, capture);
-                generate<Direction::right_up  >(jumper, capture);
-                generate<Direction::left_down >(jumper, capture);
-                generate<Direction::right_down>(jumper, capture);
+                generate<typename Direction::left_up   >(jumper, capture);
+                generate<typename Direction::right_up  >(jumper, capture);
+                generate<typename Direction::left_down >(jumper, capture);
+                generate<typename Direction::right_down>(jumper, capture);
         }
 
         static bool detect(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied)
@@ -185,10 +185,10 @@ private:
         )
         {
                 return (
-                        detect<Direction::left >(active_kings, passive_pieces, not_occupied) ||
-                        detect<Direction::right>(active_kings, passive_pieces, not_occupied) ||
-                        detect<Direction::up   >(active_kings, passive_pieces, not_occupied) ||
-                        detect<Direction::down >(active_kings, passive_pieces, not_occupied)
+                        detect<typename Direction::left >(active_kings, passive_pieces, not_occupied) ||
+                        detect<typename Direction::right>(active_kings, passive_pieces, not_occupied) ||
+                        detect<typename Direction::up   >(active_kings, passive_pieces, not_occupied) ||
+                        detect<typename Direction::down >(active_kings, passive_pieces, not_occupied)
                 );
         }
 
@@ -199,14 +199,14 @@ private:
         )
         {
                 return (
-                        detect<Direction::left_up   >(active_kings, passive_pieces, not_occupied) ||
-                        detect<Direction::right_up  >(active_kings, passive_pieces, not_occupied) ||
-                        detect<Direction::left_down >(active_kings, passive_pieces, not_occupied) ||
-                        detect<Direction::right_down>(active_kings, passive_pieces, not_occupied)
+                        detect<typename Direction::left_up   >(active_kings, passive_pieces, not_occupied) ||
+                        detect<typename Direction::right_up  >(active_kings, passive_pieces, not_occupied) ||
+                        detect<typename Direction::left_down >(active_kings, passive_pieces, not_occupied) ||
+                        detect<typename Direction::right_down>(active_kings, passive_pieces, not_occupied)
                 );
         }
 
-        template<int Index>
+        template<typename Index>
         static void generate(BitBoard jumper, State& capture)
         {
                 slide<Index>(jumper, capture.template path<Index>());
@@ -217,7 +217,7 @@ private:
                 }
         }
 
-        template<int Index>
+        template<typename Index>
         static void generate_next(BitBoard jumper, State& capture)
         {
                 PushAssign<Board, Index>()(jumper);
@@ -231,7 +231,7 @@ private:
                 }
         }
 
-        template<int Index>
+        template<typename Index>
         static bool scan_next(BitBoard jumper, State& capture)
         {
                 // tag dispatching on king capture direction reversal
@@ -242,7 +242,7 @@ private:
         }
 
         // partial specialization for kings that cannot reverse their capture direction
-        template<int Index>
+        template<typename Index>
         static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, 
                 boost::mpl::identity<boost::mpl::false_>
@@ -252,7 +252,7 @@ private:
         }
 
         // partial specialization for kings that can reverse their capture direction
-        template<int Index>
+        template<typename Index>
         static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, 
                 boost::mpl::identity<boost::mpl::true_>
@@ -267,13 +267,13 @@ private:
                 );
         }
 
-        template<int Index>
+        template<typename Index>
         static bool reverse(BitBoard jumper, State& capture)
         {
-                return scan< rotate< angle<Index>, angle<degrees::D180> >::value >(jumper, capture);
+                return scan< typename rotate< Index, angle<degrees::D180> >::type >(jumper, capture);
         }
 
-        template<int Index>
+        template<typename Index>
         static bool land(BitBoard jumper, State& capture)
         {
                 // tag dispatching on king capture landing range after intermediate captures
@@ -284,7 +284,7 @@ private:
         }
 
         // partial specialization for kings that can only land on the immediately adjacent square
-        template<int Index>
+        template<typename Index>
         static bool land_dispatch(
                 BitBoard jumper, State& capture, 
                 boost::mpl::identity<rules::range::distance_1>
@@ -297,7 +297,7 @@ private:
         }
 
         // partial specialization for kings that can land on any square along the current direction
-        template<int Index>
+        template<typename Index>
         static bool land_dispatch(
                 BitBoard jumper, State& capture, 
                 boost::mpl::identity<rules::range::distance_N>
@@ -312,7 +312,7 @@ private:
                 return found_capture |= jump<Index>(jumper, capture);
         }
 
-        template<int Index>
+        template<typename Index>
         static bool turn(BitBoard jumper, State& capture)
         {
                 // tag dispatching on king turn directions
@@ -323,7 +323,7 @@ private:
         }
 
         // partial specialization for turns in all the 6 non-parallel orthogonal and diagonal directions
-        template<int Index>
+        template<typename Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
                 boost::mpl::identity<rules::directions::all>
@@ -336,41 +336,41 @@ private:
         }
 
         // partial specialization for turns in the remaining 4 diagonal or orthogonal directions
-        template<int Index>
+        template<typename Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
                 boost::mpl::identity<rules::directions::orth>
         )
         {
                 return (
-                        scan< rotate< angle<Index>, angle<degrees::R045> >::value >(jumper, capture) |
-                        scan< rotate< angle<Index>, angle<degrees::L045> >::value >(jumper, capture) |
-                        scan< rotate< angle<Index>, angle<degrees::R135> >::value >(jumper, capture) |
-                        scan< rotate< angle<Index>, angle<degrees::L135> >::value >(jumper, capture)
+                        scan< typename rotate< Index, angle<degrees::R045> >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle<degrees::L045> >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle<degrees::R135> >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle<degrees::L135> >::type >(jumper, capture)
                 );
         }
 
         // partial specialization for turns in the 2 sideways directions
-        template<int Index>
+        template<typename Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
                 boost::mpl::identity<rules::directions::diag>
         )
         {
                 return (
-                        scan< rotate< angle<Index>, angle<degrees::R090> >::value >(jumper, capture) |
-                        scan< rotate< angle<Index>, angle<degrees::L090> >::value >(jumper, capture)
+                        scan< typename rotate< Index, angle<degrees::R090> >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle<degrees::L090> >::type >(jumper, capture)
                 );
         }
 
-        template<int Index>
+        template<typename Index>
         static bool scan(BitBoard jumper, State& capture)
         {
                 slide<Index>(jumper, capture.template path<Index>());
                 return jump<Index>(jumper, capture);
         }
 
-        template<int Index>
+        template<typename Index>
         static void slide(BitBoard& jumper, BitBoard path)
         {
                 // tag dispatching on king range
@@ -381,7 +381,7 @@ private:
         }
 
         // partial specialization for short ranged kings
-        template<int Index>
+        template<typename Index>
         static void slide_dispatch(
                 BitBoard& jumper, BitBoard /* path */, 
                 boost::mpl::identity<rules::range::distance_1>
@@ -391,7 +391,7 @@ private:
         }
 
         // partial specialization for long ranged kings
-        template<int Index>
+        template<typename Index>
         static void slide_dispatch(
                 BitBoard& jumper, BitBoard path, 
                 boost::mpl::identity<rules::range::distance_N>
@@ -400,7 +400,7 @@ private:
                 do PushAssign<Board, Index>()(jumper); while (jumper & path);
         }
 
-        template<int Index>
+        template<typename Index>
         static bool jump(BitBoard jumper, State& capture)
         {
                 if (jumper & capture.template targets<Index>()) {
@@ -412,7 +412,7 @@ private:
                         return false;
         }
 
-        template<int Index>
+        template<typename Index>
         static bool detect(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied)
         {
                 // partial specialiations of Sandwich for king range

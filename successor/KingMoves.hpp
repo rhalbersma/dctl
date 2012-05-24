@@ -87,33 +87,33 @@ private:
 
         static void generate(BitBoard from_sq, BitBoard not_occupied, Stack& moves)
         {
-                generate<Direction::left_down >(from_sq, not_occupied, moves);
-                generate<Direction::right_down>(from_sq, not_occupied, moves);
-                generate<Direction::left_up   >(from_sq, not_occupied, moves);
-                generate<Direction::right_up  >(from_sq, not_occupied, moves);
+                generate<typename Direction::left_down >(from_sq, not_occupied, moves);
+                generate<typename Direction::right_down>(from_sq, not_occupied, moves);
+                generate<typename Direction::left_up   >(from_sq, not_occupied, moves);
+                generate<typename Direction::right_up  >(from_sq, not_occupied, moves);
         }
 
         static int count(BitBoard active_kings, BitBoard not_occupied)
         {
                 return (
-                        count<Direction::left_down >(active_kings, not_occupied) +
-                        count<Direction::right_down>(active_kings, not_occupied) +
-                        count<Direction::left_up   >(active_kings, not_occupied) +
-                        count<Direction::right_up  >(active_kings, not_occupied)
+                        count<typename Direction::left_down >(active_kings, not_occupied) +
+                        count<typename Direction::right_down>(active_kings, not_occupied) +
+                        count<typename Direction::left_up   >(active_kings, not_occupied) +
+                        count<typename Direction::right_up  >(active_kings, not_occupied)
                 );
         }
 
         static bool detect(BitBoard active_kings, BitBoard not_occupied)
         {
                 return (
-                        detect<Direction::left_down >(active_kings, not_occupied) ||
-                        detect<Direction::right_down>(active_kings, not_occupied) ||
-                        detect<Direction::left_up   >(active_kings, not_occupied) ||
-                        detect<Direction::right_up  >(active_kings, not_occupied)
+                        detect<typename Direction::left_down >(active_kings, not_occupied) ||
+                        detect<typename Direction::right_down>(active_kings, not_occupied) ||
+                        detect<typename Direction::left_up   >(active_kings, not_occupied) ||
+                        detect<typename Direction::right_up  >(active_kings, not_occupied)
                 );
         }
 
-        template<int Index>
+        template<typename Index>
         static void generate(BitBoard from_sq, BitBoard not_occupied, Stack& moves)
         {
                 // tag dispatching on king range
@@ -124,7 +124,7 @@ private:
         }
 
         // partial specialization for short ranged kings
-        template<int Index>
+        template<typename Index>
         static void generate_dispatch(
                 BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
                 boost::mpl::identity<rules::range::distance_1>
@@ -135,7 +135,7 @@ private:
         }
 
         // partial specialization for long ranged kings
-        template<int Index>
+        template<typename Index>
         static void generate_dispatch(
                 BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
                 boost::mpl::identity<rules::range::distance_N>
@@ -149,7 +149,7 @@ private:
                         moves.push_back(Move::create<Color>(from_sq ^ dest_sq));
         }
 
-        template<int Index>
+        template<typename Index>
         static int count(BitBoard active_kings, BitBoard not_occupied)
         {
                 return bit::count(
@@ -157,7 +157,7 @@ private:
                 );
         }
 
-        template<int Index>
+        template<typename Index>
         static bool detect(BitBoard active_kings, BitBoard not_occupied)
         {
                 return !bit::is_zero(

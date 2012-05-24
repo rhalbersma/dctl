@@ -40,14 +40,14 @@ private:
 
 public:
         // NOTE: parenthesized multiple argument template rvalues to avoid pre-processor argument splitting
-        BOOST_STATIC_CONSTANT(auto, right      = (rotate< angle<degrees::D000>, A >::value));
-        BOOST_STATIC_CONSTANT(auto, right_up   = (rotate< angle<degrees::D045>, A >::value));
-        BOOST_STATIC_CONSTANT(auto, up         = (rotate< angle<degrees::D090>, A >::value));
-        BOOST_STATIC_CONSTANT(auto, left_up    = (rotate< angle<degrees::D135>, A >::value));
-        BOOST_STATIC_CONSTANT(auto, left       = (rotate< angle<degrees::D180>, A >::value));
-        BOOST_STATIC_CONSTANT(auto, left_down  = (rotate< angle<degrees::D225>, A >::value));
-        BOOST_STATIC_CONSTANT(auto, down       = (rotate< angle<degrees::D270>, A >::value));
-        BOOST_STATIC_CONSTANT(auto, right_down = (rotate< angle<degrees::D315>, A >::value));
+        typedef typename rotate< angle<degrees::D000>, A >::type right;
+        typedef typename rotate< angle<degrees::D045>, A >::type right_up;
+        typedef typename rotate< angle<degrees::D090>, A >::type up;
+        typedef typename rotate< angle<degrees::D135>, A >::type left_up;
+        typedef typename rotate< angle<degrees::D180>, A >::type left;
+        typedef typename rotate< angle<degrees::D225>, A >::type left_down;
+        typedef typename rotate< angle<degrees::D270>, A >::type down;
+        typedef typename rotate< angle<degrees::D315>, A >::type right_down;
 };
 
 }       // namespace board
