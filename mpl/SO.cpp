@@ -1,7 +1,7 @@
         #include <iostream>                     // cout
         #include <boost/mpl/for_each.hpp>       // for_each
         #include <boost/mpl/identity.hpp>       // identity, make_identity
-        #include <boost/mpl/int.hpp>            // int_
+        #include <boost/mpl/int_fwd.hpp>        // int_
         #include <boost/mpl/list.hpp>           // list
         #include <boost/mpl/next.hpp>           // next
         #include <boost/mpl/push_front.hpp>     // push_front
