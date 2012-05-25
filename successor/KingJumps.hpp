@@ -270,7 +270,7 @@ private:
         template<typename Index>
         static bool reverse(BitBoard jumper, State& capture)
         {
-                return scan<typename rotate< Index, angle::D180 >::type >(jumper, capture);
+                return scan< typename rotate< Index, angle::D180 >::type >(jumper, capture);
         }
 
         template<typename Index>
@@ -343,10 +343,10 @@ private:
         )
         {
                 return (
-                        scan<typename rotate< Index, angle::R045 >::type >(jumper, capture) |
-                        scan<typename rotate< Index, angle::L045 >::type >(jumper, capture) |
-                        scan<typename rotate< Index, angle::R135 >::type >(jumper, capture) |
-                        scan<typename rotate< Index, angle::L135 >::type >(jumper, capture)
+                        scan< typename rotate< Index, angle::R045 >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle::L045 >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle::R135 >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle::L135 >::type >(jumper, capture)
                 );
         }
 
@@ -358,8 +358,8 @@ private:
         )
         {
                 return (
-                        scan<typename rotate< Index, angle::R090 >::type >(jumper, capture) |
-                        scan<typename rotate< Index, angle::L090 >::type >(jumper, capture)
+                        scan< typename rotate< Index, angle::R090 >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle::L090 >::type >(jumper, capture)
                 );
         }
 
