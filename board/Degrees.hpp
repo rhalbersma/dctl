@@ -1,7 +1,8 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "Angle.hpp"
 
 namespace dctl {
+namespace angle {
 
 /*
 
@@ -24,23 +25,22 @@ namespace dctl {
 
 */
 
-struct degrees
-{
-        BOOST_STATIC_CONSTANT(auto, D000 =    0);
-        BOOST_STATIC_CONSTANT(auto, D045 =    1);
-        BOOST_STATIC_CONSTANT(auto, D090 =    2);
-        BOOST_STATIC_CONSTANT(auto, D135 =    3);
-        BOOST_STATIC_CONSTANT(auto, D180 =    4);
-        BOOST_STATIC_CONSTANT(auto, D225 =    5);
-        BOOST_STATIC_CONSTANT(auto, D270 =    6);
-        BOOST_STATIC_CONSTANT(auto, D315 =    7);
-        BOOST_STATIC_CONSTANT(auto, D360 =    8);
-        BOOST_STATIC_CONSTANT(auto, L045 = D045);       // counterclockwise
-        BOOST_STATIC_CONSTANT(auto, L090 = D090);       // counterclockwise
-        BOOST_STATIC_CONSTANT(auto, L135 = D135);       // counterclockwise
-        BOOST_STATIC_CONSTANT(auto, R135 = D225);       // clockwise
-        BOOST_STATIC_CONSTANT(auto, R090 = D270);       // clockwise
-        BOOST_STATIC_CONSTANT(auto, R045 = D315);       // clockwise
-};
+typedef Angle<0> D000;
+typedef Angle<1> D045;
+typedef Angle<2> D090;
+typedef Angle<3> D135;
+typedef Angle<4> D180;
+typedef Angle<5> D225;
+typedef Angle<6> D270;
+typedef Angle<7> D315;
+typedef Angle<8> D360;
 
+typedef D045 L045;      // counterclockwise
+typedef D090 L090;      // counterclockwise
+typedef D135 L135;      // counterclockwise
+typedef D225 R135;      // clockwise
+typedef D270 R090;      // clockwise
+typedef D315 R045;      // clockwise
+
+}       // namespace angle
 }       // namespace dctl

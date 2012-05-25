@@ -1,6 +1,5 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include "Angle.hpp"
 #include "Degrees.hpp"
 #include "Modular.hpp"
 #include "Transform.hpp"
@@ -74,28 +73,28 @@ public:
 
 // partial specialization for identity rotations
 template<typename Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle<degrees::D000> >
+struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
 :
         board::Coordinates<Grid, Row, Column>
 {};
 
 // partial specialization for 90 degrees left rotations
 template<typename Grid, int Row, int Column>
-struct rotate<board::Coordinates<Grid, Row, Column>, angle<degrees::L090> >
+struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
 :
         board::Coordinates<Grid, Column, (Grid::height - 1) - Row>
 {};
 
 // partial specialization for 90 degrees right rotations
 template<typename Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle<degrees::R090> >
+struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 :
         board::Coordinates<Grid, (Grid::width - 1) - Column, Row>
 {};
 
 // partial specialization for 180 degrees rotations
 template<typename Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle<degrees::D180> >
+struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
 :
         board::Coordinates<Grid, (Grid::height - 1) - Row, (Grid::width - 1) - Column>
 {};

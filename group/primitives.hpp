@@ -1,7 +1,7 @@
 #pragma once
 #include <type_traits>                  // is_same
 #include <boost/mpl/at.hpp>             // at
-#include <boost/mpl/int.hpp>            // int_
+#include <boost/mpl/int_fwd.hpp>        // int_
 #include <boost/mpl/vector.hpp>         // vector
 
 namespace dctl {

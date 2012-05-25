@@ -3,7 +3,7 @@
 #include <boost/mpl/arithmetic.hpp>     // modulus, plus
 #include <boost/mpl/comparison.hpp>     // less
 #include <boost/mpl/eval_if.hpp>        // eval_if
-#include <boost/mpl/int.hpp>            // int_
+#include <boost/mpl/int_fwd.hpp>        // int_
 
 namespace dctl {
 

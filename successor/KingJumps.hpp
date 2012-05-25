@@ -5,7 +5,7 @@
 #include "Driver_fwd.hpp"
 #include "Selection.hpp"
 #include "../bit/Bit.hpp"
-#include "../board/Angle.hpp"
+#include "../board/Degrees.hpp"
 #include "../board/Direction.hpp"
 #include "../board/Shift.hpp"
 #include "../capture/State.hpp"
@@ -28,7 +28,7 @@ struct Driver<Color, Material::king, select::Jumps, Rules, Board>
 private:
         // typedefs
 
-        typedef board::Direction<Color, Board> Direction;
+        typedef angle::Direction<Color, Board> Direction;
         typedef capture::State<Rules, Board> State;
 
 public:
@@ -270,7 +270,7 @@ private:
         template<typename Index>
         static bool reverse(BitBoard jumper, State& capture)
         {
-                return scan< typename rotate< Index, angle<degrees::D180> >::type >(jumper, capture);
+                return scan<typename rotate< Index, angle::D180 >::type >(jumper, capture);
         }
 
         template<typename Index>
@@ -343,10 +343,10 @@ private:
         )
         {
                 return (
-                        scan< typename rotate< Index, angle<degrees::R045> >::type >(jumper, capture) |
-                        scan< typename rotate< Index, angle<degrees::L045> >::type >(jumper, capture) |
-                        scan< typename rotate< Index, angle<degrees::R135> >::type >(jumper, capture) |
-                        scan< typename rotate< Index, angle<degrees::L135> >::type >(jumper, capture)
+                        scan<typename rotate< Index, angle::R045 >::type >(jumper, capture) |
+                        scan<typename rotate< Index, angle::L045 >::type >(jumper, capture) |
+                        scan<typename rotate< Index, angle::R135 >::type >(jumper, capture) |
+                        scan<typename rotate< Index, angle::L135 >::type >(jumper, capture)
                 );
         }
 
@@ -358,8 +358,8 @@ private:
         )
         {
                 return (
-                        scan< typename rotate< Index, angle<degrees::R090> >::type >(jumper, capture) |
-                        scan< typename rotate< Index, angle<degrees::L090> >::type >(jumper, capture)
+                        scan<typename rotate< Index, angle::R090 >::type >(jumper, capture) |
+                        scan<typename rotate< Index, angle::L090 >::type >(jumper, capture)
                 );
         }
 

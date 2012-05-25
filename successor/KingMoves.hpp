@@ -25,7 +25,7 @@ struct Driver<Color, Material::king, select::Moves, Rules, Board>
 private:
         // typedefs
 
-        typedef board::Direction<Color, Board> Direction;
+        typedef angle::Direction<Color, Board> Direction;
 
 public:
         template<template<typename, typename> class Position>

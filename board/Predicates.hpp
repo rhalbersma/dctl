@@ -2,7 +2,7 @@
 #include <boost/mpl/arithmetic.hpp>     // minus, modulus, plus
 #include <boost/mpl/comparison.hpp>     // equal_to
 #include <boost/mpl/eval_if.hpp>        // eval_if
-#include <boost/mpl/int.hpp>            // int_
+#include <boost/mpl/int_fwd.hpp>        // int_
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 #include "Angle.hpp"
 #include "Dimensions.hpp"
@@ -154,20 +154,20 @@ struct is_jump_start
         boost::mpl::and_<
                 // row_min <= row < row_max
                 mpl::is_within_range<
-                        boost::mpl::eval_if< is_up<Index>, Offset, boost::mpl::int_<0> >,
+                        boost::mpl::eval_if< angle::is_up<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::int_<Square2Coordinates< Square<Grid, SQ::value> >::type::row>,
                         boost::mpl::minus<
                                 boost::mpl::int_<Board::height>,
-                                boost::mpl::eval_if< is_down<Index>, Offset, boost::mpl::int_<0> >
+                                boost::mpl::eval_if< angle::is_down<Index>, Offset, boost::mpl::int_<0> >
                         >
                 >,
                 // col_min <= col < col_max
                 mpl::is_within_range<
-                        boost::mpl::eval_if< is_left<Index>, Offset, boost::mpl::int_<0> >,
+                        boost::mpl::eval_if< angle::is_left<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::int_<Square2Coordinates< Square<Grid, SQ::value> >::type::col>,
                         boost::mpl::minus<
                                 boost::mpl::int_<Board::width>,
-                                boost::mpl::eval_if< is_right<Index>, Offset, boost::mpl::int_<0> >
+                                boost::mpl::eval_if< angle::is_right<Index>, Offset, boost::mpl::int_<0> >
                         >
                 >
         >
@@ -182,7 +182,7 @@ struct is_jump_start
                 Board, Index, SQ,
                 typename Board::ExternalGrid,
                 boost::mpl::eval_if<
-                        is_diagonal<Index>,
+                        angle::is_diagonal<Index>,
                         boost::mpl::int_<2>,
                         boost::mpl::int_<4>
                 >

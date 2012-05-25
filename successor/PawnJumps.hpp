@@ -5,7 +5,7 @@
 #include "KingJumps.hpp"
 #include "Selection.hpp"
 #include "../bit/Bit.hpp"
-#include "../board/Angle.hpp"
+#include "../board/Degrees.hpp"
 #include "../board/Direction.hpp"
 #include "../board/Shift.hpp"
 #include "../capture/State.hpp"
@@ -30,7 +30,7 @@ private:
         // typedefs
 
         typedef Driver<Color, Material::king, select::Jumps, Rules, Board> KingJumps;
-        typedef board::Direction<Color, Board> Direction;
+        typedef angle::Direction<Color, Board> Direction;
         typedef capture::State<Rules, Board> State;
 
 public:
@@ -338,10 +338,10 @@ private:
         )
         {
                 return (
-                        scan< typename rotate< Index, angle<degrees::R045> >::type >(jumper, capture) |
-                        scan< typename rotate< Index, angle<degrees::L045> >::type >(jumper, capture) |
-                        scan< typename rotate< Index, angle<degrees::R135> >::type >(jumper, capture) |
-                        scan< typename rotate< Index, angle<degrees::L135> >::type >(jumper, capture)
+                        scan< typename rotate< Index, angle::R045 >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle::L045 >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle::R135 >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle::L135 >::type >(jumper, capture)
                 );
         }
 
@@ -353,8 +353,8 @@ private:
         )
         {
                 return (
-                        scan< typename rotate< Index, angle<degrees::R090> >::type >(jumper, capture) |
-                        scan< typename rotate< Index, angle<degrees::L090> >::type >(jumper, capture)
+                        scan< typename rotate< Index, angle::R090 >::type >(jumper, capture) |
+                        scan< typename rotate< Index, angle::L090 >::type >(jumper, capture)
                 );
         }
 
