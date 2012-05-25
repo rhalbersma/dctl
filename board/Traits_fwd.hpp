@@ -2,7 +2,7 @@
 #include "../mpl/lazy.hpp"              // LAZY_UNARY_METAFUNCTION, LAZY_BINARY_METAFUNCTION
 
 namespace dctl {
-namespace board {
+namespace angle {
 
 LAZY_UNARY_METAFUNCTION(is_orthogonal)
 LAZY_UNARY_METAFUNCTION(is_diagonal)
@@ -13,5 +13,5 @@ LAZY_UNARY_METAFUNCTION(is_right)
 LAZY_UNARY_METAFUNCTION(is_positive)
 LAZY_UNARY_METAFUNCTION(is_negative)
 
-}       // namespace board
+}       // namespace angle
 }       // namespace dctl

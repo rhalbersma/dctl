@@ -1,8 +1,24 @@
 #pragma once
+#include "boost/mpl/int_fwd.hpp"        // int_
 #include "../board/Angle.hpp"
 #include "../board/Traits.hpp"
 
 namespace dctl {
+namespace angle {
+
+template<typename Board, typename Index>
+struct shift_size;
+
+template<typename Board> struct shift_size<Board, D000 >: boost::mpl::int_< Board::InternalGrid::right      > {};
+template<typename Board> struct shift_size<Board, D045 >: boost::mpl::int_< Board::InternalGrid::right_up   > {};
+template<typename Board> struct shift_size<Board, D090 >: boost::mpl::int_< Board::InternalGrid::up         > {};
+template<typename Board> struct shift_size<Board, D135 >: boost::mpl::int_< Board::InternalGrid::left_up    > {};
+template<typename Board> struct shift_size<Board, D180 >: boost::mpl::int_< Board::InternalGrid::left       > {};
+template<typename Board> struct shift_size<Board, D225 >: boost::mpl::int_< Board::InternalGrid::left_down  > {};
+template<typename Board> struct shift_size<Board, D270 >: boost::mpl::int_< Board::InternalGrid::down       > {};
+template<typename Board> struct shift_size<Board, D315 >: boost::mpl::int_< Board::InternalGrid::right_down > {};
+
+}       // namespace angle
 
 // primary template
 template<typename Board, typename Index, typename Range>
@@ -66,9 +82,9 @@ struct FloodFill
         template<typename T>
         T operator()(T generator, T propagator) const
         {
-                return board::flood_fill<
-                        board::is_positive< Index >::value,
-                        board::shift_size<Board, Index>::value
+                return flood_fill<
+                        angle::is_positive< Index >::value,
+                        angle::shift_size<Board, Index>::value
                 >(generator, propagator);
         }
 };
@@ -80,9 +96,9 @@ struct Push
         template<typename T>
         T operator()(T square) const
         {
-                return board::Shift<
-                        board::is_positive< Index >::value,
-                        board::shift_size<Board, Index>::value
+                return Shift<
+                        angle::is_positive< Index >::value,
+                        angle::shift_size<Board, Index>::value
                 >()(square);
         }
 };
@@ -94,9 +110,9 @@ struct Pull
         template<typename T>
         T operator()(T square) const
         {
-                return board::Shift<
-                        board::is_negative< Index >::value,
-                        board::shift_size<Board, Index>::value
+                return Shift<
+                        angle::is_negative< Index >::value,
+                        angle::shift_size<Board, Index>::value
                 >()(square);
         }
 };
@@ -108,9 +124,9 @@ struct PushAssign
         template<typename T>
         void operator()(T& square) const
         {
-                board::ShiftAssign<
-                        board::is_positive< Index >::value,
-                        board::shift_size<Board, Index>::value
+                ShiftAssign<
+                        angle::is_positive< Index >::value,
+                        angle::shift_size<Board, Index>::value
                 >()(square);
         }
 };
@@ -122,26 +138,12 @@ struct PullAssign
         template<typename T>
         void operator()(T& square) const
         {
-                board::ShiftAssign<
-                        board::is_negative< Index >::value,
-                        board::shift_size<Board, Index>::value
+                ShiftAssign<
+                        angle::is_negative< Index >::value,
+                        angle::shift_size<Board, Index>::value
                 >()(square);
         }
 };
-
-namespace board {
-
-template<typename Board, typename Index>
-struct shift_size;
-
-template<typename Board> struct shift_size<Board, angle<0> >: angle<Board::InternalGrid::right     > {};
-template<typename Board> struct shift_size<Board, angle<1> >: angle<Board::InternalGrid::right_up  > {};
-template<typename Board> struct shift_size<Board, angle<2> >: angle<Board::InternalGrid::up        > {};
-template<typename Board> struct shift_size<Board, angle<3> >: angle<Board::InternalGrid::left_up   > {};
-template<typename Board> struct shift_size<Board, angle<4> >: angle<Board::InternalGrid::left      > {};
-template<typename Board> struct shift_size<Board, angle<5> >: angle<Board::InternalGrid::left_down > {};
-template<typename Board> struct shift_size<Board, angle<6> >: angle<Board::InternalGrid::down      > {};
-template<typename Board> struct shift_size<Board, angle<7> >: angle<Board::InternalGrid::right_down> {};
 
 // direction-wise flood-fill generator over propagator
 template<bool Sign, size_t N, typename T>
@@ -218,5 +220,4 @@ struct ShiftAssign<R, N>
         }
 };
 
-}       // namespace board
 }       // namespace dctl

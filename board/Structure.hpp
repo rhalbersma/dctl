@@ -10,9 +10,9 @@ namespace board {
 
 template
 <
-        int D = 2,                              // "demilitarized" rows in the initial position
-        int G = 2,                              // number of ghost bit columns
-        typename A = angle<degrees::D000>       // rotation from external to internal grid
+        int D = 2,                      // "demilitarized" rows in the initial position
+        int G = 2,                      // number of ghost bit columns
+        typename A = angle::D000      // rotation from external to internal grid
 >
 struct Structure
 {

@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/mpl/apply.hpp>          // apply
 #include <boost/mpl/bitxor.hpp>         // bitxor_
-#include <boost/mpl/bool.hpp>           // bool_
+#include <boost/mpl/bool_fwd.hpp>       // bool_
 #include <boost/mpl/eval_if.hpp>        // eval_if_
-#include <boost/mpl/int.hpp>            // int_
+#include <boost/mpl/int_fwd.hpp>        // int_
 #include <boost/mpl/integral_c.hpp>     // integral_c
 #include <boost/mpl/placeholders.hpp>   // _1
 #include <boost/mpl/prior.hpp>          // prior
