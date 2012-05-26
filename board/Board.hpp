@@ -31,17 +31,17 @@ public:
         > InternalGrid;
 
         // essential bitboard masks
-        static const BitBoard squares;                          // bit mask of legal squares, excluding borders
-        static const BitBoard INITIAL[];                        // initial position
-        static const BitBoard PROMOTION[][2];                   // promotion zones
-        static const BitBoard row_mask[][12];                   // bit masks for the rows
-        static const BitBoard col_mask[][12];                   // bit masks for the columns
+        static BitBoard const squares;                          // bit mask of legal squares, excluding borders
+        static BitBoard const INITIAL[];                        // initial position
+        static BitBoard const PROMOTION[][2];                   // promotion zones
+        static BitBoard const row_mask[][12];                   // bit masks for the rows
+        static BitBoard const col_mask[][12];                   // bit masks for the columns
 
         // detaililiary bitboard masks
-        static const BitBoard QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
-        static const BitBoard DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
-        static const BitBoard jump_group[];                     // families of squares reachable by jumping pawns
-        static const BitBoard jump_start[];                     // squares from which a jump is possible in a direction
+        static BitBoard const QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
+        static BitBoard const DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
+        static BitBoard const jump_group[];                     // families of squares reachable by jumping pawns
+        static BitBoard const jump_start[];                     // squares from which a jump is possible in a direction
 
         static bool is_valid(int);
         static int begin();
@@ -56,16 +56,16 @@ private:
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::squares = init_squares<Board>::value;
+BitBoard const Board<Dimensions, Structure>::squares = init_squares<Board>::value;
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::INITIAL[] = {
+BitBoard const Board<Dimensions, Structure>::INITIAL[] = {
         init_initial< Board, Side::black >::value,
         init_initial< Board, Side::white >::value
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::PROMOTION[][2] = {
+BitBoard const Board<Dimensions, Structure>::PROMOTION[][2] = {
         {
                 init_row_mask<Board, Side::white, 0>::value,
                 init_row_mask<Board, Side::white, 1>::value
@@ -77,7 +77,7 @@ const BitBoard Board<Dimensions, Structure>::PROMOTION[][2] = {
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::row_mask[][12] = {
+BitBoard const Board<Dimensions, Structure>::row_mask[][12] = {
         {
                 init_row_mask<Board, Side::black,  0>::value,
                 init_row_mask<Board, Side::black,  1>::value,
@@ -109,7 +109,7 @@ const BitBoard Board<Dimensions, Structure>::row_mask[][12] = {
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::col_mask[][12] = {
+BitBoard const Board<Dimensions, Structure>::col_mask[][12] = {
         {
                 init_col_mask<Board, Side::black,  0>::value,
                 init_col_mask<Board, Side::black,  1>::value,
@@ -141,17 +141,17 @@ const BitBoard Board<Dimensions, Structure>::col_mask[][12] = {
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
+BitBoard const Board<Dimensions, Structure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
         (bit::singlet<BitBoard>(1)) ^ (bit::singlet<BitBoard>(1 + (InternalGrid::left_down  << 1))),
         (bit::singlet<BitBoard>(0)) ^ (bit::singlet<BitBoard>(0 + (InternalGrid::right_down << 1)))
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
+BitBoard const Board<Dimensions, Structure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::jump_group[] = {
+BitBoard const Board<Dimensions, Structure>::jump_group[] = {
         init_jump_group< Board, InternalGrid::edge_le + 0 >::value,
         init_jump_group< Board, InternalGrid::edge_le + 1 >::value,
         init_jump_group< Board, InternalGrid::edge_lo + 0 >::value,
@@ -159,7 +159,7 @@ const BitBoard Board<Dimensions, Structure>::jump_group[] = {
 };
 
 template<typename Dimensions, typename Structure>
-const BitBoard Board<Dimensions, Structure>::jump_start[] = {
+BitBoard const Board<Dimensions, Structure>::jump_start[] = {
         init_jump_start< Board, rotate< angle::D000, Board::full_angle > >::value,
         init_jump_start< Board, rotate< angle::D045, Board::full_angle > >::value,
         init_jump_start< Board, rotate< angle::D090, Board::full_angle > >::value,

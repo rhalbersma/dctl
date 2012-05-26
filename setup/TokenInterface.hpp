@@ -21,25 +21,25 @@ struct TokenInterface
         BOOST_STATIC_CONSTANT(auto, white = W);
         BOOST_STATIC_CONSTANT(auto, empty = E);
 
-        static const char color[];
-        static const char lower[];
-        static const char upper[];
+        static char const color[];
+        static char const lower[];
+        static char const upper[];
 };
 
 template<char B, char W, char E>
-const char TokenInterface<B, W, E>::color[] = {
+char const TokenInterface<B, W, E>::color[] = {
         black,
         white
 };
 
 template<char B, char W, char E>
-const char TokenInterface<B, W, E>::lower[] = {
+char const TokenInterface<B, W, E>::lower[] = {
         static_cast<char>(tolower(black)),
         static_cast<char>(tolower(white))
 };
 
 template<char B, char W, char E>
-const char TokenInterface<B, W, E>::upper[] = {
+char const TokenInterface<B, W, E>::upper[] = {
         static_cast<char>(toupper(black)),
         static_cast<char>(toupper(white))
 };

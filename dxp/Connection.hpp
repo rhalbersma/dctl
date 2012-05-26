@@ -48,7 +48,6 @@ public:
                 do_connect(asio::ip::tcp::endpoint(asio::ip::address::from_string(host), PORT));
         }
 
-
         // connect to user supplied port and host
         void connect(std::string const& host, unsigned short port)
         {

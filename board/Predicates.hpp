@@ -19,8 +19,8 @@ template<typename Board, typename SQ>
 struct is_square
 :
         mpl::is_within_range<
-                boost::mpl::int_<0>,
                 SQ,
+                boost::mpl::int_<0>,
                 boost::mpl::int_<Board::ExternalGrid::size>
         >
 {};
@@ -29,13 +29,13 @@ template<typename Board, typename Color, typename SQ>
 struct is_initial
 :
         mpl::is_within_range<
+                boost::mpl::int_<
+                        Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row
+                >,
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::int_<((Board::height) - ((Board::height - Board::dmz) / 2))>,
                         boost::mpl::int_<0>
-                >,
-                boost::mpl::int_<
-                        Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row
                 >,
                 boost::mpl::eval_if<
                         Color,
@@ -154,8 +154,8 @@ struct is_jump_start
         boost::mpl::and_<
                 // row_min <= row < row_max
                 mpl::is_within_range<
-                        boost::mpl::eval_if< angle::is_up<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::int_<Square2Coordinates< Square<Grid, SQ::value> >::type::row>,
+                        boost::mpl::eval_if< angle::is_up<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus<
                                 boost::mpl::int_<Board::height>,
                                 boost::mpl::eval_if< angle::is_down<Index>, Offset, boost::mpl::int_<0> >
@@ -163,8 +163,8 @@ struct is_jump_start
                 >,
                 // col_min <= col < col_max
                 mpl::is_within_range<
-                        boost::mpl::eval_if< angle::is_left<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::int_<Square2Coordinates< Square<Grid, SQ::value> >::type::col>,
+                        boost::mpl::eval_if< angle::is_left<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus<
                                 boost::mpl::int_<Board::width>,
                                 boost::mpl::eval_if< angle::is_right<Index>, Offset, boost::mpl::int_<0> >
