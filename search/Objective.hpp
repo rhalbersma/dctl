@@ -1,10 +1,11 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/identity.hpp>       // identity
 #include "Score.hpp"
 #include "../bit/Bit.hpp"
 #include "../successor/Selection.hpp"
 #include "../successor/Successor.hpp"
-#include "../utility/Int2Type.hpp"
 
 namespace dctl {
 namespace search {
@@ -124,20 +125,26 @@ bool is_no_progress(Position<Rules, Board> const& p)
         // tag dispatching on restrictions on consecutive reversible moves
         return is_no_progress_dispatch<Rules>(
                 p,
-                Int2Type<rules::is_restricted_reversible_moves<Rules>::value>()
+                boost::mpl::identity<typename Rules::is_restricted_reversible_moves>()
         );
 }
 
 // partial specialization for no restrictions on consecutive reversible moves
 template<typename Position>
-bool is_no_progress_dispatch(Position const& /* p */, Int2Type<false>)
+bool is_no_progress_dispatch(
+        Position const& /* p */, 
+        boost::mpl::identity<boost::mpl::false_>
+)
 {
         return false;
 }
 
 // partial specialization for a maximum of consecutive reversible moves
 template<typename Rules, typename Board, template<typename, typename> class Position>
-bool is_no_progress_dispatch(Position<Rules, Board> const& p, Int2Type<true>)
+bool is_no_progress_dispatch(
+        Position<Rules, Board> const& p, 
+        boost::mpl::identity<boost::mpl::true_>
+)
 {
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }

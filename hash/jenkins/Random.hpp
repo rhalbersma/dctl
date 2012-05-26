@@ -45,14 +45,14 @@ private:
                 index ^= (index >> s);
         }
 
-        static const Index SIDE;                        // random number used in the mixing with the side to move
+        static Index const SIDE;                        // random number used in the mixing with the side to move
         static int const NUM_MIX = 4;                   // number of mixing steps
         static int const ADD_SHIFT_L[NUM_MIX];          // shift lengths used in the addition steps
         static int const XOR_SHIFT_R[NUM_MIX];          // shift lengths used in the exclusive-OR steps
 };
 
 template<typename Index>
-const Index Random<Index>::SIDE = 0xd2d84a61;
+Index const Random<Index>::SIDE = 0xd2d84a61;
 
 template<typename Index>
 int const Random<Index>::ADD_SHIFT_L[NUM_MIX] = { 25, 4,  8, 26 };
