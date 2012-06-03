@@ -1,7 +1,6 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include <boost/mpl/identity.hpp>       // identity
 #include <functional>                   // unary_function
 #include "Position_fwd.hpp"
 #include "Move.hpp"
@@ -170,19 +169,19 @@ private:
                 // tag dispatching on restrictions on consecutive moves with the same king
                 make_irreversible(
                         m,
-                        boost::mpl::identity<typename Rules::is_restricted_same_king_moves>()
+                        typename Rules::is_restricted_same_king_moves()
                 );
         }
 
         // partial specialization for restricted consecutive moves with the same king
         void make_irreversible(
                 Move const& m, 
-                boost::mpl::identity<boost::mpl::true_>
+                boost::mpl::true_
         )
         {
                 make_irreversible(
                         m, 
-                        boost::mpl::identity<boost::mpl::false_>()
+                        boost::mpl::false_()
                 );
                 make_restricted(m);
         }
@@ -190,7 +189,7 @@ private:
         // partial specialization for unrestricted consecutive moves with the same king
         void make_irreversible(
                 Move const& m, 
-                boost::mpl::identity<boost::mpl::false_>
+                boost::mpl::false_
         )
         {
                 make_reversible_moves(m);
@@ -348,7 +347,7 @@ BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color)
         // tag dispatching on restrictions on consecutive moves with the same king
         return detail::unrestricted_kings(
                 p, color,
-                boost::mpl::identity<typename Rules::is_restricted_same_king_moves>()
+                typename Rules::is_restricted_same_king_moves()
         );
 }
 
@@ -358,7 +357,7 @@ namespace detail {
 template<typename Rules, typename Board>
 BitBoard unrestricted_kings(
         Position<Rules, Board> const& p, bool color, 
-        boost::mpl::identity<boost::mpl::false_>
+        boost::mpl::false_
 )
 {
         return p.kings(color);
@@ -368,7 +367,7 @@ BitBoard unrestricted_kings(
 template<typename Rules, typename Board>
 BitBoard unrestricted_kings(
         Position<Rules, Board> const& p, bool color, 
-        boost::mpl::identity<boost::mpl::true_>
+        boost::mpl::true_
 )
 {
         if (p.kings(color) && p.pawns(color) && is_max<Rules>(p.restricted(color).moves()))

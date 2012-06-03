@@ -1,6 +1,5 @@
 #pragma once
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include <boost/mpl/identity.hpp>       // identity
 #include "Driver_fwd.hpp"
 #include "KingJumps.hpp"
 #include "PawnJumps.hpp"
@@ -59,7 +58,7 @@ private:
                 // tag dispatching on absolute king capture precedence
                 generate_dispatch(
                         p, capture,
-                        boost::mpl::identity<typename Rules::is_absolute_king_precedence>()
+                        typename Rules::is_absolute_king_precedence()
                 );
         }
 
@@ -67,7 +66,7 @@ private:
         template<template<typename, typename> class Position>
         static void generate_dispatch(
                 Position<Rules, Board> const& p, State& capture, 
-                boost::mpl::identity<boost::mpl::false_>
+                boost::mpl::false_
         )
         {
                 KingJumps::generate(p, capture);
@@ -78,7 +77,7 @@ private:
         template<template<typename, typename> class Position>
         static void generate_dispatch(
                 Position<Rules, Board> const& p, State& capture, 
-                boost::mpl::identity<boost::mpl::true_>
+                boost::mpl::true_
         )
         {
                 KingJumps::generate(p, capture);

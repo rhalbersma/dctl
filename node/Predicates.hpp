@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/mpl/identity.hpp>       // identity
 #include "../bit/Bit.hpp"
 #include "../rules/Enum.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -97,7 +96,7 @@ bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m)
         // tag dispatching on capture removal
         return detail::is_intersecting_capture(
                 p, m,
-                boost::mpl::identity<typename Rules::jump_removal>()
+                typename Rules::jump_removal()
         );
 }
 
@@ -107,7 +106,7 @@ namespace detail {
 template<typename Position, typename Move>
 bool is_intersecting_capture(
         Position const& /* p */, Move const& /* m */, 
-        boost::mpl::identity<rules::removal::apres_fini>
+        rules::removal::apres_fini
 )
 {
         return false;
@@ -117,7 +116,7 @@ bool is_intersecting_capture(
 template<typename Position, typename Move>
 bool is_intersecting_capture(
         Position const& p, Move const& m, 
-        boost::mpl::identity<rules::removal::en_passant>
+        rules::removal::en_passant
 )
 {
         // for intersecting captures, a man-capturing king can appear as a captured king

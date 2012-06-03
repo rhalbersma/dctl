@@ -11,7 +11,7 @@ template<typename T>
 struct Material_
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public PiecesInterface< T, Material_ >,
+        public PiecesInterface< Material_, T >,
         private boost::equality_comparable< Material_<T> >
 {
         enum Composition {
@@ -80,7 +80,7 @@ private:
 
         // queries
 
-        friend struct PiecesInterface< T, ::dctl::Material_ >;
+        friend struct PiecesInterface< ::dctl::Material_, T >;
 
         // black or white pawns
         T do_pawns(bool color) const
@@ -138,8 +138,8 @@ private:
 
         // representation
 
-        std::array<T, 2> pieces_;       // black and white pieces
-        T kings_;                       // kings
+        T pieces_[2];   // black and white pieces
+        T kings_;       // kings
 };
 
 typedef Material_<BitBoard> Material;

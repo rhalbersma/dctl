@@ -48,14 +48,14 @@ bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m);
 template<typename Position, typename Move>
 bool is_intersecting_capture(
         Position const& p, Move const& m, 
-        boost::mpl::identity<rules::removal::en_passant>
+        rules::removal::en_passant
 );
 
 // partial specialization for apres-fini capture removal
 template<typename Position, typename Move>
 bool is_intersecting_capture(
         Position const& /* p */, Move const& /* m */, 
-        boost::mpl::identity<rules::removal::apres_fini>
+        rules::removal::apres_fini
 );
 
 }       // namespace dctl

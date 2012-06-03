@@ -125,7 +125,7 @@ bool is_no_progress(Position<Rules, Board> const& p)
         // tag dispatching on restrictions on consecutive reversible moves
         return is_no_progress_dispatch<Rules>(
                 p,
-                boost::mpl::identity<typename Rules::is_restricted_reversible_moves>()
+                typename Rules::is_restricted_reversible_moves()
         );
 }
 
@@ -133,7 +133,7 @@ bool is_no_progress(Position<Rules, Board> const& p)
 template<typename Position>
 bool is_no_progress_dispatch(
         Position const& /* p */, 
-        boost::mpl::identity<boost::mpl::false_>
+        boost::mpl::false_
 )
 {
         return false;
@@ -143,7 +143,7 @@ bool is_no_progress_dispatch(
 template<typename Rules, typename Board, template<typename, typename> class Position>
 bool is_no_progress_dispatch(
         Position<Rules, Board> const& p, 
-        boost::mpl::identity<boost::mpl::true_>
+        boost::mpl::true_
 )
 {
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;

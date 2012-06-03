@@ -1,6 +1,5 @@
 #pragma once
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include <boost/mpl/identity.hpp>       // identity
 #include "Driver_fwd.hpp"
 #include "KingJumps.hpp"
 #include "Selection.hpp"
@@ -68,7 +67,7 @@ private:
                 // tag dispatching on whether pawns can capture kings
                 select_targets_dispatch(
                         p, capture,
-                        boost::mpl::identity<typename Rules::is_pawns_jump_kings>()
+                        typename Rules::is_pawns_jump_kings()
                 );
         }
 
@@ -76,13 +75,13 @@ private:
         template<template<typename, typename> class Position>
         static void select_targets_dispatch(
                 Position<Rules, Board> const& p, State& capture, 
-                boost::mpl::identity<boost::mpl::false_>
+                boost::mpl::false_
         )
         {
                 capture.toggle_king_targets();
                 select_targets_dispatch(
                         p, capture, 
-                        boost::mpl::identity<boost::mpl::true_>()
+                        boost::mpl::true_()
                 );
                 capture.toggle_king_targets();
         }
@@ -91,7 +90,7 @@ private:
         template<template<typename, typename> class Position>
         static void select_targets_dispatch(
                 Position<Rules, Board> const& p, State& capture, 
-                boost::mpl::identity<boost::mpl::true_>
+                boost::mpl::true_
         )
         {
                 generate(p.pawns(Color), capture);
@@ -102,24 +101,24 @@ private:
                 // tag dispatching on pawn capture directions
                 generate_dispatch(
                         active_pawns, capture,
-                        boost::mpl::identity<typename Rules::pawn_jump_directions>()
+                        typename Rules::pawn_jump_directions()
                 );
         }
 
         // partial specialization for pawns that capture in the 8 orthogonal and diagonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                boost::mpl::identity<rules::directions::all>
+                rules::directions::all
         )
         {
-                generate_dispatch(active_pawns, capture, boost::mpl::identity<rules::directions::orth>());
-                generate_dispatch(active_pawns, capture, boost::mpl::identity<rules::directions::diag>());
+                generate_dispatch(active_pawns, capture, rules::directions::orth());
+                generate_dispatch(active_pawns, capture, rules::directions::diag());
         }
 
         // partial specialization for pawns that capture in the 4 orthogonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                boost::mpl::identity<rules::directions::orth>
+                rules::directions::orth
         )
         {
                 generate<typename Direction::left >(active_pawns, capture);
@@ -131,17 +130,17 @@ private:
         // partial specialization for pawns that capture in the 4 diagonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                boost::mpl::identity<rules::directions::diag>
+                rules::directions::diag
         )
         {
-                generate_dispatch(active_pawns, capture, boost::mpl::identity<rules::directions::up  >());
-                generate_dispatch(active_pawns, capture, boost::mpl::identity<rules::directions::down>());
+                generate_dispatch(active_pawns, capture, rules::directions::up  ());
+                generate_dispatch(active_pawns, capture, rules::directions::down());
         }
 
         // partial specialization for pawns that capture in the 2 forward diagonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                boost::mpl::identity<rules::directions::up>
+                rules::directions::up
         )
         {
                 generate<typename Direction::left_up >(active_pawns, capture);
@@ -151,7 +150,7 @@ private:
         // partial specialization for pawns that capture in the 2 backward diagonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                boost::mpl::identity<rules::directions::down>
+                rules::directions::down
         )
         {
                 generate<typename Direction::left_down >(active_pawns, capture);
@@ -165,26 +164,26 @@ private:
                 // tag dispatching on pawn capture directions
                 return detect_dispatch(
                         active_pawns, passive_pieces, not_occupied,
-                        boost::mpl::identity<typename Rules::pawn_jump_directions>()
+                        typename Rules::pawn_jump_directions()
                 );
         }
 
         // partial specialization for pawns that capture in the 8 orthogonal and diagonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                boost::mpl::identity<rules::directions::all>
+                rules::directions::all
         )
         {
                 return (
-                        detect_dispatch(active_pawns, passive_pieces, not_occupied, boost::mpl::identity<rules::directions::orth>()) ||
-                        detect_dispatch(active_pawns, passive_pieces, not_occupied, boost::mpl::identity<rules::directions::diag>())
+                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::directions::orth()) ||
+                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::directions::diag())
                 );
         }
 
         // partial specialization for pawns that capture in the 4 orthogonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                boost::mpl::identity<rules::directions::orth>
+                rules::directions::orth
         )
         {
                 return (
@@ -198,19 +197,19 @@ private:
         // partial specialization for pawns that capture in the 4 diagonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                boost::mpl::identity<rules::directions::diag>
+                rules::directions::diag
         )
         {
                 return (
-                        detect_dispatch(active_pawns, passive_pieces, not_occupied, boost::mpl::identity<rules::directions::up  >()) ||
-                        detect_dispatch(active_pawns, passive_pieces, not_occupied, boost::mpl::identity<rules::directions::down>())
+                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::directions::up  ()) ||
+                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::directions::down())
                 );
         }
 
         // partial specialization for pawns that capture in the 2 forward diagonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                boost::mpl::identity<rules::directions::up>
+                rules::directions::up
         )
         {
                 return (
@@ -222,7 +221,7 @@ private:
         // partial specialization for pawns that capture in the 2 backward diagonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                boost::mpl::identity<rules::directions::down>
+                rules::directions::down
         )
         {
                 return (
@@ -270,7 +269,7 @@ private:
                 // tag dispatching on promotion condition
                 return scan_next_dispatch<Index>(
                         jumper, capture,
-                        boost::mpl::identity<typename Rules::pawn_promotion>()
+                        typename Rules::pawn_promotion()
                 );
         }
 
@@ -278,7 +277,7 @@ private:
         template<typename Index>
         static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, 
-                boost::mpl::identity<rules::promotion::apres_fini>
+                rules::promotion::apres_fini
         )
         {
                 return (
@@ -291,13 +290,13 @@ private:
         template<typename Index>
         static bool scan_next_dispatch(
                 BitBoard jumper, State& capture, 
-                boost::mpl::identity<rules::promotion::en_passant>
+                rules::promotion::en_passant
         )
         {
                 if (!is_promotion_sq<Color, Board>(jumper))
                         return scan_next_dispatch<Index>(
                                 jumper, capture, 
-                                boost::mpl::identity<rules::promotion::apres_fini>()
+                                rules::promotion::apres_fini()
                         );
                 else {
                         capture.toggle_promotion();
@@ -313,7 +312,7 @@ private:
                 // tag dispatching on man turn directions
                 return turn_dispatch<Index>(
                         jumper, capture,
-                        boost::mpl::identity<typename Rules::pawn_turn_directions>()
+                        typename Rules::pawn_turn_directions()
                 );
         }
 
@@ -321,12 +320,12 @@ private:
         template<typename Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
-                boost::mpl::identity<rules::directions::all>
+                rules::directions::all
         )
         {
                 return (
-                        turn_dispatch<Index>(jumper, capture, boost::mpl::identity<rules::directions::orth>()) |
-                        turn_dispatch<Index>(jumper, capture, boost::mpl::identity<rules::directions::diag>())
+                        turn_dispatch<Index>(jumper, capture, rules::directions::orth()) |
+                        turn_dispatch<Index>(jumper, capture, rules::directions::diag())
                 );
         }
 
@@ -334,7 +333,7 @@ private:
         template<typename Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
-                boost::mpl::identity<rules::directions::orth>
+                rules::directions::orth
         )
         {
                 return (
@@ -349,7 +348,7 @@ private:
         template<typename Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
-                boost::mpl::identity<rules::directions::diag>
+                rules::directions::diag
         )
         {
                 return (
@@ -362,7 +361,7 @@ private:
         template<typename Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
-                boost::mpl::identity<rules::directions::up>
+                rules::directions::up
         )
         {
                 return scan< typename mirror< Index, typename Direction::up >::type >(jumper, capture);
@@ -372,7 +371,7 @@ private:
         template<typename Index>
         static bool turn_dispatch(
                 BitBoard jumper, State& capture, 
-                boost::mpl::identity<rules::directions::down>
+                rules::directions::down
         )
         {
                 return scan< typename mirror< Index, typename Direction::down >::type >(jumper, capture);
