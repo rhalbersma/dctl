@@ -1,6 +1,5 @@
 #pragma once
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include <boost/mpl/identity.hpp>       // identity
 #include "Driver_fwd.hpp"
 #include "Selection.hpp"
 #include "../bit/Bit.hpp"
@@ -52,14 +51,14 @@ private:
                 // tag dispatching on restrictions on consecutive moves with the same king
                 serialize_dispatch(
                         active_kings, not_occupied, moves,
-                        boost::mpl::identity<typename Rules::is_restricted_same_king_moves>()
+                        typename Rules::is_restricted_same_king_moves()
                 );
         }
 
         // partial specialization for unrestricted consecutive moves with the same king
         static void serialize_dispatch(
                 BitBoard active_kings, BitBoard not_occupied, Stack& moves, 
-                boost::mpl::identity<boost::mpl::false_>
+                boost::mpl::false_
         )
         {
                 // loop cannot be empty because all active kings detected during
@@ -74,7 +73,7 @@ private:
         // partial specialization for restricted consecutive moves with the same king
         static void serialize_dispatch(
                 BitBoard active_kings, BitBoard not_occupied, Stack& moves, 
-                boost::mpl::identity<boost::mpl::true_>
+                boost::mpl::true_
         )
         {
                 // loop could be empty if the single active king detected during
@@ -119,7 +118,7 @@ private:
                 // tag dispatching on king range
                 return generate_dispatch<Index>(
                         from_sq, not_occupied, moves,
-                        boost::mpl::identity<typename Rules::king_range>()
+                        typename Rules::king_range()
                 );
         }
 
@@ -127,7 +126,7 @@ private:
         template<typename Index>
         static void generate_dispatch(
                 BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
-                boost::mpl::identity<rules::range::distance_1>
+                rules::range::distance_1
         )
         {
                 if (auto const dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
@@ -138,7 +137,7 @@ private:
         template<typename Index>
         static void generate_dispatch(
                 BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
-                boost::mpl::identity<rules::range::distance_N>
+                rules::range::distance_N
         )
         {
                 for (

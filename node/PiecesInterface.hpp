@@ -5,8 +5,8 @@ namespace dctl {
 
 template
 <
-        typename T,
-        template<typename> class Impl
+        template<typename> class Impl,
+        typename T
 >
 struct PiecesInterface
 :

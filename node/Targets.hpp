@@ -1,6 +1,5 @@
 #pragma once
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include <boost/mpl/identity.hpp>       // identity
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -11,7 +10,7 @@ static BitBoard targets(Position<Rules, Board> const& p)
         // tag dispatching on whether pawns can capture kings
         return detail::targets<Color>(
                 p, 
-                boost::mpl::identity<typename Rules::is_pawns_jump_kings>()
+                typename Rules::is_pawns_jump_kings()
         );
 }
 
@@ -21,7 +20,7 @@ namespace detail {
 template<bool Color, typename Position>
 static BitBoard targets(
         Position const& p, 
-        boost::mpl::identity<boost::mpl::false_>
+        boost::mpl::false_
 )
 {
         return p.pawns(!Color);
@@ -31,7 +30,7 @@ static BitBoard targets(
 template<bool Color, typename Position>
 static BitBoard targets(
         Position const& p, 
-        boost::mpl::identity<boost::mpl::true_>
+        boost::mpl::true_
 )
 {
         return p.pieces(!Color);

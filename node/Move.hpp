@@ -16,7 +16,7 @@ template<typename T>
 struct Move_
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public PiecesInterface< T, Move_ >,
+        public PiecesInterface< Move_, T >,
         private boost::equality_comparable< Move_<T>, 
         boost::xorable< Move_<T> > >
 {
@@ -140,7 +140,7 @@ private:
 
         // queries
 
-        friend struct PiecesInterface< T, ::dctl::Move_ >;
+        friend struct PiecesInterface< ::dctl::Move_, T >;
 
         // black or white pawns
         T do_pawns(bool color) const
@@ -270,8 +270,8 @@ private:
 
         // representation
 
-        std::array<T, 2> pieces_;       // black and white pieces
-        T kings_;                       // kings
+        T pieces_[2];   // black and white pieces
+        T kings_;       // kings
 };
 
 template<typename Rules, typename T>
@@ -280,7 +280,7 @@ bool is_intersecting_capture(T delta, T captured_pieces)
         // tag dispatching on capture removal
         return detail::is_intersecting_capture(
                 delta, captured_pieces,
-                boost::mpl::identity<typename Rules::jump_removal>()
+                typename Rules::jump_removal()
         );
 }
 
@@ -290,7 +290,7 @@ bool is_intersecting_promotion(T promotion, T delta)
         // tag dispatching on promotion condition
         return detail::is_intersecting_promotion(
                 promotion, delta,
-                boost::mpl::identity<typename Rules::pawn_promotion>()
+                typename Rules::pawn_promotion()
         );
 }
 
@@ -300,7 +300,7 @@ namespace detail {
 template<typename T>
 bool is_intersecting_capture(
         T /* delta */, T /* captured_pieces */,
-        boost::mpl::identity<rules::removal::apres_fini>
+        rules::removal::apres_fini
 )
 {
         return false;
@@ -310,7 +310,7 @@ bool is_intersecting_capture(
 template<typename T>
 bool is_intersecting_capture(
         T delta, T captured_pieces,
-        boost::mpl::identity<rules::removal::en_passant>
+        rules::removal::en_passant
 )
 {
         // [FEN "W:WK25:B8,9,20,23,24"] (Thai draughts)
@@ -322,7 +322,7 @@ bool is_intersecting_capture(
 template<typename T>
 bool is_intersecting_promotion(
         T /* promotion */, T /* delta */,
-        boost::mpl::identity<rules::promotion::apres_fini>
+        rules::promotion::apres_fini
 )
 {
         return false;
@@ -332,7 +332,7 @@ bool is_intersecting_promotion(
 template<typename T>
 bool is_intersecting_promotion(
         T promotion, T delta,
-        boost::mpl::identity<rules::promotion::en_passant>
+        rules::promotion::en_passant
 )
 {
         // [FEN "W:W15:B10,13,20,23"] (Russian draughts)

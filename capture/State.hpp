@@ -63,7 +63,7 @@ public:
                 // tag dispatching on capture removal
                 make_dispatch(
                         target_sq,
-                        boost::mpl::identity<typename Rules::jump_removal>()
+                        typename Rules::jump_removal()
                 );
                 BOOST_ASSERT(invariant());
         }
@@ -73,7 +73,7 @@ public:
                 // tag dispatching on capture removal
                 undo_dispatch(
                         target_sq,
-                        boost::mpl::identity<typename Rules::jump_removal>()
+                        typename Rules::jump_removal()
                 );
                 BOOST_ASSERT(invariant());
         }
@@ -109,7 +109,7 @@ public:
                 // tag dispatching on ambiguity of pawn captures
                 add_pawn_jump_dispatch<Color>(
                         dest_sq,
-                        boost::mpl::identity<typename Rules::is_ambiguous_pawn_jump>()
+                        typename Rules::is_ambiguous_pawn_jump()
                 );
         }
 
@@ -121,7 +121,7 @@ public:
                 // tag dispatching on king halt after final capture
                 add_king_jump_dispatch<Color, Index>(
                         dest_sq, ambiguous,
-                        boost::mpl::identity<typename Rules::halt_range>()
+                        typename Rules::halt_range()
                 );
         }
 
@@ -167,7 +167,7 @@ private:
         // specialization for apres-fini capture removal
         void make_dispatch(
                 BitBoard target_sq, 
-                boost::mpl::identity<rules::removal::apres_fini>
+                rules::removal::apres_fini
         )
         {
                 remaining_targets_ ^= target_sq;
@@ -177,21 +177,21 @@ private:
         // specialization for en-passant capture removal
         void make_dispatch(
                 BitBoard target_sq, 
-                boost::mpl::identity<rules::removal::en_passant>
+                rules::removal::en_passant
         )
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_removal, rules::removal::en_passant>));
                 not_occupied_ ^= target_sq;
                 make_dispatch(
                         target_sq, 
-                        boost::mpl::identity<rules::removal::apres_fini>()
+                        rules::removal::apres_fini()
                 );
         }
 
         // specialization for apres-fini capture removal
         void undo_dispatch(
                 BitBoard target_sq, 
-                boost::mpl::identity<rules::removal::apres_fini>
+                rules::removal::apres_fini
         )
         {
                 decrement(is_captured_king(target_sq));
@@ -201,13 +201,13 @@ private:
         // specialization for en-passant capture removal
         void undo_dispatch(
                 BitBoard target_sq, 
-                boost::mpl::identity<rules::removal::en_passant>
+                rules::removal::en_passant
         )
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_removal, rules::removal::en_passant>));
                 undo_dispatch(
                         target_sq, 
-                        boost::mpl::identity<rules::removal::apres_fini>()
+                        rules::removal::apres_fini()
                 );
                 not_occupied_ ^= target_sq;
         }
@@ -217,14 +217,14 @@ private:
                 // tag dispatching on the type of capture precedence
                 increment_dispatch(
                         is_captured_king,
-                        boost::mpl::identity<typename Rules::jump_precedence>()
+                        typename Rules::jump_precedence()
                 );
         }
 
         // specialization for no capture precedence
         void increment_dispatch(
                 bool /* is_captured_king */, 
-                boost::mpl::identity<rules::precedence::none>
+                rules::precedence::none
         )
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_precedence, rules::precedence::none>));
@@ -233,7 +233,7 @@ private:
         // specialization for quantity precedence
         void increment_dispatch(
                 bool /* is_captured_king */, 
-                boost::mpl::identity<rules::precedence::quantity>
+                rules::precedence::quantity
         )
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_precedence, rules::precedence::quantity>));
@@ -243,7 +243,7 @@ private:
         // specialization for quality precedence
         void increment_dispatch(
                 bool is_captured_king, 
-                boost::mpl::identity<rules::precedence::quality>
+                rules::precedence::quality
         )
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_precedence, rules::precedence::quality>));
@@ -255,14 +255,14 @@ private:
                 // tag dispatching on the type of capture precedence
                 decrement_dispatch(
                         is_captured_king,
-                        boost::mpl::identity<typename Rules::jump_precedence>()
+                        typename Rules::jump_precedence()
                 );
         }
 
         // specialization for no capture precedence
         void decrement_dispatch(
                 bool /* is_captured_king */, 
-                boost::mpl::identity<rules::precedence::none>
+                rules::precedence::none
         )
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_precedence, rules::precedence::none>));
@@ -271,7 +271,7 @@ private:
         // specialization for quantity precedence
         void decrement_dispatch(
                 bool /* is_captured_king */, 
-                boost::mpl::identity<rules::precedence::quantity>
+                rules::precedence::quantity
         )
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_precedence, rules::precedence::quantity>));
@@ -281,7 +281,7 @@ private:
         // specialization for quality precedence
         void decrement_dispatch(
                 bool is_captured_king, 
-                boost::mpl::identity<rules::precedence::quality>
+                rules::precedence::quality
         )
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_precedence, rules::precedence::quality>));
@@ -298,7 +298,7 @@ private:
         template<bool Color>
         void add_pawn_jump_dispatch(
                 BitBoard dest_sq, 
-                boost::mpl::identity<boost::mpl::false_>
+                boost::mpl::false_
         ) const // modifies Stack& moves_
         {
                 moves_.push_back(
@@ -315,11 +315,11 @@ private:
         template<bool Color>
         void add_pawn_jump_dispatch(
                 BitBoard dest_sq, 
-                boost::mpl::identity<boost::mpl::true_>
+                boost::mpl::true_
         ) const // modifies Stack& moves_
         {
                 auto const ambiguous = is_ambiguous();
-                add_pawn_jump_dispatch<Color>(dest_sq, boost::mpl::identity<boost::mpl::false_>());
+                add_pawn_jump_dispatch<Color>(dest_sq, boost::mpl::false_());
                 if (ambiguous)
                         unique_back();
         }
@@ -329,18 +329,18 @@ private:
         template<bool Color, typename Index>
         void add_king_jump_dispatch(
                 BitBoard dest_sq, bool ambiguous, 
-                boost::mpl::identity<rules::range::distance_1K>
+                rules::range::distance_1K
         ) const // modifies Stack& moves_
         {
                 if (king_targets_ & Pull<Board, Index>()(dest_sq))
                         add_king_jump_dispatch<Color, Index>(
                                 dest_sq, ambiguous, 
-                                boost::mpl::identity<rules::range::distance_1>()
+                                rules::range::distance_1()
                         );
                 else
                         add_king_jump_dispatch<Color, Index>(
                                 dest_sq, ambiguous, 
-                                boost::mpl::identity<rules::range::distance_N>()
+                                rules::range::distance_N()
                         );
         }
 
@@ -348,7 +348,7 @@ private:
         template<bool Color, typename Index>
         void add_king_jump_dispatch(
                 BitBoard dest_sq, bool ambiguous, 
-                boost::mpl::identity<rules::range::distance_1>
+                rules::range::distance_1
         ) const // modifies Stack& moves_
         {
                 add_king_jump<Color>(dest_sq, ambiguous);
@@ -358,7 +358,7 @@ private:
         template<bool Color, typename Index>
         void add_king_jump_dispatch(
                 BitBoard dest_sq, bool ambiguous, 
-                boost::mpl::identity<rules::range::distance_N>
+                rules::range::distance_N
         ) const // modifies Stack& moves_
         {
                 BOOST_ASSERT(dest_sq & path());
@@ -374,7 +374,7 @@ private:
                 // tag dispatching on promotion condition
                 add_king_jump_dispatch<Color>(
                         dest_sq,
-                        boost::mpl::identity<typename Rules::pawn_promotion>()
+                        typename Rules::pawn_promotion()
                 );
                 if (ambiguous)
                         unique_back();
@@ -384,7 +384,7 @@ private:
         template<bool Color>
         void add_king_jump_dispatch(
                 BitBoard dest_sq, 
-                boost::mpl::identity<rules::promotion::apres_fini>
+                rules::promotion::apres_fini
         ) const // modifies Stack& moves_
         {
                 moves_.push_back(
@@ -400,13 +400,13 @@ private:
         template<bool Color>
         void add_king_jump_dispatch(
                 BitBoard dest_sq, 
-                boost::mpl::identity<rules::promotion::en_passant>
+                rules::promotion::en_passant
         ) const // modifies Stack& moves_
         {
                 if (!is_promotion())
                         add_king_jump_dispatch<Color>(
                                 dest_sq, 
-                                boost::mpl::identity<rules::promotion::apres_fini>()
+                                rules::promotion::apres_fini()
                         );
                 else
                         moves_.push_back(
@@ -454,13 +454,13 @@ private:
         {
                 // tag dispatching on majority capture precedence
                 return count_dispatch(
-                        boost::mpl::identity<typename Rules::is_majority_precedence>()
+                        typename Rules::is_majority_precedence()
                 );
         }
 
         // specialization for no majority capture precedence
         int count_dispatch(
-                boost::mpl::identity<boost::mpl::false_>
+                boost::mpl::false_
         ) const
         {
                 BOOST_MPL_ASSERT_NOT((boost::mpl::identity<typename Rules::is_majority_precedence>));
@@ -469,7 +469,7 @@ private:
 
         // specialization for majority capture precedence
         int count_dispatch(
-                boost::mpl::identity<boost::mpl::true_>
+                boost::mpl::true_
         ) const
         {
                 BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_majority_precedence>));
@@ -490,13 +490,13 @@ private:
         {
                 // tag dispatching on whether pawns can capture kings
                 return pawn_captured_kings_dispatch(
-                        boost::mpl::identity<typename Rules::is_pawns_jump_kings>()
+                        typename Rules::is_pawns_jump_kings()
                 );
         }
 
         // specialization for pawns that cannot capture kings
         BitBoard pawn_captured_kings_dispatch(
-                boost::mpl::identity<boost::mpl::false_>
+                boost::mpl::false_
         ) const
         {
                 BOOST_MPL_ASSERT_NOT((boost::mpl::identity<typename Rules::is_pawns_jump_kings>));
@@ -505,7 +505,7 @@ private:
 
         // specialization for pawns that can capture kings
         BitBoard pawn_captured_kings_dispatch(
-                boost::mpl::identity<boost::mpl::true_>
+                boost::mpl::true_
         ) const
         {
                 BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_pawns_jump_kings>));
