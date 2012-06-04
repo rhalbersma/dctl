@@ -1,4 +1,5 @@
 #pragma once
+#include <limits>                       // numeric_limits
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"                // Value (primary template)
@@ -36,6 +37,7 @@ public:
 
         void decrement()
         {
+                BOOST_ASSERT(!empty());
                 --num_pieces_;
                 BOOST_ASSERT(invariant());
         }
@@ -62,7 +64,12 @@ public:
 private:
         bool invariant() const
         {
-                return 0 <= num_pieces_;
+                return 0 <= num_pieces_ && num_pieces_ < std::numeric_limits<int>::max();
+        }
+
+        bool empty() const
+        {
+                return num_pieces_ == 0;
         }
 
         // representation
