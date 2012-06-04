@@ -2,6 +2,7 @@
 #include "boost/mpl/int_fwd.hpp"        // int_
 #include "../board/Angle.hpp"
 #include "../board/Traits.hpp"
+#include "../rules/Enum.hpp"
 
 namespace dctl {
 namespace angle {
@@ -146,7 +147,7 @@ struct PullAssign
 };
 
 // direction-wise flood-fill generator over propagator
-template<bool Sign, size_t N, typename T>
+template<bool Sign, int N, typename T>
 T flood_fill(T generator, T propagator)
 {
         return fill_loop<Sign, N>(generator, propagator);
@@ -154,7 +155,7 @@ T flood_fill(T generator, T propagator)
 
 // Chess Programming Wiki, "Fill Loop" algorithm
 // http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
-template<bool Sign, size_t N, typename T>
+template<bool Sign, int N, typename T>
 T fill_loop(T generator, T propagator)
 {
         T flood(0);
@@ -169,11 +170,11 @@ T fill_loop(T generator, T propagator)
 enum { L, R };
 
 // primary template
-template<bool, size_t>
+template<bool, int>
 struct Shift;
 
 // partial specialization for bitwise shift-left
-template<size_t N>
+template<int N>
 struct Shift<L, N>
 {
         template<typename T>
@@ -184,7 +185,7 @@ struct Shift<L, N>
 };
 
 // partial specialization for bitwise shift-right
-template<size_t N>
+template<int N>
 struct Shift<R, N>
 {
         template<typename T>
@@ -195,11 +196,11 @@ struct Shift<R, N>
 };
 
 // primary template
-template<bool, size_t>
+template<bool, int>
 struct ShiftAssign;
 
 // partial specialization for bitwise shift-left assignment
-template<size_t N>
+template<int N>
 struct ShiftAssign<L, N>
 {
         template<typename T>
@@ -210,7 +211,7 @@ struct ShiftAssign<L, N>
 };
 
 // partial specialization for bitwise shift-right assignment
-template<size_t N>
+template<int N>
 struct ShiftAssign<R, N>
 {
         template<typename T>
