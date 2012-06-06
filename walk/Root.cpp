@@ -42,17 +42,12 @@ private:
 
 BOOST_AUTO_TEST_SUITE(TestPerft)
 
-std::string s = "W:B1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20:W31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50";
-
 // The original perft thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308
 
 BOOST_FIXTURE_TEST_CASE(InternationalInitial, Fixture)
 {
-        //auto const p = Position<rules::International, board::International>::initial();
-        auto const p = setup::read<rules::International, board::International, pdn::protocol>()(
-                s
-        );
+        auto const p = Position<rules::International, board::International>::initial();
         const NodeCount leafs[] = { 9, 81, 658, 4265, 27117, 167140, 1049442, 6483961, 41022423, 258895763, 1665861398 };
         run(p, leafs);
 }
@@ -80,10 +75,7 @@ BOOST_FIXTURE_TEST_CASE(InternationalWoldouby, Fixture)
 
 BOOST_FIXTURE_TEST_CASE(FrisianInitial, Fixture)
 {
-        //auto const p = Position<rules::Frisian, board::International>::initial();
-        auto const p = setup::read<rules::Frisian, board::International, pdn::protocol>()(
-                s
-        );
+        auto const p = Position<rules::Frisian, board::International>::initial();
         const NodeCount leafs[] = { 9, 81, 658, 3874, 21265, 102431, 540126, 2825779, 15605069, 85817725, 491186430 };
         run(p, leafs);
 }
