@@ -44,7 +44,7 @@ public:
         // initial position
         static Position initial()
         {
-                return Position(Board::INITIAL[Side::black], Board::INITIAL[Side::white], 0, Side::white);
+                return Position(Board::initial_mask[Side::black], Board::initial_mask[Side::white], 0, Side::white);
         }
 
         // queries

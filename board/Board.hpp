@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/preprocessor/repetition.hpp>
 #include "Grid.hpp"
 #include "MetaTemplates.hpp"
 #include "Structure.hpp"
@@ -32,8 +33,8 @@ public:
 
         // essential bitboard masks
         static BitBoard const squares;                          // bit mask of legal squares, excluding borders
-        static BitBoard const INITIAL[];                        // initial position
-        static BitBoard const PROMOTION[][2];                   // promotion zones
+        static BitBoard const initial_mask[];                   // initial position
+        static BitBoard const promotion_mask[][2];              // promotion zones
         static BitBoard const row_mask[][12];                   // bit masks for the rows
         static BitBoard const col_mask[][12];                   // bit masks for the columns
 
@@ -53,92 +54,60 @@ private:
         // square to bit and bit to square conversion tables
         static int const SQUARE2BIT[];                          // convert a square to a bit
         static int const BIT2SQUARE[];                          // convert a bit to a square
+
+        /*
+
+        TODO: use C++11 template aliases
+
+        template<typename A> 
+        using do_init_jump_start = 
+                init_jump_start< Board, rotate< A, typename Structure::full_angle > >;
+
+        */
+
+        template<typename A>
+        struct do_init_jump_start
+        :
+                init_jump_start< Board, rotate< A, typename Structure::full_angle > >
+        {};
 };
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::squares = init_squares<Board>::value;
 
 template<typename Dimensions, typename Structure>
-BitBoard const Board<Dimensions, Structure>::INITIAL[] = {
+BitBoard const Board<Dimensions, Structure>::initial_mask[] = {
         init_initial< Board, Side::black >::value,
         init_initial< Board, Side::white >::value
 };
 
+#define MACRO_row_mask(z, i, data)      \
+        init_row_mask<Board, data, i>::value
+
 template<typename Dimensions, typename Structure>
-BitBoard const Board<Dimensions, Structure>::PROMOTION[][2] = {
-        {
-                init_row_mask<Board, Side::white, 0>::value,
-                init_row_mask<Board, Side::white, 1>::value
-        },
-        {
-                init_row_mask<Board, Side::black, 0>::value,
-                init_row_mask<Board, Side::black, 1>::value
-        }
+BitBoard const Board<Dimensions, Structure>::promotion_mask[][2] = {
+        { BOOST_PP_ENUM(2, MACRO_row_mask, Side::white) },
+        { BOOST_PP_ENUM(2, MACRO_row_mask, Side::black) }
 };
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::row_mask[][12] = {
-        {
-                init_row_mask<Board, Side::black,  0>::value,
-                init_row_mask<Board, Side::black,  1>::value,
-                init_row_mask<Board, Side::black,  2>::value,
-                init_row_mask<Board, Side::black,  3>::value,
-                init_row_mask<Board, Side::black,  4>::value,
-                init_row_mask<Board, Side::black,  5>::value,
-                init_row_mask<Board, Side::black,  6>::value,
-                init_row_mask<Board, Side::black,  7>::value,
-                init_row_mask<Board, Side::black,  8>::value,
-                init_row_mask<Board, Side::black,  9>::value,
-                init_row_mask<Board, Side::black, 10>::value,
-                init_row_mask<Board, Side::black, 11>::value,
-        },
-        {
-                init_row_mask<Board, Side::white,  0>::value,
-                init_row_mask<Board, Side::white,  1>::value,
-                init_row_mask<Board, Side::white,  2>::value,
-                init_row_mask<Board, Side::white,  3>::value,
-                init_row_mask<Board, Side::white,  4>::value,
-                init_row_mask<Board, Side::white,  5>::value,
-                init_row_mask<Board, Side::white,  6>::value,
-                init_row_mask<Board, Side::white,  7>::value,
-                init_row_mask<Board, Side::white,  8>::value,
-                init_row_mask<Board, Side::white,  9>::value,
-                init_row_mask<Board, Side::white, 10>::value,
-                init_row_mask<Board, Side::white, 11>::value,
-        }
+        { BOOST_PP_ENUM(12, MACRO_row_mask, Side::black) },
+        { BOOST_PP_ENUM(12, MACRO_row_mask, Side::white) }
 };
+
+#undef MACRO_row_mask
+
+#define MACRO_col_mask(z, i, data)      \
+        init_col_mask<Board, data, i>::value
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::col_mask[][12] = {
-        {
-                init_col_mask<Board, Side::black,  0>::value,
-                init_col_mask<Board, Side::black,  1>::value,
-                init_col_mask<Board, Side::black,  2>::value,
-                init_col_mask<Board, Side::black,  3>::value,
-                init_col_mask<Board, Side::black,  4>::value,
-                init_col_mask<Board, Side::black,  5>::value,
-                init_col_mask<Board, Side::black,  6>::value,
-                init_col_mask<Board, Side::black,  7>::value,
-                init_col_mask<Board, Side::black,  8>::value,
-                init_col_mask<Board, Side::black,  9>::value,
-                init_col_mask<Board, Side::black, 10>::value,
-                init_col_mask<Board, Side::black, 11>::value,
-        },
-        {
-                init_col_mask<Board, Side::white,  0>::value,
-                init_col_mask<Board, Side::white,  1>::value,
-                init_col_mask<Board, Side::white,  2>::value,
-                init_col_mask<Board, Side::white,  3>::value,
-                init_col_mask<Board, Side::white,  4>::value,
-                init_col_mask<Board, Side::white,  5>::value,
-                init_col_mask<Board, Side::white,  6>::value,
-                init_col_mask<Board, Side::white,  7>::value,
-                init_col_mask<Board, Side::white,  8>::value,
-                init_col_mask<Board, Side::white,  9>::value,
-                init_col_mask<Board, Side::white, 10>::value,
-                init_col_mask<Board, Side::white, 11>::value,
-        }
+        { BOOST_PP_ENUM(12, MACRO_col_mask, Side::black) },
+        { BOOST_PP_ENUM(12, MACRO_col_mask, Side::white) }
 };
+
+#undef MACRO_col_mask
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
@@ -160,14 +129,14 @@ BitBoard const Board<Dimensions, Structure>::jump_group[] = {
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::jump_start[] = {
-        init_jump_start< Board, rotate< angle::D000, Board::full_angle > >::value,
-        init_jump_start< Board, rotate< angle::D045, Board::full_angle > >::value,
-        init_jump_start< Board, rotate< angle::D090, Board::full_angle > >::value,
-        init_jump_start< Board, rotate< angle::D135, Board::full_angle > >::value,
-        init_jump_start< Board, rotate< angle::D180, Board::full_angle > >::value,
-        init_jump_start< Board, rotate< angle::D225, Board::full_angle > >::value,
-        init_jump_start< Board, rotate< angle::D270, Board::full_angle > >::value,
-        init_jump_start< Board, rotate< angle::D315, Board::full_angle > >::value
+        Board::do_init_jump_start< angle::D000 >::value,
+        Board::do_init_jump_start< angle::D045 >::value,
+        Board::do_init_jump_start< angle::D090 >::value,
+        Board::do_init_jump_start< angle::D135 >::value,
+        Board::do_init_jump_start< angle::D180 >::value,
+        Board::do_init_jump_start< angle::D225 >::value,
+        Board::do_init_jump_start< angle::D270 >::value,
+        Board::do_init_jump_start< angle::D315 >::value
 };
 
 template<typename Dimensions, typename Structure>
@@ -200,45 +169,25 @@ int Board<Dimensions, Structure>::bit2square(int b)
         return BIT2SQUARE[b];
 }
 
+#define MACRO_square_to_bit(z, i, data) \
+        square_to_bit<Board, i>::type::value
+
 template<typename Dimensions, typename Structure>
 int const Board<Dimensions, Structure>::SQUARE2BIT[] = {
-        square_to_bit<Board,  0>::type::value, square_to_bit<Board,  1>::type::value, square_to_bit<Board,  2>::type::value, square_to_bit<Board,  3>::type::value,
-        square_to_bit<Board,  4>::type::value, square_to_bit<Board,  5>::type::value, square_to_bit<Board,  6>::type::value, square_to_bit<Board,  7>::type::value,
-        square_to_bit<Board,  8>::type::value, square_to_bit<Board,  9>::type::value, square_to_bit<Board, 10>::type::value, square_to_bit<Board, 11>::type::value,
-        square_to_bit<Board, 12>::type::value, square_to_bit<Board, 13>::type::value, square_to_bit<Board, 14>::type::value, square_to_bit<Board, 15>::type::value,
-        square_to_bit<Board, 16>::type::value, square_to_bit<Board, 17>::type::value, square_to_bit<Board, 18>::type::value, square_to_bit<Board, 19>::type::value,
-        square_to_bit<Board, 20>::type::value, square_to_bit<Board, 21>::type::value, square_to_bit<Board, 22>::type::value, square_to_bit<Board, 23>::type::value,
-        square_to_bit<Board, 24>::type::value, square_to_bit<Board, 25>::type::value, square_to_bit<Board, 26>::type::value, square_to_bit<Board, 27>::type::value,
-        square_to_bit<Board, 28>::type::value, square_to_bit<Board, 29>::type::value, square_to_bit<Board, 30>::type::value, square_to_bit<Board, 31>::type::value,
-        square_to_bit<Board, 32>::type::value, square_to_bit<Board, 33>::type::value, square_to_bit<Board, 34>::type::value, square_to_bit<Board, 35>::type::value,
-        square_to_bit<Board, 36>::type::value, square_to_bit<Board, 37>::type::value, square_to_bit<Board, 38>::type::value, square_to_bit<Board, 39>::type::value,
-        square_to_bit<Board, 40>::type::value, square_to_bit<Board, 41>::type::value, square_to_bit<Board, 42>::type::value, square_to_bit<Board, 43>::type::value,
-        square_to_bit<Board, 44>::type::value, square_to_bit<Board, 45>::type::value, square_to_bit<Board, 46>::type::value, square_to_bit<Board, 47>::type::value,
-        square_to_bit<Board, 48>::type::value, square_to_bit<Board, 49>::type::value, square_to_bit<Board, 50>::type::value, square_to_bit<Board, 51>::type::value,
-        square_to_bit<Board, 52>::type::value, square_to_bit<Board, 53>::type::value, square_to_bit<Board, 54>::type::value, square_to_bit<Board, 55>::type::value,
-        square_to_bit<Board, 56>::type::value, square_to_bit<Board, 57>::type::value, square_to_bit<Board, 58>::type::value, square_to_bit<Board, 59>::type::value,
-        square_to_bit<Board, 60>::type::value, square_to_bit<Board, 61>::type::value, square_to_bit<Board, 62>::type::value, square_to_bit<Board, 63>::type::value
+        BOOST_PP_ENUM(64, MACRO_square_to_bit, ~)
 };
+
+#undef MACRO_square_to_bit
+
+#define MACRO_bit_to_square(z, i, data) \
+        bit_to_square<Board, i>::type::value
 
 template<typename Dimensions, typename Structure>
 int const Board<Dimensions, Structure>::BIT2SQUARE[] = {
-        bit_to_square<Board,  0>::type::value, bit_to_square<Board,  1>::type::value, bit_to_square<Board,  2>::type::value, bit_to_square<Board,  3>::type::value,
-        bit_to_square<Board,  4>::type::value, bit_to_square<Board,  5>::type::value, bit_to_square<Board,  6>::type::value, bit_to_square<Board,  7>::type::value,
-        bit_to_square<Board,  8>::type::value, bit_to_square<Board,  9>::type::value, bit_to_square<Board, 10>::type::value, bit_to_square<Board, 11>::type::value,
-        bit_to_square<Board, 12>::type::value, bit_to_square<Board, 13>::type::value, bit_to_square<Board, 14>::type::value, bit_to_square<Board, 15>::type::value,
-        bit_to_square<Board, 16>::type::value, bit_to_square<Board, 17>::type::value, bit_to_square<Board, 18>::type::value, bit_to_square<Board, 19>::type::value,
-        bit_to_square<Board, 20>::type::value, bit_to_square<Board, 21>::type::value, bit_to_square<Board, 22>::type::value, bit_to_square<Board, 23>::type::value,
-        bit_to_square<Board, 24>::type::value, bit_to_square<Board, 25>::type::value, bit_to_square<Board, 26>::type::value, bit_to_square<Board, 27>::type::value,
-        bit_to_square<Board, 28>::type::value, bit_to_square<Board, 29>::type::value, bit_to_square<Board, 30>::type::value, bit_to_square<Board, 31>::type::value,
-        bit_to_square<Board, 32>::type::value, bit_to_square<Board, 33>::type::value, bit_to_square<Board, 34>::type::value, bit_to_square<Board, 35>::type::value,
-        bit_to_square<Board, 36>::type::value, bit_to_square<Board, 37>::type::value, bit_to_square<Board, 38>::type::value, bit_to_square<Board, 39>::type::value,
-        bit_to_square<Board, 40>::type::value, bit_to_square<Board, 41>::type::value, bit_to_square<Board, 42>::type::value, bit_to_square<Board, 43>::type::value,
-        bit_to_square<Board, 44>::type::value, bit_to_square<Board, 45>::type::value, bit_to_square<Board, 46>::type::value, bit_to_square<Board, 47>::type::value,
-        bit_to_square<Board, 48>::type::value, bit_to_square<Board, 49>::type::value, bit_to_square<Board, 50>::type::value, bit_to_square<Board, 51>::type::value,
-        bit_to_square<Board, 52>::type::value, bit_to_square<Board, 53>::type::value, bit_to_square<Board, 54>::type::value, bit_to_square<Board, 55>::type::value,
-        bit_to_square<Board, 56>::type::value, bit_to_square<Board, 57>::type::value, bit_to_square<Board, 58>::type::value, bit_to_square<Board, 59>::type::value,
-        bit_to_square<Board, 60>::type::value, bit_to_square<Board, 61>::type::value, bit_to_square<Board, 62>::type::value, bit_to_square<Board, 63>::type::value
+        BOOST_PP_ENUM(64, MACRO_bit_to_square, ~)
 };
+
+#undef MACRO_bit_to_square
 
 }       // namespace board
 }       // namespace dctl

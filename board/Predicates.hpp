@@ -34,13 +34,13 @@ struct is_initial
                 >,
                 boost::mpl::eval_if<
                         Color,
-                        boost::mpl::int_<((Board::height) - ((Board::height - Board::dmz) / 2))>,
+                        boost::mpl::int_<((Board::height::value) - ((Board::height::value - Board::dmz) / 2))>,
                         boost::mpl::int_<0>
                 >,
                 boost::mpl::eval_if<
                         Color,
-                        boost::mpl::int_<Board::height>,
-                        boost::mpl::int_<(Board::height - Board::dmz) / 2>
+                        boost::mpl::int_< Board::height::value >,
+                        boost::mpl::int_<(Board::height::value - Board::dmz) / 2>
                 >
         >
 {};
@@ -54,7 +54,7 @@ struct is_row_mask
                 >,
                 boost::mpl::eval_if<
                         Color,
-                        boost::mpl::int_<(Board::height - 1) - Row::value>,
+                        boost::mpl::int_<(Board::height::value - 1) - Row::value>,
                         boost::mpl::int_<Row::value>
                 >
         >
@@ -69,7 +69,7 @@ struct is_col_mask
                 >,
                 boost::mpl::eval_if<
                         Color,
-                        boost::mpl::int_<(Board::width - 1) - Column::value>,
+                        boost::mpl::int_<(Board::width::value - 1) - Column::value>,
                         boost::mpl::int_<Column::value>
                 >
         >
@@ -157,7 +157,7 @@ struct is_jump_start
                         boost::mpl::int_<Square2Coordinates< Square<Grid, SQ::value> >::type::row>,
                         boost::mpl::eval_if< angle::is_up<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus<
-                                boost::mpl::int_<Board::height>,
+                                boost::mpl::int_<Board::height::value>,
                                 boost::mpl::eval_if< angle::is_down<Index>, Offset, boost::mpl::int_<0> >
                         >
                 >,
@@ -166,7 +166,7 @@ struct is_jump_start
                         boost::mpl::int_<Square2Coordinates< Square<Grid, SQ::value> >::type::col>,
                         boost::mpl::eval_if< angle::is_left<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus<
-                                boost::mpl::int_<Board::width>,
+                                boost::mpl::int_<Board::width::value>,
                                 boost::mpl::eval_if< angle::is_right<Index>, Offset, boost::mpl::int_<0> >
                         >
                 >

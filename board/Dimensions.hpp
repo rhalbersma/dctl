@@ -1,5 +1,6 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include <boost/mpl/bool_fwd.hpp>       // bool_
+#include <boost/mpl/int_fwd.hpp>        // int_
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 #include "Degrees.hpp"                  // D000, L090, R090, D180
 #include "Transform.hpp"                // rotate
@@ -18,9 +19,9 @@ struct Dimensions
         BOOST_STATIC_ASSERT(H > 0 && W > 0);
 
         // reflection on template parameters
-        BOOST_STATIC_CONSTANT(auto, height = H);
-        BOOST_STATIC_CONSTANT(auto, width = W);
-        BOOST_STATIC_CONSTANT(auto, parity = P);
+        typedef boost::mpl::int_<H> height;
+        typedef boost::mpl::int_<W> width;
+        typedef boost::mpl::bool_<P> parity;
 
         // lazily evaluable metadata == nullary metafunction
         typedef Dimensions<H, W, P> type;
