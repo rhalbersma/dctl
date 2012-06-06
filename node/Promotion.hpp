@@ -12,25 +12,25 @@ bool is_promotion_sq(BitBoard dest_sq)
 template<bool Color, typename Board>
 BitBoard promotion_sq(BitBoard dest_sq)
 {
-        return dest_sq & Board::PROMOTION[Color][0];
+        return dest_sq & Board::promotion_mask[Color][0];
 }
 
 template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
 BitBoard promotion_squares(Position<Rules, Board> const& p)
 {
-        return not_occupied(p) & Board::PROMOTION[Color][0];
+        return not_occupied(p) & Board::promotion_mask[Color][0];
 }
 
 template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
 BitBoard promoting_pawns(Position<Rules, Board> const& p)
 {
-        return p.pawns(Color) & Board::PROMOTION[Color][1];
+        return p.pawns(Color) & Board::promotion_mask[Color][1];
 }
 
 template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
 BitBoard non_promoting_pawns(Position<Rules, Board> const& p)
 {
-        return p.pawns(Color) & ~Board::PROMOTION[Color][1];
+        return p.pawns(Color) & ~Board::promotion_mask[Color][1];
 }
 
 }       // namespace dctl

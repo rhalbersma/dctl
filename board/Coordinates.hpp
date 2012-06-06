@@ -65,7 +65,7 @@ public:
         <
                 G,
                 2 * Q + P,                      // 2x the row pairs + the row parity
-                2 * R + (P ^ !G::parity)        // 2x the range from the left edge + the row parity XOR the opposite board coloring
+                2 * R + (P ^ !G::parity::value) // 2x the range from the left edge + the row parity XOR the opposite board coloring
         > type;
 };
 
@@ -82,21 +82,21 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
 template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
 :
-        board::Coordinates<Grid, Column, (Grid::height - 1) - Row>
+        board::Coordinates<Grid, Column, (Grid::height::value - 1) - Row>
 {};
 
 // partial specialization for 90 degrees right rotations
 template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 :
-        board::Coordinates<Grid, (Grid::width - 1) - Column, Row>
+        board::Coordinates<Grid, (Grid::width::value - 1) - Column, Row>
 {};
 
 // partial specialization for 180 degrees rotations
 template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
 :
-        board::Coordinates<Grid, (Grid::height - 1) - Row, (Grid::width - 1) - Column>
+        board::Coordinates<Grid, (Grid::height::value - 1) - Row, (Grid::width::value - 1) - Column>
 {};
 
 }       // namespace dctl

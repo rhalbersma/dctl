@@ -20,7 +20,7 @@ public:
         typedef Grid<Dimensions> BaseGrid;
 
         // diagonal directions
-        BOOST_STATIC_CONSTANT(auto, left_down = (Dimensions::width + G) / 2);
+        BOOST_STATIC_CONSTANT(auto, left_down = (Dimensions::width::value + G) / 2);
         BOOST_STATIC_CONSTANT(auto, right_down = left_down + 1);
 
         // orthogonal directions
@@ -39,13 +39,13 @@ public:
         // left (l) and right (r) edges of even (e) and odd (o) rows
         BOOST_STATIC_CONSTANT(auto, edge_le = BaseGrid::edge_le);
         BOOST_STATIC_CONSTANT(auto, edge_re = BaseGrid::edge_re);
-        BOOST_STATIC_CONSTANT(auto, edge_lo = left_down + Dimensions::parity);
+        BOOST_STATIC_CONSTANT(auto, edge_lo = left_down + Dimensions::parity::value);
         BOOST_STATIC_CONSTANT(auto, edge_ro = edge_lo + BaseGrid::edge_ro - BaseGrid::edge_lo);
 
         // grid size
         BOOST_STATIC_CONSTANT(auto, size =
-                modulo * ((Dimensions::height - 1) / 2) +
-                ((Dimensions::height % 2)? edge_re : edge_ro) + 1
+                modulo * ((Dimensions::height::value - 1) / 2) +
+                ((Dimensions::height::value % 2)? edge_re : edge_ro) + 1
         );
 };
 
@@ -57,12 +57,12 @@ class Grid<Dimensions, 0>
 {
 private:
         // range of even (e) and odd (o) rows
-        BOOST_STATIC_CONSTANT(auto, row_e = (Dimensions::width +  Dimensions::parity) / 2);
-        BOOST_STATIC_CONSTANT(auto, row_o = (Dimensions::width + !Dimensions::parity) / 2);
+        BOOST_STATIC_CONSTANT(auto, row_e = (Dimensions::width::value +  Dimensions::parity::value) / 2);
+        BOOST_STATIC_CONSTANT(auto, row_o = (Dimensions::width::value + !Dimensions::parity::value) / 2);
 
 public:
         // range of row pairs
-        BOOST_STATIC_CONSTANT(auto, modulo = Dimensions::width);
+        BOOST_STATIC_CONSTANT(auto, modulo = Dimensions::width::value);
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
         BOOST_STATIC_CONSTANT(auto, edge_le = 0);
@@ -72,13 +72,13 @@ public:
 
         // grid size
         BOOST_STATIC_CONSTANT(auto, size =
-                modulo * ((Dimensions::height - 1) / 2) +
-                ((Dimensions::height % 2)? edge_re : edge_ro) + 1
+                modulo * ((Dimensions::height::value - 1) / 2) +
+                ((Dimensions::height::value % 2)? edge_re : edge_ro) + 1
         );
 
         // equivalent grid size
-        BOOST_STATIC_ASSERT(size == (Dimensions::height * Dimensions::width) / 2 +
-                (Dimensions::parity * Dimensions::height * Dimensions::width) % 2
+        BOOST_STATIC_ASSERT(size == (Dimensions::height::value * Dimensions::width::value) / 2 +
+                (Dimensions::parity::value * Dimensions::height::value * Dimensions::width::value) % 2
         );
 };
 
