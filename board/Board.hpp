@@ -60,13 +60,13 @@ private:
         TODO: use C++11 template aliases
 
         template<typename A> 
-        using do_init_jump_start = 
+        using do_jump_start = 
                 init_jump_start< Board, rotate< A, typename Structure::full_angle > >;
 
         */
 
         template<typename A>
-        struct do_init_jump_start
+        struct do_jump_start
         :
                 init_jump_start< Board, rotate< A, typename Structure::full_angle > >
         {};
@@ -81,33 +81,33 @@ BitBoard const Board<Dimensions, Structure>::initial_mask[] = {
         init_initial< Board, Side::white >::value
 };
 
-#define MACRO_row_mask(z, i, data)      \
+#define DCTL_PP_ROW_MASK(z, i, data)      \
         init_row_mask<Board, data, i>::value
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::promotion_mask[][2] = {
-        { BOOST_PP_ENUM(2, MACRO_row_mask, Side::white) },
-        { BOOST_PP_ENUM(2, MACRO_row_mask, Side::black) }
+        { BOOST_PP_ENUM(2, DCTL_PP_ROW_MASK, Side::white) },
+        { BOOST_PP_ENUM(2, DCTL_PP_ROW_MASK, Side::black) }
 };
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::row_mask[][12] = {
-        { BOOST_PP_ENUM(12, MACRO_row_mask, Side::black) },
-        { BOOST_PP_ENUM(12, MACRO_row_mask, Side::white) }
+        { BOOST_PP_ENUM(12, DCTL_PP_ROW_MASK, Side::black) },
+        { BOOST_PP_ENUM(12, DCTL_PP_ROW_MASK, Side::white) }
 };
 
-#undef MACRO_row_mask
+#undef DCTL_PP_ROW_MASK
 
-#define MACRO_col_mask(z, i, data)      \
+#define DCTL_PP_COL_MASK(z, i, data)      \
         init_col_mask<Board, data, i>::value
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::col_mask[][12] = {
-        { BOOST_PP_ENUM(12, MACRO_col_mask, Side::black) },
-        { BOOST_PP_ENUM(12, MACRO_col_mask, Side::white) }
+        { BOOST_PP_ENUM(12, DCTL_PP_COL_MASK, Side::black) },
+        { BOOST_PP_ENUM(12, DCTL_PP_COL_MASK, Side::white) }
 };
 
-#undef MACRO_col_mask
+#undef DCTL_PP_COL_MASK
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
@@ -129,14 +129,14 @@ BitBoard const Board<Dimensions, Structure>::jump_group[] = {
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::jump_start[] = {
-        Board::do_init_jump_start< angle::D000 >::value,
-        Board::do_init_jump_start< angle::D045 >::value,
-        Board::do_init_jump_start< angle::D090 >::value,
-        Board::do_init_jump_start< angle::D135 >::value,
-        Board::do_init_jump_start< angle::D180 >::value,
-        Board::do_init_jump_start< angle::D225 >::value,
-        Board::do_init_jump_start< angle::D270 >::value,
-        Board::do_init_jump_start< angle::D315 >::value
+        Board::do_jump_start< angle::D000 >::value,
+        Board::do_jump_start< angle::D045 >::value,
+        Board::do_jump_start< angle::D090 >::value,
+        Board::do_jump_start< angle::D135 >::value,
+        Board::do_jump_start< angle::D180 >::value,
+        Board::do_jump_start< angle::D225 >::value,
+        Board::do_jump_start< angle::D270 >::value,
+        Board::do_jump_start< angle::D315 >::value
 };
 
 template<typename Dimensions, typename Structure>
@@ -169,25 +169,25 @@ int Board<Dimensions, Structure>::bit2square(int b)
         return BIT2SQUARE[b];
 }
 
-#define MACRO_square_to_bit(z, i, data) \
+#define DCTL_PP_SQUARE2BIT(z, i, data) \
         square_to_bit<Board, i>::type::value
 
 template<typename Dimensions, typename Structure>
 int const Board<Dimensions, Structure>::SQUARE2BIT[] = {
-        BOOST_PP_ENUM(64, MACRO_square_to_bit, ~)
+        BOOST_PP_ENUM(64, DCTL_PP_SQUARE2BIT, ~)
 };
 
-#undef MACRO_square_to_bit
+#undef DCTL_PP_SQUARE2BIT
 
-#define MACRO_bit_to_square(z, i, data) \
+#define DCTL_PP_BIT2SQUARE(z, i, data) \
         bit_to_square<Board, i>::type::value
 
 template<typename Dimensions, typename Structure>
 int const Board<Dimensions, Structure>::BIT2SQUARE[] = {
-        BOOST_PP_ENUM(64, MACRO_bit_to_square, ~)
+        BOOST_PP_ENUM(64, DCTL_PP_BIT2SQUARE, ~)
 };
 
-#undef MACRO_bit_to_square
+#undef DCTL_PP_BIT2SQUARE
 
 }       // namespace board
 }       // namespace dctl
