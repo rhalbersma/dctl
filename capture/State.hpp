@@ -332,7 +332,7 @@ private:
                 rules::range::distance_1K
         ) const // modifies Stack& moves_
         {
-                if (king_targets_ & Pull<Board, Index>()(dest_sq))
+                if (king_targets_ & Board::prev<Index>()(dest_sq))
                         add_king_jump_dispatch<Color, Index>(
                                 dest_sq, ambiguous, 
                                 rules::range::distance_1()
@@ -364,7 +364,7 @@ private:
                 BOOST_ASSERT(dest_sq & path());
                 do {
                         add_king_jump<Color>(dest_sq, ambiguous);
-                        PushAssign<Board, Index>()(dest_sq);
+                        Board::advance<Index>()(dest_sq);
                 } while (dest_sq & path());
         }
 

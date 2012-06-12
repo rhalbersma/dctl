@@ -29,7 +29,7 @@ private:
 
         typedef angle::Direction<Color, Board> Direction;
         typedef capture::State<Rules, Board> State;
-
+        
 public:
         template<template<typename, typename> class Position>
         static void generate(Position<Rules, Board> const& p, Stack& moves)
@@ -219,7 +219,7 @@ private:
         template<typename Index>
         static void generate_next(BitBoard jumper, State& capture)
         {
-                PushAssign<Board, Index>()(jumper);
+                Board::advance<Index>()(jumper);
                 if (
                         !scan_next<Index>(jumper, capture) &&
                         capture.is_improvement()
@@ -306,7 +306,7 @@ private:
                 bool found_capture = false;
                 do {
                         found_capture |= turn<Index>(jumper, capture);
-                        PushAssign<Board, Index>()(jumper);
+                        Board::advance<Index>()(jumper);
                 } while (jumper & capture.path());
                 return found_capture |= jump<Index>(jumper, capture);
         }
@@ -386,7 +386,7 @@ private:
                 rules::range::distance_1
         )
         {
-                PushAssign<Board, Index>()(jumper);
+                Board::advance<Index>()(jumper);
         }
 
         // partial specialization for long ranged kings
@@ -396,7 +396,7 @@ private:
                 rules::range::distance_N
         )
         {
-                do PushAssign<Board, Index>()(jumper); while (jumper & path);
+                do Board::advance<Index>()(jumper); while (jumper & path);
         }
 
         template<typename Index>

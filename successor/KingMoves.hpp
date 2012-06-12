@@ -143,7 +143,7 @@ private:
                 for (
                         auto dest_sq = Push<Board, Index>()(from_sq);
                         dest_sq & not_occupied;
-                        PushAssign<Board, Index>()(dest_sq)
+                        Board::advance<Index>()(dest_sq)
                 )
                         moves.push_back(Move::create<Color>(from_sq ^ dest_sq));
         }

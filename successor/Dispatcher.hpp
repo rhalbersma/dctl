@@ -39,7 +39,8 @@ private:
 
         template<bool Color, int Material> 
         using Delegate = 
-                State<Color, Material, Selection, Rules, Board, Position>;
+                State<Color, Material, Selection, Rules, Board, Position>
+        ;
 
         */
 

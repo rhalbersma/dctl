@@ -13,25 +13,50 @@ template
         std::size_t N, 
         typename T = uint64_t 
 >
-class Set
-:       boost::bitwise< set<N< T> >
-,       boost::shiftable< Set<N, T> >
-,       boost::totally_ordered< Set<N, T> >
-        > > >
+class Array
+:       boost::bitwise< Array<N< T> >
+,       boost::shiftable< Array<N, T> >
+,       boost::totally_ordered< Array<N, T> >
+> > >
 {
 public:
-        Set& flip()
+        // structors 
+
+        Array()
+        {
+                // no-op
+        }
+
+        Array(T const& value)
+        {
+                bits_[0] = value;
+                std::fill_n(bits_[1], N - 1, T(0));
+        }
+
+        fill(T const& value)
+        {
+                bits_.fill(value);
+        }
+
+        // modifiers
+
+        void swap(Array& other)
+        {
+                bits_.swap(other.bits_);
+        }
+
+        Array& flip()
         {
                 for (auto i = 0; i < N; ++i)
-                        block_[i] = ~block_[i];
+                        bits_[i] = ~bits_[i];
                 return *this;
         }
 
 #define DCTL_PP_BITWISE_ASSIGN(OP)                              \
-        Set& operator OP ## = (Set const& other)                \
+        Array& operator OP ## = (Array const& other)            \
         {                                                       \
                 for (auto i = 0; i < N; ++i)                    \
-                        block_[i] OP ## = other.block_[i];      \
+                        bits_[i] OP ## = other.bits_[i];        \
                 return *this;                                   \
         }
 
@@ -41,7 +66,7 @@ public:
 
 #undef DCTL_PP_OP_ASSIGN
 
-        Set& operator<<=(int pos)
+        Array& operator<<=(int pos)
         {
                 BOOST_ASSERT(0 <= pos < NUM_BITS);
 
@@ -52,24 +77,24 @@ public:
 
                 if (!within) {                      
                         for (auto i = N - 1; i >= between; --i)
-                                block_[i] = block_[i - between];
+                                bits_[i] = bits_[i - between];
                 } else {
                         std::size_t const co_within = BITS_PER_BLOCK - within;
 
                         for (auto i = N - 1; i > between; --i)
-                                block_[i] = 
-                                        (block_[i - between    ] <<    within) |
-                                        (block_[i - between - 1] >> co_within)
+                                bits_[i] = 
+                                        (bits_[i - between    ] <<    within) |
+                                        (bits_[i - between - 1] >> co_within)
                                 ;
                         if (between < N)
-                                block_[between] = block_[0] << within;
+                                bits_[between] = bits_[0] << within;
                 }
-                std::fill_n(std::begin(block_), between, T(0));
+                std::fill_n(std::begin(bits_), between, T(0));
 
                 return *this;
         }
 
-        Set& operator>>=(int pos)
+        Array& operator>>=(int pos)
         {
                 BOOST_ASSERT(0 <= pos < NUM_BITS);
 
@@ -81,26 +106,26 @@ public:
 
                 if (!within) {
                         for (auto i = 0; i <= co_between; ++i)
-                                block_[i] = block_[i + between];
+                                bits_[i] = bits_[i + between];
                 } else {
                         std::size_t const co_within = BITS_PER_BLOCK - within;
 
                         for (auto i = 0; i < co_between; ++i)
-                                block_[i] = 
-                                        (block_[i + between    ] >>    within) |
-                                        (block_[i + between + 1] << co_within)
+                                bits_[i] = 
+                                        (bits_[i + between    ] >>    within) |
+                                        (bits_[i + between + 1] << co_within)
                                 ;
-                        block_[co_between] = block_[N - 1] >> within;
+                        bits_[co_between] = bits_[N - 1] >> within;
                 }
-                std::fill_n(block_[co_between + 1], between, T(0));
+                std::fill_n(bits_[co_between + 1], between, T(0));
 
                 return *this;
         }
 
 #define DCTL_PP_RELATIONAL(OP)                          \
-        bool operator OP (Set const& other) const       \
+        bool operator OP (Array const& other) const     \
         {                                               \
-                return block_ OP other.block_;          \
+                return bits_ OP other.bits_;            \
         }
 
         DCTL_PP_RELATIONAL(==)  // operator==
@@ -108,26 +133,23 @@ public:
 
 #undef DCTL_PP_OP_RELATION
 
-        size_t count() const
-        {
-                return 0;
-        }
+        // queries
 
-        size_t find_first_one() const
+        bool empty() const
         {
-                return 0;
+                return bits_.empty();
         }
 
 private:
         static std::size_t const BITS_PER_BLOCK = 8 * sizeof(T);
         static std::size_t const NUM_BITS = N * BITS_PER_BLOCK;
-        std::array<T, N> block_;
+        std::array<T, N> bits_;
 };
 
 template<std::size_t N, typename T>
-Set<N, T> operator~(const Set<N, T>& lhs)
+Array<N, T> operator~(const Array<N, T>& lhs)
 {
-        return Set<N, T>(lhs).flip();
+        return Array<N, T>(lhs).flip();
 }
 
 }       // namespace bit
