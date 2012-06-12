@@ -94,8 +94,8 @@ struct FloodFill
 template<typename Board, typename Index>
 struct Push
 {
-        template<typename T>
-        T operator()(T square) const
+        template<typename Iterator>
+        Iterator operator()(Iterator square) const
         {
                 return Shift<
                         angle::is_positive< Index >::value,
@@ -108,38 +108,10 @@ struct Push
 template<typename Board, typename Index>
 struct Pull
 {
-        template<typename T>
-        T operator()(T square) const
+        template<typename Iterator>
+        Iterator operator()(Iterator square) const
         {
                 return Shift<
-                        angle::is_negative< Index >::value,
-                        angle::shift_size<Board, Index>::value
-                >()(square);
-        }
-};
-
-// template function object for uniform left/right bitwise shift-assignment
-template<typename Board, typename Index>
-struct PushAssign
-{
-        template<typename T>
-        void operator()(T& square) const
-        {
-                ShiftAssign<
-                        angle::is_positive< Index >::value,
-                        angle::shift_size<Board, Index>::value
-                >()(square);
-        }
-};
-
-// template function object for uniform left/right bitwise shift-assignment
-template<typename Board, typename Index>
-struct PullAssign
-{
-        template<typename T>
-        void operator()(T& square) const
-        {
-                ShiftAssign<
                         angle::is_negative< Index >::value,
                         angle::shift_size<Board, Index>::value
                 >()(square);

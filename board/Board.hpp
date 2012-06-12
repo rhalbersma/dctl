@@ -2,6 +2,7 @@
 #include <boost/preprocessor/repetition.hpp>
 #include "Grid.hpp"
 #include "MetaTemplates.hpp"
+#include "Shift.hpp"
 #include "Structure.hpp"
 #include "Transform.hpp"
 #include "../node/Side.hpp"
@@ -50,6 +51,31 @@ public:
         static int square2bit(int);
         static int bit2square(int);
 
+        template<typename Index>
+        struct advance
+        {
+                template<typename Iterator>
+                void operator()(Iterator& square) const
+                {
+                        ShiftAssign<
+                                angle::is_positive< Index >::value,
+                                angle::shift_size< Board, Index >::value
+                        >()(square);
+                }        
+        };
+
+        template<typename Index>
+        struct next
+        :
+                Push<Board, Index>
+        {};
+
+        template<typename Index>
+        struct prev
+        :
+                Pull<Board, Index>
+        {};
+
 private:
         // square to bit and bit to square conversion tables
         static int const SQUARE2BIT[];                          // convert a square to a bit
@@ -61,7 +87,8 @@ private:
 
         template<typename A> 
         using do_jump_start = 
-                init_jump_start< Board, rotate< A, typename Structure::full_angle > >;
+                init_jump_start< Board, rotate< A, typename Structure::full_angle > >
+        ;
 
         */
 

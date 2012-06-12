@@ -252,7 +252,7 @@ private:
         template<typename Index>
         static void generate_next(BitBoard jumper, State& capture)
         {
-                PushAssign<Board, Index>()(jumper);
+                Board::advance<Index>()(jumper);
                 if (
                         !scan_next<Index>(jumper, capture) &&
                         capture.is_improvement()
@@ -380,7 +380,7 @@ private:
         template<typename Index>
         static bool scan(BitBoard jumper, State& capture)
         {
-                PushAssign<Board, Index>()(jumper);
+                Board::advance<Index>()(jumper);
                 return jump<Index>(jumper, capture);
         }
 

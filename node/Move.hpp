@@ -16,9 +16,10 @@ template<typename T>
 struct Move_
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public PiecesInterface< Move_, T >,
-        private boost::equality_comparable< Move_<T>, 
-        boost::xorable< Move_<T> > >
+        public PiecesInterface< Move_, T >, 
+        private boost::equality_comparable< Move_<T>
+        ,       boost::xorable< Move_<T> > 
+        >
 {
 public:
         // structors
