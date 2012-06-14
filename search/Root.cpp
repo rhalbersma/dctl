@@ -12,7 +12,7 @@
 namespace dctl {
 namespace search {
 
-#if INTEGRATION_TEST == 1
+#if SEARCH_TEST == 1
 
 template<typename Objective>
 struct Fixture

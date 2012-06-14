@@ -1,3 +1,4 @@
 #pragma once
-#define INTEGRATION_TEST 0
-#define STATIC_TEST 1
+#define SUCCESSOR_TEST  1
+#define SEARCH_TEST     0
+#define WALK_TEST       1
