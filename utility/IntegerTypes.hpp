@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>                      // uint<X>_t for X = 8, 16, 32, 64
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include "../bit/Array.hpp"
 
 namespace dctl {
 
@@ -9,11 +10,18 @@ typedef uint8_t PlyCount;
 typedef uint64_t NodeCount;
 typedef uint64_t HashIndex;
 typedef uint64_t BitBoard;
+typedef uint64_t BitIndex;
 
 template<typename T>
 struct num_bits
 {
         BOOST_STATIC_CONSTANT(int, value = 8 * sizeof(T));
+};
+
+template<int N, typename T>
+struct num_bits< bit::Array<N, T> >
+{
+        BOOST_STATIC_CONSTANT(int, value = N * num_bits<T>::value);
 };
 
 template<typename> struct log2_sizeof;

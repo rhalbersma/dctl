@@ -32,6 +32,58 @@ public:
                 Structure::ghosts
         > InternalGrid;
 
+        static bool is_valid(int square)
+        {
+                return begin() <= square && square < end();
+        }
+
+        static int begin()
+        {
+                return 0;
+        }
+
+        static int end()
+        {
+                return ExternalGrid::size;
+        }
+
+        static int square2bit(int square)
+        {
+                return SQUARE2BIT[square];
+        }
+
+        static int bit2square(int b)
+        {
+                return BIT2SQUARE[b];
+        }
+
+        template<typename Index, typename Iterator>
+        static void advance(Iterator& square)
+        {
+                ShiftAssign<
+                        angle::is_positive< Index >::value,
+                        angle::shift_size< Board, Index >::value
+                >()(square);
+        }        
+
+        template<typename Index, typename Iterator>
+        static Iterator next(Iterator square)
+        {
+                return Shift<
+                        angle::is_positive< Index >::value,
+                        angle::shift_size<Board, Index>::value
+                >()(square);
+        }
+
+        template<typename Index, typename Iterator>
+        static Iterator prev(Iterator square)
+        {
+                return Shift<
+                        angle::is_negative< Index >::value,
+                        angle::shift_size<Board, Index>::value
+                >()(square);
+        }
+
         // essential bitboard masks
         static BitBoard const squares;                          // bit mask of legal squares, excluding borders
         static BitBoard const initial_mask[];                   // initial position
@@ -44,37 +96,6 @@ public:
         static BitBoard const DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
         static BitBoard const jump_group[];                     // families of squares reachable by jumping pawns
         static BitBoard const jump_start[];                     // squares from which a jump is possible in a direction
-
-        static bool is_valid(int);
-        static int begin();
-        static int end();
-        static int square2bit(int);
-        static int bit2square(int);
-
-        template<typename Index>
-        struct advance
-        {
-                template<typename Iterator>
-                void operator()(Iterator& square) const
-                {
-                        ShiftAssign<
-                                angle::is_positive< Index >::value,
-                                angle::shift_size< Board, Index >::value
-                        >()(square);
-                }        
-        };
-
-        template<typename Index>
-        struct next
-        :
-                Push<Board, Index>
-        {};
-
-        template<typename Index>
-        struct prev
-        :
-                Pull<Board, Index>
-        {};
 
 private:
         // square to bit and bit to square conversion tables
@@ -165,36 +186,6 @@ BitBoard const Board<Dimensions, Structure>::jump_start[] = {
         Board::do_jump_start< angle::D270 >::value,
         Board::do_jump_start< angle::D315 >::value
 };
-
-template<typename Dimensions, typename Structure>
-bool Board<Dimensions, Structure>::is_valid(int sq)
-{
-        return sq >= begin() && sq < end();
-}
-
-template<typename Dimensions, typename Structure>
-int Board<Dimensions, Structure>::begin()
-{
-        return 0;
-}
-
-template<typename Dimensions, typename Structure>
-int Board<Dimensions, Structure>::end()
-{
-        return ExternalGrid::size;
-}
-
-template<typename Dimensions, typename Structure>
-int Board<Dimensions, Structure>::square2bit(int sq)
-{
-        return SQUARE2BIT[sq];
-}
-
-template<typename Dimensions, typename Structure>
-int Board<Dimensions, Structure>::bit2square(int b)
-{
-        return BIT2SQUARE[b];
-}
 
 #define DCTL_PP_SQUARE2BIT(z, i, data) \
         square_to_bit<Board, i>::type::value

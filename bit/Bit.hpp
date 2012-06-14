@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "DeBruijn.hpp"
 #include "Lookup.hpp"
@@ -60,18 +61,24 @@ bool is_exclusive(T a, T b)
         return is_zero(a & b);
 }
 
+template<typename Iterator, typename Board>
+bool is_element(Iterator it, Board b)
+{
+        return !is_zero(it & b);
+}
+
 // least significant 1-bit
 template<typename T>
 T get_first(T b)
 {
-        return b & (T(0) - b);
+        return detail::get_first<T>()(b);
 }
 
 // most significant 1-bits
 template<typename T>
 T except_first(T b)
 {
-        return b & (b - T(1));
+        return detail::except_first<T>()(b);
 }
 
 // clear the least significant 1-bit
@@ -146,5 +153,30 @@ int count_loop(T b)
         return count;
 }
 
+namespace detail {
+
+template<typename T>
+struct get_first
+:
+        std::function<T(T)>
+{
+        T operator()(T b) const
+        {
+                return b & (T(0) - b);
+        }
+};
+
+template<typename T>
+struct except_first
+:
+        std::function<T(T)>
+{
+        T operator()(T b) const
+        {
+                return b & (b - T(1));
+        }
+};
+
+}       // namespace detail
 }       // namespace bit
 }       // namespace dctl

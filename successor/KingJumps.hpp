@@ -209,7 +209,7 @@ private:
         static void generate(BitBoard jumper, State& capture)
         {
                 slide<Index>(jumper, capture.template path<Index>());
-                if (jumper & capture.template targets<Index>()) {
+                if (bit::is_element(jumper, capture.template targets<Index>())) {
                         capture.make(jumper);
                         generate_next<Index>(jumper, capture);
                         capture.undo(jumper);
@@ -219,7 +219,7 @@ private:
         template<typename Index>
         static void generate_next(BitBoard jumper, State& capture)
         {
-                Board::advance<Index>()(jumper);
+                Board::advance<Index>(jumper);
                 if (
                         !scan_next<Index>(jumper, capture) &&
                         capture.is_improvement()
@@ -302,12 +302,12 @@ private:
                 rules::range::distance_N
         )
         {
-                BOOST_ASSERT(jumper & capture.path());
+                BOOST_ASSERT(bit::is_element(jumper, capture.path()));
                 bool found_capture = false;
                 do {
                         found_capture |= turn<Index>(jumper, capture);
-                        Board::advance<Index>()(jumper);
-                } while (jumper & capture.path());
+                        Board::advance<Index>(jumper);
+                } while (bit::is_element(jumper, capture.path()));
                 return found_capture |= jump<Index>(jumper, capture);
         }
 
@@ -386,7 +386,7 @@ private:
                 rules::range::distance_1
         )
         {
-                Board::advance<Index>()(jumper);
+                Board::advance<Index>(jumper);
         }
 
         // partial specialization for long ranged kings
@@ -396,13 +396,13 @@ private:
                 rules::range::distance_N
         )
         {
-                do Board::advance<Index>()(jumper); while (jumper & path);
+                do Board::advance<Index>(jumper); while (bit::is_element(jumper, path));
         }
 
         template<typename Index>
         static bool jump(BitBoard jumper, State& capture)
         {
-                if (jumper & capture.template targets<Index>()) {
+                if (bit::is_element(jumper, capture.template targets<Index>())) {
                         capture.make(jumper);
                         generate_next<Index>(jumper, capture);
                         capture.undo(jumper);

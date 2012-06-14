@@ -14,7 +14,7 @@ struct find_entry
         typedef std::pair<Key, Value> Entry;
         typedef typename std::vector<Entry>::const_iterator ConstIterator;
 
-        const Value* operator()(ConstIterator bucket_begin, Key const& key) const
+        Value const* operator()(ConstIterator bucket_begin, Key const& key) const
         {
                 auto const bucket_end = bucket_begin + N;
                 auto const it = std::find_if(

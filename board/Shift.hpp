@@ -31,7 +31,7 @@ struct Sink<Board, Index, rules::range::distance_1>
         template<typename T>
         T operator()(T from, T dest) const
         {
-                return Push<Board, Index>()(from) & dest;
+                return Board::next<Index>(from) & dest;
         }
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>                    // count_if, fill_n
 #include <cstddef>                      // size_t
-#include <type_traits>                  // is_integral
+#include <type_traits>                  // integral_constant, is_integral, false_type, true_type
 #include <utility>                      // pair
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
@@ -10,7 +10,6 @@
 #include "KeySign.hpp"
 #include "Replace.hpp"
 #include "../utility/CacheAlign.hpp"
-#include "../utility/Int2Type.hpp"
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
@@ -28,6 +27,7 @@ class Map
 {
 public:
         // structors
+
         Map()
         {
                 resize(0);
@@ -39,6 +39,7 @@ public:
         }
 
         // capacity
+
         std::size_t available() const
         {
                 return static_cast<size_t>(
@@ -69,23 +70,25 @@ public:
         }
 
         // queries
-        const Value* find(Key const& key) const
+
+        Value const* find(Key const& key) const
         {
                 auto const index = Hash<Key, Index>()(key);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
         template<typename Item>
-        const Value* find(Item const& item) const
+        Value const* find(Item const& item) const
         {
                 // tag dispatching on the key's integral type trait
                 return find_dispatch(
                         item,
-                        Int2Type<std::is_integral<Key>::value>()
+                        std::integral_constant<bool, std::is_integral<Key>::value>()
                 );
         }
 
         // modifiers
+
         void insert(Key const& key, Value const& value)
         {
                 auto const index = Hash<Key, Index>()(key);
@@ -98,44 +101,44 @@ public:
                 // tag dispatching on the key's integral type trait
                 insert_dispatch(
                         item, value,
-                        Int2Type<std::is_integral<Key>::value>()
+                        std::integral_constant<bool, std::is_integral<Key>::value>()
                 );
         }
 
 private:
         // partial specialization for non-integral keys
         template<typename Item>
-        const Value* find_dispatch(Item const& item, Int2Type<false>) const
+        Value const* find_dispatch(Item const& item, std::false_type) const
         {
-                auto const index = Hash<Item, Index>()(item);
-                auto const key = FindKey<Item, Key>()(item);
+                auto const index = Hash<Index, Item>()(item);
+                auto const key = FindKey<Key, Item>()(item);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
         // partial specialization for integral keys
         template<typename Item>
-        const Value* find_dispatch(Item const& item, Int2Type<true>) const
+        Value const* find_dispatch(Item const& item, std::true_type) const
         {
-                auto const index = Hash<Item, Index>()(item);
-                auto const key = ShiftKey<Index, Key>()(index);
+                auto const index = Hash<Index, Item>()(item);
+                auto const key = ShiftKey<Key, Index>()(index);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
         // partial specialization for non-integral keys
         template<typename Item>
-        void insert_dispatch(Item const& item, Value const& value, Int2Type<false>)
+        void insert_dispatch(Item const& item, Value const& value, std::false_type)
         {
-                auto const index = Hash<Item, Index>()(item);
-                auto const key = FindKey<Item, Key>()(item);
+                auto const index = Hash<Index, Item>()(item);
+                auto const key = FindKey<Key, Item>()(item);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 
         // partial specialization for integral keys
         template<typename Item>
-        void insert_dispatch(Item const& item, Value const& value, Int2Type<true>)
+        void insert_dispatch(Item const& item, Value const& value, std::true_type)
         {
-                auto const index = Hash<Item, Index>()(item);
-                auto const key = ShiftKey<Index, Key>()(index);
+                auto const index = Hash<Index, Item>()(item);
+                auto const key = ShiftKey<Key, Index>()(index);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <sstream>                      // stringstream
+#include "../bit/Bit.hpp"
 #include "../node/Material.hpp"
 
 namespace dctl {
@@ -11,13 +12,13 @@ std::string content(Material const& m, int i)
         auto const b = bit::singlet<BitBoard>(i);
 
         std::stringstream sstr;
-        if (m.pieces(Side::black) & b) {
-                if (m.kings() & b)
+        if (bit::is_element(b, m.pieces(Side::black))) {
+                if (bit::is_element(b, m.kings()))
                         sstr << Token::upper[Side::black];      // black king
                 else
                         sstr << Token::lower[Side::black];      // black man
-        } else if (m.pieces(Side::white) & b) {
-                if (m.kings() & b)
+        } else if (bit::is_element(b, m.pieces(Side::white))) {
+                if (bit::is_element(b, m.kings()))
                         sstr << Token::upper[Side::white];      // white king
                 else
                         sstr << Token::lower[Side::white];      // white man

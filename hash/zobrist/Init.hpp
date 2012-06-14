@@ -1,5 +1,5 @@
 #pragma once
-#include <functional>                   // unary_function
+#include <functional>                   // function
 #include "Random.hpp"
 #include "../../node/Material.hpp"
 #include "../../node/Move.hpp"
@@ -11,14 +11,14 @@ namespace hash {
 namespace zobrist {
 
 // primary template
-template<typename Key, typename Index>
+template<typename Index, typename Key>
 struct Init;
 
 // partial specialization for ab initio hashing of material
 template<typename Index>
-struct Init<Material, Index>
+struct Init<Index, Material>
 :
-        public std::unary_function<Material, Index>
+        std::function<Index(Material)>
 {
         Index operator()(Material const& m) const
         {
@@ -32,9 +32,9 @@ struct Init<Material, Index>
 
 // partial specialization for ab initio hashing of moves
 template<typename Index>
-struct Init<Move, Index>
+struct Init<Index, Move>
 :
-        public std::unary_function<Move, Index>
+        std::function<Index(Move)>
 {
         Index operator()(Move const& m) const
         {
@@ -48,9 +48,9 @@ struct Init<Move, Index>
 
 // partial specialization for ab initio hashing of side to move
 template<typename Index>
-struct Init<bool, Index>
+struct Init<Index, bool>
 :
-        public std::unary_function<bool, Index>
+        std::function<Index(bool)>
 {
         Index operator()(bool color) const
         {
@@ -60,24 +60,24 @@ struct Init<bool, Index>
 
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
-struct Init<Restricted, Index>
+struct Init<Index, Restricted>
 :
-        public std::unary_function<Restricted, Index>
+        std::function<Index(Restricted)>
 {
         Index operator()(Restricted const& restricted) const
         {
                 return (
-                        Init<KingMoves, Index>()(restricted[Side::black], Side::black) ^
-                        Init<KingMoves, Index>()(restricted[Side::white], Side::white)
+                        Init<Index, KingMoves>()(restricted[Side::black], Side::black) ^
+                        Init<Index, KingMoves>()(restricted[Side::white], Side::white)
                 );
         }
 };
 
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
-struct Init<KingMoves, Index>
+struct Init<Index, KingMoves>
 :
-        public std::binary_function<KingMoves, bool, Index>
+        std::function<Index(KingMoves, bool)>
 {
         Index operator()(KingMoves const& restricted, bool color) const
         {

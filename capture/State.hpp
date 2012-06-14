@@ -44,21 +44,21 @@ public:
 
         // modifiers 
 
-        void launch(BitBoard jump_sq)
+        void launch(BitIndex jump_sq)
         {
                 from_sq_ = jump_sq;
                 not_occupied_ ^= jump_sq;
                 BOOST_ASSERT(invariant());
         }
 
-        void finish(BitBoard jump_sq)
+        void finish(BitIndex jump_sq)
         {
                 not_occupied_ ^= jump_sq;
-                from_sq_ = BitBoard(0);
+                from_sq_ = BitIndex(0);
                 BOOST_ASSERT(invariant());
         }
 
-        void make(BitBoard target_sq)
+        void make(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
                 make_dispatch(
@@ -68,7 +68,7 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        void undo(BitBoard target_sq)
+        void undo(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
                 undo_dispatch(
@@ -104,7 +104,7 @@ public:
         }
 
         template<bool Color>
-        void add_pawn_jump(BitBoard dest_sq) const // modifies Stack& moves_
+        void add_pawn_jump(BitIndex dest_sq) const // modifies Stack& moves_
         {
                 // tag dispatching on ambiguity of pawn captures
                 add_pawn_jump_dispatch<Color>(
@@ -114,7 +114,7 @@ public:
         }
 
         template<bool Color, typename Index>
-        void add_king_jump(BitBoard dest_sq) const // modifies Stack& moves_
+        void add_king_jump(BitIndex dest_sq) const // modifies Stack& moves_
         {
                 auto const ambiguous = is_ambiguous();
 
@@ -166,7 +166,7 @@ private:
 
         // specialization for apres-fini capture removal
         void make_dispatch(
-                BitBoard target_sq, 
+                BitIndex target_sq, 
                 rules::removal::apres_fini
         )
         {
@@ -176,7 +176,7 @@ private:
 
         // specialization for en-passant capture removal
         void make_dispatch(
-                BitBoard target_sq, 
+                BitIndex target_sq, 
                 rules::removal::en_passant
         )
         {
@@ -190,7 +190,7 @@ private:
 
         // specialization for apres-fini capture removal
         void undo_dispatch(
-                BitBoard target_sq, 
+                BitIndex target_sq, 
                 rules::removal::apres_fini
         )
         {
@@ -200,7 +200,7 @@ private:
 
         // specialization for en-passant capture removal
         void undo_dispatch(
-                BitBoard target_sq, 
+                BitIndex target_sq, 
                 rules::removal::en_passant
         )
         {
@@ -297,7 +297,7 @@ private:
         // partial specialization for pawn captures that are unambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(
-                BitBoard dest_sq, 
+                BitIndex dest_sq, 
                 boost::mpl::false_
         ) const // modifies Stack& moves_
         {
@@ -314,7 +314,7 @@ private:
         // partial specialization for pawn captures that can be ambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(
-                BitBoard dest_sq, 
+                BitIndex dest_sq, 
                 boost::mpl::true_
         ) const // modifies Stack& moves_
         {
@@ -328,11 +328,11 @@ private:
         // and slide through otherwise
         template<bool Color, typename Index>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, bool ambiguous, 
+                BitIndex dest_sq, bool ambiguous, 
                 rules::range::distance_1K
         ) const // modifies Stack& moves_
         {
-                if (king_targets_ & Board::prev<Index>()(dest_sq))
+                if (bit::is_element(Board::prev<Index>(dest_sq), king_targets_))
                         add_king_jump_dispatch<Color, Index>(
                                 dest_sq, ambiguous, 
                                 rules::range::distance_1()
@@ -347,7 +347,7 @@ private:
         // partial specialization for kings that halt immediately after the final capture
         template<bool Color, typename Index>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, bool ambiguous, 
+                BitIndex dest_sq, bool ambiguous, 
                 rules::range::distance_1
         ) const // modifies Stack& moves_
         {
@@ -357,19 +357,19 @@ private:
         // partial specialization for kings that slide through after the final capture
         template<bool Color, typename Index>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, bool ambiguous, 
+                BitIndex dest_sq, bool ambiguous, 
                 rules::range::distance_N
         ) const // modifies Stack& moves_
         {
-                BOOST_ASSERT(dest_sq & path());
+                BOOST_ASSERT(bit::is_element(dest_sq, path()));
                 do {
                         add_king_jump<Color>(dest_sq, ambiguous);
-                        Board::advance<Index>()(dest_sq);
-                } while (dest_sq & path());
+                        Board::advance<Index>(dest_sq);
+                } while (bit::is_element(dest_sq, path()));
         }
 
         template<bool Color>
-        void add_king_jump(BitBoard dest_sq, bool ambiguous) const // modifies Stack& moves_
+        void add_king_jump(BitIndex dest_sq, bool ambiguous) const // modifies Stack& moves_
         {
                 // tag dispatching on promotion condition
                 add_king_jump_dispatch<Color>(
@@ -383,7 +383,7 @@ private:
         // partial specialization for pawns that promote apres-fini
         template<bool Color>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, 
+                BitIndex dest_sq, 
                 rules::promotion::apres_fini
         ) const // modifies Stack& moves_
         {
@@ -399,7 +399,7 @@ private:
         // partial specialization for pawns that promote en-passant
         template<bool Color>
         void add_king_jump_dispatch(
-                BitBoard dest_sq, 
+                BitIndex dest_sq, 
                 rules::promotion::en_passant
         ) const // modifies Stack& moves_
         {
@@ -429,9 +429,9 @@ private:
                 );
         }
 
-        bool is_captured_king(BitBoard target_sq) const
+        bool is_captured_king(BitIndex target_sq) const
         {
-                return !bit::is_zero(target_sq & king_targets_);
+                return bit::is_element(target_sq, king_targets_);
         }
 
         bool is_promotion() const
@@ -518,7 +518,7 @@ private:
         BitBoard initial_targets_;
         BitBoard remaining_targets_;
         BitBoard not_occupied_;
-        BitBoard from_sq_;
+        BitIndex from_sq_;
         Value<Rules> current_;
         Value<Rules> best_;
         Stack& moves_;

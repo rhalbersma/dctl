@@ -233,7 +233,7 @@ private:
         template<typename Index>
         static void generate(BitBoard active_pawns, State& capture)
         {
-                BitBoard jumper, target;
+                BitIndex jumper, target;
                 for (
                         active_pawns &= Pull<Board, Index>()(capture.template targets<Index>());
                         active_pawns;
@@ -241,7 +241,7 @@ private:
                 ) {
                         jumper = bit::get_first(active_pawns);
                         capture.launch(jumper);
-                        target = Push<Board, Index>()(jumper);
+                        target = Board::next<Index>(jumper);
                         capture.make(target);
                         generate_next<Index>(target, capture);
                         capture.undo(target);
@@ -250,9 +250,9 @@ private:
         }
 
         template<typename Index>
-        static void generate_next(BitBoard jumper, State& capture)
+        static void generate_next(BitIndex jumper, State& capture)
         {
-                Board::advance<Index>()(jumper);
+                Board::advance<Index>(jumper);
                 if (
                         !scan_next<Index>(jumper, capture) &&
                         capture.is_improvement()
@@ -264,7 +264,7 @@ private:
         }
 
         template<typename Index>
-        static bool scan_next(BitBoard jumper, State& capture)
+        static bool scan_next(BitIndex jumper, State& capture)
         {
                 // tag dispatching on promotion condition
                 return scan_next_dispatch<Index>(
@@ -276,7 +276,7 @@ private:
         // partial specialization for pawns that promote apres-fini
         template<typename Index>
         static bool scan_next_dispatch(
-                BitBoard jumper, State& capture, 
+                BitIndex jumper, State& capture, 
                 rules::promotion::apres_fini
         )
         {
@@ -289,7 +289,7 @@ private:
         // partial specialization for pawns that promote en-passant
         template<typename Index>
         static bool scan_next_dispatch(
-                BitBoard jumper, State& capture, 
+                BitIndex jumper, State& capture, 
                 rules::promotion::en_passant
         )
         {
@@ -307,7 +307,7 @@ private:
         }
 
         template<typename Index>
-        static bool turn(BitBoard jumper, State& capture)
+        static bool turn(BitIndex jumper, State& capture)
         {
                 // tag dispatching on man turn directions
                 return turn_dispatch<Index>(
@@ -319,7 +319,7 @@ private:
         // partial specialization for turns in all the 6 non-parallel orthogonal and diagonal directions
         template<typename Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, 
+                BitIndex jumper, State& capture, 
                 rules::directions::all
         )
         {
@@ -332,7 +332,7 @@ private:
         // partial specialization for turns in the remaining 4 diagonal or orthogonal directions
         template<typename Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, 
+                BitIndex jumper, State& capture, 
                 rules::directions::orth
         )
         {
@@ -347,7 +347,7 @@ private:
         // partial specialization for turns in the 2 sideways directions
         template<typename Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, 
+                BitIndex jumper, State& capture, 
                 rules::directions::diag
         )
         {
@@ -360,7 +360,7 @@ private:
         // partial specialization for turns in the 1 mirrored forward direction
         template<typename Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, 
+                BitIndex jumper, State& capture, 
                 rules::directions::up
         )
         {
@@ -370,7 +370,7 @@ private:
         // partial specialization for turns in the 1 mirrored backward direction
         template<typename Index>
         static bool turn_dispatch(
-                BitBoard jumper, State& capture, 
+                BitIndex jumper, State& capture, 
                 rules::directions::down
         )
         {
@@ -378,16 +378,16 @@ private:
         }
 
         template<typename Index>
-        static bool scan(BitBoard jumper, State& capture)
+        static bool scan(BitIndex jumper, State& capture)
         {
-                Board::advance<Index>()(jumper);
+                Board::advance<Index>(jumper);
                 return jump<Index>(jumper, capture);
         }
 
         template<typename Index>
-        static bool jump(BitBoard jumper, State& capture)
+        static bool jump(BitIndex jumper, State& capture)
         {
-                if (jumper & capture.template targets<Index>()) {
+                if (bit::is_element(jumper, capture.template targets<Index>())) {
                         capture.make(jumper);
                         generate_next<Index>(jumper, capture);
                         capture.undo(jumper);

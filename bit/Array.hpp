@@ -14,10 +14,9 @@ template
         typename T = uint64_t 
 >
 class Array
-:       boost::bitwise< Array<N< T> >
-,       boost::shiftable< Array<N, T> >
+:       boost::bitwise< Array<N, T> >
+,       boost::shiftable< Array<N, T>, int >
 ,       boost::totally_ordered< Array<N, T> >
-> > >
 {
 public:
         // structors 
@@ -27,13 +26,13 @@ public:
                 // no-op
         }
 
-        Array(T const& value)
+        explicit Array(T const& value)
         {
                 bits_[0] = value;
-                std::fill_n(bits_[1], N - 1, T(0));
+                std::fill_n(std::begin(bits_)+1, N - 1, T(0));
         }
 
-        fill(T const& value)
+        void fill(T const& value)
         {
                 bits_.fill(value);
         }
@@ -68,7 +67,7 @@ public:
 
         Array& operator<<=(int pos)
         {
-                BOOST_ASSERT(0 <= pos < NUM_BITS);
+                BOOST_ASSERT(0 <= pos && pos < NUM_BITS);
 
                 if (!pos) return *this;
 
@@ -86,8 +85,7 @@ public:
                                         (bits_[i - between    ] <<    within) |
                                         (bits_[i - between - 1] >> co_within)
                                 ;
-                        if (between < N)
-                                bits_[between] = bits_[0] << within;
+                        bits_[between] = bits_[0] << within;
                 }
                 std::fill_n(std::begin(bits_), between, T(0));
 
@@ -96,7 +94,7 @@ public:
 
         Array& operator>>=(int pos)
         {
-                BOOST_ASSERT(0 <= pos < NUM_BITS);
+                BOOST_ASSERT(0 <= pos && pos < NUM_BITS);
 
                 if (!pos) return *this;
 
@@ -143,6 +141,7 @@ public:
 private:
         static std::size_t const BITS_PER_BLOCK = 8 * sizeof(T);
         static std::size_t const NUM_BITS = N * BITS_PER_BLOCK;
+
         std::array<T, N> bits_;
 };
 

@@ -5,6 +5,7 @@
 #include "Diagram.hpp"
 #include "Protocols.hpp"
 #include "TokenInterface.hpp"
+#include "../bit/Bit.hpp"
 #include "../node/Position_fwd.hpp"
 
 namespace dctl {
@@ -95,7 +96,7 @@ struct write<pdn::protocol, Token>
                                 sstr << Token::color[c];                        // color tag
                         }
                         for (auto bb = p.pieces(c); bb; bit::clear_first(bb)) {
-                                if (p.kings() & bit::get_first(bb))
+                                if (bit::is_element(bit::get_first(bb), p.kings()))
                                         sstr << Token::king;                        // king tag
                                 auto b = bit::find_first(bb);                   // bit index
                                 sstr << Board::bit2square(b) + 1;                // square number

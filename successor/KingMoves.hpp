@@ -84,7 +84,7 @@ private:
                 }
         }
 
-        static void generate(BitBoard from_sq, BitBoard not_occupied, Stack& moves)
+        static void generate(BitIndex from_sq, BitBoard not_occupied, Stack& moves)
         {
                 generate<typename Direction::left_down >(from_sq, not_occupied, moves);
                 generate<typename Direction::right_down>(from_sq, not_occupied, moves);
@@ -113,7 +113,7 @@ private:
         }
 
         template<typename Index>
-        static void generate(BitBoard from_sq, BitBoard not_occupied, Stack& moves)
+        static void generate(BitIndex from_sq, BitBoard not_occupied, Stack& moves)
         {
                 // tag dispatching on king range
                 return generate_dispatch<Index>(
@@ -125,25 +125,25 @@ private:
         // partial specialization for short ranged kings
         template<typename Index>
         static void generate_dispatch(
-                BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
+                BitIndex from_sq, BitBoard not_occupied, Stack& moves, 
                 rules::range::distance_1
         )
         {
-                if (auto const dest_sq = Push<Board, Index>()(from_sq) & not_occupied)
+                if (auto const dest_sq = Board::next<Index>(from_sq) & not_occupied)
                         moves.push_back(Move::create<Color>(from_sq ^ dest_sq));
         }
 
         // partial specialization for long ranged kings
         template<typename Index>
         static void generate_dispatch(
-                BitBoard from_sq, BitBoard not_occupied, Stack& moves, 
+                BitIndex from_sq, BitBoard not_occupied, Stack& moves, 
                 rules::range::distance_N
         )
         {
                 for (
-                        auto dest_sq = Push<Board, Index>()(from_sq);
-                        dest_sq & not_occupied;
-                        Board::advance<Index>()(dest_sq)
+                        auto dest_sq = Board::next<Index>(from_sq);
+                        bit::is_element(dest_sq, not_occupied);
+                        Board::advance<Index>(dest_sq)
                 )
                         moves.push_back(Move::create<Color>(from_sq ^ dest_sq));
         }

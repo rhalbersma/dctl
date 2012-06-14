@@ -1,18 +1,18 @@
 #pragma once
-#include <functional>                   // unary_function
+#include <functional>                   // function
 
 namespace dctl {
 namespace hash {
 
 // primary template
-template<typename Key, typename Index>
+template<typename Index, typename Key>
 struct Find;
 
 // partial specialization for retrieval of pre-computed indices of positions
-template<typename Rules, typename Board, template<typename, typename> class Position, typename Index>
-struct Find<Position<Rules, Board>, Index>
+template<typename Index, typename Rules, typename Board, template<typename, typename> class Position>
+struct Find< Index, Position<Rules, Board> >
 :
-        public std::unary_function<Position<Rules, Board>, Index>
+        std::function<Index(Position<Rules, Board>)>
 {
         Index operator()(Position<Rules, Board> const& p) const
         {
