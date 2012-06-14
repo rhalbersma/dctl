@@ -125,7 +125,7 @@ bool is_no_progress(Position<Rules, Board> const& p)
         // tag dispatching on restrictions on consecutive reversible moves
         return is_no_progress_dispatch<Rules>(
                 p,
-                typename Rules::is_restricted_reversible_moves()
+                boost::mpl::bool_<rules::is_restricted_reversible_moves<Rules>::value>()
         );
 }
 

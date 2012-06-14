@@ -6,7 +6,7 @@
 #include "Protocols.hpp"
 #include "TokenInterface.hpp"
 #include "../bit/Bit.hpp"
-#include "../node/Position_fwd.hpp"
+#include "../node/Position.hpp"
 
 namespace dctl {
 namespace setup {

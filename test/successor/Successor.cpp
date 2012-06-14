@@ -2,6 +2,7 @@
 #include <cstddef>                      // size_t
 #include <string>                       // string
 #include <boost/test/unit_test.hpp>
+#include "../test_config.hpp"
 #include "../../src/successor/Selection.hpp"
 #include "../../src/successor/Successor.hpp"
 #include "../../src/node/Position.hpp"
@@ -10,9 +11,9 @@
 #include "../../src/board/Types.hpp"
 #include "../../src/rules/Types.hpp"
 
-namespace dctl {
-
 #if SUCCESSOR_TEST == 1
+
+namespace dctl {
 
 BOOST_AUTO_TEST_SUITE(TestSuccessor)
 
@@ -49,7 +50,7 @@ BOOST_AUTO_TEST_CASE(Italian)
                 legal_66, legal_67, legal_68, legal_69, legal_610
         };
 
-        for (auto i = 0; i < 9; ++i) {
+        for (auto i = 0;  i < std::distance(std::begin(position), std::end(position)); ++i) {
                 auto const p = setup::read<rules::Italian, board::Roman, pdn::protocol>()(position[i]);
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
@@ -98,7 +99,7 @@ BOOST_AUTO_TEST_CASE(Spanish)
                 legal_66, legal_67, legal_68, legal_69, legal_610
         };
 
-        for (auto i = 0; i < 9; ++i) {
+        for (auto i = 0; i < std::distance(std::begin(position), std::end(position)); ++i) {
                 auto const p = setup::read<rules::Spanish, board::Roman, pdn::protocol>()(position[i]);
                 Stack moves;
                 Successor<select::Legal>::generate(p, moves);
@@ -107,8 +108,8 @@ BOOST_AUTO_TEST_CASE(Spanish)
                 BOOST_CHECK_EQUAL(size[i], static_cast<int>(moves.size()));
 
                 // check all generated legal moves
-                for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
-                        auto const move_string = notation::write<rules::Spanish>()(p, moves[j]);
+                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
+                        auto const move_string = notation::write<rules::Spanish>()(p, *m);
                         BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string));
                 }
         }
@@ -116,6 +117,6 @@ BOOST_AUTO_TEST_CASE(Spanish)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-#endif
-
 }       // namespace dctl
+
+#endif

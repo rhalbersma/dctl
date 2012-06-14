@@ -13,10 +13,10 @@
 #include "../../src/board/Types.hpp"
 #include "../../src/rules/Types.hpp"
 
+#if SOLVE_TEST == 1
+
 namespace dctl {
 namespace search {
-
-#if INTEGRATION_TEST == 1
 
 typedef std::pair<std::string, int> FEN_depth;
 
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(MiniInitial, R, RulesTypes)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-#endif
-
 }       // namespace search
 }       // namespace dctl
+
+#endif
