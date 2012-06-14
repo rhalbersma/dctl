@@ -12,7 +12,7 @@
 
 namespace dctl {
 
-#if INTEGRATION_TEST == 0
+#if SUCCESSOR_TEST == 1
 
 BOOST_AUTO_TEST_SUITE(TestSuccessor)
 
@@ -58,8 +58,8 @@ BOOST_AUTO_TEST_CASE(Italian)
                 BOOST_CHECK_EQUAL(size[i], static_cast<int>(moves.size()));
 
                 // check all generated legal moves
-                for (auto j = 0; j < static_cast<int>(moves.size()); ++j) {
-                        auto const move_string = notation::write<rules::Italian>()(p, moves[j]);
+                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
+                        auto const move_string = notation::write<rules::Italian>()(p, *m);
                         BOOST_CHECK_NE(legal[i] + size[i], std::find(legal[i], legal[i] + size[i], move_string));
                 }
         }

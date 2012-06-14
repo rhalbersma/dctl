@@ -11,7 +11,7 @@
 namespace dctl {
 namespace walk {
 
-#if INTEGRATION_TEST == 0
+#if WALK_TEST == 1
 
 struct Fixture
 {
@@ -27,7 +27,7 @@ struct Fixture
         BOOST_STATIC_CONSTANT(auto, R = 0);
 
         template<typename Position, std::size_t N>
-        void run(Position const& p, const NodeCount (&leafs)[N])
+        void run(Position const& p, NodeCount const (&leafs)[N])
         {
                 for (auto it = std::begin(leafs); it != std::prev(std::end(leafs), R); ++it) {
                         root_.clear_hash();
