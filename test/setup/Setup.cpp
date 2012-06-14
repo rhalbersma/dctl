@@ -1,11 +1,10 @@
 #include <boost/test/unit_test.hpp>
 #include "../../src/board/Types.hpp"
+#include "../../src/rules/Types.hpp"
 #include "../../src/setup/Setup.hpp"
 
 namespace dctl {
 namespace setup {
-
-#if INTEGRATION_TEST == 1
 
 BOOST_AUTO_TEST_SUITE(TestSetup)
 
@@ -27,7 +26,8 @@ BOOST_AUTO_TEST_CASE(Wieger)
 
         // parse the above diagram into a position using the DamExchange protocol
         // with a modified character set (default is <'Z', 'W', 'E'>)
-        auto const pos_w = setup::read<
+        auto const pos_w = read<
+                rules::International,
                 board::International,
                 dxp::protocol,
                 TokenInterface<'X', 'O', '.'>
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(Wieger)
         auto const FEN_w = write<pdn::protocol>()(pos_w);
 
         // convert the new FEN string to a new position and back into a new FEN string
-        auto const pos_r = read<board::International, pdn::protocol>()(FEN_w);
+        auto const pos_r = read<rules::International, board::International, pdn::protocol>()(FEN_w);
         auto const FEN_r = write<pdn::protocol>()(pos_r);
 
         // the two positions have been parsed through different protocols,
@@ -46,8 +46,6 @@ BOOST_AUTO_TEST_CASE(Wieger)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-#endif
 
 }       // namespace setup
 }       // namespace dctl

@@ -8,10 +8,10 @@
 #include "../../src/rules/Types.hpp"
 #include "../../src/utility/IntegerTypes.hpp"
 
+#if WALK_TEST == 1
+
 namespace dctl {
 namespace walk {
-
-#if WALK_TEST == 1
 
 struct Fixture
 {
@@ -24,7 +24,7 @@ struct Fixture
         {
         }
 
-        BOOST_STATIC_CONSTANT(auto, R = 0);
+        BOOST_STATIC_CONSTANT(auto, R = 5);
 
         template<typename Position, std::size_t N>
         void run(Position const& p, NodeCount const (&leafs)[N])
@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE(Rectangular)
 */
 BOOST_AUTO_TEST_SUITE_END()
 
-#endif
-
 }       // namespace walk
 }       // namespace dctl
+
+#endif
