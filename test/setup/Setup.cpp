@@ -27,10 +27,8 @@ BOOST_AUTO_TEST_CASE(Wieger)
         // parse the above diagram into a position using the DamExchange protocol
         // with a modified character set (default is <'Z', 'W', 'E'>)
         auto const pos_w = read<
-                rules::International,
-                board::International,
-                dxp::protocol,
-                TokenInterface<'X', 'O', '.'>
+                rules::International, board::International,
+                dxp::protocol, TokenInterface<'X', 'O', '.'>
         >()(w);
 
         // write the above position as a FEN string using the PDN protocol
