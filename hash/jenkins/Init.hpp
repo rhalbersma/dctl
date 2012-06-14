@@ -1,5 +1,5 @@
 #pragma once
-#include <functional>                   // unary_function
+#include <functional>                   // function
 #include "Random.hpp"
 #include "../../node/Side.hpp"
 
@@ -8,14 +8,14 @@ namespace hash {
 namespace jenkins {
 
 // primary template
-template<typename Key, typename Index>
+template<typename Index, typename Key>
 struct Init;
 
 // partial specialization for ab initio hashing of positions
-template<typename Rules, typename Board, template<typename, typename> class Position, typename Index>
-struct Init<Position<Rules, Board>, Index>
+template<typename Index, typename Rules, typename Board, template<typename, typename> class Position>
+struct Init< Index, Position<Rules, Board> >
 :
-        public std::unary_function<Position<Rules, Board>, Index>
+        std::function<Index(Position<Rules, Board>)>
 {
         Index operator()(Position<Rules, Board> const& p) const
         {

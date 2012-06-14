@@ -20,6 +20,7 @@ class DualMap
 {
 public:
         // structors
+
         DualMap()
         {
                 resize(1);
@@ -31,6 +32,7 @@ public:
         }
 
         // capacity
+        
         std::size_t available() const
         {
                 return dual_map_[0].available() + dual_map_[1].available();
@@ -55,13 +57,15 @@ public:
         }
 
         // queries
+
         template<typename Position>
-        const Value* find(Position const& p) const
+        Value const* find(Position const& p) const
         {
                 return dual_map_[p.active_color()].find(p);
         }
 
         // modifiers
+
         template<typename Position>
         void insert(Position const& p, Value const& value)
         {
@@ -70,6 +74,7 @@ public:
 
 private:
         // representation
+        
         Map<Key, Value, Hash, Index, Replace> dual_map_[2];
 };
 

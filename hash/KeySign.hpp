@@ -1,15 +1,15 @@
 #pragma once
-#include <functional>                   // unary_function
+#include <functional>                   // function
 #include <type_traits>                  // is_integral
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 namespace hash {
 
-template<typename Item, typename Key>
+template<typename Key, typename Item>
 struct FindKey
 :
-        public std::unary_function<Item, Key>
+        std::function<Key(Item)>
 {
         Key const& operator()(Item const& item) const
         {
@@ -19,10 +19,10 @@ struct FindKey
         }
 };
 
-template<typename Index, typename Key>
+template<typename Key, typename Index>
 struct ShiftKey
 :
-        public std::unary_function<Index, Key>
+        std::function<Key(Index)>
 {
         Key operator()(Index index) const
         {

@@ -71,14 +71,14 @@ private:
         template<typename Index>
         static void generate(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
-                BitBoard from_sq, dest_sq;
+                BitIndex from_sq, dest_sq;
                 for (
                         active_pawns &= Pull<Board, Index>()(not_occupied);
                         active_pawns;
                         bit::clear_first(active_pawns)
                 ) {
                         from_sq = bit::get_first(active_pawns);
-                        dest_sq = Push<Board, Index>()(from_sq);
+                        dest_sq = Board::next<Index>(from_sq);
                         moves.push_back(
                                 Move::create<Color>(
                                         from_sq ^ dest_sq,

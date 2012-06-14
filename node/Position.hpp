@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include <functional>                   // unary_function
+#include <functional>                   // function
 #include "Position_fwd.hpp"
 #include "Move.hpp"
 #include "Restricted.hpp"
@@ -37,7 +37,7 @@ public:
                 distance_to_root_(0),
                 to_move_(to_move)
         {
-                hash_index_ = hash::zobrist::Init<Position, HashIndex>()(*this);
+                hash_index_ = hash::zobrist::Init<HashIndex, Position>()(*this);
                 BOOST_ASSERT(material_invariant());
         }
 
@@ -217,7 +217,7 @@ private:
 
         void make_active_king_moves(Move const& m)
         {
-                typedef hash::zobrist::Init<KingMoves, HashIndex> Hash;
+                typedef hash::zobrist::Init<HashIndex, KingMoves> Hash;
                 KingMoves& restricted = restricted_[active_color()];
 
                 if (active_kings(*this) && active_pawns(*this)) {
@@ -235,7 +235,7 @@ private:
 
         void make_passive_king_moves(Move const& m)
         {
-                typedef hash::zobrist::Init<KingMoves, HashIndex> Hash;
+                typedef hash::zobrist::Init<HashIndex, KingMoves> Hash;
                 KingMoves& restricted = restricted_[passive_color()];
 
                 if (
@@ -259,13 +259,13 @@ private:
         void make_material(Move const& m)
         {
                 material_ ^= m;
-                hash_index_ ^= hash::zobrist::Init<Move, HashIndex>()(m);
+                hash_index_ ^= hash::zobrist::Init<HashIndex, Move>()(m);
         }
 
         void make_to_move()
         {
                 to_move_ ^= Side::pass;
-                hash_index_ ^= hash::zobrist::Init<bool, HashIndex>()(Side::pass);
+                hash_index_ ^= hash::zobrist::Init<HashIndex, bool>()(Side::pass);
         }
 
         // post-conditions for the constructors and modifiers
@@ -279,7 +279,7 @@ private:
 
         bool hash_index_invariant() const
         {
-                return hash_index_ == hash::zobrist::Init<Position, HashIndex>()(*this);
+                return hash_index_ == hash::zobrist::Init<HashIndex, Position>()(*this);
         }
 
         // representation
@@ -401,17 +401,17 @@ template<typename Key, typename Index>
 struct Init;
 
 // partial specialization for ab initio hashing of positions
-template<typename Rules, typename Board, template<typename, typename> class Position, typename Index>
-struct Init<Position<Rules, Board>, Index>
+template<typename Index, typename Rules, typename Board, template<typename, typename> class Position>
+struct Init< Index, Position<Rules, Board> >
 :
-        public std::unary_function<Position<Rules, Board>, Index>
+        std::function<Index(Position<Rules, Board>)>
 {
         Index operator()(Position<Rules, Board> const& p) const
         {
                 return (
-                        Init<Material  , Index>()(p.material())     ^
-                        Init<bool      , Index>()(p.active_color()) ^
-                        Init<Restricted, Index>()(p.restricted())
+                        Init<Index, Material  >()(p.material())     ^
+                        Init<Index, bool      >()(p.active_color()) ^
+                        Init<Index, Restricted>()(p.restricted())
                 );
         }
 };
