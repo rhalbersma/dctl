@@ -35,7 +35,7 @@ struct Mobility
         private nonconstructible
 {
 public:
-        template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
+        template<bool Color, template<typename, typename> class Position, typename Rules, typename Board>
         static int count(Position<Rules, Board> const& p)
         {
                 typedef successor::Dispatcher<Selection, Rules, Board, Position> Delegate;

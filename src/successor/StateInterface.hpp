@@ -21,7 +21,10 @@ namespace successor {
 
 */
 
-template<typename Position>
+template
+<
+        typename Position
+>
 class StateInterface
 :
         // enforce reference semantics

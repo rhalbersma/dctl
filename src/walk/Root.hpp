@@ -40,7 +40,7 @@ public:
                 return leafs;
         }
 
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         NodeCount divide(Position<Rules, Board> const& p, int depth)
         {
                 NodeCount leafs = 0;

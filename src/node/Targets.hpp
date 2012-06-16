@@ -4,7 +4,7 @@
 
 namespace dctl {
 
-template<bool Color, typename Rules, typename Board, template<typename, typename> class Position>
+template<bool Color, template<typename, typename> class Position, typename Rules, typename Board>
 static BitBoard targets(Position<Rules, Board> const& p)
 {
         // tag dispatching on whether pawns can capture kings

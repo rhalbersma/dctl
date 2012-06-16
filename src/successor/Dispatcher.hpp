@@ -23,9 +23,9 @@ namespace successor {
 template
 <
         typename Selection,
+        template<typename, typename> class Position,
         typename Rules,
-        typename Board,
-        template<typename, typename> class Position
+        typename Board
 >
 struct Dispatcher
 :
@@ -39,7 +39,7 @@ private:
 
         template<bool Color, int Material> 
         using Delegate = 
-                State<Color, Material, Selection, Rules, Board, Position>
+                State<Color, Material, Selection, Position, Rules, Board>
         ;
 
         */
@@ -47,7 +47,7 @@ private:
         template<bool Color, int Material>
         struct Delegate
         :
-                State<Color, Material, Selection, Rules, Board, Position>
+                State<Color, Material, Selection, Position, Rules, Board>
         {};
 
 public:

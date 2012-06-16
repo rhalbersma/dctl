@@ -91,7 +91,7 @@ struct terminal<Misere>
         }
 };
 
-template<typename Rules, typename Board, template<typename, typename> class Position>
+template<template<typename, typename> class Position, typename Rules, typename Board>
 bool is_draw(Position<Rules, Board> const& p)
 {
         return (
@@ -119,7 +119,7 @@ bool is_cycle(Position const& p)
         return false;
 }
 
-template<typename Rules, typename Board, template<typename, typename> class Position>
+template<template<typename, typename> class Position, typename Rules, typename Board>
 bool is_no_progress(Position<Rules, Board> const& p)
 {
         // tag dispatching on restrictions on consecutive reversible moves
@@ -140,7 +140,7 @@ bool is_no_progress_dispatch(
 }
 
 // partial specialization for a maximum of consecutive reversible moves
-template<typename Rules, typename Board, template<typename, typename> class Position>
+template<template<typename, typename> class Position, typename Rules, typename Board>
 bool is_no_progress_dispatch(
         Position<Rules, Board> const& p, 
         boost::mpl::true_

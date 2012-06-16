@@ -30,7 +30,7 @@ struct write;
 template<typename Rules, typename Separator>
 struct write<Rules, numeric, Separator>
 {
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         const std::string operator()(Position<Rules, Board> const& p, Move const& m) const
         {
                 std::stringstream sstr;
