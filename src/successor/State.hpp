@@ -26,9 +26,9 @@ template
         bool Color,
         int Material,
         typename Selection,
+        template<typename, typename> class Position,
         typename Rules,
-        typename Board,
-        template<typename, typename> class Position
+        typename Board
 >
 class State
 :

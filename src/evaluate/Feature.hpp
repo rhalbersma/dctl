@@ -24,7 +24,7 @@ public:
                 return score;
         }
 
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         static int material(Position<Rules, Board> const& p)
         {
                 return (
@@ -33,7 +33,7 @@ public:
                 );
         }
 
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         static int tempo(Position<Rules, Board> const& p)
         {
                 int score = 0;
@@ -42,7 +42,7 @@ public:
                 return score;
         }
 
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         static int center(Position<Rules, Board> const& p)
         {
                 int score = 0;
@@ -55,7 +55,7 @@ public:
                 return score;
         }
 
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         static int balance(Position<Rules, Board> const& p)
         {
                 int score = 0;
@@ -68,7 +68,7 @@ public:
                 return -abs(score);
         }
 
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         static int mobility(Position<Rules, Board> const& p)
         {
                 return Weight<Rules, Board>::mobility * Mobility<select::Moves>::template count<Color>(p);

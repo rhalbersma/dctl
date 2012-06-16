@@ -22,7 +22,7 @@ class diagram
 {
 public:
         // position content in diagram layout
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         std::string operator()(Position<Rules, Board> const& p) const
         {
                 return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));

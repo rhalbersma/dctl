@@ -41,7 +41,7 @@ template<typename Position, typename Move>
 bool is_pseudo_legal(Position const& p, Move const& m);
 
 // tag dispatching on capture removal
-template<typename Rules, typename Board, template<typename, typename> class Position, typename Move>
+template<template<typename, typename> class Position, typename Rules, typename Board, typename Move>
 bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m);
 
 // partial specialization for en-passant capture removal

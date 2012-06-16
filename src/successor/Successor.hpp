@@ -35,22 +35,22 @@ struct Successor
         private nonconstructible
 {
 public:
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         static void generate(Position<Rules, Board> const& p, Stack& moves)
         {
-                successor::Dispatcher<Selection, Rules, Board, Position>::select(state(p))->generate(p, moves);
+                successor::Dispatcher<Selection, Position, Rules, Board>::select(state(p))->generate(p, moves);
         }
 
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         static int count(Position<Rules, Board> const& p)
         {
-                return successor::Dispatcher<Selection, Rules, Board, Position>::select(state(p))->count(p);
+                return successor::Dispatcher<Selection, Position, Rules, Board>::select(state(p))->count(p);
         }
 
-        template<typename Rules, typename Board, template<typename, typename> class Position>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         static bool detect(Position<Rules, Board> const& p)
         {
-                return successor::Dispatcher<Selection, Rules, Board, Position>::select(state(p))->detect(p);
+                return successor::Dispatcher<Selection, Position, Rules, Board>::select(state(p))->detect(p);
         }
 };
 
