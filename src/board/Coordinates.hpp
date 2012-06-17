@@ -13,8 +13,8 @@ template<typename G, int R, int C>
 struct Coordinates
 {
         typedef G grid;
-        BOOST_STATIC_CONSTANT(auto, row = R);
-        BOOST_STATIC_CONSTANT(auto, col = C);
+        typedef boost::mpl::int_<R> row;
+        typedef boost::mpl::int_<C> col;
 
         // lazily evaluable metadata == nullary metafunction
         typedef Coordinates<G, R, C> type;
@@ -37,10 +37,10 @@ struct Coordinates2Square
 private:
         typedef typename C::grid G;
 
-        BOOST_STATIC_CONSTANT(auto, P = C::row % 2);             // row parity
-        BOOST_STATIC_CONSTANT(auto, Q = C::row / 2);             // number of row pairs
+        BOOST_STATIC_CONSTANT(auto, P = C::row::value % 2);             // row parity
+        BOOST_STATIC_CONSTANT(auto, Q = C::row::value / 2);             // number of row pairs
         BOOST_STATIC_CONSTANT(auto, L = P? G::edge_lo : G::edge_le);    // the left edge
-        BOOST_STATIC_CONSTANT(auto, S = C::col / 2);             // number of column pairs
+        BOOST_STATIC_CONSTANT(auto, S = C::col::value / 2);             // number of column pairs
         BOOST_STATIC_CONSTANT(auto, R = (L + S) % G::modulo);           // squares from the left edge
 
 public:
