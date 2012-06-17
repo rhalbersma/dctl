@@ -117,12 +117,12 @@ struct is_jump_connected
 :
         is_jump_difference<
                 boost::mpl::minus<
-                        boost::mpl::int_<From::type::row>,
-                        boost::mpl::int_<Dest::type::row>
+                        boost::mpl::int_<From::row>,
+                        boost::mpl::int_<Dest::row>
                 >,
                 boost::mpl::minus<
-                        boost::mpl::int_<From::type::col>,
-                        boost::mpl::int_<Dest::type::col>
+                        boost::mpl::int_<From::col>,
+                        boost::mpl::int_<Dest::col>
                 >
         >
 {};
@@ -130,9 +130,9 @@ struct is_jump_connected
 template<typename Grid, typename FromSq, typename DestSq>
 struct is_jump_group
 :
-        is_jump_connected<
-                Square2Coordinates< Square<Grid, FromSq> >,
-                Square2Coordinates< Square<Grid, DestSq> >
+        is_jump_connected< typename
+                Square2Coordinates< Square<Grid, FromSq> >::type, typename
+                Square2Coordinates< Square<Grid, DestSq> >::type
         >
 {};
 
