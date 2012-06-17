@@ -9,12 +9,17 @@
 namespace dctl {
 namespace board {
 
-template<typename G, int R, int C>
+template
+<
+        typename G, 
+        typename R, 
+        typename C
+>
 struct Coordinates
 {
         typedef G grid;
-        typedef boost::mpl::int_<R> row;
-        typedef boost::mpl::int_<C> col;
+        typedef R row;
+        typedef C col;
 
         // lazily evaluable metadata == nullary metafunction
         typedef Coordinates<G, R, C> type;
@@ -67,39 +72,63 @@ private:
 public:
         typedef Coordinates<
                 G,
-                ROW,  // 2x the row pairs + the row parity
-                COL   // 2x the range from the left edge + the row parity XOR the opposite board coloring
+                boost::mpl::int_<ROW>,  // 2x the row pairs + the row parity
+                boost::mpl::int_<COL>   // 2x the range from the left edge + the row parity XOR the opposite board coloring
         > type;
 };
 
 }       // namespace board
 
 // partial specialization for identity rotations
-template<typename Grid, int Row, int Column>
+template<typename Grid, typename Row, typename Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
 :
-        board::Coordinates<Grid, Row, Column>
+        board::Coordinates<
+                Grid, 
+                Row, 
+                Column
+        >
 {};
 
 // partial specialization for 90 degrees left rotations
-template<typename Grid, int Row, int Column>
+template<typename Grid, typename Row, typename Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
 :
-        board::Coordinates<Grid, Column, (Grid::height::value - 1) - Row>
-{};
+        board::Coordinates<
+                Grid, 
+                Column, 
+                boost::mpl::int_<
+                        (Grid::height::value - 1) - Row::value
+                > 
+        >
+{}; 
 
 // partial specialization for 90 degrees right rotations
-template<typename Grid, int Row, int Column>
+template<typename Grid, typename Row, typename Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 :
-        board::Coordinates<Grid, (Grid::width::value - 1) - Column, Row>
+        board::Coordinates<
+                Grid, 
+                boost::mpl::int_<
+                        (Grid::width::value - 1) - Column::value
+                >, 
+                Row
+        >
 {};
 
 // partial specialization for 180 degrees rotations
-template<typename Grid, int Row, int Column>
+template<typename Grid, typename Row, typename Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
 :
-        board::Coordinates<Grid, (Grid::height::value - 1) - Row, (Grid::width::value - 1) - Column>
+        board::Coordinates<
+                Grid, 
+                boost::mpl::int_<
+                        (Grid::height::value - 1) - Row::value
+                >, 
+                boost::mpl::int_<
+                        (Grid::width::value - 1) - Column::value
+                >
+        >
 {};
 
 }       // namespace dctl

@@ -32,13 +32,28 @@ struct is_initial
                 Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row,
                 boost::mpl::eval_if<
                         Color,
-                        boost::mpl::int_<((Board::height::value) - ((Board::height::value - Board::dmz::value) / 2))>,
+                        boost::mpl::minus< typename
+                                Board::height,
+                                boost::mpl::divides<
+                                        boost::mpl::minus< typename
+                                                Board::height, typename
+                                                Board::dmz
+                                        >,
+                                        boost::mpl::int_<2>
+                                >
+                        >,
                         boost::mpl::int_<0>
                 >,
                 boost::mpl::eval_if<
                         Color, typename
                         Board::height,
-                        boost::mpl::int_<(Board::height::value - Board::dmz::value) / 2>
+                        boost::mpl::divides<
+                                boost::mpl::minus< typename 
+                                        Board::height, typename 
+                                        Board::dmz
+                                >,
+                                boost::mpl::int_<2>
+                        >
                 >
         >
 {};
@@ -198,15 +213,15 @@ struct transform
 :
         Coordinates2Square<
                 Coordinates<
-                        DestGrid, 
+                        DestGrid, typename
                         rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
-                        >::type::row::value,
+                        >::type::row, typename
                         rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
-                        >::type::col::value
+                        >::type::col
                 >
         >
 {};
