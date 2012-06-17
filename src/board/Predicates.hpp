@@ -46,7 +46,7 @@ struct is_initial
 template<typename Board, typename Color, typename Row, typename SQ>
 struct is_row_mask
 :
-        boost::mpl::equal_to< typename 
+        boost::mpl::equal_to< 
                 boost::mpl::int_<Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row>,
                 boost::mpl::eval_if<
                         Color,
@@ -63,7 +63,7 @@ struct is_row_mask
 template<typename Board, typename Color, typename Column, typename SQ>
 struct is_col_mask
 :
-        boost::mpl::equal_to< typename
+        boost::mpl::equal_to<
                 boost::mpl::int_<Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col>,
                 boost::mpl::eval_if<
                         Color,
@@ -79,16 +79,16 @@ struct is_col_mask
 
 namespace detail {
 
-// a diagonal or orthogonal man jump between square <FROM> and square <DEST> is possible if
-// BOTH row AND column numbers difference == 0 mod 4 (even number of jumps) OR
-// BOTH row AND column numbers difference == 2 mod 4 (odd number of jumps)
 template<typename R0, typename C0, typename R1, typename C1>
 struct is_even_or_odd_jump_difference
 :
+        // a diagonal or orthogonal man jump between square <FROM> and square <DEST> is possible if
         boost::mpl::or_<
+                // either both row and column numbers difference == 0 mod 4 (even number of jumps)
                 boost::mpl::and_<
                         boost::mpl::not_<R0>, boost::mpl::not_<C0>
                 >,
+                // or both row and column numbers difference == 2 mod 4 (odd number of jumps)
                 boost::mpl::and_<
                         boost::mpl::not_<R1>, boost::mpl::not_<C1>
                 >
@@ -155,7 +155,7 @@ struct is_jump_start
 :
         boost::mpl::and_<
                 // row_min <= row < row_max
-                mpl::is_within_range< typename
+                mpl::is_within_range<
                         boost::mpl::int_<Square2Coordinates< Square<Grid, SQ> >::type::row>,
                         boost::mpl::eval_if< angle::is_up<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
@@ -164,7 +164,7 @@ struct is_jump_start
                         >
                 >,
                 // col_min <= col < col_max
-                mpl::is_within_range< typename
+                mpl::is_within_range<
                         boost::mpl::int_<Square2Coordinates< Square<Grid, SQ> >::type::col>,
                         boost::mpl::eval_if< angle::is_left<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
