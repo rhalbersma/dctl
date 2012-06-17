@@ -28,8 +28,8 @@ struct is_square
 template<typename Board, typename Color, typename SQ>
 struct is_initial
 :
-        mpl::is_within_range< 
-                boost::mpl::int_<Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row>,
+        mpl::is_within_range< typename 
+                Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row,
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::int_<((Board::height::value) - ((Board::height::value - Board::dmz::value) / 2))>,
@@ -46,8 +46,8 @@ struct is_initial
 template<typename Board, typename Color, typename Row, typename SQ>
 struct is_row_mask
 :
-        boost::mpl::equal_to< 
-                boost::mpl::int_<Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row>,
+        boost::mpl::equal_to< typename 
+                Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row,
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus< typename
@@ -63,8 +63,8 @@ struct is_row_mask
 template<typename Board, typename Color, typename Column, typename SQ>
 struct is_col_mask
 :
-        boost::mpl::equal_to<
-                boost::mpl::int_<Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col>,
+        boost::mpl::equal_to< typename 
+                Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col,
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus< typename
@@ -116,13 +116,13 @@ template<typename From, typename Dest>
 struct is_jump_connected
 :
         is_jump_difference<
-                boost::mpl::minus<
-                        boost::mpl::int_<From::row>,
-                        boost::mpl::int_<Dest::row>
+                boost::mpl::minus< typename 
+                        From::row, typename 
+                        Dest::row
                 >,
-                boost::mpl::minus<
-                        boost::mpl::int_<From::col>,
-                        boost::mpl::int_<Dest::col>
+                boost::mpl::minus< typename 
+                        From::col, typename 
+                        Dest::col
                 >
         >
 {};
@@ -155,8 +155,8 @@ struct is_jump_start
 :
         boost::mpl::and_<
                 // row_min <= row < row_max
-                mpl::is_within_range<
-                        boost::mpl::int_<Square2Coordinates< Square<Grid, SQ> >::type::row>,
+                mpl::is_within_range< typename 
+                        Square2Coordinates< Square<Grid, SQ> >::type::row,
                         boost::mpl::eval_if< angle::is_up<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
                                 Board::height,
@@ -164,8 +164,8 @@ struct is_jump_start
                         >
                 >,
                 // col_min <= col < col_max
-                mpl::is_within_range<
-                        boost::mpl::int_<Square2Coordinates< Square<Grid, SQ> >::type::col>,
+                mpl::is_within_range< typename 
+                        Square2Coordinates< Square<Grid, SQ> >::type::col,
                         boost::mpl::eval_if< angle::is_left<Index>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
                                 Board::width,
@@ -198,15 +198,15 @@ struct transform
 :
         Coordinates2Square<
                 Coordinates<
-                        DestGrid,
+                        DestGrid, 
                         rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
-                        >::type::row,
+                        >::type::row::value,
                         rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
-                        >::type::col
+                        >::type::col::value
                 >
         >
 {};
