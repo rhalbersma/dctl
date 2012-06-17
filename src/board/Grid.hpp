@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include <boost/mpl/int_fwd.hpp>        // int_
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 
 namespace dctl {
@@ -7,20 +8,20 @@ namespace board {
 
 template
 <
-        typename Dimensions,    // dimensions
-        int G = 0               // ghost columns
+        typename Dimensions,                    // dimensions
+        typename Ghosts = boost::mpl::int_<0>   // ghost columns
 >
 struct Grid
 :
-        public Dimensions
+        Dimensions
 {
 public:
-        BOOST_STATIC_ASSERT(G > 0);
+        BOOST_STATIC_ASSERT(Ghosts::value > 0);
 
         typedef Grid<Dimensions> BaseGrid;
 
         // diagonal directions
-        BOOST_STATIC_CONSTANT(auto, left_down = (Dimensions::width::value + G) / 2);
+        BOOST_STATIC_CONSTANT(auto, left_down = (Dimensions::width::value + Ghosts::value) / 2);
         BOOST_STATIC_CONSTANT(auto, right_down = left_down + 1);
 
         // orthogonal directions
@@ -51,7 +52,7 @@ public:
 
 // partial specialization for grids without ghost columns
 template<typename Dimensions>
-class Grid<Dimensions, 0>
+class Grid< Dimensions, boost::mpl::int_<0> >
 :
         public Dimensions
 {

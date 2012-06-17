@@ -28,7 +28,7 @@ public:
                 rotate<
                         Dimensions, typename 
                         Structure::full_angle
-                >::type, 
+                >::type, typename
                 Structure::ghosts
         > InternalGrid;
 
@@ -188,7 +188,7 @@ BitBoard const Board<Dimensions, Structure>::jump_start[] = {
 };
 
 #define DCTL_PP_SQUARE2BIT(z, i, data) \
-        square_to_bit<Board, i>::type::value
+        square_to_bit< Board, boost::mpl::int_<i> >::type::number::value
 
 template<typename Dimensions, typename Structure>
 int const Board<Dimensions, Structure>::SQUARE2BIT[] = {
@@ -198,7 +198,7 @@ int const Board<Dimensions, Structure>::SQUARE2BIT[] = {
 #undef DCTL_PP_SQUARE2BIT
 
 #define DCTL_PP_BIT2SQUARE(z, i, data) \
-        bit_to_square<Board, i>::type::value
+        bit_to_square< Board, boost::mpl::int_<i> >::type::number::value
 
 template<typename Dimensions, typename Structure>
 int const Board<Dimensions, Structure>::BIT2SQUARE[] = {

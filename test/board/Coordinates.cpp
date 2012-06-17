@@ -1,6 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/test_case_template.hpp>
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
+#include <boost/mpl/int_fwd.hpp>                // int_
 #include <boost/mpl/vector.hpp>                 // vector
 
 #include "../../src/board/Coordinates.hpp"
@@ -10,23 +11,16 @@
 #include "../../src/group/action.hpp"
 
 namespace dctl {
+namespace board {
 
 BOOST_AUTO_TEST_SUITE(TestCoordinates)
 
-typedef boost::mpl::vector<
-        board::Dimensions< 4,  4>,
-        board::Dimensions< 6,  6>,
-        board::Dimensions< 8,  8>,
-        board::Dimensions<10, 10>,
-        board::Dimensions<10,  8, true>,
-        board::Dimensions<11, 10, true>,
-        board::Dimensions<12, 10, true>
-> DimensionsSequence;
+typedef Grid< Dimensions< 4,  4>, boost::mpl::int_<2> > G;
 
-typedef board::Grid< board::Dimensions< 4,  4>, 2 > G;
+typedef Coordinates< G, 0, 0 > Coord;
 
 typedef boost::mpl::vector<
-        board::Coordinates<G, 0, 0>
+        Coord
 > CoordinatesSequence;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, CoordinatesSequence)
@@ -38,4 +32,5 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, CoordinatesSequence)
 
 BOOST_AUTO_TEST_SUITE_END()
 
+}       // namespace board
 }       // namespace dctl
