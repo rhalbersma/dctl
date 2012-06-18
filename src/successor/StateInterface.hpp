@@ -8,13 +8,20 @@ namespace successor {
 
 /*
 
-        The StateInterface class forms the <State> in a <State>
-        Design Pattern, with the State class as the <ConcreteState>.
-        Examples of the <Context> include the Successor and Mobility classes.
+        For purposes of move generation, a position has 8 possible states,
+        depending on the side to move and the availability of kings and pawns.
+        The move generator *dynamically* dispatches the state-specific routines.
+        For efficiency, the states are *statically* stored in a FlyWeightFactory.
+
+        State Design Pattern
+        --------------------
+        State                   : StateInterface <------------------ this class
+        ConcreteState           : State
+        Context                 : Successor, Mobility
 
         FlyWeight Design Pattern
         ------------------------
-        FlyWeight               : StateInterface
+        FlyWeight               : StateInterface <------------------ this class
         ConcreteFlyWeight       : State
         FlyWeightFactory        : Dispatcher
         Client                  : Successor, Mobility

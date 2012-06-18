@@ -12,14 +12,14 @@ namespace board {
 template
 <
         typename G, 
-        typename R, 
-        typename C
+        int R, 
+        int C
 >
 struct Coordinates
 {
         typedef G grid;
-        typedef R row;
-        typedef C col;
+        typedef boost::mpl::int_<R> row;
+        typedef boost::mpl::int_<C> col;
 
         // lazily evaluable metadata == nullary metafunction
         typedef Coordinates<G, R, C> type;
@@ -72,15 +72,15 @@ private:
 public:
         typedef Coordinates<
                 G,
-                boost::mpl::int_<ROW>,  // 2x the row pairs + the row parity
-                boost::mpl::int_<COL>   // 2x the range from the left edge + the row parity XOR the opposite board coloring
+                ROW,    // 2x the row pairs + the row parity
+                COL     // 2x the range from the left edge + the row parity XOR the opposite board coloring
         > type;
 };
 
 }       // namespace board
 
 // partial specialization for identity rotations
-template<typename Grid, typename Row, typename Column>
+template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
 :
         board::Coordinates<
@@ -91,43 +91,51 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
 {};
 
 // partial specialization for 90 degrees left rotations
-template<typename Grid, typename Row, typename Column>
+template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
 :
         board::Coordinates<
                 Grid, 
                 Column, 
-                boost::mpl::int_<
-                        (Grid::height::value - 1) - Row::value
-                > 
+                boost::mpl::minus< typename 
+                        Grid::height,
+                        boost::mpl::int_<1>,
+                        boost::mpl::int_<Row>
+                >::value
         >
 {}; 
 
 // partial specialization for 90 degrees right rotations
-template<typename Grid, typename Row, typename Column>
+template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 :
         board::Coordinates<
                 Grid, 
-                boost::mpl::int_<
-                        (Grid::width::value - 1) - Column::value
-                >, 
+                boost::mpl::minus< typename 
+                        Grid::width,
+                        boost::mpl::int_<1>,
+                        boost::mpl::int_<Column>
+                >::value,
                 Row
         >
 {};
 
 // partial specialization for 180 degrees rotations
-template<typename Grid, typename Row, typename Column>
+template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
 :
         board::Coordinates<
                 Grid, 
-                boost::mpl::int_<
-                        (Grid::height::value - 1) - Row::value
-                >, 
-                boost::mpl::int_<
-                        (Grid::width::value - 1) - Column::value
-                >
+                boost::mpl::minus< typename
+                        Grid::height,
+                        boost::mpl::int_<1>,
+                        boost::mpl::int_<Row>
+                >::value,
+                boost::mpl::minus< typename
+                        Grid::width,
+                        boost::mpl::int_<1>,
+                        boost::mpl::int_<Column>
+                >::value
         >
 {};
 

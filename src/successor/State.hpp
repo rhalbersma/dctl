@@ -8,14 +8,21 @@ namespace successor {
 
 /*
 
-        The State class forms the <ConcreteState> in a <State>
-        Design Pattern, with the StateInterface class as the <State>.
-        Examples of the <Context> include the Successor and Mobility classes.
+        For purposes of move generation, a position has 8 possible states,
+        depending on the side to move and the availability of kings and pawns. 
+        The move generator *dynamically* dispatches the state-specific routines.
+        For efficiency, the states are *statically* stored in a FlyWeightFactory.
+
+        State Design Pattern
+        --------------------
+        State                   : StateInterface
+        ConcreteState           : State <--------------------------- this class
+        Context                 : Successor, Mobility
 
         FlyWeight Design Pattern
         ------------------------
         FlyWeight               : StateInterface
-        ConcreteFlyWeight       : State
+        ConcreteFlyWeight       : State <--------------------------- this class
         FlyWeightFactory        : Dispatcher
         Client                  : Successor, Mobility
 
@@ -38,21 +45,21 @@ private:
         // typedefs
 
         typedef Driver<Color, Material, Selection, Rules, Board> Delegate;
-        typedef Position<Rules, Board> PositionType;
+        typedef Position<Rules, Board> Position;
 
         // virtual implemenation
 
-        virtual void do_generate(PositionType const& p, Stack& moves) const
+        virtual void do_generate(Position const& p, Stack& moves) const
         {
                 Delegate::generate(p, moves);
         }
 
-        virtual int do_count(PositionType const& p) const
+        virtual int do_count(Position const& p) const
         {
                 return Delegate::count(p);
         }
 
-        virtual bool do_detect(PositionType const& p) const
+        virtual bool do_detect(Position const& p) const
         {
                 return Delegate::detect(p);
         }

@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE(TestCoordinates)
 
 typedef Grid< Dimensions< 4,  4>, boost::mpl::int_<2> > G;
 
-typedef Coordinates< G, boost::mpl::int_<0>, boost::mpl::int_<0> > Coord;
+typedef Coordinates< G, 0, 0 > Coord;
 
 typedef boost::mpl::vector<
         Coord
