@@ -213,15 +213,15 @@ struct transform
 :
         Coordinates2Square<
                 Coordinates<
-                        DestGrid, typename
+                        DestGrid,
                         rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
-                        >::type::row, typename
+                        >::type::row::value,
                         rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
-                        >::type::col
+                        >::type::col::value
                 >
         >
 {};

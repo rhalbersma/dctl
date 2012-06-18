@@ -42,6 +42,7 @@ public:
         template<template<typename, typename> class Position>
         static bool detect(Position<Rules, Board> const& p)
         {
+                // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (
                         PawnReverse::detect(p) ||
                         KingReverse::detect(p)

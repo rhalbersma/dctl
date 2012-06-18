@@ -11,11 +11,22 @@ namespace successor {
 
 /*
 
+        For purposes of move generation, a position has 8 possible states,
+        depending on the side to move and the availability of kings and pawns. 
+        The move generator *dynamically* dispatches the state-specific routines.
+        For efficiency, the states are *statically* stored in a FlyWeightFactory.
+
+        State Design Pattern
+        --------------------
+        State                   : StateInterface
+        ConcreteState           : State
+        Context                 : Successor, Mobility
+
         FlyWeight Design Pattern
         ------------------------
         FlyWeight               : StateInterface
         ConcreteFlyWeight       : State
-        FlyWeightFactory        : Dispatcher
+        FlyWeightFactory        : Dispatcher <---------------------- this class
         Client                  : Successor, Mobility
 
 */
@@ -69,8 +80,9 @@ public:
 
                 // "Meyers Singleton", Effective C++ 3rd ed., Item 4 (p. 31-32)
                 static BaseConstPointer const singleton_[] = {
-                        &black_none, &black_pawn, &black_king, &black_both,
-                        &white_none, &white_pawn, &white_king, &white_both
+                //      no material  only pawns   only kings   kings and pawns
+                        &black_none, &black_pawn, &black_king, &black_both,     // black to move
+                        &white_none, &white_pawn, &white_king, &white_both      // white to move
                 };
 
                 return singleton_[state];

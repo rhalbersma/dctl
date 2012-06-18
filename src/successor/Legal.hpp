@@ -49,6 +49,7 @@ public:
         template<template<typename, typename> class Position>
         static bool detect(Position<Rules, Board> const& p)
         {
+                // speculate #moves > #jumps so that the || is likely to short-circuit
                 return (
                         DoMoves::detect(p) ||
                         DoJumps::detect(p)
