@@ -5,21 +5,6 @@
 #include "../rules/Enum.hpp"
 
 namespace dctl {
-namespace angle {
-
-template<typename Board, typename Index>
-struct shift_size;
-
-template<typename Board> struct shift_size<Board, D000 >: boost::mpl::int_< Board::InternalGrid::right      > {};
-template<typename Board> struct shift_size<Board, D045 >: boost::mpl::int_< Board::InternalGrid::right_up   > {};
-template<typename Board> struct shift_size<Board, D090 >: boost::mpl::int_< Board::InternalGrid::up         > {};
-template<typename Board> struct shift_size<Board, D135 >: boost::mpl::int_< Board::InternalGrid::left_up    > {};
-template<typename Board> struct shift_size<Board, D180 >: boost::mpl::int_< Board::InternalGrid::left       > {};
-template<typename Board> struct shift_size<Board, D225 >: boost::mpl::int_< Board::InternalGrid::left_down  > {};
-template<typename Board> struct shift_size<Board, D270 >: boost::mpl::int_< Board::InternalGrid::down       > {};
-template<typename Board> struct shift_size<Board, D315 >: boost::mpl::int_< Board::InternalGrid::right_down > {};
-
-}       // namespace angle
 
 // primary template
 template<typename Board, typename Index, typename Range>
@@ -85,7 +70,7 @@ struct FloodFill
         {
                 return flood_fill<
                         angle::is_positive< Index >::value,
-                        angle::shift_size<Board, Index>::value
+                        Board::shift< Index >::value
                 >(generator, propagator);
         }
 };
@@ -99,7 +84,7 @@ struct Push
         {
                 return Shift<
                         angle::is_positive< Index >::value,
-                        angle::shift_size<Board, Index>::value
+                        Board::shift< Index >::value
                 >()(square);
         }
 };
@@ -113,7 +98,7 @@ struct Pull
         {
                 return Shift<
                         angle::is_negative< Index >::value,
-                        angle::shift_size<Board, Index>::value
+                        Board::shift< Index >::value
                 >()(square);
         }
 };
