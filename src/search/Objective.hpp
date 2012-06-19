@@ -96,7 +96,7 @@ bool is_draw(Position<Rules, Board> const& p)
 {
         return (
                 is_cycle(p) ||
-                is_no_progress<Rules>(p)
+                is_no_progress(p)
         );
 }
 
@@ -123,16 +123,16 @@ template<template<typename, typename> class Position, typename Rules, typename B
 bool is_no_progress(Position<Rules, Board> const& p)
 {
         // tag dispatching on restrictions on consecutive reversible moves
-        return is_no_progress_dispatch<Rules>(
+        return is_no_progress_dispatch(
                 p,
                 boost::mpl::bool_<rules::is_restricted_reversible_moves<Rules>::value>()
         );
 }
 
 // partial specialization for no restrictions on consecutive reversible moves
-template<typename Position>
+template<template<typename, typename> class Position, typename Rules, typename Board>
 bool is_no_progress_dispatch(
-        Position const& /* p */, 
+        Position<Rules, Board> const& p /* p */, 
         boost::mpl::false_
 )
 {
