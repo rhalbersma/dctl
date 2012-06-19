@@ -32,6 +32,12 @@ public:
                 Structure::ghosts
         > InternalGrid;
 
+        template<typename Index>
+        struct shift
+        :
+                InternalGrid::shift<Index>
+        {};
+
         static bool is_valid(int square)
         {
                 return begin() <= square && square < end();
@@ -61,8 +67,8 @@ public:
         static void advance(Iterator& square)
         {
                 ShiftAssign<
-                        angle::is_positive< Index >::value,
-                        angle::shift_size< Board, Index >::value
+                        angle::is_positive<Index>::value,
+                        shift<Index>::value
                 >()(square);
         }        
 
@@ -70,8 +76,8 @@ public:
         static Iterator next(Iterator square)
         {
                 return Shift<
-                        angle::is_positive< Index >::value,
-                        angle::shift_size<Board, Index>::value
+                        angle::is_positive<Index>::value,
+                        shift<Index>::value
                 >()(square);
         }
 
@@ -79,8 +85,8 @@ public:
         static Iterator prev(Iterator square)
         {
                 return Shift<
-                        angle::is_negative< Index >::value,
-                        angle::shift_size<Board, Index>::value
+                        angle::is_negative<Index>::value,
+                        shift<Index>::value
                 >()(square);
         }
 
@@ -118,6 +124,7 @@ private:
         :
                 init_jump_start< Board, rotate< A, typename Structure::full_angle > >
         {};
+
 };
 
 template<typename Dimensions, typename Structure>
