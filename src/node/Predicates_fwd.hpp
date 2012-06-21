@@ -40,22 +40,7 @@ bool is_capture(Position const& p, Move const& m);
 template<typename Position, typename Move>
 bool is_pseudo_legal(Position const& p, Move const& m);
 
-// tag dispatching on capture removal
 template<template<typename, typename> class Position, typename Rules, typename Board, typename Move>
 bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m);
-
-// partial specialization for en-passant capture removal
-template<typename Position, typename Move>
-bool is_intersecting_capture(
-        Position const& p, Move const& m, 
-        rules::removal::en_passant
-);
-
-// partial specialization for apres-fini capture removal
-template<typename Position, typename Move>
-bool is_intersecting_capture(
-        Position const& /* p */, Move const& /* m */, 
-        rules::removal::apres_fini
-);
 
 }       // namespace dctl

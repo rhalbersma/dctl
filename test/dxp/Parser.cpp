@@ -29,10 +29,10 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
 
         typedef boost::mpl::vector<
                 GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
-        > Messages;
+        > MessageTypes;
 
         Factory<
-                Messages,
+                MessageTypes,
                 MessageInterface
         > factory;
 

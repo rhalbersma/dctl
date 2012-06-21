@@ -16,16 +16,6 @@ static BitBoard targets(Position<Rules, Board> const& p)
 
 namespace detail {
 
-// partial specialization for pawns that cannot capture kings
-template<bool Color, typename Position>
-static BitBoard targets(
-        Position const& p, 
-        boost::mpl::false_
-)
-{
-        return p.pawns(!Color);
-}
-
 // partial specialization for pawns that can capture kings
 template<bool Color, typename Position>
 static BitBoard targets(
@@ -34,6 +24,16 @@ static BitBoard targets(
 )
 {
         return p.pieces(!Color);
+}
+
+// partial specialization for pawns that cannot capture kings
+template<bool Color, typename Position>
+static BitBoard targets(
+        Position const& p, 
+        boost::mpl::false_
+)
+{
+        return p.pawns(!Color);
 }
 
 }       // namespace detail
