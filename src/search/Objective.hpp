@@ -94,10 +94,7 @@ struct terminal<Misere>
 template<template<typename, typename> class Position, typename Rules, typename Board>
 bool is_draw(Position<Rules, Board> const& p)
 {
-        return (
-                is_cycle(p) ||
-                is_no_progress(p)
-        );
+        return is_cycle(p) || is_no_progress(p);
 }
 
 template<typename Position>
@@ -130,9 +127,9 @@ bool is_no_progress(Position<Rules, Board> const& p)
 }
 
 // partial specialization for no restrictions on consecutive reversible moves
-template<template<typename, typename> class Position, typename Rules, typename Board>
+template<typename Position>
 bool is_no_progress_dispatch(
-        Position<Rules, Board> const& p /* p */, 
+        Position const& /* p */, 
         boost::mpl::false_
 )
 {

@@ -31,7 +31,7 @@ namespace promotion {
         struct en_passant {};   // in passing
 }
 
-// majority capture precedence: none, quantity, quality
+// majority capture precedence
 namespace precedence {
         struct none {};
         struct quantity {};

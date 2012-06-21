@@ -30,19 +30,19 @@ public:
         template<template<typename, typename> class Position>
         static void generate(Position<Rules, Board> const& p, Stack& moves)
         {
-                serialize(unrestricted_kings<Rules>(p, Color), not_occupied(p), moves);
+                serialize(unrestricted_kings(p, Color), not_occupied(p), moves);
         }
 
         template<template<typename, typename> class Position>
         static int count(Position<Rules, Board> const& p)
         {
-                return count(unrestricted_kings<Rules>(p, Color), not_occupied(p));
+                return count(unrestricted_kings(p, Color), not_occupied(p));
         }
 
         template<template<typename, typename> class Position>
         static bool detect(Position<Rules, Board> const& p)
         {
-                return detect(unrestricted_kings<Rules>(p, Color), not_occupied(p));
+                return detect(unrestricted_kings(p, Color), not_occupied(p));
         }
 
 private:
