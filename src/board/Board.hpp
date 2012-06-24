@@ -32,6 +32,8 @@ public:
                 Structure::ghosts
         > InternalGrid;
 
+        typedef BitBoard bit_type;
+
         template<typename Index>
         struct shift
         :

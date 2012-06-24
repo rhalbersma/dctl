@@ -10,12 +10,12 @@ namespace rules { struct International; }
 
 namespace capture {
 
-// explicit specialization for International draughts
-template<>
-struct Value<rules::International>
+// partial specialization for International draughts
+template<typename Board>
+struct Value<rules::International, Board>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::International> >
+        private boost::totally_ordered< Value<rules::International, Board> >
 {
 public:
         // structors

@@ -10,12 +10,12 @@ namespace rules { struct Frisian; }
 
 namespace capture {
 
-// explicit specialization for Frisian draughts
-template<>
-struct Value<rules::Frisian>
+// partial specialization for Frisian draughts
+template<typename Board>
+struct Value<rules::Frisian, Board>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Frisian> >
+        private boost::totally_ordered< Value<rules::Frisian, Board> >
 {
 public:
         // structors

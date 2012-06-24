@@ -4,7 +4,6 @@
 #include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"                // Value (primary template)
 #include "../bit/Bit.hpp"               // count, reverse_singlet
-#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 
@@ -12,13 +11,18 @@ namespace rules { struct Italian; }
 
 namespace capture {
 
-// explicit specialization for Italian draughts
-template<>
-struct Value<rules::Italian>
+// partial specialization for Italian draughts
+template<typename Board>
+struct Value<rules::Italian, Board>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Italian> >
+        private boost::totally_ordered< Value<rules::Italian, Board> >
 {
+private:
+        // typedefs
+
+        typedef typename Board::bit_type BitType;
+
 public:
         // structors
 
@@ -37,7 +41,7 @@ public:
         void increment(bool is_captured_king)
         {
                 if (is_captured_king) {
-                        piece_order_ ^= bit::reverse_singlet<BitBoard>(num_pieces_);
+                        piece_order_ ^= bit::reverse_singlet<BitType>(num_pieces_);
                         ++num_kings_;
                 }
                 ++num_pieces_;
@@ -50,7 +54,7 @@ public:
                 --num_pieces_;
                 if (is_captured_king) {
                         --num_kings_;
-                        piece_order_ ^= bit::reverse_singlet<BitBoard>(num_pieces_);
+                        piece_order_ ^= bit::reverse_singlet<BitType>(num_pieces_);
                 }
                 BOOST_ASSERT(invariant());
         }
@@ -109,10 +113,10 @@ private:
 
         // representation
 
-        BitBoard piece_order_;
         int num_pieces_;
         int num_kings_;
         bool with_king_;
+        BitType piece_order_;
 };
 
 }       // namespace capture

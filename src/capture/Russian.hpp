@@ -8,12 +8,12 @@ namespace rules { struct Russian; }
 
 namespace capture {
 
-// explicit specialization for Russian draughts
-template<>
-struct Value<rules::Russian>
+// partial specialization for Russian draughts
+template<typename Board>
+struct Value<rules::Russian, Board>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Russian> >
+        private boost::totally_ordered< Value<rules::Russian, Board> >
 {
 public:
         // structors

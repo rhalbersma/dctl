@@ -4,7 +4,7 @@ namespace dctl {
 namespace capture {
 
 // primary template
-template<typename>
+template<typename, typename>
 struct Value;
 
 }       // namespace capture
