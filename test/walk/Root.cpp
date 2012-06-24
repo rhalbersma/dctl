@@ -24,7 +24,7 @@ struct Fixture
         {
         }
 
-        BOOST_STATIC_CONSTANT(auto, R = 7);
+        BOOST_STATIC_CONSTANT(auto, R = 0);
 
         template<typename Position, std::size_t N>
         void run(Position const& p, NodeCount const (&leafs)[N])
