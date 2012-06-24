@@ -10,12 +10,12 @@ namespace rules { struct Killer; }
 
 namespace capture {
 
-// explicit specialization for Killer draughts
-template<>
-struct Value<rules::Killer>
+// partial specialization for Killer draughts
+template<typename Board>
+struct Value<rules::Killer, Board>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Killer> >
+        private boost::totally_ordered< Value<rules::Killer, Board> >
 {
 public:
         // structors

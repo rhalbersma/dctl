@@ -519,8 +519,8 @@ private:
         BitBoard remaining_targets_;
         BitBoard not_occupied_;
         BitIndex from_sq_;
-        Value<Rules> current_;
-        Value<Rules> best_;
+        Value<Rules, Board> current_;
+        Value<Rules, Board> best_;
         Stack& moves_;
 };
 

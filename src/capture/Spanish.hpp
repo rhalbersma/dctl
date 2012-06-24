@@ -10,12 +10,12 @@ namespace rules { struct Spanish; }
 
 namespace capture {
 
-// explicit specialization for Spanish draughts
-template<>
-struct Value<rules::Spanish>
+// partial specialization for Spanish draughts
+template<typename Board>
+struct Value<rules::Spanish, Board>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Spanish> >
+        private boost::totally_ordered< Value<rules::Spanish, Board> >
 {
 public:
         // structors

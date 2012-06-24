@@ -70,6 +70,9 @@ BOOST_PARAMETER_TEMPLATE_KEYWORD(pawn_promotion)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(is_absolute_king_precedence)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(is_relative_king_precedence)
 
+// TODO: wrap template-template parameter as a lambda expression
+//BOOST_PARAMETER_TEMPLATE_KEYWORD(capture_value_type)
+
 typedef boost::parameter::parameters<
         // required parameters
 

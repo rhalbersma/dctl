@@ -6,11 +6,11 @@ namespace dctl {
 namespace capture {
 
 // primary template
-template<typename Rules>
+template<typename Rules, typename Board>
 struct Value
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<Rules> >
+        private boost::totally_ordered< Value<Rules, Board> >
 {
         // predicates
 
