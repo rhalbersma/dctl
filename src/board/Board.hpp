@@ -110,23 +110,12 @@ private:
         static int const SQUARE2BIT[];                          // convert a square to a bit
         static int const BIT2SQUARE[];                          // convert a bit to a square
 
-        /*
-
-        TODO: use C++11 template aliases
-
-        template<typename A> 
-        using do_jump_start = 
-                init_jump_start< Board, rotate< A, typename Structure::full_angle > >
-        ;
-
-        */
-
+        // TODO: use C++11 template aliases
         template<typename A>
         struct do_jump_start
         :
                 init_jump_start< Board, rotate< A, typename Structure::full_angle > >
         {};
-
 };
 
 template<typename Dimensions, typename Structure>

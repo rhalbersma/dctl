@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.hpp"
 #include "Enum.hpp"
+#include "../capture/International.hpp"
 
 namespace dctl {
 namespace rules {
@@ -9,6 +10,7 @@ namespace rules {
 struct International
 : 
         Rules< 
+                International,
                 king_range<range::distance_N>,
                 pawn_jump_directions<directions::diag>,
                 jump_precedence<precedence::quantity>
@@ -22,5 +24,3 @@ typedef International Canadian;         // 12x12 board
 
 }       // namespace rules
 }       // namespace dctl
-
-#include "../capture/International.hpp"

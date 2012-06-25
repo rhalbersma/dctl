@@ -44,17 +44,7 @@ struct Dispatcher
         private nonconstructible
 {
 private:
-        /*
-
-        TODO: use C++11 template aliases
-
-        template<bool Color, int Material> 
-        using Delegate = 
-                State<Color, Material, Selection, Position, Rules, Board>
-        ;
-
-        */
-
+        // TODO: use C++11 template aliases
         template<bool Color, int Material>
         struct Delegate
         :

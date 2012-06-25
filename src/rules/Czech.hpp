@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.hpp"
 #include "Enum.hpp"
+#include "../capture/Value.hpp"
 
 namespace dctl {
 namespace rules {
@@ -9,6 +10,7 @@ namespace rules {
 struct Czech
 : 
         Rules<
+                Czech,
                 king_range<range::distance_N>,
                 pawn_jump_directions<directions::up>,
                 jump_precedence<precedence::none>,

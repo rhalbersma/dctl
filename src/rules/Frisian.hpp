@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.hpp"
 #include "Enum.hpp"
+#include "../capture/Frisian.hpp"
 
 namespace dctl {
 namespace rules {
@@ -9,6 +10,7 @@ namespace rules {
 struct Frisian
 : 
         Rules<
+                Frisian,
                 king_range<range::distance_N>,
                 pawn_jump_directions<directions::all>,
                 jump_precedence<precedence::quality>,
@@ -20,5 +22,3 @@ struct Frisian
 
 }       // namespace rules
 }       // namespace dctl
-
-#include "../capture/Frisian.hpp"

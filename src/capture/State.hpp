@@ -7,7 +7,6 @@
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/utility.hpp>            // noncopyable
-#include "Value.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Shift.hpp"
 #include "../node/Stack.hpp"
@@ -514,13 +513,15 @@ private:
 
         // representation
 
+        typedef typename Rules::capture_value_type<Board> Value;
+
         const BitBoard king_targets_;
         BitBoard initial_targets_;
         BitBoard remaining_targets_;
         BitBoard not_occupied_;
         BitIndex from_sq_;
-        Value<Rules, Board> current_;
-        Value<Rules, Board> best_;
+        Value current_;
+        Value best_;
         Stack& moves_;
 };
 

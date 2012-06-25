@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.hpp"
 #include "Enum.hpp"
+#include "../capture/Spanish.hpp"
 
 namespace dctl {
 namespace rules {
@@ -9,6 +10,7 @@ namespace rules {
 struct Spanish
 : 
         Rules<
+                Spanish,
                 king_range<range::distance_N>,
                 pawn_jump_directions<directions::up>,
                 jump_precedence<precedence::quality>
@@ -17,5 +19,3 @@ struct Spanish
 
 }       // namespace rules
 }       // namespace dctl
-
-#include "../capture/Spanish.hpp"
