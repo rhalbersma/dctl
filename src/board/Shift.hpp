@@ -69,8 +69,8 @@ struct FloodFill
         T operator()(T generator, T propagator) const
         {
                 return flood_fill<
-                        angle::is_positive< Index >::value,
-                        Board::shift< Index >::value
+                        angle::is_positive<Index>::value,
+                        Board::shift<Index>::value
                 >(generator, propagator);
         }
 };
@@ -83,8 +83,8 @@ struct Push
         Iterator operator()(Iterator square) const
         {
                 return Shift<
-                        angle::is_positive< Index >::value,
-                        Board::shift< Index >::value
+                        angle::is_positive<Index>::value,
+                        Board::shift<Index>::value
                 >()(square);
         }
 };
@@ -97,8 +97,8 @@ struct Pull
         Iterator operator()(Iterator square) const
         {
                 return Shift<
-                        angle::is_negative< Index >::value,
-                        Board::shift< Index >::value
+                        angle::is_negative<Index>::value,
+                        Board::shift<Index>::value
                 >()(square);
         }
 };

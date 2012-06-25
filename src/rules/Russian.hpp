@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.hpp"
 #include "Enum.hpp"
+#include "../capture/Russian.hpp"
 
 namespace dctl {
 namespace rules {
@@ -9,6 +10,7 @@ namespace rules {
 struct Russian
 : 
         Rules<
+                Russian,
                 king_range<range::distance_N>,
                 pawn_jump_directions<directions::diag>,
                 jump_precedence<precedence::none>,
@@ -22,5 +24,4 @@ typedef Russian Shashki;
 }       // namespace rules
 }       // namespace dctl
 
-#include "../capture/Russian.hpp"
 #include "../notation/Russian.hpp"

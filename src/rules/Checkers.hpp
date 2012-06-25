@@ -1,5 +1,7 @@
 #pragma once
 #include "Rules.hpp"
+#include "Enum.hpp"
+#include "../capture/Value.hpp"
 
 namespace dctl {
 namespace rules {
@@ -8,6 +10,7 @@ namespace rules {
 struct Checkers
 : 
         Rules<
+                Checkers,
                 king_range<range::distance_1>,
                 pawn_jump_directions<directions::up>,
                 jump_precedence<precedence::none>
