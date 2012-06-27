@@ -515,7 +515,7 @@ private:
 
         typedef typename Rules::capture_value_type<Board> Value;
 
-        const BitBoard king_targets_;
+        BitBoard const king_targets_;
         BitBoard initial_targets_;
         BitBoard remaining_targets_;
         BitBoard not_occupied_;
