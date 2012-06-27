@@ -68,7 +68,7 @@ private:
 
         private:
                 // suppress warning about the compiler-generated assignment operator
-                call_insert& operator=(const call_insert&);
+                call_insert& operator=(call_insert const&);
 
                 Registry& registry_;
         };
@@ -87,7 +87,7 @@ private:
 
         private:
                 // suppress warning about the compiler-generated assignment operator
-                call_erase& operator=(const call_erase&);
+                call_erase& operator=(call_erase const&);
 
                 Registry& registry_;
         };
