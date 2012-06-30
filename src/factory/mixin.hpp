@@ -47,6 +47,9 @@ struct FactoryCreate
 :
         public Base
 {
+        // NOTE: do NOT insert BOOST_MPL_ASSERT((std::is_base_of<Base, Derived>)) here,
+        // because Derived is undefined class with FactoryCreate mixed in
+
         static Identifier identifier()
         {
                 return Identifier(1, identifier_);

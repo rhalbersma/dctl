@@ -8,7 +8,7 @@ template
         template<typename> class Impl,
         typename T
 >
-struct PiecesInterface
+class PiecesInterface
 :
         // enable static polymorphism
         private enable_crtp< Impl<T> >
@@ -19,37 +19,37 @@ public:
         // black or white pawns
         T pawns(bool color) const
         {
-                return self().do_pawns(color);
+                return self()->do_pawns(color);
         }
 
         // black or white kings
         T kings(bool color) const
         {
-                return self().do_kings(color);
+                return self()->do_kings(color);
         }
 
         // black or white pieces
         T pieces(bool color) const
         {
-                return self().do_pieces(color);
+                return self()->do_pieces(color);
         }
 
         // black and white pawns
         T pawns() const
         {
-                return self().do_pawns();
+                return self()->do_pawns();
         }
 
         // black and white kings
         T kings() const
         {
-                return self().do_kings();
+                return self()->do_kings();
         }
 
         // black and white pieces
         T pieces() const
         {
-                return self().do_pieces();
+                return self()->do_pieces();
         }
 
 protected:

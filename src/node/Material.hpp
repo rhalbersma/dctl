@@ -14,7 +14,7 @@ struct Material_
         public PiecesInterface< Material_, T >, 
         private boost::equality_comparable< Material_<T> >
 {
-        enum Composition {
+        enum {
                 none = 0,
                 pawn = 1,
                 king = pawn << 1,
@@ -46,7 +46,7 @@ struct Material_
         // modifiers
 
         // xor-assign the set bits of another piece set
-        Material_& operator^=(const Move_<T>& m)
+        Material_& operator^=(Move_<T> const& m)
         {
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);
@@ -57,7 +57,7 @@ struct Material_
 
         // predicates
 
-        bool operator==(const Material_& other) const
+        bool operator==(Material_ const& other) const
         {
                 return (
                         (pieces(Side::black) == other.pieces(Side::black)) &&
@@ -80,7 +80,7 @@ private:
 
         // queries
 
-        friend struct PiecesInterface< ::dctl::Material_, T >;
+        friend class PiecesInterface< ::dctl::Material_, T >;
 
         // black or white pawns
         T do_pawns(bool color) const
