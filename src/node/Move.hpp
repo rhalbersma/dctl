@@ -106,7 +106,7 @@ public:
         // modifiers
 
         // xor-assign the set bits of another piece set
-        Move_& operator^=(const Move_& other)
+        Move_& operator^=(Move_ const& other)
         {
                 pieces_[Side::black] ^= other.pieces(Side::black);
                 pieces_[Side::white] ^= other.pieces(Side::white);
@@ -117,7 +117,7 @@ public:
 
         // predicates
 
-        bool operator==(const Move_& other) const
+        bool operator==(Move_ const& other) const
         {
                 return (
                         (pieces(Side::black) == other.pieces(Side::black)) &&
@@ -140,7 +140,7 @@ private:
 
         // queries
 
-        friend struct PiecesInterface< ::dctl::Move_, T >;
+        friend class PiecesInterface< ::dctl::Move_, T >;
 
         // black or white pawns
         T do_pawns(bool color) const
