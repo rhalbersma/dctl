@@ -296,7 +296,7 @@ bool is_intersecting_promotion(T promotion, T delta)
 
 namespace detail {
 
-// specialization for apres-fini capture removal
+// overload for apres-fini capture removal
 template<typename T>
 bool is_intersecting_capture(
         T /* delta */, T /* captured_pieces */,
@@ -306,7 +306,7 @@ bool is_intersecting_capture(
         return false;
 }
 
-// specialization for en-passant capture removal
+// overload for en-passant capture removal
 template<typename T>
 bool is_intersecting_capture(
         T delta, T captured_pieces,
@@ -318,7 +318,7 @@ bool is_intersecting_capture(
         return bit::is_single(delta & captured_pieces) && bit::is_multiple(captured_pieces);
 }
 
-// specialization for apres-fini promotion
+// overload for apres-fini promotion
 template<typename T>
 bool is_intersecting_promotion(
         T /* promotion */, T /* delta */,
@@ -328,7 +328,7 @@ bool is_intersecting_promotion(
         return false;
 }
 
-// specialization for en-passant promotion
+// overload for en-passant promotion
 template<typename T>
 bool is_intersecting_promotion(
         T promotion, T delta,

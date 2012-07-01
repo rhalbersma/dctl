@@ -19,20 +19,20 @@ struct Driver
         // enforce static semantics
         private nonconstructible
 {
-        template<template<typename, typename> class Position>
-        static void generate(Position<Rules, Board> const&, Stack&)
+        template<typename Position>
+        static void generate(Position const&, Stack&)
         {
-                return;
+                // no-op
         }
 
-        template<template<typename, typename> class Position>
-        static int count(Position<Rules, Board> const&)
+        template<typename Position>
+        static int count(Position const&)
         {
                 return 0;
         }
 
-        template<template<typename, typename> class Position>
-        static bool detect(Position<Rules, Board> const&)
+        template<typename Position>
+        static bool detect(Position const&)
         {
                 return false;
         }

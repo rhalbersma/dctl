@@ -90,10 +90,10 @@ struct init_jump_group
         Init< Board, is_jump_group< Board, boost::mpl::int_<Group>, boost::mpl::_1 > >
 {};
 
-template<typename Board, typename Index>
+template<typename Board, typename Direction>
 struct init_jump_start
 :
-        Init< Board, is_jump_start< Board, Index, boost::mpl::_1 > >
+        Init< Board, is_jump_start< Board, Direction, boost::mpl::_1 > >
 {};
 
 }       // namespace board

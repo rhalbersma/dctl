@@ -34,10 +34,10 @@ public:
 
         typedef BitBoard bit_type;
 
-        template<typename Index>
+        template<typename Direction>
         struct shift
         :
-                InternalGrid::shift<Index>
+                InternalGrid::shift<Direction>
         {};
 
         static bool is_valid(int square)
@@ -65,30 +65,30 @@ public:
                 return BIT2SQUARE[b];
         }
 
-        template<typename Index, typename Iterator>
+        template<typename Direction, typename Iterator>
         static void advance(Iterator& square)
         {
                 ShiftAssign<
-                        angle::is_positive<Index>::value,
-                        shift<Index>::value
+                        angle::is_positive<Direction>::value,
+                        shift<Direction>::value
                 >()(square);
         }        
 
-        template<typename Index, typename Iterator>
+        template<typename Direction, typename Iterator>
         static Iterator next(Iterator square)
         {
                 return Shift<
-                        angle::is_positive<Index>::value,
-                        shift<Index>::value
+                        angle::is_positive<Direction>::value,
+                        shift<Direction>::value
                 >()(square);
         }
 
-        template<typename Index, typename Iterator>
+        template<typename Direction, typename Iterator>
         static Iterator prev(Iterator square)
         {
                 return Shift<
-                        angle::is_negative<Index>::value,
-                        shift<Index>::value
+                        angle::is_negative<Direction>::value,
+                        shift<Direction>::value
                 >()(square);
         }
 
@@ -100,10 +100,10 @@ public:
         static BitBoard const col_mask[][12];                   // bit masks for the columns
 
         // detaililiary bitboard masks
-        static BitBoard const QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
-        static BitBoard const DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
+        static BitBoard const QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 Compasss
+        static BitBoard const DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 Compasss
         static BitBoard const jump_group[];                     // families of squares reachable by jumping pawns
-        static BitBoard const jump_start[];                     // squares from which a jump is possible in a direction
+        static BitBoard const jump_start[];                     // squares from which a jump is possible in a Compass
 
 private:
         // square to bit and bit to square conversion tables

@@ -165,26 +165,26 @@ struct is_jump_group
 
 namespace detail {
 
-template<typename Board, typename Index, typename SQ, typename Grid, typename Offset>
+template<typename Board, typename Direction, typename SQ, typename Grid, typename Offset>
 struct is_jump_start
 :
         boost::mpl::and_<
                 // row_min <= row < row_max
                 mpl::is_within_range< typename 
                         Square2Coordinates< Square<Grid, SQ> >::type::row,
-                        boost::mpl::eval_if< angle::is_up<Index>, Offset, boost::mpl::int_<0> >,
+                        boost::mpl::eval_if< angle::is_up<Direction>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
                                 Board::height,
-                                boost::mpl::eval_if< angle::is_down<Index>, Offset, boost::mpl::int_<0> >
+                                boost::mpl::eval_if< angle::is_down<Direction>, Offset, boost::mpl::int_<0> >
                         >
                 >,
                 // col_min <= col < col_max
                 mpl::is_within_range< typename 
                         Square2Coordinates< Square<Grid, SQ> >::type::col,
-                        boost::mpl::eval_if< angle::is_left<Index>, Offset, boost::mpl::int_<0> >,
+                        boost::mpl::eval_if< angle::is_left<Direction>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
                                 Board::width,
-                                boost::mpl::eval_if< angle::is_right<Index>, Offset, boost::mpl::int_<0> >
+                                boost::mpl::eval_if< angle::is_right<Direction>, Offset, boost::mpl::int_<0> >
                         >
                 >
         >
@@ -192,14 +192,14 @@ struct is_jump_start
 
 }       // namespace detail
 
-template<typename Board, typename Index, typename SQ>
+template<typename Board, typename Direction, typename SQ>
 struct is_jump_start
 :
         detail::is_jump_start<
-                Board, Index, SQ, typename 
+                Board, Direction, SQ, typename 
                 Board::ExternalGrid,
                 boost::mpl::eval_if<
-                        angle::is_diagonal<Index>,
+                        angle::is_diagonal<Direction>,
                         boost::mpl::int_<2>,
                         boost::mpl::int_<4>
                 >

@@ -12,7 +12,7 @@ struct Frisian
         Rules<
                 Frisian,
                 king_range<range::distance_N>,
-                pawn_jump_directions<directions::all>,
+                pawn_jump_Compasss<Compasss::all>,
                 jump_precedence<precedence::quality>,
                 is_restricted_same_king_moves<boost::mpl::true_>,
                 max_same_king_moves< boost::mpl::int_<6> >,

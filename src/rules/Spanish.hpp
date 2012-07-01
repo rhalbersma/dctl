@@ -12,7 +12,7 @@ struct Spanish
         Rules<
                 Spanish,
                 king_range<range::distance_N>,
-                pawn_jump_directions<directions::up>,
+                pawn_jump_Compasss<Compasss::up>,
                 jump_precedence<precedence::quality>
         > 
 {};

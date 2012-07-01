@@ -42,7 +42,7 @@ public:
 
         std::size_t available() const
         {
-                return static_cast<size_t>(
+                return static_cast<std::size_t>(
                         std::count_if(
                                 std::begin(map_), std::end(map_), 
                                 [](Entry const& e) 
@@ -106,36 +106,48 @@ public:
         }
 
 private:
-        // partial specialization for non-integral keys
+        // overload for non-integral keys
         template<typename Item>
-        Value const* find_dispatch(Item const& item, std::false_type) const
+        Value const* find_dispatch(
+                Item const& item, 
+                std::false_type
+        ) const
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = FindKey<Key, Item>()(item);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
-        // partial specialization for integral keys
+        // overload for integral keys
         template<typename Item>
-        Value const* find_dispatch(Item const& item, std::true_type) const
+        Value const* find_dispatch(
+                Item const& item, 
+                std::true_type
+        ) const
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = ShiftKey<Key, Index>()(index);
                 return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
         }
 
-        // partial specialization for non-integral keys
+        // overload for non-integral keys
         template<typename Item>
-        void insert_dispatch(Item const& item, Value const& value, std::false_type)
+        void insert_dispatch(
+                Item const& item, Value const& value, 
+                std::false_type
+        )
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = FindKey<Key, Item>()(item);
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 
-        // partial specialization for integral keys
+        // overload for integral keys
         template<typename Item>
-        void insert_dispatch(Item const& item, Value const& value, std::true_type)
+        void insert_dispatch(
+                Item const& item, Value const& value, 
+                std::true_type
+        )
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = ShiftKey<Key, Index>()(index);

@@ -12,7 +12,7 @@ struct Russian
         Rules<
                 Russian,
                 king_range<range::distance_N>,
-                pawn_jump_directions<directions::diag>,
+                pawn_jump_Compasss<Compasss::diag>,
                 jump_precedence<precedence::none>,
                 pawn_promotion<promotion::en_passant> 
         > 

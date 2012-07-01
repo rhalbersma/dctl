@@ -1,7 +1,7 @@
 #pragma once
 #include <iterator>                     // iterator, forward_iterator_tag
 #include <type_traits>                  // is_base_of
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
+#include <boost/config.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // equality_comparable
 #include "Iterator_fwd.hpp"
 #include "../link/Single.hpp"
@@ -20,7 +20,12 @@ struct Iterator<T, link::Single>
 
         // structors
 
-        Iterator(link_type* it) 
+        Iterator()
+        :
+                link_()
+        {}
+
+        explicit Iterator(link_type* it) 
         :
                 link_(it) 
         {}
@@ -72,6 +77,11 @@ private:
         {
                 BOOST_MPL_ASSERT((std::is_base_of<link_type, node_type>));
                 return static_cast<node_type*>(this);
+        }
+
+        bool empty() const
+        {
+                return link_ != nullptr;
         }
 };
 

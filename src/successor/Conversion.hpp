@@ -27,16 +27,16 @@ private:
         typedef Driver<Color, Material, select::Promotions, Rules, Board> DoPromotions;
 
 public:
-        template<template<typename, typename> class Position>
-        static void generate(Position<Rules, Board> const& p, Stack& moves)
+        template<typename Position>
+        static void generate(Position const& p, Stack& moves)
         {
                 DoJumps::generate(p, moves);
                 if (moves.empty())
                         DoPromotions::generate(p, moves);
         }
 
-        template<template<typename, typename> class Position>
-        static int count(Position<Rules, Board> const& p)
+        template<typename Position>
+        static int count(Position const& p)
         {
                 auto num_moves = DoJumps::count(p);
                 if (!num_moves)
@@ -44,8 +44,8 @@ public:
                 return num_moves;
         }
 
-        template<template<typename, typename> class Position>
-        static bool detect(Position<Rules, Board> const& p)
+        template<typename Position>
+        static bool detect(Position const& p)
         {
                 // speculate #jumps > #promotions so that the || is likely to short-circuit
                 return (

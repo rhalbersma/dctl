@@ -102,7 +102,7 @@ bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m)
 
 namespace detail {
 
-// partial specialization for apres-fini capture removal
+// overload for apres-fini capture removal
 template<typename Position, typename Move>
 bool is_intersecting_capture(
         Position const& /* p */, Move const& /* m */, 
@@ -112,7 +112,7 @@ bool is_intersecting_capture(
         return false;
 }
 
-// partial specialization for en-passant capture removal
+// overload for en-passant capture removal
 template<typename Position, typename Move>
 bool is_intersecting_capture(
         Position const& p, Move const& m, 

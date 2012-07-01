@@ -32,7 +32,7 @@ template
         bool Color,
         typename Board
 >
-struct Direction
+struct Compass
 {
 private:
         typedef typename rotate< 

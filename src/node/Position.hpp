@@ -173,7 +173,7 @@ private:
                 );
         }
 
-        // partial specialization for restricted consecutive moves with the same king
+        // overload for restricted consecutive moves with the same king
         void make_irreversible(
                 Move const& m, 
                 boost::mpl::true_
@@ -186,7 +186,7 @@ private:
                 make_restricted(m);
         }
 
-        // partial specialization for unrestricted consecutive moves with the same king
+        // overload for unrestricted consecutive moves with the same king
         void make_irreversible(
                 Move const& m, 
                 boost::mpl::false_
@@ -353,7 +353,7 @@ BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color)
 
 namespace detail {
 
-// partial specialization for unrestricted consecutive moves with the same king
+// overload for unrestricted consecutive moves with the same king
 template<typename Rules, typename Board>
 BitBoard unrestricted_kings(
         Position<Rules, Board> const& p, bool color, 
@@ -363,7 +363,7 @@ BitBoard unrestricted_kings(
         return p.kings(color);
 }
 
-// partial specialization for restricted consecutive moves with the same king
+// overload for restricted consecutive moves with the same king
 template<typename Rules, typename Board>
 BitBoard unrestricted_kings(
         Position<Rules, Board> const& p, bool color, 
