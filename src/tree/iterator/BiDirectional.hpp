@@ -1,5 +1,5 @@
 #pragma once
-#include <iterator>                     // iterator, bidirectional_iterator_tag
+#include <iterator>                     // iterator, biCompassal_iterator_tag
 #include <type_traits>                  // is_base_of
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable
@@ -13,7 +13,7 @@ namespace iterator {
 template<typename T>
 struct Iterator<T, link::Double>
 :
-        public std::iterator<std::bidirectional_iterator_tag, T>,
+        public std::iterator<std::biCompassal_iterator_tag, T>,
         private boost::equality_comparable< Iterator<T, link::Double> >
 {
         typedef link::Double link_type;
@@ -90,7 +90,7 @@ private:
 
 // TODO: use C++11 template aliases
 template<T>
-struct BiDirectional
+struct BiCompassal
 :
         Iterator<T, link::Double>
 {};

@@ -112,13 +112,13 @@ public:
                 );
         }
 
-        template<bool Color, typename Index>
+        template<bool Color, typename Direction>
         void add_king_jump(BitIndex dest_sq) const // modifies Stack& moves_
         {
                 auto const ambiguous = is_ambiguous();
 
                 // tag dispatching on king halt after final capture
-                add_king_jump_dispatch<Color, Index>(
+                add_king_jump_dispatch<Color, Direction>(
                         dest_sq, ambiguous,
                         typename Rules::halt_range()
                 );
@@ -126,16 +126,16 @@ public:
 
         // queries
 
-        template<typename Index>
+        template<typename Direction>
         BitBoard targets() const
         {
-                return remaining_targets_ & Pull<Board, Index>()(path());
+                return remaining_targets_ & Pull<Board, Direction>()(path());
         }
 
-        template<typename Index>
+        template<typename Direction>
         BitBoard path() const
         {
-                return path() & Board::jump_start[Index::value];
+                return path() & Board::jump_start[Direction::value];
         }
 
         BitBoard path() const
@@ -163,7 +163,7 @@ public:
 private:
         // modifiers
 
-        // specialization for apres-fini capture removal
+        // overload for apres-fini capture removal
         void make_dispatch(
                 BitIndex target_sq, 
                 rules::removal::apres_fini
@@ -173,7 +173,7 @@ private:
                 increment(is_captured_king(target_sq));
         }
 
-        // specialization for en-passant capture removal
+        // overload for en-passant capture removal
         void make_dispatch(
                 BitIndex target_sq, 
                 rules::removal::en_passant
@@ -187,7 +187,7 @@ private:
                 );
         }
 
-        // specialization for apres-fini capture removal
+        // overload for apres-fini capture removal
         void undo_dispatch(
                 BitIndex target_sq, 
                 rules::removal::apres_fini
@@ -197,7 +197,7 @@ private:
                 remaining_targets_ ^= target_sq;
         }
 
-        // specialization for en-passant capture removal
+        // overload for en-passant capture removal
         void undo_dispatch(
                 BitIndex target_sq, 
                 rules::removal::en_passant
@@ -220,7 +220,7 @@ private:
                 );
         }
 
-        // specialization for no capture precedence
+        // overload for no capture precedence
         void increment_dispatch(
                 bool /* is_captured_king */, 
                 rules::precedence::none
@@ -229,7 +229,7 @@ private:
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_precedence, rules::precedence::none>));
         }
 
-        // specialization for quantity precedence
+        // overload for quantity precedence
         void increment_dispatch(
                 bool /* is_captured_king */, 
                 rules::precedence::quantity
@@ -239,7 +239,7 @@ private:
                 current_.increment();
         }
 
-        // specialization for quality precedence
+        // overload for quality precedence
         void increment_dispatch(
                 bool is_captured_king, 
                 rules::precedence::quality
@@ -258,7 +258,7 @@ private:
                 );
         }
 
-        // specialization for no capture precedence
+        // overload for no capture precedence
         void decrement_dispatch(
                 bool /* is_captured_king */, 
                 rules::precedence::none
@@ -267,7 +267,7 @@ private:
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::jump_precedence, rules::precedence::none>));
         }
 
-        // specialization for quantity precedence
+        // overload for quantity precedence
         void decrement_dispatch(
                 bool /* is_captured_king */, 
                 rules::precedence::quantity
@@ -277,7 +277,7 @@ private:
                 current_.decrement();
         }
 
-        // specialization for quality precedence
+        // overload for quality precedence
         void decrement_dispatch(
                 bool is_captured_king, 
                 rules::precedence::quality
@@ -293,7 +293,7 @@ private:
                         moves_.pop_back();
         }
 
-        // partial specialization for pawn captures that are unambiguous
+        // overload for pawn captures that are unambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(
                 BitIndex dest_sq, 
@@ -310,7 +310,7 @@ private:
                 );
         }
 
-        // partial specialization for pawn captures that can be ambiguous
+        // overload for pawn captures that can be ambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(
                 BitIndex dest_sq, 
@@ -323,28 +323,28 @@ private:
                         unique_back();
         }
 
-        // partial specialization for kings that halt immediately if the final capture is a king,
+        // overload for kings that halt immediately if the final capture is a king,
         // and slide through otherwise
-        template<bool Color, typename Index>
+        template<bool Color, typename Direction>
         void add_king_jump_dispatch(
                 BitIndex dest_sq, bool ambiguous, 
                 rules::range::distance_1K
         ) const // modifies Stack& moves_
         {
-                if (bit::is_element(Board::prev<Index>(dest_sq), king_targets_))
-                        add_king_jump_dispatch<Color, Index>(
+                if (bit::is_element(Board::prev<Direction>(dest_sq), king_targets_))
+                        add_king_jump_dispatch<Color, Direction>(
                                 dest_sq, ambiguous, 
                                 rules::range::distance_1()
                         );
                 else
-                        add_king_jump_dispatch<Color, Index>(
+                        add_king_jump_dispatch<Color, Direction>(
                                 dest_sq, ambiguous, 
                                 rules::range::distance_N()
                         );
         }
 
-        // partial specialization for kings that halt immediately after the final capture
-        template<bool Color, typename Index>
+        // overload for kings that halt immediately after the final capture
+        template<bool Color, typename Direction>
         void add_king_jump_dispatch(
                 BitIndex dest_sq, bool ambiguous, 
                 rules::range::distance_1
@@ -353,8 +353,8 @@ private:
                 add_king_jump<Color>(dest_sq, ambiguous);
         }
 
-        // partial specialization for kings that slide through after the final capture
-        template<bool Color, typename Index>
+        // overload for kings that slide through after the final capture
+        template<bool Color, typename Direction>
         void add_king_jump_dispatch(
                 BitIndex dest_sq, bool ambiguous, 
                 rules::range::distance_N
@@ -363,7 +363,7 @@ private:
                 BOOST_ASSERT(bit::is_element(dest_sq, path()));
                 do {
                         add_king_jump<Color>(dest_sq, ambiguous);
-                        Board::advance<Index>(dest_sq);
+                        Board::advance<Direction>(dest_sq);
                 } while (bit::is_element(dest_sq, path()));
         }
 
@@ -379,7 +379,7 @@ private:
                         unique_back();
         }
 
-        // partial specialization for pawns that promote apres-fini
+        // overload for pawns that promote apres-fini
         template<bool Color>
         void add_king_jump_dispatch(
                 BitIndex dest_sq, 
@@ -395,7 +395,7 @@ private:
                 );
         }
 
-        // partial specialization for pawns that promote en-passant
+        // overload for pawns that promote en-passant
         template<bool Color>
         void add_king_jump_dispatch(
                 BitIndex dest_sq, 
@@ -457,7 +457,7 @@ private:
                 );
         }
 
-        // specialization for no majority capture precedence
+        // overload for no majority capture precedence
         int count_dispatch(
                 boost::mpl::false_
         ) const
@@ -466,7 +466,7 @@ private:
                 return bit::count(captured_pieces());
         }
 
-        // specialization for majority capture precedence
+        // overload for majority capture precedence
         int count_dispatch(
                 boost::mpl::true_
         ) const
@@ -493,7 +493,7 @@ private:
                 );
         }
 
-        // specialization for pawns that cannot capture kings
+        // overload for pawns that cannot capture kings
         BitBoard pawn_captured_kings_dispatch(
                 boost::mpl::false_
         ) const
@@ -502,7 +502,7 @@ private:
                 return BitBoard(0);
         }
 
-        // specialization for pawns that can capture kings
+        // overload for pawns that can capture kings
         BitBoard pawn_captured_kings_dispatch(
                 boost::mpl::true_
         ) const

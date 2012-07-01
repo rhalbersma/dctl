@@ -7,103 +7,103 @@
 namespace dctl {
 
 // primary template
-template<typename Board, typename Index, typename Range>
+template<typename Board, typename Direction, typename Range>
 struct Sink;
 
-template<typename Board, typename Index>
-struct Sink<Board, Index, rules::range::distance_1>
+template<typename Board, typename Direction>
+struct Sink<Board, Direction, rules::range::distance_1>
 {
         template<typename T>
         T operator()(T from, T dest) const
         {
-                return Board::next<Index>(from) & dest;
+                return Board::next<Direction>(from) & dest;
         }
 };
 
-template<typename Board, typename Index>
-struct Sink<Board, Index, rules::range::distance_N>
+template<typename Board, typename Direction>
+struct Sink<Board, Direction, rules::range::distance_N>
 {
         template<typename T>
         T operator()(T from, T dest) const
         {
-                return from ^ FloodFill<Board, Index>()(from, dest);
+                return from ^ FloodFill<Board, Direction>()(from, dest);
         }
 };
 
 // primary template
-template<typename Board, typename Index, typename Range>
+template<typename Board, typename Direction, typename Range>
 struct Sandwich;
 
-template<typename Board, typename Index>
-struct Sandwich<Board, Index, rules::range::distance_1>
+template<typename Board, typename Direction>
+struct Sandwich<Board, Direction, rules::range::distance_1>
 {
         template<typename T>
         T operator()(T from, T past, T dest) const
         {
                 return (
-                        Push<Board, Index>()(from) &
+                        Push<Board, Direction>()(from) &
                         past &
-                        Pull<Board, Index>()(dest)
+                        Pull<Board, Direction>()(dest)
                 );
         }
 };
 
-template<typename Board, typename Index>
-struct Sandwich<Board, Index, rules::range::distance_N>
+template<typename Board, typename Direction>
+struct Sandwich<Board, Direction, rules::range::distance_N>
 {
         template<typename T>
         T operator()(T from, T past, T dest) const
         {
                 return (
-                        Push<Board, Index>()(FloodFill<Board, Index>()(from, dest)) &
+                        Push<Board, Direction>()(FloodFill<Board, Direction>()(from, dest)) &
                         past &
-                        Pull<Board, Index>()(dest)
+                        Pull<Board, Direction>()(dest)
                 );
         }
 };
 
-template<typename Board, typename Index>
+template<typename Board, typename Direction>
 struct FloodFill
 {
         template<typename T>
         T operator()(T generator, T propagator) const
         {
                 return flood_fill<
-                        angle::is_positive<Index>::value,
-                        Board::shift<Index>::value
+                        angle::is_positive<Direction>::value,
+                        Board::shift<Direction>::value
                 >(generator, propagator);
         }
 };
 
 // template function object for uniform left/right bitwise shift
-template<typename Board, typename Index>
+template<typename Board, typename Direction>
 struct Push
 {
         template<typename Iterator>
         Iterator operator()(Iterator square) const
         {
                 return Shift<
-                        angle::is_positive<Index>::value,
-                        Board::shift<Index>::value
+                        angle::is_positive<Direction>::value,
+                        Board::shift<Direction>::value
                 >()(square);
         }
 };
 
 // template function object for uniform left/right bitwise shift
-template<typename Board, typename Index>
+template<typename Board, typename Direction>
 struct Pull
 {
         template<typename Iterator>
         Iterator operator()(Iterator square) const
         {
                 return Shift<
-                        angle::is_negative<Index>::value,
-                        Board::shift<Index>::value
+                        angle::is_negative<Direction>::value,
+                        Board::shift<Direction>::value
                 >()(square);
         }
 };
 
-// direction-wise flood-fill generator over propagator
+// Compass-wise flood-fill generator over propagator
 template<bool Sign, int N, typename T>
 T flood_fill(T generator, T propagator)
 {
@@ -123,7 +123,7 @@ T fill_loop(T generator, T propagator)
         return flood;
 }
 
-// left and right direction
+// left and right Compass
 enum { L, R };
 
 // primary template

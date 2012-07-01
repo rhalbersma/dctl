@@ -12,7 +12,7 @@ struct Czech
         Rules<
                 Czech,
                 king_range<range::distance_N>,
-                pawn_jump_directions<directions::up>,
+                pawn_jump_Compasss<Compasss::up>,
                 jump_precedence<precedence::none>,
                 is_absolute_king_precedence<boost::mpl::true_>
         > 

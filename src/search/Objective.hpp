@@ -126,7 +126,7 @@ bool is_no_progress(Position<Rules, Board> const& p)
         );
 }
 
-// partial specialization for no restrictions on consecutive reversible moves
+// overload for no restrictions on consecutive reversible moves
 template<typename Position>
 bool is_no_progress_dispatch(
         Position const& /* p */, 
@@ -136,7 +136,7 @@ bool is_no_progress_dispatch(
         return false;
 }
 
-// partial specialization for a maximum of consecutive reversible moves
+// overload for a maximum of consecutive reversible moves
 template<template<typename, typename> class Position, typename Rules, typename Board>
 bool is_no_progress_dispatch(
         Position<Rules, Board> const& p, 

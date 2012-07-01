@@ -21,15 +21,15 @@ public:
 
         typedef Grid<Dimensions> BaseGrid;
 
-        // diagonal directions
+        // diagonal Compasss
         BOOST_STATIC_CONSTANT(auto, left_down = (Dimensions::width::value + Ghosts::value) / 2);
         BOOST_STATIC_CONSTANT(auto, right_down = left_down + 1);
 
-        // orthogonal directions
+        // orthogonal Compasss
         BOOST_STATIC_CONSTANT(auto, right = right_down - left_down);
         BOOST_STATIC_CONSTANT(auto, down = right_down + left_down);
 
-        // equivalent directions
+        // equivalent Compasss
         BOOST_STATIC_CONSTANT(auto, left_up = right_down);
         BOOST_STATIC_CONSTANT(auto, right_up = left_down);
         BOOST_STATIC_CONSTANT(auto, left = right);
