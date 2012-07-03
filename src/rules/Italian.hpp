@@ -12,7 +12,7 @@ struct Italian
         Rules<
                 Italian,
                 king_range<range::distance_1>,
-                pawn_jump_Compasss<Compasss::up>,
+                pawn_jump_directions<directions::up>,
                 jump_precedence<precedence::quality>,
                 is_pawns_jump_kings<boost::mpl::false_>,
                 is_relative_king_precedence<boost::mpl::true_>

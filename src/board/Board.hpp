@@ -100,10 +100,10 @@ public:
         static BitBoard const col_mask[][12];                   // bit masks for the columns
 
         // detaililiary bitboard masks
-        static BitBoard const QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 Compasss
-        static BitBoard const DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 Compasss
+        static BitBoard const QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
+        static BitBoard const DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
         static BitBoard const jump_group[];                     // families of squares reachable by jumping pawns
-        static BitBoard const jump_start[];                     // squares from which a jump is possible in a Compass
+        static BitBoard const jump_start[];                     // squares from which a jump is possible in a direction
 
 private:
         // square to bit and bit to square conversion tables

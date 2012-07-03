@@ -103,7 +103,7 @@ struct Pull
         }
 };
 
-// Compass-wise flood-fill generator over propagator
+// direction-wise flood-fill generator over propagator
 template<bool Sign, int N, typename T>
 T flood_fill(T generator, T propagator)
 {
@@ -123,7 +123,7 @@ T fill_loop(T generator, T propagator)
         return flood;
 }
 
-// left and right Compass
+// left and right direction
 enum { L, R };
 
 // primary template

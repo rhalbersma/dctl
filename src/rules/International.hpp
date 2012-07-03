@@ -12,7 +12,7 @@ struct International
         Rules< 
                 International,
                 king_range<range::distance_N>,
-                pawn_jump_Compasss<Compasss::diag>,
+                pawn_jump_directions<directions::diag>,
                 jump_precedence<precedence::quantity>
         > 
 {};
