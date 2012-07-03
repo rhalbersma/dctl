@@ -22,9 +22,9 @@ BOOST_AUTO_TEST_CASE(Italian)
         // Positions from the official Italian rules:
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
-                "W:W30:B27",                    // Art. 5.6  (pawn capture Compasss)
+                "W:W30:B27",                    // Art. 5.6  (pawn capture directions)
                 "W:W31:B12,20,28",              // Art. 5.7  (pawn capture continuation)
-                "W:WK22:B18,19,27",             // Art. 5.8  (king capture Compasss)
+                "W:WK22:B18,19,27",             // Art. 5.8  (king capture directions)
                 "W:WK27:B5,6,13,15,21,23",      // Art. 5.9  (king capture continuation)
                 "W:WK21,31:B10,18,27",          // Art. 6.6  (capture most number of pieces)
                 "W:WK23,31:B19,26,27",          // Art. 6.7  (capture with king)
@@ -71,9 +71,9 @@ BOOST_AUTO_TEST_CASE(Spanish)
         // Positions from the official Italian rules:
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
         std::string position[] = {
-                "W:W30:B27",                    // Art. 5.6  (pawn capture Compasss)
+                "W:W30:B27",                    // Art. 5.6  (pawn capture directions)
                 "W:W31:B12,20,28",              // Art. 5.7  (pawn capture continuation)
-                "W:WK22:B18,19,27",             // Art. 5.8  (king capture Compasss)
+                "W:WK22:B18,19,27",             // Art. 5.8  (king capture directions)
                 "W:WK27:B5,6,13,15,21,23",      // Art. 5.9  (king capture continuation)
                 "W:WK21,31:B10,18,27",          // Art. 6.6  (capture most number of pieces)
                 "W:WK23,31:B19,26,27",          // Art. 6.7  (capture with king)

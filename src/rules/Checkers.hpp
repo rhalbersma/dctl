@@ -12,7 +12,7 @@ struct Checkers
         Rules<
                 Checkers,
                 king_range<range::distance_1>,
-                pawn_jump_Compasss<Compasss::up>,
+                pawn_jump_directions<directions::up>,
                 jump_precedence<precedence::none>
         > 
 {};

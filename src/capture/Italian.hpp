@@ -80,7 +80,7 @@ public:
                          ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
                         (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
                         (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
-                        (( piece_order_ < other.piece_order_ )))))))
+                         ( piece_order_ < other.piece_order_ ))))))
                 );
         }
 

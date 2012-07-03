@@ -98,27 +98,27 @@ private:
 
         static void generate(BitBoard active_pawns, State& capture)
         {
-                // tag dispatching on pawn capture Compasss
+                // tag dispatching on pawn capture directions
                 generate_dispatch(
                         active_pawns, capture,
-                        typename Rules::pawn_jump_Compasss()
+                        typename Rules::pawn_jump_directions()
                 );
         }
 
-        // overload for pawns that capture in the 8 orthogonal and diagonal Compasss
+        // overload for pawns that capture in the 8 orthogonal and diagonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                rules::Compasss::all
+                rules::directions::all
         )
         {
-                generate_dispatch(active_pawns, capture, rules::Compasss::orth());
-                generate_dispatch(active_pawns, capture, rules::Compasss::diag());
+                generate_dispatch(active_pawns, capture, rules::directions::orth());
+                generate_dispatch(active_pawns, capture, rules::directions::diag());
         }
 
-        // overload for pawns that capture in the 4 orthogonal Compasss
+        // overload for pawns that capture in the 4 orthogonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                rules::Compasss::orth
+                rules::directions::orth
         )
         {
                 generate<typename Compass::left >(active_pawns, capture);
@@ -127,30 +127,30 @@ private:
                 generate<typename Compass::down >(active_pawns, capture);
         }
 
-        // overload for pawns that capture in the 4 diagonal Compasss
+        // overload for pawns that capture in the 4 diagonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                rules::Compasss::diag
+                rules::directions::diag
         )
         {
-                generate_dispatch(active_pawns, capture, rules::Compasss::up  ());
-                generate_dispatch(active_pawns, capture, rules::Compasss::down());
+                generate_dispatch(active_pawns, capture, rules::directions::up  ());
+                generate_dispatch(active_pawns, capture, rules::directions::down());
         }
 
-        // overload for pawns that capture in the 2 forward diagonal Compasss
+        // overload for pawns that capture in the 2 forward diagonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                rules::Compasss::up
+                rules::directions::up
         )
         {
                 generate<typename Compass::left_up >(active_pawns, capture);
                 generate<typename Compass::right_up>(active_pawns, capture);
         }
 
-        // overload for pawns that capture in the 2 backward diagonal Compasss
+        // overload for pawns that capture in the 2 backward diagonal directions
         static void generate_dispatch(
                 BitBoard active_pawns, State& capture, 
-                rules::Compasss::down
+                rules::directions::down
         )
         {
                 generate<typename Compass::left_down >(active_pawns, capture);
@@ -161,29 +161,29 @@ private:
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied
         )
         {
-                // tag dispatching on pawn capture Compasss
+                // tag dispatching on pawn capture directions
                 return detect_dispatch(
                         active_pawns, passive_pieces, not_occupied,
-                        typename Rules::pawn_jump_Compasss()
+                        typename Rules::pawn_jump_directions()
                 );
         }
 
-        // overload for pawns that capture in the 8 orthogonal and diagonal Compasss
+        // overload for pawns that capture in the 8 orthogonal and diagonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                rules::Compasss::all
+                rules::directions::all
         )
         {
                 return (
-                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::Compasss::orth()) ||
-                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::Compasss::diag())
+                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::directions::orth()) ||
+                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::directions::diag())
                 );
         }
 
-        // overload for pawns that capture in the 4 orthogonal Compasss
+        // overload for pawns that capture in the 4 orthogonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                rules::Compasss::orth
+                rules::directions::orth
         )
         {
                 return (
@@ -194,22 +194,22 @@ private:
                 );
         }
 
-        // overload for pawns that capture in the 4 diagonal Compasss
+        // overload for pawns that capture in the 4 diagonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                rules::Compasss::diag
+                rules::directions::diag
         )
         {
                 return (
-                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::Compasss::up  ()) ||
-                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::Compasss::down())
+                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::directions::up  ()) ||
+                        detect_dispatch(active_pawns, passive_pieces, not_occupied, rules::directions::down())
                 );
         }
 
-        // overload for pawns that capture in the 2 forward diagonal Compasss
+        // overload for pawns that capture in the 2 forward diagonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                rules::Compasss::up
+                rules::directions::up
         )
         {
                 return (
@@ -218,10 +218,10 @@ private:
                 );
         }
 
-        // overload for pawns that capture in the 2 backward diagonal Compasss
+        // overload for pawns that capture in the 2 backward diagonal directions
         static bool detect_dispatch(
                 BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, 
-                rules::Compasss::down
+                rules::directions::down
         )
         {
                 return (
@@ -309,31 +309,31 @@ private:
         template<typename Direction>
         static bool turn(BitIndex jumper, State& capture)
         {
-                // tag dispatching on man turn Compasss
+                // tag dispatching on man turn directions
                 return turn_dispatch<Direction>(
                         jumper, capture,
-                        typename Rules::pawn_turn_Compasss()
+                        typename Rules::pawn_turn_directions()
                 );
         }
 
-        // overload for turns in all the 6 non-parallel orthogonal and diagonal Compasss
+        // overload for turns in all the 6 non-parallel orthogonal and diagonal directions
         template<typename Direction>
         static bool turn_dispatch(
                 BitIndex jumper, State& capture, 
-                rules::Compasss::all
+                rules::directions::all
         )
         {
                 return (
-                        turn_dispatch<Direction>(jumper, capture, rules::Compasss::orth()) |
-                        turn_dispatch<Direction>(jumper, capture, rules::Compasss::diag())
+                        turn_dispatch<Direction>(jumper, capture, rules::directions::orth()) |
+                        turn_dispatch<Direction>(jumper, capture, rules::directions::diag())
                 );
         }
 
-        // overload for turns in the remaining 4 diagonal or orthogonal Compasss
+        // overload for turns in the remaining 4 diagonal or orthogonal directions
         template<typename Direction>
         static bool turn_dispatch(
                 BitIndex jumper, State& capture, 
-                rules::Compasss::orth
+                rules::directions::orth
         )
         {
                 return (
@@ -344,11 +344,11 @@ private:
                 );
         }
 
-        // overload for turns in the 2 sideways Compasss
+        // overload for turns in the 2 sideways directions
         template<typename Direction>
         static bool turn_dispatch(
                 BitIndex jumper, State& capture, 
-                rules::Compasss::diag
+                rules::directions::diag
         )
         {
                 return (
@@ -357,21 +357,21 @@ private:
                 );
         }
 
-        // overload for turns in the 1 mirrored forward Compass
+        // overload for turns in the 1 mirrored forward direction
         template<typename Direction>
         static bool turn_dispatch(
                 BitIndex jumper, State& capture, 
-                rules::Compasss::up
+                rules::directions::up
         )
         {
                 return scan< typename mirror< Direction, typename Compass::up >::type >(jumper, capture);
         }
 
-        // overload for turns in the 1 mirrored backward Compass
+        // overload for turns in the 1 mirrored backward direction
         template<typename Direction>
         static bool turn_dispatch(
                 BitIndex jumper, State& capture, 
-                rules::Compasss::down
+                rules::directions::down
         )
         {
                 return scan< typename mirror< Direction, typename Compass::down >::type >(jumper, capture);

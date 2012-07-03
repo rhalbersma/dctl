@@ -10,8 +10,8 @@ namespace range {
         struct distance_1K {};
 }        
 
-// capture Compasss
-namespace Compasss {
+// capture directions
+namespace directions {
         struct up {};
         struct down {};
         struct diag {};

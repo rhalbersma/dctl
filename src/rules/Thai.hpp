@@ -11,10 +11,10 @@ struct Thai
         Rules<
                 Thai,
                 king_range<range::distance_N>,
-                pawn_jump_Compasss<Compasss::up>,
+                pawn_jump_directions<directions::up>,
                 jump_precedence<precedence::none>,
                 land_range<range::distance_1>,
-                is_jump_Compass_reversal<boost::mpl::true_>,
+                is_jump_direction_reversal<boost::mpl::true_>,
                 jump_removal<removal::en_passant>
         > 
 {};

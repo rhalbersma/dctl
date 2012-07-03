@@ -43,21 +43,21 @@ template<typename> struct max_2v1_moves                         { enum { value =
 
 template<typename> struct is_check_jump_uniqueness              { enum { value = true }; };
 
-// intermediate capture Compasss
+// intermediate capture directions
 template<typename T> 
-struct turn_Compasss
+struct turn_directions
 :
         boost::mpl::identity<T>
 {};
 
 template<> 
-struct turn_Compasss<Compasss::orth>
+struct turn_directions<directions::orth>
 :
-        boost::mpl::identity<Compasss::diag>
+        boost::mpl::identity<directions::diag>
 {};
 
 BOOST_PARAMETER_TEMPLATE_KEYWORD(king_range)
-BOOST_PARAMETER_TEMPLATE_KEYWORD(pawn_jump_Compasss)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(pawn_jump_directions)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(jump_precedence)
 
 BOOST_PARAMETER_TEMPLATE_KEYWORD(is_restricted_same_king_moves)
@@ -65,7 +65,7 @@ BOOST_PARAMETER_TEMPLATE_KEYWORD(max_same_king_moves)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(land_range)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(halt_range)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(is_pawns_jump_kings)
-BOOST_PARAMETER_TEMPLATE_KEYWORD(is_jump_Compass_reversal)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(is_jump_direction_reversal)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(jump_removal)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(pawn_promotion)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(is_absolute_king_precedence)
@@ -75,7 +75,7 @@ typedef boost::parameter::parameters<
         // required parameters
 
         boost::parameter::required<tag::king_range>,
-        boost::parameter::required<tag::pawn_jump_Compasss>,
+        boost::parameter::required<tag::pawn_jump_directions>,
         boost::parameter::required<tag::jump_precedence>,
 
         // optional parameters
@@ -85,7 +85,7 @@ typedef boost::parameter::parameters<
         boost::parameter::optional<tag::land_range>,
         boost::parameter::optional<tag::halt_range>,
         boost::parameter::optional<tag::is_pawns_jump_kings>,
-        boost::parameter::optional<tag::is_jump_Compass_reversal>,
+        boost::parameter::optional<tag::is_jump_direction_reversal>,
         boost::parameter::optional<tag::jump_removal>,
         boost::parameter::optional<tag::pawn_promotion>,
         boost::parameter::optional<tag::is_absolute_king_precedence>,
@@ -124,8 +124,8 @@ struct Rules
         >::type king_range;
 
         typedef typename boost::parameter::value_type<
-                args, tag::pawn_jump_Compasss
-        >::type pawn_jump_Compasss;
+                args, tag::pawn_jump_directions
+        >::type pawn_jump_directions;
 
         typedef typename boost::parameter::value_type<
                 args, tag::jump_precedence
@@ -154,8 +154,8 @@ struct Rules
         >::type is_pawns_jump_kings;
 
         typedef typename boost::parameter::value_type<
-                args, tag::is_jump_Compass_reversal, boost::mpl::false_
-        >::type is_jump_Compass_reversal;        
+                args, tag::is_jump_direction_reversal, boost::mpl::false_
+        >::type is_jump_direction_reversal;        
         
         typedef typename boost::parameter::value_type<
                 args, tag::jump_removal, removal::apres_fini
@@ -176,22 +176,22 @@ struct Rules
         // compute auxiliary parameters
 
         typedef typename boost::mpl::eval_if<
-                std::is_same<pawn_jump_Compasss, Compasss::all>,
-                boost::mpl::identity<Compasss::all>,
-                boost::mpl::identity<Compasss::diag>
-        >::type king_jump_Compasss;
+                std::is_same<pawn_jump_directions, directions::all>,
+                boost::mpl::identity<directions::all>,
+                boost::mpl::identity<directions::diag>
+        >::type king_jump_directions;
 
-        typedef typename turn_Compasss<
-                king_jump_Compasss
-        >::type king_turn_Compasss;
+        typedef typename turn_directions<
+                king_jump_directions
+        >::type king_turn_directions;
 
-        typedef typename turn_Compasss<
-                pawn_jump_Compasss
-        >::type pawn_turn_Compasss;
+        typedef typename turn_directions<
+                pawn_jump_directions
+        >::type pawn_turn_directions;
 
         typedef typename boost::mpl::or_<
                 boost::mpl::not_<
-                        std::is_same<pawn_jump_Compasss, Compasss::up> 
+                        std::is_same<pawn_jump_directions, directions::up> 
                 >,  
                 std::is_same<pawn_promotion, promotion::en_passant>
         >::type is_ambiguous_pawn_jump;
@@ -200,9 +200,9 @@ struct Rules
                 boost::mpl::or_<
                         boost::mpl::and_<
                                 std::is_same<jump_removal, removal::apres_fini>,
-                                std::is_same<is_jump_Compass_reversal, boost::mpl::true_>
+                                std::is_same<is_jump_direction_reversal, boost::mpl::true_>
                         >,
-                        std::is_same<pawn_jump_Compasss, Compasss::all>
+                        std::is_same<pawn_jump_directions, directions::all>
                 >,
                 boost::mpl::int_<3>,
                 boost::mpl::int_<4>
