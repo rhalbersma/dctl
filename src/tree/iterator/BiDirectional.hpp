@@ -62,7 +62,7 @@ struct Iterator<T, link::Double>
 
         pointer operator->() const
         {
-                return &(node()->value_);
+                return &**this;
         }
 
         // predicates

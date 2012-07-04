@@ -30,7 +30,7 @@ public:
         }
 
         // milliseconds since last split()
-        clock_t Timer::lap() const
+        clock_t lap() const
         {
                 BOOST_ASSERT(!laps_.empty());
                 auto const i = laps_.size() - 1;
