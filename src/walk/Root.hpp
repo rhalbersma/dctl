@@ -62,7 +62,7 @@ public:
                         leafs += move_leafs;
 
                         timer.split();
-                        Root::report(depth - 1, move_leafs, timer);
+                        report(depth - 1, move_leafs, timer);
                 }
                 summary(leafs);
 
@@ -130,12 +130,12 @@ private:
                 std::cout << "\n";
         }
 
-        void summary()
+        void summary() const
         {
                 std::cout << "\n";
         }
 
-        void summary(NodeCount leafs)
+        void summary(NodeCount leafs) const
         {
                 std::cout << "Total leafs: " << leafs << "\n\n";
         }

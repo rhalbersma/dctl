@@ -66,7 +66,7 @@ public:
                 interrupted_ = true;
         }
 
-        bool is_interrupted()
+        bool is_interrupted() const
         {
                 return interrupted_;
         }
@@ -169,7 +169,7 @@ private:
                 print_pv(q, pv, ply + 1);
         }
 
-        bool is_pv(int node)
+        bool is_pv(int node) const
         {
                 return node == PV;
         }

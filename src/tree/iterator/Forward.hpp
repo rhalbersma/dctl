@@ -54,7 +54,7 @@ struct Iterator<T, link::Single>
 
         pointer operator->() const
         {
-                return &(node()->value_);
+                return &**this;
         }
 
         // predicates

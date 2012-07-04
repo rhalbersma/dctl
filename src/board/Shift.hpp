@@ -1,5 +1,5 @@
 #pragma once
-#include "boost/mpl/int_fwd.hpp"        // int_
+#include <boost/mpl/int_fwd.hpp>        // int_
 #include "../board/Angle.hpp"
 #include "../board/Traits.hpp"
 #include "../rules/Enum.hpp"
