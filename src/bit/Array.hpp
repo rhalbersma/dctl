@@ -146,7 +146,7 @@ private:
 };
 
 template<std::size_t N, typename T>
-Array<N, T> operator~(const Array<N, T>& lhs)
+Array<N, T> operator~(Array<N, T> const& lhs)
 {
         return Array<N, T>(lhs).flip();
 }

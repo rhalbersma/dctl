@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm
-        const std::string messages[] =
+        std::string const messages[] =
         {
                 "R01Tornado voor Windows 4.0        W060065A",
                 "ATornado voor Windows 4.0        0",

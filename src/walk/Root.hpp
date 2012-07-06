@@ -118,12 +118,12 @@ private:
                 std::cout << " time ";
                 std::cout << std::setw( 6) << timer.elapsed();
 
-                const double nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.lap());
+                double const nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.lap());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
 
-                const double hashfull = 1000 * (static_cast<double>((TT.size() - TT.available())) / TT.size());
+                double const hashfull = 1000 * (static_cast<double>((TT.size() - TT.available())) / TT.size());
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
 
