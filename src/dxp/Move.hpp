@@ -59,14 +59,14 @@ public:
                 return num_captured_;
         }
 
-        const std::vector<int>& captured_pieces() const
+        std::vector<int> const& captured_pieces() const
         {
                 return captured_pieces_;
         }
 
         // output
 
-        static std::string str(int s, int f, int d, int n, const std::vector<int>& c)
+        static std::string str(int s, int f, int d, int n, std::vector<int> const& c)
         {
                 return identifier() + body(s, f, d, n, c);
         }
@@ -84,7 +84,7 @@ private:
                 return body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces());
         }
 
-        static std::string body(int s, int f, int d, int n, const std::vector<int>& c)
+        static std::string body(int s, int f, int d, int n, std::vector<int> const& c)
         {
                 std::stringstream sstr;
                 sstr << std::setw( 4) << std::setfill('0') << s;
