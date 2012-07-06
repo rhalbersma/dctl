@@ -73,10 +73,9 @@ public:
                         return delta_pawns + 2 * delta_kings - (delta_kings > 0) <  0;
                 } else {
                         // delta_kings or delta_pawns is zero or they have equal sign
-                        return (
-                                ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
-                                ( with_king_  < other.with_king_  ))
-                        );
+                        if (num_pieces_ < other.num_pieces_) return true;
+                        if (num_pieces_ > other.num_pieces_) return false;
+                        return with_king_ < other.with_king_;
                 }
         }
 
