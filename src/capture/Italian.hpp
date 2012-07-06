@@ -76,12 +76,13 @@ public:
 
         bool operator<(Value const& other) const
         {
-                return (
-                         ( num_pieces_  < other.num_pieces_  ) || (( num_pieces_ == other.num_pieces_ ) &&
-                        (( with_king_   < other.with_king_   ) || (( with_king_  == other.with_king_  ) &&
-                        (( num_kings_   < other.num_kings_   ) || (( num_kings_  == other.num_kings_  ) &&
-                         ( piece_order_ < other.piece_order_ ))))))
-                );
+                if (num_pieces_ < other.num_pieces_) return true;
+                if (num_pieces_ > other.num_pieces_) return false;
+                if (with_king_  < other.with_king_ ) return true;
+                if (with_king_  > other.with_king_ ) return false;
+                if (num_kings_  < other.num_kings_ ) return true;
+                if (num_kings_  > other.num_kings_ ) return false;
+                return piece_order_ < other.piece_order_;
         }
 
         bool operator==(Value const& other) const

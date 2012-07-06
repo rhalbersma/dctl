@@ -56,10 +56,9 @@ public:
 
         bool operator<(Value const& other) const
         {
-                return (
-                        ( num_pieces_ < other.num_pieces_ ) || (( num_pieces_ == other.num_pieces_ ) &&
-                        ( num_kings_  < other.num_kings_  ))
-                );
+                if (num_pieces_ < other.num_pieces_) return true;
+                if (num_pieces_ > other.num_pieces_) return false;
+                return num_kings_ < other.num_kings_;
         }
 
         bool operator==(Value const& other) const
