@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>                    // min_element, rotate, upper_bound
 #include <iterator>                     // iter_swap, next
+#include <tuple>
 
 namespace dctl {
 
@@ -9,6 +10,33 @@ void iota_n(OutputIterator first, Size n, Assignable value)
 {
         for (Size i = 0; i != n; ++i)
                 *first++ = value++;
+}
+
+// VC+ does not have is_permutation; Boost.Algoritm version gives spurious C4512 warnings
+// http://en.cppreference.com/w/cpp/algorithm/is_permutation
+
+template<class ForwardIterator1, class ForwardIterator2>
+bool is_permutation(ForwardIterator1 first, ForwardIterator1 last, ForwardIterator2 d_first)
+{
+        // skip common prefix
+        std::tie(first, d_first) = std::mismatch(first, last, d_first);
+        
+        // iterate over the rest, counting how many times each element
+        // from [first, last) appears in [d_first, d_last)
+        if (first != last) {
+                ForwardIterator2 d_last = d_first;
+                std::advance(d_last, std::distance(first, last));
+                
+                for (ForwardIterator1 i = first; i != last; ++i) {
+                        if (i != std::find(first, i, *i)) continue; // already counted this *i
+ 
+                        auto m = std::count(d_first, d_last, *i);
+                        if (m==0 || std::count(i, last, *i) != m) {
+                                return false;
+                        }
+                }       
+        }
+        return true;
 }
 
 template<class ForwardIterator>
