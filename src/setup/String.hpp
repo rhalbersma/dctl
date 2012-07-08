@@ -82,12 +82,12 @@ struct read<Rules, Board, pdn::protocol, Token>
 template<typename Token>
 struct write<pdn::protocol, Token>
 {
-        template<typename Rules, typename Board>
+        template<template<typename, typename> class Position, typename Rules, typename Board>
         std::string operator()(Position<Rules, Board> const& p) const
         {
                 std::stringstream sstr;
-                sstr << Token::quote;                                                // opening quotes
-                sstr << write_color<Token>(p.active_color());                        // side to move
+                sstr << Token::quote;                                           // opening quotes
+                sstr << write_color<Token>(p.active_color());                   // side to move
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i != 0;
@@ -97,11 +97,11 @@ struct write<pdn::protocol, Token>
                         }
                         for (auto bb = p.pieces(c); bb; bit::clear_first(bb)) {
                                 if (bit::is_element(bit::get_first(bb), p.kings()))
-                                        sstr << Token::king;                        // king tag
+                                        sstr << Token::king;                    // king tag
                                 auto b = bit::find_first(bb);                   // bit index
-                                sstr << Board::bit2square(b) + 1;                // square number
+                                sstr << Board::bit2square(b) + 1;               // square number
                                 if (bit::is_multiple(bb))                       // still pieces remaining
-                                        sstr << Token::comma;                        // comma separator
+                                        sstr << Token::comma;                   // comma separator
                         }
                 }
                 sstr << Token::quote << "\n";                                   // closing quotes
