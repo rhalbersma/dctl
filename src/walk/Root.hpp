@@ -53,7 +53,7 @@ public:
                 announce(p, depth, moves.size());
                 for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
                         statistics_.reset();
-                        print_move(notation::write<Rules>()(p, moves[i]), i);
+                        print_move(notation::write(p, moves[i]), i);
 
                         auto q = p;
                         q.attach(p);

@@ -1,13 +1,14 @@
 #pragma once
 #include <cstddef>                      // size_t
+#include <iterator>                     // back_inserter
 #include <string>                       // string
 #include <boost/test/unit_test.hpp>
-//#include <boost/algorithm/cxx11/is_permutation.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include "../../../src/utility/Algorithm.hpp"
+#include "../../../src/utility/algorithm.hpp"
 #include "../../../src/successor/Selection.hpp"
 #include "../../../src/successor/Successor.hpp"
 #include "../../../src/node/Position.hpp"
+#include "../../../src/node/Stack.hpp"
 #include "../../../src/setup/Setup.hpp"
 #include "../../../src/notation/String.hpp"
 
@@ -26,7 +27,7 @@ struct Fixture
         }
 
         template<std::size_t N>
-        void run(std::string const& FEN, std::string (&legal)[N])
+        void run(std::string const& FEN, std::string const (&legal)[N])
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>()(FEN);
                 Stack moves;
@@ -34,11 +35,14 @@ struct Fixture
 
                 BOOST_CHECK(moves.size() == N);
 
-                std::vector<std::string> notations(moves.size());
+                std::vector<std::string> notations;
                 std::transform(
-                        std::begin(moves), std::end(moves), std::begin(notations), [&p](Move const& m){
-                        return notation::write<Rules>()(p, m);
-                });
+                        std::begin(moves), std::end(moves), 
+                        std::back_inserter(notations), 
+                        [&](Move const& m){
+                                return notation::write(p, m);
+                        }
+                );
 
                 BOOST_CHECK(is_permutation(std::begin(legal), std::end(legal), std::begin(notations)));
         }

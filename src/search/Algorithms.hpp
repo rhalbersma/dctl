@@ -1,4 +1,5 @@
 #include <algorithm>                    // generate
+#include <iterator>                     // back_inserter
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "../successor/Selection.hpp"
