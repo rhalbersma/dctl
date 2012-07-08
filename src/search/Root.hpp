@@ -158,7 +158,7 @@ private:
                 auto const best_move = moves[pv[ply] % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
-                std::cout << notation::write<Rules>()(p, best_move);
+                std::cout << notation::write(p, best_move);
                 std::cout << ((ply % 10 == 9)? '\n' : ' ');
 
                 auto q = p;

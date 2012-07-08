@@ -4,7 +4,6 @@
 #include <string>                       // string
 #include "Notation.hpp"
 #include "../bit/Bit.hpp"
-#include "../node/Move_fwd.hpp"
 #include "../node/Predicates.hpp"
 
 namespace dctl {
@@ -18,6 +17,15 @@ template
 >
 struct read;
 
+template<template<typename, typename> class Position, typename Rules, typename Board, typename Move>
+std::string write(Position<Rules, Board> const& p, Move const& m)
+{
+        return detail::write<Rules>()(p, m);
+}
+
+namespace detail {
+
+// primary template
 template
 <
         typename Rules,
@@ -30,7 +38,7 @@ struct write;
 template<typename Rules, typename Separator>
 struct write<Rules, numeric, Separator>
 {
-        template<template<typename, typename> class Position, typename Rules, typename Board>
+        template<template<typename, typename> class Position, typename Rules, typename Board, typename Move>
         std::string operator()(Position<Rules, Board> const& p, Move const& m) const
         {
                 std::stringstream sstr;
@@ -43,5 +51,6 @@ struct write<Rules, numeric, Separator>
 
 // TODO: partial specialization for algebraic notation
 
+}       // namespace detail
 }       // namespace notation
 }       // namespace dctl
