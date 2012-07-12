@@ -16,13 +16,6 @@ typedef Fixture<rules::Italian, board::Roman> FixtureItalian;
 // Positions from the official Italian rules:
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 
-/*---------------------------------------------------------------------------*/
-#if (_MSC_VER <= 1600)
-#pragma warning(push)
-#pragma warning(disable:4512)
-#endif
-/*---------------------------------------------------------------------------*/
-
 BOOST_FIXTURE_TEST_CASE(TestPawnCaptureDirections, FixtureItalian)
 {
         // Art. 5.6  (pawn capture directions)

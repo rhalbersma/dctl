@@ -114,12 +114,12 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
 
         // generate moves
         Stack moves;
-        moves.reserve(32);
+        //moves.reserve(32);
         Successor<select::Legal>::generate(p, moves);
         BOOST_ASSERT(!moves.empty());
 
         std::vector<int> move_order;
-        move_order.reserve(moves.size());                               // reserve enough room for all indices
+        //move_order.reserve(moves.size());                               // reserve enough room for all indices
         iota_n(std::back_inserter(move_order), moves.size(), 0);        // generate indices [0, moves.size() - 1]
 
         // internal iterative deepening (IID)
@@ -238,12 +238,14 @@ int Root<Objective>::verify(Position const& p, int alpha, int beta, int depth, i
 
         // generate moves
         Stack moves;
-        moves.reserve(32);
+#if USE_STACK_ALLOC != 1
+        moves.reserve(MOVE_RESERVE);
+#endif
         Successor<select::Legal>::generate(p, moves);
         BOOST_ASSERT(!moves.empty());
 
         std::vector<int> move_order;
-        move_order.reserve(moves.size());                               // reserve enough room for all indices
+        //move_order.reserve(moves.size());                               // reserve enough room for all indices
         iota_n(std::back_inserter(move_order), moves.size(), 0);        // generate indices [0, moves.size() - 1]
 
         /*
