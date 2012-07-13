@@ -51,14 +51,14 @@ public:
 
         // predicates
 
-        bool operator<(Value const& other) const
+        friend bool operator<(Value const& lhs, Value const& rhs)
         {
-                return num_pieces_ < other.num_pieces_;
+                return lhs.num_pieces_ < rhs.num_pieces_;
         }
 
-        bool operator==(Value const& other) const
+        friend bool operator==(Value const& lhs, Value const& rhs)
         {
-                return num_pieces_ == other.num_pieces_;
+                return lhs.num_pieces_ == rhs.num_pieces_;
         }
 
 private:
