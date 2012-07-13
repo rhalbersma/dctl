@@ -61,10 +61,10 @@ public:
 
         // predicates
 
-        bool operator<(Value const& other) const
+        friend bool operator<(Value const& lhs, Value const& rhs)
         {
-                auto const delta_kings = num_kings_ - other.num_kings_;
-                auto const delta_pawns = num_pieces_ - other.num_pieces_ - delta_kings;
+                auto const delta_kings = lhs.num_kings_ - rhs.num_kings_;
+                auto const delta_pawns = lhs.num_pieces_ - rhs.num_pieces_ - delta_kings;
 
                 // Art. 11
                 if (delta_kings * delta_pawns < 0) {
@@ -73,18 +73,18 @@ public:
                         return delta_pawns + 2 * delta_kings - (delta_kings > 0) <  0;
                 } else {
                         // delta_kings or delta_pawns is zero or they have equal sign
-                        if (num_pieces_ < other.num_pieces_) return true;
-                        if (num_pieces_ > other.num_pieces_) return false;
-                        return with_king_ < other.with_king_;
+                        if (lhs.num_pieces_ < rhs.num_pieces_) return true;
+                        if (lhs.num_pieces_ > rhs.num_pieces_) return false;
+                        return lhs.with_king_ < rhs.with_king_;
                 }
         }
 
-        bool operator==(Value const& other) const
+        friend bool operator==(Value const& lhs, Value const& rhs)
         {
                 return (
-                        ( num_pieces_ == other.num_pieces_ ) &&
-                        ( num_kings_  == other.num_kings_  ) &&
-                        ( with_king_  == other.with_king_  )
+                        ( lhs.num_pieces_ == rhs.num_pieces_ ) &&
+                        ( lhs.num_kings_  == rhs.num_kings_  ) &&
+                        ( lhs.with_king_  == rhs.with_king_  )
                 );
         }
 

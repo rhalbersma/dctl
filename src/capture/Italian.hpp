@@ -74,24 +74,24 @@ public:
 
         // predicates
 
-        bool operator<(Value const& other) const
+        friend bool operator<(Value const& lhs, Value const& rhs)
         {
-                if (num_pieces_ < other.num_pieces_) return true;
-                if (num_pieces_ > other.num_pieces_) return false;
-                if (with_king_  < other.with_king_ ) return true;
-                if (with_king_  > other.with_king_ ) return false;
-                if (num_kings_  < other.num_kings_ ) return true;
-                if (num_kings_  > other.num_kings_ ) return false;
-                return piece_order_ < other.piece_order_;
+                if (lhs.num_pieces_ < rhs.num_pieces_) return true;
+                if (lhs.num_pieces_ > rhs.num_pieces_) return false;
+                if (lhs.with_king_  < rhs.with_king_ ) return true;
+                if (lhs.with_king_  > rhs.with_king_ ) return false;
+                if (lhs.num_kings_  < rhs.num_kings_ ) return true;
+                if (lhs.num_kings_  > rhs.num_kings_ ) return false;
+                return lhs.piece_order_ < rhs.piece_order_;
         }
 
-        bool operator==(Value const& other) const
+        friend bool operator==(Value const& lhs, Value const& rhs)
         {
                 return (
-                        ( num_pieces_  == other.num_pieces_  ) &&
-                        ( with_king_   == other.with_king_   ) &&
-                        ( num_kings_   == other.num_kings_   ) &&
-                        ( piece_order_ == other.piece_order_ )
+                        ( lhs.num_pieces_  == rhs.num_pieces_  ) &&
+                        ( lhs.with_king_   == rhs.with_king_   ) &&
+                        ( lhs.num_kings_   == rhs.num_kings_   ) &&
+                        ( lhs.piece_order_ == rhs.piece_order_ )
                 );
         }
 
