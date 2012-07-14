@@ -120,28 +120,19 @@ template<template<typename, typename> class Position, typename Rules, typename B
 bool is_no_progress(Position<Rules, Board> const& p)
 {
         // tag dispatching on restrictions on consecutive reversible moves
-        return is_no_progress_dispatch(
-                p,
-                boost::mpl::bool_<rules::is_restricted_reversible_moves<Rules>::value>()
-        );
+        return is_no_progress_dispatch(p, boost::mpl::bool_<rules::is_restricted_reversible_moves<Rules>::value>());
 }
 
 // overload for no restrictions on consecutive reversible moves
 template<typename Position>
-bool is_no_progress_dispatch(
-        Position const& /* p */, 
-        boost::mpl::false_
-)
+bool is_no_progress_dispatch(Position const& /* p */, boost::mpl::false_)
 {
         return false;
 }
 
 // overload for a maximum of consecutive reversible moves
 template<template<typename, typename> class Position, typename Rules, typename Board>
-bool is_no_progress_dispatch(
-        Position<Rules, Board> const& p, 
-        boost::mpl::true_
-)
+bool is_no_progress_dispatch(Position<Rules, Board> const& p, boost::mpl::true_)
 {
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }

@@ -56,18 +56,12 @@ private:
         static void generate(Position const& p, State& capture)
         {
                 // tag dispatching on absolute king capture precedence
-                generate_dispatch(
-                        p, capture,
-                        typename Rules::is_absolute_king_precedence()
-                );
+                generate_dispatch(p, capture, typename Rules::is_absolute_king_precedence());
         }
 
         // overload for no absolute king capture precedence
         template<typename Position>
-        static void generate_dispatch(
-                Position const& p, State& capture, 
-                boost::mpl::false_
-        )
+        static void generate_dispatch(Position const& p, State& capture, boost::mpl::false_)
         {
                 KingJumps::generate(p, capture);
                 PawnJumps::generate(p, capture);
@@ -75,10 +69,7 @@ private:
 
         // overload for absolute king capture precedence
         template<typename Position>
-        static void generate_dispatch(
-                Position const& p, State& capture, 
-                boost::mpl::true_
-        )
+        static void generate_dispatch(Position const& p, State& capture, boost::mpl::true_)
         {
                 KingJumps::generate(p, capture);
                 if (capture.empty())

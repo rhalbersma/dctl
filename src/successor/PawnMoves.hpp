@@ -47,8 +47,8 @@ public:
 
         static void generate(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
-                generate<typename Compass::left_up >(active_pawns, not_occupied, moves);
-                generate<typename Compass::right_up>(active_pawns, not_occupied, moves);
+                serialize<typename Compass::left_up >(active_pawns, not_occupied, moves);
+                serialize<typename Compass::right_up>(active_pawns, not_occupied, moves);
         }
 
         static int count(BitBoard active_pawns, BitBoard not_occupied)
@@ -69,7 +69,7 @@ public:
 
 private:
         template<typename Direction>
-        static void generate(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
+        static void serialize(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
                 BitIndex from_sq, dest_sq;
                 for (
