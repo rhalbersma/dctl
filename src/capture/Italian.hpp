@@ -3,12 +3,10 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"                // Value (primary template)
+#include "../rules/Italian_fwd.hpp"     // Italian
 #include "../bit/Bit.hpp"               // count, reverse_singlet
 
 namespace dctl {
-
-namespace rules { struct Italian; }
-
 namespace capture {
 
 // partial specialization for Italian draughts
@@ -21,7 +19,7 @@ struct Value<rules::Italian, Board>
 private:
         // typedefs
 
-        typedef typename Board::bit_type BitType;
+        typedef typename Board::bit_type bit_type;
 
 public:
         // structors
@@ -40,8 +38,9 @@ public:
 
         void increment(bool is_captured_king)
         {
+                BOOST_ASSERT(!full());
                 if (is_captured_king) {
-                        piece_order_ ^= bit::reverse_singlet<BitType>(num_pieces_);
+                        piece_order_ ^= bit::reverse_singlet<bit_type>(num_pieces_);
                         ++num_kings_;
                 }
                 ++num_pieces_;
@@ -54,7 +53,7 @@ public:
                 --num_pieces_;
                 if (is_captured_king) {
                         --num_kings_;
-                        piece_order_ ^= bit::reverse_singlet<BitType>(num_pieces_);
+                        piece_order_ ^= bit::reverse_singlet<bit_type>(num_pieces_);
                 }
                 BOOST_ASSERT(invariant());
         }
@@ -112,12 +111,17 @@ private:
                 return is_captured_king? (num_kings_ == 0 && piece_order_ == 0) : (num_pieces_ == 0); 
         }
 
+        bool full() const
+        {
+                return num_pieces_ == std::numeric_limits<int>::max() - 1;
+        }
+
         // representation
 
         int num_pieces_;
         int num_kings_;
         bool with_king_;
-        BitType piece_order_;
+        bit_type piece_order_;
 };
 
 }       // namespace capture

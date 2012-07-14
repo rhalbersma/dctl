@@ -3,11 +3,9 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"                // Value (primary template)
+#include "../rules/Spanish_fwd.hpp"     // Spanish
 
 namespace dctl {
-
-namespace rules { struct Spanish; }
-
 namespace capture {
 
 // partial specialization for Spanish draughts
@@ -32,6 +30,7 @@ public:
 
         void increment(bool is_captured_king)
         {
+                BOOST_ASSERT(!full());
                 num_kings_ += is_captured_king;
                 ++num_pieces_;
                 BOOST_ASSERT(invariant());
@@ -82,6 +81,11 @@ private:
         bool empty(bool is_captured_king) const
         {
                 return (is_captured_king? num_kings_ : num_pieces_) == 0; 
+        }
+
+        bool full() const
+        {
+                return num_pieces_ == std::numeric_limits<int>::max() - 1;
         }
 
         // representation

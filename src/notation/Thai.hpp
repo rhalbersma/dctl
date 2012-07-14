@@ -1,14 +1,16 @@
 #pragma once
+#include "Notation_fwd.hpp"             // Separator (primary template)
+#include "Types.hpp"                    // Token
+#include "../rules/Thai_fwd.hpp"        // Thai
 
 namespace dctl {
-
-namespace rules { struct Thai; }
-
 namespace notation {
 
-template<char, char> struct Token;
-template<typename> struct Separator;
-template<> struct Separator<rules::Thai>      { typedef Token<'-', '-'> type; };
+template<> 
+struct Separator<rules::Thai>
+:
+        Token<'-', '-'>
+{};
 
 }       // namespace notation
 }       // namespace dctl

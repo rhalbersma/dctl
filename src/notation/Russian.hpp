@@ -1,18 +1,22 @@
 #pragma once
+#include "Notation_fwd.hpp"             // Format, Separator (primary templates)
+#include "Types.hpp"                    // Token
+#include "../rules/Russian_fwd.hpp"     // Russian
 
 namespace dctl {
-
-namespace rules { struct Russian; }
-
 namespace notation {
 
-struct algebraic;
-template<typename> struct Format;
-//template<> struct Format<rules::Russian>      { typedef algebraic type; };
+template<> 
+struct Format<rules::Russian>
+: 
+        algebraic
+{};
 
-template<char, char> struct Token;
-template<typename> struct Separator;
-template<> struct Separator<rules::Russian>   { typedef Token<'-', ':'> type; };
+template<> 
+struct Separator<rules::Russian>
+:
+        Token<'-', ':'>
+{};
 
 }       // namespace notation
 }       // namespace dctl
