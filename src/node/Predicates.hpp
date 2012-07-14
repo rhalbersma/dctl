@@ -94,30 +94,21 @@ template<template<typename, typename> class Position, typename Rules, typename B
 bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m)
 {
         // tag dispatching on capture removal
-        return detail::is_intersecting_capture(
-                p, m,
-                typename Rules::jump_removal()
-        );
+        return detail::is_intersecting_capture(p, m, typename Rules::jump_removal());
 }
 
 namespace detail {
 
 // overload for apres-fini capture removal
 template<typename Position, typename Move>
-bool is_intersecting_capture(
-        Position const& /* p */, Move const& /* m */, 
-        rules::removal::apres_fini
-)
+bool is_intersecting_capture(Position const& /* p */, Move const& /* m */, rules::removal::apres_fini)
 {
         return false;
 }
 
 // overload for en-passant capture removal
 template<typename Position, typename Move>
-bool is_intersecting_capture(
-        Position const& p, Move const& m, 
-        rules::removal::en_passant
-)
+bool is_intersecting_capture(Position const& p, Move const& m, rules::removal::en_passant)
 {
         // for intersecting captures, a man-capturing king can appear as a captured king
         return bit::is_single(moving_kings(p, m) & captured_kings(p, m) & passive_pawns(p));

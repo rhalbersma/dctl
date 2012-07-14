@@ -167,30 +167,18 @@ private:
         void make_irreversible(Move const& m)
         {
                 // tag dispatching on restrictions on consecutive moves with the same king
-                make_irreversible(
-                        m,
-                        typename Rules::is_restricted_same_king_moves()
-                );
+                make_irreversible(m, typename Rules::is_restricted_same_king_moves());
         }
 
         // overload for restricted consecutive moves with the same king
-        void make_irreversible(
-                Move const& m, 
-                boost::mpl::true_
-        )
+        void make_irreversible(Move const& m, boost::mpl::true_)
         {
-                make_irreversible(
-                        m, 
-                        boost::mpl::false_()
-                );
+                make_irreversible(m, boost::mpl::false_());
                 make_restricted(m);
         }
 
         // overload for unrestricted consecutive moves with the same king
-        void make_irreversible(
-                Move const& m, 
-                boost::mpl::false_
-        )
+        void make_irreversible(Move const& m, boost::mpl::false_)
         {
                 make_reversible_moves(m);
                 make_distance_to_root();
@@ -345,30 +333,21 @@ template<typename Rules, typename Board>
 BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color)
 {
         // tag dispatching on restrictions on consecutive moves with the same king
-        return detail::unrestricted_kings(
-                p, color,
-                typename Rules::is_restricted_same_king_moves()
-        );
+        return detail::unrestricted_kings(p, color, typename Rules::is_restricted_same_king_moves());
 }
 
 namespace detail {
 
 // overload for unrestricted consecutive moves with the same king
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings(
-        Position<Rules, Board> const& p, bool color, 
-        boost::mpl::false_
-)
+BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color, boost::mpl::false_)
 {
         return p.kings(color);
 }
 
 // overload for restricted consecutive moves with the same king
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings(
-        Position<Rules, Board> const& p, bool color, 
-        boost::mpl::true_
-)
+BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color, boost::mpl::true_)
 {
         if (p.kings(color) && p.pawns(color) && is_max<Rules>(p.restricted(color).moves()))
                 return p.kings(color) ^ p.restricted(color).king();

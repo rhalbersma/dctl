@@ -49,20 +49,14 @@ private:
         static void serialize(BitBoard active_kings, BitBoard not_occupied, Stack& moves)
         {
                 // tag dispatching on restrictions on consecutive moves with the same king
-                serialize_dispatch(
-                        active_kings, not_occupied, moves,
-                        typename Rules::is_restricted_same_king_moves()
-                );
+                serialize_dispatch(active_kings, not_occupied, moves, typename Rules::is_restricted_same_king_moves());
         }
 
         // overload for unrestricted consecutive moves with the same king
-        static void serialize_dispatch(
-                BitBoard active_kings, BitBoard not_occupied, Stack& moves, 
-                boost::mpl::false_
-        )
+        static void serialize_dispatch(BitBoard active_kings, BitBoard not_occupied, Stack& moves, boost::mpl::false_)
         {
                 // loop cannot be empty because all active kings detected during
-                // Dispatcher<Selection, Rules, Board>::select are unrestricted to move
+                // Dispatcher<...>::select are unrestricted to move
                 BOOST_ASSERT(!bit::is_zero(active_kings));
                 do {
                         generate(bit::get_first(active_kings), not_occupied, moves);
@@ -71,13 +65,10 @@ private:
         }
 
         // overload for restricted consecutive moves with the same king
-        static void serialize_dispatch(
-                BitBoard active_kings, BitBoard not_occupied, Stack& moves, 
-                boost::mpl::true_
-        )
+        static void serialize_dispatch(BitBoard active_kings, BitBoard not_occupied, Stack& moves, boost::mpl::true_)
         {
                 // loop could be empty if the single active king detected during
-                // Dispatcher<Selection, Rules, Board>::select is restricted to move
+                // Dispatcher<...>::select is restricted to move
                 while (active_kings) {
                         generate(bit::get_first(active_kings), not_occupied, moves);
                         bit::clear_first(active_kings);
@@ -116,18 +107,12 @@ private:
         static void generate(BitIndex from_sq, BitBoard not_occupied, Stack& moves)
         {
                 // tag dispatching on king range
-                return generate_dispatch<Direction>(
-                        from_sq, not_occupied, moves,
-                        typename Rules::king_range()
-                );
+                return generate_dispatch<Direction>(from_sq, not_occupied, moves, typename Rules::king_range());
         }
 
         // overload for short ranged kings
         template<typename Direction>
-        static void generate_dispatch(
-                BitIndex from_sq, BitBoard not_occupied, Stack& moves, 
-                rules::range::distance_1
-        )
+        static void generate_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::range::distance_1)
         {
                 if (auto const dest_sq = Board::next<Direction>(from_sq) & not_occupied)
                         moves.push_back(Move::create<Color>(from_sq ^ dest_sq));
@@ -135,10 +120,7 @@ private:
 
         // overload for long ranged kings
         template<typename Direction>
-        static void generate_dispatch(
-                BitIndex from_sq, BitBoard not_occupied, Stack& moves, 
-                rules::range::distance_N
-        )
+        static void generate_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::range::distance_N)
         {
                 for (
                         auto dest_sq = Board::next<Direction>(from_sq);
