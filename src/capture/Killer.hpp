@@ -3,11 +3,9 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"                // Value (primary template)
+#include "../rules/Killer_fwd.hpp"      // Killer
 
 namespace dctl {
-
-namespace rules { struct Killer; }
-
 namespace capture {
 
 // partial specialization for Killer draughts
@@ -31,6 +29,7 @@ public:
 
         void increment()
         {
+                BOOST_ASSERT(!full());
                 ++num_pieces_;
                 BOOST_ASSERT(invariant());
         }
@@ -70,6 +69,11 @@ private:
         bool empty() const
         {
                 return num_pieces_ == 0;
+        }
+
+        bool full() const
+        {
+                return num_pieces_ == std::numeric_limits<int>::max() - 1;
         }
 
         // representation

@@ -1,14 +1,16 @@
 #pragma once
+#include "Notation_fwd.hpp"             // Format, Separator (primary templates)
+#include "Types.hpp"                    // Token
+#include "../rules/Czech_fwd.hpp"       // Czech
 
 namespace dctl {
-
-namespace rules { struct Czech; }
-
 namespace notation {
 
-struct algebraic;
-template<typename> struct Format;
-//template<> struct Format<rules::Czech>        { typedef algebraic type; };
+template<> 
+struct Format<rules::Czech>
+: 
+        algebraic
+{};
 
 }       // namespace notation
 }       // namespace dctl

@@ -1,13 +1,11 @@
 #pragma once
-#include <limits>                       // numeric_limits
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/operators.hpp>          // totally_ordered
-#include "Value_fwd.hpp"                // Value (primary template)
+#include <limits>                               // numeric_limits
+#include <boost/assert.hpp>                     // BOOST_ASSERT
+#include <boost/operators.hpp>                  // totally_ordered
+#include "Value_fwd.hpp"                        // Value (primary template)
+#include "../rules/International_fwd.hpp"       // International
 
 namespace dctl {
-
-namespace rules { struct International; }
-
 namespace capture {
 
 // partial specialization for International draughts
@@ -31,6 +29,7 @@ public:
 
         void increment()
         {
+                BOOST_ASSERT(!ful());
                 ++num_pieces_;
                 BOOST_ASSERT(invariant());
         }
@@ -70,6 +69,11 @@ private:
         bool empty() const
         {
                 return num_pieces_ == 0;
+        }
+
+        bool full() const
+        {
+                return num_pieces_ == std::numeric_limits<int>::max() - 1;
         }
 
         // representation

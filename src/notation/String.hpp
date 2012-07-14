@@ -13,7 +13,7 @@ template
 <
         typename Rules,
         typename Format = typename Format<Rules>::type,
-        typename Separator = typename Separator<Rules>::type
+        typename Separator = typename Separator<Rules>
 >
 struct read;
 
@@ -30,7 +30,7 @@ template
 <
         typename Rules,
         typename Format = typename Format<Rules>::type,
-        typename Separator = typename Separator<Rules>::type
+        typename Separator = typename Separator<Rules>
 >
 struct write;
 

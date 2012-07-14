@@ -1,11 +1,9 @@
 #pragma once
 #include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"                // Value (primary template)
+#include "../rules/Russian_fwd.hpp"     // Russian
 
 namespace dctl {
-
-namespace rules { struct Russian; }
-
 namespace capture {
 
 // partial specialization for Russian draughts
@@ -22,6 +20,7 @@ public:
         :
                 promotion_(false)
         {
+                BOOST_ASSERT(invariant());
         }
 
         // modifiers
@@ -29,6 +28,7 @@ public:
         void toggle_promotion()
         {
                 promotion_ ^= true;
+                BOOST_ASSERT(invariant());
         }
 
         // queries
@@ -51,6 +51,11 @@ public:
         }
 
 private:
+        bool invariant() const
+        {
+                return true;
+        }
+
         // representation
 
         bool promotion_;

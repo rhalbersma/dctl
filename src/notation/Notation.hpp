@@ -1,6 +1,5 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include "Types.hpp"
+#include "Types.hpp"                    // numeric, Token
 
 namespace dctl {
 namespace notation {
@@ -11,18 +10,11 @@ struct Format
         typedef numeric type;
 };
 
-template<char M, char J>
-struct Token
-{
-        BOOST_STATIC_CONSTANT(auto, move = M);
-        BOOST_STATIC_CONSTANT(auto, jump = J);
-};
-
 template<typename>
 struct Separator
-{
-        typedef Token<'-', 'x'> type;
-};
+:
+        Token<'-', 'x'>
+{};
 
 }       // namespace notation
 }       // namespace dctl
