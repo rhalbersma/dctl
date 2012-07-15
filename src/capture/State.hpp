@@ -245,7 +245,7 @@ private:
 
         void unique_back() const // modifies Stack& moves_
         {
-                if (std::find(std::begin(moves_), std::end(moves_), moves_.back()) != std::end(moves_) - 1)
+                if (std::find(std::begin(moves_), std::end(moves_) - 1, moves_.back()) != std::end(moves_) - 1)
                         moves_.pop_back();
         }
 
@@ -333,15 +333,15 @@ private:
                 );
         }
 
-        template<bool Color, typename Piece>
+        template<bool Color, typename WithPiece>
         void add_pawn_jump_impl(BitIndex dest_sq) const // modifies Stack& moves_
         {
                 moves_.push_back(
                         Move::create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
-                                promotion_sq_dispatch<Color>(dest_sq, Piece()),
+                                promotion<Color>(dest_sq, WithPiece()),
                                 captured_pieces(),
-                                captured_kings(Piece())
+                                captured_kings(WithPiece())
                         )
                 );
         }
@@ -397,14 +397,14 @@ private:
 
         // overload for pawn jumps without promotion
         template<bool Color>
-        BitBoard promotion_sq_dispatch(BitIndex dest_sq, with::pawn) const
+        BitBoard promotion(BitIndex dest_sq, with::pawn) const
         {
                 return promotion_sq<Color, Board>(dest_sq);
         }
 
         // overload for pawn jumps with an en-passant promotion
         template<bool Color>
-        BitBoard promotion_sq_dispatch(BitIndex dest_sq, with::king) const
+        BitBoard promotion(BitIndex dest_sq, with::king) const
         {
                 return dest_sq;
         }
