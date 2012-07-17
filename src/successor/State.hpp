@@ -1,6 +1,7 @@
 #pragma once
 #include "StateInterface.hpp"
 #include "Driver.hpp"
+#include "Result.hpp"
 #include "../node/Stack.hpp"
 
 namespace dctl {
@@ -44,24 +45,30 @@ class State
 private:
         // typedefs
 
-        typedef Driver<Color, Material, Selection, Rules, Board> Delegate;
+        // TODO: use C++11 template aliases
+        template<typename Result>
+        struct Delegate
+        : 
+                Driver<Color, Material, Selection, Result, Rules, Board>
+        {};
+
         typedef Position<Rules, Board> Position;
 
         // virtual implemenation
 
         virtual void do_generate(Position const& p, Stack& moves) const
         {
-                Delegate::generate(p, moves);
+                Delegate<generation>::generate(p, moves);
         }
 
         virtual int do_count(Position const& p) const
         {
-                return Delegate::count(p);
+                return Delegate<enumeration>::count(p);
         }
 
         virtual bool do_detect(Position const& p) const
         {
-                return Delegate::detect(p);
+                return Delegate<detection>::detect(p);
         }
 };
 

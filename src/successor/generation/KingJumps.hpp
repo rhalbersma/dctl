@@ -1,25 +1,26 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include "Driver_fwd.hpp"
-#include "Selection.hpp"
-#include "../bit/Bit.hpp"
-#include "../board/Compass.hpp"
-#include "../board/Degrees.hpp"
-#include "../board/Shift.hpp"
-#include "../capture/State.hpp"
-#include "../node/Material.hpp"
-#include "../node/Stack.hpp"
-#include "../rules/Enum.hpp"
-#include "../utility/IntegerTypes.hpp"
-#include "../utility/nonconstructible.hpp"
+#include "../Driver_fwd.hpp"
+#include "../Result.hpp"
+#include "../Selection.hpp"
+#include "../../bit/Bit.hpp"
+#include "../../board/Compass.hpp"
+#include "../../board/Degrees.hpp"
+#include "../../board/Shift.hpp"
+#include "../../capture/State.hpp"
+#include "../../node/Material.hpp"
+#include "../../node/Stack.hpp"
+#include "../../rules/Enum.hpp"
+#include "../../utility/IntegerTypes.hpp"
+#include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
 
-// partial specialization for king jumps
+// partial specialization for king jumps generation
 template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::king, select::Jumps, Rules, Board>
+struct Driver<Color, Material::king, select::Jumps, generation, Rules, Board>
 :
         // enforce static semantics
         private nonconstructible
@@ -41,47 +42,34 @@ public:
         template<typename Position>
         static void generate(Position const& p, State& capture)
         {
-                generate_precede(p, capture);
+                select(p, capture);
         }
 
         template<typename Direction>
         static bool promote_en_passant(BitIndex jumper, State& capture)
         {
-                return scan_next<Direction>(jumper, capture);
-        }
-
-        template<typename Position>
-        static int count(Position const& p)
-        {
-                Stack moves;
-                generate(p, moves);
-                return static_cast<int>(moves.size());
-        }
-
-        template<typename Position>
-        static bool detect(Position const& p)
-        {
-                return detect(p.kings(Color), p.pieces(!Color), not_occupied(p));
+                BOOST_ASSERT((is_promotion_sq<Color, Board>(jumper)));
+                return find_next<Direction>(jumper, capture);
         }
 
 private:
         template<typename Position>
-        static void generate_precede(Position const& p, State& capture)
+        static void select(Position const& p, State& capture)
         {
                 // tag dispatching on relative king capture precedence
-                generate_precede(p, capture, typename Rules::is_relative_king_precedence());
+                select_dispatch(p, capture, typename Rules::is_relative_king_precedence());
         }
 
         // overload for no relative king capture precedence
         template<typename Position>
-        static void generate_precede(Position const& p, State& capture, boost::mpl::false_)
+        static void select_dispatch(Position const& p, State& capture, boost::mpl::false_)
         {
                 serialize(p.kings(Color), capture);
         }
 
         // overload for relative king capture precedence
         template<typename Position>
-        static void generate_precede(Position const& p, State& capture, boost::mpl::true_)
+        static void select_dispatch(Position const& p, State& capture, boost::mpl::true_)
         {
                 capture.toggle_with_king();
                 serialize(p.kings(Color), capture);
@@ -95,97 +83,61 @@ private:
                 do {
                         jumper = bit::get_first(active_kings);
                         capture.launch(jumper);
-                        generate(jumper, capture);
+                        branch(jumper, capture);
                         capture.finish(jumper);
                         bit::clear_first(active_kings);
                 } while (active_kings);
         }
 
-        static void generate(BitIndex jumper, State& capture)
+        static void branch(BitIndex jumper, State& capture)
         {
                 // tag dispatching on king capture directions
-                generate_dispatch(jumper, capture, typename Rules::king_jump_directions());
+                branch_dispatch(jumper, capture, typename Rules::king_jump_directions());
         }
 
         // overload for kings that capture in the 8 orthogonal and diagonal directions
-        static void generate_dispatch(BitIndex jumper, State& capture, rules::directions::all)
+        static void branch_dispatch(BitIndex jumper, State& capture, rules::directions::all)
         {
-                generate_dispatch(jumper, capture, rules::directions::orth());
-                generate_dispatch(jumper, capture, rules::directions::diag());
+                branch_dispatch(jumper, capture, rules::directions::orth());
+                branch_dispatch(jumper, capture, rules::directions::diag());
         }
 
         // overload for kings that capture in the 4 orthogonal directions
-        static void generate_dispatch(BitIndex jumper, State& capture, rules::directions::orth)
+        static void branch_dispatch(BitIndex jumper, State& capture, rules::directions::orth)
         {
-                generate<typename Compass::left >(jumper, capture);
-                generate<typename Compass::right>(jumper, capture);
-                generate<typename Compass::up   >(jumper, capture);
-                generate<typename Compass::down >(jumper, capture);
+                find_first<typename Compass::left >(jumper, capture);
+                find_first<typename Compass::right>(jumper, capture);
+                find_first<typename Compass::up   >(jumper, capture);
+                find_first<typename Compass::down >(jumper, capture);
         }
 
         // overload for kings that capture in the 4 diagonal directions
-        static void generate_dispatch(BitIndex jumper, State& capture, rules::directions::diag)
+        static void branch_dispatch(BitIndex jumper, State& capture, rules::directions::diag)
         {
-                generate<typename Compass::left_up   >(jumper, capture);
-                generate<typename Compass::right_up  >(jumper, capture);
-                generate<typename Compass::left_down >(jumper, capture);
-                generate<typename Compass::right_down>(jumper, capture);
+                find_first<typename Compass::left_up   >(jumper, capture);
+                find_first<typename Compass::right_up  >(jumper, capture);
+                find_first<typename Compass::left_down >(jumper, capture);
+                find_first<typename Compass::right_down>(jumper, capture);
         }
 
-        static bool detect(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied)
-        {
-                // tag dispatching on king capture directions
-                return detect_dispatch(active_kings, passive_pieces, not_occupied, typename Rules::king_jump_directions());
-        }
-
-        // overload for kings that capture in the 8 orthogonal and diagonal directions
-        static bool detect_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::all)
-        {
-                return (
-                        detect_dispatch(active_kings, passive_pieces, not_occupied, rules::directions::orth()) ||
-                        detect_dispatch(active_kings, passive_pieces, not_occupied, rules::directions::diag())
-                );
-        }
-
-        // overload for kings that capture in the 4 orthogonal directions
-        static bool detect_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::orth)
-        {
-                return (
-                        detect<typename Compass::left >(active_kings, passive_pieces, not_occupied) ||
-                        detect<typename Compass::right>(active_kings, passive_pieces, not_occupied) ||
-                        detect<typename Compass::up   >(active_kings, passive_pieces, not_occupied) ||
-                        detect<typename Compass::down >(active_kings, passive_pieces, not_occupied)
-                );
-        }
-
-        // overload for kings that capture in the 4 diagonal directions
-        static bool detect_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::diag)
-        {
-                return (
-                        detect<typename Compass::left_up   >(active_kings, passive_pieces, not_occupied) ||
-                        detect<typename Compass::right_up  >(active_kings, passive_pieces, not_occupied) ||
-                        detect<typename Compass::left_down >(active_kings, passive_pieces, not_occupied) ||
-                        detect<typename Compass::right_down>(active_kings, passive_pieces, not_occupied)
-                );
-        }
 
         template<typename Direction>
-        static void generate(BitIndex jumper, State& capture)
+        static void find_first(BitIndex jumper, State& capture)
         {
                 slide<Direction>(jumper, capture.template path<Direction>());
                 if (bit::is_element(jumper, capture.template targets<Direction>())) {
                         capture.make(jumper);
-                        generate_next<Direction>(jumper, capture);
+                        add_jump<Direction>(jumper, capture);   // recursively find more jumps
                         capture.undo(jumper);
                 }
         }
 
         template<typename Direction>
-        static void generate_next(BitIndex jumper, State& capture)
+        static void add_jump(BitIndex jumper, State& capture)
         {
                 Board::advance<Direction>(jumper);
                 if (
-                        !scan_next<Direction>(jumper, capture) &&
+                        !find_next<Direction>(jumper, capture) &&
                         capture.is_improvement()
                 ) {
                         if (capture.improvement_is_strict())
@@ -195,27 +147,24 @@ private:
         }
 
         template<typename Direction>
-        static bool scan_next(BitIndex jumper, State& capture)
+        static bool find_next(BitIndex jumper, State& capture)
         {
                 // tag dispatching on king capture direction reversal
-                return scan_next_dispatch<Direction>(jumper, capture, typename Rules::is_jump_direction_reversal());
+                return find_next_dispatch<Direction>(jumper, capture, typename Rules::is_jump_direction_reversal());
         }
 
         // overload for kings that cannot reverse their capture direction
         template<typename Direction>
-        static bool scan_next_dispatch(BitIndex jumper, State& capture, boost::mpl::false_)
+        static bool find_next_dispatch(BitIndex jumper, State& capture, boost::mpl::false_)
         {
                 return land<Direction>(jumper, capture);
         }
 
         // overload for kings that can reverse their capture direction
         template<typename Direction>
-        static bool scan_next_dispatch(BitIndex jumper, State& capture, boost::mpl::true_)
+        static bool find_next_dispatch(BitIndex jumper, State& capture, boost::mpl::true_)
         {
-                return (
-                        reverse<Direction>(jumper, capture) |
-                        land<Direction>(jumper, capture)
-                );
+                return land<Direction>(jumper, capture) | reverse<Direction>(jumper, capture);
         }
 
         template<typename Direction>
@@ -246,12 +195,12 @@ private:
         static bool land_dispatch(BitIndex jumper, State& capture, rules::range::distance_N)
         {
                 BOOST_ASSERT(bit::is_element(jumper, capture.path()));
-                bool found_capture = false;
+                bool found_next = false;
                 do {
-                        found_capture |= turn<Direction>(jumper, capture);
+                        found_next |= turn<Direction>(jumper, capture);
                         Board::advance<Direction>(jumper);
                 } while (bit::is_element(jumper, capture.path()));
-                return found_capture |= jump<Direction>(jumper, capture);
+                return found_next |= jump<Direction>(jumper, capture);
         }
 
         template<typename Direction>
@@ -324,23 +273,13 @@ private:
         template<typename Direction>
         static bool jump(BitIndex jumper, State& capture)
         {
-                if (bit::is_element(jumper, capture.template targets<Direction>())) {
-                        capture.make(jumper);
-                        generate_next<Direction>(jumper, capture);
-                        capture.undo(jumper);
-                        return true;
-                } else
-                        return false;
-        }
+                if (!bit::is_element(jumper, capture.template targets<Direction>())) 
+                        return false;                   // terminated
 
-        template<typename Direction>
-        static bool detect(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied)
-        {
-                // partial specialiations of Sandwich for king range
-                return !bit::is_zero(
-                        Sandwich<Board, Direction, typename Rules::king_range>()
-                        (active_kings, passive_pieces, not_occupied)
-                );
+                capture.make(jumper);
+                add_jump<Direction>(jumper, capture);   // recursively find more jumps
+                capture.undo(jumper);                
+                return true;                            // not terminated 
         }
 };
 
