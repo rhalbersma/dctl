@@ -19,6 +19,7 @@ struct Driver<Color, Material::both, select::Moves, detection, Rules, Board>
 {
 private:
         // typedefs
+
         typedef Driver<Color, Material::king, select::Moves, detection, Rules, Board> KingMoves;
         typedef Driver<Color, Material::pawn, select::Moves, detection, Rules, Board> PawnMoves;
 

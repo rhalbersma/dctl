@@ -13,7 +13,7 @@ struct Format
 template<typename>
 struct Separator
 :
-        Token<'-', 'x'>
+        detail::token<'-', 'x'>
 {};
 
 }       // namespace notation
