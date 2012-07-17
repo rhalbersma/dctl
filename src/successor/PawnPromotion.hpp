@@ -26,7 +26,7 @@ public:
         template<typename Position>
         static void generate(Position const& p, Stack& moves)
         {
-                ActivePawnMoves::generate(promoting_pawns<Color>(p), not_occupied(p), moves);
+                ActivePawnMoves::select(promoting_pawns<Color>(p), not_occupied(p), moves);
         }
 
         template<typename Position>
