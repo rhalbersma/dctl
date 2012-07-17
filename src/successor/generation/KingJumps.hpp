@@ -95,20 +95,11 @@ private:
                 branch_dispatch(jumper, capture, typename Rules::king_jump_directions());
         }
 
-        // overload for kings that capture in the 8 orthogonal and diagonal directions
+        // overload for kings that capture in the 8 diagonal and orthogonal directions
         static void branch_dispatch(BitIndex jumper, State& capture, rules::directions::all)
         {
-                branch_dispatch(jumper, capture, rules::directions::orth());
                 branch_dispatch(jumper, capture, rules::directions::diag());
-        }
-
-        // overload for kings that capture in the 4 orthogonal directions
-        static void branch_dispatch(BitIndex jumper, State& capture, rules::directions::orth)
-        {
-                find_first<typename Compass::left >(jumper, capture);
-                find_first<typename Compass::right>(jumper, capture);
-                find_first<typename Compass::up   >(jumper, capture);
-                find_first<typename Compass::down >(jumper, capture);
+                branch_dispatch(jumper, capture, rules::directions::orth());
         }
 
         // overload for kings that capture in the 4 diagonal directions
@@ -120,6 +111,14 @@ private:
                 find_first<typename Compass::right_down>(jumper, capture);
         }
 
+        // overload for kings that capture in the 4 orthogonal directions
+        static void branch_dispatch(BitIndex jumper, State& capture, rules::directions::orth)
+        {
+                find_first<typename Compass::left >(jumper, capture);
+                find_first<typename Compass::right>(jumper, capture);
+                find_first<typename Compass::up   >(jumper, capture);
+                find_first<typename Compass::down >(jumper, capture);
+        }
 
         template<typename Direction>
         static void find_first(BitIndex jumper, State& capture)
@@ -210,13 +209,23 @@ private:
                 return turn_dispatch<Direction>(jumper, capture, typename Rules::king_turn_directions());
         }
 
-        // overload for turns in all the 6 non-parallel orthogonal and diagonal directions
+        // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
         template<typename Direction>
         static bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::all)
         {
                 return (
-                        turn_dispatch<Direction>(jumper, capture, rules::directions::orth()) |
-                        turn_dispatch<Direction>(jumper, capture, rules::directions::diag())
+                        turn_dispatch<Direction>(jumper, capture, rules::directions::diag()) |
+                        turn_dispatch<Direction>(jumper, capture, rules::directions::orth())
+                );
+        }
+
+        // overload for turns in the 2 sideways directions
+        template<typename Direction>
+        static bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::diag)
+        {
+                return (
+                        scan< typename rotate< Direction, angle::R090 >::type >(jumper, capture) |
+                        scan< typename rotate< Direction, angle::L090 >::type >(jumper, capture)
                 );
         }
 
@@ -229,16 +238,6 @@ private:
                         scan< typename rotate< Direction, angle::L045 >::type >(jumper, capture) |
                         scan< typename rotate< Direction, angle::R135 >::type >(jumper, capture) |
                         scan< typename rotate< Direction, angle::L135 >::type >(jumper, capture)
-                );
-        }
-
-        // overload for turns in the 2 sideways directions
-        template<typename Direction>
-        static bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::diag)
-        {
-                return (
-                        scan< typename rotate< Direction, angle::R090 >::type >(jumper, capture) |
-                        scan< typename rotate< Direction, angle::L090 >::type >(jumper, capture)
                 );
         }
 

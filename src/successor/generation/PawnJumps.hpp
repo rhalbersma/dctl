@@ -76,7 +76,7 @@ private:
                 branch_dispatch(active_pawns, capture, typename Rules::pawn_jump_directions());
         }
 
-        // overload for pawns that capture in the 8 orthogonal and diagonal directions
+        // overload for pawns that capture in the 8 diagonal and orthogonal directions
         static void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::all)
         {
                 branch_dispatch(active_pawns, capture, rules::directions::diag());
@@ -222,25 +222,13 @@ private:
                 return turn_dispatch<Direction>(jumper, capture, typename Rules::pawn_turn_directions());
         }
 
-        // overload for turns in all the 6 non-parallel orthogonal and diagonal directions
+        // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
         template<typename Direction>
         static bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::all)
         {
                 return (
-                        turn_dispatch<Direction>(jumper, capture, rules::directions::orth()) |
-                        turn_dispatch<Direction>(jumper, capture, rules::directions::diag())
-                );
-        }
-
-        // overload for turns in the remaining 4 diagonal or orthogonal directions
-        template<typename Direction>
-        static bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::orth)
-        {
-                return (
-                        scan< typename rotate< Direction, angle::R045 >::type >(jumper, capture) |
-                        scan< typename rotate< Direction, angle::L045 >::type >(jumper, capture) |
-                        scan< typename rotate< Direction, angle::R135 >::type >(jumper, capture) |
-                        scan< typename rotate< Direction, angle::L135 >::type >(jumper, capture)
+                        turn_dispatch<Direction>(jumper, capture, rules::directions::diag()) |
+                        turn_dispatch<Direction>(jumper, capture, rules::directions::orth())
                 );
         }
 
@@ -266,6 +254,18 @@ private:
         static bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::down)
         {
                 return scan< typename mirror< Direction, typename Compass::down >::type >(jumper, capture);
+        }
+
+        // overload for turns in the remaining 4 diagonal or orthogonal directions
+        template<typename Direction>
+        static bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::orth)
+        {
+                return (
+                        scan< typename rotate< Direction, angle::R045 >::type >(jumper, capture) |
+                        scan< typename rotate< Direction, angle::L045 >::type >(jumper, capture) |
+                        scan< typename rotate< Direction, angle::R135 >::type >(jumper, capture) |
+                        scan< typename rotate< Direction, angle::L135 >::type >(jumper, capture)
+                );
         }
 
         template<typename Direction>

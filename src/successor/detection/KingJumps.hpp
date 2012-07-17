@@ -39,7 +39,7 @@ private:
                 return branch_dispatch(active_kings, passive_pieces, not_occupied, typename Rules::king_jump_directions());
         }
 
-        // overload for kings that capture in the 8 orthogonal and diagonal directions
+        // overload for kings that capture in the 8 diagonal and orthogonal directions
         static bool branch_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::all)
         {
                 return (
