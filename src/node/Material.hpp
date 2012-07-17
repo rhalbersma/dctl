@@ -1,5 +1,6 @@
 #pragma once
-#include <array>                        // array
+#include <type_traits>                  // is_base_of
+#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable
 #include "PiecesInterface.hpp"
 #include "Move.hpp"
@@ -46,8 +47,10 @@ struct Material_
         // modifiers
 
         // xor-assign the set bits of another piece set
-        Material_& operator^=(Move_<T> const& m)
+        template<template<typename> class U>
+        Material_& operator^=(U<T> const& m)
         {
+                BOOST_MPL_ASSERT((std::is_base_of<PiecesInterface<U, T>, U<T> >));
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);
                 kings_ ^= m.kings();

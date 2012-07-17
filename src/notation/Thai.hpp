@@ -9,7 +9,7 @@ namespace notation {
 template<> 
 struct Separator<rules::Thai>
 :
-        Token<'-', '-'>
+        detail::token<'-', '-'>
 {};
 
 }       // namespace notation

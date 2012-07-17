@@ -117,12 +117,12 @@ public:
 
         // predicates
 
-        bool operator==(Move_ const& other) const
+        friend bool operator==(Move_ const& lhs, Move_ const& rhs)
         {
                 return (
-                        (pieces(Side::black) == other.pieces(Side::black)) &&
-                        (pieces(Side::white) == other.pieces(Side::white)) &&
-                                    (kings() == other.kings())
+                        (lhs.pieces(Side::black) == rhs.pieces(Side::black)) &&
+                        (lhs.pieces(Side::white) == rhs.pieces(Side::white)) &&
+                                    (lhs.kings() == rhs.kings())
                 );
         }
 

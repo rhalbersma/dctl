@@ -15,7 +15,7 @@ struct Format<rules::Russian>
 template<> 
 struct Separator<rules::Russian>
 :
-        Token<'-', ':'>
+        detail::token<'-', ':'>
 {};
 
 }       // namespace notation
