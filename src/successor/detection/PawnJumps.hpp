@@ -40,7 +40,7 @@ private:
                 return branch_dispatch(active_pawns, passive_pieces, not_occupied, typename Rules::pawn_jump_directions());
         }
 
-        // overload for pawns that capture in the 8 orthogonal and diagonal directions
+        // overload for pawns that capture in the 8 diagonal and orthogonal directions
         static bool branch_dispatch(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::all)
         {
                 return (
