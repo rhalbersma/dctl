@@ -57,17 +57,20 @@ public:
 
         stack_alloc() 
         : 
+		buf_(),
                 ptr_(buffer_begin()) 
         {}
 
         stack_alloc(stack_alloc const&) 
         : 
+		buf_(),
                 ptr_(buffer_begin()) 
         {}
         
         template <class U> 
         stack_alloc(stack_alloc<U, N> const&)
         : 
+		buf_(),
                 ptr_(buffer_begin()) 
         {}
 

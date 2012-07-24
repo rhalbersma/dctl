@@ -3,7 +3,7 @@
 #include "KingMoves.hpp"
 #include "PawnMoves.hpp"
 #include "../Result.hpp"
-#include "../Selection.hpp"
+#include "../Select.hpp"
 #include "../../node/Material.hpp"
 #include "../../utility/nonconstructible.hpp"
 

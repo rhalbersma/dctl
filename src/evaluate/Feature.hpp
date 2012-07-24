@@ -71,7 +71,7 @@ public:
         template<template<typename, typename> class Position, typename Rules, typename Board>
         static int mobility(Position<Rules, Board> const& p)
         {
-                return Weight<Rules, Board>::mobility * Mobility<select::Moves>::template count<Color>(p);
+                return Weight<Rules, Board>::mobility * mobility::count<Color, select::Moves>(p);
         }
 };
 

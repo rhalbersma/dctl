@@ -124,7 +124,7 @@ private:
                         BOOST_ASSERT(
                                 (value == Evaluate::evaluate(p)) ||
                                 (value == draw_value() && is_draw(p)) ||
-                                (value == loss_min() && !Successor<select::Legal>::detect(p))
+                                (value == loss_min() && !successor::detect<select::Legal>(p))
                                 // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
                         );
                         TT.insert(p, Transposition(value, Bound::exact, depth, Transposition::no_move()));
@@ -132,7 +132,7 @@ private:
                 }
 
                 Stack moves;
-                Successor<select::Legal>::generate(p, moves);
+                successor::generate<select::Legal>(p, moves);
                 auto const index = pv[ply] % moves.size();
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
@@ -154,7 +154,7 @@ private:
                 }
 
                 Stack moves;
-                Successor<select::Legal>::generate(p, moves);
+                successor::generate<select::Legal>(p, moves);
                 auto const best_move = moves[pv[ply] % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";

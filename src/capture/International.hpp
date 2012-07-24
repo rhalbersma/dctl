@@ -29,7 +29,7 @@ public:
 
         void increment()
         {
-                BOOST_ASSERT(!ful());
+                BOOST_ASSERT(!full());
                 ++num_pieces_;
                 BOOST_ASSERT(invariant());
         }

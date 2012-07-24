@@ -3,7 +3,7 @@
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
 #include "../Driver_fwd.hpp"
 #include "../Result.hpp"
-#include "../Selection.hpp"
+#include "../Select.hpp"
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
 #include "../../board/Shift.hpp"
@@ -63,7 +63,7 @@ private:
         static void serialize_dispatch(BitBoard active_kings, BitBoard not_occupied, Stack& moves, boost::mpl::true_)
         {
                 // loop could be empty if the single active king detected during
-                // Dispatcher<...>::select is restricted to move
+                // Dispatcher<...>::select is restricted from moving
                 while (active_kings) {
                         branch(bit::get_first(active_kings), not_occupied, moves);
                         bit::clear_first(active_kings);

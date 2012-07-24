@@ -1,39 +1,91 @@
 #pragma once
 #include <array>                        // array
-#include "StateInterface_fwd.hpp"
-#include "State.hpp"
+#include <functional>                   // function
+#include "Driver.hpp"
+#include "Result.hpp"
 #include "../node/Material.hpp"
 #include "../node/Side.hpp"
+#include "../node/Stack.hpp"
 #include "../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
-/*
+// TODO: use C++11 variadic templates
+template<typename, typename>
+struct signature;
 
-        For purposes of move generation, a position has 8 possible states,
-        depending on the side to move and the availability of kings and pawns. 
-        The move generator *dynamically* dispatches the state-specific routines.
-        For efficiency, the states are *statically* stored in a FlyWeightFactory.
+template<typename Position>
+struct signature<generation, Position>
+{
+        //typedef std::function<void(Position const&, Stack&)> type;
+        typedef void (* type)(Position const&, Stack&);
+};
 
-        State Design Pattern
-        --------------------
-        State                   : StateInterface
-        ConcreteState           : State
-        Context                 : Successor, Mobility
+template<typename Position>
+struct signature<enumeration, Position>
+{
+        //typedef std::function<int(Position const&)> type;
+        typedef int (* type)(Position const&);
+};
 
-        FlyWeight Design Pattern
-        ------------------------
-        FlyWeight               : StateInterface
-        ConcreteFlyWeight       : State
-        FlyWeightFactory        : Dispatcher <---------------------- this class
-        Client                  : Successor, Mobility
+template<typename Position>
+struct signature<detection, Position>
+{
+        //typedef std::function<bool(Position const&)> type;
+        typedef bool (* type)(Position const&);
+};
 
-*/
+// TODO: use C++11 variadic templates
+template<bool, int, typename, typename, template<typename, typename> class, typename, typename>
+struct call_back;
+
+template
+<
+        bool Color, int Material, typename Selection, 
+        template<typename, typename> class Position, typename Rules, typename Board
+>
+struct call_back<Color, Material, Selection, generation, Position, Rules, Board>
+{
+        static void run(Position<Rules, Board> const& p, Stack& moves)
+        {
+                Driver<Color, Material, Selection, generation, Rules, Board>::generate(p, moves);
+        }
+};
+
+template
+<
+        bool Color, int Material, typename Selection, 
+        template<typename, typename> class Position, typename Rules, typename Board
+>
+struct call_back<Color, Material, Selection, enumeration, Position, Rules, Board>
+{
+        static int run(Position<Rules, Board> const& p)
+        {
+                return Driver<Color, Material, Selection, enumeration, Rules, Board>::count(p);
+        }
+};
+
+template
+<
+        bool Color, int Material, typename Selection, 
+        template<typename, typename> class Position, typename Rules, typename Board
+>
+struct call_back<Color, Material, Selection, detection, Position, Rules, Board>
+{
+        static bool run(Position<Rules, Board> const& p)
+        {
+                return Driver<Color, Material, Selection, detection, Rules, Board>::detect(p);
+        }
+};
+
+}       // namespace detail
 
 template
 <
         typename Selection,
+        typename Result,
         template<typename, typename> class Position,
         typename Rules,
         typename Board
@@ -48,31 +100,28 @@ private:
         template<bool Color, int Material>
         struct Delegate
         :
-                State<Color, Material, Selection, Position, Rules, Board>
+                detail::call_back<Color, Material, Selection, Result, Position, Rules, Board>
         {};
 
 public:
         // typedefs
 
-        typedef StateInterface< Position<Rules, Board> > const* BaseConstPointer;
+        typedef typename detail::signature< Result, Position<Rules, Board> >::type Functor;
 
-        static BaseConstPointer select(int state /* partial intrinsic state encoding */ )
+        static Functor const select(int state /* partial intrinsic state encoding */ )
         {
                 // full intrinsic state representations
-                static Delegate<Side::black, Material::none> const black_none;
-                static Delegate<Side::black, Material::pawn> const black_pawn;
-                static Delegate<Side::black, Material::king> const black_king;
-                static Delegate<Side::black, Material::both> const black_both;
-                static Delegate<Side::white, Material::none> const white_none;
-                static Delegate<Side::white, Material::pawn> const white_pawn;
-                static Delegate<Side::white, Material::king> const white_king;
-                static Delegate<Side::white, Material::both> const white_both;
 
                 // "Meyers Singleton", Effective C++ 3rd ed., Item 4 (p. 31-32)
-                static BaseConstPointer const singleton_[] = {
-                //      no material  only pawns   only kings   kings and pawns
-                        &black_none, &black_pawn, &black_king, &black_both,     // black to move
-                        &white_none, &white_pawn, &white_king, &white_both      // white to move
+                static Functor const singleton_[] = {
+                        &Delegate<Side::black, Material::none>::run,
+                        &Delegate<Side::black, Material::pawn>::run,
+                        &Delegate<Side::black, Material::king>::run,
+                        &Delegate<Side::black, Material::both>::run,
+                        &Delegate<Side::white, Material::none>::run,
+                        &Delegate<Side::white, Material::pawn>::run,
+                        &Delegate<Side::white, Material::king>::run,
+                        &Delegate<Side::white, Material::both>::run
                 };
 
                 return singleton_[state];

@@ -2,7 +2,7 @@
 #include <iterator>                     // back_inserter
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include "../successor/Selection.hpp"
+#include "../successor/Select.hpp"
 #include "../successor/Successor.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/algorithm.hpp"
@@ -114,12 +114,18 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
 
         // generate moves
         Stack moves;
-        //moves.reserve(32);
-        Successor<select::Legal>::generate(p, moves);
+#if USE_STACK_ALLOC == 0       
+        moves.reserve(32);
+#endif
+        successor::generate<select::Legal>(p, moves);
         BOOST_ASSERT(!moves.empty());
 
+#if USE_STACK_ALLOC == 1
+        std::vector<int, stack_alloc<int, MOVE_RESERVE> > move_order;
+#else
         std::vector<int> move_order;
-        //move_order.reserve(moves.size());                               // reserve enough room for all indices
+        move_order.reserve(moves.size());                               // reserve enough room for all indices
+#endif
         iota_n(std::back_inserter(move_order), moves.size(), 0);        // generate indices [0, moves.size() - 1]
 
         // internal iterative deepening (IID)
@@ -241,7 +247,7 @@ int Root<Objective>::verify(Position const& p, int alpha, int beta, int depth, i
 #if USE_STACK_ALLOC != 1
         moves.reserve(MOVE_RESERVE);
 #endif
-        Successor<select::Legal>::generate(p, moves);
+        successor::generate<select::Legal>(p, moves);
         BOOST_ASSERT(!moves.empty());
 
         std::vector<int> move_order;

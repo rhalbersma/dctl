@@ -59,7 +59,7 @@ public:
 
         // Warning C4348 is incorrectly generated for nested templates with default parameters
         // http://connect.microsoft.com/VisualStudio/feedback/details/474655/warning-c4348-is-incorrectly-generated-for-nested-templates
-        template<typename Index, class _ = void> struct shift;
+        template<typename Index, typename dummy = void> struct shift;
 
 /*---------------------------------------------------------------------------*/
 #if (_MSC_VER <= 1600)
@@ -67,14 +67,14 @@ public:
 #endif
 /*---------------------------------------------------------------------------*/
 
-        template< class _ > struct shift< angle::D000, _ >: boost::mpl::int_< right      > {};
-        template< class _ > struct shift< angle::D045, _ >: boost::mpl::int_< right_up   > {};
-        template< class _ > struct shift< angle::D090, _ >: boost::mpl::int_< up         > {};
-        template< class _ > struct shift< angle::D135, _ >: boost::mpl::int_< left_up    > {};
-        template< class _ > struct shift< angle::D180, _ >: boost::mpl::int_< left       > {};
-        template< class _ > struct shift< angle::D225, _ >: boost::mpl::int_< left_down  > {};
-        template< class _ > struct shift< angle::D270, _ >: boost::mpl::int_< down       > {};
-        template< class _ > struct shift< angle::D315, _ >: boost::mpl::int_< right_down > {};
+        template< typename dummy > struct shift< angle::D000, dummy >: boost::mpl::int_< right      > {};
+        template< typename dummy > struct shift< angle::D045, dummy >: boost::mpl::int_< right_up   > {};
+        template< typename dummy > struct shift< angle::D090, dummy >: boost::mpl::int_< up         > {};
+        template< typename dummy > struct shift< angle::D135, dummy >: boost::mpl::int_< left_up    > {};
+        template< typename dummy > struct shift< angle::D180, dummy >: boost::mpl::int_< left       > {};
+        template< typename dummy > struct shift< angle::D225, dummy >: boost::mpl::int_< left_down  > {};
+        template< typename dummy > struct shift< angle::D270, dummy >: boost::mpl::int_< down       > {};
+        template< typename dummy > struct shift< angle::D315, dummy >: boost::mpl::int_< right_down > {};
 };
 
 // partial specialization for grids without ghost columns
