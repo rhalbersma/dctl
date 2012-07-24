@@ -4,7 +4,7 @@
 #include <boost/mpl/identity.hpp>       // identity
 #include "Score.hpp"
 #include "../bit/Bit.hpp"
-#include "../successor/Selection.hpp"
+#include "../successor/Select.hpp"
 #include "../successor/Successor.hpp"
 
 namespace dctl {
@@ -53,7 +53,7 @@ struct is_terminal<NoMovesLeft>
         template<typename Position>
         bool operator()(Position const& p) const
         {
-                return !Successor<select::Legal>::detect(p);
+                return !successor::detect<select::Legal>(p);
         }
 };
 

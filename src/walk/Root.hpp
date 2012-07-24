@@ -48,7 +48,7 @@ public:
 
                 Timer timer;
                 Stack moves;
-                Successor<select::Legal>::generate(p, moves);
+                successor::generate<select::Legal>(p, moves);
 
                 announce(p, depth, moves.size());
                 for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
@@ -160,7 +160,7 @@ private:
                         return 1;
 
                 Stack moves;
-                Successor<select::Legal>::generate(p, moves);
+                successor::generate<select::Legal>(p, moves);
                 NodeCount leafs = 0;
                 for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
@@ -177,7 +177,7 @@ private:
                 statistics_.update(ply);
 
                 Stack moves;
-                Successor<select::Legal>::generate(p, moves);
+                successor::generate<select::Legal>(p, moves);
                 if (depth == 1)
                         return moves.size();
 
@@ -197,10 +197,10 @@ private:
                 statistics_.update(ply);
 
                 if (depth == 1)
-                        return Successor<select::Legal>::count(p);
+                        return successor::count<select::Legal>(p);
 
                 Stack moves;
-                Successor<select::Legal>::generate(p, moves);
+                successor::generate<select::Legal>(p, moves);
                 NodeCount leafs = 0;
                 for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
@@ -224,7 +224,7 @@ private:
                         return 1;
 
                 Stack moves;
-                Successor<select::Legal>::generate(p, moves);
+                successor::generate<select::Legal>(p, moves);
                 NodeCount leafs = 0;
                 for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
@@ -248,10 +248,10 @@ private:
 
                 NodeCount leafs;
                 if (depth == 1) {
-                        leafs = Successor<select::Legal>::count(p);
+                        leafs = successor::count<select::Legal>(p);
                 } else {
                         Stack moves;
-                        Successor<select::Legal>::generate(p, moves);
+                        successor::generate<select::Legal>(p, moves);
                         leafs = 0;
                         for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                                 auto q = p;

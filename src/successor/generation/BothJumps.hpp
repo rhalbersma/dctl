@@ -4,7 +4,7 @@
 #include "KingJumps.hpp"
 #include "PawnJumps.hpp"
 #include "../Result.hpp"
-#include "../Selection.hpp"
+#include "../Select.hpp"
 #include "../../capture/State.hpp"
 #include "../../node/Material.hpp"
 #include "../../node/Stack.hpp"

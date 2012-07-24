@@ -8,7 +8,7 @@
 #include "PawnJumps.hpp"
 #include "PawnMoves.hpp"
 #include "../Result.hpp"
-#include "../Selection.hpp"
+#include "../Select.hpp"
 #include "../../utility/nonconstructible.hpp"
 
 namespace dctl {

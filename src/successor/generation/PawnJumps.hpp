@@ -2,7 +2,7 @@
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
 #include "../Driver_fwd.hpp"
 #include "../Result.hpp"
-#include "../Selection.hpp"
+#include "../Select.hpp"
 #include "KingJumps.hpp"                // promote_en_passant
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"

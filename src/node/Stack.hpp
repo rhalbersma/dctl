@@ -19,7 +19,7 @@
 
 namespace dctl {
 
-#define USE_STACK_ALLOC 0
+#define USE_STACK_ALLOC 1
 #define MOVE_RESERVE 32
 
 #if USE_STACK_ALLOC == 1

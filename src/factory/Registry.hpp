@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include <map>                          // map
 #include <memory>                       // unique_ptr
 #include <string>                       // string
@@ -13,7 +14,7 @@ template
         typename Base,
         typename BasePointer = std::unique_ptr<Base>,
         typename Identifier = std::string,
-        typename Creator = BasePointer (*)(Identifier const&)
+        typename Creator = std::function<BasePointer(Identifier const&)>
 >
 struct Registry
 {

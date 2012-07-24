@@ -55,6 +55,7 @@ BOOST_FIXTURE_TEST_CASE(Frisian21, Fixture<DefaultObjective>)
 */
 BOOST_FIXTURE_TEST_CASE(InternationalInitial, Fixture<DefaultObjective>)
 {
+        std::cout << "Position struct is :" << sizeof(Position<rules::International, board::International>) << "\n";
         auto const p = Position<rules::International, board::International>::initial();
         root_.analyze(p, 15);
 }

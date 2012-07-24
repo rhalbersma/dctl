@@ -154,7 +154,7 @@ template<typename T>
 int index(T b)
 {
         BOOST_ASSERT(is_single(b));
-        return index_lookup(b);
+        return index_DeBruijn(b);
 }
 
 // Leiserson, Prokop and Randall, 1998
@@ -186,7 +186,7 @@ int index_loop(T b)
 template<typename T>
 int count(T b)
 {
-        return count_lookup(b);
+        return count_loop(b);
 }
 
 // number of set 1-bits
