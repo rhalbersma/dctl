@@ -22,6 +22,7 @@ struct Fixture
 
         ~Fixture()
         {
+                root_.resize_hash(0);
         }
 
         BOOST_STATIC_CONSTANT(auto, R = 0);

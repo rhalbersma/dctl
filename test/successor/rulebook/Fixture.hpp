@@ -11,6 +11,7 @@
 #include "../../../src/node/Stack.hpp"
 #include "../../../src/setup/Setup.hpp"
 #include "../../../src/notation/String.hpp"
+#include "../../../src/utility/is_permutation.hpp"
 
 namespace dctl {
 namespace successor {
@@ -44,7 +45,7 @@ struct Fixture
                         }
                 );
 
-                BOOST_CHECK(is_permutation(std::begin(legal), std::end(legal), std::begin(notations)));
+                BOOST_CHECK(boost::algorithm::is_permutation(std::begin(legal), std::end(legal), std::begin(notations)));
         }
 };
 
