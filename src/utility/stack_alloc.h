@@ -1,6 +1,6 @@
 #pragma once
-#include <cstddef>                      // std::size_t
-#include <type_traits>                  // 
+#include <cstddef>                      // size_t, ptrdiff_t
+#include <type_traits>                  // aligned_storage, alignment_of
 
 template
 <
@@ -23,56 +23,14 @@ class stack_alloc
 public:
         // typedefs
 
-        typedef std::size_t       size_type;
         typedef T                 value_type;
         typedef value_type*       pointer;
         typedef value_type const* const_pointer;
         typedef value_type&       reference;
         typedef value_type const& const_reference;
-        typedef ptrdiff_t         difference_type;
 
-private:
-        // representation
-
-        typename std::aligned_storage<N * sizeof(value_type), 16>::type buf_;
-        pointer ptr_;
-
-        const_pointer buffer_cbegin() const
-        {
-                return reinterpret_cast<const_pointer>(&buf_);
-        }
-
-        pointer buffer_begin() const
-        {
-                return const_cast<pointer>(buffer_cbegin());
-        }
-
-        const_pointer buffer_cend() const
-        {
-                return buffer_cbegin() + N;
-        }
-        
-public:
-        // structors
-
-        stack_alloc() 
-        : 
-		buf_(),
-                ptr_(buffer_begin()) 
-        {}
-
-        stack_alloc(stack_alloc const&) 
-        : 
-		buf_(),
-                ptr_(buffer_begin()) 
-        {}
-        
-        template <class U> 
-        stack_alloc(stack_alloc<U, N> const&)
-        : 
-		buf_(),
-                ptr_(buffer_begin()) 
-        {}
+        typedef std::size_t       size_type;
+        typedef std::ptrdiff_t    difference_type;
 
         template <class U> 
         struct rebind 
@@ -81,12 +39,68 @@ public:
         };
 
 private:
+        // representation
+
+        typename std::aligned_storage<N * sizeof(value_type), std::alignment_of<value_type>::value>::type buf_;
+        pointer ptr_;
+
+private:
+        // buffer access
+
+        const_pointer cbegin() const
+        {
+                return reinterpret_cast<const_pointer>(&buf_);
+        }
+
+        const_pointer cend() const
+        {
+                return cbegin() + N;
+        }
+
+        pointer begin() const
+        {
+                return const_cast<pointer>(cbegin());
+        }
+
+        pointer end() const
+        {
+                return const_cast<pointer>(cend());
+        }
+        
+public:
+        // structors
+
+        stack_alloc()
+        : 
+		buf_(),
+                ptr_(begin()) 
+        {}
+
+        stack_alloc(stack_alloc const&)
+        : 
+		buf_(),
+                ptr_(begin()) 
+        {}
+        
+        template <class U> 
+        stack_alloc(stack_alloc<U, N> const&)
+        : 
+		buf_(),
+                ptr_(begin()) 
+        {}
+
+private:
         stack_alloc& operator=(stack_alloc const&);
 
 public:
+        size_type max_size() const
+        {
+                return size_type(~0) / sizeof(value_type);
+        }
+
         pointer allocate(size_type n, typename stack_alloc<void, N>::const_pointer = 0)
         {
-                if (ptr_ + n <= buffer_cend()) {
+                if (ptr_ + n <= cend()) {
                         auto const pre = ptr_;
                         ptr_ += n;
                         return pre;
@@ -96,7 +110,7 @@ public:
 
         void deallocate(pointer p, size_type n)
         {
-                if (buffer_cbegin() <= p && p < buffer_cend()) {
+                if (cbegin() <= p && p < cend()) {
                         if (p + n == ptr_)
                                 ptr_ = p;
                 } else {
@@ -104,10 +118,14 @@ public:
                 }
         }
 
-        size_type max_size() const 
+        // TODO: use C++11 variadic templates here
+        /*
+        template<typename... Args>
+        void construct(Args&&... args)
         {
-                return size_type(~0) / sizeof(value_type);
+                ::new((void*)p) value_type(std::forward<Args>(args)...);
         }
+        */
 
         void construct(pointer p)
         {
@@ -115,37 +133,35 @@ public:
         }
 
         template <class Arg0>
-        void construct(pointer p, Arg0 const& arg0)
+        void construct(pointer p, Arg0&& arg0)
         {
-                ::new((void*)p) value_type(arg0);
+                ::new((void*)p) value_type(std::forward<Arg0>(arg0));
         }
 
         template <class Arg0, class Arg1>
-        void construct(pointer p, Arg0 const& arg0, Arg1 const& arg1)
+        void construct(pointer p, Arg0&& arg0, Arg1&& arg1)
         {
-                ::new((void*)p) value_type(arg0, arg1);
+                ::new((void*)p) value_type(std::forward<Arg0>(arg0), std::forward<Arg1>(arg1));
         }
 
         template <class Arg0, class Arg1, class Arg2>
-        void construct(pointer p, Arg0 const& arg0, Arg1 const& arg1, Arg2 const& arg2)
+        void construct(pointer p, Arg0&& arg0, Arg1&& arg1, Arg2&& arg2)
         {
-                ::new((void*)p) value_type(arg0, arg1, arg2);
+                ::new((void*)p) value_type(std::forward<Arg0>(arg0), std::forward<Arg1>(arg1), std::foward<Arg2>(arg2));
         }
 
-        // A compiler bug causes it to believe that p->~T() doesn't reference p.
-        // http://blogs.msdn.com/b/vcblog/archive/2008/08/28/the-mallocator.aspx 
         void destroy(pointer const p) const 
         {
                 p->~T();
         }
 
-        bool operator==(stack_alloc& other) const 
+        friend bool operator==(stack_alloc& lhs, stack_alloc& rhs) 
         {
-                return &buf_ == &other.buf_;
+                return &lhs.buf_ == &rhs.buf_;
         }
         
-        bool operator!=(stack_alloc& other) const 
+        friend bool operator!=(stack_alloc& lhs, stack_alloc& rhs) 
         {
-                return !(*this == other); 
+                return !(lhs == rhs); 
         }
 };

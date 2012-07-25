@@ -1,21 +1,7 @@
 #pragma once
 #include <vector>                       // vector
 #include "Move.hpp"
-
-/*---------------------------------------------------------------------------*/
-#if (_MSC_VER <= 1600)
-#pragma warning(push)
-#pragma warning(disable: 4100 ) // unreferenced formal parameter
-#endif
-/*---------------------------------------------------------------------------*/
-
-#include "../utility/stack_alloc.h"
-
-/*---------------------------------------------------------------------------*/
-#if (_MSC_VER <= 1600)
-#pragma warning(pop)
-#endif
-/*---------------------------------------------------------------------------*/
+#include "../utility/stack_alloc.hpp"
 
 namespace dctl {
 
