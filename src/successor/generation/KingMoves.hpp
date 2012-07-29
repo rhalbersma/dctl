@@ -17,8 +17,8 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for king moves generation
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::king, select::Moves, generation, Rules, Board>
+template<bool Color, typename Position>
+struct generator<Color, Material::king, select::Moves, Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -26,13 +26,15 @@ struct Driver<Color, Material::king, select::Moves, generation, Rules, Board>
 private:
         // typedefs
 
+        typedef typename Position::rules_type Rules;
+        typedef typename Position::board_type Board;
         typedef angle::Compass<Color, Board> Compass;
 
 public:
-        template<typename Position>
-        static void generate(Position const& p, Stack& moves)
+        static void run(Position const& p, Stack& moves)
         {
-                select(unrestricted_kings(p, Color), not_occupied(p), moves);
+                if (auto const active_kings = unrestricted_kings(p, Color)) 
+                        select(active_kings, not_occupied(p), moves);
         }
 
 private:

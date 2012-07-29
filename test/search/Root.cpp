@@ -19,7 +19,7 @@ struct Fixture
 {
         Fixture()
         {
-                root_.resize_hash(27);
+                root_.resize_hash(24);
         }
 
         ~Fixture()
@@ -52,14 +52,14 @@ BOOST_FIXTURE_TEST_CASE(Frisian21, Fixture<DefaultObjective>)
         FEN_depth test_case("W:WK46,28:BK43", 39);      // Walinga book
         run<rules::Frisian, board::Frisian>(test_case);
 }
-*/
+
 BOOST_FIXTURE_TEST_CASE(InternationalInitial, Fixture<DefaultObjective>)
 {
         std::cout << "Position struct is :" << sizeof(Position<rules::International, board::International>) << "\n";
         auto const p = Position<rules::International, board::International>::initial();
-        root_.analyze(p, 15);
+        root_.analyze(p, 5);
 }
-
+*/
 /*
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 BOOST_FIXTURE_TEST_CASE(International11, Fixture<DefaultObjective>)
@@ -144,8 +144,7 @@ BOOST_FIXTURE_TEST_CASE(Killer11, Fixture<DefaultObjective>)
         };
         run<rules::Killer, board::International>(tests);
 }
-*/
-/*
+
 BOOST_FIXTURE_TEST_CASE(Killer21, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
@@ -166,7 +165,7 @@ BOOST_FIXTURE_TEST_CASE(Killer21, Fixture<DefaultObjective>)
         };
         run<rules::Killer, board::International>(tests);
 }
-
+*/
 BOOST_FIXTURE_TEST_CASE(Killer22, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
@@ -205,7 +204,7 @@ BOOST_FIXTURE_TEST_CASE(Killer31, Fixture<DefaultObjective>)
         };
         run<rules::Killer, board::International>(tests);
 }
-*/
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace search

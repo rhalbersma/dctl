@@ -11,23 +11,22 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::both, select::Moves, generation, Rules, Board>
+template<bool Color, typename Position>
+struct generator<Color, Material::both, select::Moves, Position>
 :
         // enforce static semantics
         private nonconstructible
 {
 private:
         // typedefs
-        typedef Driver<Color, Material::king, select::Moves, generation, Rules, Board> KingMoves;
-        typedef Driver<Color, Material::pawn, select::Moves, generation, Rules, Board> PawnMoves;
+        typedef generator<Color, Material::king, select::Moves, Position> KingMoves;
+        typedef generator<Color, Material::pawn, select::Moves, Position> PawnMoves;
 
 public:
-        template<typename Position>
-        static void generate(Position const& p, Stack& moves)
+        static void run(Position const& p, Stack& moves)
         {
-                KingMoves::generate(p, moves);
-                PawnMoves::generate(p, moves);
+                KingMoves::run(p, moves);
+                PawnMoves::run(p, moves);
         }
 };
 

@@ -19,8 +19,8 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for king jumps generation
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::king, select::Jumps, generation, Rules, Board>
+template<bool Color, typename Position>
+struct generator<Color, Material::king, select::Jumps, Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -28,24 +28,23 @@ struct Driver<Color, Material::king, select::Jumps, generation, Rules, Board>
 private:
         // typedefs
 
+        typedef typename Position::rules_type Rules;
+        typedef typename Position::board_type Board;
         typedef angle::Compass<Color, Board> Compass;
-        typedef capture::State<Rules, Board> State;
+        typedef capture::State<Position> State;
         
 public:
-        template<typename Position>
-        static void generate(Position const& p, Stack& moves)
+        static void run(Position const& p, Stack& moves)
         {
                 State capture(p, moves);
-                generate(p, capture);
+                run(p, capture);
         }
 
-        template<typename Position>
-        static void generate(Position const& p, State& capture)
+        static void run(Position const& p, State& capture)
         {
                 select(p, capture);
         }
 
-        template<typename Direction>
         static bool promote_en_passant(BitIndex jumper, State& capture)
         {
                 BOOST_ASSERT((is_promotion_sq<Color, Board>(jumper)));

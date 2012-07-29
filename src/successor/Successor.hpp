@@ -1,31 +1,55 @@
 #pragma once
-#include "Result.hpp"
-#include "Dispatcher.hpp"
+#include "Driver.hpp"
+#include "../node/Material.hpp"
+#include "../node/Side.hpp"
 #include "../node/Stack.hpp"
-#include "../node/State.hpp"
 
 namespace dctl {
 namespace successor {
 
-template<typename Selection, template<typename, typename> class Position, typename Rules, typename Board>
-void generate(Position<Rules, Board> const& p, Stack& moves)
+template<typename Selection, typename Position>
+void generate(Position const& p, Stack& moves)
 {
-        typedef Dispatcher<Selection, generation, Position, Rules, Board> Delegate;
-        (*Delegate::select(state(p)))(p, moves);
+        generate<Material::both, Selection>(p, moves);
 }
 
-template<typename Selection, template<typename, typename> class Position, typename Rules, typename Board>
-int count(Position<Rules, Board> const& p)
+template<int Material, typename Selection, typename Position>
+void generate(Position const& p, Stack& moves)
 {
-        typedef Dispatcher<Selection, enumeration, Position, Rules, Board> Delegate;
-        return (*Delegate::select(state(p)))(p);
+        if (p.active_color() == Side::white)
+                generator<Side::white, Material, Selection, Position>::run(p, moves);
+        else
+                generator<Side::black, Material, Selection, Position>::run(p, moves);      
 }
 
-template<typename Selection, template<typename, typename> class Position, typename Rules, typename Board>
-bool detect(Position<Rules, Board> const& p)
+template<typename Selection, typename Position>
+int count(Position const& p)
 {
-        typedef Dispatcher<Selection, detection, Position, Rules, Board> Delegate;
-        return (*Delegate::select(state(p)))(p);
+        return count<Material::both, Selection>(p);
+}
+
+template<int Material, typename Selection, typename Position>
+int count(Position const& p)
+{
+        return (p.active_color() == Side::white)?
+                counter<Side::white, Selection, Position>::run(p) :
+                counter<Side::black, Selection, Position>::run(p)
+        ;
+}
+
+template<typename Selection, typename Position>
+bool detect(Position const& p)
+{
+        return detect<Material::both, Selection>(p);
+}
+
+template<int Material, typename Selection, typename Position>
+bool detect(Position const& p)
+{
+        return (p.active_color() == Side::white)?
+                detector<Side::white, Selection>::run(p) :
+                detector<Side::black, Selection>::run(p)
+        ;
 }
 
 }       // namespace successor

@@ -2,6 +2,7 @@
 #include "Feature.hpp"
 
 namespace dctl {
+namespace evaluate {
 
 template
 <
@@ -16,9 +17,9 @@ private:
 
 public:
         template<typename Position>
-        static int evaluate(Position const& p)
+        static int value(Position const& p)
         {
-                return Active::evaluate(p) - Passive::evaluate(p);
+                return Active::value(p) - Passive::value(p);
         }
 
 private:
@@ -53,4 +54,5 @@ private:
         }
 };
 
+}       // namespace evaluate
 }       // namespace dctl

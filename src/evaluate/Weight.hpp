@@ -1,6 +1,7 @@
 #pragma once
 
 namespace dctl {
+namespace evaluate {
 
 template
 <
@@ -43,4 +44,5 @@ int const Weight<Rules, Board>::balance[] =
 template<typename Rules, typename Board>
 int const Weight<Rules, Board>::mobility = 1;
 
+}       // namespace evaluate
 }       // namespace dctl
