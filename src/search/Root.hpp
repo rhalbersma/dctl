@@ -8,7 +8,7 @@
 #include "Score.hpp"
 #include "Transposition.hpp"
 #include "Variation.hpp"
-#include "../evaluate/Evaluate.hpp"
+#include "../evaluate/Score.hpp"
 #include "../node/Stack.hpp"
 #include "../hash/Map.hpp"
 #include "../successor/Successor.hpp"

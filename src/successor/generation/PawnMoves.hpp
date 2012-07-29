@@ -16,8 +16,8 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for pawn moves generation
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::pawn, select::Moves, generation, Rules, Board>
+template<bool Color, typename Position>
+struct generator<Color, Material::pawn, select::Moves, Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -25,13 +25,14 @@ struct Driver<Color, Material::pawn, select::Moves, generation, Rules, Board>
 private:
         // typedefs
 
+        typedef typename Position::board_type Board;
         typedef angle::Compass<Color, Board> Compass;
 
 public:
-        template<typename Position>
-        static void generate(Position const& p, Stack& moves)
+        static void run(Position const& p, Stack& moves)
         {
-                select(p.pawns(Color), not_occupied(p), moves);
+                if (auto const active_pawns = p.pawns(Color))
+                        select(active_pawns, not_occupied(p), moves);
         }
 
         static void select(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)

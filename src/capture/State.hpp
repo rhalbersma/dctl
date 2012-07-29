@@ -23,7 +23,7 @@ struct pawn {};
 
 }       // namespace with
 
-template<typename Rules, typename Board>
+template<typename Position>
 class State
 :
         // enforce reference semantics
@@ -32,8 +32,8 @@ class State
 public:
         // structors
 
-        template<template<typename, typename> class Position>
-        explicit State(Position<Rules, Board> const& p, Stack& m)
+        template<typename Position>
+        explicit State(Position const& p, Stack& m)
         :
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
@@ -46,6 +46,11 @@ public:
         {
                 BOOST_ASSERT(invariant());
         }
+
+        // typedefs
+
+        typedef typename Position::rules_type Rules;
+        typedef typename Position::board_type Board;
 
         // modifiers 
 

@@ -5,8 +5,14 @@
 
 namespace dctl {
 
-#define USE_STACK_ALLOC 1
+#define SET_USE_STACK_ALLOC 1
 #define MOVE_RESERVE 32
+
+#if (_MSC_VER <= 1600) && _DEBUG
+#define USE_STACK_ALLOC 0
+#else
+#define USE_STACK_ALLOC SET_USE_STACK_ALLOC
+#endif
 
 #if USE_STACK_ALLOC == 1
         typedef std::vector<Move, stack_alloc<Move, MOVE_RESERVE> > Stack;

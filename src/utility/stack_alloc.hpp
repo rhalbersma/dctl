@@ -3,7 +3,7 @@
 /*---------------------------------------------------------------------------*/
 #if (_MSC_VER <= 1600)
 #pragma warning(push)
-#pragma warning(disable: 4100 ) // unreferenced formal parameter
+#pragma warning(disable: 4100)  // unreferenced formal parameter
 #endif
 /*---------------------------------------------------------------------------*/
 

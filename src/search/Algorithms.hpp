@@ -105,7 +105,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0 || ply >= MAX_PLY)
-                return Evaluate::evaluate(p);
+                return evaluate::score(p);
 
         // TT cut-off for exact win/loss scores or for deep enough heuristic scores
         auto TT_entry = TT.find(p);

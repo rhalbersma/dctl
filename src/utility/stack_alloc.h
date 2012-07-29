@@ -70,20 +70,20 @@ private:
 public:
         // structors
 
-        stack_alloc()
+        stack_alloc() throw()
         : 
 		buf_(),
                 ptr_(begin()) 
         {}
 
-        stack_alloc(stack_alloc const&)
+        stack_alloc(stack_alloc const&) throw()
         : 
 		buf_(),
                 ptr_(begin()) 
         {}
         
         template <class U> 
-        stack_alloc(stack_alloc<U, N> const&)
+        stack_alloc(stack_alloc<U, N> const&) throw()
         : 
 		buf_(),
                 ptr_(begin()) 
@@ -93,7 +93,7 @@ private:
         stack_alloc& operator=(stack_alloc const&);
 
 public:
-        size_type max_size() const
+        size_type max_size() const throw()
         {
                 return size_type(~0) / sizeof(value_type);
         }
@@ -108,7 +108,7 @@ public:
                 return static_cast<pointer>(::operator new(n * sizeof(value_type)));
         }
 
-        void deallocate(pointer p, size_type n)
+        void deallocate(pointer p, size_type n) throw()
         {
                 if (cbegin() <= p && p < cend()) {
                         if (p + n == ptr_)
@@ -150,17 +150,17 @@ public:
                 ::new((void*)p) value_type(std::forward<Arg0>(arg0), std::forward<Arg1>(arg1), std::foward<Arg2>(arg2));
         }
 
-        void destroy(pointer const p) const 
+        void destroy(pointer const p) const throw()
         {
                 p->~T();
         }
 
-        friend bool operator==(stack_alloc& lhs, stack_alloc& rhs) 
+        friend bool operator==(stack_alloc& lhs, stack_alloc& rhs) throw()
         {
                 return &lhs.buf_ == &rhs.buf_;
         }
         
-        friend bool operator!=(stack_alloc& lhs, stack_alloc& rhs) 
+        friend bool operator!=(stack_alloc& lhs, stack_alloc& rhs) throw()
         {
                 return !(lhs == rhs); 
         }

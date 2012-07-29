@@ -13,8 +13,8 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::both, select::Jumps, generation, Rules, Board>
+template<bool Color, typename Position>
+struct generator<Color, Material::both, select::Jumps, typename Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -22,41 +22,39 @@ struct Driver<Color, Material::both, select::Jumps, generation, Rules, Board>
 private:
         // typedefs
 
-        typedef Driver<Color, Material::king, select::Jumps, generation, Rules, Board> KingJumps;
-        typedef Driver<Color, Material::pawn, select::Jumps, generation, Rules, Board> PawnJumps;
-        typedef capture::State<Rules, Board> State;
+        typedef generator<Color, Material::king, select::Jumps, Position> KingJumps;
+        typedef generator<Color, Material::pawn, select::Jumps, Position> PawnJumps;
+        typedef typename Position::rules_type Rules;
+        typedef capture::State<Position> State;
 
 public:
-        template<typename Position>
-        static void generate(Position const& p, Stack& moves)
+        static void run(Position const& p, Stack& moves)
         {
-                State capture(p, moves);
-                generate(p, capture);
+                capture::State<Position> capture(p, moves); 
+                run(p, capture);
         }
 
 private:
-        template<typename Position>
-        static void generate(Position const& p, State& capture)
+        static void run(Position const& p, State& capture)
         {
                 // tag dispatching on absolute king capture precedence
-                generate_dispatch(p, capture, typename Rules::is_absolute_king_precedence());
+                run_dispatch(p, capture, typename Rules::is_absolute_king_precedence());
         }
 
         // overload for no absolute king capture precedence
-        template<typename Position>
-        static void generate_dispatch(Position const& p, State& capture, boost::mpl::false_)
+        static void run_dispatch(Position const& p, State& capture, boost::mpl::false_)
         {
-                KingJumps::generate(p, capture);
-                PawnJumps::generate(p, capture);
+                KingJumps::run(p, capture);
+                PawnJumps::run(p, capture);
         }
 
         // overload for absolute king capture precedence
-        template<typename Position>
-        static void generate_dispatch(Position const& p, State& capture, boost::mpl::true_)
+        static void run_dispatch(Position const& p, State& capture, boost::mpl::true_)
         {
-                KingJumps::generate(p, capture);
-                if (capture.empty())
-                        PawnJumps::generate(p, capture);
+                KingJumps::run(p, capture);
+                if (capture.empty()) {
+                        PawnJumps::run(p, capture);
+                }
         }
 };
 
