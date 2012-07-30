@@ -1,6 +1,5 @@
 #pragma once
-#include "../Driver_fwd.hpp"
-#include "../Result.hpp"
+#include "Enumerator_fwd.hpp"
 #include "../Select.hpp"
 #include "../generation/PawnJumps.hpp"
 #include "../../node/Material.hpp"
@@ -9,10 +8,11 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
         
 // partial specialization for pawn jumps enumeration
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::pawn, select::Jumps, enumeration, Rules, Board>
+template<bool Color, typename Position>
+struct enumerator<Color, Material::pawn, select::Jumps, Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -20,17 +20,17 @@ struct Driver<Color, Material::pawn, select::Jumps, enumeration, Rules, Board>
 private:
         // typedefs
 
-        typedef Driver<Color, Material::pawn, select::Jumps, generation, Rules, Board> PawnJumps;
+        typedef generator<Color, Material::pawn, select::Jumps, Position> PawnJumps;
 
 public:
-        template<typename Position>
-        static int count(Position const& p)
+        static int run(Position const& p)
         {
                 Stack moves;
-                PawnJumps::generate(p, moves);
+                PawnJumps::run(p, moves);
                 return static_cast<int>(moves.size());
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

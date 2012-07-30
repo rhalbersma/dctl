@@ -1,23 +1,23 @@
 #pragma once
-#include "../Driver_fwd.hpp"
-#include "../Result.hpp"
+#include "Detector_fwd.hpp"
 #include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
-template<bool Color, int Material, typename Selection, typename Rules, typename Board>
-struct Driver<Color, Material, Selection, detection, Rules, Board>
+template<bool Color, int Material, typename Selection, typename Position>
+struct detector<Color, Material, Selection, Position>
 :
         // enforce static semantics
         private nonconstructible
 {
-        template<typename Position>
-        static bool detect(Position const&)
+        static bool run(Position const&)
         {
                 return false;
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

@@ -1,36 +1,36 @@
 #pragma once
-#include "../Driver_fwd.hpp"
+#include "Enumerator_fwd.hpp"
 #include "KingMoves.hpp"
 #include "PawnMoves.hpp"
-#include "../Result.hpp"
 #include "../Select.hpp"
 #include "../../node/Material.hpp"
 #include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::both, select::Moves, enumeration, Rules, Board>
+template<bool Color, typename Position>
+struct enumerator<Color, Material::both, select::Moves, Position>
 :
         // enforce static semantics
         private nonconstructible
 {
 private:
         // typedefs
-        typedef Driver<Color, Material::king, select::Moves, enumeration, Rules, Board> KingMoves;
-        typedef Driver<Color, Material::pawn, select::Moves, enumeration, Rules, Board> PawnMoves;
+        typedef enumerator<Color, Material::king, select::Moves, Position> KingMoves;
+        typedef enumerator<Color, Material::pawn, select::Moves, Position> PawnMoves;
 
 public:
-        template<typename Position>
-        static int count(Position const& p)
+        static int run(Position const& p)
         {
                 return (
-                        KingMoves::count(p) +
-                        PawnMoves::count(p)
+                        KingMoves::run(p) +
+                        PawnMoves::run(p)
                 );
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

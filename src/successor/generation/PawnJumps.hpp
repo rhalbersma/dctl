@@ -1,9 +1,8 @@
 #pragma once
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include "../Driver_fwd.hpp"
-#include "../Result.hpp"
-#include "../Select.hpp"
+#include "Generator_fwd.hpp"
 #include "KingJumps.hpp"                // promote_en_passant
+#include "../Select.hpp"
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
 #include "../../board/Degrees.hpp"
@@ -17,6 +16,7 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 // partial specialization for pawn jumps generation
 template<bool Color, typename Position>
@@ -37,33 +37,36 @@ private:
 public:
         static void run(Position const& p, Stack& moves)
         {
-                State capture(p, moves);
-                run(p, capture);
+                if (auto const active_pawns = p.pawns(Color)) {
+                        State capture(p, moves);
+                        select(active_pawns, moves);
+                }
         }
 
         static void run(Position const& p, State& capture)
         {
-                select(p, capture);
+                if (auto const active_pawns = p.pawns(Color))
+                        select(active_pawns, capture);
         }
 
 private:
-        static void select(Position const& p, State& capture)
+        static void select(BitBoard active_pawns, State& capture)
         {
                 // tag dispatching on whether pawns can capture kings
-                select_dispatch(p, capture, typename Rules::is_pawns_jump_kings());
+                select_dispatch(active_pawns, capture, typename Rules::is_pawns_jump_kings());
         }
 
         // overload for pawns that can capture kings
-        static void select_dispatch(Position const& p, State& capture, boost::mpl::true_)
+        static void select_dispatch(BitBoard active_pawns, State& capture, boost::mpl::true_)
         {
-                branch(p.pawns(Color), capture);
+                branch(active_pawns, capture);
         }
 
         // overload for pawns that cannot capture kings
-        static void select_dispatch(Position const& p, State& capture, boost::mpl::false_)
+        static void select_dispatch(BitBoard active_pawns, State& capture, boost::mpl::false_)
         {
                 capture.toggle_king_targets();
-                branch(p.pawns(Color), capture);
+                branch(active_pawns, capture);
                 capture.toggle_king_targets();
         }    
 
@@ -285,5 +288,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

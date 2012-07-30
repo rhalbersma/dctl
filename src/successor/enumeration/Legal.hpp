@@ -1,5 +1,5 @@
 #pragma once
-#include "../Driver_fwd.hpp"
+#include "Enumerator_fwd.hpp"
 #include "Primary.hpp"
 #include "BothJumps.hpp"
 #include "BothMoves.hpp"
@@ -7,16 +7,16 @@
 #include "KingMoves.hpp"
 #include "PawnJumps.hpp"
 #include "PawnMoves.hpp"
-#include "../Result.hpp"
 #include "../Select.hpp"
 #include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 // partial specialization for legal successors enumeration
-template<bool Color, int Material, typename Rules, typename Board>
-struct Driver<Color, Material, select::Legal, enumeration, Rules, Board>
+template<bool Color, int Material, typename Position>
+struct enumerator<Color, Material, select::Legal, Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -24,19 +24,19 @@ struct Driver<Color, Material, select::Legal, enumeration, Rules, Board>
 private:
         // typedefs
 
-        typedef Driver<Color, Material, select::Jumps, enumeration, Rules, Board> DoJumps;
-        typedef Driver<Color, Material, select::Moves, enumeration, Rules, Board> DoMoves;
+        typedef enumerator<Color, Material, select::Jumps, Position> DoJumps;
+        typedef enumerator<Color, Material, select::Moves, Position> DoMoves;
 
 public:
-        template<typename Position>
-        static int count(Position const& p)
+        static int run(Position const& p)
         {
-                auto num_moves = DoJumps::count(p);
+                auto num_moves = DoJumps::run(p);
                 if (!num_moves)
-                        num_moves += DoMoves::count(p);
+                        num_moves += DoMoves::run(p);
                 return num_moves;
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

@@ -4,8 +4,8 @@
 #include <boost/mpl/identity.hpp>       // identity
 #include "Score.hpp"
 #include "../bit/Bit.hpp"
+#include "../successor/Detect.hpp"
 #include "../successor/Select.hpp"
-#include "../successor/Successor.hpp"
 
 namespace dctl {
 namespace search {

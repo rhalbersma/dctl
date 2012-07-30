@@ -5,8 +5,8 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include "../../../src/utility/algorithm.hpp"
+#include "../../../src/successor/Generate.hpp"
 #include "../../../src/successor/Select.hpp"
-#include "../../../src/successor/Successor.hpp"
 #include "../../../src/node/Position.hpp"
 #include "../../../src/node/Stack.hpp"
 #include "../../../src/setup/Setup.hpp"

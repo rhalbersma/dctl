@@ -1,9 +1,8 @@
 #pragma once
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include "../Driver_fwd.hpp"
+#include "Generator_fwd.hpp"
 #include "KingJumps.hpp"
 #include "PawnJumps.hpp"
-#include "../Result.hpp"
 #include "../Select.hpp"
 #include "../../capture/State.hpp"
 #include "../../node/Material.hpp"
@@ -12,6 +11,7 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 template<bool Color, typename Position>
 struct generator<Color, Material::both, select::Jumps, typename Position>
@@ -58,5 +58,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

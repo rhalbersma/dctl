@@ -2,10 +2,11 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
-struct detection;
-struct enumeration;
-struct generation;
+template<bool, int, typename, typename>
+struct generator;
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

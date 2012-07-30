@@ -1,8 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include "../Driver_fwd.hpp"
-#include "../Result.hpp"
+#include "Generator_fwd.hpp"
 #include "../Select.hpp"
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
@@ -17,6 +16,7 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 // partial specialization for king jumps generation
 template<bool Color, typename Position>
@@ -36,15 +36,19 @@ private:
 public:
         static void run(Position const& p, Stack& moves)
         {
-                State capture(p, moves);
-                run(p, capture);
+                if (auto const active_kings = p.kings(Color)) {
+                        State capture(p, moves);
+                        select(active_kings, capture);
+                }
         }
 
         static void run(Position const& p, State& capture)
         {
-                select(p, capture);
+                if (auto const active_kings = p.kings(Color))
+                        select(active_kings, capture);
         }
 
+        template<typename Direction>
         static bool promote_en_passant(BitIndex jumper, State& capture)
         {
                 BOOST_ASSERT((is_promotion_sq<Color, Board>(jumper)));
@@ -52,26 +56,23 @@ public:
         }
 
 private:
-        template<typename Position>
-        static void select(Position const& p, State& capture)
+        static void select(BitBoard active_kings, State& capture)
         {
                 // tag dispatching on relative king capture precedence
-                select_dispatch(p, capture, typename Rules::is_relative_king_precedence());
+                select_dispatch(active_kings, capture, typename Rules::is_relative_king_precedence());
         }
 
         // overload for no relative king capture precedence
-        template<typename Position>
-        static void select_dispatch(Position const& p, State& capture, boost::mpl::false_)
+        static void select_dispatch(BitBoard active_kings, State& capture, boost::mpl::false_)
         {
-                serialize(p.kings(Color), capture);
+                serialize(active_kings, capture);
         }
 
         // overload for relative king capture precedence
-        template<typename Position>
-        static void select_dispatch(Position const& p, State& capture, boost::mpl::true_)
+        static void select_dispatch(BitBoard active_kings, State& capture, boost::mpl::true_)
         {
                 capture.toggle_with_king();
-                serialize(p.kings(Color), capture);
+                serialize(active_kings, capture);
                 capture.toggle_with_king();
         }
 
@@ -281,5 +282,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

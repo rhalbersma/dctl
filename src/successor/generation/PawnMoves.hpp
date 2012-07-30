@@ -1,6 +1,5 @@
 #pragma once
-#include "../Driver_fwd.hpp"
-#include "../Result.hpp"
+#include "Generator_fwd.hpp"
 #include "../Select.hpp"
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
@@ -14,6 +13,7 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 // partial specialization for pawn moves generation
 template<bool Color, typename Position>
@@ -66,5 +66,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl
