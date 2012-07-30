@@ -5,7 +5,6 @@
 #include "Score.hpp"
 #include "../bit/Bit.hpp"
 #include "../successor/Detect.hpp"
-#include "../successor/Select.hpp"
 
 namespace dctl {
 namespace search {
@@ -53,7 +52,7 @@ struct is_terminal<NoMovesLeft>
         template<typename Position>
         bool operator()(Position const& p) const
         {
-                return !successor::detect<select::Legal>(p);
+                return !successor::detect(p);
         }
 };
 

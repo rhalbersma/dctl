@@ -4,7 +4,6 @@
 #include "PawnMoves.hpp"
 #include "../Select.hpp"
 #include "../../node/Material.hpp"
-#include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -12,9 +11,6 @@ namespace detail {
 
 template<bool Color, typename Position>
 struct enumerator<Color, Material::both, select::Moves, Position>
-:
-        // enforce static semantics
-        private nonconstructible
 {
 private:
         // typedefs
@@ -22,11 +18,11 @@ private:
         typedef enumerator<Color, Material::pawn, select::Moves, Position> PawnMoves;
 
 public:
-        static int run(Position const& p)
+        int operator()(Position const& p)
         {
                 return (
-                        KingMoves::run(p) +
-                        PawnMoves::run(p)
+                        KingMoves()(p) +
+                        PawnMoves()(p)
                 );
         }
 };

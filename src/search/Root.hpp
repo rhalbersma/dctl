@@ -12,7 +12,6 @@
 #include "../node/Stack.hpp"
 #include "../hash/Map.hpp"
 #include "../successor/Generate.hpp"
-#include "../successor/Select.hpp"
 #include "../utility/Ply.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/Statistics.hpp"
@@ -133,7 +132,7 @@ private:
                 }
 
                 Stack moves;
-                successor::generate<select::Legal>(p, moves);
+                successor::generate(p, moves);
                 auto const index = pv[ply] % moves.size();
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
@@ -155,7 +154,7 @@ private:
                 }
 
                 Stack moves;
-                successor::generate<select::Legal>(p, moves);
+                successor::generate(p, moves);
                 auto const best_move = moves[pv[ply] % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";

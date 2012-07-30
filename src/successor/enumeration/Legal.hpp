@@ -8,7 +8,6 @@
 #include "PawnJumps.hpp"
 #include "PawnMoves.hpp"
 #include "../Select.hpp"
-#include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -17,9 +16,6 @@ namespace detail {
 // partial specialization for legal successors enumeration
 template<bool Color, int Material, typename Position>
 struct enumerator<Color, Material, select::Legal, Position>
-:
-        // enforce static semantics
-        private nonconstructible
 {
 private:
         // typedefs
@@ -28,11 +24,11 @@ private:
         typedef enumerator<Color, Material, select::Moves, Position> DoMoves;
 
 public:
-        static int run(Position const& p)
+        int operator()(Position const& p)
         {
-                auto num_moves = DoJumps::run(p);
+                auto num_moves = DoJumps()(p);
                 if (!num_moves)
-                        num_moves += DoMoves::run(p);
+                        num_moves += DoMoves()(p);
                 return num_moves;
         }
 };

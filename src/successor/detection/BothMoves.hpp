@@ -5,7 +5,6 @@
 #include "../Select.hpp"
 #include "../../capture/State.hpp"
 #include "../../node/Material.hpp"
-#include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -13,9 +12,6 @@ namespace detail {
 
 template<bool Color, typename Position>
 struct detector<Color, Material::both, select::Moves, Position>
-:
-        // enforce static semantics
-        private nonconstructible
 {
 private:
         // typedefs
@@ -24,12 +20,12 @@ private:
         typedef detector<Color, Material::pawn, select::Moves, Position> PawnMoves;
 
 public:
-        static bool run(Position const& p)
+        bool operator()(Position const& p)
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (
-                        PawnMoves::run(p) ||
-                        KingMoves::run(p)
+                        PawnMoves()(p) ||
+                        KingMoves()(p)
                 );
         }
 };

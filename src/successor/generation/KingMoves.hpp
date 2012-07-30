@@ -10,7 +10,6 @@
 #include "../../node/Stack.hpp"
 #include "../../rules/Enum.hpp"
 #include "../../utility/IntegerTypes.hpp"
-#include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -19,9 +18,6 @@ namespace detail {
 // partial specialization for king moves generation
 template<bool Color, typename Position>
 struct generator<Color, Material::king, select::Moves, Position>
-:
-        // enforce static semantics
-        private nonconstructible
 {
 private:
         // typedefs
@@ -31,19 +27,19 @@ private:
         typedef angle::Compass<Color, Board> Compass;
 
 public:
-        static void run(Position const& p, Stack& moves)
+        void operator()(Position const& p, Stack& moves)
         {
                 if (auto const active_kings = unrestricted_kings(p, Color)) 
                         select(active_kings, not_occupied(p), moves);
         }
 
 private:
-        static void select(BitBoard active_kings, BitBoard not_occupied, Stack& moves)
+        void select(BitBoard active_kings, BitBoard not_occupied, Stack& moves)
         {
                 serialize(active_kings, not_occupied, moves);
         }
 
-        static void serialize(BitBoard active_kings, BitBoard not_occupied, Stack& moves)
+        void serialize(BitBoard active_kings, BitBoard not_occupied, Stack& moves)
         {
                 BOOST_ASSERT(!bit::is_zero(active_kings));
                 do {
@@ -52,7 +48,7 @@ private:
                 } while (active_kings);
         }
 
-        static void branch(BitIndex from_sq, BitBoard not_occupied, Stack& moves)
+        void branch(BitIndex from_sq, BitBoard not_occupied, Stack& moves)
         {
                 find<typename Compass::left_down >(from_sq, not_occupied, moves);
                 find<typename Compass::right_down>(from_sq, not_occupied, moves);
@@ -61,7 +57,7 @@ private:
         }
 
         template<typename Direction>
-        static void find(BitIndex from_sq, BitBoard not_occupied, Stack& moves)
+        void find(BitIndex from_sq, BitBoard not_occupied, Stack& moves)
         {
                 // tag dispatching on king range
                 return find_dispatch<Direction>(from_sq, not_occupied, moves, typename Rules::king_range());
@@ -69,7 +65,7 @@ private:
 
         // overload for short ranged kings
         template<typename Direction>
-        static void find_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::range::distance_1)
+        void find_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::range::distance_1)
         {
                 if (auto const dest_sq = Board::next<Direction>(from_sq) & not_occupied)
                         moves.push_back(Move::create<Color>(from_sq ^ dest_sq));
@@ -77,7 +73,7 @@ private:
 
         // overload for long ranged kings
         template<typename Direction>
-        static void find_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::range::distance_N)
+        void find_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::range::distance_N)
         {
                 for (
                         auto dest_sq = Board::next<Direction>(from_sq);

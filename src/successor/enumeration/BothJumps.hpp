@@ -4,7 +4,6 @@
 #include "../generation/BothJumps.hpp"
 #include "../../node/Material.hpp"
 #include "../../node/Stack.hpp"
-#include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -12,9 +11,6 @@ namespace detail {
 
 template<bool Color, typename Position>
 struct enumerator<Color, Material::both, select::Jumps, Position>
-:
-        // enforce static semantics
-        private nonconstructible
 {
 private:
         // typedefs
@@ -22,10 +18,10 @@ private:
         typedef generator<Color, Material::both, select::Jumps, Position> BothJumps;
 
 public:
-        static int run(Position const& p)
+        int operator()(Position const& p)
         {
                 Stack moves;
-                BothJumps::run(p, moves);
+                BothJumps()(p, moves);
                 return static_cast<int>(moves.size());
         }
 };
