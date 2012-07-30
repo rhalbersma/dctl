@@ -8,13 +8,7 @@ namespace successor {
 template<bool Color, typename Position>
 int mobility(Position const& p)
 {
-        return mobility<Color, Material::both, select::Moves>(p);
-}
-
-template<bool Color, typename Selection, typename Position>
-int mobility(Position const& p)
-{
-        return mobility<Color, Material::both, Selection>(p);
+        return mobility<Color, Material::both, Moves>(p);
 }
 
 template<bool Color, int Material, typename Selection, typename Position>

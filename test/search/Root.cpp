@@ -52,15 +52,15 @@ BOOST_FIXTURE_TEST_CASE(Frisian21, Fixture<DefaultObjective>)
         FEN_depth test_case("W:WK46,28:BK43", 39);      // Walinga book
         run<rules::Frisian, board::Frisian>(test_case);
 }
-*/
+
 BOOST_FIXTURE_TEST_CASE(InternationalInitial, Fixture<DefaultObjective>)
 {
         std::cout << "Position struct is :" << sizeof(Position<rules::International, board::International>) << "\n";
         auto const p = Position<rules::International, board::International>::initial();
         root_.analyze(p, 15);
 }
+*/
 
-/*
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 BOOST_FIXTURE_TEST_CASE(International11, Fixture<DefaultObjective>)
 {
@@ -131,7 +131,7 @@ BOOST_FIXTURE_TEST_CASE(International31, Fixture<DefaultObjective>)
         };
         run<rules::International, board::International>(tests);
 }
-*/
+
 /*
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html
 BOOST_FIXTURE_TEST_CASE(Killer11, Fixture<DefaultObjective>)

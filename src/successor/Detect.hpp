@@ -10,7 +10,7 @@ namespace successor {
 template<typename Position>
 bool detect(Position const& p)
 {
-        return detect<Material::both, select::Legal>(p);
+        return detect<Material::both, Legal>(p);
 }
 
 template<int Material, typename Selection, typename Position>

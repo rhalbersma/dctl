@@ -19,7 +19,7 @@ namespace detail {
 
 // partial specialization for king jumps generation
 template<bool Color, typename Position>
-struct generator<Color, Material::king, select::Jumps, Position>
+struct generator<Color, Material::king, Jumps, Position>
 {
 private:
         // typedefs

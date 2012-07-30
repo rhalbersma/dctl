@@ -11,12 +11,12 @@ namespace detail {
         
 // partial specialization for pawn jumps enumeration
 template<bool Color, typename Position>
-struct enumerator<Color, Material::pawn, select::Jumps, Position>
+struct enumerator<Color, Material::pawn, Jumps, Position>
 {
 private:
         // typedefs
 
-        typedef generator<Color, Material::pawn, select::Jumps, Position> PawnJumps;
+        typedef generator<Color, Material::pawn, Jumps, Position> PawnJumps;
 
 public:
         int operator()(Position const& p)

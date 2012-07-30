@@ -15,13 +15,13 @@ namespace detail {
 
 // partial specialization for legal successors enumeration
 template<bool Color, int Material, typename Position>
-struct enumerator<Color, Material, select::Legal, Position>
+struct enumerator<Color, Material, Legal, Position>
 {
 private:
         // typedefs
 
-        typedef enumerator<Color, Material, select::Jumps, Position> DoJumps;
-        typedef enumerator<Color, Material, select::Moves, Position> DoMoves;
+        typedef enumerator<Color, Material, Jumps, Position> DoJumps;
+        typedef enumerator<Color, Material, Moves, Position> DoMoves;
 
 public:
         int operator()(Position const& p)

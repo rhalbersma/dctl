@@ -16,13 +16,13 @@ namespace detail {
 
 // partial specialization for legal successors
 template<bool Color, int Material, typename Position>
-struct generator<Color, Material, select::Legal, Position>
+struct generator<Color, Material, Legal, Position>
 {
         void operator()(Position const& p, Stack& moves)
         {
-                generator<Color, Material, select::Jumps, Position>()(p, moves);
+                generator<Color, Material, Jumps, Position>()(p, moves);
                 if (moves.empty())
-                        generator<Color, Material, select::Moves, Position>()(p, moves);
+                        generator<Color, Material, Moves, Position>()(p, moves);
         }
 };
 

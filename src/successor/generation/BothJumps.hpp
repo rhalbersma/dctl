@@ -13,13 +13,13 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct generator<Color, Material::both, select::Jumps, typename Position>
+struct generator<Color, Material::both, Jumps, typename Position>
 {
 private:
         // typedefs
 
-        typedef generator<Color, Material::king, select::Jumps, Position> KingJumps;
-        typedef generator<Color, Material::pawn, select::Jumps, Position> PawnJumps;
+        typedef generator<Color, Material::king, Jumps, Position> KingJumps;
+        typedef generator<Color, Material::pawn, Jumps, Position> PawnJumps;
         typedef typename Position::rules_type Rules;
         typedef capture::State<Position> State;
 

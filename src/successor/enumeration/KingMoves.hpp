@@ -13,7 +13,7 @@ namespace detail {
 
 // partial specialization for king moves enumeration
 template<bool Color, typename Position>
-struct enumerator<Color, Material::king, select::Moves, Position>
+struct enumerator<Color, Material::king, Moves, Position>
 {
 private:
         // typedefs

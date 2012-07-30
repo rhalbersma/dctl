@@ -19,12 +19,12 @@ namespace detail {
 
 // partial specialization for pawn jumps generation
 template<bool Color, typename Position>
-struct generator<Color, Material::pawn, select::Jumps, Position>
+struct generator<Color, Material::pawn, Jumps, Position>
 {
 private:
         // typedefs
 
-        typedef generator<Color, Material::king, select::Jumps, Position> KingJumps;
+        typedef generator<Color, Material::king, Jumps, Position> KingJumps;
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
         typedef angle::Compass<Color, Board> Compass;

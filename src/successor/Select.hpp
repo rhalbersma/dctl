@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace select {
+namespace successor {
 
 struct Legal;
 struct Conversion;
@@ -10,5 +10,5 @@ struct Moves;
 struct Reverse;
 struct Promotions;
 
-}       // namespace select
+}       // namespace successor
 }       // namespace dctl

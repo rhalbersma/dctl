@@ -5,7 +5,7 @@
 
 namespace dctl {
 
-#define SET_USE_STACK_ALLOC 1
+#define SET_USE_STACK_ALLOC 0
 #define MOVE_RESERVE 32
 
 #if (_MSC_VER <= 1600) && _DEBUG

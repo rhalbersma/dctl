@@ -87,7 +87,7 @@ private:
         }
 
         template<typename Position>
-        void report(int depth, int value, Timer const& timer, Position const& p, Sequence const& pv)
+        void report(int depth, int value, Timer const& timer, Position const& p, Variation const& pv)
         {
                 std::cout << "info";
 
@@ -117,14 +117,14 @@ private:
         }
 
         template<typename Position>
-        void insert_pv(Position const& p, Sequence const& pv, int value, int ply = 0)
+        void insert_pv(Position const& p, Variation const& pv, int value, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         BOOST_ASSERT(
-                                (value == Evaluate::evaluate(p)) ||
+                                (value == evaluate::score(p)) ||
                                 (value == draw_value() && is_draw(p)) ||
-                                (value == loss_min() && !successor::detect<select::Legal>(p))
+                                (value == loss_min() && !successor::detect(p))
                                 // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
                         );
                         TT.insert(p, Transposition(value, Bound::exact, depth, Transposition::no_move()));
@@ -144,7 +144,7 @@ private:
         }
 
         template<template<typename, typename> class Position, typename Rules, typename Board>
-        void print_pv(Position<Rules, Board> const& p, Sequence const& pv, int ply = 0)
+        void print_pv(Position<Rules, Board> const& p, Variation const& pv, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {

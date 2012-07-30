@@ -11,13 +11,13 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct detector<Color, Material::both, select::Jumps, Position>
+struct detector<Color, Material::both, Jumps, Position>
 {
 private:
         // typedefs
 
-        typedef detector<Color, Material::king, select::Jumps, Position> KingJumps;
-        typedef detector<Color, Material::pawn, select::Jumps, Position> PawnJumps;
+        typedef detector<Color, Material::king, Jumps, Position> KingJumps;
+        typedef detector<Color, Material::pawn, Jumps, Position> PawnJumps;
 
 public:
         bool operator()(Position const& p)
