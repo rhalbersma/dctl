@@ -2,8 +2,9 @@
 #include <iterator>                     // back_inserter
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include "../successor/Count.hpp"
+#include "../successor/Generate.hpp"
 #include "../successor/Select.hpp"
-#include "../successor/Successor.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/algorithm.hpp"
 
@@ -115,7 +116,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         // generate moves
         Stack moves;
 #if USE_STACK_ALLOC == 0       
-        moves.reserve(32);
+        moves.reserve(MOVE_RESERVE);
 #endif
         successor::generate<select::Legal>(p, moves);
         BOOST_ASSERT(!moves.empty());

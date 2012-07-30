@@ -1,8 +1,7 @@
 #pragma once
-#include "../Driver_fwd.hpp"
+#include "Generator_fwd.hpp"
 #include "KingMoves.hpp"
 #include "PawnMoves.hpp"
-#include "../Result.hpp"
 #include "../Select.hpp"
 #include "../../node/Material.hpp"
 #include "../../node/Stack.hpp"
@@ -10,6 +9,7 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 template<bool Color, typename Position>
 struct generator<Color, Material::both, select::Moves, Position>
@@ -30,5 +30,6 @@ public:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

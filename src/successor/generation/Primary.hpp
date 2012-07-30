@@ -1,9 +1,11 @@
 #pragma once
+#include "Generator_fwd.hpp"
 #include "../../node/Stack.hpp"
 #include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 template<bool, int, typename, typename Position>
 struct generator
@@ -17,5 +19,6 @@ struct generator
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

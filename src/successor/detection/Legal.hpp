@@ -1,5 +1,5 @@
 #pragma once
-#include "../Driver_fwd.hpp"
+#include "Detector_fwd.hpp"
 #include "Primary.hpp"
 #include "BothJumps.hpp"
 #include "BothMoves.hpp"
@@ -12,10 +12,11 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 // partial specialization for legal successors detection
-template<bool Color, int Material, typename Rules, typename Board>
-struct Driver<Color, Material, select::Legal, detection, Rules, Board>
+template<bool Color, int Material, typename Position>
+struct detector<Color, Material, select::Legal, Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -23,21 +24,20 @@ struct Driver<Color, Material, select::Legal, detection, Rules, Board>
 private:
         // typedefs
 
-        typedef Driver<Color, Material, select::Jumps, detection, Rules, Board> DoJumps;
-        typedef Driver<Color, Material, select::Moves, detection, Rules, Board> DoMoves;
+        typedef detector<Color, Material, select::Jumps, Position> DoJumps;
+        typedef detector<Color, Material, select::Moves, Position> DoMoves;
 
 public:
-
-        template<typename Position>
-        static bool detect(Position const& p)
+        static bool run(Position const& p)
         {
                 // speculate #moves > #jumps so that the || is likely to short-circuit
                 return (
-                        DoMoves::detect(p) ||
-                        DoJumps::detect(p)
+                        DoMoves::run(p) ||
+                        DoJumps::run(p)
                 );
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

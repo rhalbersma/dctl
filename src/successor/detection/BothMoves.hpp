@@ -1,8 +1,7 @@
 #pragma once
-#include "../Driver_fwd.hpp"
+#include "Detector_fwd.hpp"
 #include "KingJumps.hpp"
 #include "PawnJumps.hpp"
-#include "../Result.hpp"
 #include "../Select.hpp"
 #include "../../capture/State.hpp"
 #include "../../node/Material.hpp"
@@ -10,9 +9,10 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::both, select::Moves, detection, Rules, Board>
+template<bool Color, typename Position>
+struct detector<Color, Material::both, select::Moves, Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -20,20 +20,20 @@ struct Driver<Color, Material::both, select::Moves, detection, Rules, Board>
 private:
         // typedefs
 
-        typedef Driver<Color, Material::king, select::Moves, detection, Rules, Board> KingMoves;
-        typedef Driver<Color, Material::pawn, select::Moves, detection, Rules, Board> PawnMoves;
+        typedef detector<Color, Material::king, select::Moves, Position> KingMoves;
+        typedef detector<Color, Material::pawn, select::Moves, Position> PawnMoves;
 
 public:
-        template<typename Position>
-        static bool detect(Position const& p)
+        static bool run(Position const& p)
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (
-                        PawnMoves::detect(p) ||
-                        KingMoves::detect(p)
+                        PawnMoves::run(p) ||
+                        KingMoves::run(p)
                 );
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

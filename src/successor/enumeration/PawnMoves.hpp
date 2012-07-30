@@ -1,6 +1,5 @@
 #pragma once
-#include "../Driver_fwd.hpp"
-#include "../Result.hpp"
+#include "Enumerator_fwd.hpp"
 #include "../Select.hpp"
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
@@ -11,10 +10,11 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 // partial specialization for pawn moves enumeration
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::pawn, select::Moves, enumeration, Rules, Board>
+template<bool Color, typename Position>
+struct enumerator<Color, Material::pawn, select::Moves, Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -22,13 +22,16 @@ struct Driver<Color, Material::pawn, select::Moves, enumeration, Rules, Board>
 private:
         // typedefs
 
+        typedef typename Position::board_type Board;
         typedef angle::Compass<Color, Board> Compass;
 
 public:
-        template<typename Position>
-        static int count(Position const& p)
+        static int run(Position const& p)
         {
-                return select(p.pawns(Color), not_occupied(p));
+                if (auto const active_pawns = p.pawns(Color))
+                        return select(active_pawns, not_occupied(p));
+                else
+                        return 0;
         }
 
         static int select(BitBoard active_pawns, BitBoard not_occupied)
@@ -54,5 +57,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

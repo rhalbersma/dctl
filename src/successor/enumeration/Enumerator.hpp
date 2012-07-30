@@ -1,5 +1,5 @@
 #pragma once
-#include "../Driver_fwd.hpp"
+#include "Enumerator_fwd.hpp"
 #include "Primary.hpp"
 #include "Legal.hpp"
 //#include "Conversion.hpp"

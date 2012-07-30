@@ -1,6 +1,5 @@
 #pragma once
-#include "../Driver_fwd.hpp"
-#include "../Result.hpp"
+#include "Detector_fwd.hpp"
 #include "../Select.hpp"
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
@@ -12,10 +11,11 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 // partial specialization for king moves detection
-template<bool Color, typename Rules, typename Board>
-struct Driver<Color, Material::king, select::Moves, detection, Rules, Board>
+template<bool Color, typename Position>
+struct detector<Color, Material::king, select::Moves, Position>
 :
         // enforce static semantics
         private nonconstructible
@@ -23,13 +23,16 @@ struct Driver<Color, Material::king, select::Moves, detection, Rules, Board>
 private:
         // typedefs
 
+        typedef typename Position::board_type Board;
         typedef angle::Compass<Color, Board> Compass;
 
 public:
-        template<typename Position>
-        static bool detect(Position const& p)
+        static bool run(Position const& p)
         {
-                return branch(unrestricted_kings(p, Color), not_occupied(p));
+                if (auto const active_kings = unrestricted_kings(p, Color))
+                        return branch(active_kings, not_occupied(p));
+                else
+                        return false;
         }
 
 private:
@@ -52,5 +55,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

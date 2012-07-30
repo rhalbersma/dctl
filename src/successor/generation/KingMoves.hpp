@@ -1,8 +1,7 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_MPL_ASSERT
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include "../Driver_fwd.hpp"
-#include "../Result.hpp"
+#include "Generator_fwd.hpp"
 #include "../Select.hpp"
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
@@ -15,6 +14,7 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 // partial specialization for king moves generation
 template<bool Color, typename Position>
@@ -45,31 +45,11 @@ private:
 
         static void serialize(BitBoard active_kings, BitBoard not_occupied, Stack& moves)
         {
-                // tag dispatching on restrictions on consecutive moves with the same king
-                serialize_dispatch(active_kings, not_occupied, moves, typename Rules::is_restricted_same_king_moves());
-        }
-
-        // overload for unrestricted consecutive moves with the same king
-        static void serialize_dispatch(BitBoard active_kings, BitBoard not_occupied, Stack& moves, boost::mpl::false_)
-        {
-                // loop cannot be empty because all active kings detected during
-                // Dispatcher<...>::select are unrestricted to move
                 BOOST_ASSERT(!bit::is_zero(active_kings));
                 do {
                         branch(bit::get_first(active_kings), not_occupied, moves);
                         bit::clear_first(active_kings);
                 } while (active_kings);
-        }
-
-        // overload for restricted consecutive moves with the same king
-        static void serialize_dispatch(BitBoard active_kings, BitBoard not_occupied, Stack& moves, boost::mpl::true_)
-        {
-                // loop could be empty if the single active king detected during
-                // Dispatcher<...>::select is restricted from moving
-                while (active_kings) {
-                        branch(bit::get_first(active_kings), not_occupied, moves);
-                        bit::clear_first(active_kings);
-                }
         }
 
         static void branch(BitIndex from_sq, BitBoard not_occupied, Stack& moves)
@@ -108,5 +88,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl
