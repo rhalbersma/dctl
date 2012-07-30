@@ -69,19 +69,19 @@ public:
 
         void close()
         {
-                // do_close() will only be called in a thread in which io_service::run() is currently being invoked.
+                // do_close() will only be called in a thread in which io_service()() is currently being invoked.
                 io_service_.post(boost::bind(&Connection<Protocol>::do_close, this));
         }
 
         void read(std::string& message)
         {
-                // do_read() will only be called in a thread in which io_service::run() is currently being invoked.
+                // do_read() will only be called in a thread in which io_service()() is currently being invoked.
                 io_service_.post(boost::bind(&Connection<Protocol>::do_read, this, message));
         }
 
         void write(std::string const& message)
         {
-                // do_write() will only be called in a thread in which io_service::run() is currently being invoked.
+                // do_write() will only be called in a thread in which io_service()() is currently being invoked.
                 io_service_.post(boost::bind(&Connection<Protocol>::do_write, this, message));
         }
 
@@ -130,7 +130,7 @@ private:
 
         void start_event_loop()
         {
-                io_service_thread_ = boost::thread((boost::bind(&asio::io_service::run, &io_service_)));
+                io_service_thread_ = boost::thread((boost::bind(&asio::io_service(), &io_service_)));
         }
 
         void stop_event_loop()
@@ -169,7 +169,7 @@ private:
         }
 
         // <message> is passed by-value instead of by-reference, or it might
-        // go out of scope before being used in the io_service::run() thread
+        // go out of scope before being used in the io_service()() thread
         void do_write(std::string message)
         {
                 bool no_write_in_progress = write_messages_.empty();

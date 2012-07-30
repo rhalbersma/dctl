@@ -4,7 +4,6 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include "../successor/Count.hpp"
 #include "../successor/Generate.hpp"
-#include "../successor/Select.hpp"
 #include "../node/Stack.hpp"
 #include "../utility/algorithm.hpp"
 
@@ -118,7 +117,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
 #if USE_STACK_ALLOC == 0       
         moves.reserve(MOVE_RESERVE);
 #endif
-        successor::generate<select::Legal>(p, moves);
+        successor::generate(p, moves);
         BOOST_ASSERT(!moves.empty());
 
 #if USE_STACK_ALLOC == 1

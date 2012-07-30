@@ -7,7 +7,6 @@
 #include "../../capture/State.hpp"
 #include "../../node/Material.hpp"
 #include "../../node/Stack.hpp"
-#include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -15,9 +14,6 @@ namespace detail {
 
 template<bool Color, typename Position>
 struct generator<Color, Material::both, select::Jumps, typename Position>
-:
-        // enforce static semantics
-        private nonconstructible
 {
 private:
         // typedefs
@@ -28,33 +24,32 @@ private:
         typedef capture::State<Position> State;
 
 public:
-        static void run(Position const& p, Stack& moves)
+        void operator()(Position const& p, Stack& moves)
         {
                 capture::State<Position> capture(p, moves); 
                 run(p, capture);
         }
 
 private:
-        static void run(Position const& p, State& capture)
+        void run(Position const& p, State& capture)
         {
                 // tag dispatching on absolute king capture precedence
                 run_dispatch(p, capture, typename Rules::is_absolute_king_precedence());
         }
 
         // overload for no absolute king capture precedence
-        static void run_dispatch(Position const& p, State& capture, boost::mpl::false_)
+        void run_dispatch(Position const& p, State& capture, boost::mpl::false_)
         {
-                KingJumps::run(p, capture);
-                PawnJumps::run(p, capture);
+                KingJumps()(p, capture);
+                PawnJumps()(p, capture);
         }
 
         // overload for absolute king capture precedence
-        static void run_dispatch(Position const& p, State& capture, boost::mpl::true_)
+        void run_dispatch(Position const& p, State& capture, boost::mpl::true_)
         {
-                KingJumps::run(p, capture);
-                if (capture.empty()) {
-                        PawnJumps::run(p, capture);
-                }
+                KingJumps()(p, capture);
+                if (capture.empty())
+                        PawnJumps()(p, capture);                
         }
 };
 

@@ -6,7 +6,6 @@
 #include <boost/algorithm/string/trim.hpp>
 #include "../../../src/utility/algorithm.hpp"
 #include "../../../src/successor/Generate.hpp"
-#include "../../../src/successor/Select.hpp"
 #include "../../../src/node/Position.hpp"
 #include "../../../src/node/Stack.hpp"
 #include "../../../src/setup/Setup.hpp"
@@ -32,7 +31,7 @@ struct Fixture
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>()(FEN);
                 Stack moves;
-                successor::generate<select::Legal>(p, moves);
+                successor::generate(p, moves);
 
                 BOOST_CHECK(moves.size() == N);
 

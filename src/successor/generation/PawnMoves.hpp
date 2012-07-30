@@ -9,7 +9,6 @@
 #include "../../node/Stack.hpp"
 #include "../../rules/Enum.hpp"
 #include "../../utility/IntegerTypes.hpp"
-#include "../../utility/nonconstructible.hpp"
 
 namespace dctl {
 namespace successor {
@@ -18,9 +17,6 @@ namespace detail {
 // partial specialization for pawn moves generation
 template<bool Color, typename Position>
 struct generator<Color, Material::pawn, select::Moves, Position>
-:
-        // enforce static semantics
-        private nonconstructible
 {
 private:
         // typedefs
@@ -29,26 +25,26 @@ private:
         typedef angle::Compass<Color, Board> Compass;
 
 public:
-        static void run(Position const& p, Stack& moves)
+        void operator()(Position const& p, Stack& moves)
         {
                 if (auto const active_pawns = p.pawns(Color))
                         select(active_pawns, not_occupied(p), moves);
         }
 
-        static void select(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
+        void select(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
                 branch(active_pawns, not_occupied, moves);
         }
 
 private:
-        static void branch(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
+        void branch(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
                 serialize<typename Compass::left_up >(active_pawns, not_occupied, moves);
                 serialize<typename Compass::right_up>(active_pawns, not_occupied, moves);
         }
 
         template<typename Direction>
-        static void serialize(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
+        void serialize(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
                 for (
                         active_pawns &= Pull<Board, Direction>()(not_occupied);
@@ -59,7 +55,7 @@ private:
         }
 
         template<typename Direction>
-        static void find(BitIndex from_sq, Stack& moves)
+        void find(BitIndex from_sq, Stack& moves)
         {
                 auto const dest_sq = Board::next<Direction>(from_sq);
                 moves.push_back(Move::create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq)));

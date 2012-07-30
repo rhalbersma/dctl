@@ -61,7 +61,7 @@ private:
 
         virtual void do_close()
         {
-                // post_close() will only be called in a thread in which io_service::run() is currently being invoked.
+                // post_close() will only be called in a thread in which io_service()() is currently being invoked.
                 io_service_.post(boost::bind(&Acceptor::post_close, this));
         }
 
@@ -79,7 +79,7 @@ private:
 
         void start_event_loop()
         {
-                io_service_thread_ = boost::thread((boost::bind(&boost::asio::io_service::run, &io_service_)));
+                io_service_thread_ = boost::thread((boost::bind(&boost::asio::io_service(), &io_service_)));
         }
 
         void stop_event_loop()
