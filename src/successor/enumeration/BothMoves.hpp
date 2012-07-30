@@ -10,12 +10,12 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct enumerator<Color, Material::both, select::Moves, Position>
+struct enumerator<Color, Material::both, Moves, Position>
 {
 private:
         // typedefs
-        typedef enumerator<Color, Material::king, select::Moves, Position> KingMoves;
-        typedef enumerator<Color, Material::pawn, select::Moves, Position> PawnMoves;
+        typedef enumerator<Color, Material::king, Moves, Position> KingMoves;
+        typedef enumerator<Color, Material::pawn, Moves, Position> PawnMoves;
 
 public:
         int operator()(Position const& p)

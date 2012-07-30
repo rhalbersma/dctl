@@ -26,40 +26,10 @@ int Root<Objective>::iterative_deepening(Position const& p, int depth)
                 alpha = -infinity();
                 beta = infinity();
                 score = pvs<PV>(p, alpha, beta, i, 0, pv);
-                insert_pv(p, pv.sequence(), score);
+                insert_pv(p, pv, score);
                 timer.split();
-                report(i, score, timer, p, pv.sequence());
+                report(i, score, timer, p, pv);
         }
-
-        return score;
-}
-
-// iterative deepening with no move ordering at the root
-template<typename Objective>
-template<typename Position>
-int Root<Objective>::proof_verify(Position const& p, int depth)
-{
-        auto score = -infinity();
-
-        Variation pv;
-        Timer timer;
-        announce(p, depth);
-
-        // find proof-candidate
-        statistics_.reset();
-        for (auto i = 1; !is_mate(score) && i <= depth; i += ROOT_ID_INCREMENT) {
-                score = pvs<PV>(p, -infinity(), infinity(), i, 0, pv);
-                insert_pv(p, pv.sequence(), score);
-                timer.split();
-                report(i, score, timer, p, pv.sequence());
-        }
-
-        std::cout << "Found proof-candidate, verifying without transposition cutoffs" << "\n\n";
-        statistics_.reset();
-        auto const verify_depth = is_loss(score)? loss_ply(score) : win_ply(score);
-        score = verify<PV>(p, -infinity(), infinity(), verify_depth, 0, pv);
-        timer.split();
-        report(verify_depth, score, timer, p, pv.sequence());
 
         return score;
 }
@@ -179,7 +149,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
                                 break;
                         if (best_value > alpha) {
                                 alpha = best_value;
-                                refutation.set(best_move, continuation.sequence());
+                                refutation = make_variation(best_move, continuation);
                         }
                 }
         }
@@ -192,6 +162,37 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         TT.insert(p, Transposition(best_value, type, depth, best_move));
         return best_value;
 }
+
+// iterative deepening with no move ordering at the root
+template<typename Objective>
+template<typename Position>
+int Root<Objective>::proof_verify(Position const& p, int depth)
+{
+        auto score = -infinity();
+
+        Variation pv;
+        Timer timer;
+        announce(p, depth);
+
+        // find proof-candidate
+        statistics_.reset();
+        for (auto i = 1; !is_mate(score) && i <= depth; i += ROOT_ID_INCREMENT) {
+                score = pvs<PV>(p, -infinity(), infinity(), i, 0, pv);
+                insert_pv(p, pv.sequence(), score);
+                timer.split();
+                report(i, score, timer, p, pv.sequence());
+        }
+
+        std::cout << "Found proof-candidate, verifying without transposition cutoffs" << "\n\n";
+        statistics_.reset();
+        auto const verify_depth = is_loss(score)? loss_ply(score) : win_ply(score);
+        score = verify<PV>(p, -infinity(), infinity(), verify_depth, 0, pv);
+        timer.split();
+        report(verify_depth, score, timer, p, pv.sequence());
+
+        return score;
+}
+
 
 // principal variation search (PVS)
 template<typename Objective> 
@@ -232,7 +233,7 @@ int Root<Objective>::verify(Position const& p, int alpha, int beta, int depth, i
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0 || ply >= MAX_PLY)
-                return Evaluate::evaluate(p);
+                return evaluate::score(p);
 
         auto TT_entry = TT.find(p);
 
@@ -247,7 +248,7 @@ int Root<Objective>::verify(Position const& p, int alpha, int beta, int depth, i
 #if USE_STACK_ALLOC != 1
         moves.reserve(MOVE_RESERVE);
 #endif
-        successor::generate<select::Legal>(p, moves);
+        successor::generate(p, moves);
         BOOST_ASSERT(!moves.empty());
 
         std::vector<int> move_order;

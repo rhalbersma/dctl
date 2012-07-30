@@ -11,7 +11,7 @@ namespace successor {
 template<typename Position>
 void generate(Position const& p, Stack& moves)
 {
-        generate<Material::both, select::Legal>(p, moves);
+        generate<Material::both, Legal>(p, moves);
 }
 
 template<int Material, typename Selection, typename Position>

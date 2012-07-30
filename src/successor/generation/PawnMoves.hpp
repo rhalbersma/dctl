@@ -16,7 +16,7 @@ namespace detail {
 
 // partial specialization for pawn moves generation
 template<bool Color, typename Position>
-struct generator<Color, Material::pawn, select::Moves, Position>
+struct generator<Color, Material::pawn, Moves, Position>
 {
 private:
         // typedefs
