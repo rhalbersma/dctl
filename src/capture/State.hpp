@@ -11,6 +11,7 @@
 #include "../board/Shift.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Enum.hpp"
+#include "../rules/Rules.hpp"
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/total_order.hpp"
 
@@ -111,13 +112,13 @@ public:
         void add_pawn_jump(BitIndex dest_sq) const // modifies Stack& moves_
         {
                 // tag dispatching on ambiguity of pawn captures
-                add_pawn_jump_dispatch<Color>(dest_sq, typename Rules::is_ambiguous_pawn_jump());
+                add_pawn_jump_dispatch<Color>(dest_sq, typename Rules::is_unambiguous_pawn_jump());
         }
 
         template<bool Color, typename Direction>
         void add_king_jump(BitIndex dest_sq) const // modifies Stack& moves_
         {
-                auto const ambiguous = is_ambiguous();
+                auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && is_ambiguous();
 
                 // tag dispatching on king halt after final capture
                 add_king_jump_dispatch<Color, Direction>(dest_sq, ambiguous, typename Rules::halt_range());
@@ -142,16 +143,16 @@ public:
                 return not_occupied_;
         }
 
-        bool is_improvement() const
+        bool greater_equal() const
         {
                 BOOST_ASSERT(is_totally_ordered(best_, current_));
-                return best_ <= current_;
+                return current_ >= best_;
         }
 
-        bool improvement_is_strict() const
+        bool not_equal_to() const
         {
-                BOOST_ASSERT(is_improvement());
-                return best_ != current_;
+                BOOST_ASSERT(greater_equal());
+                return current_ != best_;
         }
 
         bool empty() const
@@ -256,16 +257,16 @@ private:
 
         // overload for pawn captures that are always unambiguous
         template<bool Color>
-        void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::false_) const // modifies Stack& moves_
+        void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::true_) const // modifies Stack& moves_
         {
                 add_pawn_jump_impl<Color, with::pawn>(dest_sq);
         }
 
         // overload for pawn captures that are potentially ambiguous
         template<bool Color>
-        void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::true_) const // modifies Stack& moves_
+        void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::false_) const // modifies Stack& moves_
         {
-                auto const ambiguous = is_ambiguous();
+                auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && is_ambiguous();
                 add_pawn_jump_impl<Color, with::pawn>(dest_sq);
                 if (ambiguous)
                         unique_back();

@@ -3,11 +3,11 @@
 namespace dctl {
 
 template<typename T>
-bool is_totally_ordered(const T& left, const T& right)
+bool is_totally_ordered(T const& left, T const& right)
 {
-        auto const equivalent = !((left < right) || (right < left));
-        auto const equal = left == right;
-        return equivalent == equal;
+        auto const equivalence = !((left < right) || (right < left));
+        auto const equality = left == right;
+        return equivalence == equality;
 }
 
 }       // namespace dctl

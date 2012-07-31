@@ -41,7 +41,11 @@ template<typename> struct max_2v1_moves                         { enum { value =
 //|      Capture ambiguity                                                     |
 //+----------------------------------------------------------------------------+
 
-template<typename> struct is_check_jump_uniqueness              { enum { value = true }; };
+template<typename> 
+struct is_check_jump_uniqueness
+:
+        boost::mpl::true_
+{};
 
 // intermediate capture directions
 template<typename T> 
@@ -190,11 +194,12 @@ struct Rules
         >::type pawn_turn_directions;
 
         typedef typename boost::mpl::or_<
-                boost::mpl::not_<
-                        std::is_same<pawn_jump_directions, directions::up> 
-                >,  
-                std::is_same<pawn_promotion, promotion::en_passant>
-        >::type is_ambiguous_pawn_jump;
+                std::is_same<pawn_jump_directions, directions::down>,
+                boost::mpl::and_<
+                        std::is_same<pawn_jump_directions, directions::up>,
+                        std::is_same<pawn_promotion, promotion::apres_fini>
+                >
+        >::type is_unambiguous_pawn_jump;
 
         typedef typename boost::mpl::eval_if<
                 boost::mpl::or_<
