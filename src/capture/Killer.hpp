@@ -63,7 +63,7 @@ public:
 private:
         bool invariant() const
         {
-                return 0 <= num_pieces_ && num_pieces_ < std::numeric_limits<int>::max();
+                return 0 <= num_pieces_ && num_pieces_ <= std::numeric_limits<int>::max();
         }
 
         bool empty() const
@@ -73,7 +73,7 @@ private:
 
         bool full() const
         {
-                return num_pieces_ == std::numeric_limits<int>::max() - 1;
+                return num_pieces_ == std::numeric_limits<int>::max();
         }
 
         // representation

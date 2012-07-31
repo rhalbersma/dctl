@@ -133,9 +133,9 @@ private:
                 Board::advance<Direction>(jumper);
                 if (
                         !find_next<Direction>(jumper, capture) &&
-                        capture.is_improvement()
+                        capture.greater_equal()
                 ) {
-                        if (capture.improvement_is_strict())
+                        if (capture.not_equal_to())
                                 capture.improve();
                         capture.template add_king_jump<Color, Direction>(jumper);
                 }

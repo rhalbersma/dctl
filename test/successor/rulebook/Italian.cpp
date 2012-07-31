@@ -9,9 +9,9 @@
 namespace dctl {
 namespace successor {
 
-BOOST_AUTO_TEST_SUITE(TestItalian)
-
 typedef Fixture<rules::Italian, board::Roman> FixtureItalian;
+
+BOOST_AUTO_TEST_SUITE(TestItalian)
 
 // Positions from the official Italian rules:
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
@@ -72,19 +72,32 @@ BOOST_FIXTURE_TEST_CASE(TestCaptureMostKings, FixtureItalian)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(TestCaptureFirstKings, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(TestCaptureFirstKing, FixtureItalian)
 {
-        // Art. 6.9  (capture first kings)
+        // Art. 6.9  (capture first king)
         auto const FEN = "W:WK30:B10,12,18,K20,K26,27";
         std::string const legal[] = { "30x5 " };                
         run(FEN, legal);
 }
-
 BOOST_FIXTURE_TEST_CASE(TestEquivalentCapture, FixtureItalian)
 {
         // Art. 6.10 (equivalent capture)
         auto const FEN = "W:WK31:B18,20,K27,K28";
         std::string const legal[] = { "31x13", "31x15" };                
+        run(FEN, legal);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(TestAliotoDomenico)
+
+// suggested by Alioto Domenico in email to Ed Gilbert
+
+BOOST_FIXTURE_TEST_CASE(TestCaptureFirstKing, FixtureItalian)
+{
+        // generalizes the "capture first king" rule (Art. 6.9)
+        auto const FEN = "W:WK30:B10,K12,K18,20,K26,K27";
+        std::string const legal[] = { "30x5 " };                
         run(FEN, legal);
 }
 

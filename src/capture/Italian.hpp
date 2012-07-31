@@ -100,7 +100,7 @@ private:
                 return (
                         (0 <= num_kings_) && 
                         (num_kings_ <= num_pieces_) &&
-                        (num_pieces_ < std::numeric_limits<int>::max()) &&
+                        (num_pieces_ <= std::numeric_limits<int>::max()) &&
                         (num_kings_ == bit::count(piece_order_)) &&
                         (!num_kings_ || with_king_)
                 );
@@ -113,7 +113,7 @@ private:
 
         bool full() const
         {
-                return num_pieces_ == std::numeric_limits<int>::max() - 1;
+                return num_pieces_ == std::numeric_limits<int>::max();
         }
 
         // representation
