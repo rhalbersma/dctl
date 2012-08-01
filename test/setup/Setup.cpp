@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(Wieger)
 
         // the two positions have been parsed through different protocols,
         // but they should have identical FEN strings
-        BOOST_REQUIRE_EQUAL(FEN_w, FEN_r);
+        BOOST_CHECK_EQUAL(FEN_w, FEN_r);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
