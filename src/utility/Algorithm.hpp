@@ -1,15 +1,15 @@
 #pragma once
-#include <algorithm>                    // min_element, rotate, upper_bound
+#include <algorithm>                    // generate_n, min_element, rotate, upper_bound
 #include <iterator>                     // iter_swap, next
-#include <tuple>
 
 namespace dctl {
 
 template<class OutputIterator, class Size, class Assignable>
 void iota_n(OutputIterator first, Size n, Assignable value)
 {
-        for (Size i = 0; i != n; ++i)
-                *first++ = value++;
+        std::generate_n(first, n, [&value]() { 
+                return value++; 
+        });
 }
 
 template<class ForwardIterator>

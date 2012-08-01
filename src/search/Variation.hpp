@@ -1,11 +1,8 @@
 #pragma once
-#include <vector>                       // vector
+#include "../node/Stack.hpp"
 
 namespace dctl {
 namespace search {
-
-typedef std::vector<int> Variation;
-typedef std::vector<int> Order;
 
 inline Variation make_variation(int move, Variation const& continuation)
 {

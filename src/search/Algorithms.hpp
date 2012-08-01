@@ -84,18 +84,12 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
 
         // generate moves
         Stack moves;
-#if USE_STACK_ALLOC == 0       
         moves.reserve(MOVE_RESERVE);
-#endif
         successor::generate(p, moves);
         BOOST_ASSERT(!moves.empty());
 
-#if USE_STACK_ALLOC == 1
-        std::vector<int, stack_alloc<int, MOVE_RESERVE> > move_order;
-#else
-        std::vector<int> move_order;
+        Order move_order;
         move_order.reserve(moves.size());                               // reserve enough room for all indices
-#endif
         iota_n(std::back_inserter(move_order), moves.size(), 0);        // generate indices [0, moves.size() - 1]
 
         // internal iterative deepening (IID)
@@ -122,6 +116,8 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         int i;
 
         Variation continuation;
+        continuation.reserve(MOVE_RESERVE);
+
         for (auto s = 0; s < static_cast<int>(move_order.size()); ++s) {
                 i = move_order[s];
                 // TODO: TT singular extension
@@ -192,6 +188,84 @@ int Root<Objective>::proof_verify(Position const& p, int depth)
 
         return score;
 }
+
+/*
+// principal variation search (PVS) with TT cut-offs, TT move ordering and IID
+template<int NodeType, typename Rules, typename Board>
+int Root<Rules, Board>::quiescence(
+        const Position<Board>& p, int alpha, int beta, int depth, int ply, Variation& refutation
+)
+{
+        statistics_.update(ply);
+
+        // check for a legal draw
+        if (p.is_draw<Rules>())
+                return draw_value();
+
+        // check for legal move_stack
+        if (!successor::detect(p)) {
+                return loss_value(0);
+        }
+
+        // generate captures and promotions
+        Stack move_stack;
+        successor::generate_captures_promotions(p, move_stack);
+
+        if (move_stack.empty())
+        {
+                if (successor::detect_pending_captures_promotions(p)) {
+
+                } else {
+                        // return eval
+                }
+        }
+
+        // search generated moves
+}
+
+// negamax
+template<typename Rules, typename Board>
+int Root<Rules, Board>::negamax(
+        const Position<Board>& p, int depth, int ply, Variation& refutation
+)
+{
+        statistics_.update(ply);
+
+        // check for a legal draw
+        if (p.template is_draw<Rules>())
+                return draw_value();
+
+        // return evaluation in leaf nodes with valid moves
+        if (depth == 0)
+                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate<Rules>::evaluate(p);
+
+        // generate moves
+        Stack moves;
+        Successor<successor::Legal, Rules>::generate(p, moves);
+
+        // search moves
+        auto best_value = -infinity();
+        int value;
+        Variation continuation;
+        for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
+                auto q = p;
+                q.attach(p);
+                q.make(moves[i]);
+
+                value = -squeeze(negamax<Rules>(q, depth - 1, ply + 1, child_node));
+
+                if (value > best_value) {
+                        best_value = value;
+                        best_move = i;
+                        refutation.set(best_move, continuation.sequence());
+                }
+        }
+
+        // without a valid move, the position is an immediate loss
+        return std::max(loss_value(0), best_value);
+}
+
+*/
 
 
 // principal variation search (PVS)
@@ -324,82 +398,5 @@ int Root<Objective>::verify(Position const& p, int alpha, int beta, int depth, i
         return best_value;
 }
 
-/*
-// principal variation search (PVS) with TT cut-offs, TT move ordering and IID
-template<int NodeType, typename Rules, typename Board>
-int Root<Rules, Board>::quiescence(
-        const Position<Board>& p, int alpha, int beta, int depth, int ply, Variation& refutation
-)
-{
-        statistics_.update(ply);
-
-        // check for a legal draw
-        if (p.is_draw<Rules>())
-                return draw_value();
-
-        // check for legal move_stack
-        if (!successor::detect(p)) {
-                return loss_value(0);
-        }
-
-        // generate captures and promotions
-        Stack move_stack;
-        successor::generate_captures_promotions(p, move_stack);
-
-        if (move_stack.empty())
-        {
-                if (successor::detect_pending_captures_promotions(p)) {
-
-                } else {
-                        // return eval
-                }
-        }
-
-        // search generated moves
-}
-
-// negamax
-template<typename Rules, typename Board>
-int Root<Rules, Board>::negamax(
-        const Position<Board>& p, int depth, int ply, Variation& refutation
-)
-{
-        statistics_.update(ply);
-
-        // check for a legal draw
-        if (p.template is_draw<Rules>())
-                return draw_value();
-
-        // return evaluation in leaf nodes with valid moves
-        if (depth == 0)
-                return !Successor<successor::Legal, Rules>::detect(p)? loss_value(0) : Evaluate<Rules>::evaluate(p);
-
-        // generate moves
-        Stack moves;
-        Successor<successor::Legal, Rules>::generate(p, moves);
-
-        // search moves
-        auto best_value = -infinity();
-        int value;
-        Variation continuation;
-        for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
-                auto q = p;
-                q.attach(p);
-                q.make(moves[i]);
-
-                value = -squeeze(negamax<Rules>(q, depth - 1, ply + 1, child_node));
-
-                if (value > best_value) {
-                        best_value = value;
-                        best_move = i;
-                        refutation.set(best_move, continuation.sequence());
-                }
-        }
-
-        // without a valid move, the position is an immediate loss
-        return std::max(loss_value(0), best_value);
-}
-
-*/
 }       // namespace search
 }       // namespace dctl
