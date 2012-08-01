@@ -68,7 +68,7 @@ private:
 
         void branch(BitBoard active_pawns, State& capture)
         {
-                // tag dispatching on pawn capture directions
+                // tag dispatching on pawn jump directions
                 branch_dispatch(active_pawns, capture, typename Rules::pawn_jump_directions());
         }
 

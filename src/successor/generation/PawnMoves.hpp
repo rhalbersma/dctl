@@ -31,12 +31,12 @@ public:
                         select(active_pawns, not_occupied(p), moves);
         }
 
+private:
         void select(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
                 branch(active_pawns, not_occupied, moves);
         }
 
-private:
         void branch(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
         {
                 serialize<typename Compass::left_up >(active_pawns, not_occupied, moves);

@@ -26,12 +26,17 @@ public:
         int operator()(Position const& p)
         {
                 if (auto const active_kings = unrestricted_kings(p, Color))
-                        return branch(active_kings, not_occupied(p));
+                        return select(active_kings, not_occupied(p));
                 else
                         return 0;
         }
 
 private:
+        int select(BitBoard active_kings, BitBoard not_occupied)
+        {
+                return branch(active_kings, not_occupied);
+        }
+
         int branch(BitBoard active_kings, BitBoard not_occupied)
         {
                 return (

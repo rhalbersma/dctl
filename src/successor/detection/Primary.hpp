@@ -5,8 +5,8 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool Color, int Material, typename Selection, typename Position>
-struct detector<Color, Material, Selection, Position>
+template<bool Color, int Material, typename Selection, typename Position, typename Range>
+struct detector<Color, Material, Selection, Position, Range>
 {
         bool operator()(Position const&)
         {

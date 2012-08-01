@@ -14,8 +14,8 @@ namespace successor {
 namespace detail {
 
 // partial specialization for pawn jumps detection
-template<bool Color, typename Position>
-struct detector<Color, Material::pawn, Jumps, Position>
+template<bool Color, typename Position, typename Range>
+struct detector<Color, Material::pawn, Jumps, Position, Range>
 {
 private:
         // typedefs
@@ -28,15 +28,20 @@ public:
         bool operator()(Position const& p)
         {
                 if (auto const active_pawns = p.pawns(Color))
-                        return branch(active_pawns, targets<Color>(p), not_occupied(p));
+                        return select(active_pawns, targets<Color>(p), not_occupied(p));
                 else
                         return false;
+        }
+
+        bool select(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied)
+        {
+                return branch(active_pawns, passive_pieces, not_occupied);
         }
         
 private:
         bool branch(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied)
         {
-                // tag dispatching on pawn capture directions
+                // tag dispatching on pawn jump directions
                 return branch_dispatch(active_pawns, passive_pieces, not_occupied, typename Rules::pawn_jump_directions());
         }
 

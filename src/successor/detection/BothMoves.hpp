@@ -10,14 +10,16 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool Color, typename Position>
-struct detector<Color, Material::both, Moves, Position>
+template<bool Color, typename Position, typename Range>
+struct detector<Color, Material::both, Moves, Position, typename Range>
 {
 private:
         // typedefs
 
-        typedef detector<Color, Material::king, Moves, Position> KingMoves;
-        typedef detector<Color, Material::pawn, Moves, Position> PawnMoves;
+        // the implementation of both pawn and king move detection is independent of Range, 
+        // but we explicitly pass rules::range::distance_1 here to avoid code bloat
+        typedef detector<Color, Material::pawn, Moves, Position, rules::range::distance_1> PawnMoves;
+        typedef detector<Color, Material::king, Moves, Position, rules::range::distance_1> KingMoves;
 
 public:
         bool operator()(Position const& p)

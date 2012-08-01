@@ -111,7 +111,7 @@ public:
         template<bool Color>
         void add_pawn_jump(BitIndex dest_sq) const // modifies Stack& moves_
         {
-                // tag dispatching on ambiguity of pawn captures
+                // tag dispatching on ambiguity of pawn jumps
                 add_pawn_jump_dispatch<Color>(dest_sq, typename Rules::is_unambiguous_pawn_jump());
         }
 
@@ -255,14 +255,14 @@ private:
                         moves_.pop_back();
         }
 
-        // overload for pawn captures that are always unambiguous
+        // overload for pawn jumps that are always unambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::true_) const // modifies Stack& moves_
         {
                 add_pawn_jump_impl<Color, with::pawn>(dest_sq);
         }
 
-        // overload for pawn captures that are potentially ambiguous
+        // overload for pawn jumps that are potentially ambiguous
         template<bool Color>
         void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::false_) const // modifies Stack& moves_
         {

@@ -30,12 +30,12 @@ public:
                         return 0;
         }
 
+private:
         int select(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return branch(active_pawns, not_occupied);
         }
 
-private:
         int branch(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return (
