@@ -92,7 +92,7 @@ BOOST_FIXTURE_TEST_CASE(International21, Fixture<DefaultObjective>)
         };
         run<rules::International, board::International>(tests);
 }
-
+/*
 BOOST_FIXTURE_TEST_CASE(International22, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
@@ -131,7 +131,7 @@ BOOST_FIXTURE_TEST_CASE(International31, Fixture<DefaultObjective>)
         };
         run<rules::International, board::International>(tests);
 }
-
+*/
 /*
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html
 BOOST_FIXTURE_TEST_CASE(Killer11, Fixture<DefaultObjective>)

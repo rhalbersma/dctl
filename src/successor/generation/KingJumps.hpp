@@ -54,17 +54,17 @@ public:
 private:
         void select(BitBoard active_kings, State& capture)
         {
-                // tag dispatching on relative king capture precedence
+                // tag dispatching on relative king jump precedence
                 select_dispatch(active_kings, capture, typename Rules::is_relative_king_precedence());
         }
 
-        // overload for no relative king capture precedence
+        // overload for no relative king jump precedence
         void select_dispatch(BitBoard active_kings, State& capture, boost::mpl::false_)
         {
                 serialize(active_kings, capture);
         }
 
-        // overload for relative king capture precedence
+        // overload for relative king jump precedence
         void select_dispatch(BitBoard active_kings, State& capture, boost::mpl::true_)
         {
                 capture.toggle_with_king();
@@ -87,7 +87,7 @@ private:
 
         void branch(BitIndex jumper, State& capture)
         {
-                // tag dispatching on king capture directions
+                // tag dispatching on king jump directions
                 branch_dispatch(jumper, capture, typename Rules::king_jump_directions());
         }
 
@@ -144,7 +144,7 @@ private:
         template<typename Direction>
         bool find_next(BitIndex jumper, State& capture)
         {
-                // tag dispatching on king capture direction reversal
+                // tag dispatching on king jump direction reversal
                 return find_next_dispatch<Direction>(jumper, capture, typename Rules::is_jump_direction_reversal());
         }
 
@@ -171,7 +171,7 @@ private:
         template<typename Direction>
         bool land(BitIndex jumper, State& capture)
         {
-                // tag dispatching on king capture landing range after intermediate captures
+                // tag dispatching on king jump landing range after intermediate captures
                 return land_dispatch<Direction>(jumper, capture, typename Rules::land_range());
         }
 

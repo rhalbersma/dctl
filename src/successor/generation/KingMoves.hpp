@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_MPL_ASSERT
+#include <boost/assert.hpp>             // BOOST_MPL_ASSERT
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
 #include "Generator_fwd.hpp"
 #include "../Select.hpp"

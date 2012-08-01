@@ -13,8 +13,8 @@ namespace successor {
 namespace detail {
         
 // partial specialization for pawn moves detection
-template<bool Color, typename Position>
-struct detector<Color, Material::pawn, Moves, Position>
+template<bool Color, typename Position, typename Range>
+struct detector<Color, Material::pawn, Moves, Position, Range>
 {
 private:
         // typedefs
@@ -31,12 +31,12 @@ public:
                         return false;
         }
 
+private:
         bool select(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return branch(active_pawns, not_occupied);
         }
 
-private:
         bool branch(BitBoard active_pawns, BitBoard not_occupied)
         {
                 return (

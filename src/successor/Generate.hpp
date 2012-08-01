@@ -1,4 +1,6 @@
 #pragma once
+#include <boost/assert.hpp>             // BOOST_ASSERT
+#include "Invariant.hpp"
 #include "Select.hpp"
 #include "generation/Generator.hpp"
 #include "../node/Material.hpp"
@@ -20,7 +22,9 @@ void generate(Position const& p, Stack& moves)
         if (p.active_color() == Side::white)
                 detail::generator<Side::white, Material, Selection, Position>()(p, moves);
         else
-                detail::generator<Side::black, Material, Selection, Position>()(p, moves);      
+                detail::generator<Side::black, Material, Selection, Position>()(p, moves);
+
+        BOOST_ASSERT((detail::invariant<Material, Selection>(p, moves.size())));
 }
 
 }       // namespace successor

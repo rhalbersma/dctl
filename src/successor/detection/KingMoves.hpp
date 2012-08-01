@@ -13,8 +13,8 @@ namespace successor {
 namespace detail {
 
 // partial specialization for king moves detection
-template<bool Color, typename Position>
-struct detector<Color, Material::king, Moves, Position>
+template<bool Color, typename Position, typename Range>
+struct detector<Color, Material::king, Moves, Position, Range>
 {
 private:
         // typedefs
@@ -26,12 +26,17 @@ public:
         bool operator()(Position const& p)
         {
                 if (auto const active_kings = unrestricted_kings(p, Color))
-                        return branch(active_kings, not_occupied(p));
+                        return select(active_kings, not_occupied(p));
                 else
                         return false;
         }
 
 private:
+        bool select(BitBoard active_kings, BitBoard not_occupied)
+        {
+                return branch(active_kings, not_occupied);
+        }
+
         bool branch(BitBoard active_kings, BitBoard not_occupied)
         {
                 return (

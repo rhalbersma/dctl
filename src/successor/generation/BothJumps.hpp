@@ -1,5 +1,7 @@
 #pragma once
+#include <type_traits>                  // is_same
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/logical.hpp>        // and_
 #include "Generator_fwd.hpp"
 #include "KingJumps.hpp"
 #include "PawnJumps.hpp"
@@ -27,25 +29,25 @@ public:
         void operator()(Position const& p, Stack& moves)
         {
                 capture::State<Position> capture(p, moves); 
-                run(p, capture);
+                precedence(p, capture);
         }
 
 private:
-        void run(Position const& p, State& capture)
+        void precedence(Position const& p, State& capture)
         {
-                // tag dispatching on absolute king capture precedence
-                run_dispatch(p, capture, typename Rules::is_absolute_king_precedence());
+                // tag dispatching on absolute king jump precedence
+                precedence_dispatch(p, capture, typename Rules::is_absolute_king_precedence());
         }
 
-        // overload for no absolute king capture precedence
-        void run_dispatch(Position const& p, State& capture, boost::mpl::false_)
+        // overload for no absolute king jump precedence
+        void precedence_dispatch(Position const& p, State& capture, boost::mpl::false_)
         {
                 KingJumps()(p, capture);
                 PawnJumps()(p, capture);
         }
 
-        // overload for absolute king capture precedence
-        void run_dispatch(Position const& p, State& capture, boost::mpl::true_)
+        // overload for absolute king jump precedence
+        void precedence_dispatch(Position const& p, State& capture, boost::mpl::true_)
         {
                 KingJumps()(p, capture);
                 if (capture.empty())
