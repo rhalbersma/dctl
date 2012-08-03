@@ -1,12 +1,12 @@
 #include <string>                       // string
 #include <utility>                      // pair
 #include <boost/test/unit_test.hpp>
-#include "../../../src/search/Root.hpp"
-#include "../../../src/search/Objective.hpp"
-#include "../../../src/node/Position.hpp"
-#include "../../../src/setup/Setup.hpp"
-#include "../../../src/board/Types.hpp"
-#include "../../../src/rules/Types.hpp"
+#include "../../src/search/Root.hpp"
+#include "../../src/search/Objective.hpp"
+#include "../../src/node/Position.hpp"
+#include "../../src/setup/Setup.hpp"
+#include "../../src/board/Types.hpp"
+#include "../../src/rules/Types.hpp"
 
 namespace dctl {
 namespace search {
