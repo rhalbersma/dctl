@@ -1,19 +1,28 @@
 #include <boost/test/unit_test.hpp>
-#include "Fixture.hpp"
+#include "../Fixture.hpp"
 #include "../../test_config.hpp"
 #include "../../../src/board/Types.hpp"
 #include "../../../src/rules/Types.hpp"
 
-#if SEARCH_EGDB == 1
+#if SEARCH_EGDB_KILLER == 1
 
 namespace dctl {
 namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestKiller)
 
+BOOST_FIXTURE_TEST_CASE(KillerDavidGoliath, Fixture<DefaultObjective>)
+{
+        FEN_depth tests[] = {
+                FEN_depth("W:W23:B5,6", 29)     // David & Goliath
+                FEN_depth("B:W23:B5,6", 57),    // David & Goliath with black to move
+        };
+        run<rules::Killer, board::International>(tests);
+}
+
+// Michel Grimminkc's statistics on longest wins in the Killer endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html
 
-/*
 BOOST_FIXTURE_TEST_CASE(Killer11, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
@@ -40,15 +49,6 @@ BOOST_FIXTURE_TEST_CASE(Killer21, Fixture<DefaultObjective>)
                 FEN_depth("W:WK16:B24,K43",  9),        // 0111
                 FEN_depth("W:W14:BK10,K46",  3),        // 1002
                 FEN_depth("W:WK10:BK5,K41",  3)         // 0102
-        };
-        run<rules::Killer, board::International>(tests);
-}
-
-BOOST_FIXTURE_TEST_CASE(KillerDavidGoliath, Fixture<DefaultObjective>)
-{
-        FEN_depth tests[] = {
-                FEN_depth("B:W23:B5,6"    , 57),        // David & Goliath with black to move
-                FEN_depth("W:W23:B5,6"    , 29)         // David & Goliath
         };
         run<rules::Killer, board::International>(tests);
 }
@@ -91,7 +91,6 @@ BOOST_FIXTURE_TEST_CASE(Killer31, Fixture<DefaultObjective>)
         };
         run<rules::Killer, board::International>(tests);
 }
-*/
 
 BOOST_AUTO_TEST_SUITE_END()
 

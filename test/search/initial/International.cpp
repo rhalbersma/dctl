@@ -4,19 +4,17 @@
 #include "../../../src/board/Types.hpp"
 #include "../../../src/rules/Types.hpp"
 
-#if SEARCH_EGDB_FRISIAN == 1
+#if SEARCH_INITIAL_INTERNATIONAL == 1
 
 namespace dctl {
 namespace search {
 
-BOOST_AUTO_TEST_SUITE(TestFrisian)
+BOOST_AUTO_TEST_SUITE(TestInternational)
 
-BOOST_FIXTURE_TEST_CASE(Frisian21, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(InternationalInitial, Fixture<DefaultObjective>)
 {
-        FEN_depth tests[] = {
-                FEN_depth("W:WK46,28:BK43", 39) // Walinga book
-        };
-        run<rules::Frisian, board::Frisian>(tests);
+        auto const p = Position<rules::International, board::International>::initial();
+        root_.analyze(p, 15);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

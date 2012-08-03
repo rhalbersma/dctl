@@ -1,25 +1,26 @@
 #include <boost/test/unit_test.hpp>
-#include "Fixture.hpp"
+#include "../Fixture.hpp"
 #include "../../test_config.hpp"
 #include "../../../src/board/Types.hpp"
 #include "../../../src/rules/Types.hpp"
 
-#if SEARCH_EGDB == 1
+#if SEARCH_EGDB_INTERNATIONAL == 1
 
 namespace dctl {
 namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestInternational)
 
-BOOST_FIXTURE_TEST_CASE(InternationalInitial, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(InternationalDavidGoliath, Fixture<DefaultObjective>)
 {
-        auto const p = Position<rules::International, board::International>::initial();
-        root_.analyze(p, 15);
+        FEN_depth tests[] = {
+                FEN_depth("W:W23:B5,6", 29)     // David & Goliath
+        };
+        run<rules::International, board::International>(tests);
 }
 
+// Michel Grimminkc's statistics on longest wins in the Killer endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
-
-/*
 
 BOOST_FIXTURE_TEST_CASE(International11, Fixture<DefaultObjective>)
 {
@@ -47,14 +48,6 @@ BOOST_FIXTURE_TEST_CASE(International21, Fixture<DefaultObjective>)
                 FEN_depth("W:WK26:B23,K42",  9),        // 0111
                 FEN_depth("W:W14:BK10,K46",  3),        // 1002
                 FEN_depth("W:WK10:BK5,K23",  3)         // 0102
-        };
-        run<rules::International, board::International>(tests);
-}
-
-BOOST_FIXTURE_TEST_CASE(InternationalDavidGoliath, Fixture<DefaultObjective>)
-{
-        FEN_depth tests[] = {
-                FEN_depth("W:W23:B5,6"     , 29)        // David & Goliath
         };
         run<rules::International, board::International>(tests);
 }
@@ -97,8 +90,6 @@ BOOST_FIXTURE_TEST_CASE(International31, Fixture<DefaultObjective>)
         };
         run<rules::International, board::International>(tests);
 }
-
-*/
 
 BOOST_AUTO_TEST_SUITE_END()
 
