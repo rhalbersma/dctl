@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Enumerator_fwd.hpp"
 #include "Primary.hpp"
 #include "BothJumps.hpp"
@@ -16,6 +17,8 @@ namespace detail {
 // partial specialization for legal successors enumeration
 template<bool Color, int Material, typename Position>
 struct enumerator<Color, Material, Legal, Position>
+:
+        public std::function<int(Position const&)>
 {
 private:
         // typedefs
@@ -24,7 +27,7 @@ private:
         typedef enumerator<Color, Material, Moves, Position> DoMoves;
 
 public:
-        int operator()(Position const& p)
+        int operator()(Position const& p) const
         {
                 auto num_moves = DoJumps()(p);
                 if (!num_moves)

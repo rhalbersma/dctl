@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include <type_traits>                  // is_same
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
 #include <boost/mpl/logical.hpp>        // and_
@@ -16,6 +17,8 @@ namespace detail {
 
 template<bool Color, typename Position, typename Range>
 struct detector<Color, Material::both, Jumps, Position, Range>
+:
+        public std::function<bool(Position const&)>
 {
 private:
         // typedefs
@@ -28,13 +31,13 @@ private:
         typedef typename Position::rules_type Rules;
 
 public:
-        bool operator()(Position const& p)
+        bool operator()(Position const& p) const
         {
                 return combined(p);
         }
 
 private:
-        bool combined(Position const& p)
+        bool combined(Position const& p) const
         {
                 // tag dispatching on combined king and pawn jump detection
                 // kings and pawns need to jump identically: i.e. have the same 
@@ -56,7 +59,7 @@ private:
         }
 
         // overload for combined king and pawn jump generation
-        bool combined_dispatch(Position const& p, boost::mpl::true_)
+        bool combined_dispatch(Position const& p, boost::mpl::true_) const
         {
                 if (auto const active_pieces = p.pieces(Color))
                         return PawnJumps().select(active_pieces, targets<Color>(p), not_occupied(p));
@@ -65,7 +68,7 @@ private:
         }
 
         // overload for separate king and pawn jump generation
-        bool combined_dispatch(Position const& p, boost::mpl::false_)
+        bool combined_dispatch(Position const& p, boost::mpl::false_) const
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (

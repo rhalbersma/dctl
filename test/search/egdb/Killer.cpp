@@ -10,12 +10,12 @@ namespace dctl {
 namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestKiller)
-
+/*
 BOOST_FIXTURE_TEST_CASE(KillerDavidGoliath, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
-                FEN_depth("W:W23:B5,6", 29)     // David & Goliath
-                FEN_depth("B:W23:B5,6", 57),    // David & Goliath with black to move
+                FEN_depth("W:W23:B5,6", 29),    // David & Goliath
+                FEN_depth("B:W23:B5,6", 57)     // David & Goliath with black to move
         };
         run<rules::Killer, board::International>(tests);
 }
@@ -52,11 +52,11 @@ BOOST_FIXTURE_TEST_CASE(Killer21, Fixture<DefaultObjective>)
         };
         run<rules::Killer, board::International>(tests);
 }
-
+*/
 BOOST_FIXTURE_TEST_CASE(Killer22, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
-                FEN_depth("W:W31,49:B9,14"    , 77),    // 2020
+                /*FEN_depth("W:W31,49:B9,14"    , 77),    // 2020*/
                 FEN_depth("W:WK4,36:B7,38"    , 67),    // 1120
                 FEN_depth("W:WK29,K47:B39,44" , 27),    // 0220
                 FEN_depth("W:W37,42:B20,K41"  , 65),    // 2011

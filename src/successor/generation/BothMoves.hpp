@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Generator_fwd.hpp"
 #include "KingMoves.hpp"
 #include "PawnMoves.hpp"
@@ -12,6 +13,8 @@ namespace detail {
 
 template<bool Color, typename Position>
 struct generator<Color, Material::both, Moves, Position>
+:
+        public std::function<void(Position const&, Stack&)>
 {
 private:
         // typedefs
@@ -19,7 +22,7 @@ private:
         typedef generator<Color, Material::pawn, Moves, Position> PawnMoves;
 
 public:
-        void operator()(Position const& p, Stack& moves)
+        void operator()(Position const& p, Stack& moves) const
         {
                 KingMoves()(p, moves);
                 PawnMoves()(p, moves);

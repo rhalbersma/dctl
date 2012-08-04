@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Generator_fwd.hpp"
 #include "Primary.hpp"
 #include "BothJumps.hpp"
@@ -17,8 +18,10 @@ namespace detail {
 // partial specialization for legal successors
 template<bool Color, int Material, typename Position>
 struct generator<Color, Material, Legal, Position>
+:
+        public std::function<void(Position const&, Stack&)>
 {
-        void operator()(Position const& p, Stack& moves)
+        void operator()(Position const& p, Stack& moves) const
         {
                 generator<Color, Material, Jumps, Position>()(p, moves);
                 if (moves.empty())

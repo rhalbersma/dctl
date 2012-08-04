@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Enumerator_fwd.hpp"
 
 namespace dctl {
@@ -7,8 +8,10 @@ namespace detail {
 
 template<bool, int, typename, typename Position>
 struct enumerator
+:
+        public std::function<int(Position const&)>
 {
-        int operator()(Position const&)
+        int operator()(Position const&) const
         {
                 return 0;
         }

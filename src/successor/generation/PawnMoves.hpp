@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Generator_fwd.hpp"
 #include "../Select.hpp"
 #include "../../bit/Bit.hpp"
@@ -17,6 +18,8 @@ namespace detail {
 // partial specialization for pawn moves generation
 template<bool Color, typename Position>
 struct generator<Color, Material::pawn, Moves, Position>
+:
+        public std::function<void(Position const&, Stack&)>
 {
 private:
         // typedefs
@@ -25,26 +28,26 @@ private:
         typedef angle::Compass<Color, Board> Compass;
 
 public:
-        void operator()(Position const& p, Stack& moves)
+        void operator()(Position const& p, Stack& moves) const
         {
                 if (auto const active_pawns = p.pawns(Color))
                         select(active_pawns, not_occupied(p), moves);
         }
 
 private:
-        void select(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
+        void select(BitBoard active_pawns, BitBoard not_occupied, Stack& moves) const
         {
                 branch(active_pawns, not_occupied, moves);
         }
 
-        void branch(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
+        void branch(BitBoard active_pawns, BitBoard not_occupied, Stack& moves) const
         {
                 serialize<typename Compass::left_up >(active_pawns, not_occupied, moves);
                 serialize<typename Compass::right_up>(active_pawns, not_occupied, moves);
         }
 
         template<typename Direction>
-        void serialize(BitBoard active_pawns, BitBoard not_occupied, Stack& moves)
+        void serialize(BitBoard active_pawns, BitBoard not_occupied, Stack& moves) const
         {
                 for (
                         active_pawns &= Pull<Board, Direction>()(not_occupied);
@@ -55,7 +58,7 @@ private:
         }
 
         template<typename Direction>
-        void find(BitIndex from_sq, Stack& moves)
+        void find(BitIndex from_sq, Stack& moves) const
         {
                 auto const dest_sq = Board::next<Direction>(from_sq);
                 moves.push_back(Move::create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq)));

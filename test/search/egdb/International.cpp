@@ -19,7 +19,7 @@ BOOST_FIXTURE_TEST_CASE(InternationalDavidGoliath, Fixture<DefaultObjective>)
         run<rules::International, board::International>(tests);
 }
 
-// Michel Grimminkc's statistics on longest wins in the Killer endgame databases
+// Michel Grimminkc's statistics on longest wins in the International endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 
 BOOST_FIXTURE_TEST_CASE(International11, Fixture<DefaultObjective>)
