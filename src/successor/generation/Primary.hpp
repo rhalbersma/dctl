@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Generator_fwd.hpp"
 #include "../../node/Stack.hpp"
 
@@ -8,8 +9,10 @@ namespace detail {
 
 template<bool, int, typename, typename Position>
 struct generator
+:
+        public std::function<void(Position const&, Stack&)>
 {
-        void operator()(Position const& p, Stack& moves)
+        void operator()(Position const& p, Stack& moves) const
         {
                 // no-op
         }

@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Detector_fwd.hpp"
 #include "Primary.hpp"
 #include "BothJumps.hpp"
@@ -16,6 +17,8 @@ namespace detail {
 // partial specialization for legal successors detection
 template<bool Color, int Material, typename Position, typename Range>
 struct detector<Color, Material, Legal, Position, Range>
+:
+        public std::function<bool(Position const&)>
 {
 private:
         // typedefs
@@ -29,7 +32,7 @@ private:
         typedef detector<Color, Material, Jumps, Position, rules::range::distance_1> DoJumps;
 
 public:
-        bool operator()(Position const& p)
+        bool operator()(Position const& p) const
         {
                 // speculate #moves > #jumps, so that the || is likely to short-circuit
                 return (

@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Detector_fwd.hpp"
 
 namespace dctl {
@@ -7,8 +8,10 @@ namespace detail {
 
 template<bool Color, int Material, typename Selection, typename Position, typename Range>
 struct detector<Color, Material, Selection, Position, Range>
+:
+        public std::function<bool(Position const&)>
 {
-        bool operator()(Position const&)
+        bool operator()(Position const&) const
         {
                 return false;
         }

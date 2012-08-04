@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Enumerator_fwd.hpp"
 #include "../Select.hpp"
 #include "../../bit/Bit.hpp"
@@ -14,6 +15,8 @@ namespace detail {
 // partial specialization for king moves enumeration
 template<bool Color, typename Position>
 struct enumerator<Color, Material::king, Moves, Position>
+:
+        public std::function<int(Position const&)>
 {
 private:
         // typedefs
@@ -23,7 +26,7 @@ private:
         typedef angle::Compass<Color, Board> Compass;
 
 public:
-        int operator()(Position const& p)
+        int operator()(Position const& p) const
         {
                 if (auto const active_kings = unrestricted_kings(p, Color))
                         return select(active_kings, not_occupied(p));
@@ -32,12 +35,12 @@ public:
         }
 
 private:
-        int select(BitBoard active_kings, BitBoard not_occupied)
+        int select(BitBoard active_kings, BitBoard not_occupied) const
         {
                 return branch(active_kings, not_occupied);
         }
 
-        int branch(BitBoard active_kings, BitBoard not_occupied)
+        int branch(BitBoard active_kings, BitBoard not_occupied) const
         {
                 return (
                         parallelize<typename Compass::left_down >(active_kings, not_occupied) +
@@ -48,7 +51,7 @@ private:
         }
 
         template<typename Direction>
-        int parallelize(BitBoard active_kings, BitBoard not_occupied)
+        int parallelize(BitBoard active_kings, BitBoard not_occupied) const
         {
                 return bit::count(
                         Sink<Board, Direction, typename Rules::king_range>()(active_kings, not_occupied)

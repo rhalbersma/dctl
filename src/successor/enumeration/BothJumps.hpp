@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Enumerator_fwd.hpp"
 #include "../Select.hpp"
 #include "../generation/BothJumps.hpp"
@@ -11,6 +12,8 @@ namespace detail {
 
 template<bool Color, typename Position>
 struct enumerator<Color, Material::both, Jumps, Position>
+:
+        public std::function<int(Position const&)>
 {
 private:
         // typedefs
@@ -18,7 +21,7 @@ private:
         typedef generator<Color, Material::both, Jumps, Position> BothJumps;
 
 public:
-        int operator()(Position const& p)
+        int operator()(Position const& p) const
         {
                 Stack moves;
                 BothJumps()(p, moves);

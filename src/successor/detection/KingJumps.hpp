@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Detector_fwd.hpp"
 #include "../Select.hpp"
 #include "../../bit/Bit.hpp"
@@ -15,6 +16,8 @@ namespace detail {
 // partial specialization for king jumps detection
 template<bool Color, typename Position, typename Range>
 struct detector<Color, Material::king, Jumps, Position, Range>
+:
+        public std::function<bool(Position const&)>
 {
 private:
         // typedefs
@@ -24,7 +27,7 @@ private:
         typedef angle::Compass<Color, Board> Compass;
         
 public:
-        bool operator()(Position const& p)
+        bool operator()(Position const& p) const
         {
                 if (auto const active_kings = p.kings(Color))
                         return select(active_kings, p.pieces(!Color), not_occupied(p));
@@ -33,19 +36,19 @@ public:
         }
         
 private:
-        bool select(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied)
+        bool select(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied) const
         {
                 return branch(active_kings, passive_pieces, not_occupied);
         }
 
-        bool branch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied)
+        bool branch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied) const
         {
                 // tag dispatching on king jump directions
                 return branch_dispatch(active_kings, passive_pieces, not_occupied, typename Rules::king_jump_directions());
         }
 
         // overload for kings that capture in the 8 diagonal and orthogonal directions
-        bool branch_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::all)
+        bool branch_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::all) const
         {
                 return (
                         branch_dispatch(active_kings, passive_pieces, not_occupied, rules::directions::diag()) ||
@@ -54,7 +57,7 @@ private:
         }
 
         // overload for kings that capture in the 4 diagonal directions
-        bool branch_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::diag)
+        bool branch_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::diag) const
         {
                 return (
                         parallelize<typename Compass::left_up   >(active_kings, passive_pieces, not_occupied) ||
@@ -65,7 +68,7 @@ private:
         }
 
         // overload for kings that capture in the 4 orthogonal directions
-        bool branch_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::orth)
+        bool branch_dispatch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied, rules::directions::orth) const
         {
                 return (
                         parallelize<typename Compass::left >(active_kings, passive_pieces, not_occupied) ||
@@ -76,7 +79,7 @@ private:
         }
 
         template<typename Direction>
-        bool parallelize(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied)
+        bool parallelize(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied) const
         {
                 // partial specializations of Sandwich for king range
                 return !bit::is_zero(

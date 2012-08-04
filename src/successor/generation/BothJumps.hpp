@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include <type_traits>                  // is_same
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
 #include <boost/mpl/logical.hpp>        // and_
@@ -16,6 +17,8 @@ namespace detail {
 
 template<bool Color, typename Position>
 struct generator<Color, Material::both, Jumps, typename Position>
+:
+        public std::function<void(Position const&, Stack&)>
 {
 private:
         // typedefs
@@ -26,28 +29,28 @@ private:
         typedef capture::State<Position> State;
 
 public:
-        void operator()(Position const& p, Stack& moves)
+        void operator()(Position const& p, Stack& moves) const
         {
                 capture::State<Position> capture(p, moves); 
                 precedence(p, capture);
         }
 
 private:
-        void precedence(Position const& p, State& capture)
+        void precedence(Position const& p, State& capture) const
         {
                 // tag dispatching on absolute king jump precedence
                 precedence_dispatch(p, capture, typename Rules::is_absolute_king_precedence());
         }
 
         // overload for no absolute king jump precedence
-        void precedence_dispatch(Position const& p, State& capture, boost::mpl::false_)
+        void precedence_dispatch(Position const& p, State& capture, boost::mpl::false_) const
         {
                 KingJumps()(p, capture);
                 PawnJumps()(p, capture);
         }
 
         // overload for absolute king jump precedence
-        void precedence_dispatch(Position const& p, State& capture, boost::mpl::true_)
+        void precedence_dispatch(Position const& p, State& capture, boost::mpl::true_) const
         {
                 KingJumps()(p, capture);
                 if (capture.empty())

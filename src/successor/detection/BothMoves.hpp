@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Detector_fwd.hpp"
 #include "KingJumps.hpp"
 #include "PawnJumps.hpp"
@@ -12,6 +13,8 @@ namespace detail {
 
 template<bool Color, typename Position, typename Range>
 struct detector<Color, Material::both, Moves, Position, typename Range>
+:
+        public std::function<bool(Position const&)>
 {
 private:
         // typedefs
@@ -22,7 +25,7 @@ private:
         typedef detector<Color, Material::king, Moves, Position, rules::range::distance_1> KingMoves;
 
 public:
-        bool operator()(Position const& p)
+        bool operator()(Position const& p) const
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
                 return (

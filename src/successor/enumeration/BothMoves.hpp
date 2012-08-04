@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>                   // function
 #include "Enumerator_fwd.hpp"
 #include "KingMoves.hpp"
 #include "PawnMoves.hpp"
@@ -11,6 +12,8 @@ namespace detail {
 
 template<bool Color, typename Position>
 struct enumerator<Color, Material::both, Moves, Position>
+:
+        public std::function<int(Position const&)>
 {
 private:
         // typedefs
@@ -18,7 +21,7 @@ private:
         typedef enumerator<Color, Material::pawn, Moves, Position> PawnMoves;
 
 public:
-        int operator()(Position const& p)
+        int operator()(Position const& p) const
         {
                 return (
                         KingMoves()(p) +

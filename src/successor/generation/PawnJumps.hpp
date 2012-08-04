@@ -31,7 +31,7 @@ private:
         typedef capture::State<Position> State;
 
 public:
-        void operator()(Position const& p, Stack& moves)
+        void operator()(Position const& p, Stack& moves) const
         {
                 if (auto const active_pawns = p.pawns(Color)) {
                         State capture(p, moves);
@@ -39,69 +39,69 @@ public:
                 }
         }
 
-        void operator()(Position const& p, State& capture)
+        void operator()(Position const& p, State& capture) const
         {
                 if (auto const active_pawns = p.pawns(Color))
                         select(active_pawns, capture);
         }
 
 private:
-        void select(BitBoard active_pawns, State& capture)
+        void select(BitBoard active_pawns, State& capture) const
         {
                 // tag dispatching on whether pawns can capture kings
                 select_dispatch(active_pawns, capture, typename Rules::is_pawns_jump_kings());
         }
 
         // overload for pawns that can capture kings
-        void select_dispatch(BitBoard active_pawns, State& capture, boost::mpl::true_)
+        void select_dispatch(BitBoard active_pawns, State& capture, boost::mpl::true_) const
         {
                 branch(active_pawns, capture);
         }
 
         // overload for pawns that cannot capture kings
-        void select_dispatch(BitBoard active_pawns, State& capture, boost::mpl::false_)
+        void select_dispatch(BitBoard active_pawns, State& capture, boost::mpl::false_) const
         {
                 capture.toggle_king_targets();
                 branch(active_pawns, capture);
                 capture.toggle_king_targets();
         }    
 
-        void branch(BitBoard active_pawns, State& capture)
+        void branch(BitBoard active_pawns, State& capture) const
         {
                 // tag dispatching on pawn jump directions
                 branch_dispatch(active_pawns, capture, typename Rules::pawn_jump_directions());
         }
 
         // overload for pawns that capture in the 8 diagonal and orthogonal directions
-        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::all)
+        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::all) const
         {
                 branch_dispatch(active_pawns, capture, rules::directions::diag());
                 branch_dispatch(active_pawns, capture, rules::directions::orth());
         }
 
         // overload for pawns that capture in the 4 diagonal directions
-        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::diag)
+        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::diag) const
         {
                 branch_dispatch(active_pawns, capture, rules::directions::up  ());
                 branch_dispatch(active_pawns, capture, rules::directions::down());
         }
 
         // overload for pawns that capture in the 2 forward diagonal directions
-        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::up)
+        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::up) const
         {
                 serialize<typename Compass::left_up >(active_pawns, capture);
                 serialize<typename Compass::right_up>(active_pawns, capture);
         }
 
         // overload for pawns that capture in the 2 backward diagonal directions
-        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::down)
+        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::down) const
         {
                 serialize<typename Compass::left_down >(active_pawns, capture);
                 serialize<typename Compass::right_down>(active_pawns, capture);
         }
 
         // overload for pawns that capture in the 4 orthogonal directions
-        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::orth)
+        void branch_dispatch(BitBoard active_pawns, State& capture, rules::directions::orth) const
         {
                 serialize<typename Compass::left >(active_pawns, capture);
                 serialize<typename Compass::right>(active_pawns, capture);
@@ -110,7 +110,7 @@ private:
         }
 
         template<typename Direction>
-        void serialize(BitBoard active_pawns, State& capture)
+        void serialize(BitBoard active_pawns, State& capture) const
         {
                 BitIndex jumper;
                 for (
@@ -126,7 +126,7 @@ private:
         }
 
         template<typename Direction>
-        void find_first(BitBoard jumper, State& capture)
+        void find_first(BitBoard jumper, State& capture) const
         {
                 Board::advance<Direction>(jumper);
                 BOOST_ASSERT(bit::is_element(jumper, capture.template targets<Direction>()));
@@ -136,7 +136,7 @@ private:
         }
 
         template<typename Direction>
-        void add_jump(BitIndex jumper, State& capture)
+        void add_jump(BitIndex jumper, State& capture) const
         {
                 Board::advance<Direction>(jumper);
                 if (
@@ -150,7 +150,7 @@ private:
         }
 
         template<typename Direction>
-        bool find_next(BitIndex jumper, State& capture)
+        bool find_next(BitIndex jumper, State& capture) const
         {
                 // tag dispatching on promotion condition
                 return find_next_dispatch<Direction>(jumper, capture, typename Rules::pawn_promotion());
@@ -158,14 +158,14 @@ private:
 
         // overload for pawns that promote apres-fini
         template<typename Direction>
-        bool find_next_dispatch(BitIndex jumper, State& capture, rules::promotion::apres_fini)
+        bool find_next_dispatch(BitIndex jumper, State& capture, rules::promotion::apres_fini) const
         {
                 return find_next_impl<Direction>(jumper, capture);
         }
 
         // overload for pawns that promote en-passant
         template<typename Direction>
-        bool find_next_dispatch(BitIndex jumper, State& capture, rules::promotion::en_passant)
+        bool find_next_dispatch(BitIndex jumper, State& capture, rules::promotion::en_passant) const
         {
                 if (!is_promotion_sq<Color, Board>(jumper))
                         return find_next_impl<Direction>(jumper, capture);
@@ -174,7 +174,7 @@ private:
         }
 
         template<typename Direction>
-        bool promote_en_passant(BitIndex jumper, State& capture)
+        bool promote_en_passant(BitIndex jumper, State& capture) const
         {
                 // tag dispatching on whether pawns can capture kings
                 return promote_en_passant_dispatch<Direction>(jumper, capture, typename Rules::is_pawns_jump_kings());
@@ -182,7 +182,7 @@ private:
 
         // overload for pawns that can capture kings
         template<typename Direction>
-        bool promote_en_passant_dispatch(BitIndex jumper, State& capture, boost::mpl::true_)
+        bool promote_en_passant_dispatch(BitIndex jumper, State& capture, boost::mpl::true_) const
         {
                 capture.toggle_promotion();
                 auto const found_next = KingJumps().template promote_en_passant<Direction>(jumper, capture);
@@ -192,7 +192,7 @@ private:
 
         // overload for pawns that cannot capture kings
         template<typename Direction>
-        bool promote_en_passant_dispatch(BitIndex jumper, State& capture, boost::mpl::false_)
+        bool promote_en_passant_dispatch(BitIndex jumper, State& capture, boost::mpl::false_) const
         {
                 capture.toggle_promotion();     // no longer a pawn
                 capture.toggle_king_targets();  // can now capture kings
@@ -203,7 +203,7 @@ private:
         } 
 
         template<typename Direction>
-        bool find_next_impl(BitIndex jumper, State& capture)
+        bool find_next_impl(BitIndex jumper, State& capture) const
         {
                 return (
                         turn<Direction>(jumper, capture) |
@@ -212,7 +212,7 @@ private:
         }
 
         template<typename Direction>
-        bool turn(BitIndex jumper, State& capture)
+        bool turn(BitIndex jumper, State& capture) const
         {
                 // tag dispatching on man turn directions
                 return turn_dispatch<Direction>(jumper, capture, typename Rules::pawn_turn_directions());
@@ -220,7 +220,7 @@ private:
 
         // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
         template<typename Direction>
-        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::all)
+        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::all) const
         {
                 return (
                         turn_dispatch<Direction>(jumper, capture, rules::directions::diag()) |
@@ -230,7 +230,7 @@ private:
 
         // overload for turns in the 2 sideways directions
         template<typename Direction>
-        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::diag)
+        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::diag) const
         {
                 return (
                         scan< typename rotate< Direction, angle::R090 >::type >(jumper, capture) |
@@ -240,21 +240,21 @@ private:
 
         // overload for turns in the 1 mirrored forward direction
         template<typename Direction>
-        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::up)
+        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::up) const
         {
                 return scan< typename mirror< Direction, typename Compass::up >::type >(jumper, capture);
         }
 
         // overload for turns in the 1 mirrored backward direction
         template<typename Direction>
-        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::down)
+        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::down) const
         {
                 return scan< typename mirror< Direction, typename Compass::down >::type >(jumper, capture);
         }
 
         // overload for turns in the remaining 4 diagonal or orthogonal directions
         template<typename Direction>
-        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::orth)
+        bool turn_dispatch(BitIndex jumper, State& capture, rules::directions::orth) const
         {
                 return (
                         scan< typename rotate< Direction, angle::R045 >::type >(jumper, capture) |
@@ -265,14 +265,14 @@ private:
         }
 
         template<typename Direction>
-        bool scan(BitIndex jumper, State& capture)
+        bool scan(BitIndex jumper, State& capture) const
         {
                 Board::advance<Direction>(jumper);
                 return jump<Direction>(jumper, capture);
         }
 
         template<typename Direction>
-        bool jump(BitIndex jumper, State& capture)
+        bool jump(BitIndex jumper, State& capture) const
         {
                 if (!bit::is_element(jumper, capture.template targets<Direction>())) 
                         return false;                   // terminated
