@@ -148,7 +148,7 @@ private:
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
-                        std::cout << '\n';
+                        std::cout << std::endl /*'\n'*/;
                         std::cout << setup::diagram<pdn::protocol>()(p);
                         return;
                 }

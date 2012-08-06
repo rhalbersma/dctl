@@ -56,7 +56,7 @@ BOOST_FIXTURE_TEST_CASE(Killer21, Fixture<DefaultObjective>)
 BOOST_FIXTURE_TEST_CASE(Killer22, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
-                /*FEN_depth("W:W31,49:B9,14"    , 77),    // 2020*/
+                FEN_depth("W:W31,49:B9,14"    , 77),    // 2020
                 FEN_depth("W:WK4,36:B7,38"    , 67),    // 1120
                 FEN_depth("W:WK29,K47:B39,44" , 27),    // 0220
                 FEN_depth("W:W37,42:B20,K41"  , 65),    // 2011

@@ -76,7 +76,7 @@ public:
                         else
                                 sstr << std::setw(2) << WHITE_SPACE;    // space between squares
                 }
-                sstr << "\n";
+                sstr << std::endl /*"\n"*/;
                 return sstr.str();
         }
 
