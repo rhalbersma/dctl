@@ -97,9 +97,8 @@ bool is_draw(Position<Rules, Board> const& p)
 }
 
 template<typename Position>
-bool is_cycle(Position const& /*p*/)
+bool is_cycle(Position const& p)
 {
-        /*
         // a cycle needs at least 4 reversible moves
         if (p.reversible_moves() < 4)
                 return false;
@@ -113,7 +112,6 @@ bool is_cycle(Position const& /*p*/)
                         return true;
                 q = grand_parent(*q);
         }
-        */
         return false;
 }
 
