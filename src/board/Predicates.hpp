@@ -28,7 +28,7 @@ struct is_square
 template<typename Board, typename Color, typename SQ>
 struct is_initial
 :
-        mpl::is_within_range< typename 
+        mpl::is_within_range< typename
                 Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row,
                 boost::mpl::eval_if<
                         Color,
@@ -48,8 +48,8 @@ struct is_initial
                         Color, typename
                         Board::height,
                         boost::mpl::divides<
-                                boost::mpl::minus< typename 
-                                        Board::height, typename 
+                                boost::mpl::minus< typename
+                                        Board::height, typename
                                         Board::dmz
                                 >,
                                 boost::mpl::int_<2>
@@ -61,7 +61,7 @@ struct is_initial
 template<typename Board, typename Color, typename Row, typename SQ>
 struct is_row_mask
 :
-        boost::mpl::equal_to< typename 
+        boost::mpl::equal_to< typename
                 Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row,
                 boost::mpl::eval_if<
                         Color,
@@ -78,7 +78,7 @@ struct is_row_mask
 template<typename Board, typename Color, typename Column, typename SQ>
 struct is_col_mask
 :
-        boost::mpl::equal_to< typename 
+        boost::mpl::equal_to< typename
                 Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col,
                 boost::mpl::eval_if<
                         Color,
@@ -131,12 +131,12 @@ template<typename From, typename Dest>
 struct is_jump_connected
 :
         is_jump_difference<
-                boost::mpl::minus< typename 
-                        From::row, typename 
+                boost::mpl::minus< typename
+                        From::row, typename
                         Dest::row
                 >,
-                boost::mpl::minus< typename 
-                        From::col, typename 
+                boost::mpl::minus< typename
+                        From::col, typename
                         Dest::col
                 >
         >
@@ -156,7 +156,7 @@ struct is_jump_group
 template<typename Board, typename Group, typename SQ>
 struct is_jump_group
 :
-        detail::is_jump_group< typename 
+        detail::is_jump_group< typename
                 Board::ExternalGrid,
                 Group,
                 SQ
@@ -170,7 +170,7 @@ struct is_jump_start
 :
         boost::mpl::and_<
                 // row_min <= row < row_max
-                mpl::is_within_range< typename 
+                mpl::is_within_range< typename
                         Square2Coordinates< Square<Grid, SQ> >::type::row,
                         boost::mpl::eval_if< angle::is_up<Direction>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
@@ -179,7 +179,7 @@ struct is_jump_start
                         >
                 >,
                 // col_min <= col < col_max
-                mpl::is_within_range< typename 
+                mpl::is_within_range< typename
                         Square2Coordinates< Square<Grid, SQ> >::type::col,
                         boost::mpl::eval_if< angle::is_left<Direction>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
@@ -196,7 +196,7 @@ template<typename Board, typename Direction, typename SQ>
 struct is_jump_start
 :
         detail::is_jump_start<
-                Board, Direction, SQ, typename 
+                Board, Direction, SQ, typename
                 Board::ExternalGrid,
                 boost::mpl::eval_if<
                         angle::is_diagonal<Direction>,
@@ -231,9 +231,9 @@ struct transform
 template<typename Board, typename N>
 struct square_to_bit
 :
-        detail::transform< typename 
-                Board::ExternalGrid, typename 
-                Board::InternalGrid, typename 
+        detail::transform< typename
+                Board::ExternalGrid, typename
+                Board::InternalGrid, typename
                 Board::full_angle,
                 N
         >
@@ -242,9 +242,9 @@ struct square_to_bit
 template<typename Board, typename N>
 struct bit_to_square
 :
-        detail::transform< typename 
-                Board::InternalGrid, typename 
-                Board::ExternalGrid, typename 
+        detail::transform< typename
+                Board::InternalGrid, typename
+                Board::ExternalGrid, typename
                 Board::inverse_angle,
                 N
         >

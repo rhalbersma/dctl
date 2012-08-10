@@ -6,7 +6,7 @@
 namespace dctl {
 namespace notation {
 
-template<> 
+template<>
 struct Separator<rules::Thai>
 :
         detail::token<'-', '-'>

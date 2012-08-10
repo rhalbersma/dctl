@@ -8,7 +8,7 @@
 /*---------------------------------------------------------------------------*/
 
 // A VC++ compiler bug causes it to believe that p->~T() doesn't reference p.
-// http://blogs.msdn.com/b/vcblog/archive/2008/08/28/the-mallocator.aspx 
+// http://blogs.msdn.com/b/vcblog/archive/2008/08/28/the-mallocator.aspx
 #include "stack_alloc.h"
 
 /*---------------------------------------------------------------------------*/

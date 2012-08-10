@@ -23,7 +23,7 @@ struct detector<Color, Material::both, Jumps, Position, Range>
 private:
         // typedefs
 
-        // the implementation of pawn jump detection is independent of Range, 
+        // the implementation of pawn jump detection is independent of Range,
         // but we explicitly pass rules::range::distance_1 here to avoid code bloat
         typedef detector<Color, Material::pawn, Jumps, Position, rules::range::distance_1> PawnJumps;
 
@@ -40,19 +40,19 @@ private:
         bool combined(Position const& p) const
         {
                 // tag dispatching on combined king and pawn jump detection
-                // kings and pawns need to jump identically: i.e. have the same 
+                // kings and pawns need to jump identically: i.e. have the same
                 // (a) range, (b) jump directions, and (c) jump targets
                 return combined_dispatch(
                         p,
                         boost::mpl::and_<
-                                std::is_same< 
-                                        Range, 
+                                std::is_same<
+                                        Range,
                                         rules::range::distance_1
                                 >,
-                                std::is_same< typename 
-                                        Rules::king_jump_directions, typename 
+                                std::is_same< typename
+                                        Rules::king_jump_directions, typename
                                         Rules::pawn_jump_directions
-                                >, typename 
+                                >, typename
                                 Rules::is_pawns_jump_kings
                         >()
                 );
@@ -75,7 +75,7 @@ private:
                         PawnJumps()(p) ||
                         KingJumps()(p)
                 );
-        }        
+        }
 };
 
 }       // namespace detail

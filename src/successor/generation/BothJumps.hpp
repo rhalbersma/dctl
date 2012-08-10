@@ -31,7 +31,7 @@ private:
 public:
         void operator()(Position const& p, Stack& moves) const
         {
-                capture::State<Position> capture(p, moves); 
+                capture::State<Position> capture(p, moves);
                 precedence(p, capture);
         }
 
@@ -54,7 +54,7 @@ private:
         {
                 KingJumps()(p, capture);
                 if (capture.empty())
-                        PawnJumps()(p, capture);                
+                        PawnJumps()(p, capture);
         }
 };
 

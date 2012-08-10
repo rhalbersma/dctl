@@ -101,6 +101,7 @@ public:
         }
 
         // modifiers
+
         void set_move(int m)
         {
                 rest_ ^= (move() & MOVE_MASK) << MOVE_SHIFT;

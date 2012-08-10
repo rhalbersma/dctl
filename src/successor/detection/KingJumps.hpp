@@ -25,7 +25,7 @@ private:
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
         typedef angle::Compass<Color, Board> Compass;
-        
+
 public:
         bool operator()(Position const& p) const
         {
@@ -34,7 +34,7 @@ public:
                 else
                         return false;
         }
-        
+
 private:
         bool select(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied) const
         {

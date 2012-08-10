@@ -44,8 +44,8 @@ public:
         {
                 return static_cast<std::size_t>(
                         std::count_if(
-                                std::begin(map_), std::end(map_), 
-                                [](Entry const& e) 
+                                std::begin(map_), std::end(map_),
+                                [](Entry const& e)
                                 { return e.first == Key(0); }
                         )
                 );
@@ -109,7 +109,7 @@ private:
         // overload for non-integral keys
         template<typename Item>
         Value const* find_dispatch(
-                Item const& item, 
+                Item const& item,
                 std::false_type
         ) const
         {
@@ -121,7 +121,7 @@ private:
         // overload for integral keys
         template<typename Item>
         Value const* find_dispatch(
-                Item const& item, 
+                Item const& item,
                 std::true_type
         ) const
         {
@@ -133,7 +133,7 @@ private:
         // overload for non-integral keys
         template<typename Item>
         void insert_dispatch(
-                Item const& item, Value const& value, 
+                Item const& item, Value const& value,
                 std::false_type
         )
         {
@@ -145,7 +145,7 @@ private:
         // overload for integral keys
         template<typename Item>
         void insert_dispatch(
-                Item const& item, Value const& value, 
+                Item const& item, Value const& value,
                 std::true_type
         )
         {

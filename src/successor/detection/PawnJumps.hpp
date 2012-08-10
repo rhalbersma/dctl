@@ -40,7 +40,7 @@ public:
         {
                 return branch(active_pawns, passive_pieces, not_occupied);
         }
-        
+
 private:
         bool branch(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied) const
         {

@@ -6,9 +6,9 @@
 namespace dctl {
 namespace notation {
 
-template<> 
+template<>
 struct Format<rules::Czech>
-: 
+:
         algebraic
 {};
 

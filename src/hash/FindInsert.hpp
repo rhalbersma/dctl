@@ -18,7 +18,7 @@ struct find_entry
         {
                 auto const bucket_end = bucket_begin + N;
                 auto const it = std::find_if(
-                        bucket_begin, bucket_end, 
+                        bucket_begin, bucket_end,
                         [&](Entry const& e)
                         { return e.first == key; }
                 );
@@ -45,9 +45,9 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutSmallestOfN>
                 // replace any empty or old entry
                 Key slots[] = { Key(0), entry.first };
                 auto it = std::find_first_of(
-                        bucket_begin, bucket_end, 
-                        std::begin(slots), std::end(slots), 
-                        [](Entry const& e, Key const& k) 
+                        bucket_begin, bucket_end,
+                        std::begin(slots), std::end(slots),
+                        [](Entry const& e, Key const& k)
                         { return e.first == k; }
                 );
                 if (it != bucket_end) {
@@ -63,8 +63,8 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutSmallestOfN>
 
                 // replace the smallest entry
                 it = std::min_element(
-                        bucket_begin, bucket_end, 
-                        [](Entry const& lhs, Entry const& rhs) 
+                        bucket_begin, bucket_end,
+                        [](Entry const& lhs, Entry const& rhs)
                         { return lhs.second.leafs() < rhs.second.leafs(); }
                 );
                 *it = entry;
@@ -86,9 +86,9 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutShallowestOfN>
                 // replace any empty or old entry
                 Key slots[] = { Key(0), entry.first };
                 auto it = std::find_first_of(
-                        bucket_begin, bucket_end, 
-                        std::begin(slots), std::end(slots), 
-                        [](Entry const& e, Key const& k) 
+                        bucket_begin, bucket_end,
+                        std::begin(slots), std::end(slots),
+                        [](Entry const& e, Key const& k)
                         { return e.first == k; }
                 );
                 if (it != bucket_end) {
@@ -104,8 +104,8 @@ struct insert_entry<Key, Value, N, EmptyOldUnderCutShallowestOfN>
 
                 // replace the shallowest entry
                 it = std::min_element(
-                        bucket_begin, bucket_end, 
-                        [](Entry const& lhs, Entry const& rhs) 
+                        bucket_begin, bucket_end,
+                        [](Entry const& lhs, Entry const& rhs)
                         { return lhs.second.depth() < rhs.second.depth(); }
                 );
                 *it = entry;

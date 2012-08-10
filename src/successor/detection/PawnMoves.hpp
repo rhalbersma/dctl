@@ -12,7 +12,7 @@
 namespace dctl {
 namespace successor {
 namespace detail {
-        
+
 // partial specialization for pawn moves detection
 template<bool Color, typename Position, typename Range>
 struct detector<Color, Material::pawn, Moves, Position, Range>
@@ -47,7 +47,7 @@ private:
                         parallelize<typename Compass::right_up>(active_pawns, not_occupied)
                 );
         }
-        
+
         template<typename Direction>
         bool parallelize(BitBoard active_pawns, BitBoard not_occupied) const
         {

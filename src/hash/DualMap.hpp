@@ -32,7 +32,7 @@ public:
         }
 
         // capacity
-        
+
         std::size_t available() const
         {
                 return dual_map_[0].available() + dual_map_[1].available();
@@ -74,7 +74,7 @@ public:
 
 private:
         // representation
-        
+
         Map<Key, Value, Hash, Index, Replace> dual_map_[2];
 };
 

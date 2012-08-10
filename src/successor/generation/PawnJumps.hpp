@@ -64,7 +64,7 @@ private:
                 capture.toggle_king_targets();
                 branch(active_pawns, capture);
                 capture.toggle_king_targets();
-        }    
+        }
 
         void branch(BitBoard active_pawns, State& capture) const
         {
@@ -200,7 +200,7 @@ private:
                 capture.toggle_king_targets();  // can no longer capture kings
                 capture.toggle_promotion();     // now a pawn again
                 return found_next;
-        } 
+        }
 
         template<typename Direction>
         bool find_next_impl(BitIndex jumper, State& capture) const
@@ -274,13 +274,13 @@ private:
         template<typename Direction>
         bool jump(BitIndex jumper, State& capture) const
         {
-                if (!bit::is_element(jumper, capture.template targets<Direction>())) 
+                if (!bit::is_element(jumper, capture.template targets<Direction>()))
                         return false;                   // terminated
 
                 capture.make(jumper);
                 add_jump<Direction>(jumper, capture);   // recursively find more jumps
-                capture.undo(jumper);                
-                return true;                            // not terminated 
+                capture.undo(jumper);
+                return true;                            // not terminated
         }
 };
 

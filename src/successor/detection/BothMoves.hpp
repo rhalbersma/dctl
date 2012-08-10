@@ -19,7 +19,7 @@ struct detector<Color, Material::both, Moves, Position, typename Range>
 private:
         // typedefs
 
-        // the implementation of both pawn and king move detection is independent of Range, 
+        // the implementation of both pawn and king move detection is independent of Range,
         // but we explicitly pass rules::range::distance_1 here to avoid code bloat
         typedef detector<Color, Material::pawn, Moves, Position, rules::range::distance_1> PawnMoves;
         typedef detector<Color, Material::king, Moves, Position, rules::range::distance_1> KingMoves;

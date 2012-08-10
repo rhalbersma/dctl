@@ -9,7 +9,7 @@
 namespace dctl {
 namespace successor {
 namespace detail {
-        
+
 // partial specialization for pawn jumps enumeration
 template<bool Color, typename Position>
 struct enumerator<Color, Material::pawn, Jumps, Position>

@@ -32,7 +32,7 @@ private:
 public:
         void operator()(Position const& p, Stack& moves) const
         {
-                if (auto const active_kings = unrestricted_kings(p, Color)) 
+                if (auto const active_kings = unrestricted_kings(p, Color))
                         select(active_kings, not_occupied(p), moves);
         }
 

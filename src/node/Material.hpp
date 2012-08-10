@@ -12,7 +12,7 @@ template<typename T>
 struct Material_
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public PiecesInterface< Material_, T >, 
+        public PiecesInterface< Material_, T >,
         private boost::equality_comparable< Material_<T> >
 {
         enum {

@@ -24,9 +24,9 @@ class Board
 public:
         // external and internal grids
         typedef Grid<Dimensions> ExternalGrid;
-        typedef Grid<typename 
+        typedef Grid<typename
                 rotate<
-                        Dimensions, typename 
+                        Dimensions, typename
                         Structure::full_angle
                 >::type, typename
                 Structure::ghosts
@@ -72,7 +72,7 @@ public:
                         angle::is_positive<Direction>::value,
                         shift<Direction>::value
                 >()(square);
-        }        
+        }
 
         template<typename Direction, typename Iterator>
         static Iterator next(Iterator square)

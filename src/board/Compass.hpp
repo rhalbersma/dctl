@@ -21,7 +21,7 @@ namespace angle {
                    / | \
           left_down  |  right_down
                      |
-                   down 
+                   down
 
       +++ ACTIVE COLOR POINT OF VIEW +++
 
@@ -35,7 +35,7 @@ template
 struct Compass
 {
 private:
-        typedef typename rotate< 
+        typedef typename rotate<
                 typename Board::inverse_angle,
                 boost::mpl::eval_if<
                         boost::mpl::bool_<Color>,

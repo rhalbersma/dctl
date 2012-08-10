@@ -8,7 +8,7 @@ namespace rules {
 
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 struct Italian
-: 
+:
         Rules<
                 Italian,
                 king_range<range::distance_1>,
@@ -16,7 +16,7 @@ struct Italian
                 jump_precedence<precedence::quality>,
                 is_pawns_jump_kings<boost::mpl::false_>,
                 is_relative_king_precedence<boost::mpl::true_>
-        > 
+        >
 {};
 
 }       // namespace rules

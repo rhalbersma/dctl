@@ -8,13 +8,13 @@ namespace rules {
 
 // http://www.usacheckers.com/rulesofcheckers.php
 struct Checkers
-: 
+:
         Rules<
                 Checkers,
                 king_range<range::distance_1>,
                 pawn_jump_directions<directions::up>,
                 jump_precedence<precedence::none>
-        > 
+        >
 {};
 
 // aliases for the rules of checkers

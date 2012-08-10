@@ -12,7 +12,7 @@ std::unique_ptr<T> make_unique()
 {
         return std::unique_ptr<T>(new T());
 }
-        
+
 template
 <
         typename T,

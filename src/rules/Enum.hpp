@@ -8,7 +8,7 @@ namespace range {
         struct distance_1 {};
         struct distance_N {};
         struct distance_1K {};
-}        
+}
 
 // capture directions
 namespace directions {

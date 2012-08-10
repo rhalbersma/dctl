@@ -21,6 +21,6 @@ namespace dctl {
         typedef std::vector<Move> Stack;
         typedef std::vector<int>  Variation;
         typedef std::vector<int>  Order;
-#endif 
+#endif
 
 }       // namespace dctl

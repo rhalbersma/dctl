@@ -1,5 +1,5 @@
 #pragma once
-#include <type_traits>                  // is_same 
+#include <type_traits>                  // is_same
 #include <boost/mpl/bool_fwd.hpp>       // false_, true_
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/mpl/eval_if.hpp>        // eval_if
@@ -28,7 +28,7 @@ template<typename> struct is_restricted_repetitions             { enum { value =
 template<typename> struct max_repetitions                       { enum { value =  3 }; };       // (FMJD rule 6.1)
 
 // restricted consecutive non-conversion moves
-template<typename> struct is_restricted_reversible_moves        { enum { value = true }; };
+template<typename> struct is_restricted_reversible_moves        { enum { value = false }; };
 
 // maximum allowed consecutive non-conversion moves
 template<typename> struct max_reversible_moves                  { enum { value = 50 }; };       // (FMJD rule 6.2)
@@ -41,20 +41,20 @@ template<typename> struct max_2v1_moves                         { enum { value =
 //|      Capture ambiguity                                                     |
 //+----------------------------------------------------------------------------+
 
-template<typename> 
+template<typename>
 struct is_check_jump_uniqueness
 :
         boost::mpl::true_
 {};
 
 // intermediate capture directions
-template<typename T> 
+template<typename T>
 struct turn_directions
 :
         boost::mpl::identity<T>
 {};
 
-template<> 
+template<>
 struct turn_directions<directions::orth>
 :
         boost::mpl::identity<directions::diag>
@@ -117,7 +117,7 @@ struct Rules
 {
         // create argument pack
         typedef typename Signature::bind<
-                A1, A2, A3, A4, A5, A6, A7, 
+                A1, A2, A3, A4, A5, A6, A7,
                 A8, A9, A10, A11, A12, A13
         >::type args;
 
@@ -159,8 +159,8 @@ struct Rules
 
         typedef typename boost::parameter::value_type<
                 args, tag::is_jump_direction_reversal, boost::mpl::false_
-        >::type is_jump_direction_reversal;        
-        
+        >::type is_jump_direction_reversal;
+
         typedef typename boost::parameter::value_type<
                 args, tag::jump_removal, removal::apres_fini
         >::type jump_removal;
@@ -214,7 +214,7 @@ struct Rules
         >::type large_jump;
 
         typedef typename boost::mpl::not_<
-                std::is_same<jump_precedence, precedence::none> 
+                std::is_same<jump_precedence, precedence::none>
         >::type is_majority_precedence;
 
         // TODO: use C++11 template aliases

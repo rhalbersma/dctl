@@ -28,7 +28,7 @@ private:
         typedef typename Position::board_type Board;
         typedef angle::Compass<Color, Board> Compass;
         typedef capture::State<Position> State;
-        
+
 public:
         void operator()(Position const& p, Stack& moves) const
         {
@@ -268,13 +268,13 @@ private:
         template<typename Direction>
         bool jump(BitIndex jumper, State& capture) const
         {
-                if (!bit::is_element(jumper, capture.template targets<Direction>())) 
+                if (!bit::is_element(jumper, capture.template targets<Direction>()))
                         return false;                   // terminated
 
                 capture.make(jumper);
                 add_jump<Direction>(jumper, capture);   // recursively find more jumps
-                capture.undo(jumper);                
-                return true;                            // not terminated 
+                capture.undo(jumper);
+                return true;                            // not terminated
         }
 };
 
