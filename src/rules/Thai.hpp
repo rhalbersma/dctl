@@ -7,7 +7,7 @@ namespace dctl {
 namespace rules {
 
 struct Thai
-: 
+:
         Rules<
                 Thai,
                 king_range<range::distance_N>,
@@ -16,7 +16,7 @@ struct Thai
                 land_range<range::distance_1>,
                 is_jump_direction_reversal<boost::mpl::true_>,
                 jump_removal<removal::en_passant>
-        > 
+        >
 {};
 
 }       // namespace rules

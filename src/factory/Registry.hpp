@@ -57,7 +57,7 @@ private:
         }
 
         // representation
-        
+
         typedef std::map<Identifier, Creator> Lookup;
         Lookup lookup_;
 };

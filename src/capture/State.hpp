@@ -53,7 +53,7 @@ public:
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
 
-        // modifiers 
+        // modifiers
 
         void launch(BitIndex jump_sq)
         {
@@ -84,7 +84,7 @@ public:
         }
 
         void toggle_with_king()
-        {              
+        {
                 BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_relative_king_precedence>));
                 current_.toggle_with_king();
         }

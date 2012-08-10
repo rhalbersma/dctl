@@ -11,8 +11,8 @@ namespace board {
 
 template
 <
-        typename G, 
-        int R, 
+        typename G,
+        int R,
         int C
 >
 struct Coordinates
@@ -27,7 +27,7 @@ struct Coordinates
 
 template
 <
-        typename G, 
+        typename G,
         typename N
 >
 struct Square
@@ -84,8 +84,8 @@ template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
 :
         board::Coordinates<
-                Grid, 
-                Row, 
+                Grid,
+                Row,
                 Column
         >
 {};
@@ -95,23 +95,23 @@ template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
 :
         board::Coordinates<
-                Grid, 
-                Column, 
-                boost::mpl::minus< typename 
+                Grid,
+                Column,
+                boost::mpl::minus< typename
                         Grid::height,
                         boost::mpl::int_<1>,
                         boost::mpl::int_<Row>
                 >::value
         >
-{}; 
+{};
 
 // partial specialization for 90 degrees right rotations
 template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 :
         board::Coordinates<
-                Grid, 
-                boost::mpl::minus< typename 
+                Grid,
+                boost::mpl::minus< typename
                         Grid::width,
                         boost::mpl::int_<1>,
                         boost::mpl::int_<Column>
@@ -125,7 +125,7 @@ template<typename Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
 :
         board::Coordinates<
-                Grid, 
+                Grid,
                 boost::mpl::minus< typename
                         Grid::height,
                         boost::mpl::int_<1>,

@@ -15,6 +15,7 @@ struct Weight
         static int const center[];
         static int const balance[];
         static int const mobility;
+        static int const king_monopoly;
 };
 
 template<typename Rules, typename Board>
@@ -43,6 +44,9 @@ int const Weight<Rules, Board>::balance[] =
 
 template<typename Rules, typename Board>
 int const Weight<Rules, Board>::mobility = 1;
+
+template<typename Rules, typename Board>
+int const Weight<Rules, Board>::king_monopoly = 200;
 
 }       // namespace evaluate
 }       // namespace dctl

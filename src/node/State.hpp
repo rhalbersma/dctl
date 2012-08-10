@@ -17,10 +17,10 @@ int state(Position const& p)
 
 inline
 int state(bool color, BitBoard kings, BitBoard pawns)
-{      
+{
         // For purposes of move generation, a position has 8 possible states,
         // where the 3 bits of information indicate (in order of significance)
-        // the side to move, and the availability of kings and pawns, respectively. 
+        // the side to move, and the availability of kings and pawns, respectively.
         return (
                 ((color != 0) << 2) +   // most significant bit
                 ((kings != 0) << 1) +

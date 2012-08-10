@@ -21,7 +21,7 @@ struct Double
 
         Double* prev_;
         Double* next_;
-        
+
 private:
         // implementation
 

@@ -28,10 +28,10 @@ public:
         Derived* self()
         {
                 return const_cast<Derived*>(static_cast<Base const*>(this)->self());
-        }      
+        }
 
 protected:
-        // disable deletion of Derived* through Base* 
+        // disable deletion of Derived* through Base*
         // enable deletion of Base* through Derived*
         ~enable_crtp()
         {

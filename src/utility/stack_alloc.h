@@ -4,9 +4,9 @@
 
 template
 <
-        class T, 
+        class T,
         std::size_t N
-> 
+>
 class stack_alloc;
 
 template<std::size_t N>
@@ -32,8 +32,8 @@ public:
         typedef std::size_t       size_type;
         typedef std::ptrdiff_t    difference_type;
 
-        template <class U> 
-        struct rebind 
+        template <class U>
+        struct rebind
         {
                 typedef stack_alloc<U, N> other;
         };
@@ -66,27 +66,27 @@ private:
         {
                 return const_cast<pointer>(cend());
         }
-        
+
 public:
         // structors
 
         stack_alloc() throw()
-        : 
+        :
 		buf_(),
-                ptr_(begin()) 
+                ptr_(begin())
         {}
 
         stack_alloc(stack_alloc const&) throw()
-        : 
+        :
 		buf_(),
-                ptr_(begin()) 
+                ptr_(begin())
         {}
-        
-        template <class U> 
+
+        template <class U>
         stack_alloc(stack_alloc<U, N> const&) throw()
-        : 
+        :
 		buf_(),
-                ptr_(begin()) 
+                ptr_(begin())
         {}
 
 private:
@@ -159,9 +159,9 @@ public:
         {
                 return &lhs.buf_ == &rhs.buf_;
         }
-        
+
         friend bool operator!=(stack_alloc& lhs, stack_alloc& rhs) throw()
         {
-                return !(lhs == rhs); 
+                return !(lhs == rhs);
         }
 };

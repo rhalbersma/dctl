@@ -5,7 +5,7 @@ namespace dctl {
 
 template
 <
-        typename T, 
+        typename T,
         typename Link
 >
 struct Node

@@ -20,36 +20,36 @@ struct Iterator<T, link::Double>
 
         // structors
 
-        Iterator(link_type* it) 
+        Iterator(link_type* it)
         :
-                link_(it) 
+                link_(it)
         {}
 
         // modifiers
 
-        Iterator& operator++() 
-        { 
-                link_ = link_->next_; 
-                return *this; 
+        Iterator& operator++()
+        {
+                link_ = link_->next_;
+                return *this;
         }
 
-        Iterator operator++(int) 
+        Iterator operator++(int)
         {
-                auto tmp(*this); 
-                ++*this; 
+                auto tmp(*this);
+                ++*this;
                 return tmp;
         }
 
-        Iterator& operator--() 
-        { 
-                link_ = link_->prev_; 
-                return *this; 
+        Iterator& operator--()
+        {
+                link_ = link_->prev_;
+                return *this;
         }
 
-        Iterator operator--(int) 
+        Iterator operator--(int)
         {
-                auto tmp(*this); 
-                ++*this; 
+                auto tmp(*this);
+                ++*this;
                 return tmp;
         }
 
@@ -67,7 +67,7 @@ struct Iterator<T, link::Double>
 
         // predicates
 
-        bool operator==(Iterator const& other) const 
+        bool operator==(Iterator const& other) const
         {
                 return link_ == other.link_;
         }

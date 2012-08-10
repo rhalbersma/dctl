@@ -6,13 +6,13 @@
 namespace dctl {
 namespace notation {
 
-template<> 
+template<>
 struct Format<rules::Russian>
-: 
+:
         algebraic
 {};
 
-template<> 
+template<>
 struct Separator<rules::Russian>
 :
         detail::token<'-', ':'>

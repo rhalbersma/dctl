@@ -16,7 +16,7 @@ namespace dctl {
 
 template
 <
-        typename Rules, 
+        typename Rules,
         typename Board
 >
 struct Position

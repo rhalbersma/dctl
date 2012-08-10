@@ -10,8 +10,8 @@ namespace bit {
 
 template
 <
-        std::size_t N, 
-        typename T = uint64_t 
+        std::size_t N,
+        typename T = uint64_t
 >
 class Array
 :       boost::bitwise< Array<N, T> >
@@ -19,7 +19,7 @@ class Array
 ,       boost::totally_ordered< Array<N, T> >
 {
 public:
-        // structors 
+        // structors
 
         Array()
         {
@@ -74,14 +74,14 @@ public:
                 std::size_t const between = pos / BITS_PER_BLOCK;
                 std::size_t const within  = pos % BITS_PER_BLOCK;
 
-                if (!within) {                      
+                if (!within) {
                         for (auto i = N - 1; i >= between; --i)
                                 bits_[i] = bits_[i - between];
                 } else {
                         std::size_t const co_within = BITS_PER_BLOCK - within;
 
                         for (auto i = N - 1; i > between; --i)
-                                bits_[i] = 
+                                bits_[i] =
                                         (bits_[i - between    ] <<    within) |
                                         (bits_[i - between - 1] >> co_within)
                                 ;
@@ -109,7 +109,7 @@ public:
                         std::size_t const co_within = BITS_PER_BLOCK - within;
 
                         for (auto i = 0; i < co_between; ++i)
-                                bits_[i] = 
+                                bits_[i] =
                                         (bits_[i + between    ] >>    within) |
                                         (bits_[i + between + 1] << co_within)
                                 ;

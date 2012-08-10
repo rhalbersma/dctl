@@ -6,7 +6,7 @@ namespace detail {
 
 template
 <
-        bool, int, typename, typename Position, 
+        bool, int, typename, typename Position,
         typename Range = typename Position::rules_type::king_range
 >
 struct detector;

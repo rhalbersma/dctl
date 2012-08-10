@@ -28,7 +28,7 @@ public:
         }
 
 protected:
-        // disable deletion of Derived* through Base* 
+        // disable deletion of Derived* through Base*
         // enable deletion of Base* through Derived*
         ~LinkInterface()
         {

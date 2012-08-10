@@ -72,15 +72,15 @@ private:
         bool invariant() const
         {
                 return (
-                        (0 <= num_kings_) && 
-                        (num_kings_ <= num_pieces_) && 
+                        (0 <= num_kings_) &&
+                        (num_kings_ <= num_pieces_) &&
                         (num_pieces_ <= std::numeric_limits<int>::max())
                 );
         }
 
         bool empty(bool is_captured_king) const
         {
-                return (is_captured_king? num_kings_ : num_pieces_) == 0; 
+                return (is_captured_king? num_kings_ : num_pieces_) == 0;
         }
 
         bool full() const

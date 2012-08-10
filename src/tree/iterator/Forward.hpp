@@ -25,23 +25,23 @@ struct Iterator<T, link::Single>
                 link_()
         {}
 
-        explicit Iterator(link_type* it) 
+        explicit Iterator(link_type* it)
         :
-                link_(it) 
+                link_(it)
         {}
 
         // modifiers
 
-        Iterator& operator++() 
-        { 
-                link_ = link_->next_; 
-                return *this; 
+        Iterator& operator++()
+        {
+                link_ = link_->next_;
+                return *this;
         }
 
-        Iterator operator++(int) 
+        Iterator operator++(int)
         {
-                auto tmp(*this); 
-                ++*this; 
+                auto tmp(*this);
+                ++*this;
                 return tmp;
         }
 
@@ -59,7 +59,7 @@ struct Iterator<T, link::Single>
 
         // predicates
 
-        bool operator==(Iterator const& other) const 
+        bool operator==(Iterator const& other) const
         {
                 return link_ == other.link_;
         }
