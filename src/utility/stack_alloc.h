@@ -72,20 +72,20 @@ public:
 
         stack_alloc() throw()
         :
-		buf_(),
+                buf_(),
                 ptr_(begin())
         {}
 
         stack_alloc(stack_alloc const&) throw()
         :
-		buf_(),
+                buf_(),
                 ptr_(begin())
         {}
 
         template <class U>
         stack_alloc(stack_alloc<U, N> const&) throw()
         :
-		buf_(),
+                buf_(),
                 ptr_(begin())
         {}
 
