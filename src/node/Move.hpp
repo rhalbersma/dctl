@@ -4,7 +4,7 @@
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/operators.hpp>          // equality_comparable, xorable
 #include "Move_fwd.hpp"
-#include "PiecesInterface.hpp"
+#include "IPieces.hpp"
 #include "Side.hpp"
 #include "../bit/Bit.hpp"
 #include "../rules/Enum.hpp"
@@ -16,7 +16,7 @@ template<typename T>
 struct Move_
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public PiecesInterface< Move_, T >,
+        public IPieces< Move_, T >,
         private boost::equality_comparable< Move_<T> >
         ,       boost::xorable< Move_<T> >
 {
@@ -140,7 +140,7 @@ private:
 
         // queries
 
-        friend class PiecesInterface< ::dctl::Move_, T >;
+        friend class IPieces< ::dctl::Move_, T >;
 
         // black or white pawns
         T do_pawns(bool color) const

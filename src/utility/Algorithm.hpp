@@ -1,5 +1,5 @@
 #pragma once
-#include <algorithm>                    // generate_n, min_element, rotate, upper_bound
+#include <algorithm>                    // for_each, generate_n, min_element, rotate, upper_bound
 #include <iterator>                     // iter_swap, next
 
 namespace dctl {

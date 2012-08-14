@@ -3,7 +3,7 @@
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <boost/lexical_cast.hpp>       // lexical_cast
-#include "MessageInterface.hpp"
+#include "IMessage.hpp"
 #include "../factory/mixin.hpp"
 
 namespace dctl {
@@ -19,7 +19,7 @@ namespace dxp {
 class GameEnd
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::FactoryCreate<'E', GameEnd, MessageInterface>
+        public mixin::FactoryCreate<'E', GameEnd, IMessage>
 {
 public:
         // typedefs

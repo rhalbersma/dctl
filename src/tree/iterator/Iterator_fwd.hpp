@@ -4,7 +4,12 @@ namespace dctl {
 namespace tree {
 namespace iterator {
 
-template<Value, Link>
+template
+<
+        template<typename, typename>,
+        typename,
+        typename
+>
 struct Iterator;
 
 }       // namespace iterator

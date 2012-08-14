@@ -1,6 +1,6 @@
 #pragma once
 #include <string>                       // string
-#include "MessageInterface.hpp"
+#include "IMessage.hpp"
 #include "../factory/mixin.hpp"
 
 namespace dctl {
@@ -16,7 +16,7 @@ namespace dxp {
 class Chat
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::FactoryCreate<'C', Chat, MessageInterface>
+        public mixin::FactoryCreate<'C', Chat, IMessage>
 {
 public:
         // structors

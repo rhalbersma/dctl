@@ -5,7 +5,7 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // lexical_cast
-#include "MessageInterface.hpp"
+#include "IMessage.hpp"
 #include "../factory/mixin.hpp"
 
 namespace dctl {
@@ -21,7 +21,7 @@ namespace dxp {
 class GameRequest
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::FactoryCreate<'R', GameRequest, MessageInterface>
+        public mixin::FactoryCreate<'R', GameRequest, IMessage>
 {
 public:
         // constants and typedefs

@@ -8,7 +8,7 @@ template
         template<typename> class Impl,
         typename T
 >
-class PiecesInterface
+class IPieces
 :
         // enable static polymorphism
         private enable_crtp< Impl<T> >
@@ -55,7 +55,7 @@ public:
 protected:
         // disable deletion of Derived* through Base*
         // enable deletion of Base* through Derived*
-        ~PiecesInterface()
+        ~IPieces()
         {
                 // no-op
         }

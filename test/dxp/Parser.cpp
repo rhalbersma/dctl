@@ -2,7 +2,7 @@
 #include <string>                               // string
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL
 #include <boost/mpl/vector.hpp>                 // vector
-#include "../../src/dxp/MessageInterface.hpp"
+#include "../../src/dxp/IMessage.hpp"
 #include "../../src/dxp/Types.hpp"
 #include "../../src/factory/Factory.hpp"
 
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
 
         Factory<
                 MessageTypes,
-                MessageInterface
+                IMessage
         > factory;
 
         for (auto it = std::begin(messages); it != std::end(messages); ++it) {

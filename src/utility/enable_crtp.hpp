@@ -16,9 +16,9 @@ private:
         typedef enable_crtp Base;
 
 public:
-        // casting "down" the inheritance hierarchy
         Derived const* self() const
         {
+                // casting "down" the inheritance hierarchy
                 BOOST_MPL_ASSERT((std::is_base_of<Base, Derived>));
                 return static_cast<Derived const*>(this);
         }

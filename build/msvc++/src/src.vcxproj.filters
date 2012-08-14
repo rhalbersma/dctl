@@ -96,9 +96,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\dxp\MessageInterface.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\capture\Frisian.hpp">
       <Filter>Header Files\capture</Filter>
     </ClInclude>
@@ -447,18 +444,6 @@
     <ClInclude Include="..\..\..\src\bit\Array.hpp">
       <Filter>Header Files\bit</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\tree\tree.hpp">
-      <Filter>Header Files\tree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\tree\link\Double.hpp">
-      <Filter>Header Files\tree\link</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\tree\link\LinkInterface.hpp">
-      <Filter>Header Files\tree\link</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\tree\link\Single.hpp">
-      <Filter>Header Files\tree\link</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\node\Material.hpp">
       <Filter>Header Files\node</Filter>
     </ClInclude>
@@ -466,9 +451,6 @@
       <Filter>Header Files\node</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\node\Move_fwd.hpp">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\node\PiecesInterface.hpp">
       <Filter>Header Files\node</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\node\Position.hpp">
@@ -502,9 +484,6 @@
       <Filter>Header Files\node</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\tree\iterator\Forward.hpp">
-      <Filter>Header Files\tree\iterator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\tree\iterator\BiDirectional.hpp">
       <Filter>Header Files\tree\iterator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\tree\iterator\Iterator_fwd.hpp">
@@ -665,6 +644,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\successor\Invariant.hpp">
       <Filter>Header Files\successor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\tree\Node.hpp">
+      <Filter>Header Files\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\node\IPieces.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\tree\link\ISingle.hpp">
+      <Filter>Header Files\tree\link</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\IMessage.hpp">
+      <Filter>Header Files\dxp</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

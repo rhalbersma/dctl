@@ -1,55 +1,59 @@
 #pragma once
 #include <iterator>                     // iterator, forward_iterator_tag
 #include <type_traits>                  // is_base_of
-#include <boost/config.hpp>             // BOOST_ASSERT
+#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable
 #include "Iterator_fwd.hpp"
-#include "../link/Single.hpp"
+#include "../link/ISingle.hpp"
 
 namespace dctl {
 namespace tree {
 namespace iterator {
 
-template<typename T>
-struct Iterator<T, link::Single>
+template<template<typename, typename> class Node, typename T>
+struct Iterator<Node, link::single_tag, T>
 :
+        // Curiously Recurring Template Pattern (CRTP)
         public std::iterator<std::forward_iterator_tag, T>,
-        private boost::equality_comparable< Iterator<T, link::Single> >
+        private boost::equality_comparable< Iterator<Node, link::single_tag, T> >
 {
-        typedef link::Single link_type;
+public:
+        // typedefs
+
+        typedef Node<link::ISingle, T>* node_ptr;
 
         // structors
 
         Iterator()
         :
-                link_()
+                pnode_()
         {}
 
-        explicit Iterator(link_type* it)
+        explicit Iterator(node_ptr it)
         :
-                link_(it)
+                pnode_(it)
         {}
 
         // modifiers
 
         Iterator& operator++()
         {
-                link_ = link_->next_;
+                pnode_ = pnode_->next();
                 return *this;
         }
 
         Iterator operator++(int)
         {
-                auto tmp(*this);
+                auto const old = *this;
                 ++*this;
-                return tmp;
+                return old;
         }
 
         // queries
 
         reference operator*() const
         {
-                return node()->value_;
+                return pnode_->value_;
         }
 
         pointer operator->() const
@@ -59,37 +63,22 @@ struct Iterator<T, link::Single>
 
         // predicates
 
-        bool operator==(Iterator const& other) const
+        friend bool operator==(Iterator const& lhs, Iterator const& rhs)
         {
-                return link_ == other.link_;
+                return lhs.pnode_ == rhs.pnode_;
         }
-
-        // representation
-
-        link_type* link_;
 
 private:
-        typedef Node<T, link_type> node_type;
+        // representation
 
-        // implementation
-
-        node_type* node() const
-        {
-                BOOST_MPL_ASSERT((std::is_base_of<link_type, node_type>));
-                return static_cast<node_type*>(this);
-        }
-
-        bool empty() const
-        {
-                return link_ != nullptr;
-        }
+        node_ptr pnode_;
 };
 
 // TODO: use C++11 template aliases
-template<T>
+template<template<typename, typename> class Node, typename T>
 struct Forward
 :
-        Iterator<T, link::Single>
+        Iterator<Node, link::single_tag, T>
 {};
 
 }       // namespace iterator

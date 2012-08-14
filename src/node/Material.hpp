@@ -2,7 +2,7 @@
 #include <type_traits>                  // is_base_of
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable
-#include "PiecesInterface.hpp"
+#include "IPieces.hpp"
 #include "Move.hpp"
 #include "../utility/IntegerTypes.hpp"
 
@@ -12,7 +12,7 @@ template<typename T>
 struct Material_
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public PiecesInterface< Material_, T >,
+        public IPieces< Material_, T >,
         private boost::equality_comparable< Material_<T> >
 {
         enum {
@@ -50,7 +50,7 @@ struct Material_
         template<template<typename> class U>
         Material_& operator^=(U<T> const& m)
         {
-                BOOST_MPL_ASSERT((std::is_base_of<PiecesInterface<U, T>, U<T> >));
+                BOOST_MPL_ASSERT((std::is_base_of<IPieces<U, T>, U<T> >));
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);
                 kings_ ^= m.kings();
@@ -83,7 +83,7 @@ private:
 
         // queries
 
-        friend class PiecesInterface< ::dctl::Material_, T >;
+        friend class IPieces< ::dctl::Material_, T >;
 
         // black or white pawns
         T do_pawns(bool color) const
