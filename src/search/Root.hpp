@@ -107,12 +107,11 @@ private:
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
-
-                /*
+/*
                 double const hashfull = 1000 * (static_cast<double>((TT.size() - TT.available())) / TT.size());
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
-                */
+*/                
                 std::cout << "\n";
                 print_pv(p, pv);
         }

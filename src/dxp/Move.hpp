@@ -5,7 +5,7 @@
 #include <string>                       // string
 #include <vector>                       // vector
 #include <boost/lexical_cast.hpp>       // lexical_cast
-#include "MessageInterface.hpp"
+#include "IMessage.hpp"
 #include "../factory/mixin.hpp"
 
 namespace dctl {
@@ -21,7 +21,7 @@ namespace dxp {
 class Move
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::FactoryCreate<'M', Move, MessageInterface>
+        public mixin::FactoryCreate<'M', Move, IMessage>
 {
 public:
         // structors

@@ -160,7 +160,7 @@
     <ClInclude Include="..\..\..\src\dxp\GameAcknowledge.hpp" />
     <ClInclude Include="..\..\..\src\dxp\GameEnd.hpp" />
     <ClInclude Include="..\..\..\src\dxp\GameRequest.hpp" />
-    <ClInclude Include="..\..\..\src\dxp\MessageInterface.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\IMessage.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Move.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Traits.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Types.hpp" />
@@ -192,7 +192,7 @@
     <ClInclude Include="..\..\..\src\node\Material.hpp" />
     <ClInclude Include="..\..\..\src\node\Move.hpp" />
     <ClInclude Include="..\..\..\src\node\Move_fwd.hpp" />
-    <ClInclude Include="..\..\..\src\node\PiecesInterface.hpp" />
+    <ClInclude Include="..\..\..\src\node\IPieces.hpp" />
     <ClInclude Include="..\..\..\src\node\Position.hpp" />
     <ClInclude Include="..\..\..\src\node\Position_fwd.hpp" />
     <ClInclude Include="..\..\..\src\node\Predicates.hpp" />
@@ -287,13 +287,10 @@
     <ClInclude Include="..\..\..\src\successor\Invariant.hpp" />
     <ClInclude Include="..\..\..\src\successor\Mobility.hpp" />
     <ClInclude Include="..\..\..\src\successor\Select.hpp" />
-    <ClInclude Include="..\..\..\src\tree\iterator\BiDirectional.hpp" />
     <ClInclude Include="..\..\..\src\tree\iterator\Forward.hpp" />
     <ClInclude Include="..\..\..\src\tree\iterator\Iterator_fwd.hpp" />
-    <ClInclude Include="..\..\..\src\tree\link\Double.hpp" />
-    <ClInclude Include="..\..\..\src\tree\link\LinkInterface.hpp" />
-    <ClInclude Include="..\..\..\src\tree\link\Single.hpp" />
-    <ClInclude Include="..\..\..\src\tree\tree.hpp" />
+    <ClInclude Include="..\..\..\src\tree\link\ISingle.hpp" />
+    <ClInclude Include="..\..\..\src\tree\Node.hpp" />
     <ClInclude Include="..\..\..\src\utility\algorithm.hpp" />
     <ClInclude Include="..\..\..\src\utility\CacheAlign.hpp" />
     <ClInclude Include="..\..\..\src\utility\enable_crtp.hpp" />

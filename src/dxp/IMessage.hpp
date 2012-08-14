@@ -10,19 +10,19 @@ namespace dxp {
 
 /*
 
-        The format and semantics of MessageInterface are defined at:
+        The format and semantics of IMessage are defined at:
         http://www.mesander.nl/damexchange/edxplg2.htm
 
 */
 
-class MessageInterface
+class IMessage
 :
         public mixin::HeaderBodyTerminator< 1, 126, '\0' >,
         private boost::noncopyable
 {
 public:
         // enable deletion of a Derived* through a Base*
-        virtual ~MessageInterface()
+        virtual ~IMessage()
         {
                 // no-op
         }
