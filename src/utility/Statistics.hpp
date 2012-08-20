@@ -1,3 +1,4 @@
+#pragma once
 #include <algorithm>                    // std:max
 #include "../utility/IntegerTypes.hpp"
 

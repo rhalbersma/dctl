@@ -31,48 +31,6 @@ T reverse_singlet(int i)
         return singlet<T>(num_bits<T>::value - 1 - i);
 }
 
-// [i, i+1)
-template<typename T>
-T equal(int i)
-{
-        return singlet<T>(i);
-}
-
-// [0, ..., i-1, i+1, ... N)
-template<typename T>
-T not_equal(int i)
-{
-        return ~equal<T>(i);
-}
-
-// [0, i)
-template<typename T>
-T less(int i)
-{
-        return equal<T>(i) - 1;
-}
-
-// [0, i] == [0, i+1)
-template<typename T>
-T less_equal(int i)
-{
-        return less<T>(i + 1);
-}
-
-// [i+1, N)
-template<typename T>
-T greater(int i)
-{
-        return ~less_equal<T>(i);
-}
-
-// [i, N)
-template<typename T>
-T greater_equal(int i)
-{
-        return ~less<T>(i);
-}
-
 // 0 bits set to 1
 template<typename T>
 bool is_zero(T b)
@@ -206,6 +164,52 @@ int count_loop(T b)
                 ++count;
         return count;
 }
+
+namespace range {
+
+// [i, i+1)
+template<typename T>
+T equal(int i)
+{
+        return singlet<T>(i);
+}
+
+// [0, ..., i-1, i+1, ... N)
+template<typename T>
+T not_equal(int i)
+{
+        return ~equal<T>(i);
+}
+
+// [0, i)
+template<typename T>
+T less(int i)
+{
+        return equal<T>(i) - 1;
+}
+
+// [0, i] == [0, i+1)
+template<typename T>
+T less_equal(int i)
+{
+        return less<T>(i + 1);
+}
+
+// [i+1, N)
+template<typename T>
+T greater(int i)
+{
+        return ~less_equal<T>(i);
+}
+
+// [i, N)
+template<typename T>
+T greater_equal(int i)
+{
+        return ~less<T>(i);
+}
+
+}       // namespace range
 
 namespace detail {
 

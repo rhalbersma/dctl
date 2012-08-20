@@ -48,8 +48,7 @@ public:
                 NodeCount move_leafs;
 
                 Timer timer;
-                Stack moves;
-                successor::generate(p, moves);
+                auto moves = successor::generate(p);
 
                 announce(p, depth, moves.size());
                 for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
@@ -160,8 +159,7 @@ private:
                 if (depth == 0)
                         return 1;
 
-                Stack moves;
-                successor::generate(p, moves);
+                auto moves = successor::generate(p);
                 NodeCount leafs = 0;
                 for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
@@ -177,8 +175,7 @@ private:
         {
                 statistics_.update(ply);
 
-                Stack moves;
-                successor::generate(p, moves);
+                auto moves = successor::generate(p);
                 if (depth == 1)
                         return moves.size();
 
@@ -200,8 +197,7 @@ private:
                 if (depth == 1)
                         return successor::count(p);
 
-                Stack moves;
-                successor::generate(p, moves);
+                auto moves = successor::generate(p);
                 NodeCount leafs = 0;
                 for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
@@ -224,8 +220,7 @@ private:
                 if (depth == 0)
                         return 1;
 
-                Stack moves;
-                successor::generate(p, moves);
+                auto moves = successor::generate(p);
                 NodeCount leafs = 0;
                 for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                         auto q = p;
@@ -251,8 +246,7 @@ private:
                 if (depth == 1) {
                         leafs = successor::count(p);
                 } else {
-                        Stack moves;
-                        successor::generate(p, moves);
+                        auto moves = successor::generate(p);
                         leafs = 0;
                         for (auto m = std::begin(moves); m != std::end(moves); ++m) {
                                 auto q = p;
