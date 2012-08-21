@@ -657,5 +657,59 @@
     <ClInclude Include="..\..\..\src\dxp\IMessage.hpp">
       <Filter>Header Files\dxp</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\generation\Conversion.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\generation\BothPromotions.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\generation\PawnPromotions.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\generation\BothReverse.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\generation\KingReverse.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\generation\PawnReverse.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\detection\Conversion.hpp">
+      <Filter>Header Files\successor\detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\detection\BothPromotions.hpp">
+      <Filter>Header Files\successor\detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\detection\PawnPromotions.hpp">
+      <Filter>Header Files\successor\detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\detection\BothReverse.hpp">
+      <Filter>Header Files\successor\detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\detection\KingReverse.hpp">
+      <Filter>Header Files\successor\detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\detection\PawnReverse.hpp">
+      <Filter>Header Files\successor\detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\enumeration\Conversion.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\enumeration\BothPromotions.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\enumeration\PawnPromotions.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\enumeration\BothReverse.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\enumeration\KingReverse.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\enumeration\PawnReverse.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
