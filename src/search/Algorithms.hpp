@@ -83,7 +83,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
                 return TT_entry->value();
 
         // generate moves
-        auto moves = successor::generate(p);
+        auto const moves = successor::generate(p);
         BOOST_ASSERT(!moves.empty());
 
         Order move_order;

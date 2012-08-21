@@ -131,7 +131,7 @@ private:
                         return;
                 }
 
-                auto moves = successor::generate(p);
+                auto const moves = successor::generate(p);
                 auto const index = pv[ply] % moves.size();
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
@@ -152,7 +152,7 @@ private:
                         return;
                 }
 
-                auto moves = successor::generate(p);
+                auto const moves = successor::generate(p);
                 auto const best_move = moves[pv[ply] % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
