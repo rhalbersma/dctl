@@ -3,11 +3,11 @@
 #include "Generator_fwd.hpp"
 #include "Primary.hpp"
 #include "BothJumps.hpp"
-#include "BothMoves.hpp"
+#include "BothPromotions.hpp"
 #include "KingJumps.hpp"
-#include "KingMoves.hpp"
+// there are no king promotions
 #include "PawnJumps.hpp"
-#include "PawnMoves.hpp"
+#include "PawnPromotions.hpp"
 #include "../Select.hpp"
 #include "../../node/Stack.hpp"
 
@@ -17,7 +17,7 @@ namespace detail {
 
 // partial specialization for legal successors
 template<bool Color, int Material, typename Position>
-struct generator<Color, Material, Legal, Position>
+struct generator<Color, Material, Conversion, Position>
 :
         public std::function<void(Position const&, Stack&)>
 {
@@ -25,14 +25,14 @@ private:
         // typedefs
 
         typedef generator<Color, Material, Jumps, Position> DoJumps;
-        typedef generator<Color, Material, Moves, Position> DoMoves;
+        typedef generator<Color, Material, Promotions, Position> DoPromotions;
 
 public:
         void operator()(Position const& p, Stack& moves) const
         {
                 DoJumps()(p, moves);
                 if (moves.empty())
-                        DoMoves()(p, moves);
+                        DoPromotions()(p, moves);
         }
 };
 
