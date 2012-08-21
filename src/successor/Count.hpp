@@ -10,7 +10,7 @@ namespace successor {
 template<typename Position>
 int count(Position const& p)
 {
-        return count<Material::both, Legal>(p);
+        return count<Material::both, DefaultSelection>(p);
 }
 
 template<int Material, typename Selection, typename Position>

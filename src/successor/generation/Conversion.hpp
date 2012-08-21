@@ -24,7 +24,7 @@ struct generator<Color, Material, Conversion, Position>
 private:
         // typedefs
 
-        typedef generator<Color, Material, Jumps, Position> DoJumps;
+        typedef generator<Color, Material, Jumps,      Position> DoJumps;
         typedef generator<Color, Material, Promotions, Position> DoPromotions;
 
 public:

@@ -23,7 +23,7 @@ struct enumerator<Color, Material, Conversion, Position>
 private:
         // typedefs
 
-        typedef enumerator<Color, Material, Jumps, Position> DoJumps;
+        typedef enumerator<Color, Material, Jumps,      Position> DoJumps;
         typedef enumerator<Color, Material, Promotions, Position> DoPromotions;
 
 public:
@@ -31,7 +31,7 @@ public:
         {
                 auto num_moves = DoJumps()(p);
                 if (!num_moves)
-                        num_moves += DoMoves()(p);
+                        num_moves += DoPromotions()(p);
                 return num_moves;
         }
 };
