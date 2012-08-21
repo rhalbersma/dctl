@@ -10,7 +10,7 @@ struct Moves;
 struct Reverse;
 struct Promotions;
 
-typedef Conversion DefaultSelection;
+typedef Legal DefaultSelection;
 
 }       // namespace successor
 }       // namespace dctl

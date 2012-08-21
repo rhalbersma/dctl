@@ -25,7 +25,7 @@ public:
         void operator()(Position const& p, Stack& moves) const
         {
                 if (auto const active_pawns = p.pawns(Color))
-                        PassivePawnMoves::select(active_pawns, not_occupied(p), moves);
+                        PassivePawnMoves().select(active_pawns, not_occupied(p), moves);
         }
 };
 
