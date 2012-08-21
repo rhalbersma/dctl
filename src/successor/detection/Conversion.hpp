@@ -23,18 +23,18 @@ struct detector<Color, Material, Conversion, Position, Range>
 private:
         // typedefs
 
+        typedef detector<Color, Material, Jumps,      Position, Range                   > DoJumps;
+
         // only pawns can promote and they always have rules::range::distance_1
         typedef detector<Color, Material, Promotions, Position, rules::range::distance_1> DoPromotions;
-
-        typedef detector<Color, Material, Jumps, Position, Range> DoJumps;
 
 public:
         bool operator()(Position const& p) const
         {
-                // speculate #promotions > #jumps, so that the || is likely to short-circuit
+                // speculate #jumps > #promotions, so that the || is likely to short-circuit
                 return (
-                        DoPromotions()(p) ||
-                        DoJumps()(p)
+                        DoJumps()(p) || 
+                        DoPromotions()(p)                        
                 );
         }
 };

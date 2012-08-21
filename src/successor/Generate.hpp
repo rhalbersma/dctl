@@ -13,7 +13,7 @@ namespace successor {
 template<typename Position>
 Stack generate(Position const& p)
 {
-        return generate<Material::both, Legal>(p);
+        return generate<Material::both, DefaultSelection>(p);
 }
 
 template<int Material, typename Selection, typename Position>

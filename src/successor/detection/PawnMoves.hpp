@@ -34,12 +34,12 @@ public:
                         return false;
         }
 
-private:
         bool select(BitBoard active_pawns, BitBoard not_occupied) const
         {
                 return branch(active_pawns, not_occupied);
         }
 
+private:
         bool branch(BitBoard active_pawns, BitBoard not_occupied) const
         {
                 return (
