@@ -275,12 +275,12 @@ private:
         bool jump(BitIndex jumper, State& capture) const
         {
                 if (!bit::is_element(jumper, capture.template targets<Direction>()))
-                        return false;                   // terminated
+                        return false;
 
                 capture.make(jumper);
                 add_jump<Direction>(jumper, capture);   // recursively find more jumps
                 capture.undo(jumper);
-                return true;                            // not terminated
+                return true;
         }
 };
 
