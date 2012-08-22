@@ -7,12 +7,9 @@
 #include <boost/mpl/int_fwd.hpp>        // int_
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 
-#define BOOST_PARAMETER_MAX_ARITY 14    // will be infinite with C++11 variadic templates
-#include <boost/parameter.hpp>
-#undef BOOST_PARAMETER_MAX_ARITY
-
 #include "Enum.hpp"
 #include "../capture/Value_fwd.hpp"
+#include "../guarded/parameter.hpp"     // Boost.Parameter
 
 namespace dctl {
 namespace rules {

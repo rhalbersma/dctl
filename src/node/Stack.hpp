@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>                       // vector
 #include "Move.hpp"
-#include "../utility/stack_alloc.hpp"
+#include "../guarded/stack_alloc.hpp"
 
 namespace dctl {
 
