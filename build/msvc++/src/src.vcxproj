@@ -175,6 +175,10 @@
     <ClInclude Include="..\..\..\src\group\action.hpp" />
     <ClInclude Include="..\..\..\src\group\axioms.hpp" />
     <ClInclude Include="..\..\..\src\group\primitives.hpp" />
+    <ClInclude Include="..\..\..\src\guarded\parameter.hpp" />
+    <ClInclude Include="..\..\..\src\guarded\is_permutation.hpp" />
+    <ClInclude Include="..\..\..\src\guarded\stack_alloc.hpp" />
+    <ClInclude Include="..\..\..\src\guarded\unguarded\stack_alloc.h" />
     <ClInclude Include="..\..\..\src\hash\Find.hpp" />
     <ClInclude Include="..\..\..\src\hash\Functions.hpp" />
     <ClInclude Include="..\..\..\src\hash\DualMap.hpp" />
@@ -312,16 +316,14 @@
     <ClInclude Include="..\..\..\src\utility\algorithm.hpp" />
     <ClInclude Include="..\..\..\src\utility\CacheAlign.hpp" />
     <ClInclude Include="..\..\..\src\utility\enable_crtp.hpp" />
+    <ClInclude Include="..\..\..\src\utility\guarded_parameters.hpp" />
     <ClInclude Include="..\..\..\src\utility\IntegerTypes.hpp" />
-    <ClInclude Include="..\..\..\src\utility\is_permutation.hpp" />
     <ClInclude Include="..\..\..\src\utility\make_unique.hpp" />
     <ClInclude Include="..\..\..\src\utility\nonconstructible.hpp" />
     <ClInclude Include="..\..\..\src\utility\Ply.hpp" />
-    <ClInclude Include="..\..\..\src\utility\stack_alloc.h" />
     <ClInclude Include="..\..\..\src\utility\Statistics.hpp" />
     <ClInclude Include="..\..\..\src\utility\Timer.hpp" />
     <ClInclude Include="..\..\..\src\utility\total_order.hpp" />
-    <ClInclude Include="..\..\..\src\utility\stack_alloc.hpp" />
     <ClInclude Include="..\..\..\src\walk\Root.hpp" />
     <ClInclude Include="..\..\..\src\walk\Transposition.hpp" />
   </ItemGroup>

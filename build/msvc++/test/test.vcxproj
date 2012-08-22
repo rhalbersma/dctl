@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Full</Optimization>
       <PreprocessorDefinitions>WIN32;NOMINMAX;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -68,7 +68,7 @@
       <CompileAsManaged>false</CompileAsManaged>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerListingLocation>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</AssemblerListingLocation>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>precompiled.hpp</PrecompiledHeaderFile>
       <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <CompileAs>Default</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -89,7 +89,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -113,11 +113,12 @@
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerListingLocation>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</AssemblerListingLocation>
       <UseFullPaths>true</UseFullPaths>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>precompiled.hpp</PrecompiledHeaderFile>
       <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <CompileAs>Default</CompileAs>
       <ExceptionHandling>Async</ExceptionHandling>
       <SmallerTypeCheck>false</SmallerTypeCheck>
+      <AdditionalOptions>/FI"precompiled.hpp" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,7 +136,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\test\Boost_pch.hpp" />
+    <ClInclude Include="..\..\..\test\precompiled.hpp" />
     <ClInclude Include="..\..\..\test\search\Fixture.hpp" />
+    <ClInclude Include="..\..\..\test\STL_pch.hpp" />
     <ClInclude Include="..\..\..\test\successor\rulebook\Fixture.hpp" />
     <ClInclude Include="..\..\..\test\test_config.hpp" />
     <ClInclude Include="..\..\..\test\walk\Fixture.hpp" />
@@ -150,6 +154,12 @@
     <ClCompile Include="..\..\..\test\board\Traits.cpp" />
     <ClCompile Include="..\..\..\test\dxp\Parser.cpp" />
     <ClCompile Include="..\..\..\test\mpl\algorithm.cpp" />
+    <ClCompile Include="..\..\..\test\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.hpp</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">precompiled.hpp</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="..\..\..\test\search\egdb\Frisian.cpp" />
     <ClCompile Include="..\..\..\test\search\egdb\International.cpp" />
     <ClCompile Include="..\..\..\test\search\egdb\Killer.cpp" />

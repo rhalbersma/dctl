@@ -11,7 +11,7 @@
 #include "../../../src/node/Stack.hpp"
 #include "../../../src/setup/Setup.hpp"
 #include "../../../src/notation/String.hpp"
-#include "../../../src/utility/is_permutation.hpp"
+#include "../../../src/guarded/is_permutation.hpp"
 
 namespace dctl {
 namespace successor {

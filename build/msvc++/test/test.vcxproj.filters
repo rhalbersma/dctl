@@ -123,6 +123,9 @@
     <ClCompile Include="..\..\..\test\walk\italian\Gilbert.cpp">
       <Filter>Source Files\walk\italian</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\test\precompiled.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\test\test_config.hpp">
@@ -136,6 +139,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\test\walk\Fixture.hpp">
       <Filter>Source Files\walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\STL_pch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\Boost_pch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\precompiled.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

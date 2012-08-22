@@ -94,6 +94,12 @@
     <Filter Include="Header Files\successor\generation">
       <UniqueIdentifier>{14fdb32d-e22d-421e-b804-5d359e3cec74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\guarded">
+      <UniqueIdentifier>{d94f0fa3-7e0b-4b56-b90c-3619cbd13221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\guarded\unguarded">
+      <UniqueIdentifier>{1b30e7e6-fb13-4fd9-851b-783d048f541a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\capture\Frisian.hpp">
@@ -495,9 +501,6 @@
     <ClInclude Include="..\..\..\src\egdb\Cache.hpp">
       <Filter>Header Files\egdb</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\stack_alloc.h">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\rules\Checkers_fwd.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
@@ -606,12 +609,6 @@
     <ClInclude Include="..\..\..\src\successor\Select.hpp">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\is_permutation.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\stack_alloc.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\evaluate\Score.hpp">
       <Filter>Header Files\evaluate</Filter>
     </ClInclude>
@@ -710,6 +707,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\successor\enumeration\PawnReverse.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utility\guarded_parameters.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\guarded\is_permutation.hpp">
+      <Filter>Header Files\guarded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\guarded\stack_alloc.hpp">
+      <Filter>Header Files\guarded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\guarded\parameter.hpp">
+      <Filter>Header Files\guarded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\guarded\unguarded\stack_alloc.h">
+      <Filter>Header Files\guarded\unguarded</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
