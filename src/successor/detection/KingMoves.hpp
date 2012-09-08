@@ -28,7 +28,7 @@ private:
 public:
         bool operator()(Position const& p) const
         {
-                if (auto const active_kings = unrestricted_kings(p, Color))
+                if (auto const active_kings = moveable_kings(p, Color))
                         return select(active_kings, not_occupied(p));
                 else
                         return false;
