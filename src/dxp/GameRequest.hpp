@@ -77,7 +77,7 @@ public:
 
         // output
 
-        static std::string str(std::string const& n, char c, int min, int mov, SetupCode s, std::string p)
+        static std::string str(std::string const& n, char c, int min, int mov, SetupCode s, std::string const& p)
         {
                 return identifier() + body(n, c, min, mov, s, p);
         }
@@ -95,7 +95,7 @@ private:
                 return body(name_initiator(), color_follower(), minutes(), moves(), setup_code(), position());
         }
 
-        static std::string body(std::string const& n, char c, int min, int mov, SetupCode s, std::string p)
+        static std::string body(std::string const& n, char c, int min, int mov, SetupCode s, std::string const& p)
         {
                 std::stringstream sstr;
                 sstr << std::setw( 2) << std::setfill('0') << protocol_version;
