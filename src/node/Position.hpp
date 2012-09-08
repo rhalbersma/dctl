@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/bool.hpp>           // false_, true_
 #include <functional>                   // function
 #include "Position_fwd.hpp"
 #include "Move.hpp"

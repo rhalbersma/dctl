@@ -1,10 +1,9 @@
 #pragma once
 #include <type_traits>                  // is_same
-#include <boost/mpl/bool_fwd.hpp>       // false_, true_
-#include <boost/mpl/identity.hpp>       // identity
+#include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/identity.hpp>       // identity
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 
 #include "Enum.hpp"

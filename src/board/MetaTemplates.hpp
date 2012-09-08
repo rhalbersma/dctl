@@ -1,13 +1,12 @@
 #pragma once
 #include <boost/mpl/apply.hpp>          // apply
-#include <boost/mpl/bitxor.hpp>         // bitxor_
-#include <boost/mpl/bool_fwd.hpp>       // bool_
+#include <boost/mpl/bitwise.hpp>        // bitxor_, shift_left
+#include <boost/mpl/bool.hpp>           // bool_
 #include <boost/mpl/eval_if.hpp>        // eval_if_
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/integral_c.hpp>     // integral_c
+#include <boost/mpl/next_prior.hpp>     // prior
 #include <boost/mpl/placeholders.hpp>   // _1
-#include <boost/mpl/prior.hpp>          // prior
-#include <boost/mpl/shift_left.hpp>     // shift_left
 #include "Predicates.hpp"
 #include "../utility/IntegerTypes.hpp"
 
@@ -27,11 +26,19 @@ struct Test
         >
 {};
 
+/*
+        // NOTE: on Microsoft Visual C++ 2010 Express we get a
+        // fatal error C1202: recursive type or function dependency context too complex
+        typename Square = typename boost::mpl::minus< typename
+                Board::ExternalGrid::size, 
+                boost::mpl::int_<1> 
+        >::type
+*/
 template
 <
         typename Board,
         typename Predicate,
-        typename Square = boost::mpl::int_<Board::ExternalGrid::size - 1>
+        typename Square = boost::mpl::int_<Board::ExternalGrid::size::value - 1>
 >
 struct Init;
 
@@ -84,10 +91,10 @@ struct init_col_mask
         Init< Board, is_col_mask< Board, boost::mpl::bool_<Color>, boost::mpl::int_<Column>, boost::mpl::_1 > >
 {};
 
-template<typename Board, int Group>
+template<typename Board, typename Group>
 struct init_jump_group
 :
-        Init< Board, is_jump_group< Board, boost::mpl::int_<Group>, boost::mpl::_1 > >
+        Init< Board, is_jump_group< Board, Group, boost::mpl::_1 > >
 {};
 
 template<typename Board, typename Direction>

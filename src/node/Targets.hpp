@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/bool.hpp>           // false_, true_
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {

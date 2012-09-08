@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/bool.hpp>           // false_, true_
 #include "Generator_fwd.hpp"
 #include "../Select.hpp"
 #include "../../bit/Bit.hpp"
