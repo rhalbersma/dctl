@@ -336,24 +336,24 @@ BitBoard passive_pieces(Position const& p)
 }
 
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color)
+BitBoard moveable_kings(Position<Rules, Board> const& p, bool color)
 {
         // tag dispatching on restrictions on consecutive moves with the same king
-        return detail::unrestricted_kings(p, color, typename Rules::is_restricted_same_king_moves());
+        return detail::moveable_kings(p, color, typename Rules::is_restricted_same_king_moves());
 }
 
 namespace detail {
 
 // overload for unrestricted consecutive moves with the same king
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color, boost::mpl::false_)
+BitBoard moveable_kings(Position<Rules, Board> const& p, bool color, boost::mpl::false_)
 {
         return p.kings(color);
 }
 
 // overload for restricted consecutive moves with the same king
 template<typename Rules, typename Board>
-BitBoard unrestricted_kings(Position<Rules, Board> const& p, bool color, boost::mpl::true_)
+BitBoard moveable_kings(Position<Rules, Board> const& p, bool color, boost::mpl::true_)
 {
         if (p.kings(color) && p.pawns(color) && is_max<Rules>(p.restricted(color).moves()))
                 return p.kings(color) ^ p.restricted(color).king();
