@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/mpl/bool_fwd.hpp>       // bool_
+#include <boost/mpl/bool.hpp>           // bool_
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include "Degrees.hpp"
 #include "Transform.hpp"

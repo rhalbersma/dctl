@@ -1,6 +1,6 @@
 #pragma once
-#include <boost/mpl/bool_fwd.hpp>       // bool_
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/bool.hpp>           // bool_
+#include <boost/mpl/int.hpp>            // int_
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 #include "Degrees.hpp"                  // D000, L090, R090, D180
 #include "Transform.hpp"                // rotate

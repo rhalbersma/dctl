@@ -2,7 +2,7 @@
 #include <boost/mpl/arithmetic.hpp>     // minus, modulus, plus
 #include <boost/mpl/comparison.hpp>     // equal_to
 #include <boost/mpl/eval_if.hpp>        // eval_if
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 #include "Angle.hpp"
 #include "Dimensions.hpp"
@@ -20,8 +20,8 @@ struct is_square
 :
         mpl::is_within_range<
                 SQ,
-                boost::mpl::int_<0>,
-                boost::mpl::int_<Board::ExternalGrid::size>
+                boost::mpl::int_<0>, typename
+                Board::ExternalGrid::size
         >
 {};
 

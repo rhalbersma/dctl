@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/bool.hpp>           // false_, true_
 #include "Generator_fwd.hpp"
 #include "KingJumps.hpp"                // promote_en_passant
 #include "../Select.hpp"

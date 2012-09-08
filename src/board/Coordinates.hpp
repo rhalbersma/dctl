@@ -1,7 +1,10 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/mpl/arithmetic.hpp>     // minus, plus
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/arithmetic.hpp>     // divides, minus, modulus, plus, times
+#include <boost/mpl/bitwise.hpp>        // bitxor_
+#include <boost/mpl/comparison.hpp>     // greater_equal
+#include <boost/mpl/eval_if.hpp>        // eval_if
+#include <boost/mpl/int.hpp>            // int_
+#include <boost/mpl/logical.hpp>        // not_
 #include "Degrees.hpp"
 #include "Modular.hpp"
 #include "Transform.hpp"
@@ -42,16 +45,50 @@ struct Coordinates2Square
 private:
         typedef typename C::grid G;
 
-        BOOST_STATIC_CONSTANT(auto, P = C::row::value % 2);             // row parity
-        BOOST_STATIC_CONSTANT(auto, Q = C::row::value / 2);             // number of row pairs
-        BOOST_STATIC_CONSTANT(auto, L = P? G::edge_lo : G::edge_le);    // the left edge
-        BOOST_STATIC_CONSTANT(auto, S = C::col::value / 2);             // number of column pairs
-        BOOST_STATIC_CONSTANT(auto, R = (L + S) % G::modulo);           // squares from the left edge
+        // row parity
+        typedef boost::mpl::modulus< typename
+                C::row, 
+                boost::mpl::int_<2>
+        > P;
+
+        // number of row pairs
+        typedef boost::mpl::divides< typename
+                C::row,
+                boost::mpl::int_<2>
+        > Q;
+
+        // the left edge
+        typedef boost::mpl::eval_if<
+                P, typename
+                G::edge_lo, typename    
+                G::edge_le
+        > L;
+
+        // number of column pairs
+        typedef boost::mpl::divides< typename
+                C::col,
+                boost::mpl::int_<2>
+        > S;
+            
+        // quares from the left edge
+        typedef boost::mpl::modulus<
+                boost::mpl::plus<
+                        L, 
+                        S
+                >, typename
+                G::modulo
+        > R;
 
 public:
         typedef Square<
-                G,
-                boost::mpl::int_<G::modulo * Q + R>
+                G, typename
+                boost::mpl::plus< 
+                        boost::mpl::times< typename
+                                G::modulo, 
+                                Q
+                        >,
+                        R
+                >::type
         > type;
 };
 
@@ -61,19 +98,61 @@ struct Square2Coordinates
 private:
         typedef typename SQ::grid G;
 
-        BOOST_STATIC_CONSTANT(auto, Q = SQ::number::value / G::modulo);         // number of row pairs
-        BOOST_STATIC_CONSTANT(auto, R0 = SQ::number::value % G::modulo);        // left edge of the zeroth row
-        BOOST_STATIC_CONSTANT(auto, R1 = R0 - G::edge_lo);                      // left edge of the first row
-        BOOST_STATIC_CONSTANT(auto, P = R1 >= 0);                               // R0 is in the zeroth or first row
-        BOOST_STATIC_CONSTANT(auto, R = P? R1 : R0);                            // squares from the left edge
-        BOOST_STATIC_CONSTANT(auto, ROW = 2 * Q + P);
-        BOOST_STATIC_CONSTANT(auto, COL = 2 * R + (P ^ !G::parity::value));
+        // number of row pairs
+        typedef boost::mpl::divides< typename
+                SQ::number, typename
+                G::modulo
+        > Q;
+
+        // left edge of the zeroth row
+        typedef boost::mpl::modulus< typename
+                SQ::number, typename
+                G::modulo
+        > R0;
+
+        // left edge of the first row
+        typedef boost::mpl::minus<
+                R0, typename
+                G::edge_lo
+        > R1;
+
+        // R0 is in the zeroth or first row
+        typedef boost::mpl::greater_equal<
+                R1,
+                boost::mpl::int_<0>
+        > P;
+
+        // squares from the left edge
+        typedef boost::mpl::eval_if< P, R1, R0 > R;
+
+        // 2x the row pairs + the row parity
+        typedef boost::mpl::plus<
+                boost::mpl::times<
+                        boost::mpl::int_<2>,
+                        Q
+                >,
+                P
+        > ROW;
+
+        // 2x the range from the left edge + the row parity XOR the opposite board coloring
+        typedef boost::mpl::plus<
+                boost::mpl::times<
+                        boost::mpl::int_<2>,
+                        R
+                >,
+                boost::mpl::bitxor_<
+                        P, 
+                        boost::mpl::not_< typename
+                                G::parity
+                        >
+                >                        
+        > COL;
 
 public:
         typedef Coordinates<
                 G,
-                ROW,    // 2x the row pairs + the row parity
-                COL     // 2x the range from the left edge + the row parity XOR the opposite board coloring
+                ROW::value,    
+                COL::value     
         > type;
 };
 

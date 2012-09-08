@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/int.hpp>            // int_
 #include "Modular.hpp"                  // abs_modulus
 #include "Transform.hpp"                // inverse, rotate, mirror
 

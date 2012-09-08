@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/mpl/identity.hpp>       // identity
 #include "Score.hpp"
 #include "../bit/Bit.hpp"

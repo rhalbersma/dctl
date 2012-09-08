@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/mpl/arithmetic.hpp>     // divides, modulus
 #include <boost/mpl/comparison.hpp>     // equal_to, not_equal_to
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // not_, and_, or_
 #include "Traits_fwd.hpp"
 #include "Angle.hpp"                    // angle, rotate

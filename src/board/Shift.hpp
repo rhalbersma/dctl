@@ -1,5 +1,6 @@
 #pragma once
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/bool.hpp>           // false_, true_
+#include <boost/mpl/int.hpp>            // int_
 #include "../board/Angle.hpp"
 #include "../board/Traits.hpp"
 #include "../rules/Enum.hpp"
@@ -68,9 +69,9 @@ struct FloodFill
         template<typename T>
         T operator()(T generator, T propagator) const
         {
-                return flood_fill<
-                        angle::is_positive<Direction>::value,
-                        Board::shift<Direction>::value
+                return flood_fill< typename 
+                        angle::is_positive<Direction>::type, typename 
+                        Board::shift<Direction>::type
                 >(generator, propagator);
         }
 };
@@ -82,9 +83,9 @@ struct Push
         template<typename Iterator>
         Iterator operator()(Iterator square) const
         {
-                return Shift<
-                        angle::is_positive<Direction>::value,
-                        Board::shift<Direction>::value
+                return Shift< typename 
+                        angle::is_positive<Direction>::type, typename
+                        Board::shift<Direction>::type
                 >()(square);
         }
 };
@@ -96,15 +97,15 @@ struct Pull
         template<typename Iterator>
         Iterator operator()(Iterator square) const
         {
-                return Shift<
-                        angle::is_negative<Direction>::value,
-                        Board::shift<Direction>::value
+                return Shift< typename
+                        angle::is_negative<Direction>::type, typename
+                        Board::shift<Direction>::type
                 >()(square);
         }
 };
 
 // direction-wise flood-fill generator over propagator
-template<bool Sign, int N, typename T>
+template<typename Sign, typename N, typename T>
 T flood_fill(T generator, T propagator)
 {
         return fill_loop<Sign, N>(generator, propagator);
@@ -112,7 +113,7 @@ T flood_fill(T generator, T propagator)
 
 // Chess Programming Wiki, "Fill Loop" algorithm
 // http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
-template<bool Sign, int N, typename T>
+template<typename Sign, typename N, typename T>
 T fill_loop(T generator, T propagator)
 {
         T flood(0);
@@ -124,57 +125,59 @@ T fill_loop(T generator, T propagator)
 }
 
 // left and right direction
-enum { L, R };
+
+typedef boost::mpl::false_ L;
+typedef boost::mpl::true_ R;
 
 // primary template
-template<bool, int>
+template<typename, typename>
 struct Shift;
 
 // partial specialization for bitwise shift-left
-template<int N>
+template<typename N>
 struct Shift<L, N>
 {
         template<typename T>
         T operator()(T square) const
         {
-                return square << N;
+                return square << N::value;
         }
 };
 
 // partial specialization for bitwise shift-right
-template<int N>
+template<typename N>
 struct Shift<R, N>
 {
         template<typename T>
         T operator()(T square) const
         {
-                return square >> N;
+                return square >> N::value;
         }
 };
 
 // primary template
-template<bool, int>
+template<typename, typename>
 struct ShiftAssign;
 
 // partial specialization for bitwise shift-left assignment
-template<int N>
+template<typename N>
 struct ShiftAssign<L, N>
 {
         template<typename T>
         void operator()(T& square) const
         {
-                square <<= N;
+                square <<= N::value;
         }
 };
 
 // partial specialization for bitwise shift-right assignment
-template<int N>
+template<typename N>
 struct ShiftAssign<R, N>
 {
         template<typename T>
         void operator()(T& square) const
         {
-                square >>= N;
+                square >>= N::value;
         }
 };
 

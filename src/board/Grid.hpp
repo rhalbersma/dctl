@@ -1,6 +1,8 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/arithmetic.hpp>     // divides, minus, modulus, plus, times
+#include <boost/mpl/eval_if.hpp>        // eval_if
+#include <boost/mpl/logical.hpp>        // not_
+#include <boost/mpl/int.hpp>            // int_
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 #include "Degrees.hpp"
 
@@ -22,33 +24,84 @@ public:
         typedef Grid<Dimensions> BaseGrid;
 
         // diagonal directions
-        BOOST_STATIC_CONSTANT(auto, left_down = (Dimensions::width::value + Ghosts::value) / 2);
-        BOOST_STATIC_CONSTANT(auto, right_down = left_down + 1);
+
+        typedef boost::mpl::divides<
+                boost::mpl::plus< typename
+                        Dimensions::width,
+                        Ghosts
+                >, 
+                boost::mpl::int_<2>                
+        > left_down;
+
+        typedef boost::mpl::plus<
+                left_down, 
+                boost::mpl::int_<1>
+        > right_down;
 
         // orthogonal directions
-        BOOST_STATIC_CONSTANT(auto, right = right_down - left_down);
-        BOOST_STATIC_CONSTANT(auto, down = right_down + left_down);
+
+        typedef boost::mpl::minus<
+                right_down, 
+                left_down
+        > right;
+
+        typedef boost::mpl::plus<
+                right_down, 
+                left_down
+        > down;
 
         // equivalent directions
-        BOOST_STATIC_CONSTANT(auto, left_up = right_down);
-        BOOST_STATIC_CONSTANT(auto, right_up = left_down);
-        BOOST_STATIC_CONSTANT(auto, left = right);
-        BOOST_STATIC_CONSTANT(auto, up = down);
+
+        typedef right_down      left_up;
+        typedef left_down       right_up;
+        typedef right           left;
+        typedef down            up;
 
         // range of row pairs
-        BOOST_STATIC_CONSTANT(auto, modulo = down);
+
+        typedef down modulo;
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
-        BOOST_STATIC_CONSTANT(auto, edge_le = BaseGrid::edge_le);
-        BOOST_STATIC_CONSTANT(auto, edge_re = BaseGrid::edge_re);
-        BOOST_STATIC_CONSTANT(auto, edge_lo = left_down + Dimensions::parity::value);
-        BOOST_STATIC_CONSTANT(auto, edge_ro = edge_lo + BaseGrid::edge_ro - BaseGrid::edge_lo);
+
+        typedef typename BaseGrid::edge_le edge_le;
+        typedef typename BaseGrid::edge_re edge_re;
+        
+        typedef boost::mpl::plus<
+                left_down, typename
+                Dimensions::parity
+        > edge_lo;
+
+        typedef boost::mpl::plus<
+                edge_lo,
+                boost::mpl::minus< typename
+                        BaseGrid::edge_ro, typename
+                        BaseGrid::edge_lo
+                >
+        > edge_ro;
 
         // grid size
-        BOOST_STATIC_CONSTANT(auto, size =
-                modulo * ((Dimensions::height::value - 1) / 2) +
-                ((Dimensions::height::value % 2)? edge_re : edge_ro) + 1
-        );
+
+        typedef boost::mpl::plus<
+                boost::mpl::times<
+                        modulo,
+                        boost::mpl::divides<
+                                boost::mpl::minus< typename
+                                        Dimensions::height,
+                                        boost::mpl::int_<1>
+                                >,
+                                boost::mpl::int_<2>
+                        >
+                >,
+                boost::mpl::eval_if<
+                        boost::mpl::modulus< typename
+                                Dimensions::height,
+                                boost::mpl::int_<2>
+                        >,
+                        edge_re,
+                        edge_ro
+                >,
+                boost::mpl::int_<1>
+        > size;
 
 /*---------------------------------------------------------------------------*/
 #if (_MSC_VER <= 1600)
@@ -67,14 +120,14 @@ public:
 #endif
 /*---------------------------------------------------------------------------*/
 
-        template< typename dummy > struct shift< angle::D000, dummy >: boost::mpl::int_< right      > {};
-        template< typename dummy > struct shift< angle::D045, dummy >: boost::mpl::int_< right_up   > {};
-        template< typename dummy > struct shift< angle::D090, dummy >: boost::mpl::int_< up         > {};
-        template< typename dummy > struct shift< angle::D135, dummy >: boost::mpl::int_< left_up    > {};
-        template< typename dummy > struct shift< angle::D180, dummy >: boost::mpl::int_< left       > {};
-        template< typename dummy > struct shift< angle::D225, dummy >: boost::mpl::int_< left_down  > {};
-        template< typename dummy > struct shift< angle::D270, dummy >: boost::mpl::int_< down       > {};
-        template< typename dummy > struct shift< angle::D315, dummy >: boost::mpl::int_< right_down > {};
+        template< typename dummy > struct shift< angle::D000, dummy >: right      {};
+        template< typename dummy > struct shift< angle::D045, dummy >: right_up   {};
+        template< typename dummy > struct shift< angle::D090, dummy >: up         {};
+        template< typename dummy > struct shift< angle::D135, dummy >: left_up    {};
+        template< typename dummy > struct shift< angle::D180, dummy >: left       {};
+        template< typename dummy > struct shift< angle::D225, dummy >: left_down  {};
+        template< typename dummy > struct shift< angle::D270, dummy >: down       {};
+        template< typename dummy > struct shift< angle::D315, dummy >: right_down {};
 };
 
 // partial specialization for grids without ghost columns
@@ -85,29 +138,83 @@ class Grid< Dimensions, boost::mpl::int_<0> >
 {
 private:
         // range of even (e) and odd (o) rows
-        BOOST_STATIC_CONSTANT(auto, row_e = (Dimensions::width::value +  Dimensions::parity::value) / 2);
-        BOOST_STATIC_CONSTANT(auto, row_o = (Dimensions::width::value + !Dimensions::parity::value) / 2);
+
+        typedef boost::mpl::divides<
+                boost::mpl::plus< typename
+                        Dimensions::width, typename
+                        Dimensions::parity
+                >,
+                boost::mpl::int_<2>
+        > row_e;
+
+        typedef boost::mpl::divides<
+                boost::mpl::plus< typename
+                        Dimensions::width,
+                        boost::mpl::not_< typename
+                                Dimensions::parity
+                        >
+                >,
+                boost::mpl::int_<2>
+        > row_o;
 
 public:
         // range of row pairs
-        BOOST_STATIC_CONSTANT(auto, modulo = Dimensions::width::value);
+        
+        typedef typename Dimensions::width modulo;
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
-        BOOST_STATIC_CONSTANT(auto, edge_le = 0);
-        BOOST_STATIC_CONSTANT(auto, edge_re = edge_le + row_e - 1);
-        BOOST_STATIC_CONSTANT(auto, edge_lo = edge_re + 1);
-        BOOST_STATIC_CONSTANT(auto, edge_ro = edge_lo + row_o - 1);
 
-        // grid size
-        BOOST_STATIC_CONSTANT(auto, size =
-                modulo * ((Dimensions::height::value - 1) / 2) +
-                ((Dimensions::height::value % 2)? edge_re : edge_ro) + 1
-        );
+        typedef boost::mpl::int_<0> edge_le;
+        
+        typedef boost::mpl::plus<
+                edge_le,
+                boost::mpl::minus<
+                        row_e,
+                        boost::mpl::int_<1>
+                >
+        > edge_re;
+
+        typedef boost::mpl::plus<
+                edge_re,
+                boost::mpl::int_<1>
+        > edge_lo;
+
+        typedef boost::mpl::plus<
+                edge_lo,
+                boost::mpl::minus<
+                        row_o,
+                        boost::mpl::int_<1>
+                >
+        > edge_ro;
+
+        typedef boost::mpl::plus<
+                boost::mpl::times<
+                        modulo,
+                        boost::mpl::divides<
+                                boost::mpl::minus< typename
+                                        Dimensions::height,
+                                        boost::mpl::int_<1>
+                                >,
+                                boost::mpl::int_<2>
+                        >
+                >,
+                boost::mpl::eval_if<
+                        boost::mpl::modulus< typename
+                                Dimensions::height,
+                                boost::mpl::int_<2>
+                        >,
+                        edge_re,
+                        edge_ro
+                >,
+                boost::mpl::int_<1>
+        > size;
 
         // equivalent grid size
+        /*
         BOOST_STATIC_ASSERT(size == (Dimensions::height::value * Dimensions::width::value) / 2 +
                 (Dimensions::parity::value * Dimensions::height::value * Dimensions::width::value) % 2
         );
+        */
 };
 
 }       // namespace board

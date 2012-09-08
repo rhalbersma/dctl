@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/mpl/int_fwd.hpp>        // int_
+#include <boost/mpl/int.hpp>            // int_
 #include "Angle.hpp"
 #include "Degrees.hpp"
 #include "Modular.hpp"

@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>                   // function
 #include <type_traits>                  // is_same
-#include <boost/mpl/bool_fwd.hpp>       // false_, true_
+#include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/mpl/logical.hpp>        // and_
 #include "Detector_fwd.hpp"
 #include "KingJumps.hpp"

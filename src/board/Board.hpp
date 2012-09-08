@@ -1,5 +1,7 @@
 #pragma once
-#include <boost/preprocessor/repetition.hpp>
+#include <boost/mpl/arithmetic.hpp>             // plus
+#include <boost/mpl/int.hpp>                    // int_
+#include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include "Grid.hpp"
 #include "MetaTemplates.hpp"
 #include "Shift.hpp"
@@ -52,7 +54,7 @@ public:
 
         static int end()
         {
-                return ExternalGrid::size;
+                return ExternalGrid::size::value;
         }
 
         static int square2bit(int square)
@@ -68,27 +70,27 @@ public:
         template<typename Direction, typename Iterator>
         static void advance(Iterator& square)
         {
-                ShiftAssign<
-                        angle::is_positive<Direction>::value,
-                        shift<Direction>::value
+                ShiftAssign< typename
+                        angle::is_positive<Direction>::type, typename
+                        shift<Direction>::type
                 >()(square);
         }
 
         template<typename Direction, typename Iterator>
         static Iterator next(Iterator square)
         {
-                return Shift<
-                        angle::is_positive<Direction>::value,
-                        shift<Direction>::value
+                return Shift< typename
+                        angle::is_positive<Direction>::type, typename
+                        shift<Direction>::type
                 >()(square);
         }
 
         template<typename Direction, typename Iterator>
         static Iterator prev(Iterator square)
         {
-                return Shift<
-                        angle::is_negative<Direction>::value,
-                        shift<Direction>::value
+                return Shift< typename
+                        angle::is_negative<Direction>::type, typename
+                        shift<Direction>::type
                 >()(square);
         }
 
@@ -157,8 +159,8 @@ BitBoard const Board<Dimensions, Structure>::col_mask[][12] = {
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
-        (bit::singlet<BitBoard>(1)) ^ (bit::singlet<BitBoard>(1 + (InternalGrid::left_down  << 1))),
-        (bit::singlet<BitBoard>(0)) ^ (bit::singlet<BitBoard>(0 + (InternalGrid::right_down << 1)))
+        (bit::singlet<BitBoard>(1)) ^ (bit::singlet<BitBoard>(1 + (InternalGrid::left_down::value  << 1))),
+        (bit::singlet<BitBoard>(0)) ^ (bit::singlet<BitBoard>(0 + (InternalGrid::right_down::value << 1)))
 };
 
 template<typename Dimensions, typename Structure>
@@ -167,10 +169,10 @@ BitBoard const Board<Dimensions, Structure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::jump_group[] = {
-        init_jump_group< Board, InternalGrid::edge_le + 0 >::value,
-        init_jump_group< Board, InternalGrid::edge_le + 1 >::value,
-        init_jump_group< Board, InternalGrid::edge_lo + 0 >::value,
-        init_jump_group< Board, InternalGrid::edge_lo + 1 >::value
+        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_le, boost::mpl::int_<0> > >::value,
+        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_le, boost::mpl::int_<1> > >::value,
+        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_lo, boost::mpl::int_<0> > >::value,
+        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_lo, boost::mpl::Int_<1> > >::value
 };
 
 template<typename Dimensions, typename Structure>
