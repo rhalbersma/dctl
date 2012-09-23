@@ -1,6 +1,4 @@
 #pragma once
-#include "../rules/Enum.hpp"
-#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 
@@ -40,7 +38,7 @@ bool is_capture(Position const& p, Move const& m);
 template<typename Position, typename Move>
 bool is_pseudo_legal(Position const& p, Move const& m);
 
-template<template<typename, typename> class Position, typename Rules, typename Board, typename Move>
-bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m);
+template<typename Position, typename Move>
+bool is_intersecting_capture(Position const& p, Move const& m);
 
 }       // namespace dctl

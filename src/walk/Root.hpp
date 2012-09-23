@@ -41,8 +41,8 @@ public:
                 return leafs;
         }
 
-        template<template<typename, typename> class Position, typename Rules, typename Board>
-        NodeCount divide(Position<Rules, Board> const& p, int depth)
+        template<typename Position>
+        NodeCount divide(Position const& p, int depth)
         {
                 NodeCount leafs = 0;
                 NodeCount move_leafs;

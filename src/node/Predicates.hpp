@@ -90,11 +90,11 @@ bool is_pseudo_legal(Position const& p, Move const& m)
         );
 }
 
-template<template<typename, typename> class Position, typename Rules, typename Board, typename Move>
-bool is_intersecting_capture(Position<Rules, Board> const& p, Move const& m)
+template<typename Position, typename Move>
+bool is_intersecting_capture(Position const& p, Move const& m)
 {
         // tag dispatching on capture removal
-        return detail::is_intersecting_capture(p, m, typename Rules::jump_removal());
+        return detail::is_intersecting_capture(p, m, typename Position::rules_type::jump_removal());
 }
 
 namespace detail {

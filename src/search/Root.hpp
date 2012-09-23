@@ -142,8 +142,8 @@ private:
                 insert_pv(q, pv, -stretch(value), ply + 1);
         }
 
-        template<template<typename, typename> class Position, typename Rules, typename Board>
-        void print_pv(Position<Rules, Board> const& p, Variation const& pv, int ply = 0)
+        template<typename Position>
+        void print_pv(Position const& p, Variation const& pv, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {

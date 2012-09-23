@@ -82,9 +82,11 @@ struct read<Rules, Board, pdn::protocol, Token>
 template<typename Token>
 struct write<pdn::protocol, Token>
 {
-        template<template<typename, typename> class Position, typename Rules, typename Board>
-        std::string operator()(Position<Rules, Board> const& p) const
+        template<typename Position>
+        std::string operator()(Position const& p) const
         {
+                typedef typename Position::board_type Board;
+
                 std::stringstream sstr;
                 sstr << Token::quote;                                           // opening quotes
                 sstr << write_color<Token>(p.active_color());                   // side to move
