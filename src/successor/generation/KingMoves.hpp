@@ -10,7 +10,6 @@
 #include "../../node/Material.hpp"
 #include "../../node/Stack.hpp"
 #include "../../rules/Enum.hpp"
-#include "../../rules/Traits.hpp"
 #include "../../utility/IntegerTypes.hpp"
 
 namespace dctl {
