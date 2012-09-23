@@ -4,11 +4,11 @@
 
 namespace dctl {
 
-template<bool Color, template<typename, typename> class Position, typename Rules, typename Board>
-static BitBoard targets(Position<Rules, Board> const& p)
+template<bool Color, typename Position>
+static BitBoard targets(Position const& p)
 {
         // tag dispatching on whether pawns can capture kings
-        return detail::targets<Color>(p, typename Rules::is_pawns_jump_kings());
+        return detail::targets<Color>(p, typename Position::rules_type::is_pawns_jump_kings());
 }
 
 namespace detail {

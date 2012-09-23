@@ -17,9 +17,11 @@ template
 >
 struct read;
 
-template<template<typename, typename> class Position, typename Rules, typename Board, typename Move>
-std::string write(Position<Rules, Board> const& p, Move const& m)
+template<typename Position, typename Move>
+std::string write(Position const& p, Move const& m)
 {
+        typedef typename Position::rules_type Rules;
+
         return detail::write<Rules>()(p, m);
 }
 
@@ -38,9 +40,11 @@ struct write;
 template<typename Rules, typename Separator>
 struct write<Rules, numeric, Separator>
 {
-        template<template<typename, typename> class Position, typename Rules, typename Board, typename Move>
-        std::string operator()(Position<Rules, Board> const& p, Move const& m) const
+        template<typename Position, typename Move>
+        std::string operator()(Position const& p, Move const& m) const
         {
+                typedef typename Position::board_type Board;
+
                 std::stringstream sstr;
                 sstr << std::setw(2) << std::right << Board::bit2square(bit::find_first(from_sq(p, m))) + 1;
                 sstr << (is_capture(p, m)? Separator::jump : Separator::move);

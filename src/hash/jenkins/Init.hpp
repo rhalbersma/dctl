@@ -8,16 +8,12 @@ namespace hash {
 namespace jenkins {
 
 // primary template
-template<typename Index, typename Key>
-struct Init;
-
-// partial specialization for ab initio hashing of positions
-template<typename Index, template<typename, typename> class Position, typename Rules, typename Board>
-struct Init< Index, Position<Rules, Board> >
+template<typename Index, typename Position>
+struct Init
 :
-        std::function<Index(Position<Rules, Board>)>
+        std::function<Index(Position)>
 {
-        Index operator()(Position<Rules, Board> const& p) const
+        Index operator()(Position const& p) const
         {
                 Index index = 0;
 

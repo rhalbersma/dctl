@@ -5,16 +5,12 @@ namespace dctl {
 namespace hash {
 
 // primary template
-template<typename Index, typename Key>
-struct Find;
-
-// partial specialization for retrieval of pre-computed indices of positions
-template<typename Index, template<typename, typename> class Position, typename Rules, typename Board>
-struct Find< Index, Position<Rules, Board> >
+template<typename Index, typename Position>
+struct Find
 :
-        std::function<Index(Position<Rules, Board>)>
+        std::function<Index(Position)>
 {
-        Index operator()(Position<Rules, Board> const& p) const
+        Index operator()(Position const& p) const
         {
                 return p.hash_index();
         }
