@@ -3,46 +3,48 @@
 #include <type_traits>                  // is_base_of
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable
-#include "Iterator_fwd.hpp"
-#include "../link/ISingle.hpp"
 
 namespace dctl {
 namespace tree {
 namespace iterator {
 
-template<template<typename, typename> class Node, typename T>
-struct Iterator<Node, link::single_tag, T>
+template
+<
+        template<typename> class Node,
+        typename T
+>
+struct Forward
 :
         // Curiously Recurring Template Pattern (CRTP)
         public std::iterator<std::forward_iterator_tag, T>,
-        private boost::equality_comparable< Iterator<Node, link::single_tag, T> >
+        private boost::equality_comparable< Forward<Node, T> >
 {
 public:
         // typedefs
 
-        typedef Node<link::ISingle, T>* node_ptr;
+        typedef Node<T>* node_ptr;
 
         // structors
 
-        Iterator()
+        Forward()
         :
                 pnode_()
         {}
 
-        explicit Iterator(node_ptr it)
+        explicit Forward(node_ptr fwd)
         :
-                pnode_(it)
+                pnode_(fwd)
         {}
 
         // modifiers
 
-        Iterator& operator++()
+        Forward& operator++()
         {
                 pnode_ = pnode_->next();
                 return *this;
         }
 
-        Iterator operator++(int)
+        Forward operator++(int)
         {
                 auto const old = *this;
                 ++*this;
@@ -53,7 +55,7 @@ public:
 
         reference operator*() const
         {
-                return pnode_->value_;
+                return pnode_->value();
         }
 
         pointer operator->() const
@@ -63,7 +65,7 @@ public:
 
         // predicates
 
-        friend bool operator==(Iterator const& lhs, Iterator const& rhs)
+        friend bool operator==(Forward const& lhs, Forward const& rhs)
         {
                 return lhs.pnode_ == rhs.pnode_;
         }
@@ -73,13 +75,6 @@ private:
 
         node_ptr pnode_;
 };
-
-// TODO: use C++11 template aliases
-template<template<typename, typename> class Node, typename T>
-struct Forward
-:
-        Iterator<Node, link::single_tag, T>
-{};
 
 }       // namespace iterator
 }       // namespace tree

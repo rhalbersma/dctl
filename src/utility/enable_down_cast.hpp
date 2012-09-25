@@ -8,12 +8,12 @@ template
 <
         typename Derived
 >
-struct enable_crtp
+struct enable_down_cast
 {
 private:
         // typedefs
 
-        typedef enable_crtp Base;
+        typedef enable_down_cast Base;
 
 public:
         Derived const* self() const
@@ -33,7 +33,7 @@ public:
 protected:
         // disable deletion of Derived* through Base*
         // enable deletion of Base* through Derived*
-        ~enable_crtp()
+        ~enable_down_cast()
         {
                 // no-op
         }

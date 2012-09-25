@@ -389,7 +389,7 @@ struct Init;
 template<typename Index, template<typename, typename> class Position, typename Rules, typename Board>
 struct Init< Index, Position<Rules, Board> >
 :
-        std::function<Index(Position<Rules, Board>)>
+        std::function<Index(Position<Rules, Board> const&)>
 {
         Index operator()(Position<Rules, Board> const& p) const
         {

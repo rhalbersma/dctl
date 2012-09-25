@@ -102,32 +102,6 @@ public:
                 >,
                 boost::mpl::int_<1>
         > size;
-
-/*---------------------------------------------------------------------------*/
-#if (_MSC_VER <= 1600)
-#pragma warning(push)
-#pragma warning(disable:4348)
-#endif
-/*---------------------------------------------------------------------------*/
-
-        // Warning C4348 is incorrectly generated for nested templates with default parameters
-        // http://connect.microsoft.com/VisualStudio/feedback/details/474655/warning-c4348-is-incorrectly-generated-for-nested-templates
-        template<typename Index, typename dummy = void> struct shift;
-
-/*---------------------------------------------------------------------------*/
-#if (_MSC_VER <= 1600)
-#pragma warning(pop)
-#endif
-/*---------------------------------------------------------------------------*/
-
-        template< typename dummy > struct shift< angle::D000, dummy >: right      {};
-        template< typename dummy > struct shift< angle::D045, dummy >: right_up   {};
-        template< typename dummy > struct shift< angle::D090, dummy >: up         {};
-        template< typename dummy > struct shift< angle::D135, dummy >: left_up    {};
-        template< typename dummy > struct shift< angle::D180, dummy >: left       {};
-        template< typename dummy > struct shift< angle::D225, dummy >: left_down  {};
-        template< typename dummy > struct shift< angle::D270, dummy >: down       {};
-        template< typename dummy > struct shift< angle::D315, dummy >: right_down {};
 };
 
 // partial specialization for grids without ghost columns
@@ -216,6 +190,18 @@ public:
         );
         */
 };
+
+template<typename Grid, typename Direction> 
+struct ShiftSize;
+
+template< typename Grid > struct ShiftSize< Grid, angle::D000 >: Grid::right      {};
+template< typename Grid > struct ShiftSize< Grid, angle::D045 >: Grid::right_up   {};
+template< typename Grid > struct ShiftSize< Grid, angle::D090 >: Grid::up         {};
+template< typename Grid > struct ShiftSize< Grid, angle::D135 >: Grid::left_up    {};
+template< typename Grid > struct ShiftSize< Grid, angle::D180 >: Grid::left       {};
+template< typename Grid > struct ShiftSize< Grid, angle::D225 >: Grid::left_down  {};
+template< typename Grid > struct ShiftSize< Grid, angle::D270 >: Grid::down       {};
+template< typename Grid > struct ShiftSize< Grid, angle::D315 >: Grid::right_down {};
 
 }       // namespace board
 }       // namespace dctl

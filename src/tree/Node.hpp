@@ -4,18 +4,11 @@
 namespace dctl {
 namespace tree {
 
-template
-<
-        typename,
-        typename
-> 
-struct Node;
-
 template<typename T>
-struct Node<link::single_tag, T>
+struct Node
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public link::ISingle<Node, link::single_tag, T>
+        public link::ISingle<Node, T>
 {
 public:
         // structors
@@ -30,6 +23,7 @@ private:
         // typdefs
 
         typedef Node* node_ptr;
+        typedef T value_type;
 
         // modifiers
 
@@ -50,11 +44,19 @@ private:
                 return next_;
         }
 
+        value_type const& do_value() const
+        {
+                return value_;
+        }
+
+        value_type& do_value()
+        {
+                return value_;
+        }
+
         // representation
 
         node_ptr next_;
-
-public:
         T value_;
 };
 

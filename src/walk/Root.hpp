@@ -33,7 +33,7 @@ public:
                 announce(p, depth);
                 for (auto i = 1; i <= depth; ++i) {
                         statistics_.reset();
-                        leafs = driver(p, 0, i);
+                        leafs = driver(p, i, 0);
                         timer.split();
                         report(i, leafs, timer);
                 }
@@ -65,7 +65,6 @@ public:
                         report(depth - 1, move_leafs, timer);
                 }
                 summary(leafs);
-
                 return leafs;
         }
 
@@ -127,12 +126,12 @@ private:
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
 
-                std::cout << "\n";
+                std::cout << std::endl;
         }
 
         void summary() const
         {
-                std::cout << "\n";
+                std::cout << std::endl;
         }
 
         void summary(NodeCount leafs) const

@@ -14,25 +14,13 @@ public:
                 nodes_(0),
                 sum_ply_(0),
                 max_ply_(0)
-        {
-                cycle_begin.reserve(100);
-                cycle_begin.assign(100, 0);
-
-                cycle_end.reserve(100);
-                cycle_end.assign(100, 0);
-
-                cycle_size.reserve(100);
-                cycle_size.assign(100, 0);
-        }
+        {}
 
         // modifiers
 
         void reset()
         {
                 nodes_ = sum_ply_ = max_ply_ = 0;
-                cycle_begin.assign(100, 0);
-                cycle_end.assign(100, 0);
-                cycle_size.assign(100, 0);
         }
 
         void update(int ply)
@@ -58,10 +46,6 @@ public:
         {
                 return max_ply_;
         }
-
-        std::vector<NodeCount> cycle_begin;
-        std::vector<NodeCount> cycle_end;
-        std::vector<NodeCount> cycle_size;
 
 private:
         // representation
