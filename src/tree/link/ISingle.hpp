@@ -1,21 +1,29 @@
 #pragma once
-#include "../../utility/enable_crtp.hpp"
+#include "../../utility/enable_down_cast.hpp"
+#include <iterator>
 
 namespace dctl {
 namespace tree {
 namespace link {
 
-struct single_tag {};
-
-template<template<typename, typename> class Node, typename T>
+template
+<
+        template<typename> class Node, 
+        typename T
+>
 struct ISingle
 :
-        private enable_crtp< Node<single_tag, T> >
+        // enable static polymorphism
+        private enable_down_cast< Node<T> >
 {
+private:
+        // dependent name now in scope
+        using enable_down_cast< Node<T> >::self;
+
 public:
         // typedefs
 
-        typedef Node<single_tag, T>* node_ptr;
+        typedef Node<T>* node_ptr;
 
         // modifiers
 

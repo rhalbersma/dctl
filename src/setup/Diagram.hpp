@@ -25,6 +25,8 @@ public:
         template<typename Position>
         std::string operator()(Position const& p) const
         {
+                typedef typename Position::board_type Board;
+
                 return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
         }
 };

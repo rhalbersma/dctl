@@ -40,11 +40,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files\boost\boost_1_50_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\boost\boost_1_51;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files\boost\boost_1_50_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\boost\boost_1_51;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -310,12 +310,11 @@
     <ClInclude Include="..\..\..\src\successor\Mobility.hpp" />
     <ClInclude Include="..\..\..\src\successor\Select.hpp" />
     <ClInclude Include="..\..\..\src\tree\iterator\Forward.hpp" />
-    <ClInclude Include="..\..\..\src\tree\iterator\Iterator_fwd.hpp" />
     <ClInclude Include="..\..\..\src\tree\link\ISingle.hpp" />
     <ClInclude Include="..\..\..\src\tree\Node.hpp" />
     <ClInclude Include="..\..\..\src\utility\algorithm.hpp" />
     <ClInclude Include="..\..\..\src\utility\CacheAlign.hpp" />
-    <ClInclude Include="..\..\..\src\utility\enable_crtp.hpp" />
+    <ClInclude Include="..\..\..\src\utility\enable_down_cast.hpp" />
     <ClInclude Include="..\..\..\src\utility\guarded_parameters.hpp" />
     <ClInclude Include="..\..\..\src\utility\IntegerTypes.hpp" />
     <ClInclude Include="..\..\..\src\utility\make_unique.hpp" />

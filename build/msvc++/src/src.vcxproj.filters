@@ -393,9 +393,6 @@
     <ClInclude Include="..\..\..\src\board\Cyclic.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\algorithm.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\factory\mixin.hpp">
       <Filter>Header Files\factory</Filter>
     </ClInclude>
@@ -425,9 +422,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\capture\Value_fwd.hpp">
       <Filter>Header Files\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\enable_crtp.hpp">
-      <Filter>Header Files\utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\utility\nonconstructible.hpp">
       <Filter>Header Files\utility</Filter>
@@ -490,9 +484,6 @@
       <Filter>Header Files\node</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\tree\iterator\Forward.hpp">
-      <Filter>Header Files\tree\iterator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\tree\iterator\Iterator_fwd.hpp">
       <Filter>Header Files\tree\iterator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\board\Compass.hpp">
@@ -722,6 +713,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\guarded\unguarded\stack_alloc.h">
       <Filter>Header Files\guarded\unguarded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utility\algorithm.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utility\enable_down_cast.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,10 +1,20 @@
 #pragma once
-#include <algorithm>                    // for_each, generate_n, min_element, rotate, upper_bound
+#include <algorithm>                    // find, for_each, generate_n, min_element, rotate, upper_bound
 #include <iterator>                     // iter_swap, next
 
 namespace dctl {
 
-template<class OutputIterator, class Size, class Assignable>
+// non-mutating algorithms
+
+template<typename InputIterator, typename EqualityComparable>
+bool contains(InputIterator first, InputIterator last, EqualityComparable const& value)
+{
+        return std::find(first, last, value) != last;
+}
+
+// mutating algorithms
+
+template<typename OutputIterator, typename Size, typename Assignable>
 void iota_n(OutputIterator first, Size n, Assignable value)
 {
         std::generate_n(first, n, [&value]() {
@@ -12,7 +22,9 @@ void iota_n(OutputIterator first, Size n, Assignable value)
         });
 }
 
-template<class ForwardIterator>
+// sorting
+
+template<typename ForwardIterator>
 void insertion_sort(ForwardIterator first, ForwardIterator last)
 {
         std::for_each(first, last, [](ForwardIterator it) {
@@ -21,7 +33,7 @@ void insertion_sort(ForwardIterator first, ForwardIterator last)
         });
 }
 
-template<class ForwardIterator>
+template<typename ForwardIterator>
 void selection_sort(ForwardIterator first, ForwardIterator last)
 {
         std::for_each(first, last, [](ForwardIterator it) {

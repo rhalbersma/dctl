@@ -11,7 +11,7 @@ namespace jenkins {
 template<typename Index, typename Position>
 struct Init
 :
-        std::function<Index(Position)>
+        std::function<Index(Position const&)>
 {
         Index operator()(Position const& p) const
         {

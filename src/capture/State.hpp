@@ -1,5 +1,4 @@
 #pragma once
-#include <algorithm>                    // find
 #include <iterator>                     // begin, end
 #include <type_traits>                  // is_same
 #include <boost/assert.hpp>             // BOOST_ASSERT
@@ -12,6 +11,7 @@
 #include "../node/Stack.hpp"
 #include "../rules/Enum.hpp"
 #include "../rules/Rules.hpp"
+#include "../utility/algorithm.hpp"     // contains
 #include "../utility/IntegerTypes.hpp"
 #include "../utility/total_order.hpp"
 
@@ -33,7 +33,6 @@ class State
 public:
         // structors
 
-        template<typename Position>
         explicit State(Position const& p, Stack& m)
         :
                 king_targets_(passive_kings(p)),
@@ -249,9 +248,9 @@ private:
                 current_.decrement(is_captured_king);
         }
 
-        void unique_back() const // modifies Stack& moves_
+        void remove_non_unique_back() const // modifies Stack& moves_
         {
-                if (std::find(std::begin(moves_), std::end(moves_) - 1, moves_.back()) != std::end(moves_) - 1)
+                if (contains(std::begin(moves_), std::end(moves_) - 1, moves_.back()))
                         moves_.pop_back();
         }
 
@@ -269,7 +268,7 @@ private:
                 auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && is_ambiguous();
                 add_pawn_jump_impl<Color, with::pawn>(dest_sq);
                 if (ambiguous)
-                        unique_back();
+                        remove_non_unique_back();
         }
 
         // overload for kings that halt immediately if the final capture is a king,
@@ -307,7 +306,7 @@ private:
                 // tag dispatching on promotion condition
                 add_king_jump_dispatch<Color>(dest_sq, typename Rules::pawn_promotion());
                 if (ambiguous)
-                        unique_back();
+                        remove_non_unique_back();
         }
 
         // overload for pawns that promote apres-fini

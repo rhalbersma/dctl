@@ -1,5 +1,5 @@
 #pragma once
-#include "../utility/enable_crtp.hpp"   // enable_crtp
+#include "../utility/enable_down_cast.hpp"   // enable_down_cast
 
 namespace dctl {
 
@@ -11,8 +11,12 @@ template
 class IPieces
 :
         // enable static polymorphism
-        private enable_crtp< Impl<T> >
+        private enable_down_cast< Impl<T> >
 {
+private:
+        // dependent name now in scope
+        using enable_down_cast< Impl<T> >::self;
+
 public:
         // queries
 

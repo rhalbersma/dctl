@@ -39,7 +39,7 @@ public:
         template<typename Direction>
         struct shift
         :
-                InternalGrid::shift<Direction>
+                ShiftSize<InternalGrid, Direction>
         {};
 
         static bool is_valid(int square)

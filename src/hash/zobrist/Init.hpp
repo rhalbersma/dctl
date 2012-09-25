@@ -18,7 +18,7 @@ struct Init;
 template<typename Index>
 struct Init<Index, Material>
 :
-        std::function<Index(Material)>
+        std::function<Index(Material const&)>
 {
         Index operator()(Material const& m) const
         {
@@ -34,7 +34,7 @@ struct Init<Index, Material>
 template<typename Index>
 struct Init<Index, Move>
 :
-        std::function<Index(Move)>
+        std::function<Index(Move const&)>
 {
         Index operator()(Move const& m) const
         {
@@ -62,7 +62,7 @@ struct Init<Index, bool>
 template<typename Index>
 struct Init<Index, Restricted>
 :
-        std::function<Index(Restricted)>
+        std::function<Index(Restricted const&)>
 {
         Index operator()(Restricted const& restricted) const
         {
@@ -77,7 +77,7 @@ struct Init<Index, Restricted>
 template<typename Index>
 struct Init<Index, KingMoves>
 :
-        std::function<Index(KingMoves, bool)>
+        std::function<Index(KingMoves const&, bool)>
 {
         Index operator()(KingMoves const& restricted, bool color) const
         {
