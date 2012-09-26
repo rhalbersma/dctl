@@ -20,7 +20,7 @@ public:
         {}
 
 private:
-        // typdefs
+        // typedefs
 
         typedef Node* node_ptr;
         typedef T value_type;

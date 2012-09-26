@@ -53,10 +53,23 @@ private:
 
         void branch(BitIndex from_sq, BitBoard not_occupied, Stack& moves) const
         {
+                branch_dispatch(from_sq, not_occupied, moves, rules::directions::diag());
+        }
+
+        void branch_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::directions::diag) const
+        {
                 find<typename Compass::left_down >(from_sq, not_occupied, moves);
                 find<typename Compass::right_down>(from_sq, not_occupied, moves);
                 find<typename Compass::left_up   >(from_sq, not_occupied, moves);
                 find<typename Compass::right_up  >(from_sq, not_occupied, moves);
+        }
+
+        void branch_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::directions::orth) const
+        {
+                find<typename Compass::left >(from_sq, not_occupied, moves);
+                find<typename Compass::right>(from_sq, not_occupied, moves);
+                find<typename Compass::up   >(from_sq, not_occupied, moves);
+                find<typename Compass::down >(from_sq, not_occupied, moves);
         }
 
         template<typename Direction>
