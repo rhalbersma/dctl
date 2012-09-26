@@ -120,11 +120,11 @@
     <ClCompile Include="..\..\..\test\setup\Wesselink.cpp">
       <Filter>Source Files\setup</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\test\walk\italian\Gilbert.cpp">
-      <Filter>Source Files\walk\italian</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\test\precompiled.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\walk\italian\Gilbert.cpp">
+      <Filter>Source Files\walk\italian</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +137,6 @@
     <ClInclude Include="..\..\..\test\search\Fixture.hpp">
       <Filter>Source Files\search</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\test\walk\Fixture.hpp">
-      <Filter>Source Files\walk</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\test\STL_pch.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -148,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\test\precompiled.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\walk\Fixture.hpp">
+      <Filter>Source Files\walk</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

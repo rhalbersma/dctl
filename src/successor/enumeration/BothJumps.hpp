@@ -24,6 +24,7 @@ public:
         int operator()(Position const& p) const
         {
                 Stack moves;
+                moves.reserve(MOVE_RESERVE);
                 BothJumps()(p, moves);
                 return static_cast<int>(moves.size());
         }

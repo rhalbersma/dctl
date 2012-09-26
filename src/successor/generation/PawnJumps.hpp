@@ -112,31 +112,34 @@ private:
         template<typename Direction>
         void serialize(BitBoard active_pawns, State& capture) const
         {
-                BitIndex jumper;
                 for (
                         active_pawns &= Pull<Board, Direction>()(capture.template targets<Direction>());
                         active_pawns;
                         bit::clear_first(active_pawns)
-                ) {
-                        jumper = bit::get_first(active_pawns);
-                        capture.launch(jumper);
-                        find_first<Direction>(jumper, capture);
-                        capture.finish(jumper);
-                }
+                )
+                        launch<Direction>(bit::get_first(active_pawns), capture);
         }
 
         template<typename Direction>
-        void find_first(BitBoard jumper, State& capture) const
+        void launch(BitIndex jumper, State& capture) const
+        {
+                capture.launch(jumper);
+                find_first<Direction>(jumper, capture);
+                capture.finish(jumper);
+        }
+
+        template<typename Direction>
+        void find_first(BitIndex jumper, State& capture) const
         {
                 Board::advance<Direction>(jumper);
                 BOOST_ASSERT(bit::is_element(jumper, capture.template targets<Direction>()));
                 capture.make(jumper);
-                add_jump<Direction>(jumper, capture);   // recursively find more jumps
+                precedence<Direction>(jumper, capture); // recursively find more jumps
                 capture.undo(jumper);
         }
 
         template<typename Direction>
-        void add_jump(BitIndex jumper, State& capture) const
+        void precedence(BitIndex jumper, State& capture) const
         {
                 Board::advance<Direction>(jumper);
                 if (
@@ -145,7 +148,7 @@ private:
                 ) {
                         if (capture.not_equal_to())
                                 capture.improve();
-                        capture.template add_pawn_jump<Color>(jumper);
+                        add_pawn_jump(jumper, capture);
                 }
         }
 
@@ -278,9 +281,30 @@ private:
                         return false;
 
                 capture.make(jumper);
-                add_jump<Direction>(jumper, capture);   // recursively find more jumps
+                precedence<Direction>(jumper, capture); // recursively find more jumps
                 capture.undo(jumper);
                 return true;
+        }
+
+        void add_pawn_jump(BitIndex dest_sq, State& capture) const
+        {
+                // tag dispatching on ambiguity of pawn jumps
+                add_pawn_jump_dispatch(dest_sq, capture, typename Rules::is_unambiguous_pawn_jump());
+        }
+
+        // overload for pawn jumps that are always unambiguous
+        void add_pawn_jump_dispatch(BitIndex dest_sq, State& capture, boost::mpl::true_) const
+        {
+                capture.template add_pawn_jump<Color, capture::with::pawn>(dest_sq);
+        }
+
+        // overload for pawn jumps that are potentially ambiguous
+        void add_pawn_jump_dispatch(BitIndex dest_sq, State& capture, boost::mpl::false_) const
+        {
+                auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && capture.is_ambiguous();
+                capture.template add_pawn_jump<Color, capture::with::pawn>(dest_sq);
+                if (ambiguous)
+                        capture.remove_non_unique_back();
         }
 };
 

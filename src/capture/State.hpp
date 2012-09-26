@@ -8,6 +8,7 @@
 #include <boost/utility.hpp>            // noncopyable
 #include "../bit/Bit.hpp"
 #include "../board/Shift.hpp"
+#include "../node/Material.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Enum.hpp"
 #include "../rules/Rules.hpp"
@@ -18,12 +19,12 @@
 namespace dctl {
 namespace capture {
 namespace with {
-
+       
 struct king {};
 struct pawn {};
-
+        
 }       // namespace with
-
+        
 template<typename Position>
 class State
 :
@@ -108,19 +109,34 @@ public:
         }
 
         template<bool Color>
-        void add_pawn_jump(BitIndex dest_sq) const // modifies Stack& moves_
-        {
-                // tag dispatching on ambiguity of pawn jumps
-                add_pawn_jump_dispatch<Color>(dest_sq, typename Rules::is_unambiguous_pawn_jump());
-        }
-
-        template<bool Color, typename Direction>
         void add_king_jump(BitIndex dest_sq) const // modifies Stack& moves_
         {
-                auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && is_ambiguous();
+                moves_.push_back(
+                        Move::create<Color, Rules>(
+                                from_sq_ ^ dest_sq,
+                                captured_pieces(),
+                                captured_kings(with::king())
+                        )
+                );
+        }
 
-                // tag dispatching on king halt after final capture
-                add_king_jump_dispatch<Color, Direction>(dest_sq, ambiguous, typename Rules::halt_range());
+        template<bool Color, typename WithPiece>
+        void add_pawn_jump(BitIndex dest_sq) const // modifies Stack& moves_
+        {
+                moves_.push_back(
+                        Move::create<Color, Rules>(
+                                from_sq_ ^ dest_sq,
+                                promotion<Color>(dest_sq, WithPiece()),
+                                captured_pieces(),
+                                captured_kings(WithPiece())
+                        )
+                );
+        }
+
+        void remove_non_unique_back() const // modifies Stack& moves_
+        {
+                if (contains(std::begin(moves_), std::end(moves_) - 1, moves_.back()))
+                        moves_.pop_back();
         }
 
         // queries
@@ -131,15 +147,25 @@ public:
                 return remaining_targets_ & Pull<Board, Direction>()(path());
         }
 
+        BitBoard path() const
+        {
+                return not_occupied_;
+        }
+
         template<typename Direction>
         BitBoard path() const
         {
                 return path() & Board::jump_start[Direction::value];
         }
 
-        BitBoard path() const
+        bool empty() const
         {
-                return not_occupied_;
+                return moves_.empty();
+        }
+
+        bool is_captured_king(BitIndex target_sq) const
+        {
+                return bit::is_element(target_sq, king_targets_);
         }
 
         bool greater_equal() const
@@ -154,9 +180,15 @@ public:
                 return current_ != best_;
         }
 
-        bool empty() const
+        bool is_ambiguous() const
         {
-                return moves_.empty();
+                return !moves_.empty() && is_large();
+        }
+
+        bool is_promotion() const
+        {
+                BOOST_MPL_ASSERT((std::is_same<typename Rules::pawn_promotion, rules::promotion::en_passant>));
+                return current_.is_promotion();
         }
 
 private:
@@ -248,109 +280,6 @@ private:
                 current_.decrement(is_captured_king);
         }
 
-        void remove_non_unique_back() const // modifies Stack& moves_
-        {
-                if (contains(std::begin(moves_), std::end(moves_) - 1, moves_.back()))
-                        moves_.pop_back();
-        }
-
-        // overload for pawn jumps that are always unambiguous
-        template<bool Color>
-        void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::true_) const // modifies Stack& moves_
-        {
-                add_pawn_jump_impl<Color, with::pawn>(dest_sq);
-        }
-
-        // overload for pawn jumps that are potentially ambiguous
-        template<bool Color>
-        void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::false_) const // modifies Stack& moves_
-        {
-                auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && is_ambiguous();
-                add_pawn_jump_impl<Color, with::pawn>(dest_sq);
-                if (ambiguous)
-                        remove_non_unique_back();
-        }
-
-        // overload for kings that halt immediately if the final capture is a king,
-        // and slide through otherwise
-        template<bool Color, typename Direction>
-        void add_king_jump_dispatch(BitIndex dest_sq, bool ambiguous, rules::range::distance_1K) const // modifies Stack& moves_
-        {
-                if (bit::is_element(Board::prev<Direction>(dest_sq), king_targets_))
-                        add_king_jump_dispatch<Color, Direction>(dest_sq, ambiguous, rules::range::distance_1());
-                else
-                        add_king_jump_dispatch<Color, Direction>(dest_sq, ambiguous, rules::range::distance_N());
-        }
-
-        // overload for kings that halt immediately after the final capture
-        template<bool Color, typename Direction>
-        void add_king_jump_dispatch(BitIndex dest_sq, bool ambiguous, rules::range::distance_1) const // modifies Stack& moves_
-        {
-                add_king_jump<Color>(dest_sq, ambiguous);
-        }
-
-        // overload for kings that slide through after the final capture
-        template<bool Color, typename Direction>
-        void add_king_jump_dispatch(BitIndex dest_sq, bool ambiguous, rules::range::distance_N) const // modifies Stack& moves_
-        {
-                BOOST_ASSERT(bit::is_element(dest_sq, path()));
-                do {
-                        add_king_jump<Color>(dest_sq, ambiguous);
-                        Board::advance<Direction>(dest_sq);
-                } while (bit::is_element(dest_sq, path()));
-        }
-
-        template<bool Color>
-        void add_king_jump(BitIndex dest_sq, bool ambiguous) const // modifies Stack& moves_
-        {
-                // tag dispatching on promotion condition
-                add_king_jump_dispatch<Color>(dest_sq, typename Rules::pawn_promotion());
-                if (ambiguous)
-                        remove_non_unique_back();
-        }
-
-        // overload for pawns that promote apres-fini
-        template<bool Color>
-        void add_king_jump_dispatch(BitIndex dest_sq, rules::promotion::apres_fini) const // modifies Stack& moves_
-        {
-                add_king_jump_impl<Color>(dest_sq);
-        }
-
-        // overload for pawns that promote en-passant
-        template<bool Color>
-        void add_king_jump_dispatch(BitIndex dest_sq, rules::promotion::en_passant) const // modifies Stack& moves_
-        {
-                if (!is_promotion())
-                        add_king_jump_impl<Color>(dest_sq);
-                else
-                        add_pawn_jump_impl<Color, with::king>(dest_sq);
-        }
-
-        template<bool Color>
-        void add_king_jump_impl(BitIndex dest_sq) const // modifies Stack& moves_
-        {
-                moves_.push_back(
-                        Move::create<Color, Rules>(
-                                from_sq_ ^ dest_sq,
-                                captured_pieces(),
-                                captured_kings(with::king())
-                        )
-                );
-        }
-
-        template<bool Color, typename WithPiece>
-        void add_pawn_jump_impl(BitIndex dest_sq) const // modifies Stack& moves_
-        {
-                moves_.push_back(
-                        Move::create<Color, Rules>(
-                                from_sq_ ^ dest_sq,
-                                promotion<Color>(dest_sq, WithPiece()),
-                                captured_pieces(),
-                                captured_kings(WithPiece())
-                        )
-                );
-        }
-
         // queries
 
         bool invariant() const
@@ -359,22 +288,6 @@ private:
                         bit::is_subset_of(remaining_targets_, initial_targets_) &&
                         !bit::is_multiple(from_sq_)
                 );
-        }
-
-        bool is_captured_king(BitIndex target_sq) const
-        {
-                return bit::is_element(target_sq, king_targets_);
-        }
-
-        bool is_promotion() const
-        {
-                BOOST_MPL_ASSERT((std::is_same<typename Rules::pawn_promotion, rules::promotion::en_passant>));
-                return current_.is_promotion();
-        }
-
-        bool is_ambiguous() const
-        {
-                return !moves_.empty() && is_large();
         }
 
         bool is_large() const

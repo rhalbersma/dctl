@@ -74,15 +74,18 @@ private:
 
         void serialize(BitBoard active_kings, State& capture) const
         {
-                BitIndex jumper;
                 BOOST_ASSERT(!bit::is_zero(active_kings));
                 do {
-                        jumper = bit::get_first(active_kings);
-                        capture.launch(jumper);
-                        branch(jumper, capture);
-                        capture.finish(jumper);
+                        launch(bit::get_first(active_kings), capture);
                         bit::clear_first(active_kings);
                 } while (active_kings);
+        }
+
+        void launch(BitIndex jumper, State& capture) const
+        {
+                capture.launch(jumper);
+                branch(jumper, capture);
+                capture.finish(jumper);
         }
 
         void branch(BitIndex jumper, State& capture) const
@@ -122,13 +125,13 @@ private:
                 slide<Direction>(jumper, capture.template path<Direction>());
                 if (bit::is_element(jumper, capture.template targets<Direction>())) {
                         capture.make(jumper);
-                        add_jump<Direction>(jumper, capture);   // recursively find more jumps
+                        precedence<Direction>(jumper, capture); // recursively find more jumps
                         capture.undo(jumper);
                 }
         }
 
         template<typename Direction>
-        void add_jump(BitIndex jumper, State& capture) const
+        void precedence(BitIndex jumper, State& capture) const
         {
                 Board::advance<Direction>(jumper);
                 if (
@@ -137,7 +140,7 @@ private:
                 ) {
                         if (capture.not_equal_to())
                                 capture.improve();
-                        capture.template add_king_jump<Color, Direction>(jumper);
+                        add_king_jump<Direction>(jumper, capture);
                 }
         }
 
@@ -173,6 +176,16 @@ private:
         {
                 // tag dispatching on king jump landing range after intermediate captures
                 return land_dispatch<Direction>(jumper, capture, typename Rules::land_range());
+        }
+
+        // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
+        template<bool Color, typename Direction>
+        void land_dispatch(BitIndex jumper, State& capture, rules::range::distance_1K) const
+        {
+                if (capture.is_captured_king(Board::prev<Direction>(jumper)))
+                        land_dispatch<Color, Direction>(jumper, capture, rules::range::distance_1());
+                else
+                        land_dispatch<Color, Direction>(jumper, capture, rules::range::distance_N());
         }
 
         // overload for kings that can only land on the immediately adjacent square
@@ -272,9 +285,71 @@ private:
                         return false;
 
                 capture.make(jumper);
-                add_jump<Direction>(jumper, capture);   // recursively find more jumps
+                precedence<Direction>(jumper, capture); // recursively find more jumps
                 capture.undo(jumper);
                 return true;
+        }
+
+        template<typename Direction>
+        void add_king_jump(BitIndex dest_sq, State& capture) const
+        {
+                auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && capture.is_ambiguous();
+
+                // tag dispatching on king halt after final capture
+                add_king_jump_dispatch<Direction>(dest_sq, capture, ambiguous, typename Rules::halt_range());
+        }
+
+        // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
+        template<typename Direction>
+        void add_king_jump_dispatch(BitIndex dest_sq, State& capture, bool ambiguous, rules::range::distance_1K) const
+        {
+                if (capture.is_captured_king(Board::prev<Direction>(dest_sq)))
+                        add_king_jump_dispatch<Direction>(dest_sq, capture, ambiguous, rules::range::distance_1());
+                else
+                        add_king_jump_dispatch<Direction>(dest_sq, capture, ambiguous, rules::range::distance_N());
+        }
+
+        // overload for kings that halt immediately after the final capture
+        template<typename Direction>
+        void add_king_jump_dispatch(BitIndex dest_sq, State& capture, bool ambiguous, rules::range::distance_1) const
+        {
+                add_king_jump(dest_sq, capture, ambiguous);
+        }
+
+        // overload for kings that slide through after the final capture
+        template<typename Direction>
+        void add_king_jump_dispatch(BitIndex dest_sq, State& capture, bool ambiguous, rules::range::distance_N) const
+        {
+                // NOTE: capture.template path<Direction>() would be an ERROR here
+                // because we need all landing squares rather than the directional launching squares subset
+                BOOST_ASSERT(bit::is_element(dest_sq, capture.path()));
+                do {
+                        add_king_jump(dest_sq, capture, ambiguous);
+                        Board::advance<Direction>(dest_sq);
+                } while (bit::is_element(dest_sq, capture.path()));
+        }
+
+        void add_king_jump(BitIndex dest_sq, State& capture, bool ambiguous) const
+        {
+                // tag dispatching on promotion condition
+                add_king_jump_dispatch(dest_sq, capture, typename Rules::pawn_promotion());
+                if (ambiguous)
+                        capture.remove_non_unique_back();
+        }
+
+        // overload for pawns that promote apres-fini
+        void add_king_jump_dispatch(BitIndex dest_sq, State& capture, rules::promotion::apres_fini) const
+        {
+                capture.template add_king_jump<Color>(dest_sq);
+        }
+
+        // overload for pawns that promote en-passant
+        void add_king_jump_dispatch(BitIndex dest_sq, State& capture, rules::promotion::en_passant) const
+        {
+                if (!capture.is_promotion())
+                        capture.template add_king_jump<Color>(dest_sq);
+                else
+                        capture.template add_pawn_jump<Color, capture::with::king>(dest_sq);
         }
 };
 
