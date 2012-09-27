@@ -76,12 +76,12 @@ private:
         {
                 BOOST_ASSERT(!bit::is_zero(active_kings));
                 do {
-                        launch(bit::get_first(active_kings), capture);
+                        find(bit::get_first(active_kings), capture);
                         bit::clear_first(active_kings);
                 } while (active_kings);
         }
 
-        void launch(BitIndex jumper, State& capture) const
+        void find(BitIndex jumper, State& capture) const
         {
                 capture.launch(jumper);
                 branch(jumper, capture);
@@ -133,6 +133,23 @@ private:
         template<typename Direction>
         void precedence(BitIndex jumper, State& capture) const
         {
+                // tag dispatching on majority precedence
+                precedence_dispatch<Direction>(jumper, capture, typename Rules::is_majority_precedence());
+        }
+
+        // overload for no majority precedence
+        template<typename Direction>
+        void precedence_dispatch(BitIndex jumper, State& capture, boost::mpl::false_) const
+        {
+                Board::advance<Direction>(jumper);
+                if (!find_next<Direction>(jumper, capture))
+                        add_king_jump<Direction>(jumper, capture);
+        }
+
+        // overload for majority precedence
+        template<typename Direction>
+        void precedence_dispatch(BitIndex jumper, State& capture, boost::mpl::true_) const
+        {
                 Board::advance<Direction>(jumper);
                 if (
                         !find_next<Direction>(jumper, capture) &&
@@ -179,13 +196,13 @@ private:
         }
 
         // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
-        template<bool Color, typename Direction>
+        template<typename Direction>
         void land_dispatch(BitIndex jumper, State& capture, rules::range::distance_1K) const
         {
-                if (capture.is_captured_king(Board::prev<Direction>(jumper)))
-                        land_dispatch<Color, Direction>(jumper, capture, rules::range::distance_1());
+                if (capture.is_king(Board::prev<Direction>(jumper)))
+                        land_dispatch<Direction>(jumper, capture, rules::range::distance_1());
                 else
-                        land_dispatch<Color, Direction>(jumper, capture, rules::range::distance_N());
+                        land_dispatch<Direction>(jumper, capture, rules::range::distance_N());
         }
 
         // overload for kings that can only land on the immediately adjacent square
@@ -203,7 +220,7 @@ private:
         bool land_dispatch(BitIndex jumper, State& capture, rules::range::distance_N) const
         {
                 BOOST_ASSERT(bit::is_element(jumper, capture.path()));
-                bool found_next = false;
+                auto found_next = false;
                 do {
                         found_next |= turn<Direction>(jumper, capture);
                         Board::advance<Direction>(jumper);
@@ -303,7 +320,7 @@ private:
         template<typename Direction>
         void add_king_jump_dispatch(BitIndex dest_sq, State& capture, bool ambiguous, rules::range::distance_1K) const
         {
-                if (capture.is_captured_king(Board::prev<Direction>(dest_sq)))
+                if (capture.is_king(Board::prev<Direction>(dest_sq)))
                         add_king_jump_dispatch<Direction>(dest_sq, capture, ambiguous, rules::range::distance_1());
                 else
                         add_king_jump_dispatch<Direction>(dest_sq, capture, ambiguous, rules::range::distance_N());
