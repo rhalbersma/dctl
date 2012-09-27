@@ -103,7 +103,7 @@ public:
 
         void improve()
         {
-                BOOST_ASSERT(Rules::is_majority_precedence::value);
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_majority_precedence>));
                 best_ = current_;
                 moves_.clear();
         }
@@ -163,19 +163,21 @@ public:
                 return moves_.empty();
         }
 
-        bool is_captured_king(BitIndex target_sq) const
+        bool is_king(BitIndex target_sq) const
         {
                 return bit::is_element(target_sq, king_targets_);
         }
 
         bool greater_equal() const
         {
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_majority_precedence>));
                 BOOST_ASSERT(is_totally_ordered(best_, current_));
                 return current_ >= best_;
         }
 
         bool not_equal_to() const
         {
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_majority_precedence>));
                 BOOST_ASSERT(greater_equal());
                 return current_ != best_;
         }
@@ -210,7 +212,7 @@ private:
         void make_impl(BitIndex target_sq)
         {
                 remaining_targets_ ^= target_sq;
-                increment(is_captured_king(target_sq));
+                increment(is_king(target_sq));
         }
 
         // overload for apres-fini capture removal
@@ -228,56 +230,56 @@ private:
 
         void undo_impl(BitIndex target_sq)
         {
-                decrement(is_captured_king(target_sq));
+                decrement(is_king(target_sq));
                 remaining_targets_ ^= target_sq;
         }
 
-        void increment(bool is_captured_king)
+        void increment(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                increment_dispatch(is_captured_king, typename Rules::jump_precedence());
+                increment_dispatch(is_king, typename Rules::jump_precedence());
         }
 
         // overload for no capture precedence
-        void increment_dispatch(bool /* is_captured_king */, rules::precedence::none)
+        void increment_dispatch(bool /* is_king */, rules::precedence::none)
         {
                 // no-op
         }
 
         // overload for quantity precedence
-        void increment_dispatch(bool /* is_captured_king */, rules::precedence::quantity)
+        void increment_dispatch(bool /* is_king */, rules::precedence::quantity)
         {
                 current_.increment();
         }
 
         // overload for quality precedence
-        void increment_dispatch(bool is_captured_king, rules::precedence::quality)
+        void increment_dispatch(bool is_king, rules::precedence::quality)
         {
-                current_.increment(is_captured_king);
+                current_.increment(is_king);
         }
 
-        void decrement(bool is_captured_king)
+        void decrement(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                decrement_dispatch(is_captured_king, typename Rules::jump_precedence());
+                decrement_dispatch(is_king, typename Rules::jump_precedence());
         }
 
         // overload for no capture precedence
-        void decrement_dispatch(bool /* is_captured_king */, rules::precedence::none)
+        void decrement_dispatch(bool /* is_king */, rules::precedence::none)
         {
                 // no-op
         }
 
         // overload for quantity precedence
-        void decrement_dispatch(bool /* is_captured_king */, rules::precedence::quantity)
+        void decrement_dispatch(bool /* is_king */, rules::precedence::quantity)
         {
                 current_.decrement();
         }
 
         // overload for quality precedence
-        void decrement_dispatch(bool is_captured_king, rules::precedence::quality)
+        void decrement_dispatch(bool is_king, rules::precedence::quality)
         {
-                current_.decrement(is_captured_king);
+                current_.decrement(is_king);
         }
 
         // queries
