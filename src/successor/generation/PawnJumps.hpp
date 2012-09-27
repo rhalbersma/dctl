@@ -117,11 +117,11 @@ private:
                         active_pawns;
                         bit::clear_first(active_pawns)
                 )
-                        launch<Direction>(bit::get_first(active_pawns), capture);
+                        find<Direction>(bit::get_first(active_pawns), capture);
         }
 
         template<typename Direction>
-        void launch(BitIndex jumper, State& capture) const
+        void find(BitIndex jumper, State& capture) const
         {
                 capture.launch(jumper);
                 find_first<Direction>(jumper, capture);
@@ -140,6 +140,23 @@ private:
 
         template<typename Direction>
         void precedence(BitIndex jumper, State& capture) const
+        {
+                // tag dispatching on majority precedence
+                precedence_dispatch<Direction>(jumper, capture, typename Rules::is_majority_precedence());
+        }
+
+        // overload for no majority precedence
+        template<typename Direction>
+        void precedence_dispatch(BitIndex jumper, State& capture, boost::mpl::false_) const
+        {
+                Board::advance<Direction>(jumper);
+                if (!find_next<Direction>(jumper, capture))
+                        add_pawn_jump(jumper, capture);
+        }
+
+        // overload for majority precedence
+        template<typename Direction>
+        void precedence_dispatch(BitIndex jumper, State& capture, boost::mpl::true_) const
         {
                 Board::advance<Direction>(jumper);
                 if (
