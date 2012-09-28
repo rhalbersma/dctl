@@ -720,5 +720,14 @@
     <ClInclude Include="..\..\..\src\utility\enable_down_cast.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\rules\Lineo.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\capture\Lineo.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\rules\Lineo_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

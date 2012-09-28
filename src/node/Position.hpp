@@ -283,7 +283,7 @@ private:
         PlyCount reversible_moves_;
         PlyCount distance_to_root_;
         bool to_move_;
-        BitBoard padding_[5];
+        //BitBoard padding_[5];
 };
 
 // unoccupied squares

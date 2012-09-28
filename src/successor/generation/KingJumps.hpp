@@ -123,7 +123,7 @@ private:
         void find_first(BitIndex jumper, State& capture) const
         {
                 slide<Direction>(jumper, capture.template path<Direction>());
-                if (bit::is_element(jumper, capture.template targets<Direction>())) {
+                if (bit::is_element(jumper, capture.template targets_with_king<Direction>())) {
                         capture.make(jumper);
                         precedence<Direction>(jumper, capture); // recursively find more jumps
                         capture.undo(jumper);
@@ -134,7 +134,7 @@ private:
         void precedence(BitIndex jumper, State& capture) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch<Direction>(jumper, capture, typename Rules::is_majority_precedence());
+                precedence_dispatch<Direction>(jumper, capture, typename Rules::is_precedence());
         }
 
         // overload for no majority precedence
@@ -219,6 +219,8 @@ private:
         template<typename Direction>
         bool land_dispatch(BitIndex jumper, State& capture, rules::range::distance_N) const
         {
+                // NOTE: capture.template path<Direction>() would be an ERROR here
+                // because we need all landing squares rather than the directional launching squares subset
                 BOOST_ASSERT(bit::is_element(jumper, capture.path()));
                 auto found_next = false;
                 do {
@@ -298,7 +300,7 @@ private:
         template<typename Direction>
         bool jump(BitIndex jumper, State& capture) const
         {
-                if (!bit::is_element(jumper, capture.template targets<Direction>()))
+                if (!bit::is_element(jumper, capture.template targets_with_king<Direction>()))
                         return false;
 
                 capture.make(jumper);
@@ -338,7 +340,7 @@ private:
         void add_king_jump_dispatch(BitIndex dest_sq, State& capture, bool ambiguous, rules::range::distance_N) const
         {
                 // NOTE: capture.template path<Direction>() would be an ERROR here
-                // because we need all landing squares rather than the directional launching squares subset
+                // because we need all halting squares rather than the directional launching squares subset
                 BOOST_ASSERT(bit::is_element(dest_sq, capture.path()));
                 do {
                         add_king_jump(dest_sq, capture, ambiguous);

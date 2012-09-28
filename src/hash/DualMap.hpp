@@ -16,7 +16,7 @@ template
         typename Index = HashIndex,
         typename Replace = EmptyOldUnderCutSmallestOfN
 >
-class DualMap
+struct DualMap
 {
 public:
         // structors
@@ -72,10 +72,12 @@ public:
                 dual_map_[p.active_color()].insert(p, value);
         }
 
-private:
+//private:
         // representation
 
-        Map<Key, Value, Hash, Index, Replace> dual_map_[2];
+        typedef Map<Key, Value, Hash, Index, Replace> map_type;
+        typedef typename map_type::Entry Entry;
+        map_type dual_map_[2];
 };
 
 }       // namespace hash

@@ -31,6 +31,13 @@ namespace promotion {
         struct en_passant {};   // in passing
 }
 
+// king move directions
+namespace orthogonality {
+        struct none {};
+        struct relative {};
+        struct absolute {};
+}
+
 // majority capture precedence
 namespace precedence {
         struct none {};

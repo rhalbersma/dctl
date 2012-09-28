@@ -84,7 +84,7 @@ public:
                 return TT.clear();
         }
 
-private:
+//private:
         template<typename Position>
         void announce(Position const& p, int depth)
         {
@@ -115,17 +115,17 @@ private:
                 std::cout << std::setw(12) << std::right << statistics_.nodes();
 
                 std::cout << " time ";
-                std::cout << std::setw( 6) << timer.elapsed();
+                std::cout << std::setw( 6) << timer.lap();
 
                 double const nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.lap());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
-
+                /*
                 double const hashfull = 1000 * (static_cast<double>((TT.size() - TT.available())) / TT.size());
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
-
+                */
                 std::cout << std::endl;
         }
 
@@ -147,7 +147,7 @@ private:
         template<typename Position>
         NodeCount driver(Position const& p, int depth, int ply)
         {
-                return (depth == 0)? leaf(p, depth, ply) : fast(p, depth, ply);
+                return (depth == 0)? leaf(p, depth, ply) : hash(p, depth, ply);
         }
 
         template<typename Position>
@@ -216,31 +216,6 @@ private:
                 if (TT_entry && TT_entry->depth() == depth)
                         return TT_entry->leafs();
 
-                if (depth == 0)
-                        return 1;
-
-                auto const moves = successor::generate(p);
-                NodeCount leafs = 0;
-                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
-                        auto q = p;
-                        q.attach(p);
-                        q.make(*m);
-                        leafs += hash(q, depth - 1, ply + 1);
-                }
-
-                TT.insert(p, Transposition(leafs, depth));
-                return leafs;
-        }
-
-        template<typename Position>
-        NodeCount fast(Position const& p, int depth, int ply)
-        {
-                statistics_.update(ply);
-
-                auto TT_entry = TT.find(p);
-                if (TT_entry && TT_entry->depth() == depth)
-                        return TT_entry->leafs();
-
                 NodeCount leafs;
                 if (depth == 1) {
                         leafs = successor::count(p);
@@ -251,7 +226,7 @@ private:
                                 auto q = p;
                                 q.attach(p);
                                 q.make(*m);
-                                leafs += fast(q, depth - 1, ply + 1);
+                                leafs += hash(q, depth - 1, ply + 1);
                         }
                 }
 

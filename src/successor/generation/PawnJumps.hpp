@@ -113,7 +113,7 @@ private:
         void serialize(BitBoard active_pawns, State& capture) const
         {
                 for (
-                        active_pawns &= Pull<Board, Direction>()(capture.template targets<Direction>());
+                        active_pawns &= Pull<Board, Direction>()(capture.template targets_with_pawn<Direction>());
                         active_pawns;
                         bit::clear_first(active_pawns)
                 )
@@ -132,7 +132,7 @@ private:
         void find_first(BitIndex jumper, State& capture) const
         {
                 Board::advance<Direction>(jumper);
-                BOOST_ASSERT(bit::is_element(jumper, capture.template targets<Direction>()));
+                BOOST_ASSERT(bit::is_element(jumper, capture.template targets_with_pawn<Direction>()));
                 capture.make(jumper);
                 precedence<Direction>(jumper, capture); // recursively find more jumps
                 capture.undo(jumper);
@@ -142,7 +142,7 @@ private:
         void precedence(BitIndex jumper, State& capture) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch<Direction>(jumper, capture, typename Rules::is_majority_precedence());
+                precedence_dispatch<Direction>(jumper, capture, typename Rules::is_precedence());
         }
 
         // overload for no majority precedence
@@ -294,7 +294,7 @@ private:
         template<typename Direction>
         bool jump(BitIndex jumper, State& capture) const
         {
-                if (!bit::is_element(jumper, capture.template targets<Direction>()))
+                if (!bit::is_element(jumper, capture.template targets_with_pawn<Direction>()))
                         return false;
 
                 capture.make(jumper);

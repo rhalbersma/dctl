@@ -23,7 +23,7 @@ template
         typename Index = HashIndex,
         typename Replace = EmptyOldUnderCutShallowestOfN
 >
-class Map
+struct Map
 {
 public:
         // structors
@@ -81,10 +81,7 @@ public:
         Value const* find(Item const& item) const
         {
                 // tag dispatching on the key's integral type trait
-                return find_dispatch(
-                        item,
-                        std::integral_constant<bool, std::is_integral<Key>::value>()
-                );
+                return find_dispatch(item, std::integral_constant<bool, std::is_integral<Key>::value>());
         }
 
         // modifiers
@@ -99,19 +96,13 @@ public:
         void insert(Item const& item, Value const& value)
         {
                 // tag dispatching on the key's integral type trait
-                insert_dispatch(
-                        item, value,
-                        std::integral_constant<bool, std::is_integral<Key>::value>()
-                );
+                insert_dispatch(item, value, std::integral_constant<bool, std::is_integral<Key>::value>());
         }
 
-private:
+//private:
         // overload for non-integral keys
         template<typename Item>
-        Value const* find_dispatch(
-                Item const& item,
-                std::false_type
-        ) const
+        Value const* find_dispatch(Item const& item, std::false_type) const
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = FindKey<Key, Item>()(item);
@@ -120,10 +111,7 @@ private:
 
         // overload for integral keys
         template<typename Item>
-        Value const* find_dispatch(
-                Item const& item,
-                std::true_type
-        ) const
+        Value const* find_dispatch(Item const& item, std::true_type) const
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = ShiftKey<Key, Index>()(index);
@@ -132,10 +120,7 @@ private:
 
         // overload for non-integral keys
         template<typename Item>
-        void insert_dispatch(
-                Item const& item, Value const& value,
-                std::false_type
-        )
+        void insert_dispatch(Item const& item, Value const& value, std::false_type)
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = FindKey<Key, Item>()(item);
@@ -144,10 +129,7 @@ private:
 
         // overload for integral keys
         template<typename Item>
-        void insert_dispatch(
-                Item const& item, Value const& value,
-                std::true_type
-        )
+        void insert_dispatch(Item const& item, Value const& value, std::true_type)
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = ShiftKey<Key, Index>()(index);

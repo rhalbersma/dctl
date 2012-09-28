@@ -8,7 +8,7 @@
 namespace dctl {
 namespace search {
 
-class Transposition
+struct Transposition
 {
 public:
         // structors
