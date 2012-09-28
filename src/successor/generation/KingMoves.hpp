@@ -33,29 +33,57 @@ public:
         void operator()(Position const& p, Stack& moves) const
         {
                 if (auto const active_kings = moveable_kings(p, Color))
-                        select(active_kings, not_occupied(p), moves);
+                        select(active_kings, not_occupied(p), moves, p);
         }
 
 private:
-        void select(BitBoard active_kings, BitBoard not_occupied, Stack& moves) const
+        void select(BitBoard active_kings, BitBoard not_occupied, Stack& moves, Position const& p) const
         {
-                serialize(active_kings, not_occupied, moves);
+                // tag dispatching on king move orthogonality
+                select_dispatch(active_kings, not_occupied, moves, p, typename Rules::king_move_orthogonality());
         }
 
+        // overload for kings that move in the 4 diagonal directions
+        void select_dispatch(BitBoard active_kings, BitBoard not_occupied, Stack& moves, Position const& /* p */, rules::orthogonality::none) const
+        {
+                serialize<rules::directions::diag>(active_kings, not_occupied, moves);
+        }
+
+        // overload for kings that move in the 8 diagonal and orthogonal directions 
+        // if they belong to the side with a king majority, 
+        // and that otherwise move in the 4 diagonal directions
+        void select_dispatch(BitBoard active_kings, BitBoard not_occupied, Stack& moves, Position const& p, rules::orthogonality::relative) const
+        {
+                if (bit::count(p.kings(Color)) > bit::count(p.kings(!Color)))
+                        serialize<rules::directions::all >(active_kings, not_occupied, moves);
+                else
+                        serialize<rules::directions::diag>(active_kings, not_occupied, moves);
+        }
+
+        // overload for kings that move in the 8 diagonal and orthogonal directions
+        void select_dispatch(BitBoard active_kings, BitBoard not_occupied, Stack& moves, Position const& /* p */, rules::orthogonality::absolute) const
+        {
+                serialize<rules::directions::all>(active_kings, not_occupied, moves);
+        }
+
+        template<typename Directions>
         void serialize(BitBoard active_kings, BitBoard not_occupied, Stack& moves) const
         {
                 BOOST_ASSERT(!bit::is_zero(active_kings));
                 do {
-                        branch(bit::get_first(active_kings), not_occupied, moves);
+                        branch_dispatch(bit::get_first(active_kings), not_occupied, moves, Directions());
                         bit::clear_first(active_kings);
                 } while (active_kings);
         }
 
-        void branch(BitIndex from_sq, BitBoard not_occupied, Stack& moves) const
+        // overload for kings that move in the 8 diagonal and orthogonal directions
+        void branch_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::directions::all) const
         {
                 branch_dispatch(from_sq, not_occupied, moves, rules::directions::diag());
+                branch_dispatch(from_sq, not_occupied, moves, rules::directions::orth());
         }
 
+        // overload for kings that move in the 4 diagonal directions
         void branch_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::directions::diag) const
         {
                 find<typename Compass::left_down >(from_sq, not_occupied, moves);
@@ -64,6 +92,7 @@ private:
                 find<typename Compass::right_up  >(from_sq, not_occupied, moves);
         }
 
+        // overload for kings that move in the 4 orthogonal directions
         void branch_dispatch(BitIndex from_sq, BitBoard not_occupied, Stack& moves, rules::directions::orth) const
         {
                 find<typename Compass::left >(from_sq, not_occupied, moves);

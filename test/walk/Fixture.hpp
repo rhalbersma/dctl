@@ -14,7 +14,7 @@ struct Fixture
 {
         Fixture()
         {
-                root_.resize_hash(24);
+                root_.resize_hash(25);
         }
 
         ~Fixture()
@@ -32,6 +32,9 @@ struct Fixture
                         auto const depth = std::distance(std::begin(leafs), it) + 1;
                         BOOST_CHECK_EQUAL(*it, root_.test(p, depth));
                 }*/
+                std::cout << "Move size: " << sizeof(Move) << "\n";
+                std::cout << "Material size: " << sizeof(Material) << "\n";
+                std::cout << "TT entry size: " << sizeof(Root::TranspositionTable::Entry) << "\n";
                 root_.perft(p, N);
         };
 

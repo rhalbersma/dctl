@@ -5,6 +5,7 @@
 #include "International.hpp"
 #include "Italian.hpp"
 #include "Killer.hpp"
+#include "Lineo.hpp"
 #include "Pool.hpp"
 #include "Russian.hpp"
 #include "Spanish.hpp"

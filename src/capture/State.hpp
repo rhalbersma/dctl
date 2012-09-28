@@ -5,9 +5,11 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/mpl/identity.hpp>       // identity
+#include <boost/mpl/logical.hpp>        // and
 #include <boost/utility.hpp>            // noncopyable
 #include "../bit/Bit.hpp"
 #include "../board/Shift.hpp"
+#include "../board/Traits.hpp"
 #include "../node/Material.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Enum.hpp"
@@ -103,7 +105,7 @@ public:
 
         void improve()
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_majority_precedence>));
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_precedence>));
                 best_ = current_;
                 moves_.clear();
         }
@@ -142,7 +144,13 @@ public:
         // queries
 
         template<typename Direction>
-        BitBoard targets() const
+        BitBoard targets_with_king() const
+        {
+                return remaining_targets<Direction>() & Pull<Board, Direction>()(path());
+        }
+        
+        template<typename Direction>
+        BitBoard targets_with_pawn() const
         {
                 return remaining_targets_ & Pull<Board, Direction>()(path());
         }
@@ -170,14 +178,14 @@ public:
 
         bool greater_equal() const
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_majority_precedence>));
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_precedence>));
                 BOOST_ASSERT(is_totally_ordered(best_, current_));
                 return current_ >= best_;
         }
 
         bool not_equal_to() const
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_majority_precedence>));
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_precedence>));
                 BOOST_ASSERT(greater_equal());
                 return current_ != best_;
         }
@@ -292,6 +300,30 @@ private:
                 );
         }
 
+        template<typename Direction>
+        BitBoard remaining_targets() const
+        {
+                return remaining_targets_dispatch(
+                        boost::mpl::and_<
+                                angle::is_orthogonal<Direction>,
+                                std::is_same<
+                                        typename Rules::king_jump_orthogonality,
+                                        rules::orthogonality::relative
+                                >
+                        >()
+                );
+        }
+
+        BitBoard remaining_targets_dispatch(boost::mpl::false_) const
+        {
+                return remaining_targets_;
+        }
+
+        BitBoard remaining_targets_dispatch(boost::mpl::true_) const
+        {
+                return remaining_targets_ & king_targets_;
+        }
+
         bool is_large() const
         {
                 return count() >= Rules::large_jump::value;
@@ -300,7 +332,7 @@ private:
         int count() const
         {
                 // tag dispatching on majority capture precedence
-                return count_dispatch(typename Rules::is_majority_precedence());
+                return count_dispatch(typename Rules::is_precedence());
         }
 
         // overload for no majority capture precedence

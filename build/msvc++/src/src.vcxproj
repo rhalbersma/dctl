@@ -144,6 +144,7 @@
     <ClInclude Include="..\..\..\src\capture\International.hpp" />
     <ClInclude Include="..\..\..\src\capture\Italian.hpp" />
     <ClInclude Include="..\..\..\src\capture\Killer.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Lineo.hpp" />
     <ClInclude Include="..\..\..\src\capture\Russian.hpp" />
     <ClInclude Include="..\..\..\src\capture\Spanish.hpp" />
     <ClInclude Include="..\..\..\src\capture\State.hpp" />
@@ -222,6 +223,8 @@
     <ClInclude Include="..\..\..\src\rules\International_fwd.hpp" />
     <ClInclude Include="..\..\..\src\rules\Italian_fwd.hpp" />
     <ClInclude Include="..\..\..\src\rules\Killer_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Lineo.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Lineo_fwd.hpp" />
     <ClInclude Include="..\..\..\src\rules\Pool.hpp" />
     <ClInclude Include="..\..\..\src\rules\Czech.hpp" />
     <ClInclude Include="..\..\..\src\rules\Enum.hpp" />

@@ -64,6 +64,8 @@ BOOST_PARAMETER_TEMPLATE_KEYWORD(is_restricted_same_king_moves)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(max_same_king_moves)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(land_range)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(halt_range)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(king_jump_orthogonality)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(king_move_orthogonality)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(is_pawns_jump_kings)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(is_jump_direction_reversal)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(jump_removal)
@@ -84,6 +86,8 @@ typedef boost::parameter::parameters<
         boost::parameter::optional<tag::max_same_king_moves>,
         boost::parameter::optional<tag::land_range>,
         boost::parameter::optional<tag::halt_range>,
+        boost::parameter::optional<tag::king_jump_orthogonality>,
+        boost::parameter::optional<tag::king_move_orthogonality>,
         boost::parameter::optional<tag::is_pawns_jump_kings>,
         boost::parameter::optional<tag::is_jump_direction_reversal>,
         boost::parameter::optional<tag::jump_removal>,
@@ -95,6 +99,7 @@ typedef boost::parameter::parameters<
 template
 <
         class rules_tag,
+        class A0 = boost::parameter::void_,
         class A1 = boost::parameter::void_,
         class A2 = boost::parameter::void_,
         class A3 = boost::parameter::void_,
@@ -107,14 +112,16 @@ template
         class A10 = boost::parameter::void_,
         class A11 = boost::parameter::void_,
         class A12 = boost::parameter::void_,
-        class A13 = boost::parameter::void_
+        class A13 = boost::parameter::void_,
+        class A14 = boost::parameter::void_
 >
 struct Rules
 {
         // create argument pack
         typedef typename Signature::bind<
-                A1, A2, A3, A4, A5, A6, A7,
-                A8, A9, A10, A11, A12, A13
+                A0,   A1,  A2,  A3,  A4,  
+                A5,   A6,  A7,  A8,  A9, 
+                A10, A11, A12, A13, A14
         >::type args;
 
         // extract required parameters
@@ -150,6 +157,19 @@ struct Rules
         >::type halt_range;
 
         typedef typename boost::parameter::value_type<
+                args, tag::king_jump_orthogonality, typename 
+                boost::mpl::eval_if<
+                        std::is_same<pawn_jump_directions, directions::all>,
+                        boost::mpl::identity<orthogonality::absolute>,
+                        boost::mpl::identity<orthogonality::none    >
+                >::type
+        >::type king_jump_orthogonality;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::king_move_orthogonality, orthogonality::none
+        >::type king_move_orthogonality;
+
+        typedef typename boost::parameter::value_type<
                 args, tag::is_pawns_jump_kings, boost::mpl::true_
         >::type is_pawns_jump_kings;
 
@@ -176,9 +196,9 @@ struct Rules
         // compute auxiliary parameters
 
         typedef typename boost::mpl::eval_if<
-                std::is_same<pawn_jump_directions, directions::all>,
-                boost::mpl::identity<directions::all>,
-                boost::mpl::identity<directions::diag>
+                std::is_same<king_jump_orthogonality, orthogonality::none>,
+                boost::mpl::identity<directions::diag>,
+                boost::mpl::identity<directions::all >
         >::type king_jump_directions;
 
         typedef typename turn_directions<
@@ -211,7 +231,7 @@ struct Rules
 
         typedef typename boost::mpl::not_<
                 std::is_same<jump_precedence, precedence::none>
-        >::type is_majority_precedence;
+        >::type is_precedence;
 
         // TODO: use C++11 template aliases
         template<typename Board>

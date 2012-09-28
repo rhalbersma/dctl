@@ -5,7 +5,7 @@
 namespace dctl {
 namespace walk {
 
-class Transposition
+struct Transposition
 {
 public:
         // structors
