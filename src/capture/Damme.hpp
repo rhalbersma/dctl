@@ -6,9 +6,9 @@
 namespace dctl {
 namespace capture {
 
-// partial specialization for Lineo draughts
+// partial specialization for A.K.W. Damme's proposal
 template<typename Board>
-struct Value<rules::Hoogland, Board>
+struct Value<rules::Damme, Board>
 :
         public Value<rules::International, Board>
 {};

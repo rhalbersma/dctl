@@ -7,7 +7,7 @@
 namespace dctl {
 namespace rules {
 
-// http://www.mindsports.nl/index.php/arena/draughts/382-killer-draughts-rules
+// A.K.W. Damme's proposal
 struct Damme
 :
         Rules<

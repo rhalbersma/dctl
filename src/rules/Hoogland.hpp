@@ -7,6 +7,7 @@
 namespace dctl {
 namespace rules {
 
+// H. Hoogland's proposal
 struct Hoogland
 :
         Rules<
