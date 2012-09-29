@@ -1,4 +1,5 @@
 #pragma once
+#include "Lineo.hpp"
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Lineo.hpp"
@@ -6,7 +7,6 @@
 namespace dctl {
 namespace rules {
 
-// http://laatste.info/bb3/viewtopic.php?f=65&t=2598
 struct Lineo
 :
         Rules<

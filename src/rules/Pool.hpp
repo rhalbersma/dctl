@@ -1,4 +1,5 @@
 #pragma once
+#include "Pool_fwd.hpp"
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Value.hpp"

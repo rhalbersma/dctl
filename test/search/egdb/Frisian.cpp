@@ -14,7 +14,8 @@ BOOST_AUTO_TEST_SUITE(TestFrisian)
 BOOST_FIXTURE_TEST_CASE(Frisian21, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
-                FEN_depth("W:WK46,28:BK43", 39) // Walinga book
+                FEN_depth("W:WK46,28:BK43", 39),        // Walinga book
+                FEN_depth("W:WK1,25:BK33", 39)
         };
         run<rules::Frisian, board::Frisian>(tests);
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "Frisian_fwd.hpp"
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Frisian.hpp"

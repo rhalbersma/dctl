@@ -729,5 +729,23 @@
     <ClInclude Include="..\..\..\src\rules\Lineo_fwd.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\rules\Hoogland.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\rules\Hoogland_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\capture\Hoogland.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\rules\Damme.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\rules\Damme_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\capture\Damme.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
