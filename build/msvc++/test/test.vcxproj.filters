@@ -22,9 +22,6 @@
     <Filter Include="Source Files\dxp">
       <UniqueIdentifier>{ff203a43-55ee-4f39-b021-4278e2f8841a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\successor">
-      <UniqueIdentifier>{dcf76e5a-a4b7-4b5e-94ae-4f5df70d1b15}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\walk">
       <UniqueIdentifier>{76ed4de4-ecc7-4c18-bc00-a5ad02a626e7}</UniqueIdentifier>
     </Filter>
@@ -33,9 +30,6 @@
     </Filter>
     <Filter Include="Source Files\mpl">
       <UniqueIdentifier>{dc6843a5-b95a-4aa3-b5d6-01aebb00c0c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\successor\rulebook">
-      <UniqueIdentifier>{31e3e81d-e87f-4a51-84cc-38f96d24a56e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\setup">
       <UniqueIdentifier>{26dbc175-16b8-4139-8f71-a65272878b46}</UniqueIdentifier>
@@ -54,6 +48,12 @@
     </Filter>
     <Filter Include="Source Files\walk\initial">
       <UniqueIdentifier>{7e23b12a-b3e7-43c6-a27a-26556bade2da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\successor">
+      <UniqueIdentifier>{dcf76e5a-a4b7-4b5e-94ae-4f5df70d1b15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\successor\rulebook">
+      <UniqueIdentifier>{31e3e81d-e87f-4a51-84cc-38f96d24a56e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

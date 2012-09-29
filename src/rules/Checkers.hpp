@@ -1,4 +1,5 @@
 #pragma once
+#include "Checkers_fwd.hpp"
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Value.hpp"
@@ -16,10 +17,6 @@ struct Checkers
                 jump_precedence<precedence::none>
         >
 {};
-
-// aliases for the rules of checkers
-typedef Checkers English;
-typedef Checkers American;
 
 }       // namespace rules
 }       // namespace dctl

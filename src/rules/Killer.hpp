@@ -1,4 +1,5 @@
 #pragma once
+#include "Killer_fwd.hpp"
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Killer.hpp"

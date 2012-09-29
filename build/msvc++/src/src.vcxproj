@@ -140,7 +140,9 @@
     <ClInclude Include="..\..\..\src\board\Traits_fwd.hpp" />
     <ClInclude Include="..\..\..\src\board\Transform.hpp" />
     <ClInclude Include="..\..\..\src\board\Types.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Damme.hpp" />
     <ClInclude Include="..\..\..\src\capture\Frisian.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Hoogland.hpp" />
     <ClInclude Include="..\..\..\src\capture\International.hpp" />
     <ClInclude Include="..\..\..\src\capture\Italian.hpp" />
     <ClInclude Include="..\..\..\src\capture\Killer.hpp" />
@@ -219,7 +221,11 @@
     <ClInclude Include="..\..\..\src\rules\Checkers.hpp" />
     <ClInclude Include="..\..\..\src\rules\Checkers_fwd.hpp" />
     <ClInclude Include="..\..\..\src\rules\Czech_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Damme.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Damme_fwd.hpp" />
     <ClInclude Include="..\..\..\src\rules\Frisian_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Hoogland.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Hoogland_fwd.hpp" />
     <ClInclude Include="..\..\..\src\rules\International_fwd.hpp" />
     <ClInclude Include="..\..\..\src\rules\Italian_fwd.hpp" />
     <ClInclude Include="..\..\..\src\rules\Killer_fwd.hpp" />

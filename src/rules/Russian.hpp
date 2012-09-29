@@ -1,4 +1,5 @@
 #pragma once
+#include "Russian_fwd.hpp"
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Russian.hpp"
@@ -17,9 +18,6 @@ struct Russian
                 pawn_promotion<promotion::en_passant>
         >
 {};
-
-// alias for the Russian rules
-typedef Russian Shashki;
 
 }       // namespace rules
 }       // namespace dctl

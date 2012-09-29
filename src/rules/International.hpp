@@ -1,4 +1,5 @@
 #pragma once
+#include "International_fwd.hpp"
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/International.hpp"
@@ -16,11 +17,6 @@ struct International
                 jump_precedence<precedence::quantity>
         >
 {};
-
-// aliases for the international rules
-typedef International Brazilian;        //  8x8  board
-typedef International Polish;           // 10x10 board
-typedef International Canadian;         // 12x12 board
 
 }       // namespace rules
 }       // namespace dctl
