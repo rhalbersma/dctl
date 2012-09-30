@@ -1,4 +1,5 @@
 #pragma once
+#include "Italian_fwd.hpp"
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Italian.hpp"

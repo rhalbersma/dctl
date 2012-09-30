@@ -21,14 +21,18 @@ Stack generate(Position const& p)
 {
         Stack moves;
         moves.reserve(MOVE_RESERVE);
+        generate<Material, Selection>(p, moves);
+        return moves;
+}
 
+template<int Material, typename Selection, typename Position>
+void generate(Position const& p, Stack& moves)
+{
         if (p.active_color() == Side::white)
                 detail::generator<Side::white, Material, Selection, Position>()(p, moves);
         else
                 detail::generator<Side::black, Material, Selection, Position>()(p, moves);
         BOOST_ASSERT((detail::invariant<Material, Selection>(p, moves.size())));
-
-        return moves;
 }
 
 }       // namespace successor

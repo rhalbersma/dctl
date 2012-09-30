@@ -16,7 +16,7 @@ struct Frisian
                 pawn_jump_directions<directions::all>,               
                 jump_precedence<precedence::quality>,
                 is_restricted_same_king_moves<boost::mpl::true_>,
-                max_same_king_moves< boost::mpl::int_<6> >,
+                max_same_king_moves< boost::mpl::int_<3> >,
                 is_relative_king_precedence<boost::mpl::true_>
         >
 {};

@@ -3,6 +3,7 @@
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Value.hpp"
+#include "../notation/Czech.hpp"
 
 namespace dctl {
 namespace rules {
@@ -21,5 +22,3 @@ struct Czech
 
 }       // namespace rules
 }       // namespace dctl
-
-#include "../notation/Czech.hpp"

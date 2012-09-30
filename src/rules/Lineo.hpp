@@ -1,5 +1,5 @@
 #pragma once
-#include "Lineo.hpp"
+#include "Lineo_fwd.hpp"
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Lineo.hpp"
