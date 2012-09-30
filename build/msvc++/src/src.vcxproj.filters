@@ -699,9 +699,6 @@
     <ClInclude Include="..\..\..\src\successor\enumeration\PawnReverse.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\guarded_parameters.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\guarded\is_permutation.hpp">
       <Filter>Header Files\guarded</Filter>
     </ClInclude>

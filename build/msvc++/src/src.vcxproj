@@ -324,7 +324,6 @@
     <ClInclude Include="..\..\..\src\utility\algorithm.hpp" />
     <ClInclude Include="..\..\..\src\utility\CacheAlign.hpp" />
     <ClInclude Include="..\..\..\src\utility\enable_down_cast.hpp" />
-    <ClInclude Include="..\..\..\src\utility\guarded_parameters.hpp" />
     <ClInclude Include="..\..\..\src\utility\IntegerTypes.hpp" />
     <ClInclude Include="..\..\..\src\utility\make_unique.hpp" />
     <ClInclude Include="..\..\..\src\utility\nonconstructible.hpp" />
