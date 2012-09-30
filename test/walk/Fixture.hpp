@@ -25,17 +25,13 @@ struct Fixture
         BOOST_STATIC_CONSTANT(auto, R = 0);
 
         template<typename Position, std::size_t N>
-        void run(Position const& p, NodeCount const (&/*leafs*/)[N])
-        {/*
+        void run(Position const& p, NodeCount const (&leafs)[N])
+        {
                 for (auto it = std::begin(leafs); it != std::prev(std::end(leafs), R); ++it) {
                         root_.clear_hash();
                         auto const depth = std::distance(std::begin(leafs), it) + 1;
                         BOOST_CHECK_EQUAL(*it, root_.test(p, depth));
-                }*/
-                std::cout << "Move size: " << sizeof(Move) << "\n";
-                std::cout << "Material size: " << sizeof(Material) << "\n";
-                std::cout << "TT entry size: " << sizeof(Root::TranspositionTable::Entry) << "\n";
-                root_.perft(p, N);
+                }
         };
 
 private:

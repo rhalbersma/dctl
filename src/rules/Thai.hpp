@@ -3,6 +3,7 @@
 #include "Rules.hpp"
 #include "Enum.hpp"
 #include "../capture/Value.hpp"
+#include "../notation/Thai.hpp"
 
 namespace dctl {
 namespace rules {
@@ -22,5 +23,3 @@ struct Thai
 
 }       // namespace rules
 }       // namespace dctl
-
-#include "../notation/Thai.hpp"
