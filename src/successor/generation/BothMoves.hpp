@@ -18,14 +18,16 @@ struct generator<Color, Material::both, Moves, Position>
 {
 private:
         // typedefs
+
         typedef generator<Color, Material::king, Moves, Position> KingMoves;
         typedef generator<Color, Material::pawn, Moves, Position> PawnMoves;
 
 public:
         void operator()(Position const& p, Stack& moves) const
         {
-                KingMoves()(p, moves);
-                PawnMoves()(p, moves);
+                // parentheses around function objects to avoid "C++'s most vexing parse"
+                (KingMoves(moves))(p);
+                (PawnMoves(moves))(p);
         }
 };
 
