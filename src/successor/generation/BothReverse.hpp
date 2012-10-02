@@ -18,6 +18,7 @@ struct generator<Color, Material::both, Reverse, Position>
 {
 private:
         // typedefs
+
         typedef generator<Color, Material::king, Reverse, Position> KingMoves;
         typedef generator<Color, Material::pawn, Reverse, Position> PawnMoves;
 

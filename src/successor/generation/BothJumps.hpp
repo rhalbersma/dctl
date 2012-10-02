@@ -45,16 +45,18 @@ private:
         // overload for no absolute king jump precedence
         void precedence_dispatch(Position const& p, State& capture, boost::mpl::false_) const
         {
-                KingJumps()(p, capture);
-                PawnJumps()(p, capture);
+                // parentheses around function objects to avoid "C++'s most vexing parse"
+                (KingJumps(capture))(p);
+                (PawnJumps(capture))(p);
         }
 
         // overload for absolute king jump precedence
         void precedence_dispatch(Position const& p, State& capture, boost::mpl::true_) const
         {
-                KingJumps()(p, capture);
+                // parentheses around function objects to avoid "C++'s most vexing parse"
+                (KingJumps(capture))(p);
                 if (capture.empty())
-                        PawnJumps()(p, capture);
+                        (PawnJumps(capture))(p);
         }
 };
 
