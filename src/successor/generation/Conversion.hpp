@@ -15,24 +15,43 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for legal successors
+// partial specialization for conversion successors
 template<bool Color, int Material, typename Position>
 struct generator<Color, Material, Conversion, Position>
 :
-        public std::function<void(Position const&, Stack&)>
+        // enforce reference semantics
+        private boost::noncopyable,
+        public std::function<void(Position const&)>
 {
 private:
         // typedefs
 
         typedef generator<Color, Material, Jumps,      Position> DoJumps;
         typedef generator<Color, Material, Promotions, Position> DoPromotions;
+        typedef capture::State<Position> State;
+
+        // representation
+
+        Stack& moves_;
 
 public:
-        void operator()(Position const& p, Stack& moves) const
+        // structors
+
+        explicit generator(Stack& m)
+        : 
+                moves_(m)
+        {}
+
+        // function call operators
+
+        void operator()(Position const& p) const
         {
-                DoJumps()(p, moves);
-                if (moves.empty())
-                        DoPromotions()(p, moves);
+                State capture_(p, moves_);
+
+                // parentheses around function objects to avoid "C++'s most vexing parse"
+                (DoJumps(capture_))(p);
+                if (moves_.empty())
+                        (DoPromotions(moves_))(p);
         }
 };
 
