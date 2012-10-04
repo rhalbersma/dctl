@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>                   // function
+#include <boost/utility.hpp>            // noncopyable
 #include "Generator_fwd.hpp"
 #include "PawnMoves.hpp"
 #include "../Select.hpp"
@@ -14,18 +15,33 @@ namespace detail {
 template<bool Color, typename Position>
 struct generator<Color, Material::pawn, Reverse, Position>
 :
-        public std::function<void(Position const&, Stack&)>
+        // enforce reference semantics
+        private boost::noncopyable,
+        public std::function<void(Position const&)>
 {
 private:
         // typedefs
 
         typedef generator<!Color, Material::pawn, Moves, Position> PassivePawnMoves;
 
+        // representation
+
+        Stack& moves_;
+
 public:
-        void operator()(Position const& p, Stack& moves) const
+        // structors
+
+        explicit generator(Stack& m)
+        : 
+                moves_(m) 
+        {}
+
+        // function call operators
+
+        void operator()(Position const& p) const
         {
                 if (auto const active_pawns = p.pawns(Color))
-                        PassivePawnMoves().select(active_pawns, not_occupied(p), moves);
+                        PassivePawnMoves(moves_).select(active_pawns, not_occupied(p));
         }
 };
 

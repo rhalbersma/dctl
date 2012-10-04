@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>                   // function
+#include <boost/utility.hpp>            // noncopyable
 #include "Generator_fwd.hpp"
 #include "KingReverse.hpp"
 #include "PawnReverse.hpp"
@@ -14,7 +15,9 @@ namespace detail {
 template<bool Color, typename Position>
 struct generator<Color, Material::both, Reverse, Position>
 :
-        public std::function<void(Position const&, Stack&)>
+        // enforce reference semantics
+        private boost::noncopyable,
+        public std::function<void(Position const&)>
 {
 private:
         // typedefs
@@ -22,11 +25,25 @@ private:
         typedef generator<Color, Material::king, Reverse, Position> KingMoves;
         typedef generator<Color, Material::pawn, Reverse, Position> PawnMoves;
 
+        // representation
+
+        Stack& moves_;
+
 public:
-        void operator()(Position const& p, Stack& moves) const
+        // structors
+
+        explicit generator(Stack& m)
+        : 
+                moves_(m) 
+        {}
+
+        // function call operators
+
+        void operator()(Position const& p) const
         {
-                KingMoves()(p, moves);
-                PawnMoves()(p, moves);
+                // parentheses around function objects to avoid "C++'s most vexing parse"
+                (KingMoves(moves_))(p);
+                (PawnMoves(moves_))(p);
         }
 };
 

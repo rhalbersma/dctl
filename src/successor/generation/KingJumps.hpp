@@ -38,6 +38,7 @@ private:
         // representation
 
         State& capture_;
+
 public:
         // structors
         

@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>                   // function
+#include <boost/utility.hpp>            // noncopyable
 #include "Generator_fwd.hpp"
 #include "Primary.hpp"
 #include "BothJumps.hpp"
@@ -19,7 +20,9 @@ namespace detail {
 template<bool Color, int Material, typename Position>
 struct generator<Color, Material, Legal, Position>
 :
-        public std::function<void(Position const&, Stack&)>
+        // enforce reference semantics
+        private boost::noncopyable,
+        public std::function<void(Position const&)>
 {
 private:
         // typedefs
@@ -27,12 +30,28 @@ private:
         typedef generator<Color, Material, Jumps, Position> DoJumps;
         typedef generator<Color, Material, Moves, Position> DoMoves;
 
+        // representation
+
+        Stack& moves_;
+
 public:
-        void operator()(Position const& p, Stack& moves) const
+        // structors
+
+        explicit generator(Stack& m)
+        : 
+                moves_(m)
+        {}
+
+        // function call operators
+
+        void operator()(Position const& p) const
         {
-                DoJumps()(p, moves);
-                if (moves.empty())
-                        DoMoves()(p, moves);
+                auto capture_ = capture::State<Position>(p, moves_);
+
+                // parentheses around function objects to avoid "C++'s most vexing parse"
+                (DoJumps(capture_))(p);
+                if (moves_.empty())
+                        (DoMoves(moves_))(p);
         }
 };
 
