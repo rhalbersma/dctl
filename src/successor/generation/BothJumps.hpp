@@ -38,7 +38,7 @@ private:
 public:
         // structors
 
-        generator(State& c)
+        explicit generator(State& c)
         :
                 capture_(c)
         {}
