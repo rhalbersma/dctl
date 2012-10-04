@@ -36,7 +36,7 @@ class State
 public:
         // structors
 
-        explicit State(Position const& p, Stack& m)
+        State(Position const& p, Stack& m)
         :
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
