@@ -29,6 +29,7 @@ private:
 
         typedef generator<Color, Material, Jumps, Position> DoJumps;
         typedef generator<Color, Material, Moves, Position> DoMoves;
+        typedef capture::State<Position> State;
 
         // representation
 
@@ -46,7 +47,7 @@ public:
 
         void operator()(Position const& p) const
         {
-                auto capture_ = capture::State<Position>(p, moves_);
+                State capture_(p, moves_);
 
                 // parentheses around function objects to avoid "C++'s most vexing parse"
                 (DoJumps(capture_))(p);
