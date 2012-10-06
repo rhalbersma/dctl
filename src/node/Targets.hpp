@@ -3,14 +3,6 @@
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
-
-template<bool Color, typename Position>
-static BitBoard targets(Position const& p)
-{
-        // tag dispatching on whether pawns can capture kings
-        return detail::targets<Color>(p, typename Position::rules_type::is_pawns_jump_kings());
-}
-
 namespace detail {
 
 // overload for pawns that can capture kings
@@ -28,4 +20,12 @@ static BitBoard targets(Position const& p, boost::mpl::false_)
 }
 
 }       // namespace detail
+
+template<bool Color, typename Position>
+static BitBoard targets(Position const& p)
+{
+        // tag dispatching on whether pawns can capture kings
+        return detail::targets<Color>(p, typename Position::rules_type::is_pawns_jump_kings());
+}
+
 }       // namespace dctl

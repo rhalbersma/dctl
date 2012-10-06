@@ -66,7 +66,7 @@ private:
         void serialize(BitBoard active_pawns, BitBoard not_occupied) const
         {
                 for (
-                        active_pawns &= Pull<Board, Direction>()(not_occupied);
+                        active_pawns &= Prev<Board, Direction>()(not_occupied);
                         active_pawns;
                         bit::clear_first(active_pawns)
                 )
@@ -76,8 +76,8 @@ private:
         template<typename Direction>
         void find(BitIndex from_sq) const
         {
-                auto const dest_sq = Board::next<Direction>(from_sq);
-                moves_.push_back(Move::create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq)));
+                auto const dest_sq = Next<Board, Direction>()(from_sq);
+                moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq)));
         }
 };
 

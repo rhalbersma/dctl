@@ -152,7 +152,7 @@ private:
         template<typename Direction>
         void precedence_dispatch(BitIndex jumper, boost::mpl::false_) const
         {
-                Board::advance<Direction>(jumper);
+                Advance<Board, Direction>()(jumper);
                 if (!find_next<Direction>(jumper))
                         add_king_jump<Direction>(jumper);
         }
@@ -161,7 +161,7 @@ private:
         template<typename Direction>
         void precedence_dispatch(BitIndex jumper, boost::mpl::true_) const
         {
-                Board::advance<Direction>(jumper);
+                Advance<Board, Direction>()(jumper);
                 if (
                         !find_next<Direction>(jumper) &&
                         capture_.greater_equal()
@@ -210,7 +210,7 @@ private:
         template<typename Direction>
         void land_dispatch(BitIndex jumper, rules::range::distance_1K) const
         {
-                if (capture_.is_king(Board::prev<Direction>(jumper)))
+                if (capture_.is_king(Prev<Board, Direction>()(jumper)))
                         land_dispatch<Direction>(jumper, rules::range::distance_1());
                 else
                         land_dispatch<Direction>(jumper, rules::range::distance_N());
@@ -236,7 +236,7 @@ private:
                 auto found_next = false;
                 do {
                         found_next |= turn<Direction>(jumper);
-                        Board::advance<Direction>(jumper);
+                        Advance<Board, Direction>()(jumper);
                 } while (bit::is_element(jumper, capture_.path()));
                 return found_next |= jump<Direction>(jumper);
         }
@@ -298,14 +298,14 @@ private:
         template<typename Direction>
         void slide_dispatch(BitIndex& jumper, BitBoard /* path */, rules::range::distance_1) const
         {
-                Board::advance<Direction>(jumper);
+                Advance<Board, Direction>()(jumper);
         }
 
         // overload for long ranged kings
         template<typename Direction>
         void slide_dispatch(BitIndex& jumper, BitBoard path, rules::range::distance_N) const
         {
-                do Board::advance<Direction>(jumper); while (bit::is_element(jumper, path));
+                do Advance<Board, Direction>()(jumper); while (bit::is_element(jumper, path));
         }
 
         template<typename Direction>
@@ -333,7 +333,7 @@ private:
         template<typename Direction>
         void add_king_jump_dispatch(BitIndex dest_sq, bool ambiguous, rules::range::distance_1K) const
         {
-                if (capture_.is_king(Board::prev<Direction>(dest_sq)))
+                if (capture_.is_king(Prev<Board, Direction>()(dest_sq)))
                         add_king_jump_dispatch<Direction>(dest_sq, ambiguous, rules::range::distance_1());
                 else
                         add_king_jump_dispatch<Direction>(dest_sq, ambiguous, rules::range::distance_N());
@@ -355,7 +355,7 @@ private:
                 BOOST_ASSERT(bit::is_element(dest_sq, capture_.path()));
                 do {
                         add_king_jump(dest_sq, ambiguous);
-                        Board::advance<Direction>(dest_sq);
+                        Advance<Board, Direction>()(dest_sq);
                 } while (bit::is_element(dest_sq, capture_.path()));
         }
 

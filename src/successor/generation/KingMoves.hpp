@@ -128,7 +128,7 @@ private:
         template<typename Direction>
         void find_dispatch(BitIndex from_sq, BitBoard not_occupied, rules::range::distance_1) const
         {
-                if (auto const dest_sq = Board::next<Direction>(from_sq) & not_occupied)
+                if (auto const dest_sq = Next<Board, Direction>()(from_sq) & not_occupied)
                         moves_.push_back(Move::create<Color>(from_sq ^ dest_sq));
         }
 
@@ -137,11 +137,11 @@ private:
         void find_dispatch(BitIndex from_sq, BitBoard not_occupied, rules::range::distance_N) const
         {
                 for (
-                        auto dest_sq = Board::next<Direction>(from_sq);
+                        auto dest_sq = Next<Board, Direction>()(from_sq);
                         bit::is_element(dest_sq, not_occupied);
-                        Board::advance<Direction>(dest_sq)
+                        Advance<Board, Direction>()(dest_sq)
                 )
-                        moves_.push_back(Move::create<Color>(from_sq ^ dest_sq));
+                        moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
         }
 };
 

@@ -11,6 +11,55 @@
 #include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
+namespace detail {
+
+// overload for apres-fini capture removal
+template<typename T>
+bool is_intersecting_capture(T /* delta */, T /* captured_pieces */, rules::removal::apres_fini)
+{
+        return false;
+}
+
+// overload for en-passant capture removal
+template<typename T>
+bool is_intersecting_capture(T delta, T captured_pieces, rules::removal::en_passant)
+{
+        // [FEN "W:WK25:B8,9,20,23,24"] (Thai draughts)
+        // white has to capture 25x20, landing on a square it also captured on
+        return bit::is_single(delta & captured_pieces) && bit::is_multiple(captured_pieces);
+}
+
+// overload for apres-fini promotion
+template<typename T>
+bool is_intersecting_promotion(T /* promotion */, T /* delta */, rules::promotion::apres_fini)
+{
+        return false;
+}
+
+// overload for en-passant promotion
+template<typename T>
+bool is_intersecting_promotion(T promotion, T delta, rules::promotion::en_passant)
+{
+        // [FEN "W:W15:B10,13,20,23"] (Russian draughts)
+        // white has to capture 15x15, promoting on its original square
+        return bit::is_single(promotion) && bit::is_zero(delta);
+}
+
+}       // namespace detail
+
+template<typename Rules, typename T>
+bool is_intersecting_capture(T delta, T captured_pieces)
+{
+        // tag dispatching on capture removal
+        return detail::is_intersecting_capture(delta, captured_pieces, typename Rules::jump_removal());
+}
+
+template<typename Rules, typename T>
+bool is_intersecting_promotion(T promotion, T delta)
+{
+        // tag dispatching on promotion condition
+        return detail::is_intersecting_promotion(promotion, delta, typename Rules::pawn_promotion());
+}
 
 template<typename T>
 struct Move_
@@ -262,13 +311,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::is_exclusive(pieces(Side::black), pieces(Side::white));
+                return bit::is_exclusive(this->pieces(Side::black), this->pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::is_subset_of(kings(), pieces());
+                return bit::is_subset_of(this->kings(), this->pieces());
         }
 
         // representation
@@ -277,53 +326,4 @@ private:
         T kings_;       // kings
 };
 
-template<typename Rules, typename T>
-bool is_intersecting_capture(T delta, T captured_pieces)
-{
-        // tag dispatching on capture removal
-        return detail::is_intersecting_capture(delta, captured_pieces, typename Rules::jump_removal());
-}
-
-template<typename Rules, typename T>
-bool is_intersecting_promotion(T promotion, T delta)
-{
-        // tag dispatching on promotion condition
-        return detail::is_intersecting_promotion(promotion, delta, typename Rules::pawn_promotion());
-}
-
-namespace detail {
-
-// overload for apres-fini capture removal
-template<typename T>
-bool is_intersecting_capture(T /* delta */, T /* captured_pieces */, rules::removal::apres_fini)
-{
-        return false;
-}
-
-// overload for en-passant capture removal
-template<typename T>
-bool is_intersecting_capture(T delta, T captured_pieces, rules::removal::en_passant)
-{
-        // [FEN "W:WK25:B8,9,20,23,24"] (Thai draughts)
-        // white has to capture 25x20, landing on a square it also captured on
-        return bit::is_single(delta & captured_pieces) && bit::is_multiple(captured_pieces);
-}
-
-// overload for apres-fini promotion
-template<typename T>
-bool is_intersecting_promotion(T /* promotion */, T /* delta */, rules::promotion::apres_fini)
-{
-        return false;
-}
-
-// overload for en-passant promotion
-template<typename T>
-bool is_intersecting_promotion(T promotion, T delta, rules::promotion::en_passant)
-{
-        // [FEN "W:W15:B10,13,20,23"] (Russian draughts)
-        // white has to capture 15x15, promoting on its original square
-        return bit::is_single(promotion) && bit::is_zero(delta);
-}
-
-}       // namespace detail
 }       // namespace dctl

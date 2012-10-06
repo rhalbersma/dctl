@@ -53,12 +53,12 @@ public:
 
         void resize_hash(std::size_t s)
         {
-                return TT.resize(s);
+                TT.resize(s);
         }
 
         void clear_hash()
         {
-                return TT.clear();
+                TT.clear();
         }
 
         void interrupt()

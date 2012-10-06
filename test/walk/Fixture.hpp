@@ -32,7 +32,7 @@ struct Fixture
                         auto const depth = std::distance(std::begin(leafs), it) + 1;
                         BOOST_CHECK_EQUAL(*it, root_.test(p, depth));
                 }
-        };
+        }
 
 private:
         Root root_;

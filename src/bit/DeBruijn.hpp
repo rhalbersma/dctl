@@ -9,22 +9,6 @@ namespace dctl {
 namespace bit {
 namespace debruijn {
 
-template<typename T>
-class Index
-{
-public:
-        int operator()(T b)
-        {
-                b *= Sequence<T>::value;
-                b >>= shift;
-                return Table<T>::value[b];
-        }
-
-private:
-        BOOST_STATIC_CONSTANT(auto, N = log2_sizeof<T>::value);         // log base-2 of number of bits
-        BOOST_STATIC_CONSTANT(auto, shift = num_bits<T>::value - N);    // 2^N - N
-};
-
 // primary template
 template<typename T, typename _ = void>
 struct Sequence;
@@ -164,6 +148,22 @@ struct Graph
                         Eulerian(vertex, 0, depth - 1, sequence, tour, nodes)
                 );
         }
+};
+
+template<typename T>
+class Index
+{
+public:
+        int operator()(T b)
+        {
+                b *= Sequence<T>::value;
+                b >>= shift;
+                return Table<T>::value[b];
+        }
+
+private:
+        BOOST_STATIC_CONSTANT(auto, N = log2_sizeof<T>::value);         // log base-2 of number of bits
+        BOOST_STATIC_CONSTANT(auto, shift = num_bits<T>::value - N);    // 2^N - N
 };
 
 }       // namespace debruijn

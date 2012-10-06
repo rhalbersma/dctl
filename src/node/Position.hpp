@@ -3,6 +3,7 @@
 #include <boost/mpl/bool.hpp>           // false_, true_
 #include <functional>                   // function
 #include "Position_fwd.hpp"
+#include "Material.hpp"
 #include "Move.hpp"
 #include "Restricted.hpp"
 #include "Side.hpp"
@@ -144,9 +145,9 @@ public:
         // make a move in a copy from another position
         void copy_make(Position const& other, Move const& move)
         {
-                *this = other;          // copy the position
-                attach(other);          // attach the position
-                make<Rules>(move);      // make the move
+                *this = other; // copy the position
+                attach(other);  // attach the position
+                make(move);     // make the move
         }
 
         void make(Move const& m)
@@ -335,13 +336,6 @@ BitBoard passive_pieces(Position const& p)
         return p.pieces(p.passive_color());
 }
 
-template<typename Rules, typename Board>
-BitBoard moveable_kings(Position<Rules, Board> const& p, bool color)
-{
-        // tag dispatching on restrictions on consecutive moves with the same king
-        return detail::moveable_kings(p, color, typename Rules::is_restricted_same_king_moves());
-}
-
 namespace detail {
 
 // overload for unrestricted consecutive moves with the same king
@@ -362,6 +356,13 @@ BitBoard moveable_kings(Position<Rules, Board> const& p, bool color, boost::mpl:
 }
 
 }       // namespace detail
+
+template<typename Rules, typename Board>
+BitBoard moveable_kings(Position<Rules, Board> const& p, bool color)
+{
+        // tag dispatching on restrictions on consecutive moves with the same king
+        return detail::moveable_kings(p, color, typename Rules::is_restricted_same_king_moves());
+}
 
 template<typename Position>
 Position const* grand_parent(Position const& p)

@@ -67,33 +67,6 @@ public:
                 return BIT2SQUARE[b];
         }
 
-        template<typename Direction, typename Iterator>
-        static void advance(Iterator& square)
-        {
-                ShiftAssign< typename
-                        angle::is_positive<Direction>::type, typename
-                        shift<Direction>::type
-                >()(square);
-        }
-
-        template<typename Direction, typename Iterator>
-        static Iterator next(Iterator square)
-        {
-                return Shift< typename
-                        angle::is_positive<Direction>::type, typename
-                        shift<Direction>::type
-                >()(square);
-        }
-
-        template<typename Direction, typename Iterator>
-        static Iterator prev(Iterator square)
-        {
-                return Shift< typename
-                        angle::is_negative<Direction>::type, typename
-                        shift<Direction>::type
-                >()(square);
-        }
-
         // essential bitboard masks
         static BitBoard const squares;                          // bit mask of legal squares, excluding borders
         static BitBoard const initial_mask[];                   // initial position
