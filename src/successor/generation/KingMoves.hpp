@@ -129,7 +129,7 @@ private:
         void find_dispatch(BitIndex from_sq, BitBoard not_occupied, rules::range::distance_1) const
         {
                 if (auto const dest_sq = Next<Board, Direction>()(from_sq) & not_occupied)
-                        moves_.push_back(Move::create<Color>(from_sq ^ dest_sq));
+                        moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
         }
 
         // overload for long ranged kings

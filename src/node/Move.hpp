@@ -99,7 +99,7 @@ public:
         {
                 BOOST_ASSERT(pre_condition(delta));
                 Move_ tmp;
-                tmp.init<Color>(
+                tmp.template init<Color>(
                         delta,  // move a king between the from and destination squares
                         0,
                         delta   // move a king between the from and destination squares
@@ -114,7 +114,7 @@ public:
         {
                 BOOST_ASSERT(pre_condition(delta, promotion));
                 Move_ tmp;
-                tmp.init<Color>(
+                tmp.template init<Color>(
                         delta,          // move a pawn between the from and destination squares
                         0,
                         promotion       // crown a pawn to a king
@@ -129,7 +129,7 @@ public:
         {
                 BOOST_ASSERT(pre_condition<Rules>(delta, captured_pieces, captured_kings));
                 Move_ tmp;
-                tmp.init<Color>(
+                tmp.template init<Color>(
                         delta,                  // move a king between the from and destination square
                         captured_pieces,        // remove the captured pieces
                         delta ^ captured_kings  // move a king and remove the captured kings
@@ -144,7 +144,7 @@ public:
         {
                 BOOST_ASSERT(pre_condition<Rules>(delta, promotion, captured_pieces, captured_kings));
                 Move_ tmp;
-                tmp.init<Color>(
+                tmp.template init<Color>(
                         delta,                          // move a pawn between the from and destination squares
                         captured_pieces,                // remove the captured pieces
                         promotion ^ captured_kings      // crown a pawn to a king and remove the captured kings
