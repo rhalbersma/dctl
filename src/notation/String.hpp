@@ -8,31 +8,14 @@
 
 namespace dctl {
 namespace notation {
-
-template
-<
-        typename Rules,
-        typename Format = typename Format<Rules>::type,
-        typename Separator = typename Separator<Rules>
->
-struct read;
-
-template<typename Position, typename Move>
-std::string write(Position const& p, Move const& m)
-{
-        typedef typename Position::rules_type Rules;
-
-        return detail::write<Rules>()(p, m);
-}
-
 namespace detail {
 
 // primary template
 template
 <
         typename Rules,
-        typename Format = typename Format<Rules>::type,
-        typename Separator = typename Separator<Rules>
+        typename Format = typename notation::Format<Rules>::type,
+        typename Separator = notation::Separator<Rules>
 >
 struct write;
 
@@ -53,8 +36,25 @@ struct write<Rules, numeric, Separator>
         }
 };
 
+template
+<
+        typename Rules,
+        typename Format = typename notation::Format<Rules>::type,
+        typename Separator = notation::Separator<Rules>
+>
+struct read;
+
 // TODO: partial specialization for algebraic notation
 
 }       // namespace detail
+
+template<typename Position, typename Move>
+std::string write(Position const& p, Move const& m)
+{
+        typedef typename Position::rules_type Rules;
+
+        return detail::write<Rules>()(p, m);
+}
+
 }       // namespace notation
 }       // namespace dctl

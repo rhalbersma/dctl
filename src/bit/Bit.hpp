@@ -6,6 +6,31 @@
 
 namespace dctl {
 namespace bit {
+namespace detail {
+
+template<typename T>
+struct get_first
+:
+        std::function<T(T)>
+{
+        T operator()(T b) const
+        {
+                return b & (T(0) - b);
+        }
+};
+
+template<typename T>
+struct except_first
+:
+        std::function<T(T)>
+{
+        T operator()(T b) const
+        {
+                return b & (b - T(1));
+        }
+};
+
+}       // namespace detail
 
 template<typename T>
 T zero()
@@ -100,21 +125,6 @@ void clear_first(T& b)
         b &= b - T(1);
 }
 
-// index of the least significant 1-bit
-template<typename T>
-int find_first(T b)
-{
-        return index(get_first(b));
-}
-
-// index of a set 1-bit
-template<typename T>
-int index(T b)
-{
-        BOOST_ASSERT(is_single(b));
-        return index_DeBruijn(b);
-}
-
 // Leiserson, Prokop and Randall, 1998
 // http://supertech.csail.mit.edu/papers/debruijn.pdf
 template<typename T>
@@ -140,11 +150,19 @@ int index_loop(T b)
         return 0;
 }
 
-// number of set 1-bits
+// index of a set 1-bit
 template<typename T>
-int count(T b)
+int index(T b)
 {
-        return count_loop(b);
+        BOOST_ASSERT(is_single(b));
+        return index_DeBruijn(b);
+}
+
+// index of the least significant 1-bit
+template<typename T>
+int find_first(T b)
+{
+        return index(get_first(b));
 }
 
 // number of set 1-bits
@@ -163,6 +181,13 @@ int count_loop(T b)
         for (; b; clear_first(b))
                 ++count;
         return count;
+}
+
+// number of set 1-bits
+template<typename T>
+int count(T b)
+{
+        return count_loop(b);
 }
 
 namespace range {
@@ -211,30 +236,5 @@ T greater_equal(int i)
 
 }       // namespace range
 
-namespace detail {
-
-template<typename T>
-struct get_first
-:
-        std::function<T(T)>
-{
-        T operator()(T b) const
-        {
-                return b & (T(0) - b);
-        }
-};
-
-template<typename T>
-struct except_first
-:
-        std::function<T(T)>
-{
-        T operator()(T b) const
-        {
-                return b & (b - T(1));
-        }
-};
-
-}       // namespace detail
 }       // namespace bit
 }       // namespace dctl

@@ -11,6 +11,7 @@
 #include "../board/Shift.hpp"
 #include "../board/Traits.hpp"
 #include "../node/Material.hpp"
+#include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
 #include "../rules/Enum.hpp"
 #include "../rules/Rules.hpp"
@@ -114,7 +115,7 @@ public:
         void add_king_jump(BitIndex dest_sq) const // modifies Stack& moves_
         {
                 moves_.push_back(
-                        Move::create<Color, Rules>(
+                        Move::template create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
                                 captured_pieces(),
                                 captured_kings(with::king())
@@ -126,7 +127,7 @@ public:
         void add_pawn_jump(BitIndex dest_sq) const // modifies Stack& moves_
         {
                 moves_.push_back(
-                        Move::create<Color, Rules>(
+                        Move::template create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
                                 promotion<Color>(dest_sq, WithPiece()),
                                 captured_pieces(),
@@ -146,13 +147,13 @@ public:
         template<typename Direction>
         BitBoard targets_with_king() const
         {
-                return remaining_targets<Direction>() & Pull<Board, Direction>()(path());
+                return remaining_targets<Direction>() & Prev<Board, Direction>()(path());
         }
         
         template<typename Direction>
         BitBoard targets_with_pawn() const
         {
-                return remaining_targets_ & Pull<Board, Direction>()(path());
+                return remaining_targets_ & Prev<Board, Direction>()(path());
         }
 
         BitBoard path() const
@@ -391,15 +392,15 @@ private:
 
         // representation
 
-        typedef typename Rules::capture_value_type<Board> Value;
+        typedef typename Rules::capture_value_type<Board> XValue;
 
         BitBoard const king_targets_;
         BitBoard initial_targets_;
         BitBoard remaining_targets_;
         BitBoard not_occupied_;
         BitIndex from_sq_;
-        Value current_;
-        Value best_;
+        XValue current_;
+        XValue best_;
         Stack& moves_;
 };
 

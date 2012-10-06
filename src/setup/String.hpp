@@ -11,6 +11,26 @@
 namespace dctl {
 namespace setup {
 
+template<typename Token>
+bool read_color(char c)
+{
+        switch(c) {
+        case Token::black:
+                return Side::black;
+        case Token::white:
+                return Side::white;
+        default:
+                BOOST_ASSERT(!"switch statement incomplete");
+                return false;
+        }
+}
+
+template<typename Token>
+char write_color(bool color)
+{
+        return Token::color[color];
+}
+
 template
 <
         typename Rules,
@@ -165,26 +185,6 @@ struct write<dxp::protocol, Token>
                 return sstr.str();
         }
 };
-
-template<typename Token>
-bool read_color(char c)
-{
-        switch(c) {
-        case Token::black:
-                return Side::black;
-        case Token::white:
-                return Side::white;
-        default:
-                BOOST_ASSERT(!"switch statement incomplete");
-                return false;
-        }
-}
-
-template<typename Token>
-char write_color(bool color)
-{
-        return Token::color[color];
-}
 
 }       // namespace setup
 }       // namespace dctl

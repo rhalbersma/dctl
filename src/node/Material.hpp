@@ -1,7 +1,8 @@
 #pragma once
 #include <type_traits>                  // is_base_of
+#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
-#include <boost/operators.hpp>          // equality_comparable
+#include <boost/operators.hpp>          // equality_comparable1
 #include "IPieces.hpp"
 #include "Move.hpp"
 #include "../utility/IntegerTypes.hpp"
@@ -51,7 +52,7 @@ struct Material_
         template<template<typename> class U>
         Material_& operator^=(U<T> const& m)
         {
-                BOOST_MPL_ASSERT((std::is_base_of<IPieces<U, T>, U<T> >));
+                //BOOST_MPL_ASSERT((std::is_base_of<IPieces<U, T>, U<T> >));
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);
                 kings_ ^= m.kings();
@@ -132,13 +133,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::is_exclusive(pieces(Side::black), pieces(Side::white));
+                return bit::is_exclusive(this->pieces(Side::black), this->pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::is_subset_of(kings(), pieces());
+                return bit::is_subset_of(this->kings(), this->pieces());
         }
 
         // representation
