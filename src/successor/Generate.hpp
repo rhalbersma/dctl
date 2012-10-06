@@ -11,24 +11,6 @@
 
 namespace dctl {
 namespace successor {
-
-template<typename Position>
-Stack generate(Position const& p)
-{
-        return generate<Material::both, DefaultSelection>(p);
-}
-
-template<int Material, typename Selection, typename Position>
-Stack generate(Position const& p)
-{
-        Stack moves;
-
-        // parentheses around function objects to avoid "C++'s most vexing parse"
-        (aux::generator<Material, Selection, Position>(moves))(p);
-        
-        return moves;
-}
-
 namespace aux {
 
 // partial specialization for legal successors
@@ -74,5 +56,23 @@ public:
 };
 
 }       // namespace aux
+
+template<int Material, typename Selection, typename Position>
+Stack generate(Position const& p)
+{
+        Stack moves;
+
+        // parentheses around function objects to avoid "C++'s most vexing parse"
+        (aux::generator<Material, Selection, Position>(moves))(p);
+        
+        return moves;
+}
+
+template<typename Position>
+Stack generate(Position const& p)
+{
+        return generate<Material::both, DefaultSelection>(p);
+}
+
 }       // namespace successor
 }       // namespace dctl

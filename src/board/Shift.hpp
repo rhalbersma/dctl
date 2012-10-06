@@ -96,7 +96,7 @@ template<typename Board, typename Direction>
 struct Advance
 {
         template<typename Iterator>
-        Iterator operator()(Iterator& square) const
+        void operator()(Iterator& square) const
         {
                 ShiftAssign< typename
                         angle::is_positive<Direction>::type, typename
@@ -148,7 +148,7 @@ struct Sink<Board, Direction, rules::range::distance_1>
         template<typename T>
         T operator()(T from, T dest) const
         {
-                return Board::template next<Direction>(from) & dest;
+                return Next<Board, Direction>()(from) & dest;
         }
 };
 
