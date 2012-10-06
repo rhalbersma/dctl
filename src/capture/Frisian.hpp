@@ -1,7 +1,6 @@
 #pragma once
 #include <limits>                       // numeric_limits
-#include <tuple>                        // get, tuple
-#include <utility>                      // make_pair
+#include <tuple>                        // get, tie, tuple
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
 #include "Value_fwd.hpp"                // Value (primary template)
@@ -73,10 +72,10 @@ public:
                         return delta_pawns + 2 * delta_kings - (delta_kings > 0) <  0;
                 } else {
                         // delta_kings or delta_pawns is zero or they have equal sign
-                        // delegate to std::pair::operator<
+                        // delegate to std::tuple::operator<
                         return (
-                                std::make_pair(lhs.num_pieces(), lhs.with_king()) < 
-                                std::make_pair(rhs.num_pieces(), rhs.with_king())
+                                std::tie(lhs.num_pieces(), lhs.with_king()) < 
+                                std::tie(rhs.num_pieces(), rhs.with_king())
                         );
                 }
         }
