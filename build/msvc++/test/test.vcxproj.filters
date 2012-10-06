@@ -75,9 +75,6 @@
     <ClCompile Include="..\..\..\test\search\Score.cpp">
       <Filter>Source Files\search</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\test\bit\DeBruijn.cpp">
-      <Filter>Source Files\bit</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\test\search\Solve.cpp">
       <Filter>Source Files\search</Filter>
     </ClCompile>
@@ -125,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\test\walk\italian\Gilbert.cpp">
       <Filter>Source Files\walk\italian</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\bit\DeBruijn.cpp">
+      <Filter>Source Files\bit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

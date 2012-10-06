@@ -1,16 +1,10 @@
 #pragma once
 #include <functional>                   // function
+#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/utility.hpp>            // noncopyable
-#include "Generator_fwd.hpp"
-#include "Primary.hpp"
-#include "BothJumps.hpp"
-#include "BothMoves.hpp"
-#include "KingJumps.hpp"
-#include "KingMoves.hpp"
-#include "PawnJumps.hpp"
-#include "PawnMoves.hpp"
-#include "../Select.hpp"
-#include "../../capture/State.hpp"
+#include "Generator.hpp"
+#include "Invariant.hpp"
+#include "../../node/Side.hpp"
 #include "../../node/Stack.hpp"
 
 namespace dctl {
@@ -18,8 +12,8 @@ namespace successor {
 namespace detail {
 
 // partial specialization for legal successors
-template<bool Color, int Material, typename Position>
-struct generator<Color, Material, Legal, Position>
+template<int Material, typename Selection, typename Position>
+struct generate
 :
         // enforce reference semantics
         private boost::noncopyable,
@@ -28,9 +22,8 @@ struct generator<Color, Material, Legal, Position>
 private:
         // typedefs
 
-        typedef generator<Color, Material, Jumps, Position> DoJumps;
-        typedef generator<Color, Material, Moves, Position> DoMoves;
-        typedef capture::State<Position> State;
+        typedef generator<Side::white, Material, Selection, Position> DoWhite;
+        typedef generator<Side::black, Material, Selection, Position> DoBlack;
 
         // representation
 
@@ -39,21 +32,24 @@ private:
 public:
         // structors
 
-        explicit generator(Stack& m)
+        explicit generate(Stack& m)
         : 
                 moves_(m)
-        {}
+        {
+                moves_.reserve(MOVE_RESERVE);        
+        }
 
         // function call operators
 
         void operator()(Position const& p) const
         {
-                State capture_(p, moves_);
-
                 // parentheses around function objects to avoid "C++'s most vexing parse"
-                (DoJumps(capture_))(p);
-                if (moves_.empty())
-                        (DoMoves(moves_))(p);
+                if (p.active_color() == Side::white)
+                        (DoWhite(moves_))(p);
+                else
+                        (DoBlack(moves_))(p);
+
+                BOOST_ASSERT((invariant<Material, Selection>(p, moves_.size())));
         }
 };
 

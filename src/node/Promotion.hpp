@@ -1,4 +1,5 @@
 #pragma once
+#include "UnaryProjections.hpp"
 #include "../bit/Bit.hpp"
 #include "../utility/IntegerTypes.hpp"
 
