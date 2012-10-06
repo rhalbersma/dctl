@@ -13,6 +13,7 @@
 #include "../node/Material.hpp"
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"
+#include "../node/UnaryProjections.hpp"
 #include "../rules/Enum.hpp"
 #include "../rules/Rules.hpp"
 #include "../utility/algorithm.hpp"     // contains
@@ -200,6 +201,11 @@ public:
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::pawn_promotion, rules::promotion::en_passant>));
                 return current_.is_promotion();
+        }
+
+        int size() const
+        {
+                return static_cast<int>(moves_.size());
         }
 
 private:

@@ -5,7 +5,8 @@
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
 #include "../../board/Shift.hpp"
-#include "../../node/Stack.hpp"
+#include "../../node/Material.hpp"
+#include "../../node/UnaryProjections.hpp"
 #include "../../utility/IntegerTypes.hpp"
 
 namespace dctl {

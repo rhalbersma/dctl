@@ -60,21 +60,6 @@ struct Init<Index, bool>
 
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
-struct Init<Index, Restricted>
-:
-        std::function<Index(Restricted const&)>
-{
-        Index operator()(Restricted const& restricted) const
-        {
-                return (
-                        Init<Index, KingMoves>()(restricted[Side::black], Side::black) ^
-                        Init<Index, KingMoves>()(restricted[Side::white], Side::white)
-                );
-        }
-};
-
-// partial specialization for ab initio hashing of restricted consecutive same king moves
-template<typename Index>
 struct Init<Index, KingMoves>
 :
         std::function<Index(KingMoves const&, bool)>
@@ -84,6 +69,21 @@ struct Init<Index, KingMoves>
                 return (
                         Random<Index>::xor_rand(restricted.king(),  Random<Index>::RESTRICTED_KING[color] ) ^
                         Random<Index>::xor_rand(restricted.moves(), Random<Index>::RESTRICTED_MOVES[color])
+                );
+        }
+};
+
+// partial specialization for ab initio hashing of restricted consecutive same king moves
+template<typename Index>
+struct Init<Index, Restricted>
+:
+        std::function<Index(Restricted const&)>
+{
+        Index operator()(Restricted const& restricted) const
+        {
+                return (
+                        Init<Index, KingMoves>()(restricted[Side::black], Side::black) ^
+                        Init<Index, KingMoves>()(restricted[Side::white], Side::white)
                 );
         }
 };

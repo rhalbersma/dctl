@@ -10,6 +10,7 @@
 #include "../../board/Shift.hpp"
 #include "../../node/Material.hpp"
 #include "../../node/Stack.hpp"
+#include "../../node/UnaryProjections.hpp"
 #include "../../rules/Enum.hpp"
 #include "../../utility/IntegerTypes.hpp"
 

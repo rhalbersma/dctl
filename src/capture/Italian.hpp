@@ -125,7 +125,7 @@ private:
                 return std::get<2>(data_);
         }
 
-        bit_type& piece_order() const
+        bit_type piece_order() const
         {
                 return std::get<3>(data_);
         }

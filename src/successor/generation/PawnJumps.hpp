@@ -13,7 +13,6 @@
 #include "../../capture/State.hpp"
 #include "../../node/Material.hpp"
 #include "../../node/Promotion.hpp"
-#include "../../node/Stack.hpp"
 #include "../../rules/Enum.hpp"
 #include "../../utility/IntegerTypes.hpp"
 

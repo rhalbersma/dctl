@@ -5,7 +5,7 @@
 #include "../Select.hpp"
 #include "../../node/Material.hpp"
 #include "../../node/Promotion.hpp"
-#include "../../node/Stack.hpp"
+#include "../../node/UnaryProjections.hpp"
 
 namespace dctl {
 namespace successor {

@@ -196,6 +196,9 @@
     <ClInclude Include="..\..\..\src\mpl\algorithm.hpp" />
     <ClInclude Include="..\..\..\src\mpl\lazy.hpp" />
     <ClInclude Include="..\..\..\src\mpl\type_traits.hpp" />
+    <ClInclude Include="..\..\..\src\node\detail\Predicates.hpp" />
+    <ClInclude Include="..\..\..\src\node\detail\Targets.hpp" />
+    <ClInclude Include="..\..\..\src\node\detail\UnaryProjections.hpp" />
     <ClInclude Include="..\..\..\src\node\Material.hpp" />
     <ClInclude Include="..\..\..\src\node\Move.hpp" />
     <ClInclude Include="..\..\..\src\node\Move_fwd.hpp" />
@@ -204,12 +207,14 @@
     <ClInclude Include="..\..\..\src\node\Position_fwd.hpp" />
     <ClInclude Include="..\..\..\src\node\Predicates.hpp" />
     <ClInclude Include="..\..\..\src\node\Predicates_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\node\BinaryProjections.hpp" />
+    <ClInclude Include="..\..\..\src\node\BinaryProjections_fwd.hpp" />
     <ClInclude Include="..\..\..\src\node\Promotion.hpp" />
     <ClInclude Include="..\..\..\src\node\Restricted.hpp" />
     <ClInclude Include="..\..\..\src\node\Side.hpp" />
     <ClInclude Include="..\..\..\src\node\Stack.hpp" />
-    <ClInclude Include="..\..\..\src\node\State.hpp" />
     <ClInclude Include="..\..\..\src\node\Targets.hpp" />
+    <ClInclude Include="..\..\..\src\node\UnaryProjections.hpp" />
     <ClInclude Include="..\..\..\src\notation\Czech.hpp" />
     <ClInclude Include="..\..\..\src\notation\Notation.hpp" />
     <ClInclude Include="..\..\..\src\notation\Notation_fwd.hpp" />
@@ -304,8 +309,10 @@
     <ClInclude Include="..\..\..\src\successor\generation\BothPromotions.hpp" />
     <ClInclude Include="..\..\..\src\successor\generation\BothReverse.hpp" />
     <ClInclude Include="..\..\..\src\successor\generation\Conversion.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\Generate.hpp" />
     <ClInclude Include="..\..\..\src\successor\generation\Generator.hpp" />
     <ClInclude Include="..\..\..\src\successor\generation\Generator_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\Invariant.hpp" />
     <ClInclude Include="..\..\..\src\successor\generation\KingJumps.hpp" />
     <ClInclude Include="..\..\..\src\successor\generation\KingMoves.hpp" />
     <ClInclude Include="..\..\..\src\successor\generation\KingReverse.hpp" />
@@ -315,7 +322,6 @@
     <ClInclude Include="..\..\..\src\successor\generation\PawnPromotions.hpp" />
     <ClInclude Include="..\..\..\src\successor\generation\PawnReverse.hpp" />
     <ClInclude Include="..\..\..\src\successor\generation\Primary.hpp" />
-    <ClInclude Include="..\..\..\src\successor\Invariant.hpp" />
     <ClInclude Include="..\..\..\src\successor\Mobility.hpp" />
     <ClInclude Include="..\..\..\src\successor\Select.hpp" />
     <ClInclude Include="..\..\..\src\tree\iterator\Forward.hpp" />

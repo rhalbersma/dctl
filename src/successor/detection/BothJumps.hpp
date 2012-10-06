@@ -9,6 +9,7 @@
 #include "../Select.hpp"
 #include "../../capture/State.hpp"
 #include "../../node/Material.hpp"
+#include "../../node/UnaryProjections.hpp"
 #include "../../rules/Enum.hpp"
 
 namespace dctl {

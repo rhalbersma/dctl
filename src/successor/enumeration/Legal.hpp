@@ -9,6 +9,8 @@
 #include "PawnJumps.hpp"
 #include "PawnMoves.hpp"
 #include "../Select.hpp"
+#include "../../capture/State.hpp"
+#include "../../node/Stack.hpp"
 
 namespace dctl {
 namespace successor {
@@ -25,11 +27,30 @@ private:
 
         typedef enumerator<Color, Material, Jumps, Position> DoJumps;
         typedef enumerator<Color, Material, Moves, Position> DoMoves;
+        typedef capture::State<Position> State;
+
+        // representation
+
+        Stack mutable moves_;
 
 public:
+        // structors
+
+        enumerator()
+        :
+                moves_()
+        {
+                moves_.reserve(MOVE_RESERVE);
+        }
+
+        // function call operators
+
         int operator()(Position const& p) const
         {
-                auto num_moves = DoJumps()(p);
+                State capture_(p, moves_);
+                
+                // parentheses around function objects to avoid "C++'s most vexing parse"
+                auto num_moves = (DoJumps(capture_))(p);
                 if (!num_moves)
                         num_moves += DoMoves()(p);
                 return num_moves;

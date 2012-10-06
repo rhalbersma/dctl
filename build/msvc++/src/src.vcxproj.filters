@@ -100,6 +100,9 @@
     <Filter Include="Header Files\guarded\unguarded">
       <UniqueIdentifier>{1b30e7e6-fb13-4fd9-851b-783d048f541a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\node\detail">
+      <UniqueIdentifier>{fd214eff-9d7a-4278-98dc-cacf3f2b1d06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\capture\Frisian.hpp">
@@ -477,9 +480,6 @@
     <ClInclude Include="..\..\..\src\node\Stack.hpp">
       <Filter>Header Files\node</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\State.hpp">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\node\Targets.hpp">
       <Filter>Header Files\node</Filter>
     </ClInclude>
@@ -630,9 +630,6 @@
     <ClInclude Include="..\..\..\src\successor\Detect.hpp">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\Invariant.hpp">
-      <Filter>Header Files\successor</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\tree\Node.hpp">
       <Filter>Header Files\tree</Filter>
     </ClInclude>
@@ -743,6 +740,30 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\capture\Damme.hpp">
       <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\node\detail\Predicates.hpp">
+      <Filter>Header Files\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\node\detail\Targets.hpp">
+      <Filter>Header Files\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\generation\Invariant.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\successor\generation\Generate.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\node\BinaryProjections.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\node\BinaryProjections_fwd.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\node\UnaryProjections.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\node\detail\UnaryProjections.hpp">
+      <Filter>Header Files\node\detail</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,7 +10,6 @@
 #include "../Select.hpp"
 #include "../../capture/State.hpp"
 #include "../../node/Material.hpp"
-#include "../../node/Stack.hpp"
 
 namespace dctl {
 namespace successor {

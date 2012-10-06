@@ -11,7 +11,6 @@
 #include "../../board/Shift.hpp"
 #include "../../capture/State.hpp"
 #include "../../node/Material.hpp"
-#include "../../node/Stack.hpp"
 #include "../../rules/Enum.hpp"
 #include "../../utility/IntegerTypes.hpp"
 

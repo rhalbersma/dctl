@@ -7,12 +7,6 @@
 namespace dctl {
 namespace successor {
 
-template<typename Position>
-int count(Position const& p)
-{
-        return count<Material::both, DefaultSelection>(p);
-}
-
 template<int Material, typename Selection, typename Position>
 int count(Position const& p)
 {
@@ -20,6 +14,12 @@ int count(Position const& p)
                 detail::enumerator<Side::white, Material, Selection, Position>()(p) :
                 detail::enumerator<Side::black, Material, Selection, Position>()(p)
         ;
+}
+
+template<typename Position>
+int count(Position const& p)
+{
+        return count<Material::both, DefaultSelection>(p);
 }
 
 }       // namespace successor
