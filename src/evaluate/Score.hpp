@@ -27,11 +27,11 @@ static void print_break_down(Position const& p)
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";
         std::cout<< "\n";
-        std::cout << "Move    " << std::setw(6) << Feature<Side::black>::material(p) << std::setw(6) << Feature<Side::white>::material(p) << std::setw(6) << Delta<Side::black, Rules, Board>::material(p) << "\n";
-        std::cout << "Tempo   " << std::setw(6) << Feature<Side::black>::tempo(p)    << std::setw(6) << Feature<Side::white>::tempo(p)    << std::setw(6) << Delta<Side::black, Rules, Board>::tempo(p)    << "\n";
-        std::cout << "Center  " << std::setw(6) << Feature<Side::black>::center(p)   << std::setw(6) << Feature<Side::white>::center(p)   << std::setw(6) << Delta<Side::black, Rules, Board>::center(p)   << "\n";
-        std::cout << "Balance " << std::setw(6) << Feature<Side::black>::balance(p)  << std::setw(6) << Feature<Side::white>::balance(p)  << std::setw(6) << Delta<Side::black, Rules, Board>::balance(p)  << "\n";
-        std::cout << "Mobility" << std::setw(6) << Feature<Side::black>::mobility(p) << std::setw(6) << Feature<Side::white>::mobility(p) << std::setw(6) << Delta<Side::black, Rules, Board>::mobility(p) << "\n";
+        std::cout << "Move    " << std::setw(6) << Feature<Side::black>::material(p) << std::setw(6) << Feature<Side::white>::material(p) << std::setw(6) << Delta<Side::black>::material(p) << "\n";
+        std::cout << "Tempo   " << std::setw(6) << Feature<Side::black>::tempo(p)    << std::setw(6) << Feature<Side::white>::tempo(p)    << std::setw(6) << Delta<Side::black>::tempo(p)    << "\n";
+        std::cout << "Center  " << std::setw(6) << Feature<Side::black>::center(p)   << std::setw(6) << Feature<Side::white>::center(p)   << std::setw(6) << Delta<Side::black>::center(p)   << "\n";
+        std::cout << "Balance " << std::setw(6) << Feature<Side::black>::balance(p)  << std::setw(6) << Feature<Side::white>::balance(p)  << std::setw(6) << Delta<Side::black>::balance(p)  << "\n";
+        std::cout << "Mobility" << std::setw(6) << Feature<Side::black>::mobility(p) << std::setw(6) << Feature<Side::white>::mobility(p) << std::setw(6) << Delta<Side::black>::mobility(p) << "\n";
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";
         std::cout<< "\n";

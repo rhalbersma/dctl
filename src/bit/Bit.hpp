@@ -32,6 +32,27 @@ struct except_first
 
 }       // namespace detail
 
+// least significant 1-bit
+template<typename T>
+T get_first(T b)
+{
+        return detail::get_first<T>()(b);
+}
+
+// most significant 1-bits
+template<typename T>
+T except_first(T b)
+{
+        return detail::except_first<T>()(b);
+}
+
+// clear the least significant 1-bit
+template<typename T>
+void clear_first(T& b)
+{
+        b &= b - T(1);
+}
+
 template<typename T>
 T zero()
 {
@@ -63,6 +84,13 @@ bool is_zero(T b)
         return b == zero<T>();
 }
 
+// 2 or more bits set to 1
+template<typename T>
+bool is_multiple(T b)
+{
+        return !is_zero(except_first(b));
+}
+
 // 1 bit set to 1
 template<typename T>
 bool is_single(T b)
@@ -75,13 +103,6 @@ template<typename T>
 bool is_double(T b)
 {
         return is_single(except_first(b));
-}
-
-// 2 or more bits set to 1
-template<typename T>
-bool is_multiple(T b)
-{
-        return !is_zero(except_first(b));
 }
 
 // a contained within b
@@ -102,27 +123,6 @@ template<typename Iterator, typename Board>
 bool is_element(Iterator it, Board b)
 {
         return !is_zero(it & b);
-}
-
-// least significant 1-bit
-template<typename T>
-T get_first(T b)
-{
-        return detail::get_first<T>()(b);
-}
-
-// most significant 1-bits
-template<typename T>
-T except_first(T b)
-{
-        return detail::except_first<T>()(b);
-}
-
-// clear the least significant 1-bit
-template<typename T>
-void clear_first(T& b)
-{
-        b &= b - T(1);
 }
 
 // Leiserson, Prokop and Randall, 1998

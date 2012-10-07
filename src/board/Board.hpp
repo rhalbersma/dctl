@@ -145,7 +145,7 @@ BitBoard const Board<Dimensions, Structure>::jump_group[] = {
         init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_le, boost::mpl::int_<0> > >::value,
         init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_le, boost::mpl::int_<1> > >::value,
         init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_lo, boost::mpl::int_<0> > >::value,
-        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_lo, boost::mpl::Int_<1> > >::value
+        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_lo, boost::mpl::int_<1> > >::value
 };
 
 template<typename Dimensions, typename Structure>
