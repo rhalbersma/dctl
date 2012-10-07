@@ -7,7 +7,7 @@ namespace successor {
 namespace detail {
 
 template<bool Color, int Material, typename Selection, typename Position, typename Range>
-struct detector<Color, Material, Selection, Position, Range>
+struct detector
 :
         public std::function<bool(Position const&)>
 {

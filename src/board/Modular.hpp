@@ -32,10 +32,10 @@ struct abs_modulus
         >
 {
         // the remainder is non-negative and less than the denominator
-        BOOST_STATIC_ASSERT(
+        /*BOOST_STATIC_ASSERT(
                 0 <= (abs_modulus<Numerator, Denominator>::value) &&
                 (abs_modulus<Numerator, Denominator>::value) < Denominator::value
-        );
+        );*/
 };
 
 }       // namespace dctl

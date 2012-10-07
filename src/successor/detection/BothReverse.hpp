@@ -12,7 +12,7 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position, typename Range>
-struct detector<Color, Material::both, Reverse, Position, typename Range>
+struct detector<Color, Material::both, Reverse, Position, Range>
 :
         public std::function<bool(Position const&)>
 {

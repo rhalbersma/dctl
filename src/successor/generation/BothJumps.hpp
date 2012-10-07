@@ -16,7 +16,7 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct generator<Color, Material::both, Jumps, typename Position>
+struct generator<Color, Material::both, Jumps, Position>
 :
         // enforce reference semantics
         private boost::noncopyable,
