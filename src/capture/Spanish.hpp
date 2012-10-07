@@ -82,12 +82,12 @@ private:
 
         // queries
 
-        int num_pieces() const
+        int const& num_pieces() const
         {
                 return data_.first;
         }
 
-        int num_kings() const
+        int const& num_kings() const
         {
                 return data_.second;
         }

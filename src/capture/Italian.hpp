@@ -110,22 +110,22 @@ private:
 
         // queries
 
-        int num_pieces() const
+        int const& num_pieces() const
         {
                 return std::get<0>(data_);
         }
 
-        int num_kings() const
+        int const& num_kings() const
         {
                 return std::get<1>(data_);
         }
 
-        bool with_king() const
+        bool const& with_king() const
         {
                 return std::get<2>(data_);
         }
 
-        bit_type piece_order() const
+        bit_type const& piece_order() const
         {
                 return std::get<3>(data_);
         }

@@ -88,6 +88,10 @@ public:
         }
 
 private:
+        // representation
+
+        std::tuple<int, int, bool> data_;
+
         // modifiers
 
         int& num_pieces()
@@ -142,10 +146,6 @@ private:
         {
                 return num_pieces() == std::numeric_limits<int>::max();
         }
-
-        // representation
-
-        std::tuple<int, int, bool> data_;
 };
 
 }       // namespace capture
