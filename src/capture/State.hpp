@@ -398,7 +398,7 @@ private:
 
         // representation
 
-        typedef typename Rules::capture_value_type<Board> XValue;
+        typedef typename Rules::template capture_value_type<Board> XValue;
 
         BitBoard const king_targets_;
         BitBoard initial_targets_;
