@@ -48,7 +48,7 @@ private:
 
         bool insert(Identifier const& id, Creator fun)
         {
-                return lookup_.insert(Lookup::value_type(id, fun)).second;
+                return lookup_.insert(typename Lookup::value_type(id, fun)).second;
         }
 
         bool erase(Identifier const& id)
