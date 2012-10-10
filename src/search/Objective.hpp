@@ -22,27 +22,6 @@ struct FirstPlayerWin;
 struct SecondPlayerWin;
 struct HeuristicDraw;
 
-template
-<
-        typename TerminalDetection = NoMovesLeft,
-        typename TerminalScoring = Regular,
-        typename CycleScoring = HeuristicDraw
->
-struct GameObjective
-{
-        template<typename Position>
-        static int value(Position const& p)
-        {
-                if (is_cycle(p))
-                        return cycle<CycleScoring>::value(p);
-
-                if (is_terminal<TerminalDetection>()(p))
-                        return terminal<TerminalScoring>::value();
-
-                return -infinity();
-        }
-};
-
 template<typename>
 struct is_terminal;
 
@@ -91,12 +70,6 @@ struct terminal<Misere>
 };
 
 template<typename Position>
-bool is_draw(Position const& p)
-{
-        return is_cycle(p) || is_no_progress(p);
-}
-
-template<typename Position>
 bool is_cycle(Position const& p)
 {
         // a cycle needs at least 4 reversible moves
@@ -113,31 +86,6 @@ bool is_cycle(Position const& p)
                 q = grand_parent(*q);
         }
         return false;
-}
-
-template<typename Position>
-bool is_no_progress(Position const& p)
-{
-        typedef typename Position::rules_type Rules;
-
-        // tag dispatching on restrictions on consecutive reversible moves
-        return is_no_progress_dispatch(p, boost::mpl::bool_<rules::is_restricted_reversible_moves<Rules>::value>());
-}
-
-// overload for no restrictions on consecutive reversible moves
-template<typename Position>
-bool is_no_progress_dispatch(Position const& /* p */, boost::mpl::false_)
-{
-        return false;
-}
-
-// overload for a maximum of consecutive reversible moves
-template<typename Position>
-bool is_no_progress_dispatch(Position const& p, boost::mpl::true_)
-{
-        typedef typename Position::rules_type Rules;
-
-        return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }
 
 template<typename>
@@ -170,6 +118,62 @@ struct cycle<SecondPlayerWin>
         static int value(Position const& p)
         {
                 return -cycle<FirstPlayerWin>::value(p);
+        }
+};
+
+namespace detail {
+
+// overload for no restrictions on consecutive reversible moves
+template<typename Position>
+bool is_no_progress(Position const& /* p */, boost::mpl::false_)
+{
+        return false;
+}
+
+// overload for a maximum of consecutive reversible moves
+template<typename Position>
+bool is_no_progress(Position const& p, boost::mpl::true_)
+{
+        typedef typename Position::rules_type Rules;
+
+        return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
+}
+
+}       // namespace detail
+
+template<typename Position>
+bool is_no_progress(Position const& p)
+{
+        typedef typename Position::rules_type Rules;
+
+        // tag dispatching on restrictions on consecutive reversible moves
+        return detail::is_no_progress(p, boost::mpl::bool_<rules::is_restricted_reversible_moves<Rules>::value>());
+}
+
+template<typename Position>
+bool is_draw(Position const& p)
+{
+        return is_cycle(p) || is_no_progress(p);
+}
+
+template
+<
+        typename TerminalDetection = NoMovesLeft,
+        typename TerminalScoring = Regular,
+        typename CycleScoring = HeuristicDraw
+>
+struct GameObjective
+{
+        template<typename Position>
+        static int value(Position const& p)
+        {
+                if (is_cycle(p))
+                        return cycle<CycleScoring>::value(p);
+
+                if (is_terminal<TerminalDetection>()(p))
+                        return terminal<TerminalScoring>::value();
+
+                return -infinity();
         }
 };
 

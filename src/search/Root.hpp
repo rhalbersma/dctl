@@ -73,9 +73,7 @@ public:
 
 private:
         template<typename Position> int iterative_deepening(Position const&, int);
-        template<typename Position> int proof_verify(Position const&, int);
         template<typename Position> int negamax(Position const&, int, int, Variation&);
-        template<typename int, typename Position> int verify(Position const&, int, int, int, int, Variation&);
         template<typename int, typename Position> int pvs(Position const&, int, int, int, int, Variation&);
 
         template<typename Position>

@@ -4,7 +4,7 @@
 
 namespace dctl {
 
-// non-mutating algorithms
+// non-mutating sequence algorithms
 
 template<typename InputIterator, typename EqualityComparable>
 bool contains(InputIterator first, InputIterator last, EqualityComparable const& value)
@@ -12,7 +12,7 @@ bool contains(InputIterator first, InputIterator last, EqualityComparable const&
         return std::find(first, last, value) != last;
 }
 
-// mutating algorithms
+// mutating sequence algorithms
 
 template<typename OutputIterator, typename Size, typename Assignable>
 void iota_n(OutputIterator first, Size n, Assignable value)

@@ -120,9 +120,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\bit\Bit.hpp" />
-    <ClInclude Include="..\..\..\src\bit\DeBruijn.hpp" />
-    <ClInclude Include="..\..\..\src\bit\Lookup.hpp" />
-    <ClInclude Include="..\..\..\src\bit\Array.hpp" />
     <ClInclude Include="..\..\..\src\board\Angle.hpp" />
     <ClInclude Include="..\..\..\src\board\Board.hpp" />
     <ClInclude Include="..\..\..\src\board\Coordinates.hpp" />
@@ -155,10 +152,6 @@
     <ClInclude Include="..\..\..\src\dxp\BackAcknowledge.hpp" />
     <ClInclude Include="..\..\..\src\dxp\BackRequest.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Chat.hpp" />
-    <ClInclude Include="..\..\..\src\dxp\CommunicationInterface.hpp" />
-    <ClInclude Include="..\..\..\src\dxp\Connection.hpp" />
-    <ClInclude Include="..\..\..\src\dxp\ConnectionInterface.hpp" />
-    <ClInclude Include="..\..\..\src\dxp\Acceptor.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Version.hpp" />
     <ClInclude Include="..\..\..\src\dxp\GameAcknowledge.hpp" />
     <ClInclude Include="..\..\..\src\dxp\GameEnd.hpp" />
@@ -167,7 +160,6 @@
     <ClInclude Include="..\..\..\src\dxp\Move.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Traits.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Types.hpp" />
-    <ClInclude Include="..\..\..\src\egdb\Cache.hpp" />
     <ClInclude Include="..\..\..\src\evaluate\Delta.hpp" />
     <ClInclude Include="..\..\..\src\evaluate\Score.hpp" />
     <ClInclude Include="..\..\..\src\evaluate\Feature.hpp" />
@@ -180,8 +172,6 @@
     <ClInclude Include="..\..\..\src\group\primitives.hpp" />
     <ClInclude Include="..\..\..\src\guarded\parameter.hpp" />
     <ClInclude Include="..\..\..\src\guarded\is_permutation.hpp" />
-    <ClInclude Include="..\..\..\src\guarded\stack_alloc.hpp" />
-    <ClInclude Include="..\..\..\src\guarded\unguarded\stack_alloc.h" />
     <ClInclude Include="..\..\..\src\hash\Find.hpp" />
     <ClInclude Include="..\..\..\src\hash\Functions.hpp" />
     <ClInclude Include="..\..\..\src\hash\DualMap.hpp" />
@@ -324,9 +314,6 @@
     <ClInclude Include="..\..\..\src\successor\generation\Primary.hpp" />
     <ClInclude Include="..\..\..\src\successor\Mobility.hpp" />
     <ClInclude Include="..\..\..\src\successor\Select.hpp" />
-    <ClInclude Include="..\..\..\src\tree\iterator\Forward.hpp" />
-    <ClInclude Include="..\..\..\src\tree\link\ISingle.hpp" />
-    <ClInclude Include="..\..\..\src\tree\Node.hpp" />
     <ClInclude Include="..\..\..\src\utility\algorithm.hpp" />
     <ClInclude Include="..\..\..\src\utility\CacheAlign.hpp" />
     <ClInclude Include="..\..\..\src\utility\enable_down_cast.hpp" />

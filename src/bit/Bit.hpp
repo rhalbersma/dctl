@@ -1,8 +1,7 @@
 #pragma once
 #include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include "DeBruijn.hpp"
-#include "Lookup.hpp"
+#include "../utility/IntegerTypes.hpp"
 
 namespace dctl {
 namespace bit {
@@ -125,21 +124,6 @@ bool is_element(Iterator it, Board b)
         return !is_zero(it & b);
 }
 
-// Leiserson, Prokop and Randall, 1998
-// http://supertech.csail.mit.edu/papers/debruijn.pdf
-template<typename T>
-int index_DeBruijn(T b)
-{
-        return debruijn::Index<T>()(b);
-}
-
-// index of a set 1-bit
-template<typename T>
-int index_lookup(T b)
-{
-        return Lookup::index(b);
-}
-
 // index of a set 1-bit
 template<typename T>
 int index_loop(T b)
@@ -155,7 +139,7 @@ template<typename T>
 int index(T b)
 {
         BOOST_ASSERT(is_single(b));
-        return index_DeBruijn(b);
+        return index_loop(b);
 }
 
 // index of the least significant 1-bit
@@ -163,13 +147,6 @@ template<typename T>
 int find_first(T b)
 {
         return index(get_first(b));
-}
-
-// number of set 1-bits
-template<typename T>
-int count_lookup(T b)
-{
-        return Lookup::count(b);
 }
 
 // Kernighan & Ritchie, The C programming language, 2nd Ed.

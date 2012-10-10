@@ -1,9 +1,11 @@
 #pragma once
 
 /*---------------------------------------------------------------------------*/
-#if (_MSC_VER <= 1600)
-#pragma warning(push)
-#pragma warning(disable: 4512)  // assignment operator could not be generated
+#ifdef _MSC_VER
+        #if (_MSC_VER <= 1600)
+                #pragma warning(push)
+                #pragma warning(disable: 4512)  // assignment operator could not be generated
+        #endif
 #endif
 /*---------------------------------------------------------------------------*/
 
@@ -17,7 +19,9 @@
 #include <boost/algorithm/cxx11/is_permutation.hpp>
 
 /*---------------------------------------------------------------------------*/
-#if (_MSC_VER <= 1600)
-#pragma warning(pop)
+#ifdef _MSC_VER
+        #if (_MSC_VER <= 1600)
+                #pragma warning(pop)
+        #endif
 #endif
 /*---------------------------------------------------------------------------*/
