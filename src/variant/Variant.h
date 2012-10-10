@@ -1,0 +1,11 @@
+#pragma once
+#include "Checkers.h"
+#include "Czech.h"
+#include "Frisian.h"
+#include "International.h"
+#include "Italian.h"
+#include "Killer.h"
+#include "Pool.h"
+#include "Russian.h"
+#include "Spanish.h"
+#include "Thai.h"

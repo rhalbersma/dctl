@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2BBA0958-E029-4D35-BEED-227743CD7BD4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DCTL</RootNamespace>
+    <ProjectName>DCTL</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Full</Optimization>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_46_1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <AdditionalOptions>/wd4127 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files\boost\boost_1_46_1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_46_1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <StringPooling>true</StringPooling>
+      <AdditionalOptions>/wd4127 %(AdditionalOptions)</AdditionalOptions>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Program Files\boost\boost_1_44\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\bit\Bit.h" />
+    <ClInclude Include="src\bit\Bit.hpp" />
+    <ClInclude Include="src\bit\DeBruijn.h" />
+    <ClInclude Include="src\bit\DeBruijn.hpp" />
+    <ClInclude Include="src\bit\Lookup.h" />
+    <ClInclude Include="src\bit\Lookup.hpp" />
+    <ClInclude Include="src\board\Angle.h" />
+    <ClInclude Include="src\board\Angle.hpp" />
+    <ClInclude Include="src\board\Board.h" />
+    <ClInclude Include="src\board\Board.hpp" />
+    <ClInclude Include="src\board\Dimensions.h" />
+    <ClInclude Include="src\board\MetaTemplates.h" />
+    <ClInclude Include="src\board\MetaTemplates.hpp" />
+    <ClInclude Include="src\board\Predicates.h" />
+    <ClInclude Include="src\board\Predicates.hpp" />
+    <ClInclude Include="src\board\Coordinates.h" />
+    <ClInclude Include="src\board\Coordinates.hpp" />
+    <ClInclude Include="src\board\Direction.h" />
+    <ClInclude Include="src\board\Grid.h" />
+    <ClInclude Include="src\board\Dimensions.hpp" />
+    <ClInclude Include="src\board\Structure.h" />
+    <ClInclude Include="src\board\Traits.h" />
+    <ClInclude Include="src\board\Transform.h" />
+    <ClInclude Include="src\board\Types.h" />
+    <ClInclude Include="src\capture\Frisian.h" />
+    <ClInclude Include="src\capture\International.h" />
+    <ClInclude Include="src\capture\Italian.h" />
+    <ClInclude Include="src\capture\Killer.h" />
+    <ClInclude Include="src\capture\Russian.h" />
+    <ClInclude Include="src\capture\Spanish.h" />
+    <ClInclude Include="src\capture\State.h" />
+    <ClInclude Include="src\capture\State.hpp" />
+    <ClInclude Include="src\capture\Value.h" />
+    <ClInclude Include="src\capture\Value.hpp" />
+    <ClInclude Include="src\capture\ValueInterface.h" />
+    <ClInclude Include="src\dxp\BackAcknowledge.h" />
+    <ClInclude Include="src\dxp\BackRequest.h" />
+    <ClInclude Include="src\dxp\Chat.h" />
+    <ClInclude Include="src\dxp\Connection.h" />
+    <ClInclude Include="src\dxp\Connection.hpp" />
+    <ClInclude Include="src\dxp\GameAcknowledge.h" />
+    <ClInclude Include="src\dxp\GameEnd.h" />
+    <ClInclude Include="src\dxp\GameRequest.h" />
+    <ClInclude Include="src\dxp\MessageInterface.h" />
+    <ClInclude Include="src\dxp\Move.h" />
+    <ClInclude Include="src\dxp\Parser.h" />
+    <ClInclude Include="src\dxp\Parser.hpp" />
+    <ClInclude Include="src\dxp\Scanner.h" />
+    <ClInclude Include="src\dxp\Scanner.hpp" />
+    <ClInclude Include="src\dxp\Protocol.h" />
+    <ClInclude Include="src\dxp\DXP.h" />
+    <ClInclude Include="src\node\Move.hpp" />
+    <ClInclude Include="src\node\Restricted.h" />
+    <ClInclude Include="src\node\Restricted.hpp" />
+    <ClInclude Include="src\notation\Czech.h" />
+    <ClInclude Include="src\notation\Notation.h" />
+    <ClInclude Include="src\notation\Russian.h" />
+    <ClInclude Include="src\notation\String.h" />
+    <ClInclude Include="src\notation\String.hpp" />
+    <ClInclude Include="src\notation\Thai.h" />
+    <ClInclude Include="src\notation\Types.h" />
+    <ClInclude Include="src\pdn\PDN.h" />
+    <ClInclude Include="src\rules\Checkers.h" />
+    <ClInclude Include="src\rules\Czech.h" />
+    <ClInclude Include="src\rules\Enum.h" />
+    <ClInclude Include="src\rules\Frisian.h" />
+    <ClInclude Include="src\rules\International.h" />
+    <ClInclude Include="src\rules\Italian.h" />
+    <ClInclude Include="src\rules\Killer.h" />
+    <ClInclude Include="src\rules\Russian.h" />
+    <ClInclude Include="src\rules\Spanish.h" />
+    <ClInclude Include="src\rules\Thai.h" />
+    <ClInclude Include="src\rules\Rules.h" />
+    <ClInclude Include="src\evaluate\Evaluate.h" />
+    <ClInclude Include="src\evaluate\Evaluate.hpp" />
+    <ClInclude Include="src\evaluate\Weight.h" />
+    <ClInclude Include="src\hash\Algorithms.h" />
+    <ClInclude Include="src\hash\DualMap.h" />
+    <ClInclude Include="src\hash\DualMap.hpp" />
+    <ClInclude Include="src\hash\EntryPredicates.h" />
+    <ClInclude Include="src\hash\EntryPredicates.hpp" />
+    <ClInclude Include="src\hash\FindInsert.h" />
+    <ClInclude Include="src\hash\FindInsert.hpp" />
+    <ClInclude Include="src\hash\jenkins\Init.h" />
+    <ClInclude Include="src\hash\jenkins\Init.hpp" />
+    <ClInclude Include="src\hash\jenkins\Mix.h" />
+    <ClInclude Include="src\hash\jenkins\Mix.hpp" />
+    <ClInclude Include="src\hash\Map.h" />
+    <ClInclude Include="src\hash\Map.hpp" />
+    <ClInclude Include="src\hash\Replace.h" />
+    <ClInclude Include="src\hash\Sign.h" />
+    <ClInclude Include="src\hash\Sign.hpp" />
+    <ClInclude Include="src\hash\zobrist\Find.h" />
+    <ClInclude Include="src\hash\zobrist\Find.hpp" />
+    <ClInclude Include="src\hash\zobrist\Init.h" />
+    <ClInclude Include="src\hash\zobrist\Init.hpp" />
+    <ClInclude Include="src\hash\zobrist\Random.h" />
+    <ClInclude Include="src\hash\zobrist\Random.hpp" />
+    <ClInclude Include="src\node\MakeMove.hpp" />
+    <ClInclude Include="src\node\Move.h" />
+    <ClInclude Include="src\node\Material.h" />
+    <ClInclude Include="src\node\Material.hpp" />
+    <ClInclude Include="src\node\Position.h" />
+    <ClInclude Include="src\node\Position.hpp" />
+    <ClInclude Include="src\node\Predicates.h" />
+    <ClInclude Include="src\node\Predicates.hpp" />
+    <ClInclude Include="src\node\Side.h" />
+    <ClInclude Include="src\node\Stack.h" />
+    <ClInclude Include="src\node\Stack.hpp" />
+    <ClInclude Include="src\search\Algorithms.hpp" />
+    <ClInclude Include="src\search\Parameters.h" />
+    <ClInclude Include="src\search\Root.h" />
+    <ClInclude Include="src\search\Root.hpp" />
+    <ClInclude Include="src\search\Score.h" />
+    <ClInclude Include="src\search\Transposition.h" />
+    <ClInclude Include="src\setup\Content.h" />
+    <ClInclude Include="src\setup\Content.hpp" />
+    <ClInclude Include="src\setup\DXP.h" />
+    <ClInclude Include="src\setup\Diagram.h" />
+    <ClInclude Include="src\setup\Diagram.hpp" />
+    <ClInclude Include="src\setup\Methods.h" />
+    <ClInclude Include="src\setup\Numbers.h" />
+    <ClInclude Include="src\setup\PDN.h" />
+    <ClInclude Include="src\setup\Protocols.h" />
+    <ClInclude Include="src\setup\Setup.h" />
+    <ClInclude Include="src\setup\Token.h" />
+    <ClInclude Include="src\setup\Token.hpp" />
+    <ClInclude Include="src\setup\String.h" />
+    <ClInclude Include="src\setup\String.hpp" />
+    <ClInclude Include="src\successors\BothJumps.h" />
+    <ClInclude Include="src\successors\BothJumps.hpp" />
+    <ClInclude Include="src\successors\BothMoves.h" />
+    <ClInclude Include="src\successors\BothMoves.hpp" />
+    <ClInclude Include="src\successors\Driver.h" />
+    <ClInclude Include="src\successors\Driver.hpp" />
+    <ClInclude Include="src\successors\Generator.h" />
+    <ClInclude Include="src\successors\Generator.hpp" />
+    <ClInclude Include="src\successors\GeneratorInterface.h" />
+    <ClInclude Include="src\successors\GeneratorInterface.hpp" />
+    <ClInclude Include="src\successors\KingJumps.h" />
+    <ClInclude Include="src\successors\KingJumps.hpp" />
+    <ClInclude Include="src\successors\KingMoves.h" />
+    <ClInclude Include="src\successors\KingMoves.hpp" />
+    <ClInclude Include="src\successors\PawnJumps.h" />
+    <ClInclude Include="src\successors\PawnJumps.hpp" />
+    <ClInclude Include="src\successors\PawnMoves.h" />
+    <ClInclude Include="src\successors\PawnMoves.hpp" />
+    <ClInclude Include="src\successors\Successors.h" />
+    <ClInclude Include="src\successors\Successors.hpp" />
+    <ClInclude Include="src\utils\Iota.hpp" />
+    <ClInclude Include="src\variant\Checkers.h" />
+    <ClInclude Include="src\variant\Czech.h" />
+    <ClInclude Include="src\variant\Frisian.h" />
+    <ClInclude Include="src\variant\International.h" />
+    <ClInclude Include="src\variant\Italian.h" />
+    <ClInclude Include="src\variant\Killer.h" />
+    <ClInclude Include="src\variant\Pool.h" />
+    <ClInclude Include="src\variant\Russian.h" />
+    <ClInclude Include="src\variant\Spanish.h" />
+    <ClInclude Include="src\variant\Thai.h" />
+    <ClInclude Include="src\variant\Variant.h" />
+    <ClInclude Include="src\walk\Root.h" />
+    <ClInclude Include="src\walk\Root.hpp" />
+    <ClInclude Include="src\walk\Transposition.h" />
+    <ClInclude Include="src\utils\CacheAlign.h" />
+    <ClInclude Include="src\utils\IntegerTypes.h" />
+    <ClInclude Include="src\utils\Ply.h" />
+    <ClInclude Include="src\utils\Shift.h" />
+    <ClInclude Include="src\utils\Shift.hpp" />
+    <ClInclude Include="src\utils\Statistics.h" />
+    <ClInclude Include="src\utils\TemplateTricks.h" />
+    <ClInclude Include="src\utils\Timer.h" />
+    <ClInclude Include="src\utils\Iota.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\bit\DeBruijn.cpp" />
+    <ClCompile Include="src\bit\Lookup.cpp" />
+    <ClCompile Include="src\capture\Frisian.cpp" />
+    <ClCompile Include="src\capture\International.cpp" />
+    <ClCompile Include="src\capture\Italian.cpp" />
+    <ClCompile Include="src\capture\Killer.cpp" />
+    <ClCompile Include="src\capture\Russian.cpp" />
+    <ClCompile Include="src\capture\Spanish.cpp" />
+    <ClCompile Include="src\capture\ValueInterface.cpp" />
+    <ClCompile Include="src\dxp\BackAcknowledge.cpp" />
+    <ClCompile Include="src\dxp\BackRequest.cpp" />
+    <ClCompile Include="src\dxp\Chat.cpp" />
+    <ClCompile Include="src\dxp\GameAcknowledge.cpp" />
+    <ClCompile Include="src\dxp\GameEnd.cpp" />
+    <ClCompile Include="src\dxp\GameRequest.cpp" />
+    <ClCompile Include="src\dxp\MessageInterface.cpp" />
+    <ClCompile Include="src\dxp\Move.cpp" />
+    <ClCompile Include="src\node\Move.cpp" />
+    <ClCompile Include="src\node\Restricted.cpp" />
+    <ClCompile Include="src\evaluate\Weight.cpp" />
+    <ClCompile Include="src\hash\jenkins\Mix.cpp" />
+    <ClCompile Include="src\hash\zobrist\Random.cpp" />
+    <ClCompile Include="src\node\Material.cpp" />
+    <ClCompile Include="src\node\Predicates.cpp" />
+    <ClCompile Include="src\node\Stack.cpp" />
+    <ClCompile Include="src\search\Parameters.cpp" />
+    <ClCompile Include="src\search\Root.cpp" />
+    <ClCompile Include="src\search\Score.cpp" />
+    <ClCompile Include="src\search\Transposition.cpp" />
+    <ClCompile Include="src\walk\Root.cpp" />
+    <ClCompile Include="src\walk\Transposition.cpp" />
+    <ClCompile Include="src\utils\Statistics.cpp" />
+    <ClCompile Include="src\utils\Timer.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

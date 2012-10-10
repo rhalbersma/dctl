@@ -1,0 +1,41 @@
+#include <algorithm>    // std:max
+#include "Statistics.h"
+
+namespace dctl {
+
+Statistics::Statistics()
+:
+        nodes_(0),
+        sum_ply_(0),
+        max_ply_(0)
+{
+}
+
+NodeCount Statistics::nodes() const
+{
+        return nodes_;
+}
+
+NodeCount Statistics::sum_ply() const
+{
+        return sum_ply_;
+}
+
+int Statistics::max_ply() const
+{
+        return max_ply_;
+}
+
+void Statistics::reset()
+{
+        nodes_ = sum_ply_ = max_ply_ = 0;
+}
+
+void Statistics::update(int ply)
+{
+        ++nodes_;
+        sum_ply_ += ply;
+        max_ply_ = std::max(ply, max_ply_);
+}
+
+}       // namespace dctl
