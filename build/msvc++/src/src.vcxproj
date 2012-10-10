@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0B1C650F-2EAC-4B31-8DE7-D4A3BF2BD122}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>src</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files\boost\boost_1_51;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Program Files\boost\boost_1_51;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_47;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ObjectFileName>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\Program Files\boost\boost_1_50_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</ObjectFileName>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_47;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\Program Files\boost\boost_1_50_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\bit\Bit.hpp" />
+    <ClInclude Include="..\..\..\src\board\Angle.hpp" />
+    <ClInclude Include="..\..\..\src\board\Board.hpp" />
+    <ClInclude Include="..\..\..\src\board\Coordinates.hpp" />
+    <ClInclude Include="..\..\..\src\board\Cyclic.hpp" />
+    <ClInclude Include="..\..\..\src\board\Degrees.hpp" />
+    <ClInclude Include="..\..\..\src\board\Dimensions.hpp" />
+    <ClInclude Include="..\..\..\src\board\Compass.hpp" />
+    <ClInclude Include="..\..\..\src\board\Grid.hpp" />
+    <ClInclude Include="..\..\..\src\board\MetaTemplates.hpp" />
+    <ClInclude Include="..\..\..\src\board\Modular.hpp" />
+    <ClInclude Include="..\..\..\src\board\Predicates.hpp" />
+    <ClInclude Include="..\..\..\src\board\Shift.hpp" />
+    <ClInclude Include="..\..\..\src\board\Structure.hpp" />
+    <ClInclude Include="..\..\..\src\board\Traits.hpp" />
+    <ClInclude Include="..\..\..\src\board\Traits_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\board\Transform.hpp" />
+    <ClInclude Include="..\..\..\src\board\Types.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Damme.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Frisian.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Hoogland.hpp" />
+    <ClInclude Include="..\..\..\src\capture\International.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Italian.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Killer.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Lineo.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Russian.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Spanish.hpp" />
+    <ClInclude Include="..\..\..\src\capture\State.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Value.hpp" />
+    <ClInclude Include="..\..\..\src\capture\Value_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\BackAcknowledge.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\BackRequest.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\Chat.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\Version.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\GameAcknowledge.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\GameEnd.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\GameRequest.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\IMessage.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\Move.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\Traits.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\Types.hpp" />
+    <ClInclude Include="..\..\..\src\evaluate\Delta.hpp" />
+    <ClInclude Include="..\..\..\src\evaluate\Score.hpp" />
+    <ClInclude Include="..\..\..\src\evaluate\Feature.hpp" />
+    <ClInclude Include="..\..\..\src\evaluate\Weight.hpp" />
+    <ClInclude Include="..\..\..\src\factory\Registry.hpp" />
+    <ClInclude Include="..\..\..\src\factory\mixin.hpp" />
+    <ClInclude Include="..\..\..\src\factory\Factory.hpp" />
+    <ClInclude Include="..\..\..\src\group\action.hpp" />
+    <ClInclude Include="..\..\..\src\group\axioms.hpp" />
+    <ClInclude Include="..\..\..\src\group\primitives.hpp" />
+    <ClInclude Include="..\..\..\src\guarded\parameter.hpp" />
+    <ClInclude Include="..\..\..\src\guarded\is_permutation.hpp" />
+    <ClInclude Include="..\..\..\src\hash\Find.hpp" />
+    <ClInclude Include="..\..\..\src\hash\Functions.hpp" />
+    <ClInclude Include="..\..\..\src\hash\DualMap.hpp" />
+    <ClInclude Include="..\..\..\src\hash\FindInsert.hpp" />
+    <ClInclude Include="..\..\..\src\hash\jenkins\Init.hpp" />
+    <ClInclude Include="..\..\..\src\hash\jenkins\Random.hpp" />
+    <ClInclude Include="..\..\..\src\hash\Map.hpp" />
+    <ClInclude Include="..\..\..\src\hash\Replace.hpp" />
+    <ClInclude Include="..\..\..\src\hash\KeySign.hpp" />
+    <ClInclude Include="..\..\..\src\hash\zobrist\Init.hpp" />
+    <ClInclude Include="..\..\..\src\hash\zobrist\Random.hpp" />
+    <ClInclude Include="..\..\..\src\mpl\algorithm.hpp" />
+    <ClInclude Include="..\..\..\src\mpl\lazy.hpp" />
+    <ClInclude Include="..\..\..\src\mpl\type_traits.hpp" />
+    <ClInclude Include="..\..\..\src\node\detail\Predicates.hpp" />
+    <ClInclude Include="..\..\..\src\node\detail\Targets.hpp" />
+    <ClInclude Include="..\..\..\src\node\detail\UnaryProjections.hpp" />
+    <ClInclude Include="..\..\..\src\node\Material.hpp" />
+    <ClInclude Include="..\..\..\src\node\Move.hpp" />
+    <ClInclude Include="..\..\..\src\node\Move_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\node\IPieces.hpp" />
+    <ClInclude Include="..\..\..\src\node\Position.hpp" />
+    <ClInclude Include="..\..\..\src\node\Position_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\node\Predicates.hpp" />
+    <ClInclude Include="..\..\..\src\node\Predicates_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\node\BinaryProjections.hpp" />
+    <ClInclude Include="..\..\..\src\node\BinaryProjections_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\node\Promotion.hpp" />
+    <ClInclude Include="..\..\..\src\node\Restricted.hpp" />
+    <ClInclude Include="..\..\..\src\node\Side.hpp" />
+    <ClInclude Include="..\..\..\src\node\Stack.hpp" />
+    <ClInclude Include="..\..\..\src\node\Targets.hpp" />
+    <ClInclude Include="..\..\..\src\node\UnaryProjections.hpp" />
+    <ClInclude Include="..\..\..\src\notation\Czech.hpp" />
+    <ClInclude Include="..\..\..\src\notation\Notation.hpp" />
+    <ClInclude Include="..\..\..\src\notation\Notation_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\notation\Russian.hpp" />
+    <ClInclude Include="..\..\..\src\notation\String.hpp" />
+    <ClInclude Include="..\..\..\src\notation\Thai.hpp" />
+    <ClInclude Include="..\..\..\src\notation\Types.hpp" />
+    <ClInclude Include="..\..\..\src\pdn\Version.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Checkers.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Checkers_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Czech_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Damme.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Damme_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Frisian_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Hoogland.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Hoogland_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\International_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Italian_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Killer_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Lineo.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Lineo_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Pool.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Czech.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Enum.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Frisian.hpp" />
+    <ClInclude Include="..\..\..\src\rules\International.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Italian.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Killer.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Pool_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Rules.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Russian.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Russian_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Spanish.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Spanish_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Thai.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Thai_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\rules\Types.hpp" />
+    <ClInclude Include="..\..\..\src\search\Algorithms.hpp" />
+    <ClInclude Include="..\..\..\src\search\Bound.hpp" />
+    <ClInclude Include="..\..\..\src\search\Objective.hpp" />
+    <ClInclude Include="..\..\..\src\search\Variation.hpp" />
+    <ClInclude Include="..\..\..\src\search\Root.hpp" />
+    <ClInclude Include="..\..\..\src\search\Score.hpp" />
+    <ClInclude Include="..\..\..\src\search\Transposition.hpp" />
+    <ClInclude Include="..\..\..\src\setup\Content.hpp" />
+    <ClInclude Include="..\..\..\src\setup\Diagram.hpp" />
+    <ClInclude Include="..\..\..\src\setup\DXP.hpp" />
+    <ClInclude Include="..\..\..\src\setup\Methods.hpp" />
+    <ClInclude Include="..\..\..\src\setup\Numbers.hpp" />
+    <ClInclude Include="..\..\..\src\setup\PDN.hpp" />
+    <ClInclude Include="..\..\..\src\setup\Protocols.hpp" />
+    <ClInclude Include="..\..\..\src\setup\Setup.hpp" />
+    <ClInclude Include="..\..\..\src\setup\String.hpp" />
+    <ClInclude Include="..\..\..\src\setup\TokenInterface.hpp" />
+    <ClInclude Include="..\..\..\src\successor\Detect.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\BothJumps.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\BothMoves.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\BothPromotions.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\BothReverse.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\Conversion.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\Detector.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\Detector_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\KingJumps.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\KingMoves.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\KingReverse.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\Legal.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\PawnJumps.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\PawnMoves.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\PawnPromotions.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\PawnReverse.hpp" />
+    <ClInclude Include="..\..\..\src\successor\detection\Primary.hpp" />
+    <ClInclude Include="..\..\..\src\successor\Count.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\BothJumps.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\BothMoves.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\BothPromotions.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\BothReverse.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\Conversion.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\Enumerator.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\Enumerator_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\KingJumps.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\KingMoves.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\KingReverse.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\Legal.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\PawnJumps.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\PawnMoves.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\PawnPromotions.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\PawnReverse.hpp" />
+    <ClInclude Include="..\..\..\src\successor\enumeration\Primary.hpp" />
+    <ClInclude Include="..\..\..\src\successor\Generate.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\BothJumps.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\BothMoves.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\BothPromotions.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\BothReverse.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\Conversion.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\Generate.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\Generator.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\Generator_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\Invariant.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\KingJumps.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\KingMoves.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\KingReverse.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\Legal.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\PawnJumps.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\PawnMoves.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\PawnPromotions.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\PawnReverse.hpp" />
+    <ClInclude Include="..\..\..\src\successor\generation\Primary.hpp" />
+    <ClInclude Include="..\..\..\src\successor\Mobility.hpp" />
+    <ClInclude Include="..\..\..\src\successor\Select.hpp" />
+    <ClInclude Include="..\..\..\src\utility\algorithm.hpp" />
+    <ClInclude Include="..\..\..\src\utility\CacheAlign.hpp" />
+    <ClInclude Include="..\..\..\src\utility\enable_down_cast.hpp" />
+    <ClInclude Include="..\..\..\src\utility\IntegerTypes.hpp" />
+    <ClInclude Include="..\..\..\src\utility\make_unique.hpp" />
+    <ClInclude Include="..\..\..\src\utility\nonconstructible.hpp" />
+    <ClInclude Include="..\..\..\src\utility\Ply.hpp" />
+    <ClInclude Include="..\..\..\src\utility\Statistics.hpp" />
+    <ClInclude Include="..\..\..\src\utility\Timer.hpp" />
+    <ClInclude Include="..\..\..\src\utility\total_order.hpp" />
+    <ClInclude Include="..\..\..\src\walk\Root.hpp" />
+    <ClInclude Include="..\..\..\src\walk\Transposition.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
