@@ -10,13 +10,7 @@ template<int N>
 struct Angle
 {
         // nullary metadata subject to arithmetic modulo 360 degrees
-        BOOST_STATIC_CONSTANT(auto, value =
-        (
-                abs_modulus<
-                        boost::mpl::int_<N>,
-                        boost::mpl::int_<8>
-                >::value
-        ));
+        static int const value = boost::mpl::modulus<boost::mpl::int_<N+8>, boost::mpl::int_<8> >::value; //Mod<N, 8>::value;
 
         // lazily evaluable metadata == nullary metafunction
         typedef Angle<value> type;
