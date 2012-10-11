@@ -53,13 +53,13 @@ public:
         }
 
 private:
-        typedef Registry<Base, BasePointer, Identifier, Creator> Registry;
+        typedef Registry<Base, BasePointer, Identifier, Creator> XRegistry;
 
         // TODO: refactor into polymorphic lambda expresssion whenever C++11 supports this
         struct call_insert
         {
         public:
-                explicit call_insert(Registry& r): registry_(r) {};
+                explicit call_insert(XRegistry& r): registry_(r) {};
 
                 template<typename T>
                 bool operator()(boost::mpl::identity<T> I)
@@ -71,14 +71,14 @@ private:
                 // suppress warning about the compiler-generated assignment operator
                 call_insert& operator=(call_insert const&);
 
-                Registry& registry_;
+                XRegistry& registry_;
         };
 
         // TODO: refactor into polymorphic lambda expresssion whenever C++11 supports this
         struct call_erase
         {
         public:
-                explicit call_erase(Registry& r): registry_(r) {};
+                explicit call_erase(XRegistry& r): registry_(r) {};
 
                 template<typename T>
                 bool operator()(boost::mpl::identity<T> I)
@@ -90,10 +90,10 @@ private:
                 // suppress warning about the compiler-generated assignment operator
                 call_erase& operator=(call_erase const&);
 
-                Registry& registry_;
+                XRegistry& registry_;
         };
 
-        Registry registry_;
+        XRegistry registry_;
 };
 
 }       // namespace dctl
