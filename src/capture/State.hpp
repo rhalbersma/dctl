@@ -165,7 +165,7 @@ public:
         template<typename Direction>
         BitBoard path() const
         {
-                return path() & Board::jump_start[Direction::value];
+                return path() & Board::jump_start[Direction::octant];
         }
 
         bool empty() const
