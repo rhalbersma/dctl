@@ -4,7 +4,7 @@
 #include <boost/mpl/logical.hpp>        // not_
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
-#include "Degrees.hpp"
+#include "../angle/Degrees.hpp"
 
 namespace dctl {
 namespace board {
@@ -29,24 +29,24 @@ public:
                 boost::mpl::plus< typename
                         Dimensions::width,
                         Ghosts
-                >, 
-                boost::mpl::int_<2>                
+                >,
+                boost::mpl::int_<2>
         > left_down;
 
         typedef boost::mpl::plus<
-                left_down, 
+                left_down,
                 boost::mpl::int_<1>
         > right_down;
 
         // orthogonal directions
 
         typedef boost::mpl::minus<
-                right_down, 
+                right_down,
                 left_down
         > right;
 
         typedef boost::mpl::plus<
-                right_down, 
+                right_down,
                 left_down
         > down;
 
@@ -65,7 +65,7 @@ public:
 
         typedef typename BaseGrid::edge_le edge_le;
         typedef typename BaseGrid::edge_re edge_re;
-        
+
         typedef boost::mpl::plus<
                 left_down, typename
                 Dimensions::parity
@@ -133,13 +133,13 @@ private:
 
 public:
         // range of row pairs
-        
+
         typedef typename Dimensions::width modulo;
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
 
         typedef boost::mpl::int_<0> edge_le;
-        
+
         typedef boost::mpl::plus<
                 edge_le,
                 boost::mpl::minus<
@@ -191,7 +191,7 @@ public:
         */
 };
 
-template<typename Grid, typename Direction> 
+template<typename Grid, typename Direction>
 struct ShiftSize;
 
 template< typename Grid > struct ShiftSize< Grid, angle::D000 >: Grid::right      {};

@@ -3,7 +3,7 @@
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/vector.hpp>                 // vector
 #include "../../src/board/Dimensions.hpp"
-#include "../../src/board/Cyclic.hpp"
+#include "../../src/angle/Cyclic.hpp"
 #include "../../src/group/action.hpp"
 
 namespace dctl {

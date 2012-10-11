@@ -2,8 +2,8 @@
 #include <boost/test/test_case_template.hpp>
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/vector.hpp>                 // vector
-#include "../../src/board/Traits.hpp"
-#include "../../src/board/Degrees.hpp"
+#include "../../src/angle/Degrees.hpp"
+#include "../../src/angle/Traits.hpp"
 
 namespace dctl {
 namespace angle {

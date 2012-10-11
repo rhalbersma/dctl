@@ -1,9 +1,7 @@
 #pragma once
 #include <boost/mpl/int.hpp>            // int_
-#include "Angle.hpp"
-#include "Degrees.hpp"
-#include "Modular.hpp"
-#include "Transform.hpp"
+#include "../angle/Degrees.hpp"
+#include "../mpl/transform.hpp"
 
 namespace dctl {
 namespace board {
@@ -21,7 +19,7 @@ struct Structure
         typedef boost::mpl::int_<G> ghosts;
         typedef A full_angle;
 
-        typedef typename inverse< full_angle >::type inverse_angle;
+        typedef typename mpl::inverse< full_angle >::type inverse_angle;
 };
 
 }       // namespace board

@@ -5,11 +5,12 @@
 #include <boost/utility.hpp>            // noncopyable
 #include "Generator_fwd.hpp"
 #include "../Select.hpp"
+#include "../../angle/Degrees.hpp"
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
-#include "../../board/Degrees.hpp"
 #include "../../board/Shift.hpp"
 #include "../../capture/State.hpp"
+#include "../../mpl/transform.hpp"
 #include "../../node/Material.hpp"
 #include "../../rules/Enum.hpp"
 #include "../../utility/IntegerTypes.hpp"
@@ -31,7 +32,7 @@ private:
 
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
-        typedef angle::Compass<Color, Board> Compass;
+        typedef Compass<Color, Board> Compass;
         typedef capture::State<Position> State;
 
         // representation
@@ -262,8 +263,8 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan< typename rotate< Direction, angle::R090 >::type >(jumper) |
-                        scan< typename rotate< Direction, angle::L090 >::type >(jumper)
+                        scan< typename mpl::rotate< Direction, angle::R090 >::type >(jumper) |
+                        scan< typename mpl::rotate< Direction, angle::L090 >::type >(jumper)
                 );
         }
 
@@ -272,10 +273,10 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan< typename rotate< Direction, angle::R045 >::type >(jumper) |
-                        scan< typename rotate< Direction, angle::L045 >::type >(jumper) |
-                        scan< typename rotate< Direction, angle::R135 >::type >(jumper) |
-                        scan< typename rotate< Direction, angle::L135 >::type >(jumper)
+                        scan< typename mpl::rotate< Direction, angle::R045 >::type >(jumper) |
+                        scan< typename mpl::rotate< Direction, angle::L045 >::type >(jumper) |
+                        scan< typename mpl::rotate< Direction, angle::R135 >::type >(jumper) |
+                        scan< typename mpl::rotate< Direction, angle::L135 >::type >(jumper)
                 );
         }
 

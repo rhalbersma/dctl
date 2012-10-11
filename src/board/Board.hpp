@@ -6,7 +6,9 @@
 #include "MetaTemplates.hpp"
 #include "Shift.hpp"
 #include "Structure.hpp"
-#include "Transform.hpp"
+#include "../angle/Degrees.hpp"
+#include "../bit/Bit.hpp"
+#include "../mpl/transform.hpp"
 #include "../node/Side.hpp"
 #include "../utility/IntegerTypes.hpp"
 
@@ -27,7 +29,7 @@ public:
         // external and internal grids
         typedef Grid<Dimensions> ExternalGrid;
         typedef Grid<typename
-                rotate<
+                mpl::rotate<
                         Dimensions, typename
                         Structure::full_angle
                 >::type, typename
@@ -77,7 +79,6 @@ public:
         // detaililiary bitboard masks
         static BitBoard const QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
         static BitBoard const DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
-        static BitBoard const jump_group[];                     // families of squares reachable by jumping pawns
         static BitBoard const jump_start[];                     // squares from which a jump is possible in a direction
 
 private:
@@ -89,7 +90,7 @@ private:
         template<typename A>
         struct do_jump_start
         :
-                init_jump_start< Board, rotate< A, typename Structure::full_angle > >
+                init_jump_start< Board, mpl::rotate< A, typename Structure::full_angle > >
         {};
 };
 
@@ -139,14 +140,6 @@ BitBoard const Board<Dimensions, Structure>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
-
-template<typename Dimensions, typename Structure>
-BitBoard const Board<Dimensions, Structure>::jump_group[] = {
-        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_le, boost::mpl::int_<0> > >::value,
-        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_le, boost::mpl::int_<1> > >::value,
-        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_lo, boost::mpl::int_<0> > >::value,
-        init_jump_group< Board, boost::mpl::plus<InternalGrid::edge_lo, boost::mpl::int_<1> > >::value
-};
 
 template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::jump_start[] = {

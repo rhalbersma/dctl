@@ -7,9 +7,9 @@
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/mpl/logical.hpp>        // and
 #include <boost/utility.hpp>            // noncopyable
+#include "../angle/Traits.hpp"
 #include "../bit/Bit.hpp"
 #include "../board/Shift.hpp"
-#include "../board/Traits.hpp"
 #include "../node/Material.hpp"
 #include "../node/Promotion.hpp"
 #include "../node/Stack.hpp"

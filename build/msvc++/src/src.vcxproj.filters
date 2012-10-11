@@ -88,6 +88,9 @@
     <Filter Include="Header Files\node\detail">
       <UniqueIdentifier>{fd214eff-9d7a-4278-98dc-cacf3f2b1d06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\angle">
+      <UniqueIdentifier>{082d86df-6a16-4db4-9125-f836f1f2d422}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\capture\Frisian.hpp">
@@ -110,60 +113,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\capture\Spanish.hpp">
       <Filter>Header Files\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\BackAcknowledge.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\BackRequest.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Chat.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\GameAcknowledge.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\GameEnd.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\GameRequest.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Move.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Angle.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Board.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Coordinates.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Dimensions.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\MetaTemplates.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Predicates.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Transform.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Grid.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Structure.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Traits.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Types.hpp">
-      <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\setup\Content.hpp">
       <Filter>Header Files\setup</Filter>
@@ -191,12 +140,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\setup\String.hpp">
       <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Types.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Traits.hpp">
-      <Filter>Header Files\dxp</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\notation\String.hpp">
       <Filter>Header Files\notation</Filter>
@@ -276,9 +219,6 @@
     <ClInclude Include="..\..\..\src\hash\Functions.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Version.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\pdn\Version.hpp">
       <Filter>Header Files\pdn</Filter>
     </ClInclude>
@@ -351,18 +291,6 @@
     <ClInclude Include="..\..\..\src\setup\TokenInterface.hpp">
       <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Degrees.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Modular.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Traits_fwd.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Cyclic.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\factory\mixin.hpp">
       <Filter>Header Files\factory</Filter>
     </ClInclude>
@@ -395,9 +323,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\utility\nonconstructible.hpp">
       <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Shift.hpp">
-      <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\utility\total_order.hpp">
       <Filter>Header Files\utility</Filter>
@@ -446,9 +371,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\node\Targets.hpp">
       <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Compass.hpp">
-      <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\rules\Checkers_fwd.hpp">
       <Filter>Header Files\rules</Filter>
@@ -591,9 +513,6 @@
     <ClInclude Include="..\..\..\src\node\IPieces.hpp">
       <Filter>Header Files\node</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\IMessage.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\successor\generation\Conversion.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
@@ -710,6 +629,87 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\node\detail\UnaryProjections.hpp">
       <Filter>Header Files\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\BackAcknowledge.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\BackRequest.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\Chat.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\GameAcknowledge.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\GameEnd.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\GameRequest.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\IMessage.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\Move.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\Traits.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\Types.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\dxp\Version.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\mpl\modular.hpp">
+      <Filter>Header Files\mpl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\mpl\transform.hpp">
+      <Filter>Header Files\mpl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\angle\Cyclic.hpp">
+      <Filter>Header Files\angle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\angle\Degrees.hpp">
+      <Filter>Header Files\angle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\angle\Traits.hpp">
+      <Filter>Header Files\angle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\angle\Traits_fwd.hpp">
+      <Filter>Header Files\angle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\Board.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\Compass.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\Coordinates.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\Dimensions.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\Grid.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\MetaTemplates.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\Predicates.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\Shift.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\Structure.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\board\Types.hpp">
+      <Filter>Header Files\board</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

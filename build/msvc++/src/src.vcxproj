@@ -119,23 +119,20 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\angle\Cyclic.hpp" />
+    <ClInclude Include="..\..\..\src\angle\Degrees.hpp" />
+    <ClInclude Include="..\..\..\src\angle\Traits.hpp" />
+    <ClInclude Include="..\..\..\src\angle\Traits_fwd.hpp" />
     <ClInclude Include="..\..\..\src\bit\Bit.hpp" />
-    <ClInclude Include="..\..\..\src\board\Angle.hpp" />
     <ClInclude Include="..\..\..\src\board\Board.hpp" />
-    <ClInclude Include="..\..\..\src\board\Coordinates.hpp" />
-    <ClInclude Include="..\..\..\src\board\Cyclic.hpp" />
-    <ClInclude Include="..\..\..\src\board\Degrees.hpp" />
-    <ClInclude Include="..\..\..\src\board\Dimensions.hpp" />
     <ClInclude Include="..\..\..\src\board\Compass.hpp" />
+    <ClInclude Include="..\..\..\src\board\Coordinates.hpp" />
+    <ClInclude Include="..\..\..\src\board\Dimensions.hpp" />
     <ClInclude Include="..\..\..\src\board\Grid.hpp" />
     <ClInclude Include="..\..\..\src\board\MetaTemplates.hpp" />
-    <ClInclude Include="..\..\..\src\board\Modular.hpp" />
     <ClInclude Include="..\..\..\src\board\Predicates.hpp" />
     <ClInclude Include="..\..\..\src\board\Shift.hpp" />
     <ClInclude Include="..\..\..\src\board\Structure.hpp" />
-    <ClInclude Include="..\..\..\src\board\Traits.hpp" />
-    <ClInclude Include="..\..\..\src\board\Traits_fwd.hpp" />
-    <ClInclude Include="..\..\..\src\board\Transform.hpp" />
     <ClInclude Include="..\..\..\src\board\Types.hpp" />
     <ClInclude Include="..\..\..\src\capture\Damme.hpp" />
     <ClInclude Include="..\..\..\src\capture\Frisian.hpp" />
@@ -152,7 +149,6 @@
     <ClInclude Include="..\..\..\src\dxp\BackAcknowledge.hpp" />
     <ClInclude Include="..\..\..\src\dxp\BackRequest.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Chat.hpp" />
-    <ClInclude Include="..\..\..\src\dxp\Version.hpp" />
     <ClInclude Include="..\..\..\src\dxp\GameAcknowledge.hpp" />
     <ClInclude Include="..\..\..\src\dxp\GameEnd.hpp" />
     <ClInclude Include="..\..\..\src\dxp\GameRequest.hpp" />
@@ -160,6 +156,7 @@
     <ClInclude Include="..\..\..\src\dxp\Move.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Traits.hpp" />
     <ClInclude Include="..\..\..\src\dxp\Types.hpp" />
+    <ClInclude Include="..\..\..\src\dxp\Version.hpp" />
     <ClInclude Include="..\..\..\src\evaluate\Delta.hpp" />
     <ClInclude Include="..\..\..\src\evaluate\Score.hpp" />
     <ClInclude Include="..\..\..\src\evaluate\Feature.hpp" />
@@ -185,6 +182,8 @@
     <ClInclude Include="..\..\..\src\hash\zobrist\Random.hpp" />
     <ClInclude Include="..\..\..\src\mpl\algorithm.hpp" />
     <ClInclude Include="..\..\..\src\mpl\lazy.hpp" />
+    <ClInclude Include="..\..\..\src\mpl\modular.hpp" />
+    <ClInclude Include="..\..\..\src\mpl\transform.hpp" />
     <ClInclude Include="..\..\..\src\mpl\type_traits.hpp" />
     <ClInclude Include="..\..\..\src\node\detail\Predicates.hpp" />
     <ClInclude Include="..\..\..\src\node\detail\Targets.hpp" />

@@ -6,11 +6,12 @@
 #include "Generator_fwd.hpp"
 #include "KingJumps.hpp"                // promote_en_passant
 #include "../Select.hpp"
+#include "../../angle/Degrees.hpp"
 #include "../../bit/Bit.hpp"
 #include "../../board/Compass.hpp"
-#include "../../board/Degrees.hpp"
 #include "../../board/Shift.hpp"
 #include "../../capture/State.hpp"
+#include "../../mpl/transform.hpp"
 #include "../../node/Material.hpp"
 #include "../../node/Promotion.hpp"
 #include "../../rules/Enum.hpp"
@@ -34,7 +35,7 @@ private:
         typedef generator<Color, Material::king, Jumps, Position> KingJumps;
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
-        typedef angle::Compass<Color, Board> Compass;
+        typedef Compass<Color, Board> Compass;
         typedef capture::State<Position> State;
 
         // representation
@@ -265,8 +266,8 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan< typename rotate< Direction, angle::R090 >::type >(jumper) |
-                        scan< typename rotate< Direction, angle::L090 >::type >(jumper)
+                        scan< typename mpl::rotate< Direction, angle::R090 >::type >(jumper) |
+                        scan< typename mpl::rotate< Direction, angle::L090 >::type >(jumper)
                 );
         }
 
@@ -274,14 +275,14 @@ private:
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::up) const
         {
-                return scan< typename mirror< Direction, typename Compass::up >::type >(jumper);
+                return scan< typename mpl::mirror< Direction, typename Compass::up >::type >(jumper);
         }
 
         // overload for turns in the 1 mirrored backward direction
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::down) const
         {
-                return scan< typename mirror< Direction, typename Compass::down >::type >(jumper);
+                return scan< typename mpl::mirror< Direction, typename Compass::down >::type >(jumper);
         }
 
         // overload for turns in the remaining 4 diagonal or orthogonal directions
@@ -289,10 +290,10 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan< typename rotate< Direction, angle::R045 >::type >(jumper) |
-                        scan< typename rotate< Direction, angle::L045 >::type >(jumper) |
-                        scan< typename rotate< Direction, angle::R135 >::type >(jumper) |
-                        scan< typename rotate< Direction, angle::L135 >::type >(jumper)
+                        scan< typename mpl::rotate< Direction, angle::R045 >::type >(jumper) |
+                        scan< typename mpl::rotate< Direction, angle::L045 >::type >(jumper) |
+                        scan< typename mpl::rotate< Direction, angle::R135 >::type >(jumper) |
+                        scan< typename mpl::rotate< Direction, angle::L135 >::type >(jumper)
                 );
         }
 

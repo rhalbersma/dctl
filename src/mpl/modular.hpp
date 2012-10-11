@@ -6,6 +6,7 @@
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 
 namespace dctl {
+namespace mpl {
 
 template<
         typename Numerator,
@@ -38,4 +39,5 @@ struct abs_modulus
         );*/
 };
 
+}	// namespace mpl
 }       // namespace dctl

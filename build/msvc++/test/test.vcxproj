@@ -146,14 +146,16 @@
     <ClInclude Include="..\..\..\test\walk\Fixture.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\test\angle\Degrees.cpp" />
+    <ClCompile Include="..\..\..\test\angle\Traits.cpp" />
     <ClCompile Include="..\..\..\test\bit\Bit.cpp" />
-    <ClCompile Include="..\..\..\test\board\Angle.cpp" />
     <ClCompile Include="..\..\..\test\board\Coordinates.cpp" />
     <ClCompile Include="..\..\..\test\board\Dimensions.cpp" />
-    <ClCompile Include="..\..\..\test\board\Cyclic.cpp" />
-    <ClCompile Include="..\..\..\test\board\Traits.cpp" />
     <ClCompile Include="..\..\..\test\dxp\Parser.cpp" />
+    <ClCompile Include="..\..\..\test\group\action.cpp" />
+    <ClCompile Include="..\..\..\test\group\axioms.cpp" />
     <ClCompile Include="..\..\..\test\mpl\algorithm.cpp" />
+    <ClCompile Include="..\..\..\test\mpl\type_traits.cpp" />
     <ClCompile Include="..\..\..\test\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.hpp</PrecompiledHeaderFile>

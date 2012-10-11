@@ -4,12 +4,11 @@
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
-#include "Angle.hpp"
 #include "Dimensions.hpp"
-#include "Transform.hpp"
 #include "Coordinates.hpp"
 #include "Grid.hpp"
-#include "Traits.hpp"
+#include "../angle/Traits.hpp"
+#include "../mpl/transform.hpp"
 #include "../mpl/type_traits.hpp"
 
 namespace dctl {
@@ -214,11 +213,11 @@ struct transform
         Coordinates2Square<
                 Coordinates<
                         DestGrid,
-                        rotate<
+                        mpl::rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
                         >::type::row::value,
-                        rotate<
+                        mpl::rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
                         >::type::col::value

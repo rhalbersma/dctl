@@ -2,8 +2,8 @@
 #include <boost/mpl/bool.hpp>           // bool_
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
-#include "Degrees.hpp"                  // D000, L090, R090, D180
-#include "Transform.hpp"                // rotate
+#include "../angle/Degrees.hpp"         // D000, L090, R090, D180
+#include "../mpl/transform.hpp"         // rotate
 
 namespace dctl {
 namespace board {
@@ -28,6 +28,8 @@ struct Dimensions
 };
 
 }       // namespace board
+
+namespace mpl {
 
 // partial specialization for identity rotations
 template<int H, int W, bool P>
@@ -57,4 +59,5 @@ struct rotate< board::Dimensions<H, W, P>, angle::D180 >
         board::Dimensions<H, W, (H % 2) ^ (W % 2) ^ (!!P)>
 {};
 
+}		// namespace mpl
 }       // namespace dctl

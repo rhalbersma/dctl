@@ -5,9 +5,8 @@
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // not_
-#include "Degrees.hpp"
-#include "Modular.hpp"
-#include "Transform.hpp"
+#include "../angle/Degrees.hpp"
+#include "../mpl/transform.hpp"
 
 namespace dctl {
 namespace board {
@@ -47,7 +46,7 @@ private:
 
         // row parity
         typedef boost::mpl::modulus< typename
-                C::row, 
+                C::row,
                 boost::mpl::int_<2>
         > P;
 
@@ -60,7 +59,7 @@ private:
         // the left edge
         typedef boost::mpl::eval_if<
                 P, typename
-                G::edge_lo, typename    
+                G::edge_lo, typename
                 G::edge_le
         > L;
 
@@ -69,11 +68,11 @@ private:
                 C::col,
                 boost::mpl::int_<2>
         > S;
-            
-        // quares from the left edge
+
+        // squares from the left edge
         typedef boost::mpl::modulus<
                 boost::mpl::plus<
-                        L, 
+                        L,
                         S
                 >, typename
                 G::modulo
@@ -82,9 +81,9 @@ private:
 public:
         typedef Square<
                 G, typename
-                boost::mpl::plus< 
+                boost::mpl::plus<
                         boost::mpl::times< typename
-                                G::modulo, 
+                                G::modulo,
                                 Q
                         >,
                         R
@@ -141,22 +140,24 @@ private:
                         R
                 >,
                 boost::mpl::bitxor_<
-                        P, 
+                        P,
                         boost::mpl::not_< typename
                                 G::parity
                         >
-                >                        
+                >
         > COL;
 
 public:
         typedef Coordinates<
                 G,
-                ROW::value,    
-                COL::value     
+                ROW::value,
+                COL::value
         > type;
 };
 
 }       // namespace board
+
+namespace mpl {
 
 // partial specialization for identity rotations
 template<typename Grid, int Row, int Column>
@@ -218,4 +219,5 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
         >
 {};
 
+}		// namespace mpl
 }       // namespace dctl

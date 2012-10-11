@@ -7,7 +7,7 @@
 #include "../../src/board/Coordinates.hpp"
 #include "../../src/board/Dimensions.hpp"
 #include "../../src/board/Grid.hpp"
-#include "../../src/board/Cyclic.hpp"
+#include "../../src/angle/Cyclic.hpp"
 #include "../../src/group/action.hpp"
 
 namespace dctl {

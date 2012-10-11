@@ -2,8 +2,7 @@
 #include "Board.hpp"
 #include "Dimensions.hpp"
 #include "Structure.hpp"
-#include "Angle.hpp"
-#include "Degrees.hpp"
+#include "../angle/Degrees.hpp"
 
 namespace dctl {
 namespace board {

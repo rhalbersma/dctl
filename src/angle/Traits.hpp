@@ -4,9 +4,8 @@
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // not_, and_, or_
 #include "Traits_fwd.hpp"
-#include "Angle.hpp"                    // angle, rotate
 #include "Degrees.hpp"                  // L090, D090, D180
-#include "Transform.hpp"                // rotate
+#include "../mpl/transform.hpp"			// rotate
 
 namespace dctl {
 namespace angle {
@@ -31,9 +30,8 @@ namespace angle {
 
 */
 
-// 0, 2, 4, 6
 template<int N>
-struct is_orthogonal< Angle<N> >
+struct is_orthogonal< Degrees<N> >
 :
         boost::mpl::equal_to<
                 boost::mpl::modulus<
@@ -44,16 +42,14 @@ struct is_orthogonal< Angle<N> >
         >
 {};
 
-// 1, 3, 5, 7
 template<int N>
-struct is_diagonal< Angle<N> >
+struct is_diagonal< Degrees<N> >
 :
-        boost::mpl::not_< is_orthogonal< Angle<N> > >
+        boost::mpl::not_< is_orthogonal< Degrees<N> > >
 {};
 
-// 1, 2, 3
 template<int N>
-struct is_up< Angle<N> >
+struct is_up< Degrees<N> >
 :
         boost::mpl::and_<
                 boost::mpl::equal_to<
@@ -73,9 +69,8 @@ struct is_up< Angle<N> >
         >
 {};
 
-// 5, 6, 7
 template<int N>
-struct is_down< Angle<N> >
+struct is_down< Degrees<N> >
 :
         boost::mpl::and_<
                 boost::mpl::not_equal_to<
@@ -95,40 +90,36 @@ struct is_down< Angle<N> >
         >
 {};
 
-// 3, 4, 5
 template<int N>
-struct is_left< Angle<N> >
+struct is_left< Degrees<N> >
 :
-        is_down< rotate< Angle<N>, L090 > >
+        is_down< mpl::rotate< Degrees<N>, L090 > >
 {};
 
-// 0, 1, 7
 template<int N>
-struct is_right< Angle<N> >
+struct is_right< Degrees<N> >
 :
-        is_up< rotate< Angle<N>, L090 > >
+        is_up< mpl::rotate< Degrees<N>, L090 > >
 {};
 
-// 1, 2, 3, 4
 template<int N>
-struct is_positive< Angle<N> >
+struct is_positive< Degrees<N> >
 :
         boost::mpl::or_<
-                is_up< Angle<N> >,
+                is_up< Degrees<N> >,
                 boost::mpl::and_<
-                        is_left< Angle<N> >,
+                        is_left< Degrees<N> >,
                         boost::mpl::not_<
-                                is_down< Angle<N> >
+                                is_down< Degrees<N> >
                         >
                 >
         >
 {};
 
-// 0, 5, 6, 7
 template<int N>
-struct is_negative< Angle<N> >
+struct is_negative< Degrees<N> >
 :
-        boost::mpl::not_< is_positive< Angle<N> > >
+        boost::mpl::not_< is_positive< Degrees<N> > >
 {};
 
 }       // namespace angle

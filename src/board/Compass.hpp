@@ -1,11 +1,10 @@
 #pragma once
 #include <boost/mpl/bool.hpp>           // bool_
 #include <boost/mpl/eval_if.hpp>        // eval_if
-#include "Degrees.hpp"
-#include "Transform.hpp"
+#include "../angle/Degrees.hpp"
+#include "../mpl/transform.hpp"
 
 namespace dctl {
-namespace angle {
 
 /*
 
@@ -35,25 +34,24 @@ template
 struct Compass
 {
 private:
-        typedef typename rotate<
-                typename Board::inverse_angle,
+        typedef typename mpl::rotate< typename
+        		Board::inverse_angle,
                 boost::mpl::eval_if<
                         boost::mpl::bool_<Color>,
-                        D000,
-                        D180
+                        angle::D000,
+                        angle::D180
                 >
         >::type A;
 
 public:
-        typedef typename rotate< D000, A >::type right;
-        typedef typename rotate< D045, A >::type right_up;
-        typedef typename rotate< D090, A >::type up;
-        typedef typename rotate< D135, A >::type left_up;
-        typedef typename rotate< D180, A >::type left;
-        typedef typename rotate< D225, A >::type left_down;
-        typedef typename rotate< D270, A >::type down;
-        typedef typename rotate< D315, A >::type right_down;
+        typedef typename mpl::rotate< angle::D000, A >::type right;
+        typedef typename mpl::rotate< angle::D045, A >::type right_up;
+        typedef typename mpl::rotate< angle::D090, A >::type up;
+        typedef typename mpl::rotate< angle::D135, A >::type left_up;
+        typedef typename mpl::rotate< angle::D180, A >::type left;
+        typedef typename mpl::rotate< angle::D225, A >::type left_down;
+        typedef typename mpl::rotate< angle::D270, A >::type down;
+        typedef typename mpl::rotate< angle::D315, A >::type right_down;
 };
 
-}       // namespace angle
 }       // namespace dctl
