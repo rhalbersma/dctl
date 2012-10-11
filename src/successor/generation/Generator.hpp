@@ -1,0 +1,17 @@
+#pragma once
+#include "Generator_fwd.hpp"
+#include "Primary.hpp"
+#include "Legal.hpp"
+#include "Conversion.hpp"
+#include "BothJumps.hpp"
+#include "BothMoves.hpp"
+#include "BothReverse.hpp"
+#include "BothPromotions.hpp"
+#include "KingJumps.hpp"
+#include "KingMoves.hpp"
+#include "KingReverse.hpp"
+// there are no king promotions
+#include "PawnJumps.hpp"
+#include "PawnMoves.hpp"
+#include "PawnReverse.hpp"
+#include "PawnPromotions.hpp"

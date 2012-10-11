@@ -1,0 +1,15 @@
+#pragma once
+#include "Checkers.hpp"
+#include "Czech.hpp"
+#include "Frisian.hpp"
+#include "International.hpp"
+#include "Italian.hpp"
+#include "Pool.hpp"
+#include "Russian.hpp"
+#include "Spanish.hpp"
+#include "Thai.hpp"
+
+#include "Damme.hpp"
+#include "Hoogland.hpp"
+#include "Killer.hpp"
+#include "Lineo.hpp"
