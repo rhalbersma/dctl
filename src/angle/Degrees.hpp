@@ -13,11 +13,13 @@ struct Degrees
         // nullary metadata subject to arithmetic modulo 360 degrees
         BOOST_STATIC_CONSTANT(int, value =
         (
-                boost::mpl::modulus<
-        	        boost::mpl::int_<N + 720>,
+                mpl::abs_modulus<
+        	        boost::mpl::int_<N>,
         		boost::mpl::int_<360>
                 >::value
         ));
+
+        BOOST_STATIC_CONSTANT(int, octant = value / 45);
 
         // lazily evaluable metadata == nullary metafunction
         typedef Degrees<value> type;
