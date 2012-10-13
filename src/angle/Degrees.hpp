@@ -16,8 +16,6 @@ struct Degrees
                 >::value
         };
 
-        enum { octant = value / 45 };
-
         // lazily evaluable metadata == nullary metafunction
         typedef Degrees<value> type;
 };

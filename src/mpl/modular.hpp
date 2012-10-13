@@ -1,14 +1,15 @@
 #pragma once
+#include <boost/assert.hpp>             // BOOST_STATIC_ASSERT
 #include <boost/mpl/arithmetic.hpp>     // modulus, plus
 #include <boost/mpl/comparison.hpp>     // less
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/int.hpp>            // int_
-#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 
 namespace dctl {
 namespace mpl {
 
-template<
+template
+<
         typename Numerator,
         typename Denominator
 >
@@ -32,11 +33,7 @@ struct abs_modulus
                 Denominator
         >
 {
-        // the remainder is non-negative and less than the denominator
-        /*BOOST_STATIC_ASSERT(
-                0 <= (abs_modulus<Numerator, Denominator>::value) &&
-                (abs_modulus<Numerator, Denominator>::value) < Denominator::value
-        );*/
+        BOOST_STATIC_ASSERT(0 <= (abs_modulus::value) && (abs_modulus::value) < Denominator::value);
 };
 
 }	// namespace mpl
