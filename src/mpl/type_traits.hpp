@@ -20,13 +20,13 @@ struct is_idempotent
         >
 {};
 
-// Value lies within the range [Min, Max), i.e. Min <= Value < Max
-template<typename Value, typename Min, typename Max>
+// Value lies within the range [First, Last), i.e. First <= Value < Last
+template<typename Value, typename First, typename Last>
 struct is_within_range
 :
         boost::mpl::and_<
-                boost::mpl::less_equal< Min, Value>,
-                boost::mpl::less< Value, Max >
+                boost::mpl::less_equal< First, Value>,
+                boost::mpl::less< Value, Last >
         >
 {};
 

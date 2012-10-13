@@ -20,7 +20,7 @@ template
         typename Dimensions,                                    // height, width and parity
         typename Structure = Structure<>                        // dmz, ghosts and internal rotation
 >
-class Board
+struct Board
 :
         public Dimensions,
         public Structure
