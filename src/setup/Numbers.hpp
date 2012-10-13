@@ -3,7 +3,7 @@
 
 namespace dctl {
 
-namespace board { template<typename, typename> class Board; }
+namespace board { template<typename, typename> struct Board; }
 
 namespace setup {
 
