@@ -35,7 +35,7 @@ struct Compass
 {
 private:
         typedef typename mpl::rotate< typename
-        		Board::inverse_angle,
+        	Board::inverse_angle,
                 boost::mpl::eval_if<
                         boost::mpl::bool_<Color>,
                         angle::D000,

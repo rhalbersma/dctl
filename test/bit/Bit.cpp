@@ -111,8 +111,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(CountKernighan, T, UnsignedIntegerTypes)
                 BOOST_CHECK_EQUAL(i, count_loop(b));
         }
 
-        auto const x = num_bits<T>::value;
-        BOOST_CHECK_EQUAL(x, count_loop(T(~0)));
+        BOOST_CHECK_EQUAL(num_bits<T>::value, count_loop(T(~0)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

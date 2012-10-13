@@ -1,8 +1,7 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/int.hpp>            // int_
 #include "../mpl/modular.hpp"           // abs_modulus
-#include "../mpl/transform.hpp"			// inverse, rotate, mirror
+#include "../mpl/transform.hpp"		// inverse, rotate, mirror
 
 namespace dctl {
 namespace angle {
@@ -11,15 +10,13 @@ template<int N>
 struct Degrees
 {
         // nullary metadata subject to arithmetic modulo 360 degrees
-        BOOST_STATIC_CONSTANT(int, value =
-        (
-                mpl::abs_modulus<
+        enum { value = mpl::abs_modulus<
         	        boost::mpl::int_<N>,
         		boost::mpl::int_<360>
                 >::value
-        ));
+        };
 
-        BOOST_STATIC_CONSTANT(int, octant = value / 45);
+        enum { octant = value / 45 };
 
         // lazily evaluable metadata == nullary metafunction
         typedef Degrees<value> type;
@@ -63,7 +60,7 @@ typedef D225 R135;      // clockwise
 typedef D270 R090;      // clockwise
 typedef D315 R045;      // clockwise
 
-}		// namespace angle
+}       // namespace angle
 
 namespace mpl {
 
@@ -93,5 +90,5 @@ struct mirror< angle::Degrees<N1>, angle::Degrees<N2> >
         >
 {};
 
-}		// namespace mpl
+}	// namespace mpl
 }       // namespace dctl

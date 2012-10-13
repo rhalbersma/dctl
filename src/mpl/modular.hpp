@@ -14,7 +14,7 @@ template<
 >
 struct abs_modulus
 :
-        boost::mpl::modulus<
+        boost::mpl::modulus< typename
                 boost::mpl::eval_if<
                         boost::mpl::less<
                                 Numerator,
@@ -28,7 +28,7 @@ struct abs_modulus
                                 Denominator
                         >,
                         Numerator
-                >,
+                >::type,
                 Denominator
         >
 {
