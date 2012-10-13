@@ -39,9 +39,15 @@ public:
         typedef BitBoard bit_type;
 
         template<typename Direction>
-        struct shift
+        struct shift_size
         :
                 ShiftSize<InternalGrid, Direction>
+        {};
+
+        template<typename Direction>
+        struct jump_start
+        :
+                init_jump_start< Board, mpl::rotate< Direction, typename Structure::full_angle > >
         {};
 
         static bool is_valid(int square)
@@ -85,13 +91,6 @@ private:
         // square to bit and bit to square conversion tables
         static int const SQUARE2BIT[];                          // convert a square to a bit
         static int const BIT2SQUARE[];                          // convert a bit to a square
-
-        // TODO: use C++11 template aliases
-        template<typename A>
-        struct do_jump_start
-        :
-                init_jump_start< Board, mpl::rotate< A, typename Structure::full_angle > >
-        {};
 };
 
 template<typename Dimensions, typename Structure>
@@ -141,18 +140,6 @@ template<typename Dimensions, typename Structure>
 BitBoard const Board<Dimensions, Structure>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
-template<typename Dimensions, typename Structure>
-BitBoard const Board<Dimensions, Structure>::jump_start[] = {
-        Board::do_jump_start< angle::D000 >::value,
-        Board::do_jump_start< angle::D045 >::value,
-        Board::do_jump_start< angle::D090 >::value,
-        Board::do_jump_start< angle::D135 >::value,
-        Board::do_jump_start< angle::D180 >::value,
-        Board::do_jump_start< angle::D225 >::value,
-        Board::do_jump_start< angle::D270 >::value,
-        Board::do_jump_start< angle::D315 >::value
-};
-
 #define DCTL_PP_SQUARE2BIT(z, i, data) \
         square_to_bit< Board, boost::mpl::int_<i> >::type::number::value
 
@@ -174,4 +161,19 @@ int const Board<Dimensions, Structure>::BIT2SQUARE[] = {
 #undef DCTL_PP_BIT2SQUARE
 
 }       // namespace board
+
+// TODO: use C++11 template aliases
+template<typename Board, typename Direction>
+struct shift_size
+:
+        Board::template shift_size<Direction>
+{};
+
+// TODO: use C+11 template aliases
+template<typename Board, typename Direction>
+struct jump_start
+:
+        Board::template jump_start<Direction>
+{};
+
 }       // namespace dctl

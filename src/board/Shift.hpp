@@ -72,7 +72,7 @@ struct Next
         {
                 return Shift< typename
                         angle::is_positive<Direction>::type, typename
-                        Board::template shift<Direction>::type
+                        shift_size<Board, Direction>::type
                 >()(square);
         }
 };
@@ -86,7 +86,7 @@ struct Prev
         {
                 return Shift< typename
                         angle::is_negative<Direction>::type, typename
-                        Board::template shift<Direction>::type
+                        shift_size<Board, Direction>::type
                 >()(square);
         }
 };
@@ -99,7 +99,7 @@ struct Advance
         {
                 ShiftAssign< typename
                         angle::is_positive<Direction>::type, typename
-                        Board::template shift<Direction>::type
+                        shift_size<Board, Direction>::type
                 >()(square);
         }
 };
@@ -132,7 +132,7 @@ struct FloodFill
         {
                 return flood_fill< typename 
                         angle::is_positive<Direction>::type, typename 
-                        Board::template shift<Direction>::type
+                        shift_size<Board, Direction>::type
                 >(generator, propagator);
         }
 };
@@ -169,11 +169,11 @@ template<typename Board, typename Direction>
 struct Sandwich<Board, Direction, rules::range::distance_1>
 {
         template<typename T>
-        T operator()(T from, T past, T dest) const
+        T operator()(T from, T through, T dest) const
         {
                 return (
                         Next<Board, Direction>()(from) &
-                        past &
+                        through &
                         Prev<Board, Direction>()(dest)
                 );
         }
@@ -183,11 +183,11 @@ template<typename Board, typename Direction>
 struct Sandwich<Board, Direction, rules::range::distance_N>
 {
         template<typename T>
-        T operator()(T from, T past, T dest) const
+        T operator()(T from, T through, T dest) const
         {
                 return (
                         Next<Board, Direction>()(FloodFill<Board, Direction>()(from, dest)) &
-                        past &
+                        through &
                         Prev<Board, Direction>()(dest)
                 );
         }
