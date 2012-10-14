@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/test_case_template.hpp>
-#include <boost/mpl/list.hpp>
+#include <boost/mpl/vector.hpp>
 #include "../../src/bit/Bit.hpp"
 #include "../../src/utility/IntegerTypes.hpp"
 
@@ -9,10 +9,8 @@ namespace bit {
 
 BOOST_AUTO_TEST_SUITE(TestBit)
 
-typedef boost::mpl::list
+typedef boost::mpl::vector
 <
-        uint8_t,
-        uint16_t,
         uint32_t,
         uint64_t
 > UnsignedIntegerTypes;
