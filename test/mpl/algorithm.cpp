@@ -9,7 +9,7 @@
 namespace dctl {
 namespace mpl {
 
-BOOST_AUTO_TEST_SUITE(TestAlgorithm)
+BOOST_AUTO_TEST_SUITE(TestMPLAlgorithm)
 
 typedef int P;
 typedef std::string N;

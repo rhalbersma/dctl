@@ -139,7 +139,7 @@ public:
 
         void remove_non_unique_back() const // modifies Stack& moves_
         {
-                if (contains(std::begin(moves_), std::end(moves_) - 1, moves_.back()))
+                if (algorithm::contains(std::begin(moves_), std::end(moves_) - 1, moves_.back()))
                         moves_.pop_back();
         }
 
