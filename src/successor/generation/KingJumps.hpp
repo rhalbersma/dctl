@@ -87,8 +87,8 @@ private:
         {
                 BOOST_ASSERT(!bit::is_zero(active_kings));
                 do {
-                        find(bit::get_first(active_kings));
-                        bit::clear_first(active_kings);
+                        find(bit::first::equal(active_kings));
+                        bit::first::clear(active_kings);
                 } while (active_kings);
         }
 

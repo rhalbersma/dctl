@@ -88,8 +88,8 @@ private:
         {
                 BOOST_ASSERT(!bit::is_zero(active_kings));
                 do {
-                        branch_dispatch(bit::get_first(active_kings), not_occupied, Directions());
-                        bit::clear_first(active_kings);
+                        branch_dispatch(bit::first::equal(active_kings), not_occupied, Directions());
+                        bit::first::clear(active_kings);
                 } while (active_kings);
         }
 

@@ -219,5 +219,5 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
         >
 {};
 
-}		// namespace mpl
+}	// namespace mpl
 }       // namespace dctl

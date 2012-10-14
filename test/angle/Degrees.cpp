@@ -1,11 +1,8 @@
-#include <boost/test/unit_test.hpp>
-#include <boost/test/test_case_template.hpp>
-#include <type_traits>
-#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
-#include <boost/mpl/quote.hpp>                  // quote1
-#include "../../src/angle/Degrees.hpp"
-#include "../../src/angle/Traits.hpp"
-#include "../../src/mpl/transform.hpp"
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE
+#include <type_traits>                  // is_same
+#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
+#include "../../src/angle/Degrees.hpp"  // D045, D090, D135, D225, D270, D315
+#include "../../src/mpl/transform.hpp"  // mirror
 
 namespace dctl {
 namespace angle {

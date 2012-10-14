@@ -117,10 +117,10 @@ struct write<pdn::protocol, Token>
                                 sstr << Token::colon;                           // colon
                                 sstr << Token::color[c];                        // color tag
                         }
-                        for (auto bb = p.pieces(c); bb; bit::clear_first(bb)) {
-                                if (bit::is_element(bit::get_first(bb), p.kings()))
+                        for (auto bb = p.pieces(c); bb; bit::first::clear(bb)) {
+                                if (bit::is_element(bit::first::equal(bb), p.kings()))
                                         sstr << Token::king;                    // king tag
-                                auto b = bit::find_first(bb);                   // bit index
+                                auto b = bit::first::find(bb);                   // bit index
                                 sstr << Board::bit2square(b) + 1;               // square number
                                 if (bit::is_multiple(bb))                       // still pieces remaining
                                         sstr << Token::comma;                   // comma separator

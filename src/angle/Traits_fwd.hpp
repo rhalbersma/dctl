@@ -1,5 +1,5 @@
 #pragma once
-#include "../mpl/lazy.hpp"              // LAZY_UNARY_METAFUNCTION, LAZY_BINARY_METAFUNCTION
+#include "../mpl/lazy.hpp"              // LAZY_UNARY_METAFUNCTION
 
 namespace dctl {
 namespace angle {

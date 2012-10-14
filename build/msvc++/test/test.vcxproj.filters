@@ -114,23 +114,23 @@
     <ClCompile Include="..\..\..\test\angle\Traits.cpp">
       <Filter>Source Files\angle</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\test\board\Coordinates.cpp">
-      <Filter>Source Files\board</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\test\board\Dimensions.cpp">
-      <Filter>Source Files\board</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\test\mpl\algorithm.cpp">
       <Filter>Source Files\mpl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\test\mpl\type_traits.cpp">
       <Filter>Source Files\mpl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\test\group\axioms.cpp">
+      <Filter>Source Files\group</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\test\group\action.cpp">
       <Filter>Source Files\group</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\test\group\axioms.cpp">
-      <Filter>Source Files\group</Filter>
+    <ClCompile Include="..\..\..\test\board\Coordinates.cpp">
+      <Filter>Source Files\board</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\board\Dimensions.cpp">
+      <Filter>Source Files\board</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

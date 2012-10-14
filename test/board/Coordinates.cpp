@@ -1,14 +1,13 @@
-#include <boost/test/unit_test.hpp>
-#include <boost/test/test_case_template.hpp>
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE
+#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
-#include <boost/mpl/int_fwd.hpp>                // int_
+#include <boost/mpl/int.hpp>                    // int_
 #include <boost/mpl/vector.hpp>                 // vector
-
-#include "../../src/board/Coordinates.hpp"
-#include "../../src/board/Dimensions.hpp"
-#include "../../src/board/Grid.hpp"
-#include "../../src/angle/Cyclic.hpp"
-#include "../../src/group/action.hpp"
+#include "../../src/board/Coordinates.hpp"      // Coordinates
+#include "../../src/board/Dimensions.hpp"       // Dimensions
+#include "../../src/board/Grid.hpp"             // Grid
+#include "../../src/angle/Cyclic.hpp"           // C1, C2, C4
+#include "../../src/group/action.hpp"           // is_realized
 
 namespace dctl {
 namespace board {
@@ -25,9 +24,9 @@ typedef boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, CoordinatesSequence)
 {
-        BOOST_MPL_ASSERT(( group::is_right_action< T, angle::C1 > ));
-        BOOST_MPL_ASSERT(( group::is_right_action< T, angle::C2 > ));
-        BOOST_MPL_ASSERT(( group::is_right_action< T, angle::C4 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, angle::C1 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, angle::C2 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, angle::C4 > ));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

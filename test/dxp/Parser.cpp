@@ -1,10 +1,10 @@
 #include <iterator>                             // begin, end
 #include <string>                               // string
-#include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL
 #include <boost/mpl/vector.hpp>                 // vector
-#include "../../src/dxp/IMessage.hpp"
-#include "../../src/dxp/Types.hpp"
-#include "../../src/factory/Factory.hpp"
+#include "../../src/dxp/IMessage.hpp"           // IMessage
+#include "../../src/dxp/Types.hpp"              // GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
+#include "../../src/factory/Factory.hpp"        // Factory
 
 namespace dctl {
 namespace dxp {
