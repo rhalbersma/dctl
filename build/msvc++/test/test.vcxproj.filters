@@ -61,6 +61,9 @@
     <Filter Include="Source Files\group">
       <UniqueIdentifier>{ff8fa95e-cf45-461f-b18b-9223f73466a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\utility">
+      <UniqueIdentifier>{76e15794-6cf2-4348-af94-aedf553a1441}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\test\test_main.cpp">
@@ -131,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\test\board\Dimensions.cpp">
       <Filter>Source Files\board</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\utility\algorithm.cpp">
+      <Filter>Source Files\utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

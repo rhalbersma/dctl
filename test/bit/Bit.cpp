@@ -1,6 +1,6 @@
-#include <boost/test/unit_test.hpp>
-#include <boost/test/test_case_template.hpp>
-#include <boost/mpl/vector.hpp>
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK
+#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
+#include <boost/mpl/vector.hpp>                 // vector
 #include "../../src/bit/Bit.hpp"
 #include "../../src/utility/IntegerTypes.hpp"
 
