@@ -306,9 +306,6 @@
     <ClInclude Include="..\..\..\src\mpl\lazy.hpp">
       <Filter>Header Files\mpl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\group\action.hpp">
-      <Filter>Header Files\group</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\group\axioms.hpp">
       <Filter>Header Files\group</Filter>
     </ClInclude>
@@ -710,6 +707,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\board\Types.hpp">
       <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\bit\Bit_fwd.hpp">
+      <Filter>Header Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\bit\Loop.hpp">
+      <Filter>Header Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\group\action.hpp">
+      <Filter>Header Files\group</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

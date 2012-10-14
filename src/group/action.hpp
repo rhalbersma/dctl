@@ -4,13 +4,15 @@
 #include <boost/mpl/fold.hpp>           // fold
 #include <boost/mpl/lambda.hpp>         // lambda, _1, _2
 #include <boost/mpl/logical.hpp>        // and_, not_, true_
-#include "primitives.hpp"
+#include "primitives.hpp"               // set, plus, identity, minus
 
 namespace dctl {
 namespace group {
+namespace action {
+namespace detail {
 
 template<typename X, typename Op, typename A, typename B>
-struct is_right_associativity
+struct is_associativity_primitive
 :
         std::is_same< typename
                 boost::mpl::apply<
@@ -23,13 +25,13 @@ struct is_right_associativity
 {};
 
 template<typename X, typename G, typename A, typename B>
-struct is_right_associativity_pair
+struct is_associativity_pair
 :
-        is_right_associativity< X, typename plus<G>::type, A, B >
+        is_associativity_primitive< X, typename plus<G>::type, A, B >
 {};
 
 template<typename X, typename G, typename A>
-struct is_right_associativity_element
+struct is_associativity_element
 :
         boost::mpl::fold< typename
                 set<G>::type,
@@ -37,37 +39,39 @@ struct is_right_associativity_element
                 boost::mpl::lambda<
                         boost::mpl::and_<
                                 boost::mpl::_1,
-                                is_right_associativity_pair< X, G, A, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
-
-template<typename X, typename G>
-struct is_right_associativity_action
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                is_right_associativity_element< X, G, boost::mpl::_2 >
+                                is_associativity_pair< X, G, A, boost::mpl::_2 >
                         >
                 >
         >
 {};
 
 template<typename X, typename Op, typename E>
-struct is_right_identity
+struct is_identity_primitive
 :
         std::is_same< typename boost::mpl::apply< Op, X, E >::type, X >
 {};
 
+}       // namespace right_action
+
 template<typename X, typename G>
-struct is_right_identity_action
+struct is_associativity
 :
-        is_right_identity<
+        boost::mpl::fold< typename
+                set<G>::type,
+                boost::mpl::true_,
+                boost::mpl::lambda<
+                        boost::mpl::and_<
+                                boost::mpl::_1,
+                                detail::is_associativity_element< X, G, boost::mpl::_2 >
+                        >
+                >
+        >
+{};
+
+template<typename X, typename G>
+struct is_identity
+:
+        detail::is_identity_primitive<
                 X, typename
                 plus<G>::type, typename
                 identity<G>::type
@@ -75,13 +79,14 @@ struct is_right_identity_action
 {};
 
 template<typename X, typename G>
-struct is_right_action
+struct is_realized
 :
         boost::mpl::and_<
-                is_right_associativity_action< X, G >,
-                is_right_identity_action< X, G >
+                is_associativity< X, G >,
+                is_identity< X, G >
         >
 {};
 
+}       // namespace action
 }       // namespace group
 }       // namespace dctl

@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/mpl/quote.hpp>          // quote1, quote2
 #include <boost/mpl/vector.hpp>         // vector
-#include "Degrees.hpp"
-#include "../group/primitives.hpp"
-#include "../mpl/transform.hpp"
+#include "Degrees.hpp"                  // D000, D045, D090, D135, D180, D225, D270, D315
+#include "../group/primitives.hpp"      // tuple
+#include "../mpl/transform.hpp"         // inverse, rotate
 
 namespace dctl {
 namespace angle {

@@ -5,13 +5,15 @@
 #include <boost/mpl/fold.hpp>           // fold
 #include <boost/mpl/lambda.hpp>         // lambda, _1, _2
 #include <boost/mpl/logical.hpp>        // and_, not_, true_
-#include "primitives.hpp"
+#include "primitives.hpp"               // set, plus, identity, minus
 
 namespace dctl {
 namespace group {
+namespace axioms {
+namespace detail {
 
 template<typename S, typename Op, typename A, typename B>
-struct is_closure
+struct is_closure_primitive
 :
         boost::mpl::contains<
                 S, typename
@@ -22,7 +24,7 @@ struct is_closure
 template<typename G, typename A, typename B>
 struct is_closure_pair
 :
-        is_closure< typename
+        is_closure_primitive< typename
                 set<G>::type, typename
                 plus<G>::type,
                 A, B
@@ -44,23 +46,8 @@ struct is_closure_element
         >
 {};
 
-template<typename G>
-struct is_closure_axiom
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                is_closure_element< G, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
-
 template<typename Op, typename A, typename B, typename C>
-struct is_associativity
+struct is_associativity_primitive
 :
         std::is_same< typename
                 boost::mpl::apply<
@@ -75,7 +62,7 @@ struct is_associativity
 template<typename G, typename A, typename B, typename C>
 struct is_associativity_triplet
 :
-        is_associativity< typename
+        is_associativity_primitive< typename
                 plus<G>::type, A, B, C
         >
 {};
@@ -110,23 +97,8 @@ struct is_associativity_element
         >
 {};
 
-template<typename G>
-struct is_associativity_axiom
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                is_associativity_element< G, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
-
 template<typename S, typename Op, typename E, typename A>
-struct is_identity
+struct is_identity_primitive
 :
         boost::mpl::and_<
                 boost::mpl::contains< S, E >,
@@ -138,7 +110,7 @@ struct is_identity
 template<typename G, typename A>
 struct is_identity_element
 :
-        is_identity< typename
+        is_identity_primitive< typename
                 set<G>::type, typename
                 plus<G>::type, typename
                 identity<G>::type,
@@ -146,23 +118,8 @@ struct is_identity_element
         >
 {};
 
-template<typename G>
-struct is_identity_axiom
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                is_identity_element< G, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
-
 template<typename S, typename Op, typename E, typename I, typename A>
-struct is_inverse
+struct is_inverse_primitive
 :
         boost::mpl::and_<
                 boost::mpl::contains< S, I >,
@@ -174,7 +131,7 @@ struct is_inverse
 template<typename G, typename A>
 struct is_inverse_element
 :
-        is_inverse< typename
+        is_inverse_primitive< typename
                 set<G>::type, typename
                 plus<G>::type, typename
                 identity<G>::type, typename
@@ -185,8 +142,10 @@ struct is_inverse_element
         >
 {};
 
+}       // namespace detail 
+
 template<typename G>
-struct is_inverse_axiom
+struct is_closure
 :
         boost::mpl::fold< typename
                 set<G>::type,
@@ -194,22 +153,68 @@ struct is_inverse_axiom
                 boost::mpl::lambda<
                         boost::mpl::and_<
                                 boost::mpl::_1,
-                                is_inverse_element< G, boost::mpl::_2 >
+                                detail::is_closure_element< G, boost::mpl::_2 >
                         >
                 >
         >
 {};
 
 template<typename G>
-struct is_axioms
+struct is_associativity
 :
-        boost::mpl::and_<
-                is_closure_axiom<G>,
-                is_associativity_axiom<G>,
-                is_identity_axiom<G>,
-                is_inverse_axiom<G>
+        boost::mpl::fold< typename
+                set<G>::type,
+                boost::mpl::true_,
+                boost::mpl::lambda<
+                        boost::mpl::and_<
+                                boost::mpl::_1,
+                                detail::is_associativity_element< G, boost::mpl::_2 >
+                        >
+                >
         >
 {};
 
+template<typename G>
+struct is_identity
+:
+        boost::mpl::fold< typename
+                set<G>::type,
+                boost::mpl::true_,
+                boost::mpl::lambda<
+                        boost::mpl::and_<
+                                boost::mpl::_1,
+                                detail::is_identity_element< G, boost::mpl::_2 >
+                        >
+                >
+        >
+{};
+
+template<typename G>
+struct is_inverse
+:
+        boost::mpl::fold< typename
+                set<G>::type,
+                boost::mpl::true_,
+                boost::mpl::lambda<
+                        boost::mpl::and_<
+                                boost::mpl::_1,
+                                detail::is_inverse_element< G, boost::mpl::_2 >
+                        >
+                >
+        >
+{};
+
+template<typename G>
+struct is_realized
+:
+        boost::mpl::and_<
+                is_closure<G>,
+                is_associativity<G>,
+                is_identity<G>,
+                is_inverse<G>
+        >
+{};
+
+}       // namespace axioms
 }       // namespace group
 }       // namespace dctl

@@ -89,29 +89,29 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsMultiple, T, UnsignedIntegerTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(CountKernighan, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(0, count_loop(T(0)));
+        BOOST_CHECK_EQUAL(0, loop::count(T(0)));
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(1, count_loop(b));
+                BOOST_CHECK_EQUAL(1, loop::count(b));
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 for (auto j = 0; j < num_bits<T>::value; ++j) {
                         auto const b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j)
-                                BOOST_CHECK_EQUAL(0, count_loop(b));
+                                BOOST_CHECK_EQUAL(0, loop::count(b));
                         else
-                                BOOST_CHECK_EQUAL(2, count_loop(b));
+                                BOOST_CHECK_EQUAL(2, loop::count(b));
                 }
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i) - 1;
-                BOOST_CHECK_EQUAL(i, count_loop(b));
+                BOOST_CHECK_EQUAL(i, loop::count(b));
         }
 
-        BOOST_CHECK_EQUAL(num_bits<T>::value, count_loop(T(~0)));
+        BOOST_CHECK_EQUAL(num_bits<T>::value, loop::count(T(~0)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

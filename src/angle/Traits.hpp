@@ -5,7 +5,7 @@
 #include <boost/mpl/logical.hpp>        // not_, and_, or_
 #include "Traits_fwd.hpp"
 #include "Degrees.hpp"                  // L090, D090, D180
-#include "../mpl/transform.hpp"			// rotate
+#include "../mpl/transform.hpp"		// rotate
 
 namespace dctl {
 namespace angle {

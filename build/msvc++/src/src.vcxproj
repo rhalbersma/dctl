@@ -124,6 +124,8 @@
     <ClInclude Include="..\..\..\src\angle\Traits.hpp" />
     <ClInclude Include="..\..\..\src\angle\Traits_fwd.hpp" />
     <ClInclude Include="..\..\..\src\bit\Bit.hpp" />
+    <ClInclude Include="..\..\..\src\bit\Bit_fwd.hpp" />
+    <ClInclude Include="..\..\..\src\bit\Loop.hpp" />
     <ClInclude Include="..\..\..\src\board\Board.hpp" />
     <ClInclude Include="..\..\..\src\board\Compass.hpp" />
     <ClInclude Include="..\..\..\src\board\Coordinates.hpp" />

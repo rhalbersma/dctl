@@ -128,9 +128,9 @@ private:
                 for (
                         active_pawns &= Prev<Board, Direction>()(capture_.template targets_with_pawn<Direction>());
                         active_pawns;
-                        bit::clear_first(active_pawns)
+                        bit::first::clear(active_pawns)
                 )
-                        find<Direction>(bit::get_first(active_pawns));
+                        find<Direction>(bit::first::equal(active_pawns));
         }
 
         template<typename Direction>
