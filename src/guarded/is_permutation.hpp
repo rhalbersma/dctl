@@ -2,7 +2,7 @@
 
 /*---------------------------------------------------------------------------*/
 #ifdef _MSC_VER
-        #if (_MSC_VER <= 1600)
+        #if (_MSC_VER <= 1700)
                 #pragma warning(push)
                 #pragma warning(disable: 4512)  // assignment operator could not be generated
         #endif
@@ -20,7 +20,7 @@
 
 /*---------------------------------------------------------------------------*/
 #ifdef _MSC_VER
-        #if (_MSC_VER <= 1600)
+        #if (_MSC_VER <= 1700)
                 #pragma warning(pop)
         #endif
 #endif

@@ -1,10 +1,11 @@
-#include <boost/test/unit_test.hpp>
-#include "Fixture.hpp"
 #include "../../test_config.hpp"
-#include "../../../src/board/Types.hpp"
-#include "../../../src/rules/Types.hpp"
 
 #if SUCCESSOR_TEST == 1
+
+#include <boost/test/unit_test.hpp>
+#include "Fixture.hpp"
+#include "../../../src/board/Types.hpp"
+#include "../../../src/rules/Types.hpp"
 
 namespace dctl {
 namespace successor {

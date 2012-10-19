@@ -2,7 +2,7 @@
 #include <cstdlib>                              // rand, srand
 #include <iterator>                             // back_inserter
 #include <vector>                               // vector
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK
 #include <boost/algorithm/cxx11/is_sorted.hpp>  // is_sorted
 #include "../../src/utility/algorithm.hpp"      // insertion_sort, selection_sort
 
