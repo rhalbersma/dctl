@@ -2,7 +2,7 @@
 #include <boost/mpl/arithmetic.hpp>     // negate, plus
 #include <boost/mpl/int.hpp>            // int_
 #include "../mpl/modular.hpp"           // abs_modulus
-#include "../mpl/transform.hpp"		// inverse, mirror, rotate
+#include "../mpl/transform.hpp"			// inverse, mirror, rotate
 
 namespace dctl {
 namespace angle {

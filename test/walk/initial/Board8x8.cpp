@@ -1,13 +1,14 @@
+#include "../../test_config.hpp"
+
+#if WALK_INITIAL_BOARD8x8 == 1
+
 #include <boost/test/unit_test.hpp>
 #include "../Fixture.hpp"
-#include "../../test_config.hpp"
 #include "../../../src/walk/Root.hpp"
 #include "../../../src/node/Position.hpp"
 #include "../../../src/board/Types.hpp"
 #include "../../../src/rules/Types.hpp"
 #include "../../../src/utility/IntegerTypes.hpp"
-
-#if WALK_INITIAL_BOARD8x8 == 1
 
 namespace dctl {
 namespace walk {

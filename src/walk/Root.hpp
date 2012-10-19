@@ -84,7 +84,7 @@ public:
                 TT.clear();
         }
 
-//private:
+private:
         template<typename Position>
         void announce(Position const& p, int depth)
         {
