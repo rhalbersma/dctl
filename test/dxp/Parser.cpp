@@ -36,9 +36,9 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                 IMessage
         > factory;
 
-        for (auto it = std::begin(messages); it != std::end(messages); ++it) {
-                if (auto const parsed = factory.create(*it))
-                        BOOST_CHECK_EQUAL(*it, parsed->str());
+        for (auto const& m: messages) {
+                if (auto const parsed = factory.create(m))
+                        BOOST_CHECK_EQUAL(m, parsed->str());
                 else
                         BOOST_CHECK(!"Factory cannot create an unregistered message type.");
         }

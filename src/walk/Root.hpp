@@ -160,10 +160,10 @@ private:
 
                 auto const moves = successor::generate(p);
                 NodeCount leafs = 0;
-                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
+                for (auto const& m: moves) {
                         auto q = p;
                         q.attach(p);
-                        q.make(*m);
+                        q.make(m);
                         leafs += leaf(q, depth - 1, ply + 1);
                 }
                 return leafs;
@@ -179,10 +179,10 @@ private:
                         return moves.size();
 
                 NodeCount leafs = 0;
-                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
+                for (auto const& m: moves) {
                         auto q = p;
                         q.attach(p);
-                        q.make(*m);
+                        q.make(m);
                         leafs += bulk(q, depth - 1, ply + 1);
                 }
                 return leafs;
@@ -198,10 +198,10 @@ private:
 
                 auto const moves = successor::generate(p);
                 NodeCount leafs = 0;
-                for (auto m = std::begin(moves); m != std::end(moves); ++m) {
+                for (auto const& m: moves) {
                         auto q = p;
                         q.attach(p);
-                        q.make(*m);
+                        q.make(m);
                         leafs += count(q, depth - 1, ply + 1);
                 }
                 return leafs;
@@ -222,10 +222,10 @@ private:
                 } else {
                         auto const moves = successor::generate(p);
                         leafs = 0;
-                        for (auto m = std::begin(moves); m != std::end(moves); ++m) {
+                        for (auto const& m: moves) {
                                 auto q = p;
                                 q.attach(p);
-                                q.make(*m);
+                                q.make(m);
                                 leafs += hash(q, depth - 1, ply + 1);
                         }
                 }

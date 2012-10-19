@@ -1,5 +1,4 @@
 #pragma once
-#include <algorithm>                    // for_each
 #include <iomanip>                      // setfill, setw
 #include <sstream>                      // stringstream
 #include <string>                       // string
@@ -91,9 +90,7 @@ private:
                 sstr << std::setw( 2) << std::setfill('0') << f;
                 sstr << std::setw( 2) << std::setfill('0') << d;
                 sstr << std::setw( 2) << std::setfill('0') << n;
-                std::for_each(std::begin(c), std::end(c), [&sstr](int x) {
-                        sstr << std::setw(2) << std::setfill('0') << x;
-                });
+				for (auto const& x: c) sstr << std::setw(2) << std::setfill('0') << x;
                 return sstr.str();
         }
 
