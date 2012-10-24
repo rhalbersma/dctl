@@ -34,14 +34,14 @@ template
 struct Compass
 {
 private:
-        typedef typename mpl::rotate< typename
+        typedef mpl::rotate< typename
         	Board::inverse_angle,
                 boost::mpl::eval_if<
                         boost::mpl::bool_<Color>,
                         angle::D000,
                         angle::D180
                 >
-        >::type A;
+        > A;
 
 public:
         typedef typename mpl::rotate< angle::D000, A >::type right;

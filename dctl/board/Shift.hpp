@@ -6,6 +6,13 @@
 
 namespace dctl {
 
+// TODO: use C++11 template aliases
+template<typename Board, typename Direction>
+struct shift_size
+:
+        Board::template shift_size<Direction>
+{};
+
 // left and right direction
 
 typedef boost::mpl::false_ L;

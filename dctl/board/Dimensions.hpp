@@ -59,5 +59,5 @@ struct rotate< board::Dimensions<H, W, P>, angle::D180 >
         board::Dimensions<H, W, (H % 2) ^ (W % 2) ^ (!!P)>
 {};
 
-}		// namespace mpl
+}	// namespace mpl
 }       // namespace dctl
