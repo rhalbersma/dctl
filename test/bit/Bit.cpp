@@ -79,6 +79,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsMultiple, T, UnsignedIntegerTypes)
                                 BOOST_CHECK(!is_single(b));
                                 BOOST_CHECK(!is_double(b));
                                 BOOST_CHECK( is_multiple(b));
+                                break;
                         }
                 }
         }
