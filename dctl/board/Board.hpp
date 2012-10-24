@@ -52,27 +52,27 @@ public:
 
         static bool is_valid(int square)
         {
-                return begin() <= square && square < end();
+                return (begin() <= square && square < end());
         }
 
         static int begin()
         {
-                return 0;
+                return (0);
         }
 
         static int end()
         {
-                return ExternalGrid::size::value;
+                return (ExternalGrid::size::value);
         }
 
         static int square2bit(int square)
         {
-                return SQUARE2BIT[square];
+                return (SQUARE2BIT[square]);
         }
 
         static int bit2square(int b)
         {
-                return BIT2SQUARE[b];
+                return (BIT2SQUARE[b]);
         }
 
         // essential bitboard masks

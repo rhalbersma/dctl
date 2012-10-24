@@ -22,7 +22,7 @@ struct Shift<L, N>
         template<typename T>
         T operator()(T square) const
         {
-                return square << N::value;
+                return (square << N::value);
         }
 };
 
@@ -33,7 +33,7 @@ struct Shift<R, N>
         template<typename T>
         T operator()(T square) const
         {
-                return square >> N::value;
+                return (square >> N::value);
         }
 };
 
@@ -70,10 +70,10 @@ struct Next
         template<typename Iterator>
         Iterator operator()(Iterator square) const
         {
-                return Shift< typename
+                return (Shift< typename
                         angle::is_positive<Direction>::type, typename
                         shift_size<Board, Direction>::type
-                >()(square);
+                >()(square));
         }
 };
 
@@ -84,10 +84,10 @@ struct Prev
         template<typename Iterator>
         Iterator operator()(Iterator square) const
         {
-                return Shift< typename
+                return (Shift< typename
                         angle::is_negative<Direction>::type, typename
                         shift_size<Board, Direction>::type
-                >()(square);
+                >()(square));
         }
 };
 
@@ -114,14 +114,14 @@ T fill_loop(T generator, T propagator)
                 flood |= generator;
                 generator = Shift<Sign, N>()(generator) & propagator;
         }
-        return flood;
+        return (flood);
 }
 
 // direction-wise flood-fill generator over propagator
 template<typename Sign, typename N, typename T>
 T flood_fill(T generator, T propagator)
 {
-        return fill_loop<Sign, N>(generator, propagator);
+        return (fill_loop<Sign, N>(generator, propagator));
 }
 
 template<typename Board, typename Direction>
@@ -130,10 +130,10 @@ struct FloodFill
         template<typename T>
         T operator()(T generator, T propagator) const
         {
-                return flood_fill< typename 
+                return (flood_fill< typename
                         angle::is_positive<Direction>::type, typename 
                         shift_size<Board, Direction>::type
-                >(generator, propagator);
+                >(generator, propagator));
         }
 };
 
@@ -147,7 +147,7 @@ struct Sink<Board, Direction, rules::range::distance_1>
         template<typename T>
         T operator()(T from, T dest) const
         {
-                return Next<Board, Direction>()(from) & dest;
+                return (Next<Board, Direction>()(from) & dest);
         }
 };
 
@@ -157,7 +157,7 @@ struct Sink<Board, Direction, rules::range::distance_N>
         template<typename T>
         T operator()(T from, T dest) const
         {
-                return from ^ FloodFill<Board, Direction>()(from, dest);
+                return (from ^ FloodFill<Board, Direction>()(from, dest));
         }
 };
 

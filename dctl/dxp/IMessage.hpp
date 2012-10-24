@@ -31,7 +31,7 @@ public:
         std::string str() const
         {
                 BOOST_ASSERT(invariant());
-                return do_header() + do_body();
+                return (do_header() + do_body());
         }
 
 private:

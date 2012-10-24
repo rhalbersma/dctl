@@ -49,7 +49,7 @@ public:
         BasePointer create(Input const& input) const
         {
                 auto const fun = registry_.find(Base::header(input));
-                return fun? (fun)(Base::body(input)) : nullptr;
+                return (fun? (fun)(Base::body(input)) : nullptr);
         }
 
 private:
@@ -64,7 +64,7 @@ private:
                 template<typename T>
                 bool operator()(boost::mpl::identity<T> I)
                 {
-                        return registry_.insert(I);
+                        return (registry_.insert(I));
                 }
 
         private:
@@ -83,7 +83,7 @@ private:
                 template<typename T>
                 bool operator()(boost::mpl::identity<T> I)
                 {
-                        return registry_.erase(I);
+                        return (registry_.erase(I));
                 }
 
         private:

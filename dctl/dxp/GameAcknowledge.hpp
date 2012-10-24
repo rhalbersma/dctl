@@ -39,17 +39,17 @@ public:
 
         std::string const& name_follower() const
         {
-                return name_follower_;
+                return (name_follower_);
         }
 
         AcceptanceCode acceptance_code() const
         {
-                return acceptance_code_;
+                return (acceptance_code_);
         }
 
         static std::string generate(std::string const& n, AcceptanceCode a)
         {
-                return identifier() + body(n, a);
+                return (identifier() + body(n, a));
         }
 
 private:
@@ -57,12 +57,12 @@ private:
 
         virtual std::string do_header() const
         {
-                return identifier();
+                return (identifier());
         }
 
         virtual std::string do_body() const
         {
-                return body(name_follower(), acceptance_code());
+                return (body(name_follower(), acceptance_code()));
         }
 
         static std::string body(std::string const& n, AcceptanceCode a)
@@ -70,7 +70,7 @@ private:
                 std::stringstream sstr;
                 sstr << std::setw(32) << n << std::setfill(' ');
                 sstr << std::setw( 1) << a;
-                return sstr.str();
+                return (sstr.str());
         }
 
         // representation

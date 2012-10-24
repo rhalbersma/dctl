@@ -35,19 +35,19 @@ public:
 
         int move_number() const
         {
-                return move_number_;
+                return (move_number_);
         }
 
         char side_to_move() const
         {
-                return side_to_move_;
+                return (side_to_move_);
         }
 
         // output
 
         static std::string str(int m, char c)
         {
-                return identifier() + body(m, c);
+                return (identifier() + body(m, c));
         }
 
 private:
@@ -55,12 +55,12 @@ private:
 
         virtual std::string do_header() const
         {
-                return identifier();
+                return (identifier());
         }
 
         virtual std::string do_body() const
         {
-                return body(move_number(), side_to_move());
+                return (body(move_number(), side_to_move()));
         }
 
         static std::string body(int m, char c)
@@ -68,7 +68,7 @@ private:
                 std::stringstream sstr;
                 sstr << std::setw( 3) << std::setfill('0') << m;
                 sstr << std::setw( 1) << c;
-                return sstr.str();
+                return (sstr.str());
         }
 
         // representation
