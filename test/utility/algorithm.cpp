@@ -1,6 +1,6 @@
 #include <algorithm>                            // generate_n
 #include <cstdlib>                              // rand, srand
-#include <iterator>                             // back_inserter
+#include <iterator>                             // back_inserter, begin, end
 #include <vector>                               // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_AUTO_TEST_SUITE_END
 #include <boost/algorithm/cxx11/is_sorted.hpp>  // is_sorted

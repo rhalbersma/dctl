@@ -7,9 +7,9 @@
 #include <boost/algorithm/string.hpp>           // trim_copy
 #include <dctl/guarded/is_permutation.hpp>      // is_permutation
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK
-#include <dctl/successor/Generate.hpp>       // generate
-#include <dctl/setup/Setup.hpp>              // read
-#include <dctl/notation/String.hpp>          // write
+#include <dctl/successor/Generate.hpp>          // generate
+#include <dctl/setup/Setup.hpp>                 // read
+#include <dctl/notation/String.hpp>             // write
 
 namespace dctl {
 namespace successor {

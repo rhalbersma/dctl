@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>                    // transform
 #include <cstddef>                      // size_t
-#include <iterator>                     // back_inserter
+#include <iterator>                     // back_inserter, begin, end
 #include <string>                       // string
 #include <vector>                       // vector
 #include <boost/algorithm/string.hpp>   // trim_copy
