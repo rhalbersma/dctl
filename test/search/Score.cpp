@@ -1,6 +1,6 @@
-#include <boost/test/unit_test.hpp>
-#include "../../src/search/Score.hpp"
-#include "../../src/utility/Ply.hpp"
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_LT, BOOST_AUTO_TEST_SUITE_END
+#include <dctl/search/Score.hpp>
+#include <dctl/utility/Ply.hpp>
 
 namespace dctl {
 namespace search {

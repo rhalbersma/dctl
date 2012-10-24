@@ -1,17 +1,17 @@
-#include "../../test_config.hpp"
+#include <test/test_config.hpp>
 
 #if SEARCH_EGDB_KILLER == 1
 
 #include <boost/test/unit_test.hpp>
-#include "../Fixture.hpp"
-#include "../../../src/board/Types.hpp"
-#include "../../../src/rules/Types.hpp"
+#include <test/search/Fixture.hpp>
+#include <dctl/board/Types.hpp>
+#include <dctl/rules/Types.hpp>
 
 namespace dctl {
 namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestKiller)
-/*
+
 BOOST_FIXTURE_TEST_CASE(KillerDavidGoliath, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
@@ -53,7 +53,7 @@ BOOST_FIXTURE_TEST_CASE(Killer21, Fixture<DefaultObjective>)
         };
         run<rules::Killer, board::International>(tests);
 }
-*/
+
 BOOST_FIXTURE_TEST_CASE(Killer22, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {

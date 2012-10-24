@@ -1,17 +1,17 @@
 #pragma once
-#include <boost/test/unit_test.hpp>
-#include <iterator>
-#include "../../src/walk/Root.hpp"
-#include "../../src/node/Position.hpp"
-#include "../../src/board/Types.hpp"
-#include "../../src/rules/Types.hpp"
-#include "../../src/utility/IntegerTypes.hpp"
+#include <cstddef>                              // size_t
+#include <iterator>                             // begin, end
+#include <boost/config.hpp>                     // BOOST_STATIC_CONSTANT
+#include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL
+#include <dctl/walk/Root.hpp>                   // Root
+#include <dctl/utility/IntegerTypes.hpp>        // NodeCount
 
 namespace dctl {
 namespace walk {
 
 struct Fixture
 {
+public:
         Fixture()
         {
                 root_.resize_hash(25);

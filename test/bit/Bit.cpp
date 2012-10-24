@@ -1,8 +1,8 @@
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                 // vector
-#include "../../src/bit/Bit.hpp"
-#include "../../src/utility/IntegerTypes.hpp"
+#include <dctl/bit/Bit.hpp>
+#include <dctl/utility/IntegerTypes.hpp>
 
 namespace dctl {
 namespace bit {

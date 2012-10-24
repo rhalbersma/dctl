@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../src/guarded/is_permutation.hpp"    // <boost/algorithm/cxx11/is_permutation.hpp>
+#include <boost/algorithm/string.hpp>
+#include <dctl/guarded/is_permutation.hpp>    // <boost/algorithm/cxx11/is_permutation.hpp>
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/operators.hpp>
-#include "../src/guarded/parameter.hpp"         // <boost/parameter.hpp>
+#include <dctl/guarded/parameter.hpp>         // <boost/parameter.hpp>
 #include <boost/preprocessor/repetition.hpp>
 #include <boost/utility.hpp>
 

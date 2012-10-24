@@ -1,33 +1,23 @@
 #pragma once
-#include <algorithm>                    // transform
-#include <cstddef>                      // size_t
-#include <iterator>                     // back_inserter
-#include <string>                       // string
-#include <vector>                       // vector
-#include <boost/algorithm/string.hpp>   // trim_copy
-#include <boost/test/unit_test.hpp>
-#include "../../../src/successor/Generate.hpp"
-#include "../../../src/node/Position.hpp"
-#include "../../../src/node/Stack.hpp"
-#include "../../../src/setup/Setup.hpp"
-#include "../../../src/notation/String.hpp"
-#include "../../../src/guarded/is_permutation.hpp"
+#include <algorithm>                            // transform
+#include <cstddef>                              // size_t
+#include <iterator>                             // back_inserter, begin, end
+#include <string>                               // string
+#include <vector>                               // vector
+#include <boost/algorithm/string.hpp>           // trim_copy
+#include <dctl/guarded/is_permutation.hpp>      // is_permutation
+#include <boost/test/unit_test.hpp>             // BOOST_CHECK
+#include <dctl/successor/Generate.hpp>       // generate
+#include <dctl/setup/Setup.hpp>              // read
+#include <dctl/notation/String.hpp>          // write
 
 namespace dctl {
 namespace successor {
 
-// TODO: define this as a C++11 lambda expression inside boost::algorithm::is_permutation (which crashes MSVC++ 2010)
-struct trim_cmp
-{
-        bool operator()(std::string const& lhs, std::string const& rhs) const
-        {
-                return boost::algorithm::trim_copy(lhs) == boost::algorithm::trim_copy(rhs);
-        }
-};
-
 template<typename Rules, typename Board>
 struct Fixture
 {
+public:
         template<std::size_t N>
         void run(std::string const& FEN, std::string const (&legal)[N])
         {
@@ -52,8 +42,10 @@ struct Fixture
                 BOOST_CHECK(
                         boost::algorithm::is_permutation(
                                 std::begin(legal), std::end(legal),
-                                std::begin(notations),
-                                trim_cmp()
+                                std::begin(notations), 
+                                [](std::string const& lhs, std::string const& rhs) {
+                                        return boost::algorithm::trim_copy(lhs) == boost::algorithm::trim_copy(rhs);
+                                }
                         )
                 );
         }

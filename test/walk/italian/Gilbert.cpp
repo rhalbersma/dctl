@@ -1,15 +1,15 @@
-#include "../../test_config.hpp"
+#include <test/test_config.hpp>
 
 #if WALK_ITALIAN_GILBERT == 1
 
 #include <boost/test/unit_test.hpp>
-#include "../Fixture.hpp"
-#include "../../../src/walk/Root.hpp"
-#include "../../../src/node/Position.hpp"
-#include "../../../src/setup/Setup.hpp"
-#include "../../../src/board/Types.hpp"
-#include "../../../src/rules/Types.hpp"
-#include "../../../src/utility/IntegerTypes.hpp"
+#include <test/walk/Fixture.hpp>
+#include <dctl/walk/Root.hpp>
+#include <dctl/node/Position.hpp>
+#include <dctl/setup/Setup.hpp>
+#include <dctl/board/Types.hpp>
+#include <dctl/rules/Types.hpp>
+#include <dctl/utility/IntegerTypes.hpp>
 
 namespace dctl {
 namespace walk {

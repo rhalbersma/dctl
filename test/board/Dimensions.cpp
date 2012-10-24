@@ -2,9 +2,9 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/vector.hpp>                 // vector
-#include "../../src/board/Dimensions.hpp"       // Dimensions
-#include "../../src/angle/Cyclic.hpp"           // C1, C2, C4
-#include "../../src/group/action.hpp"           // is_realized
+#include <dctl/board/Dimensions.hpp>            // Dimensions
+#include <dctl/angle/Cyclic.hpp>                // C1, C2, C4
+#include <dctl/group/action.hpp>                // is_realized
 
 namespace dctl {
 namespace board {

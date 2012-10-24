@@ -1,11 +1,11 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
-#include <boost/mpl/quote.hpp>					// quote1
-#include "../../src/mpl/type_traits.hpp"        // is_idempotent
-#include "../../src/mpl/transform.hpp"          // inverse
-#include "../../src/angle/Cyclic.hpp"           // C8
-#include "../../src/group/primitives.hpp"       // set
+#include <boost/mpl/quote.hpp>			// quote1
+#include <dctl/mpl/type_traits.hpp>             // is_idempotent
+#include <dctl/mpl/transform.hpp>               // inverse
+#include <dctl/angle/Cyclic.hpp>                // C8
+#include <dctl/group/primitives.hpp>            // set
 
 namespace dctl {
 namespace mpl {

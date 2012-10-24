@@ -1,10 +1,9 @@
-#include <iterator>                             // begin, end
-#include <string>                               // string
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL
-#include <boost/mpl/vector.hpp>                 // vector
-#include "../../src/dxp/IMessage.hpp"           // IMessage
-#include "../../src/dxp/Types.hpp"              // GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
-#include "../../src/factory/Factory.hpp"        // Factory
+#include <string>                       // string
+#include <boost/mpl/vector.hpp>         // vector
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_CHECK_EQUAL
+#include <dctl/dxp/IMessage.hpp>        // IMessage
+#include <dctl/dxp/Types.hpp>           // GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
+#include <dctl/factory/Factory.hpp>     // Factory
 
 namespace dctl {
 namespace dxp {
@@ -15,8 +14,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm
-        std::string const messages[] =
-        {
+        std::string const messages[] = {
                 "R01Tornado voor Windows 4.0        W060065A",
                 "ATornado voor Windows 4.0        0",
                 "M0012061100",
