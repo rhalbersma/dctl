@@ -9,13 +9,13 @@ namespace angle {
 
 BOOST_AUTO_TEST_SUITE(TestDegrees)
 
-BOOST_AUTO_TEST_CASE(MirrorUp)
+BOOST_AUTO_TEST_CASE(testMirrorUp)
 {
         BOOST_MPL_ASSERT(( std::is_same< mpl::mirror< D045, D090 >::type, D135 > ));
         BOOST_MPL_ASSERT(( std::is_same< mpl::mirror< D135, D090 >::type, D045 > ));
 }
 
-BOOST_AUTO_TEST_CASE(MirrorDown)
+BOOST_AUTO_TEST_CASE(testMirrorDown)
 {
         BOOST_MPL_ASSERT(( std::is_same< mpl::mirror< D225, D270 >::type, D315 > ));
         BOOST_MPL_ASSERT(( std::is_same< mpl::mirror< D315, D270 >::type, D225 > ));

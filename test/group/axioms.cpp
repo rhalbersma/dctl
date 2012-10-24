@@ -9,7 +9,7 @@ namespace axioms {
 
 BOOST_AUTO_TEST_SUITE(TestAxioms)
 
-BOOST_AUTO_TEST_CASE(IsRealized)
+BOOST_AUTO_TEST_CASE(testIsRealized)
 {
         BOOST_MPL_ASSERT(( is_realized<angle::C1> ));
         BOOST_MPL_ASSERT(( is_realized<angle::C2> ));

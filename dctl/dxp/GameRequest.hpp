@@ -47,39 +47,39 @@ public:
 
         std::string const& name_initiator() const
         {
-                return name_initiator_;
+                return (name_initiator_);
         }
 
         char color_follower() const
         {
-                return color_follower_;
+                return (color_follower_);
         }
 
         int minutes() const
         {
-                return minutes_;
+                return (minutes_);
         }
 
         int moves() const
         {
-                return moves_;
+                return (moves_);
         }
 
         SetupCode setup_code() const
         {
-                return setup_code_;
+                return (setup_code_);
         }
 
         std::string const& position() const
         {
-                return position_;
+                return (position_);
         }
 
         // output
 
         static std::string str(std::string const& n, char c, int min, int mov, SetupCode s, std::string const& p)
         {
-                return identifier() + body(n, c, min, mov, s, p);
+                return (identifier() + body(n, c, min, mov, s, p));
         }
 
 private:
@@ -87,12 +87,12 @@ private:
 
         virtual std::string do_header() const
         {
-                return identifier();
+                return (identifier());
         }
 
         virtual std::string do_body() const
         {
-                return body(name_initiator(), color_follower(), minutes(), moves(), setup_code(), position());
+                return (body(name_initiator(), color_follower(), minutes(), moves(), setup_code(), position()));
         }
 
         static std::string body(std::string const& n, char c, int min, int mov, SetupCode s, std::string const& p)
@@ -106,7 +106,7 @@ private:
                 sstr << std::setw( 1) << static_cast<char>(s);
                 if (s == special)
                         sstr << std::setw(51) << p;
-                return sstr.str();
+                return (sstr.str());
         }
 
         // representation

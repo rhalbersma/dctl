@@ -10,7 +10,7 @@ namespace dxp {
 
 BOOST_AUTO_TEST_SUITE(TestParser)
 
-BOOST_AUTO_TEST_CASE(MesanderExamples)
+BOOST_AUTO_TEST_CASE(mesanderExamples)
 {
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm

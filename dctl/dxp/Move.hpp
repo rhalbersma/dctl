@@ -40,34 +40,34 @@ public:
 
         int seconds() const
         {
-                return seconds_;
+                return (seconds_);
         }
 
         int from_sq() const
         {
-                return from_sq_;
+                return (from_sq_);
         }
 
         int dest_sq() const
         {
-                return dest_sq_;
+                return (dest_sq_);
         }
 
         int num_captured() const
         {
-                return num_captured_;
+                return (num_captured_);
         }
 
         std::vector<int> const& captured_pieces() const
         {
-                return captured_pieces_;
+                return (captured_pieces_);
         }
 
         // output
 
         static std::string str(int s, int f, int d, int n, std::vector<int> const& c)
         {
-                return identifier() + body(s, f, d, n, c);
+                return (identifier() + body(s, f, d, n, c));
         }
 
 private:
@@ -75,12 +75,12 @@ private:
 
         virtual std::string do_header() const
         {
-                return identifier();
+                return (identifier());
         }
 
         virtual std::string do_body() const
         {
-                return body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces());
+                return (body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces()));
         }
 
         static std::string body(int s, int f, int d, int n, std::vector<int> const& c)
@@ -91,7 +91,7 @@ private:
                 sstr << std::setw( 2) << std::setfill('0') << d;
                 sstr << std::setw( 2) << std::setfill('0') << n;
 				for (auto const& x: c) sstr << std::setw(2) << std::setfill('0') << x;
-                return sstr.str();
+                return (sstr.str());
         }
 
         // representation
