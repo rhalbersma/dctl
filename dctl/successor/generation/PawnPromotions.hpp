@@ -1,0 +1,52 @@
+#pragma once
+#include <functional>                   // function
+#include <boost/utility.hpp>            // noncopyable
+#include <dctl/successor/generation/Generator_fwd.hpp>
+#include <dctl/successor/generation/PawnMoves.hpp>
+#include <dctl/successor/Select.hpp>
+#include <dctl/node/Material.hpp>
+#include <dctl/node/Promotion.hpp>
+#include <dctl/node/Stack.hpp>
+#include <dctl/node/UnaryProjections.hpp>
+
+namespace dctl {
+namespace successor {
+namespace detail {
+
+// partial specialization for pawn moves generation
+template<bool Color, typename Position>
+struct generator<Color, Material::pawn, Promotions, Position>
+:
+        // enforce reference semantics
+        private boost::noncopyable,
+        public std::function<void(Position const&)>
+{
+private:
+        // typedefs
+
+        typedef generator<Color, Material::pawn, Moves, Position> PawnMoves;
+
+        // representation
+
+        Stack& moves_;
+
+public:
+        // structors
+
+        explicit generator(Stack& m)
+        : 
+                moves_(m)
+        {}
+
+        // function call operators
+
+        void operator()(Position const& p) const
+        {
+                if (auto const active_promotors = promoting_pawns<Color>(p))
+                        PawnMoves(moves_).select(active_promotors, not_occupied(p));
+        }
+};
+
+}       // namespace detail
+}       // namespace successor
+}       // namespace dctl

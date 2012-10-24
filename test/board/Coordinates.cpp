@@ -3,11 +3,11 @@
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/int.hpp>                    // int_
 #include <boost/mpl/vector.hpp>                 // vector
-#include "../../src/board/Coordinates.hpp"      // Coordinates
-#include "../../src/board/Dimensions.hpp"       // Dimensions
-#include "../../src/board/Grid.hpp"             // Grid
-#include "../../src/angle/Cyclic.hpp"           // C1, C2, C4
-#include "../../src/group/action.hpp"           // is_realized
+#include <dctl/board/Coordinates.hpp>           // Coordinates
+#include <dctl/board/Dimensions.hpp>            // Dimensions
+#include <dctl/board/Grid.hpp>                  // Grid
+#include <dctl/angle/Cyclic.hpp>                // C1, C2, C4
+#include <dctl/group/action.hpp>                // is_realized
 
 namespace dctl {
 namespace board {

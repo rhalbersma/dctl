@@ -93,629 +93,632 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\capture\Frisian.hpp">
-      <Filter>Header Files\capture</Filter>
+    <ClInclude Include="..\..\..\dctl\angle\Cyclic.hpp">
+      <Filter>Header Files\angle</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\Value.hpp">
-      <Filter>Header Files\capture</Filter>
+    <ClInclude Include="..\..\..\dctl\angle\Degrees.hpp">
+      <Filter>Header Files\angle</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\International.hpp">
-      <Filter>Header Files\capture</Filter>
+    <ClInclude Include="..\..\..\dctl\angle\Traits.hpp">
+      <Filter>Header Files\angle</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\Killer.hpp">
-      <Filter>Header Files\capture</Filter>
+    <ClInclude Include="..\..\..\dctl\angle\Traits_fwd.hpp">
+      <Filter>Header Files\angle</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\Italian.hpp">
-      <Filter>Header Files\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\Russian.hpp">
-      <Filter>Header Files\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\Spanish.hpp">
-      <Filter>Header Files\capture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\Content.hpp">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\Diagram.hpp">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\DXP.hpp">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\Methods.hpp">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\Numbers.hpp">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\PDN.hpp">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\Protocols.hpp">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\Setup.hpp">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\String.hpp">
-      <Filter>Header Files\setup</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\notation\String.hpp">
-      <Filter>Header Files\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\notation\Czech.hpp">
-      <Filter>Header Files\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\notation\Russian.hpp">
-      <Filter>Header Files\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\notation\Thai.hpp">
-      <Filter>Header Files\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\notation\Types.hpp">
-      <Filter>Header Files\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\notation\Notation.hpp">
-      <Filter>Header Files\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\IntegerTypes.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\CacheAlign.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\Ply.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\Timer.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\Statistics.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Czech.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Enum.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Frisian.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\International.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Italian.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Killer.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Rules.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Russian.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Spanish.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Thai.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Pool.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\bit\Bit.hpp">
+    <ClInclude Include="..\..\..\dctl\bit\Bit.hpp">
       <Filter>Header Files\bit</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\DualMap.hpp">
+    <ClInclude Include="..\..\..\dctl\bit\Bit_fwd.hpp">
+      <Filter>Header Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\bit\Loop.hpp">
+      <Filter>Header Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Board.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Compass.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Coordinates.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Dimensions.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Grid.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\MetaTemplates.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Predicates.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Shift.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Structure.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Types.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Damme.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Frisian.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Hoogland.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\International.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Italian.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Killer.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Lineo.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Russian.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Spanish.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\State.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Value.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\capture\Value_fwd.hpp">
+      <Filter>Header Files\capture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\BackAcknowledge.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\BackRequest.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\Chat.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\GameAcknowledge.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\GameEnd.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\GameRequest.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\IMessage.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\Move.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\Traits.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\Types.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\dxp\Version.hpp">
+      <Filter>Header Files\dxp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\evaluate\Delta.hpp">
+      <Filter>Header Files\evaluate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\evaluate\Feature.hpp">
+      <Filter>Header Files\evaluate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\evaluate\Score.hpp">
+      <Filter>Header Files\evaluate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\evaluate\Weight.hpp">
+      <Filter>Header Files\evaluate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\factory\Factory.hpp">
+      <Filter>Header Files\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\factory\mixin.hpp">
+      <Filter>Header Files\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\factory\Registry.hpp">
+      <Filter>Header Files\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\group\action.hpp">
+      <Filter>Header Files\group</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\group\axioms.hpp">
+      <Filter>Header Files\group</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\group\primitives.hpp">
+      <Filter>Header Files\group</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\guarded\is_permutation.hpp">
+      <Filter>Header Files\guarded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\guarded\parameter.hpp">
+      <Filter>Header Files\guarded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\DualMap.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\Map.hpp">
+    <ClInclude Include="..\..\..\dctl\hash\Find.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\Functions.hpp">
+    <ClInclude Include="..\..\..\dctl\hash\FindInsert.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\pdn\Version.hpp">
+    <ClInclude Include="..\..\..\dctl\hash\Functions.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\KeySign.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\Map.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\Replace.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\zobrist\Init.hpp">
+      <Filter>Header Files\hash\zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\zobrist\Random.hpp">
+      <Filter>Header Files\hash\zobrist</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\jenkins\Init.hpp">
+      <Filter>Header Files\hash\jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\jenkins\Random.hpp">
+      <Filter>Header Files\hash\jenkins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\mpl\algorithm.hpp">
+      <Filter>Header Files\mpl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\mpl\lazy.hpp">
+      <Filter>Header Files\mpl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\mpl\modular.hpp">
+      <Filter>Header Files\mpl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\mpl\transform.hpp">
+      <Filter>Header Files\mpl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\mpl\type_traits.hpp">
+      <Filter>Header Files\mpl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\BinaryProjections.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\BinaryProjections_fwd.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\IPieces.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Material.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Move.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Move_fwd.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Position.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Position_fwd.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Predicates.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Predicates_fwd.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Promotion.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Restricted.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Side.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Stack.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\State.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\Targets.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\UnaryProjections.hpp">
+      <Filter>Header Files\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\detail\Predicates.hpp">
+      <Filter>Header Files\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\detail\Targets.hpp">
+      <Filter>Header Files\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\node\detail\UnaryProjections.hpp">
+      <Filter>Header Files\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\notation\Czech.hpp">
+      <Filter>Header Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\notation\Notation.hpp">
+      <Filter>Header Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\notation\Notation_fwd.hpp">
+      <Filter>Header Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\notation\Russian.hpp">
+      <Filter>Header Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\notation\String.hpp">
+      <Filter>Header Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\notation\Thai.hpp">
+      <Filter>Header Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\notation\Types.hpp">
+      <Filter>Header Files\notation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\pdn\Version.hpp">
       <Filter>Header Files\pdn</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\Replace.hpp">
-      <Filter>Header Files\hash</Filter>
+    <ClInclude Include="..\..\..\dctl\rules\Checkers.hpp">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\FindInsert.hpp">
-      <Filter>Header Files\hash</Filter>
+    <ClInclude Include="..\..\..\dctl\rules\Checkers_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\zobrist\Init.hpp">
-      <Filter>Header Files\hash\zobrist</Filter>
+    <ClInclude Include="..\..\..\dctl\rules\Czech.hpp">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\zobrist\Random.hpp">
-      <Filter>Header Files\hash\zobrist</Filter>
+    <ClInclude Include="..\..\..\dctl\rules\Czech_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\jenkins\Init.hpp">
-      <Filter>Header Files\hash\jenkins</Filter>
+    <ClInclude Include="..\..\..\dctl\rules\Damme.hpp">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\Mobility.hpp">
-      <Filter>Header Files\successor</Filter>
+    <ClInclude Include="..\..\..\dctl\rules\Damme_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\State.hpp">
-      <Filter>Header Files\capture</Filter>
+    <ClInclude Include="..\..\..\dctl\rules\Enum.hpp">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\walk\Transposition.hpp">
-      <Filter>Header Files\walk</Filter>
+    <ClInclude Include="..\..\..\dctl\rules\Frisian.hpp">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\search\Transposition.hpp">
+    <ClInclude Include="..\..\..\dctl\rules\Frisian_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Hoogland.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Hoogland_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\International.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\International_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Italian.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Italian_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Killer.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Killer_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Lineo.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Lineo_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Pool.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Pool_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Rules.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Russian.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Russian_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Spanish.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Spanish_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Thai.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Thai_fwd.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\rules\Types.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\search\Algorithms.hpp">
       <Filter>Header Files\search</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\search\Score.hpp">
+    <ClInclude Include="..\..\..\dctl\search\Bound.hpp">
       <Filter>Header Files\search</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\jenkins\Random.hpp">
-      <Filter>Header Files\hash\jenkins</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\Find.hpp">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\hash\KeySign.hpp">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\evaluate\Weight.hpp">
-      <Filter>Header Files\evaluate</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\evaluate\Delta.hpp">
-      <Filter>Header Files\evaluate</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\evaluate\Feature.hpp">
-      <Filter>Header Files\evaluate</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\search\Algorithms.hpp">
+    <ClInclude Include="..\..\..\dctl\search\Objective.hpp">
       <Filter>Header Files\search</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\search\Root.hpp">
+    <ClInclude Include="..\..\..\dctl\search\Root.hpp">
       <Filter>Header Files\search</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\walk\Root.hpp">
-      <Filter>Header Files\walk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\search\Variation.hpp">
+    <ClInclude Include="..\..\..\dctl\search\Score.hpp">
       <Filter>Header Files\search</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\search\Bound.hpp">
+    <ClInclude Include="..\..\..\dctl\search\Transposition.hpp">
       <Filter>Header Files\search</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\search\Objective.hpp">
+    <ClInclude Include="..\..\..\dctl\search\Variation.hpp">
       <Filter>Header Files\search</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\setup\TokenInterface.hpp">
+    <ClInclude Include="..\..\..\dctl\setup\Content.hpp">
       <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\factory\mixin.hpp">
-      <Filter>Header Files\factory</Filter>
+    <ClInclude Include="..\..\..\dctl\setup\Diagram.hpp">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\factory\Factory.hpp">
-      <Filter>Header Files\factory</Filter>
+    <ClInclude Include="..\..\..\dctl\setup\DXP.hpp">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\factory\Registry.hpp">
-      <Filter>Header Files\factory</Filter>
+    <ClInclude Include="..\..\..\dctl\setup\Methods.hpp">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\mpl\algorithm.hpp">
-      <Filter>Header Files\mpl</Filter>
+    <ClInclude Include="..\..\..\dctl\setup\Numbers.hpp">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\mpl\lazy.hpp">
-      <Filter>Header Files\mpl</Filter>
+    <ClInclude Include="..\..\..\dctl\setup\PDN.hpp">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\group\axioms.hpp">
-      <Filter>Header Files\group</Filter>
+    <ClInclude Include="..\..\..\dctl\setup\Protocols.hpp">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\group\primitives.hpp">
-      <Filter>Header Files\group</Filter>
+    <ClInclude Include="..\..\..\dctl\setup\Setup.hpp">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\mpl\type_traits.hpp">
-      <Filter>Header Files\mpl</Filter>
+    <ClInclude Include="..\..\..\dctl\setup\String.hpp">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\Value_fwd.hpp">
-      <Filter>Header Files\capture</Filter>
+    <ClInclude Include="..\..\..\dctl\setup\TokenInterface.hpp">
+      <Filter>Header Files\setup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\nonconstructible.hpp">
+    <ClInclude Include="..\..\..\dctl\utility\algorithm.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\total_order.hpp">
+    <ClInclude Include="..\..\..\dctl\utility\CacheAlign.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\make_unique.hpp">
+    <ClInclude Include="..\..\..\dctl\utility\enable_down_cast.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Checkers.hpp">
-      <Filter>Header Files\rules</Filter>
+    <ClInclude Include="..\..\..\dctl\utility\IntegerTypes.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Types.hpp">
-      <Filter>Header Files\rules</Filter>
+    <ClInclude Include="..\..\..\dctl\utility\make_unique.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Material.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\utility\NonConstructible.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Move.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\utility\Ply.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Move_fwd.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\utility\Statistics.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Position.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\utility\Timer.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Position_fwd.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\utility\total_order.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Predicates.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\walk\Root.hpp">
+      <Filter>Header Files\walk</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Predicates_fwd.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\walk\Transposition.hpp">
+      <Filter>Header Files\walk</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Promotion.hpp">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Restricted.hpp">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Side.hpp">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Stack.hpp">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\node\Targets.hpp">
-      <Filter>Header Files\node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Checkers_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Frisian_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\International_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Italian_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Russian_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Czech_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Killer_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Thai_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Spanish_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Pool_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\notation\Notation_fwd.hpp">
-      <Filter>Header Files\notation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\BothJumps.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\BothMoves.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\KingJumps.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\KingMoves.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\Legal.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\PawnJumps.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\PawnMoves.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\Primary.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\BothJumps.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\BothMoves.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\KingJumps.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\KingMoves.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\Legal.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\PawnJumps.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\PawnMoves.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\Primary.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\BothJumps.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\BothMoves.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\KingJumps.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\KingMoves.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\Legal.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\PawnJumps.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\PawnMoves.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\Primary.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\Select.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\Count.hpp">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\evaluate\Score.hpp">
-      <Filter>Header Files\evaluate</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\Detector.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\Detector_fwd.hpp">
-      <Filter>Header Files\successor\detection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\Enumerator_fwd.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\Enumerator.hpp">
-      <Filter>Header Files\successor\enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\Generator.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\Generator_fwd.hpp">
-      <Filter>Header Files\successor\generation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\Generate.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\Detect.hpp">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\Count.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\Generate.hpp">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\Detect.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\Mobility.hpp">
       <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\IPieces.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\Select.hpp">
+      <Filter>Header Files\successor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\Conversion.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\BothJumps.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\BothPromotions.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\BothMoves.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\PawnPromotions.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\BothPromotions.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\BothReverse.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\BothReverse.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\KingReverse.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\Conversion.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\PawnReverse.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\Generate.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\Conversion.hpp">
-      <Filter>Header Files\successor\detection</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\generation\Generator.hpp">
+      <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\BothPromotions.hpp">
-      <Filter>Header Files\successor\detection</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\generation\Generator_fwd.hpp">
+      <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\PawnPromotions.hpp">
-      <Filter>Header Files\successor\detection</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\generation\Invariant.hpp">
+      <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\BothReverse.hpp">
-      <Filter>Header Files\successor\detection</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\generation\KingJumps.hpp">
+      <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\KingReverse.hpp">
-      <Filter>Header Files\successor\detection</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\generation\KingMoves.hpp">
+      <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\detection\PawnReverse.hpp">
-      <Filter>Header Files\successor\detection</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\generation\KingReverse.hpp">
+      <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\Conversion.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\Legal.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\successor\generation\PawnJumps.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\successor\generation\PawnMoves.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\successor\generation\PawnPromotions.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\successor\generation\PawnReverse.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\successor\generation\Primary.hpp">
+      <Filter>Header Files\successor\generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\BothJumps.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\BothPromotions.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\BothMoves.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\PawnPromotions.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\BothPromotions.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\BothReverse.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\BothReverse.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\KingReverse.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\Conversion.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\enumeration\PawnReverse.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\Enumerator.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\guarded\is_permutation.hpp">
-      <Filter>Header Files\guarded</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\Enumerator_fwd.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\guarded\parameter.hpp">
-      <Filter>Header Files\guarded</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\KingJumps.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\enable_down_cast.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\KingMoves.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Lineo.hpp">
-      <Filter>Header Files\rules</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\KingReverse.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\Lineo.hpp">
-      <Filter>Header Files\capture</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\Legal.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Lineo_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\PawnJumps.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Hoogland.hpp">
-      <Filter>Header Files\rules</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\PawnMoves.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Hoogland_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\PawnPromotions.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\Hoogland.hpp">
-      <Filter>Header Files\capture</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\PawnReverse.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Damme.hpp">
-      <Filter>Header Files\rules</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\Primary.hpp">
+      <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\rules\Damme_fwd.hpp">
-      <Filter>Header Files\rules</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\BothJumps.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\capture\Damme.hpp">
-      <Filter>Header Files\capture</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\BothMoves.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\detail\Predicates.hpp">
-      <Filter>Header Files\node\detail</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\BothPromotions.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\detail\Targets.hpp">
-      <Filter>Header Files\node\detail</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\BothReverse.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\Invariant.hpp">
-      <Filter>Header Files\successor\generation</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\Conversion.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\successor\generation\Generate.hpp">
-      <Filter>Header Files\successor\generation</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\Detector.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\BinaryProjections.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\Detector_fwd.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\BinaryProjections_fwd.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\KingJumps.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\UnaryProjections.hpp">
-      <Filter>Header Files\node</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\KingMoves.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\node\detail\UnaryProjections.hpp">
-      <Filter>Header Files\node\detail</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\KingReverse.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\BackAcknowledge.hpp">
-      <Filter>Header Files\dxp</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\Legal.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\BackRequest.hpp">
-      <Filter>Header Files\dxp</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\PawnJumps.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Chat.hpp">
-      <Filter>Header Files\dxp</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\PawnMoves.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\GameAcknowledge.hpp">
-      <Filter>Header Files\dxp</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\PawnPromotions.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\GameEnd.hpp">
-      <Filter>Header Files\dxp</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\PawnReverse.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\GameRequest.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\IMessage.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Move.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Traits.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Types.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\dxp\Version.hpp">
-      <Filter>Header Files\dxp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\mpl\modular.hpp">
-      <Filter>Header Files\mpl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\mpl\transform.hpp">
-      <Filter>Header Files\mpl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\angle\Cyclic.hpp">
-      <Filter>Header Files\angle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\angle\Degrees.hpp">
-      <Filter>Header Files\angle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\angle\Traits.hpp">
-      <Filter>Header Files\angle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\angle\Traits_fwd.hpp">
-      <Filter>Header Files\angle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Board.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Compass.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Coordinates.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Dimensions.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Grid.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\MetaTemplates.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Predicates.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Shift.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Structure.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\board\Types.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\bit\Bit_fwd.hpp">
-      <Filter>Header Files\bit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\bit\Loop.hpp">
-      <Filter>Header Files\bit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\group\action.hpp">
-      <Filter>Header Files\group</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\utility\algorithm.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="..\..\..\dctl\successor\detection\Primary.hpp">
+      <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

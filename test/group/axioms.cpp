@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
-#include "../../src/group/axioms.hpp"   // is_realized
-#include "../../src/angle/Cyclic.hpp"	// C1, C2, C4, C8
+#include <dctl/group/axioms.hpp>        // is_realized
+#include <dctl/angle/Cyclic.hpp>	// C1, C2, C4, C8
 
 namespace dctl {
 namespace group {

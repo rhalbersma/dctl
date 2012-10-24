@@ -1,11 +1,11 @@
-#include "../../test_config.hpp"
+#include <test/test_config.hpp>
 
 #if SEARCH_EGDB_INTERNATIONAL == 1
 
 #include <boost/test/unit_test.hpp>
-#include "../Fixture.hpp"
-#include "../../../src/board/Types.hpp"
-#include "../../../src/rules/Types.hpp"
+#include <test/search/Fixture.hpp>
+#include <dctl/board/Types.hpp>
+#include <dctl/rules/Types.hpp>
 
 namespace dctl {
 namespace search {

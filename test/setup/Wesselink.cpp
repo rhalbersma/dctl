@@ -1,7 +1,7 @@
-#include <boost/test/unit_test.hpp>
-#include "../../src/board/Types.hpp"
-#include "../../src/rules/Types.hpp"
-#include "../../src/setup/Setup.hpp"
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
+#include <dctl/board/Types.hpp>         // International
+#include <dctl/rules/Types.hpp>         // International
+#include <dctl/setup/Setup.hpp>         // read, write
 
 namespace dctl {
 namespace setup {

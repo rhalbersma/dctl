@@ -64,6 +64,15 @@
     <Filter Include="Source Files\utility">
       <UniqueIdentifier>{76e15794-6cf2-4348-af94-aedf553a1441}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\successor">
+      <UniqueIdentifier>{7e4dab1c-26d7-4eb2-9dc6-c0c78ff3b70b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\search">
+      <UniqueIdentifier>{28da0ec1-1b97-4b30-b0b2-05aa3fedd6c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\walk">
+      <UniqueIdentifier>{2f7eaa5f-4f46-42c9-bd03-a62fd764bc80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\test\test_main.cpp">
@@ -143,12 +152,6 @@
     <ClInclude Include="..\..\..\test\test_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\test\successor\rulebook\Fixture.hpp">
-      <Filter>Source Files\successor\rulebook</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\test\search\Fixture.hpp">
-      <Filter>Source Files\search</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\test\STL_pch.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -158,8 +161,14 @@
     <ClInclude Include="..\..\..\test\precompiled.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\test\successor\rulebook\Fixture.hpp">
+      <Filter>Header Files\successor</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\test\walk\Fixture.hpp">
-      <Filter>Source Files\walk</Filter>
+      <Filter>Header Files\walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\successor\Fixture.hpp">
+      <Filter>Header Files\search</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

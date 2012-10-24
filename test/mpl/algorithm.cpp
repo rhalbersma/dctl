@@ -1,10 +1,10 @@
 #include <string>                       // string
 #include <type_traits>                  // is_base_of, is_pod
-#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT, BOOST_MPL_ASSERT_NOT
 #include <boost/mpl/placeholders.hpp>   // _1
 #include <boost/mpl/vector.hpp>         // vector
-#include "../../src/mpl/algorithm.hpp"  // all_of, none_of, any_of
+#include <dctl/mpl/algorithm.hpp>       // all_of, none_of, any_of
 
 namespace dctl {
 namespace mpl {

@@ -2,9 +2,9 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/quote.hpp>                  // quote1
-#include "../../src/group/action.hpp"           // is_realized
-#include "../../src/group/primitives.hpp"       // set
-#include "../../src/angle/Cyclic.hpp"           // C1, C2, C4, C8
+#include <dctl/group/action.hpp>                // is_realized
+#include <dctl/group/primitives.hpp>            // set
+#include <dctl/angle/Cyclic.hpp>                // C1, C2, C4, C8
 
 namespace dctl {
 namespace group {

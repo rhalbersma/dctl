@@ -1,11 +1,12 @@
-#include "../../test_config.hpp"
+#include <test/test_config.hpp>        // SUCCESSOR_TEST
 
 #if SUCCESSOR_TEST == 1
 
-#include <boost/test/unit_test.hpp>
-#include "Fixture.hpp"
-#include "../../../src/board/Types.hpp"
-#include "../../../src/rules/Types.hpp"
+#include <string>                       // string
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
+#include <test/successor/Fixture.hpp>   // run
+#include <dctl/board/Types.hpp>         // International
+#include <dctl/rules/Types.hpp>         // International
 
 namespace dctl {
 namespace successor {

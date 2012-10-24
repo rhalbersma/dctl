@@ -43,12 +43,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files\boost\boost_1_51_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\boost\boost_1_51_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files\boost\boost_1_51_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\boost\boost_1_51_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -57,7 +57,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Full</Optimization>
       <PreprocessorDefinitions>WIN32;NOMINMAX;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_51;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_51;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -101,7 +101,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NOMINMAX;NDEBUG;_CONSOLE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_51;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_51;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ObjectFileName>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</ObjectFileName>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <StringPooling>true</StringPooling>
@@ -145,8 +145,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\test\Boost_pch.hpp" />
     <ClInclude Include="..\..\..\test\precompiled.hpp" />
-    <ClInclude Include="..\..\..\test\search\Fixture.hpp" />
     <ClInclude Include="..\..\..\test\STL_pch.hpp" />
+    <ClInclude Include="..\..\..\test\successor\Fixture.hpp" />
     <ClInclude Include="..\..\..\test\successor\rulebook\Fixture.hpp" />
     <ClInclude Include="..\..\..\test\test_config.hpp" />
     <ClInclude Include="..\..\..\test\walk\Fixture.hpp" />
