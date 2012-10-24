@@ -27,7 +27,7 @@ struct Test
 {};
 
 /*
-        // NOTE: on Microsoft Visual C++ 2010 Express we get a
+        // NOTE: on Microsoft Visual C++ 2012 Express,dbrm2 we get a
         // fatal error C1202: recursive type or function dependency context too complex
         typename Square = typename boost::mpl::minus< typename
                 Board::ExternalGrid::size, 
