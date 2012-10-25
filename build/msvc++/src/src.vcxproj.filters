@@ -91,9 +91,6 @@
     <Filter Include="Header Files\angle">
       <UniqueIdentifier>{082d86df-6a16-4db4-9125-f836f1f2d422}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\guarded\unguarded">
-      <UniqueIdentifier>{7d8cd39a-d4ed-491a-9a6f-aa08ec576463}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\dctl\angle\Cyclic.hpp">
@@ -725,12 +722,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\bit\Lookup.hpp">
       <Filter>Header Files\bit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\guarded\unguarded\stack_alloch.h">
-      <Filter>Header Files\guarded\unguarded</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\guarded\stack_alloc.hpp">
-      <Filter>Header Files\guarded</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
