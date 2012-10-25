@@ -147,6 +147,12 @@
     <ClCompile Include="..\..\..\test\utility\algorithm.cpp">
       <Filter>Source Files\utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\test\bit\Lookup.cpp">
+      <Filter>Source Files\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\bit\Loop.cpp">
+      <Filter>Source Files\bit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\test\test_config.hpp">

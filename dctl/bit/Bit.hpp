@@ -2,6 +2,7 @@
 #include <functional>                           // function
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <dctl/bit/Bit_fwd.hpp>                 // forward declarations
+#include <dctl/bit/Lookup.hpp>                  // count, index
 #include <dctl/bit/Loop.hpp>                    // count, index
 #include <dctl/utility/IntegerTypes.hpp>        // num_bits
 
@@ -174,7 +175,7 @@ T less_equal(int i)
 template<typename T>
 int count(T b)
 {
-        return (loop::count(b));
+        return (lookup::count(b));
 }
  
 // index of a set 1-bit
@@ -182,7 +183,7 @@ template<typename T>
 int index(T b)
 {
         BOOST_ASSERT(is_single(b));
-        return (loop::index(b));
+        return (lookup::index(b));
 }
 
 // 0 bits set to 1
