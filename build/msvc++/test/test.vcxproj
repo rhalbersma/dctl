@@ -155,6 +155,8 @@
     <ClCompile Include="..\..\..\test\angle\Degrees.cpp" />
     <ClCompile Include="..\..\..\test\angle\Traits.cpp" />
     <ClCompile Include="..\..\..\test\bit\Bit.cpp" />
+    <ClCompile Include="..\..\..\test\bit\Lookup.cpp" />
+    <ClCompile Include="..\..\..\test\bit\Loop.cpp" />
     <ClCompile Include="..\..\..\test\board\Coordinates.cpp" />
     <ClCompile Include="..\..\..\test\board\Dimensions.cpp" />
     <ClCompile Include="..\..\..\test\dxp\Parser.cpp" />
