@@ -64,8 +64,6 @@
     <ClInclude Include="..\..\..\dctl\group\primitives.hpp" />
     <ClInclude Include="..\..\..\dctl\guarded\is_permutation.hpp" />
     <ClInclude Include="..\..\..\dctl\guarded\parameter.hpp" />
-    <ClInclude Include="..\..\..\dctl\guarded\stack_alloc.hpp" />
-    <ClInclude Include="..\..\..\dctl\guarded\unguarded\stack_alloch.h" />
     <ClInclude Include="..\..\..\dctl\hash\DualMap.hpp" />
     <ClInclude Include="..\..\..\dctl\hash\Find.hpp" />
     <ClInclude Include="..\..\..\dctl\hash\FindInsert.hpp" />
