@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/config.hpp>                     // BOOST_STATIC_CONSTANT
+#include <cstddef>                              // std::size_t
 #include <cstdint>                              // uint8_t
 #include <dctl/bit/Bit_fwd.hpp>                 // is_single
 #include <dctl/utility/IntegerTypes.hpp>        // num_bits
@@ -16,9 +17,9 @@ public:
         template<typename T>
         static int count(T t)
         {
-                int const num_blocks = sizeof(T) / sizeof(Block);       // auto would give unsigned type!
+                auto const num_blocks = sizeof(T) / sizeof(Block);
                 auto n = 0;
-                for (auto i = 0; i < num_blocks; ++i)
+                for (std::size_t i = 0; i < num_blocks; ++i)
                         n += count_[block(t, i)];
                 return (n);
         }
@@ -27,8 +28,8 @@ public:
         static int index(T t)
         {
                 BOOST_ASSERT(is_single(t));
-                int const num_blocks = sizeof(T) / sizeof(Block);       // auto would give unsigned type!
-                for (auto i = 0; i < num_blocks; ++i)
+                auto const num_blocks = sizeof(T) / sizeof(Block);
+                for (std::size_t i = 0; i < num_blocks; ++i)
                         if (auto const b = block(t, i))
                                 return (offset<T>(i) + index_[b]);
                 BOOST_ASSERT(false);
@@ -51,7 +52,7 @@ private:
         }
 
         // representation
-        BOOST_STATIC_CONSTANT(int, bits_per_block = num_bits<Block>::value);
+        BOOST_STATIC_CONSTANT(auto, bits_per_block = num_bits<Block>::value);
         static int const count_[];
         static int const index_[];
 };

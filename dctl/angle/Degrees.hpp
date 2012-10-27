@@ -1,8 +1,6 @@
 #pragma once
-#include <boost/mpl/arithmetic.hpp>     // negate, plus
 #include <boost/mpl/int.hpp>            // int_
 #include <dctl/mpl/modular.hpp>         // abs_modulus
-#include <dctl/mpl/transform.hpp>       // inverse, mirror, rotate
 
 namespace dctl {
 namespace angle {
@@ -60,43 +58,4 @@ typedef D270 R090;      // clockwise
 typedef D315 R045;      // clockwise
 
 }       // namespace angle
-
-namespace mpl {
-
-template<int N>
-struct inverse< angle::Degrees<N> >
-:
-        angle::Degrees<  
-                boost::mpl::negate<
-                        boost::mpl::int_<N>
-                >::value
-        >
-{};
-
-template<int N1, int N2>
-struct rotate< angle::Degrees<N1>, angle::Degrees<N2> >
-:
-        angle::Degrees<  
-                boost::mpl::plus<
-                        boost::mpl::int_<N1>,
-                        boost::mpl::int_<N2>
-                >::value
-        >
-{};
-
-template<int N1, int N2>
-struct mirror< angle::Degrees<N1>, angle::Degrees<N2> >
-:
-        rotate<
-                inverse<
-                        rotate<
-                                angle::Degrees<N1>,
-                                inverse< angle::Degrees<N2> >
-                        >
-                >,
-                angle::Degrees<N2>
-        >
-{};
-
-}	// namespace mpl
 }       // namespace dctl

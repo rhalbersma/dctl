@@ -7,7 +7,7 @@
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/mpl/logical.hpp>        // and
 #include <boost/utility.hpp>            // noncopyable
-#include <dctl/angle/Traits.hpp>
+#include <dctl/angle/traits.hpp>
 #include <dctl/bit/Bit.hpp>
 #include <dctl/board/Shift.hpp>
 #include <dctl/node/Material.hpp>

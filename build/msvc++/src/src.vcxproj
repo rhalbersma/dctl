@@ -11,10 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\dctl\angle\Cyclic.hpp" />
     <ClInclude Include="..\..\..\dctl\angle\Degrees.hpp" />
-    <ClInclude Include="..\..\..\dctl\angle\Traits.hpp" />
-    <ClInclude Include="..\..\..\dctl\angle\Traits_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\angle\traits.hpp" />
+    <ClInclude Include="..\..\..\dctl\angle\traits_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\angle\transform.hpp" />
+    <ClInclude Include="..\..\..\dctl\angle\transform_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\bit\Bit.hpp" />
     <ClInclude Include="..\..\..\dctl\bit\Bit_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\bit\Lookup.hpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="..\..\..\dctl\factory\Registry.hpp" />
     <ClInclude Include="..\..\..\dctl\group\action.hpp" />
     <ClInclude Include="..\..\..\dctl\group\axioms.hpp" />
+    <ClInclude Include="..\..\..\dctl\group\cyclic.hpp" />
     <ClInclude Include="..\..\..\dctl\group\primitives.hpp" />
     <ClInclude Include="..\..\..\dctl\guarded\is_permutation.hpp" />
     <ClInclude Include="..\..\..\dctl\guarded\parameter.hpp" />
@@ -79,6 +81,7 @@
     <ClInclude Include="..\..\..\dctl\mpl\lazy.hpp" />
     <ClInclude Include="..\..\..\dctl\mpl\modular.hpp" />
     <ClInclude Include="..\..\..\dctl\mpl\transform.hpp" />
+    <ClInclude Include="..\..\..\dctl\mpl\transform_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\mpl\type_traits.hpp" />
     <ClInclude Include="..\..\..\dctl\node\BinaryProjections.hpp" />
     <ClInclude Include="..\..\..\dctl\node\BinaryProjections_fwd.hpp" />

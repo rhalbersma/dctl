@@ -120,22 +120,10 @@
     <ClCompile Include="..\..\..\test\walk\italian\Gilbert.cpp">
       <Filter>Source Files\walk\italian</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\test\angle\Degrees.cpp">
-      <Filter>Source Files\angle</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\test\angle\Traits.cpp">
-      <Filter>Source Files\angle</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\test\mpl\algorithm.cpp">
       <Filter>Source Files\mpl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\test\mpl\type_traits.cpp">
-      <Filter>Source Files\mpl</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\test\group\axioms.cpp">
-      <Filter>Source Files\group</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\test\group\action.cpp">
       <Filter>Source Files\group</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\test\board\Coordinates.cpp">
@@ -152,6 +140,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\test\bit\Loop.cpp">
       <Filter>Source Files\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\angle\traits.cpp">
+      <Filter>Source Files\angle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\angle\Degrees.cpp">
+      <Filter>Source Files\angle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\angle\transform.cpp">
+      <Filter>Source Files\angle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
