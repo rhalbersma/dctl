@@ -7,7 +7,7 @@
 #include <dctl/board/Dimensions.hpp>
 #include <dctl/board/Coordinates.hpp>
 #include <dctl/board/Grid.hpp>
-#include <dctl/angle/Traits.hpp>
+#include <dctl/angle/traits.hpp>
 #include <dctl/mpl/transform.hpp>
 #include <dctl/mpl/type_traits.hpp>
 

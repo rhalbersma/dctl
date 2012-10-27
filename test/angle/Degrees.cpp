@@ -1,24 +1,27 @@
-#include <type_traits>                  // is_same
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
-#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/angle/Degrees.hpp>       // D045, D090, D135, D225, D270, D315
-#include <dctl/mpl/transform.hpp>       // mirror
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE
+#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
+#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
+#include <boost/mpl/vector.hpp>                 // vector
+#include <dctl/angle/Degrees.hpp>               // D000, D045, D090, D135, D180, D225, D270, D315
+#include <dctl/group/action.hpp>                // is_realized
+#include <dctl/group/cyclic.hpp>                // C1, C2, C4, C8
 
 namespace dctl {
 namespace angle {
 
 BOOST_AUTO_TEST_SUITE(TestDegrees)
 
-BOOST_AUTO_TEST_CASE(testMirrorUp)
-{
-        BOOST_MPL_ASSERT(( std::is_same< mpl::mirror< D045, D090 >::type, D135 > ));
-        BOOST_MPL_ASSERT(( std::is_same< mpl::mirror< D135, D090 >::type, D045 > ));
-}
+typedef boost::mpl::vector<
+        D000, D045, D090, D135,
+        D180, D225, D270, D315
+> DegreesSequence;
 
-BOOST_AUTO_TEST_CASE(testMirrorDown)
+BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, DegreesSequence)
 {
-        BOOST_MPL_ASSERT(( std::is_same< mpl::mirror< D225, D270 >::type, D315 > ));
-        BOOST_MPL_ASSERT(( std::is_same< mpl::mirror< D315, D270 >::type, D225 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, group::C1 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, group::C2 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, group::C4 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, group::C8 > ));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

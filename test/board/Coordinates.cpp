@@ -6,8 +6,8 @@
 #include <dctl/board/Coordinates.hpp>           // Coordinates
 #include <dctl/board/Dimensions.hpp>            // Dimensions
 #include <dctl/board/Grid.hpp>                  // Grid
-#include <dctl/angle/Cyclic.hpp>                // C1, C2, C4
 #include <dctl/group/action.hpp>                // is_realized
+#include <dctl/group/cyclic.hpp>                // C1, C2, C4
 
 namespace dctl {
 namespace board {
@@ -24,9 +24,9 @@ typedef boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, CoordinatesSequence)
 {
-        BOOST_MPL_ASSERT(( group::action::is_realized< T, angle::C1 > ));
-        BOOST_MPL_ASSERT(( group::action::is_realized< T, angle::C2 > ));
-        BOOST_MPL_ASSERT(( group::action::is_realized< T, angle::C4 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, group::C1 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, group::C2 > ));
+        BOOST_MPL_ASSERT(( group::action::is_realized< T, group::C4 > ));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

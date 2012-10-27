@@ -93,16 +93,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\dctl\angle\Cyclic.hpp">
-      <Filter>Header Files\angle</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\dctl\angle\Degrees.hpp">
-      <Filter>Header Files\angle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\angle\Traits.hpp">
-      <Filter>Header Files\angle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\angle\Traits_fwd.hpp">
       <Filter>Header Files\angle</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\bit\Bit.hpp">
@@ -118,12 +109,6 @@
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\Compass.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\board\Coordinates.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\board\Dimensions.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\Grid.hpp">
@@ -722,6 +707,30 @@
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\bit\Lookup.hpp">
       <Filter>Header Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\angle\transform.hpp">
+      <Filter>Header Files\angle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\mpl\transform_fwd.hpp">
+      <Filter>Header Files\mpl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\angle\transform_fwd.hpp">
+      <Filter>Header Files\angle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\angle\traits.hpp">
+      <Filter>Header Files\angle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\angle\traits_fwd.hpp">
+      <Filter>Header Files\angle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\group\cyclic.hpp">
+      <Filter>Header Files\group</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Coordinates.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Dimensions.hpp">
+      <Filter>Header Files\board</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

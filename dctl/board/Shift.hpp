@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/mpl/int.hpp>            // int_
-#include <dctl/angle/Traits.hpp>
+#include <dctl/angle/traits.hpp>
 #include <dctl/rules/Enum.hpp>
 
 namespace dctl {

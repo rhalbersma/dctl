@@ -1,17 +1,19 @@
 #pragma once
-#include <dctl/mpl/lazy.hpp>            // LAZY_UNARY_METAFUNCTION
+#include <dctl/mpl/lazy.hpp>            // DCTL_PP_DEFINE_LAZY_UNARY_METAFUNCTION
 
 namespace dctl {
 namespace angle {
 
-LAZY_UNARY_METAFUNCTION(is_orthogonal)
-LAZY_UNARY_METAFUNCTION(is_diagonal)
-LAZY_UNARY_METAFUNCTION(is_up)
-LAZY_UNARY_METAFUNCTION(is_down)
-LAZY_UNARY_METAFUNCTION(is_left)
-LAZY_UNARY_METAFUNCTION(is_right)
-LAZY_UNARY_METAFUNCTION(is_positive)
-LAZY_UNARY_METAFUNCTION(is_negative)
+// primary template definitions
+
+DCTL_PP_DEFINE_LAZY_UNARY_METAFUNCTION(is_orthogonal)
+DCTL_PP_DEFINE_LAZY_UNARY_METAFUNCTION(is_diagonal)
+DCTL_PP_DEFINE_LAZY_UNARY_METAFUNCTION(is_up)
+DCTL_PP_DEFINE_LAZY_UNARY_METAFUNCTION(is_down)
+DCTL_PP_DEFINE_LAZY_UNARY_METAFUNCTION(is_left)
+DCTL_PP_DEFINE_LAZY_UNARY_METAFUNCTION(is_right)
+DCTL_PP_DEFINE_LAZY_UNARY_METAFUNCTION(is_positive)
+DCTL_PP_DEFINE_LAZY_UNARY_METAFUNCTION(is_negative)
 
 }       // namespace angle
 }       // namespace dctl

@@ -2,7 +2,7 @@
 #include <boost/mpl/bool.hpp>           // bool_
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <dctl/angle/Degrees.hpp>
-#include <dctl/mpl/transform.hpp>
+#include <dctl/angle/transform.hpp>
 
 namespace dctl {
 
