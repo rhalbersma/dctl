@@ -117,12 +117,6 @@
     <ClInclude Include="..\..\..\dctl\board\Compass.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\board\MetaTemplates.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\board\Predicates.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\Shift.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
@@ -754,6 +748,24 @@
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\Grid_fwd.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\iterator.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\patterns.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\algorithm.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\predicates.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Init_fwd.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Init.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
   </ItemGroup>

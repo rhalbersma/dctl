@@ -7,7 +7,7 @@
 #include <dctl/successor/Select.hpp>
 #include <dctl/bit/Bit.hpp>
 #include <dctl/board/Compass.hpp>
-#include <dctl/board/Shift.hpp>
+#include <dctl/board/iterator.hpp>
 #include <dctl/node/Material.hpp>
 #include <dctl/node/Stack.hpp>
 #include <dctl/node/UnaryProjections.hpp>
@@ -140,7 +140,7 @@ private:
                 for (
                         auto dest_sq = Next<Board, Direction>()(from_sq);
                         bit::is_element(dest_sq, not_occupied);
-                        Advance<Board, Direction>()(dest_sq)
+                        Increment<Board, Direction>()(dest_sq)
                 )
                         moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
         }

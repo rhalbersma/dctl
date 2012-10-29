@@ -9,7 +9,7 @@
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/angle/traits.hpp>
 #include <dctl/bit/Bit.hpp>
-#include <dctl/board/Shift.hpp>
+#include <dctl/board/iterator.hpp>
 #include <dctl/node/Material.hpp>
 #include <dctl/node/Promotion.hpp>
 #include <dctl/node/Stack.hpp>

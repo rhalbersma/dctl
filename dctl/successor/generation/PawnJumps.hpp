@@ -10,7 +10,7 @@
 #include <dctl/angle/transform.hpp>
 #include <dctl/bit/Bit.hpp>
 #include <dctl/board/Compass.hpp>
-#include <dctl/board/Shift.hpp>
+#include <dctl/board/iterator.hpp>
 #include <dctl/capture/State.hpp>
 #include <dctl/node/Material.hpp>
 #include <dctl/node/Promotion.hpp>
@@ -144,7 +144,7 @@ private:
         template<typename Direction>
         void find_first(BitIndex jumper) const
         {
-                Advance<Board, Direction>()(jumper);
+                Increment<Board, Direction>()(jumper);
                 BOOST_ASSERT(bit::is_element(jumper, capture_.template targets_with_pawn<Direction>()));
                 capture_.make(jumper);
                 precedence<Direction>(jumper); // recursively find more jumps
@@ -162,7 +162,7 @@ private:
         template<typename Direction>
         void precedence_dispatch(BitIndex jumper, boost::mpl::false_) const
         {
-                Advance<Board, Direction>()(jumper);
+                Increment<Board, Direction>()(jumper);
                 if (!find_next<Direction>(jumper))
                         add_pawn_jump(jumper);
         }
@@ -171,7 +171,7 @@ private:
         template<typename Direction>
         void precedence_dispatch(BitIndex jumper, boost::mpl::true_) const
         {
-                Advance<Board, Direction>()(jumper);
+                Increment<Board, Direction>()(jumper);
                 if (
                         !find_next<Direction>(jumper) &&
                         capture_.greater_equal()
@@ -300,7 +300,7 @@ private:
         template<typename Direction>
         bool scan(BitIndex jumper) const
         {
-                Advance<Board, Direction>()(jumper);
+                Increment<Board, Direction>()(jumper);
                 return jump<Direction>(jumper);
         }
 
