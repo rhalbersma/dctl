@@ -81,25 +81,12 @@ BOOST_FIXTURE_TEST_CASE(TestJumpFirstKing, FixtureItalian)
         std::string const legal[] = { "30x5" };
         run(FEN, legal);
 }
+
 BOOST_FIXTURE_TEST_CASE(TestEquivalentJump, FixtureItalian)
 {
         // Art. 6.10 (equivalent jump)
         auto const FEN = "W:WK31:B18,20,K27,K28";
         std::string const legal[] = { "31x13", "31x15" };
-        run(FEN, legal);
-}
-
-BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE(TestAliotoDomenico)
-
-// suggested by Alioto Domenico in email to Ed Gilbert
-
-BOOST_FIXTURE_TEST_CASE(TestJumpFirstKing, FixtureItalian)
-{
-        // generalizes the "jump first king" rule (Art. 6.9)
-        auto const FEN = "W:WK30:B10,K12,K18,20,K26,K27";
-        std::string const legal[] = { "30x5" };
         run(FEN, legal);
 }
 

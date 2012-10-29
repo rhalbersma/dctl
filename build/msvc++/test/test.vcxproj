@@ -176,6 +176,7 @@
     <ClCompile Include="..\..\..\test\search\initial\International.cpp" />
     <ClCompile Include="..\..\..\test\search\Score.cpp" />
     <ClCompile Include="..\..\..\test\setup\Wesselink.cpp" />
+    <ClCompile Include="..\..\..\test\successor\regressions\Italian.cpp" />
     <ClCompile Include="..\..\..\test\successor\rulebook\International.cpp" />
     <ClCompile Include="..\..\..\test\successor\rulebook\Italian.cpp" />
     <ClCompile Include="..\..\..\test\test_main.cpp" />
