@@ -20,6 +20,7 @@
     <ClInclude Include="..\..\..\dctl\bit\Bit_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\bit\Lookup.hpp" />
     <ClInclude Include="..\..\..\dctl\bit\Loop.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\algorithm.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Board.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Compass.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Coordinates.hpp" />
@@ -30,8 +31,11 @@
     <ClInclude Include="..\..\..\dctl\board\Dimensions\transform_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Grid.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Grid_fwd.hpp" />
-    <ClInclude Include="..\..\..\dctl\board\MetaTemplates.hpp" />
-    <ClInclude Include="..\..\..\dctl\board\Predicates.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\Init_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\iterator.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\Init.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\patterns.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\predicates.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Shift.hpp" />
     <ClInclude Include="..\..\..\dctl\board\ShiftSize.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Structure.hpp" />

@@ -4,7 +4,7 @@
 #include <dctl/successor/Select.hpp>
 #include <dctl/bit/Bit.hpp>
 #include <dctl/board/Compass.hpp>
-#include <dctl/board/Shift.hpp>
+#include <dctl/board/patterns.hpp>
 #include <dctl/node/Material.hpp>
 #include <dctl/node/UnaryProjections.hpp>
 #include <dctl/rules/Enum.hpp>
@@ -82,7 +82,6 @@ private:
         template<typename Direction>
         bool parallelize(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied) const
         {
-                // partial specializations of Sandwich for king range
                 return !bit::is_zero(
                         Sandwich<Board, Direction, Range>()(active_kings, passive_pieces, not_occupied)
                 );

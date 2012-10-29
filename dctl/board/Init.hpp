@@ -7,7 +7,8 @@
 #include <boost/mpl/integral_c.hpp>     // integral_c
 #include <boost/mpl/next_prior.hpp>     // prior
 #include <boost/mpl/placeholders.hpp>   // _1
-#include <dctl/board/Predicates.hpp>
+#include <dctl/board/Init_fwd.hpp>      // Init (primary template and partial specialization declarations)
+#include <dctl/board/predicates.hpp>
 #include <dctl/utility/IntegerTypes.hpp>
 
 namespace dctl {
@@ -26,28 +27,7 @@ struct Test
         >
 {};
 
-/*
-        // NOTE: on Microsoft Visual C++ 2012 Express,dbrm2 we get a
-        // fatal error C1202: recursive type or function dependency context too complex
-        typename Square = typename boost::mpl::minus< typename
-                Board::ExternalGrid::size, 
-                boost::mpl::int_<1> 
-        >::type
-*/
-template
-<
-        typename Board,
-        typename Predicate,
-        typename Square = boost::mpl::int_<Board::ExternalGrid::size::value - 1>
->
-struct Init;
-
-template<typename Board, typename Predicate>
-struct Init<Board, Predicate, boost::mpl::int_<0> >
-:
-        Test< Board, Predicate, boost::mpl::int_<0> >
-{};
-
+// primary template definition
 template<typename Board, typename Predicate, typename Square>
 struct Init
 :
@@ -55,6 +35,13 @@ struct Init
                 Init< Board, Predicate, typename boost::mpl::prior<Square>::type >,
                 Test< Board, Predicate, Square >
         >
+{};
+
+// partial specialization definition
+template<typename Board, typename Predicate>
+struct Init<Board, Predicate, boost::mpl::int_<0> >
+:
+        Test< Board, Predicate, boost::mpl::int_<0> >
 {};
 
 /*

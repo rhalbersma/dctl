@@ -152,7 +152,7 @@ private:
         template<typename Direction>
         void precedence_dispatch(BitIndex jumper, boost::mpl::false_) const
         {
-                Advance<Board, Direction>()(jumper);
+                Increment<Board, Direction>()(jumper);
                 if (!find_next<Direction>(jumper))
                         add_king_jump<Direction>(jumper);
         }
@@ -161,7 +161,7 @@ private:
         template<typename Direction>
         void precedence_dispatch(BitIndex jumper, boost::mpl::true_) const
         {
-                Advance<Board, Direction>()(jumper);
+                Increment<Board, Direction>()(jumper);
                 if (
                         !find_next<Direction>(jumper) &&
                         capture_.greater_equal()
@@ -236,7 +236,7 @@ private:
                 auto found_next = false;
                 do {
                         found_next |= turn<Direction>(jumper);
-                        Advance<Board, Direction>()(jumper);
+                        Increment<Board, Direction>()(jumper);
                 } while (bit::is_element(jumper, capture_.path()));
                 return found_next |= jump<Direction>(jumper);
         }
@@ -298,14 +298,14 @@ private:
         template<typename Direction>
         void slide_dispatch(BitIndex& jumper, BitBoard /* path */, rules::range::distance_1) const
         {
-                Advance<Board, Direction>()(jumper);
+                Increment<Board, Direction>()(jumper);
         }
 
         // overload for long ranged kings
         template<typename Direction>
         void slide_dispatch(BitIndex& jumper, BitBoard path, rules::range::distance_N) const
         {
-                do Advance<Board, Direction>()(jumper); while (bit::is_element(jumper, path));
+                do Increment<Board, Direction>()(jumper); while (bit::is_element(jumper, path));
         }
 
         template<typename Direction>
@@ -355,7 +355,7 @@ private:
                 BOOST_ASSERT(bit::is_element(dest_sq, capture_.path()));
                 do {
                         add_king_jump(dest_sq, ambiguous);
-                        Advance<Board, Direction>()(dest_sq);
+                        Increment<Board, Direction>()(dest_sq);
                 } while (bit::is_element(dest_sq, capture_.path()));
         }
 

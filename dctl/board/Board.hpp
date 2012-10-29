@@ -4,7 +4,7 @@
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include <dctl/board/dimensions/transform.hpp>
 #include <dctl/board/Grid.hpp>
-#include <dctl/board/MetaTemplates.hpp>
+#include <dctl/board/Init.hpp>
 #include <dctl/board/ShiftSize.hpp>
 #include <dctl/board/Structure.hpp>
 #include <dctl/angle/Degrees.hpp>
@@ -160,12 +160,4 @@ int const Board<Dimensions, Structure>::BIT2SQUARE[] = {
 #undef DCTL_PP_BIT2SQUARE
 
 }       // namespace board
-
-// TODO: use C+11 template aliases
-template<typename Board, typename Direction>
-struct jump_start
-:
-        Board::template jump_start<Direction>
-{};
-
 }       // namespace dctl
