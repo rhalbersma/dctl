@@ -73,6 +73,9 @@
     <Filter Include="Header Files\walk">
       <UniqueIdentifier>{2f7eaa5f-4f46-42c9-bd03-a62fd764bc80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\successor\regressions">
+      <UniqueIdentifier>{adcc599c-054e-40d0-8f16-6d6ce2469c92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\test\test_main.cpp">
@@ -155,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\test\walk\initial\Rectangular.cpp">
       <Filter>Source Files\walk\initial</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\successor\regressions\Italian.cpp">
+      <Filter>Source Files\successor\regressions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
