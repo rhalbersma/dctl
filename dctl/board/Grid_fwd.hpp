@@ -6,13 +6,13 @@ namespace board {
 
 // primary template declaration
 template<typename Dimensions, typename Ghosts>
-struct Ghosts;
+struct Grid;
 
 typedef boost::mpl::int_<0> no_ghosts;
 
 // partial template declaration
 template<typename Dimensions>
-struct Ghosts<Dimensions, no_ghosts>;
+struct Grid<Dimensions, no_ghosts>;
 
 }       // namespace board
 }       // namespace dctl
