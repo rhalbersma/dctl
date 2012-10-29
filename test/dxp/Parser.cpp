@@ -29,10 +29,7 @@ BOOST_AUTO_TEST_CASE(mesanderExamples)
                 GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
         > MessageTypes;
 
-        Factory<
-                MessageTypes,
-                IMessage
-        > factory;
+        Factory<MessageTypes, IMessage> factory;
 
         for (auto const& m: messages) {
                 if (auto const parsed = factory.create(m))

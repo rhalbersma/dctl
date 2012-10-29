@@ -28,7 +28,7 @@ typedef Board< Dimensions<10, 10>, Structure<2, 2> > Frisian;
 // and require internal rotations for 12x10 to fit within 64-bits
 typedef Board< Dimensions<10,  8, true>                                > Spantsireti;
 typedef Board< Dimensions<11, 10, true>, Structure<3, 1>               > Ktar11;
-typedef Board< Dimensions<12, 10, true>, Structure<2, 1, angle::R090 > > Ktar12;
+typedef Board< Dimensions<12, 10, true>, Structure<2, 1, angle::L090 > > Ktar12;
 
 }       // namespace board
 }       // namespace dctl

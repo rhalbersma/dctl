@@ -9,6 +9,7 @@
 
 namespace dctl {
 namespace angle {
+namespace lazy {
 
 /*
 
@@ -98,13 +99,13 @@ struct is_down< Degrees<N> >
 template<int N>
 struct is_left< Degrees<N> >
 :
-        is_down< mpl::rotate< Degrees<N>, L090 > >
+        is_down< mpl::lazy::rotate< Degrees<N>, L090 > >
 {};
 
 template<int N>
 struct is_right< Degrees<N> >
 :
-        is_up< mpl::rotate< Degrees<N>, L090 > >
+        is_up< mpl::lazy::rotate< Degrees<N>, L090 > >
 {};
 
 template<int N>
@@ -127,5 +128,6 @@ struct is_negative< Degrees<N> >
         boost::mpl::not_< is_positive< Degrees<N> > >
 {};
 
+}       // namespace lazy
 }       // namespace angle
 }       // namespace dctl

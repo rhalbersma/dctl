@@ -91,6 +91,12 @@
     <Filter Include="Header Files\angle">
       <UniqueIdentifier>{082d86df-6a16-4db4-9125-f836f1f2d422}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\board\coordinates">
+      <UniqueIdentifier>{6e88944e-1c7d-4d01-9ccf-3435f0481b68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\board\dimensions">
+      <UniqueIdentifier>{bb013ce6-13a1-4c2d-ab9d-b4e19ce9657e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\dctl\angle\Degrees.hpp">
@@ -109,9 +115,6 @@
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\Compass.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\board\Grid.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\MetaTemplates.hpp">
@@ -726,10 +729,31 @@
     <ClInclude Include="..\..\..\dctl\group\cyclic.hpp">
       <Filter>Header Files\group</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Coordinates\transform.hpp">
+      <Filter>Header Files\board\coordinates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Coordinates\transform_fwd.hpp">
+      <Filter>Header Files\board\coordinates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Dimensions\transform.hpp">
+      <Filter>Header Files\board\dimensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Dimensions\transform_fwd.hpp">
+      <Filter>Header Files\board\dimensions</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\Coordinates.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\Dimensions.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Grid.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\ShiftSize.hpp">
+      <Filter>Header Files\board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Grid_fwd.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
   </ItemGroup>

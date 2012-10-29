@@ -7,6 +7,7 @@
 
 namespace dctl {
 namespace angle {
+namespace lazy {
 
 BOOST_AUTO_TEST_SUITE(TestTraits)
 
@@ -92,5 +93,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsNegative, T, NegativeAngles)
 
 BOOST_AUTO_TEST_SUITE_END()
 
+}       // namespace lazy
 }       // namespace angle
 }       // namespace dctl

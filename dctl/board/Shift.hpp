@@ -78,7 +78,7 @@ struct Next
         Iterator operator()(Iterator square) const
         {
                 return (Shift< typename
-                        angle::is_positive<Direction>::type, typename
+                        angle::lazy::is_positive<Direction>::type, typename
                         shift_size<Board, Direction>::type
                 >()(square));
         }
@@ -92,7 +92,7 @@ struct Prev
         Iterator operator()(Iterator square) const
         {
                 return (Shift< typename
-                        angle::is_negative<Direction>::type, typename
+                        angle::lazy::is_negative<Direction>::type, typename
                         shift_size<Board, Direction>::type
                 >()(square));
         }
@@ -105,7 +105,7 @@ struct Advance
         void operator()(Iterator& square) const
         {
                 ShiftAssign< typename
-                        angle::is_positive<Direction>::type, typename
+                        angle::lazy::is_positive<Direction>::type, typename
                         shift_size<Board, Direction>::type
                 >()(square);
         }
@@ -138,7 +138,7 @@ struct FloodFill
         T operator()(T generator, T propagator) const
         {
                 return (flood_fill< typename
-                        angle::is_positive<Direction>::type, typename 
+                        angle::lazy::is_positive<Direction>::type, typename 
                         shift_size<Board, Direction>::type
                 >(generator, propagator));
         }

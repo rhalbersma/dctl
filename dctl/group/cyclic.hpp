@@ -12,27 +12,27 @@ typedef tuple<
         boost::mpl::vector<
                 angle::D000
         >,
-        boost::mpl::quote2< mpl::rotate >,
+        boost::mpl::quote2< mpl::lazy::rotate >,
         angle::D000,
-        boost::mpl::quote1< mpl::inverse >
+        boost::mpl::quote1< mpl::lazy::inverse >
 > C1;
 
 typedef tuple<
         boost::mpl::vector<
                 angle::D000, angle::D180
         >,
-        boost::mpl::quote2< mpl::rotate >,
+        boost::mpl::quote2< mpl::lazy::rotate >,
         angle::D000,
-        boost::mpl::quote1< mpl::inverse >
+        boost::mpl::quote1< mpl::lazy::inverse >
 > C2;
 
 typedef tuple<
         boost::mpl::vector<
                 angle::D000, angle::D090, angle::D180, angle::D270
         >,
-        boost::mpl::quote2< mpl::rotate >,
+        boost::mpl::quote2< mpl::lazy::rotate >,
         angle::D000,
-        boost::mpl::quote1< mpl::inverse >
+        boost::mpl::quote1< mpl::lazy::inverse >
 > C4;
 
 typedef tuple<
@@ -40,9 +40,9 @@ typedef tuple<
                 angle::D000, angle::D045, angle::D090, angle::D135,
                 angle::D180, angle::D225, angle::D270, angle::D315
         >,
-        boost::mpl::quote2< mpl::rotate >,
+        boost::mpl::quote2< mpl::lazy::rotate >,
         angle::D000,
-        boost::mpl::quote1< mpl::inverse >
+        boost::mpl::quote1< mpl::lazy::inverse >
 > C8;
 
 }       // namespace group

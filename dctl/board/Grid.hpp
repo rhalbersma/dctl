@@ -4,15 +4,16 @@
 #include <boost/mpl/logical.hpp>        // not_
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
-#include <dctl/angle/Degrees.hpp>
+#include <dctl/board/Grid_fwd.hpp>      // primary template and partial specialization declarations
 
 namespace dctl {
 namespace board {
 
+// primary template definition
 template
 <
-        typename Dimensions,                    // dimensions
-        typename Ghosts = boost::mpl::int_<0>   // ghost columns
+        typename Dimensions,    // dimensions
+        typename Ghosts         // number of ghost columns
 >
 struct Grid
 :
@@ -21,7 +22,7 @@ struct Grid
 public:
         BOOST_STATIC_ASSERT(Ghosts::value > 0);
 
-        typedef Grid<Dimensions> BaseGrid;
+        typedef Grid<Dimensions, no_ghosts> BaseGrid;
 
         // diagonal directions
 
@@ -104,9 +105,9 @@ public:
         > size;
 };
 
-// partial specialization for grids without ghost columns
+// partial specialization definition
 template<typename Dimensions>
-class Grid< Dimensions, boost::mpl::int_<0> >
+struct Grid< Dimensions, no_ghosts >
 :
         public Dimensions
 {
@@ -190,18 +191,6 @@ public:
         );
         */
 };
-
-template<typename Grid, typename Direction>
-struct ShiftSize;
-
-template< typename Grid > struct ShiftSize< Grid, angle::D000 >: Grid::right      {};
-template< typename Grid > struct ShiftSize< Grid, angle::D045 >: Grid::right_up   {};
-template< typename Grid > struct ShiftSize< Grid, angle::D090 >: Grid::up         {};
-template< typename Grid > struct ShiftSize< Grid, angle::D135 >: Grid::left_up    {};
-template< typename Grid > struct ShiftSize< Grid, angle::D180 >: Grid::left       {};
-template< typename Grid > struct ShiftSize< Grid, angle::D225 >: Grid::left_down  {};
-template< typename Grid > struct ShiftSize< Grid, angle::D270 >: Grid::down       {};
-template< typename Grid > struct ShiftSize< Grid, angle::D315 >: Grid::right_down {};
 
 }       // namespace board
 }       // namespace dctl

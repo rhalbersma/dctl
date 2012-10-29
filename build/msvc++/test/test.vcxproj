@@ -160,6 +160,7 @@
     <ClCompile Include="..\..\..\test\bit\Loop.cpp" />
     <ClCompile Include="..\..\..\test\board\Coordinates.cpp" />
     <ClCompile Include="..\..\..\test\board\Dimensions.cpp" />
+    <ClCompile Include="..\..\..\test\board\Grid.cpp" />
     <ClCompile Include="..\..\..\test\dxp\Parser.cpp" />
     <ClCompile Include="..\..\..\test\group\axioms.cpp" />
     <ClCompile Include="..\..\..\test\mpl\algorithm.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="..\..\..\test\test_main.cpp" />
     <ClCompile Include="..\..\..\test\utility\algorithm.cpp" />
     <ClCompile Include="..\..\..\test\walk\initial\Board8x8.cpp" />
+    <ClCompile Include="..\..\..\test\walk\initial\Rectangular.cpp" />
     <ClCompile Include="..\..\..\test\walk\international\FMJD.cpp" />
     <ClCompile Include="..\..\..\test\walk\italian\Gilbert.cpp" />
   </ItemGroup>

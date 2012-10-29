@@ -6,11 +6,11 @@
 #include <dctl/successor/generation/Generator_fwd.hpp>
 #include <dctl/successor/Select.hpp>
 #include <dctl/angle/Degrees.hpp>
+#include <dctl/angle/transform.hpp>
 #include <dctl/bit/Bit.hpp>
 #include <dctl/board/Compass.hpp>
 #include <dctl/board/Shift.hpp>
 #include <dctl/capture/State.hpp>
-#include <dctl/mpl/transform.hpp>
 #include <dctl/node/Material.hpp>
 #include <dctl/rules/Enum.hpp>
 #include <dctl/utility/IntegerTypes.hpp>
@@ -263,8 +263,8 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan< typename mpl::rotate< Direction, angle::R090 >::type >(jumper) |
-                        scan< typename mpl::rotate< Direction, angle::L090 >::type >(jumper)
+                        scan< typename mpl::lazy::rotate< Direction, angle::R090 >::type >(jumper) |
+                        scan< typename mpl::lazy::rotate< Direction, angle::L090 >::type >(jumper)
                 );
         }
 
@@ -273,10 +273,10 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan< typename mpl::rotate< Direction, angle::R045 >::type >(jumper) |
-                        scan< typename mpl::rotate< Direction, angle::L045 >::type >(jumper) |
-                        scan< typename mpl::rotate< Direction, angle::R135 >::type >(jumper) |
-                        scan< typename mpl::rotate< Direction, angle::L135 >::type >(jumper)
+                        scan< typename mpl::lazy::rotate< Direction, angle::R045 >::type >(jumper) |
+                        scan< typename mpl::lazy::rotate< Direction, angle::L045 >::type >(jumper) |
+                        scan< typename mpl::lazy::rotate< Direction, angle::R135 >::type >(jumper) |
+                        scan< typename mpl::lazy::rotate< Direction, angle::L135 >::type >(jumper)
                 );
         }
 

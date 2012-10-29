@@ -7,6 +7,7 @@ namespace algorithm {
 
 // non-mutating sequence algorithms
 
+// O(N) complexity
 template<typename InputIterator, typename EqualityComparable>
 bool contains(InputIterator first, InputIterator last, EqualityComparable const& value)
 {
@@ -15,6 +16,7 @@ bool contains(InputIterator first, InputIterator last, EqualityComparable const&
 
 // mutating sequence algorithms
 
+// O(N) complexity
 template<typename OutputIterator, typename Size, typename Assignable>
 void iota_n(OutputIterator first, Size n, Assignable value)
 {
@@ -23,8 +25,9 @@ void iota_n(OutputIterator first, Size n, Assignable value)
         });
 }
 
-// sorting
+// sorting algorithms
 
+// O(N^2) complexity
 template<typename ForwardIterator>
 void insertion_sort(ForwardIterator first, ForwardIterator last)
 {
@@ -34,6 +37,7 @@ void insertion_sort(ForwardIterator first, ForwardIterator last)
         }
 }
 
+// O(N^2) complexity
 template<typename ForwardIterator>
 void selection_sort(ForwardIterator first, ForwardIterator last)
 {

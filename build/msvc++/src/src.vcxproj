@@ -23,11 +23,17 @@
     <ClInclude Include="..\..\..\dctl\board\Board.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Compass.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Coordinates.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\Coordinates\transform.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\Coordinates\transform_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Dimensions.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\Dimensions\transform.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\Dimensions\transform_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Grid.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\Grid_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\board\MetaTemplates.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Predicates.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Shift.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\ShiftSize.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Structure.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Types.hpp" />
     <ClInclude Include="..\..\..\dctl\capture\Damme.hpp" />
