@@ -17,9 +17,9 @@ public:
         template<typename T>
         static int count(T t)
         {
-                auto const num_blocks = sizeof(T) / sizeof(Block);
+                int const num_blocks = sizeof(T) / sizeof(Block);
                 auto n = 0;
-                for (std::size_t i = 0; i < num_blocks; ++i)
+                for (auto i = 0; i < num_blocks; ++i)
                         n += count_[block(t, i)];
                 return (n);
         }
@@ -28,8 +28,8 @@ public:
         static int index(T t)
         {
                 BOOST_ASSERT(is_single(t));
-                auto const num_blocks = sizeof(T) / sizeof(Block);
-                for (std::size_t i = 0; i < num_blocks; ++i)
+                int const num_blocks = sizeof(T) / sizeof(Block);
+                for (auto i = 0; i < num_blocks; ++i)
                         if (auto const b = block(t, i))
                                 return (offset<T>(i) + index_[b]);
                 BOOST_ASSERT(false);
@@ -38,10 +38,10 @@ public:
 
 private:
         // implementation
+
         template<typename T>
         static Block block(T t, int i)
         {
-                BOOST_ASSERT(0 <= i && i < (sizeof(T) / sizeof(Block)));
                 return (static_cast<Block>(t >> (i * bits_per_block)));
         }
 
@@ -52,7 +52,8 @@ private:
         }
 
         // representation
-        BOOST_STATIC_CONSTANT(auto, bits_per_block = num_bits<Block>::value);
+
+        BOOST_STATIC_CONSTANT(int, bits_per_block = num_bits<Block>::value);
         static int const count_[];
         static int const index_[];
 };
