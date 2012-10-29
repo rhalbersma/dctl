@@ -235,7 +235,7 @@ private:
         }
 
         // 32-byte hash entries: 24-byte piece lists signature, 8-byte (59-bit leafs, 5-bit depth) content
-        // 2-way buckets on 64-byte cache lines, 2 * 2^23 buckets (= 1 Gb)
+        // 8-way buckets on 64-byte cache lines, (2^25 entries = 1 Gb)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
         typedef hash::DualMap<Material, Transposition> TranspositionTable;
         TranspositionTable TT;
