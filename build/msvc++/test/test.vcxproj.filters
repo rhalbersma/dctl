@@ -182,7 +182,7 @@
     <ClInclude Include="..\..\..\test\walk\Fixture.hpp">
       <Filter>Header Files\walk</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\test\successor\Fixture.hpp">
+    <ClInclude Include="..\..\..\test\search\Fixture.hpp">
       <Filter>Header Files\search</Filter>
     </ClInclude>
   </ItemGroup>

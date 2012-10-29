@@ -145,8 +145,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\test\Boost_pch.hpp" />
     <ClInclude Include="..\..\..\test\precompiled.hpp" />
+    <ClInclude Include="..\..\..\test\search\Fixture.hpp" />
     <ClInclude Include="..\..\..\test\STL_pch.hpp" />
-    <ClInclude Include="..\..\..\test\successor\Fixture.hpp" />
     <ClInclude Include="..\..\..\test\successor\rulebook\Fixture.hpp" />
     <ClInclude Include="..\..\..\test\test_config.hpp" />
     <ClInclude Include="..\..\..\test\walk\Fixture.hpp" />
