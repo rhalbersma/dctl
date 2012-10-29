@@ -2,12 +2,13 @@
 #include <boost/mpl/arithmetic.hpp>             // plus
 #include <boost/mpl/int.hpp>                    // int_
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
+#include <dctl/board/dimensions/transform.hpp>
 #include <dctl/board/Grid.hpp>
 #include <dctl/board/MetaTemplates.hpp>
+#include <dctl/board/ShiftSize.hpp>
 #include <dctl/board/Structure.hpp>
 #include <dctl/angle/Degrees.hpp>
 #include <dctl/bit/Bit.hpp>
-#include <dctl/mpl/transform.hpp>
 #include <dctl/node/Side.hpp>
 #include <dctl/utility/IntegerTypes.hpp>
 
@@ -26,9 +27,9 @@ struct Board
 {
 public:
         // external and internal grids
-        typedef Grid<Dimensions> ExternalGrid;
+        typedef Grid<Dimensions, no_ghosts> ExternalGrid;
         typedef Grid<typename
-                mpl::rotate<
+                mpl::lazy::rotate<
                         Dimensions, typename
                         Structure::full_angle
                 >::type, typename
@@ -46,7 +47,7 @@ public:
         template<typename Direction>
         struct jump_start
         :
-                init_jump_start< Board, mpl::rotate< Direction, typename Structure::full_angle > >
+                init_jump_start< Board, mpl::lazy::rotate< Direction, typename Structure::full_angle > >
         {};
 
         static bool is_valid(int square)

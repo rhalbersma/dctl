@@ -312,7 +312,7 @@ private:
         {
                 return (remaining_targets_dispatch(
                         boost::mpl::and_<
-                                angle::is_orthogonal<Direction>,
+                                angle::lazy::is_orthogonal<Direction>,
                                 std::is_same<
                                         typename Rules::king_jump_orthogonality,
                                         rules::orthogonality::relative

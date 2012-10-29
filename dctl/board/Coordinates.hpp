@@ -5,8 +5,6 @@
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // not_
-#include <dctl/angle/Degrees.hpp>
-#include <dctl/mpl/transform.hpp>
 
 namespace dctl {
 namespace board {
@@ -156,68 +154,4 @@ public:
 };
 
 }       // namespace board
-
-namespace mpl {
-
-// partial specialization for identity rotations
-template<typename Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
-:
-        board::Coordinates<
-                Grid,
-                Row,
-                Column
-        >
-{};
-
-// partial specialization for 90 degrees left rotations
-template<typename Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
-:
-        board::Coordinates<
-                Grid,
-                Column,
-                boost::mpl::minus< typename
-                        Grid::height,
-                        boost::mpl::int_<1>,
-                        boost::mpl::int_<Row>
-                >::value
-        >
-{};
-
-// partial specialization for 90 degrees right rotations
-template<typename Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
-:
-        board::Coordinates<
-                Grid,
-                boost::mpl::minus< typename
-                        Grid::width,
-                        boost::mpl::int_<1>,
-                        boost::mpl::int_<Column>
-                >::value,
-                Row
-        >
-{};
-
-// partial specialization for 180 degrees rotations
-template<typename Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
-:
-        board::Coordinates<
-                Grid,
-                boost::mpl::minus< typename
-                        Grid::height,
-                        boost::mpl::int_<1>,
-                        boost::mpl::int_<Row>
-                >::value,
-                boost::mpl::minus< typename
-                        Grid::width,
-                        boost::mpl::int_<1>,
-                        boost::mpl::int_<Column>
-                >::value
-        >
-{};
-
-}	// namespace mpl
 }       // namespace dctl

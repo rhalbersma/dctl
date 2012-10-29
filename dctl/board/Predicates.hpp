@@ -6,9 +6,9 @@
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 #include <dctl/board/Dimensions.hpp>
 #include <dctl/board/Coordinates.hpp>
+#include <dctl/board/coordinates/transform.hpp>
 #include <dctl/board/Grid.hpp>
 #include <dctl/angle/traits.hpp>
-#include <dctl/mpl/transform.hpp>
 #include <dctl/mpl/type_traits.hpp>
 
 namespace dctl {
@@ -171,19 +171,19 @@ struct is_jump_start
                 // row_min <= row < row_max
                 mpl::is_within_range< typename
                         Square2Coordinates< Square<Grid, SQ> >::type::row,
-                        boost::mpl::eval_if< angle::is_up<Direction>, Offset, boost::mpl::int_<0> >,
+                        boost::mpl::eval_if< angle::lazy::is_up<Direction>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
                                 Board::height,
-                                boost::mpl::eval_if< angle::is_down<Direction>, Offset, boost::mpl::int_<0> >
+                                boost::mpl::eval_if< angle::lazy::is_down<Direction>, Offset, boost::mpl::int_<0> >
                         >
                 >,
                 // col_min <= col < col_max
                 mpl::is_within_range< typename
                         Square2Coordinates< Square<Grid, SQ> >::type::col,
-                        boost::mpl::eval_if< angle::is_left<Direction>, Offset, boost::mpl::int_<0> >,
+                        boost::mpl::eval_if< angle::lazy::is_left<Direction>, Offset, boost::mpl::int_<0> >,
                         boost::mpl::minus< typename
                                 Board::width,
-                                boost::mpl::eval_if< angle::is_right<Direction>, Offset, boost::mpl::int_<0> >
+                                boost::mpl::eval_if< angle::lazy::is_right<Direction>, Offset, boost::mpl::int_<0> >
                         >
                 >
         >
@@ -198,7 +198,7 @@ struct is_jump_start
                 Board, Direction, SQ, typename
                 Board::ExternalGrid,
                 boost::mpl::eval_if<
-                        angle::is_diagonal<Direction>,
+                        angle::lazy::is_diagonal<Direction>,
                         boost::mpl::int_<2>,
                         boost::mpl::int_<4>
                 >
@@ -213,11 +213,11 @@ struct transform
         Coordinates2Square<
                 Coordinates<
                         DestGrid,
-                        mpl::rotate<
+                        mpl::lazy::rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
                         >::type::row::value,
-                        mpl::rotate<
+                        mpl::lazy::rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 Angle
                         >::type::col::value

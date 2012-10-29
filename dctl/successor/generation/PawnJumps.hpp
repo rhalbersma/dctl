@@ -7,11 +7,11 @@
 #include <dctl/successor/generation/KingJumps.hpp>                // promote_en_passant
 #include <dctl/successor/Select.hpp>
 #include <dctl/angle/Degrees.hpp>
+#include <dctl/angle/transform.hpp>
 #include <dctl/bit/Bit.hpp>
 #include <dctl/board/Compass.hpp>
 #include <dctl/board/Shift.hpp>
 #include <dctl/capture/State.hpp>
-#include <dctl/mpl/transform.hpp>
 #include <dctl/node/Material.hpp>
 #include <dctl/node/Promotion.hpp>
 #include <dctl/rules/Enum.hpp>
@@ -266,8 +266,8 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan< typename mpl::rotate< Direction, angle::R090 >::type >(jumper) |
-                        scan< typename mpl::rotate< Direction, angle::L090 >::type >(jumper)
+                        scan< typename mpl::lazy::rotate< Direction, angle::R090 >::type >(jumper) |
+                        scan< typename mpl::lazy::rotate< Direction, angle::L090 >::type >(jumper)
                 );
         }
 
@@ -275,14 +275,14 @@ private:
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::up) const
         {
-                return scan< typename mpl::mirror< Direction, typename Compass::up >::type >(jumper);
+                return scan< typename mpl::lazy::mirror< Direction, typename Compass::up >::type >(jumper);
         }
 
         // overload for turns in the 1 mirrored backward direction
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::down) const
         {
-                return scan< typename mpl::mirror< Direction, typename Compass::down >::type >(jumper);
+                return scan< typename mpl::lazy::mirror< Direction, typename Compass::down >::type >(jumper);
         }
 
         // overload for turns in the remaining 4 diagonal or orthogonal directions
@@ -290,10 +290,10 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan< typename mpl::rotate< Direction, angle::R045 >::type >(jumper) |
-                        scan< typename mpl::rotate< Direction, angle::L045 >::type >(jumper) |
-                        scan< typename mpl::rotate< Direction, angle::R135 >::type >(jumper) |
-                        scan< typename mpl::rotate< Direction, angle::L135 >::type >(jumper)
+                        scan< typename mpl::lazy::rotate< Direction, angle::R045 >::type >(jumper) |
+                        scan< typename mpl::lazy::rotate< Direction, angle::L045 >::type >(jumper) |
+                        scan< typename mpl::lazy::rotate< Direction, angle::R135 >::type >(jumper) |
+                        scan< typename mpl::lazy::rotate< Direction, angle::L135 >::type >(jumper)
                 );
         }
 

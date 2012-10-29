@@ -150,6 +150,12 @@
     <ClCompile Include="..\..\..\test\angle\transform.cpp">
       <Filter>Source Files\angle</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\test\board\Grid.cpp">
+      <Filter>Source Files\board</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\walk\initial\Rectangular.cpp">
+      <Filter>Source Files\walk\initial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\test\test_config.hpp">

@@ -1,9 +1,10 @@
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE
-#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/int.hpp>                    // int_
 #include <boost/mpl/vector.hpp>                 // vector
+#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/board/Coordinates.hpp>           // Coordinates
+#include <dctl/board/coordinates/transform.hpp> // rotate
 #include <dctl/board/Dimensions.hpp>            // Dimensions
 #include <dctl/board/Grid.hpp>                  // Grid
 #include <dctl/group/action.hpp>                // is_realized

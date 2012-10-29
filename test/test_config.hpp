@@ -3,7 +3,8 @@
 #define SUCCESSOR_TEST                  1
 
 #define WALK_INITIAL_BOARD8x8           0
-#define WALK_INTERNATIONAL_FMJD         0
+#define WALK_INITIAL_RECTANGULAR        0
+#define WALK_INTERNATIONAL_FMJD         1
 #define WALK_ITALIAN_GILBERT            0
 
 #define SEARCH_EGDB_FRISIAN             0

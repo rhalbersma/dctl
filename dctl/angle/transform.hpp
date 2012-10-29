@@ -7,6 +7,7 @@
 
 namespace dctl {
 namespace mpl {
+namespace lazy {
 
 // NOTE: because inverse, rotate and mirror are LAZY metafunctions, 
 // their primary template definitions need to have been seen at this point
@@ -48,5 +49,6 @@ struct mirror< angle::Degrees<N1>, angle::Degrees<N2> >
         >
 {};
 
+}       // namespace lazy
 }	// namespace mpl
 }       // namespace dctl
