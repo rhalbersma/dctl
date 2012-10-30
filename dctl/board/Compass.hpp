@@ -5,6 +5,7 @@
 #include <dctl/angle/transform.hpp>     // rotate
 
 namespace dctl {
+namespace board {
 
 /*
 
@@ -54,4 +55,5 @@ public:
         typedef typename mpl::lazy::rotate< angle::D315, A >::type right_down;
 };
 
+}       // namespace board
 }       // namespace dctl

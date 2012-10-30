@@ -32,7 +32,7 @@ private:
 
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
-        typedef Compass<Color, Board> Compass;
+        typedef board::Compass<Color, Board> Compass;
         typedef capture::State<Position> State;
 
         // representation
@@ -196,7 +196,7 @@ private:
         template<typename Direction>
         bool reverse(BitIndex jumper) const
         {
-                return scan< typename rotate< Direction, angle::D180 >::type >(jumper);
+                return scan< typename mpl::lazy::rotate< Direction, angle::D180 >::type >(jumper);
         }
 
         template<typename Direction>

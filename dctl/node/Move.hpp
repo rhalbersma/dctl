@@ -17,7 +17,7 @@ namespace detail {
 template<typename T>
 bool is_intersecting_capture(T /* delta */, T /* captured_pieces */, rules::removal::apres_fini)
 {
-        return false;
+        return (false);
 }
 
 // overload for en-passant capture removal
@@ -26,14 +26,14 @@ bool is_intersecting_capture(T delta, T captured_pieces, rules::removal::en_pass
 {
         // [FEN "W:WK25:B8,9,20,23,24"] (Thai draughts)
         // white has to capture 25x20, landing on a square it also captured on
-        return bit::is_single(delta & captured_pieces) && bit::is_multiple(captured_pieces);
+        return (bit::is_single(delta & captured_pieces) && bit::is_multiple(captured_pieces));
 }
 
 // overload for apres-fini promotion
 template<typename T>
 bool is_intersecting_promotion(T /* promotion */, T /* delta */, rules::promotion::apres_fini)
 {
-        return false;
+        return (false);
 }
 
 // overload for en-passant promotion
@@ -42,7 +42,7 @@ bool is_intersecting_promotion(T promotion, T delta, rules::promotion::en_passan
 {
         // [FEN "W:W15:B10,13,20,23"] (Russian draughts)
         // white has to capture 15x15, promoting on its original square
-        return bit::is_single(promotion) && bit::is_zero(delta);
+        return (bit::is_single(promotion) && bit::is_zero(delta));
 }
 
 }       // namespace detail
@@ -51,14 +51,14 @@ template<typename Rules, typename T>
 bool is_intersecting_capture(T delta, T captured_pieces)
 {
         // tag dispatching on capture removal
-        return detail::is_intersecting_capture(delta, captured_pieces, typename Rules::jump_removal());
+        return (detail::is_intersecting_capture(delta, captured_pieces, typename Rules::jump_removal()));
 }
 
 template<typename Rules, typename T>
 bool is_intersecting_promotion(T promotion, T delta)
 {
         // tag dispatching on promotion condition
-        return detail::is_intersecting_promotion(promotion, delta, typename Rules::pawn_promotion());
+        return (detail::is_intersecting_promotion(promotion, delta, typename Rules::pawn_promotion()));
 }
 
 template<typename T>
@@ -70,6 +70,8 @@ struct Move_
 ,       IPieces< Move_, T >
         > >
 {
+        friend class IPieces< ::dctl::Move_, T >;
+
 public:
         // structors
 
@@ -105,7 +107,7 @@ public:
                         delta   // move a king between the from and destination squares
                 );
                 BOOST_ASSERT(tmp.invariant());
-                return tmp;
+                return (tmp);
         }
 
         // pawn move
@@ -120,7 +122,7 @@ public:
                         promotion       // crown a pawn to a king
                 );
                 BOOST_ASSERT(tmp.invariant());
-                return tmp;
+                return (tmp);
         }
 
         // king jump
@@ -135,7 +137,7 @@ public:
                         delta ^ captured_kings  // move a king and remove the captured kings
                 );
                 BOOST_ASSERT(tmp.king_jump_invariant<Rules>(delta, captured_pieces));
-                return tmp;
+                return (tmp);
         }
 
         // pawn jump
@@ -150,7 +152,7 @@ public:
                         promotion ^ captured_kings      // crown a pawn to a king and remove the captured kings
                 );
                 BOOST_ASSERT(tmp.pawn_jump_invariant<Rules>(delta, promotion));
-                return tmp;
+                return (tmp);
         }
 
         // modifiers
@@ -163,7 +165,7 @@ public:
                 pieces_[Side::white] ^= other.pieces(Side::white);
                 kings_ ^= other.kings();
                 BOOST_ASSERT(invariant());
-                return *this;
+                return (*this);
         }
 
         // predicates
@@ -192,48 +194,46 @@ private:
 
         // queries
 
-        friend class IPieces< ::dctl::Move_, T >;
-
         // black or white pawns
         T do_pawns(bool color) const
         {
-                return do_pieces(color) & ~do_kings();
+                return (do_pieces(color) & ~do_kings());
         }
 
         // black or white kings
         T do_kings(bool color) const
         {
-                return do_pieces(color) & do_kings();
+                return (do_pieces(color) & do_kings());
         }
 
         // black or white pieces
         T do_pieces(bool color) const
         {
-                return pieces_[color];
+                return (pieces_[color]);
         }
 
         // black and white pawns
         T do_pawns() const
         {
-                return do_pieces() & ~do_kings();
+                return (do_pieces() & ~do_kings());
         }
 
         // black and white kings
         T do_kings() const
         {
-                return kings_;
+                return (kings_);
         }
 
         // black and white pieces
         T do_pieces() const
         {
-                return do_pieces(Side::black) ^ do_pieces(Side::white);
+                return (do_pieces(Side::black) ^ do_pieces(Side::white));
         }
 
         // king move
         static bool pre_condition(T delta)
         {
-                return bit::is_double(delta);
+                return (bit::is_double(delta));
         }
 
         // pawn move
@@ -285,7 +285,7 @@ private:
         // logical consistency of the representation
         bool invariant() const
         {
-                return side_invariant() && material_invariant();
+                return (side_invariant() && material_invariant());
         }
 
         // logical consistency of a king jump
@@ -311,13 +311,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::is_exclusive(this->pieces(Side::black), this->pieces(Side::white));
+                return (bit::is_exclusive(this->pieces(Side::black), this->pieces(Side::white)));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::is_subset_of(this->kings(), this->pieces());
+                return (bit::is_subset_of(this->kings(), this->pieces()));
         }
 
         // representation

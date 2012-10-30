@@ -24,7 +24,7 @@ private:
         // typedefs
 
         typedef typename Position::board_type Board;
-        typedef Compass<Color, Board> Compass;
+        typedef board::Compass<Color, Board> Compass;
 
 public:
         bool operator()(Position const& p) const
