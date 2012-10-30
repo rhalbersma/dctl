@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/board/Board.hpp>
 #include <dctl/setup/TokenInterface.hpp>
 
 namespace dctl {

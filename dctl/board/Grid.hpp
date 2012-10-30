@@ -92,7 +92,7 @@ public:
                                 >,
                                 boost::mpl::int_<2>
                         >
-                >,
+                >, typename
                 boost::mpl::eval_if<
                         boost::mpl::modulus< typename
                                 Dimensions::height,
@@ -100,7 +100,7 @@ public:
                         >,
                         edge_re,
                         edge_ro
-                >,
+                >::type,
                 boost::mpl::int_<1>
         > size;
 };
@@ -172,7 +172,7 @@ public:
                                 >,
                                 boost::mpl::int_<2>
                         >
-                >,
+                >, typename
                 boost::mpl::eval_if<
                         boost::mpl::modulus< typename
                                 Dimensions::height,
@@ -180,7 +180,7 @@ public:
                         >,
                         edge_re,
                         edge_ro
-                >,
+                >::type,
                 boost::mpl::int_<1>
         > size;
 

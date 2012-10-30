@@ -30,7 +30,7 @@ template<typename Board, typename Color, typename Separation, typename SQ = boos
 struct is_initial
 :
         mpl::is_within_range< typename
-                Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row,
+                Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus< typename
@@ -44,7 +44,7 @@ struct is_initial
                                 >
                         >,
                         boost::mpl::int_<0>
-                >,
+                >::type, typename
                 boost::mpl::eval_if<
                         Color, typename
                         Board::height,
@@ -55,7 +55,7 @@ struct is_initial
                                 >,
                                 boost::mpl::int_<2>
                         >
-                >
+                >::type
         >
 {};
 
@@ -63,7 +63,7 @@ template<typename Board, typename Color, typename Row, typename SQ = boost::mpl:
 struct is_row
 :
         boost::mpl::equal_to< typename
-                Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row,
+                Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus< typename
@@ -72,7 +72,7 @@ struct is_row
                                 Row
                         >,
                         Row
-                >
+                >::type
         >
 {};
 
@@ -80,7 +80,7 @@ template<typename Board, typename Color, typename Column, typename SQ = boost::m
 struct is_col
 :
         boost::mpl::equal_to< typename
-                Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col,
+                Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus< typename
@@ -89,7 +89,7 @@ struct is_col
                                 Column
                         >,
                         Column
-                >
+                >::type
         >
 {};
 
@@ -172,20 +172,36 @@ struct is_jump_start
         boost::mpl::and_<
                 // row_min <= row < row_max
                 mpl::is_within_range< typename
-                        Square2Coordinates< Square<Grid, SQ> >::type::row,
-                        boost::mpl::eval_if< angle::lazy::is_up<Direction>, Offset, boost::mpl::int_<0> >,
+                        Square2Coordinates< Square<Grid, SQ> >::type::row, typename
+                        boost::mpl::eval_if< 
+                                angle::lazy::is_up<Direction>, 
+                                Offset, 
+                                boost::mpl::int_<0> 
+                        >::type,
                         boost::mpl::minus< typename
-                                Board::height,
-                                boost::mpl::eval_if< angle::lazy::is_down<Direction>, Offset, boost::mpl::int_<0> >
+                                Board::height, typename
+                                boost::mpl::eval_if< 
+                                        angle::lazy::is_down<Direction>, 
+                                        Offset, 
+                                        boost::mpl::int_<0> 
+                                >::type
                         >
                 >,
                 // col_min <= col < col_max
                 mpl::is_within_range< typename
-                        Square2Coordinates< Square<Grid, SQ> >::type::col,
-                        boost::mpl::eval_if< angle::lazy::is_left<Direction>, Offset, boost::mpl::int_<0> >,
+                        Square2Coordinates< Square<Grid, SQ> >::type::col, typename
+                        boost::mpl::eval_if< 
+                                angle::lazy::is_left<Direction>, 
+                                Offset, 
+                                boost::mpl::int_<0> 
+                        >::type,
                         boost::mpl::minus< typename
-                                Board::width,
-                                boost::mpl::eval_if< angle::lazy::is_right<Direction>, Offset, boost::mpl::int_<0> >
+                                Board::width, typename
+                                boost::mpl::eval_if< 
+                                        angle::lazy::is_right<Direction>, 
+                                        Offset, 
+                                        boost::mpl::int_<0> 
+                                >::type
                         >
                 >
         >
@@ -198,12 +214,12 @@ struct is_jump_start
 :
         detail::is_jump_start<
                 Board, Direction, SQ, typename
-                Board::ExternalGrid,
+                Board::ExternalGrid, typename
                 boost::mpl::eval_if<
                         angle::lazy::is_diagonal<Direction>,
                         boost::mpl::int_<2>,
                         boost::mpl::int_<4>
-                >
+                >::type
         >
 {};
 

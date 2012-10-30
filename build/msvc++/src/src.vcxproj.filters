@@ -771,5 +771,8 @@
     <ClInclude Include="..\..\..\dctl\board\Ghosts.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\dctl\setup\Diagram_fwd.hpp">
+      <Filter>Header Files\setup</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

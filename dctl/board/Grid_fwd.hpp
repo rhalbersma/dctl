@@ -5,7 +5,7 @@ namespace dctl {
 namespace board {
 
 // primary template declaration
-template<typename Dimensions, typename Ghosts>
+template<typename Dimensions, typename GhostColumns>
 struct Grid;
 
 typedef boost::mpl::int_<0> no_ghosts;
