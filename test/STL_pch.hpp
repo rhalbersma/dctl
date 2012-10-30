@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef _MSC_VER
+
 // utilities
 
 #include <typeinfo>
@@ -47,3 +49,5 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+
+#endif

@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef _MSC_VER
+
 #include <boost/algorithm/string.hpp>
 #include <dctl/guarded/is_permutation.hpp>    // <boost/algorithm/cxx11/is_permutation.hpp>
 #include <boost/assert.hpp>
@@ -37,3 +39,5 @@
 #include <boost/mpl/lambda.hpp>
 #include <boost/mpl/placeholders.hpp>
 #include <boost/mpl/quote.hpp>
+
+#endif
