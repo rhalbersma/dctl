@@ -12,15 +12,15 @@ namespace board {
 // primary template definition
 template
 <
-        typename Dimensions,    // dimensions
-        typename Ghosts         // number of ghost columns
+        typename Dimensions,
+        typename GhostColumns
 >
 struct Grid
 :
         Dimensions
 {
 public:
-        BOOST_STATIC_ASSERT(Ghosts::value > 0);
+        BOOST_STATIC_ASSERT(GhostColumns::value > 0);
 
         typedef Grid<Dimensions, no_ghosts> BaseGrid;
 
@@ -29,7 +29,7 @@ public:
         typedef boost::mpl::divides<
                 boost::mpl::plus< typename
                         Dimensions::width,
-                        Ghosts
+                        GhostColumns
                 >,
                 boost::mpl::int_<2>
         > left_down;

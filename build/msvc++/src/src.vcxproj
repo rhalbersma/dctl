@@ -31,14 +31,14 @@
     <ClInclude Include="..\..\..\dctl\board\Dimensions\transform_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Grid.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Grid_fwd.hpp" />
-    <ClInclude Include="..\..\..\dctl\board\Init_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\board\iterator.hpp" />
-    <ClInclude Include="..\..\..\dctl\board\Init.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\mask\init.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\mask\init_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\mask\predicates.hpp" />
     <ClInclude Include="..\..\..\dctl\board\patterns.hpp" />
-    <ClInclude Include="..\..\..\dctl\board\predicates.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Shift.hpp" />
     <ClInclude Include="..\..\..\dctl\board\ShiftSize.hpp" />
-    <ClInclude Include="..\..\..\dctl\board\Structure.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\Ghosts.hpp" />
     <ClInclude Include="..\..\..\dctl\board\Types.hpp" />
     <ClInclude Include="..\..\..\dctl\capture\Damme.hpp" />
     <ClInclude Include="..\..\..\dctl\capture\Frisian.hpp" />
@@ -267,12 +267,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files\boost\boost_1_51;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\boost\boost_1_51_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files\boost\boost_1_51;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\boost\boost_1_51_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

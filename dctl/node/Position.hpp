@@ -27,6 +27,7 @@ public:
 
         typedef Rules rules_type;
         typedef Board board_type;
+        BOOST_STATIC_CONSTANT(auto, dmz = rules_type::initial_dmz::value + board_type::height::value % 2);
 
         /*
         Position()
@@ -50,7 +51,18 @@ public:
         // initial position
         static Position initial()
         {
-                return Position(Board::initial_mask[Side::black], Board::initial_mask[Side::white], 0, Side::white);
+                return initial<dmz>();
+        }
+
+        template<int N>
+        static Position initial()
+        {
+                return Position(
+                        Board::initial_mask[Side::black][N], 
+                        Board::initial_mask[Side::white][N], 
+                        0, 
+                        Side::white
+                );
         }
 
         // queries

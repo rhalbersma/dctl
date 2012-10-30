@@ -8,17 +8,14 @@ namespace board {
 
 template
 <
-        int D = 2,                      // "demilitarized" rows in the initial position
-        int G = 2,                      // number of ghost bit columns
-        typename A = angle::D000        // rotation from external to internal grid
+        int Columns = 2,
+        typename Angle = angle::D000    // rotation from external to internal grid
 >
-struct Structure
+struct Ghosts
 {
         // reflection on template parameters
-        typedef boost::mpl::int_<D> dmz;
-        typedef boost::mpl::int_<G> ghosts;
-        typedef A full_angle;
-
+        typedef boost::mpl::int_<Columns> columns;
+        typedef Angle full_angle;
         typedef typename mpl::lazy::inverse< full_angle >::type inverse_angle;
 };
 

@@ -72,6 +72,7 @@ BOOST_PARAMETER_TEMPLATE_KEYWORD(jump_removal)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(pawn_promotion)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(is_absolute_king_precedence)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(is_relative_king_precedence)
+BOOST_PARAMETER_TEMPLATE_KEYWORD(initial_dmz)
 
 typedef boost::parameter::parameters<
         // required parameters
@@ -93,7 +94,8 @@ typedef boost::parameter::parameters<
         boost::parameter::optional<tag::jump_removal>,
         boost::parameter::optional<tag::pawn_promotion>,
         boost::parameter::optional<tag::is_absolute_king_precedence>,
-        boost::parameter::optional<tag::is_relative_king_precedence>
+        boost::parameter::optional<tag::is_relative_king_precedence>,
+        boost::parameter::optional<tag::initial_dmz>
 > Signature;
 
 template
@@ -113,15 +115,15 @@ template
         class A11 = boost::parameter::void_,
         class A12 = boost::parameter::void_,
         class A13 = boost::parameter::void_,
-        class A14 = boost::parameter::void_
+        class A14 = boost::parameter::void_,
+        class A15 = boost::parameter::void_
 >
 struct Rules
 {
         // create argument pack
         typedef typename Signature::bind<
-                A0,   A1,  A2,  A3,  A4,  
-                A5,   A6,  A7,  A8,  A9, 
-                A10, A11, A12, A13, A14
+                A0,  A1,  A2,  A3,  A4,  A5,  A6,  A7,  
+                A8,  A9, A10, A11, A12, A13, A14, A15
         >::type args;
 
         // extract required parameters
@@ -192,6 +194,10 @@ struct Rules
         typedef typename boost::parameter::value_type<
                 args, tag::is_relative_king_precedence, boost::mpl::false_
         >::type is_relative_king_precedence;
+
+        typedef typename boost::parameter::value_type<
+                args, tag::initial_dmz, boost::mpl::int_<2>
+        >::type initial_dmz;
 
         // compute auxiliary parameters
 

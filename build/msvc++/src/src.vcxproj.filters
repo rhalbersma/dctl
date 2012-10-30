@@ -97,6 +97,9 @@
     <Filter Include="Header Files\board\dimensions">
       <UniqueIdentifier>{bb013ce6-13a1-4c2d-ab9d-b4e19ce9657e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\board\mask">
+      <UniqueIdentifier>{f48092c0-8194-49bb-a93d-4294b0a21984}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\dctl\angle\Degrees.hpp">
@@ -118,9 +121,6 @@
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\Shift.hpp">
-      <Filter>Header Files\board</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\board\Structure.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\board\Types.hpp">
@@ -759,13 +759,16 @@
     <ClInclude Include="..\..\..\dctl\board\algorithm.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\board\predicates.hpp">
-      <Filter>Header Files\board</Filter>
+    <ClInclude Include="..\..\..\dctl\board\mask\init.hpp">
+      <Filter>Header Files\board\mask</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\board\Init_fwd.hpp">
-      <Filter>Header Files\board</Filter>
+    <ClInclude Include="..\..\..\dctl\board\mask\init_fwd.hpp">
+      <Filter>Header Files\board\mask</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\board\Init.hpp">
+    <ClInclude Include="..\..\..\dctl\board\mask\predicates.hpp">
+      <Filter>Header Files\board\mask</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\board\Ghosts.hpp">
       <Filter>Header Files\board</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,6 +4,7 @@
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
+#include <boost/mpl/placeholders.hpp>   // _1
 #include <dctl/board/Dimensions.hpp>
 #include <dctl/board/Coordinates.hpp>
 #include <dctl/board/coordinates/transform.hpp>
@@ -13,8 +14,9 @@
 
 namespace dctl {
 namespace board {
+namespace mask {
 
-template<typename Board, typename SQ>
+template<typename Board, typename SQ = boost::mpl::_1 >
 struct is_square
 :
         mpl::is_within_range<
@@ -24,7 +26,7 @@ struct is_square
         >
 {};
 
-template<typename Board, typename Color, typename SQ>
+template<typename Board, typename Color, typename Separation, typename SQ = boost::mpl::_1 >
 struct is_initial
 :
         mpl::is_within_range< typename
@@ -35,8 +37,8 @@ struct is_initial
                                 Board::height,
                                 boost::mpl::divides<
                                         boost::mpl::minus< typename
-                                                Board::height, typename
-                                                Board::dmz
+                                                Board::height, 
+                                                Separation
                                         >,
                                         boost::mpl::int_<2>
                                 >
@@ -48,8 +50,8 @@ struct is_initial
                         Board::height,
                         boost::mpl::divides<
                                 boost::mpl::minus< typename
-                                        Board::height, typename
-                                        Board::dmz
+                                        Board::height,
+                                        Separation
                                 >,
                                 boost::mpl::int_<2>
                         >
@@ -57,8 +59,8 @@ struct is_initial
         >
 {};
 
-template<typename Board, typename Color, typename Row, typename SQ>
-struct is_row_mask
+template<typename Board, typename Color, typename Row, typename SQ = boost::mpl::_1 >
+struct is_row
 :
         boost::mpl::equal_to< typename
                 Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row,
@@ -74,8 +76,8 @@ struct is_row_mask
         >
 {};
 
-template<typename Board, typename Color, typename Column, typename SQ>
-struct is_col_mask
+template<typename Board, typename Color, typename Column, typename SQ = boost::mpl::_1 >
+struct is_col
 :
         boost::mpl::equal_to< typename
                 Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col,
@@ -152,7 +154,7 @@ struct is_jump_group
 
 }       // namespace detail
 
-template<typename Board, typename Group, typename SQ>
+template<typename Board, typename Group, typename SQ = boost::mpl::_1 >
 struct is_jump_group
 :
         detail::is_jump_group< typename
@@ -191,7 +193,7 @@ struct is_jump_start
 
 }       // namespace detail
 
-template<typename Board, typename Direction, typename SQ>
+template<typename Board, typename Direction, typename SQ = boost::mpl::_1 >
 struct is_jump_start
 :
         detail::is_jump_start<
@@ -204,6 +206,8 @@ struct is_jump_start
                 >
         >
 {};
+
+}       // namespace mask
 
 namespace detail {
 
@@ -227,25 +231,25 @@ struct transform
 
 }       // namespace detail
 
-template<typename Board, typename N>
+template<typename Board, typename Number>
 struct square_to_bit
 :
         detail::transform< typename
                 Board::ExternalGrid, typename
                 Board::InternalGrid, typename
                 Board::full_angle,
-                N
+                Number
         >
 {};
 
-template<typename Board, typename N>
+template<typename Board, typename Number>
 struct bit_to_square
 :
         detail::transform< typename
                 Board::InternalGrid, typename
                 Board::ExternalGrid, typename
                 Board::inverse_angle,
-                N
+                Number
         >
 {};
 
