@@ -25,7 +25,7 @@ public:
         {
                 auto depth = 0;
                 for (auto const& node_count: leafs) {
-                        root_.clear_hash();                        
+                        root_.clear_hash(); 
                         BOOST_CHECK_EQUAL(node_count, root_.test(p, ++depth));
                 }
         }

@@ -18,7 +18,7 @@ template
         typename Protocol,
         typename Content = typename Token<Protocol>::type
 >
-class diagram
+struct diagram
 {
 public:
         // position content in diagram layout
@@ -33,7 +33,7 @@ public:
 
 // partial specialization to write bit numbers in diagram layout
 template<typename Board>
-class diagram<Board, bits>
+struct diagram<Board, bits>
 {
 public:
         // the board bit numbers (starting at 0)
@@ -52,7 +52,7 @@ public:
 
 // partial specialization to write square numbers in diagram layout
 template<typename Board>
-class diagram<Board, squares>
+struct diagram<Board, squares>
 {
 public:
         // the board square numbers (starting at 1)

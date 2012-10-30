@@ -162,6 +162,9 @@
     <ClCompile Include="..\..\..\test\successor\regressions\Italian.cpp">
       <Filter>Source Files\successor\regressions</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\test\setup\Layout.cpp">
+      <Filter>Source Files\setup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\test\test_config.hpp">
