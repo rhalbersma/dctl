@@ -74,7 +74,7 @@ public:
 private:
         template<typename Position> int iterative_deepening(Position const&, int);
         template<typename Position> int negamax(Position const&, int, int, Variation&);
-        template<typename int, typename Position> int pvs(Position const&, int, int, int, int, Variation&);
+        template<int, typename Position> int pvs(Position const&, int, int, int, int, Variation&);
 
         template<typename Position>
         void announce(Position const& p, int depth)
@@ -101,7 +101,7 @@ private:
                 std::cout << " time ";
                 std::cout << std::setw( 6) << timer.elapsed();
 
-                double const nps = (1000 * statistics_.nodes()) / static_cast<double>(timer.elapsed());
+                double const nps = static_cast<double>(1000 * statistics_.nodes()) / static_cast<double>(timer.elapsed());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;

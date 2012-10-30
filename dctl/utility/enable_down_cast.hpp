@@ -8,7 +8,7 @@ template
 <
         typename Derived
 >
-struct enable_down_cast
+class enable_down_cast
 {
 private:
         // typedefs
@@ -19,7 +19,7 @@ public:
         Derived const* self() const
         {
                 // casting "down" the inheritance hierarchy
-                BOOST_MPL_ASSERT((std::is_base_of<Base, Derived>));
+                BOOST_MPL_ASSERT(( std::is_base_of<Base, Derived> ));
                 return (static_cast<Derived const*>(this));
         }
 

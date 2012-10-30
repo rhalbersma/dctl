@@ -35,7 +35,7 @@ private:
         typedef generator<Color, Material::king, Jumps, Position> KingJumps;
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
-        typedef Compass<Color, Board> Compass;
+        typedef board::Compass<Color, Board> Compass;
         typedef capture::State<Position> State;
 
         // representation

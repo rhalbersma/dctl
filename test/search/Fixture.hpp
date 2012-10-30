@@ -35,7 +35,7 @@ struct Fixture
                         auto const value = root_.analyze(position, t.second);
                         BOOST_CHECK_EQUAL(win_value(t.second), value);
                 }
-        };
+        }
 
         Root<Objective> root_;
 };

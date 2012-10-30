@@ -24,7 +24,7 @@ private:
 
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
-        typedef Compass<Color, Board> Compass;
+        typedef board::Compass<Color, Board> Compass;
 
 public:
         int operator()(Position const& p) const

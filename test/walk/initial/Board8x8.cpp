@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE(TestInitialBoard8x8)
 BOOST_FIXTURE_TEST_CASE(BrazilianInitial, Fixture)
 {
         auto const p = Position<rules::Brazilian, board::Checkers>::initial();
-        NodeCount const leafs[] = { 7, 49, 302, 1469, 7473, 37628, 187302, 907830 , 4431766, 21560022, 105491257, 511882477, 2481546396 };
+        NodeCount const leafs[] = { 7, 49, 302, 1469, 7473, 37628, 187302, 907830 , 4431766, 21560022, 105491257, 511882477, 2481546396LL };
         run(p, leafs);
 }
 
@@ -31,7 +31,7 @@ BOOST_FIXTURE_TEST_CASE(BrazilianInitial, Fixture)
 BOOST_FIXTURE_TEST_CASE(PoolInitial, Fixture)
 {
         auto const p = Position<rules::Pool, board::Checkers>::initial();
-        NodeCount const leafs[] = { 7, 49, 302, 1469, 7482, 37986, 190146, 929896 , 4570534, 22435955, 110833952, 544005148, 2668385616 };
+        NodeCount const leafs[] = { 7, 49, 302, 1469, 7482, 37986, 190146, 929896 , 4570534, 22435955, 110833952, 544005148, 2668385616LL };
         run(p, leafs);
 }
 
@@ -41,7 +41,7 @@ BOOST_FIXTURE_TEST_CASE(PoolInitial, Fixture)
 BOOST_FIXTURE_TEST_CASE(RussianInitial, Fixture)
 {
         auto const p = Position<rules::Russian, board::Checkers>::initial();
-        NodeCount const leafs[] = { 7, 49, 302, 1469, 7482, 37986, 190146, 929899 , 4570586, 22444032, 110917189, 544770444, 2673979569 };
+        NodeCount const leafs[] = { 7, 49, 302, 1469, 7482, 37986, 190146, 929899 , 4570586, 22444032, 110917189, 544770444, 2673979569LL };
         run(p, leafs);
 }
 

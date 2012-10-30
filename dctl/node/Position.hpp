@@ -27,7 +27,7 @@ public:
 
         typedef Rules rules_type;
         typedef Board board_type;
-        BOOST_STATIC_CONSTANT(auto, dmz = rules_type::initial_dmz::value + board_type::height::value % 2);
+        BOOST_STATIC_CONSTANT(int, dmz = rules_type::initial_dmz::value + board_type::height::value % 2);
 
         /*
         Position()
