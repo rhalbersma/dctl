@@ -47,10 +47,6 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         // -INF <= alpha < beta <= +INF
         BOOST_ASSERT(-infinity() <= alpha && alpha < beta && beta <= infinity());
 
-        // alpha < beta implies alpha <= beta - 1,
-        // with the strict inequality if and only if is_pv(NodeType)
-        BOOST_ASSERT(is_pv(NodeType) == (alpha <  beta - 1));
-
         // alpha < beta <= +INF implies alpha <= win_min
         // with equality, any finite score will fail low
         if (alpha == win_min())
@@ -60,6 +56,10 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         // with equality, any finite score will fail high
         if (beta == loss_min())
                 return beta;
+
+        // alpha < beta implies alpha <= beta - 1,
+        // with the strict inequality if and only if is_pv(NodeType)
+        BOOST_ASSERT(is_pv(NodeType) == (alpha <  beta - 1));
 
         // terminal positions
         auto const terminal_value = Objective::value(p);
