@@ -55,11 +55,11 @@ private:
         > Q;
 
         // the left edge
-        typedef boost::mpl::eval_if<
+        typedef typename boost::mpl::eval_if<
                 P, typename
                 G::edge_lo, typename
                 G::edge_le
-        > L;
+        >::type L;
 
         // number of column pairs
         typedef boost::mpl::divides< typename
@@ -120,7 +120,7 @@ private:
         > P;
 
         // squares from the left edge
-        typedef boost::mpl::eval_if< P, R1, R0 > R;
+        typedef typename boost::mpl::eval_if< P, R1, R0 >::type R;
 
         // 2x the row pairs + the row parity
         typedef boost::mpl::plus<

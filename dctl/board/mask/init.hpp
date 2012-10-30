@@ -6,8 +6,8 @@
 #include <boost/mpl/integral_c.hpp>             // integral_c
 #include <boost/mpl/next_prior.hpp>             // prior
 #include <boost/mpl/placeholders.hpp>           // _1
-#include <dctl/board/mask/init_fwd.hpp>        // init, detail::init, detail::test (primary template and partial specialization declarations)
-#include <dctl/board/mask/predicates.hpp>      // square2bit
+#include <dctl/board/mask/init_fwd.hpp>         // init, detail::init, detail::test (primary template and partial specialization declarations)
+#include <dctl/board/mask/predicates.hpp>       // square2bit
 #include <dctl/utility/IntegerTypes.hpp>        // BitBoard
 
 namespace dctl {
@@ -90,7 +90,7 @@ struct test
                         square_to_bit< Board, Square >::type::number
                 >,
                 boost::mpl::integral_c<BitBoard, 0>
-        >
+        >::type
 {};
 
 }       // namespace detail

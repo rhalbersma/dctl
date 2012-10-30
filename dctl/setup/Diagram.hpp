@@ -5,6 +5,7 @@
 #include <string>                       // string
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <dctl/setup/Content.hpp>
+#include <dctl/setup/Diagram_fwd.hpp>
 #include <dctl/setup/Numbers.hpp>
 #include <dctl/setup/TokenInterface.hpp>
 #include <dctl/node/Side.hpp>
@@ -13,44 +14,7 @@
 namespace dctl {
 namespace setup {
 
-template
-<
-        typename Protocol,
-        typename Content = typename Token<Protocol>::type
->
-struct diagram
-{
-public:
-        // position content in diagram layout
-        template<typename Position>
-        std::string operator()(Position const& p) const
-        {
-                typedef typename Position::board_type Board;
-
-                return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
-        }
-};
-
-// partial specialization to write bit numbers in diagram layout
-template<typename Board>
-struct diagram<Board, bits>
-{
-public:
-        // the board bit numbers (starting at 0)
-        std::string operator()() const
-        {
-                return diagram<Board, bits>()(std::bind(std::plus<int>(), std::placeholders::_1, 0));
-        }
-
-        // parameterized board bit content
-        template<typename Functor>
-        std::string operator()(Functor f) const
-        {
-                return diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
-        }
-};
-
-// partial specialization to write square numbers in diagram layout
+// partial specialization definition to write square numbers in diagram layout
 template<typename Board>
 struct diagram<Board, squares>
 {
@@ -102,6 +66,44 @@ private:
         }
 
         BOOST_STATIC_CONSTANT(auto, WHITE_SPACE = ' ');
+};
+
+// partial specialization definition to write bit numbers in diagram layout
+template<typename Board>
+struct diagram<Board, bits>
+{
+public:
+        // the board bit numbers (starting at 0)
+        std::string operator()() const
+        {
+                return diagram<Board, bits>()(std::bind(std::plus<int>(), std::placeholders::_1, 0));
+        }
+
+        // parameterized board bit content
+        template<typename Functor>
+        std::string operator()(Functor f) const
+        {
+                return diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
+        }
+};
+
+// primary template definition
+template
+<
+        typename Protocol,
+        typename Content
+>
+struct diagram
+{
+public:
+        // position content in diagram layout
+        template<typename Position>
+        std::string operator()(Position const& p) const
+        {
+                typedef typename Position::board_type Board;
+
+                return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
+        }
 };
 
 }       // namespace setup
