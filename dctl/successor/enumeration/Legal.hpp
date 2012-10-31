@@ -53,7 +53,7 @@ public:
                 auto num_moves = (DoJumps(capture_))(p);
                 if (!num_moves)
                         num_moves += DoMoves()(p);
-                return num_moves;
+                return (num_moves);
         }
 };
 

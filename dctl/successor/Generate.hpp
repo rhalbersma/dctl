@@ -15,13 +15,13 @@ Stack generate(Position const& p)
         // parentheses around function objects to avoid "C++'s most vexing parse"
         (detail::generate<Material, Selection, Position>(moves))(p);
         
-        return moves;
+        return (moves);
 }
 
 template<typename Position>
 Stack generate(Position const& p)
 {
-        return generate<Material::both, DefaultSelection>(p);
+        return (generate<Material::both, DefaultSelection>(p));
 }
 
 }       // namespace successor

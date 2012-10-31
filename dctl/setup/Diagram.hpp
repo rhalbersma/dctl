@@ -22,7 +22,7 @@ public:
         // the board square numbers (starting at 1)
         std::string operator()() const
         {
-                return diagram<Board, squares>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
+                return (diagram<Board, squares>()(std::bind(std::plus<int>(), std::placeholders::_1, 1)));
         }
 
         // parameterized board square content
@@ -43,7 +43,7 @@ public:
                                 sstr << std::setw(2) << WHITE_SPACE;    // space between squares
                 }
                 sstr << std::endl /*"\n"*/;
-                return sstr.str();
+                return (sstr.str());
         }
 
 private:
@@ -53,7 +53,7 @@ private:
                 auto const end_RE = r == Board::ExternalGrid::edge_re::value;   // right of even rows
                 auto const end_RO = r == Board::ExternalGrid::edge_ro::value;   // right of odd rows
 
-                return end_RE || end_RO;
+                return (end_RE || end_RO);
         }
 
         static bool is_indent_row(int sq)
@@ -62,7 +62,7 @@ private:
                 auto const indent_LE = r == Board::ExternalGrid::edge_le::value;        // left of even rows
                 auto const indent_LO = r == Board::ExternalGrid::edge_lo::value;        // left of odd rows
 
-                return Board::parity::value? indent_LO : indent_LE;
+                return (Board::parity::value? indent_LO : indent_LE);
         }
 
         BOOST_STATIC_CONSTANT(auto, WHITE_SPACE = ' ');
@@ -76,14 +76,14 @@ public:
         // the board bit numbers (starting at 0)
         std::string operator()() const
         {
-                return diagram<Board, bits>()(std::bind(std::plus<int>(), std::placeholders::_1, 0));
+                return (diagram<Board, bits>()(std::bind(std::plus<int>(), std::placeholders::_1, 0)));
         }
 
         // parameterized board bit content
         template<typename Functor>
         std::string operator()(Functor f) const
         {
-                return diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
+                return (diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1))));
         }
 };
 
@@ -102,7 +102,7 @@ public:
         {
                 typedef typename Position::board_type Board;
 
-                return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
+                return (diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1)));
         }
 };
 

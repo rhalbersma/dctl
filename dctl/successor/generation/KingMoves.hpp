@@ -122,7 +122,7 @@ private:
         void find(BitIndex from_sq, BitBoard not_occupied) const
         {
                 // tag dispatching on king range
-                return find_dispatch<Direction>(from_sq, not_occupied, typename Rules::king_range());
+                find_dispatch<Direction>(from_sq, not_occupied, typename Rules::king_range());
         }
 
         // overload for short ranged kings

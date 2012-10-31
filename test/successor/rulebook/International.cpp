@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(TestInternational)
 // Positions from the official International rules (Italian translation):
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_II.pdf
 
-BOOST_FIXTURE_TEST_CASE(TestKingMoveRange, FixtureInternational)
+BOOST_FIXTURE_TEST_CASE(kingMoveRange, FixtureInternational)
 {
         // Art. 3.9 (king move range)
         auto const FEN = "W:WK23";
@@ -31,7 +31,7 @@ BOOST_FIXTURE_TEST_CASE(TestKingMoveRange, FixtureInternational)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(TestPawnJumpDirections, FixtureInternational)
+BOOST_FIXTURE_TEST_CASE(pawnJumpDirections, FixtureInternational)
 {
         // Art. 4.2 (pawn jump directions)
         auto const FEN = "W:W35:B30,K40";
@@ -39,7 +39,7 @@ BOOST_FIXTURE_TEST_CASE(TestPawnJumpDirections, FixtureInternational)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(TestKingJumpRange, FixtureInternational)
+BOOST_FIXTURE_TEST_CASE(kingJumpRange, FixtureInternational)
 {
         // Art. 4.3 (king jump range)
         auto const FEN = "W:WK41:B23";
@@ -47,7 +47,7 @@ BOOST_FIXTURE_TEST_CASE(TestKingJumpRange, FixtureInternational)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(TestPawnJumpContinuation, FixtureInternational)
+BOOST_FIXTURE_TEST_CASE(pawnJumpContinuation, FixtureInternational)
 {
         // Art. 4.5 (pawn jump continuation)
         auto const FEN = "W:W47:B13,14,22,24,31,34,K41,44";
@@ -55,7 +55,7 @@ BOOST_FIXTURE_TEST_CASE(TestPawnJumpContinuation, FixtureInternational)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(TestKingJumpContinuation, FixtureInternational)
+BOOST_FIXTURE_TEST_CASE(kingJumpContinuation, FixtureInternational)
 {
         // Art. 4.6 (king jump continuation)
         auto const FEN = "W:WK1:B7,9,17,19,20,30,31,33,43,44";
@@ -63,7 +63,7 @@ BOOST_FIXTURE_TEST_CASE(TestKingJumpContinuation, FixtureInternational)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(TestJumpRemoval, FixtureInternational)
+BOOST_FIXTURE_TEST_CASE(jumpRemoval, FixtureInternational)
 {
         // Art. 4.8 (jump removal NOT en-passant)
         auto const FEN = "B:W27,28,38,39,42:BK25";
@@ -71,7 +71,7 @@ BOOST_FIXTURE_TEST_CASE(TestJumpRemoval, FixtureInternational)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(TestJumpMostPieces, FixtureInternational)
+BOOST_FIXTURE_TEST_CASE(jumpMostPieces, FixtureInternational)
 {
         // Art. 4.13 (jump most pieces)
         auto const FEN = "W:WK48:B7,8,31,34,K42,44";
@@ -79,7 +79,7 @@ BOOST_FIXTURE_TEST_CASE(TestJumpMostPieces, FixtureInternational)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(TestJumpMostKings, FixtureInternational)
+BOOST_FIXTURE_TEST_CASE(jumpMostKings, FixtureInternational)
 {
         // Art. 4.14 (jump most kings NOT applicable)
         auto const FEN = "W:W26:B12,K21,31,32";
@@ -87,7 +87,7 @@ BOOST_FIXTURE_TEST_CASE(TestJumpMostKings, FixtureInternational)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(TestPawnPromotion, FixtureInternational)
+BOOST_FIXTURE_TEST_CASE(pawnPromotion, FixtureInternational)
 {
         // Art. 4.15 (pawn promotion NOT en-passant)
         auto const FEN = "W:W15:B9,10";

@@ -13,7 +13,7 @@ namespace successor {
 
 typedef Fixture<rules::Italian, board::Roman> FixtureItalian;
 
-BOOST_AUTO_TEST_SUITE(TestAliotoDomenico)
+BOOST_AUTO_TEST_SUITE(aliotoDomenico)
 
 // suggested by Alioto Domenico in email to Ed Gilbert
 

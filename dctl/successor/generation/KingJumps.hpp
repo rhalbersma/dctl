@@ -59,7 +59,7 @@ public:
         bool promote_en_passant(BitIndex jumper) const
         {
                 BOOST_ASSERT((is_promotion_sq<Color, Board>(jumper)));
-                return find_next<Direction>(jumper);
+                return (find_next<Direction>(jumper));
         }
 
 private:
@@ -176,34 +176,34 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return find_next_dispatch<Direction>(jumper, typename Rules::is_jump_direction_reversal());
+                return (find_next_dispatch<Direction>(jumper, typename Rules::is_jump_direction_reversal()));
         }
 
         // overload for kings that cannot reverse their capture direction
         template<typename Direction>
         bool find_next_dispatch(BitIndex jumper, boost::mpl::false_) const
         {
-                return land<Direction>(jumper);
+                return (land<Direction>(jumper));
         }
 
         // overload for kings that can reverse their capture direction
         template<typename Direction>
         bool find_next_dispatch(BitIndex jumper, boost::mpl::true_) const
         {
-                return land<Direction>(jumper) | reverse<Direction>(jumper);
+                return (land<Direction>(jumper) | reverse<Direction>(jumper));
         }
 
         template<typename Direction>
         bool reverse(BitIndex jumper) const
         {
-                return scan< typename mpl::lazy::rotate< Direction, angle::D180 >::type >(jumper);
+                return (scan< typename mpl::lazy::rotate< Direction, angle::D180 >::type >(jumper));
         }
 
         template<typename Direction>
         bool land(BitIndex jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
-                return land_dispatch<Direction>(jumper, typename Rules::land_range());
+                return (land_dispatch<Direction>(jumper, typename Rules::land_range()));
         }
 
         // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
@@ -238,14 +238,14 @@ private:
                         found_next |= turn<Direction>(jumper);
                         Increment<Board, Direction>()(jumper);
                 } while (bit::is_element(jumper, capture_.path()));
-                return found_next |= jump<Direction>(jumper);
+                return (found_next |= jump<Direction>(jumper));
         }
 
         template<typename Direction>
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on king turn directions
-                return turn_dispatch<Direction>(jumper, typename Rules::king_turn_directions());
+                return (turn_dispatch<Direction>(jumper, typename Rules::king_turn_directions()));
         }
 
         // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
@@ -284,7 +284,7 @@ private:
         bool scan(BitIndex jumper) const
         {
                 slide<Direction>(jumper, capture_.template path<Direction>());
-                return jump<Direction>(jumper);
+                return (jump<Direction>(jumper));
         }
 
         template<typename Direction>
@@ -312,12 +312,12 @@ private:
         bool jump(BitIndex jumper) const
         {
                 if (!bit::is_element(jumper, capture_.template targets_with_king<Direction>()))
-                        return false;
+                        return (false);
 
                 capture_.make(jumper);
                 precedence<Direction>(jumper); // recursively find more jumps
                 capture_.undo(jumper);
-                return true;
+                return (true);
         }
 
         template<typename Direction>

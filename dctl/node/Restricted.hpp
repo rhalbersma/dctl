@@ -20,12 +20,12 @@ public:
         // queries
         BitBoard king() const
         {
-                return king_;
+                return (king_);
         }
 
         PlyCount moves() const
         {
-                return moves_;
+                return (moves_);
         }
 
         // modifiers
@@ -74,7 +74,7 @@ typedef KingMoves Restricted[2];
 template<typename Rules>
 bool is_max(PlyCount moves)
 {
-        return moves == Rules::max_same_king_moves::value;
+        return (moves == Rules::max_same_king_moves::value);
 }
 
 }       // namespace dctl

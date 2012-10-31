@@ -31,21 +31,21 @@ public:
         bool operator()(Position const& p) const
         {
                 if (auto const active_kings = p.kings(Color))
-                        return select(active_kings, p.pieces(!Color), not_occupied(p));
+                        return (select(active_kings, p.pieces(!Color), not_occupied(p)));
                 else
-                        return false;
+                        return (false);
         }
 
 private:
         bool select(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied) const
         {
-                return branch(active_kings, passive_pieces, not_occupied);
+                return (branch(active_kings, passive_pieces, not_occupied));
         }
 
         bool branch(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied) const
         {
                 // tag dispatching on king jump directions
-                return branch_dispatch(active_kings, passive_pieces, not_occupied, typename Rules::king_jump_directions());
+                return (branch_dispatch(active_kings, passive_pieces, not_occupied, typename Rules::king_jump_directions()));
         }
 
         // overload for kings that capture in the 8 diagonal and orthogonal directions
@@ -82,9 +82,9 @@ private:
         template<typename Direction>
         bool parallelize(BitBoard active_kings, BitBoard passive_pieces, BitBoard not_occupied) const
         {
-                return !bit::is_zero(
+                return (!bit::is_zero(
                         Sandwich<Board, Direction, Range>()(active_kings, passive_pieces, not_occupied)
-                );
+                ));
         }
 };
 

@@ -12,7 +12,7 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestInternational)
 
-BOOST_FIXTURE_TEST_CASE(InternationalDavidGoliath, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(internationalDavidGoliath, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W23:B5,6", 29)     // David & Goliath
@@ -23,7 +23,7 @@ BOOST_FIXTURE_TEST_CASE(InternationalDavidGoliath, Fixture<DefaultObjective>)
 // Michel Grimminkc's statistics on longest wins in the International endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 
-BOOST_FIXTURE_TEST_CASE(International11, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(international11, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W33:B2"  , 17),   // 1010
@@ -34,7 +34,7 @@ BOOST_FIXTURE_TEST_CASE(International11, Fixture<DefaultObjective>)
         run<rules::International, board::International>(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(International21, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(international21, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W40,44:B3"   , 23),        // 2010
@@ -53,7 +53,7 @@ BOOST_FIXTURE_TEST_CASE(International21, Fixture<DefaultObjective>)
         run<rules::International, board::International>(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(International22, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(international22, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W33,46:B4,5"     , 39),    // 2020
@@ -69,7 +69,7 @@ BOOST_FIXTURE_TEST_CASE(International22, Fixture<DefaultObjective>)
         run<rules::International, board::International>(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(International31, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(international31, Fixture<DefaultObjective>)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W12,13,16:B30"    , 23),   // 3010

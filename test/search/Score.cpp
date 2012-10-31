@@ -7,7 +7,7 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestScore)
 
-BOOST_AUTO_TEST_CASE(IsLoss)
+BOOST_AUTO_TEST_CASE(isLoss)
 {
         // minus infinity is not a loss
         BOOST_CHECK(!is_loss(-infinity()));
@@ -24,21 +24,21 @@ BOOST_AUTO_TEST_CASE(IsLoss)
                 BOOST_CHECK(!is_loss(v));
 }
 
-BOOST_AUTO_TEST_CASE(FiniteLoss)
+BOOST_AUTO_TEST_CASE(finiteLoss)
 {
         // scores in the interval [loss_min, loss_max) are finite
         for (auto v = loss_min(); v < loss_max(); ++v)
                 BOOST_CHECK(is_finite(v));
 }
 
-BOOST_AUTO_TEST_CASE(NegativeLoss)
+BOOST_AUTO_TEST_CASE(negativeLoss)
 {
         // scores in the interval [loss_min, loss_max) are negative
         for (auto v = loss_min(); v < loss_max(); ++v)
                 BOOST_CHECK_LT(v, 0);
 }
 
-BOOST_AUTO_TEST_CASE(IsWin)
+BOOST_AUTO_TEST_CASE(isWin)
 {
         // infinity is not a win
         BOOST_CHECK(!is_win(infinity()));
@@ -55,27 +55,27 @@ BOOST_AUTO_TEST_CASE(IsWin)
                 BOOST_CHECK(!is_win(v));
 }
 
-BOOST_AUTO_TEST_CASE(FiniteWin)
+BOOST_AUTO_TEST_CASE(finiteWin)
 {
         // scores in the interval (win_max, win_min] are finite
         for (auto v = win_min(); v > win_max(); --v)
                 BOOST_CHECK(is_finite(v));
 }
 
-BOOST_AUTO_TEST_CASE(PositiveWin)
+BOOST_AUTO_TEST_CASE(positiveWin)
 {
         // scores in the interval (win_max, win_min] are positive
         for (auto v = win_min(); v > win_max(); --v)
                 BOOST_CHECK_GT(v, 0);
 }
 
-BOOST_AUTO_TEST_CASE(WinEqualMinusLoss)
+BOOST_AUTO_TEST_CASE(winEqualMinusLoss)
 {
         for (auto i = 0; i < MAX_MATE_MOVES; ++i)
                 BOOST_CHECK_EQUAL(win_value(i), -loss_value(i));
 }
 
-BOOST_AUTO_TEST_CASE(MinMaxDistance)
+BOOST_AUTO_TEST_CASE(testMinMaxDistance)
 {
         BOOST_CHECK_EQUAL(loss_min(), loss_value(0));
         BOOST_CHECK_EQUAL(loss_max(), loss_value(MAX_MATE_MOVES));
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(MinMaxDistance)
         BOOST_CHECK_EQUAL( win_max(),  win_value(MAX_MATE_MOVES));
 }
 
-BOOST_AUTO_TEST_CASE(PlyValueInverse)
+BOOST_AUTO_TEST_CASE(plyValueInverse)
 {
         for (auto i = 0; i < MAX_MATE_MOVES; ++i) {
                 BOOST_CHECK_EQUAL(i, loss_ply(loss_value(i)));
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(PlyValueInverse)
         }
 }
 
-BOOST_AUTO_TEST_CASE(Stretch)
+BOOST_AUTO_TEST_CASE(stretcher)
 {
         // loss and win values are "stretched" one step towards the edges of the [-INF, +INF] interval
         for (auto i = 1; i < MAX_MATE_MOVES; ++i) {
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(Stretch)
         BOOST_CHECK_EQUAL( infinity(), stretch( win_value(0)));
 }
 
-BOOST_AUTO_TEST_CASE(Squeeze)
+BOOST_AUTO_TEST_CASE(squeezer)
 {
         // loss and win values are "squeezed" one step towards the center of the [-INF, +INF] interval
         for (auto i = 0; i < MAX_MATE_MOVES; ++i) {

@@ -30,15 +30,15 @@ public:
         bool operator()(Position const& p) const
         {
                 if (auto const active_kings = moveable_kings(p, Color))
-                        return select(active_kings, not_occupied(p));
+                        return (select(active_kings, not_occupied(p)));
                 else
-                        return false;
+                        return (false);
         }
 
 private:
         bool select(BitBoard active_kings, BitBoard not_occupied) const
         {
-                return branch(active_kings, not_occupied);
+                return (branch(active_kings, not_occupied));
         }
 
         bool branch(BitBoard active_kings, BitBoard not_occupied) const
@@ -54,9 +54,9 @@ private:
         template<typename Direction>
         bool parallelize(BitBoard active_kings, BitBoard not_occupied) const
         {
-                return !bit::is_zero(
+                return (!bit::is_zero(
                         Sink<Board, Direction, rules::range::distance_1>()(active_kings, not_occupied)
-                );
+                ));
         }
 };
 

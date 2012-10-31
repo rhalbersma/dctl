@@ -18,19 +18,19 @@ struct Random
                 Index hash = 0;
                 for (; b; bit::first::clear(b))
                         hash ^= random[bit::first::find(b)];
-                return hash;
+                return (hash);
         }
 
         // xor with random numbers conditional on a ply count
         static Index xor_rand(PlyCount s, Index const* random)
         {
-                return s? random[s - 1] : 0;
+                return (s? random[s - 1] : 0);
         }
 
         // xor with a random number conditional on a boolean
         static Index xor_rand(bool to_move, Index random)
         {
-                return to_move? random : 0;
+                return (to_move? random : 0);
         }
 
         static Index const PIECES[2][64];

@@ -54,7 +54,7 @@ struct Init<Index, bool>
 {
         Index operator()(bool color) const
         {
-                return Random<Index>::xor_rand(color, Random<Index>::SIDE);
+                return (Random<Index>::xor_rand(color, Random<Index>::SIDE));
         }
 };
 

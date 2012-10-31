@@ -13,7 +13,7 @@ struct enumerator
 {
         int operator()(Position const&) const
         {
-                return 0;
+                return (0);
         }
 };
 
