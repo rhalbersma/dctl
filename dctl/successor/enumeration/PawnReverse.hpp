@@ -25,9 +25,9 @@ public:
         int operator()(Position const& p) const
         {
                 if (auto const active_pawns = p.pawns(Color))
-                        return PassivePawnMoves().select(active_pawns, not_occupied(p));
+                        return (PassivePawnMoves().select(active_pawns, not_occupied(p)));
                 else
-                        return 0;
+                        return (0);
         }
 };
 

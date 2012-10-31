@@ -30,15 +30,15 @@ public:
         int operator()(Position const& p) const
         {
                 if (auto const active_kings = moveable_kings(p, Color))
-                        return select(active_kings, not_occupied(p));
+                        return (select(active_kings, not_occupied(p)));
                 else
-                        return 0;
+                        return (0);
         }
 
 private:
         int select(BitBoard active_kings, BitBoard not_occupied) const
         {
-                return branch(active_kings, not_occupied);
+                return (branch(active_kings, not_occupied));
         }
 
         int branch(BitBoard active_kings, BitBoard not_occupied) const
@@ -54,9 +54,9 @@ private:
         template<typename Direction>
         int parallelize(BitBoard active_kings, BitBoard not_occupied) const
         {
-                return bit::count(
+                return (bit::count(
                         Sink<Board, Direction, typename Rules::king_range>()(active_kings, not_occupied)
-                );
+                ));
         }
 };
 

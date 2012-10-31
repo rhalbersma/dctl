@@ -32,21 +32,21 @@ public:
         bool operator()(Position const& p) const
         {
                 if (auto const active_pawns = p.pawns(Color))
-                        return select(active_pawns, targets<Color>(p), not_occupied(p));
+                        return (select(active_pawns, targets<Color>(p), not_occupied(p)));
                 else
-                        return false;
+                        return (false);
         }
 
         bool select(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied) const
         {
-                return branch(active_pawns, passive_pieces, not_occupied);
+                return (branch(active_pawns, passive_pieces, not_occupied));
         }
 
 private:
         bool branch(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied) const
         {
                 // tag dispatching on pawn jump directions
-                return branch_dispatch(active_pawns, passive_pieces, not_occupied, typename Rules::pawn_jump_directions());
+                return (branch_dispatch(active_pawns, passive_pieces, not_occupied, typename Rules::pawn_jump_directions()));
         }
 
         // overload for pawns that capture in the 8 diagonal and orthogonal directions
@@ -99,9 +99,9 @@ private:
         template<typename Direction>
         bool parallelize(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied) const
         {
-                return !bit::is_zero(
+                return (!bit::is_zero(
                         Sandwich<Board, Direction, rules::range::distance_1>()(active_pawns, passive_pieces, not_occupied)
-                );
+                ));
         }
 };
 

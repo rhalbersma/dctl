@@ -26,6 +26,8 @@ template
 struct Map
 {
 public:
+        typedef std::pair<Key, Value> Entry;
+
         // structors
 
         Map()
@@ -42,18 +44,18 @@ public:
 
         std::size_t available() const
         {
-                return static_cast<std::size_t>(
+                return (static_cast<std::size_t>(
                         std::count_if(
                                 std::begin(map_), std::end(map_),
                                 [](Entry const& e)
-                                { return e.first == Key(0); }
+                                { return (e.first == Key(0)); }
                         )
-                );
+                ));
         }
 
         std::size_t size() const
         {
-                return map_.size();
+                return (map_.size());
         }
 
         void resize(std::size_t log2_n)
@@ -74,14 +76,14 @@ public:
         Value const* find(Key const& key) const
         {
                 auto const index = Hash<Key, Index>()(key);
-                return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
+                return (find_entry<Key, Value, bucket_size>()(bucket_begin(index), key));
         }
 
         template<typename Item>
         Value const* find(Item const& item) const
         {
                 // tag dispatching on the key's integral type trait
-                return find_dispatch(item, std::integral_constant<bool, std::is_integral<Key>::value>());
+                return (find_dispatch(item, std::integral_constant<bool, std::is_integral<Key>::value>()));
         }
 
         // modifiers
@@ -99,14 +101,14 @@ public:
                 insert_dispatch(item, value, std::integral_constant<bool, std::is_integral<Key>::value>());
         }
 
-//private:
+private:
         // overload for non-integral keys
         template<typename Item>
         Value const* find_dispatch(Item const& item, std::false_type) const
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = FindKey<Key, Item>()(item);
-                return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
+                return (find_entry<Key, Value, bucket_size>()(bucket_begin(index), key));
         }
 
         // overload for integral keys
@@ -115,7 +117,7 @@ public:
         {
                 auto const index = Hash<Index, Item>()(item);
                 auto const key = ShiftKey<Key, Index>()(index);
-                return find_entry<Key, Value, bucket_size>()(bucket_begin(index), key);
+                return (find_entry<Key, Value, bucket_size>()(bucket_begin(index), key));
         }
 
         // overload for non-integral keys
@@ -136,7 +138,6 @@ public:
                 insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
         }
 
-        typedef std::pair<Key, Value> Entry;
         typedef std::vector<Entry> VectorMap;
         typedef typename VectorMap::iterator map_iterator;
         typedef typename VectorMap::const_iterator const_map_iterator;
@@ -146,12 +147,12 @@ public:
 
         map_iterator bucket_begin(Index index)
         {
-                return std::begin(map_) + static_cast<std::size_t>(index & map_mask_);
+                return (std::begin(map_) + static_cast<std::size_t>(index & map_mask_));
         }
 
         const_map_iterator bucket_begin(Index index) const
         {
-                return std::begin(map_) + static_cast<std::size_t>(index & map_mask_);
+                return (std::begin(map_) + static_cast<std::size_t>(index & map_mask_));
         }
 
         // representation

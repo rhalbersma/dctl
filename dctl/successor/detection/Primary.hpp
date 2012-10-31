@@ -13,7 +13,7 @@ struct detector
 {
         bool operator()(Position const&) const
         {
-                return false;
+                return (false);
         }
 };
 

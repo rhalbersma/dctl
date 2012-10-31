@@ -11,10 +11,10 @@ namespace evaluate {
 template<typename Position>
 static int score (Position const& p)
 {
-        return (p.active_color() == Side::white)?
+        return ((p.active_color() == Side::white)?
                 Delta<Side::white>::value(p) :
                 Delta<Side::black>::value(p)
-        ;
+        );
 }
 
 template<typename Position>

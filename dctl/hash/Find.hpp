@@ -12,7 +12,7 @@ struct Find
 {
         Index operator()(Position const& p) const
         {
-                return p.hash_index();
+                return (p.hash_index());
         }
 };
 

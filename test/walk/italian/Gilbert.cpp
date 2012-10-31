@@ -37,7 +37,7 @@ BOOST_FIXTURE_TEST_CASE(Gilbert2, Fixture)
         run(p, leafs);
 }
 */
-BOOST_FIXTURE_TEST_CASE(Gilbert3, Fixture)
+BOOST_FIXTURE_TEST_CASE(gilbert3, Fixture)
 {
         auto const p = setup::read<rules::Italian, board::Roman, pdn::protocol>()(
                 "W:WK27,K28,17,20,9,K12,8:B21,24,K19,K13,14,K11,4"

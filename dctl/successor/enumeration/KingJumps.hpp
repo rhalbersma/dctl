@@ -43,7 +43,7 @@ public:
         {
                 // parentheses around function objects to avoid "C++'s most vexing parse"
                 (KingJumps(capture_))(p);
-                return capture_.size();
+                return (capture_.size());
         }
 };
 

@@ -35,12 +35,12 @@ public:
 
         std::size_t available() const
         {
-                return dual_map_[0].available() + dual_map_[1].available();
+                return (dual_map_[0].available() + dual_map_[1].available());
         }
 
         std::size_t size() const
         {
-                return dual_map_[0].size() + dual_map_[1].size();
+                return (dual_map_[0].size() + dual_map_[1].size());
         }
 
         void resize(std::size_t log2_n)
@@ -61,7 +61,7 @@ public:
         template<typename Position>
         Value const* find(Position const& p) const
         {
-                return dual_map_[p.active_color()].find(p);
+                return (dual_map_[p.active_color()].find(p));
         }
 
         // modifiers

@@ -8,7 +8,7 @@ namespace setup {
 
 BOOST_AUTO_TEST_SUITE(TestSetup)
 
-BOOST_AUTO_TEST_CASE(Wieger)
+BOOST_AUTO_TEST_CASE(wiegerWesselink)
 {
         // Test position from email conversation with Wieger Wesselink
         auto const w = "O     \

@@ -31,7 +31,7 @@ int Root<Objective>::iterative_deepening(Position const& p, int depth)
                 report(i, score, timer, p, pv);
         }
 
-        return score;
+        return (score);
 }
 
 // principal variation search (PVS)
@@ -42,7 +42,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         statistics_.update(ply);
 
         if (is_interrupted())
-                return alpha;
+                return (alpha);
 
         // -INF <= alpha < beta <= +INF
         BOOST_ASSERT(-infinity() <= alpha && alpha < beta && beta <= infinity());
@@ -50,12 +50,12 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         // alpha < beta <= +INF implies alpha <= win_min
         // with equality, any finite score will fail low
         if (alpha == win_min())
-                return alpha;
+                return (alpha);
 
         // -INF <= alpha < beta implies loss_min <= beta
         // with equality, any finite score will fail high
         if (beta == loss_min())
-                return beta;
+                return (beta);
 
         // alpha < beta implies alpha <= beta - 1,
         // with the strict inequality if and only if is_pv(NodeType)
@@ -70,17 +70,17 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
                         if (type == Bound::exact)
                                 refutation.clear();
                 }
-                return terminal_value;
+                return (terminal_value);
         }
 
         // return evaluation in leaf nodes with valid moves
         if (depth <= 0 || ply >= MAX_PLY)
-                return evaluate::score(p);
+                return (evaluate::score(p));
 
         // TT cut-off for exact win/loss scores or for deep enough heuristic scores
         auto TT_entry = TT.find(p);
         if (TT_entry && (is_mate(TT_entry->value()) || TT_entry->depth() >= depth) && TT_entry->is_cutoff(alpha, beta))
-                return TT_entry->value();
+                return (TT_entry->value());
 
         // generate moves
         auto const moves = successor::generate(p);
@@ -154,7 +154,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
 
         auto const type = Bound::type(best_value, original_alpha, beta);
         TT.insert(p, Transposition(best_value, type, depth, best_move));
-        return best_value;
+        return (best_value);
 }
 
 }       // namespace search

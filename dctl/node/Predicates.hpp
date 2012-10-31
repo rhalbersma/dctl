@@ -10,38 +10,38 @@ namespace dctl {
 template<typename Position, typename Move>
 bool is_connected(Position const& p, Move const& m1, Move const& m2)
 {
-        return false;
+        return (false);
 }
 
 template<typename Position, typename Move>
 bool is_promotion(Position const& p, Move const& m)
 {
-        return bit::is_single(moving_kings(p, m));
+        return (bit::is_single(moving_kings(p, m)));
 }
 
 template<typename Position, typename Move>
 bool is_with_king(Position const& p, Move const& m)
 {
-        return !bit::is_zero(moving_kings(p, m) & active_kings(p));
+        return (!bit::is_zero(moving_kings(p, m) & active_kings(p)));
 }
 
 template<typename Position, typename Move>
 bool is_capture(Position const& p, Move const& m)
 {
-        return !bit::is_zero(captured_pieces(p, m));
+        return (!bit::is_zero(captured_pieces(p, m)));
 }
 
 template<typename Position, typename Move>
 bool is_reversible(Position const& p, Move const& m)
 {
-        return is_with_king(p, m) && !is_capture(p, m);
+        return (is_with_king(p, m) && !is_capture(p, m));
 }
 
 template<typename Position, typename Move>
 bool is_intersecting_capture(Position const& p, Move const& m)
 {
         // tag dispatching on capture removal
-        return detail::is_intersecting_capture(p, m, typename Position::rules_type::jump_removal());
+        return (detail::is_intersecting_capture(p, m, typename Position::rules_type::jump_removal()));
 }
 
 template<typename Position, typename Move>

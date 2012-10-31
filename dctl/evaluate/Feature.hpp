@@ -23,7 +23,7 @@ public:
                 score += balance(p);
                 score += mobility(p);
                 //score += king_monopoly(p);
-                return score;
+                return (score);
         }
 
         template<template<typename, typename> class Position, typename Rules, typename Board>
@@ -42,7 +42,7 @@ public:
                 for (auto i = 1; i < Board::height::value; ++i) {
                         score += Weight<Rules, Board>::tempo[i] * bit::count(p.pieces(Color) & Board::row_mask[Color][i]);
                 }
-                return score;
+                return (score);
         }
 
         template<template<typename, typename> class Position, typename Rules, typename Board>
@@ -56,7 +56,7 @@ public:
                                 bit::count(p.pieces(Color) & Board::col_mask[!Color][i])
                         );
                 }
-                return score;
+                return (score);
         }
 
         template<template<typename, typename> class Position, typename Rules, typename Board>
@@ -70,19 +70,19 @@ public:
                                 bit::count(p.pieces(Color) & Board::col_mask[!Color][i])
                         );
                 }
-                return -abs(score);
+                return (-abs(score));
         }
 
         template<template<typename, typename> class Position, typename Rules, typename Board>
         static int mobility(Position<Rules, Board> const& p)
         {
-                return Weight<Rules, Board>::mobility * successor::mobility<Color>(p);
+                return (Weight<Rules, Board>::mobility * successor::mobility<Color>(p));
         }
 
         template<template<typename, typename> class Position, typename Rules, typename Board>
         static int king_monopoly(Position<Rules, Board> const& p)
         {
-                return Weight<Rules, Board>::king_monopoly * (!bit::is_zero(p.kings(Color)) && bit::is_zero(p.kings(!Color)));
+                return (Weight<Rules, Board>::king_monopoly * (!bit::is_zero(p.kings(Color)) && bit::is_zero(p.kings(!Color))));
         }
 };
 

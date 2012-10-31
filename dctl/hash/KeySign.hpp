@@ -15,7 +15,7 @@ struct FindKey
         {
                 static_assert(!std::is_integral<Item>::value, "Only bitwise shift applicable to integer types.");
 
-                return item.key();
+                return (item.key());
         }
 };
 
@@ -30,7 +30,7 @@ struct ShiftKey
                 static_assert(std::is_integral<Key>::value, "Bitwise shift only applicable to integer types.");
                 static_assert(sizeof(Key) <= sizeof(Index), "Key cannot be of larger type than the index.");
 
-                return static_cast<Key>(index >> (num_bits<Index>::value - num_bits<Key>::value));
+                return (static_cast<Key>(index >> (num_bits<Index>::value - num_bits<Key>::value)));
         }
 };
 

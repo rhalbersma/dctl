@@ -32,7 +32,7 @@ public:
                 auto num_moves = DoJumps()(p);
                 if (!num_moves)
                         num_moves += DoPromotions()(p);
-                return num_moves;
+                return (num_moves);
         }
 };
 

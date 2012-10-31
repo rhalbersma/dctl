@@ -38,7 +38,7 @@ public:
                         report(i, leafs, timer);
                 }
                 summary();
-                return leafs;
+                return (leafs);
         }
 
         template<typename Position>
@@ -65,13 +65,13 @@ public:
                         report(depth - 1, move_leafs, timer);
                 }
                 summary(leafs);
-                return leafs;
+                return (leafs);
         }
 
         template<typename Position>
         NodeCount test(Position const& p, int depth)
         {
-                return driver(p, depth, 0);
+                return (driver(p, depth, 0));
         }
 
         void resize_hash(std::size_t s)
@@ -147,7 +147,7 @@ private:
         template<typename Position>
         NodeCount driver(Position const& p, int depth, int ply)
         {
-                return (depth == 0)? leaf(p, depth, ply) : hash(p, depth, ply);
+                return ((depth == 0)? leaf(p, depth, ply) : hash(p, depth, ply));
         }
 
         template<typename Position>
@@ -156,7 +156,7 @@ private:
                 statistics_.update(ply);
 
                 if (depth == 0)
-                        return 1;
+                        return (1);
 
                 auto const moves = successor::generate(p);
                 NodeCount leafs = 0;
@@ -166,7 +166,7 @@ private:
                         q.make(m);
                         leafs += leaf(q, depth - 1, ply + 1);
                 }
-                return leafs;
+                return (leafs);
         }
 
         template<typename Position>
@@ -176,7 +176,7 @@ private:
 
                 auto const moves = successor::generate(p);
                 if (depth == 1)
-                        return moves.size();
+                        return (moves.size());
 
                 NodeCount leafs = 0;
                 for (auto const& m: moves) {
@@ -185,7 +185,7 @@ private:
                         q.make(m);
                         leafs += bulk(q, depth - 1, ply + 1);
                 }
-                return leafs;
+                return (leafs);
         }
 
         template<typename Position>
@@ -194,7 +194,7 @@ private:
                 statistics_.update(ply);
 
                 if (depth == 1)
-                        return successor::count(p);
+                        return (successor::count(p));
 
                 auto const moves = successor::generate(p);
                 NodeCount leafs = 0;
@@ -204,7 +204,7 @@ private:
                         q.make(m);
                         leafs += count(q, depth - 1, ply + 1);
                 }
-                return leafs;
+                return (leafs);
         }
 
         template<typename Position>
@@ -214,7 +214,7 @@ private:
 
                 auto TT_entry = TT.find(p);
                 if (TT_entry && TT_entry->depth() == depth)
-                        return TT_entry->leafs();
+                        return (TT_entry->leafs());
 
                 NodeCount leafs;
                 if (depth == 1) {
@@ -231,7 +231,7 @@ private:
                 }
 
                 TT.insert(p, Transposition(leafs, depth));
-                return leafs;
+                return (leafs);
         }
 
         // 32-byte hash entries: 24-byte piece lists signature, 8-byte (59-bit leafs, 5-bit depth) content
