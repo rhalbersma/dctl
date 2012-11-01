@@ -2,6 +2,7 @@
 #include <boost/mpl/arithmetic.hpp>             // plus
 #include <boost/mpl/bool.hpp>                   // bool_
 #include <boost/mpl/int.hpp>                    // int_
+#include <boost/mpl/placeholders.hpp>
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include <dctl/angle/Degrees.hpp>
 #include <dctl/bit/Bit.hpp>
@@ -51,7 +52,7 @@ public:
         :
                 mask::init< 
                         mask::is_jump_start< 
-                                Board, 
+                                Board, boost::mpl::_1,
                                 mpl::lazy::rotate< Direction, typename Layout::full_angle > 
                         >
                 >
@@ -100,10 +101,10 @@ private:
 };
 
 template<typename Dimensions, typename Layout>
-BitBoard const Board<Dimensions, Layout>::squares = mask::init< mask::is_square<Board> >::value;
+BitBoard const Board<Dimensions, Layout>::squares = mask::init< mask::is_square<Board, boost::mpl::_1> >::value;
 
 #define DCTL_PP_INITIAL_MASK(z, i, data)      \
-        mask::init< mask::is_initial< Board, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
+        mask::init< mask::is_initial< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
 
 template<typename Dimensions, typename Layout>
 BitBoard const Board<Dimensions, Layout>::initial_mask[][5] = {
@@ -114,7 +115,7 @@ BitBoard const Board<Dimensions, Layout>::initial_mask[][5] = {
 #undef DCTL_PP_INITIAL_MASK
 
 #define DCTL_PP_ROW_MASK(z, i, data)      \
-        mask::init< mask::is_row< Board, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
+        mask::init< mask::is_row< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
 
 template<typename Dimensions, typename Layout>
 BitBoard const Board<Dimensions, Layout>::promotion_mask[][2] = {
@@ -131,7 +132,7 @@ BitBoard const Board<Dimensions, Layout>::row_mask[][12] = {
 #undef DCTL_PP_ROW_MASK
 
 #define DCTL_PP_COL_MASK(z, i, data)      \
-        mask::init< mask::is_col< Board, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
+        mask::init< mask::is_col< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
 
 template<typename Dimensions, typename Layout>
 BitBoard const Board<Dimensions, Layout>::col_mask[][12] = {

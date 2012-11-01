@@ -7,16 +7,21 @@ namespace board {
 namespace mask {
 
 // primary template declaration
-template<typename Predicate>
+template<typename>
 struct init;
 
-/*
+#ifndef _MSC_VER
 
-// TODO: rewrite using C++11 variadic templates
-template<template<typename, typename..., typename> class Pred, typename Board, typename... Args>
-struct init< Pred<Board, Args..., boost::mpl::_1> >;
+// partial specialization declarations
+template
+<
+        template<typename, typename, typename...> class Predicate,
+        typename Board,
+        typename... Args
+>
+struct init< Predicate<Board, boost::mpl::_1, Args...> >;
 
-*/
+#else
 
 // partial specialization declaration for nullary predicates
 template
@@ -33,7 +38,7 @@ template
         typename Board, 
         typename Arg1
 >
-struct init< UnaryPredicate<Board, Arg1, boost::mpl::_1> >;
+struct init< UnaryPredicate<Board, boost::mpl::_1, Arg1> >;
 
 // partial specialization declaration for binary predicates
 template
@@ -43,18 +48,11 @@ template
         typename Arg1, 
         typename Arg2
 >
-struct init< BinaryPredicate<Board, Arg1, Arg2, boost::mpl::_1> >;
+struct init< BinaryPredicate<Board, boost::mpl::_1, Arg1, Arg2> >;
+
+#endif
 
 namespace detail {
-
-/*
-        // NOTE: on Microsoft Visual C++ 2012 Express, we get a fatal error C1202: 
-        // recursive type or function dependency context too complex from
-        typename Square = typename boost::mpl::minus< typename
-                Board::ExternalGrid::size, 
-                boost::mpl::int_<1> 
-        >::type
-*/
 
 // primary template declaration
 template

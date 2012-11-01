@@ -16,7 +16,7 @@ namespace dctl {
 namespace board {
 namespace mask {
 
-template<typename Board, typename SQ = boost::mpl::_1 >
+template<typename Board, typename SQ>
 struct is_square
 :
         mpl::is_within_range<
@@ -26,7 +26,7 @@ struct is_square
         >
 {};
 
-template<typename Board, typename Color, typename Separation, typename SQ = boost::mpl::_1 >
+template<typename Board, typename SQ, typename Color, typename Separation>
 struct is_initial
 :
         mpl::is_within_range< typename
@@ -59,7 +59,7 @@ struct is_initial
         >
 {};
 
-template<typename Board, typename Color, typename Row, typename SQ = boost::mpl::_1 >
+template<typename Board, typename SQ, typename Color, typename Row>
 struct is_row
 :
         boost::mpl::equal_to< typename
@@ -76,7 +76,7 @@ struct is_row
         >
 {};
 
-template<typename Board, typename Color, typename Column, typename SQ = boost::mpl::_1 >
+template<typename Board, typename SQ, typename Color, typename Column>
 struct is_col
 :
         boost::mpl::equal_to< typename
@@ -154,7 +154,7 @@ struct is_jump_group
 
 }       // namespace detail
 
-template<typename Board, typename Group, typename SQ = boost::mpl::_1 >
+template<typename Board, typename SQ, typename Group>
 struct is_jump_group
 :
         detail::is_jump_group< typename
@@ -209,7 +209,7 @@ struct is_jump_start
 
 }       // namespace detail
 
-template<typename Board, typename Direction, typename SQ = boost::mpl::_1 >
+template<typename Board, typename SQ, typename Direction>
 struct is_jump_start
 :
         detail::is_jump_start<
