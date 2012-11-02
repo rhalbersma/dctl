@@ -239,6 +239,7 @@
     <ProjectGuid>{0B1C650F-2EAC-4B31-8DE7-D4A3BF2BD122}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>src</RootNamespace>
+    <ProjectName>dctl</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
