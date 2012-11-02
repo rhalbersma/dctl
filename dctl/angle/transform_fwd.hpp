@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle/Degrees.hpp>       // Degrees
+#include <dctl/angle/degrees.hpp>       // Degrees
 #include <dctl/mpl/transform.hpp>       // inverse, mirror, rotate (primary template definitions)
 
 namespace dctl {

@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/dxp/GameRequest.hpp>
-#include <dctl/dxp/GameAcknowledge.hpp>
-#include <dctl/dxp/Move.hpp>
-#include <dctl/dxp/GameEnd.hpp>
-#include <dctl/dxp/Chat.hpp>
-#include <dctl/dxp/BackAcknowledge.hpp>
-#include <dctl/dxp/BackRequest.hpp>
+#include <dctl/dxp/game_request.hpp>
+#include <dctl/dxp/game_acknowledge.hpp>
+#include <dctl/dxp/move.hpp>
+#include <dctl/dxp/game_end.hpp>
+#include <dctl/dxp/chat.hpp>
+#include <dctl/dxp/back_acknowledge.hpp>
+#include <dctl/dxp/back_request.hpp>

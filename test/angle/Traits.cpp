@@ -1,8 +1,8 @@
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/vector.hpp>                 // vector
-#include <dctl/angle/Degrees.hpp>               // D000, D045, D090, D135, D180, D225, D270, D315
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
+#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
+#include <dctl/angle/degrees.hpp>               // D000, D045, D090, D135, D180, D225, D270, D315
 #include <dctl/angle/traits.hpp>                // is_orthogonal, is_diagonal, is_up, is_down, is_left, is_right, is_positive, is_negative
 
 namespace dctl {

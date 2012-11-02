@@ -1,17 +1,17 @@
 #pragma once
 #include <functional>                   // function
 #include <boost/utility.hpp>            // noncopyable
-#include <dctl/successor/generation/Generator_fwd.hpp>
-#include <dctl/successor/generation/Primary.hpp>
-#include <dctl/successor/generation/BothJumps.hpp>
-#include <dctl/successor/generation/BothMoves.hpp>
-#include <dctl/successor/generation/KingJumps.hpp>
-#include <dctl/successor/generation/KingMoves.hpp>
-#include <dctl/successor/generation/PawnJumps.hpp>
-#include <dctl/successor/generation/PawnMoves.hpp>
-#include <dctl/successor/Select.hpp>
-#include <dctl/capture/State.hpp>
-#include <dctl/node/Stack.hpp>
+#include <dctl/successor/generation/generator_fwd.hpp>
+#include <dctl/successor/generation/primary.hpp>
+#include <dctl/successor/generation/both_jumps.hpp>
+#include <dctl/successor/generation/both_moves.hpp>
+#include <dctl/successor/generation/king_jumps.hpp>
+#include <dctl/successor/generation/king_moves.hpp>
+#include <dctl/successor/generation/pawn_jumps.hpp>
+#include <dctl/successor/generation/pawn_moves.hpp>
+#include <dctl/successor/select.hpp>
+#include <dctl/capture/state.hpp>
+#include <dctl/node/stack.hpp>
 
 namespace dctl {
 namespace successor {

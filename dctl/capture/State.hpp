@@ -8,16 +8,16 @@
 #include <boost/mpl/logical.hpp>        // and
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/angle/traits.hpp>
-#include <dctl/bit/Bit.hpp>
+#include <dctl/bit/bit.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/node/Material.hpp>
-#include <dctl/node/Promotion.hpp>
-#include <dctl/node/Stack.hpp>
-#include <dctl/node/UnaryProjections.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/rules/Rules.hpp>
+#include <dctl/node/material.hpp>
+#include <dctl/node/promotion.hpp>
+#include <dctl/node/stack.hpp>
+#include <dctl/node/unary_projections.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/rules/rules.hpp>
 #include <dctl/utility/algorithm.hpp>     // contains
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/utility/int.hpp>
 #include <dctl/utility/total_order.hpp>
 
 namespace dctl {

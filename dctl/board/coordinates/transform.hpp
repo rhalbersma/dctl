@@ -1,8 +1,8 @@
 #pragma once
 #include <boost/mpl/arithmetic.hpp>                     // minus
 #include <boost/mpl/int.hpp>                            // int_
-#include <dctl/angle/Degrees.hpp>                       // D000, L090, R090, D180
-#include <dctl/board/Coordinates.hpp>                   // Coordinates
+#include <dctl/angle/degrees.hpp>                       // D000, L090, R090, D180
+#include <dctl/board/coordinates.hpp>                   // Coordinates
 #include <dctl/board/coordinates/transform_fwd.hpp>     // rotate (partial specialization declarations)
 
 namespace dctl {

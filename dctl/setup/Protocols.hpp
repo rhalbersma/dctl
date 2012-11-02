@@ -1,3 +1,3 @@
 #pragma once
-#include <dctl/setup/DXP.hpp>
-#include <dctl/setup/PDN.hpp>
+#include <dctl/setup/dxp.hpp>
+#include <dctl/setup/pdn.hpp>

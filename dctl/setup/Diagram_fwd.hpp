@@ -2,8 +2,8 @@
 #include <functional>                   // bind, placeholders
 #include <iomanip>                      // setw
 #include <sstream>                      // stringstream
-#include <dctl/setup/Numbers.hpp>
-#include <dctl/setup/TokenInterface.hpp>
+#include <dctl/setup/numbers.hpp>
+#include <dctl/setup/i_token.hpp>
 
 namespace dctl {
 namespace setup {

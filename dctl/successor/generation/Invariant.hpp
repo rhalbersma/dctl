@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/successor/Count.hpp>
-#include <dctl/successor/Detect.hpp>
+#include <dctl/successor/count.hpp>
+#include <dctl/successor/detect.hpp>
 
 namespace dctl {
 namespace successor {

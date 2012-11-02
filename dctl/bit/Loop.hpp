@@ -1,7 +1,7 @@
 #pragma once
-#include <functional>                           // function
-#include <dctl/bit/Bit_fwd.hpp>                 // first::clear, is_element, singlet
-#include <dctl/utility/IntegerTypes.hpp>        // num_bits
+#include <functional>                   // function
+#include <dctl/bit/bit_fwd.hpp>         // first::clear, is_element, singlet
+#include <dctl/utility/int.hpp>         // num_bits
 
 namespace dctl {
 namespace bit {  

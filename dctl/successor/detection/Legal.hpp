@@ -1,14 +1,14 @@
 #pragma once
 #include <functional>                   // function
-#include <dctl/successor/detection/Detector_fwd.hpp>
-#include <dctl/successor/detection/Primary.hpp>
-#include <dctl/successor/detection/BothJumps.hpp>
-#include <dctl/successor/detection/BothMoves.hpp>
-#include <dctl/successor/detection/KingJumps.hpp>
-#include <dctl/successor/detection/KingMoves.hpp>
-#include <dctl/successor/detection/PawnJumps.hpp>
-#include <dctl/successor/detection/PawnMoves.hpp>
-#include <dctl/successor/Select.hpp>
+#include <dctl/successor/detection/detector_fwd.hpp>
+#include <dctl/successor/detection/primary.hpp>
+#include <dctl/successor/detection/both_jumps.hpp>
+#include <dctl/successor/detection/both_moves.hpp>
+#include <dctl/successor/detection/king_jumps.hpp>
+#include <dctl/successor/detection/king_moves.hpp>
+#include <dctl/successor/detection/pawn_jumps.hpp>
+#include <dctl/successor/detection/pawn_moves.hpp>
+#include <dctl/successor/select.hpp>
 
 namespace dctl {
 namespace successor {

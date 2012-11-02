@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/bit/Bit.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace hash {

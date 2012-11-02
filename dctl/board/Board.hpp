@@ -4,16 +4,16 @@
 #include <boost/mpl/int.hpp>                    // int_
 #include <boost/mpl/placeholders.hpp>
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
-#include <dctl/angle/Degrees.hpp>
-#include <dctl/bit/Bit.hpp>
+#include <dctl/angle/degrees.hpp>
+#include <dctl/bit/bit.hpp>
 #include <dctl/board/dimensions/transform.hpp>
-#include <dctl/board/Ghosts.hpp>
-#include <dctl/board/Grid.hpp>
+#include <dctl/board/ghosts.hpp>
+#include <dctl/board/grid.hpp>
 #include <dctl/board/mask/init.hpp>
 #include <dctl/board/mask/predicates.hpp>
-#include <dctl/board/ShiftSize.hpp>
-#include <dctl/node/Side.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/board/shift_size.hpp>
+#include <dctl/node/side.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace board {

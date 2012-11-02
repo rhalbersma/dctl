@@ -2,9 +2,9 @@
 #include <iomanip>                      // left, right, setw
 #include <sstream>                      // stringsream
 #include <string>                       // string
-#include <dctl/notation/Notation.hpp>
-#include <dctl/bit/Bit.hpp>
-#include <dctl/node/Predicates.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/node/predicates.hpp>
+#include <dctl/notation/notation.hpp>
 
 namespace dctl {
 namespace notation {

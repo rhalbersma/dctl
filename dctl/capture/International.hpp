@@ -2,8 +2,8 @@
 #include <limits>                               // numeric_limits
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/operators.hpp>                  // totally_ordered
-#include <dctl/capture/Value_fwd.hpp>                        // Value (primary template)
-#include <dctl/rules/International_fwd.hpp>       // International
+#include <dctl/capture/value_fwd.hpp>           // Value (primary template)
+#include <dctl/rules/international_fwd.hpp>     // International
 
 namespace dctl {
 namespace capture {

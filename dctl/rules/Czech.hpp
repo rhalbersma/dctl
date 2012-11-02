@@ -1,9 +1,9 @@
 #pragma once
-#include <dctl/rules/Czech_fwd.hpp>
-#include <dctl/rules/Rules.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Value.hpp>
-#include <dctl/notation/Czech.hpp>
+#include <dctl/rules/czech_fwd.hpp>
+#include <dctl/rules/rules.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/value.hpp>
+#include <dctl/notation/czech.hpp>
 
 namespace dctl {
 namespace rules {

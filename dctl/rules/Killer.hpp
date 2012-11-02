@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/rules/Killer_fwd.hpp>
-#include <dctl/rules/Rules.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Killer.hpp>
+#include <dctl/rules/killer_fwd.hpp>
+#include <dctl/rules/rules.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/killer.hpp>
 
 namespace dctl {
 namespace rules {

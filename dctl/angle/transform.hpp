@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/mpl/arithmetic.hpp>     // negate, plus
 #include <boost/mpl/int.hpp>            // int_
-#include <dctl/angle/Degrees.hpp>       // Degrees
+#include <dctl/angle/degrees.hpp>       // Degrees
 #include <dctl/angle/transform_fwd.hpp> // inverse, rotate, mirror (partial specialization declarations)
 #include <dctl/mpl/modular.hpp>         // abs_modulus
 

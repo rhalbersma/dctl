@@ -1,14 +1,14 @@
 #pragma once
 #include <functional>                   // function
-#include <dctl/successor/enumeration/Enumerator_fwd.hpp>
-#include <dctl/successor/enumeration/Primary.hpp>
-#include <dctl/successor/enumeration/BothJumps.hpp>
-#include <dctl/successor/enumeration/BothPromotions.hpp>
-#include <dctl/successor/enumeration/KingJumps.hpp>
+#include <dctl/successor/enumeration/enumerator_fwd.hpp>
+#include <dctl/successor/enumeration/primary.hpp>
+#include <dctl/successor/enumeration/both_jumps.hpp>
+#include <dctl/successor/enumeration/both_promotions.hpp>
+#include <dctl/successor/enumeration/king_jumps.hpp>
 // there are no king promotions
-#include <dctl/successor/enumeration/PawnJumps.hpp>
-#include <dctl/successor/enumeration/PawnPromotions.hpp>
-#include <dctl/successor/Select.hpp>
+#include <dctl/successor/enumeration/pawn_jumps.hpp>
+#include <dctl/successor/enumeration/pawn_promotions.hpp>
+#include <dctl/successor/select.hpp>
 
 namespace dctl {
 namespace successor {

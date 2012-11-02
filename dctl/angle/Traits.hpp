@@ -3,7 +3,7 @@
 #include <boost/mpl/comparison.hpp>     // equal_to, not_equal_to
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // not_, and_, or_
-#include <dctl/angle/Degrees.hpp>       // L090, D090, D180
+#include <dctl/angle/degrees.hpp>       // L090, D090, D180
 #include <dctl/angle/traits_fwd.hpp>    // is_orthogonal, is_diagonal, is_up, is_down, is_left, is_right, is_positive, is_negative (primary template definitions)
 #include <dctl/angle/transform.hpp>	// rotate
 

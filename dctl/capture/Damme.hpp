@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/capture/Value_fwd.hpp>                // Value (primary template)
-#include <dctl/capture/International.hpp>            // International (partial specialization)
-#include <dctl/rules/Damme_fwd.hpp>       // Damme
+#include <dctl/capture/value_fwd.hpp>           // Value (primary template)
+#include <dctl/capture/international.hpp>       // International (partial specialization)
+#include <dctl/rules/damme_fwd.hpp>             // Damme
 
 namespace dctl {
 namespace capture {

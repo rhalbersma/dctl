@@ -1,10 +1,10 @@
 #pragma once
-#include <boost/assert.hpp>                     // BOOST_ASSERT
-#include <boost/config.hpp>                     // BOOST_STATIC_CONSTANT
-#include <cstddef>                              // std::size_t
-#include <cstdint>                              // uint8_t
-#include <dctl/bit/Bit_fwd.hpp>                 // is_single
-#include <dctl/utility/IntegerTypes.hpp>        // num_bits
+#include <cstddef>                      // std::size_t
+#include <cstdint>                      // uint8_t
+#include <boost/assert.hpp>             // BOOST_ASSERT
+#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
+#include <dctl/bit/bit_fwd.hpp>         // is_single
+#include <dctl/utility/int.hpp>         // num_bits
 
 namespace dctl {
 namespace bit {

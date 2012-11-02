@@ -3,8 +3,8 @@
 #include <utility>                      // pair
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
-#include <dctl/capture/Value_fwd.hpp>                // Value (primary template)
-#include <dctl/rules/Spanish_fwd.hpp>     // Spanish
+#include <dctl/capture/value_fwd.hpp>   // Value (primary template)
+#include <dctl/rules/spanish_fwd.hpp>   // Spanish
 
 namespace dctl {
 namespace capture {

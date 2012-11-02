@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/mpl/bool.hpp>           // bool_
 #include <boost/mpl/eval_if.hpp>        // eval_if
-#include <dctl/angle/Degrees.hpp>       // D000, D045, D090, D135, D180, D225, D270, D315
+#include <dctl/angle/degrees.hpp>       // D000, D045, D090, D135, D180, D225, D270, D315
 #include <dctl/angle/transform.hpp>     // rotate
 
 namespace dctl {

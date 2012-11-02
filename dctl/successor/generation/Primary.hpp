@@ -1,8 +1,8 @@
 #pragma once
 #include <functional>                   // function
 #include <boost/utility.hpp>            // noncopyable
-#include <dctl/successor/generation/Generator_fwd.hpp>
-#include <dctl/node/Stack.hpp>
+#include <dctl/successor/generation/generator_fwd.hpp>
+#include <dctl/node/stack.hpp>
 
 namespace dctl {
 namespace successor {

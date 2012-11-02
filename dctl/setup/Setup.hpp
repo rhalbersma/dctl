@@ -1,3 +1,3 @@
 #pragma once
-#include <dctl/setup/Methods.hpp>
-#include <dctl/setup/Protocols.hpp>
+#include <dctl/setup/methods.hpp>
+#include <dctl/setup/protocols.hpp>

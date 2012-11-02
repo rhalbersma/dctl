@@ -53,11 +53,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Full</Optimization>
       <PreprocessorDefinitions>WIN32;NOMINMAX;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_51;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -74,11 +73,11 @@
       <CompileAsManaged>false</CompileAsManaged>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerListingLocation>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</AssemblerListingLocation>
-      <PrecompiledHeaderFile>precompiled.hpp</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <CompileAs>Default</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalOptions>/FI"precompiled.hpp" %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.hpp</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -96,12 +95,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NOMINMAX;NDEBUG;_CONSOLE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_51;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ObjectFileName>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</ObjectFileName>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <StringPooling>true</StringPooling>
@@ -120,12 +118,12 @@
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerListingLocation>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</AssemblerListingLocation>
       <UseFullPaths>true</UseFullPaths>
-      <PrecompiledHeaderFile>precompiled.hpp</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <CompileAs>Default</CompileAs>
       <ExceptionHandling>Async</ExceptionHandling>
       <SmallerTypeCheck>false</SmallerTypeCheck>
-      <AdditionalOptions>/FI"precompiled.hpp" %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.hpp</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,54 +141,52 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\test\Boost_pch.hpp" />
-    <ClInclude Include="..\..\..\test\precompiled.hpp" />
-    <ClInclude Include="..\..\..\test\search\Fixture.hpp" />
-    <ClInclude Include="..\..\..\test\STL_pch.hpp" />
-    <ClInclude Include="..\..\..\test\successor\rulebook\Fixture.hpp" />
-    <ClInclude Include="..\..\..\test\test_config.hpp" />
-    <ClInclude Include="..\..\..\test\walk\Fixture.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\test\angle\Degrees.cpp" />
-    <ClCompile Include="..\..\..\test\angle\traits.cpp" />
-    <ClCompile Include="..\..\..\test\angle\transform.cpp" />
-    <ClCompile Include="..\..\..\test\bit\Bit.cpp" />
-    <ClCompile Include="..\..\..\test\bit\Lookup.cpp" />
-    <ClCompile Include="..\..\..\test\bit\Loop.cpp" />
-    <ClCompile Include="..\..\..\test\board\Coordinates.cpp" />
-    <ClCompile Include="..\..\..\test\board\Dimensions.cpp" />
-    <ClCompile Include="..\..\..\test\board\Grid.cpp" />
-    <ClCompile Include="..\..\..\test\dxp\Parser.cpp" />
-    <ClCompile Include="..\..\..\test\group\axioms.cpp" />
-    <ClCompile Include="..\..\..\test\mpl\algorithm.cpp" />
-    <ClCompile Include="..\..\..\test\precompiled.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.hpp</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">precompiled.hpp</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="..\..\..\test\search\egdb\Frisian.cpp" />
-    <ClCompile Include="..\..\..\test\search\egdb\International.cpp" />
-    <ClCompile Include="..\..\..\test\search\egdb\Killer.cpp" />
-    <ClCompile Include="..\..\..\test\search\initial\International.cpp" />
-    <ClCompile Include="..\..\..\test\search\Score.cpp" />
-    <ClCompile Include="..\..\..\test\setup\Layout.cpp" />
-    <ClCompile Include="..\..\..\test\setup\Wesselink.cpp" />
-    <ClCompile Include="..\..\..\test\successor\regressions\Italian.cpp" />
-    <ClCompile Include="..\..\..\test\successor\rulebook\International.cpp" />
-    <ClCompile Include="..\..\..\test\successor\rulebook\Italian.cpp" />
-    <ClCompile Include="..\..\..\test\test_main.cpp" />
-    <ClCompile Include="..\..\..\test\utility\algorithm.cpp" />
-    <ClCompile Include="..\..\..\test\walk\initial\Board8x8.cpp" />
-    <ClCompile Include="..\..\..\test\walk\initial\Rectangular.cpp" />
-    <ClCompile Include="..\..\..\test\walk\international\FMJD.cpp" />
-    <ClCompile Include="..\..\..\test\walk\italian\Gilbert.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\src\src.vcxproj">
       <Project>{0b1c650f-2eac-4b31-8de7-d4a3bf2bd122}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\test\angle\degrees.cpp" />
+    <ClCompile Include="..\..\..\test\angle\traits.cpp" />
+    <ClCompile Include="..\..\..\test\angle\transform.cpp" />
+    <ClCompile Include="..\..\..\test\bit\bit.cpp" />
+    <ClCompile Include="..\..\..\test\bit\lookup.cpp" />
+    <ClCompile Include="..\..\..\test\bit\loop.cpp" />
+    <ClCompile Include="..\..\..\test\board\coordinates.cpp" />
+    <ClCompile Include="..\..\..\test\board\dimensions.cpp" />
+    <ClCompile Include="..\..\..\test\board\grid.cpp" />
+    <ClCompile Include="..\..\..\test\dxp\parser.cpp" />
+    <ClCompile Include="..\..\..\test\group\axioms.cpp" />
+    <ClCompile Include="..\..\..\test\mpl\algorithm.cpp" />
+    <ClCompile Include="..\..\..\test\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\search\egdb\frisian.cpp" />
+    <ClCompile Include="..\..\..\test\search\egdb\international.cpp" />
+    <ClCompile Include="..\..\..\test\search\egdb\killer.cpp" />
+    <ClCompile Include="..\..\..\test\search\initial\international.cpp" />
+    <ClCompile Include="..\..\..\test\search\score.cpp" />
+    <ClCompile Include="..\..\..\test\setup\layout.cpp" />
+    <ClCompile Include="..\..\..\test\setup\wesselink.cpp" />
+    <ClCompile Include="..\..\..\test\successor\regressions\italian.cpp" />
+    <ClCompile Include="..\..\..\test\successor\rulebook\international.cpp" />
+    <ClCompile Include="..\..\..\test\successor\rulebook\italian.cpp" />
+    <ClCompile Include="..\..\..\test\test_main.cpp" />
+    <ClCompile Include="..\..\..\test\utility\algorithm.cpp" />
+    <ClCompile Include="..\..\..\test\walk\initial\board8x8.cpp" />
+    <ClCompile Include="..\..\..\test\walk\initial\rectangular.cpp" />
+    <ClCompile Include="..\..\..\test\walk\international\fmjd.cpp" />
+    <ClCompile Include="..\..\..\test\walk\italian\gilbert.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\test\boost_pch.hpp" />
+    <ClInclude Include="..\..\..\test\precompiled.hpp" />
+    <ClInclude Include="..\..\..\test\search\fixture.hpp" />
+    <ClInclude Include="..\..\..\test\stl_pch.hpp" />
+    <ClInclude Include="..\..\..\test\successor\fixture.hpp" />
+    <ClInclude Include="..\..\..\test\test_config.hpp" />
+    <ClInclude Include="..\..\..\test\walk\fixture.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

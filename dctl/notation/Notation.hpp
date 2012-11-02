@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/notation/Types.hpp>                    // numeric, Token
+#include <dctl/notation/types.hpp>      // numeric, Token
 
 namespace dctl {
 namespace notation {

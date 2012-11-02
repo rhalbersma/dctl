@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <dctl/setup/TokenInterface.hpp>
+#include <dctl/setup/i_token.hpp>
 
 namespace dctl {
 

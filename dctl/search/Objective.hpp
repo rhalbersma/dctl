@@ -2,9 +2,9 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/mpl/identity.hpp>       // identity
-#include <dctl/search/Score.hpp>
-#include <dctl/bit/Bit.hpp>
-#include <dctl/successor/Detect.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/search/score.hpp>
+#include <dctl/successor/detect.hpp>
 
 namespace dctl {
 namespace search {

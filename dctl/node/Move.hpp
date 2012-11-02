@@ -1,14 +1,13 @@
 #pragma once
-#include <array>                        // array
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/operators.hpp>          // equality_comparable, xorable
-#include <dctl/node/Move_fwd.hpp>
-#include <dctl/node/IPieces.hpp>
-#include <dctl/node/Side.hpp>
-#include <dctl/bit/Bit.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/node/move_fwd.hpp>
+#include <dctl/node/i_pieces.hpp>
+#include <dctl/node/side.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace detail {

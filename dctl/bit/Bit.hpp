@@ -1,10 +1,10 @@
 #pragma once
-#include <functional>                           // function
-#include <boost/assert.hpp>                     // BOOST_ASSERT
-#include <dctl/bit/Bit_fwd.hpp>                 // forward declarations
-#include <dctl/bit/Lookup.hpp>                  // count, index
-#include <dctl/bit/Loop.hpp>                    // count, index
-#include <dctl/utility/IntegerTypes.hpp>        // num_bits
+#include <functional>                   // function
+#include <boost/assert.hpp>             // BOOST_ASSERT
+#include <dctl/bit/bit_fwd.hpp>         // forward declarations
+#include <dctl/bit/lookup.hpp>          // count, index
+#include <dctl/bit/loop.hpp>            // count, index
+#include <dctl/utility/int.hpp>         // num_bits
 
 namespace dctl {
 namespace bit {

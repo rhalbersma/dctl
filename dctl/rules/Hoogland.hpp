@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/rules/Hoogland_fwd.hpp>
-#include <dctl/rules/Rules.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Hoogland.hpp>
+#include <dctl/rules/hoogland_fwd.hpp>
+#include <dctl/rules/rules.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/hoogland.hpp>
 
 namespace dctl {
 namespace rules {

@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/successor/Select.hpp>                 // Moves
-#include <dctl/successor/enumeration/Enumerator.hpp> // enumerator
-#include <dctl/node/Material.hpp>                    // both
+#include <dctl/successor/select.hpp>                 // Moves
+#include <dctl/successor/enumeration/enumerator.hpp> // enumerator
+#include <dctl/node/material.hpp>                    // both
 
 namespace dctl {
 namespace successor {

@@ -3,13 +3,13 @@
 #if WALK_ITALIAN_GILBERT == 1
 
 #include <boost/test/unit_test.hpp>
-#include <test/walk/Fixture.hpp>
-#include <dctl/walk/Root.hpp>
-#include <dctl/node/Position.hpp>
-#include <dctl/setup/Setup.hpp>
-#include <dctl/board/Types.hpp>
-#include <dctl/rules/Types.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <test/walk/fixture.hpp>
+#include <dctl/walk/root.hpp>
+#include <dctl/node/position.hpp>
+#include <dctl/setup/setup.hpp>
+#include <dctl/board/types.hpp>
+#include <dctl/rules/types.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace walk {

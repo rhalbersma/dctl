@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/mpl/quote.hpp>          // quote1, quote2
 #include <boost/mpl/vector.hpp>         // vector
-#include <dctl/angle/Degrees.hpp>       // D000, D045, D090, D135, D180, D225, D270, D315
+#include <dctl/angle/degrees.hpp>       // D000, D045, D090, D135, D180, D225, D270, D315
 #include <dctl/angle/transform.hpp>     // inverse, rotate (partial specialization definitions)
 #include <dctl/group/primitives.hpp>    // tuple
 

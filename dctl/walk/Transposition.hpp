@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace walk {

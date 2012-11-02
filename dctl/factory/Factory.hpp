@@ -8,9 +8,9 @@
 #include <boost/mpl/for_each.hpp>       // for_each
 #include <boost/mpl/identity.hpp>       // identity, make_identity
 #include <boost/mpl/placeholders.hpp>   // _1
-#include <dctl/factory/mixin.hpp>            // has_header_body_terminator
-#include <dctl/factory/Registry.hpp>         // Registry
-#include <dctl/mpl/algorithm.hpp>            // all_of
+#include <dctl/factory/mixin.hpp>       // has_header_body_terminator
+#include <dctl/factory/registry.hpp>    // Registry
+#include <dctl/mpl/algorithm.hpp>       // all_of
 
 namespace dctl {
 

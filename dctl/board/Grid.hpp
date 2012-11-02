@@ -4,7 +4,7 @@
 #include <boost/mpl/logical.hpp>        // not_
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
-#include <dctl/board/Grid_fwd.hpp>      // primary template and partial specialization declarations
+#include <dctl/board/grid_fwd.hpp>      // primary template and partial specialization declarations
 
 namespace dctl {
 namespace board {

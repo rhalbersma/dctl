@@ -3,22 +3,22 @@
 #include <iostream>
 #include <iomanip>
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <dctl/search/Bound.hpp>
-#include <dctl/search/Objective.hpp>
-#include <dctl/search/Score.hpp>
-#include <dctl/search/Transposition.hpp>
-#include <dctl/search/Variation.hpp>
-#include <dctl/evaluate/Score.hpp>
-#include <dctl/node/Stack.hpp>
-#include <dctl/hash/Map.hpp>
-#include <dctl/successor/Generate.hpp>
-#include <dctl/utility/Ply.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
-#include <dctl/utility/Statistics.hpp>
-#include <dctl/utility/Timer.hpp>
-#include <dctl/setup/Diagram.hpp>
-#include <dctl/setup/String.hpp>
-#include <dctl/notation/String.hpp>
+#include <dctl/search/bound.hpp>
+#include <dctl/search/objective.hpp>
+#include <dctl/search/score.hpp>
+#include <dctl/search/transposition.hpp>
+#include <dctl/search/variation.hpp>
+#include <dctl/evaluate/score.hpp>
+#include <dctl/node/stack.hpp>
+#include <dctl/hash/map.hpp>
+#include <dctl/successor/generate.hpp>
+#include <dctl/utility/ply.hpp>
+#include <dctl/utility/int.hpp>
+#include <dctl/utility/statistics.hpp>
+#include <dctl/utility/timer.hpp>
+#include <dctl/setup/diagram.hpp>
+#include <dctl/setup/string.hpp>
+#include <dctl/notation/string.hpp>
 
 namespace dctl {
 namespace search {
@@ -188,4 +188,4 @@ private:
 }       // namespace dctl
 
 // include template definitions inside header
-#include <dctl/search/Algorithms.hpp>
+#include <dctl/search/algorithms.hpp>

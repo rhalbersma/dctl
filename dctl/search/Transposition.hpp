@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <dctl/search/Bound.hpp>
-#include <dctl/search/Score.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/search/bound.hpp>
+#include <dctl/search/score.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace search {

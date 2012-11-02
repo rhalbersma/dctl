@@ -2,10 +2,10 @@
 #include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/utility.hpp>            // noncopyable
-#include <dctl/successor/generation/Generator.hpp>
-#include <dctl/successor/generation/Invariant.hpp>
-#include <dctl/node/Side.hpp>
-#include <dctl/node/Stack.hpp>
+#include <dctl/successor/generation/generator.hpp>
+#include <dctl/successor/generation/invariant.hpp>
+#include <dctl/node/side.hpp>
+#include <dctl/node/stack.hpp>
 
 namespace dctl {
 namespace successor {

@@ -4,12 +4,12 @@
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <dctl/setup/Content.hpp>
-#include <dctl/setup/Diagram_fwd.hpp>
-#include <dctl/setup/Numbers.hpp>
-#include <dctl/setup/TokenInterface.hpp>
-#include <dctl/node/Side.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/setup/content.hpp>
+#include <dctl/setup/diagram_fwd.hpp>
+#include <dctl/setup/numbers.hpp>
+#include <dctl/setup/i_token.hpp>
+#include <dctl/node/side.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace setup {

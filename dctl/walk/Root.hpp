@@ -4,19 +4,19 @@
 #include <iostream>
 #include <iterator>                     // begin, end
 #include <boost/assert.hpp>
-#include <dctl/walk/Transposition.hpp>
-#include <dctl/hash/DualMap.hpp>
-#include <dctl/node/Material.hpp>
-#include <dctl/node/Stack.hpp>
-#include <dctl/successor/Count.hpp>
-#include <dctl/successor/Generate.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
-#include <dctl/utility/Statistics.hpp>
-#include <dctl/utility/Timer.hpp>
+#include <dctl/walk/transposition.hpp>
+#include <dctl/hash/dual_map.hpp>
+#include <dctl/node/material.hpp>
+#include <dctl/node/stack.hpp>
+#include <dctl/successor/count.hpp>
+#include <dctl/successor/generate.hpp>
+#include <dctl/utility/int.hpp>
+#include <dctl/utility/statistics.hpp>
+#include <dctl/utility/timer.hpp>
 
-#include <dctl/setup/Diagram.hpp>
-#include <dctl/setup/String.hpp>
-#include <dctl/notation/String.hpp>
+#include <dctl/setup/diagram.hpp>
+#include <dctl/setup/string.hpp>
+#include <dctl/notation/string.hpp>
 
 namespace dctl {
 namespace walk {

@@ -5,11 +5,11 @@
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 #include <boost/mpl/placeholders.hpp>   // _1
-#include <dctl/board/Dimensions.hpp>
-#include <dctl/board/Coordinates.hpp>
-#include <dctl/board/coordinates/transform.hpp>
-#include <dctl/board/Grid.hpp>
 #include <dctl/angle/traits.hpp>
+#include <dctl/board/coordinates.hpp>
+#include <dctl/board/coordinates/transform.hpp>
+#include <dctl/board/dimensions.hpp>
+#include <dctl/board/grid.hpp>
 #include <dctl/mpl/type_traits.hpp>
 
 namespace dctl {

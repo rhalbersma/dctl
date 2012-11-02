@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/node/UnaryProjections.hpp>
-#include <dctl/bit/Bit.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/node/unary_projections.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 

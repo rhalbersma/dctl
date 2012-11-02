@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/board/Board.hpp>
-#include <dctl/setup/TokenInterface.hpp>
+#include <dctl/board/board.hpp>
+#include <dctl/setup/i_token.hpp>
 
 namespace dctl {
 

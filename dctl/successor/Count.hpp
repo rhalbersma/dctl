@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/successor/Select.hpp>                 // DefaultSelection
-#include <dctl/successor/enumeration/Enumerator.hpp> // enumerator
-#include <dctl/node/Material.hpp>                    // both
-#include <dctl/node/Side.hpp>                        // black, white
+#include <dctl/successor/select.hpp>                 // DefaultSelection
+#include <dctl/successor/enumeration/enumerator.hpp> // enumerator
+#include <dctl/node/material.hpp>                    // both
+#include <dctl/node/side.hpp>                        // black, white
 
 namespace dctl {
 namespace successor {

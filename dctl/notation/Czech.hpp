@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/notation/Notation_fwd.hpp>             // Format, Separator (primary templates)
-#include <dctl/notation/Types.hpp>                    // Token
-#include <dctl/rules/Czech_fwd.hpp>       // Czech
+#include <dctl/notation/notation_fwd.hpp>       // Format, Separator (primary templates)
+#include <dctl/notation/types.hpp>              // Token
+#include <dctl/rules/czech_fwd.hpp>             // Czech
 
 namespace dctl {
 namespace notation {

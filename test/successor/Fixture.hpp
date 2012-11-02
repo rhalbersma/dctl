@@ -6,11 +6,11 @@
 #include <vector>                       // vector
 #include <boost/algorithm/string.hpp>   // trim_copy
 #include <boost/test/unit_test.hpp>
-#include <dctl/successor/Generate.hpp>
-#include <dctl/node/Position.hpp>
-#include <dctl/node/Stack.hpp>
-#include <dctl/setup/Setup.hpp>
-#include <dctl/notation/String.hpp>
+#include <dctl/successor/generate.hpp>
+#include <dctl/node/position.hpp>
+#include <dctl/node/stack.hpp>
+#include <dctl/setup/setup.hpp>
+#include <dctl/notation/string.hpp>
 #include <dctl/guarded/is_permutation.hpp>
 
 namespace dctl {

@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/capture/Value_fwd.hpp>                // Value (primary template)
-#include <dctl/capture/International.hpp>            // International (partial specialization)
-#include <dctl/rules/Killer_fwd.hpp>      // Killer
+#include <dctl/capture/value_fwd.hpp>           // Value (primary template)
+#include <dctl/capture/international.hpp>       // International (partial specialization)
+#include <dctl/rules/killer_fwd.hpp>            // Killer
 
 namespace dctl {
 namespace capture {

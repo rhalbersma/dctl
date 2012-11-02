@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/node/detail/Targets.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/node/detail/targets.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 

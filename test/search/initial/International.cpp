@@ -3,10 +3,10 @@
 #if SEARCH_INITIAL_INTERNATIONAL == 1
 
 #include <boost/test/unit_test.hpp>
-#include <test/search/Fixture.hpp>
-#include <dctl/board/Types.hpp>
-#include <dctl/rules/Types.hpp>
-#include <dctl/setup/String.hpp>
+#include <test/search/fixture.hpp>
+#include <dctl/board/types.hpp>
+#include <dctl/rules/types.hpp>
+#include <dctl/setup/string.hpp>
 
 namespace dctl {
 namespace search {

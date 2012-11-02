@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/setup/TokenInterface.hpp>
+#include <dctl/setup/i_token.hpp>
 
 namespace dctl {
 

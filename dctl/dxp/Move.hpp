@@ -4,8 +4,8 @@
 #include <string>                       // string
 #include <vector>                       // vector
 #include <boost/lexical_cast.hpp>       // lexical_cast
-#include <dctl/dxp/IMessage.hpp>             // IMessage
-#include <dctl/factory/mixin.hpp>            // FactoryCreate
+#include <dctl/dxp/i_message.hpp>       // IMessage
+#include <dctl/factory/mixin.hpp>       // FactoryCreate
 
 namespace dctl {
 namespace dxp {

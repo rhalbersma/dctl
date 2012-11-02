@@ -1,9 +1,9 @@
 #include <string>                       // string
 #include <boost/mpl/vector.hpp>         // vector
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_CHECK_EQUAL
-#include <dctl/dxp/IMessage.hpp>        // IMessage
-#include <dctl/dxp/Types.hpp>           // GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
-#include <dctl/factory/Factory.hpp>     // Factory
+#include <dctl/dxp/i_message.hpp>        // IMessage
+#include <dctl/dxp/types.hpp>           // GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
+#include <dctl/factory/factory.hpp>     // Factory
 
 namespace dctl {
 namespace dxp {

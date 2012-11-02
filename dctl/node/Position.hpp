@@ -2,16 +2,16 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/mpl/bool.hpp>           // false_, true_
 #include <functional>                   // function
-#include <dctl/node/Position_fwd.hpp>
-#include <dctl/node/Material.hpp>
-#include <dctl/node/Move.hpp>
-#include <dctl/node/Restricted.hpp>
-#include <dctl/node/Side.hpp>
-#include <dctl/node/Predicates_fwd.hpp>
-#include <dctl/bit/Bit.hpp>
-#include <dctl/hash/zobrist/Init.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/hash/zobrist/init.hpp>
+#include <dctl/node/position_fwd.hpp>
+#include <dctl/node/material.hpp>
+#include <dctl/node/move.hpp>
+#include <dctl/node/restricted.hpp>
+#include <dctl/node/side.hpp>
+#include <dctl/node/predicates_fwd.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 

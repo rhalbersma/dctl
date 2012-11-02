@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>                   // function
-#include <dctl/hash/jenkins/Random.hpp>
-#include <dctl/node/Side.hpp>
+#include <dctl/hash/jenkins/random.hpp>
+#include <dctl/node/side.hpp>
 
 namespace dctl {
 namespace hash {

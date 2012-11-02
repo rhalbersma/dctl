@@ -3,9 +3,8 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable1
-#include <dctl/node/IPieces.hpp>
-#include <dctl/node/Move.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/node/i_pieces.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 

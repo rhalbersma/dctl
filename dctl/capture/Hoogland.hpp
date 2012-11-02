@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/capture/Value_fwd.hpp>                // Value (primary template)
-#include <dctl/capture/International.hpp>            // International (partial specialization)
-#include <dctl/rules/Hoogland_fwd.hpp>    // Hoogland
+#include <dctl/capture/value_fwd.hpp>                // Value (primary template)
+#include <dctl/capture/international.hpp>            // International (partial specialization)
+#include <dctl/rules/hoogland_fwd.hpp>    // Hoogland
 
 namespace dctl {
 namespace capture {

@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>                   // function
-#include <dctl/successor/enumeration/Enumerator_fwd.hpp>
+#include <dctl/successor/enumeration/enumerator_fwd.hpp>
 
 namespace dctl {
 namespace successor {

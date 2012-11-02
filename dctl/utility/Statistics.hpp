@@ -1,6 +1,6 @@
 #pragma once
 #include <algorithm>                    // std:max
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 

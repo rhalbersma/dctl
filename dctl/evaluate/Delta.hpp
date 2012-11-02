@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/evaluate/Feature.hpp>
+#include <dctl/evaluate/feature.hpp>
 
 namespace dctl {
 namespace evaluate {

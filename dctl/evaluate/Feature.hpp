@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdlib>                      // abs
-#include <dctl/evaluate/Weight.hpp>
-#include <dctl/successor/Mobility.hpp>
+#include <dctl/evaluate/weight.hpp>
+#include <dctl/successor/mobility.hpp>
 
 namespace dctl {
 namespace evaluate {
