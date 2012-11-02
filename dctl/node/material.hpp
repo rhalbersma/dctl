@@ -4,6 +4,7 @@
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable1
 #include <dctl/node/i_pieces.hpp>
+#include <dctl/node/side.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
