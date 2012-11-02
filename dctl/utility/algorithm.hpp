@@ -28,21 +28,21 @@ void iota_n(OutputIterator first, Size n, Assignable value)
 // sorting algorithms
 
 // O(N^2) complexity
-template<typename ForwardIterator>
-void insertion_sort(ForwardIterator first, ForwardIterator last)
+template< typename ForwardIterator, typename Compare = std::less<typename ForwardIterator::value_type> >
+void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare())
 {
         for (auto it = first; it != last; ++it) {
-                auto const insertion = std::upper_bound(first, it, *it);
+                auto const insertion = std::upper_bound(first, it, *it, cmp);
                 std::rotate(insertion, it, std::next(it));
         }
 }
 
 // O(N^2) complexity
-template<typename ForwardIterator>
-void selection_sort(ForwardIterator first, ForwardIterator last)
+template< typename ForwardIterator, typename Compare = std::less<typename ForwardIterator::value_type> >
+void selection_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare())
 {
         for (auto it = first; it != last; ++it) {
-                auto const selection = std::min_element(it, last);
+                auto const selection = std::min_element(it, last, cmp);
                 std::iter_swap(selection, it);
         }
 }
