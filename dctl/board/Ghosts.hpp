@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/mpl/int.hpp>            // int_
-#include <dctl/angle/Degrees.hpp>       // D000
+#include <dctl/angle/degrees.hpp>       // D000
 #include <dctl/angle/transform.hpp>     // inverse
 
 namespace dctl {

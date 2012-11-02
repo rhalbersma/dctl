@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/mpl/bool.hpp>                   // false_, true_
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace detail {

@@ -2,11 +2,11 @@
 #include <cctype>                       // isdigit
 #include <sstream>                      // stringstream
 #include <string>                       // string
-#include <dctl/setup/Diagram.hpp>
-#include <dctl/setup/Protocols.hpp>
-#include <dctl/setup/TokenInterface.hpp>
-#include <dctl/bit/Bit.hpp>
-#include <dctl/node/Position.hpp>
+#include <dctl/setup/diagram.hpp>
+#include <dctl/setup/protocols.hpp>
+#include <dctl/setup/i_token.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/node/position.hpp>
 
 namespace dctl {
 namespace setup {

@@ -1,8 +1,9 @@
+#include <iostream>
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/board/Types.hpp>                 // International
-#include <dctl/setup/Diagram.hpp>               // diagram, bits, squares
+#include <dctl/board/types.hpp>                 // International
+#include <dctl/setup/diagram.hpp>               // diagram, bits, squares
 
 namespace dctl {
 namespace setup {

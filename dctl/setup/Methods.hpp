@@ -1,3 +1,3 @@
 #pragma once
-#include <dctl/setup/Diagram.hpp>
-#include <dctl/setup/String.hpp>
+#include <dctl/setup/diagram.hpp>
+#include <dctl/setup/string.hpp>

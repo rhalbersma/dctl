@@ -2,7 +2,7 @@
 #include <climits>                      // SHRT_MAX
 #include <sstream>                      // stringstream
 #include <string>                       // string
-#include <dctl/utility/Ply.hpp>
+#include <dctl/utility/ply.hpp>
 
 namespace dctl {
 namespace search {

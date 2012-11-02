@@ -3,7 +3,7 @@
 #include <string>                       // string
 #include <type_traits>                  // is_base_of
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <dctl/utility/make_unique.hpp>   // make_unique
+#include <dctl/utility/make_unique.hpp> // make_unique
 
 namespace dctl {
 namespace mixin {

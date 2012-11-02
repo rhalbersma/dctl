@@ -1,10 +1,10 @@
 #pragma once
 #include <boost/mpl/int.hpp>
-#include <dctl/rules/Thai_fwd.hpp>
-#include <dctl/rules/Rules.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Value.hpp>
-#include <dctl/notation/Thai.hpp>
+#include <dctl/rules/thai_fwd.hpp>
+#include <dctl/rules/rules.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/value.hpp>
+#include <dctl/notation/thai.hpp>
 
 namespace dctl {
 namespace rules {

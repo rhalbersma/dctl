@@ -1,10 +1,10 @@
 #pragma once
 #include <functional>                   // function
-#include <dctl/hash/zobrist/Random.hpp>
-#include <dctl/node/Material.hpp>
-#include <dctl/node/Move.hpp>
-#include <dctl/node/Restricted.hpp>
-#include <dctl/node/Side.hpp>
+#include <dctl/hash/zobrist/random.hpp>
+#include <dctl/node/material.hpp>
+#include <dctl/node/move.hpp>
+#include <dctl/node/restricted.hpp>
+#include <dctl/node/side.hpp>
 
 namespace dctl {
 namespace hash {

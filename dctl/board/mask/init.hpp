@@ -8,7 +8,7 @@
 #include <boost/mpl/placeholders.hpp>           // _1
 #include <dctl/board/mask/init_fwd.hpp>         // init, detail::init, detail::test (primary template and partial specialization declarations)
 #include <dctl/board/mask/predicates.hpp>       // square2bit
-#include <dctl/utility/IntegerTypes.hpp>        // BitBoard
+#include <dctl/utility/int.hpp>                 // BitBoard
 
 namespace dctl {
 namespace board {

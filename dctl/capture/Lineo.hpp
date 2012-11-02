@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/capture/Value_fwd.hpp>                // Value (primary template)
-#include <dctl/capture/International.hpp>            // International (partial specialization)
-#include <dctl/rules/Lineo_fwd.hpp>       // Lineo
+#include <dctl/capture/value_fwd.hpp>           // Value (primary template)
+#include <dctl/capture/international.hpp>       // International (partial specialization)
+#include <dctl/rules/lineo_fwd.hpp>             // Lineo
 
 namespace dctl {
 namespace capture {

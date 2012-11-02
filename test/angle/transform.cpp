@@ -4,7 +4,7 @@
 #include <boost/mpl/quote.hpp>          // quote1
 #include <boost/mpl/vector.hpp>         // vector
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/angle/Degrees.hpp>       // D045, D090, D135, D225, D270, D315
+#include <dctl/angle/degrees.hpp>       // D045, D090, D135, D225, D270, D315
 #include <dctl/angle/transform.hpp>     // inverse, rotate, mirror
 #include <dctl/mpl/type_traits.hpp>     // is_idempotent
 

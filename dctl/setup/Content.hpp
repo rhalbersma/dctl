@@ -1,7 +1,7 @@
 #pragma once
 #include <sstream>                      // stringstream
-#include <dctl/bit/Bit.hpp>
-#include <dctl/node/Material.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/node/material.hpp>
 
 namespace dctl {
 namespace setup {

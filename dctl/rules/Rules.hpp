@@ -6,8 +6,8 @@
 #include <boost/mpl/int.hpp>            // int_
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Value_fwd.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/value_fwd.hpp>
 #include <dctl/guarded/parameter.hpp>     // Boost.Parameter
 
 namespace dctl {

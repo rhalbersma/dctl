@@ -5,12 +5,12 @@
 #include <utility>                      // pair
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <dctl/hash/FindInsert.hpp>
-#include <dctl/hash/Functions.hpp>
-#include <dctl/hash/KeySign.hpp>
-#include <dctl/hash/Replace.hpp>
-#include <dctl/utility/CacheAlign.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/hash/find_insert.hpp>
+#include <dctl/hash/function.hpp>
+#include <dctl/hash/key_sign.hpp>
+#include <dctl/hash/replace.hpp>
+#include <dctl/utility/cache_align.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace hash {

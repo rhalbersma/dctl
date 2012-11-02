@@ -1,7 +1,7 @@
 #pragma once
 #include <string>                       // string
-#include <dctl/dxp/IMessage.hpp>             // IMessage
-#include <dctl/factory/mixin.hpp>            // FactoryCreate
+#include <dctl/dxp/i_message.hpp>       // IMessage
+#include <dctl/factory/mixin.hpp>       // FactoryCreate
 
 namespace dctl {
 namespace dxp {

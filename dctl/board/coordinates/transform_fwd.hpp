@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/angle/Degrees.hpp>       // D000, L090, R090, D180
-#include <dctl/board/Coordinates.hpp>   // Coordinates
+#include <dctl/angle/degrees.hpp>       // D000, L090, R090, D180
+#include <dctl/board/coordinates.hpp>   // Coordinates
 #include <dctl/mpl/transform.hpp>       // rotate (primary template definition)
 
 namespace dctl {

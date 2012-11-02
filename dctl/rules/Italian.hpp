@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/rules/Italian_fwd.hpp>
-#include <dctl/rules/Rules.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Italian.hpp>
+#include <dctl/rules/italian_fwd.hpp>
+#include <dctl/rules/rules.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/italian.hpp>
 
 namespace dctl {
 namespace rules {

@@ -1,9 +1,9 @@
 #pragma once
 #include <iomanip>
 #include <iostream>
-#include <dctl/evaluate/Delta.hpp>
-#include <dctl/evaluate/Feature.hpp>
-#include <dctl/evaluate/Weight.hpp>
+#include <dctl/evaluate/delta.hpp>
+#include <dctl/evaluate/feature.hpp>
+#include <dctl/evaluate/weight.hpp>
 
 namespace dctl {
 namespace evaluate {

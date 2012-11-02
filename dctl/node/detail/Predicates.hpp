@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/node/detail/UnaryProjections.hpp>
-#include <dctl/node/BinaryProjections.hpp>
-#include <dctl/bit/Bit.hpp>
-#include <dctl/rules/Enum.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/node/detail/unary_projections.hpp>
+#include <dctl/node/binary_projections.hpp>
+#include <dctl/rules/enum.hpp>
 
 namespace dctl {
 namespace detail {

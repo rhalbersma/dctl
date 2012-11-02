@@ -1,16 +1,16 @@
 #pragma once
 #include <functional>                   // function
-#include <dctl/successor/enumeration/Enumerator_fwd.hpp>
-#include <dctl/successor/enumeration/Primary.hpp>
-#include <dctl/successor/enumeration/BothJumps.hpp>
-#include <dctl/successor/enumeration/BothMoves.hpp>
-#include <dctl/successor/enumeration/KingJumps.hpp>
-#include <dctl/successor/enumeration/KingMoves.hpp>
-#include <dctl/successor/enumeration/PawnJumps.hpp>
-#include <dctl/successor/enumeration/PawnMoves.hpp>
-#include <dctl/successor/Select.hpp>
-#include <dctl/capture/State.hpp>
-#include <dctl/node/Stack.hpp>
+#include <dctl/successor/enumeration/enumerator_fwd.hpp>
+#include <dctl/successor/enumeration/primary.hpp>
+#include <dctl/successor/enumeration/both_jumps.hpp>
+#include <dctl/successor/enumeration/both_moves.hpp>
+#include <dctl/successor/enumeration/king_jumps.hpp>
+#include <dctl/successor/enumeration/king_moves.hpp>
+#include <dctl/successor/enumeration/pawn_jumps.hpp>
+#include <dctl/successor/enumeration/pawn_moves.hpp>
+#include <dctl/successor/select.hpp>
+#include <dctl/capture/state.hpp>
+#include <dctl/node/stack.hpp>
 
 namespace dctl {
 namespace successor {

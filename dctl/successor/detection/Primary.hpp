@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>                   // function
-#include <dctl/successor/detection/Detector_fwd.hpp>
+#include <dctl/successor/detection/detector_fwd.hpp>
 
 namespace dctl {
 namespace successor {

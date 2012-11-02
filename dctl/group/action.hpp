@@ -4,7 +4,7 @@
 #include <boost/mpl/fold.hpp>           // fold
 #include <boost/mpl/lambda.hpp>         // lambda, _1, _2
 #include <boost/mpl/logical.hpp>        // and_, not_, true_
-#include <dctl/group/primitives.hpp>         // set, plus, identity, minus
+#include <dctl/group/primitives.hpp>    // set, plus, identity, minus
 
 namespace dctl {
 namespace group {

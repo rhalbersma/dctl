@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/operators.hpp>          // totally_ordered
-#include <dctl/capture/Value_fwd.hpp>                // Value (primary template)
+#include <dctl/capture/value_fwd.hpp>   // Value (primary template)
 
 namespace dctl {
 namespace capture {

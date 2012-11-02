@@ -5,7 +5,7 @@
 #include <string>                       // string
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/mpl/identity.hpp>       // identity
-#include <dctl/factory/mixin.hpp>                    // has_factory_create
+#include <dctl/factory/mixin.hpp>       // has_factory_create
 
 namespace dctl {
 

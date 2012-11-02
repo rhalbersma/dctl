@@ -1,9 +1,9 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                 // vector
-#include <dctl/bit/Bit.hpp>
-#include <dctl/bit/Loop.hpp>
-#include <dctl/utility/IntegerTypes.hpp>
+#include <dctl/bit/bit.hpp>
+#include <dctl/bit/loop.hpp>
+#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace bit {
@@ -14,9 +14,9 @@ typedef boost::mpl::vector
 <
         uint32_t,
         uint64_t
-> UnsignedIntegerTypes;
+> Unsignedinteger_types;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, Unsignedinteger_types)
 {
         BOOST_CHECK_EQUAL(0, loop::count(T(0)));
 

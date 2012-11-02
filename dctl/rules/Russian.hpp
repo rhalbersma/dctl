@@ -1,9 +1,9 @@
 #pragma once
-#include <dctl/rules/Russian_fwd.hpp>
-#include <dctl/rules/Rules.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Russian.hpp>
-#include <dctl/notation/Russian.hpp>
+#include <dctl/rules/russian_fwd.hpp>
+#include <dctl/rules/rules.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/russian.hpp>
+#include <dctl/notation/russian.hpp>
 
 namespace dctl {
 namespace rules {

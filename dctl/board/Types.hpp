@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/angle/Degrees.hpp>       // R090
-#include <dctl/board/Board.hpp>         // Board
-#include <dctl/board/Dimensions.hpp>    // Dimensions
-#include <dctl/board/Ghosts.hpp>        // Ghosts
+#include <dctl/angle/degrees.hpp>       // R090
+#include <dctl/board/board.hpp>         // Board
+#include <dctl/board/dimensions.hpp>    // Dimensions
+#include <dctl/board/ghosts.hpp>        // Ghosts
 
 namespace dctl {
 namespace board {

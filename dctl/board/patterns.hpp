@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/board/algorithm.hpp>     // Fill
 #include <dctl/board/iterator.hpp>      // Next, Prev
-#include <dctl/rules/Enum.hpp>          // range::distance_1, range::distance_N
+#include <dctl/rules/enum.hpp>          // range::distance_1, range::distance_N
 
 namespace dctl {
 

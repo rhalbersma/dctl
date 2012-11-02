@@ -1,8 +1,8 @@
 #pragma once
 #include <cstddef>                              // size_t
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL
-#include <dctl/walk/Root.hpp>                   // Root
-#include <dctl/utility/IntegerTypes.hpp>        // NodeCount
+#include <dctl/walk/root.hpp>                   // Root
+#include <dctl/utility/int.hpp>        // NodeCount
 
 namespace dctl {
 namespace walk {

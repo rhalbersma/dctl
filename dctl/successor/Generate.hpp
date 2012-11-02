@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/successor/Select.hpp>                 // DefaultSelection
-#include <dctl/successor/generation/Generate.hpp>    // generator
-#include <dctl/node/Material.hpp>                    // both
-#include <dctl/node/Stack.hpp>                       // Stack
+#include <dctl/successor/select.hpp>                 // DefaultSelection
+#include <dctl/successor/generation/generate.hpp>    // generator
+#include <dctl/node/material.hpp>                    // both
+#include <dctl/node/stack.hpp>                       // Stack
 
 namespace dctl {
 namespace successor {

@@ -1,14 +1,14 @@
 #pragma once
 #include <functional>                   // function
-#include <dctl/successor/detection/Detector_fwd.hpp>
-#include <dctl/successor/detection/Primary.hpp>
-#include <dctl/successor/detection/BothJumps.hpp>
-#include <dctl/successor/detection/BothPromotions.hpp>
-#include <dctl/successor/detection/KingJumps.hpp>
+#include <dctl/successor/detection/detector_fwd.hpp>
+#include <dctl/successor/detection/primary.hpp>
+#include <dctl/successor/detection/both_jumps.hpp>
+#include <dctl/successor/detection/both_promotions.hpp>
+#include <dctl/successor/detection/king_jumps.hpp>
 // there are no king promotions
-#include <dctl/successor/detection/PawnJumps.hpp>
-#include <dctl/successor/detection/PawnPromotions.hpp>
-#include <dctl/successor/Select.hpp>
+#include <dctl/successor/detection/pawn_jumps.hpp>
+#include <dctl/successor/detection/pawn_promotions.hpp>
+#include <dctl/successor/select.hpp>
 
 namespace dctl {
 namespace successor {

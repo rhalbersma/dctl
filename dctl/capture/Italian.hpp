@@ -3,9 +3,9 @@
 #include <tuple>                        // get, tuple
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
-#include <dctl/capture/Value_fwd.hpp>                // Value (primary template)
-#include <dctl/rules/Italian_fwd.hpp>     // Italian
-#include <dctl/bit/Bit.hpp>               // count, reverse_singlet
+#include <dctl/bit/bit.hpp>             // count, reverse_singlet
+#include <dctl/capture/value_fwd.hpp>   // Value (primary template)
+#include <dctl/rules/italian_fwd.hpp>   // Italian
 
 namespace dctl {
 namespace capture {

@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/rules/Frisian_fwd.hpp>
-#include <dctl/rules/Rules.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Frisian.hpp>
+#include <dctl/rules/frisian_fwd.hpp>
+#include <dctl/rules/rules.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/frisian.hpp>
 
 namespace dctl {
 namespace rules {

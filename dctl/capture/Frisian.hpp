@@ -3,8 +3,8 @@
 #include <tuple>                        // get, tie, tuple
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
-#include <dctl/capture/Value_fwd.hpp>   // Value (primary template)
-#include <dctl/rules/Frisian_fwd.hpp>   // Frisian
+#include <dctl/capture/value_fwd.hpp>   // Value (primary template)
+#include <dctl/rules/frisian_fwd.hpp>   // Frisian
 
 namespace dctl {
 namespace capture {

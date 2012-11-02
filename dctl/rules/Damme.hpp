@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/rules/Damme_fwd.hpp>
-#include <dctl/rules/Rules.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Damme.hpp>
+#include <dctl/rules/damme_fwd.hpp>
+#include <dctl/rules/rules.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/damme.hpp>
 
 namespace dctl {
 namespace rules {

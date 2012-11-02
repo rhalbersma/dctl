@@ -4,9 +4,9 @@
 
 #include <string>                       // string
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
-#include <test/successor/Fixture.hpp>   // run
-#include <dctl/board/Types.hpp>         // International
-#include <dctl/rules/Types.hpp>         // International
+#include <test/successor/fixture.hpp>   // run
+#include <dctl/board/types.hpp>         // International
+#include <dctl/rules/types.hpp>         // International
 
 namespace dctl {
 namespace successor {

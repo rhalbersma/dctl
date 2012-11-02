@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/rules/Pool_fwd.hpp>
-#include <dctl/rules/Rules.hpp>
-#include <dctl/rules/Enum.hpp>
-#include <dctl/capture/Value.hpp>
+#include <dctl/rules/pool_fwd.hpp>
+#include <dctl/rules/rules.hpp>
+#include <dctl/rules/enum.hpp>
+#include <dctl/capture/value.hpp>
 
 namespace dctl {
 namespace rules {
