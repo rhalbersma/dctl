@@ -1,6 +1,7 @@
 # use glob syntax.
 syntax: glob
 
+# Visual Studio build output
 build/msvc++/ipch
 build/msvc++/Debug
 build/msvc++/Release
@@ -12,4 +13,7 @@ build/msvc++/*.opensdf
 build/msvc++/*.sdf
 build/msvc++/*.suo
 
-doc
+# Eclipse build output
+Default/*.o
+Default/*.d
+Default/*.exe
