@@ -1,8 +1,9 @@
 #pragma once
 #include <cstddef>                      // size_t
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <dctl/hash/function.hpp>
+#include <dctl/hash/hash_extractor.hpp>
 #include <dctl/hash/map.hpp>
+#include <dctl/hash/parity_extractor.hpp>
 #include <dctl/hash/replace.hpp>
 
 namespace dctl {
@@ -10,74 +11,95 @@ namespace hash {
 
 template
 <
-        typename Key,
-        typename Value,
-        template<typename, typename> class Hash = Find,
-        typename Index = HashIndex,
-        typename Replace = EmptyOldUnderCutSmallestOfN
+        typename KeyExtractor,
+        typename T,
+        typename Hash = HashExtractor,
+        typename Replace = EmptyOldUnderCutMin<Smallest>,
+        typename Parity = ActiveColorExtractor
 >
 struct DualMap
 {
+private:
+        // typedefs
+
+        typedef Map<KeyExtractor, T, HashExtractor, Replace> map_type;
+        typedef typename map_type::size_type size_type;
+        typedef typename map_type::mapped_pointer mapped_pointer;
+        typedef typename map_type::const_mapped_pointer const_mapped_pointer;
+
 public:
         // structors
 
         DualMap()
         {
-                resize(1);
+                resize(2);
         }
 
-        explicit DualMap(std::size_t log2_n)
+        explicit DualMap(size_type mega_bytes)
         {
-                resize(log2_n);
+                resize(mega_bytes);
         }
 
         // capacity
 
-        std::size_t available() const
+        bool empty() const
         {
-                return (dual_map_[0].available() + dual_map_[1].available());
+                return (map_[0].empty() && map_[1].empty());
         }
 
-        std::size_t size() const
+        size_type size() const
         {
-                return (dual_map_[0].size() + dual_map_[1].size());
+                return (map_[0].size() + map_[1].size());
         }
 
-        void resize(std::size_t log2_n)
+        size_type max_size() const
         {
-                BOOST_ASSERT(log2_n > 0);
-                dual_map_[0].resize(log2_n - 1);
-                dual_map_[1].resize(log2_n - 1);
+                return (map_[0].max_size() + map_[1].max_size());
         }
 
-        void clear()
+        size_type capacity() const
         {
-                dual_map_[0].clear();
-                dual_map_[1].clear();
-        }
-
-        // queries
-
-        template<typename Position>
-        Value const* find(Position const& p) const
-        {
-                return (dual_map_[p.active_color()].find(p));
+                return (map_[0].capacity() + map_[1].capacity());
         }
 
         // modifiers
 
-        template<typename Position>
-        void insert(Position const& p, Value const& value)
+        void clear()
         {
-                dual_map_[p.active_color()].insert(p, value);
+                map_[0].clear();
+                map_[1].clear();
+        }
+
+        template<typename U>
+        void insert(U const& u, T const& t)
+        {
+                map_[Parity()(u)].insert(u, t);
+        }
+
+        void resize(size_type mega_bytes)
+        {
+                map_[0].resize(mega_bytes >> 1);
+                map_[1].resize(mega_bytes >> 1);
+        }
+
+        // lookup
+
+        template<typename U>
+        mapped_pointer find(U const& u)
+        {
+                return (map_[Parity()(u)].find(u));
+        }
+
+        template<typename U>
+        const_mapped_pointer find(U const& u) const
+        {
+                return (map_[Parity()(u)].find(u));
         }
 
 private:
         // representation
 
-        typedef Map<Key, Value, Hash, Index, Replace> map_type;
-        typedef typename map_type::Entry Entry;
-        map_type dual_map_[2];
+        map_type map_[2];
 };
 
 }       // namespace hash

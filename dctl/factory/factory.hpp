@@ -62,9 +62,9 @@ private:
                 explicit call_insert(XRegistry& r): registry_(r) {};
 
                 template<typename T>
-                bool operator()(boost::mpl::identity<T> I)
+                void operator()(boost::mpl::identity<T> I)
                 {
-                        return (registry_.insert(I));
+                        registry_.insert(I);
                 }
 
         private:
@@ -81,9 +81,9 @@ private:
                 explicit call_erase(XRegistry& r): registry_(r) {};
 
                 template<typename T>
-                bool operator()(boost::mpl::identity<T> I)
+                void operator()(boost::mpl::identity<T> I)
                 {
-                        return (registry_.erase(I));
+                        registry_.erase(I);
                 }
 
         private:

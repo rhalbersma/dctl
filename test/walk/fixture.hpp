@@ -12,12 +12,12 @@ struct Fixture
 public:
         Fixture()
         {
-                root_.resize_hash(25);
+                root_.resize_hash(1024);
         }
 
         ~Fixture()
         {
-                root_.resize_hash(1);
+                root_.resize_hash(2);
         }
 
         template<typename Position, std::size_t N>

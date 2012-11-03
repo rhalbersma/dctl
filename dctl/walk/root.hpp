@@ -6,6 +6,7 @@
 #include <boost/assert.hpp>
 #include <dctl/walk/transposition.hpp>
 #include <dctl/hash/dual_map.hpp>
+#include <dctl/hash/key_extractor.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/successor/count.hpp>
@@ -237,7 +238,7 @@ private:
         // 32-byte hash entries: 24-byte piece lists signature, 8-byte (59-bit leafs, 5-bit depth) content
         // 8-way buckets on 64-byte cache lines, (2^25 entries = 1 Gb)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
-        typedef hash::DualMap<Material, Transposition> TranspositionTable;
+        typedef hash::DualMap<hash::MaterialExtractor, Transposition> TranspositionTable;
         TranspositionTable TT;
 
         // representation

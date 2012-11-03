@@ -16,12 +16,12 @@ struct Fixture
 {
         Fixture()
         {
-                root_.resize_hash(27);
+                root_.resize_hash(1024);
         }
 
         ~Fixture()
         {
-                root_.resize_hash(0);
+                root_.resize_hash(1);
         }
 
         typedef std::pair<std::string, int> FEN_depth;

@@ -1,13 +1,14 @@
 #pragma once
 #include <algorithm>                    // count_if, fill_n
-#include <cstddef>                      // size_t
+#include <array>                        // array
+#include <cstddef>                      // ptrdiff_t, size_t
+#include <functional>                   // equal_to, hash
+#include <memory>                       // allocator
 #include <type_traits>                  // integral_constant, is_integral, false_type, true_type
-#include <utility>                      // pair
+#include <utility>                      // make_pair, pair
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <dctl/hash/find_insert.hpp>
-#include <dctl/hash/function.hpp>
-#include <dctl/hash/key_sign.hpp>
+#include <dctl/hash/hash_extractor.hpp>
 #include <dctl/hash/replace.hpp>
 #include <dctl/utility/cache_align.hpp>
 #include <dctl/utility/int.hpp>
@@ -17,147 +18,193 @@ namespace hash {
 
 template
 <
-        typename Key,
-        typename Value,
-        template<typename, typename> class Hash = Find,
-        typename Index = HashIndex,
-        typename Replace = EmptyOldUnderCutShallowestOfN
+        typename KeyExtractor,
+        typename T,
+        typename Hash = HashExtractor,
+        typename Replace = EmptyOldUnderCutMin<Shallowest>
 >
 struct Map
 {
-public:
-        typedef std::pair<Key, Value> Entry;
+private:
+        typedef typename KeyExtractor::key_type Key;
 
+public:
+        typedef Key key_type;
+        typedef T mapped_type;
+        typedef std::pair<Key, T> value_type;
+
+private:
+        static auto const N = CACHE_LINE / sizeof(value_type);
+        typedef std::array<value_type, N> bucket_type;
+        static_assert(sizeof(bucket_type) == CACHE_LINE, "non-aligned hash table");
+
+        typedef std::vector<bucket_type> map_type;
+
+public:
+        typedef std::size_t size_type;
+        typedef mapped_type* mapped_pointer;
+        typedef mapped_type const* const_mapped_pointer;
+
+public:
         // structors
 
         Map()
         {
-                resize(0);
+                resize(1);
         }
 
-        explicit Map(std::size_t log2_n)
+        explicit Map(size_type mega_bytes)
         {
-                resize(log2_n);
+                resize(mega_bytes);
         }
 
         // capacity
 
-        std::size_t available() const
+        bool empty() const
         {
-                return (static_cast<std::size_t>(
-                        std::count_if(
-                                std::begin(map_), std::end(map_),
-                                [](Entry const& e)
-                                { return (e.first == Key(0)); }
-                        )
-                ));
+                return size() != 0;
         }
 
-        std::size_t size() const
+        size_type size() const
         {
-                return (map_.size());
+                return size_;
         }
 
-        void resize(std::size_t log2_n)
+        size_type max_size() const
         {
-                map_.resize(Index(1) << log2_n);        // allocate all the entries
-                map_mask_ = map_.size() - 1;            // modulo the number of entries
-                map_mask_ ^= bucket_mask;               // modulo the number of buckets
-                clear();
+                return max_bucket_count() * bucket_size();
         }
 
-        void clear()
+        size_type capacity() const
         {
-                std::fill_n(std::begin(map_), map_.size(), Entry(Key(0), Value()));
-        }
-
-        // queries
-
-        Value const* find(Key const& key) const
-        {
-                auto const index = Hash<Key, Index>()(key);
-                return (find_entry<Key, Value, bucket_size>()(bucket_begin(index), key));
-        }
-
-        template<typename Item>
-        Value const* find(Item const& item) const
-        {
-                // tag dispatching on the key's integral type trait
-                return (find_dispatch(item, std::integral_constant<bool, std::is_integral<Key>::value>()));
+                return bucket_count() * bucket_size();
         }
 
         // modifiers
 
-        void insert(Key const& key, Value const& value)
+        void clear()
         {
-                auto const index = Hash<Key, Index>()(key);
-                insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
+                std::memset(&map_[0], 0, map_.size() * sizeof(bucket_type));
+                size_ = 0;
         }
 
-        template<typename Item>
-        void insert(Item const& item, Value const& value)
+        template<typename U>
+        void insert(U const& u, T const& t)
         {
-                // tag dispatching on the key's integral type trait
-                insert_dispatch(item, value, std::integral_constant<bool, std::is_integral<Key>::value>());
+                auto const hash = Hash()(u);
+                auto const key = KeyExtractor()(u, hash);
+                auto const n = index(hash);
+                size_ += Replace()(begin(n), end(n), std::make_pair(key, t));
+        }
+
+        void resize(size_type mega_bytes)
+        {
+                auto const n = (mega_bytes << 20) / sizeof(bucket_type);
+                map_.resize(n);
+                mask_ = map_.size() - 1;
+                clear();
+        }
+
+        // lookup
+
+        template<typename U>
+        mapped_pointer find(U const& u)
+        {
+                auto const hash = Hash()(u);
+                auto const key = KeyExtractor()(u, hash);
+                auto const n = index(hash);
+
+                auto it = std::find_if(
+                        begin(n), end(n),
+                        [&](value_type const& e) {
+                        return (e.first == key);
+                });
+                return ((it != end(n))? &(it->second) : nullptr);
+        }
+
+        template<typename U>
+        const_mapped_pointer find(U const& u) const
+        {
+                auto const hash = Hash()(u);
+                auto const key = KeyExtractor()(u, hash);
+                auto const n = index(hash);
+
+                auto it = std::find_if(
+                        cbegin(n), cend(n),
+                        [&](value_type const& e) {
+                        return (e.first == key);
+                });
+                return ((it != cend(n))? &(it->second) : nullptr);
         }
 
 private:
-        // overload for non-integral keys
-        template<typename Item>
-        Value const* find_dispatch(Item const& item, std::false_type) const
+        // bucket interface
+
+        typedef typename bucket_type::iterator local_iterator;
+        typedef typename bucket_type::const_iterator const_local_iterator;
+
+        local_iterator begin(size_type n)
         {
-                auto const index = Hash<Index, Item>()(item);
-                auto const key = FindKey<Key, Item>()(item);
-                return (find_entry<Key, Value, bucket_size>()(bucket_begin(index), key));
+                return map_[n].begin();
         }
 
-        // overload for integral keys
-        template<typename Item>
-        Value const* find_dispatch(Item const& item, std::true_type) const
+        const_local_iterator begin(size_type n) const
         {
-                auto const index = Hash<Index, Item>()(item);
-                auto const key = ShiftKey<Key, Index>()(index);
-                return (find_entry<Key, Value, bucket_size>()(bucket_begin(index), key));
+                return map_[n].begin();
         }
 
-        // overload for non-integral keys
-        template<typename Item>
-        void insert_dispatch(Item const& item, Value const& value, std::false_type)
+        const_local_iterator cbegin(size_type n) const
         {
-                auto const index = Hash<Index, Item>()(item);
-                auto const key = FindKey<Key, Item>()(item);
-                insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
+                return map_[n].cbegin();
         }
 
-        // overload for integral keys
-        template<typename Item>
-        void insert_dispatch(Item const& item, Value const& value, std::true_type)
+        local_iterator end(size_type n)
         {
-                auto const index = Hash<Index, Item>()(item);
-                auto const key = ShiftKey<Key, Index>()(index);
-                insert_entry<Key, Value, bucket_size, Replace>()(bucket_begin(index), Entry(key, value));
+                return map_[n].end();
         }
 
-        typedef std::vector<Entry> VectorMap;
-        typedef typename VectorMap::iterator map_iterator;
-        typedef typename VectorMap::const_iterator const_map_iterator;
-
-        static std::size_t const bucket_size = CACHE_LINE / sizeof(Entry);
-        static std::size_t const bucket_mask = bucket_size - 1;
-
-        map_iterator bucket_begin(Index index)
+        const_local_iterator end(size_type n) const
         {
-                return (std::begin(map_) + static_cast<std::size_t>(index & map_mask_));
+                return map_[n].end();
         }
 
-        const_map_iterator bucket_begin(Index index) const
+        const_local_iterator cend(size_type n) const
         {
-                return (std::begin(map_) + static_cast<std::size_t>(index & map_mask_));
+                return map_[n].cend();
+        }
+
+        size_type bucket_count() const
+        {
+                return map_.size();
+        }
+
+        size_type max_bucket_count() const
+        {
+                return map_.max_size();
+        }
+
+        size_type bucket_size(size_type /* n */ = 0) const
+        {
+                return N;
+        }
+
+        template<typename U>
+        size_type bucket(U const& u) const
+        {
+                return index(Hash()(u));
+        }
+
+        template<typename Size>
+        size_type index(Size hash) const
+        {
+                return static_cast<size_type>(hash) & mask_;
         }
 
         // representation
-        VectorMap map_;
-        std::size_t map_mask_;
+
+        map_type map_;
+        size_type mask_;
+        size_type size_;
 };
 
 }       // namespace hash

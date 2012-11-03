@@ -312,22 +312,10 @@
     <ClInclude Include="..\..\..\dctl\hash\dual_map.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\find.hpp">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\find_insert.hpp">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\dctl\hash\function.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\key_sign.hpp">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\dctl\hash\map.hpp">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\replace.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\mpl\algorithm.hpp">
@@ -770,6 +758,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\utility\int.hpp">
       <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\replace.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\key_extractor.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\hash_extractor.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\parity_extractor.hpp">
+      <Filter>Header Files\hash</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

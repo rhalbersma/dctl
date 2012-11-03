@@ -22,17 +22,17 @@ public:
         // modifiers
 
         template<typename Derived>
-        bool insert(boost::mpl::identity<Derived>)
+        void insert(boost::mpl::identity<Derived>)
         {
                 BOOST_MPL_ASSERT((mixin::has_factory_create<Derived>));
-                return (insert(Derived::identifier(), Derived::create));
+                insert(Derived::identifier(), Derived::create);
         }
 
         template<typename Derived>
-        bool erase(boost::mpl::identity<Derived>)
+        void erase(boost::mpl::identity<Derived>)
         {
                 BOOST_MPL_ASSERT((mixin::has_factory_create<Derived>));
-                return (erase(Derived::identifier()));
+                erase(Derived::identifier());
         }
 
         // queries
@@ -46,14 +46,14 @@ public:
 private:
         // implementation
 
-        bool insert(Identifier const& id, Creator fun)
+        void insert(Identifier const& id, Creator fun)
         {
-                return (lookup_.insert(typename Lookup::value_type(id, fun)).second);
+                lookup_.insert(typename Lookup::value_type(id, fun));
         }
 
-        bool erase(Identifier const& id)
+        void erase(Identifier const& id)
         {
-                return (lookup_.erase(id) == 1);
+                lookup_.erase(id);
         }
 
         // representation
