@@ -10,6 +10,7 @@
 #include <dctl/search/variation.hpp>
 #include <dctl/evaluate/score.hpp>
 #include <dctl/node/stack.hpp>
+#include <dctl/hash/key_extractor.hpp>
 #include <dctl/hash/map.hpp>
 #include <dctl/successor/generate.hpp>
 #include <dctl/utility/ply.hpp>
@@ -105,11 +106,11 @@ private:
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
-/*
-                double const hashfull = 1000 * (static_cast<double>((TT.size() - TT.available())) / TT.size());
+
+                double const hashfull = 1000 * (static_cast<double>(TT.size()) / static_cast<double>(TT.capacity()));
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
-*/                
+                
                 std::cout << "\n";
                 print_pv(p, pv);
         }
@@ -176,7 +177,7 @@ private:
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content
         // 8-way buckets on 64-byte cache lines, (1 Gb = 2^27 entries)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
-        typedef hash::Map<uint32_t, Transposition> TranspositionTable;
+        typedef hash::Map<hash::UpperHashBitsExtractor, Transposition> TranspositionTable;
         TranspositionTable TT;
 
         // representation
@@ -188,4 +189,4 @@ private:
 }       // namespace dctl
 
 // include template definitions inside header
-#include <dctl/search/algorithms.hpp>
+#include <dctl/search/algorithm.hpp>
