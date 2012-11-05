@@ -13,16 +13,15 @@ template
 <
         typename KeyExtractor,
         typename T,
-        typename Hash = HashExtractor,
-        typename Replace = EmptyOldUnderCutMin<Smallest>,
-        typename Parity = ActiveColorExtractor
+        typename Parity = ActiveColorExtractor,
+        typename Container = Map< KeyExtractor, T, EmptyOldUnderCutMin<Smallest> >
 >
 struct DualMap
 {
 private:
         // typedefs
 
-        typedef Map<KeyExtractor, T, HashExtractor, Replace> map_type;
+        typedef Container map_type;
         typedef typename map_type::size_type size_type;
         typedef typename map_type::mapped_pointer mapped_pointer;
         typedef typename map_type::const_mapped_pointer const_mapped_pointer;

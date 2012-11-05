@@ -1,6 +1,6 @@
 #pragma once
 #include <algorithm>                    // find_if, get_first_of, min_element
-#include <iterator>                     // begin, end
+#include <iterator>                     // begin, end, iterator_traits
 #include <type_traits>                  // is_same
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 
@@ -13,7 +13,7 @@ struct EmptyOldUnderCutMin
         template<typename ForwardIterator, typename value_type>
         bool operator()(ForwardIterator first, ForwardIterator last, value_type const& value) const
         {
-                BOOST_MPL_ASSERT(( std::is_same<typename ForwardIterator::value_type, value_type> ));
+                BOOST_MPL_ASSERT(( std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, value_type> ));
                 typedef typename value_type::first_type key_type;
 
                 // 1) fill an empty slot or replace an existing entry with the same key

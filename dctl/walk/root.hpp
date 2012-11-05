@@ -122,11 +122,11 @@ private:
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
-                /*
-                double const hashfull = 1000 * (static_cast<double>((TT.size() - TT.available())) / TT.size());
+                
+                double const hashfull = 1000 * (static_cast<double>(TT.size()) / static_cast<double>(TT.capacity()));
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
-                */
+                
                 std::cout << std::endl;
         }
 
@@ -213,7 +213,7 @@ private:
         {
                 statistics_.update(ply);
 
-                auto TT_entry = TT.find(p);
+                auto const TT_entry = TT.find(p);
                 if (TT_entry && TT_entry->depth() == depth)
                         return (TT_entry->leafs());
 
