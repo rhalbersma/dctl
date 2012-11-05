@@ -20,8 +20,9 @@ template
 <
         typename KeyExtractor,
         typename T,
-        typename Hash = HashExtractor,
-        typename Replace = EmptyOldUnderCutMin<Shallowest>
+        typename Replace = EmptyOldUnderCutMin<Shallowest>,
+        typename Hash = HashExtractor
+        // TODO: KeyEqual and Allocator
 >
 struct Map
 {
