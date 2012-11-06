@@ -267,13 +267,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\boost\boost_1_51_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\dev\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\dev\boost\boost_1_51_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\boost\boost_1_51_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\dev\boost\boost_1_51_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\dev\boost\boost_1_51_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -304,7 +304,7 @@
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>C:\Program Files\boost\boost_1_51_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\dev\boost\boost_1_51_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
     </Lib>
     <ProjectReference>
@@ -343,7 +343,7 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <Lib>
-      <AdditionalLibraryDirectories>C:\Program Files\boost\boost_1_51_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\dev\boost\boost_1_51_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
     </Lib>
   </ItemDefinitionGroup>
