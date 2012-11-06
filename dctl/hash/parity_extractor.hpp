@@ -5,12 +5,12 @@ namespace hash {
 
 struct ActiveColorExtractor
 {
-        typedef bool parity_type;
+        typedef bool value_type;
 
-        template<typename U>
-        parity_type operator()(U const& u) const
+        template<typename Key>
+        value_type operator()(Key const& key) const
         {
-                return (u.active_color());
+                return (key.active_color());
         }
 };
 

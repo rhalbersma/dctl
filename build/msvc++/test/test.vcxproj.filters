@@ -150,9 +150,6 @@
     <ClCompile Include="..\..\..\test\walk\italian\gilbert.cpp">
       <Filter>Source Files\walk\italian</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\test\test_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\test\angle\degrees.cpp">
       <Filter>Source Files\angle</Filter>
     </ClCompile>
@@ -163,6 +160,9 @@
       <Filter>Source Files\angle</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\test\precompiled.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,9 +176,6 @@
     <ClInclude Include="..\..\..\test\walk\fixture.hpp">
       <Filter>Header Files\walk</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\test\test_config.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\test\boost_pch.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -186,6 +183,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\test\stl_pch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

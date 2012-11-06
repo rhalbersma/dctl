@@ -5,14 +5,14 @@
 namespace dctl {
 namespace hash {
 
-struct HashExtractor
+struct IndexExtractor
 {
-        typedef uint64_t index_type;
+        typedef uint64_t value_type;
 
-        template<typename U>
-        index_type operator()(U const& u) const
+        template<typename Key>
+        value_type operator()(Key const& key) const
         {
-                return (u.hash_index());
+                return (key.hash_index());
         }
 };
 

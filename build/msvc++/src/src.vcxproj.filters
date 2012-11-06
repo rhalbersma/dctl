@@ -291,9 +291,6 @@
     <ClInclude Include="..\..\..\dctl\group\primitives.hpp">
       <Filter>Header Files\group</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\guarded\is_permutation.hpp">
-      <Filter>Header Files\guarded</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\dctl\guarded\parameter.hpp">
       <Filter>Header Files\guarded</Filter>
     </ClInclude>
@@ -308,15 +305,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\hash\zobrist\random.hpp">
       <Filter>Header Files\hash\zobrist</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\dual_map.hpp">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\function.hpp">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\map.hpp">
-      <Filter>Header Files\hash</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\mpl\algorithm.hpp">
       <Filter>Header Files\mpl</Filter>
@@ -759,16 +747,25 @@
     <ClInclude Include="..\..\..\dctl\utility\int.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\replace.hpp">
+    <ClInclude Include="..\..\..\dctl\hash\dual_map.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\key_extractor.hpp">
+    <ClInclude Include="..\..\..\dctl\hash\function.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\hash\hash_extractor.hpp">
+    <ClInclude Include="..\..\..\dctl\hash\index_extractor.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\map.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\hash\parity_extractor.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\replace.hpp">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\hash\signature_extractor.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
   </ItemGroup>

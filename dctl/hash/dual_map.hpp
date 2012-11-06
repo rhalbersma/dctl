@@ -1,7 +1,7 @@
 #pragma once
 #include <cstddef>                      // size_t
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <dctl/hash/hash_extractor.hpp>
+#include <dctl/hash/index_extractor.hpp>
 #include <dctl/hash/map.hpp>
 #include <dctl/hash/parity_extractor.hpp>
 #include <dctl/hash/replace.hpp>
@@ -11,10 +11,10 @@ namespace hash {
 
 template
 <
-        typename KeyExtractor,
+        typename SignatureExtractor,
         typename T,
         typename Parity = ActiveColorExtractor,
-        typename Container = Map< KeyExtractor, T, EmptyOldUnderCutMin<Smallest> >
+        typename Container = Map< SignatureExtractor, T, EmptyOldUnderCutMin<Smallest> >
 >
 struct DualMap
 {
@@ -23,6 +23,8 @@ private:
 
         typedef Container map_type;
         typedef typename map_type::size_type size_type;
+        typedef typename map_type::iterator iterator;
+        typedef typename map_type::const_iterator const_iterator;
         typedef typename map_type::mapped_pointer mapped_pointer;
         typedef typename map_type::const_mapped_pointer const_mapped_pointer;
 
@@ -69,10 +71,16 @@ public:
                 map_[1].clear();
         }
 
-        template<typename U>
-        void insert(U const& u, T const& t)
+        template<typename Key>
+        bool insert(Key const& key, T const& value)
         {
-                map_[Parity()(u)].insert(u, t);
+                return (map_[Parity()(key)].insert(key, value));
+        }
+
+        template<typename Key, typename... Args>
+        bool emplace(Key const& key, Args&&... args)
+        {
+        		return (map_[Parity()(key)].emplace(key, std::forward<Args>(args)...));
         }
 
         void resize(size_type mega_bytes)
@@ -83,16 +91,16 @@ public:
 
         // lookup
 
-        template<typename U>
-        mapped_pointer find(U const& u)
+        template<typename Key>
+        mapped_pointer find(Key const& key)
         {
-                return (map_[Parity()(u)].find(u));
+                return (map_[Parity()(key)].find(key));
         }
 
-        template<typename U>
-        const_mapped_pointer find(U const& u) const
+        template<typename Key>
+        const_mapped_pointer find(Key const& key) const
         {
-                return (map_[Parity()(u)].find(u));
+                return (map_[Parity()(key)].find(key));
         }
 
 private:

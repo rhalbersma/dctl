@@ -1,6 +1,6 @@
 #pragma once
 #include <algorithm>                    // find, generate_n, min_element, rotate, upper_bound
-#include <iterator>                     // iter_swap, next
+#include <iterator>                     // iterator_traits, iter_swap, next
 
 namespace dctl {
 namespace algorithm {
@@ -28,7 +28,7 @@ void iota_n(OutputIterator first, Size n, Assignable value)
 // sorting algorithms
 
 // O(N^2) complexity
-template< typename ForwardIterator, typename Compare = std::less<typename ForwardIterator::value_type> >
+template< typename ForwardIterator, typename Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type> >
 void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare())
 {
         for (auto it = first; it != last; ++it) {
@@ -38,7 +38,7 @@ void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = C
 }
 
 // O(N^2) complexity
-template< typename ForwardIterator, typename Compare = std::less<typename ForwardIterator::value_type> >
+template< typename ForwardIterator, typename Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type> >
 void selection_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare())
 {
         for (auto it = first; it != last; ++it) {

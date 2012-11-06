@@ -17,8 +17,8 @@ typedef boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, BoardSequence)
 {
-        std::cout << diagram<T, squares>()() << "\n";
-        std::cout << diagram<T, bits>()() << "\n";
+        //std::cout << diagram<T, squares>()() << "\n";
+        //std::cout << diagram<T, bits>()() << "\n";
 }
 
 BOOST_AUTO_TEST_SUITE_END()

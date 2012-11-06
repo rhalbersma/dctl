@@ -155,7 +155,7 @@ Index const Random<Index>::RESTRICTED_MOVES[2][8] = {
         }
 };
 
-// explicit instantation
+// explicit instantiation
 template struct Random<>;
 
 }       // namespace zobrist

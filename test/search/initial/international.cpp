@@ -1,4 +1,4 @@
-#include <test/test_config.hpp>
+#include <test/config.hpp>
 
 #if SEARCH_INITIAL_INTERNATIONAL == 1
 

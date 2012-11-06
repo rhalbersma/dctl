@@ -6,7 +6,7 @@
 #include <boost/assert.hpp>
 #include <dctl/walk/transposition.hpp>
 #include <dctl/hash/dual_map.hpp>
-#include <dctl/hash/key_extractor.hpp>
+#include <dctl/hash/signature_extractor.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/successor/count.hpp>
@@ -122,11 +122,11 @@ private:
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
-                
+
                 double const hashfull = 1000 * (static_cast<double>(TT.size()) / static_cast<double>(TT.capacity()));
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
-                
+
                 std::cout << std::endl;
         }
 
@@ -231,7 +231,7 @@ private:
                         }
                 }
 
-                TT.insert(p, Transposition(leafs, depth));
+                TT.emplace(p, leafs, depth);
                 return (leafs);
         }
 

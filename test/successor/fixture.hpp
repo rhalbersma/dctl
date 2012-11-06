@@ -1,5 +1,5 @@
 #pragma once
-#include <algorithm>                    // transform
+#include <algorithm>                    // is_permutation, transform
 #include <cstddef>                      // size_t
 #include <iterator>                     // back_inserter, begin, end
 #include <string>                       // string
@@ -11,7 +11,6 @@
 #include <dctl/node/stack.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/notation/string.hpp>
-#include <dctl/guarded/is_permutation.hpp>
 
 namespace dctl {
 namespace successor {
@@ -40,9 +39,9 @@ struct Fixture
 
                 // check whether the vector of generated moves is a permutation of the array of legal moves
                 BOOST_CHECK(
-                        boost::algorithm::is_permutation(
+                        std::is_permutation(
                                 std::begin(legal), std::end(legal),
-                                std::begin(notations), 
+                                std::begin(notations),
                                 [](std::string const& lhs, std::string const& rhs) {
                                 return (boost::algorithm::trim_copy(lhs) == boost::algorithm::trim_copy(rhs));
                         })
