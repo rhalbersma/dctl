@@ -3,7 +3,6 @@
 #ifdef _MSC_VER
 
 #include <boost/algorithm/string.hpp>
-#include <dctl/guarded/is_permutation.hpp>    // <boost/algorithm/cxx11/is_permutation.hpp>
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
 #include <boost/lexical_cast.hpp>
