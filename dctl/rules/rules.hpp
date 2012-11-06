@@ -122,7 +122,7 @@ struct Rules
 {
         // create argument pack
         typedef typename Signature::bind<
-                A0,  A1,  A2,  A3,  A4,  A5,  A6,  A7,  
+                A0,  A1,  A2,  A3,  A4,  A5,  A6,  A7,
                 A8,  A9, A10, A11, A12, A13, A14, A15
         >::type args;
 
@@ -159,7 +159,7 @@ struct Rules
         >::type halt_range;
 
         typedef typename boost::parameter::value_type<
-                args, tag::king_jump_orthogonality, typename 
+                args, tag::king_jump_orthogonality, typename
                 boost::mpl::eval_if<
                         std::is_same<pawn_jump_directions, directions::all>,
                         boost::mpl::identity<orthogonality::absolute>,

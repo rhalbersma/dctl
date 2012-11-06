@@ -1,4 +1,4 @@
-#include <test/test_config.hpp>        // SUCCESSOR_TEST
+#include <test/config.hpp>        // SUCCESSOR_TEST
 
 #if SUCCESSOR_TEST == 1
 

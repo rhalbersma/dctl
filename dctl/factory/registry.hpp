@@ -3,6 +3,7 @@
 #include <map>                          // map
 #include <memory>                       // unique_ptr
 #include <string>                       // string
+#include <boost/assert.hpp>				// BOOST_ASSERT
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/mpl/identity.hpp>       // identity
 #include <dctl/factory/mixin.hpp>       // has_factory_create
@@ -19,47 +20,57 @@ template
 struct Registry
 {
 public:
-        // modifiers
+		// typedefs
+
+		typedef Identifier key_type;
+		typedef Creator mapped_type;
+    	typedef std::map<key_type, mapped_type> map_type;
+    	typedef typename map_type::value_type value_type;
+
+		// modifiers
 
         template<typename Derived>
-        void insert(boost::mpl::identity<Derived>)
+        bool insert(boost::mpl::identity<Derived>)
         {
                 BOOST_MPL_ASSERT((mixin::has_factory_create<Derived>));
-                insert(Derived::identifier(), Derived::create);
+                return (insert(Derived::identifier(), Derived::create));
         }
 
         template<typename Derived>
-        void erase(boost::mpl::identity<Derived>)
+        bool erase(boost::mpl::identity<Derived>)
         {
                 BOOST_MPL_ASSERT((mixin::has_factory_create<Derived>));
-                erase(Derived::identifier());
+                return (erase(Derived::identifier()));
         }
 
         // queries
 
-        Creator find(Identifier const& id) const
+        mapped_type find(key_type const& id) const
         {
-                auto const it = lookup_.find(id);
-                return ((it != std::end(lookup_))? it->second : nullptr);
+                auto const it = map_.find(id);
+                return ((it != std::end(map_))? it->second : nullptr);
         }
 
 private:
         // implementation
 
-        void insert(Identifier const& id, Creator fun)
+        bool insert(key_type const& id, mapped_type fun)
         {
-                lookup_.insert(typename Lookup::value_type(id, fun));
+                auto const insertion = map_.insert(value_type(id, fun)).second;
+                BOOST_ASSERT(insertion);
+                return insertion;
         }
 
-        void erase(Identifier const& id)
+        bool erase(key_type const& id)
         {
-                lookup_.erase(id);
+                auto const erasure = map_.erase(id) == 1;
+                BOOST_ASSERT(erasure);
+                return erasure;
         }
 
         // representation
 
-        typedef std::map<Identifier, Creator> Lookup;
-        Lookup lookup_;
+        map_type map_;
 };
 
 }       // namespace dctl

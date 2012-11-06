@@ -60,7 +60,7 @@ int const Random<Index>::ADD_SHIFT_L[NUM_MIX] = { 25, 4,  8, 26 };
 template<typename Index>
 int const Random<Index>::XOR_SHIFT_R[NUM_MIX] = { 23, 6, 10, 31 };
 
-// explicit instantation
+// explicit instantiation
 template struct Random<>;
 
 }       // namespace jenkins

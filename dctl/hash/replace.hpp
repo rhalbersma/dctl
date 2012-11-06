@@ -2,6 +2,7 @@
 #include <algorithm>                    // find_if, get_first_of, min_element
 #include <iterator>                     // begin, end, iterator_traits
 #include <type_traits>                  // is_same
+#include <utility>
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 
 namespace dctl {
@@ -25,18 +26,18 @@ struct EmptyOldUnderCutMin
                         return (v.first == k);
                 });
                 if (it != last) {
-                        auto const is_new = it->first != value.first;
-                        *it = value;                        
-                        return (is_new);
+                        auto const insertion = it->first != value.first;
+                        *it = value;
+                        return (insertion);
                 }
 
-                // 2) replace the first entry if its depth is undercut by one
+                // 2) replace the first entry if its depth is under cut by one
                 if (value.second.depth() == first->second.depth() - 1) {
                         *first = value;
                         return (false);
                 }
 
-                // 3) replace the miminal entry with respect to the Predicate
+                // 3) replace the minimal entry with respect to the Predicate
                 it = std::min_element(first, last, Predicate());
                 *it = value;
                 return (false);

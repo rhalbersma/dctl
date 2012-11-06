@@ -1,4 +1,4 @@
-#include <test/test_config.hpp>
+#include <test/config.hpp>
 
 #if WALK_INTERNATIONAL_FMJD == 1
 

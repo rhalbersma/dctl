@@ -1,8 +1,8 @@
 #pragma once
-#include <cstddef>                              // size_t
-#include <boost/test/unit_test.hpp>             // BOOST_CHECK_EQUAL
-#include <dctl/walk/root.hpp>                   // Root
-#include <dctl/utility/int.hpp>        // NodeCount
+#include <cstddef>                      // size_t
+#include <boost/test/unit_test.hpp>		// BOOST_CHECK_EQUAL
+#include <dctl/walk/root.hpp>           // Root
+#include <dctl/utility/int.hpp>        	// NodeCount
 
 namespace dctl {
 namespace walk {
@@ -25,7 +25,7 @@ public:
         {
                 auto depth = 0;
                 for (auto const& node_count: leafs) {
-                        root_.clear_hash(); 
+                        root_.clear_hash();
                         BOOST_CHECK_EQUAL(node_count, root_.test(p, ++depth));
                 }
         }

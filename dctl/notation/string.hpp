@@ -1,6 +1,6 @@
 #pragma once
 #include <iomanip>                      // left, right, setw
-#include <sstream>                      // stringsream
+#include <sstream>                      // stringstream
 #include <string>                       // string
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/predicates.hpp>
@@ -30,7 +30,7 @@ struct write<Rules, numeric, Separator>
 
                 std::stringstream sstr;
                 sstr << std::setw(2) << std::right << Board::bit2square(bit::first::find(from_sq(p, m))) + 1;
-                sstr << (is_capture(p, m)? Separator::jump : Separator::move);
+                sstr << (is_capture(p, m)? static_cast<char>(Separator::jump) : static_cast<char>(Separator::move));
                 sstr << std::setw(2) << std::left  << Board::bit2square(bit::first::find(dest_sq(p, m))) + 1;
                 return (sstr.str());
         }

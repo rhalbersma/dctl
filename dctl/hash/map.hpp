@@ -8,7 +8,7 @@
 #include <utility>                      // make_pair, pair
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <dctl/hash/hash_extractor.hpp>
+#include <dctl/hash/index_extractor.hpp>
 #include <dctl/hash/replace.hpp>
 #include <dctl/utility/cache_align.hpp>
 #include <dctl/utility/int.hpp>
@@ -18,31 +18,33 @@ namespace hash {
 
 template
 <
-        typename KeyExtractor,
+        typename SignatureExtractor,
         typename T,
         typename Replace = EmptyOldUnderCutMin<Shallowest>,
-        typename Hash = HashExtractor
-        // TODO: KeyEqual and Allocator
+        typename Hash = IndexExtractor
 >
 struct Map
 {
 private:
-        typedef typename KeyExtractor::key_type Key;
+        typedef typename SignatureExtractor::value_type Signature;
 
 public:
-        typedef Key key_type;
+        typedef Signature key_type;
         typedef T mapped_type;
-        typedef std::pair<Key, T> value_type;
+        typedef std::pair<Signature, T> value_type;
 
 private:
         static auto const N = CACHE_LINE / sizeof(value_type);
         typedef std::array<value_type, N> bucket_type;
         static_assert(sizeof(bucket_type) == CACHE_LINE, "non-aligned hash table");
 
+        typedef typename Hash::value_type index_type;
         typedef std::vector<bucket_type> map_type;
 
 public:
         typedef std::size_t size_type;
+        typedef value_type* iterator;
+        typedef value_type const* const_iterator;
         typedef mapped_type* mapped_pointer;
         typedef mapped_type const* const_mapped_pointer;
 
@@ -89,13 +91,26 @@ public:
                 size_ = 0;
         }
 
-        template<typename U>
-        void insert(U const& u, T const& t)
+        template<typename Key>
+        bool insert(Key const& key, T const& t)
         {
-                auto const hash = Hash()(u);
-                auto const key = KeyExtractor()(u, hash);
-                auto const n = index(hash);
-                size_ += Replace()(begin(n), end(n), std::make_pair(key, t));
+            	auto const index = Hash()(key);
+            	auto const signature = SignatureExtractor()(key, index);
+                auto const n = bucket(index);
+                auto const insertion = Replace()(begin(n), end(n), std::make_pair(signature, t));
+                size_ += insertion;
+                return (insertion);
+        }
+
+        template<typename Key, typename... Args>
+        bool emplace(Key const& key, Args&&... args)
+        {
+                auto const index = Hash()(key);
+                auto const signature = SignatureExtractor()(key, index);
+                auto const n = bucket(index);
+                auto const emplacement = Replace()(begin(n), end(n), std::make_pair(signature, T(std::forward<Args>(args)...)));
+                size_ += emplacement;
+                return (emplacement);
         }
 
         void resize(size_type mega_bytes)
@@ -108,32 +123,32 @@ public:
 
         // lookup
 
-        template<typename U>
-        mapped_pointer find(U const& u)
+        template<typename Key>
+        mapped_pointer find(Key const& key)
         {
-                auto const hash = Hash()(u);
-                auto const key = KeyExtractor()(u, hash);
-                auto const n = index(hash);
+            	auto const index = Hash()(key);
+            	auto const signature = SignatureExtractor()(key, index);
+                auto const n = bucket(index);
 
                 auto it = std::find_if(
                         begin(n), end(n),
                         [&](value_type const& e) {
-                        return (e.first == key);
+                        return (e.first == signature);
                 });
                 return ((it != end(n))? &(it->second) : nullptr);
         }
 
-        template<typename U>
-        const_mapped_pointer find(U const& u) const
+        template<typename Key>
+        const_mapped_pointer find(Key const& key) const
         {
-                auto const hash = Hash()(u);
-                auto const key = KeyExtractor()(u, hash);
-                auto const n = index(hash);
+            	auto const index = Hash()(key);
+            	auto const signature = SignatureExtractor()(key, index);
+                auto const n = bucket(index);
 
                 auto it = std::find_if(
                         cbegin(n), cend(n),
                         [&](value_type const& e) {
-                        return (e.first == key);
+                        return (e.first == signature);
                 });
                 return ((it != cend(n))? &(it->second) : nullptr);
         }
@@ -189,16 +204,15 @@ private:
                 return N;
         }
 
-        template<typename U>
-        size_type bucket(U const& u) const
+        template<typename Key>
+        size_type bucket(Key const& key) const
         {
-                return index(Hash()(u));
+                return bucket(Hash()(key));
         }
 
-        template<typename Size>
-        size_type index(Size hash) const
+        size_type bucket(index_type index) const
         {
-                return static_cast<size_type>(hash) & mask_;
+                return static_cast<size_type>(index) & mask_;
         }
 
         // representation

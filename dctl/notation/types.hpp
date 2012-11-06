@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 
 namespace dctl {
 namespace notation {
@@ -8,8 +7,9 @@ namespace detail {
 template<char M, char J>
 struct token
 {
-        BOOST_STATIC_CONSTANT(auto, move = M);
-        BOOST_STATIC_CONSTANT(auto, jump = J);
+		// BOOST_STATIC_CONSTANT here will give a linker error
+		// when called without optimization flags g++ -O0
+		enum { move = M, jump = J };
 };
 
 }

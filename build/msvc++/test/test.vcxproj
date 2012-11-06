@@ -112,18 +112,20 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <OpenMPSupport>false</OpenMPSupport>
+      <OpenMPSupport>true</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerListingLocation>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</AssemblerListingLocation>
       <UseFullPaths>true</UseFullPaths>
       <CompileAs>Default</CompileAs>
-      <ExceptionHandling>Async</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
       <SmallerTypeCheck>false</SmallerTypeCheck>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.hpp</PrecompiledHeaderFile>
       <ForcedIncludeFiles>precompiled.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -172,7 +174,7 @@
     <ClCompile Include="..\..\..\test\successor\regressions\italian.cpp" />
     <ClCompile Include="..\..\..\test\successor\rulebook\international.cpp" />
     <ClCompile Include="..\..\..\test\successor\rulebook\italian.cpp" />
-    <ClCompile Include="..\..\..\test\test_main.cpp" />
+    <ClCompile Include="..\..\..\test\main.cpp" />
     <ClCompile Include="..\..\..\test\utility\algorithm.cpp" />
     <ClCompile Include="..\..\..\test\walk\initial\board8x8.cpp" />
     <ClCompile Include="..\..\..\test\walk\initial\rectangular.cpp" />
@@ -185,7 +187,7 @@
     <ClInclude Include="..\..\..\test\search\fixture.hpp" />
     <ClInclude Include="..\..\..\test\stl_pch.hpp" />
     <ClInclude Include="..\..\..\test\successor\fixture.hpp" />
-    <ClInclude Include="..\..\..\test\test_config.hpp" />
+    <ClInclude Include="..\..\..\test\config.hpp" />
     <ClInclude Include="..\..\..\test\walk\fixture.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
