@@ -54,24 +54,24 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: dctl
+all: dctl-make
 
 # Tool invocations
-dctl: $(OBJS) $(USER_OBJS)
+dctl-make: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MinGW C++ Linker'
-	g++ -L"C:\MinGW\lib" -o "dctl" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"C:\dev\MinGW\lib" -o "dctl-make" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
-	-$(RM) $(C++_DEPS)$(OBJS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) dctl
+	-$(RM) $(C++_DEPS)$(OBJS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) dctl-make
 	-@echo ' '
 
 post-build:
-	-dctl.exe --result_code=yes --report_level=detailed
+	-dctl-make.exe --result_code=yes --report_level=detailed
 	-@echo ' '
 
 .PHONY: all clean dependents

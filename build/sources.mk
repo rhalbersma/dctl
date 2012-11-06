@@ -27,13 +27,13 @@ test/walk/italian \
 test/walk/international \
 test/walk/initial \
 test/utility \
-test \
 test/successor/rulebook \
 test/successor/regressions \
 test/setup \
 test/search \
 test/search/initial \
 test/search/egdb \
+test \
 test/mpl \
 test/group \
 test/dxp \

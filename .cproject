@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
-		<cconfiguration id="cdt.managedbuild.toolchain.gnu.mingw.base.367272948">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.toolchain.gnu.mingw.base.367272948" moduleId="org.eclipse.cdt.core.settings" name="build">
+		<cconfiguration id="cdt.managedbuild.toolchain.gnu.mingw.base.1862300307">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.toolchain.gnu.mingw.base.1862300307" moduleId="org.eclipse.cdt.core.settings" name="build">
 				<externalSettings/>
 				<extensions>
 					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
@@ -14,64 +14,74 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="dctl" buildProperties="" description="" id="cdt.managedbuild.toolchain.gnu.mingw.base.367272948" name="build" parent="org.eclipse.cdt.build.core.emptycfg" postbuildStep="dctl.exe --result_code=yes --report_level=detailed">
-					<folderInfo id="cdt.managedbuild.toolchain.gnu.mingw.base.367272948.461846746" name="/" resourcePath="">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.base.239421137" name="cdt.managedbuild.toolchain.gnu.mingw.base" superClass="cdt.managedbuild.toolchain.gnu.mingw.base">
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.base.1624507734" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.mingw.base"/>
-							<builder buildPath="${workspace_loc:/dctl/Default}" id="cdt.managedbuild.builder.gnu.cross.864095837" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.builder.gnu.cross"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.base.1396673265" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1230652294" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+				<configuration artifactName="dctl-make" buildProperties="" description="" id="cdt.managedbuild.toolchain.gnu.mingw.base.1862300307" name="build" parent="org.eclipse.cdt.build.core.emptycfg" postbuildStep="${ProjName}.exe --result_code=yes --report_level=detailed">
+					<folderInfo id="cdt.managedbuild.toolchain.gnu.mingw.base.1862300307.1217336644" name="/" resourcePath="">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.base.1253459124" name="cdt.managedbuild.toolchain.gnu.mingw.base" superClass="cdt.managedbuild.toolchain.gnu.mingw.base">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.base.913775603" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.mingw.base"/>
+							<builder buildPath="${workspace_loc:/dctl-make/Default}" id="cdt.managedbuild.target.gnu.builder.base.663818428" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.base.341772980" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.852198920" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.1683516412" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.1265301759" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base">
-								<option id="gnu.cpp.compiler.option.warnings.toerrors.83207787" name="Warnings as errors (-Werror)" superClass="gnu.cpp.compiler.option.warnings.toerrors" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.warnings.extrawarn.1793332103" name="Extra warnings (-Wextra)" superClass="gnu.cpp.compiler.option.warnings.extrawarn" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.warnings.nowarn.1764298031" name="Inhibit all warnings (-w)" superClass="gnu.cpp.compiler.option.warnings.nowarn" value="false" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.warnings.pedantic.error.1194427282" name="Pedantic warnings as errors (-pedantic-errors)" superClass="gnu.cpp.compiler.option.warnings.pedantic.error" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.warnings.pedantic.1315644536" name="Pedantic (-pedantic)" superClass="gnu.cpp.compiler.option.warnings.pedantic" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.include.paths.1780619381" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;C:\MinGW\include\boost&quot;"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.556905858" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.1841078365" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base">
+								<option id="gnu.cpp.compiler.option.include.paths.1756188688" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\dev\MinGW\include\boost&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.optimization.level.1284233095" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.950357772" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+								<option id="gnu.cpp.compiler.option.warnings.pedantic.528186723" name="Pedantic (-pedantic)" superClass="gnu.cpp.compiler.option.warnings.pedantic" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.warnings.pedantic.error.765807656" name="Pedantic warnings as errors (-pedantic-errors)" superClass="gnu.cpp.compiler.option.warnings.pedantic.error" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.warnings.extrawarn.316699659" name="Extra warnings (-Wextra)" superClass="gnu.cpp.compiler.option.warnings.extrawarn" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.warnings.toerrors.607818465" name="Warnings as errors (-Werror)" superClass="gnu.cpp.compiler.option.warnings.toerrors" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.optimization.level.586921258" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1602509140" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.1168508287" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1629480264" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.1552829833" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1967400610" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.1866244667" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.348676509" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
-								<option id="gnu.cpp.link.option.paths.1728136806" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib&quot;"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.963718713" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.707240793" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
+								<option id="gnu.cpp.link.option.paths.518094565" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;C:\dev\MinGW\lib&quot;"/>
 								</option>
-								<option id="gnu.cpp.link.option.libs.2047841601" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
+								<option id="gnu.cpp.link.option.libs.284104068" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="boost_unit_test_framework"/>
 								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.2014370577" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.418162021" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<sourceEntries>
-						<entry excluding="build" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-					</sourceEntries>
+					<folderInfo id="cdt.managedbuild.toolchain.gnu.mingw.base.1862300307.1365471170" name="/" resourcePath="dctl">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.base.938918419" name="cdt.managedbuild.toolchain.gnu.mingw.base" superClass="cdt.managedbuild.toolchain.gnu.mingw.base" unusedChildren="">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.base" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.mingw.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.base.510269794" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base.341772980">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.148928076" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.796329557" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base.556905858"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.965584891" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.1841078365">
+								<option id="gnu.cpp.compiler.option.include.paths.1066372128" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath"/>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.326385736" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.1084391271" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.1552829833">
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.653891702" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.1711343962" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base.963718713"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.518503728" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.707240793"/>
+						</toolChain>
+					</folderInfo>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="dctl.null.1489498128" name="dctl"/>
+		<project id="dctl-make.null.457349156" name="dctl-make"/>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/dctl"/>
-		</configuration>
-	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>
