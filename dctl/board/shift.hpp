@@ -36,7 +36,7 @@ struct Shift<L, N>
         template<typename T>
         T operator()(T square) const
         {
-                return (square << N::value);
+                return square << N::value;
         }
 };
 
@@ -47,7 +47,7 @@ struct Shift<R, N>
         template<typename T>
         T operator()(T square) const
         {
-                return (square >> N::value);
+                return square >> N::value;
         }
 };
 

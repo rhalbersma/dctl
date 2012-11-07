@@ -33,8 +33,8 @@ private:
 public:
         // structors
 
-        explicit generator(Stack& m)
-        : 
+        /*explicit*/ generator(Stack& m)
+        :
                 moves_(m)
         {}
 
@@ -43,7 +43,7 @@ public:
         void operator()(Position const& p) const
         {
                 if (auto const active_promotors = promoting_pawns<Color>(p))
-                        PawnMoves(moves_).select(active_promotors, not_occupied(p));
+                        PawnMoves{moves_}.select(active_promotors, not_occupied(p));
         }
 };
 

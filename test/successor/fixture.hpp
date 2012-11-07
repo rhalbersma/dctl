@@ -34,7 +34,7 @@ struct Fixture
                         std::begin(moves), std::end(moves),
                         std::back_inserter(notations),
                         [&](Move const& m) {
-                        return (notation::write(p, m));
+                        return notation::write(p, m);
                 });
 
                 // check whether the vector of generated moves is a permutation of the array of legal moves
@@ -43,7 +43,7 @@ struct Fixture
                                 std::begin(legal), std::end(legal),
                                 std::begin(notations),
                                 [](std::string const& lhs, std::string const& rhs) {
-                                return (boost::algorithm::trim_copy(lhs) == boost::algorithm::trim_copy(rhs));
+                                return boost::algorithm::trim_copy(lhs) == boost::algorithm::trim_copy(rhs);
                         })
                 );
         }

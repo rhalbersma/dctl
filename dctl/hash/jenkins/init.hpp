@@ -22,7 +22,7 @@ struct Init
                 Random<Index>::mix(index, p.pieces(Side::white));
                 Random<Index>::mix(index, p.kings());
 
-                return (index);
+                return index;
         }
 };
 

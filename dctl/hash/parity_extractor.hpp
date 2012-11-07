@@ -10,7 +10,7 @@ struct ActiveColorExtractor
         template<typename Key>
         value_type operator()(Key const& key) const
         {
-                return (key.active_color());
+                return key.active_color();
         }
 };
 

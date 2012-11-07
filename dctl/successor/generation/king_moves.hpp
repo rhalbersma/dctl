@@ -40,7 +40,7 @@ private:
 public:
         // structors
 
-        explicit generator(Stack& m)
+        /*explicit*/ generator(Stack& m)
         :
                 moves_(m)
         {}
@@ -66,8 +66,8 @@ private:
                 serialize<rules::directions::diag>(active_kings, not_occupied);
         }
 
-        // overload for kings that move in the 8 diagonal and orthogonal directions 
-        // if they belong to the side with a king majority, 
+        // overload for kings that move in the 8 diagonal and orthogonal directions
+        // if they belong to the side with a king majority,
         // and that otherwise move in the 4 diagonal directions
         void select_dispatch(BitBoard active_kings, BitBoard not_occupied, Position const& p, rules::orthogonality::relative) const
         {

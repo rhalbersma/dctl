@@ -34,7 +34,7 @@ private:
 public:
         bool operator()(Position const& p) const
         {
-                return (combined(p));
+                return combined(p);
         }
 
 private:
@@ -43,7 +43,7 @@ private:
                 // tag dispatching on combined king and pawn jump detection
                 // kings and pawns need to jump identically: i.e. have the same
                 // (a) range, (b) jump directions, and (c) jump targets
-                return (combined_dispatch(
+                return combined_dispatch(
                         p,
                         boost::mpl::and_<
                                 std::is_same<
@@ -56,26 +56,23 @@ private:
                                 >, typename
                                 Rules::is_pawns_jump_kings
                         >()
-                ));
+                );
         }
 
         // overload for combined king and pawn jump generation
         bool combined_dispatch(Position const& p, boost::mpl::true_) const
         {
                 if (auto const active_pieces = p.pieces(Color))
-                        return (PawnJumps().select(active_pieces, targets<Color>(p), not_occupied(p)));
+                        return PawnJumps().select(active_pieces, targets<Color>(p), not_occupied(p));
                 else
-                        return (false);
+                        return false;
         }
 
         // overload for separate king and pawn jump generation
         bool combined_dispatch(Position const& p, boost::mpl::false_) const
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
-                return (
-                        PawnJumps()(p) ||
-                        KingJumps()(p)
-                );
+                return PawnJumps()(p) || KingJumps()(p);
         }
 };
 

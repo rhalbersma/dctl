@@ -23,12 +23,12 @@
 namespace dctl {
 namespace capture {
 namespace with {
-       
+
 struct king {};
 struct pawn {};
-        
+
 }       // namespace with
-        
+
 template<typename Position>
 class State
 :
@@ -148,64 +148,64 @@ public:
         template<typename Direction>
         BitBoard targets_with_king() const
         {
-                return (remaining_targets<Direction>() & Prev<Board, Direction>()(path()));
+                return remaining_targets<Direction>() & Prev<Board, Direction>()(path());
         }
-        
+
         template<typename Direction>
         BitBoard targets_with_pawn() const
         {
-                return (remaining_targets_ & Prev<Board, Direction>()(path()));
+                return remaining_targets_ & Prev<Board, Direction>()(path());
         }
 
         BitBoard path() const
         {
-                return (not_occupied_);
+                return not_occupied_;
         }
 
         template<typename Direction>
         BitBoard path() const
         {
-                return (path() & jump_start<Board, Direction>::value);
+                return path() & jump_start<Board, Direction>::value;
         }
 
         bool empty() const
         {
-                return (moves_.empty());
+                return moves_.empty();
         }
 
         bool is_king(BitIndex target_sq) const
         {
-                return (bit::is_element(target_sq, king_targets_));
+                return bit::is_element(target_sq, king_targets_);
         }
 
         bool greater_equal() const
         {
                 BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_precedence>));
                 BOOST_ASSERT(is_totally_ordered(best_, current_));
-                return (current_ >= best_);
+                return current_ >= best_;
         }
 
         bool not_equal_to() const
         {
                 BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_precedence>));
                 BOOST_ASSERT(greater_equal());
-                return (current_ != best_);
+                return current_ != best_;
         }
 
         bool is_ambiguous() const
         {
-                return (!moves_.empty() && is_large());
+                return !moves_.empty() && is_large();
         }
 
         bool is_promotion() const
         {
                 BOOST_MPL_ASSERT((std::is_same<typename Rules::pawn_promotion, rules::promotion::en_passant>));
-                return (current_.is_promotion());
+                return current_.is_promotion();
         }
 
         int size() const
         {
-                return (static_cast<int>(moves_.size()));
+                return static_cast<int>(moves_.size());
         }
 
 private:
@@ -310,7 +310,8 @@ private:
         template<typename Direction>
         BitBoard remaining_targets() const
         {
-                return (remaining_targets_dispatch(
+        		// tag dispatching based on direction and king jump orthogonality
+                return remaining_targets_dispatch(
                         boost::mpl::and_<
                                 angle::lazy::is_orthogonal<Direction>,
                                 std::is_same<
@@ -318,82 +319,84 @@ private:
                                         rules::orthogonality::relative
                                 >
                         >()
-                ));
+                );
         }
 
+        // overload for diagonal direction or king jump
         BitBoard remaining_targets_dispatch(boost::mpl::false_) const
         {
-                return (remaining_targets_);
+                return remaining_targets_;
         }
 
+        // overload for orthogonal direction and king jump
         BitBoard remaining_targets_dispatch(boost::mpl::true_) const
         {
-                return (remaining_targets_ & king_targets_);
+                return remaining_targets_ & king_targets_;
         }
 
         bool is_large() const
         {
-                return (count() >= Rules::large_jump::value);
+                return count() >= Rules::large_jump::value;
         }
 
         int count() const
         {
                 // tag dispatching on majority capture precedence
-                return (count_dispatch(typename Rules::is_precedence()));
+                return count_dispatch(typename Rules::is_precedence());
         }
 
         // overload for no majority capture precedence
         int count_dispatch(boost::mpl::false_) const
         {
-                return (bit::count(captured_pieces()));
+                return bit::count(captured_pieces());
         }
 
         // overload for majority capture precedence
         int count_dispatch(boost::mpl::true_) const
         {
-                return (current_.count());
+                return current_.count();
         }
 
         // overload for pawn jumps without promotion
         template<bool Color>
         BitBoard promotion(BitIndex dest_sq, with::pawn) const
         {
-                return (promotion_sq<Color, Board>(dest_sq));
+                return promotion_sq<Color, Board>(dest_sq);
         }
 
         // overload for pawn jumps with an en-passant promotion
         template<bool Color>
         BitBoard promotion(BitIndex dest_sq, with::king) const
         {
-                return (dest_sq);
+                return dest_sq;
         }
 
         BitBoard captured_kings(with::pawn) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return (captured_kings_dispatch(typename Rules::is_pawns_jump_kings()));
+                return captured_kings_dispatch(typename Rules::is_pawns_jump_kings());
         }
 
         // overload for pawns that can capture kings
         BitBoard captured_kings_dispatch(boost::mpl::true_) const
         {
-                return (captured_kings(with::king()));
+                return captured_kings(with::king());
         }
 
         // overload for pawns that cannot capture kings
         BitBoard captured_kings_dispatch(boost::mpl::false_) const
         {
-                return (BitBoard(0));
+                return BitBoard(0);
         }
 
         BitBoard captured_kings(with::king) const
         {
-                return (captured_pieces() & king_targets_);
+                return captured_pieces() & king_targets_;
         }
 
         BitBoard captured_pieces() const
         {
-                return (initial_targets_ ^ remaining_targets_);
+                return initial_targets_ ^ remaining_targets_;
         }
 
         // representation

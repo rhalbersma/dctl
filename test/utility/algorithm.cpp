@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(insertionSelectionSort)
 
         std::srand(47110815);
         std::generate_n(std::back_inserter(v), N, [](){
-                return (std::rand());
+                return std::rand();
         });
         auto w = v;
 

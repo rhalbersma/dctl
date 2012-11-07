@@ -1,3 +1,4 @@
+#include <cstdint>								// uint8_t, uint16_t, uint32_t, uint64_t
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                 // vector
@@ -11,11 +12,13 @@ BOOST_AUTO_TEST_SUITE(TestBit)
 
 typedef boost::mpl::vector
 <
+		uint8_t,
+		uint16_t,
         uint32_t,
         uint64_t
-> Unsignedinteger_types;
+> UnsignedIntegerTypes;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, Unsignedinteger_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, UnsignedIntegerTypes)
 {
         auto const b = T(0);
         BOOST_CHECK( is_zero(b));
@@ -24,7 +27,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, Unsignedinteger_types)
         BOOST_CHECK(!is_multiple(b));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, Unsignedinteger_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
@@ -41,7 +44,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, Unsignedinteger_types)
         }
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, Unsignedinteger_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 for (auto j = 0; j < num_bits<T>::value; ++j) {
@@ -58,7 +61,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, Unsignedinteger_types)
         }
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsMultiple, T, Unsignedinteger_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsMultiple, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 for (auto j = 0; j < num_bits<T>::value - i; ++j) {

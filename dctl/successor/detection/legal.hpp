@@ -35,10 +35,7 @@ public:
         bool operator()(Position const& p) const
         {
                 // speculate #moves > #jumps, so that the || is likely to short-circuit
-                return (
-                        DoMoves()(p) ||
-                        DoJumps()(p)
-                );
+                return DoMoves()(p) || DoJumps()(p);
         }
 };
 

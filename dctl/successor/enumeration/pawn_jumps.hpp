@@ -31,19 +31,18 @@ private:
 
 public:
         // structors
-        
-        explicit enumerator(State& c)
-        : 
-                capture_(c) 
+
+        /*explicit*/ enumerator(State& c)
+        :
+                capture_(c)
         {}
 
         // function call operators
 
         int operator()(Position const& p) const
         {
-                // parentheses around function objects to avoid "C++'s most vexing parse"
-                (PawnJumps(capture_))(p);
-                return (capture_.size());
+                PawnJumps{capture_}(p);
+                return capture_.size();
         }
 };
 

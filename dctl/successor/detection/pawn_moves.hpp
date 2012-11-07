@@ -30,14 +30,14 @@ public:
         bool operator()(Position const& p) const
         {
                 if (auto const active_pawns = p.pawns(Color))
-                        return (select(active_pawns, not_occupied(p)));
+                        return select(active_pawns, not_occupied(p));
                 else
-                        return (false);
+                        return false;
         }
 
         bool select(BitBoard active_pawns, BitBoard not_occupied) const
         {
-                return (branch(active_pawns, not_occupied));
+                return branch(active_pawns, not_occupied);
         }
 
 private:
@@ -52,9 +52,9 @@ private:
         template<typename Direction>
         bool parallelize(BitBoard active_pawns, BitBoard not_occupied) const
         {
-                return (!bit::is_zero(
+                return !bit::is_zero(
                         Sink<Board, Direction, rules::range::distance_1>()(active_pawns, not_occupied)
-                ));
+                );
         }
 };
 

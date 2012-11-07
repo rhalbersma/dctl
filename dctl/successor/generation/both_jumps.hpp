@@ -37,7 +37,7 @@ private:
 public:
         // structors
 
-        explicit generator(State& c)
+        /*explicit*/ generator(State& c)
         :
                 capture_(c)
         {}
@@ -59,18 +59,16 @@ private:
         // overload for no absolute king jump precedence
         void precedence_dispatch(Position const& p, boost::mpl::false_) const
         {
-                // parentheses around function objects to avoid "C++'s most vexing parse"
-                (KingJumps(capture_))(p);
-                (PawnJumps(capture_))(p);
+                KingJumps{capture_}(p);
+                PawnJumps{capture_}(p);
         }
 
         // overload for absolute king jump precedence
         void precedence_dispatch(Position const& p, boost::mpl::true_) const
         {
-                // parentheses around function objects to avoid "C++'s most vexing parse"
-                (KingJumps(capture_))(p);
+                KingJumps{capture_}(p);
                 if (capture_.empty())
-                        (PawnJumps(capture_))(p);
+                        PawnJumps{capture_}(p);
         }
 };
 

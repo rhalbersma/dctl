@@ -11,7 +11,7 @@ public:
 
         Statistics()
         :
-                nodes_(0),
+                nodes_ (0),
                 sum_ply_(0),
                 max_ply_(0)
         {}
@@ -34,17 +34,17 @@ public:
 
         NodeCount nodes() const
         {
-                return (nodes_);
+                return nodes_;
         }
 
         NodeCount sum_ply() const
         {
-                return (sum_ply_);
+                return sum_ply_;
         }
 
         int max_ply() const
         {
-                return (max_ply_);
+                return max_ply_;
         }
 
 private:

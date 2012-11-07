@@ -21,7 +21,7 @@ public:
                 auto n = 0;
                 for (auto i = 0; i < num_blocks; ++i)
                         n += count_[block(t, i)];
-                return (n);
+                return n;
         }
 
         template<typename T>
@@ -31,9 +31,9 @@ public:
                 int const num_blocks = sizeof(T) / sizeof(Block);
                 for (auto i = 0; i < num_blocks; ++i)
                         if (auto const b = block(t, i))
-                                return (offset<T>(i) + index_[b]);
+                                return offset<T>(i) + index_[b];
                 BOOST_ASSERT(false);
-                return (0);
+                return 0;
         }
 
 private:
@@ -42,13 +42,13 @@ private:
         template<typename T>
         static Block block(T t, int i)
         {
-                return (static_cast<Block>(t >> (i * bits_per_block)));
+                return static_cast<Block>(t >> (i * bits_per_block));
         }
 
         template<typename T>
         static int offset(int i)
         {
-                return (i * (sizeof(T) / sizeof(Block)));
+                return i * (sizeof(T) / sizeof(Block));
         }
 
         // representation
@@ -103,13 +103,13 @@ typedef table<uint8_t> detail;
 template<typename T>
 int count(T b)
 {
-        return (detail::count(b));
+        return detail::count(b);
 }
 
 template<typename T>
 int index(T b)
 {
-        return (detail::index(b));
+        return detail::index(b);
 }
 
 }       // namespace lookup

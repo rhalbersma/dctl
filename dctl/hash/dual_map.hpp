@@ -45,22 +45,22 @@ public:
 
         bool empty() const
         {
-                return (map_[0].empty() && map_[1].empty());
+                return map_[0].empty() && map_[1].empty();
         }
 
         size_type size() const
         {
-                return (map_[0].size() + map_[1].size());
+                return map_[0].size() + map_[1].size();
         }
 
         size_type max_size() const
         {
-                return (map_[0].max_size() + map_[1].max_size());
+                return map_[0].max_size() + map_[1].max_size();
         }
 
         size_type capacity() const
         {
-                return (map_[0].capacity() + map_[1].capacity());
+                return map_[0].capacity() + map_[1].capacity();
         }
 
         // modifiers
@@ -74,13 +74,13 @@ public:
         template<typename Key>
         bool insert(Key const& key, T const& value)
         {
-                return (map_[Parity()(key)].insert(key, value));
+                return map_[Parity()(key)].insert(key, value);
         }
 
         template<typename Key, typename... Args>
         bool emplace(Key const& key, Args&&... args)
         {
-        		return (map_[Parity()(key)].emplace(key, std::forward<Args>(args)...));
+        		return map_[Parity()(key)].emplace(key, std::forward<Args>(args)...);
         }
 
         void resize(size_type mega_bytes)
@@ -94,13 +94,13 @@ public:
         template<typename Key>
         mapped_pointer find(Key const& key)
         {
-                return (map_[Parity()(key)].find(key));
+                return map_[Parity()(key)].find(key);
         }
 
         template<typename Key>
         const_mapped_pointer find(Key const& key) const
         {
-                return (map_[Parity()(key)].find(key));
+                return map_[Parity()(key)].find(key);
         }
 
 private:

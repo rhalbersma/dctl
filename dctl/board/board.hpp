@@ -50,37 +50,37 @@ public:
         template<typename Direction>
         struct jump_start
         :
-                mask::init< 
-                        mask::is_jump_start< 
+                mask::init<
+                        mask::is_jump_start<
                                 Board, boost::mpl::_1,
-                                mpl::lazy::rotate< Direction, typename Layout::full_angle > 
+                                mpl::lazy::rotate< Direction, typename Layout::full_angle >
                         >
                 >
         {};
 
         static int begin()
         {
-                return (0);
+                return 0;
         }
 
         static int end()
         {
-                return (ExternalGrid::size::value);
+                return ExternalGrid::size::value;
         }
 
         static bool is_valid(int square)
         {
-                return (begin() <= square && square < end());
+                return begin() <= square && square < end();
         }
 
        static int square2bit(int number)
         {
-                return (SQUARE2BIT[number]);
+                return SQUARE2BIT[number];
         }
 
         static int bit2square(int number)
         {
-                return (BIT2SQUARE[number]);
+                return BIT2SQUARE[number];
         }
 
         // essential bitboard mask

@@ -24,21 +24,20 @@ public:
         explicit Chat(std::string const& message)
         :
                 text_(message)
-        {
-        }
+        {}
 
         // queries
 
         std::string text() const
         {
-                return (text_);
+                return text_;
         }
 
         // output
 
         static std::string str(std::string const& message)
         {
-                return (identifier() + body(message));
+                return identifier() + body(message);
         }
 
 private:
@@ -46,17 +45,17 @@ private:
 
         virtual std::string do_header() const
         {
-                return (identifier());
+                return identifier();
         }
 
         virtual std::string do_body() const
         {
-                return (body(text()));
+                return body(text());
         }
 
         static std::string body(std::string const& m)
         {
-                return (m);
+                return m;
         }
 
         // representation

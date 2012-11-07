@@ -54,7 +54,7 @@ public:
 
         int count() const
         {
-                return (num_pieces());
+                return num_pieces();
         }
 
         // predicates
@@ -69,12 +69,12 @@ public:
                 if (delta_kings * delta_pawns < 0) {
                         // delta_kings and delta_pawns are both non-zero and have opposite sign
                         // [2 n - 1] pawns < [n] kings < [2 n] pawns
-                        return (delta_pawns + 2 * delta_kings - (delta_kings > 0) <  0);
+                        return delta_pawns + 2 * delta_kings - (delta_kings > 0) <  0;
                 } else {
                         // delta_kings or delta_pawns is zero or they have equal sign
                         // delegate to std::tuple::operator<
                         return (
-                                std::tie(lhs.num_pieces(), lhs.with_king()) < 
+                                std::tie(lhs.num_pieces(), lhs.with_king()) <
                                 std::tie(rhs.num_pieces(), rhs.with_king())
                         );
                 }
@@ -84,7 +84,7 @@ public:
         friend bool operator==(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator==
-                return (lhs.data_ == rhs.data_);
+                return lhs.data_ == rhs.data_;
         }
 
 private:
@@ -96,34 +96,34 @@ private:
 
         int& num_pieces()
         {
-                return (std::get<0>(data_));
+                return std::get<0>(data_);
         }
 
         int& num_kings()
         {
-                return (std::get<1>(data_));
+                return std::get<1>(data_);
         }
 
         bool& with_king()
         {
-                return (std::get<2>(data_));
+                return std::get<2>(data_);
         }
 
         // queries
 
         int const& num_pieces() const
         {
-                return (std::get<0>(data_));
+                return std::get<0>(data_);
         }
 
         int const& num_kings() const
         {
-                return (std::get<1>(data_));
+                return std::get<1>(data_);
         }
 
         bool const& with_king() const
         {
-                return (std::get<2>(data_));
+                return std::get<2>(data_);
         }
 
         // predicates
@@ -139,12 +139,12 @@ private:
 
         bool empty(bool is_king) const
         {
-                return ((is_king? num_kings() : num_pieces()) == 0);
+                return (is_king? num_kings() : num_pieces()) == 0;
         }
 
         bool full() const
         {
-                return (num_pieces() == std::numeric_limits<int>::max());
+                return num_pieces() == std::numeric_limits<int>::max();
         }
 };
 

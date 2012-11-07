@@ -24,7 +24,7 @@ std::string content(Material const& m, int i)
                         sstr << Token::lower[Side::white];      // white man
         } else
                 sstr << Token::empty;                           // empty square
-        return (sstr.str());
+        return sstr.str();
 }
 
 }       // namespace setup

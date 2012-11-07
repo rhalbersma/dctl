@@ -33,14 +33,14 @@ public:
         bool insert(boost::mpl::identity<Derived>)
         {
                 BOOST_MPL_ASSERT((mixin::has_factory_create<Derived>));
-                return (insert(Derived::identifier(), Derived::create));
+                return insert(Derived::identifier(), Derived::create);
         }
 
         template<typename Derived>
         bool erase(boost::mpl::identity<Derived>)
         {
                 BOOST_MPL_ASSERT((mixin::has_factory_create<Derived>));
-                return (erase(Derived::identifier()));
+                return erase(Derived::identifier());
         }
 
         // queries
@@ -48,7 +48,7 @@ public:
         mapped_type find(key_type const& id) const
         {
                 auto const it = map_.find(id);
-                return ((it != std::end(map_))? it->second : nullptr);
+                return (it != std::end(map_))? it->second : nullptr;
         }
 
 private:

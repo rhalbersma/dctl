@@ -32,22 +32,21 @@ private:
 public:
         // structors
 
-        explicit generate(Stack& m)
-        : 
+        /*explicit*/ generate(Stack& m)
+        :
                 moves_(m)
         {
-                moves_.reserve(MOVE_RESERVE);        
+                moves_.reserve(MOVE_RESERVE);
         }
 
         // function call operators
 
         void operator()(Position const& p) const
         {
-                // parentheses around function objects to avoid "C++'s most vexing parse"
                 if (p.active_color() == Side::white)
-                        (DoWhite(moves_))(p);
+                        DoWhite{moves_}(p);
                 else
-                        (DoBlack(moves_))(p);
+                        DoBlack{moves_}(p);
 
                 BOOST_ASSERT((invariant<Material, Selection>(p, moves_.size())));
         }

@@ -31,20 +31,19 @@ public:
         explicit BackAcknowledge(std::string const& message)
         :
                 acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(0, 1).c_str())))
-        {
-        }
+        {}
 
         // queries
 
         AcceptanceCode acceptance_code() const
         {
-                return (acceptance_code_);
+                return acceptance_code_;
         }
 
         // output
         static std::string str(AcceptanceCode a)
         {
-                return (identifier() + body(a));
+                return identifier() + body(a);
         }
 
 private:
@@ -52,19 +51,19 @@ private:
 
         virtual std::string do_header() const
         {
-                return (identifier());
+                return identifier();
         }
 
         virtual std::string do_body() const
         {
-                return (body(acceptance_code()));
+                return body(acceptance_code());
         }
 
         static std::string body(AcceptanceCode a)
         {
                 std::stringstream sstr;
                 sstr << std::setw(1) << a;
-                return (sstr.str());
+                return sstr.str();
         }
 
         // representation

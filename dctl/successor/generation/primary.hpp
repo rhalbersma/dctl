@@ -23,9 +23,9 @@ private:
 public:
         // structors
 
-        explicit generator(Stack& m)
-        : 
-                moves_(m)         
+        /*explicit*/ generator(Stack& m)
+        :
+                moves_(m)
         {}
 
         // function call operators

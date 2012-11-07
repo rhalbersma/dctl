@@ -59,7 +59,7 @@ struct Next
         BidirectionalIterator operator()(BidirectionalIterator square) const
         {
                 Advance<Board, Direction, N>()(square);
-                return (square);
+                return square;
         }
 };
 
@@ -70,7 +70,7 @@ struct Prev
         BidirectionalIterator operator()(BidirectionalIterator square) const
         {
                 Retreat<Board, Direction, N>()(square);
-                return (square);
+                return square;
         }
 };
 

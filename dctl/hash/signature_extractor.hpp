@@ -13,7 +13,7 @@ struct MaterialExtractor
         template<typename Key, typename Index>
         value_type operator()(Key const& key, Index /* index */) const
         {
-                return (key.material());
+                return key.material();
         }
 };
 
@@ -28,7 +28,7 @@ struct UpperHashBitsExtractor
                 static_assert(std::is_integral<value_type>::value, "Bitwise shift only applicable to integral types.");
                 static_assert(sizeof(value_type) <= sizeof(Index), "Key cannot be of larger type than the hash.");
 
-                return (static_cast<value_type>(index >> (num_bits<Index>::value - num_bits<value_type>::value)));
+                return static_cast<value_type>(index >> (num_bits<Index>::value - num_bits<value_type>::value));
         }
 };
 

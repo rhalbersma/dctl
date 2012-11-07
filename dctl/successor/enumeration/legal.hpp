@@ -47,13 +47,12 @@ public:
 
         int operator()(Position const& p) const
         {
-                State capture_(p, moves_);
-                
-                // parentheses around function objects to avoid "C++'s most vexing parse"
+                State capture_ { p, moves_ };
+
                 auto num_moves = (DoJumps(capture_))(p);
                 if (!num_moves)
                         num_moves += DoMoves()(p);
-                return (num_moves);
+                return num_moves;
         }
 };
 

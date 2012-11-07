@@ -23,24 +23,24 @@ struct EmptyOldUnderCutMin
                         first, last,
                         std::begin(slots), std::end(slots),
                         [](value_type const& v, key_type const& k) {
-                        return (v.first == k);
+                        return v.first == k;
                 });
                 if (it != last) {
                         auto const insertion = it->first != value.first;
                         *it = value;
-                        return (insertion);
+                        return insertion;
                 }
 
                 // 2) replace the first entry if its depth is under cut by one
                 if (value.second.depth() == first->second.depth() - 1) {
                         *first = value;
-                        return (false);
+                        return false;
                 }
 
                 // 3) replace the minimal entry with respect to the Predicate
                 it = std::min_element(first, last, Predicate());
                 *it = value;
-                return (false);
+                return false;
         }
 };
 
@@ -49,7 +49,7 @@ struct Shallowest
         template<typename T>
         bool operator()(T const& lhs, T const& rhs) const
         {
-                return (lhs.second.depth() < rhs.second.depth());
+                return lhs.second.depth() < rhs.second.depth();
         }
 };
 
@@ -58,7 +58,7 @@ struct Smallest
         template<typename T>
         bool operator()(T const& lhs, T const& rhs) const
         {
-                return (lhs.second.leafs() < rhs.second.leafs());
+                return lhs.second.leafs() < rhs.second.leafs();
         }
 };
 

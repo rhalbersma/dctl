@@ -26,7 +26,7 @@ public:
         // milliseconds since construction
         clock_t elapsed() const
         {
-                return (laps_.back() - laps_.front());
+                return laps_.back() - laps_.front();
         }
 
         // milliseconds since last split()
@@ -34,7 +34,7 @@ public:
         {
                 BOOST_ASSERT(!laps_.empty());
                 auto const i = laps_.size() - 1;
-                return (laps_[i] - laps_[i - 1]);
+                return laps_[i] - laps_[i - 1];
         }
 
 private:

@@ -39,8 +39,8 @@ private:
 public:
         // structors
 
-        explicit generator(Stack& m)
-        : 
+        /*explicit*/ generator(Stack& m)
+        :
                 moves_(m)
         {}
 
@@ -48,12 +48,11 @@ public:
 
         void operator()(Position const& p) const
         {
-                State capture_(p, moves_);
+                State capture_ { p, moves_ };
 
-                // parentheses around function objects to avoid "C++'s most vexing parse"
-                (DoJumps(capture_))(p);
+                DoJumps{capture_}(p);
                 if (moves_.empty())
-                        (DoMoves(moves_))(p);
+                        DoMoves{moves_}(p);
         }
 };
 

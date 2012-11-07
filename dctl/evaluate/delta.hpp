@@ -19,38 +19,38 @@ public:
         template<typename Position>
         static int value(Position const& p)
         {
-                return (Active::value(p) - Passive::value(p));
+                return Active::value(p) - Passive::value(p);
         }
 
 private:
         template<typename Position>
         static int material(Position const& p)
         {
-                return (Active::material(p) - Passive::material(p));
+                return Active::material(p) - Passive::material(p);
         }
 
         template<typename Position>
         static int tempo(Position const& p)
         {
-                return (Active::tempo(p) - Passive::tempo(p));
+                return Active::tempo(p) - Passive::tempo(p);
         }
 
         template<typename Position>
         static int center(Position const& p)
         {
-                return (Active::center(p) - Passive::center(p));
+                return Active::center(p) - Passive::center(p);
         }
 
         template<typename Position>
         static int balance(Position const& p)
         {
-                return (Active::balance(p) - Passive::balance(p));
+                return Active::balance(p) - Passive::balance(p);
         }
 
         template<typename Position>
         static int mobility(Position const& p)
         {
-                return (Active::mobility(p) - Passive::mobility(p));
+                return Active::mobility(p) - Passive::mobility(p);
         }
 };
 

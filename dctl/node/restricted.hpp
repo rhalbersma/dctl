@@ -20,12 +20,12 @@ public:
         // queries
         BitBoard king() const
         {
-                return (king_);
+                return king_;
         }
 
         PlyCount moves() const
         {
-                return (moves_);
+                return moves_;
         }
 
         // modifiers
