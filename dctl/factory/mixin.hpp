@@ -18,17 +18,17 @@ struct HeaderBodyTerminator
 {
         static std::string header(std::string const& input)
         {
-                return (input.substr(0, HeaderLength));
+                return input.substr(0, HeaderLength);
         }
 
         static std::string body(std::string const& input)
         {
-                return (input.substr(HeaderLength));
+                return input.substr(HeaderLength);
         }
 
         static char terminator()
         {
-                return (terminator_);
+                return terminator_;
         }
 
         BOOST_STATIC_CONSTANT(auto, header_length_ = HeaderLength);
@@ -52,12 +52,12 @@ struct FactoryCreate
 
         static Identifier identifier()
         {
-                return (Identifier(1, identifier_));
+                return Identifier(1, identifier_);
         }
 
         static std::unique_ptr<Base> create(std::string const& parameter)
         {
-                return (make_unique<Derived>(parameter));
+                return make_unique<Derived>(parameter);
         }
 
         typedef Base base;

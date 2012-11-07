@@ -51,107 +51,107 @@ public:
         // initial position
         static Position initial()
         {
-                return (initial<dmz>());
+                return initial<dmz>();
         }
 
         template<int N>
         static Position initial()
         {
-                return (Position(
-                        Board::initial_mask[Side::black][N], 
-                        Board::initial_mask[Side::white][N], 
-                        0, 
+                return Position(
+                        Board::initial_mask[Side::black][N],
+                        Board::initial_mask[Side::white][N],
+                        0,
                         Side::white
-                ));
+                );
         }
 
         // queries
         Position const* parent() const
         {
-                return (parent_);
+                return parent_;
         }
 
         HashIndex hash_index() const
         {
-                return (hash_index_);
+                return hash_index_;
         }
 
         Material const& material() const
         {
-                return (material_);
+                return material_;
         }
 
         Material const& key() const
         {
-                return (material());
+                return material();
         }
 
         Restricted const& restricted() const
         {
-                return (restricted_);
+                return restricted_;
         }
 
         KingMoves const& restricted(bool color) const
         {
-                return (restricted_[color]);
+                return restricted_[color];
         }
 
         PlyCount reversible_moves() const
         {
-                return (reversible_moves_);
+                return reversible_moves_;
         }
 
         PlyCount distance_to_root() const
         {
-                return (distance_to_root_);
+                return distance_to_root_;
         }
 
         // side to move
         bool active_color() const
         {
-                return (to_move_);
+                return to_move_;
         }
 
         // opposite side to move
         bool passive_color() const
         {
-                return (!to_move_);
+                return !to_move_;
         }
 
         // black or white pawns
         BitBoard pawns(bool color) const
         {
-                return (material_.pawns(color));
+                return material_.pawns(color);
         }
 
         // black or white kings
         BitBoard kings(bool color) const
         {
-                return (material_.kings(color));
+                return material_.kings(color);
         }
 
         // black or white pieces
         BitBoard pieces(bool color) const
         {
-                return (material_.pieces(color));
+                return material_.pieces(color);
         }
 
         // black and white pawns
         BitBoard pawns() const
         {
-                return (material_.pawns());
+                return material_.pawns();
         }
 
         // black and white kings
         BitBoard kings() const
         {
-                return (material_.kings());
+                return material_.kings();
         }
 
         // black and white pieces
         BitBoard pieces() const
         {
-                return (material_.pieces());
+                return material_.pieces();
         }
 
         // make a move in a copy from another position
@@ -285,7 +285,7 @@ private:
 
         bool hash_index_invariant() const
         {
-                return (hash_index_ == hash::zobrist::Init<HashIndex, Position>()(*this));
+                return hash_index_ == hash::zobrist::Init<HashIndex, Position>()(*this);
         }
 
         // representation
@@ -302,13 +302,13 @@ private:
 template<typename Position>
 Position const* grand_parent(Position const& p)
 {
-        return (p.parent() ? p.parent()->parent() : nullptr);
+        return p.parent() ? p.parent()->parent() : nullptr;
 }
 
 template<typename Position>
 KingMoves const& active_restricted(Position const& p)
 {
-        return (p.restricted()[p.active_color()]);
+        return p.restricted()[p.active_color()];
 }
 
 template<typename Position>

@@ -28,10 +28,7 @@ public:
         bool operator()(Position const& p) const
         {
                 // speculate #pawns > #kings so that the || is likely to short-circuit
-                return (
-                        PawnMoves()(p) ||
-                        KingMoves()(p)
-                );
+                return PawnMoves()(p) || KingMoves()(p);
         }
 };
 

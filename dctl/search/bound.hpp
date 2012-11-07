@@ -39,7 +39,7 @@ struct Bound
                         BOOST_ASSERT(false);
                         break;
                 }
-                return (sstr.str());
+                return sstr.str();
         }
 };
 

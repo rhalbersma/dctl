@@ -4,7 +4,7 @@
 #include <dctl/utility/int.hpp>         // num_bits
 
 namespace dctl {
-namespace bit {  
+namespace bit {
 namespace loop {
 namespace detail {
 
@@ -20,9 +20,9 @@ struct count
                 auto n = 0;
                 for (; b; first::clear(b))
                         ++n;
-                return (n);
+                return n;
         }
-}; 
+};
 
 template<typename T>
 struct index
@@ -33,10 +33,10 @@ struct index
         {
                 for (auto i = 0; i < num_bits<T>::value; ++i)
                         if (is_element(singlet<T>(i), b))
-                                return (i);
-                return (0);
+                                return i;
+                return 0;
         }
-}; 
+};
 
 // TODO: partial specializations for bit arrays
 
@@ -45,13 +45,13 @@ struct index
 template<typename T>
 int count(T b)
 {
-        return (detail::count<T>()(b));
+        return detail::count<T>()(b);
 }
 
 template<typename T>
 int index(T b)
 {
-        return (detail::index<T>()(b));
+        return detail::index<T>()(b);
 }
 
 }       // namespace loop

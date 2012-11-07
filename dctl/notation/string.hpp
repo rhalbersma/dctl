@@ -32,7 +32,7 @@ struct write<Rules, numeric, Separator>
                 sstr << std::setw(2) << std::right << Board::bit2square(bit::first::find(from_sq(p, m))) + 1;
                 sstr << (is_capture(p, m)? static_cast<char>(Separator::jump) : static_cast<char>(Separator::move));
                 sstr << std::setw(2) << std::left  << Board::bit2square(bit::first::find(dest_sq(p, m))) + 1;
-                return (sstr.str());
+                return sstr.str();
         }
 };
 
@@ -53,7 +53,7 @@ std::string write(Position const& p, Move const& m)
 {
         typedef typename Position::rules_type Rules;
 
-        return (detail::write<Rules>()(p, m));
+        return detail::write<Rules>()(p, m);
 }
 
 }       // namespace notation

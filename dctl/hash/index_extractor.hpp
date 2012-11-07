@@ -12,7 +12,7 @@ struct IndexExtractor
         template<typename Key>
         value_type operator()(Key const& key) const
         {
-                return (key.hash_index());
+                return key.hash_index();
         }
 };
 

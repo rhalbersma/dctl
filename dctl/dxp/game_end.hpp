@@ -33,26 +33,25 @@ public:
         :
                 reason_(static_cast<Reason>(boost::lexical_cast<int>(message.substr(0, 1).c_str()))),
                 stop_code_(static_cast<StopCode>(boost::lexical_cast<int>(message.substr(1, 1).c_str())))
-        {
-        }
+        {}
 
         // queries
 
         Reason reason() const
         {
-                return (reason_);
+                return reason_;
         }
 
         StopCode stop_code() const
         {
-                return (stop_code_);
+                return stop_code_;
         }
 
         // output
 
         static std::string str(Reason r, StopCode s)
         {
-                return (identifier() + body(r, s));
+                return identifier() + body(r, s);
         }
 
 private:
@@ -60,12 +59,12 @@ private:
 
         virtual std::string do_header() const
         {
-                return (identifier());
+                return identifier();
         }
 
         virtual std::string do_body() const
         {
-                return (body(reason(), stop_code()));
+                return body(reason(), stop_code());
         }
 
         static std::string body(Reason r, StopCode s)
@@ -73,7 +72,7 @@ private:
                 std::stringstream sstr;
                 sstr << std::setw( 1) << r;
                 sstr << std::setw( 1) << s;
-                return (sstr.str());
+                return sstr.str();
         }
 
         // representation

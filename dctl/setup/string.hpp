@@ -16,19 +16,19 @@ bool read_color(char c)
 {
         switch(c) {
         case Token::black:
-                return (Side::black);
+                return Side::black;
         case Token::white:
-                return (Side::white);
+                return Side::white;
         default:
                 BOOST_ASSERT(!"switch statement incomplete");
-                return (false);
+                return false;
         }
 }
 
 template<typename Token>
 char write_color(bool color)
 {
-        return (Token::color[color]);
+        return Token::color[color];
 }
 
 template
@@ -58,7 +58,7 @@ struct read<Rules, Board, pdn::protocol, Token>
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return (Position<Rules, Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side));
+                        return { p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side };
 
                 bool setup_kings = false;
                 bool setup_color = p_side;
@@ -95,7 +95,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 break;
                         }
                 }
-                return (Position<Rules, Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side));
+                return { p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side };
         }
 };
 
@@ -127,7 +127,7 @@ struct write<pdn::protocol, Token>
                         }
                 }
                 sstr << Token::quote << "\n";                                   // closing quotes
-                return (sstr.str());
+                return sstr.str();
         }
 };
 
@@ -165,7 +165,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                         if (isupper(ch))
                                 p_kings ^= bb;                  // king
                 }
-                return (Position<Rules, Board>(p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side));
+                return { p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side };
         }
 };
 
@@ -182,7 +182,7 @@ struct write<dxp::protocol, Token>
                         sstr << content<Token>(p.material(), b);        // bit content
                 }
                 sstr << "\n";
-                return (sstr.str());
+                return sstr.str();
         }
 };
 

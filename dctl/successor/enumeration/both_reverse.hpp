@@ -23,10 +23,7 @@ private:
 public:
         int operator()(Position const& p) const
         {
-                return (
-                        KingMoves()(p) +
-                        PawnMoves()(p)
-                );
+                return KingMoves()(p) + PawnMoves()(p);
         }
 };
 

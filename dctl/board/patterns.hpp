@@ -15,7 +15,7 @@ struct Sink<Board, Direction, rules::range::distance_1>
         template<typename T>
         T operator()(T from, T dest) const
         {
-                return (Next<Board, Direction>()(from) & dest);
+                return Next<Board, Direction>()(from) & dest;
         }
 };
 
@@ -25,7 +25,7 @@ struct Sink<Board, Direction, rules::range::distance_N>
         template<typename T>
         T operator()(T from, T dest) const
         {
-                return (from ^ Fill<Board, Direction>()(from, dest));
+                return from ^ Fill<Board, Direction>()(from, dest);
         }
 };
 

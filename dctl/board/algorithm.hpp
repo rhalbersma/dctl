@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle/traits.hpp>        // is_positive
-#include <dctl/board/shift.hpp>         // shift_size, Shift 
+#include <dctl/board/shift.hpp>         // shift_size, Shift
 
 namespace dctl {
 namespace detail {
@@ -16,7 +16,7 @@ T fill(T generator, T propagator)
                 flood |= generator;
                 generator = Shift<Sign, N>()(generator) & propagator;
         }
-        return (flood);
+        return flood;
 }
 
 }       // namespace loop
@@ -25,10 +25,10 @@ T fill(T generator, T propagator)
 template<typename Sign, typename N, typename T>
 T fill(T generator, T propagator)
 {
-        return (loop::fill<Sign, N>(generator, propagator));
+        return loop::fill<Sign, N>(generator, propagator);
 }
 
-}       // namespace detail 
+}       // namespace detail
 
 template<typename Board, typename Direction>
 struct Fill
@@ -36,10 +36,10 @@ struct Fill
         template<typename T>
         T operator()(T generator, T propagator) const
         {
-                return (detail::fill< typename
-                        angle::lazy::is_positive<Direction>::type, typename 
+                return detail::fill< typename
+                        angle::lazy::is_positive<Direction>::type, typename
                         shift_size<Board, Direction>::type
-                >(generator, propagator));
+                >(generator, propagator);
         }
 };
 

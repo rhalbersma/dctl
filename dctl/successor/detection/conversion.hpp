@@ -32,10 +32,7 @@ public:
         bool operator()(Position const& p) const
         {
                 // speculate #jumps > #promotions, so that the || is likely to short-circuit
-                return (
-                        DoJumps()(p) || 
-                        DoPromotions()(p)                        
-                );
+                return DoJumps()(p) || DoPromotions()(p);
         }
 };
 

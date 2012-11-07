@@ -38,7 +38,7 @@ private:
 public:
         // structors
 
-        explicit generator(Stack& m)
+        /*explicit*/ generator(Stack& m)
         :
                 moves_(m)
         {}

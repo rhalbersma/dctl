@@ -11,9 +11,9 @@ struct enumerator
 :
         public std::function<int(Position const&)>
 {
-        int operator()(Position const&) const
+        int operator()(Position const& /* p */) const
         {
-                return (0);
+                return 0;
         }
 };
 

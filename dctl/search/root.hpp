@@ -43,13 +43,13 @@ public:
         template<typename Position>
         int analyze(Position const& p, int depth)
         {
-                return (iterative_deepening(p, depth));
+                return iterative_deepening(p, depth);
         }
 
         template<typename Position>
         int solve(Position const& p, int depth)
         {
-                return (proof_verify(p, depth));
+                return proof_verify(p, depth);
         }
 
         void resize_hash(std::size_t s)
@@ -69,7 +69,7 @@ public:
 
         bool is_interrupted() const
         {
-                return (interrupted_);
+                return interrupted_;
         }
 
 private:
@@ -168,7 +168,7 @@ private:
 
         bool is_pv(int node) const
         {
-                return (node == PV);
+                return node == PV;
         }
 
         // implementation

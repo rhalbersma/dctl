@@ -32,18 +32,17 @@ private:
 public:
         // structors
 
-        explicit generator(Stack& m)
-        : 
-                moves_(m) 
+        /*explicit*/ generator(Stack& m)
+        :
+                moves_(m)
         {}
 
         // function call operators
 
         void operator()(Position const& p) const
         {
-                // parentheses around function objects to avoid "C++'s most vexing parse"
-                (KingMoves(moves_))(p);
-                (PawnMoves(moves_))(p);
+                KingMoves{moves_}(p);
+                PawnMoves{moves_}(p);
         }
 };
 

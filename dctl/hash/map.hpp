@@ -99,7 +99,7 @@ public:
                 auto const n = bucket(index);
                 auto const insertion = Replace()(begin(n), end(n), std::make_pair(signature, t));
                 size_ += insertion;
-                return (insertion);
+                return insertion;
         }
 
         template<typename Key, typename... Args>
@@ -110,7 +110,7 @@ public:
                 auto const n = bucket(index);
                 auto const emplacement = Replace()(begin(n), end(n), std::make_pair(signature, T(std::forward<Args>(args)...)));
                 size_ += emplacement;
-                return (emplacement);
+                return emplacement;
         }
 
         void resize(size_type mega_bytes)
@@ -133,9 +133,9 @@ public:
                 auto it = std::find_if(
                         begin(n), end(n),
                         [&](value_type const& e) {
-                        return (e.first == signature);
+                        return e.first == signature;
                 });
-                return ((it != end(n))? &(it->second) : nullptr);
+                return (it != end(n))? &(it->second) : nullptr;
         }
 
         template<typename Key>
@@ -148,9 +148,9 @@ public:
                 auto it = std::find_if(
                         cbegin(n), cend(n),
                         [&](value_type const& e) {
-                        return (e.first == signature);
+                        return e.first == signature;
                 });
-                return ((it != cend(n))? &(it->second) : nullptr);
+                return (it != cend(n))? &(it->second) : nullptr;
         }
 
 private:

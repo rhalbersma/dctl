@@ -11,9 +11,9 @@ struct detector
 :
         public std::function<bool(Position const&)>
 {
-        bool operator()(Position const&) const
+        bool operator()(Position const& /* p */) const
         {
-                return (false);
+                return false;
         }
 };
 

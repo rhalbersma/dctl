@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE(aliotoDomenico)
 
 // suggested by Alioto Domenico in email to Ed Gilbert
 
-BOOST_FIXTURE_TEST_CASE(TestJumpFirstKing, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(testJumpFirstKing, FixtureItalian)
 {
         // generalizes the "jump first king" rule (Art. 6.9)
         auto const FEN = "W:WK30:B10,K12,K18,20,K26,K27";

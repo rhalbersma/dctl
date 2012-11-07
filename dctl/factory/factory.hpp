@@ -49,7 +49,7 @@ public:
         BasePointer create(Input const& input) const
         {
                 auto const fun = registry_.find(Base::header(input));
-                return (fun? (fun)(Base::body(input)) : nullptr);
+                return fun? (fun)(Base::body(input)) : nullptr;
         }
 
 private:

@@ -32,9 +32,9 @@ private:
 public:
         // structors
 
-        explicit generator(Stack& m)
-        : 
-                moves_(m) 
+        /*explicit*/ generator(Stack& m)
+        :
+                moves_(m)
         {}
 
         // function call operators
@@ -42,7 +42,7 @@ public:
         void operator()(Position const& p) const
         {
                 if (auto const active_pawns = p.pawns(Color))
-                        PassivePawnMoves(moves_).select(active_pawns, not_occupied(p));
+                        PassivePawnMoves{moves_}.select(active_pawns, not_occupied(p));
         }
 };
 

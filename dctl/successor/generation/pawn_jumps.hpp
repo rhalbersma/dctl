@@ -45,9 +45,9 @@ private:
 public:
         // structors
 
-        explicit generator(State& c)
-        : 
-                capture_(c) 
+        /*explicit*/ generator(State& c)
+        :
+                capture_(c)
         {}
 
         // function call operators
@@ -186,14 +186,14 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on promotion condition
-                return (find_next_dispatch<Direction>(jumper, typename Rules::pawn_promotion()));
+                return find_next_dispatch<Direction>(jumper, typename Rules::pawn_promotion());
         }
 
         // overload for pawns that promote apres-fini
         template<typename Direction>
         bool find_next_dispatch(BitIndex jumper, rules::promotion::apres_fini) const
         {
-                return (find_next_impl<Direction>(jumper));
+                return find_next_impl<Direction>(jumper);
         }
 
         // overload for pawns that promote en-passant
@@ -201,16 +201,16 @@ private:
         bool find_next_dispatch(BitIndex jumper, rules::promotion::en_passant) const
         {
                 if (!is_promotion_sq<Color, Board>(jumper))
-                        return (find_next_impl<Direction>(jumper));
+                        return find_next_impl<Direction>(jumper);
                 else
-                        return (promote_en_passant<Direction>(jumper));
+                        return promote_en_passant<Direction>(jumper);
         }
 
         template<typename Direction>
         bool promote_en_passant(BitIndex jumper) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return (promote_en_passant_dispatch<Direction>(jumper, typename Rules::is_pawns_jump_kings()));
+                return promote_en_passant_dispatch<Direction>(jumper, typename Rules::is_pawns_jump_kings());
         }
 
         // overload for pawns that can capture kings
@@ -218,9 +218,9 @@ private:
         bool promote_en_passant_dispatch(BitIndex jumper, boost::mpl::true_) const
         {
                 capture_.toggle_promotion();
-                auto const found_next = KingJumps(capture_).template promote_en_passant<Direction>(jumper);
+                auto const found_next = KingJumps(capture_).promote_en_passant<Direction>(jumper);
                 capture_.toggle_promotion();
-                return (found_next);
+                return found_next;
         }
 
         // overload for pawns that cannot capture kings
@@ -232,23 +232,20 @@ private:
                 auto const found_next = KingJumps(capture_).template promote_en_passant<Direction>(jumper);
                 capture_.toggle_king_targets();  // can no longer capture kings
                 capture_.toggle_promotion();     // now a pawn again
-                return (found_next);
+                return found_next;
         }
 
         template<typename Direction>
         bool find_next_impl(BitIndex jumper) const
         {
-                return (
-                        turn<Direction>(jumper) |
-                        scan<Direction>(jumper)
-                );
+                return turn<Direction>(jumper) | scan<Direction>(jumper);
         }
 
         template<typename Direction>
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on man turn directions
-                return (turn_dispatch<Direction>(jumper, typename Rules::pawn_turn_directions()));
+                return turn_dispatch<Direction>(jumper, typename Rules::pawn_turn_directions());
         }
 
         // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
@@ -275,14 +272,14 @@ private:
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::up) const
         {
-                return (scan< typename mpl::lazy::mirror< Direction, typename Compass::up >::type >(jumper));
+                return scan< typename mpl::lazy::mirror< Direction, typename Compass::up >::type >(jumper);
         }
 
         // overload for turns in the 1 mirrored backward direction
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::down) const
         {
-                return (scan< typename mpl::lazy::mirror< Direction, typename Compass::down >::type >(jumper));
+                return scan< typename mpl::lazy::mirror< Direction, typename Compass::down >::type >(jumper);
         }
 
         // overload for turns in the remaining 4 diagonal or orthogonal directions
@@ -301,19 +298,19 @@ private:
         bool scan(BitIndex jumper) const
         {
                 Increment<Board, Direction>()(jumper);
-                return (jump<Direction>(jumper));
+                return jump<Direction>(jumper);
         }
 
         template<typename Direction>
         bool jump(BitIndex jumper) const
         {
                 if (!bit::is_element(jumper, capture_.template targets_with_pawn<Direction>()))
-                        return (false);
+                        return false;
 
                 capture_.make(jumper);
                 precedence<Direction>(jumper); // recursively find more jumps
                 capture_.undo(jumper);
-                return (true);
+                return true;
         }
 
         void add_pawn_jump(BitIndex dest_sq) const

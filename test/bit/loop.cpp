@@ -1,3 +1,4 @@
+#include <cstdint>								// uint8_t, uint16_t, uint32_t, uint64_t
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                 // vector
@@ -12,13 +13,15 @@ BOOST_AUTO_TEST_SUITE(TestLookup)
 
 typedef boost::mpl::vector
 <
+		uint8_t,
+		uint16_t,
         uint32_t,
         uint64_t
-> Unsignedinteger_types;
+> UnsignedIntegerTypes;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, Unsignedinteger_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(0, loop::count(T(0)));
+        BOOST_CHECK_EQUAL(0, loop::count(zero<T>()));
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
@@ -40,7 +43,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, Unsignedinteger_types)
                 BOOST_CHECK_EQUAL(i, loop::count(b));
         }
 
-        BOOST_CHECK_EQUAL(num_bits<T>::value, loop::count(T(~0)));
+        BOOST_CHECK_EQUAL(num_bits<T>::value, loop::count(universe<T>()));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
