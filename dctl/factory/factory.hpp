@@ -83,7 +83,7 @@ private:
                 template<typename T>
                 void operator()(boost::mpl::identity<T> I)
                 {
-                		registry_.erase(I);
+                	registry_.erase(I);
                 }
 
         private:

@@ -20,14 +20,14 @@ template
 struct Registry
 {
 public:
-		// typedefs
+	// typedefs
 
-		typedef Identifier key_type;
-		typedef Creator mapped_type;
+	typedef Identifier key_type;
+	typedef Creator mapped_type;
     	typedef std::map<key_type, mapped_type> map_type;
     	typedef typename map_type::value_type value_type;
 
-		// modifiers
+	// modifiers
 
         template<typename Derived>
         bool insert(boost::mpl::identity<Derived>)
