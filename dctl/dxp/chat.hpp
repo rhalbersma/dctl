@@ -23,7 +23,7 @@ public:
 
         explicit Chat(std::string const& message)
         :
-                text_(message)
+                text_ { message }
         {}
 
         // queries
