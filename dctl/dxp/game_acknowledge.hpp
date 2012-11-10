@@ -1,8 +1,7 @@
 #pragma once
 #include <iomanip>                      // setfill, setw
 #include <sstream>                      // stringstream
-#include <string>                       // string
-#include <boost/lexical_cast.hpp>       // lexical_cast
+#include <string>                       // stoi, string
 #include <dctl/dxp/i_message.hpp>       // IMessage
 #include <dctl/factory/mixin.hpp>       // FactoryCreate
 
@@ -30,8 +29,8 @@ public:
 
         explicit GameAcknowledge(std::string const& message)
         :
-                name_follower_(message.substr(0, 32)),
-                acceptance_code_(static_cast<AcceptanceCode>(boost::lexical_cast<int>(message.substr(32, 1).c_str())))
+                name_follower_ { message.substr(0, 32) },
+                acceptance_code_ { static_cast<AcceptanceCode>(std::stoi(message.substr(32, 1).c_str())) }
         {}
 
         // queries

@@ -87,7 +87,7 @@ public:
 
         void clear()
         {
-                std::memset(&map_[0], 0, map_.size() * sizeof(bucket_type));
+                std::fill(std::begin(map_), std::end(map_), bucket_type());
                 size_ = 0;
         }
 
