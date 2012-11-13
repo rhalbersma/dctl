@@ -12,8 +12,7 @@ template<bool, int, typename, typename Position>
 struct generator
 :
         // enforce reference semantics
-        private boost::noncopyable,
-        public std::function<void(Position const&, Stack&)>
+        private boost::noncopyable
 {
 private:
         // representation

@@ -15,8 +15,6 @@ namespace detail {
 // partial specialization for pawn moves generation
 template<bool Color, typename Position>
 struct detector<Color, Material::pawn, Promotions, Position>
-:
-        public std::function<bool(Position const&)>
 {
 private:
         // typedefs

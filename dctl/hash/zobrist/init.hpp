@@ -17,8 +17,6 @@ struct Init;
 // partial specialization for ab initio hashing of material
 template<typename Index>
 struct Init<Index, Material>
-:
-        std::function<Index(Material const&)>
 {
         Index operator()(Material const& m) const
         {
@@ -33,8 +31,6 @@ struct Init<Index, Material>
 // partial specialization for ab initio hashing of moves
 template<typename Index>
 struct Init<Index, Move>
-:
-        std::function<Index(Move const&)>
 {
         Index operator()(Move const& m) const
         {
@@ -49,8 +45,6 @@ struct Init<Index, Move>
 // partial specialization for ab initio hashing of side to move
 template<typename Index>
 struct Init<Index, bool>
-:
-        std::function<Index(bool)>
 {
         Index operator()(bool color) const
         {
@@ -61,8 +55,6 @@ struct Init<Index, bool>
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
 struct Init<Index, KingMoves>
-:
-        std::function<Index(KingMoves const&, bool)>
 {
         Index operator()(KingMoves const& restricted, bool color) const
         {
@@ -76,8 +68,6 @@ struct Init<Index, KingMoves>
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
 struct Init<Index, Restricted>
-:
-        std::function<Index(Restricted const&)>
 {
         Index operator()(Restricted const& restricted) const
         {

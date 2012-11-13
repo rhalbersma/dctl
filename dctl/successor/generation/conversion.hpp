@@ -20,8 +20,7 @@ template<bool Color, int Material, typename Position>
 struct generator<Color, Material, Conversion, Position>
 :
         // enforce reference semantics
-        private boost::noncopyable,
-        public std::function<void(Position const&)>
+        private boost::noncopyable
 {
 private:
         // typedefs

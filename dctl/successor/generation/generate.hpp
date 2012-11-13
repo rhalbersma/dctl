@@ -16,8 +16,7 @@ template<int Material, typename Selection, typename Position>
 struct generate
 :
         // enforce reference semantics
-        private boost::noncopyable,
-        public std::function<void(Position const&)>
+        private boost::noncopyable
 {
 private:
         // typedefs

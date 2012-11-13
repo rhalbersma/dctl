@@ -13,8 +13,6 @@ namespace detail {
 
 template<bool Color, typename Position, typename Range>
 struct detector<Color, Material::both, Moves, Position, Range>
-:
-        public std::function<bool(Position const&)>
 {
 private:
         // typedefs

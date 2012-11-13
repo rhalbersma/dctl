@@ -17,8 +17,6 @@ namespace detail {
 // partial specialization for king moves detection
 template<bool Color, typename Position, typename Range>
 struct detector<Color, Material::king, Moves, Position, Range>
-:
-        public std::function<bool(Position const&)>
 {
 private:
         // typedefs

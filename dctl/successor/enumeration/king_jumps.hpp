@@ -16,8 +16,7 @@ template<bool Color, typename Position>
 struct enumerator<Color, Material::king, Jumps, Position>
 :
         // enforce reference semantics
-        private boost::noncopyable,
-        public std::function<int(Position const&)>
+        private boost::noncopyable
 {
 private:
         // typedefs
