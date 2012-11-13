@@ -10,8 +10,6 @@ namespace detail {
 
 template<typename T>
 struct count
-:
-        std::function<int(T)>
 {
         int operator()(T b)
         {
@@ -26,8 +24,6 @@ struct count
 
 template<typename T>
 struct index
-:
-        std::function<int(T)>
 {
         int operator()(T b)
         {

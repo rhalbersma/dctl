@@ -16,8 +16,6 @@ namespace detail {
 // partial specialization for pawn moves enumeration
 template<bool Color, typename Position>
 struct enumerator<Color, Material::pawn, Moves, Position>
-:
-        public std::function<int(Position const&)>
 {
 private:
         // typedefs

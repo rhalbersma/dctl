@@ -12,8 +12,6 @@ namespace detail {
 
 template<bool Color, typename Position>
 struct enumerator<Color, Material::both, Moves, Position>
-:
-        public std::function<int(Position const&)>
 {
 private:
         // typedefs

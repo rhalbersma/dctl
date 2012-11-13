@@ -17,8 +17,6 @@ namespace detail {
 // partial specialization for legal successors enumeration
 template<bool Color, int Material, typename Position>
 struct enumerator<Color, Material, Conversion, Position>
-:
-        public std::function<int(Position const&)>
 {
 private:
         // typedefs

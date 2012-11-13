@@ -38,8 +38,6 @@ namespace detail {
 
 template<typename T>
 struct equal
-:
-        std::function<T(T)>
 {
         T operator()(T b) const
         {
@@ -49,8 +47,6 @@ struct equal
 
 template<typename T>
 struct not_equal_to
-:
-        std::function<T(T)>
 {
         T operator()(T b) const
         {
@@ -60,8 +56,6 @@ struct not_equal_to
 
 template<typename T>
 struct less
-:
-        std::function<T(T)>
 {
         T operator()(T b) const
         {
@@ -71,8 +65,6 @@ struct less
 
 template<typename T>
 struct less_equal
-:
-        std::function<T(T)>
 {
         T operator()(T b) const
         {
@@ -82,8 +74,6 @@ struct less_equal
 
 template<typename T>
 struct clear
-:
-        std::function<void(T&)>
 {
         void operator()(T& b) const
         {

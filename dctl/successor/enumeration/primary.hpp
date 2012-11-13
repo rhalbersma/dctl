@@ -8,8 +8,6 @@ namespace detail {
 
 template<bool, int, typename, typename Position>
 struct enumerator
-:
-        public std::function<int(Position const&)>
 {
         int operator()(Position const& /* p */) const
         {

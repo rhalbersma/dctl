@@ -17,8 +17,6 @@ namespace detail {
 // partial specialization for legal successors detection
 template<bool Color, int Material, typename Position, typename Range>
 struct detector<Color, Material, Conversion, Position, Range>
-:
-        public std::function<bool(Position const&)>
 {
 private:
         // typedefs
