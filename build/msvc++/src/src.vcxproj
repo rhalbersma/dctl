@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\dctl\angle\degrees.hpp" />
+    <ClInclude Include="..\..\..\dctl\angle\traits.hpp" />
+    <ClInclude Include="..\..\..\dctl\angle\traits_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\angle\transform.hpp" />
+    <ClInclude Include="..\..\..\dctl\angle\transform_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\bit\bit.hpp" />
+    <ClInclude Include="..\..\..\dctl\bit\bit_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\bit\lookup.hpp" />
+    <ClInclude Include="..\..\..\dctl\bit\loop.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\algorithm.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\board.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\compass.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\coordinates.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\coordinates\transform.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\coordinates\transform_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\dimensions.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\dimensions\transform.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\dimensions\transform_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\ghosts.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\grid.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\grid_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\iterator.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\mask\init.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\mask\init_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\mask\predicates.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\patterns.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\shift.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\shift_size.hpp" />
+    <ClInclude Include="..\..\..\dctl\board\types.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\damme.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\frisian.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\hoogland.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\international.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\italian.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\killer.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\lineo.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\russian.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\spanish.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\state.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\value.hpp" />
+    <ClInclude Include="..\..\..\dctl\capture\value_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\back_acknowledge.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\back_request.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\chat.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\game_acknowledge.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\game_end.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\game_request.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\i_message.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\move.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\traits.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\types.hpp" />
+    <ClInclude Include="..\..\..\dctl\dxp\version.hpp" />
+    <ClInclude Include="..\..\..\dctl\evaluate\delta.hpp" />
+    <ClInclude Include="..\..\..\dctl\evaluate\feature.hpp" />
+    <ClInclude Include="..\..\..\dctl\evaluate\score.hpp" />
+    <ClInclude Include="..\..\..\dctl\evaluate\weight.hpp" />
+    <ClInclude Include="..\..\..\dctl\factory\factory.hpp" />
+    <ClInclude Include="..\..\..\dctl\factory\mixin.hpp" />
+    <ClInclude Include="..\..\..\dctl\factory\registry.hpp" />
+    <ClInclude Include="..\..\..\dctl\group\action.hpp" />
+    <ClInclude Include="..\..\..\dctl\group\axioms.hpp" />
+    <ClInclude Include="..\..\..\dctl\group\cyclic.hpp" />
+    <ClInclude Include="..\..\..\dctl\group\primitives.hpp" />
+    <ClInclude Include="..\..\..\dctl\guarded\parameter.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\dual_map.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\function.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\index_extractor.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\jenkins\init.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\jenkins\random.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\map.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\parity_extractor.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\replace.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\signature_extractor.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\zobrist\init.hpp" />
+    <ClInclude Include="..\..\..\dctl\hash\zobrist\random.hpp" />
+    <ClInclude Include="..\..\..\dctl\mpl\algorithm.hpp" />
+    <ClInclude Include="..\..\..\dctl\mpl\lazy.hpp" />
+    <ClInclude Include="..\..\..\dctl\mpl\modular.hpp" />
+    <ClInclude Include="..\..\..\dctl\mpl\transform.hpp" />
+    <ClInclude Include="..\..\..\dctl\mpl\transform_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\mpl\type_traits.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\binary_projections.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\binary_projections_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\detail\predicates.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\detail\targets.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\detail\unary_projections.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\i_pieces.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\material.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\move.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\move_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\position.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\position_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\predicates.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\predicates_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\promotion.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\restricted.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\side.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\stack.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\targets.hpp" />
+    <ClInclude Include="..\..\..\dctl\node\unary_projections.hpp" />
+    <ClInclude Include="..\..\..\dctl\notation\czech.hpp" />
+    <ClInclude Include="..\..\..\dctl\notation\notation.hpp" />
+    <ClInclude Include="..\..\..\dctl\notation\notation_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\notation\russian.hpp" />
+    <ClInclude Include="..\..\..\dctl\notation\string.hpp" />
+    <ClInclude Include="..\..\..\dctl\notation\thai.hpp" />
+    <ClInclude Include="..\..\..\dctl\notation\types.hpp" />
+    <ClInclude Include="..\..\..\dctl\pdn\version.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\checkers.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\checkers_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\czech.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\czech_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\damme.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\damme_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\enum.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\frisian.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\frisian_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\hoogland.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\hoogland_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\international.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\international_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\italian.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\italian_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\killer.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\killer_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\lineo.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\lineo_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\pool.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\pool_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\rules.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\russian.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\russian_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\spanish.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\spanish_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\thai.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\thai_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\types.hpp" />
+    <ClInclude Include="..\..\..\dctl\search\algorithm.hpp" />
+    <ClInclude Include="..\..\..\dctl\search\bound.hpp" />
+    <ClInclude Include="..\..\..\dctl\search\objective.hpp" />
+    <ClInclude Include="..\..\..\dctl\search\root.hpp" />
+    <ClInclude Include="..\..\..\dctl\search\score.hpp" />
+    <ClInclude Include="..\..\..\dctl\search\transposition.hpp" />
+    <ClInclude Include="..\..\..\dctl\search\variation.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\content.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\diagram.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\diagram_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\dxp.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\i_token.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\methods.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\numbers.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\pdn.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\protocols.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\setup.hpp" />
+    <ClInclude Include="..\..\..\dctl\setup\string.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\count.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detect.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\both_jumps.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\both_moves.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\both_promotions.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\both_reverse.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\conversion.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\detector.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\detector_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\king_jumps.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\king_moves.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\king_reverse.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\legal.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\pawn_jumps.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\pawn_moves.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\pawn_promotions.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\pawn_reverse.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\primary.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\both_jumps.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\both_moves.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\both_promotions.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\both_reverse.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\conversion.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\enumerator.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\enumerator_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\king_jumps.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\king_moves.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\king_reverse.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\legal.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\pawn_jumps.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\pawn_moves.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\pawn_promotions.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\pawn_reverse.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\primary.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generate.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\both_jumps.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\both_moves.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\both_promotions.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\both_reverse.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\conversion.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\generate.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\generator.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\generator_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\invariant.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\king_jumps.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\king_moves.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\king_reverse.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\legal.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\pawn_jumps.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\pawn_moves.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\pawn_promotions.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\pawn_reverse.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\primary.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\mobility.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\select.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\algorithm.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\cache_align.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\enable_down_cast.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\int.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\make_unique.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\nonconstructible.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\ply.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\statistics.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\timer.hpp" />
+    <ClInclude Include="..\..\..\dctl\utility\total_order.hpp" />
+    <ClInclude Include="..\..\..\dctl\walk\root.hpp" />
+    <ClInclude Include="..\..\..\dctl\walk\transposition.hpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0B1C650F-2EAC-4B31-8DE7-D4A3BF2BD122}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>src</RootNamespace>
+    <ProjectName>dctl</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\dev\boost\boost_1_52_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\dev\boost\boost_1_52_0\stage\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\dev\boost\boost_1_52_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\dev\boost\boost_1_52_0\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\dev\boost\boost_1_52_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\dev\boost\boost_1_52_0\stage\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\dev\boost\boost_1_52_0;C:\Users\Reinepein\Documents\Visual Studio 2012\Projects\dctl;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\dev\boost\boost_1_52_0\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_47;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ObjectFileName>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\dev\boost\boost_1_52_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_47;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <ObjectFileName>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\dev\boost\boost_1_52_0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</ObjectFileName>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_47;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\dev\boost\boost_1_52_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)/msvc++/$(ProjectName)/$(ConfigurationName)/%(RelativeDir)</ObjectFileName>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_47;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <StringPooling>true</StringPooling>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\dev\boost\boost_1_52_0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
+    </Lib>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
