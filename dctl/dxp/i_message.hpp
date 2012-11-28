@@ -22,10 +22,7 @@ class IMessage
 {
 public:
         // enable deletion of a Derived* through a Base*
-        virtual ~IMessage()
-        {
-                // no-op
-        }
+        virtual ~IMessage() = default;
 
         // non-virtual interface
         std::string str() const

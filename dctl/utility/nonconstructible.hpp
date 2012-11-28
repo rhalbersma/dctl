@@ -24,7 +24,7 @@ struct nonconstructible
 protected:
         // structors
 
-        ~nonconstructible();
+        ~nonconstructible() = delete;
 };
 
 }       // namespace dctl
