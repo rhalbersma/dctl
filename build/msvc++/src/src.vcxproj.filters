@@ -768,5 +768,8 @@
     <ClInclude Include="..\..\..\dctl\hash\signature_extractor.hpp">
       <Filter>Header Files\hash</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\dctl\guarded\default_delete.hpp">
+      <Filter>Header Files\guarded</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

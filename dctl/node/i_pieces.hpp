@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/utility/enable_down_cast.hpp>   // enable_down_cast
+#include <dctl/guarded/default_delete.hpp>
 
 namespace dctl {
 
@@ -59,7 +60,7 @@ public:
 protected:
         // disable deletion of Derived* through Base*
         // enable deletion of Base* through Derived*
-        ~IPieces() = default;
+        ~IPieces() DCTL_PP_IS_DEFAULT
 };
 
 }       // namespace dctl
