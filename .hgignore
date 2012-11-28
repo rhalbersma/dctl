@@ -7,6 +7,9 @@ build/msvc++/Debug
 build/msvc++/Release
 build/msvc++/src/Debug
 build/msvc++/src/Release
+build/msvc++/src/x64
+build/msvc++/test/x64
+build/msvc++/x64
 build/msvc++/test/Debug
 build/msvc++/test/Release
 build/msvc++/*.opensdf

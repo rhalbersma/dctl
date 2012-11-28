@@ -12,7 +12,7 @@ struct Fixture
 public:
         Fixture()
         {
-                root_.resize_hash(1024);
+                root_.resize_hash(4096);
         }
 
         ~Fixture()
