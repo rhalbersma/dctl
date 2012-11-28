@@ -100,9 +100,9 @@ private:
                 std::cout << std::setw(11) << std::right << statistics_.nodes();
 
                 std::cout << " time ";
-                std::cout << std::setw( 6) << timer.elapsed();
+                std::cout << std::setw( 6) << timer.elapsed().count();
 
-                double const nps = static_cast<double>(1000 * statistics_.nodes()) / static_cast<double>(timer.elapsed());
+                double const nps = static_cast<double>(1000 * statistics_.nodes()) / static_cast<double>(timer.elapsed().count());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
@@ -131,7 +131,7 @@ private:
                 }
 
                 auto const moves = successor::generate(p);
-                auto const index = pv[ply] % moves.size();
+                int const index = pv[ply] % moves.size();
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
 

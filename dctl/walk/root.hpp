@@ -116,9 +116,9 @@ private:
                 std::cout << std::setw(12) << std::right << statistics_.nodes();
 
                 std::cout << " time ";
-                std::cout << std::setw( 6) << timer.lap();
+                std::cout << std::setw( 6) << timer.lap().count();
 
-                double const nps = static_cast<double>(1000 * statistics_.nodes()) / static_cast<double>(timer.lap());
+                double const nps = static_cast<double>(1000 * statistics_.nodes()) / static_cast<double>(timer.lap().count());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
