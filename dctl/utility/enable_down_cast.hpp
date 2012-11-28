@@ -1,6 +1,7 @@
 #pragma once
 #include <type_traits>                  // is_base_of
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
+#include <dctl/guarded/default_delete.hpp>
 
 namespace dctl {
 
@@ -33,7 +34,7 @@ public:
 protected:
         // disable deletion of Derived* through Base*
         // enable deletion of Base* through Derived*
-        ~enable_down_cast() = default;
+        ~enable_down_cast() DCTL_PP_IS_DEFAULT
 };
 
 }       // namespace dctl

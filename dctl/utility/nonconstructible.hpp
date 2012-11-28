@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/utility.hpp>            // noncopyable
+#include <dctl/guarded/default_delete.hpp>
 
 namespace dctl {
 
@@ -24,7 +25,7 @@ struct nonconstructible
 protected:
         // structors
 
-        ~nonconstructible() = delete;
+        ~nonconstructible() DCTL_PP_IS_DELETE
 };
 
 }       // namespace dctl
