@@ -18,9 +18,7 @@ int Root<Objective>::iterative_deepening(Position const& p, int depth)
         auto score = -infinity();
         int alpha, beta;
 
-        IntArena ar;
-        IntAlloc all(ar);
-        Variation pv(all);
+        Variation pv;
         Timer timer;
         announce(p, depth);
         statistics_.reset();
@@ -88,9 +86,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         auto const moves = successor::generate(p);
         BOOST_ASSERT(!moves.empty());
 
-        IntArena ar;
-        IntAlloc all(ar);
-        Order move_order(ar);
+        Order move_order;
         move_order.reserve(moves.size());					// reserve enough room for all indices
         algorithm::iota_n(std::back_inserter(move_order), moves.size(), 0);	// generate indices [0, moves.size() - 1]
 
@@ -117,9 +113,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         int value;
         int i;
 
-        IntArena iar;
-        IntAlloc iall(iar);
-        Variation continuation(iall);
+        Variation continuation;
         continuation.reserve(DCTL_PP_VECTOR_RESERVE);
 
         for (auto s = 0; s < static_cast<int>(move_order.size()); ++s) {
@@ -149,8 +143,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
                                 break;
                         if (best_value > alpha) {
                                 alpha = best_value;
-                                //refutation = make_variation(best_move, continuation);
-                                update_variation(refutation, best_move, continuation);
+                                refutation = make_variation(best_move, continuation);
                         }
                 }
         }

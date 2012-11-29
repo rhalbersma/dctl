@@ -85,7 +85,6 @@
     <ClInclude Include="..\..\..\dctl\guarded\default_delete.hpp" />
     <ClInclude Include="..\..\..\dctl\guarded\noexcept.hpp" />
     <ClInclude Include="..\..\..\dctl\guarded\parameter.hpp" />
-    <ClInclude Include="..\..\..\dctl\guarded\short_alloc.hpp" />
     <ClInclude Include="..\..\..\dctl\hash\dual_map.hpp" />
     <ClInclude Include="..\..\..\dctl\hash\function.hpp" />
     <ClInclude Include="..\..\..\dctl\hash\index_extractor.hpp" />

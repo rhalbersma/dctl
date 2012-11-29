@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE(TestInternational)
 BOOST_FIXTURE_TEST_CASE(internationalInitial, Fixture<DefaultObjective>)
 {
         auto const p = Position<rules::International, board::International>::initial();
-        root_.analyze(p, 25);
+        root_.analyze(p, 15);
 }
 /*
 BOOST_FIXTURE_TEST_CASE(lineoD1, Fixture<DefaultObjective>)
