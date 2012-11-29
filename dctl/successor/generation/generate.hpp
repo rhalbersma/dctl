@@ -34,9 +34,7 @@ public:
         /*explicit*/ generate(Stack& m)
         :
                 moves_(m)
-        {
-                moves_.reserve(DCTL_PP_VECTOR_RESERVE);
-        }
+        {}
 
         // function call operators
 
