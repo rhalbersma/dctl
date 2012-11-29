@@ -7,14 +7,14 @@
 template <std::size_t N>
 class arena
 {
-    static const std::size_t alignment = 16;
+    //static const std::size_t alignment = 16;
     /*alignas(alignment)*/ char buf_[N];
     char* ptr_;
-
-    std::size_t 
+/*
+    std::size_t
     align_up(std::size_t n) DCTL_PP_NOEXCEPT
-        {return n + (alignment-1) & ~(alignment-1);}
-
+        {return n + ((alignment-1) & ~(alignment-1));}
+*/
     bool
     pointer_in_buffer(char* p) DCTL_PP_NOEXCEPT
         {return buf_ <= p && p <= buf_ + N;}
@@ -22,8 +22,8 @@ class arena
 public:
     arena() DCTL_PP_NOEXCEPT : ptr_(buf_) {}
     ~arena() {ptr_ = nullptr;}
-    arena(const arena&) DCTL_PP_IS_DELETE
-    arena& operator=(const arena&) DCTL_PP_IS_DELETE
+    arena(const arena&) = delete;
+    arena& operator=(const arena&) = delete;
 
     char* allocate(std::size_t n);
     void deallocate(char* p, std::size_t n) DCTL_PP_NOEXCEPT;
@@ -38,8 +38,8 @@ char*
 arena<N>::allocate(std::size_t n)
 {
     assert(pointer_in_buffer(ptr_) && "short_alloc has outlived arena");
-    n = align_up(n);
-    if (buf_ + N - ptr_ >= n)
+    //n = align_up(n);
+    if (buf_ + N >= ptr_+ n)
     {
         char* r = ptr_;
         ptr_ += n;
@@ -55,7 +55,7 @@ arena<N>::deallocate(char* p, std::size_t n) DCTL_PP_NOEXCEPT
     assert(pointer_in_buffer(ptr_) && "short_alloc has outlived arena");
     if (pointer_in_buffer(p))
     {
-        n = align_up(n);
+        //n = align_up(n);
         if (p + n == ptr_)
             ptr_ = p;
     }
@@ -77,8 +77,8 @@ public:
     template <class U>
         short_alloc(const short_alloc<U, N>& a) DCTL_PP_NOEXCEPT
             : a_(a.a_) {}
-    //short_alloc(const short_alloc&) = default;
-    short_alloc& operator=(const short_alloc&) DCTL_PP_IS_DELETE
+    short_alloc(const short_alloc&) = default;
+    short_alloc& operator=(const short_alloc&) = delete;
 
     T* allocate(std::size_t n)
     {
@@ -112,3 +112,4 @@ operator!=(const short_alloc<T, N>& x, const short_alloc<U, M>& y) DCTL_PP_NOEXC
 {
     return !(x == y);
 }
+
