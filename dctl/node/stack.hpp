@@ -5,7 +5,7 @@
 
 namespace dctl {
 
-#define DCTL_PP_VECTOR_RESERVE 32
+#define DCTL_PP_VECTOR_RESERVE 1024
 
 #define SHORT_ALLOC 1
 

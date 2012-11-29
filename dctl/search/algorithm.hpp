@@ -18,7 +18,8 @@ int Root<Objective>::iterative_deepening(Position const& p, int depth)
         auto score = -infinity();
         int alpha, beta;
 
-        Variation pv;
+        IntArena apv;
+        Variation pv{IntAlloc(apv)};
         Timer timer;
         announce(p, depth);
         statistics_.reset();
@@ -88,7 +89,7 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
 
         IntArena a;
         Order move_order{IntAlloc(a)};
-        move_order.reserve(moves.size());									// reserve enough room for all indices
+        move_order.reserve(moves.size());					// reserve enough room for all indices
         algorithm::iota_n(std::back_inserter(move_order), moves.size(), 0);	// generate indices [0, moves.size() - 1]
 
         // internal iterative deepening (IID)
