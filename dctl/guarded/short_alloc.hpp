@@ -4,87 +4,69 @@
 #include <dctl/guarded/default_delete.hpp>
 #include <dctl/guarded/noexcept.hpp>
 
+#include <cstddef>
+
 template <std::size_t N>
 class arena
 {
-    //static const std::size_t alignment = 16;
+    static const std::size_t alignment = 16;
     /*alignas(alignment)*/ char buf_[N];
     char* ptr_;
-/*
-    std::size_t
-    align_up(std::size_t n) DCTL_PP_NOEXCEPT
-        {return n + ((alignment-1) & ~(alignment-1));}
-*/
-    bool
-    pointer_in_buffer(char* p) DCTL_PP_NOEXCEPT
-        {return buf_ <= p && p <= buf_ + N;}
+
+    std::size_t 
+    align_up(std::size_t n) {return n + (alignment-1) & ~(alignment-1);}
 
 public:
-    arena() DCTL_PP_NOEXCEPT : ptr_(buf_) {}
-    ~arena() {ptr_ = nullptr;}
-    arena(const arena&) = delete;
-    arena& operator=(const arena&) = delete;
+    arena() : ptr_(buf_) {}
+    arena(const arena&) DCTL_PP_IS_DELETE
+    arena& operator=(const arena&) DCTL_PP_IS_DELETE
 
-    char* allocate(std::size_t n);
-    void deallocate(char* p, std::size_t n) DCTL_PP_NOEXCEPT;
-
-    static /*constexpr*/ std::size_t size() {return N;}
-    std::size_t used() const {return static_cast<std::size_t>(ptr_ - buf_);}
-    void reset() {ptr_ = buf_;}
-};
-
-template <std::size_t N>
-char*
-arena<N>::allocate(std::size_t n)
-{
-    assert(pointer_in_buffer(ptr_) && "short_alloc has outlived arena");
-    //n = align_up(n);
-    if (buf_ + N >= ptr_+ n)
-    {
-        char* r = ptr_;
-        ptr_ += n;
-        return r;
-    }
-    return static_cast<char*>(::operator new(n));
-}
-
-template <std::size_t N>
-void
-arena<N>::deallocate(char* p, std::size_t n) DCTL_PP_NOEXCEPT
-{
-    assert(pointer_in_buffer(ptr_) && "short_alloc has outlived arena");
-    if (pointer_in_buffer(p))
+    char* allocate(std::size_t n)
     {
         //n = align_up(n);
-        if (p + n == ptr_)
-            ptr_ = p;
+        if (buf_ + N >= ptr_ + n)
+        {
+            char* r = ptr_;
+            ptr_ += n;
+            return r;
+        }
+        return static_cast<char*>(::operator new(n));
     }
-    else
-        ::operator delete(p);
-}
+    void deallocate(char* p, std::size_t n)
+    {
+        //n = align_up(n);
+        if (buf_ <= p && p < buf_ + N)
+        {
+            if (p + n == ptr_)
+                ptr_ = p;
+        }
+        else
+            ::operator delete(p);
+    }
+};
 
 template <class T, std::size_t N>
-class short_alloc
+class stack_allocator
 {
     arena<N>& a_;
 public:
     typedef T value_type;
 
 public:
-    template <class _Up> struct rebind {typedef short_alloc<_Up, N> other;};
+    template <class U> struct rebind {typedef stack_allocator<U, N> other;};
 
-    short_alloc(arena<N>& a) DCTL_PP_NOEXCEPT : a_(a) {}
+    explicit stack_allocator(arena<N>& a) : a_(a) {}
     template <class U>
-        short_alloc(const short_alloc<U, N>& a) DCTL_PP_NOEXCEPT
+        stack_allocator(const stack_allocator<U, N>& a)
             : a_(a.a_) {}
-    short_alloc(const short_alloc&) = default;
-    short_alloc& operator=(const short_alloc&) = delete;
+    //stack_allocator(const stack_allocator&) = default;
+    stack_allocator& operator=(const stack_allocator&) DCTL_PP_IS_DELETE
 
     T* allocate(std::size_t n)
     {
         return reinterpret_cast<T*>(a_.allocate(n*sizeof(T)));
     }
-    void deallocate(T* p, std::size_t n) DCTL_PP_NOEXCEPT
+    void deallocate(T* p, std::size_t n)
     {
         a_.deallocate(reinterpret_cast<char*>(p), n*sizeof(T));
     }
@@ -92,24 +74,21 @@ public:
     template <class T1, std::size_t N1, class U, std::size_t M>
     friend
     bool
-    operator==(const short_alloc<T1, N1>& x, const short_alloc<U, M>& y) DCTL_PP_NOEXCEPT;
+    operator==(const stack_allocator<T1, N1>& x, const stack_allocator<U, M>& y);
 
-    template <class U, std::size_t M> friend class short_alloc;
+    template <class U, std::size_t M> friend class stack_allocator;
 };
 
 template <class T, std::size_t N, class U, std::size_t M>
-inline
 bool
-operator==(const short_alloc<T, N>& x, const short_alloc<U, M>& y) DCTL_PP_NOEXCEPT
+operator==(const stack_allocator<T, N>& x, const stack_allocator<U, M>& y)
 {
     return N == M && &x.a_ == &y.a_;
 }
 
 template <class T, std::size_t N, class U, std::size_t M>
-inline
 bool
-operator!=(const short_alloc<T, N>& x, const short_alloc<U, M>& y) DCTL_PP_NOEXCEPT
+operator!=(const stack_allocator<T, N>& x, const stack_allocator<U, M>& y)
 {
     return !(x == y);
 }
-
