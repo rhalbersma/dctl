@@ -11,11 +11,14 @@ namespace dctl {
 
 #if SHORT_ALLOC == 1
 
-typedef short_alloc<Move, DCTL_PP_VECTOR_RESERVE * sizeof(Move)> MoveAlloc;
-typedef short_alloc<int, DCTL_PP_VECTOR_RESERVE * sizeof(int)> IntAlloc;
+static auto const MoveMem = DCTL_PP_VECTOR_RESERVE * sizeof(Move);
+static auto const IntMem = DCTL_PP_VECTOR_RESERVE * sizeof(int);
 
-typedef arena<DCTL_PP_VECTOR_RESERVE * sizeof(Move)> MoveArena;
-typedef arena<DCTL_PP_VECTOR_RESERVE * sizeof(int)> IntArena;
+typedef stack_allocator<Move, MoveMem> MoveAlloc;
+typedef stack_allocator<int, IntMem> IntAlloc;
+
+typedef arena<MoveMem> MoveArena;
+typedef arena<IntMem> IntArena;
 
 typedef std::vector<Move, MoveAlloc> Stack;
 typedef std::vector<int, IntAlloc> Variation;

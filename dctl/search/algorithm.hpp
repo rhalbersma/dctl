@@ -18,8 +18,9 @@ int Root<Objective>::iterative_deepening(Position const& p, int depth)
         auto score = -infinity();
         int alpha, beta;
 
-        IntArena apv;
-        Variation pv{IntAlloc(apv)};
+        IntArena ar;
+        IntAlloc all(ar);
+        Variation pv(all);
         Timer timer;
         announce(p, depth);
         statistics_.reset();
@@ -87,8 +88,9 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         auto const moves = successor::generate(p);
         BOOST_ASSERT(!moves.empty());
 
-        IntArena a;
-        Order move_order{IntAlloc(a)};
+        IntArena ar;
+        IntAlloc all(ar);
+        Order move_order(ar);
         move_order.reserve(moves.size());					// reserve enough room for all indices
         algorithm::iota_n(std::back_inserter(move_order), moves.size(), 0);	// generate indices [0, moves.size() - 1]
 
@@ -115,8 +117,9 @@ int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int 
         int value;
         int i;
 
-        IntArena ia;
-        Variation continuation{IntAlloc(ia)};
+        IntArena iar;
+        IntAlloc iall(iar);
+        Variation continuation(iall);
         continuation.reserve(DCTL_PP_VECTOR_RESERVE);
 
         for (auto s = 0; s < static_cast<int>(move_order.size()); ++s) {
