@@ -771,5 +771,11 @@
     <ClInclude Include="..\..\..\dctl\guarded\default_delete.hpp">
       <Filter>Header Files\guarded</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\dctl\guarded\short_alloc.hpp">
+      <Filter>Header Files\guarded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\guarded\noexcept.hpp">
+      <Filter>Header Files\guarded</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

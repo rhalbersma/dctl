@@ -16,7 +16,7 @@ struct Fixture
 {
         Fixture()
         {
-                root_.resize_hash(4096);
+                root_.resize_hash(128);
         }
 
         ~Fixture()

@@ -12,5 +12,12 @@ inline Variation make_variation(int move, Variation const& continuation)
         return line;
 }
 
+inline void update_variation(Variation& line, int move, Variation const& continuation)
+{
+        line.clear();
+        line.push_back(move);
+        line.insert(std::end(line), std::begin(continuation), std::end(continuation));
+}
+
 }       // namespace search
 }       // namespace dctl

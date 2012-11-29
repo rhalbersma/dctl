@@ -35,7 +35,7 @@ public:
         :
                 moves_(m)
         {
-                moves_.reserve(MOVE_RESERVE);
+                moves_.reserve(DCTL_PP_VECTOR_RESERVE);
         }
 
         // function call operators

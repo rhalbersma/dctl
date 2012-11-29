@@ -10,7 +10,8 @@ namespace successor {
 template<int Material, typename Selection, typename Position>
 Stack generate(Position const& p)
 {
-        Stack moves;
+        MoveArena a;
+        Stack moves{MoveAlloc(a)};
         detail::generate<Material, Selection, Position>{moves}(p);
         return moves;
 }
