@@ -774,5 +774,8 @@
     <ClInclude Include="..\..\..\dctl\guarded\noexcept.hpp">
       <Filter>Header Files\guarded</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\dctl\guarded\arena_allocator.hpp">
+      <Filter>Header Files\guarded</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

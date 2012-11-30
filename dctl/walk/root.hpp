@@ -49,7 +49,8 @@ public:
                 NodeCount move_leafs;
 
                 Timer timer;
-                auto const moves = successor::generate(p);
+                MoveArena a;
+                auto const moves = successor::generate(p, a);
 
                 announce(p, depth, moves.size());
                 for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
@@ -159,7 +160,8 @@ private:
                 if (depth == 0)
                         return 1;
 
-                auto const moves = successor::generate(p);
+                MoveArena a;
+                auto const moves = successor::generate(p, a);
                 NodeCount leafs = 0;
                 for (auto const& m: moves) {
                         auto q = p;
@@ -175,7 +177,8 @@ private:
         {
                 statistics_.update(ply);
 
-                auto const moves = successor::generate(p);
+                MoveArena a;
+                auto const moves = successor::generate(p, a);
                 if (depth == 1)
                         return moves.size();
 
@@ -197,7 +200,8 @@ private:
                 if (depth == 1)
                         return successor::count(p);
 
-                auto const moves = successor::generate(p);
+                MoveArena a;
+                auto const moves = successor::generate(p, a);
                 NodeCount leafs = 0;
                 for (auto const& m: moves) {
                         auto q = p;
@@ -221,7 +225,8 @@ private:
                 if (depth == 1) {
                         leafs = successor::count(p);
                 } else {
-                        auto const moves = successor::generate(p);
+                        MoveArena a;
+                        auto const moves = successor::generate(p, a);
                         leafs = 0;
                         for (auto const& m: moves) {
                                 auto q = p;

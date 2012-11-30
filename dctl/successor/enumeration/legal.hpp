@@ -29,6 +29,8 @@ private:
 
         // representation
 
+        MoveArena mar_;
+        MoveAlloc mal_;
         Stack mutable moves_;
 
 public:
@@ -36,7 +38,9 @@ public:
 
         enumerator()
         :
-                moves_()
+                mar_(),
+                mal_(mar_),
+                moves_(mal_)
         {
                 moves_.reserve(DCTL_PP_VECTOR_RESERVE);
         }

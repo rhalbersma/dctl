@@ -82,6 +82,7 @@
     <ClInclude Include="..\..\..\dctl\group\axioms.hpp" />
     <ClInclude Include="..\..\..\dctl\group\cyclic.hpp" />
     <ClInclude Include="..\..\..\dctl\group\primitives.hpp" />
+    <ClInclude Include="..\..\..\dctl\guarded\arena_allocator.hpp" />
     <ClInclude Include="..\..\..\dctl\guarded\default_delete.hpp" />
     <ClInclude Include="..\..\..\dctl\guarded\noexcept.hpp" />
     <ClInclude Include="..\..\..\dctl\guarded\parameter.hpp" />

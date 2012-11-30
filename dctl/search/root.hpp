@@ -130,7 +130,8 @@ private:
                         return;
                 }
 
-                auto const moves = successor::generate(p);
+                MoveArena a;
+                auto const moves = successor::generate(p, a);
                 int const index = pv[ply] % moves.size();
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
@@ -151,7 +152,8 @@ private:
                         return;
                 }
 
-                auto const moves = successor::generate(p);
+                MoveArena a;
+                auto const moves = successor::generate(p, a);
                 auto const best_move = moves[pv[ply] % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";

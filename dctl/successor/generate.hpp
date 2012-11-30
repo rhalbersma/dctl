@@ -8,18 +8,19 @@ namespace dctl {
 namespace successor {
 
 template<int Material, typename Selection, typename Position>
-Stack generate(Position const& p)
+Stack generate(Position const& p, MoveArena& mar)
 {
-        Stack moves;
+        MoveAlloc mal(mar);
+        Stack moves(mal);
         moves.reserve(DCTL_PP_VECTOR_RESERVE);
         detail::generate<Material, Selection, Position>{moves}(p);
         return moves;
 }
 
 template<typename Position>
-Stack generate(Position const& p)
+Stack generate(Position const& p, MoveArena& mar)
 {
-        return generate<Material::both, DefaultSelection>(p);
+        return generate<Material::both, DefaultSelection>(p, mar);
 }
 
 }       // namespace successor
