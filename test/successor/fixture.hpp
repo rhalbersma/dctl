@@ -23,7 +23,8 @@ struct Fixture
         {
                 // setup the position and generate all legal moves
                 auto const p = setup::read<Rules, Board, pdn::protocol>()(FEN);
-                auto const moves = successor::generate(p);
+                MoveArena a;
+                auto const moves = successor::generate(p, a);
 
                 // check whether the number of generated moves is equal to the number of legal moves
                 BOOST_CHECK(moves.size() == N);
