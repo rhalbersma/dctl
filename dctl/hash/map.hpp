@@ -87,7 +87,8 @@ public:
 
         void clear()
         {
-                std::fill(std::begin(map_), std::end(map_), bucket_type());
+                for(auto& bucket: map_)
+                        bucket.fill(value_type(key_type(0), mapped_type()));
                 size_ = 0;
         }
 

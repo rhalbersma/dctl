@@ -80,7 +80,7 @@ public:
         template<typename Key, typename... Args>
         bool emplace(Key const& key, Args&&... args)
         {
-        		return map_[Parity()(key)].emplace(key, std::forward<Args>(args)...);
+        	return map_[Parity()(key)].emplace(key, std::forward<Args>(args)...);
         }
 
         void resize(size_type mega_bytes)

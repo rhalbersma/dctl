@@ -26,7 +26,7 @@ struct EmptyOldUnderCutMin
                         return v.first == k;
                 });
                 if (it != last) {
-                        auto const insertion = it->first != value.first;
+                        auto const insertion = it->first == key_type(0);
                         *it = value;
                         return insertion;
                 }
