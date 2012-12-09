@@ -1,6 +1,9 @@
 #pragma once
 #include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
+#include <intrin.h>
+#pragma intrinsic(_BitScanForward64)
+
 #include <dctl/bit/bit_fwd.hpp>         // forward declarations
 #include <dctl/bit/lookup.hpp>          // count, index
 #include <dctl/bit/loop.hpp>            // count, index
@@ -174,6 +177,9 @@ int index(T b)
 {
         BOOST_ASSERT(is_single(b));
         return lookup::index(b);
+        /*unsigned long i;
+        _BitScanForward64(&i, b);
+        return static_cast<int>(i);*/
 }
 
 // 0 bits set to 1
