@@ -40,7 +40,7 @@ template<typename> struct max_2v1_moves                         { enum { value =
 template<typename>
 struct is_check_jump_uniqueness
 :
-        boost::mpl::true_
+        boost::mpl::false_//true_
 {};
 
 // intermediate capture directions

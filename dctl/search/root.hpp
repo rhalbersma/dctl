@@ -12,6 +12,7 @@
 #include <dctl/node/stack.hpp>
 #include <dctl/hash/signature_extractor.hpp>
 #include <dctl/hash/map.hpp>
+#include <dctl/hash/replace.hpp>
 #include <dctl/successor/generate.hpp>
 #include <dctl/utility/ply.hpp>
 #include <dctl/utility/int.hpp>
@@ -26,6 +27,7 @@ namespace search {
 
 template
 <
+        typename Position,
         typename Objective
 >
 class Root
@@ -40,13 +42,11 @@ public:
         {
         }
 
-        template<typename Position>
         int analyze(Position const& p, int depth)
         {
                 return iterative_deepening(p, depth);
         }
 
-        template<typename Position>
         int solve(Position const& p, int depth)
         {
                 return proof_verify(p, depth);
@@ -73,11 +73,10 @@ public:
         }
 
 private:
-        template<typename Position> int iterative_deepening(Position const&, int);
-        template<typename Position> int negamax(Position const&, int, int, Variation&);
-        template<int, typename Position> int pvs(Position const&, int, int, int, int, Variation&);
+        int iterative_deepening(Position const&, int);
+        int negamax(Position const&, int, int, Variation&);
+        template<int> int pvs(Position const&, int, int, int, int, Variation&);
 
-        template<typename Position>
         void announce(Position const& p, int depth)
         {
                 std::cout << setup::diagram<pdn::protocol>()(p);
@@ -85,7 +84,6 @@ private:
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
-        template<typename Position>
         void report(int depth, int value, Timer const& timer, Position const& p, Variation const& pv)
         {
                 std::cout << "info";
@@ -115,7 +113,6 @@ private:
                 print_pv(p, pv);
         }
 
-        template<typename Position>
         void insert_pv(Position const& p, Variation const& pv, int value, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
@@ -142,7 +139,6 @@ private:
                 insert_pv(q, pv, -stretch(value), ply + 1);
         }
 
-        template<typename Position>
         void print_pv(Position const& p, Variation const& pv, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
@@ -179,7 +175,13 @@ private:
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content
         // 8-way buckets on 64-byte cache lines, (1 Gb = 2^27 entries)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
-        typedef hash::Map<hash::UpperHashBitsExtractor, Transposition> TranspositionTable;
+        typedef hash::Map< 
+                Position, 
+                Transposition, 
+                hash::UpperHashBitsExtractor, 
+                hash::EmptyOldUnderCutMin<hash::Shallowest> 
+        > TranspositionTable;
+
         TranspositionTable TT;
 
         // representation

@@ -38,10 +38,10 @@ public:
         // initialize with a set of bitboards and a color
         Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
         :
-                parent_(nullptr),
+                //parent_(nullptr),
                 material_(black_pieces, white_pieces, kings),
-                reversible_moves_(0),
-                distance_to_root_(0),
+                //reversible_moves_(0),
+                //distance_to_root_(0),
                 to_move_(to_move)
         {
                 hash_index_ = hash::zobrist::Init<HashIndex, Position>()(*this);
@@ -166,16 +166,16 @@ public:
         {
                 BOOST_ASSERT(is_pseudo_legal(*this, m));
 
-                make_irreversible(m);
+                //make_irreversible(m);
                 make_incremental(m);
 
                 BOOST_ASSERT(material_invariant());
                 BOOST_ASSERT(hash_index_invariant());
         }
-
-        void attach(Position const& other)
+        
+        void attach(Position const&/* other*/)
         {
-                parent_ = &other;       // link the pointers
+                //parent_ = &other;       // link the pointers
         }
 
 private:
@@ -289,12 +289,12 @@ private:
         }
 
         // representation
-        Position const* parent_;
+        //Position const* parent_;
         HashIndex hash_index_;
         Material material_;
-        Restricted restricted_;
-        PlyCount reversible_moves_;
-        PlyCount distance_to_root_;
+        //Restricted restricted_;
+        //PlyCount reversible_moves_;
+        //PlyCount distance_to_root_;
         bool to_move_;
         //BitBoard padding_[5];
 };
@@ -329,8 +329,8 @@ struct Init< Index, Position<Rules, Board> >
         {
                 return (
                         Init<Index, Material  >()(p.material())     ^
-                        Init<Index, bool      >()(p.active_color()) ^
-                        Init<Index, Restricted>()(p.restricted())
+                        Init<Index, bool      >()(p.active_color())// ^
+                        //Init<Index, Restricted>()(p.restricted())
                 );
         }
 };

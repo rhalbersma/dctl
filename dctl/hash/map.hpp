@@ -9,7 +9,6 @@
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/hash/index_extractor.hpp>
-#include <dctl/hash/replace.hpp>
 #include <dctl/utility/cache_align.hpp>
 #include <dctl/utility/int.hpp>
 
@@ -18,35 +17,42 @@ namespace hash {
 
 template
 <
-        typename SignatureExtractor,
+        typename Key,
         typename T,
-        typename Replace = EmptyOldUnderCutMin<Shallowest>,
-        typename Hash = IndexExtractor
+        typename Signature,
+        typename Replace,
+        typename Hash = IndexExtractor,
+        typename KeyEqual = std::equal_to<typename Signature::result_type>,
+        typename Allocator = std::allocator< std::pair<typename Signature::result_type, T> >
 >
 struct Map
 {
-private:
-        typedef typename SignatureExtractor::value_type Signature;
+public:
+        typedef typename Signature::result_type key_type;
+        typedef T mapped_type;
+        typedef std::pair<key_type, mapped_type> value_type;
+        typedef std::size_t size_type;
+        typedef std::ptrdiff_t differrence_type;
+        typedef Hash hasher;
+        typedef KeyEqual key_equal;
+        typedef Allocator allocator;
+        typedef value_type& reference;
+        typedef value_type const& const_reference;
+        //typedef std::allocator_traits<allocator>::pointer pointer;
+        //typedef std::allocator_traits<allocator>::const_pointer const_pointer;
 
 public:
-        typedef Signature key_type;
-        typedef T mapped_type;
-        typedef std::pair<Signature, T> value_type;
+        typedef typename hasher::result_type index_type;
+        typedef value_type* iterator;
+        typedef value_type const* const_iterator;
+        typedef mapped_type* mapped_pointer;
+        typedef mapped_type const* const_mapped_pointer;
 
 private:
         static auto const N = CACHE_LINE / sizeof(value_type);
         typedef std::array<value_type, N> bucket_type;
         static_assert(sizeof(bucket_type) == CACHE_LINE, "non-aligned hash table");
-
-        typedef typename Hash::value_type index_type;
         typedef std::vector<bucket_type> map_type;
-
-public:
-        typedef std::size_t size_type;
-        typedef value_type* iterator;
-        typedef value_type const* const_iterator;
-        typedef mapped_type* mapped_pointer;
-        typedef mapped_type const* const_mapped_pointer;
 
 public:
         // structors
@@ -87,31 +93,8 @@ public:
 
         void clear()
         {
-                for(auto& bucket: map_)
-                        bucket.fill(value_type(key_type(0), mapped_type()));
+                for(auto& b: map_) b.fill(value_type(key_type(0), mapped_type()));
                 size_ = 0;
-        }
-
-        template<typename Key>
-        bool insert(Key const& key, T const& t)
-        {
-            	auto const index = Hash()(key);
-            	auto const signature = SignatureExtractor()(key, index);
-                auto const n = bucket(index);
-                auto const insertion = Replace()(begin(n), end(n), std::make_pair(signature, t));
-                size_ += insertion;
-                return insertion;
-        }
-
-        template<typename Key, typename... Args>
-        bool emplace(Key const& key, Args&&... args)
-        {
-                auto const index = Hash()(key);
-                auto const signature = SignatureExtractor()(key, index);
-                auto const n = bucket(index);
-                auto const emplacement = Replace()(begin(n), end(n), std::make_pair(signature, T(std::forward<Args>(args)...)));
-                size_ += emplacement;
-                return emplacement;
         }
 
         void resize(size_type mega_bytes)
@@ -122,41 +105,35 @@ public:
                 clear();
         }
 
-        // lookup
-
-        template<typename Key>
-        mapped_pointer find(Key const& key)
+        void insert(Key const& key, T const& t)
         {
-            	auto const index = Hash()(key);
-            	auto const signature = SignatureExtractor()(key, index);
-                auto const n = bucket(index);
+                auto const index = hasher()(key);
+                auto const first = begin(bucket(index));
+                auto const last = first + bucket_size();
 
-                auto it = std::find_if(
-                        begin(n), end(n),
-                        [&](value_type const& e) {
-                        return e.first == signature;
-                });
-                return (it != end(n))? &(it->second) : nullptr;
+                auto const insertion = Replace()(first, last, std::make_pair(Signature()(/*key,*/ index), t));
+                size_ += insertion;
+                //return insertion;
         }
 
-        template<typename Key>
-        const_mapped_pointer find(Key const& key) const
+        // lookup
+
+        mapped_pointer find(Key const& key)
         {
-            	auto const index = Hash()(key);
-            	auto const signature = SignatureExtractor()(key, index);
-                auto const n = bucket(index);
+                auto const index = hasher()(key);
+                auto const first = begin(bucket(index));
+                auto const last = first + bucket_size();
 
                 auto it = std::find_if(
-                        cbegin(n), cend(n),
-                        [&](value_type const& e) {
-                        return e.first == signature;
+                        first, last,
+                        [&](value_type const& entry) {
+                        return key_equal()(entry.first, Signature()(/*key,*/ index));
                 });
-                return (it != cend(n))? &(it->second) : nullptr;
+                return (it != last)? &(it->second) : nullptr;
         }
 
 private:
         // bucket interface
-
         typedef typename bucket_type::iterator local_iterator;
         typedef typename bucket_type::const_iterator const_local_iterator;
 

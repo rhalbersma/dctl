@@ -5,10 +5,10 @@ namespace hash {
 
 struct ActiveColorExtractor
 {
-        typedef bool value_type;
+        typedef bool result_type;
 
         template<typename Key>
-        value_type operator()(Key const& key) const
+        result_type operator()(Key const& key) const
         {
                 return key.active_color();
         }
