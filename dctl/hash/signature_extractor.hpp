@@ -8,10 +8,10 @@ namespace hash {
 
 struct MaterialExtractor
 {
-        typedef Material value_type;
+        typedef Material result_type;
 
         template<typename Key, typename Index>
-        value_type operator()(Key const& key, Index /* index */) const
+        result_type const& operator()(Key const& key, Index /* index */) const
         {
                 return key.material();
         }
@@ -19,16 +19,26 @@ struct MaterialExtractor
 
 struct UpperHashBitsExtractor
 {
-        typedef std::size_t value_type;
+        typedef std::size_t result_type;
 
         template<typename Key, typename Index>
-        value_type operator()(Key const& /* key */, Index index) const
+        result_type operator()(Key const& /* key */, Index index) const
         {
                 static_assert(std::is_integral<Index>::value,      "Bitwise shift only applicable to integral types.");
-                static_assert(std::is_integral<value_type>::value, "Bitwise shift only applicable to integral types.");
-                static_assert(sizeof(value_type) <= sizeof(Index), "Key cannot be of larger type than the hash.");
+                static_assert(std::is_integral<result_type>::value, "Bitwise shift only applicable to integral types.");
+                static_assert(sizeof(result_type) <= sizeof(Index), "Key cannot be of larger type than the hash.");
 
-                return static_cast<value_type>(index >> (num_bits<Index>::value - num_bits<value_type>::value));
+                return static_cast<result_type>(index >> (num_bits<Index>::value - num_bits<result_type>::value));
+        }
+
+        template<typename Index>
+        result_type operator()(Index index) const
+        {
+                static_assert(std::is_integral<Index>::value,      "Bitwise shift only applicable to integral types.");
+                static_assert(std::is_integral<result_type>::value, "Bitwise shift only applicable to integral types.");
+                static_assert(sizeof(result_type) <= sizeof(Index), "Key cannot be of larger type than the hash.");
+
+                return static_cast<result_type>(index >> (num_bits<Index>::value - num_bits<result_type>::value));
         }
 };
 

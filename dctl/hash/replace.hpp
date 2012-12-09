@@ -1,8 +1,8 @@
 #pragma once
-#include <algorithm>                    // find_if, get_first_of, min_element
+#include <algorithm>                    // min_element
 #include <iterator>                     // begin, end, iterator_traits
 #include <type_traits>                  // is_same
-#include <utility>
+#include <utility>                      // pair, make_pair
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 
 namespace dctl {
@@ -18,17 +18,16 @@ struct EmptyOldUnderCutMin
                 typedef typename value_type::first_type key_type;
 
                 // 1) fill an empty slot or replace an existing entry with the same key
-                key_type slots[] = { key_type(0), value.first };
-                auto it = std::find_first_of(
-                        first, last,
-                        std::begin(slots), std::end(slots),
-                        [](value_type const& v, key_type const& k) {
-                        return v.first == k;
-                });
-                if (it != last) {
-                        auto const insertion = it->first == key_type(0);
-                        *it = value;
-                        return insertion;
+                for (auto it = first; it != last; ++it) {
+                        if (it->first == key_type(0)) {
+                                *it = value;
+                                return true;
+                        }
+
+                        if (it->first == value.first) {
+                                it->second = value.second;
+                                return false;
+                        }
                 }
 
                 // 2) replace the first entry if its depth is under cut by one
@@ -38,7 +37,7 @@ struct EmptyOldUnderCutMin
                 }
 
                 // 3) replace the minimal entry with respect to the Predicate
-                it = std::min_element(first, last, Predicate());
+                auto it = std::min_element(first, last, Predicate());
                 *it = value;
                 return false;
         }

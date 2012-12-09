@@ -5,7 +5,7 @@
 
 namespace dctl {
 
-#define DCTL_PP_VECTOR_RESERVE 32
+#define DCTL_PP_VECTOR_RESERVE 16
 
 typedef arena<DCTL_PP_VECTOR_RESERVE * sizeof(Move)> MoveArena;
 typedef short_alloc<Move, DCTL_PP_VECTOR_RESERVE * sizeof(Move)> MoveAlloc;

@@ -22,10 +22,10 @@
 namespace dctl {
 namespace walk {
 
+template<typename Position>
 class Root
 {
 public:
-        template<typename Position>
         NodeCount perft(Position const& p, int depth)
         {
                 NodeCount leafs = 0;
@@ -42,7 +42,6 @@ public:
                 return leafs;
         }
 
-        template<typename Position>
         NodeCount divide(Position const& p, int depth)
         {
                 NodeCount leafs = 0;
@@ -70,7 +69,6 @@ public:
                 return leafs;
         }
 
-        template<typename Position>
         NodeCount test(Position const& p, int depth)
         {
                 return driver(p, depth, 0);
@@ -87,7 +85,6 @@ public:
         }
 
 private:
-        template<typename Position>
         void announce(Position const& p, int depth)
         {
                 std::cout << setup::diagram<pdn::protocol>()(p);
@@ -95,7 +92,6 @@ private:
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
-        template<typename Position>
         void announce(Position const& p, int depth, int num_moves)
         {
                 announce(p, depth);
@@ -146,13 +142,11 @@ private:
                 std::cout << std::setw(2) << (i + 1) << "." << move << " ";
         }
 
-        template<typename Position>
         NodeCount driver(Position const& p, int depth, int ply)
         {
                 return (depth == 0)? leaf(p, depth, ply) : hash(p, depth, ply);
         }
 
-        template<typename Position>
         NodeCount leaf(Position const& p, int depth, int ply)
         {
                 statistics_.update(ply);
@@ -165,14 +159,13 @@ private:
                 NodeCount leafs = 0;
                 for (auto const& m: moves) {
                         auto q = p;
-                        q.attach(p);
+                        //q.attach(p);
                         q.make(m);
                         leafs += leaf(q, depth - 1, ply + 1);
                 }
                 return leafs;
         }
 
-        template<typename Position>
         NodeCount bulk(Position const& p, int depth, int ply)
         {
                 statistics_.update(ply);
@@ -185,14 +178,13 @@ private:
                 NodeCount leafs = 0;
                 for (auto const& m: moves) {
                         auto q = p;
-                        q.attach(p);
+                        //q.attach(p);
                         q.make(m);
                         leafs += bulk(q, depth - 1, ply + 1);
                 }
                 return leafs;
         }
 
-        template<typename Position>
         NodeCount count(Position const& p, int depth, int ply)
         {
                 statistics_.update(ply);
@@ -205,14 +197,13 @@ private:
                 NodeCount leafs = 0;
                 for (auto const& m: moves) {
                         auto q = p;
-                        q.attach(p);
+                        //q.attach(p);
                         q.make(m);
                         leafs += count(q, depth - 1, ply + 1);
                 }
                 return leafs;
         }
 
-        template<typename Position>
         NodeCount hash(Position const& p, int depth, int ply)
         {
                 statistics_.update(ply);
@@ -230,7 +221,7 @@ private:
                         leafs = 0;
                         for (auto const& m: moves) {
                                 auto q = p;
-                                q.attach(p);
+                                //q.attach(p);
                                 q.make(m);
                                 leafs += hash(q, depth - 1, ply + 1);
                         }
@@ -243,8 +234,20 @@ private:
         // 32-byte hash entries: 24-byte piece lists signature, 8-byte (59-bit leafs, 5-bit depth) content
         // 8-way buckets on 64-byte cache lines, (2^25 entries = 1 Gb)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
-        typedef hash::DualMap<hash::MaterialExtractor, Transposition> TranspositionTable;
-        TranspositionTable TT;
+        typedef hash::DualMap<
+                Position, 
+                Transposition, 
+                hash::MaterialExtractor
+        > TranspositionTable;
+
+        typedef hash::Map< 
+                Position, 
+                Transposition, 
+                hash::UpperHashBitsExtractor, 
+                hash::EmptyOldUnderCutMin<hash::Smallest> 
+        > TranspositionTable2;
+
+        TranspositionTable2 TT;
 
         // representation
         Statistics statistics_;

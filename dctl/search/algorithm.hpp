@@ -11,9 +11,8 @@ namespace dctl {
 namespace search {
 
 // iterative deepening with no move ordering at the root
-template<typename Objective>
-template<typename Position>
-int Root<Objective>::iterative_deepening(Position const& p, int depth)
+template<typename Position, typename Objective>
+int Root<Position, Objective>::iterative_deepening(Position const& p, int depth)
 {
         auto score = -infinity();
         int alpha, beta;
@@ -37,9 +36,9 @@ int Root<Objective>::iterative_deepening(Position const& p, int depth)
 }
 
 // principal variation search (PVS)
-template<typename Objective>
-template<int NodeType, typename Position>
-int Root<Objective>::pvs(Position const& p, int alpha, int beta, int depth, int ply, Variation& refutation)
+template<typename Position, typename Objective>
+template<int NodeType>
+int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int depth, int ply, Variation& refutation)
 {
         statistics_.update(ply);
 

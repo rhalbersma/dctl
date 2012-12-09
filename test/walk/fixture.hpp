@@ -7,12 +7,13 @@
 namespace dctl {
 namespace walk {
 
+template<typename Position>
 struct Fixture
 {
 public:
         Fixture()
         {
-                root_.resize_hash(4096);
+                root_.resize_hash(1024);
         }
 
         ~Fixture()
@@ -20,18 +21,20 @@ public:
                 root_.resize_hash(2);
         }
 
-        template<typename Position, std::size_t N>
-        void run(Position const& p, NodeCount const (&leafs)[N])
-        {
+        template<std::size_t N>
+        void run(Position const& p, NodeCount const (&/*leafs*/)[N])
+        {/*
                 auto depth = 0;
                 for (auto const& node_count: leafs) {
                         root_.clear_hash();
                         BOOST_CHECK_EQUAL(node_count, root_.test(p, ++depth));
-                }
+                }*/
+                root_.clear_hash();
+                root_.perft(p, 16);
         }
 
 private:
-        Root root_;
+        Root<Position> root_;
 };
 
 }       // namespace walk

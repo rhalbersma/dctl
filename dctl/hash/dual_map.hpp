@@ -11,10 +11,11 @@ namespace hash {
 
 template
 <
-        typename SignatureExtractor,
+        typename Key,
         typename T,
+        typename Signature,
         typename Parity = ActiveColorExtractor,
-        typename Container = Map< SignatureExtractor, T, EmptyOldUnderCutMin<Smallest> >
+        typename Container = Map< Key, T, Signature, EmptyOldUnderCutMin<Smallest> >
 >
 struct DualMap
 {
@@ -71,33 +72,24 @@ public:
                 map_[1].clear();
         }
 
-        template<typename Key>
-        bool insert(Key const& key, T const& value)
-        {
-                return map_[Parity()(key)].insert(key, value);
-        }
-
-        template<typename Key, typename... Args>
-        bool emplace(Key const& key, Args&&... args)
-        {
-        	return map_[Parity()(key)].emplace(key, std::forward<Args>(args)...);
-        }
-
         void resize(size_type mega_bytes)
         {
                 map_[0].resize(mega_bytes >> 1);
                 map_[1].resize(mega_bytes >> 1);
         }
 
+        void insert(Key const& key, T const& value)
+        {
+                /*return*/ map_[Parity()(key)].insert(key, value);
+        }
+
         // lookup
 
-        template<typename Key>
         mapped_pointer find(Key const& key)
         {
                 return map_[Parity()(key)].find(key);
         }
 
-        template<typename Key>
         const_mapped_pointer find(Key const& key) const
         {
                 return map_[Parity()(key)].find(key);
