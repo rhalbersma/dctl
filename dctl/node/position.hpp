@@ -10,7 +10,7 @@
 #include <dctl/node/restricted.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/node/predicates_fwd.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -27,7 +27,7 @@ public:
 
         typedef Rules rules_type;
         typedef Board board_type;
-        BOOST_STATIC_CONSTANT(int, dmz = rules_type::initial_dmz::value + board_type::height::value % 2);
+        BOOST_STATIC_CONSTANT(int, gap = rules::traits<rules_type>::initial_gap::value + board_type::height::value % 2);
 
         /*
         Position()
@@ -38,10 +38,10 @@ public:
         // initialize with a set of bitboards and a color
         Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
         :
-                //parent_(nullptr),
+                parent_(nullptr),
                 material_(black_pieces, white_pieces, kings),
-                //reversible_moves_(0),
-                //distance_to_root_(0),
+                reversible_moves_(0),
+                distance_to_root_(0),
                 to_move_(to_move)
         {
                 hash_index_ = hash::zobrist::Init<HashIndex, Position>()(*this);
@@ -51,7 +51,7 @@ public:
         // initial position
         static Position initial()
         {
-                return initial<dmz>();
+                return initial<gap>();
         }
 
         template<int N>
@@ -185,7 +185,7 @@ private:
         void make_irreversible(Move const& m)
         {
                 // tag dispatching on restrictions on consecutive moves with the same king
-                make_irreversible(m, typename Rules::is_restricted_same_king_moves());
+                make_irreversible(m, typename rules::traits<Rules>::is_restricted_same_king_moves());
         }
 
         // overload for restricted consecutive moves with the same king
@@ -289,14 +289,14 @@ private:
         }
 
         // representation
-        //Position const* parent_;
+        Position const* parent_;
         HashIndex hash_index_;
         Material material_;
-        //Restricted restricted_;
-        //PlyCount reversible_moves_;
-        //PlyCount distance_to_root_;
+        Restricted restricted_;
+        PlyCount reversible_moves_;
+        PlyCount distance_to_root_;
         bool to_move_;
-        //BitBoard padding_[5];
+        BitBoard padding_[5];
 };
 
 template<typename Position>

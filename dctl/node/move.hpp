@@ -6,7 +6,7 @@
 #include <dctl/node/move_fwd.hpp>
 #include <dctl/node/i_pieces.hpp>
 #include <dctl/node/side.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -50,14 +50,14 @@ template<typename Rules, typename T>
 bool is_intersecting_capture(T delta, T captured_pieces)
 {
         // tag dispatching on capture removal
-        return detail::is_intersecting_capture(delta, captured_pieces, typename Rules::jump_removal());
+        return detail::is_intersecting_capture(delta, captured_pieces, typename rules::traits<Rules>::jump_removal());
 }
 
 template<typename Rules, typename T>
 bool is_intersecting_promotion(T promotion, T delta)
 {
         // tag dispatching on promotion condition
-        return detail::is_intersecting_promotion(promotion, delta, typename Rules::pawn_promotion());
+        return detail::is_intersecting_promotion(promotion, delta, typename rules::traits<Rules>::pawn_promotion());
 }
 
 template<typename T>

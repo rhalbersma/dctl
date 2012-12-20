@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/successor/enumeration/enumerator_fwd.hpp>
 #include <dctl/successor/select.hpp>
 #include <dctl/bit/bit.hpp>
@@ -7,6 +6,7 @@
 #include <dctl/board/patterns.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/unary_projections.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -53,7 +53,7 @@ private:
         int parallelize(BitBoard active_kings, BitBoard not_occupied) const
         {
                 return bit::count(
-                        Sink<Board, Direction, typename Rules::king_range>()(active_kings, not_occupied)
+                        Sink<Board, Direction, typename rules::traits<Rules>::king_range>()(active_kings, not_occupied)
                 );
         }
 };

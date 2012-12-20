@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/generation/generator.hpp>

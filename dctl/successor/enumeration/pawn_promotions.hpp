@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/successor/enumeration/enumerator_fwd.hpp>
 #include <dctl/successor/enumeration/pawn_moves.hpp>
 #include <dctl/successor/select.hpp>

@@ -1,7 +1,6 @@
 #pragma once
-#include <functional>                   // function
+#include <type_traits>                  // false_type, true_type
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/generation/generator_fwd.hpp>
 #include <dctl/successor/generation/king_jumps.hpp>                // promote_en_passant
@@ -14,7 +13,7 @@
 #include <dctl/capture/state.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -61,17 +60,17 @@ private:
         void select(BitBoard active_pawns) const
         {
                 // tag dispatching on whether pawns can capture kings
-                select_dispatch(active_pawns, typename Rules::is_pawns_jump_kings());
+                select_dispatch(active_pawns, typename rules::traits<Rules>::is_pawns_jump_kings());
         }
 
         // overload for pawns that can capture kings
-        void select_dispatch(BitBoard active_pawns, boost::mpl::true_) const
+        void select_dispatch(BitBoard active_pawns, std::true_type) const
         {
                 branch(active_pawns);
         }
 
         // overload for pawns that cannot capture kings
-        void select_dispatch(BitBoard active_pawns, boost::mpl::false_) const
+        void select_dispatch(BitBoard active_pawns, std::false_type) const
         {
                 capture_.toggle_king_targets();
                 branch(active_pawns);
@@ -81,7 +80,7 @@ private:
         void branch(BitBoard active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                branch_dispatch(active_pawns, typename Rules::pawn_jump_directions());
+                branch_dispatch(active_pawns, typename rules::traits<Rules>::pawn_jump_directions());
         }
 
         // overload for pawns that capture in the 8 diagonal and orthogonal directions
@@ -154,12 +153,12 @@ private:
         void precedence(BitIndex jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch<Direction>(jumper, typename Rules::is_precedence());
+                precedence_dispatch<Direction>(jumper, typename rules::traits<Rules>::is_precedence());
         }
 
         // overload for no majority precedence
         template<typename Direction>
-        void precedence_dispatch(BitIndex jumper, boost::mpl::false_) const
+        void precedence_dispatch(BitIndex jumper, std::false_type) const
         {
                 Increment<Board, Direction>()(jumper);
                 if (!find_next<Direction>(jumper))
@@ -168,7 +167,7 @@ private:
 
         // overload for majority precedence
         template<typename Direction>
-        void precedence_dispatch(BitIndex jumper, boost::mpl::true_) const
+        void precedence_dispatch(BitIndex jumper, std::true_type) const
         {
                 Increment<Board, Direction>()(jumper);
                 if (
@@ -185,7 +184,7 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on promotion condition
-                return find_next_dispatch<Direction>(jumper, typename Rules::pawn_promotion());
+                return find_next_dispatch<Direction>(jumper, typename rules::traits<Rules>::pawn_promotion());
         }
 
         // overload for pawns that promote apres-fini
@@ -209,12 +208,12 @@ private:
         bool promote_en_passant(BitIndex jumper) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return promote_en_passant_dispatch<Direction>(jumper, typename Rules::is_pawns_jump_kings());
+                return promote_en_passant_dispatch<Direction>(jumper, typename rules::traits<Rules>::is_pawns_jump_kings());
         }
 
         // overload for pawns that can capture kings
         template<typename Direction>
-        bool promote_en_passant_dispatch(BitIndex jumper, boost::mpl::true_) const
+        bool promote_en_passant_dispatch(BitIndex jumper, std::true_type) const
         {
                 capture_.toggle_promotion();
                 auto const found_next = KingJumps(capture_).promote_en_passant<Direction>(jumper);
@@ -224,7 +223,7 @@ private:
 
         // overload for pawns that cannot capture kings
         template<typename Direction>
-        bool promote_en_passant_dispatch(BitIndex jumper, boost::mpl::false_) const
+        bool promote_en_passant_dispatch(BitIndex jumper, std::false_type) const
         {
                 capture_.toggle_promotion();     // no longer a pawn
                 capture_.toggle_king_targets();  // can now capture kings
@@ -244,7 +243,7 @@ private:
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on man turn directions
-                return turn_dispatch<Direction>(jumper, typename Rules::pawn_turn_directions());
+                return turn_dispatch<Direction>(jumper, typename rules::traits<Rules>::pawn_turn_directions());
         }
 
         // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
@@ -315,17 +314,17 @@ private:
         void add_pawn_jump(BitIndex dest_sq) const
         {
                 // tag dispatching on ambiguity of pawn jumps
-                add_pawn_jump_dispatch(dest_sq, typename Rules::is_unambiguous_pawn_jump());
+                add_pawn_jump_dispatch(dest_sq, typename rules::traits<Rules>::is_unambiguous_pawn_jump());
         }
 
         // overload for pawn jumps that are always unambiguous
-        void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::true_) const
+        void add_pawn_jump_dispatch(BitIndex dest_sq, std::true_type) const
         {
                 capture_.template add_pawn_jump<Color, capture::with::pawn>(dest_sq);
         }
 
         // overload for pawn jumps that are potentially ambiguous
-        void add_pawn_jump_dispatch(BitIndex dest_sq, boost::mpl::false_) const
+        void add_pawn_jump_dispatch(BitIndex dest_sq, std::false_type) const
         {
                 auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && capture_.is_ambiguous();
                 capture_.template add_pawn_jump<Color, capture::with::pawn>(dest_sq);
