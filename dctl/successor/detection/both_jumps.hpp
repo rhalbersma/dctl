@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <type_traits>                  // is_same
 #include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/mpl/logical.hpp>        // and_
@@ -10,7 +9,7 @@
 #include <dctl/capture/state.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/unary_projections.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/traits.hpp>
 
 namespace dctl {
 namespace successor {
@@ -49,10 +48,10 @@ private:
                                         rules::range::distance_1
                                 >,
                                 std::is_same< typename
-                                        Rules::king_jump_directions, typename
-                                        Rules::pawn_jump_directions
+                                        rules::traits<Rules>::king_jump_directions, typename
+                                        rules::traits<Rules>::pawn_jump_directions
                                 >, typename
-                                Rules::is_pawns_jump_kings
+                                rules::traits<Rules>::is_pawns_jump_kings
                         >()
                 );
         }

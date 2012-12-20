@@ -1,23 +1,22 @@
 #pragma once
 #include <dctl/rules/damme_fwd.hpp>
-#include <dctl/rules/rules.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/international.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/capture/damme.hpp>
 
 namespace dctl {
 namespace rules {
 
-// A.K.W. Damme's proposal
+// A.K.W. Damme's proposal (1922)
+
 struct Damme
 :
-        Rules<
-                Damme,
-                king_range<range::distance_N>,
-                pawn_jump_directions<directions::diag>,
-                jump_precedence<precedence::quantity>,
-                halt_range<range::distance_1>
-        >
-{};
+        // main rules
+        International
+{
+        // additional rules
+        typedef range::distance_1 halt_range;
+};
 
 }       // namespace rules
 }       // namespace dctl

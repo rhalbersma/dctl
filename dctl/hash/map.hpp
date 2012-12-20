@@ -182,7 +182,6 @@ private:
                 return N;
         }
 
-        template<typename Key>
         size_type bucket(Key const& key) const
         {
                 return bucket(Hash()(key));

@@ -1,25 +1,28 @@
 #pragma once
+#include <type_traits>
 #include <dctl/rules/frisian_fwd.hpp>
-#include <dctl/rules/rules.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/capture/frisian.hpp>
 
 namespace dctl {
 namespace rules {
 
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
+
 struct Frisian
-:
-        Rules<
-                Frisian,
-                king_range<range::distance_N>,
-                pawn_jump_directions<directions::all>,               
-                jump_precedence<precedence::quality>,
-                is_restricted_same_king_moves<boost::mpl::true_>,
-                max_same_king_moves< boost::mpl::int_<3> >,
-                is_relative_king_precedence<boost::mpl::true_>
-        >
-{};
+{
+        // main rules
+        typedef range::distance_N king_range;
+        typedef directions::all pawn_jump_directions;
+        typedef precedence::quality jump_precedence;
+
+        // additional rules
+        typedef std::true_type is_relative_king_precedence;
+
+        // drawing rules
+        typedef std::integral_constant<int, 3> max_same_king_moves;
+        typedef std::integral_constant<int, 7> max_2Kv1K_majority_moves;
+};
 
 }       // namespace rules
 }       // namespace dctl

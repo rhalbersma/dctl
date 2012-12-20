@@ -1,23 +1,22 @@
 #pragma once
 #include <dctl/rules/hoogland_fwd.hpp>
-#include <dctl/rules/rules.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/international.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/capture/hoogland.hpp>
 
 namespace dctl {
 namespace rules {
 
-// H. Hoogland's proposal
+// H. Hoogland's proposal (1923)
+
 struct Hoogland
 :
-        Rules<
-                Hoogland,
-                king_range<range::distance_N>,
-                pawn_jump_directions<directions::diag>,
-                jump_precedence<precedence::quantity>,
-                king_jump_orthogonality<orthogonality::relative>
-        >
-{};
+        // main rules
+        International
+{
+        // additional rules
+        typedef orthogonality::relative king_jump_orthogonality;
+};
 
 }       // namespace rules
 }       // namespace dctl

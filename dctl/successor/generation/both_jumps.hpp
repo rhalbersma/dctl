@@ -1,7 +1,5 @@
 #pragma once
-#include <functional>                   // function
-#include <type_traits>                  // is_same
-#include <boost/mpl/bool.hpp>           // false_, true_
+#include <type_traits>                  // false_type, true_type
 #include <boost/mpl/logical.hpp>        // and_
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/generation/generator_fwd.hpp>
@@ -10,6 +8,7 @@
 #include <dctl/successor/select.hpp>
 #include <dctl/capture/state.hpp>
 #include <dctl/node/material.hpp>
+#include <dctl/rules/traits.hpp>
 
 namespace dctl {
 namespace successor {
@@ -52,18 +51,18 @@ private:
         void precedence(Position const& p) const
         {
                 // tag dispatching on absolute king jump precedence
-                precedence_dispatch(p, typename Rules::is_absolute_king_precedence());
+                precedence_dispatch(p, typename rules::traits<Rules>::is_absolute_king_precedence());
         }
 
         // overload for no absolute king jump precedence
-        void precedence_dispatch(Position const& p, boost::mpl::false_) const
+        void precedence_dispatch(Position const& p, std::false_type) const
         {
                 KingJumps{capture_}(p);
                 PawnJumps{capture_}(p);
         }
 
         // overload for absolute king jump precedence
-        void precedence_dispatch(Position const& p, boost::mpl::true_) const
+        void precedence_dispatch(Position const& p, std::true_type) const
         {
                 KingJumps{capture_}(p);
                 if (capture_.empty())
