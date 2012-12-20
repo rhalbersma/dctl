@@ -1,11 +1,11 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/successor/detection/detector_fwd.hpp>
 #include <dctl/successor/detection/king_reverse.hpp>
 #include <dctl/successor/detection/pawn_reverse.hpp>
 #include <dctl/successor/select.hpp>
 #include <dctl/capture/state.hpp>
 #include <dctl/node/material.hpp>
+#include <dctl/rules/traits.hpp>
 
 namespace dctl {
 namespace successor {

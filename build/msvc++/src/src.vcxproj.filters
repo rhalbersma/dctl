@@ -468,7 +468,7 @@
     <ClInclude Include="..\..\..\dctl\rules\pool_fwd.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\rules\rules.hpp">
+    <ClInclude Include="..\..\..\dctl\rules\traits.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\rules\russian.hpp">

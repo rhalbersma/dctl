@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/generation/generator_fwd.hpp>
 #include <dctl/successor/generation/king_reverse.hpp>

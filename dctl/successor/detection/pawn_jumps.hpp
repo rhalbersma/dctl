@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/successor/detection/detector_fwd.hpp>
 #include <dctl/successor/select.hpp>
 #include <dctl/bit/bit.hpp>
@@ -8,7 +7,7 @@
 #include <dctl/node/material.hpp>
 #include <dctl/node/targets.hpp>
 #include <dctl/node/unary_projections.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -44,7 +43,7 @@ private:
         bool branch(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied) const
         {
                 // tag dispatching on pawn jump directions
-                return branch_dispatch(active_pawns, passive_pieces, not_occupied, typename Rules::pawn_jump_directions());
+                return branch_dispatch(active_pawns, passive_pieces, not_occupied, typename rules::traits<Rules>::pawn_jump_directions());
         }
 
         // overload for pawns that capture in the 8 diagonal and orthogonal directions

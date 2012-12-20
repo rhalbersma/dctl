@@ -1,24 +1,29 @@
 #pragma once
+#include <type_traits>
 #include <dctl/rules/italian_fwd.hpp>
-#include <dctl/rules/rules.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/capture/italian.hpp>
 
 namespace dctl {
 namespace rules {
 
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
+
 struct Italian
-:
-        Rules<
-                Italian,
-                king_range<range::distance_1>,
-                pawn_jump_directions<directions::up>,
-                jump_precedence<precedence::quality>,
-                is_pawns_jump_kings<boost::mpl::false_>,
-                is_relative_king_precedence<boost::mpl::true_>
-        >
-{};
+{
+        // main rules
+        typedef range::distance_1 king_range;                           // 4.7
+        typedef directions::up pawn_jump_directions;                    // 5.3(a)
+        typedef precedence::quality jump_precedence;                    // 6.1 - 6.10
+
+        // additional rules
+        typedef std::false_type is_pawns_jump_kings;                    // 5.3(b)
+        typedef std::true_type is_relative_king_precedence;             // 6.7
+
+        // drawing rules
+        typedef std::integral_constant<int,  4> max_repetitions;        // 9.3(b1)
+        typedef std::integral_constant<int, 80> max_reversible_moves;   // 10.4
+};
 
 }       // namespace rules
 }       // namespace dctl

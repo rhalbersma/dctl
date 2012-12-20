@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/node/detail/unary_projections.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -57,7 +58,7 @@ template<typename Position>
 BitBoard moveable_kings(Position const& p, bool color)
 {
         // tag dispatching on restrictions on consecutive moves with the same king
-        return detail::moveable_kings(p, color, typename Position::rules_type::is_restricted_same_king_moves());
+        return detail::moveable_kings(p, color, typename rules::traits<typename Position::rules_type>::is_restricted_same_king_moves());
 }
 
 }       // namespace dctl

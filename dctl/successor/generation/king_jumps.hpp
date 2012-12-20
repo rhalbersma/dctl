@@ -1,7 +1,6 @@
 #pragma once
-#include <functional>                   // function
+#include <type_traits>                  // false_type, true_type
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/generation/generator_fwd.hpp>
 #include <dctl/successor/select.hpp>
@@ -12,7 +11,7 @@
 #include <dctl/board/iterator.hpp>
 #include <dctl/capture/state.hpp>
 #include <dctl/node/material.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -65,17 +64,17 @@ private:
         void select(BitBoard active_kings) const
         {
                 // tag dispatching on relative king jump precedence
-                select_dispatch(active_kings, typename Rules::is_relative_king_precedence());
+                select_dispatch(active_kings, typename rules::traits<Rules>::is_relative_king_precedence());
         }
 
         // overload for no relative king jump precedence
-        void select_dispatch(BitBoard active_kings, boost::mpl::false_) const
+        void select_dispatch(BitBoard active_kings, std::false_type) const
         {
                 serialize(active_kings);
         }
 
         // overload for relative king jump precedence
-        void select_dispatch(BitBoard active_kings, boost::mpl::true_) const
+        void select_dispatch(BitBoard active_kings, std::true_type) const
         {
                 capture_.toggle_with_king();
                 serialize(active_kings);
@@ -101,7 +100,7 @@ private:
         void branch(BitIndex jumper) const
         {
                 // tag dispatching on king jump directions
-                branch_dispatch(jumper, typename Rules::king_jump_directions());
+                branch_dispatch(jumper, typename rules::traits<Rules>::king_jump_directions());
         }
 
         // overload for kings that capture in the 8 diagonal and orthogonal directions
@@ -144,12 +143,12 @@ private:
         void precedence(BitIndex jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch<Direction>(jumper, typename Rules::is_precedence());
+                precedence_dispatch<Direction>(jumper, typename rules::traits<Rules>::is_precedence());
         }
 
         // overload for no majority precedence
         template<typename Direction>
-        void precedence_dispatch(BitIndex jumper, boost::mpl::false_) const
+        void precedence_dispatch(BitIndex jumper, std::false_type) const
         {
                 Increment<Board, Direction>()(jumper);
                 if (!find_next<Direction>(jumper))
@@ -158,7 +157,7 @@ private:
 
         // overload for majority precedence
         template<typename Direction>
-        void precedence_dispatch(BitIndex jumper, boost::mpl::true_) const
+        void precedence_dispatch(BitIndex jumper, std::true_type) const
         {
                 Increment<Board, Direction>()(jumper);
                 if (
@@ -175,19 +174,19 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return find_next_dispatch<Direction>(jumper, typename Rules::is_jump_direction_reversal());
+                return find_next_dispatch<Direction>(jumper, typename rules::traits<Rules>::is_jump_direction_reversal());
         }
 
         // overload for kings that cannot reverse their capture direction
         template<typename Direction>
-        bool find_next_dispatch(BitIndex jumper, boost::mpl::false_) const
+        bool find_next_dispatch(BitIndex jumper, std::false_type) const
         {
                 return land<Direction>(jumper);
         }
 
         // overload for kings that can reverse their capture direction
         template<typename Direction>
-        bool find_next_dispatch(BitIndex jumper, boost::mpl::true_) const
+        bool find_next_dispatch(BitIndex jumper, std::true_type) const
         {
                 return land<Direction>(jumper) | reverse<Direction>(jumper);
         }
@@ -202,7 +201,7 @@ private:
         bool land(BitIndex jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
-                return land_dispatch<Direction>(jumper, typename Rules::land_range());
+                return land_dispatch<Direction>(jumper, typename rules::traits<Rules>::land_range());
         }
 
         // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
@@ -241,7 +240,7 @@ private:
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on king turn directions
-                return turn_dispatch<Direction>(jumper, typename Rules::king_turn_directions());
+                return turn_dispatch<Direction>(jumper, typename rules::traits<Rules>::king_turn_directions());
         }
 
         // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
@@ -287,7 +286,7 @@ private:
         void slide(BitIndex& jumper, BitBoard path) const
         {
                 // tag dispatching on king range
-                slide_dispatch<Direction>(jumper, path, typename Rules::king_range());
+                slide_dispatch<Direction>(jumper, path, typename rules::traits<Rules>::king_range());
         }
 
         // overload for short ranged kings
@@ -322,7 +321,7 @@ private:
                 auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && capture_.is_ambiguous();
 
                 // tag dispatching on king halt after final capture
-                add_king_jump_dispatch<Direction>(dest_sq, ambiguous, typename Rules::halt_range());
+                add_king_jump_dispatch<Direction>(dest_sq, ambiguous, typename rules::traits<Rules>::halt_range());
         }
 
         // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
@@ -358,7 +357,7 @@ private:
         void add_king_jump(BitIndex dest_sq, bool ambiguous) const
         {
                 // tag dispatching on promotion condition
-                add_king_jump_dispatch(dest_sq, typename Rules::pawn_promotion());
+                add_king_jump_dispatch(dest_sq, typename rules::traits<Rules>::pawn_promotion());
                 if (ambiguous)
                         capture_.remove_non_unique_back();
         }

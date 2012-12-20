@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/mpl/bool.hpp>                   // false_, true_
+#include <type_traits>                  // false_type, true_type
 #include <dctl/node/restricted.hpp>
 #include <dctl/utility/int.hpp>
 
@@ -8,14 +8,14 @@ namespace detail {
 
 // overload for unrestricted consecutive moves with the same king
 template<typename Position>
-BitBoard moveable_kings(Position const& p, bool color, boost::mpl::false_)
+BitBoard moveable_kings(Position const& p, bool color, std::false_type)
 {
         return p.kings(color);
 }
 
 // overload for restricted consecutive moves with the same king
 template<typename Position>
-BitBoard moveable_kings(Position const& p, bool color, boost::mpl::true_)
+BitBoard moveable_kings(Position const& p, bool color, std::true_type)
 {
         if (p.kings(color) && p.pawns(color) && is_max<typename Position::rules_type>(p.restricted(color).moves()))
                 return p.kings(color) ^ p.restricted(color).king();

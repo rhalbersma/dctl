@@ -2,7 +2,6 @@
 #include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/mpl/int.hpp>            // int_
 #include <dctl/angle/traits.hpp>
-#include <dctl/rules/enum.hpp>
 
 namespace dctl {
 

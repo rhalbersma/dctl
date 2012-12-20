@@ -1,7 +1,5 @@
 #pragma once
-#include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/mpl/bool.hpp>           // false_, true_
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/generation/generator_fwd.hpp>
 #include <dctl/successor/select.hpp>
@@ -11,7 +9,7 @@
 #include <dctl/node/material.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/node/unary_projections.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -56,7 +54,7 @@ private:
         void select(BitBoard active_kings, BitBoard not_occupied, Position const& p) const
         {
                 // tag dispatching on king move orthogonality
-                select_dispatch(active_kings, not_occupied, p, typename Rules::king_move_orthogonality());
+                select_dispatch(active_kings, not_occupied, p, typename rules::traits<Rules>::king_move_orthogonality());
         }
 
         // overload for kings that move in the 4 diagonal directions
@@ -121,7 +119,7 @@ private:
         void find(BitIndex from_sq, BitBoard not_occupied) const
         {
                 // tag dispatching on king range
-                find_dispatch<Direction>(from_sq, not_occupied, typename Rules::king_range());
+                find_dispatch<Direction>(from_sq, not_occupied, typename rules::traits<Rules>::king_range());
         }
 
         // overload for short ranged kings

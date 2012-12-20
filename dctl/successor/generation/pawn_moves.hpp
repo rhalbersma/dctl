@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/generation/generator_fwd.hpp>
 #include <dctl/successor/select.hpp>
@@ -10,7 +9,6 @@
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/node/unary_projections.hpp>
-#include <dctl/rules/enum.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {

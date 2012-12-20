@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/successor/enumeration/enumerator_fwd.hpp>
 #include <dctl/successor/enumeration/primary.hpp>
 #include <dctl/successor/enumeration/both_jumps.hpp>

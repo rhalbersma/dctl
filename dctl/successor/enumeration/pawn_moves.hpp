@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/successor/enumeration/enumerator_fwd.hpp>
 #include <dctl/successor/select.hpp>
 #include <dctl/bit/bit.hpp>
@@ -7,6 +6,7 @@
 #include <dctl/board/patterns.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/unary_projections.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {

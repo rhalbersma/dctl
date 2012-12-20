@@ -10,7 +10,7 @@ namespace capture {
 template<typename Board>
 struct Value<rules::Lineo, Board>
 :
-        public Value<rules::International, Board>
+        Value<rules::International, Board>
 {};
 
 }       // namespace capture
