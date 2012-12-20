@@ -1,8 +1,8 @@
 #pragma once
 #include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <intrin.h>
-#pragma intrinsic(_BitScanForward64)
+//#include <intrin.h>
+//#pragma intrinsic(_BitScanForward64)
 
 #include <dctl/bit/bit_fwd.hpp>         // forward declarations
 #include <dctl/bit/lookup.hpp>          // count, index
