@@ -3,6 +3,7 @@
 #include <dctl/node/predicates_fwd.hpp>
 #include <dctl/node/binary_projections.hpp>
 #include <dctl/node/detail/predicates.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/node/unary_projections.hpp>
 
 namespace dctl {
@@ -41,7 +42,7 @@ template<typename Position, typename Move>
 bool is_intersecting_capture(Position const& p, Move const& m)
 {
         // tag dispatching on capture removal
-        return detail::is_intersecting_capture(p, m, typename Position::rules_type::jump_removal());
+        return detail::is_intersecting_capture(p, m, typename rules::traits<typename Position::rules_type>::jump_removal());
 }
 
 template<typename Position, typename Move>

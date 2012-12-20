@@ -151,7 +151,7 @@
     <ClInclude Include="..\..\..\dctl\rules\lineo_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\rules\pool.hpp" />
     <ClInclude Include="..\..\..\dctl\rules\pool_fwd.hpp" />
-    <ClInclude Include="..\..\..\dctl\rules\rules.hpp" />
+    <ClInclude Include="..\..\..\dctl\rules\traits.hpp" />
     <ClInclude Include="..\..\..\dctl\rules\russian.hpp" />
     <ClInclude Include="..\..\..\dctl\rules\russian_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\rules\spanish.hpp" />

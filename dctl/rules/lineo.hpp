@@ -1,22 +1,23 @@
 #pragma once
 #include <dctl/rules/lineo_fwd.hpp>
-#include <dctl/rules/rules.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/international.hpp>
+#include <dctl/rules/traits.hpp>
 #include <dctl/capture/lineo.hpp>
 
 namespace dctl {
 namespace rules {
 
+// http://laatste.info/bb3/viewtopic.php?t=2598
+// P. Schuitema's proposal (2009)
+
 struct Lineo
 :
-        Rules<
-                Lineo,
-                king_range<range::distance_N>,
-                pawn_jump_directions<directions::diag>,
-                jump_precedence<precedence::quantity>,
-                king_move_orthogonality<orthogonality::relative>
-        >
-{};
+        // main rules
+        International
+{
+        // additional rules
+        typedef orthogonality::relative king_move_orthogonality;
+};
 
 }       // namespace rules
 }       // namespace dctl

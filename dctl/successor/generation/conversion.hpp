@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/successor/generation/generator_fwd.hpp>
 #include <dctl/successor/generation/primary.hpp>
 #include <dctl/successor/generation/both_jumps.hpp>

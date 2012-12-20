@@ -1,7 +1,5 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/mpl/bool.hpp>           // false_, true_
-#include <boost/mpl/identity.hpp>       // identity
+#include <type_traits>                  // false_type, true_type
 #include <dctl/bit/bit.hpp>
 #include <dctl/search/score.hpp>
 #include <dctl/successor/detect.hpp>
@@ -125,18 +123,18 @@ namespace detail {
 
 // overload for no restrictions on consecutive reversible moves
 template<typename Position>
-bool is_no_progress(Position const& /* p */, boost::mpl::false_)
+bool is_no_progress(Position const& /* p */, std::false_type)
 {
         return false;
 }
 
 // overload for a maximum of consecutive reversible moves
 template<typename Position>
-bool is_no_progress(Position const& p, boost::mpl::true_)
+bool is_no_progress(Position const& p, std::true_type)
 {
         typedef typename Position::rules_type Rules;
 
-        return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
+        return p.reversible_moves() >= rules::traits<Rules>::max_reversible_moves::value;
 }
 
 }       // namespace detail
@@ -147,7 +145,7 @@ bool is_no_progress(Position const& p)
         typedef typename Position::rules_type Rules;
 
         // tag dispatching on restrictions on consecutive reversible moves
-        return detail::is_no_progress(p, boost::mpl::bool_<rules::is_restricted_reversible_moves<Rules>::value>());
+        return detail::is_no_progress(p, typename rules::traits<Rules>::is_restricted_reversible_moves());
 }
 
 template<typename Position>

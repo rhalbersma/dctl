@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/successor/detection/detector_fwd.hpp>
 #include <dctl/successor/detection/pawn_moves.hpp>
 #include <dctl/successor/select.hpp>

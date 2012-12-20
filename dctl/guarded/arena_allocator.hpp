@@ -15,7 +15,7 @@ class arena
 
     std::size_t 
     align_up(std::size_t n) DCTL_PP_NOEXCEPT
-        {return n + (alignment-1) & ~(alignment-1);}
+        {return n + ((alignment-1) & ~(alignment-1));}
 
     bool
     pointer_in_buffer(char* p) DCTL_PP_NOEXCEPT

@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/enumeration/enumerator_fwd.hpp>
 #include <dctl/successor/select.hpp>

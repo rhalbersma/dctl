@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/successor/detection/detector_fwd.hpp>
 #include <dctl/successor/detection/primary.hpp>
 #include <dctl/successor/detection/both_jumps.hpp>
@@ -9,6 +8,7 @@
 #include <dctl/successor/detection/pawn_jumps.hpp>
 #include <dctl/successor/detection/pawn_moves.hpp>
 #include <dctl/successor/select.hpp>
+#include <dctl/rules/traits.hpp>
 
 namespace dctl {
 namespace successor {

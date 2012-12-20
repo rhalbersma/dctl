@@ -1,6 +1,6 @@
 #pragma once
 #include <iterator>                     // begin, end
-#include <type_traits>                  // is_same
+#include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
@@ -10,13 +10,13 @@
 #include <dctl/angle/traits.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/iterator.hpp>
+#include <dctl/capture/value.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/node/unary_projections.hpp>
-#include <dctl/rules/enum.hpp>
-#include <dctl/rules/rules.hpp>
-#include <dctl/utility/algorithm.hpp>     // contains
+#include <dctl/rules/traits.hpp>
+#include <dctl/utility/algorithm.hpp>   // contains
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/total_order.hpp>
 
@@ -76,38 +76,38 @@ public:
         void make(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                make_dispatch(target_sq, typename Rules::jump_removal());
+                make_dispatch(target_sq, typename rules::traits<Rules>::jump_removal());
                 BOOST_ASSERT(invariant());
         }
 
         void undo(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                undo_dispatch(target_sq, typename Rules::jump_removal());
+                undo_dispatch(target_sq, typename rules::traits<Rules>::jump_removal());
                 BOOST_ASSERT(invariant());
         }
 
         void toggle_with_king()
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_relative_king_precedence>));
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_relative_king_precedence>));
                 current_.toggle_with_king();
         }
 
         void toggle_king_targets()
         {
-                BOOST_MPL_ASSERT_NOT((boost::mpl::identity<typename Rules::is_pawns_jump_kings>));
+                BOOST_MPL_ASSERT_NOT((boost::mpl::identity<typename rules::traits<Rules>::is_pawns_jump_kings>));
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
 
         void toggle_promotion()
         {
-                BOOST_MPL_ASSERT((std::is_same<typename Rules::pawn_promotion, rules::promotion::en_passant>));
+                BOOST_MPL_ASSERT((std::is_same<typename rules::traits<Rules>::pawn_promotion, rules::promotion::en_passant>));
                 current_.toggle_promotion();
         }
 
         void improve()
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_precedence>));
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_precedence>));
                 best_ = current_;
                 moves_.clear();
         }
@@ -180,14 +180,14 @@ public:
 
         bool greater_equal() const
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_precedence>));
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_precedence>));
                 BOOST_ASSERT(is_totally_ordered(best_, current_));
                 return current_ >= best_;
         }
 
         bool not_equal_to() const
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename Rules::is_precedence>));
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_precedence>));
                 BOOST_ASSERT(greater_equal());
                 return current_ != best_;
         }
@@ -199,7 +199,7 @@ public:
 
         bool is_promotion() const
         {
-                BOOST_MPL_ASSERT((std::is_same<typename Rules::pawn_promotion, rules::promotion::en_passant>));
+                BOOST_MPL_ASSERT((std::is_same<typename rules::traits<Rules>::pawn_promotion, rules::promotion::en_passant>));
                 return current_.is_promotion();
         }
 
@@ -252,7 +252,7 @@ private:
         void increment(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                increment_dispatch(is_king, typename Rules::jump_precedence());
+                increment_dispatch(is_king, typename rules::traits<Rules>::jump_precedence());
         }
 
         // overload for no capture precedence
@@ -276,7 +276,7 @@ private:
         void decrement(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                decrement_dispatch(is_king, typename Rules::jump_precedence());
+                decrement_dispatch(is_king, typename rules::traits<Rules>::jump_precedence());
         }
 
         // overload for no capture precedence
@@ -312,47 +312,50 @@ private:
         {
         		// tag dispatching based on direction and king jump orthogonality
                 return remaining_targets_dispatch(
-                        boost::mpl::and_<
-                                angle::lazy::is_orthogonal<Direction>,
-                                std::is_same<
-                                        typename Rules::king_jump_orthogonality,
-                                        rules::orthogonality::relative
-                                >
+                        std::integral_constant<
+                                bool,
+                                boost::mpl::and_<
+                                        angle::lazy::is_orthogonal<Direction>,
+                                        std::is_same<typename
+                                                rules::traits<Rules>::king_jump_orthogonality,
+                                                rules::orthogonality::relative
+                                        >
+                                >::value
                         >()
                 );
         }
 
         // overload for diagonal direction or king jump
-        BitBoard remaining_targets_dispatch(boost::mpl::false_) const
+        BitBoard remaining_targets_dispatch(std::false_type) const
         {
                 return remaining_targets_;
         }
 
         // overload for orthogonal direction and king jump
-        BitBoard remaining_targets_dispatch(boost::mpl::true_) const
+        BitBoard remaining_targets_dispatch(std::true_type) const
         {
                 return remaining_targets_ & king_targets_;
         }
 
         bool is_large() const
         {
-                return count() >= Rules::large_jump::value;
+                return count() >= rules::traits<Rules>::large_jump::value;
         }
 
         int count() const
         {
                 // tag dispatching on majority capture precedence
-                return count_dispatch(typename Rules::is_precedence());
+                return count_dispatch(typename rules::traits<Rules>::is_precedence());
         }
 
         // overload for no majority capture precedence
-        int count_dispatch(boost::mpl::false_) const
+        int count_dispatch(std::false_type) const
         {
                 return bit::count(captured_pieces());
         }
 
         // overload for majority capture precedence
-        int count_dispatch(boost::mpl::true_) const
+        int count_dispatch(std::true_type) const
         {
                 return current_.count();
         }
@@ -374,17 +377,17 @@ private:
         BitBoard captured_kings(with::pawn) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return captured_kings_dispatch(typename Rules::is_pawns_jump_kings());
+                return captured_kings_dispatch(typename rules::traits<Rules>::is_pawns_jump_kings());
         }
 
         // overload for pawns that can capture kings
-        BitBoard captured_kings_dispatch(boost::mpl::true_) const
+        BitBoard captured_kings_dispatch(std::true_type) const
         {
                 return captured_kings(with::king());
         }
 
         // overload for pawns that cannot capture kings
-        BitBoard captured_kings_dispatch(boost::mpl::false_) const
+        BitBoard captured_kings_dispatch(std::false_type) const
         {
                 return BitBoard(0);
         }
@@ -401,15 +404,13 @@ private:
 
         // representation
 
-        typedef typename Rules::template capture_value_type<Board> XValue;
-
         BitBoard const king_targets_;
         BitBoard initial_targets_;
         BitBoard remaining_targets_;
         BitBoard not_occupied_;
         BitIndex from_sq_;
-        XValue current_;
-        XValue best_;
+        Value<Rules, Board> current_;
+        Value<Rules, Board> best_;
         Stack& moves_;
 };
 
