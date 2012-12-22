@@ -7,7 +7,7 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool, int, typename, typename Position>
+template<bool /* Color */, int /* Material */, typename /* Selection */, typename Position>
 struct generator
 :
         // enforce reference semantics

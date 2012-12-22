@@ -5,7 +5,7 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool, int, typename, typename Position>
+template<bool /* Color */, int /* Material */, typename /* Selection */, typename Position>
 struct enumerator
 {
         int operator()(Position const& /* p */) const

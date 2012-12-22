@@ -28,8 +28,8 @@ private:
 
         // representation
 
-        MoveArena mar_;
-        MoveAlloc mal_;
+        MoveArena mutable mar_;
+        MoveAlloc mutable mal_;
         Stack mutable moves_;
 
 public:
@@ -46,7 +46,7 @@ public:
 
         // function call operators
 
-        int operator()(Position const& p) const
+        int operator()(Position const& p)
         {
                 State capture_ { p, moves_ };
 
