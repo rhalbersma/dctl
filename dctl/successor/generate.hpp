@@ -1,8 +1,10 @@
 #pragma once
-#include <dctl/successor/select.hpp>                 // DefaultSelection
-#include <dctl/successor/generation/generate.hpp>    // generator
-#include <dctl/node/material.hpp>                    // both
-#include <dctl/node/stack.hpp>                       // Stack
+#include <dctl/successor/select.hpp>                    // DefaultSelection
+#include <dctl/successor/generation/generator.hpp>      // generator
+#include <dctl/successor/generation/invariant.hpp>      // invariant
+#include <dctl/node/material.hpp>                       // both
+#include <dctl/node/side.hpp>                           // black, white
+#include <dctl/node/stack.hpp>                          // Stack
 
 namespace dctl {
 namespace successor {
@@ -13,7 +15,13 @@ Stack generate(Position const& p, MoveArena& mar)
         MoveAlloc mal(mar);
         Stack moves(mal);
         moves.reserve(DCTL_PP_VECTOR_RESERVE);
-        detail::generate<Material, Selection, Position>{moves}(p);
+
+        if (p.active_color() == Side::white)
+                detail::generator<Side::white, Material, Selection, Position>{moves}(p);
+        else
+                detail::generator<Side::black, Material, Selection, Position>{moves}(p);
+
+        BOOST_ASSERT((detail::invariant<Material, Selection>(p, moves.size())));
         return moves;
 }
 

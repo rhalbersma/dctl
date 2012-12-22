@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/successor/select.hpp>                 // DefaultSelection
-#include <dctl/successor/detection/detector.hpp>     // detector
-#include <dctl/node/material.hpp>                    // both
-#include <dctl/node/side.hpp>                        // black, white
+#include <dctl/successor/select.hpp>                    // DefaultSelection
+#include <dctl/successor/detection/detector.hpp>        // detector
+#include <dctl/node/material.hpp>                       // both
+#include <dctl/node/side.hpp>                           // black, white
 
 namespace dctl {
 namespace successor {

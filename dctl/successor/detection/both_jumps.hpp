@@ -1,6 +1,5 @@
 #pragma once
-#include <type_traits>                  // is_same
-#include <boost/mpl/bool.hpp>           // false_, true_
+#include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <boost/mpl/logical.hpp>        // and_
 #include <dctl/successor/detection/detector_fwd.hpp>
 #include <dctl/successor/detection/king_jumps.hpp>
@@ -21,8 +20,8 @@ struct detector<Color, Material::both, Jumps, Position, Range>
 private:
         // typedefs
 
-        // the implementation of pawn jump detection is independent of Range,
-        // but we explicitly pass rules::range::distance_1 here to avoid code bloat
+        // the existence of pawn jumps is independent of Range,
+        // but we always use rules::range::distance_1 to avoid template bloat
         typedef detector<Color, Material::pawn, Jumps, Position, rules::range::distance_1> PawnJumps;
 
         typedef detector<Color, Material::king, Jumps, Position, Range> KingJumps;
@@ -42,33 +41,38 @@ private:
                 // (a) range, (b) jump directions, and (c) jump targets
                 return combined_dispatch(
                         p,
-                        boost::mpl::and_<
-                                std::is_same<
-                                        Range,
-                                        rules::range::distance_1
-                                >,
-                                std::is_same< typename
-                                        rules::traits<Rules>::king_jump_directions, typename
-                                        rules::traits<Rules>::pawn_jump_directions
-                                >, typename
-                                rules::traits<Rules>::is_pawns_jump_kings
+                        std::integral_constant<
+                                bool,
+                                boost::mpl::and_<
+                                        std::is_same<
+                                                Range,
+                                                rules::range::distance_1
+                                        >,
+                                        std::is_same< typename
+                                                rules::traits<Rules>::king_jump_directions, typename
+                                                rules::traits<Rules>::pawn_jump_directions
+                                        >, typename
+                                        rules::traits<Rules>::is_pawns_jump_kings
+                                >::value
                         >()
                 );
         }
 
-        // overload for combined king and pawn jump generation
-        bool combined_dispatch(Position const& p, boost::mpl::true_) const
+        // overload for combined king and pawn jump detection
+        bool combined_dispatch(Position const& p, std::true_type) const
         {
+                typedef PawnJumps PiecesJumps;
+
                 if (auto const active_pieces = p.pieces(Color))
-                        return PawnJumps().select(active_pieces, targets<Color>(p), not_occupied(p));
+                        return PiecesJumps().select(active_pieces, targets<Color>(p), not_occupied(p));
                 else
                         return false;
         }
 
-        // overload for separate king and pawn jump generation
-        bool combined_dispatch(Position const& p, boost::mpl::false_) const
+        // overload for separate king and pawn jump detection
+        bool combined_dispatch(Position const& p, std::false_type) const
         {
-                // speculate #pawns > #kings so that the || is likely to short-circuit
+                // speculate #pawns > #kings so that the logical OR is more likely to short-circuit
                 return PawnJumps()(p) || KingJumps()(p);
         }
 };
