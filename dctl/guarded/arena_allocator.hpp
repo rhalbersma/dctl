@@ -1,118 +1,153 @@
 #pragma once
-#include <cstddef>
 #include <cassert>
+#include <cstddef>
+#include <type_traits>
+#include <boost/operators.hpp>
+#include <dctl/guarded/constexpr.hpp>
 #include <dctl/guarded/default_delete.hpp>
 #include <dctl/guarded/noexcept.hpp>
 
 namespace dctl {
 
+// adapted from Howard Hinnant's short allocator
+// http://home.roadrunner.com/~hinnant/stack_alloc.html
+
 template <std::size_t N>
-class arena
+struct arena
 {
-    static const std::size_t alignment = 16;
-    /*alignas(alignment)*/ char buf_[N];
-    char* ptr_;
-
-    std::size_t 
-    align_up(std::size_t n) DCTL_PP_NOEXCEPT
-        {return n + ((alignment-1) & ~(alignment-1));}
-
-    bool
-    pointer_in_buffer(char* p) DCTL_PP_NOEXCEPT
-        {return buf_ <= p && p <= buf_ + N;}
-
 public:
-    arena() DCTL_PP_NOEXCEPT : ptr_(buf_) {}
-    ~arena() {ptr_ = nullptr;}
-    arena(const arena&) DCTL_PP_IS_DELETE
-    arena& operator=(const arena&) DCTL_PP_IS_DELETE
+        arena() DCTL_PP_NOEXCEPT
+        :
+                offset_(0)
+        {
+                // no-op
+        }
 
-    char* allocate(std::size_t n);
-    void deallocate(char* p, std::size_t n) DCTL_PP_NOEXCEPT;
+        ~arena()
+        {
+                //ptr_ = nullptr;
+        }
 
-    static /*constexpr*/ std::size_t size() {return N;}
-    std::size_t used() const {return static_cast<std::size_t>(ptr_ - buf_);}
-    void reset() {ptr_ = buf_;}
+        arena(arena const&) DCTL_PP_IS_DELETE
+        arena& operator=(arena const&) DCTL_PP_IS_DELETE
+
+        static DCTL_PP_CONSTEXPR std::size_t size()
+        {
+                return N;
+        }
+
+        std::size_t used() const
+        {
+                return offset_;
+        }
+
+        void reset()
+        {
+                offset_ = 0;
+        }
+
+        char* allocate(std::size_t n)
+        {
+                assert(pointer_in_buffer(offset_) && "short_alloc has outlived arena");
+                n = align_up(n);
+                if (offset_ + n <= N) {
+                        char* r = &buf_[offset_];
+                        offset_ += n;
+                        return r;
+                }
+                return static_cast<char*>(::operator new(n));
+        }
+
+        void deallocate(char* p, std::size_t n) DCTL_PP_NOEXCEPT
+        {
+                assert(pointer_in_buffer(offset_) && "short_alloc has outlived arena");
+                int const i = std::distance(buf_, p);
+                if (pointer_in_buffer(i)) {
+                        n = align_up(n);
+                        if (i + n == offset_)
+                        offset_ = i;
+                }
+                else
+                        ::operator delete(p);
+        }
+
+private:
+        std::size_t align_up(std::size_t n) DCTL_PP_NOEXCEPT
+        {
+                return (n + (alignment - 1)) & ~(alignment - 1);
+        }
+
+        bool pointer_in_buffer(int i) DCTL_PP_NOEXCEPT
+        {
+                return 0 <= i && i <= static_cast<int>(N);
+        }
+
+        static const std::size_t alignment = 16;
+        /*alignas(alignment)*/ char buf_[N];
+        std::size_t offset_;
 };
 
-template <std::size_t N>
-char*
-arena<N>::allocate(std::size_t n)
+template <typename T, std::size_t N>
+struct short_alloc
+:
+        boost::equality_comparable< short_alloc<T, N> > // ==, !=
 {
-    assert(pointer_in_buffer(ptr_) && "short_alloc has outlived arena");
-    n = align_up(n);
-    if (buf_ + N >= ptr_ + n)
-    {
-        char* r = ptr_;
-        ptr_ += n;
-        return r;
-    }
-    return static_cast<char*>(::operator new(n));
-}
-
-template <std::size_t N>
-void
-arena<N>::deallocate(char* p, std::size_t n) DCTL_PP_NOEXCEPT
-{
-    assert(pointer_in_buffer(ptr_) && "short_alloc has outlived arena");
-    if (pointer_in_buffer(p))
-    {
-        n = align_up(n);
-        if (p + n == ptr_)
-            ptr_ = p;
-    }
-    else
-        ::operator delete(p);
-}
-
-template <class T, std::size_t N>
-class short_alloc
-{
-    arena<N>& a_;
 public:
-    typedef T value_type;
+        typedef T value_type;
+        static auto const num_bytes = N * sizeof(T);
 
-public:
-    template <class _Up> struct rebind {typedef short_alloc<_Up, N> other;};
+        typedef std::true_type propagate_on_container_copy_assignment;
+        typedef std::true_type propagate_on_container_move_assignment;
+        typedef std::true_type propagate_on_container_swap;
 
-    short_alloc(arena<N>& a) DCTL_PP_NOEXCEPT : a_(a) {}
-    template <class U>
-        short_alloc(const short_alloc<U, N>& a) DCTL_PP_NOEXCEPT
-            : a_(a.a_) {}
-    //short_alloc(const short_alloc&) = default;
-    short_alloc& operator=(const short_alloc&) DCTL_PP_IS_DELETE
+        template <typename U>
+        struct rebind
+        {
+                typedef short_alloc<U, N> other;
+        };
 
-    T* allocate(std::size_t n)
-    {
-        return reinterpret_cast<T*>(a_.allocate(n*sizeof(T)));
-    }
-    void deallocate(T* p, std::size_t n) DCTL_PP_NOEXCEPT
-    {
-        a_.deallocate(reinterpret_cast<char*>(p), n*sizeof(T));
-    }
+        short_alloc(arena<num_bytes>& a) DCTL_PP_NOEXCEPT
+        :
+                a_(a)
+        {
+                // no-op
+        }
 
-    template <class T1, std::size_t N1, class U, std::size_t M>
-    friend
-    bool
-    operator==(const short_alloc<T1, N1>& x, const short_alloc<U, M>& y) DCTL_PP_NOEXCEPT;
+        template <typename U, std::size_t M>
+        short_alloc(short_alloc<U, M> const& a) DCTL_PP_NOEXCEPT
+        :
+                a_(a.a_)
+        {
+                static_assert(N * sizeof(T) == M * sizeof(U), "");
+                // no-op
+        }
 
-    template <class U, std::size_t M> friend class short_alloc;
+        //short_alloc(short_alloc const&) = default;
+        short_alloc& operator=(short_alloc const&) DCTL_PP_IS_DELETE
+
+        T* allocate(std::size_t n)
+        {
+                return reinterpret_cast<T*>(a_.allocate(n * sizeof(T)));
+        }
+
+        void deallocate(T* p, std::size_t n) DCTL_PP_NOEXCEPT
+        {
+                a_.deallocate(reinterpret_cast<char*>(p), n * sizeof(T));
+        }
+
+        // operator!= automatically generated by boost::equality_comparible
+        template <typename T1, std::size_t N1, typename T2, std::size_t N2>
+        friend bool operator==(short_alloc<T1, N1> const& x, short_alloc<T2, N2> const& y) DCTL_PP_NOEXCEPT
+        {
+                return (N1 * sizeof(T1) == N2 * sizeof(T2)) && &x.a_ == &y.a_;
+        }
+
+        template <typename U, std::size_t M>
+        friend class short_alloc;
+
+private:
+        arena<num_bytes>& a_;
+
 };
-
-template <class T, std::size_t N, class U, std::size_t M>
-inline
-bool
-operator==(const short_alloc<T, N>& x, const short_alloc<U, M>& y) DCTL_PP_NOEXCEPT
-{
-    return N == M && &x.a_ == &y.a_;
-}
-
-template <class T, std::size_t N, class U, std::size_t M>
-inline
-bool
-operator!=(const short_alloc<T, N>& x, const short_alloc<U, M>& y) DCTL_PP_NOEXCEPT
-{
-    return !(x == y);
-}
 
 }       // namespace dctl
