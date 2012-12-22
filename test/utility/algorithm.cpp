@@ -10,7 +10,7 @@ namespace algorithm {
 
 BOOST_AUTO_TEST_SUITE(TestSTDAlgorithm)
 
-BOOST_AUTO_TEST_CASE(insertionSelectionSort)
+BOOST_AUTO_TEST_CASE(InsertionSelectionSort)
 {
         auto const N = 100;
         std::vector<int> v;
