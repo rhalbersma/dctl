@@ -159,7 +159,7 @@ private:
                 NodeCount leafs = 0;
                 for (auto const& m: moves) {
                         auto q = p;
-                        //q.attach(p);
+                        q.attach(p);
                         q.make(m);
                         leafs += leaf(q, depth - 1, ply + 1);
                 }
@@ -178,7 +178,7 @@ private:
                 NodeCount leafs = 0;
                 for (auto const& m: moves) {
                         auto q = p;
-                        //q.attach(p);
+                        q.attach(p);
                         q.make(m);
                         leafs += bulk(q, depth - 1, ply + 1);
                 }
@@ -197,7 +197,7 @@ private:
                 NodeCount leafs = 0;
                 for (auto const& m: moves) {
                         auto q = p;
-                        //q.attach(p);
+                        q.attach(p);
                         q.make(m);
                         leafs += count(q, depth - 1, ply + 1);
                 }
@@ -221,7 +221,7 @@ private:
                         leafs = 0;
                         for (auto const& m: moves) {
                                 auto q = p;
-                                //q.attach(p);
+                                q.attach(p);
                                 q.make(m);
                                 leafs += hash(q, depth - 1, ply + 1);
                         }

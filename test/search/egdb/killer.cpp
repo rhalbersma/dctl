@@ -12,19 +12,21 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestKiller)
 
-BOOST_FIXTURE_TEST_CASE(killerDavidGoliath, Fixture<DefaultObjective>)
+typedef Fixture< Position<rules::Killer, board::International>, DefaultObjective > KillerFixture;
+
+BOOST_FIXTURE_TEST_CASE(KillerDavidGoliath, KillerFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W23:B5,6", 29),    // David & Goliath
                 FEN_depth("B:W23:B5,6", 57)     // David & Goliath with black to move
         };
-        run<rules::Killer, board::International>(tests);
+        run(tests);
 }
 
 // Michel Grimminkc's statistics on longest wins in the Killer endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html
 
-BOOST_FIXTURE_TEST_CASE(killer11, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(Killer11, KillerFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W31:B5"   , 17),   // 1010
@@ -32,10 +34,10 @@ BOOST_FIXTURE_TEST_CASE(killer11, Fixture<DefaultObjective>)
                 FEN_depth("W:W10:BK46" ,  3),   // 1001
                 FEN_depth("W:WK10:BK46",  3)    // 0101
         };
-        run<rules::Killer, board::International>(tests);
+        run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(killer21, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(Killer21, KillerFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W41,46:B24"  , 63),        // 2010
@@ -51,10 +53,10 @@ BOOST_FIXTURE_TEST_CASE(killer21, Fixture<DefaultObjective>)
                 FEN_depth("W:W14:BK10,K46",  3),        // 1002
                 FEN_depth("W:WK10:BK5,K41",  3)         // 0102
         };
-        run<rules::Killer, board::International>(tests);
+        run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(killer22, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(Killer22, KillerFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W31,49:B9,14"    , 77),    // 2020
@@ -67,10 +69,10 @@ BOOST_FIXTURE_TEST_CASE(killer22, Fixture<DefaultObjective>)
                 FEN_depth("W:WK37,46:BK41,K43", 53),    // 1102
                 FEN_depth("W:WK5,K23:BK19,K50", 17)     // 0202
         };
-        run<rules::Killer, board::International>(tests);
+        run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(killer31, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(Killer31, KillerFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W37,43,46:B44"    , 69),   // 3010
@@ -90,7 +92,7 @@ BOOST_FIXTURE_TEST_CASE(killer31, Fixture<DefaultObjective>)
                 FEN_depth("W:W23:BK10,K19,K46" ,  3),   // 1003
                 FEN_depth("W:WK48:BK10,K42,K46",  3)    // 0103
         };
-        run<rules::Killer, board::International>(tests);
+        run(tests);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
