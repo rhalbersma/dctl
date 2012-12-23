@@ -1,4 +1,4 @@
-#include <cstdint>								// uint8_t, uint16_t, uint32_t, uint64_t
+#include <cstdint>				// uint8_t, uint16_t, uint32_t, uint64_t
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                 // vector
@@ -12,8 +12,8 @@ BOOST_AUTO_TEST_SUITE(TestBit)
 
 typedef boost::mpl::vector
 <
-		uint8_t,
-		uint16_t,
+        uint8_t,
+	uint16_t,
         uint32_t,
         uint64_t
 > UnsignedIntegerTypes;

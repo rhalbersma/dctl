@@ -1,10 +1,8 @@
 #pragma once
 #include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
-//#include <intrin.h>
-//#pragma intrinsic(_BitScanForward64)
-
 #include <dctl/bit/bit_fwd.hpp>         // forward declarations
+#include <dctl/bit/intrinsic.hpp>       // count, index
 #include <dctl/bit/lookup.hpp>          // count, index
 #include <dctl/bit/loop.hpp>            // count, index
 #include <dctl/utility/int.hpp>         // num_bits
@@ -168,7 +166,7 @@ T less_equal(int i)
 template<typename T>
 int count(T b)
 {
-        return lookup::count(b);
+        return intrinsic::count(b);
 }
 
 // index of a set 1-bit
@@ -176,10 +174,7 @@ template<typename T>
 int index(T b)
 {
         BOOST_ASSERT(is_single(b));
-        return lookup::index(b);
-        /*unsigned long i;
-        _BitScanForward64(&i, b);
-        return static_cast<int>(i);*/
+        return intrinsic::index(b);
 }
 
 // 0 bits set to 1
