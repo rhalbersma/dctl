@@ -12,18 +12,20 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestInternational)
 
-BOOST_FIXTURE_TEST_CASE(internationalDavidGoliath, Fixture<DefaultObjective>)
+typedef Fixture< Position<rules::International, board::International>, DefaultObjective > InternationalFixture;
+
+BOOST_FIXTURE_TEST_CASE(InternationalDavidGoliath, InternationalFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W23:B5,6", 29)     // David & Goliath
         };
-        run<rules::International, board::International>(tests);
+        run(tests);
 }
 
 // Michel Grimminkc's statistics on longest wins in the International endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 
-BOOST_FIXTURE_TEST_CASE(international11, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(International11, InternationalFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W33:B2"  , 17),   // 1010
@@ -31,10 +33,10 @@ BOOST_FIXTURE_TEST_CASE(international11, Fixture<DefaultObjective>)
                 FEN_depth("W:W10:BK46",  3),   // 1001
                 FEN_depth("W:WK10:BK5",  3)    // 0101
         };
-        run<rules::International, board::International>(tests);
+        run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(international21, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(International21, InternationalFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W40,44:B3"   , 23),        // 2010
@@ -50,10 +52,10 @@ BOOST_FIXTURE_TEST_CASE(international21, Fixture<DefaultObjective>)
                 FEN_depth("W:W14:BK10,K46",  3),        // 1002
                 FEN_depth("W:WK10:BK5,K23",  3)         // 0102
         };
-        run<rules::International, board::International>(tests);
+        run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(international22, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(International22, InternationalFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W33,46:B4,5"     , 39),    // 2020
@@ -66,10 +68,10 @@ BOOST_FIXTURE_TEST_CASE(international22, Fixture<DefaultObjective>)
                 FEN_depth("W:W6,K22:BK17,K50" ,  9),    // 1102
                 FEN_depth("W:WK6,K22:BK17,K50",  9)     // 0202
         };
-        run<rules::International, board::International>(tests);
+        run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(international31, Fixture<DefaultObjective>)
+BOOST_FIXTURE_TEST_CASE(International31, InternationalFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W12,13,16:B30"    , 23),   // 3010
@@ -89,7 +91,7 @@ BOOST_FIXTURE_TEST_CASE(international31, Fixture<DefaultObjective>)
                 FEN_depth("W:W23:BK10,K19,K46" ,  3),   // 1003
                 FEN_depth("W:WK49:BK23,K43,K46",  3)    // 0103
         };
-        run<rules::International, board::International>(tests);
+        run(tests);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

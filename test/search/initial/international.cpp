@@ -13,7 +13,9 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestInternational)
 
-BOOST_FIXTURE_TEST_CASE(internationalInitial, Fixture<DefaultObjective>)
+typedef Fixture< Position<rules::International, board::International>, DefaultObjective > InternationalFixture;
+
+BOOST_FIXTURE_TEST_CASE(InternationalInitial, InternationalFixture)
 {
         auto const p = Position<rules::International, board::International>::initial();
         root_.analyze(p, 15);

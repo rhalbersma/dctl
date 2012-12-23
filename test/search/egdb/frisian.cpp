@@ -12,7 +12,9 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestFrisian)
 
-BOOST_FIXTURE_TEST_CASE(frisian21, Fixture<DefaultObjective>)
+typedef Fixture< Position<rules::Frisian, board::International>, DefaultObjective > FrisianFixture;
+
+BOOST_FIXTURE_TEST_CASE(Frisian21, FrisianFixture)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:WK46,28:BK43", 39),        // Walinga book
@@ -20,7 +22,7 @@ BOOST_FIXTURE_TEST_CASE(frisian21, Fixture<DefaultObjective>)
                 FEN_depth("W:WK1,25:BK33", 21),
                 FEN_depth("W:W45,49,50:BK6", 49)
         };
-        run<rules::Frisian, board::Frisian>(tests);
+        run(tests);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

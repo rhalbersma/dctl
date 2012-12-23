@@ -115,15 +115,14 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
         auto best_value = -infinity();
         auto best_move = Transposition::no_move();
         int value;
-        int i;
+        //int i;
 
         IntArena car;
         IntAlloc cal(car);
         Variation continuation(cal);
         continuation.reserve(DCTL_PP_VECTOR_RESERVE);
 
-        for (auto s = 0; s < static_cast<int>(move_order.size()); ++s) {
-                i = move_order[s];
+        for (auto& i: move_order) {
                 // TODO: TT singular extension
 
                 // TODO: futility pruning
@@ -132,7 +131,7 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
                 q.attach(p);
                 q.make(moves[i]);
 
-                if (is_pv(NodeType) && s == 0)
+                if (is_pv(NodeType) && (&i == &move_order[0]))
                         value = -squeeze(pvs<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
                 else {
                         // TODO: late move reductions

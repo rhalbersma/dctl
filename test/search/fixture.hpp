@@ -11,7 +11,7 @@
 namespace dctl {
 namespace search {
 
-template<typename Objective>
+template<typename Position, typename Objective>
 struct Fixture
 {
         Fixture()
@@ -25,8 +25,10 @@ struct Fixture
         }
 
         typedef std::pair<std::string, int> FEN_depth;
+        typedef typename Position::rules_type Rules;
+        typedef typename Position::board_type Board;
 
-        template<typename Rules, typename Board, std::size_t N>
+        template<std::size_t N>
         void run(FEN_depth const (&tests)[N])
         {
                 for (auto const& t: tests) {
@@ -37,7 +39,7 @@ struct Fixture
                 }
         }
 
-        Root<Objective> root_;
+        Root<Position, Objective> root_;
 };
 
 typedef GameObjective<NoMovesLeft> DefaultObjective;
