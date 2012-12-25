@@ -1,7 +1,6 @@
 #pragma once
+#include <type_traits>                  // false_type, true_type
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/mpl/bool.hpp>           // false_, true_
-#include <functional>                   // function
 #include <dctl/bit/bit.hpp>
 #include <dctl/hash/zobrist/init.hpp>
 #include <dctl/node/position_fwd.hpp>
@@ -166,16 +165,16 @@ public:
         {
                 BOOST_ASSERT(is_pseudo_legal(*this, m));
 
-                //make_irreversible(m);
+                make_irreversible(m);
                 make_incremental(m);
 
                 BOOST_ASSERT(material_invariant());
                 BOOST_ASSERT(hash_index_invariant());
         }
         
-        void attach(Position const&/* other*/)
+        void attach(Position const& other)
         {
-                //parent_ = &other;       // link the pointers
+                parent_ = &other;       // link the pointers
         }
 
 private:
@@ -189,14 +188,14 @@ private:
         }
 
         // overload for restricted consecutive moves with the same king
-        void make_irreversible(Move const& m, boost::mpl::true_)
+        void make_irreversible(Move const& m, std::true_type)
         {
-                make_irreversible(m, boost::mpl::false_());
+                make_irreversible(m, std::false_type());
                 make_restricted(m);
         }
 
         // overload for unrestricted consecutive moves with the same king
-        void make_irreversible(Move const& m, boost::mpl::false_)
+        void make_irreversible(Move const& m, std::false_type)
         {
                 make_reversible_moves(m);
                 make_distance_to_root();

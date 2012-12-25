@@ -122,7 +122,7 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
         Variation continuation(cal);
         continuation.reserve(DCTL_PP_VECTOR_RESERVE);
 
-        for (auto& i: move_order) {
+        for (auto const& i: move_order) {
                 // TODO: TT singular extension
 
                 // TODO: futility pruning
