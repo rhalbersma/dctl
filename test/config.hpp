@@ -9,6 +9,6 @@
 
 #define SEARCH_EGDB_FRISIAN             0
 #define SEARCH_EGDB_INTERNATIONAL       0
-#define SEARCH_EGDB_KILLER              0
+#define SEARCH_EGDB_KILLER              1
 
 #define SEARCH_INITIAL_INTERNATIONAL    1
