@@ -90,44 +90,44 @@ private:
 
         int& num_pieces()
         {
-                return std::get<0>(data_);
+                return std::get<num_pieces_>(data_);
         }
 
         int& num_kings()
         {
-                return std::get<1>(data_);
+                return std::get<num_kings_>(data_);
         }
 
         bool& with_king()
         {
-                return std::get<2>(data_);
+                return std::get<with_king_>(data_);
         }
 
         bit_type& piece_order()
         {
-                return std::get<3>(data_);
+                return std::get<piece_order_>(data_);
         }
 
         // queries
 
         int const& num_pieces() const
         {
-                return std::get<0>(data_);
+                return std::get<num_pieces_>(data_);
         }
 
         int const& num_kings() const
         {
-                return std::get<1>(data_);
+                return std::get<num_kings_>(data_);
         }
 
         bool const& with_king() const
         {
-                return std::get<2>(data_);
+                return std::get<with_king_>(data_);
         }
 
         bit_type const& piece_order() const
         {
-                return std::get<3>(data_);
+                return std::get<piece_order_>(data_);
         }
 
         // predicates
@@ -155,6 +155,7 @@ private:
 
         // representation
 
+        enum { num_pieces_, num_kings_, with_king_, piece_order_ };
         std::tuple<int, int, bool, bit_type> data_;
 };
 
