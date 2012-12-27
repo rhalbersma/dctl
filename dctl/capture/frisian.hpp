@@ -88,42 +88,38 @@ public:
         }
 
 private:
-        // representation
-
-        std::tuple<int, int, bool> data_;
-
         // modifiers
 
         int& num_pieces()
         {
-                return std::get<0>(data_);
+                return std::get<num_pieces_>(data_);
         }
 
         int& num_kings()
         {
-                return std::get<1>(data_);
+                return std::get<num_kings_>(data_);
         }
 
         bool& with_king()
         {
-                return std::get<2>(data_);
+                return std::get<with_king_>(data_);
         }
 
         // queries
 
         int const& num_pieces() const
         {
-                return std::get<0>(data_);
+                return std::get<num_pieces_>(data_);
         }
 
         int const& num_kings() const
         {
-                return std::get<1>(data_);
+                return std::get<num_kings_>(data_);
         }
 
         bool const& with_king() const
         {
-                return std::get<2>(data_);
+                return std::get<with_king_>(data_);
         }
 
         // predicates
@@ -146,6 +142,11 @@ private:
         {
                 return num_pieces() == std::numeric_limits<int>::max();
         }
+
+        // representation
+
+        enum { num_pieces_, num_kings_, with_king_ };
+        std::tuple<int, int, bool> data_;
 };
 
 }       // namespace capture

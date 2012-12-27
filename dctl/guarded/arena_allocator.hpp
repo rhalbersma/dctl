@@ -65,7 +65,7 @@ public:
                 if (pointer_in_buffer(i)) {
                         n = align_up(n);
                         if (i + n == offset_)
-                        offset_ = i;
+                                offset_ = i;
                 }
                 else
                         ::operator delete(p);
