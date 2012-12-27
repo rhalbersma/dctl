@@ -72,24 +72,24 @@ private:
 
         int& num_pieces()
         {
-                return data_.first;
+                return std::get<num_pieces_>(data_);
         }
 
         int& num_kings()
         {
-                return data_.second;
+                return std::get<num_kings_>(data_);
         }
 
         // queries
 
         int const& num_pieces() const
         {
-                return data_.first;
+                return std::get<num_pieces_>(data_);
         }
 
         int const& num_kings() const
         {
-                return data_.second;
+                return std::get<num_kings_>(data_);
         }
 
         // predicates
@@ -115,6 +115,7 @@ private:
 
         // representation
 
+        enum { num_pieces_, num_kings_ };
         std::pair<int, int> data_;
 };
 
