@@ -23,7 +23,7 @@ struct count<uint64_t>
         int operator()(uint64_t b)
         {
 #ifdef _MSC_VER
-                return __popcnt64(b);
+                return static_cast<int>(__popcnt64(b));
 #else
                 __asm__("popcnt %1, %0" : "=r" (b) : "r" (b));
                 return b;
