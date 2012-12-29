@@ -100,6 +100,15 @@
     <Filter Include="Header Files\board\mask">
       <UniqueIdentifier>{f48092c0-8194-49bb-a93d-4294b0a21984}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\tree">
+      <UniqueIdentifier>{a0dae5c7-60cb-4700-8ce1-9792b976e447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\iterator">
+      <UniqueIdentifier>{99cd3150-a66c-4820-835d-f617fd512f29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree\link">
+      <UniqueIdentifier>{f1c0a9c4-973a-4f05-a448-ab20a228b477}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\dctl\angle\degrees.hpp">
@@ -776,6 +785,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\guarded\arena_allocator.hpp">
       <Filter>Header Files\guarded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\bit\intrinsic.hpp">
+      <Filter>Header Files\bit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\tree\node.hpp">
+      <Filter>Header Files\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\tree\iterator\forward.hpp">
+      <Filter>Header Files\tree\iterator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\tree\iterator\stride.hpp">
+      <Filter>Header Files\tree\iterator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dctl\tree\link\i_single.hpp">
+      <Filter>Header Files\tree\link</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

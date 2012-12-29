@@ -281,6 +281,7 @@
     <ClCompile Include="..\..\..\test\angle\traits.cpp" />
     <ClCompile Include="..\..\..\test\angle\transform.cpp" />
     <ClCompile Include="..\..\..\test\bit\bit.cpp" />
+    <ClCompile Include="..\..\..\test\bit\intrinsic.cpp" />
     <ClCompile Include="..\..\..\test\bit\lookup.cpp" />
     <ClCompile Include="..\..\..\test\bit\loop.cpp" />
     <ClCompile Include="..\..\..\test\board\coordinates.cpp" />

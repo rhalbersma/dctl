@@ -26,6 +26,7 @@
     <ClInclude Include="..\..\..\dctl\angle\transform_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\bit\bit.hpp" />
     <ClInclude Include="..\..\..\dctl\bit\bit_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\bit\intrinsic.hpp" />
     <ClInclude Include="..\..\..\dctl\bit\lookup.hpp" />
     <ClInclude Include="..\..\..\dctl\bit\loop.hpp" />
     <ClInclude Include="..\..\..\dctl\board\algorithm.hpp" />
@@ -232,6 +233,10 @@
     <ClInclude Include="..\..\..\dctl\successor\generation\primary.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\mobility.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\select.hpp" />
+    <ClInclude Include="..\..\..\dctl\tree\iterator\forward.hpp" />
+    <ClInclude Include="..\..\..\dctl\tree\iterator\stride.hpp" />
+    <ClInclude Include="..\..\..\dctl\tree\link\i_single.hpp" />
+    <ClInclude Include="..\..\..\dctl\tree\node.hpp" />
     <ClInclude Include="..\..\..\dctl\utility\algorithm.hpp" />
     <ClInclude Include="..\..\..\dctl\utility\cache_align.hpp" />
     <ClInclude Include="..\..\..\dctl\utility\enable_down_cast.hpp" />
