@@ -5,16 +5,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../test/bit/bit.cpp \
+../test/bit/intrinsic.cpp \
 ../test/bit/lookup.cpp \
 ../test/bit/loop.cpp 
 
 OBJS += \
 ./test/bit/bit.o \
+./test/bit/intrinsic.o \
 ./test/bit/lookup.o \
 ./test/bit/loop.o 
 
 CPP_DEPS += \
 ./test/bit/bit.d \
+./test/bit/intrinsic.d \
 ./test/bit/lookup.d \
 ./test/bit/loop.d 
 

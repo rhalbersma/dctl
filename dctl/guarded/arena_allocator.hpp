@@ -38,7 +38,7 @@ public:
 
         std::size_t used() const
         {
-                return return static_cast<std::size_t>(ptr_ - buf_);
+                return static_cast<std::size_t>(ptr_ - buf_);
         }
 
         void reset()
