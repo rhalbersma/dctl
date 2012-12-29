@@ -1,5 +1,5 @@
 #pragma once
-#include <algorithm>                    // find, generate_n, min_element, rotate, upper_bound
+#include <algorithm>                    // find, find_if, generate_n, min_element, rotate, upper_bound
 #include <iterator>                     // iterator_traits, iter_swap, next
 
 namespace dctl {
@@ -12,6 +12,13 @@ template<typename InputIterator, typename EqualityComparable>
 bool contains(InputIterator first, InputIterator last, EqualityComparable const& value)
 {
         return std::find(first, last, value) != last;
+}
+
+// O(N) complexity
+template<typename InputIterator, typename Predicate>
+bool contains_if(InputIterator first, InputIterator last, Predicate pred)
+{
+        return std::find_if(first, last, pred) != last;
 }
 
 // mutating sequence algorithms

@@ -65,7 +65,7 @@ template<typename T>
 struct Move_
         // http://www.boost.org/doc/libs/1_51_0/libs/utility/operators.htm#chaining
         // use base class chaining to ensure Empty Base Optimization
-:       boost::equality_comparable< Move_<T>
+:       boost::equality_comparable1< Move_<T>
 ,       boost::xorable1< Move_<T>
 ,       IPieces< Move_, T >
         > >
