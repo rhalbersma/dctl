@@ -71,9 +71,18 @@ template<typename Position>
 bool is_cycle(Position const& p)
 {
         // a cycle needs at least 4 reversible moves
-        if (p.reversible_moves() < 4)
-                return false;
+        if (p.reversible_moves() < 4) return false;
+/*
+        auto first = std::next(tree::iterator::Stride(p), 2);
+        auto last = std::next(first, (p.reversible_moves()/2 - 2);
+        return contains_if(
+                first, last
+                [](Position const& elem){
+                return elem.hash_index() == p.hash_index();
+        });
 
+
+*/
         // find the parent position at 4 ply above the current position
         auto q = grand_parent(*grand_parent(p));
 

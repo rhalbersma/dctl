@@ -26,6 +26,7 @@ public:
 
         typedef Rules rules_type;
         typedef Board board_type;
+        typedef Position const* TreeIterator;
         BOOST_STATIC_CONSTANT(int, gap = rules::traits<rules_type>::initial_gap::value + board_type::height::value % 2);
 
         /*
@@ -65,7 +66,7 @@ public:
         }
 
         // queries
-        Position const* parent() const
+        TreeIterator parent() const
         {
                 return parent_;
         }
@@ -288,7 +289,7 @@ private:
         }
 
         // representation
-        Position const* parent_;
+        TreeIterator parent_;
         HashIndex hash_index_;
         Material material_;
         Restricted restricted_;
@@ -299,7 +300,7 @@ private:
 };
 
 template<typename Position>
-Position const* grand_parent(Position const& p)
+typename Position::TreeIterator grand_parent(Position const& p)
 {
         return p.parent() ? p.parent()->parent() : nullptr;
 }
