@@ -18,14 +18,14 @@ struct arena
 public:
         arena() DCTL_PP_NOEXCEPT
         :
-                offset_(0)
+                ptr_(buf_)
         {
                 // no-op
         }
 
         ~arena()
         {
-                //ptr_ = nullptr;
+                reset();
         }
 
         arena(arena const&) DCTL_PP_IS_DELETE
@@ -38,21 +38,21 @@ public:
 
         std::size_t used() const
         {
-                return offset_;
+                return return static_cast<std::size_t>(ptr_ - buf_);
         }
 
         void reset()
         {
-                offset_ = 0;
+                ptr_ = nullptr;
         }
 
         char* allocate(std::size_t n)
         {
-                assert(pointer_in_buffer(offset_) && "short_alloc has outlived arena");
+                assert(pointer_in_buffer(ptr_) && "short_alloc has outlived arena");
                 n = align_up(n);
-                if (offset_ + n <= N) {
-                        char* r = &buf_[offset_];
-                        offset_ += n;
+                if (ptr_ + n <= buf_ + N) {
+                        char* r = ptr_;
+                        ptr_ += n;
                         return r;
                 }
                 return static_cast<char*>(::operator new(n));
@@ -60,12 +60,11 @@ public:
 
         void deallocate(char* p, std::size_t n) DCTL_PP_NOEXCEPT
         {
-                assert(pointer_in_buffer(offset_) && "short_alloc has outlived arena");
-                int const i = std::distance(buf_, p);
-                if (pointer_in_buffer(i)) {
+                assert(pointer_in_buffer(ptr_) && "short_alloc has outlived arena");
+                if (pointer_in_buffer(p)) {
                         n = align_up(n);
-                        if (i + n == offset_)
-                                offset_ = i;
+                        if (p + n == ptr_)
+                                ptr_ = p;
                 }
                 else
                         ::operator delete(p);
@@ -77,14 +76,14 @@ private:
                 return (n + (alignment - 1)) & ~(alignment - 1);
         }
 
-        bool pointer_in_buffer(int i) DCTL_PP_NOEXCEPT
+        bool pointer_in_buffer(char* p) DCTL_PP_NOEXCEPT
         {
-                return 0 <= i && i <= static_cast<int>(N);
+                return buf_ <= p && p <= buf_ + N;
         }
 
         static const std::size_t alignment = 16;
         /*alignas(alignment)*/ char buf_[N];
-        std::size_t offset_;
+        char* ptr_;
 };
 
 template <typename T, std::size_t N>
@@ -95,11 +94,11 @@ struct short_alloc
 public:
         typedef T value_type;
         static auto const num_bytes = N * sizeof(T);
-
+        /*
         typedef std::true_type propagate_on_container_copy_assignment;
         typedef std::true_type propagate_on_container_move_assignment;
         typedef std::true_type propagate_on_container_swap;
-
+        */
         template <typename U>
         struct rebind
         {
@@ -143,7 +142,7 @@ public:
         }
 
         template <typename U, std::size_t M>
-        friend class short_alloc;
+        friend struct short_alloc;
 
 private:
         arena<num_bytes>& a_;
