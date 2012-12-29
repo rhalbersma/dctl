@@ -5,6 +5,8 @@
 
 #ifdef _MSC_VER
 #include <intrin.h>
+//#pragma intrinsic(__popcnt64)
+#pragma intrinsic(_BitScanForward64)
 #endif
 
 namespace dctl {
@@ -39,7 +41,7 @@ struct index<uint64_t>
         {
 #ifdef _MSC_VER
                 unsigned long index;
-                _BitScanForward64(&index, mask);
+                _BitScanForward64(&index, b);
                 return static_cast<int>(index);
 #else
                 uint64_t index;
