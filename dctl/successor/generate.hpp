@@ -16,10 +16,10 @@ Stack generate(Position const& p, MoveArena& mar)
         Stack moves(mal);
         moves.reserve(DCTL_PP_VECTOR_RESERVE);
 
-        if (p.active_color() == Side::white)
-                detail::generator<Side::white, Material, Selection, Position>{moves}(p);
-        else
+        if (p.active_color() == Side::black)
                 detail::generator<Side::black, Material, Selection, Position>{moves}(p);
+        else
+                detail::generator<Side::white, Material, Selection, Position>{moves}(p);
 
         BOOST_ASSERT((detail::invariant<Material, Selection>(p, moves.size())));
         return moves;

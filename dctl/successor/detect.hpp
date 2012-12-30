@@ -10,9 +10,9 @@ namespace successor {
 template<int Material, typename Selection, typename Position>
 bool detect(Position const& p)
 {
-        return (p.active_color() == Side::white)?
-                detail::detector<Side::white, Material, Selection, Position>()(p) :
-                detail::detector<Side::black, Material, Selection, Position>()(p)
+        return (p.active_color() == Side::black)?
+                detail::detector<Side::black, Material, Selection, Position>()(p) :
+                detail::detector<Side::white, Material, Selection, Position>()(p)
         ;
 }
 
