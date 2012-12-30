@@ -22,18 +22,22 @@ Requirements
 
 ### C++11
 
-The DCTL is a modern [C++](isocpp.org) library that is dependent on many of the features that came available with the new C++11 Standard. Compiler support for C++11 differs across compilers. See this [site](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport) for an up-to-date overview of C++11 support by all major compiler vendors. The C++11 features that the DCTL currently depends on consist of auto, initializer lists, lambda, nullptr, range-based for-loop, r-value references, static_assert, and variadic templates. The DCTL is being developed with g++ >= 4.6.3 and with Microsoft Visual C++ >= 11.0 (November 2012 CTP), but the Intel >= 13.0 and Clang >= 3.1 compilers should also work (untested). As soon as support for more features also becomes available (such as constexpr, default/deleted functions, and template aliases) in Microsoft Visual C++, the DCTL will aggressively adopt such features.
+The DCTL is a modern [C++](isocpp.org) library that is dependent on many of the features that have come available with the new C++11 Standard. Compiler support for C++11 differs across compilers. See this [site](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport) for an up-to-date overview of C++11 support by all major compiler vendors. The C++11 features that the DCTL currently depends on consist of auto, initializer lists, lambda, nullptr, range-based for-loop, r-value references, static_assert, and variadic templates. The DCTL is being developed with g++ >= 4.6.3 and with Microsoft Visual C++ >= 11.0 (November 2012 CTP), but the Intel >= 13.0 and Clang >= 3.1 compilers should also work (untested). As soon as support for more features also becomes available (such as constexpr, default/deleted functions, and template aliases) in Microsoft Visual C++, the DCTL will aggressively adopt such features.
 
 ### Boost
 
 The DCTL also uses the [Boost C++ libraries](www.boost.org) in many places. Examples are Boost.Algorithm, Boost.Assert, Boost.Lexical_Cast, Boost.MPL, Boost.Operators, Boost.Preprocessor, and Boost.Utility. The unit testing framework is based on Boost.Test. The DCTL is being developed with Boost >= 1.52.0, but any version >= 1.47.0 should also work (untested). See the [documentation](http://www.boost.org/doc/libs/1_52_0/more/getting_started/) on how to install Boost on your system.
+
+### Platforms
+
+The DCTL is being developed under both Microsoft Windows 7 64-bit and Linux Mint 14.1 64-bit. The code should also compile on Apple OSX with the Clang >= 3.1 compiler (untested). Support for Android (using the Android NDK to interface the Java GUI) is being considered. NOTE: there is a [critical patch](http://laatste.info/bb3/viewtopic.php?f=53&t=3910&start=14) required to build with Microsoft Visual C++ 2012, and even then the build will only succeed in Release mode, but not in Debug mode.
 
 Installation
 ============
 
 ### Build environment
 
-Apart from a modern C++ compiler and the Boost libraries, it is convenient to have a modern build environment. The DCTL is being developed under Microsoft Visual Studio (with the Microsoft Visual C++ compiler) and Eclipse (with both the MinGW and Linux gcc compilers). The necessary build files can be found in the dctl/build subdirectory. It is also possible to generate a makefile from within Eclipse. Support for the cross-build platform [CMake](http://cmake.org/) is being considered. The DCTL development is being tracked with the [Mercurial](http://hginit.com/) distribed version control system and the [hg flow](https://bitbucket.org/yujiewu/hgflow/wiki/Home) extension.
+Apart from a modern C++ compiler and the Boost libraries, it is convenient to have a modern build environment. The DCTL is being developed under Microsoft Visual Studio (with the Microsoft Visual C++ compiler) and Eclipse (with both the MinGW and Linux gcc compilers). The necessary build files can be found in the dctl/build subdirectory. It is also possible to generate a makefile from within Eclipse. Support for the cross-build platform [CMake](http://cmake.org/) is being considered. The DCTL development is being tracked with the [Mercurial](http://hginit.com/) distribed version control system and the [hg flow](https://bitbucket.org/yujiewu/hgflow/wiki/Home) extension. The default branch is the currently stable version and the commits along this branch are tagged with versions. Development takes place on the develop branch, with several features being developed in parallel in so-called feature branches.
 
 ### Download
 
@@ -47,11 +51,26 @@ The DCTL is header-only, so simply #including the appropriate header files shoul
 
 The DCTL comes with an extensive suite of unit tests, placed in the dctl/test subdirectory. You need to statically link these files agains the boost_unit_test_framework library.  NOTE: the Microsoft Windows platform supports auto-linking that will automatically detect the presence of static and dynamic libraries. It is convenient to run the test binary as a post-build event so that the build succeeds if and only if the unit tests succeed. Consult your build environment's documentation for more details. Some of the unit tests take a long time (they are actually integration tests) to run. These have been disabled by default in the test/config.hpp file.
 
+Roadmap
+=======
+
+The DCTL is actively being developed with over 500 commits in the last 2 years. Using the [hg flow](https://bitbucket.org/yujiewu/hgflow/wiki/Home) workflow manager, several features will be developed in parallel. The main priority is to enhance the genericity of the search algorithms so that users can more easily experiment with their own engines. Other functionality being planned include:
+-CMake support for cross-platform builds
+-a tree iterator
+-a generalized bit array to support arbitrarily large boards
+-an engine class
+-support for the Checkerboard GUI
+-support for the GUIDE protocol
+-support for the DamExchange protocol
+-endgame database generation
+
+Most of these features are being tracked in so-called feature branches, and will be merged back into the main tree when they are finished.
+
 License
 =======
 
-Copyright Rein Halbersma (rhalbersma@gmail.com) 2010 - 2012.<br/>
-Distributed under the Boost Software License, Version 1.0.<br/>
+Copyright Rein Halbersma (rhalbersma@gmail.com) 2010 - 2012.   
+Distributed under the Boost Software License, Version 1.0.   
 (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 	
 Boost Software License - Version 1.0 - August 17th, 2003
