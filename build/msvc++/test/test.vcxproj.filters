@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\bit">
+      <UniqueIdentifier>{c44eaafd-b572-4dca-be98-4fa59afe1912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\board">
+      <UniqueIdentifier>{4d2565c4-a429-4fee-9019-82f0824071e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dxp">
+      <UniqueIdentifier>{ff203a43-55ee-4f39-b021-4278e2f8841a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\walk">
+      <UniqueIdentifier>{76ed4de4-ecc7-4c18-bc00-a5ad02a626e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\search">
+      <UniqueIdentifier>{ead43420-29db-4c12-bd5a-6f573c4f0e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mpl">
+      <UniqueIdentifier>{dc6843a5-b95a-4aa3-b5d6-01aebb00c0c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\setup">
+      <UniqueIdentifier>{26dbc175-16b8-4139-8f71-a65272878b46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\search\egdb">
+      <UniqueIdentifier>{cf9e6d72-10b0-4937-810d-8b17b474cec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\search\initial">
+      <UniqueIdentifier>{d938fafc-7003-4ce3-9e7e-1f681e52d812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\walk\international">
+      <UniqueIdentifier>{e71abb05-c505-4c77-b65b-60f967a6ccb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\walk\italian">
+      <UniqueIdentifier>{8aba2bc3-85e7-4277-b11f-0097a403b29c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\walk\initial">
+      <UniqueIdentifier>{7e23b12a-b3e7-43c6-a27a-26556bade2da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\successor">
+      <UniqueIdentifier>{dcf76e5a-a4b7-4b5e-94ae-4f5df70d1b15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\successor\rulebook">
+      <UniqueIdentifier>{31e3e81d-e87f-4a51-84cc-38f96d24a56e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\angle">
+      <UniqueIdentifier>{f7204b62-56ef-4da6-b407-1e44fcf2366f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\group">
+      <UniqueIdentifier>{ff8fa95e-cf45-461f-b18b-9223f73466a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utility">
+      <UniqueIdentifier>{76e15794-6cf2-4348-af94-aedf553a1441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\successor">
+      <UniqueIdentifier>{7e4dab1c-26d7-4eb2-9dc6-c0c78ff3b70b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\search">
+      <UniqueIdentifier>{28da0ec1-1b97-4b30-b0b2-05aa3fedd6c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\walk">
+      <UniqueIdentifier>{2f7eaa5f-4f46-42c9-bd03-a62fd764bc80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\successor\regressions">
+      <UniqueIdentifier>{adcc599c-054e-40d0-8f16-6d6ce2469c92}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\test\bit\bit.cpp">
+      <Filter>Source Files\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\bit\lookup.cpp">
+      <Filter>Source Files\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\bit\loop.cpp">
+      <Filter>Source Files\bit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\board\coordinates.cpp">
+      <Filter>Source Files\board</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\board\dimensions.cpp">
+      <Filter>Source Files\board</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\board\grid.cpp">
+      <Filter>Source Files\board</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\dxp\parser.cpp">
+      <Filter>Source Files\dxp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\group\axioms.cpp">
+      <Filter>Source Files\group</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\mpl\algorithm.cpp">
+      <Filter>Source Files\mpl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\search\score.cpp">
+      <Filter>Source Files\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\search\egdb\frisian.cpp">
+      <Filter>Source Files\search\egdb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\search\egdb\international.cpp">
+      <Filter>Source Files\search\egdb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\search\egdb\killer.cpp">
+      <Filter>Source Files\search\egdb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\search\initial\international.cpp">
+      <Filter>Source Files\search\initial</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\setup\layout.cpp">
+      <Filter>Source Files\setup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\setup\wesselink.cpp">
+      <Filter>Source Files\setup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\successor\regressions\italian.cpp">
+      <Filter>Source Files\successor\regressions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\successor\rulebook\international.cpp">
+      <Filter>Source Files\successor\rulebook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\successor\rulebook\italian.cpp">
+      <Filter>Source Files\successor\rulebook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\utility\algorithm.cpp">
+      <Filter>Source Files\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\walk\initial\board8x8.cpp">
+      <Filter>Source Files\walk\initial</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\walk\initial\rectangular.cpp">
+      <Filter>Source Files\walk\initial</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\walk\international\fmjd.cpp">
+      <Filter>Source Files\walk\international</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\walk\italian\gilbert.cpp">
+      <Filter>Source Files\walk\italian</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\angle\degrees.cpp">
+      <Filter>Source Files\angle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\angle\traits.cpp">
+      <Filter>Source Files\angle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\angle\transform.cpp">
+      <Filter>Source Files\angle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\precompiled.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\bit\intrinsic.cpp">
+      <Filter>Source Files\bit</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\test\search\fixture.hpp">
+      <Filter>Header Files\search</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\successor\fixture.hpp">
+      <Filter>Header Files\successor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\walk\fixture.hpp">
+      <Filter>Header Files\walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\boost_pch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\precompiled.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\stl_pch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
