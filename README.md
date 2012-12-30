@@ -1,17 +1,17 @@
 DCTL: Draughts and Checkers Template Library.
 =============================================
 
-A C++ template library for the games of draughts and checkers, supporting all known rules variations, board sizes and game objectives.
+A [C++](isocpp.org) template library for the games of draughts and checkers, supporting all known rules variations, board sizes and game objectives.
 
 Introduction
 ============
 
-[Draughts](http://en.wikipedia.org/wiki/Draughts) is a family of related board games played in many regions across the world. Each country has its own game rules and board size. Most of the draughts variants have official game rules and a governing body, such as the Fédération Mondiale du Jeu de Dames (FMJD, World Draughts Federation). These variants include International/Brazilian/Canadian, American/English, Russian, Italian, Spanish/Portugese, Czech, Thai, and Frisian draughts. These games are commonly played on checkered boards of dimensions 8x8, 10x10 and 12x12. The common game objectives is "the first player to have no moves left, loses". A commonly played variation is so-called misère play ("first to have no moves left, wins"), also known as "suicide" draughts (or "qui-perd-gagné"). 
+[Draughts](http://en.wikipedia.org/wiki/Draughts) is a family of related board games played in many regions across the world. Each country has its own game rules and board size. Most of the draughts variants have official game rules and a governing body, such as the [Fédération Mondiale du Jeu de Dames](fmjd.org) (FMJD, World Draughts Federation). These variants include International/Brazilian/Canadian, American/English, Russian, Italian, Spanish/Portugese, Czech, Thai, and Frisian draughts. These games are commonly played on checkered boards of dimensions 8x8, 10x10 and 12x12. The common game objectives is "the first player to have no moves left, loses". A commonly played variation is so-called misère play ("first to have no moves left, wins"), also known as "suicide" draughts (or "qui-perd-gagné"). 
 
 Scope
 =====
 
-The DCTL supports all above mentioned draughts variants with official rules, on all board sizes smaller than 12x12. Support for 12x12 boards is tentatively planned. Because draughts has a high percentage of draws when played between experienced players, many variants with small tweaks to the game rules have been proposed in the past. Even world champions such as Herman Hoogland proposed such new game variants. The DCTL also supports some of these games. In particular the recently proposed game of Killer Draughts is actively supported.
+The DCTL supports all above mentioned draughts variants with official rules, on all board sizes smaller than 12x12. Support for 12x12 boards is tentatively planned. Because draughts has a high percentage of draws when played between experienced players, many variants with small tweaks to the game rules have been proposed in the past. Even world champions such as Herman Hoogland proposed such new game variants. The DCTL also supports some of these games. In particular the recently proposed game of [Killer Draughts](http://www.killerdraughts.org/) is actively being supported.
 
 This library does not yet provide a game engine, but it does provide move generators and search functions to analyze positions that can be setup using Portable Draughts Notation. 
 
