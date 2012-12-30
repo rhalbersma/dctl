@@ -10,9 +10,9 @@ namespace successor {
 template<int Material, typename Selection, typename Position>
 int count(Position const& p)
 {
-        return (p.active_color() == Side::white)?
-                detail::enumerator<Side::white, Material, Selection, Position>()(p) :
-                detail::enumerator<Side::black, Material, Selection, Position>()(p)
+        return (p.active_color() == Side::black)?
+                detail::enumerator<Side::black, Material, Selection, Position>()(p) :
+                detail::enumerator<Side::white, Material, Selection, Position>()(p)
         ;
 }
 
