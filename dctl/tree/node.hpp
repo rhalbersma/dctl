@@ -32,11 +32,6 @@ private:
                 next_ = other;
         }
 
-        void do_detach()
-        {
-                next_ = nullptr;
-        }
-
         // queries
 
         node_ptr do_next() const
