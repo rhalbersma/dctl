@@ -1,36 +1,54 @@
-DCTL: Draughts and Checkers Template Library.
-=============================================
+DCTL: Draughts and Checkers Template Library
+============================================
 
-A [C++](isocpp.org) template library for the games of draughts and checkers, supporting all known rules variations, board sizes and game objectives.
+A [C++](isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting all known rules variations, board sizes and game objectives.
 
 Introduction
 ============
 
-[Draughts](http://en.wikipedia.org/wiki/Draughts) is a family of related board games played in many regions across the world. Each country has its own game rules and board size. Most of the draughts variants have official game rules and a governing body, such as the [Fédération Mondiale du Jeu de Dames](fmjd.org) (FMJD, World Draughts Federation). These variants include International/Brazilian/Canadian, American/English, Russian, Italian, Spanish/Portugese, Czech, Thai, and Frisian draughts. These games are commonly played on checkered boards of dimensions 8x8, 10x10 and 12x12. The common game objectives is "the first player to have no moves left, loses". A commonly played variation is so-called misère play ("first to have no moves left, wins"), also known as "suicide" draughts (or "qui-perd-gagné"). 
+Draughts is a family of related board games played in many regions across the world. Each country has its own game rules and board size. Most of the draughts variants have official game rules and a governing body, such as the [Fédération Mondiale du Jeu de Dames](fmjd.org) (FMJD, World Draughts Federation). These variants include International/Brazilian/Canadian, American/English, Russian, Italian, Spanish/Portugese, Czech, Thai, and Frisian draughts. These games are commonly played on checkered boards of dimensions 8x8, 10x10 and 12x12. The common game objectives is "the first player to have no moves left, loses". A commonly played variation is so-called misère play ("first to have no moves left, wins"), also known as "suicide" draughts (or "qui-perd-gagné"). 
 
 Scope
 =====
 
-The DCTL supports all above mentioned draughts variants with official rules, on all board sizes smaller than 12x12. Support for 12x12 boards is tentatively planned. Because draughts has a high percentage of draws when played between experienced players, many variants with small tweaks to the game rules have been proposed in the past. Even world champions such as Herman Hoogland proposed such new game variants. The DCTL also supports some of these games. In particular the recently proposed game of [Killer Draughts](http://www.killerdraughts.org/) is actively being supported.
+The DCTL supports all above mentioned draughts variants with official rules, on all board sizes smaller than 12x12. Support for 12x12 boards is tentatively planned. Because draughts has a high percentage of draws when played between experienced players, many variants with small tweaks to the game rules have been proposed in the past. Even world champions such as Herman Hoogland proposed such new game variants. The DCTL also supports some of these games. In particular, the recently proposed game of [Killer Draughts](http://www.killerdraughts.org/) is actively being supported.
 
-This library does not yet provide a game engine, but it does provide move generators and search functions to analyze positions that can be setup using Portable Draughts Notation. 
+The DCTL provides a series of C++ templates to define the board geometry and game rules of draughts variants. With these templates, one can read and write draughts positions from so-called FEN strings using [Portable Draughts Notation](http://www.10x10.dse.nl/pdn/introduction.html). Once a position variable has been initalized with such a FEN string, the DCTL provides template functions to analyze them using a search algorithm, which is supported by the usual infrastructure of a move generator, evaluation function and hash table.
 
-Dependencies
+The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. Support for such functionality is being planned. 
+
+Requirements
 ============
 
 ### C++11
 
-The DCTL is a modern C++ library that is dependent on many of the features that came available with the new C++11 Standard. Compiler support for C++11 differs across compilers. See http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport for an up-to-date overview.
+The DCTL is a modern C++ library that is dependent on many of the features that came available with the new C++11 Standard. Compiler support for C++11 differs across compilers. See this [site](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport) for an up-to-date overview of C++11 support by all major compiler vendors. The C++11 features that the DCTL currently depends on consist of auto, initializer lists, lambda, nullptr, range-based for-loop, r-value references, static_assert, and variadic templates. The DCTL is being developed with g++ >= 4.6.3 and with Microsoft Visual C++ >= 11.0 (November 2012 CTP), but the Intel >= 13.0 and Clang >= 3.1 compilers should also work (untested). As soon as support for more features also becomes available (such as constexpr, default/deleted functions, and template aliases) in Microsoft Visual C++, the DCTL will aggressively adopt such features.
 
 ### Boost
 
-The DCTL also uses the Boost libraries in many places. Examples are Boost.MPL, Boost.Algorithm, Boost.Preprocessor, Boost.Utility, Boost.Operators, Boost.Assert, and Boost.Lexical_Cast. The unit testing framework is based on Boost.Test.
+The DCTL also uses the Boost libraries in many places. Examples are Boost.MPL, Boost.Algorithm, Boost.Preprocessor, Boost.Utility, Boost.Operators, Boost.Assert, and Boost.Lexical_Cast. The unit testing framework is based on Boost.Test. The DCTL is being developed with Boost >= 1.52.0, but any version >= 1.47.0 should also work (untested).
+
+Usage
+=====
+
+The functionality that the DCTL provides consistes of a series of C++ templates
+
+### Game rules
+
+TODO
+
+### Board geometry
+
+### Move generator
+
+### Input/output
+
 
 License
 =======
 
-Copyright Rein Halbersma (rhalbersma@gmail.com) 2010 - 2012.
-Distributed under the Boost Software License, Version 1.0.
+Copyright Rein Halbersma (rhalbersma@gmail.com) 2010 - 2012.<br>
+Distributed under the Boost Software License, Version 1.0.<br>
 (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 	
 Boost Software License - Version 1.0 - August 17th, 2003
