@@ -35,11 +35,13 @@ public:
         // structors
 
         Stride()
+        :
+                fwd_()
         {
                 BOOST_MPL_ASSERT((std::is_default_constructible<ForwardIterator>));
         }
 
-        explicit Stride(ForwardIterator it)
+        Stride(ForwardIterator it)
         :
                 fwd_(it)
         {

@@ -29,6 +29,7 @@ private:
         using Base::pointer;    // T*
 
 public:
+        typedef Node& node_ref;
         typedef Node* node_ptr;
 
         // structors
@@ -38,9 +39,14 @@ public:
                 pnode_(nullptr)
         {}
 
-        explicit Forward(node_ptr p)
+        Forward(node_ptr p)
         :
                 pnode_(p)
+        {}
+
+        Forward(node_ref p)
+        :
+                pnode_(&p)
         {}
 
         // modifiers

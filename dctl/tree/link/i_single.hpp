@@ -1,6 +1,6 @@
 #pragma once
-#include <iterator>
-#include <dctl/utility/enable_down_cast.hpp>
+#include <dctl/guarded/default_delete.hpp>      // DCTL_PP_IS_DEFAULT
+#include <dctl/utility/enable_down_cast.hpp>    // enable_down_cast
 
 namespace dctl {
 namespace tree {
@@ -8,7 +8,7 @@ namespace link {
 
 template
 <
-        typename Node,
+        template<typename> class Node,
         typename T
 >
 class ISingle
@@ -30,11 +30,6 @@ public:
         void attach(node_ptr other)
         {
                 self()->do_attach(other);
-        }
-
-        void detach()
-        {
-                self()->do_detach();
         }
 
         // queries
