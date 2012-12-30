@@ -15,7 +15,7 @@ The DCTL supports all above mentioned draughts variants with official rules, on 
 
 The DCTL provides a series of C++ templates to define the board geometry and game rules of draughts variants. With these templates, one can read and write draughts positions from so-called FEN strings using [Portable Draughts Notation](http://www.10x10.dse.nl/pdn/introduction.html). Once a position variable has been initalized with such a FEN string, the DCTL provides template functions to analyze them using a search algorithm, which is supported by the usual infrastructure of a move generator, evaluation function and hash table.
 
-The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. Support for such functionality is being planned. 
+The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. It is currently not possible to play a game against a program based on the DCTL. Support for such functionality is being planned. 
 
 Requirements
 ============
@@ -54,17 +54,22 @@ The DCTL comes with an extensive suite of unit tests, placed in the dctl/test su
 Roadmap
 =======
 
-The DCTL is actively being developed with over 500 commits in the last 2 years. Using the [hg flow](https://bitbucket.org/yujiewu/hgflow/wiki/Home) workflow manager, several features will be developed in parallel. The main priority is to enhance the genericity of the search algorithms so that users can more easily experiment with their own engines. Other functionality being planned include:
--CMake support for cross-platform builds
--a tree iterator
--a generalized bit array to support arbitrarily large boards
--an engine class
--support for the Checkerboard GUI
--support for the GUIDE protocol
--support for the DamExchange protocol
--endgame database generation
+The DCTL is actively being developed with over 500 commits in the last 2 years. Using the [hg flow](https://bitbucket.org/yujiewu/hgflow/wiki/Home) workflow manager, several features will be developed in parallel. The main priority is to enhance the genericity of the search algorithms so that users can more easily experiment with their own engines. Other functionality being planned include:   
+-CMake support for cross-platform builds   
+-a tree iterator   
+-a generalized bit array to support arbitrarily large boards   
+-an engine class   
+-support for the Checkerboard GUI   
+-support for the GUIDE protocol   
+-support for the DamExchange protocol  
+-endgame database generation   
 
 Most of these features are being tracked in so-called feature branches, and will be merged back into the main tree when they are finished.
+
+Acknowledgements
+================
+
+A big thanks to everyone who has been supportive, either by downloading and compiling the code, or by hearing me out when I wanted to bounce and idea off someone.
 
 License
 =======
