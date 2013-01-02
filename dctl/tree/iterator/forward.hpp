@@ -44,11 +44,6 @@ public:
                 pnode_(p)
         {}
 
-        Forward(node_ref p)
-        :
-                pnode_(&p)
-        {}
-
         // modifiers
 
         Forward& operator++()

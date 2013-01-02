@@ -8,22 +8,21 @@ namespace link {
 
 template
 <
-        template<typename> class Node,
-        typename T
+        typename Node
 >
 class ISingle
 :
         // enable static polymorphism
-        public enable_down_cast< Node<T> >
+        public enable_down_cast< Node >
 {
 private:
         // dependent name now in scope
-        using enable_down_cast< Node<T> >::self;
+        using enable_down_cast< Node >::self;
 
 public:
         // typedefs
 
-        typedef Node<T>* node_ptr;
+        typedef Node* node_ptr;
 
         // modifiers
 
