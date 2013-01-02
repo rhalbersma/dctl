@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/tree/link/i_single.hpp>
+#include <dctl/tree/link/i_single.hpp>  // ISingle
 
 namespace dctl {
 namespace tree {
@@ -8,23 +8,25 @@ template<typename T>
 struct Node
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public link::ISingle<Node, T>
+        public link::ISingle< Node<T> >
 {
 public:
-        // structors
+        friend class ISingle< Node >;
 
-        Node(T const& v)
-        :
-                next_(nullptr),
-                value_(v)
-        {}
-
-private:
         // typedefs
 
         typedef Node* node_ptr;
         typedef T value_type;
 
+        // structors
+
+        Node(node_ptr p, T const& v)
+        :
+                next_(p),
+                value_(v)
+        {}
+
+private:
         // modifiers
 
         void do_attach(node_ptr other)
