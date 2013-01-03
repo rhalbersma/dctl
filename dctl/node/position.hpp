@@ -229,7 +229,7 @@ private:
                 if (active_kings(*this) && active_pawns(*this)) {
                         hash_index_ ^= Hash()(restricted, active_color());
                         if (is_reversible(*this, m) && !is_max<Rules>(restricted.moves())) {
-                                if (restricted.king() & from_sq(*this, m))
+                                if (bit::is_element(restricted.king(), from_sq(*this, m)))
                                         restricted.increment(dest_sq(*this, m));
                                 else
                                         restricted.init(dest_sq(*this, m));

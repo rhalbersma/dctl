@@ -108,6 +108,7 @@ public:
         void improve()
         {
                 BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_precedence>));
+                BOOST_ASSERT(best_ < current_);
                 best_ = current_;
                 moves_.clear();
         }
