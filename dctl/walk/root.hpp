@@ -2,8 +2,8 @@
 #include <cstddef>                      // size_t
 #include <iomanip>
 #include <iostream>
-#include <iterator>                     // begin, end
-#include <boost/assert.hpp>
+#include <iterator>                     // distance
+#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/walk/transposition.hpp>
 #include <dctl/hash/dual_map.hpp>
 #include <dctl/hash/signature_extractor.hpp>
@@ -18,7 +18,7 @@
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>
 #include <dctl/notation/string.hpp>
-z
+
 namespace dctl {
 namespace walk {
 
@@ -26,47 +26,44 @@ template<typename Position>
 class Root
 {
 public:
-        NodeCount perft(Position const& p, int depth)
+        NodeCount perft(Position const& p, int max_depth)
         {
-                NodeCount leafs = 0;
-
+                BOOST_ASSERT(1 <= max_depth);
+                NodeCount leaf_nodes;
                 Timer timer;
-                announce(p, depth);
-                for (auto i = 1; i <= depth; ++i) {
+                announce(p, max_depth);
+                for (auto depth = 1; depth <= max_depth; ++depth) {
                         statistics_.reset();
-                        leafs = driver(p, i, 0);
+                        leaf_nodes = driver(p, depth, 0);
                         timer.split();
-                        report(i, leafs, timer);
+                        report(depth, leaf_nodes, timer);
                 }
                 summary();
-                return leafs;
+                return leaf_nodes;
         }
 
         NodeCount divide(Position const& p, int depth)
         {
-                NodeCount leafs = 0;
-                NodeCount move_leafs;
+                NodeCount leaf_nodes = 0;
+                NodeCount sub_count;
 
                 Timer timer;
                 MoveArena a;
                 auto const moves = successor::generate(p, a);
 
                 announce(p, depth, moves.size());
-                for (auto i = 0; i < static_cast<int>(moves.size()); ++i) {
+                for (auto const& m: moves) {
                         statistics_.reset();
+                        auto const i = std::distance(&m, &moves[0]);
                         print_move(notation::write(p, moves[i]), i);
-
-                        auto q = p;
-                        q.attach(p);
-                        q.make(moves[i]);
-                        move_leafs = driver(q, depth - 1, 0);
-                        leafs += move_leafs;
+                        sub_count = driver(successor::make_copy(p, moves[i]), depth - 1, 1);
+                        leaf_nodes += sub_count;
 
                         timer.split();
-                        report(depth - 1, move_leafs, timer);
+                        report(depth - 1, sub_count, timer);
                 }
-                summary(leafs);
-                return leafs;
+                summary(leaf_nodes);
+                return leaf_nodes;
         }
 
         NodeCount test(Position const& p, int depth)
@@ -144,11 +141,12 @@ private:
 
         NodeCount driver(Position const& p, int depth, int ply)
         {
-                return (depth == 0)? leaf(p, depth, ply) : hash(p, depth, ply);
+                return (depth == 0)? perft_impl(p, depth, ply) : perft_hash(p, depth, ply);
         }
 
-        NodeCount leaf(Position const& p, int depth, int ply)
+        NodeCount perft_impl(Position const& p, int depth, int ply)
         {
+                BOOST_ASSERT(0 <= depth);
                 statistics_.update(ply);
 
                 if (depth == 0)
@@ -156,18 +154,15 @@ private:
 
                 MoveArena a;
                 auto const moves = successor::generate(p, a);
-                NodeCount leafs = 0;
-                for (auto const& m: moves) {
-                        auto q = p;
-                        q.attach(p);
-                        q.make(m);
-                        leafs += leaf(q, depth - 1, ply + 1);
-                }
-                return leafs;
+                NodeCount leaf_nodes = 0;
+                for (auto const& m: moves)
+                        leaf_nodes += perft_impl(successor::make_copy(p, m), depth - 1, ply + 1);
+                return leaf_nodes;
         }
 
-        NodeCount bulk(Position const& p, int depth, int ply)
+        NodeCount perft_bulk(Position const& p, int depth, int ply)
         {
+                BOOST_ASSERT(0 < depth);
                 statistics_.update(ply);
 
                 MoveArena a;
@@ -175,18 +170,15 @@ private:
                 if (depth == 1)
                         return moves.size();
 
-                NodeCount leafs = 0;
-                for (auto const& m: moves) {
-                        auto q = p;
-                        q.attach(p);
-                        q.make(m);
-                        leafs += bulk(q, depth - 1, ply + 1);
-                }
-                return leafs;
+                NodeCount leaf_nodes = 0;
+                for (auto const& m: moves)
+                        leaf_nodes += perft_bulk(successor::make_copy(p, m), depth - 1, ply + 1);
+                return leaf_nodes;
         }
 
-        NodeCount count(Position const& p, int depth, int ply)
+        NodeCount perft_count(Position const& p, int depth, int ply)
         {
+                BOOST_ASSERT(0 < depth);
                 statistics_.update(ply);
 
                 if (depth == 1)
@@ -194,41 +186,34 @@ private:
 
                 MoveArena a;
                 auto const moves = successor::generate(p, a);
-                NodeCount leafs = 0;
-                for (auto const& m: moves) {
-                        auto q = p;
-                        q.attach(p);
-                        q.make(m);
-                        leafs += count(q, depth - 1, ply + 1);
-                }
-                return leafs;
+                NodeCount leaf_nodes = 0;
+                for (auto const& m: moves)
+                        leaf_nodes += perft_count(successor::make_copy(p, m), depth - 1, ply + 1);
+                return leaf_nodes;
         }
 
-        NodeCount hash(Position const& p, int depth, int ply)
+        NodeCount perft_hash(Position const& p, int depth, int ply)
         {
+                BOOST_ASSERT(0 < depth);
                 statistics_.update(ply);
 
                 auto const TT_entry = TT.find(p);
                 if (TT_entry && TT_entry->depth() == depth)
-                        return TT_entry->leafs();
+                        return TT_entry->nodes();
 
-                NodeCount leafs;
+                NodeCount leaf_nodes;
                 if (depth == 1) {
-                        leafs = successor::count(p);
+                        leaf_nodes = successor::count(p);
                 } else {
                         MoveArena a;
                         auto const moves = successor::generate(p, a);
-                        leafs = 0;
-                        for (auto const& m: moves) {
-                                auto q = p;
-                                q.attach(p);
-                                q.make(m);
-                                leafs += hash(q, depth - 1, ply + 1);
-                        }
+                        leaf_nodes = 0;
+                        for (auto const& m: moves)
+                                leaf_nodes += perft_hash(successor::make_copy(p, m), depth - 1, ply + 1);
                 }
 
-                TT.insert(p, { leafs, depth } );
-                return leafs;
+                TT.insert(p, { leaf_nodes, depth } );
+                return leaf_nodes;
         }
 
         // 32-byte hash entries: 24-byte piece lists signature, 8-byte (59-bit leafs, 5-bit depth) content

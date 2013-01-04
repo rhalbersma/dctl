@@ -127,9 +127,7 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
 
                 // TODO: futility pruning
 
-                auto q = p;
-                q.attach(p);
-                q.make(moves[i]);
+                auto q = successor::make_copy(p, moves[i]);
 
                 if (is_pv(NodeType) && (&i == &move_order[0]))
                         value = -squeeze(pvs<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
