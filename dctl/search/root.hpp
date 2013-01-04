@@ -133,10 +133,7 @@ private:
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
 
-                auto q = p;
-                q.attach(p);
-                q.make(best_move);
-                insert_pv(q, pv, -stretch(value), ply + 1);
+                insert_pv(successor::make_copy(p, best_move), pv, -stretch(value), ply + 1);
         }
 
         void print_pv(Position const& p, Variation const& pv, int ply = 0)
@@ -156,9 +153,7 @@ private:
                 std::cout << notation::write(p, best_move);
                 std::cout << ((ply % 10 == 9)? '\n' : ' ');
 
-                auto q = p;
-                q.attach(p);
-                q.make(best_move);
+                auto q = successor::make_copy(p, best_move);
                 //if (q.same_king_moves(!q.to_move()))
                         //std::cout << "^" << q.same_king_moves(!q.to_move());
                 print_pv(q, pv, ply + 1);
