@@ -57,7 +57,7 @@ struct Smallest
         template<typename T>
         bool operator()(T const& lhs, T const& rhs) const
         {
-                return lhs.second.leafs() < rhs.second.leafs();
+                return lhs.second.nodes() < rhs.second.nodes();
         }
 };
 

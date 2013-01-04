@@ -154,14 +154,6 @@ public:
                 return material_.pieces();
         }
 
-        // make a move in a copy from another position
-        void copy_make(Position const& other, Move const& move)
-        {
-                *this = other; // copy the position
-                attach(other);  // attach the position
-                make(move);     // make the move
-        }
-
         void make(Move const& m)
         {
                 BOOST_ASSERT(is_pseudo_legal(*this, m));
@@ -180,7 +172,6 @@ public:
 
 private:
         // implementation
-        void detach();
 
         void make_irreversible(Move const& m)
         {
@@ -337,5 +328,4 @@ struct Init< Index, Position<Rules, Board> >
 
 }       // namespace zobrist
 }       // namespace hash
-
 }       // namespace dctl

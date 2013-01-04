@@ -31,5 +31,14 @@ Stack generate(Position const& p, MoveArena& mar)
         return generate<Material::both, DefaultSelection>(p, mar);
 }
 
+template<typename Position, typename Move>
+Position make_copy(Position const& p, Move const& m)
+{
+        auto q = p;
+        q.attach(p);
+        q.make(m);
+        return q;
+}
+
 }       // namespace successor
 }       // namespace dctl
