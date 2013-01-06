@@ -80,7 +80,7 @@ public:
         // check for a fail high cutoff
         bool is_fail_high(int beta) const
         {
-                return has_lower_bound() && value() >= beta;
+                return has_lower_bound() && beta <= value();
         }
 
         // check for a best move
