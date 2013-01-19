@@ -22,15 +22,15 @@ public:
         }
 
         template<std::size_t N>
-        void run(Position const& p, NodeCount const (&leafs)[N])
-        {
+        void run(Position const& p, NodeCount const (&/*leafs*/)[N])
+        {/*
                 auto depth = 0;
                 for (auto const& node_count: leafs) {
                         root_.clear_hash();
                         BOOST_CHECK_EQUAL(node_count, root_.test(p, ++depth));
-                }
-                //root_.clear_hash();
-                //root_.perft(p, 16);
+                }*/
+                root_.clear_hash();
+                root_.perft(p, 16);
         }
 
 private:

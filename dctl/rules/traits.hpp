@@ -342,7 +342,7 @@ struct traits
 template<typename>
 struct is_check_jump_uniqueness
 :
-        std::true_type
+        std::false_type
 {};
 
 }       // namespace rules
