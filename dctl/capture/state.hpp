@@ -38,7 +38,7 @@ class State
 public:
         // structors
 
-        State(Position const& p, Stack& m)
+        State(Position const& p, Vector<Move>& m)
         :
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
@@ -412,7 +412,7 @@ private:
         BitIndex from_sq_;
         Value<Rules, Board> current_;
         Value<Rules, Board> best_;
-        Stack& moves_;
+        Vector<Move>& moves_;
 };
 
 }       // namespace capture

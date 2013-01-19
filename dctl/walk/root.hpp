@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>                    // accumulate
 #include <cstddef>                      // size_t
 #include <iomanip>
 #include <iostream>
@@ -29,7 +30,7 @@ public:
         NodeCount perft(Position const& p, int max_depth)
         {
                 BOOST_ASSERT(1 <= max_depth);
-                NodeCount leaf_nodes;
+                NodeCount leaf_nodes = 0;
                 Timer timer;
                 announce(p, max_depth);
                 for (auto depth = 1; depth <= max_depth; ++depth) {
@@ -48,7 +49,7 @@ public:
                 NodeCount sub_count;
 
                 Timer timer;
-                MoveArena a;
+                Arena<Move> a;
                 auto const moves = successor::generate(p, a);
 
                 announce(p, depth, moves.size());
@@ -152,7 +153,7 @@ private:
                 if (depth == 0)
                         return 1;
 
-                MoveArena a;
+                Arena<Move> a;
                 auto const moves = successor::generate(p, a);
                 NodeCount leaf_nodes = 0;
                 for (auto const& m: moves)
@@ -165,7 +166,7 @@ private:
                 BOOST_ASSERT(0 < depth);
                 statistics_.update(ply);
 
-                MoveArena a;
+                Arena<Move> a;
                 auto const moves = successor::generate(p, a);
                 if (depth == 1)
                         return moves.size();
@@ -184,7 +185,7 @@ private:
                 if (depth == 1)
                         return successor::count(p);
 
-                MoveArena a;
+                Arena<Move> a;
                 auto const moves = successor::generate(p, a);
                 NodeCount leaf_nodes = 0;
                 for (auto const& m: moves)
@@ -205,14 +206,14 @@ private:
                 if (depth == 1) {
                         leaf_nodes = successor::count(p);
                 } else {
-                        MoveArena a;
+                        Arena<Move> a;
                         auto const moves = successor::generate(p, a);
-                        leaf_nodes = 0;
-                        for (auto const& m: moves)
-                                leaf_nodes += perft_hash(successor::make_copy(p, m), depth - 1, ply + 1);
+                        leaf_nodes = std::accumulate(std::begin(moves), std::end(moves), NodeCount(0), [=, &p](NodeCount sub, Move const& m){
+                                return sub + this->perft_hash(successor::make_copy(p, m), depth - 1, ply + 1);
+                        });
                 }
 
-                TT.insert(p, { leaf_nodes, depth } );
+                TT.emplace(p, leaf_nodes, depth);
                 return leaf_nodes;
         }
 

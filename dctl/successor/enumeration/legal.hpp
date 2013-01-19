@@ -28,9 +28,9 @@ private:
 
         // representation
 
-        MoveArena mutable mar_;
-        MoveAlloc mutable mal_;
-        Stack mutable moves_;
+        Arena<Move> mutable mar_;
+        Alloc<Move> mutable mal_;
+        Vector<Move> mutable moves_;
 
 public:
         // structors

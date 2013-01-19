@@ -25,12 +25,12 @@ private:
 
         // representation
 
-        Stack& moves_;
+        Vector<Move>& moves_;
 
 public:
         // structors
 
-        /*explicit*/ generator(Stack& m)
+        /*explicit*/ generator(Vector<Move>& m)
         :
                 moves_(m)
         {}

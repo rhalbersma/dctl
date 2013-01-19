@@ -127,7 +127,7 @@ private:
                         return;
                 }
 
-                MoveArena a;
+                Arena<Move> a;
                 auto const moves = successor::generate(p, a);
                 int const index = pv[ply] % moves.size();
                 auto const best_move = moves[index];
@@ -145,7 +145,7 @@ private:
                         return;
                 }
 
-                MoveArena a;
+                Arena<Move> a;
                 auto const moves = successor::generate(p, a);
                 auto const best_move = moves[pv[ply] % moves.size()];
 

@@ -10,10 +10,10 @@ namespace dctl {
 namespace successor {
 
 template<int Material, typename Selection, typename Position>
-Stack generate(Position const& p, MoveArena& mar)
+Vector<Move> generate(Position const& p, Arena<Move>& mar)
 {
-        MoveAlloc mal(mar);
-        Stack moves(mal);
+        Alloc<Move> mal(mar);
+        Vector<Move> moves(mal);
         moves.reserve(DCTL_PP_VECTOR_RESERVE);
 
         if (p.active_color() == Side::black)
@@ -26,7 +26,7 @@ Stack generate(Position const& p, MoveArena& mar)
 }
 
 template<typename Position>
-Stack generate(Position const& p, MoveArena& mar)
+Vector<Move> generate(Position const& p, Arena<Move>& mar)
 {
         return generate<Material::both, DefaultSelection>(p, mar);
 }

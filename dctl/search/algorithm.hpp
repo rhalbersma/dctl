@@ -17,8 +17,8 @@ int Root<Position, Objective>::iterative_deepening(Position const& p, int depth)
         auto score = -infinity();
         int alpha, beta;
 
-        IntArena iar;
-        IntAlloc ial(iar); 
+        Arena<int> iar;
+        Alloc<int> ial(iar);
         Variation pv(ial);
         Timer timer;
         announce(p, depth);
@@ -84,12 +84,12 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
                 return TT_entry->value();
 
         // generate moves
-        MoveArena a;
+        Arena<Move> a;
         auto const moves = successor::generate(p, a);
         BOOST_ASSERT(!moves.empty());
 
-        IntArena oar;
-        IntAlloc oal(oar);
+        Arena<int> oar;
+        Alloc<int> oal(oar);
         Order move_order(oal);
         move_order.reserve(moves.size());					// reserve enough room for all indices
         algorithm::iota_n(std::back_inserter(move_order), moves.size(), 0);	// generate indices [0, moves.size() - 1]
@@ -116,8 +116,8 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
         auto best_move = Transposition::no_move();
         int value;
 
-        IntArena car;
-        IntAlloc cal(car);
+        Arena<int> car;
+        Alloc<int> cal(car);
         Variation continuation(cal);
         continuation.reserve(DCTL_PP_VECTOR_RESERVE);
 
