@@ -116,17 +116,6 @@ public:
                 //return insertion;
         }
 
-        template<typename... Args>
-        void emplace(Key const& key, Args&&... args)
-        {
-                auto const index = hasher()(key);
-                auto const first = begin(bucket(index));
-                auto const last = first + bucket_size();
-
-                auto const insertion = Replace()(first, last, Signature()(/*key,*/ index), std::forward<Args>(args)...);
-                size_ += insertion;
-        }
-
         // lookup
 
         mapped_pointer find(Key const& key)
