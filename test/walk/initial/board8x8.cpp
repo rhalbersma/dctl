@@ -52,12 +52,11 @@ BOOST_FIXTURE_TEST_CASE(RussianInitial, RussianFixture)
 // The alternative game rules thread on the Shashki forum
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
 
-typedef Fixture< Position<rules::Checkers, board::Checkers> > CheckersFixture;
-BOOST_FIXTURE_TEST_CASE(CheckersInitial, CheckersFixture)
+BOOST_AUTO_TEST_CASE(CheckersInitial)
 {
         auto const p = Position<rules::Checkers, board::Checkers>::initial();
         NodeCount const leafs[] = { 7, 49, 302, 1469, 7361, 36768, 179740, 845931, 3963680, 18391564, 85242128, 388617999, 1766564893 };
-        run(p, leafs);
+        test(p, leafs);
 }
 /*
 // The alternative game rules thread on the FMJD forum
