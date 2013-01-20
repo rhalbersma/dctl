@@ -15,10 +15,10 @@ void test(Position const& p, NodeCount const (&/*leafs*/)[N])
         auto depth = 0;
         for (auto const& node_count: leafs) {
                 e.handle_->TT_.clear();
-                BOOST_CHECK_EQUAL(node_count, walk(e, p, ++depth));
+                BOOST_CHECK_EQUAL(node_count, walk(p, ++depth, e));
         }
 */
-        perft(e, p, 16);
+        perft(p, 16, e);
 }
 
 }       // namespace walk

@@ -20,6 +20,7 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/notation/string.hpp>
 
+#include <memory>
 #include <utility>
 
 namespace dctl {
@@ -45,14 +46,7 @@ struct Enhancements<default_tag, Position>
         Enhancements()
         :
                 handle_(new Data<default_tag, Position>())
-        {
-                BOOST_ASSERT(handle_ != nullptr);
-        }
-
-        ~Enhancements()
-        {
-                delete handle_;
-        }
+        {}
 
         std::pair<bool, NodeCount> find(Position const& /* p */, int /* depth */) const
         {
@@ -69,7 +63,7 @@ struct Enhancements<default_tag, Position>
                 /* no-op */
         }
 
-        Data<default_tag, Position>* handle_;
+        std::unique_ptr< Data<default_tag, Position> > handle_;
 };
 
 struct bulk_tag {};
@@ -86,14 +80,7 @@ struct Enhancements<bulk_tag, Position>
         Enhancements()
         :
                 handle_(new Data<bulk_tag, Position>())
-        {
-                BOOST_ASSERT(handle_ != nullptr);
-        }
-
-        ~Enhancements()
-        {
-                delete handle_;
-        }
+        {}
 
         std::pair<bool, NodeCount> find(Position const& /* p */, int /* depth */) const
         {
@@ -110,7 +97,7 @@ struct Enhancements<bulk_tag, Position>
                 /* no-op */
         }
 
-        Data<bulk_tag, Position>* handle_;
+        std::unique_ptr< Data<bulk_tag, Position> > handle_;
 };
 
 struct hash_tag {};
@@ -135,14 +122,8 @@ struct Enhancements<hash_tag, Position>
         :
                 handle_(new Data<hash_tag, Position>())
         {
-                BOOST_ASSERT(handle_ != nullptr);
                 handle_->TT_.resize(1024);
                 handle_->TT_.clear();
-        }
-
-        ~Enhancements()
-        {
-                delete handle_;
         }
 
         std::pair<bool, NodeCount> find(Position const& p, int depth) const
@@ -167,11 +148,11 @@ struct Enhancements<hash_tag, Position>
                 handle_->TT_.insert(p, { nodes, depth } );
         }
 
-        Data<hash_tag, Position>* handle_;
+        std::unique_ptr< Data<hash_tag, Position> > handle_;
 };
 
-template<typename Enhancements, typename Position>
-NodeCount walk(Enhancements const& e, Position const& p, int depth, int ply = 0)
+template<typename Position, typename Enhancements>
+NodeCount walk(Position const& p, int depth, int ply, Enhancements const& e)
 {
         e.handle_->statistics_.update(ply);
 
@@ -190,7 +171,7 @@ NodeCount walk(Enhancements const& e, Position const& p, int depth, int ply = 0)
                 Arena<Move> a;
                 auto const moves = successor::generate(p, a);
                 for (auto const& m: moves)
-                        nodes += walk(e, successor::make_copy(p, m), depth - 1, ply + 1);
+                        nodes += walk(successor::make_copy(p, m), depth - 1, ply + 1, e);
         }
 
         // (3)
@@ -221,7 +202,7 @@ void print_move(std::string const& move, int i)
 }
 
 template<typename Enhancements>
-void report(Enhancements const& e, int depth, NodeCount leafs, Timer const& timer)
+void report(int depth, NodeCount leafs, Timer const& timer, Enhancements const& e)
 {
         std::cout << "info";
 
@@ -254,23 +235,23 @@ void summary(NodeCount leafs)
         std::cout << "Total leafs: " << leafs << "\n\n";
 }
 
-template<typename Enhancements, typename Position>
-NodeCount perft(Enhancements const& e, Position const& p, int depth)
+template<typename Position, typename Enhancements>
+NodeCount perft(Position const& p, int depth, Enhancements const& e)
 {
         NodeCount nodes = 0;
         Timer timer;
         announce(p, depth);
         for (auto d = 1; d <= depth; ++d) {
                 e.handle_->statistics_.reset();
-                nodes = walk(e, p, d);
+                nodes = walk(p, d, 0, e);
                 timer.split();
-                report(e, d, nodes, timer);
+                report(d, nodes, timer, e);
         }
         return nodes;
 }
 
-template<typename Enhancements, typename Position>
-NodeCount divide(Enhancements const& e, Position const& p, int depth)
+template<typename Position, typename Enhancements>
+NodeCount divide(Position const& p, int depth, Enhancements const& e)
 {
         NodeCount leaf_nodes = 0;
         NodeCount sub_count;
@@ -284,11 +265,11 @@ NodeCount divide(Enhancements const& e, Position const& p, int depth)
                 e.handle_->statistics_.reset();
                 auto const i = std::distance(&moves[0], &m);
                 print_move(notation::write(p, moves[i]), i);
-                sub_count = walk(e, successor::make_copy(p, moves[i]), depth - 1, 1);
+                sub_count = walk(successor::make_copy(p, moves[i]), depth - 1, 1, e);
                 leaf_nodes += sub_count;
 
                 timer.split();
-                report(e, depth - 1, sub_count, timer);
+                report(depth - 1, sub_count, timer, e);
         }
         summary(leaf_nodes);
         return leaf_nodes;
