@@ -10,11 +10,14 @@ namespace walk {
 template<typename Position, std::size_t N>
 void test(Position const& p, NodeCount const (&/*leafs*/)[N])
 {
-        Enhancements<hash_tag, Position> e;
+        typedef hash_tag impl_tag;
+        Data<impl_tag, Position> d;
+        Enhancements<impl_tag, Position> e(&d);
+        e.resize_TT(1024);
 /*
         auto depth = 0;
         for (auto const& node_count: leafs) {
-                e.handle_->TT_.clear();
+                e.clear_TT();
                 BOOST_CHECK_EQUAL(node_count, walk(p, ++depth, e));
         }
 */
