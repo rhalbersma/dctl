@@ -27,10 +27,8 @@ private:
 public:
         int operator()(Position const& p) const
         {
-                if (auto const active_kings = moveable_kings(p, Color))
-                        return select(active_kings, not_occupied(p));
-                else
-                        return 0;
+                auto const active_kings = moveable_kings(p, Color);
+                return active_kings? select(active_kings, not_occupied(p)) : 0;
         }
 
 private:

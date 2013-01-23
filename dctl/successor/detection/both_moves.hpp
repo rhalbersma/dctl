@@ -25,10 +25,8 @@ private:
         {
                 typedef detector< Color, Material::pawn, Moves, Position, rules::range::distance_1> PiecesUpMoves;
 
-                if (auto const active_pieces = p.pieces(Color))
-                        return PiecesUpMoves().select(active_pieces, not_occupied(p));
-                else
-                        return false;
+                auto const active_pieces = p.pieces(Color);
+                return active_pieces? PiecesUpMoves().select(active_pieces, not_occupied(p)) : false;
         }
 
         bool king_down_moves(Position const& p) const

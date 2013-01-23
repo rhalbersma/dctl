@@ -27,10 +27,8 @@ private:
 public:
         bool operator()(Position const& p) const
         {
-                if (auto const active_kings = p.kings(Color))
-                        return select(active_kings, p.pieces(!Color), not_occupied(p));
-                else
-                        return false;
+                auto const active_kings = p.kings(Color);
+                return active_kings? select(active_kings, p.pieces(!Color), not_occupied(p)) : false;
         }
 
 private:

@@ -22,10 +22,8 @@ private:
 public:
         int operator()(Position const& p) const
         {
-                if (auto const active_promotors = promoting_pawns<Color>(p))
-                        return PawnMoves().select(active_promotors, not_occupied(p));
-                else
-                        return 0;
+                auto const active_promotors = promoting_pawns<Color>(p);
+                return active_promotors? PawnMoves().select(active_promotors, not_occupied(p)) : 0;
         }
 };
 

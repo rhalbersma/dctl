@@ -22,10 +22,8 @@ private:
 public:
         bool operator()(Position const& p) const
         {
-                if (auto const active_pawns = p.pawns(Color))
-                        return PassivePawnMoves().select(active_pawns, not_occupied(p));
-                else
-                        return false;
+                auto const active_pawns = p.pawns(Color);
+                return active_pawns? PassivePawnMoves().select(active_pawns, not_occupied(p)) : false;
         }
 };
 
