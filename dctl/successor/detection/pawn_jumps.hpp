@@ -28,10 +28,8 @@ private:
 public:
         bool operator()(Position const& p) const
         {
-                if (auto const active_pawns = p.pawns(Color))
-                        return select(active_pawns, targets<Color>(p), not_occupied(p));
-                else
-                        return false;
+                auto const active_pawns = p.pawns(Color);
+                return active_pawns? select(active_pawns, targets<Color>(p), not_occupied(p)) : false;
         }
 
         bool select(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied) const

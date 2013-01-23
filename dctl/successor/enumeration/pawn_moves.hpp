@@ -26,10 +26,8 @@ private:
 public:
         int operator()(Position const& p) const
         {
-                if (auto const active_pawns = p.pawns(Color))
-                        return select(active_pawns, not_occupied(p));
-                else
-                        return 0;
+                auto const active_pawns = p.pawns(Color);
+                return active_pawns? select(active_pawns, not_occupied(p)) : 0;
         }
 
         int select(BitBoard active_pawns, BitBoard not_occupied) const

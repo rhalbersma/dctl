@@ -198,10 +198,16 @@ private:
         template<typename Direction>
         bool find_next_dispatch(BitIndex jumper, rules::promotion::en_passant) const
         {
-                if (!is_promotion_sq<Color, Board>(jumper))
-                        return find_next_impl<Direction>(jumper);
-                else
-                        return promote_en_passant<Direction>(jumper);
+                return (!is_promotion_sq<Color, Board>(jumper))?
+                        find_next_impl<Direction>(jumper) :
+                        promote_en_passant<Direction>(jumper)
+                ;
+        }
+
+        template<typename Direction>
+        bool find_next_impl(BitIndex jumper) const
+        {
+                return turn<Direction>(jumper) | scan<Direction>(jumper);
         }
 
         template<typename Direction>
@@ -231,12 +237,6 @@ private:
                 capture_.toggle_king_targets();  // can no longer capture kings
                 capture_.toggle_promotion();     // now a pawn again
                 return found_next;
-        }
-
-        template<typename Direction>
-        bool find_next_impl(BitIndex jumper) const
-        {
-                return turn<Direction>(jumper) | scan<Direction>(jumper);
         }
 
         template<typename Direction>

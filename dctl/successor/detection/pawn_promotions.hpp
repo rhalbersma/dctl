@@ -23,10 +23,8 @@ private:
 public:
         bool operator()(Position const& p) const
         {
-                if (auto const active_promotors = promoting_pawns<Color>(p))
-                        return PawnMoves().select(active_promotors, not_occupied(p));
-                else
-                        return false;
+                auto const active_promotors = promoting_pawns<Color>(p);
+                return active_pawns? PawnMoves().select(active_promotors, not_occupied(p)) : false;
         }
 };
 

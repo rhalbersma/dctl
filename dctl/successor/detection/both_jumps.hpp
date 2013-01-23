@@ -63,10 +63,8 @@ private:
         {
                 typedef PawnJumps PiecesJumps;
 
-                if (auto const active_pieces = p.pieces(Color))
-                        return PiecesJumps().select(active_pieces, targets<Color>(p), not_occupied(p));
-                else
-                        return false;
+                auto const active_pieces = p.pieces(Color);
+                return active_pieces? PiecesJumps().select(active_pieces, targets<Color>(p), not_occupied(p)) : false;
         }
 
         // overload for separate king and pawn jump detection
