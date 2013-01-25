@@ -21,12 +21,7 @@ struct detector<Color, Material, Legal, Position, Range>
 private:
         // typedefs
 
-        // the detection of both pawn and king jumps and moves is independent of Range,
-        // but we always use rules::range::distance_1 to avoid template bloat
         typedef detector<Color, Material, Moves, Position, rules::range::distance_1> ShortMoves;
-
-        // we do not have to test for the existence of long-ranged jumps because
-        // because they imply the existence of short-ranged moves, for which we already test
         typedef detector<Color, Material, Jumps, Position, rules::range::distance_1> ShortJumps;
 
 public:

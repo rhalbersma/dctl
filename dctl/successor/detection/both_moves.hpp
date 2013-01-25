@@ -33,10 +33,8 @@ private:
         {
                 typedef detector<!Color, Material::pawn, Moves, Position, rules::range::distance_1> KingDownMoves;
 
-                if (auto const active_kings = p.kings(Color))
-                        return KingDownMoves().select(active_kings, not_occupied(p));
-                else
-                        return false;
+                auto const active_kings = p.kings(Color);
+                return active_kings? KingDownMoves().select(active_kings, not_occupied(p)) : false;
         }
 };
 
