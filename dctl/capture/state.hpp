@@ -138,9 +138,9 @@ public:
                 );
         }
 
-        void remove_non_unique_back() const // modifies Stack& moves_
+        void remove_duplicate() const // modifies Stack& moves_
         {
-                if (algorithm::contains(std::begin(moves_), std::end(moves_) - 1, moves_.back()))
+                if (is_duplicate())
                         moves_.pop_back();
         }
 
@@ -193,7 +193,7 @@ public:
                 return current_ != best_;
         }
 
-        bool is_ambiguous() const
+        bool is_potential_duplicate() const
         {
                 return !moves_.empty() && is_large();
         }
@@ -341,6 +341,11 @@ private:
         bool is_large() const
         {
                 return count() >= rules::traits<Rules>::large_jump::value;
+        }
+
+        bool is_duplicate() const
+        {
+                return algorithm::detect(std::begin(moves_), std::end(moves_) - 1, moves_.back());
         }
 
         int count() const

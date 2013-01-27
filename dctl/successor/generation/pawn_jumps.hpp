@@ -326,10 +326,10 @@ private:
         // overload for pawn jumps that are potentially ambiguous
         void add_pawn_jump_dispatch(BitIndex dest_sq, std::false_type) const
         {
-                auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && capture_.is_ambiguous();
+                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate();
                 capture_.template add_pawn_jump<Color, capture::with::pawn>(dest_sq);
-                if (ambiguous)
-                        capture_.remove_non_unique_back();
+                if (check_duplicate)
+                        capture_.remove_duplicate();
         }
 };
 

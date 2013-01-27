@@ -340,7 +340,7 @@ struct traits
 //+----------------------------------------------------------------------------+
 
 template<typename>
-struct is_check_jump_uniqueness
+struct is_remove_duplicates
 :
         std::false_type
 {};
