@@ -318,48 +318,48 @@ private:
         template<typename Direction>
         void add_king_jump(BitIndex dest_sq) const
         {
-                auto const ambiguous = rules::is_check_jump_uniqueness<Rules>::value && capture_.is_ambiguous();
+                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate();
 
                 // tag dispatching on king halt after final capture
-                add_king_jump_dispatch<Direction>(dest_sq, ambiguous, typename rules::traits<Rules>::halt_range());
+                add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, typename rules::traits<Rules>::halt_range());
         }
 
         // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
         template<typename Direction>
-        void add_king_jump_dispatch(BitIndex dest_sq, bool ambiguous, rules::range::distance_1K) const
+        void add_king_jump_dispatch(BitIndex dest_sq, bool check_duplicate, rules::range::distance_1K) const
         {
                 if (capture_.is_king(Prev<Board, Direction>()(dest_sq)))
-                        add_king_jump_dispatch<Direction>(dest_sq, ambiguous, rules::range::distance_1());
+                        add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::range::distance_1());
                 else
-                        add_king_jump_dispatch<Direction>(dest_sq, ambiguous, rules::range::distance_N());
+                        add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::range::distance_N());
         }
 
         // overload for kings that halt immediately after the final capture
         template<typename Direction>
-        void add_king_jump_dispatch(BitIndex dest_sq, bool ambiguous, rules::range::distance_1) const
+        void add_king_jump_dispatch(BitIndex dest_sq, bool check_duplicate, rules::range::distance_1) const
         {
-                add_king_jump(dest_sq, ambiguous);
+                add_king_jump(dest_sq, check_duplicate);
         }
 
         // overload for kings that slide through after the final capture
         template<typename Direction>
-        void add_king_jump_dispatch(BitIndex dest_sq, bool ambiguous, rules::range::distance_N) const
+        void add_king_jump_dispatch(BitIndex dest_sq, bool check_duplicate, rules::range::distance_N) const
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 BOOST_ASSERT(bit::is_element(dest_sq, capture_.path()));
                 do {
-                        add_king_jump(dest_sq, ambiguous);
+                        add_king_jump(dest_sq, check_duplicate);
                         Increment<Board, Direction>()(dest_sq);
                 } while (bit::is_element(dest_sq, capture_.path()));
         }
 
-        void add_king_jump(BitIndex dest_sq, bool ambiguous) const
+        void add_king_jump(BitIndex dest_sq, bool check_duplicate) const
         {
                 // tag dispatching on promotion condition
                 add_king_jump_dispatch(dest_sq, typename rules::traits<Rules>::pawn_promotion());
-                if (ambiguous)
-                        capture_.remove_non_unique_back();
+                if (check_duplicate)
+                        capture_.remove_duplicate();
         }
 
         // overload for pawns that promote apres-fini

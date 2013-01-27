@@ -75,7 +75,7 @@ bool is_cycle(Position const& p)
 /*
         auto first = std::next(tree::iterator::Stride(p), 2);
         auto last = std::next(first, (p.reversible_moves()/2 - 2);
-        return contains_if(
+        return detect_if(
                 first, last
                 [](Position const& elem){
                 return elem.hash_index() == p.hash_index();
