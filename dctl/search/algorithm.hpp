@@ -4,7 +4,7 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/node/stack.hpp>
 #include <dctl/successor/count.hpp>
-#include <dctl/successor/generate.hpp>
+#include <dctl/successor/copy.hpp>
 #include <dctl/utility/algorithm.hpp>
 
 namespace dctl {
@@ -85,7 +85,7 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
 
         // generate moves
         Arena<Move> a;
-        auto const moves = successor::generate(p, a);
+        auto const moves = successor::copy(p, a);
         BOOST_ASSERT(!moves.empty());
 
         Arena<int> oar;

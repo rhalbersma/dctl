@@ -13,7 +13,7 @@
 #include <dctl/hash/signature_extractor.hpp>
 #include <dctl/hash/map.hpp>
 #include <dctl/hash/replace.hpp>
-#include <dctl/successor/generate.hpp>
+#include <dctl/successor/copy.hpp>
 #include <dctl/utility/ply.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/statistics.hpp>
@@ -128,7 +128,7 @@ private:
                 }
 
                 Arena<Move> a;
-                auto const moves = successor::generate(p, a);
+                auto const moves = successor::copy(p, a);
                 int const index = pv[ply] % moves.size();
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
@@ -146,7 +146,7 @@ private:
                 }
 
                 Arena<Move> a;
-                auto const moves = successor::generate(p, a);
+                auto const moves = successor::copy(p, a);
                 auto const best_move = moves[pv[ply] % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";

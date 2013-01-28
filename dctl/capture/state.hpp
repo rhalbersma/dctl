@@ -311,7 +311,7 @@ private:
         template<typename Direction>
         BitBoard remaining_targets() const
         {
-        		// tag dispatching based on direction and king jump orthogonality
+        	// tag dispatching based on direction and king jump orthogonality
                 return remaining_targets_dispatch(
                         std::integral_constant<
                                 bool,
