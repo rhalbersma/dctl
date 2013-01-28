@@ -18,7 +18,7 @@ int search(Position const& p, std::pair<int, int> window, int depth, int ply, Va
 
         // generate moves
         MoveArena a;
-        auto const moves = successor::generate(p, a);
+        auto const moves = successor::copy(p, a);
         BOOST_ASSERT(!moves.empty());
 
         // hash move, IID, killer, history

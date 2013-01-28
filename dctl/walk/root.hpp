@@ -11,7 +11,7 @@
 #include <dctl/node/material.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/successor/count.hpp>
-#include <dctl/successor/generate.hpp>
+#include <dctl/successor/copy.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/timer.hpp>
@@ -176,7 +176,7 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
                 nodes = terminal.second;
         } else {
                 Arena<Move> a;
-                auto const moves = successor::generate(p, a);
+                auto const moves = successor::copy(p, a);
                 for (auto const& m: moves)
                         nodes += walk(successor::make_copy(p, m), depth - 1, ply + 1, e);
         }
@@ -265,7 +265,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
 
         Timer timer;
         Arena<Move> a;
-        auto const moves = successor::generate(p, a);
+        auto const moves = successor::copy(p, a);
 
         announce(p, depth, moves.size());
         for (auto const& m: moves) {

@@ -1,18 +1,24 @@
 #pragma once
-#include <dctl/successor/select.hpp>                    // DefaultSelection
-#include <dctl/successor/enumeration/enumerator.hpp>    // enumerator
-#include <dctl/node/material.hpp>                       // both
-#include <dctl/node/side.hpp>                           // black, white
+#include <dctl/successor/select.hpp>            // DefaultSelection
+#include <dctl/successor/count/enumerator.hpp>  // enumerator
+#include <dctl/node/material.hpp>               // both
+#include <dctl/node/side.hpp>                   // black, white
 
 namespace dctl {
 namespace successor {
+
+template<bool Color, int Material, typename Selection, typename Position>
+int count(Position const& p)
+{
+        return detail::enumerator<Color, Material, Selection, Position>()(p);
+}
 
 template<int Material, typename Selection, typename Position>
 int count(Position const& p)
 {
         return (p.active_color() == Side::black)?
-                detail::enumerator<Side::black, Material, Selection, Position>()(p) :
-                detail::enumerator<Side::white, Material, Selection, Position>()(p)
+                count<Side::black, Material, Selection>(p) :
+                count<Side::white, Material, Selection>(p)
         ;
 }
 
