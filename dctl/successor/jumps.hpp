@@ -6,7 +6,6 @@
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/mpl/logical.hpp>        // and
-#include <boost/utility.hpp>            // noncopyable
 #include <dctl/angle/traits.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/iterator.hpp>
@@ -16,12 +15,12 @@
 #include <dctl/node/stack.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/algorithm.hpp>   // contains
+#include <dctl/successor/select.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/total_order.hpp>
 
 namespace dctl {
-namespace capture {
+namespace successor {
 namespace with {
 
 struct king {};
@@ -29,16 +28,16 @@ struct pawn {};
 
 }       // namespace with
 
+template<typename, typename>
+struct Propagate;
+
 template<typename Position>
-class State
-:
-        // enforce reference semantics
-        private boost::noncopyable
+struct Propagate<Jumps, Position>
 {
 public:
         // structors
 
-        State(Position const& p, Vector<Move>& m)
+        explicit Propagate(Position const& p)
         :
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
@@ -46,8 +45,7 @@ public:
                 not_occupied_(not_occupied(p)),
                 from_sq_(0),
                 current_(),
-                best_(),
-                moves_(m)
+                best_()
         {
                 BOOST_ASSERT(invariant());
         }
@@ -110,13 +108,12 @@ public:
                 BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_precedence>));
                 BOOST_ASSERT(best_ < current_);
                 best_ = current_;
-                moves_.clear();
         }
 
         template<bool Color>
-        void add_king_jump(BitIndex dest_sq) const // modifies Stack& moves_
+        void add_king_jump(BitIndex dest_sq, Vector<Move>& moves) const
         {
-                moves_.push_back(
+                moves.push_back(
                         Move::template create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
                                 captured_pieces(),
@@ -126,9 +123,9 @@ public:
         }
 
         template<bool Color, typename WithPiece>
-        void add_pawn_jump(BitIndex dest_sq) const // modifies Stack& moves_
+        void add_pawn_jump(BitIndex dest_sq, Vector<Move>& moves) const
         {
-                moves_.push_back(
+                moves.push_back(
                         Move::template create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
                                 promotion<Color>(dest_sq, WithPiece()),
@@ -136,12 +133,6 @@ public:
                                 captured_kings(WithPiece())
                         )
                 );
-        }
-
-        void remove_duplicate() const // modifies Stack& moves_
-        {
-                if (is_duplicate())
-                        moves_.pop_back();
         }
 
         // queries
@@ -169,11 +160,6 @@ public:
                 return path() & jump_start<Board, Direction>::value;
         }
 
-        bool empty() const
-        {
-                return moves_.empty();
-        }
-
         bool is_king(BitIndex target_sq) const
         {
                 return bit::is_element(target_sq, king_targets_);
@@ -193,20 +179,20 @@ public:
                 return current_ != best_;
         }
 
-        bool is_potential_duplicate() const
+        bool is_potential_duplicate(Vector<Move> const& moves) const
         {
-                return !moves_.empty() && is_large();
+                return !moves.empty() && is_large();
+        }
+
+        bool is_large() const
+        {
+                return count() >= rules::traits<Rules>::large_jump::value;
         }
 
         bool is_promotion() const
         {
                 BOOST_MPL_ASSERT((std::is_same<typename rules::traits<Rules>::pawn_promotion, rules::promotion::en_passant>));
                 return current_.is_promotion();
-        }
-
-        int size() const
-        {
-                return static_cast<int>(moves_.size());
         }
 
 private:
@@ -338,16 +324,6 @@ private:
                 return remaining_targets_ & king_targets_;
         }
 
-        bool is_large() const
-        {
-                return count() >= rules::traits<Rules>::large_jump::value;
-        }
-
-        bool is_duplicate() const
-        {
-                return algorithm::detect(std::begin(moves_), std::end(moves_) - 1, moves_.back());
-        }
-
         int count() const
         {
                 // tag dispatching on majority capture precedence
@@ -415,10 +391,9 @@ private:
         BitBoard remaining_targets_;
         BitBoard not_occupied_;
         BitIndex from_sq_;
-        Value<Rules, Board> current_;
-        Value<Rules, Board> best_;
-        Vector<Move>& moves_;
+        capture::Value<Rules, Board> current_;
+        capture::Value<Rules, Board> best_;
 };
 
-}       // namespace capture
+}       // namespace successor
 }       // namespace dctl

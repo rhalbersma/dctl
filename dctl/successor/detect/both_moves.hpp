@@ -2,7 +2,6 @@
 #include <dctl/successor/detect/detector_fwd.hpp>
 #include <dctl/successor/detect/pawn_moves.hpp>
 #include <dctl/successor/select.hpp>
-#include <dctl/capture/state.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/rules/traits.hpp>
 

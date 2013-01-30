@@ -3,7 +3,7 @@
 #include <dctl/successor/count/enumerator_fwd.hpp>
 #include <dctl/successor/select.hpp>
 #include <dctl/successor/copy/pawn_jumps.hpp>
-#include <dctl/capture/state.hpp>
+#include <dctl/successor/jumps.hpp>
 #include <dctl/node/material.hpp>
 
 namespace dctl {
@@ -21,7 +21,7 @@ private:
         // typedefs
 
         typedef generator<Color, Material::pawn, Jumps, Position> PawnJumps;
-        typedef capture::State<Position> State;
+        typedef Propagate<Jumps, Position> State;
 
         // representation
 
@@ -30,7 +30,7 @@ private:
 public:
         // structors
 
-        /*explicit*/ enumerator(State& c)
+        explicit enumerator(State& c)
         :
                 capture_(c)
         {}

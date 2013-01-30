@@ -8,7 +8,6 @@
 #include <dctl/successor/copy/pawn_jumps.hpp>
 #include <dctl/successor/copy/pawn_moves.hpp>
 #include <dctl/successor/select.hpp>
-#include <dctl/capture/state.hpp>
 #include <dctl/node/stack.hpp>
 
 namespace dctl {

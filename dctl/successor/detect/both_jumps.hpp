@@ -5,7 +5,7 @@
 #include <dctl/successor/detect/king_jumps.hpp>
 #include <dctl/successor/detect/pawn_jumps.hpp>
 #include <dctl/successor/select.hpp>
-#include <dctl/capture/state.hpp>
+#include <dctl/successor/jumps.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>

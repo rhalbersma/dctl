@@ -5,12 +5,12 @@
 #include <dctl/successor/copy/generator_fwd.hpp>
 #include <dctl/successor/copy/king_jumps.hpp>                // promote_en_passant
 #include <dctl/successor/select.hpp>
+#include <dctl/successor/jumps.hpp>
 #include <dctl/angle/degrees.hpp>
 #include <dctl/angle/transform.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/capture/state.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/rules/traits.hpp>
@@ -34,18 +34,20 @@ private:
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
         typedef board::Compass<Color, Board> Compass;
-        typedef capture::State<Position> State;
+        typedef Propagate<Jumps, Position> State;
 
         // representation
 
         State& capture_;
+        Vector<Move>& moves_;
 
 public:
         // structors
 
-        /*explicit*/ generator(State& c)
+        explicit generator(State& c, Vector<Move>& m)
         :
-                capture_(c)
+                capture_(c),
+                moves_(m)
         {}
 
         // function call operators
@@ -174,8 +176,10 @@ private:
                         !find_next<Direction>(jumper) &&
                         capture_.greater_equal()
                 ) {
-                        if (capture_.not_equal_to())
+                        if (capture_.not_equal_to()) {
                                 capture_.improve();
+                                moves_.clear();
+                        }
                         add_pawn_jump(jumper);
                 }
         }
@@ -320,16 +324,16 @@ private:
         // overload for pawn jumps that are always unambiguous
         void add_pawn_jump_dispatch(BitIndex dest_sq, std::true_type) const
         {
-                capture_.template add_pawn_jump<Color, capture::with::pawn>(dest_sq);
+                capture_.template add_pawn_jump<Color, with::pawn>(dest_sq, moves_);
         }
 
         // overload for pawn jumps that are potentially ambiguous
         void add_pawn_jump_dispatch(BitIndex dest_sq, std::false_type) const
         {
-                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate();
-                capture_.template add_pawn_jump<Color, capture::with::pawn>(dest_sq);
-                if (check_duplicate)
-                        capture_.remove_duplicate();
+                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
+                capture_.template add_pawn_jump<Color, with::pawn>(dest_sq, moves_);
+                if (check_duplicate && is_duplicate_back(moves_))
+                        moves_.pop_back();
         }
 };
 

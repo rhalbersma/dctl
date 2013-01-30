@@ -4,7 +4,7 @@
 #include <dctl/successor/copy/king_jumps.hpp>
 #include <dctl/successor/copy/pawn_jumps.hpp>
 #include <dctl/successor/select.hpp>
-#include <dctl/capture/state.hpp>
+#include <dctl/successor/jumps.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/rules/traits.hpp>
@@ -22,35 +22,35 @@ private:
         typedef generator<Color, Material::king, Jumps, Position> KingJumps;
         typedef generator<Color, Material::pawn, Jumps, Position> PawnJumps;
         typedef typename Position::rules_type Rules;
-        typedef capture::State<Position> State;
+        typedef Propagate<Jumps, Position> State;
 
 public:
         void operator()(Position const& p, Vector<Move>& moves) const
         {
-                State capture_(p, moves);
-                precedence(p, capture_);
+                State capture(p);
+                precedence(p, capture, moves);
         }
 
 private:
-        void precedence(Position const& p, State& capture_) const
+        void precedence(Position const& p, State& capture, Vector<Move>& moves) const
         {
                 // tag dispatching on absolute king jump precedence
-                precedence_dispatch(p, capture_, typename rules::traits<Rules>::is_absolute_king_precedence());
+                precedence_dispatch(p, capture, moves, typename rules::traits<Rules>::is_absolute_king_precedence());
         }
 
         // overload for no absolute king jump precedence
-        void precedence_dispatch(Position const& p, State& capture_, std::false_type) const
+        void precedence_dispatch(Position const& p, State& capture, Vector<Move>& moves, std::false_type) const
         {
-                KingJumps{capture_}(p);
-                PawnJumps{capture_}(p);
+                KingJumps{capture, moves}(p);
+                PawnJumps{capture, moves}(p);
         }
 
         // overload for absolute king jump precedence
-        void precedence_dispatch(Position const& p, State& capture_, std::true_type) const
+        void precedence_dispatch(Position const& p, State& capture, Vector<Move>& moves, std::true_type) const
         {
-                KingJumps{capture_}(p);
-                if (capture_.empty())
-                        PawnJumps{capture_}(p);
+                KingJumps{capture, moves}(p);
+                if (capture.empty())
+                        PawnJumps{capture, moves}(p);
         }
 };
 

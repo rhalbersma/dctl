@@ -8,6 +8,7 @@
 #include <dctl/successor/copy/pawn_jumps.hpp>
 #include <dctl/successor/copy/pawn_promotions.hpp>
 #include <dctl/successor/select.hpp>
+#include <dctl/successor/jumps.hpp>
 #include <dctl/node/stack.hpp>
 
 namespace dctl {
@@ -26,7 +27,7 @@ private:
 
         typedef generator<Color, Material, Jumps,      Position> DoJumps;
         typedef generator<Color, Material, Promotions, Position> DoPromotions;
-        typedef capture::State<Position> State;
+        typedef Propagate<Jumps, Position> State;
 
         // representation
 
@@ -35,7 +36,7 @@ private:
 public:
         // structors
 
-        /*explicit*/ generator(Vector<Move>& m)
+        explicit generator(Vector<Move>& m)
         :
                 moves_(m)
         {}

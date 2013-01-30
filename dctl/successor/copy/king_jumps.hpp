@@ -9,8 +9,10 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/capture/state.hpp>
+#include <dctl/successor/jumps.hpp>
 #include <dctl/node/material.hpp>
+#include <dctl/node/move.hpp>
+#include <dctl/node/stack.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
@@ -31,18 +33,20 @@ private:
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
         typedef board::Compass<Color, Board> Compass;
-        typedef capture::State<Position> State;
+        typedef Propagate<Jumps, Position> State;
 
         // representation
 
         State& capture_;
+        Vector<Move>& moves_;
 
 public:
         // structors
 
-        /*explicit*/ generator(State& c)
+        explicit generator(State& c, Vector<Move>& m)
         :
-                capture_(c)
+                capture_(c),
+                moves_(m)
         {}
 
         // function call operators
@@ -164,8 +168,10 @@ private:
                         !find_next<Direction>(jumper) &&
                         capture_.greater_equal()
                 ) {
-                        if (capture_.not_equal_to())
+                        if (capture_.not_equal_to()) {
                                 capture_.improve();
+                                moves_.clear();
+                        }
                         add_king_jump<Direction>(jumper);
                 }
         }
@@ -318,7 +324,7 @@ private:
         template<typename Direction>
         void add_king_jump(BitIndex dest_sq) const
         {
-                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate();
+                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
 
                 // tag dispatching on king halt after final capture
                 add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, typename rules::traits<Rules>::halt_range());
@@ -358,23 +364,23 @@ private:
         {
                 // tag dispatching on promotion condition
                 add_king_jump_dispatch(dest_sq, typename rules::traits<Rules>::pawn_promotion());
-                if (check_duplicate)
-                        capture_.remove_duplicate();
+                if (check_duplicate && is_duplicate_back(moves_))
+                        moves_.pop_back();
         }
 
         // overload for pawns that promote apres-fini
         void add_king_jump_dispatch(BitIndex dest_sq, rules::promotion::apres_fini) const
         {
-                capture_.template add_king_jump<Color>(dest_sq);
+                capture_.template add_king_jump<Color>(dest_sq, moves_);
         }
 
         // overload for pawns that promote en-passant
         void add_king_jump_dispatch(BitIndex dest_sq, rules::promotion::en_passant) const
         {
                 if (!capture_.is_promotion())
-                        capture_.template add_king_jump<Color>(dest_sq);
+                        capture_.template add_king_jump<Color>(dest_sq, moves_);
                 else
-                        capture_.template add_pawn_jump<Color, capture::with::king>(dest_sq);
+                        capture_.template add_pawn_jump<Color, with::king>(dest_sq, moves_);
         }
 };
 
