@@ -1,10 +1,10 @@
 #pragma once
-#include <dctl/successor/select.hpp>                    // DefaultSelection
-#include <dctl/successor/copy/generator.hpp>      // generator
-#include <dctl/successor/copy/invariant.hpp>      // invariant
-#include <dctl/node/material.hpp>                       // both
-#include <dctl/node/side.hpp>                           // black, white
-#include <dctl/node/stack.hpp>                          // Stack
+#include <dctl/successor/select.hpp>            // DefaultSelection
+#include <dctl/successor/copy/generator.hpp>    // generator
+#include <dctl/successor/copy/invariant.hpp>    // invariant
+#include <dctl/node/material.hpp>               // both
+#include <dctl/node/side.hpp>                   // black, white
+#include <dctl/node/stack.hpp>                  // Stack
 
 namespace dctl {
 namespace successor {

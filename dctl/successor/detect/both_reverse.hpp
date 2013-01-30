@@ -3,7 +3,6 @@
 #include <dctl/successor/detect/king_reverse.hpp>
 #include <dctl/successor/detect/pawn_reverse.hpp>
 #include <dctl/successor/select.hpp>
-#include <dctl/capture/state.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/rules/traits.hpp>
 

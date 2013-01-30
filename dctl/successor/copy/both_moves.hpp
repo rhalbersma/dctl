@@ -4,6 +4,7 @@
 #include <dctl/successor/copy/pawn_moves.hpp>
 #include <dctl/successor/select.hpp>
 #include <dctl/node/material.hpp>
+#include <dctl/node/move.hpp>
 #include <dctl/node/stack.hpp>
 
 namespace dctl {
@@ -16,7 +17,7 @@ struct generator<Color, Material::both, Moves, Position>
         void operator()(Position const& p, Vector<Move>& moves) const
         {
                 generator<Color, Material::king, Moves, Position>{moves}(p);
-                generator<Color, Material::pawn, Moves, Position>{moves}(p);
+                generator<Color, Material::pawn, Moves, Position>()(p, moves);
         }
 };
 

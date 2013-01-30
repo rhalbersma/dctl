@@ -116,7 +116,7 @@ private:
         }
 
         template<typename Direction>
-        void find(BitIndex from_sq, BitBoard not_occupied) const
+        void find(BitIndex from_sq, BitBoard const& not_occupied) const
         {
                 // tag dispatching on king range
                 find_dispatch<Direction>(from_sq, not_occupied, typename rules::traits<Rules>::king_range());
@@ -124,7 +124,7 @@ private:
 
         // overload for short ranged kings
         template<typename Direction>
-        void find_dispatch(BitIndex from_sq, BitBoard not_occupied, rules::range::distance_1) const
+        void find_dispatch(BitIndex from_sq, BitBoard const& not_occupied, rules::range::distance_1) const
         {
                 if (auto const dest_sq = Next<Board, Direction>()(from_sq) & not_occupied)
                         moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
@@ -132,7 +132,7 @@ private:
 
         // overload for long ranged kings
         template<typename Direction>
-        void find_dispatch(BitIndex from_sq, BitBoard not_occupied, rules::range::distance_N) const
+        void find_dispatch(BitIndex from_sq, BitBoard const& not_occupied, rules::range::distance_N) const
         {
                 for (
                         auto dest_sq = Next<Board, Direction>()(from_sq);
