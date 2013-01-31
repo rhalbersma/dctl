@@ -2,7 +2,7 @@
 #include <type_traits>
 #include <dctl/rules/czech_fwd.hpp>
 #include <dctl/rules/enum.hpp>
-#include <dctl/capture/value.hpp>
+#include <dctl/successor/value.hpp>
 #include <dctl/notation/czech.hpp>
 
 namespace dctl {

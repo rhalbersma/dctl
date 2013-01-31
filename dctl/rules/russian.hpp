@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/rules/russian_fwd.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/capture/russian.hpp>
+#include <dctl/successor/value/russian.hpp>
 #include <dctl/notation/russian.hpp>
 
 namespace dctl {

@@ -2,7 +2,7 @@
 #include <type_traits>
 #include <dctl/rules/thai_fwd.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/capture/value.hpp>
+#include <dctl/successor/value.hpp>
 #include <dctl/notation/thai.hpp>
 
 namespace dctl {

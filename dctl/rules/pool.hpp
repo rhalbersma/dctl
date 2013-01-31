@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/rules/pool_fwd.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/capture/value.hpp>
+#include <dctl/successor/value.hpp>
 
 namespace dctl {
 namespace rules {

@@ -2,7 +2,7 @@
 #include <dctl/rules/lineo_fwd.hpp>
 #include <dctl/rules/international.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/capture/lineo.hpp>
+#include <dctl/successor/value/lineo.hpp>
 
 namespace dctl {
 namespace rules {
