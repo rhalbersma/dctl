@@ -1,16 +1,16 @@
 #pragma once
 #include <boost/operators.hpp>          // totally_ordered
-#include <dctl/capture/value_fwd.hpp>   // Value (primary template)
+#include <dctl/successor/value_fwd.hpp> // Value (primary template)
 
 namespace dctl {
-namespace capture {
+namespace successor {
 
 // primary template
-template<typename Rules, typename Board>
+template<typename Rules>
 struct Value
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<Rules, Board> >   // < >= > <= == !=
+        private boost::totally_ordered< Value<Rules> >  // < >= > <= == !=
 {
         // predicates
 
@@ -27,5 +27,5 @@ struct Value
         }
 };
 
-}       // namespace capture
+}       // namespace successor
 }       // namespace dctl

@@ -1,11 +1,11 @@
 #pragma once
 
 namespace dctl {
-namespace capture {
+namespace successor {
 
 // primary template
-template<typename, typename>
+template<typename /* Rules */>
 struct Value;
 
-}       // namespace capture
+}       // namespace successor
 }       // namespace dctl

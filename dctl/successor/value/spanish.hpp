@@ -3,18 +3,18 @@
 #include <utility>                      // get, tuple
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
-#include <dctl/capture/value_fwd.hpp>   // Value (primary template)
+#include <dctl/successor/value_fwd.hpp> // Value (primary template)
 #include <dctl/rules/spanish_fwd.hpp>   // Spanish
 
 namespace dctl {
-namespace capture {
+namespace successor {
 
-// partial specialization for Spanish draughts
-template<typename Board>
-struct Value<rules::Spanish, Board>
+// specialization for Spanish draughts
+template<>
+struct Value<rules::Spanish>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Spanish, Board> >  // < >= > <= == !=
+        private boost::totally_ordered< Value<rules::Spanish> > // < >= > <= == !=
 {
 public:
         // structors
@@ -119,5 +119,5 @@ private:
         std::tuple<int, int> data_;
 };
 
-}       // namespace capture
+}       // namespace successor
 }       // namespace dctl
