@@ -2,18 +2,18 @@
 #include <limits>                               // numeric_limits
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/operators.hpp>                  // totally_ordered
-#include <dctl/capture/value_fwd.hpp>           // Value (primary template)
+#include <dctl/successor/value_fwd.hpp>         // Value (primary template)
 #include <dctl/rules/international_fwd.hpp>     // International
 
 namespace dctl {
-namespace capture {
+namespace successor {
 
 // partial specialization for International draughts
-template<typename Board>
-struct Value<rules::International, Board>
+template<>
+struct Value<rules::International>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::International, Board> >    // < >= > <= == !=
+        private boost::totally_ordered< Value<rules::International> >   // < >= > <= == !=
 {
 public:
         // structors
@@ -83,5 +83,5 @@ private:
         int num_pieces_;
 };
 
-}       // namespace capture
+}       // namespace successor
 }       // namespace dctl

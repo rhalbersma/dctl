@@ -1,17 +1,17 @@
 #pragma once
 #include <boost/operators.hpp>          // totally_ordered
-#include <dctl/capture/value_fwd.hpp>   // Value (primary template)
+#include <dctl/successor/value_fwd.hpp> // Value (primary template)
 #include <dctl/rules/russian_fwd.hpp>   // Russian
 
 namespace dctl {
-namespace capture {
+namespace successor {
 
-// partial specialization for Russian draughts
-template<typename Board>
-struct Value<rules::Russian, Board>
+// specialization for Russian draughts
+template<>
+struct Value<rules::Russian>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Russian, Board> >  // < >= > <= == !=
+        private boost::totally_ordered< Value<rules::Russian> > // < >= > <= == !=
 {
 public:
         // structors
@@ -63,5 +63,5 @@ private:
         bool promotion_;
 };
 
-}       // namespace capture
+}       // namespace successor
 }       // namespace dctl

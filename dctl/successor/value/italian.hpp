@@ -1,27 +1,25 @@
 #pragma once
+#include <algorithm>                    // count
+#include <deque>                        // deque (avoids the infamous vector<bool>)
+#include <iterator>                     // begin, end
 #include <limits>                       // numeric_limits
 #include <tuple>                        // get, tuple
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
 #include <dctl/bit/bit.hpp>             // count, reverse_singlet
-#include <dctl/capture/value_fwd.hpp>   // Value (primary template)
+#include <dctl/successor/value_fwd.hpp> // Value (primary template)
 #include <dctl/rules/italian_fwd.hpp>   // Italian
 
 namespace dctl {
-namespace capture {
+namespace successor {
 
-// partial specialization for Italian draughts
-template<typename Board>
-struct Value<rules::Italian, Board>
+// specialization for Italian draughts
+template<>
+struct Value<rules::Italian>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Italian, Board> >  // < >= > <= == !=
+        private boost::totally_ordered< Value<rules::Italian> > // < >= > <= == !=
 {
-private:
-        // typedefs
-
-        typedef typename Board::bit_type bit_type;
-
 public:
         // structors
 
@@ -37,22 +35,18 @@ public:
         void increment(bool is_king)
         {
                 BOOST_ASSERT(!full());
-                if (is_king) {
-                        piece_order() ^= bit::reverse_singlet<bit_type>(num_pieces());
-                        ++num_kings();
-                }
+                piece_order().push_back(is_king);
+                num_kings() += is_king;
                 ++num_pieces();
                 BOOST_ASSERT(invariant());
         }
 
         void decrement(bool is_king)
         {
-                BOOST_ASSERT(!empty(is_king));
+                BOOST_ASSERT(!empty(is_king) && !piece_order().empty() && piece_order().back() == is_king);
                 --num_pieces();
-                if (is_king) {
-                        --num_kings();
-                        piece_order() ^= bit::reverse_singlet<bit_type>(num_pieces());
-                }
+                num_kings() -= is_king;
+                piece_order().pop_back();
                 BOOST_ASSERT(invariant());
         }
 
@@ -75,6 +69,7 @@ public:
         friend bool operator<(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator<
+                // NOTE: this will -in turn- delegate to std::deque::operator< for the last tuple element
                 return lhs.data_ < rhs.data_;
         }
 
@@ -82,6 +77,7 @@ public:
         friend bool operator==(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator==
+                // NOTE: this will -in turn- delegate to std::deque::operator== for the last tuple element
                 return lhs.data_ == rhs.data_;
         }
 
@@ -103,7 +99,7 @@ private:
                 return std::get<with_king_>(data_);
         }
 
-        bit_type& piece_order()
+        std::deque<bool>& piece_order()
         {
                 return std::get<piece_order_>(data_);
         }
@@ -125,7 +121,7 @@ private:
                 return std::get<with_king_>(data_);
         }
 
-        bit_type const& piece_order() const
+        std::deque<bool> const& piece_order() const
         {
                 return std::get<piece_order_>(data_);
         }
@@ -138,14 +134,14 @@ private:
                         (0 <= num_kings()) &&
                         (num_kings() <= num_pieces()) &&
                         (num_pieces() <= std::numeric_limits<int>::max()) &&
-                        (num_kings() == bit::count(piece_order())) &&
+                        (num_kings() == std::count(std::begin(piece_order()), std::end(piece_order()), true)) &&
                         (!num_kings() || with_king())
                 );
         }
 
         bool empty(bool is_king) const
         {
-                return is_king? (num_kings() == 0 && piece_order() == 0) : (num_pieces() == 0);
+                return is_king? (num_kings() == 0) : (num_pieces() == 0);
         }
 
         bool full() const
@@ -156,8 +152,8 @@ private:
         // representation
 
         enum { num_pieces_, num_kings_, with_king_, piece_order_ };
-        std::tuple<int, int, bool, bit_type> data_;
+        std::tuple< int, int, bool, std::deque<bool> > data_;
 };
 
-}       // namespace capture
+}       // namespace successor
 }       // namespace dctl

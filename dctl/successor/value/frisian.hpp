@@ -3,18 +3,18 @@
 #include <tuple>                        // get, tie, tuple
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
-#include <dctl/capture/value_fwd.hpp>   // Value (primary template)
+#include <dctl/successor/value_fwd.hpp> // Value (primary template)
 #include <dctl/rules/frisian_fwd.hpp>   // Frisian
 
 namespace dctl {
-namespace capture {
+namespace successor {
 
-// partial specialization for Frisian draughts
-template<typename Board>
-struct Value<rules::Frisian, Board>
+// specialization for Frisian draughts
+template<>
+struct Value<rules::Frisian>
 :
         // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Frisian, Board> >  // < >= > <= == !=
+        private boost::totally_ordered< Value<rules::Frisian> >  // < >= > <= == !=
 {
 public:
         // structors
@@ -149,5 +149,5 @@ private:
         std::tuple<int, int, bool> data_;
 };
 
-}       // namespace capture
+}       // namespace successor
 }       // namespace dctl
