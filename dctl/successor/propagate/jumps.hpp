@@ -9,12 +9,13 @@
 #include <dctl/angle/traits.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/capture/value.hpp>
+#include <dctl/successor/value.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
+#include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/total_order.hpp>
@@ -27,9 +28,6 @@ struct king {};
 struct pawn {};
 
 }       // namespace with
-
-template<typename, typename>
-struct Propagate;
 
 template<typename Position>
 struct Propagate<Jumps, Position>
@@ -391,8 +389,8 @@ private:
         BitBoard remaining_targets_;
         BitBoard not_occupied_;
         BitIndex from_sq_;
-        capture::Value<Rules, Board> current_;
-        capture::Value<Rules, Board> best_;
+        Value<Rules> current_;
+        Value<Rules> best_;
 };
 
 }       // namespace successor
