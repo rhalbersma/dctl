@@ -8,7 +8,7 @@
 #include <dctl/successor/copy/pawn_jumps.hpp>
 #include <dctl/successor/copy/pawn_promotions.hpp>
 #include <dctl/successor/select.hpp>
-#include <dctl/successor/jumps.hpp>
+#include <dctl/successor/propagate/jumps.hpp>
 #include <dctl/node/stack.hpp>
 
 namespace dctl {

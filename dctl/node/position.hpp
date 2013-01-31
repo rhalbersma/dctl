@@ -320,8 +320,8 @@ struct Init< Index, Position<Rules, Board> >
         {
                 return (
                         Init<Index, Material  >()(p.material())     ^
-                        Init<Index, bool      >()(p.active_color())// ^
-                        //Init<Index, Restricted>()(p.restricted())
+                        Init<Index, bool      >()(p.active_color()) ^
+                        Init<Index, Restricted>()(p.restricted())
                 );
         }
 };

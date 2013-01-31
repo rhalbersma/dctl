@@ -5,7 +5,7 @@
 #include <dctl/successor/copy/generator_fwd.hpp>
 #include <dctl/successor/copy/king_jumps.hpp>                // promote_en_passant
 #include <dctl/successor/select.hpp>
-#include <dctl/successor/jumps.hpp>
+#include <dctl/successor/propagate/jumps.hpp>
 #include <dctl/angle/degrees.hpp>
 #include <dctl/angle/transform.hpp>
 #include <dctl/bit/bit.hpp>
@@ -226,7 +226,7 @@ private:
         bool promote_en_passant_dispatch(BitIndex jumper, std::true_type) const
         {
                 capture_.toggle_promotion();
-                auto const found_next = KingJumps(capture_).promote_en_passant<Direction>(jumper);
+                auto const found_next = KingJumps(capture_, moves_).template promote_en_passant<Direction>(jumper);
                 capture_.toggle_promotion();
                 return found_next;
         }
@@ -237,7 +237,7 @@ private:
         {
                 capture_.toggle_promotion();     // no longer a pawn
                 capture_.toggle_king_targets();  // can now capture kings
-                auto const found_next = KingJumps(capture_).template promote_en_passant<Direction>(jumper);
+                auto const found_next = KingJumps(capture_, moves_).template promote_en_passant<Direction>(jumper);
                 capture_.toggle_king_targets();  // can no longer capture kings
                 capture_.toggle_promotion();     // now a pawn again
                 return found_next;

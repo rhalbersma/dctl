@@ -4,7 +4,7 @@
 #include <dctl/successor/copy/king_jumps.hpp>
 #include <dctl/successor/copy/pawn_jumps.hpp>
 #include <dctl/successor/select.hpp>
-#include <dctl/successor/jumps.hpp>
+#include <dctl/successor/propagate/jumps.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/rules/traits.hpp>
@@ -49,7 +49,7 @@ private:
         void precedence_dispatch(Position const& p, State& capture, Vector<Move>& moves, std::true_type) const
         {
                 KingJumps{capture, moves}(p);
-                if (capture.empty())
+                if (moves.empty())
                         PawnJumps{capture, moves}(p);
         }
 };
