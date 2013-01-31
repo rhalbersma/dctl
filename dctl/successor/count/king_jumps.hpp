@@ -3,7 +3,7 @@
 #include <dctl/successor/count/enumerator_fwd.hpp>
 #include <dctl/successor/select.hpp>
 #include <dctl/successor/copy/king_jumps.hpp>
-#include <dctl/successor/jumps.hpp>
+#include <dctl/successor/propagate/jumps.hpp>
 #include <dctl/node/material.hpp>
 
 namespace dctl {

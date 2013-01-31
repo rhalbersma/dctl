@@ -9,7 +9,7 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/successor/jumps.hpp>
+#include <dctl/successor/propagate/jumps.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/move.hpp>
 #include <dctl/node/stack.hpp>

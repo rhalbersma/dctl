@@ -2,7 +2,7 @@
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/copy/generator_fwd.hpp>
 #include <dctl/successor/select.hpp>
-#include <dctl/successor/moves.hpp>
+#include <dctl/successor/propagate/moves.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
@@ -41,8 +41,8 @@ public:
 
         explicit copy(Position const& p, Vector<Move>& m)
         :
-                propagate_{p},
-                moves_{m}
+                propagate_(p),
+                moves_(m)
         {}
 
         // function call operators
