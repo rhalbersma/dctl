@@ -342,7 +342,7 @@ struct traits
 template<typename>
 struct is_remove_duplicates
 :
-        std::false_type
+        std::true_type
 {};
 
 }       // namespace rules

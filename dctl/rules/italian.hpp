@@ -2,7 +2,7 @@
 #include <type_traits>
 #include <dctl/rules/italian_fwd.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/capture/italian.hpp>
+#include <dctl/successor/value/italian.hpp>
 
 namespace dctl {
 namespace rules {

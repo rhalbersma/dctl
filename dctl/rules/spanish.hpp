@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/rules/spanish_fwd.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/capture/spanish.hpp>
+#include <dctl/successor/value/spanish.hpp>
 
 namespace dctl {
 namespace rules {

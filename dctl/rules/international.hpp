@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/rules/international_fwd.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/capture/international.hpp>
+#include <dctl/successor/value/international.hpp>
 
 namespace dctl {
 namespace rules {

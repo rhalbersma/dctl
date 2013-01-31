@@ -2,7 +2,7 @@
 #include <dctl/rules/damme_fwd.hpp>
 #include <dctl/rules/international.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/capture/damme.hpp>
+#include <dctl/successor/value/damme.hpp>
 
 namespace dctl {
 namespace rules {

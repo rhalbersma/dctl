@@ -2,7 +2,7 @@
 #include <dctl/rules/killer_fwd.hpp>
 #include <dctl/rules/international.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/capture/killer.hpp>
+#include <dctl/successor/value/killer.hpp>
 
 namespace dctl {
 namespace rules {
