@@ -43,7 +43,7 @@ public:
 
         void decrement(bool is_king)
         {
-                BOOST_ASSERT(!empty(is_king) && !piece_order().empty() && piece_order().back() == is_king);
+                BOOST_ASSERT(!empty(is_king));
                 --num_pieces();
                 num_kings() -= is_king;
                 piece_order().pop_back();
@@ -141,7 +141,7 @@ private:
 
         bool empty(bool is_king) const
         {
-                return is_king? (num_kings() == 0) : (num_pieces() == 0);
+                return ((is_king? num_kings() : num_pieces() == 0)) && piece_order().empty() && piece_order().back() == is_king;
         }
 
         bool full() const
