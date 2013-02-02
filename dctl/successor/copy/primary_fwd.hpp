@@ -5,7 +5,7 @@ namespace successor {
 namespace detail {
 
 template<bool, int, typename, typename>
-struct generator;
+struct copy;
 
 }       // namespace detail
 }       // namespace successor

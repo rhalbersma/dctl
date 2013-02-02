@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/detect/detector_fwd.hpp>
 #include <dctl/successor/detect/king_moves.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/reverse.hpp>
 #include <dctl/node/material.hpp>
 
 namespace dctl {

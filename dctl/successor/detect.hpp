@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/select.hpp>            // DefaultSelection
+#include <dctl/successor/select/legal.hpp>            // DefaultSelection
 #include <dctl/successor/detect/detector.hpp>   // detector
 #include <dctl/node/material.hpp>               // both
 #include <dctl/node/side.hpp>                   // black, white
@@ -25,7 +25,7 @@ bool detect(Position const& p)
 template<typename Position>
 bool detect(Position const& p)
 {
-        return detect<Material::both, DefaultSelection>(p);
+        return detect<Material::both, Legal>(p);
 }
 
 }       // namespace successor

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/select.hpp>            // DefaultSelection
+#include <dctl/successor/select/legal.hpp>            // DefaultSelection
 #include <dctl/successor/count/enumerator.hpp>  // enumerator
 #include <dctl/node/material.hpp>               // both
 #include <dctl/node/side.hpp>                   // black, white
@@ -25,7 +25,7 @@ int count(Position const& p)
 template<typename Position>
 int count(Position const& p)
 {
-        return count<Material::both, DefaultSelection>(p);
+        return count<Material::both, select::legal>(p);
 }
 
 }       // namespace successor

@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/utility.hpp>            // noncopyable
-#include <dctl/successor/copy/primary_fwd.hpp>
+#include <dctl/successor/copy/aux/primary_fwd.hpp>
 #include <dctl/successor/propagate/moves.hpp>
 #include <dctl/successor/select/moves.hpp>
 #include <dctl/bit/bit.hpp>
@@ -15,7 +15,7 @@
 
 namespace dctl {
 namespace successor {
-namespace detail {
+namespace aux {
 
 // partial specialization for king moves generation
 template<bool Color, typename Position>

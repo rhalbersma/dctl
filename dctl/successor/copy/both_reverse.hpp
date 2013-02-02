@@ -1,10 +1,11 @@
 #pragma once
-#include <boost/utility.hpp>            // noncopyable
-#include <dctl/successor/copy/generator_fwd.hpp>
-#include <dctl/successor/copy/king_reverse.hpp>
-#include <dctl/successor/copy/pawn_reverse.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/copy/primary_fwd.hpp>
+#include <dctl/successor/copy/aux/king_moves.hpp>
+#include <dctl/successor/copy/aux/pawn_moves.hpp>
+#include <dctl/successor/select/moves.hpp>
+#include <dctl/successor/select/reverse.hpp>
 #include <dctl/node/material.hpp>
+#include <dctl/node/move.hpp>
 #include <dctl/node/stack.hpp>
 
 namespace dctl {
@@ -12,35 +13,13 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct generator<Color, Material::both, Reverse, Position>
-:
-        // enforce reference semantics
-        private boost::noncopyable
+struct copy<Color, Material::both, select::reverse, Position>
 {
-private:
-        // typedefs
-
-        typedef generator<Color, Material::king, Reverse, Position> KingMoves;
-        typedef generator<Color, Material::pawn, Reverse, Position> PawnMoves;
-
-        // representation
-
-        Vector<Move>& moves_;
-
-public:
-        // structors
-
-        /*explicit*/ generator(Vector<Move>& m)
-        :
-                moves_(m)
-        {}
-
-        // function call operators
-
-        void operator()(Position const& p) const
+        void operator()(Position const& p, Vector<Move>& moves) const
         {
-                KingMoves{moves_}(p);
-                PawnMoves{moves_}(p);
+                Propagate<select::moves, Position> const propagate(p);
+                aux::copy<!Color, Material::king, select::moves, Position>{propagate, moves}(p.kings(Color));
+                aux::copy<!Color, Material::pawn, select::moves, Position>{propagate, moves}(p.pawns(Color));
         }
 };
 

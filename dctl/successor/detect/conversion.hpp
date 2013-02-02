@@ -7,7 +7,7 @@
 // there are no king promotions
 #include <dctl/successor/detect/pawn_jumps.hpp>
 #include <dctl/successor/detect/pawn_promotions.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/conversion.hpp>
 #include <dctl/rules/traits.hpp>
 
 namespace dctl {
