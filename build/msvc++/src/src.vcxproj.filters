@@ -585,10 +585,10 @@
     <ClInclude Include="..\..\..\dctl\successor\detection\conversion.hpp">
       <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\successor\detection\detector.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\detection\detect.hpp">
       <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\successor\detection\detector_fwd.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\detection\primary_fwd.hpp">
       <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\successor\detection\king_jumps.hpp">
@@ -633,10 +633,10 @@
     <ClInclude Include="..\..\..\dctl\successor\enumeration\conversion.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\successor\enumeration\enumerator.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\count.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\successor\enumeration\enumerator_fwd.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\primary_fwd.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\successor\enumeration\king_jumps.hpp">

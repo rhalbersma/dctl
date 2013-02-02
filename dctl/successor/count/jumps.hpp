@@ -1,18 +1,19 @@
 #pragma once
-#include <boost/utility.hpp>            // noncopyable
-#include <dctl/successor/count/enumerator_fwd.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/successor/copy/both_jumps.hpp>
-#include <dctl/node/material.hpp>
+#include <dctl/successor/copy/king_jumps.hpp>
+#include <dctl/successor/copy/pawn_jumps.hpp>
+#include <dctl/node/move.hpp>
 #include <dctl/node/stack.hpp>
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for king jumps enumeration
-template<bool Color, typename Position>
-struct enumerator<Color, Material::both, select::jumps, Position>
+// partial specialization for jumps enumeration
+template<bool Color, int Material, typename Position>
+struct count<Color, Material, select::jumps, Position>
 {
         int operator()(Position const& p) const
         {
@@ -20,7 +21,7 @@ struct enumerator<Color, Material::both, select::jumps, Position>
                 Alloc<Move> mal_(mar_);
                 Vector<Move> moves_(mal_);
 
-                copy<Color, Material::both, select::jumps, Position>()(p, moves_);
+                copy<Color, Material, select::jumps, Position>()(p, moves_);
                 return moves_.size();
         }
 };

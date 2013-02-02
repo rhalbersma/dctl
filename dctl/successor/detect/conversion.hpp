@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/detect/detector_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/primary.hpp>
 #include <dctl/successor/detect/both_jumps.hpp>
 #include <dctl/successor/detect/both_promotions.hpp>
@@ -16,15 +16,15 @@ namespace detail {
 
 // partial specialization for legal successors detection
 template<bool Color, int Material, typename Position, typename Range>
-struct detector<Color, Material, select::conversion, Position, Range>
+struct detect<Color, Material, select::conversion, Position, Range>
 {
 private:
         // typedefs
 
-        typedef detector<Color, Material, select::jumps,      Position, Range                   > DoJumps;
+        typedef detect<Color, Material, select::jumps,      Position, Range                   > DoJumps;
 
         // only pawns can promote and they always have rules::range::distance_1
-        typedef detector<Color, Material, select::promotions, Position, rules::range::distance_1> DoPromotions;
+        typedef detect<Color, Material, select::promotions, Position, rules::range::distance_1> DoPromotions;
 
 public:
         bool operator()(Position const& p) const

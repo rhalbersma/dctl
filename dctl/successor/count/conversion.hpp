@@ -1,11 +1,8 @@
 #pragma once
-#include <dctl/successor/count/enumerator_fwd.hpp>
-#include <dctl/successor/count/primary.hpp>
-#include <dctl/successor/count/both_jumps.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>
+#include <dctl/successor/count/jumps.hpp>
 #include <dctl/successor/count/both_promotions.hpp>
-#include <dctl/successor/count/king_jumps.hpp>
 // there are no king promotions
-#include <dctl/successor/count/pawn_jumps.hpp>
 #include <dctl/successor/count/pawn_promotions.hpp>
 #include <dctl/successor/select/conversion.hpp>
 
@@ -15,13 +12,13 @@ namespace detail {
 
 // partial specialization for legal successors enumeration
 template<bool Color, int Material, typename Position>
-struct enumerator<Color, Material, select::conversion, Position>
+struct count<Color, Material, select::conversion, Position>
 {
 private:
         // typedefs
 
-        typedef enumerator<Color, Material, select::jumps,      Position> DoJumps;
-        typedef enumerator<Color, Material, select::promotions, Position> DoPromotions;
+        typedef count<Color, Material, select::jumps,      Position> DoJumps;
+        typedef count<Color, Material, select::promotions, Position> DoPromotions;
 
 public:
         int operator()(Position const& p) const

@@ -1,12 +1,12 @@
 #pragma once
-#include <dctl/successor/count/enumerator_fwd.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
 template<bool /* Color */, int /* Material */, typename /* Selection */, typename Position>
-struct enumerator
+struct count
 {
         int operator()(Position const& /* p */) const
         {

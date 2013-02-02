@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/count/enumerator_fwd.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>
 #include <dctl/successor/count/king_moves.hpp>
 #include <dctl/successor/count/pawn_moves.hpp>
 #include <dctl/successor/select/reverse.hpp>
@@ -10,12 +10,12 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct enumerator<Color, Material::both, select::reverse, Position>
+struct count<Color, Material::both, select::reverse, Position>
 {
 private:
         // typedefs
-        typedef enumerator<Color, Material::king, select::reverse, Position> KingMoves;
-        typedef enumerator<Color, Material::pawn, select::reverse, Position> PawnMoves;
+        typedef count<Color, Material::king, select::reverse, Position> KingMoves;
+        typedef count<Color, Material::pawn, select::reverse, Position> PawnMoves;
 
 public:
         int operator()(Position const& p) const

@@ -1,12 +1,12 @@
 #pragma once
-#include <dctl/successor/detect/detector_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
 template<bool /* Color */, int /* Material */, typename /* Selection */, typename Position, typename /* Range */>
-struct detector
+struct detect
 {
         bool operator()(Position const& /* p */) const
         {

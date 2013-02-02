@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/count/enumerator_fwd.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>
 #include <dctl/successor/count/pawn_moves.hpp>
 #include <dctl/successor/select/reverse.hpp>
 #include <dctl/node/material.hpp>
@@ -11,12 +11,12 @@ namespace detail {
 
 // partial specialization for pawn moves generation
 template<bool Color, typename Position>
-struct enumerator<Color, Material::pawn, select::reverse, Position>
+struct count<Color, Material::pawn, select::reverse, Position>
 {
 private:
         // typedefs
 
-        typedef enumerator<!Color, Material::pawn, select::moves, Position> PassivePawnMoves;
+        typedef count<!Color, Material::pawn, select::moves, Position> PassivePawnMoves;
 
 public:
         int operator()(Position const& p) const

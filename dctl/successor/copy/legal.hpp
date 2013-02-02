@@ -9,6 +9,7 @@
 #include <dctl/successor/select/legal.hpp>
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/successor/select/moves.hpp>
+#include <dctl/node/move.hpp>
 #include <dctl/node/stack.hpp>
 
 namespace dctl {
@@ -21,9 +22,12 @@ struct copy<Color, Material, select::legal, Position>
 {
         void operator()(Position const& p, Vector<Move>& moves) const
         {
-                copy<Color, Material, select::jumps, Position>()(p, moves);
+                typedef copy<Color, Material, select::jumps, Position> DoJumps;
+                typedef copy<Color, Material, select::moves, Position> DoMoves;
+
+                DoJumps()(p, moves);
                 if (moves.empty())
-                        copy<Color, Material, select::moves, Position>()(p, moves);
+                        DoMoves()(p, moves);
         }
 };
 

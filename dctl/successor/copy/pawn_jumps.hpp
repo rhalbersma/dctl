@@ -18,7 +18,6 @@ struct copy<Color, Material::pawn, select::jumps, Position>
         void operator()(Position const& p, Vector<Move>& moves) const
         {
                 typedef aux::copy<Color, Material::pawn, select::jumps, Position> PawnJumps;
-
                 Propagate<select::jumps, Position> propagate(p);
                 PawnJumps{propagate, moves}(p.pawns(Color));
         }

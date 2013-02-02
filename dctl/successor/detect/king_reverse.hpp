@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/detect/detector_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/king_moves.hpp>
 #include <dctl/successor/select/reverse.hpp>
 #include <dctl/node/material.hpp>
@@ -9,9 +9,9 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct detector<Color, Material::king, select::reverse, Position>
+struct detect<Color, Material::king, select::reverse, Position>
 :
-        detector<Color, Material::king, select::moves, Position>
+        detect<Color, Material::king, select::moves, Position>
 {};
 
 }       // namespace detail

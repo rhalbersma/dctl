@@ -14,11 +14,15 @@ namespace detail {
 template<bool Color, typename Position>
 struct copy<Color, Material::both, select::moves, Position>
 {
+private:
+        // typedefs
+
+        typedef aux::copy<Color, Material::king, select::moves, Position> KingMoves;
+        typedef aux::copy<Color, Material::pawn, select::moves, Position> PawnMoves;
+
+public:
         void operator()(Position const& p, Vector<Move>& moves) const
         {
-                typedef aux::copy<Color, Material::king, select::moves, Position> KingMoves;
-                typedef aux::copy<Color, Material::pawn, select::moves, Position> PawnMoves;
-
                 Propagate<select::moves, Position> const propagate(p);
                 KingMoves{propagate, moves}(p.kings(Color));
                 PawnMoves{propagate, moves}(p.pawns(Color));

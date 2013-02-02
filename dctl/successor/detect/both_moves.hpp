@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/detect/detector_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/pawn_moves.hpp>
 #include <dctl/successor/select/moves.hpp>
 #include <dctl/node/material.hpp>
@@ -10,7 +10,7 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position, typename Range>
-struct detector<Color, Material::both, select::moves, Position, Range>
+struct detect<Color, Material::both, select::moves, Position, Range>
 {
 public:
         bool operator()(Position const& p) const
@@ -22,7 +22,7 @@ public:
 private:
         bool pieces_up_moves(Position const& p) const
         {
-                typedef detector< Color, Material::pawn, select::moves, Position, rules::range::distance_1> PiecesUpMoves;
+                typedef detect< Color, Material::pawn, select::moves, Position, rules::range::distance_1> PiecesUpMoves;
 
                 auto const active_pieces = p.pieces(Color);
                 return active_pieces? PiecesUpMoves().select(active_pieces, not_occupied(p)) : false;
@@ -30,7 +30,7 @@ private:
 
         bool king_down_moves(Position const& p) const
         {
-                typedef detector<!Color, Material::pawn, select::moves, Position, rules::range::distance_1> KingDownMoves;
+                typedef detect<!Color, Material::pawn, select::moves, Position, rules::range::distance_1> KingDownMoves;
 
                 auto const active_kings = p.kings(Color);
                 return active_kings? KingDownMoves().select(active_kings, not_occupied(p)) : false;

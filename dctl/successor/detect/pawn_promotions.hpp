@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/detect/detector_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/pawn_moves.hpp>
 #include <dctl/successor/select/promotions.hpp>
 #include <dctl/node/material.hpp>
@@ -13,12 +13,12 @@ namespace detail {
 
 // partial specialization for pawn moves generation
 template<bool Color, typename Position>
-struct detector<Color, Material::pawn, select::promotions, Position>
+struct detect<Color, Material::pawn, select::promotions, Position>
 {
 private:
         // typedefs
 
-        typedef detector<Color, Material::pawn, select::moves, Position> PawnMoves;
+        typedef detect<Color, Material::pawn, select::moves, Position> PawnMoves;
 
 public:
         bool operator()(Position const& p) const

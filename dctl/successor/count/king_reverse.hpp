@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/count/enumerator_fwd.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>
 #include <dctl/successor/count/king_moves.hpp>
 #include <dctl/successor/select/moves.hpp>
 #include <dctl/successor/select/reverse.hpp>
@@ -10,9 +10,9 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct enumerator<Color, Material::king, select::reverse, Position>
+struct count<Color, Material::king, select::reverse, Position>
 :
-        enumerator<Color, Material::king, select::moves, Position>
+        count<Color, Material::king, select::moves, Position>
 {};
 
 }       // namespace detail

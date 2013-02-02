@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/detect/detector_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/select/moves.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
@@ -15,7 +15,7 @@ namespace detail {
 
 // partial specialization for pawn moves detection
 template<bool Color, typename Position, typename Range>
-struct detector<Color, Material::pawn, select::moves, Position, Range>
+struct detect<Color, Material::pawn, select::moves, Position, Range>
 {
 private:
         // typedefs

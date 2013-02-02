@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/select/legal.hpp>            // DefaultSelection
 #include <dctl/successor/copy/specializations.hpp>         // copy
-#include <dctl/successor/copy/invariant.hpp>    // invariant
+#include <dctl/successor/invariant.hpp>    // invariant
 #include <dctl/node/material.hpp>               // both
 #include <dctl/node/side.hpp>                   // black, white
 #include <dctl/node/stack.hpp>                  // Stack
@@ -24,7 +24,7 @@ Vector<Move> copy(Position const& p, Arena<Move>& mar)
 
         copy<Color, Material, Selection>(p, moves);
 
-        BOOST_ASSERT((detail::invariant<Color, Material, Selection>(p, moves.size())));
+        BOOST_ASSERT((invariant<Color, Material, Selection>(p, moves.size())));
         return moves;
 }
 
