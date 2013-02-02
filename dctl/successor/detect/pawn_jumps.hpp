@@ -16,7 +16,7 @@ namespace detail {
 
 // partial specialization for pawn jumps detection
 template<bool Color, typename Position, typename Range>
-struct detector<Color, Material::pawn, Jumps, Position, Range>
+struct detector<Color, Material::pawn, select::jumps, Position, Range>
 {
 private:
         // typedefs

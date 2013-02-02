@@ -14,16 +14,16 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position, typename Range>
-struct detector<Color, Material::both, Jumps, Position, Range>
+struct detector<Color, Material::both, select::jumps, Position, Range>
 {
 private:
         // typedefs
 
         // the existence of pawn jumps is independent of Range,
         // but we always use rules::range::distance_1 to avoid template bloat
-        typedef detector<Color, Material::pawn, Jumps, Position, rules::range::distance_1> PawnJumps;
+        typedef detector<Color, Material::pawn, select::jumps, Position, rules::range::distance_1> PawnJumps;
 
-        typedef detector<Color, Material::king, Jumps, Position, Range> KingJumps;
+        typedef detector<Color, Material::king, select::jumps, Position, Range> KingJumps;
         typedef typename Position::rules_type Rules;
 
 public:

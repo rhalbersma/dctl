@@ -47,7 +47,8 @@ public:
 
         void operator()(BitBoard active_pawns) const
         {
-                branch(active_pawns);
+                if (active_pawns)
+                        branch(active_pawns);
         }
 
 private:
