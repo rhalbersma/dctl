@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/successor/copy/generator_fwd.hpp>
-#include <dctl/successor/copy/king_moves.hpp>
-#include <dctl/successor/copy/pawn_moves.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/copy/primary_fwd.hpp>
+#include <dctl/successor/copy/aux/king_moves.hpp>
+#include <dctl/successor/copy/aux/pawn_moves.hpp>
+#include <dctl/successor/select/moves.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/move.hpp>
 #include <dctl/node/stack.hpp>
@@ -12,12 +12,13 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct generator<Color, Material::both, Moves, Position>
+struct copy<Color, Material::both, select::moves, Position>
 {
         void operator()(Position const& p, Vector<Move>& moves) const
         {
-                generator<Color, Material::king, Moves, Position>{moves}(p);
-                generator<Color, Material::pawn, Moves, Position>()(p, moves);
+                Propagate<Moves, Position> const propagate(p);
+                aux::copy<Color, Material::king, select::moves, Position>{propagate, moves}(p.kings(Color));
+                aux::copy<Color, Material::pawn, select::moves, Position>{propagate, moves}(p.pawns(Color));
         }
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/successor/count/enumerator_fwd.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/jumps.hpp>
 #include <dctl/successor/copy/pawn_jumps.hpp>
 #include <dctl/successor/propagate/jumps.hpp>
 #include <dctl/node/material.hpp>
@@ -12,7 +12,7 @@ namespace detail {
 
 // partial specialization for king jumps enumeration
 template<bool Color, typename Position>
-struct enumerator<Color, Material::pawn, Jumps, Position>
+struct enumerator<Color, Material::pawn, select::jumps, Position>
 :
         // enforce reference semantics
         private boost::noncopyable
@@ -20,8 +20,8 @@ struct enumerator<Color, Material::pawn, Jumps, Position>
 private:
         // typedefs
 
-        typedef generator<Color, Material::pawn, Jumps, Position> PawnJumps;
-        typedef Propagate<Jumps, Position> State;
+        typedef copy<Color, Material::pawn, select::jumps, Position> PawnJumps;
+        typedef Propagate<select::jumps, Position> State;
 
         // representation
 

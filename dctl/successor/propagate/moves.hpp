@@ -1,12 +1,13 @@
 #pragma once
 #include <dctl/successor/propagate_fwd.hpp>
+#include <dctl/successor/select/moves.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace successor {
 
 template<typename Position>
-struct Propagate<Moves, Position>
+struct Propagate<select::moves, Position>
 {
 public:
         // structors

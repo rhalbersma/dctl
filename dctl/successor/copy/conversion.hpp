@@ -1,55 +1,30 @@
 #pragma once
-#include <dctl/successor/copy/generator_fwd.hpp>
-#include <dctl/successor/copy/primary.hpp>
+#include <dctl/successor/copy/primary_fwd.hpp>
 #include <dctl/successor/copy/both_jumps.hpp>
 #include <dctl/successor/copy/both_promotions.hpp>
 #include <dctl/successor/copy/king_jumps.hpp>
 // there are no king promotions
 #include <dctl/successor/copy/pawn_jumps.hpp>
 #include <dctl/successor/copy/pawn_promotions.hpp>
-#include <dctl/successor/select.hpp>
-#include <dctl/successor/propagate/jumps.hpp>
+#include <dctl/successor/select/conversion.hpp>
+#include <dctl/successor/select/jumps.hpp>
+#include <dctl/successor/select/promotions.hpp>
+#include <dctl/node/move.hpp>
 #include <dctl/node/stack.hpp>
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for conversion successors
+// partial specialization for legal successors
 template<bool Color, int Material, typename Position>
-struct generator<Color, Material, Conversion, Position>
-:
-        // enforce reference semantics
-        private boost::noncopyable
+struct copy<Color, Material, select::conversion, Position>
 {
-private:
-        // typedefs
-
-        typedef generator<Color, Material, Jumps,      Position> DoJumps;
-        typedef generator<Color, Material, Promotions, Position> DoPromotions;
-        typedef Propagate<Jumps, Position> State;
-
-        // representation
-
-        Vector<Move>& moves_;
-
-public:
-        // structors
-
-        explicit generator(Vector<Move>& m)
-        :
-                moves_(m)
-        {}
-
-        // function call operators
-
-        void operator()(Position const& p) const
+        void operator()(Position const& p, Vector<Move>& moves) const
         {
-                State capture_ { p, moves_ };
-
-                DoJumps{capture_}(p);
-                if (moves_.empty())
-                        DoPromotions{moves_}(p);
+                copy<Color, Material, select::jumps, Position>()(p, moves);
+                if (moves.empty())
+                        copy<Color, Material, select::promotions, Position>()(p, moves);
         }
 };
 

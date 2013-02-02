@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/successor/count/enumerator_fwd.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/moves.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/patterns.hpp>
@@ -15,7 +15,7 @@ namespace detail {
 
 // partial specialization for king moves enumeration
 template<bool Color, typename Position>
-struct enumerator<Color, Material::king, Moves, Position>
+struct enumerator<Color, Material::king, select::moves, Position>
 {
 private:
         // typedefs

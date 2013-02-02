@@ -7,7 +7,7 @@
 // there are no king promotions
 #include <dctl/successor/count/pawn_jumps.hpp>
 #include <dctl/successor/count/pawn_promotions.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/conversion.hpp>
 
 namespace dctl {
 namespace successor {
@@ -15,13 +15,13 @@ namespace detail {
 
 // partial specialization for legal successors enumeration
 template<bool Color, int Material, typename Position>
-struct enumerator<Color, Material, Conversion, Position>
+struct enumerator<Color, Material, select::conversion, Position>
 {
 private:
         // typedefs
 
-        typedef enumerator<Color, Material, Jumps,      Position> DoJumps;
-        typedef enumerator<Color, Material, Promotions, Position> DoPromotions;
+        typedef enumerator<Color, Material, select::jumps,      Position> DoJumps;
+        typedef enumerator<Color, Material, select::promotions, Position> DoPromotions;
 
 public:
         int operator()(Position const& p) const

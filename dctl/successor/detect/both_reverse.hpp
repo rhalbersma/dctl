@@ -2,7 +2,7 @@
 #include <dctl/successor/detect/detector_fwd.hpp>
 #include <dctl/successor/detect/king_reverse.hpp>
 #include <dctl/successor/detect/pawn_reverse.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/reverse.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/rules/traits.hpp>
 

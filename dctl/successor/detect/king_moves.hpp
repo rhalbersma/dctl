@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/successor/detect/detector_fwd.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/moves.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/patterns.hpp>

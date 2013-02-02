@@ -219,8 +219,8 @@
     <ClInclude Include="..\..\..\dctl\successor\generation\both_reverse.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\conversion.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\generate.hpp" />
-    <ClInclude Include="..\..\..\dctl\successor\generation\generator.hpp" />
-    <ClInclude Include="..\..\..\dctl\successor\generation\generator_fwd.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\copy.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\primary_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\invariant.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\king_jumps.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\king_moves.hpp" />

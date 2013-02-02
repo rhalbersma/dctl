@@ -684,10 +684,10 @@
     <ClInclude Include="..\..\..\dctl\successor\generation\generate.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\successor\generation\generator.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\copy.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\successor\generation\generator_fwd.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\primary_fwd.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\successor\generation\invariant.hpp">

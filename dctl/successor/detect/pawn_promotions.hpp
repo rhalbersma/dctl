@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/detect/detector_fwd.hpp>
 #include <dctl/successor/detect/pawn_moves.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/promotions.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/stack.hpp>

@@ -7,7 +7,7 @@
 #include <dctl/successor/detect/king_moves.hpp>
 #include <dctl/successor/detect/pawn_jumps.hpp>
 #include <dctl/successor/detect/pawn_moves.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/legal.hpp>
 #include <dctl/rules/traits.hpp>
 
 namespace dctl {

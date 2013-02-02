@@ -16,7 +16,7 @@
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/successor/propagate_fwd.hpp>
-#include <dctl/successor/select.hpp>
+#include <dctl/successor/select/jumps.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/total_order.hpp>
 
@@ -30,7 +30,7 @@ struct pawn {};
 }       // namespace with
 
 template<typename Position>
-struct Propagate<Jumps, Position>
+struct Propagate<select::jumps, Position>
 {
 public:
         // structors
