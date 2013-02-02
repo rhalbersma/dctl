@@ -1,7 +1,7 @@
 #pragma once
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <boost/mpl/logical.hpp>        // and_
-#include <dctl/successor/detect/detector_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/king_jumps.hpp>
 #include <dctl/successor/detect/pawn_jumps.hpp>
 #include <dctl/successor/select/jumps.hpp>
@@ -14,16 +14,16 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position, typename Range>
-struct detector<Color, Material::both, select::jumps, Position, Range>
+struct detect<Color, Material::both, select::jumps, Position, Range>
 {
 private:
         // typedefs
 
         // the existence of pawn jumps is independent of Range,
         // but we always use rules::range::distance_1 to avoid template bloat
-        typedef detector<Color, Material::pawn, select::jumps, Position, rules::range::distance_1> PawnJumps;
+        typedef detect<Color, Material::pawn, select::jumps, Position, rules::range::distance_1> PawnJumps;
 
-        typedef detector<Color, Material::king, select::jumps, Position, Range> KingJumps;
+        typedef detect<Color, Material::king, select::jumps, Position, Range> KingJumps;
         typedef typename Position::rules_type Rules;
 
 public:

@@ -22,9 +22,12 @@ struct copy<Color, Material, select::conversion, Position>
 {
         void operator()(Position const& p, Vector<Move>& moves) const
         {
-                copy<Color, Material, select::jumps, Position>()(p, moves);
+                typedef copy<Color, Material, select::jumps,      Position> DoJumps;
+                typedef copy<Color, Material, select::promotions, Position> DoPromotions;
+
+                DoJumps()(p, moves);
                 if (moves.empty())
-                        copy<Color, Material, select::promotions, Position>()(p, moves);
+                        DoPromotions()(p, moves);
         }
 };
 

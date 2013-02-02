@@ -4,17 +4,15 @@
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 template<bool Color, int Material, typename Selection, typename Position>
-bool invariant(Position const& p,  int number)
+bool invariant(Position const& p,  int N)
 {
         return (
-                ( count<Color, Material, Selection>(p) ==  number     ) &&
-                (detect<Color, Material, Selection>(p) == (number > 0))
+                ( count<Color, Material, Selection>(p) ==  N     ) &&
+                (detect<Color, Material, Selection>(p) == (N > 0))
         );
 }
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

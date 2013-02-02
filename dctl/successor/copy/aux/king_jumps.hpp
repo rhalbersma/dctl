@@ -1,20 +1,20 @@
 #pragma once
-#include <type_traits>                  // false_type, true_type
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/utility.hpp>            // noncopyable
-#include <dctl/successor/copy/aux/primary_fwd.hpp>
-#include <dctl/successor/propagate/jumps.hpp>
-#include <dctl/successor/select/jumps.hpp>
-#include <dctl/angle/degrees.hpp>
-#include <dctl/angle/transform.hpp>
+#include <type_traits>                                  // false_type, true_type
+#include <boost/assert.hpp>                             // BOOST_ASSERT
+#include <boost/utility.hpp>                            // noncopyable
+#include <dctl/successor/copy/aux/primary_fwd.hpp>      // copy (primary template)
+#include <dctl/successor/propagate/jumps.hpp>           // Propagate
+#include <dctl/successor/select/jumps.hpp>              // jumps
+#include <dctl/angle/degrees.hpp>                       // Degrees
+#include <dctl/angle/transform.hpp>                     // rotate
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
-#include <dctl/board/iterator.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/move.hpp>
-#include <dctl/node/stack.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/board/iterator.hpp>                      // Next
+#include <dctl/node/material.hpp>                       // king
+#include <dctl/node/move.hpp>                           //
+#include <dctl/node/stack.hpp>                          // Vector
+#include <dctl/rules/traits.hpp>                        // traits
+#include <dctl/utility/int.hpp>                         // BitBoard, BitIndex
 
 namespace dctl {
 namespace successor {

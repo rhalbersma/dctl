@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/detect/detector_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/primary.hpp>
 #include <dctl/successor/detect/both_jumps.hpp>
 #include <dctl/successor/detect/both_moves.hpp>
@@ -16,13 +16,13 @@ namespace detail {
 
 // partial specialization for legal successors detection
 template<bool Color, int Material, typename Position, typename Range>
-struct detector<Color, Material, select::legal, Position, Range>
+struct detect<Color, Material, select::legal, Position, Range>
 {
 private:
         // typedefs
 
-        typedef detector<Color, Material, select::moves, Position, rules::range::distance_1> ShortMoves;
-        typedef detector<Color, Material, select::jumps, Position, rules::range::distance_1> ShortJumps;
+        typedef detect<Color, Material, select::moves, Position, rules::range::distance_1> ShortMoves;
+        typedef detect<Color, Material, select::jumps, Position, rules::range::distance_1> ShortJumps;
 
 public:
         bool operator()(Position const& p) const

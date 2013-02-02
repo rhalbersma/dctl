@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/successor/select/legal.hpp>            // DefaultSelection
-#include <dctl/successor/count/enumerator.hpp>  // enumerator
+#include <dctl/successor/count/specializations.hpp>  // count
 #include <dctl/node/material.hpp>               // both
 #include <dctl/node/side.hpp>                   // black, white
 
@@ -10,7 +10,7 @@ namespace successor {
 template<bool Color, int Material, typename Selection, typename Position>
 int count(Position const& p)
 {
-        return detail::enumerator<Color, Material, Selection, Position>()(p);
+        return detail::count<Color, Material, Selection, Position>()(p);
 }
 
 template<int Material, typename Selection, typename Position>
