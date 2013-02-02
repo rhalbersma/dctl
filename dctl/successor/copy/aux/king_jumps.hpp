@@ -54,7 +54,8 @@ public:
         void operator()(BitBoard active_kings) const
         {
                 // tag dispatching on relative king jump precedence
-                select_dispatch(active_kings, typename rules::traits<Rules>::is_relative_king_precedence());
+                if (active_kings)
+                        select_dispatch(active_kings, typename rules::traits<Rules>::is_relative_king_precedence());
         }
 
         template<typename Direction>

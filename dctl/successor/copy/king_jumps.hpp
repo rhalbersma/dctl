@@ -11,16 +11,19 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for pawn jumps
+// partial specialization for king jumps
 template<bool Color, typename Position>
 struct copy<Color, Material::king, select::jumps, Position>
 {
+public:
         void operator()(Position const& p, Vector<Move>& moves) const
         {
                 typedef aux::copy<Color, Material::king, select::jumps, Position> KingJumps;
+
                 Propagate<select::jumps, Position> propagate(p);
                 KingJumps{propagate, moves}(p.kings(Color));
         }
+
 };
 
 }       // namespace detail

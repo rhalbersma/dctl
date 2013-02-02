@@ -40,7 +40,7 @@ Vector<Move> copy(Position const& p, Arena<Move>& mar)
 template<typename Position>
 Vector<Move> copy(Position const& p, Arena<Move>& mar)
 {
-        return copy<Material::both, Legal>(p, mar);
+        return copy<Material::both, select::legal>(p, mar);
 }
 
 template<typename Position, typename Move>

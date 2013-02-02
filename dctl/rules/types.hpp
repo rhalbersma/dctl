@@ -12,4 +12,3 @@
 #include <dctl/rules/damme.hpp>
 #include <dctl/rules/hoogland.hpp>
 #include <dctl/rules/killer.hpp>
-#include <dctl/rules/lineo.hpp>

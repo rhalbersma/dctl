@@ -16,13 +16,13 @@ namespace detail {
 
 // partial specialization for legal successors detection
 template<bool Color, int Material, typename Position, typename Range>
-struct detector<Color, Material, Legal, Position, Range>
+struct detector<Color, Material, select::legal, Position, Range>
 {
 private:
         // typedefs
 
-        typedef detector<Color, Material, Moves, Position, rules::range::distance_1> ShortMoves;
-        typedef detector<Color, Material, Jumps, Position, rules::range::distance_1> ShortJumps;
+        typedef detector<Color, Material, select::moves, Position, rules::range::distance_1> ShortMoves;
+        typedef detector<Color, Material, select::jumps, Position, rules::range::distance_1> ShortJumps;
 
 public:
         bool operator()(Position const& p) const

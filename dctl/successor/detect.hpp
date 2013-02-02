@@ -25,7 +25,7 @@ bool detect(Position const& p)
 template<typename Position>
 bool detect(Position const& p)
 {
-        return detect<Material::both, Legal>(p);
+        return detect<Material::both, select::legal>(p);
 }
 
 }       // namespace successor

@@ -55,7 +55,8 @@ public:
         void operator()(BitBoard active_pawns) const
         {
                 // tag dispatching on whether pawns can capture kings
-                select_dispatch(active_pawns, typename rules::traits<Rules>::is_pawns_jump_kings());
+                if (active_pawns)
+                        select_dispatch(active_pawns, typename rules::traits<Rules>::is_pawns_jump_kings());
         }
 
 private:

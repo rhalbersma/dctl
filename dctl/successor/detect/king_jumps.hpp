@@ -15,7 +15,7 @@ namespace detail {
 
 // partial specialization for king jumps detection
 template<bool Color, typename Position, typename Range>
-struct detector<Color, Material::king, Jumps, Position, Range>
+struct detector<Color, Material::king, select::jumps, Position, Range>
 {
 private:
         // typedefs

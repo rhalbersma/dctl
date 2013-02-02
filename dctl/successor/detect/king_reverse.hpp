@@ -9,9 +9,9 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Position>
-struct detector<Color, Material::king, Reverse, Position>
+struct detector<Color, Material::king, select::reverse, Position>
 :
-        detector<Color, Material::king, Moves, Position>
+        detector<Color, Material::king, select::moves, Position>
 {};
 
 }       // namespace detail

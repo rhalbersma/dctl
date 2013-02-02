@@ -20,8 +20,9 @@ struct copy<Color, Material::both, select::jumps, Position>
 public:
         void operator()(Position const& p, Vector<Move>& moves) const
         {
-                // tag dispatching on absolute king jump precedence
                 typedef typename Position::rules_type Rules;
+
+                // tag dispatching on absolute king jump precedence
                 precedence_dispatch(p, moves, typename rules::traits<Rules>::is_absolute_king_precedence());
         }
 
