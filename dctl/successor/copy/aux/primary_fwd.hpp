@@ -4,7 +4,7 @@ namespace dctl {
 namespace successor {
 namespace aux {
 
-template<bool, int, typename, typename>
+template<bool /* Color */, int /* Material */, typename /* Selection */, typename /* Position */>
 struct copy;
 
 }       // namespace aux

@@ -21,7 +21,7 @@ struct count<Color, Material, select::jumps, Position>
                 Alloc<Move> mal_(mar_);
                 Vector<Move> moves_(mal_);
 
-                copy<Color, Material, select::jumps, Position>()(p, moves_);
+                copy<Color, Material, select::jumps>()(p, moves_);
                 return moves_.size();
         }
 };

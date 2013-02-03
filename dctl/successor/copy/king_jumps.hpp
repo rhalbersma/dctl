@@ -10,10 +10,10 @@ namespace successor {
 namespace detail {
 
 // partial specialization for king jumps
-template<bool Color, typename Position>
-struct copy<Color, Material::king, select::jumps, Position>
+template<bool Color>
+struct copy<Color, Material::king, select::jumps>
 {
-        template<typename Vector>
+        template<typename Position, typename Vector>
         void operator()(Position const& p, Vector& moves) const
         {
                 typedef aux::copy<Color, Material::king, select::jumps, Position> KingJumps;

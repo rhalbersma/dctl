@@ -1,18 +1,18 @@
 #pragma once
-#include <dctl/successor/select/legal.hpp>            // DefaultSelection
-#include <dctl/successor/copy/specializations.hpp>         // copy
-#include <dctl/successor/invariant.hpp>    // invariant
-#include <dctl/node/material.hpp>               // both
-#include <dctl/node/side.hpp>                   // black, white
-#include <dctl/node/stack.hpp>                  // Stack
+#include <dctl/successor/select/legal.hpp>              // DefaultSelection
+#include <dctl/successor/copy/specializations.hpp>      // copy
+#include <dctl/successor/invariant.hpp>                 // invariant
+#include <dctl/node/material.hpp>                       // both
+#include <dctl/node/side.hpp>                           // black, white
+#include <dctl/node/stack.hpp>                          // Stack
 
 namespace dctl {
 namespace successor {
 
-template<bool Color, int Material, typename Selection, typename Position>
-void copy(Position const& p, Vector<Move>& moves)
+template<bool Color, int Material, typename Selection, typename Position, typename Vector>
+void copy(Position const& p, Vector& moves)
 {
-        detail::copy<Color, Material, Selection, Position>()(p, moves);
+        detail::copy<Color, Material, Selection>()(p, moves);
 }
 
 template<bool Color, int Material, typename Selection, typename Position>

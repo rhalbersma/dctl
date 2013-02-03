@@ -1,17 +1,17 @@
 #pragma once
-#include <dctl/successor/copy/primary_fwd.hpp>
-#include <dctl/successor/copy/pawn_promotions.hpp>
-#include <dctl/successor/select/promotions.hpp>
-#include <dctl/node/material.hpp>
+#include <dctl/successor/copy/primary_fwd.hpp>          // copy (primary template)
+#include <dctl/successor/copy/pawn_promotions.hpp>      // copy (pawn promotions specialization)
+#include <dctl/successor/select/promotions.hpp>         // promotions
+#include <dctl/node/material.hpp>                       // Material
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool Color, typename Position>
-struct copy<Color, Material::both, select::promotions, Position>
+template<bool Color>
+struct copy<Color, Material::both, select::promotions>
 :
-        copy<Color, Material::pawn, select::promotions, Position>
+        copy<Color, Material::pawn, select::promotions>
 {};
 
 }       // namespace detail

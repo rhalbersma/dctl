@@ -13,41 +13,45 @@ namespace successor {
 namespace detail {
 
 // partial specialization for combined king and pawn jumps
-template<bool Color, typename Position>
-struct copy<Color, Material::both, select::jumps, Position>
+template<bool Color>
+struct copy<Color, Material::both, select::jumps>
 {
 public:
-        template<typename Vector>
+        template<typename Position, typename Vector>
         void operator()(Position const& p, Vector& moves) const
         {
                 typedef typename Position::rules_type Rules;
+
                 // tag dispatching on absolute king jump precedence
                 precedence_dispatch(p, moves, typename rules::traits<Rules>::is_absolute_king_precedence());
         }
 
 private:
-        // typedefs
+        // template aliases
 
-        typedef aux::copy<Color, Material::king, select::jumps, Position> KingJumps;
-        typedef aux::copy<Color, Material::pawn, select::jumps, Position> PawnJumps;
+        template<typename Position>
+        using KingJumps = aux::copy<Color, Material::king, select::jumps, Position>;
+
+        template<typename Position>
+        using PawnJumps = aux::copy<Color, Material::pawn, select::jumps, Position>;
 
         // overload for no absolute king jump precedence
-        template<typename Vector>
+        template<typename Position, typename Vector>
         void precedence_dispatch(Position const& p, Vector& moves, std::false_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                KingJumps{propagate, moves}(p.kings(Color));
-                PawnJumps{propagate, moves}(p.pawns(Color));
+                KingJumps<Position>{propagate, moves}(p.kings(Color));
+                PawnJumps<Position>{propagate, moves}(p.pawns(Color));
         }
 
         // overload for absolute king jump precedence
-        template<typename Vector>
+        template<typename Position, typename Vector>
         void precedence_dispatch(Position const& p, Vector& moves, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                KingJumps{propagate, moves}(p.kings(Color));
+                KingJumps<Position>{propagate, moves}(p.kings(Color));
                 if (moves.empty())
-                        PawnJumps{propagate, moves}(p.pawns(Color));
+                        PawnJumps<Position>{propagate, moves}(p.pawns(Color));
         }
 };
 

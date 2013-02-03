@@ -15,14 +15,14 @@ namespace successor {
 namespace detail {
 
 // partial specialization for legal successors
-template<bool Color, int Material, typename Position>
-struct copy<Color, Material, select::conversion, Position>
+template<bool Color, int Material>
+struct copy<Color, Material, select::conversion>
 {
-        template<typename Vector>
+        template<typename Position, typename Vector>
         void operator()(Position const& p, Vector& moves) const
         {
-                typedef copy<Color, Material, select::jumps,      Position> DoJumps;
-                typedef copy<Color, Material, select::promotions, Position> DoPromotions;
+                typedef copy<Color, Material, select::jumps     > DoJumps;
+                typedef copy<Color, Material, select::promotions> DoPromotions;
 
                 DoJumps()(p, moves);
                 if (moves.empty())
