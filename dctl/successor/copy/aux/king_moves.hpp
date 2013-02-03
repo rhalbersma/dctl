@@ -1,9 +1,9 @@
 #pragma once
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/utility.hpp>            // noncopyable
-#include <dctl/successor/copy/aux/primary_fwd.hpp>
-#include <dctl/successor/propagate/moves.hpp>
-#include <dctl/successor/select/moves.hpp>
+#include <boost/assert.hpp>                             // BOOST_ASSERT
+#include <boost/utility.hpp>                            // noncopyable
+#include <dctl/successor/copy/aux/primary_fwd.hpp>      // copy (primary template)
+#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/moves.hpp>              // moves
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
