@@ -1,11 +1,13 @@
 #pragma once
-#include <dctl/successor/copy/primary_fwd.hpp>
-#include <dctl/node/stack.hpp>
+#include <dctl/successor/copy/primary_fwd.hpp>  // copy (primary template)
+#include <dctl/node/move.hpp>                   // Move
+#include <dctl/node/stack.hpp>                  // Vector
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
+// primary template (default implementation)
 template<bool /* Color */, int /* Material */, typename /* Selection */, typename Position>
 struct copy
 {

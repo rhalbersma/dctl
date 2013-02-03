@@ -1,24 +1,24 @@
 #pragma once
 #include <type_traits>                                  // false_type, true_type
-#include <dctl/successor/copy/primary_fwd.hpp>
-#include <dctl/successor/copy/aux/king_jumps.hpp>
-#include <dctl/successor/copy/aux/pawn_jumps.hpp>
-#include <dctl/successor/propagate/jumps.hpp>
-#include <dctl/successor/select/jumps.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/move.hpp>
-#include <dctl/node/stack.hpp>
-#include <dctl/rules/traits.hpp>
+#include <dctl/successor/copy/primary_fwd.hpp>          // copy (primary template)
+#include <dctl/successor/copy/aux/king_jumps.hpp>       // copy (king jumps specialization)
+#include <dctl/successor/copy/aux/pawn_jumps.hpp>       // copy (pawn jumps specialization)
+#include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
+#include <dctl/successor/select/jumps.hpp>              // jumps
+#include <dctl/node/material.hpp>                       // Material
+#include <dctl/rules/traits.hpp>                        // traits
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
+// partial specialization for combined king and pawn jumps
 template<bool Color, typename Position>
 struct copy<Color, Material::both, select::jumps, Position>
 {
 public:
-        void operator()(Position const& p, Vector<Move>& moves) const
+        template<typename Vector>
+        void operator()(Position const& p, Vector& moves) const
         {
                 typedef typename Position::rules_type Rules;
                 // tag dispatching on absolute king jump precedence
@@ -32,7 +32,8 @@ private:
         typedef aux::copy<Color, Material::pawn, select::jumps, Position> PawnJumps;
 
         // overload for no absolute king jump precedence
-        void precedence_dispatch(Position const& p, Vector<Move>& moves, std::false_type) const
+        template<typename Vector>
+        void precedence_dispatch(Position const& p, Vector& moves, std::false_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
                 KingJumps{propagate, moves}(p.kings(Color));
@@ -40,7 +41,8 @@ private:
         }
 
         // overload for absolute king jump precedence
-        void precedence_dispatch(Position const& p, Vector<Move>& moves, std::true_type) const
+        template<typename Vector>
+        void precedence_dispatch(Position const& p, Vector& moves, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
                 KingJumps{propagate, moves}(p.kings(Color));
