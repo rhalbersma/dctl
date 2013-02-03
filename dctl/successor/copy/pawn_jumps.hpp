@@ -1,11 +1,9 @@
 #pragma once
-#include <dctl/successor/copy/primary_fwd.hpp>
-#include <dctl/successor/copy/aux/pawn_jumps.hpp>
-#include <dctl/successor/propagate/jumps.hpp>
-#include <dctl/successor/select/jumps.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/move.hpp>
-#include <dctl/node/stack.hpp>
+#include <dctl/successor/copy/primary_fwd.hpp>          // copy (primary template)
+#include <dctl/successor/copy/aux/pawn_jumps.hpp>       // copy (pawn jumps specialization)
+#include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
+#include <dctl/successor/select/jumps.hpp>              // jumps
+#include <dctl/node/material.hpp>                       // Material
 
 namespace dctl {
 namespace successor {
@@ -15,9 +13,11 @@ namespace detail {
 template<bool Color, typename Position>
 struct copy<Color, Material::pawn, select::jumps, Position>
 {
-        void operator()(Position const& p, Vector<Move>& moves) const
+        template<typename Vector>
+        void operator()(Position const& p, Vector& moves) const
         {
                 typedef aux::copy<Color, Material::pawn, select::jumps, Position> PawnJumps;
+
                 Propagate<select::jumps, Position> propagate(p);
                 PawnJumps{propagate, moves}(p.pawns(Color));
         }
