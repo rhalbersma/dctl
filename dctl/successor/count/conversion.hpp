@@ -1,28 +1,27 @@
 #pragma once
-#include <dctl/successor/count/primary_fwd.hpp>
-#include <dctl/successor/count/jumps.hpp>
-#include <dctl/successor/count/both_promotions.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
+#include <dctl/successor/count/jumps.hpp>               // count (jumps specialization)
+#include <dctl/successor/count/both_promotions.hpp>     // count (combined king and pawn promotions specialization)
 // there are no king promotions
-#include <dctl/successor/count/pawn_promotions.hpp>
-#include <dctl/successor/select/conversion.hpp>
+#include <dctl/successor/count/pawn_promotions.hpp>     // count (pawn promotions specialization)
+#include <dctl/successor/select/conversion.hpp>         // conversions
+#include <dctl/successor/select/jumps.hpp>              // jumps
+#include <dctl/successor/select/promotions.hpp>         // promotions
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for legal successors enumeration
-template<bool Color, int Material, typename Position>
-struct count<Color, Material, select::conversion, Position>
+// partial specialization for conversions
+template<bool Color, int Material>
+struct count<Color, Material, select::conversion>
 {
-private:
-        // typedefs
-
-        typedef count<Color, Material, select::jumps,      Position> DoJumps;
-        typedef count<Color, Material, select::promotions, Position> DoPromotions;
-
-public:
+        template<typename Position>
         int operator()(Position const& p) const
         {
+                typedef count<Color, Material, select::jumps     > DoJumps;
+                typedef count<Color, Material, select::promotions> DoPromotions;
+
                 auto num_moves = DoJumps()(p);
                 if (!num_moves)
                         num_moves += DoPromotions()(p);

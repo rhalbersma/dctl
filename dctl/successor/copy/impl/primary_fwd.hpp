@@ -2,11 +2,13 @@
 
 namespace dctl {
 namespace successor {
-namespace aux {
+namespace detail {
+namespace impl {
 
 template<bool /* Color */, int /* Material */, typename /* Selection */, typename /* Position */>
 struct copy;
 
-}       // namespace aux
+}       // namespace impl
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

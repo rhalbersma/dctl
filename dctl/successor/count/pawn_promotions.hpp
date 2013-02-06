@@ -1,29 +1,27 @@
 #pragma once
-#include <dctl/successor/count/primary_fwd.hpp>
-#include <dctl/successor/count/pawn_moves.hpp>
-#include <dctl/successor/select/promotions.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/promotion.hpp>
-#include <dctl/node/unary_projections.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
+#include <dctl/successor/count/impl/pawn_moves.hpp>     // count (pawn moves specialization)
+#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/successor/select/promotions.hpp>         // promotions
+#include <dctl/node/material.hpp>                       // Material
+#include <dctl/node/promotion.hpp>                      // promoting_pawns
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for pawn moves generation
-template<bool Color, typename Position>
-struct count<Color, Material::pawn, select::promotions, Position>
+// partial specialization for pawn promotions
+template<bool Color>
+struct count<Color, Material::pawn, select::promotions>
 {
-private:
-        // typedefs
-
-        typedef count<Color, Material::pawn, select::moves, Position> PawnMoves;
-
-public:
+        template<typename Position>
         int operator()(Position const& p) const
         {
-                auto const active_promotors = promoting_pawns<Color>(p);
-                return active_promotors? PawnMoves().select(active_promotors, not_occupied(p)) : 0;
+                typedef impl::count<Color, Material::pawn, select::moves, Position> PawnMoves;
+
+                Propagate<select::moves, Position> const propagate(p);
+                return PawnMoves{propagate}(promoting_pawns<Color>(p));
         }
 };
 

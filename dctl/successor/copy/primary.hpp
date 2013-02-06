@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/copy/primary_fwd.hpp>  // copy (primary template)
+#include <dctl/successor/copy/primary_fwd.hpp>          // copy (primary template)
 
 namespace dctl {
 namespace successor {

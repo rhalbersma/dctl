@@ -1,6 +1,6 @@
 #pragma once
 #include <algorithm>                    // count
-#include <deque>                        // deque (avoids the infamous vector<bool>)
+#include <deque>                        // deque (NOTE: avoids vector<bool>)
 #include <iterator>                     // begin, end
 #include <limits>                       // numeric_limits
 #include <tuple>                        // get, tuple
@@ -141,7 +141,7 @@ private:
 
         bool empty(bool is_king) const
         {
-                return ((is_king? num_kings() : num_pieces() == 0)) && piece_order().empty() && piece_order().back() == is_king;
+                return ((is_king? num_kings() : num_pieces()) == 0) && piece_order().empty() && piece_order().back() == is_king;
         }
 
         bool full() const

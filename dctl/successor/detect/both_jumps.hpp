@@ -2,8 +2,8 @@
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <boost/mpl/logical.hpp>        // and_
 #include <dctl/successor/detect/primary_fwd.hpp>
-#include <dctl/successor/detect/king_jumps.hpp>
-#include <dctl/successor/detect/pawn_jumps.hpp>
+#include <dctl/successor/detect/impl/king_jumps.hpp>
+#include <dctl/successor/detect/impl/pawn_jumps.hpp>
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/unary_projections.hpp>
@@ -21,9 +21,9 @@ private:
 
         // the existence of pawn jumps is independent of Range,
         // but we always use rules::range::distance_1 to avoid template bloat
-        typedef detect<Color, Material::pawn, select::jumps, Position, rules::range::distance_1> PawnJumps;
+        typedef impl::detect<Color, Material::pawn, select::jumps, Position, rules::range::distance_1> PawnJumps;
 
-        typedef detect<Color, Material::king, select::jumps, Position, Range> KingJumps;
+        typedef impl::detect<Color, Material::king, select::jumps, Position, Range> KingJumps;
         typedef typename Position::rules_type Rules;
 
 public:

@@ -4,7 +4,7 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool, int, typename, typename>
+template<bool /* Color */, int /* Material */, typename /* Selection */>
 struct count;
 
 }       // namespace detail
