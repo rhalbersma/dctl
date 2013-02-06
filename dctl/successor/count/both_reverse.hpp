@@ -1,26 +1,28 @@
 #pragma once
-#include <dctl/successor/count/primary_fwd.hpp>
-#include <dctl/successor/count/king_moves.hpp>
-#include <dctl/successor/count/pawn_moves.hpp>
-#include <dctl/successor/select/reverse.hpp>
-#include <dctl/node/material.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
+#include <dctl/successor/count/impl/king_moves.hpp>     // count (king moves specialization)
+#include <dctl/successor/count/impl/pawn_moves.hpp>     // count (pawn moves specialization)
+#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/reverse.hpp>            // reverse
+#include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/node/material.hpp>                       // Material
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool Color, typename Position>
-struct count<Color, Material::both, select::reverse, Position>
+// partial specialization for combined king and pawn reverse moves
+template<bool Color>
+struct count<Color, Material::both, select::reverse>
 {
-private:
-        // typedefs
-        typedef count<Color, Material::king, select::reverse, Position> KingMoves;
-        typedef count<Color, Material::pawn, select::reverse, Position> PawnMoves;
-
-public:
+        template<typename Position>
         int operator()(Position const& p) const
         {
-                return KingMoves()(p) + PawnMoves()(p);
+                typedef impl::count<!Color, Material::king, select::moves, Position> KingReverse;
+                typedef impl::count<!Color, Material::pawn, select::moves, Position> PawnReverse;
+
+                Propagate<select::moves, Position> const propagate(p);
+                return KingReverse{propagate}(p.kings(Color)) + PawnReverse{propagate}(p.pawns(Color));
         }
 };
 

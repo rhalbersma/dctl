@@ -2,8 +2,8 @@
 #include <type_traits>                                  // false_type, true_type
 #include <boost/assert.hpp>                             // BOOST_ASSERT
 #include <boost/utility.hpp>                            // noncopyable
-#include <dctl/successor/copy/aux/primary_fwd.hpp>      // copy (primaray template)
-#include <dctl/successor/copy/aux/king_jumps.hpp>       // promote_en_passant
+#include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primaray template)
+#include <dctl/successor/copy/impl/king_jumps.hpp>      // promote_en_passant
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/angle/degrees.hpp>
@@ -18,7 +18,8 @@
 
 namespace dctl {
 namespace successor {
-namespace aux {
+namespace detail {
+namespace impl {
 
 // partial specialization for pawn jumps generation
 template<bool Color, typename Position>
@@ -332,6 +333,7 @@ private:
         }
 };
 
-}       // namespace aux
+}       // namespace impl
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

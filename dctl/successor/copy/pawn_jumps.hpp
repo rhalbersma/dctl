@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/successor/copy/primary_fwd.hpp>          // copy (primary template)
-#include <dctl/successor/copy/aux/pawn_jumps.hpp>       // copy (pawn jumps specialization)
+#include <dctl/successor/copy/impl/pawn_jumps.hpp>      // copy (pawn jumps specialization)
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/node/material.hpp>                       // Material
@@ -16,7 +16,7 @@ struct copy<Color, Material::pawn, select::jumps>
         template<typename Position, typename Vector>
         void operator()(Position const& p, Vector& moves) const
         {
-                typedef aux::copy<Color, Material::pawn, select::jumps, Position> PawnJumps;
+                typedef impl::copy<Color, Material::pawn, select::jumps, Position> PawnJumps;
 
                 Propagate<select::jumps, Position> propagate(p);
                 PawnJumps{propagate, moves}(p.pawns(Color));

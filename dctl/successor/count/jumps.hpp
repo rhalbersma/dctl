@@ -1,20 +1,21 @@
 #pragma once
-#include <dctl/successor/count/primary_fwd.hpp>
-#include <dctl/successor/select/jumps.hpp>
-#include <dctl/successor/copy/both_jumps.hpp>
-#include <dctl/successor/copy/king_jumps.hpp>
-#include <dctl/successor/copy/pawn_jumps.hpp>
-#include <dctl/node/move.hpp>
-#include <dctl/node/stack.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
+#include <dctl/successor/copy/both_jumps.hpp>           // copy (combined king and pawn jumps specialization)
+#include <dctl/successor/copy/king_jumps.hpp>           // copy (king jumps specialization)
+#include <dctl/successor/copy/pawn_jumps.hpp>           // copy (pawn jumps specialization)
+#include <dctl/successor/select/jumps.hpp>              // jumps
+#include <dctl/node/move.hpp>                           // Move
+#include <dctl/node/stack.hpp>                          // Vector, Alloc, Arena
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for jumps enumeration
-template<bool Color, int Material, typename Position>
-struct count<Color, Material, select::jumps, Position>
+// partial specialization for jumps
+template<bool Color, int Material>
+struct count<Color, Material, select::jumps>
 {
+        template<typename Position>
         int operator()(Position const& p) const
         {
                 Arena<Move> mar_;

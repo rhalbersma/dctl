@@ -1,8 +1,8 @@
 #pragma once
 #include <type_traits>                                  // false_type, true_type
 #include <dctl/successor/copy/primary_fwd.hpp>          // copy (primary template)
-#include <dctl/successor/copy/aux/king_jumps.hpp>       // copy (king jumps specialization)
-#include <dctl/successor/copy/aux/pawn_jumps.hpp>       // copy (pawn jumps specialization)
+#include <dctl/successor/copy/impl/king_jumps.hpp>      // copy (king jumps specialization)
+#include <dctl/successor/copy/impl/pawn_jumps.hpp>      // copy (pawn jumps specialization)
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/node/material.hpp>                       // Material
@@ -30,10 +30,10 @@ private:
         // template aliases
 
         template<typename Position>
-        using KingJumps = aux::copy<Color, Material::king, select::jumps, Position>;
+        using KingJumps = impl::copy<Color, Material::king, select::jumps, Position>;
 
         template<typename Position>
-        using PawnJumps = aux::copy<Color, Material::pawn, select::jumps, Position>;
+        using PawnJumps = impl::copy<Color, Material::pawn, select::jumps, Position>;
 
         // overload for no absolute king jump precedence
         template<typename Position, typename Vector>

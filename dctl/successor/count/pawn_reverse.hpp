@@ -1,28 +1,26 @@
 #pragma once
-#include <dctl/successor/count/primary_fwd.hpp>
-#include <dctl/successor/count/pawn_moves.hpp>
-#include <dctl/successor/select/reverse.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/unary_projections.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
+#include <dctl/successor/count/impl/pawn_moves.hpp>     // count (pawn moves specialization)
+#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/reverse.hpp>            // reverse
+#include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/node/material.hpp>                       // Material
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for pawn moves generation
-template<bool Color, typename Position>
-struct count<Color, Material::pawn, select::reverse, Position>
+// partial specialization for reverse pawn moves
+template<bool Color>
+struct count<Color, Material::pawn, select::reverse>
 {
-private:
-        // typedefs
-
-        typedef count<!Color, Material::pawn, select::moves, Position> PassivePawnMoves;
-
-public:
+        template<typename Position>
         int operator()(Position const& p) const
         {
-                auto const active_pawns = p.pawns(Color);
-                return active_pawns? PassivePawnMoves().select(active_pawns, not_occupied(p)) : 0;
+                typedef impl::count<!Color, Material::pawn, select::moves, Position> PawnReverse;
+
+                Propagate<select::moves, Position> const propagate(p);
+                return PawnReverse{propagate}(p.pawns(Color));
         }
 };
 
