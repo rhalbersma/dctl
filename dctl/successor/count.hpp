@@ -10,7 +10,7 @@ namespace successor {
 template<bool Color, int Material, typename Selection, typename Position>
 int count(Position const& p)
 {
-        return detail::count<Color, Material, Selection, Position>()(p);
+        return detail::count<Color, Material, Selection>()(p);
 }
 
 template<int Material, typename Selection, typename Position>

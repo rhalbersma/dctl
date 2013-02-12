@@ -13,28 +13,15 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool Color, typename Position, typename Range>
-struct detect<Color, Material::both, select::jumps, Position, Range>
+template<bool Color, typename Range>
+struct detect<Color, Material::both, select::jumps, Range>
 {
-private:
-        // typedefs
-
-        // the existence of pawn jumps is independent of Range,
-        // but we always use rules::range::distance_1 to avoid template bloat
-        typedef impl::detect<Color, Material::pawn, select::jumps, Position, rules::range::distance_1> PawnJumps;
-
-        typedef impl::detect<Color, Material::king, select::jumps, Position, Range> KingJumps;
-        typedef typename Position::rules_type Rules;
-
 public:
+        template<typename Position>
         bool operator()(Position const& p) const
         {
-                return combined(p);
-        }
+                typedef typename Position::rules_type Rules;
 
-private:
-        bool combined(Position const& p) const
-        {
                 // tag dispatching on combined king and pawn jump detection
                 // kings and pawns need to jump identically: i.e. have the same
                 // (a) range, (b) jump directions, and (c) jump targets
@@ -57,20 +44,33 @@ private:
                 );
         }
 
+private:
+        // template aliases
+
+        // the existence of pawn jumps is independent of Range,
+        // but we always use rules::range::distance_1 to avoid template bloat
+        template<typename Position>
+        using PawnJumps = impl::detect<Color, Material::pawn, select::jumps, Position, rules::range::distance_1>;
+
+        template<typename Position>
+        using KingJumps = impl::detect<Color, Material::king, select::jumps, Position, Range>;
+
         // overload for combined king and pawn jump detection
+        template<typename Position>
         bool combined_dispatch(Position const& p, std::true_type) const
         {
-                typedef PawnJumps PiecesJumps;
-
-                auto const active_pieces = p.pieces(Color);
-                return active_pieces? PiecesJumps().select(active_pieces, targets<Color>(p), not_occupied(p)) : false;
+                Propagate<select::jumps, Position> propagate(p);
+                return PawnJumps<Position>{propagate}(p.pieces(Color));
         }
 
         // overload for separate king and pawn jump detection
+        template<typename Position>
         bool combined_dispatch(Position const& p, std::false_type) const
         {
+                Propagate<select::jumps, Position> propagate(p);
+
                 // speculate #pawns > #kings so that the logical OR is more likely to short-circuit
-                return PawnJumps()(p) || KingJumps()(p);
+                return PawnJumps<Position>{propagate}(p.pawns(Color)) || KingJumps<Position>{propagate}(p.kings(Color));
         }
 };
 

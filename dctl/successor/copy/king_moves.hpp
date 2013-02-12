@@ -16,10 +16,10 @@ struct copy<Color, Material::king, select::moves>
         template<typename Position, typename Vector>
         void operator()(Position const& p, Vector& moves) const
         {
-                typedef impl::copy<Color, Material::king, select::moves, Position> PawnMoves;
+                typedef impl::copy<Color, Material::king, select::moves, Position> KingMoves;
 
                 Propagate<select::moves, Position> const propagate(p);
-                PawnMoves{propagate, moves}(p.pawns(Color));
+                KingMoves{propagate, moves}(moveable_kings(p, Color));
         }
 };
 

@@ -1,55 +1,26 @@
 #pragma once
-#include <dctl/successor/detect/primary_fwd.hpp>
-#include <dctl/successor/select/moves.hpp>
-#include <dctl/bit/bit.hpp>
-#include <dctl/board/compass.hpp>
-#include <dctl/board/patterns.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/unary_projections.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>        // detect (primary template)
+#include <dctl/successor/detect/impl/pawn_moves.hpp>    // detect (pawn moves specialization)
+#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/node/material.hpp>                       // Material
+#include <dctl/rules/traits.hpp>                        // distance_1
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
 // partial specialization for pawn moves detection
-template<bool Color, typename Position, typename Range>
-struct detect<Color, Material::pawn, select::moves, Position, Range>
+template<bool Color, typename Range>
+struct detect<Color, Material::pawn, select::moves, Range>
 {
-private:
-        // typedefs
-
-        typedef typename Position::board_type Board;
-        typedef board::Compass<Color, Board> Compass;
-
-public:
+        template<typename Position>
         bool operator()(Position const& p) const
         {
-                auto const active_pawns = p.pawns(Color);
-                return active_pawns? select(active_pawns, not_occupied(p)) : false;
-        }
+                typedef impl::detect<Color, Material::pawn, select::moves, Position, rules::range::distance_1> PawnMoves;
 
-        bool select(BitBoard active_pawns, BitBoard not_occupied) const
-        {
-                return branch(active_pawns, not_occupied);
-        }
-
-private:
-        bool branch(BitBoard active_pawns, BitBoard not_occupied) const
-        {
-                return (
-                        parallelize<typename Compass::left_up >(active_pawns, not_occupied) ||
-                        parallelize<typename Compass::right_up>(active_pawns, not_occupied)
-                );
-        }
-
-        template<typename Direction>
-        bool parallelize(BitBoard active_pawns, BitBoard not_occupied) const
-        {
-                return !bit::is_zero(
-                        Sink<Board, Direction, rules::range::distance_1>()(active_pawns, not_occupied)
-                );
+                Propagate<select::moves, Position> const propagate(p);
+                return PawnMoves{propagate}(p.pawns(Color));
         }
 };
 

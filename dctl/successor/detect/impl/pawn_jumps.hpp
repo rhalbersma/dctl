@@ -25,17 +25,25 @@ private:
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
         typedef board::Compass<Color, Board> Compass;
+        typedef Propagate<select::jumps, Position> State;
+
+        // representation
+
+        State& propagate_;
 
 public:
-        bool operator()(Position const& p) const
-        {
-                auto const active_pawns = p.pawns(Color);
-                return active_pawns? select(active_pawns, targets<Color>(p), not_occupied(p)) : false;
-        }
+        // structors
 
-        bool select(BitBoard active_pawns, BitBoard passive_pieces, BitBoard not_occupied) const
+        explicit detect(State& p)
+        :
+                propagate_(p)
+        {}
+
+        // function call operators
+
+        bool operator()(BitBoard active_pawns) const
         {
-                return branch(active_pawns, passive_pieces, not_occupied);
+                return active_pawns? branch(active_pawns) : false;
         }
 
 private:
@@ -96,7 +104,7 @@ private:
         bool parallelize(BitBoard active_pawns) const
         {
                 return !bit::is_zero(
-                        Sandwich<Board, Direction, rules::range::distance_1>()(active_pawns, passive_pieces, not_occupied)
+                        Sandwich<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.template targets_with_pawn<Direction>(), propagate_.path())
                 );
         }
 };

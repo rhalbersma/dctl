@@ -15,16 +15,17 @@ namespace successor {
 namespace detail {
 
 // partial specialization for legal successors detection
-template<bool Color, int Material, typename Position, typename Range>
-struct detect<Color, Material, select::legal, Position, Range>
+template<bool Color, int Material, typename Range>
+struct detect<Color, Material, select::legal, Range>
 {
+        template<typename Position>
         bool operator()(Position const& p) const
         {
-                typedef detect<Color, Material, select::moves, Position, rules::range::distance_1> ShortMoves;
-                typedef detect<Color, Material, select::jumps, Position, rules::range::distance_1> ShortJumps;
+                typedef detect<Color, Material, select::moves, rules::range::distance_1> ShortMoves;
+                typedef detect<Color, Material, select::jumps, rules::range::distance_1> ShortJumps;
 
                 // speculate #moves > #jumps, so that the logical OR is more likely to short-circuit
-                return ShortMoves(p) || ShortJumps(p);
+                return ShortMoves()(p) || ShortJumps()(p);
         }
 };
 

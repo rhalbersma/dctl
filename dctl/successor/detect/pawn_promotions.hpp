@@ -1,30 +1,27 @@
 #pragma once
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/pawn_moves.hpp>
-#include <dctl/successor/select/promotions.hpp>
+#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/promotions.hpp>         // promotions
+#include <dctl/successor/select/moves.hpp>              // moves
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
-#include <dctl/node/stack.hpp>
-#include <dctl/node/unary_projections.hpp>
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
 // partial specialization for pawn moves generation
-template<bool Color, typename Position>
-struct detect<Color, Material::pawn, select::promotions, Position>
+template<bool Color, typename Range>
+struct detect<Color, Material::pawn, select::promotions, Range>
 {
-private:
-        // typedefs
-
-        typedef detect<Color, Material::pawn, select::moves, Position> PawnMoves;
-
-public:
+        template<typename Position>
         bool operator()(Position const& p) const
         {
-                auto const active_promotors = promoting_pawns<Color>(p);
-                return active_pawns? PawnMoves().select(active_promotors, not_occupied(p)) : false;
+                typedef impl::detect<Color, Material::pawn, select::moves, Position, rules::range::distance_1> PawnMoves;
+
+                Propagate<select::moves, Position> const propagate(p);
+                return PawnMoves{propagate}(promoting_pawns<Color>(p));
         }
 };
 
