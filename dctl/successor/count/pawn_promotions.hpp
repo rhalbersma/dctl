@@ -2,8 +2,8 @@
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
 #include <dctl/successor/count/impl/pawn_moves.hpp>     // count (pawn moves specialization)
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
-#include <dctl/successor/select/moves.hpp>              // moves
 #include <dctl/successor/select/promotions.hpp>         // promotions
+#include <dctl/successor/select/moves.hpp>              // moves
 #include <dctl/node/material.hpp>                       // Material
 #include <dctl/node/promotion.hpp>                      // promoting_pawns
 

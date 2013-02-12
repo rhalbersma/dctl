@@ -8,10 +8,10 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool Color, typename Position>
-struct detect<Color, Material::both, select::promotions, Position>
+template<bool Color, typename Range>
+struct detect<Color, Material::both, select::promotions, Range>
 :
-        detect<Color, Material::pawn, select::promotions, Position>
+        detect<Color, Material::pawn, select::promotions, Range>
 {};
 
 }       // namespace detail

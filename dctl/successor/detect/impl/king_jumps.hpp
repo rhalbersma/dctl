@@ -24,9 +24,23 @@ private:
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
         typedef board::Compass<Color, Board> Compass;
+        typedef Propagate<select::jumps, Position> State;
+
+        // representation
+
+        State const& propagate_;
 
 public:
-        bool operator()(Position const& p) const
+        // structors
+
+        explicit detect(State const& p)
+        :
+                propagate_(p)
+        {}
+
+        // function call operators
+
+        bool operator()(BitBoard active_kings) const
         {
                 return active_kings? branch(active_kings) : false;
         }
@@ -73,7 +87,7 @@ private:
         bool parallelize(BitBoard active_kings) const
         {
                 return !bit::is_zero(
-                        Sandwich<Board, Direction, Range>()(active_kings, propagate_.targets(), propagate_.path())
+                        Sandwich<Board, Direction, Range>()(active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path())
                 );
         }
 };

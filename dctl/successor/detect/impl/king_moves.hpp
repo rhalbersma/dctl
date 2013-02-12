@@ -26,7 +26,7 @@ private:
 
         typedef typename Position::board_type Board;
         typedef board::Compass<Color, Board> Compass;
-        typedef Propgate<select::moves, Position> State;
+        typedef Propagate<select::moves, Position> State;
 
         // representation
 

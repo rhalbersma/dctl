@@ -1,22 +1,20 @@
 #pragma once
-#include <dctl/successor/detect/primary_fwd.hpp>
-#include <dctl/successor/select/moves.hpp>
-#include <dctl/bit/bit.hpp>
-#include <dctl/board/compass.hpp>
-#include <dctl/board/patterns.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/unary_projections.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>        // detect (primary template)
+#include <dctl/successor/detect/impl/king_moves.hpp>    // detect (king moves specialization)
+#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/node/material.hpp>                       // Material
+#include <dctl/rules/traits.hpp>                        // distance_1
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
 // partial specialization for king moves detection
-template<bool Color, typename Position, typename Range>
-struct detect<Color, Material::king, select::moves, Position, Range>
+template<bool Color, typename Range>
+struct detect<Color, Material::king, select::moves, Range>
 {
+        template<typename Position>
         bool operator()(Position const& p) const
         {
                 typedef impl::detect<Color, Material::king, select::moves, Position, rules::range::distance_1> KingMoves;

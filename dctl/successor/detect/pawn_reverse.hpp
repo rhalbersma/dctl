@@ -1,29 +1,27 @@
 #pragma once
-#include <dctl/successor/detect/primary_fwd.hpp>
-#include <dctl/successor/detect/pawn_moves.hpp>
-#include <dctl/successor/select/reverse.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>        // detect (primary template)
+#include <dctl/successor/detect/impl/pawn_moves.hpp>    // detect (pawn moves specialization)
+#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/reverse.hpp>            // reverse
+#include <dctl/successor/select/moves.hpp>              // moves
 #include <dctl/node/material.hpp>
-#include <dctl/node/stack.hpp>
-#include <dctl/node/unary_projections.hpp>
+#include <dctl/rules/traits.hpp>
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
 // partial specialization for pawn moves generation
-template<bool Color, typename Position>
-struct detect<Color, Material::pawn, select::reverse, Position>
+template<bool Color, typename Range>
+struct detect<Color, Material::pawn, select::reverse, Range>
 {
-private:
-        // typedefs
-
-        typedef detect<!Color, Material::pawn, select::moves, Position> PassivePawnMoves;
-
-public:
+        template<typename Position>
         bool operator()(Position const& p) const
         {
-                auto const active_pawns = p.pawns(Color);
-                return active_pawns? PassivePawnMoves().select(active_pawns, not_occupied(p)) : false;
+                typedef impl::detect<!Color, Material::pawn, select::moves, Position, rules::range::distance_1> PawnReverse;
+
+                Propagate<select::moves, Position> const propagate(p);
+                return PawnReverse{propagate}(p.pawns(Color));
         }
 };
 

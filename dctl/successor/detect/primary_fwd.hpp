@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/rules/enum.hpp>
 
 namespace dctl {
 namespace successor {
@@ -6,8 +7,7 @@ namespace detail {
 
 template
 <
-        bool, int, typename, typename Position,
-        typename Range = typename Position::rules_type::king_range
+        bool /* Color */, int /* Material */, typename /* Selection */, typename Range = rules::range::distance_1
 >
 struct detect;
 

@@ -16,13 +16,14 @@ namespace successor {
 namespace detail {
 
 // partial specialization for conversions
-template<bool Color, int Material, typename Position, typename Range>
-struct detect<Color, Material, select::conversion, Position, Range>
+template<bool Color, int Material, typename Range>
+struct detect<Color, Material, select::conversion, Range>
 {
+        template<typename Position>
         bool operator()(Position const& p) const
         {
-                typedef detect<Color, Material, select::jumps,      Position, Range                   > DoJumps;
-                typedef detect<Color, Material, select::promotions, Position, rules::range::distance_1> DoPromotions;
+                typedef detect<Color, Material, select::jumps,      Range                   > DoJumps;
+                typedef detect<Color, Material, select::promotions, rules::range::distance_1> DoPromotions;
 
                 // speculate #jumps > #promotions, so that the || is likely to short-circuit
                 return DoJumps()(p) || DoPromotions()(p);

@@ -203,6 +203,7 @@ void announce(Position const& p, int depth, int num_moves)
         std::cout << "\n";
 }
 
+inline
 void print_move(std::string const& move, int i)
 {
         std::cout << std::setw(2) << (i + 1) << "." << move << " ";
@@ -237,6 +238,7 @@ void report(int depth, NodeCount leafs, Timer const& timer, Enhancements e)
         std::cout << std::endl;
 }
 
+inline
 void summary(NodeCount leafs)
 {
         std::cout << "Total leafs: " << leafs << "\n\n";
