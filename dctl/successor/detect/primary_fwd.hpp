@@ -7,7 +7,7 @@ namespace detail {
 
 template
 <
-        bool /* Color */, int /* Material */, typename /* Selection */, typename Range = rules::range::distance_1
+        bool /* Color */, typename /* Material */, typename /* Select */, typename Range = rules::range::distance_1
 >
 struct detect;
 

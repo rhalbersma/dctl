@@ -6,7 +6,10 @@ namespace successor {
 namespace detail {
 
 // primary template (default implementation)
-template<bool /* Color */, int /* Material */, typename /* Selection */>
+template
+<
+        bool /* Color */, typename /* Material */, typename /* Select */
+>
 struct copy
 {
         template<typename Position, typename Vector>

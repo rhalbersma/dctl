@@ -582,7 +582,7 @@
     <ClInclude Include="..\..\..\dctl\successor\detection\both_reverse.hpp">
       <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\successor\detection\conversion.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\detection\conversions.hpp">
       <Filter>Header Files\successor\detection</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\successor\detection\detect.hpp">
@@ -630,7 +630,7 @@
     <ClInclude Include="..\..\..\dctl\successor\enumeration\both_reverse.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\successor\enumeration\conversion.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\conversions.hpp">
       <Filter>Header Files\successor\enumeration</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\successor\enumeration\count.hpp">
@@ -678,7 +678,7 @@
     <ClInclude Include="..\..\..\dctl\successor\generation\both_reverse.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\dctl\successor\generation\conversion.hpp">
+    <ClInclude Include="..\..\..\dctl\successor\generation\conversions.hpp">
       <Filter>Header Files\successor\generation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\dctl\successor\generation\generate.hpp">

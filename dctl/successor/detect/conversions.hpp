@@ -1,12 +1,12 @@
 #pragma once
 #include <dctl/successor/detect/primary_fwd.hpp>        // detect (primary template)
-#include <dctl/successor/detect/both_jumps.hpp>         // detect (combined king and pawn jumps specialization)
-#include <dctl/successor/detect/both_promotions.hpp>    // detect (combined king and pawn promotions specialization)
+#include <dctl/successor/detect/piece_jumps.hpp>        // detect (piece jumps specialization)
+#include <dctl/successor/detect/piece_promotions.hpp>   // detect (piece promotions specialization)
 #include <dctl/successor/detect/king_jumps.hpp>         // detect (king jumps specialization)
 // there are no king promotions
 #include <dctl/successor/detect/pawn_jumps.hpp>         // detect (pawn jumps specialization)
 #include <dctl/successor/detect/pawn_promotions.hpp>    // detect (pawn promotions specialization)
-#include <dctl/successor/select/conversion.hpp>         // conversion
+#include <dctl/successor/select/conversions.hpp>        // conversions
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/successor/select/promotions.hpp>         // promotions
 #include <dctl/rules/traits.hpp>
@@ -16,8 +16,8 @@ namespace successor {
 namespace detail {
 
 // partial specialization for conversions
-template<bool Color, int Material, typename Range>
-struct detect<Color, Material, select::conversion, Range>
+template<bool Color, typename Material, typename Range>
+struct detect<Color, Material, select::conversions, Range>
 {
         template<typename Position>
         bool operator()(Position const& p) const

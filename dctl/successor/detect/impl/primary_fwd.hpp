@@ -7,7 +7,7 @@ namespace impl {
 
 template
 <
-        bool, int, typename, typename Position,
+        bool, typename, typename, typename Position,
         typename Range = typename Position::rules_type::king_range
 >
 struct detect;

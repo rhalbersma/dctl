@@ -3,14 +3,15 @@
 #include <boost/assert.hpp>                             // BOOST_ASSERT
 #include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
+#include <dctl/successor/material/king.hpp>             // king
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate
 #include <dctl/successor/select/jumps.hpp>              // jumps
+
 #include <dctl/angle/degrees.hpp>                       // Degrees
 #include <dctl/angle/transform.hpp>                     // rotate
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>                      // Next
-#include <dctl/node/material.hpp>                       // king
 #include <dctl/node/move.hpp>                           //
 #include <dctl/node/stack.hpp>                          // Vector
 #include <dctl/rules/traits.hpp>                        // traits
@@ -23,7 +24,7 @@ namespace impl {
 
 // partial specialization for king jumps generation
 template<bool Color, typename Position>
-struct copy<Color, Material::king, select::jumps, Position>
+struct copy<Color, material::king, select::jumps, Position>
 :
         // enforce reference semantics
         private boost::noncopyable

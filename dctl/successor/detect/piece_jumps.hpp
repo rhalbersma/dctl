@@ -4,9 +4,11 @@
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/impl/king_jumps.hpp>
 #include <dctl/successor/detect/impl/pawn_jumps.hpp>
+#include <dctl/successor/material/piece.hpp>            // piece
+#include <dctl/successor/material/king.hpp>             // king
+#include <dctl/successor/material/pawn.hpp>             // pawn
+#include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 
 namespace dctl {
@@ -14,7 +16,7 @@ namespace successor {
 namespace detail {
 
 template<bool Color, typename Range>
-struct detect<Color, Material::both, select::jumps, Range>
+struct detect<Color, material::piece, select::jumps, Range>
 {
 public:
         template<typename Position>
@@ -22,7 +24,7 @@ public:
         {
                 typedef typename Position::rules_type Rules;
 
-                // tag dispatching on combined king and pawn jump detection
+                // tag dispatching on piece jump detection
                 // kings and pawns need to jump identically: i.e. have the same
                 // (a) range, (b) jump directions, and (c) jump targets
                 return combined_dispatch(
@@ -50,12 +52,12 @@ private:
         // the existence of pawn jumps is independent of Range,
         // but we always use rules::range::distance_1 to avoid template bloat
         template<typename Position>
-        using PawnJumps = impl::detect<Color, Material::pawn, select::jumps, Position, rules::range::distance_1>;
+        using PawnJumps = impl::detect<Color, material::pawn, select::jumps, Position, rules::range::distance_1>;
 
         template<typename Position>
-        using KingJumps = impl::detect<Color, Material::king, select::jumps, Position, Range>;
+        using KingJumps = impl::detect<Color, material::king, select::jumps, Position, Range>;
 
-        // overload for combined king and pawn jump detection
+        // overload for piece jump detection
         template<typename Position>
         bool combined_dispatch(Position const& p, std::true_type) const
         {

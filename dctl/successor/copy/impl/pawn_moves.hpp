@@ -1,16 +1,16 @@
 #pragma once
 #include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
+#include <dctl/successor/material/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // select
+
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/node/material.hpp>
 #include <dctl/node/move.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/stack.hpp>
-#include <dctl/node/unary_projections.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -19,7 +19,7 @@ namespace detail {
 namespace impl {
 
 template<bool Color, typename Position>
-struct copy<Color, Material::pawn, select::moves, Position>
+struct copy<Color, material::pawn, select::moves, Position>
 :
         // enforce reference semantics
         boost::noncopyable

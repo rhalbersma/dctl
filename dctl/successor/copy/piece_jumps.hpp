@@ -3,18 +3,20 @@
 #include <dctl/successor/copy/primary_fwd.hpp>          // copy (primary template)
 #include <dctl/successor/copy/impl/king_jumps.hpp>      // copy (king jumps specialization)
 #include <dctl/successor/copy/impl/pawn_jumps.hpp>      // copy (pawn jumps specialization)
+#include <dctl/successor/material/piece.hpp>            // piece
+#include <dctl/successor/material/king.hpp>             // king
+#include <dctl/successor/material/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
-#include <dctl/node/material.hpp>                       // Material
 #include <dctl/rules/traits.hpp>                        // traits
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for combined king and pawn jumps
+// partial specialization for piece jumps
 template<bool Color>
-struct copy<Color, Material::both, select::jumps>
+struct copy<Color, material::piece, select::jumps>
 {
 public:
         template<typename Position, typename Vector>
@@ -30,10 +32,10 @@ private:
         // template aliases
 
         template<typename Position>
-        using KingJumps = impl::copy<Color, Material::king, select::jumps, Position>;
+        using KingJumps = impl::copy<Color, material::king, select::jumps, Position>;
 
         template<typename Position>
-        using PawnJumps = impl::copy<Color, Material::pawn, select::jumps, Position>;
+        using PawnJumps = impl::copy<Color, material::pawn, select::jumps, Position>;
 
         // overload for no absolute king jump precedence
         template<typename Position, typename Vector>

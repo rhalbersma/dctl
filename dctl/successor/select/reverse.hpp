@@ -4,7 +4,7 @@ namespace dctl {
 namespace successor {
 namespace select {
 
-struct reverse;
+struct reverse {};
 
 }       // namespace select
 }       // namespace successor

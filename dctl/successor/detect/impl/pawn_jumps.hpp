@@ -1,12 +1,13 @@
 #pragma once
 #include <dctl/successor/detect/impl/primary_fwd.hpp>
+#include <dctl/successor/material/pawn.hpp>             // pawn
+#include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>
+
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/patterns.hpp>
-#include <dctl/node/material.hpp>
 #include <dctl/node/targets.hpp>
-#include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
@@ -17,7 +18,7 @@ namespace impl {
 
 // partial specialization for pawn jumps detection
 template<bool Color, typename Position, typename Range>
-struct detect<Color, Material::pawn, select::jumps, Position, Range>
+struct detect<Color, material::pawn, select::jumps, Position, Range>
 {
 private:
         // typedefs

@@ -1,31 +1,32 @@
 #pragma once
-#include <dctl/successor/select/legal.hpp>            // DefaultSelection
-#include <dctl/successor/count/specializations.hpp>  // count
-#include <dctl/node/material.hpp>               // both
-#include <dctl/node/side.hpp>                   // black, white
+#include <cstddef>                                      // size_t
+#include <dctl/successor/select/legal.hpp>              // legal
+#include <dctl/successor/count/specializations.hpp>     // count
+#include <dctl/successor/material/piece.hpp>            // piece
+#include <dctl/node/side.hpp>                           // black, white
 
 namespace dctl {
 namespace successor {
 
-template<bool Color, int Material, typename Selection, typename Position>
-int count(Position const& p)
+template<bool Color, typename Material, typename Select, typename Position>
+std::size_t count(Position const& p)
 {
-        return detail::count<Color, Material, Selection>()(p);
+        return detail::count<Color, Material, Select>()(p);
 }
 
-template<int Material, typename Selection, typename Position>
-int count(Position const& p)
+template<typename Material, typename Select, typename Position>
+std::size_t count(Position const& p)
 {
         return (p.active_color() == Side::black)?
-                count<Side::black, Material, Selection>(p) :
-                count<Side::white, Material, Selection>(p)
+                count<Side::black, Material, Select>(p) :
+                count<Side::white, Material, Select>(p)
         ;
 }
 
 template<typename Position>
-int count(Position const& p)
+std::size_t count(Position const& p)
 {
-        return count<Material::both, select::legal>(p);
+        return count<material::piece, select::legal>(p);
 }
 
 }       // namespace successor

@@ -1,6 +1,7 @@
 #pragma once
-#include <cstdint>                      // uint<X>_t for X = 8, 16, 32, 64
-#include <boost/mpl/int.hpp>            // int_
+#include <cstddef>              // size_t
+#include <cstdint>              // uint<X>_t for X = 8, 16, 32, 64
+#include <type_traits>          // integral_constant
 
 namespace dctl {
 
@@ -14,17 +15,17 @@ typedef uint64_t BitIndex;
 template<typename T>
 struct num_bits
 :
-        boost::mpl::int_<8 * sizeof(T)>
+        std::integral_constant<std::size_t, 8 * sizeof(T)>
 {};
 
 // primary template
 template<typename> struct log2_sizeof;
 
 // specializations for integral types
-template<> struct log2_sizeof<uint8_t>  : boost::mpl::int_<3> {};
-template<> struct log2_sizeof<uint16_t> : boost::mpl::int_<4> {};
-template<> struct log2_sizeof<uint32_t> : boost::mpl::int_<5> {};
-template<> struct log2_sizeof<uint64_t> : boost::mpl::int_<6> {};
+template<> struct log2_sizeof<uint8_t>  : std::integral_constant<std::size_t, 3> {};
+template<> struct log2_sizeof<uint16_t> : std::integral_constant<std::size_t, 4> {};
+template<> struct log2_sizeof<uint32_t> : std::integral_constant<std::size_t, 5> {};
+template<> struct log2_sizeof<uint64_t> : std::integral_constant<std::size_t, 6> {};
 
 // primary template
 template<int> struct exp2_typeof;

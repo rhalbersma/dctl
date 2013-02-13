@@ -1,6 +1,7 @@
 #pragma once
+#include <cstddef>                                      // size_t
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
-#include <dctl/successor/copy/both_jumps.hpp>           // copy (combined king and pawn jumps specialization)
+#include <dctl/successor/copy/piece_jumps.hpp>          // copy (piece jumps specialization)
 #include <dctl/successor/copy/king_jumps.hpp>           // copy (king jumps specialization)
 #include <dctl/successor/copy/pawn_jumps.hpp>           // copy (pawn jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
@@ -12,11 +13,11 @@ namespace successor {
 namespace detail {
 
 // partial specialization for jumps
-template<bool Color, int Material>
+template<bool Color, typename Material>
 struct count<Color, Material, select::jumps>
 {
         template<typename Position>
-        int operator()(Position const& p) const
+        std::size_t operator()(Position const& p) const
         {
                 Arena<Move> mar_;
                 Alloc<Move> mal_(mar_);

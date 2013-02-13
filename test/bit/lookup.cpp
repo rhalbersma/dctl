@@ -23,13 +23,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(LookupCount, T, UnsignedIntegerTypes)
 {
         BOOST_CHECK_EQUAL(0, lookup::count(zero<T>()));
 
-        for (auto i = 0; i < num_bits<T>::value; ++i) {
+        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
                 BOOST_CHECK_EQUAL(1, lookup::count(b));
         }
 
-        for (auto i = 0; i < num_bits<T>::value; ++i) {
-                for (auto j = 0; j < num_bits<T>::value; ++j) {
+        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
+                for (std::size_t j = 0; j < num_bits<T>::value; ++j) {
                         auto const b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j)
                                 BOOST_CHECK_EQUAL(0, lookup::count(b));
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(LookupCount, T, UnsignedIntegerTypes)
                 }
         }
 
-        for (auto i = 0; i < num_bits<T>::value; ++i) {
+        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i) - 1;
                 BOOST_CHECK_EQUAL(i, lookup::count(b));
         }
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(LookupCount, T, UnsignedIntegerTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(LookupIndex, T, UnsignedIntegerTypes)
 {
-        for (auto i = 0; i < num_bits<T>::value; ++i) {
+        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
                 BOOST_CHECK_EQUAL(i, lookup::index(b));
         }

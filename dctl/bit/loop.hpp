@@ -11,11 +11,11 @@ namespace detail {
 template<typename T>
 struct count
 {
-        int operator()(T b)
+        std::size_t operator()(T b)
         {
                 // Kernighan & Ritchie, The C programming language, 2nd Ed.
                 // https://chessprogramming.wikispaces.com/Population+Count
-                auto n = 0;
+                std::size_t n = 0;
                 for (; b; first::clear(b))
                         ++n;
                 return n;
@@ -27,7 +27,7 @@ struct index
 {
         int operator()(T b)
         {
-                for (auto i = 0; i < num_bits<T>::value; ++i)
+                for (std::size_t i = 0; i < num_bits<T>::value; ++i)
                         if (is_element(singlet<T>(i), b))
                                 return i;
                 return 0;
@@ -39,7 +39,7 @@ struct index
 }       // namespace detail
 
 template<typename T>
-int count(T b)
+std::size_t count(T b)
 {
         return detail::count<T>()(b);
 }

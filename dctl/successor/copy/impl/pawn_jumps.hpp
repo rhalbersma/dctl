@@ -4,14 +4,15 @@
 #include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primaray template)
 #include <dctl/successor/copy/impl/king_jumps.hpp>      // promote_en_passant
+#include <dctl/successor/material/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
+
 #include <dctl/angle/degrees.hpp>
 #include <dctl/angle/transform.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
@@ -23,7 +24,7 @@ namespace impl {
 
 // partial specialization for pawn jumps generation
 template<bool Color, typename Position>
-struct copy<Color, Material::pawn, select::jumps, Position>
+struct copy<Color, material::pawn, select::jumps, Position>
 :
         // enforce reference semantics
         private boost::noncopyable
@@ -31,7 +32,7 @@ struct copy<Color, Material::pawn, select::jumps, Position>
 private:
         // typedefs
 
-        typedef copy<Color, Material::king, select::jumps, Position> KingJumps;
+        typedef copy<Color, material::king, select::jumps, Position> KingJumps;
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
         typedef board::Compass<Color, Board> Compass;
