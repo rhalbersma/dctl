@@ -20,10 +20,10 @@ struct count;
 template<>
 struct count<uint64_t>
 {
-        int operator()(uint64_t b)
+        std::size_t operator()(uint64_t b)
         {
 #ifdef _MSC_VER
-                return static_cast<int>(__popcnt64(b));
+                return __popcnt64(b);
 #else
                 __asm__("popcnt %1, %0" : "=r" (b) : "r" (b));
                 return b;
@@ -56,7 +56,7 @@ struct index<uint64_t>
 }       // namespace detail
 
 template<typename T>
-int count(T b)
+std::size_t count(T b)
 {
         return detail::count<T>()(b);
 }

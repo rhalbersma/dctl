@@ -5,7 +5,10 @@ namespace successor {
 namespace detail {
 namespace impl {
 
-template<bool /* Color */, int /* Material */, typename /* Selection */, typename /* Position */>
+template
+<
+        bool /* Color */, typename /* Material */, typename /* Select */, typename /* Position */
+>
 struct copy;
 
 }       // namespace impl

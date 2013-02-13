@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>                              // size_t
 #include <limits>                               // numeric_limits
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/operators.hpp>                  // totally_ordered
@@ -43,7 +44,7 @@ public:
 
         // queries
 
-        int count() const
+        std::size_t count() const
         {
                 return num_pieces_;
         }
@@ -65,7 +66,7 @@ public:
 private:
         bool invariant() const
         {
-                return 0 <= num_pieces_ && num_pieces_ <= std::numeric_limits<int>::max();
+                return num_pieces_ <= std::numeric_limits<std::size_t>::max();
         }
 
         bool empty() const
@@ -75,12 +76,12 @@ private:
 
         bool full() const
         {
-                return num_pieces_ == std::numeric_limits<int>::max();
+                return num_pieces_ == std::numeric_limits<std::size_t>::max();
         }
 
         // representation
 
-        int num_pieces_;
+        std::size_t num_pieces_;
 };
 
 }       // namespace successor

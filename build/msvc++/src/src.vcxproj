@@ -184,7 +184,7 @@
     <ClInclude Include="..\..\..\dctl\successor\detection\both_moves.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\detection\both_promotions.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\detection\both_reverse.hpp" />
-    <ClInclude Include="..\..\..\dctl\successor\detection\conversion.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\detection\conversions.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\detection\detect.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\detection\primary_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\detection\king_jumps.hpp" />
@@ -200,7 +200,7 @@
     <ClInclude Include="..\..\..\dctl\successor\enumeration\both_moves.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\enumeration\both_promotions.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\enumeration\both_reverse.hpp" />
-    <ClInclude Include="..\..\..\dctl\successor\enumeration\conversion.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\enumeration\conversions.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\enumeration\count.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\enumeration\primary_fwd.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\enumeration\king_jumps.hpp" />
@@ -217,7 +217,7 @@
     <ClInclude Include="..\..\..\dctl\successor\generation\both_moves.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\both_promotions.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\both_reverse.hpp" />
-    <ClInclude Include="..\..\..\dctl\successor\generation\conversion.hpp" />
+    <ClInclude Include="..\..\..\dctl\successor\generation\conversions.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\generate.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\copy.hpp" />
     <ClInclude Include="..\..\..\dctl\successor\generation\primary_fwd.hpp" />

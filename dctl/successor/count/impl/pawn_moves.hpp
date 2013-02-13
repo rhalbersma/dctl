@@ -1,12 +1,13 @@
 #pragma once
+#include <cstddef>
 #include <dctl/successor/count/impl/primary_fwd.hpp>
+#include <dctl/successor/material/pawn.hpp>
 #include <dctl/successor/propagate/moves.hpp>
 #include <dctl/successor/select/moves.hpp>
+
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/patterns.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
@@ -17,7 +18,7 @@ namespace impl {
 
 // partial specialization for pawn moves enumeration
 template<bool Color, typename Position>
-struct count<Color, Material::pawn, select::moves, Position>
+struct count<Color, material::pawn, select::moves, Position>
 :
         // enforce reference semantics
         boost::noncopyable
@@ -43,13 +44,13 @@ public:
 
         // function call operators
 
-        int operator()(BitBoard active_pawns) const
+        std::size_t operator()(BitBoard active_pawns) const
         {
                 return active_pawns? branch(active_pawns) : 0;
         }
 
 private:
-        int branch(BitBoard active_pawns) const
+        std::size_t branch(BitBoard active_pawns) const
         {
                 return (
                         parallelize<typename Compass::left_up >(active_pawns) +
@@ -58,7 +59,7 @@ private:
         }
 
         template<typename Direction>
-        int parallelize(BitBoard active_pawns) const
+        std::size_t parallelize(BitBoard active_pawns) const
         {
                 return bit::count(
                         Sink<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.path())

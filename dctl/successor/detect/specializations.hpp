@@ -2,11 +2,11 @@
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/primary.hpp>
 #include <dctl/successor/detect/legal.hpp>
-#include <dctl/successor/detect/conversion.hpp>
-#include <dctl/successor/detect/both_jumps.hpp>
-#include <dctl/successor/detect/both_moves.hpp>
-#include <dctl/successor/detect/both_reverse.hpp>
-#include <dctl/successor/detect/both_promotions.hpp>
+#include <dctl/successor/detect/conversions.hpp>
+#include <dctl/successor/detect/piece_jumps.hpp>
+#include <dctl/successor/detect/piece_moves.hpp>
+#include <dctl/successor/detect/piece_reverse.hpp>
+#include <dctl/successor/detect/piece_promotions.hpp>
 #include <dctl/successor/detect/king_jumps.hpp>
 #include <dctl/successor/detect/king_moves.hpp>
 #include <dctl/successor/detect/king_reverse.hpp>

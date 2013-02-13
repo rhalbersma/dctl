@@ -1,15 +1,19 @@
 #pragma once
+#include <cstddef>                                      // size_t
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool /* Color */, int /* Material */, typename /* Selection */>
+template
+<
+        bool /* Color */, typename /* Material */, typename /* Select */
+>
 struct count
 {
         template<typename Position>
-        int operator()(Position const& /* p */) const
+        std::size_t operator()(Position const& /* p */) const
         {
                 return 0;
         }

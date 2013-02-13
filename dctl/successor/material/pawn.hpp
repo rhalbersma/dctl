@@ -2,10 +2,10 @@
 
 namespace dctl {
 namespace successor {
-namespace select {
+namespace material {
 
-struct moves {};
+struct pawn {};
 
-}       // namespace select
+}       // namespace material
 }       // namespace successor
 }       // namespace dctl

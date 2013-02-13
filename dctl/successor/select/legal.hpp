@@ -4,7 +4,7 @@ namespace dctl {
 namespace successor {
 namespace select {
 
-struct legal;
+struct legal {};
 
 }       // namespace select
 }       // namespace successor

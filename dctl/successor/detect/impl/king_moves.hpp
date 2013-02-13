@@ -1,11 +1,12 @@
 #pragma once
 #include <dctl/successor/detect/impl/primary_fwd.hpp>
+#include <dctl/successor/material/king.hpp>             // king
+#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>
+
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/patterns.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
@@ -16,7 +17,7 @@ namespace impl {
 
 // partial specialization for king moves detection
 template<bool Color, typename Position, typename Range>
-struct detect<Color, Material::king, select::moves, Position, Range>
+struct detect<Color, material::king, select::moves, Position, Range>
 :
         // enforce reference semantics
         boost::noncopyable

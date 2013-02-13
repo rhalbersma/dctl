@@ -1,12 +1,13 @@
 #pragma once
+#include <cstddef>
 #include <dctl/successor/count/impl/primary_fwd.hpp>
+#include <dctl/successor/material/king.hpp>
 #include <dctl/successor/propagate/moves.hpp>
 #include <dctl/successor/select/moves.hpp>
+
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/patterns.hpp>
-#include <dctl/node/material.hpp>
-#include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
 
@@ -17,7 +18,7 @@ namespace impl {
 
 // partial specialization for king moves enumeration
 template<bool Color, typename Position>
-struct count<Color, Material::king, select::moves, Position>
+struct count<Color, material::king, select::moves, Position>
 :
         // enforce reference semantics
         boost::noncopyable
@@ -44,13 +45,13 @@ public:
 
         // function call operators
 
-        int operator()(BitBoard active_kings) const
+        std::size_t operator()(BitBoard active_kings) const
         {
                 return active_kings? branch(active_kings) : 0;
         }
 
 private:
-        int branch(BitBoard active_kings) const
+        std::size_t branch(BitBoard active_kings) const
         {
                 return (
                         parallelize<typename Compass::left_down >(active_kings) +
@@ -61,7 +62,7 @@ private:
         }
 
         template<typename Direction>
-        int parallelize(BitBoard active_kings) const
+        std::size_t parallelize(BitBoard active_kings) const
         {
                 return bit::count(
                         Sink<Board, Direction, typename rules::traits<Rules>::king_range>()(active_kings, propagate_.path())

@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(Initial)
         NodeCount const leafs[] = { 9, 81, 658, 4265, 27117, 167140, 1049442, 6483961, 41022423, 258895763, 1665861398 };
         test(p, leafs);
 }
-
+/*
 BOOST_AUTO_TEST_CASE(Random178)
 {
         auto const p = setup::read<rules::International, board::International, pdn::protocol>()(
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(Woldouby)
         NodeCount const leafs[] = { 6, 12, 30, 73, 215, 590, 1944, 6269, 22369, 88050, 377436, 1910989, 9872645, 58360286, 346184885 };
         test(p, leafs);
 }
-
+*/
 BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace walk

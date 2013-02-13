@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>                      // size_t
 #include <limits>                       // numeric_limits
 #include <utility>                      // get, tuple
 #include <boost/assert.hpp>             // BOOST_ASSERT
@@ -46,7 +47,7 @@ public:
 
         // queries
 
-        int count() const
+        std::size_t count() const
         {
                 return num_pieces();
         }
@@ -70,24 +71,24 @@ public:
 private:
         // modifiers
 
-        int& num_pieces()
+        std::size_t& num_pieces()
         {
                 return std::get<num_pieces_>(data_);
         }
 
-        int& num_kings()
+        std::size_t& num_kings()
         {
                 return std::get<num_kings_>(data_);
         }
 
         // queries
 
-        int const& num_pieces() const
+        std::size_t const& num_pieces() const
         {
                 return std::get<num_pieces_>(data_);
         }
 
-        int const& num_kings() const
+        std::size_t const& num_kings() const
         {
                 return std::get<num_kings_>(data_);
         }
@@ -97,9 +98,8 @@ private:
         bool invariant() const
         {
                 return (
-                        (0 <= num_kings()) &&
                         (num_kings() <= num_pieces()) &&
-                        (num_pieces() <= std::numeric_limits<int>::max())
+                        (num_pieces() <= std::numeric_limits<std::size_t>::max())
                 );
         }
 
@@ -110,13 +110,13 @@ private:
 
         bool full() const
         {
-                return num_pieces() == std::numeric_limits<int>::max();
+                return num_pieces() == std::numeric_limits<std::size_t>::max();
         }
 
         // representation
 
         enum { num_pieces_, num_kings_ };
-        std::tuple<int, int> data_;
+        std::tuple<std::size_t, std::size_t> data_;
 };
 
 }       // namespace successor

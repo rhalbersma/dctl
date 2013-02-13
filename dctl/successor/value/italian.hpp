@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>                    // count
+#include <cstddef>                      // size_t
 #include <deque>                        // deque (NOTE: avoids vector<bool>)
 #include <iterator>                     // begin, end
 #include <limits>                       // numeric_limits
@@ -58,7 +59,7 @@ public:
 
         // queries
 
-        int count() const
+        std::size_t count() const
         {
                 return num_pieces();
         }
@@ -84,12 +85,12 @@ public:
 private:
         // modifiers
 
-        int& num_pieces()
+        std::size_t& num_pieces()
         {
                 return std::get<num_pieces_>(data_);
         }
 
-        int& num_kings()
+        std::size_t& num_kings()
         {
                 return std::get<num_kings_>(data_);
         }
@@ -106,12 +107,12 @@ private:
 
         // queries
 
-        int const& num_pieces() const
+        std::size_t const& num_pieces() const
         {
                 return std::get<num_pieces_>(data_);
         }
 
-        int const& num_kings() const
+        std::size_t const& num_kings() const
         {
                 return std::get<num_kings_>(data_);
         }
@@ -131,10 +132,9 @@ private:
         bool invariant() const
         {
                 return (
-                        (0 <= num_kings()) &&
                         (num_kings() <= num_pieces()) &&
-                        (num_pieces() <= std::numeric_limits<int>::max()) &&
-                        (num_kings() == std::count(std::begin(piece_order()), std::end(piece_order()), true)) &&
+                        (num_pieces() <= std::numeric_limits<std::size_t>::max()) &&
+                        (num_kings() == static_cast<std::size_t>(std::count(std::begin(piece_order()), std::end(piece_order()), true))) &&
                         (!num_kings() || with_king())
                 );
         }
@@ -146,13 +146,13 @@ private:
 
         bool full() const
         {
-                return num_pieces() == std::numeric_limits<int>::max();
+                return num_pieces() == std::numeric_limits<std::size_t>::max();
         }
 
         // representation
 
         enum { num_pieces_, num_kings_, with_king_, piece_order_ };
-        std::tuple< int, int, bool, std::deque<bool> > data_;
+        std::tuple< std::size_t, std::size_t, bool, std::deque<bool> > data_;
 };
 
 }       // namespace successor

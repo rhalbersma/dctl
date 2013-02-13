@@ -1,12 +1,12 @@
 #pragma once
 #include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
+#include <dctl/successor/material/king.hpp>             // king
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/node/material.hpp>
 #include <dctl/node/stack.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
@@ -19,7 +19,7 @@ namespace impl {
 
 // partial specialization for king moves generation
 template<bool Color, typename Position>
-struct copy<Color, Material::king, select::moves, Position>
+struct copy<Color, material::king, select::moves, Position>
 :
         // enforce reference semantics
         private boost::noncopyable

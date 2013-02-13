@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/detect/primary_fwd.hpp>        // detect (primary template)
-#include <dctl/successor/detect/both_jumps.hpp>         // detect (combined king and pawn jumps specialization)
-#include <dctl/successor/detect/both_moves.hpp>         // detect (combined king and pawn moves specialization)
+#include <dctl/successor/detect/piece_jumps.hpp>        // detect (piece jumps specialization)
+#include <dctl/successor/detect/piece_moves.hpp>        // detect (piece moves specialization)
 #include <dctl/successor/detect/king_jumps.hpp>         // detect (king jumps specialization)
 #include <dctl/successor/detect/king_moves.hpp>         // detect (king moves specialization)
 #include <dctl/successor/detect/pawn_jumps.hpp>         // detect (pawn jumps specialization)
@@ -14,8 +14,8 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-// partial specialization for legal successors detection
-template<bool Color, int Material, typename Range>
+// partial specialization for legal successors
+template<bool Color, typename Material, typename Range>
 struct detect<Color, Material, select::legal, Range>
 {
         template<typename Position>
