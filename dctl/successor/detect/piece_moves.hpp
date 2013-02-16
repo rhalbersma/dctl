@@ -7,6 +7,7 @@
 #include <dctl/successor/material/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/node/unary_projections.hpp>              // moveable_kings
 #include <dctl/rules/traits.hpp>                        // distance_1
 
 namespace dctl {
@@ -24,7 +25,7 @@ struct detect<Color, material::piece, select::moves, Range>
 
                 // #pieces > #kings, so the logical OR is more likely to short-circuit
                 Propagate<select::moves, Position> const propagate(p);
-                return PiecesUpMoves{propagate}(p.pieces(Color)) || KingDownMoves{propagate}(p.kings(Color));
+                return PiecesUpMoves{propagate}(p.pieces(Color)) || KingDownMoves{propagate}(moveable_kings(p, Color));
         }
 };
 

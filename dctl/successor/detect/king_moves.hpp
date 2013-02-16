@@ -4,6 +4,7 @@
 #include <dctl/successor/material/king.hpp>             // king
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/node/unary_projections.hpp>              // moveable_kings
 #include <dctl/rules/traits.hpp>                        // distance_1
 
 namespace dctl {

@@ -8,6 +8,7 @@
 #include <dctl/successor/material/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/node/unary_projections.hpp>              // moveable_kings
 
 namespace dctl {
 namespace successor {
@@ -24,7 +25,7 @@ struct count<Color, material::piece, select::moves>
                 typedef impl::count<Color, material::pawn, select::moves, Position> PawnMoves;
 
                 Propagate<select::moves, Position> const propagate(p);
-                return KingMoves{propagate}(p.kings(Color)) + PawnMoves{propagate}(p.pawns(Color));
+                return KingMoves{propagate}(moveable_kings(p, Color)) + PawnMoves{propagate}(p.pawns(Color));
         }
 };
 
