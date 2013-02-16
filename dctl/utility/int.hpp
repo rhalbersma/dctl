@@ -22,10 +22,10 @@ struct num_bits
 template<typename> struct log2_sizeof;
 
 // specializations for integral types
-template<> struct log2_sizeof<uint8_t>  : std::integral_constant<std::size_t, 3> {};
-template<> struct log2_sizeof<uint16_t> : std::integral_constant<std::size_t, 4> {};
-template<> struct log2_sizeof<uint32_t> : std::integral_constant<std::size_t, 5> {};
-template<> struct log2_sizeof<uint64_t> : std::integral_constant<std::size_t, 6> {};
+template<> struct log2_sizeof<uint8_t> : std::integral_constant<std::size_t, 3> {};
+template<> struct log2_sizeof<uint16_t>: std::integral_constant<std::size_t, 4> {};
+template<> struct log2_sizeof<uint32_t>: std::integral_constant<std::size_t, 5> {};
+template<> struct log2_sizeof<uint64_t>: std::integral_constant<std::size_t, 6> {};
 
 // primary template
 template<int> struct exp2_typeof;
