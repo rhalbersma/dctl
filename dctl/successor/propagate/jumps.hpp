@@ -83,10 +83,16 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        void toggle_with_king()
+        void set_with_king()
         {
                 BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_relative_king_precedence>));
-                current_.toggle_with_king();
+                current_.set_with_king();
+        }
+
+        void clear_with_king()
+        {
+                BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_relative_king_precedence>));
+                current_.clear_with_king();
         }
 
         void toggle_king_targets()
@@ -95,10 +101,16 @@ public:
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
 
-        void toggle_promotion()
+        void set_promotion()
         {
                 BOOST_MPL_ASSERT((std::is_same<typename rules::traits<Rules>::pawn_promotion, rules::promotion::en_passant>));
-                current_.toggle_promotion();
+                current_.set_promotion();
+        }
+
+        void clear_promotion()
+        {
+                BOOST_MPL_ASSERT((std::is_same<typename rules::traits<Rules>::pawn_promotion, rules::promotion::en_passant>));
+                current_.clear_promotion();
         }
 
         void improve()
@@ -322,20 +334,20 @@ private:
                 return remaining_targets_ & king_targets_;
         }
 
-        int count() const
+        std::size_t count() const
         {
                 // tag dispatching on majority capture precedence
                 return count_dispatch(typename rules::traits<Rules>::is_precedence());
         }
 
         // overload for no majority capture precedence
-        int count_dispatch(std::false_type) const
+        std::size_t count_dispatch(std::false_type) const
         {
                 return bit::count(captured_pieces());
         }
 
         // overload for majority capture precedence
-        int count_dispatch(std::true_type) const
+        std::size_t count_dispatch(std::true_type) const
         {
                 return current_.count();
         }

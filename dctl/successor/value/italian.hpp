@@ -1,10 +1,10 @@
 #pragma once
 #include <algorithm>                    // count
 #include <cstddef>                      // size_t
-#include <deque>                        // deque (NOTE: avoids vector<bool>)
 #include <iterator>                     // begin, end
 #include <limits>                       // numeric_limits
 #include <tuple>                        // get, tuple
+#include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered
 #include <dctl/bit/bit.hpp>             // count, reverse_singlet
@@ -36,24 +36,37 @@ public:
         void increment(bool is_king)
         {
                 BOOST_ASSERT(!full());
-                piece_order().push_back(is_king);
-                num_kings() += is_king;
+                if (is_king) {
+                        king_order().push_back(reverse());
+                        ++num_kings();
+                }
                 ++num_pieces();
                 BOOST_ASSERT(invariant());
         }
 
         void decrement(bool is_king)
         {
-                BOOST_ASSERT(!empty(is_king));
+                BOOST_ASSERT(!empty());
                 --num_pieces();
-                num_kings() -= is_king;
-                piece_order().pop_back();
+                if (is_king) {
+                        --num_kings();
+                        BOOST_ASSERT(king_order().back() == reverse());
+                        king_order().pop_back();
+                }
                 BOOST_ASSERT(invariant());
         }
 
-        void toggle_with_king()
+        void set_with_king()
         {
-                with_king() ^= true;
+                BOOST_ASSERT(!with_king());
+                with_king() = true;
+                BOOST_ASSERT(invariant());
+        }
+
+        void clear_with_king()
+        {
+                BOOST_ASSERT(with_king());
+                with_king() = false;
                 BOOST_ASSERT(invariant());
         }
 
@@ -70,7 +83,7 @@ public:
         friend bool operator<(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator<
-                // NOTE: this will -in turn- delegate to std::deque::operator< for the last tuple element
+                // NOTE: this will -in turn- delegate to std::vector::operator< for the last tuple element
                 return lhs.data_ < rhs.data_;
         }
 
@@ -78,7 +91,7 @@ public:
         friend bool operator==(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator==
-                // NOTE: this will -in turn- delegate to std::deque::operator== for the last tuple element
+                // NOTE: this will -in turn- delegate to std::vector::operator== for the last tuple element
                 return lhs.data_ == rhs.data_;
         }
 
@@ -100,9 +113,9 @@ private:
                 return std::get<with_king_>(data_);
         }
 
-        std::deque<bool>& piece_order()
+        std::vector<std::size_t>& king_order()
         {
-                return std::get<piece_order_>(data_);
+                return std::get<king_order_>(data_);
         }
 
         // queries
@@ -122,9 +135,14 @@ private:
                 return std::get<with_king_>(data_);
         }
 
-        std::deque<bool> const& piece_order() const
+        std::vector<std::size_t> const& king_order() const
         {
-                return std::get<piece_order_>(data_);
+                return std::get<king_order_>(data_);
+        }
+
+        std::size_t reverse() const
+        {
+                return std::numeric_limits<std::size_t>::max() - num_pieces();
         }
 
         // predicates
@@ -132,16 +150,16 @@ private:
         bool invariant() const
         {
                 return (
-                        (num_kings() <= num_pieces()) &&
-                        (num_pieces() <= std::numeric_limits<std::size_t>::max()) &&
-                        (num_kings() == static_cast<std::size_t>(std::count(std::begin(piece_order()), std::end(piece_order()), true))) &&
+                        num_kings() <= num_pieces() &&
+                        num_pieces() <= std::numeric_limits<std::size_t>::max() &&
+                        num_kings() == king_order().size() &&
                         (!num_kings() || with_king())
                 );
         }
 
-        bool empty(bool is_king) const
+        bool empty() const
         {
-                return ((is_king? num_kings() : num_pieces()) == 0) && piece_order().empty() && piece_order().back() == is_king;
+                return 0 == num_kings() && num_kings() == num_pieces() && king_order().empty();
         }
 
         bool full() const
@@ -151,8 +169,8 @@ private:
 
         // representation
 
-        enum { num_pieces_, num_kings_, with_king_, piece_order_ };
-        std::tuple< std::size_t, std::size_t, bool, std::deque<bool> > data_;
+        enum { num_pieces_, num_kings_, with_king_, king_order_ };
+        std::tuple< std::size_t, std::size_t, bool, std::vector<std::size_t> > data_;
 };
 
 }       // namespace successor

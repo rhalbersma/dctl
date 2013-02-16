@@ -39,7 +39,7 @@ public:
 
         void decrement(bool is_king)
         {
-                BOOST_ASSERT(!empty(is_king));
+                BOOST_ASSERT(!empty());
                 --num_pieces();
                 num_kings() -= is_king;
                 BOOST_ASSERT(invariant());
@@ -98,14 +98,14 @@ private:
         bool invariant() const
         {
                 return (
-                        (num_kings() <= num_pieces()) &&
-                        (num_pieces() <= std::numeric_limits<std::size_t>::max())
+                        num_kings() <= num_pieces() &&
+                        num_pieces() <= std::numeric_limits<std::size_t>::max()
                 );
         }
 
-        bool empty(bool is_king) const
+        bool empty() const
         {
-                return (is_king? num_kings() : num_pieces()) == 0;
+                return 0 == num_kings() && num_kings() == num_pieces();
         }
 
         bool full() const

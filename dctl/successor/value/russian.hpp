@@ -25,9 +25,17 @@ public:
 
         // modifiers
 
-        void toggle_promotion()
+        void set_promotion()
         {
-                promotion_ ^= true;
+                BOOST_ASSERT(!promotion_);
+                promotion_ = true;
+                BOOST_ASSERT(invariant());
+        }
+
+        void clear_promotion()
+        {
+                BOOST_ASSERT(promotion_);
+                promotion_ = false;
                 BOOST_ASSERT(invariant());
         }
 
