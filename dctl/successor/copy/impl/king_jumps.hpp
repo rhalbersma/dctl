@@ -77,9 +77,9 @@ private:
         // overload for relative king jump precedence
         void select_dispatch(BitBoard active_kings, std::true_type) const
         {
-                capture_.toggle_with_king();
+                capture_.set_with_king();
                 serialize(active_kings);
-                capture_.toggle_with_king();
+                capture_.clear_with_king();
         }
 
         void serialize(BitBoard active_kings) const

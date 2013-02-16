@@ -222,9 +222,9 @@ private:
         template<typename Direction>
         bool promote_en_passant_dispatch(BitIndex jumper, std::true_type) const
         {
-                capture_.toggle_promotion();
+                capture_.set_promotion();
                 auto const found_next = KingJumps(capture_, moves_).template promote_en_passant<Direction>(jumper);
-                capture_.toggle_promotion();
+                capture_.clear_promotion();
                 return found_next;
         }
 
@@ -232,11 +232,11 @@ private:
         template<typename Direction>
         bool promote_en_passant_dispatch(BitIndex jumper, std::false_type) const
         {
-                capture_.toggle_promotion();     // no longer a pawn
-                capture_.toggle_king_targets();  // can now capture kings
+                capture_.set_promotion();       // no longer a pawn
+                capture_.set_king_targets();    // can now capture kings
                 auto const found_next = KingJumps(capture_, moves_).template promote_en_passant<Direction>(jumper);
-                capture_.toggle_king_targets();  // can no longer capture kings
-                capture_.toggle_promotion();     // now a pawn again
+                capture_.clear_king_targets();  // can no longer capture kings
+                capture_.clear_promotion();     // now a pawn again
                 return found_next;
         }
 

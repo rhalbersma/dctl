@@ -71,7 +71,7 @@ private:
 
         bool empty() const
         {
-                return num_pieces_ == 0;
+                return 0 == num_pieces_;
         }
 
         bool full() const
