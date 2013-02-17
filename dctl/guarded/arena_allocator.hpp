@@ -4,7 +4,6 @@
 #include <type_traits>
 #include <boost/operators.hpp>
 #include <dctl/guarded/constexpr.hpp>
-#include <dctl/guarded/default_delete.hpp>
 #include <dctl/guarded/noexcept.hpp>
 
 namespace dctl {
@@ -28,8 +27,8 @@ public:
                 reset();
         }
 
-        arena(arena const&) DCTL_PP_IS_DELETE
-        arena& operator=(arena const&) DCTL_PP_IS_DELETE
+        arena(arena const&) = delete;
+        arena& operator=(arena const&) = delete;
 
         static DCTL_PP_CONSTEXPR std::size_t size()
         {
@@ -65,9 +64,9 @@ public:
                         n = align_up(n);
                         if (p + n == ptr_)
                                 ptr_ = p;
-                }
-                else
+                } else {
                         ::operator delete(p);
+                }
         }
 
 private:
@@ -121,8 +120,8 @@ public:
                 // no-op
         }
 
-        //short_alloc(short_alloc const&) = default;
-        short_alloc& operator=(short_alloc const&) DCTL_PP_IS_DELETE
+        short_alloc(short_alloc const&) = default;
+        short_alloc& operator=(short_alloc const&) = delete;
 
         T* allocate(std::size_t n)
         {

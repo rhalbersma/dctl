@@ -69,7 +69,7 @@ private:
 
         private:
                 // suppress warning about the compiler-generated assignment operator
-                call_insert& operator=(call_insert const&) DCTL_PP_IS_DELETE
+                call_insert& operator=(call_insert const&) = delete;
 
                 XRegistry& registry_;
         };
@@ -88,7 +88,7 @@ private:
 
         private:
                 // suppress warning about the compiler-generated assignment operator
-                call_erase& operator=(call_erase const&) DCTL_PP_IS_DELETE
+                call_erase& operator=(call_erase const&) = delete;
 
                 XRegistry& registry_;
         };
