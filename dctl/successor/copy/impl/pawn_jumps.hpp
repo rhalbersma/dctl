@@ -2,7 +2,7 @@
 #include <type_traits>                                  // false_type, true_type
 #include <boost/assert.hpp>                             // BOOST_ASSERT
 #include <boost/utility.hpp>                            // noncopyable
-#include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primaray template)
+#include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
 #include <dctl/successor/copy/impl/king_jumps.hpp>      // promote_en_passant
 #include <dctl/successor/material/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
