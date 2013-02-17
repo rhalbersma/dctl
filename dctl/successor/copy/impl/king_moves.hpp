@@ -57,7 +57,7 @@ public:
 private:
         void serialize(BitBoard active_kings) const
         {
-                while(active_kings) {
+                while (active_kings) {
                         branch(bit::first::equal(active_kings));
                         bit::first::clear(active_kings);
                 }
