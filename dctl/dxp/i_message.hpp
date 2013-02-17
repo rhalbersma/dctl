@@ -4,7 +4,6 @@
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/utility.hpp>            // noncopyable
 #include <dctl/factory/mixin.hpp>       // HeaderBodyTerminator
-#include <dctl/guarded/default_delete.hpp>
 
 namespace dctl {
 namespace dxp {
@@ -23,7 +22,7 @@ class IMessage
 {
 public:
         // enable deletion of a Derived* through a Base*
-        virtual ~IMessage() DCTL_PP_IS_DEFAULT
+        virtual ~IMessage() = default;
 
         // non-virtual interface
         std::string str() const
