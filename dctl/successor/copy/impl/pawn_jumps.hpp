@@ -23,8 +23,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for pawn jumps generation
-template<bool Color, typename Position>
-struct copy<Color, material::pawn, select::jumps, Position>
+template<bool Color, typename Position, typename Vector>
+struct copy<Color, material::pawn, select::jumps, Position, Vector>
 :
         // enforce reference semantics
         private boost::noncopyable
@@ -32,7 +32,7 @@ struct copy<Color, material::pawn, select::jumps, Position>
 private:
         // typedefs
 
-        typedef copy<Color, material::king, select::jumps, Position> KingJumps;
+        typedef copy<Color, material::king, select::jumps, Position, Vector> KingJumps;
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
         typedef board::Compass<Color, Board> Compass;
@@ -41,12 +41,12 @@ private:
         // representation
 
         State& capture_;
-        Vector<Move>& moves_;
+        Vector& moves_;
 
 public:
         // structors
 
-        explicit copy(State& c, Vector<Move>& m)
+        explicit copy(State& c, Vector& m)
         :
                 capture_(c),
                 moves_(m)

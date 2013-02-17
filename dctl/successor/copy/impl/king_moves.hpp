@@ -4,10 +4,10 @@
 #include <dctl/successor/material/king.hpp>             // king
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
+
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/node/stack.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
@@ -18,8 +18,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for king moves generation
-template<bool Color, typename Position>
-struct copy<Color, material::king, select::moves, Position>
+template<bool Color, typename Position, typename Vector>
+struct copy<Color, material::king, select::moves, Position, Vector>
 :
         // enforce reference semantics
         private boost::noncopyable
@@ -29,18 +29,19 @@ private:
 
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
+        typedef typename Vector::value_type Move;
         typedef board::Compass<Color, Board> Compass;
         typedef Propagate<select::moves, Position> State;
 
         // representation
 
         State const& propagate_;
-        Vector<Move>& moves_;
+        Vector& moves_;
 
 public:
         // structors
 
-        explicit copy(State const& p, Vector<Move>& m)
+        explicit copy(State const& p, Vector& m)
         :
                 propagate_(p),
                 moves_(m)

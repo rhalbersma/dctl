@@ -17,7 +17,7 @@ struct copy<Color, material::pawn, select::reverse>
         template<typename Position, typename Vector>
         void operator()(Position const& p, Vector& moves) const
         {
-                typedef impl::copy<!Color, material::pawn, select::moves, Position> PawnReverse;
+                typedef impl::copy<!Color, material::pawn, select::moves, Position, Vector> PawnReverse;
 
                 Propagate<select::moves, Position> const propagate(p);
                 PawnReverse{propagate, moves}(p.pawns(Color));

@@ -31,19 +31,19 @@ public:
 private:
         // template aliases
 
-        template<typename Position>
-        using KingJumps = impl::copy<Color, material::king, select::jumps, Position>;
+        template<typename Position, typename Vector>
+        using KingJumps = impl::copy<Color, material::king, select::jumps, Position, Vector>;
 
-        template<typename Position>
-        using PawnJumps = impl::copy<Color, material::pawn, select::jumps, Position>;
+        template<typename Position, typename Vector>
+        using PawnJumps = impl::copy<Color, material::pawn, select::jumps, Position, Vector>;
 
         // overload for no absolute king jump precedence
         template<typename Position, typename Vector>
         void precedence_dispatch(Position const& p, Vector& moves, std::false_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                KingJumps<Position>{propagate, moves}(p.kings(Color));
-                PawnJumps<Position>{propagate, moves}(p.pawns(Color));
+                KingJumps<Position, Vector>{propagate, moves}(p.kings(Color));
+                PawnJumps<Position, Vector>{propagate, moves}(p.pawns(Color));
         }
 
         // overload for absolute king jump precedence
@@ -51,9 +51,9 @@ private:
         void precedence_dispatch(Position const& p, Vector& moves, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                KingJumps<Position>{propagate, moves}(p.kings(Color));
+                KingJumps<Position, Vector>{propagate, moves}(p.kings(Color));
                 if (moves.empty())
-                        PawnJumps<Position>{propagate, moves}(p.pawns(Color));
+                        PawnJumps<Position, Vector>{propagate, moves}(p.pawns(Color));
         }
 };
 

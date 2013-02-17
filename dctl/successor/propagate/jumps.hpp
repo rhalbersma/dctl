@@ -12,7 +12,6 @@
 #include <dctl/successor/value.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
-#include <dctl/node/stack.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/successor/propagate_fwd.hpp>
@@ -120,9 +119,11 @@ public:
                 best_ = current_;
         }
 
-        template<bool Color>
-        void add_king_jump(BitIndex dest_sq, Vector<Move>& moves) const
+        template<bool Color, typename Vector>
+        void add_king_jump(BitIndex dest_sq, Vector& moves) const
         {
+                typedef typename Vector::value_type Move;
+
                 moves.push_back(
                         Move::template create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
@@ -132,9 +133,11 @@ public:
                 );
         }
 
-        template<bool Color, typename WithPiece>
-        void add_pawn_jump(BitIndex dest_sq, Vector<Move>& moves) const
+        template<bool Color, typename WithPiece, typename Vector>
+        void add_pawn_jump(BitIndex dest_sq, Vector& moves) const
         {
+                typedef typename Vector::value_type Move;
+
                 moves.push_back(
                         Move::template create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
@@ -189,7 +192,8 @@ public:
                 return current_ != best_;
         }
 
-        bool is_potential_duplicate(Vector<Move> const& moves) const
+        template<typename Vector>
+        bool is_potential_duplicate(Vector const& moves) const
         {
                 return !moves.empty() && is_large();
         }
