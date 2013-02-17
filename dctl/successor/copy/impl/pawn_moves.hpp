@@ -8,9 +8,7 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/node/move.hpp>
 #include <dctl/node/promotion.hpp>
-#include <dctl/node/stack.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -18,8 +16,8 @@ namespace successor {
 namespace detail {
 namespace impl {
 
-template<bool Color, typename Position>
-struct copy<Color, material::pawn, select::moves, Position>
+template<bool Color, typename Position, typename Vector>
+struct copy<Color, material::pawn, select::moves, Position, Vector>
 :
         // enforce reference semantics
         boost::noncopyable
@@ -28,18 +26,19 @@ private:
         // typedefs
 
         typedef typename Position::board_type Board;
+        typedef typename Vector::value_type Move;
         typedef board::Compass<Color, Board> Compass;
         typedef Propagate<select::moves, Position> State;
 
         // representation
 
         State const& propagate_;
-        Vector<Move>& moves_;
+        Vector& moves_;
 
 public:
         // structors
 
-        explicit copy(State const& p, Vector<Move>& m)
+        explicit copy(State const& p, Vector& m)
         :
                 propagate_(p),
                 moves_(m)

@@ -12,8 +12,6 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
 #include <dctl/board/iterator.hpp>                      // Next
-#include <dctl/node/move.hpp>                           //
-#include <dctl/node/stack.hpp>                          // Vector
 #include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/utility/int.hpp>                         // BitBoard, BitIndex
 
@@ -23,8 +21,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for king jumps generation
-template<bool Color, typename Position>
-struct copy<Color, material::king, select::jumps, Position>
+template<bool Color, typename Position, typename Vector>
+struct copy<Color, material::king, select::jumps, Position, Vector>
 :
         // enforce reference semantics
         private boost::noncopyable
@@ -34,18 +32,19 @@ private:
 
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
+        typedef typename Vector::value_type Move;
         typedef board::Compass<Color, Board> Compass;
         typedef Propagate<select::jumps, Position> State;
 
         // representation
 
         State& capture_;
-        Vector<Move>& moves_;
+        Vector& moves_;
 
 public:
         // structors
 
-        explicit copy(State& c, Vector<Move>& m)
+        explicit copy(State& c, Vector& m)
         :
                 capture_(c),
                 moves_(m)
