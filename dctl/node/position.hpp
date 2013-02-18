@@ -175,15 +175,25 @@ private:
                 KingMoves& restricted = restricted_[active_color(*this)];
 
                 if (active_kings(*this) && active_pawns(*this)) {
-                        hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, active_color(*this)));
-                        if (is_reversible(*this, m) && !is_max<Rules>(restricted.moves())) {
-                                if (bit::is_element(restricted.king(), from_sq(*this, m)))
-                                        restricted.increment(dest_sq(*this, m));
-                                else
-                                        restricted.init(dest_sq(*this, m));
+                        if (restricted.moves())
                                 hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, active_color(*this)));
-                        } else
-                                restricted.reset();
+
+                        if (!is_reversible(*this, m)) {
+                                if (restricted.moves())
+                                        restricted.reset();
+                                return;
+                        }
+
+                        if (restricted.moves() && bit::is_element(restricted.king(), from_sq(*this, m))) {
+                                // a consecutive irreversible move with the same king
+                                BOOST_ASSERT(!is_max<Rules>(restricted.moves()));
+                                restricted.increment(dest_sq(*this, m));
+                        } else {
+                                // a first irreversible move with a new king
+                                BOOST_ASSERT(!restricted.moves() || bit::count(active_kings(*this)) > 1);
+                                restricted.init(dest_sq(*this, m));
+                        }
+                        hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, active_color(*this)));
                 }
         }
 
