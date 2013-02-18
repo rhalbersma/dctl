@@ -1,5 +1,5 @@
 #pragma once
-#include <functional>                   // function
+#include <utility>                      //pair
 #include <dctl/hash/zobrist/random.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/move.hpp>
@@ -7,6 +7,9 @@
 #include <dctl/node/side.hpp>
 
 namespace dctl {
+
+typedef std::pair<KingMoves, bool> KingMovesColor;
+
 namespace hash {
 namespace zobrist {
 
@@ -54,13 +57,13 @@ struct Init<Index, bool>
 
 // partial specialization for ab initio hashing of restricted consecutive same king moves
 template<typename Index>
-struct Init<Index, KingMoves>
+struct Init<Index, KingMovesColor>
 {
-        Index operator()(KingMoves const& restricted, bool color) const
+        Index operator()(KingMovesColor const& restricted) const
         {
                 return (
-                        Random<Index>::xor_rand(restricted.king(),  Random<Index>::RESTRICTED_KING[color] ) ^
-                        Random<Index>::xor_rand(restricted.moves(), Random<Index>::RESTRICTED_MOVES[color])
+                        Random<Index>::xor_rand(restricted.first.king(),  Random<Index>::RESTRICTED_KING[restricted.second] ) ^
+                        Random<Index>::xor_rand(restricted.first.moves(), Random<Index>::RESTRICTED_MOVES[restricted.second])
                 );
         }
 };
@@ -72,11 +75,17 @@ struct Init<Index, Restricted>
         Index operator()(Restricted const& restricted) const
         {
                 return (
-                        Init<Index, KingMoves>()(restricted[Side::black], Side::black) ^
-                        Init<Index, KingMoves>()(restricted[Side::white], Side::white)
+                        Init<Index, KingMovesColor>()(std::make_pair(restricted[Side::black], Side::black)) ^
+                        Init<Index, KingMovesColor>()(std::make_pair(restricted[Side::white], Side::white))
                 );
         }
 };
+
+template<typename Index, typename T>
+Index hash(T const& t)
+{
+        return Init<Index, T>()(t);
+}
 
 }       // namespace zobrist
 }       // namespace hash

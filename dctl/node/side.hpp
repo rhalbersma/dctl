@@ -4,7 +4,7 @@ namespace dctl {
 
 struct Side
 {
-        enum {
+        enum: bool {
                 black = false,
                 red = black,
                 white = true,

@@ -36,7 +36,7 @@ BOOST_FIXTURE_TEST_CASE(Gilbert2, Fixture)
         NodeCount const leafs[] = { 6, 47, 271, 1916, 10810, 73137, 389809, 2469050, 12803372, 77920042, 396940628, 2365222285 };
         run(p, leafs);
 }
-*/
+
 BOOST_FIXTURE_TEST_CASE(gilbert3, Fixture)
 {
         auto const p = setup::read<rules::Italian, board::Roman, pdn::protocol>()(
@@ -45,7 +45,7 @@ BOOST_FIXTURE_TEST_CASE(gilbert3, Fixture)
         NodeCount const leafs[] = { 13, 112, 828, 6756, 46241, 368908, 2468110, 19914763, 130562037, 1056217651, 6894949061 };
         run(p, leafs);
 }
-
+*/
 BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace walk
