@@ -21,7 +21,7 @@ struct detect<Color, material::king, select::reverse, Range>
                 typedef impl::detect<!Color, material::king, select::moves, Position, rules::range::distance_1> KingReverse;
 
                 Propagate<select::moves, Position> const propagate(p);
-                return KingReverse{propagate}(p.kings(Color));
+                return KingReverse{propagate}(p.material().kings(Color));
         }
 };
 

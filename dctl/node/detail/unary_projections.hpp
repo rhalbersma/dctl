@@ -10,17 +10,17 @@ namespace detail {
 template<typename Position>
 BitBoard moveable_kings(Position const& p, bool color, std::false_type)
 {
-        return p.kings(color);
+        return p.material().kings(color);
 }
 
 // overload for restricted consecutive moves with the same king
 template<typename Position>
 BitBoard moveable_kings(Position const& p, bool color, std::true_type)
 {
-        if (p.kings(color) && p.pawns(color) && is_max<typename Position::rules_type>(p.restricted(color).moves()))
-                return p.kings(color) ^ p.restricted(color).king();
+        if (p.material().kings(color) && p.material().pawns(color) && is_max<typename Position::rules_type>(p.restricted(color).moves()))
+                return p.material().kings(color) ^ p.restricted(color).king();
         else
-                return p.kings(color);
+                return p.material().kings(color);
 }
 
 }       // namespace detail

@@ -25,7 +25,7 @@ struct detect<Color, material::piece, select::reverse, Range>
 
                 // speculate #pawns > #kings so that the || is likely to short-circuit
                 Propagate<select::moves, Position> const propagate(p);
-                return PawnReverse{propagate}(p.kings(Color)) || KingReverse{propagate}(p.pawns(Color));
+                return PawnReverse{propagate}(p.material().kings(Color)) || KingReverse{propagate}(p.material().pawns(Color));
         }
 };
 

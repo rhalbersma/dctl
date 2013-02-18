@@ -21,7 +21,7 @@ struct detect<Color, material::pawn, select::reverse, Range>
                 typedef impl::detect<!Color, material::pawn, select::moves, Position, rules::range::distance_1> PawnReverse;
 
                 Propagate<select::moves, Position> const propagate(p);
-                return PawnReverse{propagate}(p.pawns(Color));
+                return PawnReverse{propagate}(p.material().pawns(Color));
         }
 };
 

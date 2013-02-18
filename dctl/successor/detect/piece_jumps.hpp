@@ -62,7 +62,7 @@ private:
         bool combined_dispatch(Position const& p, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                return PawnJumps<Position>{propagate}(p.pieces(Color));
+                return PawnJumps<Position>{propagate}(p.material().pieces(Color));
         }
 
         // overload for separate king and pawn jump detection
@@ -72,7 +72,7 @@ private:
                 Propagate<select::jumps, Position> propagate(p);
 
                 // speculate #pawns > #kings so that the logical OR is more likely to short-circuit
-                return PawnJumps<Position>{propagate}(p.pawns(Color)) || KingJumps<Position>{propagate}(p.kings(Color));
+                return PawnJumps<Position>{propagate}(p.material().pawns(Color)) || KingJumps<Position>{propagate}(p.material().kings(Color));
         }
 };
 

@@ -21,7 +21,7 @@ struct count<Color, material::pawn, select::reverse>
                 typedef impl::count<!Color, material::pawn, select::moves, Position> PawnReverse;
 
                 Propagate<select::moves, Position> const propagate(p);
-                return PawnReverse{propagate}(p.pawns(Color));
+                return PawnReverse{propagate}(p.material().pawns(Color));
         }
 };
 

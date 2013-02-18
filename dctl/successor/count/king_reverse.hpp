@@ -21,7 +21,7 @@ struct count<Color, material::king, select::reverse>
                 typedef impl::count<!Color, material::king, select::moves, Position> KingReverse;
 
                 Propagate<select::moves, Position> const propagate(p);
-                return KingReverse{propagate}(p.kings(Color));
+                return KingReverse{propagate}(p.material().kings(Color));
         }
 };
 

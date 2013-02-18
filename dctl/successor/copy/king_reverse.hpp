@@ -20,7 +20,7 @@ struct copy<Color, material::king, select::reverse>
                 typedef impl::copy<!Color, material::king, select::moves, Position, Vector> KingReverse;
 
                 Propagate<select::moves, Position> const propagate(p);
-                KingReverse{propagate, moves}(p.kings(Color));
+                KingReverse{propagate, moves}(p.material().kings(Color));
         }
 };
 

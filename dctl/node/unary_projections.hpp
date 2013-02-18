@@ -9,49 +9,49 @@ namespace dctl {
 template<typename Position>
 BitBoard not_occupied(Position const& p)
 {
-        return Position::board_type::squares ^ p.pieces();
+        return Position::board_type::squares ^ p.material().pieces();
 }
 
 // pawns for the side to move
 template<typename Position>
 BitBoard active_pawns(Position const& p)
 {
-        return p.pawns(p.active_color());
+        return p.material().pawns(active_color(p));
 }
 
 // kings for the side to move
 template<typename Position>
 BitBoard active_kings(Position const& p)
 {
-        return p.kings(p.active_color());
+        return p.material().kings(active_color(p));
 }
 
 // pieces for the side to move
 template<typename Position>
 BitBoard active_pieces(Position const& p)
 {
-        return p.pieces(p.active_color());
+        return p.material().pieces(active_color(p));
 }
 
 // pawns for the opposite side
 template<typename Position>
 BitBoard passive_pawns(Position const& p)
 {
-        return p.pawns(p.passive_color());
+        return p.material().pawns(passive_color(p));
 }
 
 // kings for the opposite side
 template<typename Position>
 BitBoard passive_kings(Position const& p)
 {
-        return p.kings(p.passive_color());
+        return p.material().kings(passive_color(p));
 }
 
 // pieces for the opposite side
 template<typename Position>
 BitBoard passive_pieces(Position const& p)
 {
-        return p.pieces(p.passive_color());
+        return p.material().pieces(passive_color(p));
 }
 
 template<typename Position>

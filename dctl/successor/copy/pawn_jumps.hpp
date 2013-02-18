@@ -19,7 +19,7 @@ struct copy<Color, material::pawn, select::jumps>
                 typedef impl::copy<Color, material::pawn, select::jumps, Position, Vector> PawnJumps;
 
                 Propagate<select::jumps, Position> propagate(p);
-                PawnJumps{propagate, moves}(p.pawns(Color));
+                PawnJumps{propagate, moves}(p.material().pawns(Color));
         }
 };
 

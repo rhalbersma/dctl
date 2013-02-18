@@ -18,7 +18,7 @@ bool detect(Position const& p)
 template<typename Material, typename Select, typename Position>
 bool detect(Position const& p)
 {
-        return (p.active_color() == Side::black)?
+        return (p.to_move() == Side::black)?
                 detect<Side::black, Material, Select>(p) :
                 detect<Side::white, Material, Select>(p)
         ;

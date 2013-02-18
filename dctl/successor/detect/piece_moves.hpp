@@ -20,12 +20,11 @@ struct detect<Color, material::piece, select::moves, Range>
         template<typename Position>
         bool operator()(Position const& p) const
         {
-                typedef impl::detect<Color, material::pawn, select::moves, Position, rules::range::distance_1> PiecesUpMoves;
-                typedef impl::detect<Color, material::king, select::moves, Position, rules::range::distance_1> KingDownMoves;
+                typedef impl::detect<Color, material::king, select::moves, Position, rules::range::distance_1> KingMoves;
+                typedef impl::detect<Color, material::pawn, select::moves, Position, rules::range::distance_1> PawnMoves;
 
-                // #pieces > #kings, so the logical OR is more likely to short-circuit
                 Propagate<select::moves, Position> const propagate(p);
-                return PiecesUpMoves{propagate}(p.pieces(Color)) || KingDownMoves{propagate}(moveable_kings(p, Color));
+                return KingMoves{propagate}(moveable_kings(p, Color)) || PawnMoves{propagate}(p.material().pawns(Color));
         }
 };
 
