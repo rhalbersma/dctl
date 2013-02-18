@@ -31,7 +31,7 @@ Vector<Move> copy(Position const& p, Arena<Move>& mar)
 template<typename Material, typename Select, typename Position>
 Vector<Move> copy(Position const& p, Arena<Move>& mar)
 {
-        return (p.active_color() == Side::black)?
+        return (p.to_move() == Side::black)?
                 copy<Side::black, Material, Select>(p, mar) :
                 copy<Side::white, Material, Select>(p, mar)
         ;

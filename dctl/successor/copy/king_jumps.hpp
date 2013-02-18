@@ -19,7 +19,7 @@ struct copy<Color, material::king, select::jumps>
                 typedef impl::copy<Color, material::king, select::jumps, Position, Vector> KingJumps;
 
                 Propagate<select::jumps, Position> propagate(p);
-                KingJumps{propagate, moves}(p.kings(Color));
+                KingJumps{propagate, moves}(p.material().kings(Color));
         }
 };
 

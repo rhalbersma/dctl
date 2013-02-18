@@ -24,8 +24,8 @@ struct copy<Color, material::piece, select::reverse>
                 typedef impl::copy<!Color, material::pawn, select::moves, Position, Vector> PawnReverse;
 
                 Propagate<select::moves, Position> const propagate(p);
-                KingReverse{propagate, moves}(p.kings(Color));
-                PawnReverse{propagate, moves}(p.pawns(Color));
+                KingReverse{propagate, moves}(p.material().kings(Color));
+                PawnReverse{propagate, moves}(p.material().pawns(Color));
         }
 };
 

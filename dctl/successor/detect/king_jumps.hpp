@@ -19,7 +19,7 @@ struct detect<Color, material::king, select::jumps, Range>
                 typedef impl::detect<Color, material::king, select::jumps, Position, Range> KingJumps;
 
                 Propagate<select::jumps, Position> const propagate(p);
-                return KingJumps{propagate}(p.kings(Color));
+                return KingJumps{propagate}(p.material().kings(Color));
         }
 };
 

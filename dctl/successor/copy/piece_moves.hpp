@@ -25,7 +25,7 @@ struct copy<Color, material::piece, select::moves>
 
                 Propagate<select::moves, Position> const propagate(p);
                 KingMoves{propagate, moves}(moveable_kings(p, Color));
-                PawnMoves{propagate, moves}(p.pawns(Color));
+                PawnMoves{propagate, moves}(p.material().pawns(Color));
         }
 };
 

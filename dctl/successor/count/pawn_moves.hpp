@@ -20,7 +20,7 @@ struct count<Color, material::pawn, select::moves>
                 typedef impl::count<Color, material::pawn, select::moves, Position> PawnMoves;
 
                 Propagate<select::moves, Position> const propagate(p);
-                return PawnMoves{propagate}(p.pawns(Color));
+                return PawnMoves{propagate}(p.material().pawns(Color));
         }
 };
 

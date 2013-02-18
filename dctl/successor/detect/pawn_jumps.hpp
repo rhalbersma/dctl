@@ -20,7 +20,7 @@ struct detect<Color, material::pawn, select::jumps, Range>
                 typedef impl::detect<Color, material::pawn, select::jumps, Position, rules::range::distance_1> PawnJumps;
 
                 Propagate<select::jumps, Position> const propagate(p);
-                return PawnJumps{propagate}(p.pawns(Color));
+                return PawnJumps{propagate}(p.material().pawns(Color));
         }
 };
 

@@ -17,7 +17,7 @@ std::size_t count(Position const& p)
 template<typename Material, typename Select, typename Position>
 std::size_t count(Position const& p)
 {
-        return (p.active_color() == Side::black)?
+        return (p.to_move() == Side::black)?
                 count<Side::black, Material, Select>(p) :
                 count<Side::white, Material, Select>(p)
         ;
