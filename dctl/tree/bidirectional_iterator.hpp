@@ -52,7 +52,7 @@ public:
 
         self_type& operator++()
         {
-                plink_ = plink_->next_;
+                plink_ = plink_->next();
                 return *this;
         }
 
@@ -65,7 +65,7 @@ public:
 
         self_type& operator--()
         {
-                plink_ = plink_->prev_;
+                plink_ = plink_->prev();
                 return *this;
         }
 
@@ -76,10 +76,10 @@ public:
                 return old;
         }
 
-        void link(self_type& other)
+        friend void set_successor(self_type& lhs, self_type& rhs)
         {
-                plink_->connect(other.plink_);
-                BOOST_ASSERT(this->is_linked(other));
+                set_successor(lhs.plink_, rhs.plink_);
+                BOOST_ASSERT(is_successor(lhs, rhs));
         }
 
         // queries
@@ -102,16 +102,15 @@ public:
                 return lhs.plink_ == rhs.plink_;
         }
 
-private:
-        // postcondition for link()
-        bool is_linked(self_type const& other) const
+        friend bool is_successor(self_type const& lhs, self_type const& rhs)
         {
                 return (
-                        std::next(this) == other &&
-                        std::prev(other) == this
+                        std::next(lhs) == rhs &&
+                        std::prev(rhs) == lhs
                 );
         }
 
+private:
         // representation
 
         link_ptr plink_;

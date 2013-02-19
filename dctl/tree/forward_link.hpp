@@ -3,36 +3,29 @@
 namespace dctl {
 namespace tree {
 
-struct bidirectional_link
+struct forward_link
 {
 private:
         // typedefs
 
-        typedef bidirectional_link self_type;
+        typedef forward_link self_type;
 
 public:
         // structors
 
-        bidirectional_link()
+        forward_link()
         :
-                prev_(nullptr),
                 next_(nullptr)
         {}
 
         // modifiers
 
-        friend void set_successor(self_type* lhs, self_type* rhs)
+        friend void set_successor(self_type* lhs, self_type const* rhs)
         {
                 lhs->next_ = rhs;
-                rhs->prev_ = lhs;
         }
 
         // queries
-
-        self_type* prev() const
-        {
-                return prev_;
-        }
 
         self_type* next() const
         {
@@ -42,7 +35,6 @@ public:
 private:
         // representation
 
-        self_type* prev_;
         self_type* next_;
 };
 
