@@ -3,7 +3,7 @@
 #include <type_traits>                  // enable_if, is_same
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // equality_comparable1
-#include <dctl/tree/backward_link.hpp>  // backward_link
+#include <dctl/tree/forward_link.hpp>   // forward_link
 #include <dctl/tree/node.hpp>           // node
 
 namespace dctl {
@@ -13,10 +13,10 @@ template
 <
         typename T
 >
-struct backward_iterator
+struct forward_iterator
         // http://www.boost.org/doc/libs/1_52_0/libs/utility/operators.htm#chaining
         // use base class chaining to ensure Empty Base Optimization
-:       boost::equality_comparable1< backward_iterator<T>      // == !=
+:       boost::equality_comparable1< forward_iterator<T>      // == !=
 ,       std::iterator<std::forward_iterator_tag, T>
         >
 {
@@ -30,8 +30,8 @@ private:
 
         // typedefs
 
-        typedef backward_iterator self_type;
-        typedef backward_link link_type;
+        typedef forward_iterator self_type;
+        typedef forward_link link_type;
 public:
         typedef node<link_type, value_type> node_type;
 private:
@@ -41,12 +41,12 @@ private:
 public:
         // structors
 
-        backward_iterator()
+        forward_iterator()
         :
                 plink_()
         {}
 
-        explicit backward_iterator(link_ptr p)
+        explicit forward_iterator(link_ptr p)
         :
                 plink_(p)
         {}
@@ -55,7 +55,7 @@ public:
 
         self_type& operator++()
         {
-                plink_ = plink_->prev_;
+                plink_ = plink_->next();
                 return *this;
         }
 
@@ -66,10 +66,10 @@ public:
                 return old;
         }
 
-        void link(self_type& other)
+        friend void set_successor(self_type& lhs, self_type& rhs)
         {
-                plink_->connect(other.plink_);
-                BOOST_ASSERT(this->is_linked(other));
+                set_successor(lhs.plink_, rhs.plink_);
+                BOOST_ASSERT(is_successor(lhs, rhs));
         }
 
         // queries
@@ -92,14 +92,12 @@ public:
                 return lhs.plink_ == rhs.plink_;
         }
 
-private:
-        // postcondition for link()
-
-        bool is_linked(self_type const& other) const
+        friend bool is_successor(self_type const& lhs, self_type const& rhs)
         {
-                return std::prev(this) == other;
+                return std::next(lhs) == rhs;
         }
 
+private:
         // representation
 
         link_ptr plink_;
