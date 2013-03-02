@@ -25,8 +25,7 @@ struct count<uint64_t>
 #ifdef _MSC_VER
                 return __popcnt64(b);
 #else
-                __asm__("popcnt %1, %0" : "=r" (b) : "r" (b));
-                return b;
+                return __builtin_popcountll(b);
 #endif
         }
 };
@@ -44,9 +43,7 @@ struct index<uint64_t>
                 _BitScanForward64(&index, b);
                 return static_cast<int>(index);
 #else
-                uint64_t index;
-                __asm__("bsfq %1, %0": "=r"(index): "rm"(b) );
-                return static_cast<int>(index);
+                return __builtin_ctzll(b);
 #endif
         }
 };
