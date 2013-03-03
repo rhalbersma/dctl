@@ -13,9 +13,9 @@ public:
                 mask_(m)
         {}
 
-        operator bool() const
+        operator unsigned() const
         {
-                return static_cast<bool>(*pseg_ & mask_);
+                return ctz(mask_);
         }
 
         iterator<T> operator&() const
@@ -54,48 +54,48 @@ private:
 };
 
 template<typename T, std::size_t N>
-class container;
+class list;
 
 template<typename T>
-class container<T, 1>
+class list<T, 1>
 {
 public:
         // structors
 
-        explicit container(T const& b)
+        explicit list(T const& b)
         :
                 data_(b)
         {}
 
         // modifiers
 
-        container& operator<<=(std::size_t n)
+        list& operator<<=(std::size_t n)
         {
                 data_ <<= n;
                 return *this;
         }
 
-        container& operator>>=(std::size_t n)
+        list& operator>>=(std::size_t n)
         {
                 data_ >>= n;
                 return *this;
         }
 
-        container& operator&=(container const& rhs)
+        list& operator&=(list const& rhs)
         {
                 data &= rhs;
                 return *this;
         }
 
-        container& operator|=(container const& rhs)
+        list& operator^=(list const& rhs)
         {
-                data |= rhs;
+                data ^= rhs;
                 return *this;
         }
 
-        container& operator^=(container const& rhs)
+        list& operator|=(list const& rhs)
         {
-                data ^= rhs;
+                data |= rhs;
                 return *this;
         }
 
