@@ -3,72 +3,118 @@
 namespace dctl {
 namespace bit {
 
+template<typename T>
 class reference
 {
 public:
+        reference(T* p, T m)
+        :
+                pseg_(p),
+                mask_(m)
+        {}
+
         operator bool() const
         {
                 return static_cast<bool>(*pseg_ & mask_);
         }
 
-        iterator operator&() const
+        iterator<T> operator&() const
         {
-                return iterator(pseg_, mask_);
+                return iterator<T>(pseg_, mask_);
         }
 
 private:
-        storage* pseg_;
-        storage mask_;
+        T* pseg_;
+        T mask_;
 };
 
+template<typename T>
 class iterator
 {
 public:
-        iterator(storage* p, unsigned n)
+        iterator(T* p, unsigned n)
         :
                 pseg_(p),
                 ctz_(n)
         {}
 
-        reference operator*() const
+        reference<T> operator*() const
         {
-                return reference(pseg_, bit::singlet<storage>(ctz_));
+                return reference<T>(pseg_, singlet<T>(ctz_));
         }
 
         iterator operator++()
         {
-                return iterator(pseg_, bit::ctz(*pseg_ & (~storage(0) << ctz_)));
+                return iterator(pseg_, ctz(*pseg_ & ((~T(0) ^ T(1)) << ctz_)));
         }
 
 private:
-        storage* pseg_;
+        T* pseg_;
         unsigned ctz_;
 };
 
-class container
+template<typename T, std::size_t N>
+class container;
+
+template<typename T>
+class container<T, 1>
 {
 public:
-        explicit container(storage b)
+        // structors
+
+        explicit container(T const& b)
         :
                 data_(b)
         {}
 
-        iterator begin() const
+        // modifiers
+
+        container& operator<<=(std::size_t n)
         {
-                return iterator(&data_, ctz(data_));
+                data_ <<= n;
+                return *this;
         }
 
-        iterator end() const
+        container& operator>>=(std::size_t n)
         {
-                return iterator(&data_, num_bits<storage>::value - clz(data_));
+                data_ >>= n;
+                return *this;
         }
 
-        reference front() const
+        container& operator&=(container const& rhs)
+        {
+                data &= rhs;
+                return *this;
+        }
+
+        container& operator|=(container const& rhs)
+        {
+                data |= rhs;
+                return *this;
+        }
+
+        container& operator^=(container const& rhs)
+        {
+                data ^= rhs;
+                return *this;
+        }
+
+        iterator<T> begin() const
+        {
+                return iterator<T>(&data_, ctz(data_));
+        }
+
+        iterator<T> end() const
+        {
+                return iterator<T>(&data_, num_bits<T>::value - clz(data_));
+        }
+
+        reference<T> front() const
         {
                 return *begin();
         }
 
-        reference back() const
+        reference<T> back() const
         {
                 return *end();
         }
@@ -79,7 +125,7 @@ public:
         }
 
 private:
-        storage data_;
+        T data_;
 };
 
 }       // namespace bit
