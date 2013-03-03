@@ -18,7 +18,9 @@ build/msvc++/*.suo
 
 # Eclipse build output
 Debug/dctl
+Debug/test
 Release/dctl
+Release/test
 *.o
 *.d
 *.exe
