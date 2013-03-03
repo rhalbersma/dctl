@@ -13,7 +13,7 @@ public:
                 mask_(m)
         {}
 
-        operator unsigned() const
+        operator std::size_t() const
         {
                 return ctz(mask_);
         }
@@ -32,7 +32,7 @@ template<typename T>
 class iterator
 {
 public:
-        iterator(T* p, unsigned n)
+        iterator(T* p, std::size_t n)
         :
                 pseg_(p),
                 ctz_(n)
@@ -50,7 +50,7 @@ public:
 
 private:
         T* pseg_;
-        unsigned ctz_;
+        std::size_t ctz_;
 };
 
 template<typename T, std::size_t N>
@@ -83,19 +83,19 @@ public:
 
         list& operator&=(list const& rhs)
         {
-                data &= rhs;
+                data_ &= rhs;
                 return *this;
         }
 
         list& operator^=(list const& rhs)
         {
-                data ^= rhs;
+                data_ ^= rhs;
                 return *this;
         }
 
         list& operator|=(list const& rhs)
         {
-                data |= rhs;
+                data_ |= rhs;
                 return *this;
         }
 
@@ -117,6 +117,11 @@ public:
         reference<T> back() const
         {
                 return *end();
+        }
+
+        std::size_t empty() const
+        {
+                return data_ != 0;
         }
 
         std::size_t size() const
