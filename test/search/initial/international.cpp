@@ -18,6 +18,7 @@ typedef Fixture< Position<rules::International, board::International>, DefaultOb
 BOOST_FIXTURE_TEST_CASE(InternationalInitial, InternationalFixture)
 {
         auto const p = Position<rules::International, board::International>::initial();
+        std::cout << sizeof(decltype(p)) << "\n";
         root_.analyze(p, 17);
 }
 /*
