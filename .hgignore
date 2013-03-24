@@ -1,5 +1,5 @@
 syntax: glob
 
-Debug/test
-Release/test/
+Debug/*
+Release/*
 
