@@ -233,7 +233,7 @@ public:
 
         std::size_t max_size() const
         {
-             return 8 * sizeof(T);
+                return 8 * sizeof(T);
         }
 
         const_iterator find(std::size_t n) const // TODO: make const (requires const arguments for constructor)
@@ -312,6 +312,21 @@ private:
 
 typedef bit_set<uint64_t, 1> bitset;
 
+bitset operator&(bitset const& lhs, bitset const& rhs)
+{
+        return bitset(lhs) &= rhs;
+}
+
+bitset operator|(bitset const& lhs, bitset const& rhs)
+{
+        return bitset(lhs) |= rhs;
+}
+
+bitset operator^(bitset const& lhs, bitset const& rhs)
+{
+        return bitset(lhs) ^= rhs;
+}
+
 bitset operator~(bitset const& lhs)
 {
         return bitset(lhs).flip();
@@ -319,7 +334,7 @@ bitset operator~(bitset const& lhs)
 
 bitset set_difference(bitset const& lhs, bitset const& rhs)
 {
-        return bitset(lhs) &= ~rhs;
+        return lhs & ~rhs;
 }
 
 bool includes(bitset const& lhs, bitset const& rhs)
@@ -329,17 +344,17 @@ bool includes(bitset const& lhs, bitset const& rhs)
 
 bitset set_intersection(bitset const& lhs, bitset const& rhs)
 {
-        return bitset(lhs) &= rhs;
+        return lhs & rhs;
 }
 
 bitset set_union(bitset const& lhs, bitset const& rhs)
 {
-        return bitset(lhs) |= rhs;
+        return lhs | rhs;
 }
 
 bitset set_symmetric_difference(bitset const& lhs, bitset const& rhs)
 {
-        return bitset(lhs) ^= rhs;
+        return lhs ^ rhs;
 }
 
 }       // namespace dctl
