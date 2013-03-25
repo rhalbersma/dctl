@@ -16,6 +16,12 @@ std::size_t safe_ctzll(T mask)
 }
 
 template<typename T>
+std::size_t safe_clzll(T mask)
+{
+     return mask? __builtin_clzll(mask) : (8 * sizeof(T));
+}
+
+template<typename T>
 class bit_const_reference
 {
 public:
@@ -48,7 +54,7 @@ class bit_const_iterator
 :
         public std::iterator
         <
-                std::forward_iterator_tag, // TODO: bidirectional_iterator_tag
+                std::bidirectional_iterator_tag,
                 std::size_t,
                 std::ptrdiff_t,
                 bit_const_iterator<T>,
@@ -69,11 +75,31 @@ public:
 
         bit_const_iterator& operator++()
         {
-                mask_ &= mask_ - 1;
+                auto ctz = safe_ctzll(mask_);
+                mask_ ^= T(1) << ctz;
                 return *this;
         }
 
-        // TODO operator-- and the postfix increment/decrement versions
+        bit_const_iterator operator++(int)
+        {
+                auto old = *this;
+                ++*this;
+                return old;
+        }
+
+        bit_const_iterator& operator--()
+        {
+                auto clz = safe_clzll(mask_);
+                mask_ ^= T(1) << clz;
+                return *this;
+        }
+
+        bit_const_iterator operator--(int)
+        {
+                auto old = *this;
+                --*this;
+                return old;
+        }
 
         friend bool operator==(bit_const_iterator const& lhs, bit_const_iterator const& rhs)
         {
@@ -124,7 +150,7 @@ class bit_iterator
 :
         public std::iterator
         <
-                std::forward_iterator_tag, // TODO: bidirectional_iterator_tag
+                std::bidirectional_iterator_tag,
                 std::size_t,
                 std::ptrdiff_t,
                 bit_iterator<T>,
@@ -150,12 +176,31 @@ public:
 
         bit_iterator& operator++()
         {
-                // guard against invalidation
-                mask_ &= *pseg_ & (mask_ - 1);
+                auto ctz = safe_ctzll(mask_);
+                mask_ ^= T(1) << ctz;
                 return *this;
         }
 
-        // TODO operator-- and the postfix increment/decrement versions
+        bit_iterator operator++(int)
+        {
+                auto old = *this;
+                ++*this;
+                return old;
+        }
+
+        bit_iterator& operator--()
+        {
+                auto clz = safe_clzll(mask_);
+                mask_ ^= T(1) << clz;
+                return *this;
+        }
+
+        bit_iterator operator--(int)
+        {
+                auto old = *this;
+                --*this;
+                return old;
+        }
 
         friend bool operator==(bit_iterator const& lhs, bit_iterator const& rhs)
         {
