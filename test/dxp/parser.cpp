@@ -10,8 +10,14 @@ namespace dxp {
 
 BOOST_AUTO_TEST_SUITE(TestParser)
 
-BOOST_AUTO_TEST_CASE(mesanderExamples)
+BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
+        typedef boost::mpl::vector<
+                GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
+        > MessageTypes;
+
+        Factory<MessageTypes, IMessage> factory;
+
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm
         std::string const messages[] = {
@@ -24,12 +30,6 @@ BOOST_AUTO_TEST_CASE(mesanderExamples)
                 "B005Z",
                 "K1"
         };
-
-        typedef boost::mpl::vector<
-                GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
-        > MessageTypes;
-
-        Factory<MessageTypes, IMessage> factory;
 
         for (auto const& m: messages) {
                 if (auto const parsed = factory.create(m))

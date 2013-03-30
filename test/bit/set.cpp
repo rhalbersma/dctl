@@ -8,6 +8,8 @@
 namespace dctl {
 namespace bit {
 
+typedef bit_set<uint64_t, 1> bitset;
+
 BOOST_AUTO_TEST_SUITE(BitSet)
 
 BOOST_AUTO_TEST_CASE(Members)
@@ -15,12 +17,15 @@ BOOST_AUTO_TEST_CASE(Members)
         const bitset z { 17, 31, 61 }; // removing const will enable dynamic re-checking of mask
         std::copy(z.begin(), z.end(), std::ostream_iterator<std::size_t>(std::cout, ",")); std::cout << "\n";
 
-        uint64_t a[] = { 17, 31, 61 };
+        std::size_t a[] = { 17, 31, 61 };
         bitset aa;
         aa.insert(std::begin(a), std::end(a));
+        bitset bb(std::begin(a), std::end(a));
+        bitset cc(aa);
+        BOOST_CHECK(aa == bb);
+        BOOST_CHECK(aa == cc);
 
         std::copy(std::begin(a), std::end(a), std::insert_iterator<bitset>(aa, aa.end()));
-        std::copy(aa.begin(), aa.end(), std::ostream_iterator<std::size_t>(std::cout, ",")); std::cout << "\n";
 
         // initialize-list
         bitset x {17, 31, 61};
@@ -59,23 +64,61 @@ BOOST_AUTO_TEST_CASE(Members)
         BOOST_CHECK(!includes(y, x));
         BOOST_CHECK(!includes(x, y));
 
-        // both include their intersection
-        BOOST_CHECK(includes(x, i));
-        BOOST_CHECK(includes(y, i));
-
-        // their union includes both
-        BOOST_CHECK(includes(u, x));
-        BOOST_CHECK(includes(u, y));
-
         // plain for-loop summation equals accumulate algorithm
         auto sum = 0; for (auto it = x.begin(); it != x.end(); ++it) sum += *it;
         BOOST_CHECK(sum == std::accumulate(x.begin(), x.end(), 0));
+}
 
-        // distance between begin / end equals number of elements
-        BOOST_CHECK(std::distance(x.begin(), x.end()) == static_cast<std::ptrdiff_t>(x.size()));
+BOOST_AUTO_TEST_CASE(BitSetIntersection)
+{
+        bitset const a { 0, 1, 2, 3 };
+        bitset const b { 0, 1, 4, 5 };
 
-        // sets are sorted containers of unique elements
-        BOOST_CHECK(std::is_sorted(x.begin(), x.end()));
+        auto const i = set_intersection(a, b);
+
+        BOOST_CHECK(includes(a, i));
+        BOOST_CHECK(includes(b, i));
+        BOOST_CHECK(i == (a & b));
+}
+
+BOOST_AUTO_TEST_CASE(BitSetUnion)
+{
+        bitset const a { 0, 1, 2, 3 };
+        bitset const b { 0, 1, 4, 5 };
+
+        auto const u = set_union(a, b);
+
+        BOOST_CHECK(includes(u, a));
+        BOOST_CHECK(includes(u, b));
+        BOOST_CHECK(u == (a | b));
+}
+
+BOOST_AUTO_TEST_CASE(BitSetSymmetricDifference)
+{
+        bitset const a { 0, 1, 2, 3 };
+        bitset const b { 0, 1, 4, 5 };
+
+        auto const s = set_symmetric_difference(a, b);
+        auto const d_ab = set_difference(a, b);
+        auto const d_ba = set_difference(b, a);
+        auto const u = set_union(d_ab, d_ba);
+
+        BOOST_CHECK(s == u);
+        BOOST_CHECK(s == (a ^ b));
+}
+
+BOOST_AUTO_TEST_CASE(BitSetDifference)
+{
+        bitset const a { 0, 1, 2, 3 };
+        bitset const b { 0, 1, 4, 5 };
+
+        auto const d_ab = set_difference(a, b);
+        auto const d_ba = set_difference(b, a);
+
+        BOOST_CHECK( includes(a, d_ab));
+        BOOST_CHECK(!includes(a, d_ba));
+        BOOST_CHECK( includes(b, d_ba));
+        BOOST_CHECK(!includes(b, d_ab));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
