@@ -1,9 +1,10 @@
 #pragma once
-#include <string>                       // string
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/utility.hpp>            // noncopyable
-#include <dctl/factory/mixin.hpp>       // HeaderBodyTerminator
+#include <string>                               // string
+#include <boost/assert.hpp>                     // BOOST_ASSERT
+#include <boost/config.hpp>                     // BOOST_STATIC_CONSTANT
+#include <boost/utility.hpp>                    // noncopyable
+#include <dctl/factory/mixin.hpp>               // HeaderBodyTerminator
+#include <dctl/preprocessor/cpp11/default.hpp>  // DCTL_PP_IS_DEFAULT
 
 namespace dctl {
 namespace dxp {
@@ -22,7 +23,7 @@ class IMessage
 {
 public:
         // enable deletion of a Derived* through a Base*
-        virtual ~IMessage() = default;
+        virtual ~IMessage() DCTL_PP_IS_DEFAULT
 
         // non-virtual interface
         std::string str() const

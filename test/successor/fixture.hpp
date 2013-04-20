@@ -8,7 +8,7 @@
 #include <boost/test/unit_test.hpp>
 #include <dctl/successor/copy.hpp>
 #include <dctl/node/position.hpp>
-#include <dctl/node/stack.hpp>
+#include <dctl/utility/stack_vector.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/notation/string.hpp>
 
@@ -23,7 +23,7 @@ struct Fixture
         {
                 // setup the position and generate all legal moves
                 auto const p = setup::read<Rules, Board, pdn::protocol>()(FEN);
-                Arena<Move> a;
+                Arena<Move>::type a;
                 auto const moves = successor::copy(p, a);
 
                 // check whether the number of generated moves is equal to the number of legal moves

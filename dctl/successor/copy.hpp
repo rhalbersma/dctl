@@ -3,8 +3,9 @@
 #include <dctl/successor/copy/specializations.hpp>      // copy
 #include <dctl/successor/invariant.hpp>                 // invariant
 #include <dctl/successor/material/piece.hpp>            // piece
+#include <dctl/node/move.hpp>                           // Move
 #include <dctl/node/side.hpp>                           // black, white
-#include <dctl/node/stack.hpp>                          // Stack
+#include <dctl/utility/stack_vector.hpp>                // stack_vector
 
 namespace dctl {
 namespace successor {
@@ -16,11 +17,11 @@ void copy(Position const& p, Vector& moves)
 }
 
 template<bool Color, typename Material, typename Select, typename Position>
-Vector<Move> copy(Position const& p, Arena<Move>& mar)
+stack_vector<Move>::type copy(Position const& p, Arena<Move>::type& mar)
 {
-        Alloc<Move> mal(mar);
-        Vector<Move> moves(mal);
-        moves.reserve(DCTL_PP_VECTOR_RESERVE);
+        Alloc<Move>::type mal(mar);
+        stack_vector<Move>::type moves(mal);
+        moves.reserve(DCTL_PP_STACK_RESERVE);
 
         copy<Color, Material, Select>(p, moves);
 
@@ -29,7 +30,7 @@ Vector<Move> copy(Position const& p, Arena<Move>& mar)
 }
 
 template<typename Material, typename Select, typename Position>
-Vector<Move> copy(Position const& p, Arena<Move>& mar)
+stack_vector<Move>::type copy(Position const& p, Arena<Move>::type& mar)
 {
         return (p.to_move() == Side::black)?
                 copy<Side::black, Material, Select>(p, mar) :
@@ -38,7 +39,7 @@ Vector<Move> copy(Position const& p, Arena<Move>& mar)
 }
 
 template<typename Position>
-Vector<Move> copy(Position const& p, Arena<Move>& mar)
+stack_vector<Move>::type copy(Position const& p, Arena<Move>::type& mar)
 {
         return copy<material::piece, select::legal>(p, mar);
 }
