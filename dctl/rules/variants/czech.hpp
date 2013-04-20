@@ -1,6 +1,6 @@
 #pragma once
 #include <type_traits>
-#include <dctl/rules/czech_fwd.hpp>
+#include <dctl/rules/variants/czech_fwd.hpp>
 #include <dctl/rules/enum.hpp>
 #include <dctl/successor/value.hpp>
 #include <dctl/notation/czech.hpp>

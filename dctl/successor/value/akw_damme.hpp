@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/value_fwd.hpp>                 // Value (primary template)
 #include <dctl/successor/value/international.hpp>       // International (specialization)
-#include <dctl/rules/damme_fwd.hpp>                     // Damme
+#include <dctl/rules/variants/akw_damme_fwd.hpp>                     // Damme
 
 namespace dctl {
 namespace successor {

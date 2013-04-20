@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/value_fwd.hpp>                 // Value (primary template)
 #include <dctl/successor/value/international.hpp>       // International (specialization)
-#include <dctl/rules/hoogland_fwd.hpp>                  // Hoogland
+#include <dctl/rules/variants/hoogland_fwd.hpp>                  // Hoogland
 
 namespace dctl {
 namespace successor {

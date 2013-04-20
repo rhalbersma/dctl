@@ -8,7 +8,7 @@
 #include <dctl/node/position.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/board/types.hpp>
-#include <dctl/rules/types.hpp>
+#include <dctl/rules/variants.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {

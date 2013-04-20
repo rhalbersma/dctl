@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/rules/damme_fwd.hpp>
-#include <dctl/rules/international.hpp>
+#include <dctl/rules/variants/akw_damme_fwd.hpp>
+#include <dctl/rules/variants/international.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/successor/value/damme.hpp>
+#include <dctl/successor/value/akw_damme.hpp>
 
 namespace dctl {
 namespace rules {

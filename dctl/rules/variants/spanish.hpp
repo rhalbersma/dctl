@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/spanish_fwd.hpp>
+#include <dctl/rules/variants/spanish_fwd.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/successor/value/spanish.hpp>
 

@@ -9,7 +9,7 @@
 #include <boost/operators.hpp>          // totally_ordered
 #include <dctl/bit/bit.hpp>             // count, reverse_singlet
 #include <dctl/successor/value_fwd.hpp> // Value (primary template)
-#include <dctl/rules/italian_fwd.hpp>   // Italian
+#include <dctl/rules/variants/italian_fwd.hpp>   // Italian
 
 namespace dctl {
 namespace successor {

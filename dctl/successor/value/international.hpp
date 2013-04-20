@@ -4,7 +4,7 @@
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/international_fwd.hpp>     // International
+#include <dctl/rules/variants/international_fwd.hpp>     // International
 
 namespace dctl {
 namespace successor {
