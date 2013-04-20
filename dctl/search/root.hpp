@@ -93,14 +93,18 @@ private:
 
                 std::cout << " depth ";
                 std::cout << std::setw( 2) << depth;
+                std::cout << std::setiosflags(std::ios::fixed) << std::setprecision(1);
+                std::cout << "/" << boost::accumulators::mean(statistics_.ply());
+                std::cout << "/" << std::setw( 2) << boost::accumulators::max(statistics_.ply());
 
+                auto const node_count = boost::accumulators::count(statistics_.nodes());
                 std::cout << " nodes ";
-                std::cout << std::setw(11) << std::right << statistics_.nodes();
+                std::cout << std::setw(11) << std::right << node_count;
 
                 std::cout << " time ";
                 std::cout << std::setw( 6) << timer.elapsed().count();
 
-                double const nps = static_cast<double>(1000 * statistics_.nodes()) / static_cast<double>(timer.elapsed().count());
+                double const nps = static_cast<double>(1000 * node_count) / static_cast<double>(timer.elapsed().count());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;

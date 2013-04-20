@@ -1,5 +1,9 @@
 #pragma once
-#include <algorithm>                    // std:max
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/mean.hpp>
+#include <boost/accumulators/statistics/max.hpp>
+#include <boost/accumulators/statistics/count.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -7,52 +11,40 @@ namespace dctl {
 class Statistics
 {
 public:
-        // structors
-
-        Statistics()
-        :
-                nodes_ (0),
-                sum_ply_(0),
-                max_ply_(0)
-        {}
+        typedef boost::accumulators::accumulator_set<NodeCount, boost::accumulators::stats<boost::accumulators::tag::count> > NodeStats;
+        typedef boost::accumulators::accumulator_set<double, boost::accumulators::stats<boost::accumulators::tag::mean, boost::accumulators::tag::max> > PlyStats;
 
         // modifiers
 
         void reset()
         {
-                nodes_ = sum_ply_ = max_ply_ = 0;
+                nodes_ = NodeStats();
+                ply_ = PlyStats();
         }
 
-        void update(int ply)
+        void collect(int ply)
         {
-                ++nodes_;
-                sum_ply_ += ply;
-                max_ply_ = std::max(ply, max_ply_);
+                nodes_(1);
+                ply_(ply);
         }
 
         // queries
 
-        NodeCount nodes() const
+        NodeStats nodes() const
         {
                 return nodes_;
         }
 
-        NodeCount sum_ply() const
+        PlyStats ply() const
         {
-                return sum_ply_;
-        }
-
-        int max_ply() const
-        {
-                return max_ply_;
+                return ply_;
         }
 
 private:
         // representation
 
-        NodeCount nodes_;
-        NodeCount sum_ply_;
-        int max_ply_;
+        NodeStats nodes_;
+        PlyStats ply_;
 };
 
 }       // namespace dctl

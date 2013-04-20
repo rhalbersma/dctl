@@ -84,7 +84,7 @@ struct Enhancements<bulk_tag, Position>
         explicit Enhancements(value_type* p): handle_(p) {}
 
         void reset_statistics() { handle_->statistics_.reset(); }
-        void update_statistics(int ply) { handle_->statistics_.update(ply); }
+        void collect_statistics(int ply) { handle_->statistics_.collect(ply); }
 
         std::pair<bool, NodeCount> find(Position const& /* p */, int /* depth */) const
         {
@@ -127,7 +127,7 @@ struct Enhancements<hash_tag, Position>
         explicit Enhancements(value_type* p): handle_(p) {}
 
         void reset_statistics() { handle_->statistics_.reset(); }
-        void update_statistics(int ply) { handle_->statistics_.update(ply); }
+        void collect_statistics(int ply) { handle_->statistics_.collect(ply); }
 
         void clear_TT() { handle_->TT_.clear(); };
         void resize_TT(std::size_t n) { handle_->TT_.resize(n); }
@@ -161,7 +161,7 @@ template<typename Position, typename Enhancements>
 NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
 {
         // (0)
-        e.update_statistics(ply);
+        e.collect_statistics(ply);
 
         // (1)
         auto const find = e.find(p, depth);
@@ -220,13 +220,14 @@ void report(int depth, NodeCount leafs, Timer const& timer, Enhancements e)
         std::cout << " leafs ";
         std::cout << std::setw(12) << std::right << leafs;
 
+        auto const node_count = boost::accumulators::count(e.handle_->statistics_.nodes());
         std::cout << " nodes ";
-        std::cout << std::setw(12) << std::right << e.handle_->statistics_.nodes();
+        std::cout << std::setw(12) << std::right << node_count;
 
         std::cout << " time ";
         std::cout << std::setw( 6) << timer.lap().count();
 
-        double const nps = static_cast<double>(1000 * e.handle_->statistics_.nodes()) / static_cast<double>(timer.lap().count());
+        double const nps = static_cast<double>(1000 * node_count) / static_cast<double>(timer.lap().count());
         std::cout << " nps ";
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
         std::cout << std::setw( 7) << nps;
