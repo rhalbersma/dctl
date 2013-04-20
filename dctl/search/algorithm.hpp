@@ -40,7 +40,7 @@ template<typename Position, typename Objective>
 template<int NodeType>
 int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int depth, int ply, Variation& refutation)
 {
-        statistics_.update(ply);
+        statistics_.collect(ply);
 
         if (is_interrupted())
                 return alpha;
