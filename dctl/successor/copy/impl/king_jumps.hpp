@@ -14,6 +14,7 @@
 #include <dctl/board/iterator.hpp>                      // Next
 #include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/utility/int.hpp>                         // BitBoard, BitIndex
+#include <dctl/utility/algorithm.hpp>
 
 namespace dctl {
 namespace successor {
@@ -360,7 +361,7 @@ private:
         {
                 // tag dispatching on promotion condition
                 add_king_jump_dispatch(dest_sq, typename rules::traits<Rules>::pawn_promotion());
-                if (check_duplicate && is_duplicate_back(moves_))
+                if (check_duplicate && algorithm::is_duplicate_back(moves_))
                         moves_.pop_back();
         }
 

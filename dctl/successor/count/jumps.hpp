@@ -6,7 +6,7 @@
 #include <dctl/successor/copy/pawn_jumps.hpp>           // copy (pawn jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/node/move.hpp>                           // Move
-#include <dctl/node/stack.hpp>                          // Vector, Alloc, Arena
+#include <dctl/utility/stack_vector.hpp>                          // Vector, Alloc, Arena
 
 namespace dctl {
 namespace successor {
@@ -19,9 +19,9 @@ struct count<Color, Material, select::jumps>
         template<typename Position>
         std::size_t operator()(Position const& p) const
         {
-                Arena<Move> mar_;
-                Alloc<Move> mal_(mar_);
-                Vector<Move> moves_(mal_);
+                Arena<Move>::type mar_;
+                Alloc<Move>::type mal_(mar_);
+                stack_vector<Move>::type moves_(mal_);
 
                 copy<Color, Material, select::jumps>()(p, moves_);
                 return moves_.size();

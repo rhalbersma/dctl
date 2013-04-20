@@ -2,7 +2,7 @@
 #include <iterator>                     // back_inserter
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <dctl/node/stack.hpp>
+#include <dctl/utility/stack_vector.hpp>
 #include <dctl/successor/count.hpp>
 #include <dctl/successor/copy.hpp>
 #include <dctl/utility/algorithm.hpp>
@@ -17,8 +17,8 @@ int Root<Position, Objective>::iterative_deepening(Position const& p, int depth)
         auto score = -infinity();
         int alpha, beta;
 
-        Arena<int> iar;
-        Alloc<int> ial(iar);
+        Arena<int>::type iar;
+        Alloc<int>::type ial(iar);
         Variation pv(ial);
         Timer timer;
         announce(p, depth);
@@ -84,12 +84,12 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
                 return TT_entry->value();
 
         // generate moves
-        Arena<Move> a;
+        Arena<Move>::type a;
         auto const moves = successor::copy(p, a);
         BOOST_ASSERT(!moves.empty());
 
-        Arena<int> oar;
-        Alloc<int> oal(oar);
+        Arena<int>::type oar;
+        Alloc<int>::type oal(oar);
         Order move_order(oal);
         move_order.reserve(moves.size());					// reserve enough room for all indices
         algorithm::iota_n(std::back_inserter(move_order), moves.size(), 0);	// generate indices [0, moves.size() - 1]
@@ -116,10 +116,10 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
         auto best_move = Transposition::no_move();
         int value;
 
-        Arena<int> car;
-        Alloc<int> cal(car);
+        Arena<int>::type car;
+        Alloc<int>::type cal(car);
         Variation continuation(cal);
-        continuation.reserve(DCTL_PP_VECTOR_RESERVE);
+        continuation.reserve(DCTL_PP_STACK_RESERVE);
 
         for (auto const& i: move_order) {
                 auto q = successor::make_copy(p, moves[i]);

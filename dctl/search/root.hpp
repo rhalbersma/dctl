@@ -9,7 +9,7 @@
 #include <dctl/search/transposition.hpp>
 #include <dctl/search/variation.hpp>
 #include <dctl/evaluate/score.hpp>
-#include <dctl/node/stack.hpp>
+#include <dctl/utility/stack_vector.hpp>
 #include <dctl/hash/signature_extractor.hpp>
 #include <dctl/hash/map.hpp>
 #include <dctl/hash/replace.hpp>

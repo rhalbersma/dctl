@@ -25,6 +25,13 @@ bool detect_if(InputIterator first, InputIterator last, Predicate pred)
         return std::find_if(first, last, pred) != last;
 }
 
+// O(N) complexity
+template<typename Container>
+bool is_duplicate_back(Container const& c)
+{
+        return detect(std::begin(c), std::end(c) - 1, c.back());
+}
+
 // mutating sequence algorithms
 
 // O(N) complexity: weak range extension of std::iota

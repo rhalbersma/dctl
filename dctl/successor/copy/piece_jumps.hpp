@@ -32,18 +32,24 @@ private:
         // template aliases
 
         template<typename Position, typename Vector>
-        using KingJumps = impl::copy<Color, material::king, select::jumps, Position, Vector>;
+        struct KingJumps
+        {
+                typedef impl::copy<Color, material::king, select::jumps, Position, Vector> type;
+        };
 
         template<typename Position, typename Vector>
-        using PawnJumps = impl::copy<Color, material::pawn, select::jumps, Position, Vector>;
+        struct PawnJumps
+        {
+                typedef impl::copy<Color, material::pawn, select::jumps, Position, Vector> type;
+        };
 
         // overload for no absolute king jump precedence
         template<typename Position, typename Vector>
         void precedence_dispatch(Position const& p, Vector& moves, std::false_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                KingJumps<Position, Vector>{propagate, moves}(p.material().kings(Color));
-                PawnJumps<Position, Vector>{propagate, moves}(p.material().pawns(Color));
+                typename KingJumps<Position, Vector>::type{propagate, moves}(p.material().kings(Color));
+                typename PawnJumps<Position, Vector>::type{propagate, moves}(p.material().pawns(Color));
         }
 
         // overload for absolute king jump precedence
@@ -51,9 +57,9 @@ private:
         void precedence_dispatch(Position const& p, Vector& moves, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                KingJumps<Position, Vector>{propagate, moves}(p.material().kings(Color));
+                typename KingJumps<Position, Vector>::type{propagate, moves}(p.material().kings(Color));
                 if (moves.empty())
-                        PawnJumps<Position, Vector>{propagate, moves}(p.material().pawns(Color));
+                        typename PawnJumps<Position, Vector>::type{propagate, moves}(p.material().pawns(Color));
         }
 };
 

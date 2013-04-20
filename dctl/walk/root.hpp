@@ -9,7 +9,7 @@
 #include <dctl/hash/dual_map.hpp>
 #include <dctl/hash/signature_extractor.hpp>
 #include <dctl/node/material.hpp>
-#include <dctl/node/stack.hpp>
+#include <dctl/utility/stack_vector.hpp>
 #include <dctl/successor/count.hpp>
 #include <dctl/successor/copy.hpp>
 #include <dctl/utility/int.hpp>
@@ -175,7 +175,7 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
         if (terminal.first) {
                 nodes = terminal.second;
         } else {
-                Arena<Move> a;
+                Arena<Move>::type a;
                 auto const moves = successor::copy(p, a);
                 for (auto const& m: moves)
                         nodes += walk(successor::make_copy(p, m), depth - 1, ply + 1, e);

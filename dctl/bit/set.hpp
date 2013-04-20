@@ -1,10 +1,11 @@
 #pragma once
-#include <cstddef>                      // size_t
+#include <cstddef>                              // size_t
 #include <cstdint>
 #include <algorithm>
 #include <iterator>
 #include <utility>
-#include <boost/operators.hpp>          // totally_ordered
+#include <boost/operators.hpp>                  // totally_ordered
+#include <dctl/preprocessor/cpp11/delete.hpp>   // DCTL_PP_IS_DELETE
 
 namespace dctl {
 
@@ -36,7 +37,7 @@ public:
         {}
 
         // reference cannot be rebound
-        bit_const_reference& operator=(bit_const_reference const&) = delete;
+        bit_const_reference& operator=(bit_const_reference const&) DCTL_PP_IS_DELETE
 
         operator std::size_t() const
         {
@@ -131,7 +132,7 @@ public:
         {}
 
         // reference cannot be rebound
-        bit_reference& operator=(bit_reference const&) = delete;
+        bit_reference& operator=(bit_reference const&) DCTL_PP_IS_DELETE
 
         operator std::size_t() const
         {

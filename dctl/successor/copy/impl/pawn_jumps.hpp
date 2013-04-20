@@ -16,6 +16,7 @@
 #include <dctl/node/promotion.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
+#include <dctl/utility/algorithm.hpp>
 
 namespace dctl {
 namespace successor {
@@ -329,7 +330,7 @@ private:
         {
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
                 capture_.template add_pawn_jump<Color, with::pawn>(dest_sq, moves_);
-                if (check_duplicate && is_duplicate_back(moves_))
+                if (check_duplicate && algorithm::is_duplicate_back(moves_))
                         moves_.pop_back();
         }
 };

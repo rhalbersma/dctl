@@ -52,17 +52,23 @@ private:
         // the existence of pawn jumps is independent of Range,
         // but we always use rules::range::distance_1 to avoid template bloat
         template<typename Position>
-        using PawnJumps = impl::detect<Color, material::pawn, select::jumps, Position, rules::range::distance_1>;
+        struct PawnJumps
+        {
+                typedef impl::detect<Color, material::pawn, select::jumps, Position, rules::range::distance_1> type;
+        };
 
         template<typename Position>
-        using KingJumps = impl::detect<Color, material::king, select::jumps, Position, Range>;
+        struct KingJumps
+        {
+                typedef impl::detect<Color, material::king, select::jumps, Position, Range> type;
+        };
 
         // overload for piece jump detection
         template<typename Position>
         bool combined_dispatch(Position const& p, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                return PawnJumps<Position>{propagate}(p.material().pieces(Color));
+                return typename PawnJumps<Position>::type{propagate}(p.material().pieces(Color));
         }
 
         // overload for separate king and pawn jump detection
@@ -72,7 +78,7 @@ private:
                 Propagate<select::jumps, Position> propagate(p);
 
                 // speculate #pawns > #kings so that the logical OR is more likely to short-circuit
-                return PawnJumps<Position>{propagate}(p.material().pawns(Color)) || KingJumps<Position>{propagate}(p.material().kings(Color));
+                return typename PawnJumps<Position>::type{propagate}(p.material().pawns(Color)) || typename KingJumps<Position>::type{propagate}(p.material().kings(Color));
         }
 };
 

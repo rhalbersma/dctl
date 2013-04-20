@@ -39,11 +39,11 @@ BOOST_AUTO_TEST_CASE(Members)
         x.erase(17);
         y.insert({1,6});
 
-        // plain for-loop using iterators
+        // plain for-loop with iterators
         for (auto it = x.begin(); it != x.end(); ++it) std::cout << *it << ","; std::cout << "\n";
         for (auto it = y.begin(); it != y.end(); ++it) std::cout << *it << ","; std::cout << "\n";
 
-        // range for-loop using auto (NOTE: can't use auto& or auto const& here)
+        // range for-loop with auto (NOTE: can't use auto& or auto const& here)
         auto i = set_intersection(x, y);
         for (auto e: i) std::cout << e << ","; std::cout << "\n";
 
