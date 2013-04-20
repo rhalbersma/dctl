@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/rules/hoogland_fwd.hpp>
-#include <dctl/rules/international.hpp>
+#include <dctl/rules/variants/hoogland_fwd.hpp>
+#include <dctl/rules/variants/international.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/successor/value/hoogland.hpp>
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <type_traits>
-#include <dctl/rules/frisian_fwd.hpp>
+#include <dctl/rules/variants/frisian_fwd.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/successor/value/frisian.hpp>
 

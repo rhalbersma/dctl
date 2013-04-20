@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/checkers_fwd.hpp>
+#include <dctl/rules/variants/checkers_fwd.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/successor/value.hpp>
 

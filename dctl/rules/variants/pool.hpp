@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/pool_fwd.hpp>
+#include <dctl/rules/variants/pool_fwd.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/successor/value.hpp>
 

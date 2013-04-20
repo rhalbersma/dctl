@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/international_fwd.hpp>
+#include <dctl/rules/variants/international_fwd.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/successor/value/international.hpp>
 

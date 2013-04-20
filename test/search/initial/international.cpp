@@ -5,7 +5,7 @@
 #include <boost/test/unit_test.hpp>
 #include <test/search/fixture.hpp>
 #include <dctl/board/types.hpp>
-#include <dctl/rules/types.hpp>
+#include <dctl/rules/variants.hpp>
 #include <dctl/setup/string.hpp>
 
 namespace dctl {

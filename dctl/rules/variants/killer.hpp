@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/rules/killer_fwd.hpp>
-#include <dctl/rules/international.hpp>
+#include <dctl/rules/variants/killer_fwd.hpp>
+#include <dctl/rules/variants/international.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/successor/value/killer.hpp>
 
