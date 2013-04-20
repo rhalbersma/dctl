@@ -17,31 +17,31 @@ public:
 
         void split()
         {
-                laps_.push_back(clock::now());
+                splits_.push_back(clock::now());
         }
 
         void reset()
         {
-                laps_.clear();
+                splits_.clear();
         }
 
-        // milliseconds since construction
+        // milliseconds since first split()
         std::chrono::milliseconds elapsed() const
         {
-                return std::chrono::duration_cast<std::chrono::milliseconds>(laps_.back() - laps_.front());
+                 return std::chrono::duration_cast<std::chrono::milliseconds>(splits_.back() - splits_.front());
         }
 
         // milliseconds since last split()
         std::chrono::milliseconds lap() const
         {
-                BOOST_ASSERT(!laps_.empty());
-                auto const i = laps_.size() - 1;
-                return std::chrono::duration_cast<std::chrono::milliseconds>(laps_[i] - laps_[i - 1]);
+                BOOST_ASSERT(1 <= splits_.size());
+                auto const i = splits_.size() - 1;
+                return std::chrono::duration_cast<std::chrono::milliseconds>(splits_.back() - splits_[i - 1]);
         }
 
 private:
         // representation
-        std::vector<std::chrono::high_resolution_clock::time_point> laps_;     // lap times
+        std::vector<std::chrono::high_resolution_clock::time_point> splits_;     // lap times
 };
 
 }       // namespace dctl
