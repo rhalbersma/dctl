@@ -43,13 +43,12 @@ Apart from a modern C++ compiler and the Boost libraries, it is convenient to ha
 
 Clone this BitBucket repository to a directory of your choice
 
+      cd projects/
       hg clone https://bitbucket.org/rhalbersma/dctl/
-
-and point your compiler to their location. 
 
 ### Header-only
 
-The DCTL is header-only, which means that you do not have link your application against a seperately compiled to separately compiled version of the DCTL. That's right: no DLL hell. You can simply #including the appropriate header files into your application and continue to use your regular build process. However, to make sure that your build environment is compatible with the DCTL requirements, you might want to run some the tests.
+The DCTL is header-only, which means that you do not have link your application against a seperately compiled to separately compiled version of the DCTL. That's right: no DLL hell. You can simply #including the appropriate header files into your application, point your compiler to their location, and continue to use your regular build process. However, to make sure that your build environment is compatible with the DCTL requirements, you might want to run some tests.
 
 ### Testing
 
