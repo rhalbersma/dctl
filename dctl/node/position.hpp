@@ -298,11 +298,7 @@ struct Init< Index, Position<Rules, Board> >
         {
                 return (
                         Init<Index, Material  >()(p.material())     ^
-<<<<<<< local
-                        Init<Index, bool      >()(p.active_color()) ^
-=======
                         Init<Index, bool      >()(p.to_move()) ^
->>>>>>> other
                         Init<Index, Restricted>()(p.restricted())
                 );
         }
