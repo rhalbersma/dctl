@@ -131,7 +131,7 @@ private:
                         return;
                 }
 
-                Arena<Move> a;
+                Arena<Move>::type a;
                 auto const moves = successor::copy(p, a);
                 int const index = pv[ply] % moves.size();
                 auto const best_move = moves[index];
@@ -149,7 +149,7 @@ private:
                         return;
                 }
 
-                Arena<Move> a;
+                Arena<Move>::type a;
                 auto const moves = successor::copy(p, a);
                 auto const best_move = moves[pv[ply] % moves.size()];
 
