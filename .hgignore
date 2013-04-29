@@ -1,6 +1,8 @@
 syntax: glob
 
-Debug/*
-Release/*
+# emacs saves
+*~
+*#
 
-
+# cmake output
+build
