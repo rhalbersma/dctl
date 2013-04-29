@@ -267,7 +267,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
         NodeCount sub_count;
 
         Timer timer;
-        Arena<Move> a;
+        Arena<Move>::type a;
         auto const moves = successor::copy(p, a);
 
         announce(p, depth, moves.size());
