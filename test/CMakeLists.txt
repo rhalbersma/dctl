@@ -7,9 +7,15 @@ if(Boost_FOUND)
   include_directories(${DCTL_SOURCE_DIR} ${Boost_INCLUDE_DIRS})
 
   # add all test cases
-  file(GLOB_RECURSE tests FOLLOW_SYMLINKS "*.hpp" "*.cpp")
-  add_executable(main ${tests})
+  file(GLOB_RECURSE testsuite FOLLOW_SYMLINKS "*.hpp" "*.cpp")
+  add_executable(testrunner ${testsuite})
 
   # link against Boost.Test
-  target_link_libraries(main ${Boost_LIBRARIES})
+  target_link_libraries(testrunner ${Boost_LIBRARIES})
+
+  get_target_property(testrunner_EXE testrunner LOCATION)
+  add_custom_target(
+    test ${testrunner_EXE} --result_code=yes --report_level=detailed
+    DEPENDS testrunner
+  )
 endif()
