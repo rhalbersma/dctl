@@ -73,11 +73,11 @@ The test-suite is built using the [CMake](http://www.cmake.org/) cross-platform 
 
 * **NOTE:** CMake is **ONLY** a requirement for building the test-suite, and **NOT** for using the DCTL headers with your application. 
 
-### Git
+### Mercurial
 
-Development is being tracked with the [Git](http://git-scm.com/) distributed version control system, the [git-flow](https://github.com/nvie/gitflow) extension, and the [GitHub](https://github.com/rhalbersma) hosting service. The master branch is the currently stable version and the commits along this branch are tagged with versions. Development takes place on the develop branch, with features being developed in so-called feature branches. To contribute to the DCTL, use 
+Development is being tracked with the [Mercurial](http://mercurial.selenic.com/) distributed version control system, the [hg flow](https://bitbucket.org/yujiewu/hgflow/wiki/Home) extension, and the [BitBucket](https://bitbucket.org) hosting service. The default branch is the currently stable version and the commits along this branch are tagged with versions. Development takes place on the develop branch, with features being developed in so-called feature branches. To contribute to the DCTL, use 
 
-* **NOTE**: Git is **ONLY** a requirement for contributing to the DCTL, and **NOT** for using the DCTL headers with your application. Downloading and unpacking the latest zipped source archive works equally well.
+* **NOTE**: Mercurial is **ONLY** a requirement for contributing to the DCTL, and **NOT** for using the DCTL headers with your application. Downloading and unpacking the latest zipped source archive works equally well.
 
 Installation
 ------------
@@ -87,7 +87,7 @@ Installation
 Clone this repository to a directory of your choice 
 
       cd projects/ 
-      git clone https://github.org/rhalbersma/dctl/
+      hg clone https://bitbucket.org/rhalbersma/dctl/
 
 Alternatively, you can download and unpack the latest zipped source archive into the same directory.
 
@@ -115,7 +115,7 @@ The DCTL is header-only, which means that you do not have to link your applicati
 
 ### Contribute
 
-Any ideas and contributions are much appreciated! The recommended way to contribute code is through GitHub [pull requests](https://help.github.com/articles/using-pull-requests). Patches and raw code samples are discouraged.    
+Any feature requests, ideas and contributions are much appreciated! The recommended way to contribute code is through BitBucket [pull requests](https://confluence.atlassian.com/display/BITBUCKET/Working+with+pull+requests).    
 
 Acknowledgments
 ----------------
