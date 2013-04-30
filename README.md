@@ -86,26 +86,29 @@ Installation
 
 Clone this repository to a directory of your choice 
 
-      cd projects/ 
+      cd ~/projects/ 
       hg clone https://bitbucket.org/rhalbersma/dctl/
 
 Alternatively, you can download and unpack the latest zipped source archive into the same directory.
 
 ### Test-suite
 
-To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost), and type from inside your `dctl/` project root directory
-    
+To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost), and type
+
+      cd ~/projects/dctl    
       mkdir build
       cd build
       cmake ../test
       make
       make test
 
-To completely regenerate the test-suite's build solution, simply delete the entire `dctl/build/` directory and rerun the above five commands. To only rebuild and rerun the test-suite, type
+To completely regenerate the test-suite's build solution, simply delete the entire `dctl/build/` directory and rerun the above commands. To only rebuild and rerun the test-suite, type
 
       make clean
       make
       make test
+
+The build will take about 35 seconds on a single 3.2 Ghz Intel i7 core. You can speed up the build with a `make -j N` on a system supporting up to `N` (hyper)threads.
 
 * **NOTE**: your application is completely independent of the test-suite. You do not have to build and run the test-suite in order to use the DCTL headers with your own application. 
 
