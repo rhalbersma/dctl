@@ -14,8 +14,8 @@ BOOST_AUTO_TEST_SUITE(BitSet)
 
 BOOST_AUTO_TEST_CASE(Members)
 {
-        const bitset z { 17, 31, 61 }; // removing const will enable dynamic re-checking of mask
-        std::copy(z.begin(), z.end(), std::ostream_iterator<std::size_t>(std::cout, ",")); std::cout << "\n";
+        //const bitset z { 17, 31, 61 }; // removing const will enable dynamic re-checking of mask
+        //std::copy(z.begin(), z.end(), std::ostream_iterator<std::size_t>(std::cout, ",")); std::cout << "\n";
 
         std::size_t a[] = { 17, 31, 61 };
         bitset aa;
@@ -40,25 +40,25 @@ BOOST_AUTO_TEST_CASE(Members)
         y.insert({1,6});
 
         // plain for-loop with iterators
-        for (auto it = x.begin(); it != x.end(); ++it) std::cout << *it << ","; std::cout << "\n";
-        for (auto it = y.begin(); it != y.end(); ++it) std::cout << *it << ","; std::cout << "\n";
+        //for (auto it = x.begin(); it != x.end(); ++it) std::cout << *it << ","; std::cout << "\n";
+        //for (auto it = y.begin(); it != y.end(); ++it) std::cout << *it << ","; std::cout << "\n";
 
         // range for-loop with auto (NOTE: can't use auto& or auto const& here)
-        auto i = set_intersection(x, y);
-        for (auto e: i) std::cout << e << ","; std::cout << "\n";
+        //auto i = set_intersection(x, y);
+        //for (auto e: i) std::cout << e << ","; std::cout << "\n";
 
         // STL algorithm iteration
-        auto u = set_union(x,y);
-        std::for_each(u.begin(), u.end(), [](bit_reference<uint64_t> const& elem){ std::cout << elem << ","; }); std::cout << "\n";
+        //auto u = set_union(x,y);
+        //std::for_each(u.begin(), u.end(), [](bit_reference<uint64_t> const& elem){ std::cout << elem << ","; }); std::cout << "\n";
 
         // copy to std::cout
-        auto s = set_symmetric_difference(x, y);
-        std::copy(s.begin(), s.end(), std::ostream_iterator<std::size_t>(std::cout, ",")); std::cout << "\n";
+        //auto s = set_symmetric_difference(x, y);
+        //std::copy(s.begin(), s.end(), std::ostream_iterator<std::size_t>(std::cout, ",")); std::cout << "\n";
 
-        auto d1 = set_difference(x, y);
-        auto d2 = set_difference(y, x);
-        for (auto it = d1.begin(); it != d1.end(); ++it) std::cout << *it << ","; std::cout << "\n";
-        for (auto it = d2.begin(); it != d2.end(); ++it) std::cout << *it << ","; std::cout << "\n";
+        //auto d1 = set_difference(x, y);
+        //auto d2 = set_difference(y, x);
+        //for (auto it = d1.begin(); it != d1.end(); ++it) std::cout << *it << ","; std::cout << "\n";
+        //for (auto it = d2.begin(); it != d2.end(); ++it) std::cout << *it << ","; std::cout << "\n";
 
         // x and y don't include each other
         BOOST_CHECK(!includes(y, x));
