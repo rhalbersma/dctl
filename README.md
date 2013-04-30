@@ -1,7 +1,7 @@
 DCTL: Draughts and Checkers Template Library
 ============================================
 
-A [C++](isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting all known rules variations, board sizes and game objectives.
+A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting all known rules variations, board sizes and game objectives.
 
 Introduction
 ============
@@ -22,7 +22,7 @@ Requirements
 
 ### C++11 compiler
 
-The DCTL is a modern [C++](isocpp.org) library that is dependent on many of the features that have come available with the new [C++11 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf). Compiler support for C++11 differs across compilers. See this [site](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport) for an up-to-date overview of C++11 support by all major compiler vendors. 
+The DCTL is a modern [C++](http://isocpp.org) library that is dependent on many of the features that have come available with the new [C++11 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf). Compiler support for C++11 differs across compilers. See this [site](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport) for an up-to-date overview of C++11 support by all major compiler vendors. 
 
 The C++11 features that the DCTL currently depends on consist of `auto`, initializer lists, lambda, `nullptr`, range-based for-loop, r-value references, `static_assert`, and variadic templates. The DCTL is exclusively being developed on Linux with g++ >= 4.7.2, but the Intel >= 13.0 and Clang >= 3.1 compilers should also work (untested). The latest Microsoft Visual C++ compiler (2012 November CTP) has insufficient support to reliably compile the current testsuite, and is currently unsupported (subject to change when new updates come available).
 
