@@ -1,17 +1,17 @@
 DCTL: Draughts and Checkers Template Library
 ============================================
 
-A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting all known rules variations, board sizes and game objectives.
+A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting almost all known rules variations, board sizes and game objectives.
 
 Introduction
-============
+------------
 
-Draughts is a family of related board games played in many regions across the world. Each country has its own game rules and board size. Most of the draughts variants have official game rules and a governing body, such as the [Fédération Mondiale du Jeu de Dames](fmjd.org) (FMJD, World Draughts Federation). These variants include International/Brazilian/Canadian, American/English, Russian, Italian, Spanish/Portugese, Czech, Thai, and Frisian draughts. These games are commonly played on checkered boards of dimensions 8x8, 10x10 and 12x12. The common game objectives is "the first player to have no moves left, loses". A commonly played variation is so-called misère play ("first to have no moves left, wins"), also known as "suicide" draughts (or "qui-perd-gagné"). 
+Draughts is a family of related board games played in many regions across the world, with many country-specific game rules and board size. Many draughts variants have an official governing body, such as the [Fédération Mondiale du Jeu de Dames](fmjd.org) (FMJD, World Draughts Federation). These variants include International/Brazilian/Canadian, American/English, Russian, Italian, Spanish/Portugese, Czech, Thai, and Frisian draughts. These games are commonly played on checkered boards of dimensions 8x8, 10x10 and 12x12. The common game objectives is "the first player to have no moves left, **loses**". A less common variation is so-called misère play ("first to have no moves left, **wins**"), also known as "suicide" draughts (or "qui-perd-gagné"). 
 
 Scope
-=====
+-----
 
-The DCTL supports all above mentioned draughts variants with official rules, on all board sizes smaller than 12x12. Support for 12x12 boards is tentatively planned. Because draughts has a high percentage of draws when played between experienced players, many variants with small tweaks to the game rules have been proposed in the past. Even world champions such as Herman Hoogland proposed such new game variants. The DCTL also supports some of these games. In particular, the recently proposed game of [Killer Draughts](http://www.killerdraughts.org/) is actively being supported.
+The DCTL supports all above mentioned draughts variants with official rules, on all board sizes smaller than 12x12. Support for 12x12 boards is tentatively planned. Because draughts has a high percentage of draws when played between experienced players, many variants with small tweaks to the game rules have been proposed in the past. Even former world champions such as [Herman Hoogland](http://en.wikipedia.org/wiki/Herman_Hoogland) proposed such new game variants. The DCTL also supports some of these variants. In particular, the recently proposed [Killer Draughts](http://www.killerdraughts.org/) is actively supported.
 
 The DCTL provides a series of C++ templates to define the board geometry and game rules of draughts variants. With these templates, one can read and write draughts positions from so-called FEN strings using [Portable Draughts Notation](http://www.10x10.dse.nl/pdn/introduction.html). Once a position variable has been initalized with such a FEN string, the DCTL provides template functions to analyze them using a search algorithm, which is supported by the usual infrastructure of a move generator, evaluation function and hash table.
 
@@ -20,15 +20,25 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 Requirements
 ============
 
-### C++11 compiler
+### Compilers
 
-The DCTL is a modern [C++](http://isocpp.org) library that is dependent on many of the features that have come available with the new [C++11 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf). Compiler support for C++11 differs across compilers. See this [site](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport) for an up-to-date overview of C++11 support by all major compiler vendors. 
+The DCTL is a modern [C++](http://isocpp.org) library that is dependent on many of the features that have come available with the new [C++11 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf). The C++11 features that the DCTL currently depends on consist of `auto`, initializer lists, lambda expressions, `nullptr`, range-based `for`-loop, rvalue references, `static_assert`, and variadic templates. Unfortunately, feature support for C++11 [differs across compiler vendors](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport). 
 
-The C++11 features that the DCTL currently depends on consist of `auto`, initializer lists, lambda, `nullptr`, range-based for-loop, r-value references, `static_assert`, and variadic templates. The DCTL is exclusively being developed on Linux with g++ >= 4.7.2, but the Intel >= 13.0 and Clang >= 3.1 compilers should also work (untested). The latest Microsoft Visual C++ compiler (2012 November CTP) has insufficient support to reliably compile the current testsuite, and is currently unsupported (subject to change when new updates come available).
+#### Supported
+
+The [g++ >= 4.6.3](http://gcc.gnu.org/projects/cxx0x.html) compiler is the only officially supported compiler. Current development takes place with g++ 4.7.2 (on Linux) and MinGW g++ 4.8.0 (on Windows).
+
+#### Untested
+
+Both the [Intel >= 13.0](http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler) and [Clang >= 3.1](http://clang.llvm.org/cxx_status.html) compilers should correctly build the DCTL, but both are currently untested.
+
+#### Unsupported
+
+The [Microsoft Visual C++ 2012](http://msdn.microsoft.com/en-us/library/vstudio/hh567368.aspx) compiler, even with its [November CTP](http://blogs.msdn.com/b/vcblog/archive/2012/11/02/visual-c-c-11-and-the-future-of-c.aspx), currently has insufficient(ly stable) C++11 support to reliably compile the DCTL testsuite, and is currently unsupported (subject to change when new updates come available).
 
 ### Boost
 
-The DCTL also uses the [Boost C++ libraries](www.boost.org) in many places. Examples are  Boost.MPL, Boost.Operators, and Boost.Preprocessor. The unit testing framework is based on Boost.Test. The DCTL is being developed with Boost >= 1.53.0, but any version >= 1.47.0 should also work (untested). See the [documentation](http://www.boost.org/doc/libs/1_53_0/more/getting_started/) on how to install Boost on your system.
+The DCTL heavily uses the [Boost C++ libraries >= 1.47.0](www.boost.org) in many places. Examples are Boost.Accumulators, Boost.MPL, Boost.Operators, and Boost.Preprocessor. The unit testing framework is based on Boost.Test. Current development taks place with The DCTL is being developed with Boost 1.53.0.
 
 ### Platforms
 
@@ -56,7 +66,6 @@ The DCTL is header-only, which means that you do not have link your application 
 
 To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the dctl/test subdirectory. To build and run them, simply type the following five commands
     
-    mkdir build
     cd build
     cmake ..
     make
@@ -64,7 +73,7 @@ To make sure that your build environment is compatible with the DCTL requirement
 
 NOTE: in order to build and run the tests, you have to compile Boost.Test into a static library. Consult the [Boost Documentation](http://www.boost.org/doc/libs/1_53_0/more/getting_started/index.html) for more information.
 
-The unit tests build target does not have a `make clean` command. You can simply delete the entire build directory and run the above commands again (e.g. after you changed something in your own build system). The use of the DCTL library in your application is completely independent of the library's own unit tests.
+The unit tests build target does not have a `make clean` command. You can simply delete contens of the build directory and run the above commands again (e.g. after you changed something in your own build system). The use of the DCTL library in your application is completely independent of the library's own unit tests.
 
 Roadmap
 =======
