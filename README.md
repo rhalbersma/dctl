@@ -18,11 +18,11 @@ The DCTL supports all above mentioned draughts variants with official rules, on 
 Usage
 -----
 
-The DCTL provides a series of [C++ templates](http://en.wikipedia.org/wiki/Template_(C%2B%2B)) to define the board geometry and game rules of draughts variants. With these templates, one can read and write draughts positions from so-called FEN strings using [Portable Draughts Notation](http://www.10x10.dse.nl/pdn/introduction.html). Once a position variable has been initalized with such a FEN string, the DCTL provides further templates to analyze them using a search algorithm, which is supported by a typical board game [engine infrastructure](http://chessprogramming.wikispaces.com/) of e.g. a move generator, evaluation function and hash table.
+The DCTL provides a series of [C++ templates](http://en.wikipedia.org/wiki/Template_(C%2B%2B)) to define the board geometry and game rules of draughts variants. With these templates, one can read and write draughts positions from so-called FEN strings using [Portable Draughts Notation](http://www.10x10.dse.nl/pdn/introduction.html). Once a position variable has been initialized with such a FEN string, the DCTL provides further templates to analyze them using a search algorithm, which is supported by a typical board game [engine infrastructure](http://chessprogramming.wikispaces.com/) of e.g. a move generator, evaluation function and hash table.
 
-* **TIP**: Consult the testsuite sources (under the `dctl/test` directory) for concrete usage examples.
+* **TIP**: Consult the test-suite sources (under the `dctl/test` directory) for concrete usage examples.
 
-Roadmap
+Road-map
 -------
 
 The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. It is currently not possible to play a game against a program based on the DCTL. Functionality being planned includes:   
@@ -53,9 +53,9 @@ The DCTL is a modern [C++](http://isocpp.org) library that is dependent on many 
 
 * **Supported**:
   * **tested:** the actively tested compiler is [g++](http://gcc.gnu.org/projects/cxx0x.html). Current development takes place with g++ 4.7.2 (on Linux) and MinGW g++ 4.8.0 (on Windows), and the minimum required version is 4.6.3 (untested).
-  * **untested:** recent versions of either the [Intel](http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler) (version 13.0 or higher) or [Clang](http://clang.llvm.org/cxx_status.html) (version 3.1 or higher) compilers should correctly build the DCTL testsuite. Both compilers are currently untested.
+  * **untested:** recent versions of either the [Intel](http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler) (version 13.0 or higher) or [Clang](http://clang.llvm.org/cxx_status.html) (version 3.1 or higher) compilers should correctly build the DCTL test-suite. Both compilers are currently untested.
 * **Unsupported:** 
-  * the [Microsoft Visual C++ 2012](http://msdn.microsoft.com/en-us/library/vstudio/hh567368.aspx) compiler, even with its [November CTP](http://blogs.msdn.com/b/vcblog/archive/2012/11/02/visual-c-c-11-and-the-future-of-c.aspx), currently has insufficient(ly stable) C++11 support to reliably compile the DCTL testsuite. This compiler is currently unsupported (subject to change when new updates come available).
+  * the [Microsoft Visual C++ 2012](http://msdn.microsoft.com/en-us/library/vstudio/hh567368.aspx) compiler, even with its [November CTP](http://blogs.msdn.com/b/vcblog/archive/2012/11/02/visual-c-c-11-and-the-future-of-c.aspx), currently has insufficient(ly stable) C++11 support to reliably compile the DCTL test-suite. This compiler is currently unsupported (subject to change when new updates come available).
 
 ### Boost headers
 
@@ -63,19 +63,19 @@ The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org)
 
 ### Boost libraries
 
-The testsuite uses [Boost.Test](http://www.boost.org/doc/libs/1_53_0/libs/test/doc/html/index.html). In order to build and run the testsuite (see below), you need to compile Boost.Test into a static library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_53_0/more/getting_started/index.html) on how to do this on your system.
+The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_53_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a static library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_53_0/more/getting_started/index.html) on how to do this on your system.
 
-* **NOTE:** compilation of the Boost libraries is **ONLY** a requirement for running the testsuite, and **NOT** for using the DCTL headers with your application.  
+* **NOTE:** compilation of the Boost libraries is **ONLY** a requirement for running the test-suite, and **NOT** for using the DCTL headers with your application.  
 
 ### CMake
 
-The testsuite is built using the [CMake](http://www.cmake.org/) cross-platform build system. Most development environments can run the CMake generated Makefiles. To generate native build solutions for your own development environment, consult the [CMake documentation](http://www.cmake.org/cmake/help/runningcmake.html).
+The test-suite is built using the [CMake](http://www.cmake.org/) cross-platform build system. Most development environments can run the CMake generated Makefiles. To generate native build solutions for your own development environment, consult the [CMake documentation](http://www.cmake.org/cmake/help/runningcmake.html).
 
-* **NOTE:** CMake is **ONLY** a requirement for building the testsuite, and **NOT** for using the DCTL headers with your application. 
+* **NOTE:** CMake is **ONLY** a requirement for building the test-suite, and **NOT** for using the DCTL headers with your application. 
 
 ### Git
 
-Development is being tracked with the [Git](http://git-scm.com/) distribed version control system, the [git-flow](https://github.com/nvie/gitflow) extension, and the [GitHub](https://github.com/rhalbersma) hosting service. The master branch is the currently stable version and the commits along this branch are tagged with versions. Development takes place on the develop branch, with features being developed in so-called feature branches. To contribute to the DCTL, use 
+Development is being tracked with the [Git](http://git-scm.com/) distributed version control system, the [git-flow](https://github.com/nvie/gitflow) extension, and the [GitHub](https://github.com/rhalbersma) hosting service. The master branch is the currently stable version and the commits along this branch are tagged with versions. Development takes place on the develop branch, with features being developed in so-called feature branches. To contribute to the DCTL, use 
 
 * **NOTE**: Git is **ONLY** a requirement for contributing to the DCTL, and **NOT** for using the DCTL headers with your application. Downloading and unpacking the latest zipped source archive works equally well.
 
@@ -91,9 +91,9 @@ Clone this repository to a directory of your choice
 
 Alternatively, you can download and unpack the latest zipped source archive into the same directory.
 
-### Testsuite
+### Test-suite
 
-To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` subdirectory. To build and run the testsuite, follow the requirements (in particular: compile Boost), and type from inside your `dctl/` project root directory
+To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost), and type from inside your `dctl/` project root directory
     
       mkdir build
       cd build
@@ -101,23 +101,23 @@ To make sure that your build environment is compatible with the DCTL requirement
       make
       make test
 
-To completely regenerate the testsuite's build solution, simply delete the entire `dctl/build/` directory and rerun the above five commands. To only rebuild and rerun the testsuite, type
+To completely regenerate the test-suite's build solution, simply delete the entire `dctl/build/` directory and rerun the above five commands. To only rebuild and rerun the test-suite, type
 
       make clean
       make
       make test
 
-* **NOTE**: your application is completely independent of the testsuite. You do not have to build and run the testsuite in order to use the DCTL headers with your own application. 
+* **NOTE**: your application is completely independent of the test-suite. You do not have to build and run the test-suite in order to use the DCTL headers with your own application. 
 
 ### Build your application
 
-The DCTL is header-only, which means that you do not have to link your application against a seperately compiled library. Furthermore, even though the DCTL is dependent on Boost, you do not have to separately compile Boost yourself, or even `#include` any Boost headers. Simply point your compiler to the location of both the DCTL and the Boost headers, `#include` the appropriate DCTL header files into your application, and then continue to use your regular build process. 
+The DCTL is header-only, which means that you do not have to link your application against a separately compiled library. Furthermore, even though the DCTL is dependent on Boost, you do not have to separately compile Boost yourself, or even `#include` any Boost headers. Simply point your compiler to the location of both the DCTL and the Boost headers, `#include` the appropriate DCTL header files into your application, and then continue to use your regular build process. 
 
 ### Contribute
 
 Any ideas and contributions are much appreciated! The recommended way to contribute code is through GitHub [pull requests](https://help.github.com/articles/using-pull-requests). Patches and raw code samples are discouraged.    
 
-Acknowledgements
+Acknowledgments
 ----------------
 
 Special thanks Ed Gilbert, Aart Bik, Wieger Wesselink and Walter Thoen for encouragement, testing, and exchange of ideas.
