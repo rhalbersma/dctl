@@ -102,15 +102,15 @@ To make sure that your build environment is compatible with the DCTL requirement
       make
       make test
 
-To completely regenerate the test-suite's build solution, simply delete the entire `dctl/build/` directory and rerun the above commands. To only rebuild and rerun the test-suite, type
+The build will take about 35 seconds on a single 3.2 Ghz Intel i7 core. You can speed up the build with a `make -j N` on a system supporting up to `N` (hyper)threads. To completely regenerate the test-suite's build solution, simply delete the entire `dctl/build/` directory and rerun the above commands. To only rebuild and rerun the test-suite, simply type 
 
       make clean
       make
-      make test
+      make test 
 
-The build will take about 35 seconds on a single 3.2 Ghz Intel i7 core. You can speed up the build with a `make -j N` on a system supporting up to `N` (hyper)threads.
+The test-suite runner follows the [UNIX rule of silence](http://www.linfo.org/rule_of_silence.html): if you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
-* **NOTE**: your application is completely independent of the test-suite. You do not have to build and run the test-suite in order to use the DCTL headers with your own application. 
+* **NOTE**: your application is completely independent of the test-suite. Building and running the test-suite is a sufficient but not a necessary step in order to use the DCTL headers with your own application. 
 
 ### Build your application
 
