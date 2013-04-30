@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/board/types.hpp>         // International
-#include <dctl/rules/types.hpp>         // International
+#include <dctl/rules/variants.hpp>         // International
 #include <dctl/setup/setup.hpp>         // read, write
 
 namespace dctl {
@@ -24,14 +24,14 @@ BOOST_AUTO_TEST_CASE(wiegerWesselink)
           .   .   .   .   .   \
         ";
 
-        // parse the above diagram into a position using the DamExchange protocol
+        // parse the above diagram into a position with the DamExchange protocol
         // with a modified character set (default is <'Z', 'W', 'E'>)
         auto const pos_w = read<
                 rules::International, board::International,
                 dxp::protocol, TokenInterface<'X', 'O', '.'>
         >()(w);
 
-        // write the above position as a FEN string using the PDN protocol
+        // write the above position as a FEN string with the PDN protocol
         auto const FEN_w = write<pdn::protocol>()(pos_w);
 
         // convert the new FEN string to a new position and back into a new FEN string

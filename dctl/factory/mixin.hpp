@@ -57,7 +57,7 @@ struct FactoryCreate
 
         static std::unique_ptr<Base> create(std::string const& parameter)
         {
-                return make_unique<Derived>(parameter);
+                return std::make_unique<Derived>(parameter);
         }
 
         typedef Base base;

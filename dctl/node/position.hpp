@@ -44,7 +44,7 @@ public:
                 distance_to_root_(0),
                 to_move_(to_move)
         {
-                hash_index_ = hash::zobrist::Init<HashIndex, Position>()(*this);
+                hash_index_ = hash::zobrist::hash<HashIndex>(*this);
                 BOOST_ASSERT(material_invariant());
         }
 
@@ -107,59 +107,9 @@ public:
         }
 
         // side to move
-        bool active_color() const
+        bool to_move() const
         {
                 return to_move_;
-        }
-
-        // opposite side to move
-        bool passive_color() const
-        {
-                return !to_move_;
-        }
-
-        // black or white pawns
-        BitBoard pawns(bool color) const
-        {
-                return material_.pawns(color);
-        }
-
-        // black or white kings
-        BitBoard kings(bool color) const
-        {
-                return material_.kings(color);
-        }
-
-        // black or white pieces
-        BitBoard pieces(bool color) const
-        {
-                return material_.pieces(color);
-        }
-
-        // black and white pawns
-        BitBoard pawns() const
-        {
-                return material_.pawns();
-        }
-
-        // black and white kings
-        BitBoard kings() const
-        {
-                return material_.kings();
-        }
-
-        // black and white pieces
-        BitBoard pieces() const
-        {
-                return material_.pieces();
-        }
-
-        // make a move in a copy from another position
-        void copy_make(Position const& other, Move const& move)
-        {
-                *this = other; // copy the position
-                attach(other);  // attach the position
-                make(move);     // make the move
         }
 
         void make(Move const& m)
@@ -180,7 +130,6 @@ public:
 
 private:
         // implementation
-        void detach();
 
         void make_irreversible(Move const& m)
         {
@@ -223,26 +172,34 @@ private:
 
         void make_active_king_moves(Move const& m)
         {
-                typedef hash::zobrist::Init<HashIndex, KingMoves> Hash;
-                KingMoves& restricted = restricted_[active_color()];
+                KingMoves& restricted = restricted_[active_color(*this)];
 
                 if (active_kings(*this) && active_pawns(*this)) {
-                        hash_index_ ^= Hash()(restricted, active_color());
-                        if (is_reversible(*this, m) && !is_max<Rules>(restricted.moves())) {
-                                if (restricted.king() & from_sq(*this, m))
-                                        restricted.increment(dest_sq(*this, m));
-                                else
-                                        restricted.init(dest_sq(*this, m));
-                                hash_index_ ^= Hash()(restricted, active_color());
-                        } else
-                                restricted.reset();
+                        if (restricted.moves())
+                                hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, active_color(*this)));
+
+                        if (!is_reversible(*this, m)) {
+                                if (restricted.moves())
+                                        restricted.reset();
+                                return;
+                        }
+
+                        if (restricted.moves() && bit::is_element(restricted.king(), from_sq(*this, m))) {
+                                // a consecutive irreversible move with the same king
+                                BOOST_ASSERT(!is_max<Rules>(restricted.moves()));
+                                restricted.increment(dest_sq(*this, m));
+                        } else {
+                                // a first irreversible move with a new king
+                                BOOST_ASSERT(!restricted.moves() || bit::count(active_kings(*this)) > 1);
+                                restricted.init(dest_sq(*this, m));
+                        }
+                        hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, active_color(*this)));
                 }
         }
 
         void make_passive_king_moves(Move const& m)
         {
-                typedef hash::zobrist::Init<HashIndex, KingMoves> Hash;
-                KingMoves& restricted = restricted_[passive_color()];
+                KingMoves& restricted = restricted_[passive_color(*this)];
 
                 if (
                         restricted.moves() && is_capture(*this, m) &&
@@ -251,7 +208,7 @@ private:
                                 bit::is_subset_of(passive_pawns(*this), captured_pieces(*this, m))
                         )
                 ) {
-                        hash_index_ ^= Hash()(restricted, passive_color());
+                        hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, passive_color(*this)));
                         restricted.reset();
                 }
         }
@@ -265,13 +222,13 @@ private:
         void make_material(Move const& m)
         {
                 material_ ^= m;
-                hash_index_ ^= hash::zobrist::Init<HashIndex, Move>()(m);
+                hash_index_ ^= hash::zobrist::hash<HashIndex>(m);
         }
 
         void make_to_move()
         {
                 to_move_ ^= Side::pass;
-                hash_index_ ^= hash::zobrist::Init<HashIndex, bool>()(Side::pass);
+                hash_index_ ^= hash::zobrist::hash<HashIndex>(bool(Side::pass));
         }
 
         // post-conditions for the constructors and modifiers
@@ -279,13 +236,13 @@ private:
         {
                 return (
                         //material_.invariant() &&
-                        bit::is_subset_of(pieces(), Board::squares)
+                        bit::is_subset_of(material().pieces(), Board::squares)
                 );
         }
 
         bool hash_index_invariant() const
         {
-                return hash_index_ == hash::zobrist::Init<HashIndex, Position>()(*this);
+                return hash_index_ == hash::zobrist::hash<HashIndex>(*this);
         }
 
         // representation
@@ -296,7 +253,7 @@ private:
         PlyCount reversible_moves_;
         PlyCount distance_to_root_;
         bool to_move_;
-        BitBoard padding_[5];
+        BitBoard padding_[6];
 };
 
 template<typename Position>
@@ -306,9 +263,21 @@ typename Position::TreeIterator grand_parent(Position const& p)
 }
 
 template<typename Position>
+bool active_color(Position const& p)
+{
+        return p.to_move();
+}
+
+template<typename Position>
+bool passive_color(Position const& p)
+{
+        return !p.to_move();
+}
+
+template<typename Position>
 KingMoves const& active_restricted(Position const& p)
 {
-        return p.restricted()[p.active_color()];
+        return p.restricted()[active_color(p)];
 }
 
 template<typename Position>
@@ -329,7 +298,7 @@ struct Init< Index, Position<Rules, Board> >
         {
                 return (
                         Init<Index, Material  >()(p.material())     ^
-                        Init<Index, bool      >()(p.active_color()) ^
+                        Init<Index, bool      >()(p.to_move()) ^
                         Init<Index, Restricted>()(p.restricted())
                 );
         }
@@ -337,5 +306,4 @@ struct Init< Index, Position<Rules, Board> >
 
 }       // namespace zobrist
 }       // namespace hash
-
 }       // namespace dctl

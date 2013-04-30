@@ -15,10 +15,10 @@ struct Init
         {
                 Index index = 0;
 
-                Random<Index>::mix(index, p.active_color());
-                Random<Index>::mix(index, p.pieces(Side::black));
-                Random<Index>::mix(index, p.pieces(Side::white));
-                Random<Index>::mix(index, p.kings());
+                Random<Index>::mix(index, active_color(p));
+                Random<Index>::mix(index, p.material().pieces(Side::black));
+                Random<Index>::mix(index, p.material().pieces(Side::white));
+                Random<Index>::mix(index, p.material().kings());
 
                 return index;
         }

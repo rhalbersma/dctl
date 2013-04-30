@@ -164,7 +164,7 @@ T less_equal(int i)
 
 // number of set 1-bits
 template<typename T>
-int count(T b)
+std::size_t count(T b)
 {
         return intrinsic::count(b);
 }

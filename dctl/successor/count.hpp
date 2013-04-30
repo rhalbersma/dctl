@@ -1,25 +1,32 @@
 #pragma once
-#include <dctl/successor/select.hpp>                    // DefaultSelection
-#include <dctl/successor/enumeration/enumerator.hpp>    // enumerator
-#include <dctl/node/material.hpp>                       // both
+#include <cstddef>                                      // size_t
+#include <dctl/successor/select/legal.hpp>              // legal
+#include <dctl/successor/count/specializations.hpp>     // count
+#include <dctl/successor/material/piece.hpp>            // piece
 #include <dctl/node/side.hpp>                           // black, white
 
 namespace dctl {
 namespace successor {
 
-template<int Material, typename Selection, typename Position>
-int count(Position const& p)
+template<bool Color, typename Material, typename Select, typename Position>
+std::size_t count(Position const& p)
 {
-        return (p.active_color() == Side::black)?
-                detail::enumerator<Side::black, Material, Selection, Position>()(p) :
-                detail::enumerator<Side::white, Material, Selection, Position>()(p)
+        return detail::count<Color, Material, Select>()(p);
+}
+
+template<typename Material, typename Select, typename Position>
+std::size_t count(Position const& p)
+{
+        return (p.to_move() == Side::black)?
+                count<Side::black, Material, Select>(p) :
+                count<Side::white, Material, Select>(p)
         ;
 }
 
 template<typename Position>
-int count(Position const& p)
+std::size_t count(Position const& p)
 {
-        return count<Material::both, DefaultSelection>(p);
+        return count<material::piece, select::legal>(p);
 }
 
 }       // namespace successor

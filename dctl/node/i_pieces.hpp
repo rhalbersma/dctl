@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/utility/enable_down_cast.hpp>   // enable_down_cast
-#include <dctl/guarded/default_delete.hpp>
+#include <dctl/utility/enable_down_cast.hpp>    // enable_down_cast
+#include <dctl/preprocessor/cpp11/default.hpp>  // DCTL_PP_IS_DEFAULT
 
 namespace dctl {
 

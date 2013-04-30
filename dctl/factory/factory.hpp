@@ -1,16 +1,17 @@
 #pragma once
-#include <functional>                   // function
-#include <map>                          // map
-#include <memory>                       // unique_ptr
-#include <string>                       // string
-#include <type_traits>                  // is_base_of
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
-#include <boost/mpl/for_each.hpp>       // for_each
-#include <boost/mpl/identity.hpp>       // identity, make_identity
-#include <boost/mpl/placeholders.hpp>   // _1
-#include <dctl/factory/mixin.hpp>       // has_header_body_terminator
-#include <dctl/factory/registry.hpp>    // Registry
-#include <dctl/mpl/algorithm.hpp>       // all_of
+#include <functional>                           // function
+#include <map>                                  // map
+#include <memory>                               // unique_ptr
+#include <string>                               // string
+#include <type_traits>                          // is_base_of
+#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
+#include <boost/mpl/for_each.hpp>               // for_each
+#include <boost/mpl/identity.hpp>               // identity, make_identity
+#include <boost/mpl/placeholders.hpp>           // _1
+#include <dctl/factory/mixin.hpp>               // has_header_body_terminator
+#include <dctl/factory/registry.hpp>            // Registry
+#include <dctl/mpl/algorithm.hpp>               // all_of
+#include <dctl/preprocessor/cpp11/delete.hpp>   // DCTL_PP_IS_DELETE
 
 namespace dctl {
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <iterator>                     // begin, end
-#include <dctl/node/stack.hpp>
+#include <dctl/utility/stack_vector.hpp>
 
 namespace dctl {
 namespace search {

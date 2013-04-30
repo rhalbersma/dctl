@@ -1,6 +1,6 @@
 #pragma once
-#include <boost/utility.hpp>            // noncopyable
-#include <dctl/guarded/default_delete.hpp>
+#include <boost/utility.hpp>                    // noncopyable
+#include <dctl/preprocessor/cpp11/delete.hpp>   // DCTL_PP_IS_DELETE
 
 namespace dctl {
 

@@ -30,8 +30,8 @@ public:
         static int material(Position<Rules, Board> const& p)
         {
                 return (
-                        Weight<Rules, Board>::material[0] * bit::count(p.pieces(Color)) +
-                        Weight<Rules, Board>::material[1] * bit::count(p.kings(Color))
+                        Weight<Rules, Board>::material[0] * bit::count(p.material().pieces(Color)) +
+                        Weight<Rules, Board>::material[1] * bit::count(p.material().kings(Color))
                 );
         }
 
@@ -40,7 +40,7 @@ public:
         {
                 int score = 0;
                 for (auto i = 1; i < Board::height::value; ++i)
-                        score += Weight<Rules, Board>::tempo[i] * bit::count(p.pieces(Color) & Board::row_mask[Color][i]);
+                        score += Weight<Rules, Board>::tempo[i] * bit::count(p.material().pieces(Color) & Board::row_mask[Color][i]);
                 return score;
         }
 
@@ -51,8 +51,8 @@ public:
                 for (auto i = 1; i < Board::width::value / 2; ++i) {
                         score += Weight<Rules, Board>::center[i] *
                         (
-                                bit::count(p.pieces(Color) & Board::col_mask[ Color][i]) +
-                                bit::count(p.pieces(Color) & Board::col_mask[!Color][i])
+                                bit::count(p.material().pieces(Color) & Board::col_mask[ Color][i]) +
+                                bit::count(p.material().pieces(Color) & Board::col_mask[!Color][i])
                         );
                 }
                 return score;
@@ -65,8 +65,8 @@ public:
                 for (auto i = 0; i < Board::width::value / 2; ++i) {
                         score += Weight<Rules, Board>::balance[i] *
                         (
-                                bit::count(p.pieces(Color) & Board::col_mask[ Color][i]) -
-                                bit::count(p.pieces(Color) & Board::col_mask[!Color][i])
+                                bit::count(p.material().pieces(Color) & Board::col_mask[ Color][i]) -
+                                bit::count(p.material().pieces(Color) & Board::col_mask[!Color][i])
                         );
                 }
                 return -abs(score);
@@ -81,7 +81,7 @@ public:
         template<template<typename, typename> class Position, typename Rules, typename Board>
         static int king_monopoly(Position<Rules, Board> const& p)
         {
-                return Weight<Rules, Board>::king_monopoly * (!bit::is_zero(p.kings(Color)) && bit::is_zero(p.kings(!Color)));
+                return Weight<Rules, Board>::king_monopoly * (!bit::is_zero(p.material().kings(Color)) && bit::is_zero(p.material().kings(!Color)));
         }
 };
 
