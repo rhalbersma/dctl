@@ -42,20 +42,20 @@ Requirements
 The DCTL is a cross-platform library
 
 * **Supported:** 
-  * **tested:** current development takes place on Linux Mint 14.1 64-bit and Microsoft Windows 7 64-bit.
-  * **untested:** successful builds should be possible for the Google Android platform (using the [Android NDK](http://developer.android.com/tools/sdk/ndk/index.html) with a supported compiler).
+    * **tested:** current development takes place on Linux Mint 14.1 64-bit and Microsoft Windows 7 64-bit.
+    * **untested:** successful builds should be possible for the Google Android platform (using the [Android NDK](http://developer.android.com/tools/sdk/ndk/index.html) with a supported compiler).
 * **Unsupported:** 
-  * the Apple Mac OS X and iOS platforms are currently unsupported.
+    * the Apple Mac OS X and iOS platforms are currently unsupported.
 
 ### Compilers
 
 The DCTL is a modern [C++](http://isocpp.org) library that is dependent on many of the features that have come available with the new [C++11 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf). The C++11 features that the DCTL currently depends on consist of `auto`, initializer lists, lambda expressions, `nullptr`, range-based `for`-loop, rvalue references, `static_assert`, and variadic templates. Unfortunately, feature support for C++11 [differs across compiler vendors](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport). 
 
 * **Supported**:
-  * **tested:** the actively tested compiler is [g++](http://gcc.gnu.org/projects/cxx0x.html). Current development takes place with g++ 4.7.2 (on Linux) and MinGW g++ 4.8.0 (on Windows), and the minimum required version is 4.6.3 (untested).
-  * **untested:** recent versions of either the [Intel](http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler) (version 13.0 or higher) or [Clang](http://clang.llvm.org/cxx_status.html) (version 3.1 or higher) compilers should correctly build the DCTL test-suite. Both compilers are currently untested.
+    * **tested:** the actively tested compiler is [g++](http://gcc.gnu.org/projects/cxx0x.html). Current development takes place with g++ 4.7.2 (on Linux) and MinGW g++ 4.8.0 (on Windows), and the minimum required version is 4.6.3 (untested).
+    * **untested:** recent versions of either the [Intel](http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler) (version 13.0 or higher) or [Clang](http://clang.llvm.org/cxx_status.html) (version 3.1 or higher) compilers should correctly build the DCTL test-suite. Both compilers are currently untested.
 * **Unsupported:** 
-  * the [Microsoft Visual C++ 2012](http://msdn.microsoft.com/en-us/library/vstudio/hh567368.aspx) compiler, even with its [November CTP](http://blogs.msdn.com/b/vcblog/archive/2012/11/02/visual-c-c-11-and-the-future-of-c.aspx), currently has insufficient(ly stable) C++11 support to reliably compile the DCTL test-suite. This compiler is currently unsupported (subject to change when new updates come available).
+    * the [Microsoft Visual C++ 2012](http://msdn.microsoft.com/en-us/library/vstudio/hh567368.aspx) compiler, even with its [November CTP](http://blogs.msdn.com/b/vcblog/archive/2012/11/02/visual-c-c-11-and-the-future-of-c.aspx), currently has insufficient(ly stable) C++11 support to reliably compile the DCTL test-suite. This compiler is currently unsupported (subject to change when new updates come available).
 
 ### Boost headers
 
