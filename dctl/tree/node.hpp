@@ -1,58 +1,25 @@
 #pragma once
-#include <dctl/tree/link/i_single.hpp>
 
 namespace dctl {
 namespace tree {
 
-template<typename T>
-struct Node
+template
+<
+        typename Link,
+        typename T
+>
+struct node
 :
-        // Curiously Recurring Template Pattern (CRTP)
-        public link::ISingle<Node, T>
+        Link
 {
-public:
-        // structors
-
-        Node(T const& v)
+        template<typename... Args>
+        node(Args&&... args)
         :
-                next_(nullptr),
-                value_(v)
+                Link(),
+                value_(std::forward<Args>(args)...)
         {}
 
-private:
-        // typedefs
-
-        typedef Node* node_ptr;
-        typedef T value_type;
-
-        // modifiers
-
-        void do_attach(node_ptr other)
-        {
-                next_ = other;
-        }
-
-        // queries
-
-        node_ptr do_next() const
-        {
-                return next_;
-        }
-
-        value_type const& do_value() const
-        {
-                return value_;
-        }
-
-        value_type& do_value()
-        {
-                return value_;
-        }
-
-        // representation
-
-        node_ptr next_;
-        value_type value_;
+        T value_;
 };
 
 }       // namespace tree

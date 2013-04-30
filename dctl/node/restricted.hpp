@@ -9,6 +9,7 @@ struct KingMoves
 {
 public:
         // structors
+
         KingMoves()
         :
                 king_(0),
@@ -17,18 +18,8 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        // queries
-        BitBoard king() const
-        {
-                return king_;
-        }
-
-        PlyCount moves() const
-        {
-                return moves_;
-        }
-
         // modifiers
+
         void init(BitBoard dest)
         {
                 BOOST_ASSERT(bit::is_single(dest));
@@ -47,23 +38,37 @@ public:
 
         void reset()
         {
-                BOOST_ASSERT(true);
+                BOOST_ASSERT(!bit::is_zero(king_) && moves_);
                 king_ = 0;
                 moves_ = 0;
                 BOOST_ASSERT(invariant());
         }
 
+        // queries
+
+        BitBoard king() const
+        {
+                return king_;
+        }
+
+        PlyCount moves() const
+        {
+                return moves_;
+        }
+
 private:
-        // implementation
+        // predicates
+
         bool invariant() const
         {
                 return (
-                        !bit::is_multiple(king()) &&
-                        (!king() == !moves())
+                        !bit::is_multiple(king_) &&
+                        bit::is_zero(king_) == !moves_
                 );
         }
 
         // representation
+
         BitBoard king_;
         PlyCount moves_;
 };

@@ -26,13 +26,13 @@ BitBoard promotion_squares(Position const& p)
 template<bool Color, typename Position>
 BitBoard promoting_pawns(Position const& p)
 {
-        return p.pawns(Color) & Position::board_type::promotion_mask[Color][1];
+        return p.material().pawns(Color) & Position::board_type::promotion_mask[Color][1];
 }
 
 template<bool Color, typename Position>
 BitBoard non_promoting_pawns(Position const& p)
 {
-        return p.pawns(Color) & ~Position::board_type::promotion_mask[Color][1];
+        return p.material().pawns(Color) & ~Position::board_type::promotion_mask[Color][1];
 }
 
 }       // namespace dctl

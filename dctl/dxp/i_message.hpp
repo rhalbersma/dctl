@@ -1,10 +1,10 @@
 #pragma once
-#include <string>                       // string
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/utility.hpp>            // noncopyable
-#include <dctl/factory/mixin.hpp>       // HeaderBodyTerminator
-#include <dctl/guarded/default_delete.hpp>
+#include <string>                               // string
+#include <boost/assert.hpp>                     // BOOST_ASSERT
+#include <boost/config.hpp>                     // BOOST_STATIC_CONSTANT
+#include <boost/utility.hpp>                    // noncopyable
+#include <dctl/factory/mixin.hpp>               // HeaderBodyTerminator
+#include <dctl/preprocessor/cpp11/default.hpp>  // DCTL_PP_IS_DEFAULT
 
 namespace dctl {
 namespace dxp {

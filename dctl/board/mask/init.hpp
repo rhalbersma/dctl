@@ -14,8 +14,6 @@ namespace dctl {
 namespace board {
 namespace mask {
 
-#ifndef _MSC_VER
-
 // partial specialization definitions
 template
 <
@@ -27,46 +25,6 @@ struct init< Predicate<Board, boost::mpl::_1, Args...> >
 :
         detail::init< Board, Predicate<Board, boost::mpl::_1, Args...> >
 {};
-
-#else
-
-// partial specialization definition for nullary predicates
-template
-<
-        template<typename, typename> class NullaryPredicate,
-        typename Board
->
-struct init< NullaryPredicate<Board, boost::mpl::_1> >
-:
-        detail::init< Board, NullaryPredicate<Board, boost::mpl::_1> >
-{};
-
-// partial specialization definition for unary predicates
-template
-<
-        template<typename, typename, typename> class UnaryPredicate,
-        typename Board, 
-        typename Arg1
->
-struct init< UnaryPredicate<Board, boost::mpl::_1, Arg1> >
-:
-        detail::init< Board, UnaryPredicate<Board, boost::mpl::_1, Arg1> >
-{};
-
-// partial specialization definition for binary predicates
-template
-<
-        template<typename, typename, typename, typename> class BinaryPredicate,
-        typename Board, 
-        typename Arg1, 
-        typename Arg2 
->
-struct init< BinaryPredicate<Board, boost::mpl::_1, Arg1, Arg2> >
-:
-        detail::init< Board, BinaryPredicate<Board, boost::mpl::_1, Arg1, Arg2> >
-{};
-
-#endif
 
 namespace detail {
 

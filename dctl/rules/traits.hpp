@@ -5,6 +5,8 @@
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 #include <dctl/rules/enum.hpp>
+#include <dctl/preprocessor/has_type.hpp>
+#include <dctl/preprocessor/get_type.hpp>
 
 namespace dctl {
 namespace rules {
@@ -21,29 +23,6 @@ struct turn_directions<directions::orth>
 :
         boost::mpl::identity<directions::diag>
 {};
-
-#define DCTL_PP_DEFINE_HAS_TYPE(U)                              \
-template<typename T>                                            \
-struct has_ ## U                                                \
-{                                                               \
-private:                                                        \
-        typedef char                      yes;                  \
-        typedef struct { char array[2]; } no;                   \
-                                                                \
-        template<typename C> static yes test(typename C::U*);   \
-        template<typename C> static no  test(...);              \
-                                                                \
-public:                                                         \
-        enum { value = sizeof(test<T>(0)) == sizeof(yes) };     \
-        typedef std::integral_constant<bool, value> type;       \
-};
-
-#define DCTL_PP_DEFINE_GET_TYPE(U)      \
-template<typename T>                    \
-struct get_ ## U                        \
-{                                       \
-        typedef typename T::U type;     \
-};
 
 DCTL_PP_DEFINE_HAS_TYPE(land_range)
 DCTL_PP_DEFINE_HAS_TYPE(halt_range)
@@ -251,8 +230,8 @@ struct traits
                         >,
                         std::is_same<pawn_jump_directions, directions::all>
                 >,
-                std::integral_constant<int, 3>,
-                std::integral_constant<int, 4>
+                std::integral_constant<std::size_t, 3>,
+                std::integral_constant<std::size_t, 4>
         >::type large_jump;
 
         typedef std::integral_constant<
@@ -340,7 +319,7 @@ struct traits
 //+----------------------------------------------------------------------------+
 
 template<typename>
-struct is_check_jump_uniqueness
+struct is_remove_duplicates
 :
         std::true_type
 {};

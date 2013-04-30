@@ -15,7 +15,7 @@ class table
 {
 public:
         template<typename T>
-        static int count(T t)
+        static std::size_t count(T t)
         {
                 int const num_blocks = sizeof(T) / sizeof(Block);
                 auto n = 0;
@@ -54,12 +54,12 @@ private:
         // representation
 
         BOOST_STATIC_CONSTANT(int, bits_per_block = num_bits<Block>::value);
-        static int const count_[];
+        static std::size_t const count_[];
         static int const index_[];
 };
 
 template<typename Block>
-int const table<Block>::count_[] = {
+std::size_t const table<Block>::count_[] = {
          0,  1,  1,  2,  1,  2,  2,  3,  1,  2,  2,  3,  2,  3,  3,  4,
          1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
          1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,

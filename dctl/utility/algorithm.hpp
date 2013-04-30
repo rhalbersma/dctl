@@ -7,29 +7,38 @@ namespace algorithm {
 
 // non-mutating sequence algorithms
 
+// runtime equivalent of boost::mpl::contains
+// dctl::detect / std::count / std::find / std::copy
 // O(N) complexity
 template<typename InputIterator, typename EqualityComparable>
-bool contains(InputIterator first, InputIterator last, EqualityComparable const& value)
+bool detect(InputIterator first, InputIterator last, EqualityComparable const& value)
 {
         return std::find(first, last, value) != last;
 }
 
+// equivalent to std::any_of
+// dctl::detect_if / std::count_if / std::find_if / std::copy_if
 // O(N) complexity
 template<typename InputIterator, typename Predicate>
-bool contains_if(InputIterator first, InputIterator last, Predicate pred)
+bool detect_if(InputIterator first, InputIterator last, Predicate pred)
 {
         return std::find_if(first, last, pred) != last;
 }
 
+// O(N) complexity
+template<typename Container>
+bool is_duplicate_back(Container const& c)
+{
+        return detect(std::begin(c), std::end(c) - 1, c.back());
+}
+
 // mutating sequence algorithms
 
-// O(N) complexity
+// O(N) complexity: weak range extension of std::iota
 template<typename OutputIterator, typename Size, typename Assignable>
 void iota_n(OutputIterator first, Size n, Assignable value)
 {
-        std::generate_n(first, n, [&value]() {
-                return value++;
-        });
+        std::generate_n(first, n, [&]() { return value++; });
 }
 
 // sorting algorithms

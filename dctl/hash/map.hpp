@@ -9,7 +9,6 @@
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/hash/index_extractor.hpp>
-#include <dctl/utility/cache_align.hpp>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -49,9 +48,9 @@ public:
         typedef mapped_type const* const_mapped_pointer;
 
 private:
-        static auto const N = CACHE_LINE / sizeof(value_type);
+        static auto const N = 64 / sizeof(value_type);
         typedef std::array<value_type, N> bucket_type;
-        static_assert(sizeof(bucket_type) == CACHE_LINE, "non-aligned hash table");
+        static_assert(sizeof(bucket_type) == 64, "non-aligned hash table");
         typedef std::vector<bucket_type> map_type;
 
 public:

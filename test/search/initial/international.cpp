@@ -5,7 +5,7 @@
 #include <boost/test/unit_test.hpp>
 #include <test/search/fixture.hpp>
 #include <dctl/board/types.hpp>
-#include <dctl/rules/types.hpp>
+#include <dctl/rules/variants.hpp>
 #include <dctl/setup/string.hpp>
 
 namespace dctl {
@@ -18,6 +18,7 @@ typedef Fixture< Position<rules::International, board::International>, DefaultOb
 BOOST_FIXTURE_TEST_CASE(InternationalInitial, InternationalFixture)
 {
         auto const p = Position<rules::International, board::International>::initial();
+        std::cout << sizeof(decltype(p)) << "\n";
         root_.analyze(p, 17);
 }
 /*

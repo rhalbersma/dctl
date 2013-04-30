@@ -9,11 +9,11 @@
 #include <dctl/search/transposition.hpp>
 #include <dctl/search/variation.hpp>
 #include <dctl/evaluate/score.hpp>
-#include <dctl/node/stack.hpp>
+#include <dctl/utility/stack_vector.hpp>
 #include <dctl/hash/signature_extractor.hpp>
 #include <dctl/hash/map.hpp>
 #include <dctl/hash/replace.hpp>
-#include <dctl/successor/generate.hpp>
+#include <dctl/successor/copy.hpp>
 #include <dctl/utility/ply.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/statistics.hpp>
@@ -93,14 +93,18 @@ private:
 
                 std::cout << " depth ";
                 std::cout << std::setw( 2) << depth;
+                std::cout << std::setiosflags(std::ios::fixed) << std::setprecision(1);
+                std::cout << "/" << boost::accumulators::mean(statistics_.ply());
+                std::cout << "/" << std::setw( 2) << boost::accumulators::max(statistics_.ply());
 
+                auto const node_count = boost::accumulators::count(statistics_.nodes());
                 std::cout << " nodes ";
-                std::cout << std::setw(11) << std::right << statistics_.nodes();
+                std::cout << std::setw(11) << std::right << node_count;
 
                 std::cout << " time ";
                 std::cout << std::setw( 6) << timer.elapsed().count();
 
-                double const nps = static_cast<double>(1000 * statistics_.nodes()) / static_cast<double>(timer.elapsed().count());
+                double const nps = static_cast<double>(1000 * node_count) / static_cast<double>(timer.elapsed().count());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
@@ -127,16 +131,13 @@ private:
                         return;
                 }
 
-                MoveArena a;
-                auto const moves = successor::generate(p, a);
+                Arena<Move>::type a;
+                auto const moves = successor::copy(p, a);
                 int const index = pv[ply] % moves.size();
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, index));
 
-                auto q = p;
-                q.attach(p);
-                q.make(best_move);
-                insert_pv(q, pv, -stretch(value), ply + 1);
+                insert_pv(successor::make_copy(p, best_move), pv, -stretch(value), ply + 1);
         }
 
         void print_pv(Position const& p, Variation const& pv, int ply = 0)
@@ -148,17 +149,15 @@ private:
                         return;
                 }
 
-                MoveArena a;
-                auto const moves = successor::generate(p, a);
+                Arena<Move>::type a;
+                auto const moves = successor::copy(p, a);
                 auto const best_move = moves[pv[ply] % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
                 std::cout << notation::write(p, best_move);
                 std::cout << ((ply % 10 == 9)? '\n' : ' ');
 
-                auto q = p;
-                q.attach(p);
-                q.make(best_move);
+                auto q = successor::make_copy(p, best_move);
                 //if (q.same_king_moves(!q.to_move()))
                         //std::cout << "^" << q.same_king_moves(!q.to_move());
                 print_pv(q, pv, ply + 1);

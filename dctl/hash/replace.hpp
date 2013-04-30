@@ -3,6 +3,7 @@
 #include <iterator>                     // begin, end, iterator_traits
 #include <type_traits>                  // is_same
 #include <utility>                      // pair, make_pair
+#include <tuple>
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 
 namespace dctl {
@@ -57,7 +58,7 @@ struct Smallest
         template<typename T>
         bool operator()(T const& lhs, T const& rhs) const
         {
-                return lhs.second.leafs() < rhs.second.leafs();
+                return lhs.second.nodes() < rhs.second.nodes();
         }
 };
 

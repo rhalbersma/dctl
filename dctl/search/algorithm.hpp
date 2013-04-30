@@ -2,9 +2,9 @@
 #include <iterator>                     // back_inserter
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <dctl/node/stack.hpp>
+#include <dctl/utility/stack_vector.hpp>
 #include <dctl/successor/count.hpp>
-#include <dctl/successor/generate.hpp>
+#include <dctl/successor/copy.hpp>
 #include <dctl/utility/algorithm.hpp>
 
 namespace dctl {
@@ -17,8 +17,8 @@ int Root<Position, Objective>::iterative_deepening(Position const& p, int depth)
         auto score = -infinity();
         int alpha, beta;
 
-        IntArena iar;
-        IntAlloc ial(iar); 
+        Arena<int>::type iar;
+        Alloc<int>::type ial(iar);
         Variation pv(ial);
         Timer timer;
         announce(p, depth);
@@ -40,7 +40,7 @@ template<typename Position, typename Objective>
 template<int NodeType>
 int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int depth, int ply, Variation& refutation)
 {
-        statistics_.update(ply);
+        statistics_.collect(ply);
 
         if (is_interrupted())
                 return alpha;
@@ -84,12 +84,12 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
                 return TT_entry->value();
 
         // generate moves
-        MoveArena a;
-        auto const moves = successor::generate(p, a);
+        Arena<Move>::type a;
+        auto const moves = successor::copy(p, a);
         BOOST_ASSERT(!moves.empty());
 
-        IntArena oar;
-        IntAlloc oal(oar);
+        Arena<int>::type oar;
+        Alloc<int>::type oal(oar);
         Order move_order(oal);
         move_order.reserve(moves.size());					// reserve enough room for all indices
         algorithm::iota_n(std::back_inserter(move_order), moves.size(), 0);	// generate indices [0, moves.size() - 1]
@@ -115,21 +115,18 @@ int Root<Position, Objective>::pvs(Position const& p, int alpha, int beta, int d
         auto best_value = -infinity();
         auto best_move = Transposition::no_move();
         int value;
-        //int i;
 
-        IntArena car;
-        IntAlloc cal(car);
+        Arena<int>::type car;
+        Alloc<int>::type cal(car);
         Variation continuation(cal);
-        continuation.reserve(DCTL_PP_VECTOR_RESERVE);
+        continuation.reserve(DCTL_PP_STACK_RESERVE);
 
         for (auto const& i: move_order) {
+                auto q = successor::make_copy(p, moves[i]);
+
                 // TODO: TT singular extension
 
                 // TODO: futility pruning
-
-                auto q = p;
-                q.attach(p);
-                q.make(moves[i]);
 
                 if (is_pv(NodeType) && (&i == &move_order[0]))
                         value = -squeeze(pvs<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));

@@ -109,16 +109,16 @@ struct write<pdn::protocol, Token>
 
                 std::stringstream sstr;
                 sstr << Token::quote;                                           // opening quotes
-                sstr << write_color<Token>(p.active_color());                   // side to move
+                sstr << write_color<Token>(active_color(p));                   // side to move
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i != 0;
-                        if (p.pieces(c)) {
+                        if (p.material().pieces(c)) {
                                 sstr << Token::colon;                           // colon
                                 sstr << Token::color[c];                        // color tag
                         }
-                        for (auto bb = p.pieces(c); bb; bit::first::clear(bb)) {
-                                if (bit::is_element(bit::first::equal(bb), p.kings()))
+                        for (auto bb = p.material().pieces(c); bb; bit::first::clear(bb)) {
+                                if (bit::is_element(bit::first::equal(bb), p.material().kings()))
                                         sstr << Token::king;                    // king tag
                                 auto b = bit::first::find(bb);                  // bit index
                                 sstr << Board::bit2square(b) + 1;               // square number
@@ -176,7 +176,7 @@ struct write<dxp::protocol, Token>
         std::string operator()(Position<Rules, Board> const& p) const
         {
                 std::stringstream sstr;
-                sstr << write_color<Token>(p.active_color());                // side to move
+                sstr << write_color<Token>(active_color(p));                // side to move
                 for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
                         auto b = Board::square2bit(sq);                 // convert square to bit
                         sstr << content<Token>(p.material(), b);        // bit content

@@ -20,13 +20,12 @@ struct count;
 template<>
 struct count<uint64_t>
 {
-        int operator()(uint64_t b)
+        std::size_t operator()(uint64_t b)
         {
 #ifdef _MSC_VER
-                return static_cast<int>(__popcnt64(b));
+                return __popcnt64(b);
 #else
-                __asm__("popcnt %1, %0" : "=r" (b) : "r" (b));
-                return b;
+                return __builtin_popcountll(b);
 #endif
         }
 };
@@ -44,9 +43,7 @@ struct index<uint64_t>
                 _BitScanForward64(&index, b);
                 return static_cast<int>(index);
 #else
-                uint64_t index;
-                __asm__("bsfq %1, %0": "=r"(index): "rm"(b) );
-                return static_cast<int>(index);
+                return __builtin_ctzll(b);
 #endif
         }
 };
@@ -56,7 +53,7 @@ struct index<uint64_t>
 }       // namespace detail
 
 template<typename T>
-int count(T b)
+std::size_t count(T b)
 {
         return detail::count<T>()(b);
 }

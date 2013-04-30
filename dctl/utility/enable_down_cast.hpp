@@ -1,7 +1,7 @@
 #pragma once
-#include <type_traits>                  // is_base_of
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
-#include <dctl/guarded/default_delete.hpp>
+#include <type_traits>                          // is_base_of
+#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
+#include <dctl/preprocessor/cpp11/default.hpp>  // DCTL_PP_IS_DEFAULT
 
 namespace dctl {
 

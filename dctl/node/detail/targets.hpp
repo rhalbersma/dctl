@@ -9,14 +9,14 @@ namespace detail {
 template<bool Color, typename Position>
 BitBoard targets(Position const& p, std::false_type)
 {
-        return p.pawns(!Color);
+        return p.material().pawns(!Color);
 }
 
 // overload for pawns that can capture kings
 template<bool Color, typename Position>
 BitBoard targets(Position const& p, std::true_type)
 {
-        return p.pieces(!Color);
+        return p.material().pieces(!Color);
 }
 
 }       // namespace detail
