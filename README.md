@@ -53,7 +53,7 @@ The DCTL is a modern [C++](http://isocpp.org) library that is dependent on many 
 
 * **Supported**:
     * **tested:** the recommended and actively tested compilers are [g++](http://gcc.gnu.org/projects/cxx0x.html) and [Clang](http://clang.llvm.org/cxx_status.html). Current development takes place with g++ 4.7.2 and Clang 3.3 (on Linux), and MinGW g++ 4.8.0 (on Windows).
-    * **untested:** the minimally required but untested compilers are [Intel](http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler) 13.0, g++ 4.6.3, and Clang 3.1. However, it is strongly recommended to use the most recently available verion of the compiler vendor of your choice.
+    * **untested:** the minimally required but untested compilers are [Intel](http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler) 13.0, g++ 4.6.3, and Clang 3.1. However, it is strongly recommended to use the most recently available version of the compiler vendor of your choice.
 * **Unsupported:** 
     * the [Microsoft Visual C++ 2012](http://msdn.microsoft.com/en-us/library/vstudio/hh567368.aspx) compiler, even with its [November CTP](http://blogs.msdn.com/b/vcblog/archive/2012/11/02/visual-c-c-11-and-the-future-of-c.aspx), currently has insufficient(ly stable) C++11 support to reliably compile the DCTL test-suite. This could be subject to change when new updates come available.
 
@@ -102,7 +102,7 @@ To make sure that your build environment is compatible with the DCTL requirement
       make
       make test
 
-The build will take about 35 seconds on a single 3.2 Ghz Intel i7 core. You can speed up the build with a `make -j N` on a system supporting up to `N` (hyper)threads. To completely regenerate the test-suite's build solution, simply delete the entire `dctl/build/` directory and rerun the above commands. To only rebuild and rerun the test-suite, simply type 
+The build will take about 35 seconds on a single 3.2 GHz Intel i7 core. You can speed up the build with a `make -j N` on a system supporting up to `N` (hyper)threads. To completely regenerate the test-suite's build solution, simply delete the entire `dctl/build/` directory and rerun the above commands. To only rebuild and rerun the test-suite, simply type 
 
       make clean
       make
