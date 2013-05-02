@@ -123,7 +123,7 @@ Any feature requests, ideas and contributions are much appreciated! The recommen
 Acknowledgments
 ----------------
 
-Special thanks Ed Gilbert, Aart Bik, Wieger Wesselink and Walter Thoen for encouragement, testing, and exchange of ideas.
+Special thanks to Ed Gilbert, Aart Bik, Wieger Wesselink and Walter Thoen for encouragement, testing, and exchange of ideas.
 
 License
 -------
