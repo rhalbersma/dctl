@@ -1,11 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(DTCL_TEST)
+project(dctl_test)
 
 # use C++11 features
-if(CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-endif()
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # statically link against Boost.Test
 set(Boost_USE_STATIC_LIBS ON)
