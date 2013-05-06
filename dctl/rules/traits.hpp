@@ -1,5 +1,5 @@
 #pragma once
-#include <limits>                       // INT_MAX
+#include <climits>                      // INT_MAX
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/identity.hpp>       // identity

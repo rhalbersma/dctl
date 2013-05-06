@@ -20,7 +20,7 @@ public:
 
         // modifiers
 
-        friend void set_successor(self_type* lhs, self_type const* rhs)
+        friend void set_successor(self_type* lhs, self_type* rhs)
         {
                 lhs->next_ = rhs;
         }

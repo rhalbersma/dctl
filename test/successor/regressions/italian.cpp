@@ -1,4 +1,4 @@
-#include <test/config.hpp>        // SUCCESSOR_TEST
+#include <test/config.hpp>              // SUCCESSOR_TEST
 
 #if SUCCESSOR_TEST == 1
 
@@ -6,7 +6,7 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <test/successor/fixture.hpp>   // run
 #include <dctl/board/types.hpp>         // Roman
-#include <dctl/rules/variants.hpp>         // Italian
+#include <dctl/rules/variants.hpp>      // Italian
 
 namespace dctl {
 namespace successor {

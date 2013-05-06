@@ -1,3 +1,4 @@
+#pragma once
 #include <string>                       // string
 #include <utility>                      // pair
 #include <boost/test/unit_test.hpp>

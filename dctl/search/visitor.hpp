@@ -1,3 +1,4 @@
+/*
 
 // principal variation search (PVS)
 template<typename Objective, typename Position, typename Enhancement>
@@ -57,3 +58,4 @@ int search(Position const& p, std::pair<int, int> window, int depth, int ply, Va
         TT.insert(p, { best_value, type, depth, best_move } );
         return best_value;
 }
+*/
