@@ -102,7 +102,7 @@ To make sure that your build environment is compatible with the DCTL requirement
       make
       make test
 
-The build will take about 35 seconds on a single 3.2 GHz Intel i7 core. You can speed up the build with a `make -j N` on a system supporting up to `N` (hyper)threads. To completely regenerate the test-suite's build solution, simply delete the entire `dctl/build/` directory and rerun the above commands. To only rebuild and rerun the test-suite, simply type 
+The build will take about 35 seconds on a single 3.2 GHz Intel i7 core. You can speed up the build with a `make -j N` on a system supporting up to `N` (hyper)threads. To completely regenerate the test-suite's build solution, simply delete the contents of the entire `build/` directory and rerun the above commands. To only rebuild and rerun the test-suite, simply type 
 
       make clean
       make
