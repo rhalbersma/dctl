@@ -95,10 +95,10 @@ Alternatively, you can download and unpack the latest zipped source archive into
 
 To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost), and type
 
-      cd ~/projects/dctl    
+      cd ~/projects/dctl/test    
       mkdir build
       cd build
-      cmake ../test
+      cmake ..
       make
       make test
 
