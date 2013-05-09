@@ -1,3 +1,4 @@
+#pragma once
 /*
 
 // principal variation search (PVS)

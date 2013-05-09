@@ -32,6 +32,22 @@ set(dctl_include_dirs ${PROJECT_SOURCE_DIR}/../include)
 file(GLOB_RECURSE dctl_headers FOLLOW_SYMLINKS "${dctl_include_dirs}/*.hpp")
 
 ###############################################################
+# Standalone headers
+###############################################################
+
+set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
+set(CMAKE_REQUIRED_INCLUDES ${dctl_include_dirs})
+include(CheckIncludeFileCXX)
+
+foreach(h ${dctl_headers})
+  # header name without extension
+  get_filename_component(header_name ${h} NAME_WE)
+
+  # check if header is standalone
+  check_include_file_cxx("${h}" ${header_name}_IS_STANDALONE)
+endforeach(h)
+
+###############################################################
 # Test suite
 ###############################################################
 
