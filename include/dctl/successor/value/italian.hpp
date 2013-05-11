@@ -1,15 +1,14 @@
 #pragma once
-#include <algorithm>                    // count
-#include <cstddef>                      // size_t
-#include <iterator>                     // begin, end
-#include <limits>                       // numeric_limits
-#include <tuple>                        // tie
-#include <vector>                       // vector
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/operators.hpp>          // totally_ordered
-#include <dctl/bit/bit.hpp>             // count, reverse_singlet
-#include <dctl/successor/value_fwd.hpp> // Value (primary template)
-#include <dctl/rules/variants/italian_fwd.hpp>   // Italian
+#include <algorithm>                            // count
+#include <iterator>                             // begin, end
+#include <limits>                               // numeric_limits
+#include <tuple>                                // tie
+#include <vector>                               // vector
+#include <boost/assert.hpp>                     // BOOST_ASSERT
+#include <boost/operators.hpp>                  // totally_ordered
+#include <dctl/bit/bit.hpp>                     // count, reverse_singlet
+#include <dctl/successor/value_fwd.hpp>         // Value (primary template)
+#include <dctl/rules/variants/italian_fwd.hpp>  // Italian
 
 namespace dctl {
 namespace successor {
@@ -40,7 +39,7 @@ public:
         {
                 BOOST_ASSERT(!full());
                 if (is_king) {
-                        king_order_.push_back(minus(num_pieces_));
+                        king_order_.push_back(-num_pieces_);
                         ++num_kings_;
                 }
                 ++num_pieces_;
@@ -53,7 +52,7 @@ public:
                 --num_pieces_;
                 if (is_king) {
                         --num_kings_;
-                        BOOST_ASSERT(king_order_.back() == minus(num_pieces_));
+                        BOOST_ASSERT(king_order_.back() == -num_pieces_);
                         king_order_.pop_back();
                 }
                 BOOST_ASSERT(invariant());
@@ -75,7 +74,7 @@ public:
 
         // queries
 
-        std::size_t count() const
+        int count() const
         {
                 return num_pieces_;
         }
@@ -105,41 +104,35 @@ public:
         }
 
 private:
-        // queries
-
-        std::size_t minus(std::size_t n) const
-        {
-                return std::numeric_limits<std::size_t>::max() - n;
-        }
-
         // predicates
 
         bool invariant() const
         {
                 return (
-                        num_kings_ <= num_pieces_ &&
-                        num_pieces_ <= std::numeric_limits<std::size_t>::max() &&
-                        num_kings_ == king_order_.size() &&
+                                  0 <= num_kings_ &&
+                         num_kings_ <= num_pieces_ &&
+                        num_pieces_ <= std::numeric_limits<int>::max() &&
+                         num_kings_ == static_cast<int>(king_order_.size()) &&
                         (!num_kings_ || with_king_)
                 );
         }
 
         bool empty() const
         {
-                return 0 == num_kings_ && num_kings_ == num_pieces_ && king_order_.empty();
+                return (0 == num_kings_) && (num_kings_ == num_pieces_) && king_order_.empty();
         }
 
         bool full() const
         {
-                return num_pieces_ == std::numeric_limits<std::size_t>::max();
+                return num_pieces_ == std::numeric_limits<int>::max();
         }
 
         // representation
 
-        std::size_t num_pieces_;
-        std::size_t num_kings_;
+        int num_pieces_;
+        int num_kings_;
         bool with_king_;
-        std::vector<std::size_t> king_order_;
+        std::vector<int> king_order_;
 };
 
 }       // namespace successor

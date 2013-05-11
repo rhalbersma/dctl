@@ -338,20 +338,20 @@ private:
                 return remaining_targets_ & king_targets_;
         }
 
-        std::size_t count() const
+        int count() const
         {
                 // tag dispatching on majority capture precedence
                 return count_dispatch(typename rules::traits<Rules>::is_precedence());
         }
 
         // overload for no majority capture precedence
-        std::size_t count_dispatch(std::false_type) const
+        int count_dispatch(std::false_type) const
         {
                 return bit::count(captured_pieces());
         }
 
         // overload for majority capture precedence
-        std::size_t count_dispatch(std::true_type) const
+        int count_dispatch(std::true_type) const
         {
                 return current_.count();
         }

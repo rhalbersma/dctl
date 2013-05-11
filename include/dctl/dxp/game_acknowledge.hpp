@@ -23,7 +23,7 @@ class GameAcknowledge
 public:
         // typedefs
 
-        enum AcceptanceCode { accept = 0, decline_version = 1, decline_game = 2, decline_always = 3 };
+        enum AcceptanceCode: int { accept = 0, decline_version = 1, decline_game = 2, decline_always = 3 };
 
         // structors
 
@@ -67,7 +67,7 @@ private:
         {
                 std::stringstream sstr;
                 sstr << std::setw(32) << n << std::setfill(' ');
-                sstr << std::setw( 1) << a;
+                sstr << std::setw( 1) << static_cast<int>(a);
                 return sstr.str();
         }
 

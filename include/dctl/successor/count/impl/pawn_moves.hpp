@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 #include <boost/utility.hpp>
 #include <dctl/successor/count/impl/primary_fwd.hpp>
 #include <dctl/successor/material/pawn.hpp>
@@ -45,13 +44,13 @@ public:
 
         // function call operators
 
-        std::size_t operator()(BitBoard active_pawns) const
+        int operator()(BitBoard active_pawns) const
         {
                 return active_pawns? branch(active_pawns) : 0;
         }
 
 private:
-        std::size_t branch(BitBoard active_pawns) const
+        int branch(BitBoard active_pawns) const
         {
                 return (
                         parallelize<typename Compass::left_up >(active_pawns) +
@@ -60,7 +59,7 @@ private:
         }
 
         template<typename Direction>
-        std::size_t parallelize(BitBoard active_pawns) const
+        int parallelize(BitBoard active_pawns) const
         {
                 return bit::count(
                         Sink<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.path())

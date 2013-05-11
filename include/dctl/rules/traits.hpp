@@ -230,8 +230,8 @@ struct traits
                         >,
                         std::is_same<pawn_jump_directions, directions::all>
                 >,
-                std::integral_constant<std::size_t, 3>,
-                std::integral_constant<std::size_t, 4>
+                std::integral_constant<int, 3>,
+                std::integral_constant<int, 4>
         >::type large_jump;
 
         typedef std::integral_constant<

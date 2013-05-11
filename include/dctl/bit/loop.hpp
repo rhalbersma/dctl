@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>                   // function
 #include <dctl/bit/bit_fwd.hpp>         // first::clear, is_element, singlet
 #include <dctl/utility/int.hpp>         // num_bits
 
@@ -11,11 +10,11 @@ namespace detail {
 template<typename T>
 struct count
 {
-        std::size_t operator()(T b)
+        int operator()(T b)
         {
                 // Kernighan & Ritchie, The C programming language, 2nd Ed.
                 // https://chessprogramming.wikispaces.com/Population+Count
-                std::size_t n = 0;
+                auto n = 0;
                 for (; b; first::clear(b))
                         ++n;
                 return n;
@@ -27,7 +26,7 @@ struct index
 {
         int operator()(T b)
         {
-                for (std::size_t i = 0; i < num_bits<T>::value; ++i)
+                for (auto i = 0; i < num_bits<T>::value; ++i)
                         if (is_element(singlet<T>(i), b))
                                 return i;
                 return 0;
@@ -39,7 +38,7 @@ struct index
 }       // namespace detail
 
 template<typename T>
-std::size_t count(T b)
+int count(T b)
 {
         return detail::count<T>()(b);
 }

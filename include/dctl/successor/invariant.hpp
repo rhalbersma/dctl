@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 #include <dctl/successor/count.hpp>
 #include <dctl/successor/detect.hpp>
 
@@ -7,7 +6,7 @@ namespace dctl {
 namespace successor {
 
 template<bool Color, typename Material, typename Select, typename Position>
-bool invariant(Position const& p,  std::size_t n)
+bool invariant(Position const& p, int n)
 {
         return (
                 ( count<Color, Material, Select>(p) ==  n     ) &&

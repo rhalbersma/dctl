@@ -24,8 +24,8 @@ class GameEnd
 public:
         // typedefs
 
-        enum Reason { forfeit = 0, resign = 1, claim_draw = 2, claim_win = 3 };
-        enum StopCode { stop_game = 0, stop_always = 1 };
+        enum Reason: int { forfeit = 0, resign = 1, claim_draw = 2, claim_win = 3 };
+        enum StopCode: int { stop_game = 0, stop_always = 1 };
 
         // structors
 
@@ -70,8 +70,8 @@ private:
         static std::string body(Reason r, StopCode s)
         {
                 std::stringstream sstr;
-                sstr << std::setw( 1) << r;
-                sstr << std::setw( 1) << s;
+                sstr << std::setw(1) << static_cast<int>(r);
+                sstr << std::setw(1) << static_cast<int>(s);
                 return sstr.str();
         }
 

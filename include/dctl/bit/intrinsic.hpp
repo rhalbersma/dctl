@@ -1,13 +1,6 @@
 #pragma once
 #include <cstdint>
-#include <functional>                   // function
 #include <dctl/bit/bit_fwd.hpp>         // first::clear, is_element, singlet
-
-#ifdef _MSC_VER
-#include <intrin.h>
-//#pragma intrinsic(__popcnt64)
-#pragma intrinsic(_BitScanForward64)
-#endif
 
 namespace dctl {
 namespace bit {
@@ -20,13 +13,9 @@ struct count;
 template<>
 struct count<uint64_t>
 {
-        std::size_t operator()(uint64_t b)
+        int operator()(uint64_t b)
         {
-#ifdef _MSC_VER
-                return __popcnt64(b);
-#else
-                return __builtin_popcountll(b);
-#endif
+                return static_cast<int>(__builtin_popcountll(b));
         }
 };
 
@@ -38,13 +27,7 @@ struct index<uint64_t>
 {
         int operator()(uint64_t b)
         {
-#ifdef _MSC_VER
-                unsigned long index;
-                _BitScanForward64(&index, b);
-                return static_cast<int>(index);
-#else
-                return __builtin_ctzll(b);
-#endif
+                return static_cast<int>(__builtin_ctzll(b));
         }
 };
 
@@ -53,7 +36,7 @@ struct index<uint64_t>
 }       // namespace detail
 
 template<typename T>
-std::size_t count(T b)
+int count(T b)
 {
         return detail::count<T>()(b);
 }

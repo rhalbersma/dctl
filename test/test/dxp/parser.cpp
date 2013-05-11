@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                 if (auto const parsed = factory.create(m))
                         BOOST_CHECK_EQUAL(m, parsed->str());
                 else
-                        BOOST_CHECK(!"Factory cannot create an unregistered message type.");
+                        BOOST_CHECK_MESSAGE(false, "Factory cannot create an unregistered message type.");
         }
 }
 

@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>                                      // size_t
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
 #include <dctl/successor/count/impl/pawn_moves.hpp>     // count (pawn moves specialization)
 #include <dctl/successor/material/pawn.hpp>             // pawn
@@ -15,7 +14,7 @@ template<bool Color>
 struct count<Color, material::pawn, select::moves>
 {
         template<typename Position>
-        std::size_t operator()(Position const& p) const
+        int operator()(Position const& p) const
         {
                 typedef impl::count<Color, material::pawn, select::moves, Position> PawnMoves;
 

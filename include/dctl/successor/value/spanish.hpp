@@ -1,11 +1,10 @@
 #pragma once
-#include <cstddef>                      // size_t
-#include <limits>                       // numeric_limits
-#include <tuple>                        // tie
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/operators.hpp>          // totally_ordered
-#include <dctl/successor/value_fwd.hpp> // Value (primary template)
-#include <dctl/rules/variants/spanish_fwd.hpp>   // Spanish
+#include <limits>                               // numeric_limits
+#include <tuple>                                // tie
+#include <boost/assert.hpp>                     // BOOST_ASSERT
+#include <boost/operators.hpp>                  // totally_ordered
+#include <dctl/successor/value_fwd.hpp>         // Value (primary template)
+#include <dctl/rules/variants/spanish_fwd.hpp>  // Spanish
 
 namespace dctl {
 namespace successor {
@@ -48,7 +47,7 @@ public:
 
         // queries
 
-        std::size_t count() const
+        int count() const
         {
                 return num_pieces_;
         }
@@ -81,8 +80,9 @@ private:
         bool invariant() const
         {
                 return (
-                        num_kings_ <= num_pieces_ &&
-                        num_pieces_ <= std::numeric_limits<std::size_t>::max()
+                                  0 <= num_kings_ &&
+                         num_kings_ <= num_pieces_ &&
+                        num_pieces_ <= std::numeric_limits<int>::max()
                 );
         }
 
@@ -93,13 +93,13 @@ private:
 
         bool full() const
         {
-                return num_pieces_ == std::numeric_limits<std::size_t>::max();
+                return num_pieces_ == std::numeric_limits<int>::max();
         }
 
         // representation
 
-        std::size_t num_pieces_;
-        std::size_t num_kings_;
+        int num_pieces_;
+        int num_kings_;
 };
 
 }       // namespace successor
