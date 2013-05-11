@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>                                      // size_t
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
 #include <dctl/successor/count/jumps.hpp>               // count (jumps specialization)
 #include <dctl/successor/count/piece_promotions.hpp>    // count (piece promotions specialization)
@@ -18,7 +17,7 @@ template<bool Color, typename Material>
 struct count<Color, Material, select::conversions>
 {
         template<typename Position>
-        std::size_t operator()(Position const& p) const
+        int operator()(Position const& p) const
         {
                 typedef count<Color, Material, select::jumps     > DoJumps;
                 typedef count<Color, Material, select::promotions> DoPromotions;

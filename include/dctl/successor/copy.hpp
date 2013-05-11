@@ -25,7 +25,7 @@ stack_vector<Move>::type copy(Position const& p, Arena<Move>::type& mar)
 
         copy<Color, Material, Select>(p, moves);
 
-        BOOST_ASSERT((invariant<Color, Material, Select>(p, moves.size())));
+        BOOST_ASSERT((invariant<Color, Material, Select>(p, static_cast<int>(moves.size()))));
         return moves;
 }
 

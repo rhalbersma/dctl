@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>                      // size_t
 #include <boost/test/unit_test.hpp>	// BOOST_CHECK_EQUAL
 #include <dctl/walk/root.hpp>           // Root
 #include <dctl/utility/int.hpp>        	// NodeCount
@@ -7,7 +6,7 @@
 namespace dctl {
 namespace walk {
 
-template<typename Position, std::size_t N>
+template<typename Position, int N>
 void test(Position const& p, NodeCount const (&leafs)[N])
 {
         typedef hash_tag impl_tag;

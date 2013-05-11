@@ -36,8 +36,8 @@ private:
         bool invariant() const
         {
                 return (
-                        do_header().length() == header_length_ &&
-                        do_body().length() <= max_body_length_
+                        static_cast<int>(do_header().length()) == header_length_ &&
+                        static_cast<int>(do_body().length()) <= max_body_length_
                 );
         }
 

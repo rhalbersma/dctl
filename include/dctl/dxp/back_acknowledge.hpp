@@ -23,7 +23,7 @@ class BackAcknowledge
 public:
         // typedefs
 
-        enum AcceptanceCode { accept = 0, not_supported = 1, decline = 2 };
+        enum AcceptanceCode: int { accept = 0, not_supported = 1, decline = 2 };
 
         // structors
 
@@ -61,7 +61,7 @@ private:
         static std::string body(AcceptanceCode a)
         {
                 std::stringstream sstr;
-                sstr << std::setw(1) << a;
+                sstr << std::setw(1) << static_cast<int>(a);
                 return sstr.str();
         }
 

@@ -10,12 +10,8 @@ namespace bit {
 
 BOOST_AUTO_TEST_SUITE(TestBit)
 
-typedef boost::mpl::vector
-<
-        uint8_t,
-	uint16_t,
-        uint32_t,
-        uint64_t
+typedef boost::mpl::vector<
+        uint32_t, uint64_t
 > UnsignedIntegerTypes;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, UnsignedIntegerTypes)
@@ -29,7 +25,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, UnsignedIntegerTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, UnsignedIntegerTypes)
 {
-        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
+        for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
                 BOOST_CHECK(!is_zero(b));
                 BOOST_CHECK( is_single(b));
@@ -46,8 +42,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, UnsignedIntegerTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, UnsignedIntegerTypes)
 {
-        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
-                for (std::size_t j = 0; j < num_bits<T>::value; ++j) {
+        for (auto i = 0; i < num_bits<T>::value; ++i) {
+                for (auto j = 0; j < num_bits<T>::value; ++j) {
                         auto const b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j) {
                                 BOOST_CHECK(is_zero(b));
@@ -63,8 +59,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, UnsignedIntegerTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsMultiple, T, UnsignedIntegerTypes)
 {
-        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
-                for (std::size_t j = 0; j < num_bits<T>::value - i; ++j) {
+        for (auto i = 0; i < num_bits<T>::value; ++i) {
+                for (auto j = 0; j < num_bits<T>::value - i; ++j) {
                         auto const b = (singlet<T>(i) - T(1)) << j;
                         switch (i) {
                         case 0:

@@ -20,7 +20,7 @@ bool read_color(char c)
         case Token::white:
                 return Side::white;
         default:
-                BOOST_ASSERT(!"switch statement incomplete");
+                BOOST_ASSERT_MSG(false, "switch statement incomplete");
                 return false;
         }
 }
@@ -159,7 +159,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                         case Token::empty:
                                 break;
                         default:
-                                BOOST_ASSERT(!"switch statement incomplete");
+                                BOOST_ASSERT_MSG(false, "switch statement incomplete");
                                 break;
                         }
                         if (isupper(ch))

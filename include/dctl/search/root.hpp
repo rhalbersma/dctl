@@ -1,6 +1,6 @@
 #pragma once
 #include <algorithm>                    // generate
-#include <cstddef>                      // size_t
+#include <cstddef>
 #include <iostream>
 #include <iomanip>
 #include <iterator>                     // back_inserter
@@ -63,9 +63,9 @@ public:
                 return proof_verify(p, depth);
         }
 
-        void resize_hash(std::size_t s)
+        void resize_hash(int s)
         {
-                TT.resize(s);
+                TT.resize(static_cast<std::size_t>(s));
         }
 
         void clear_hash()

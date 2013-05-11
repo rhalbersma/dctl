@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 #include <memory>                       // unique_ptr
 #include <string>                       // string
 #include <type_traits>                  // is_base_of
@@ -11,8 +10,8 @@ namespace mixin {
 
 template
 <
-        std::size_t HeaderLength,
-        std::size_t MaxBodyLength,
+        int HeaderLength,
+        int MaxBodyLength,
         char Terminator
 >
 struct HeaderBodyTerminator

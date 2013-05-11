@@ -9,27 +9,23 @@
 namespace dctl {
 namespace bit {
 
-BOOST_AUTO_TEST_SUITE(TestLookup)
+BOOST_AUTO_TEST_SUITE(TestLoop)
 
-typedef boost::mpl::vector
-<
-        uint8_t,
-	uint16_t,
-        uint32_t,
-        uint64_t
+typedef boost::mpl::vector<
+        uint32_t, uint64_t
 > UnsignedIntegerTypes;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, UnsignedIntegerTypes)
 {
         BOOST_CHECK_EQUAL(0, loop::count(zero<T>()));
 
-        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
+        for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
                 BOOST_CHECK_EQUAL(1, loop::count(b));
         }
 
-        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
-                for (std::size_t j = 0; j < num_bits<T>::value; ++j) {
+        for (auto i = 0; i < num_bits<T>::value; ++i) {
+                for (auto j = 0; j < num_bits<T>::value; ++j) {
                         auto const b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j)
                                 BOOST_CHECK_EQUAL(0, loop::count(b));
@@ -38,7 +34,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, UnsignedIntegerTypes)
                 }
         }
 
-        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
+        for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i) - 1;
                 BOOST_CHECK_EQUAL(i, loop::count(b));
         }
@@ -46,9 +42,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, UnsignedIntegerTypes)
         BOOST_CHECK_EQUAL(num_bits<T>::value, loop::count(universe<T>()));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(LookupIndex, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(LoopIndex, T, UnsignedIntegerTypes)
 {
-        for (std::size_t i = 0; i < num_bits<T>::value; ++i) {
+        for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
                 BOOST_CHECK_EQUAL(i, loop::index(b));
         }

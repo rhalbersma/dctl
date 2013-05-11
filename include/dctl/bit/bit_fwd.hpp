@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 
 namespace dctl {
 namespace bit {
@@ -36,7 +35,7 @@ template<typename T> T less_equal(int);
 
 }       // namespace range
 
-template<typename T> std::size_t count(T);
+template<typename T> int count(T);
 template<typename T> int index(T);
 
 template<typename T> bool is_zero(T);

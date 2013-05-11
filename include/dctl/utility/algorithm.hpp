@@ -29,7 +29,7 @@ bool detect_if(InputIterator first, InputIterator last, Predicate pred)
 template<typename Container>
 bool is_duplicate_back(Container const& c)
 {
-        return detect(std::begin(c), std::end(c) - 1, c.back());
+        return detect(c.begin(), c.end() - 1, c.back());
 }
 
 // mutating sequence algorithms

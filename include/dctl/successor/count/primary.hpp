@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>                                      // size_t
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
 
 namespace dctl {
@@ -13,7 +12,7 @@ template
 struct count
 {
         template<typename Position>
-        std::size_t operator()(Position const& /* p */) const
+        int operator()(Position const& /* p */) const
         {
                 return 0;
         }

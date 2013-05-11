@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 #include <boost/utility.hpp>
 #include <dctl/successor/count/impl/primary_fwd.hpp>
 #include <dctl/successor/material/king.hpp>
@@ -46,13 +45,13 @@ public:
 
         // function call operators
 
-        std::size_t operator()(BitBoard active_kings) const
+        int operator()(BitBoard active_kings) const
         {
                 return active_kings? branch(active_kings) : 0;
         }
 
 private:
-        std::size_t branch(BitBoard active_kings) const
+        int branch(BitBoard active_kings) const
         {
                 return (
                         parallelize<typename Compass::left_down >(active_kings) +
@@ -63,7 +62,7 @@ private:
         }
 
         template<typename Direction>
-        std::size_t parallelize(BitBoard active_kings) const
+        int parallelize(BitBoard active_kings) const
         {
                 return bit::count(
                         Sink<Board, Direction, typename rules::traits<Rules>::king_range>()(active_kings, propagate_.path())

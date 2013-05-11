@@ -32,8 +32,10 @@ public:
                 dest_sq_(boost::lexical_cast<int>(message.substr(6, 2).c_str())),
                 num_captured_(boost::lexical_cast<int>(message.substr(8, 2).c_str()))
         {
-                for (auto i = 0; i < num_captured(); ++i)
-                        captured_pieces_.push_back(boost::lexical_cast<int>(message.substr(10 + 2 * i, 2).c_str()));
+                for (auto i = 0; i < num_captured(); ++i) {
+                        auto const index = static_cast<std::size_t>(10 + 2 * i);
+                        captured_pieces_.push_back(boost::lexical_cast<int>(message.substr(index, 2).c_str()));
+                }
         }
 
         // queries
