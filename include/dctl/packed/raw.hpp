@@ -13,7 +13,7 @@ namespace packed {
 //      for containers with corresponding member functions and for C-arrays.
 //      Unfortunately, adding overloads or specializations for builtin types to
 //      namespace std leads to undefined behavior.
-//      This rules out the C++ ranged-for loop construct for builtin types.
+//      This rules out the C++11 ranged-for loop construct for builtin types.
 
 template<class U, class Requires = typename std::enable_if<std::is_unsigned<U>::value>::type>
 auto begin(U u) -> decltype(bit_iterator<int, U>(u))
