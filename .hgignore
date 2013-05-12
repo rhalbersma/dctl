@@ -3,6 +3,8 @@ syntax: glob
 # emacs saves
 *.~
 *.#
+
+# Eclipse settings
 *.*project
 *.xml
 
