@@ -20,7 +20,7 @@ public:
                 entry_(0)
         {
                 entry_ ^= (n & NODES_MASK) << NODES_SHIFT;
-                entry_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
+                entry_ ^= (static_cast<NodeCount>(d) & DEPTH_MASK) << DEPTH_SHIFT;
         }
 
         // leaf node count
