@@ -89,6 +89,9 @@ class bit_reference
 public:
         // structors
 
+        // references have to be initialized
+        bit_reference() = delete;
+
         explicit bit_reference(U m)
         :
                 mask_(m)
@@ -127,25 +130,6 @@ private:
 
         U mask_;
 };
-
-//      Note that C++11 ranged-for loop applies argument-dependent-lookup,
-//      with std as associated namespace, finding std::begin() and std::end()
-//      for containers with corresponding member functions and for C-arrays.
-//      Unfortunately, adding overloads or specializations for builtin types to
-//      namespace std leads to undefined behavior.
-//      This rules out the C++ ranged-for loop construct for builtin types.
-
-template<class U, class Requires = typename std::enable_if<std::is_unsigned<U>::value>::type>
-auto begin(U u) -> decltype(bit_iterator<int, U>(u))
-{
-        return bit_iterator<int, U>(u);
-}
-
-template<class U, class Requires = typename std::enable_if<std::is_unsigned<U>::value>::type>
-auto end(U /* u */) -> decltype(bit_iterator<int, U>())
-{
-        return bit_iterator<int, U>();
-}
 
 }       // namespace packed
 }       // namespace dctl
