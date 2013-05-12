@@ -1,8 +1,10 @@
 syntax: glob
 
 # emacs saves
-*~
-*#
+*.~
+*.#
+*.*project
+*.xml
 
 # cmake output
 build
