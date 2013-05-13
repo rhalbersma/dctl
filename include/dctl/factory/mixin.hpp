@@ -83,8 +83,8 @@ struct has_factory_create
         std::is_base_of<
                 FactoryCreate<
                         T::identifier_,
-                        T,
-                        typename T::base
+                        T, typename
+                        T::base
                 >,
                 T
         >

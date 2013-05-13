@@ -3,31 +3,31 @@
 namespace dctl {
 namespace packed {
 
-template<typename Set>
+template<class Set>
 Set set_intersection(Set const& lhs, Set const& rhs)
 {
         return lhs & rhs;
 }
 
-template<typename Set>
+template<class Set>
 Set set_union(Set const& lhs, Set const& rhs)
 {
         return lhs | rhs;
 }
 
-template<typename Set>
+template<class Set>
 Set set_symmetric_difference(Set const& lhs, Set const& rhs)
 {
         return lhs ^ rhs;
 }
 
-template<typename Set>
+template<class Set>
 Set set_difference(Set const& lhs, Set const& rhs)
 {
         return lhs & ~rhs;
 }
 
-template<typename Set>
+template<class Set>
 bool includes(Set const& lhs, Set const& rhs)
 {
         return set_difference(rhs, lhs).empty();
