@@ -18,7 +18,7 @@ namespace dxp {
 
 */
 
-class GameRequest
+class GameRequest final
 :
         // Curiously Recurring Template Pattern (CRTP)
         public mixin::FactoryCreate<'R', GameRequest, IMessage>
@@ -85,12 +85,12 @@ public:
 private:
         // virtual implementation
 
-        virtual std::string do_header() const
+        virtual std::string do_header() const override
         {
                 return identifier();
         }
 
-        virtual std::string do_body() const
+        virtual std::string do_body() const override
         {
                 return body(name_initiator(), color_follower(), minutes(), moves(), setup_code(), position());
         }

@@ -16,7 +16,7 @@ namespace dxp {
 
 */
 
-class GameEnd
+class GameEnd final
 :
         // Curiously Recurring Template Pattern (CRTP)
         public mixin::FactoryCreate<'E', GameEnd, IMessage>
@@ -57,12 +57,12 @@ public:
 private:
         // virtual implementation
 
-        virtual std::string do_header() const
+        virtual std::string do_header() const override
         {
                 return identifier();
         }
 
-        virtual std::string do_body() const
+        virtual std::string do_body() const override
         {
                 return body(reason(), stop_code());
         }

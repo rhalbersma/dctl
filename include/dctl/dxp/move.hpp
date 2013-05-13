@@ -17,7 +17,7 @@ namespace dxp {
 
 */
 
-class Move
+class Move final
 :
         // Curiously Recurring Template Pattern (CRTP)
         public mixin::FactoryCreate<'M', Move, IMessage>
@@ -75,12 +75,12 @@ public:
 private:
         // virtual implementation
 
-        virtual std::string do_header() const
+        virtual std::string do_header() const override
         {
                 return identifier();
         }
 
-        virtual std::string do_body() const
+        virtual std::string do_body() const override
         {
                 return body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces());
         }
