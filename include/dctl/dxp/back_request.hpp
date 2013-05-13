@@ -16,7 +16,7 @@ namespace dxp {
 
 */
 
-class BackRequest
+class BackRequest final
 :
         // Curiously Recurring Template Pattern (CRTP)
         public mixin::FactoryCreate<'B', BackRequest, IMessage>
@@ -52,12 +52,12 @@ public:
 private:
         // virtual implementation
 
-        virtual std::string do_header() const
+        virtual std::string do_header() const override
         {
                 return identifier();
         }
 
-        virtual std::string do_body() const
+        virtual std::string do_body() const override
         {
                 return body(move_number(), side_to_move());
         }

@@ -15,7 +15,7 @@ namespace dxp {
 
 */
 
-class BackAcknowledge
+class BackAcknowledge final
 :
         // Curiously Recurring Template Pattern (CRTP)
         public mixin::FactoryCreate<'K', BackAcknowledge, IMessage>
@@ -48,12 +48,12 @@ public:
 private:
         // virtual implementation
 
-        virtual std::string do_header() const
+        virtual std::string do_header() const override
         {
                 return identifier();
         }
 
-        virtual std::string do_body() const
+        virtual std::string do_body() const override
         {
                 return body(acceptance_code());
         }

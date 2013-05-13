@@ -15,7 +15,7 @@ namespace dxp {
 
 */
 
-class GameAcknowledge
+class GameAcknowledge final
 :
         // Curiously Recurring Template Pattern (CRTP)
         public mixin::FactoryCreate<'A', GameAcknowledge, IMessage>
@@ -53,12 +53,12 @@ public:
 private:
         // virtual implementation
 
-        virtual std::string do_header() const
+        virtual std::string do_header() const override
         {
                 return identifier();
         }
 
-        virtual std::string do_body() const
+        virtual std::string do_body() const override
         {
                 return body(name_follower(), acceptance_code());
         }
