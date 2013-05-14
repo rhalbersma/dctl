@@ -74,7 +74,7 @@ public:
 
         // queries
 
-        int count() const
+        int size() const
         {
                 return num_pieces_;
         }

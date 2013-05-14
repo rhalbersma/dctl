@@ -24,19 +24,18 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        // modifiers
-
-        void set_promotion()
+        explicit Value(bool promotion)
+        :
+                promotion_(promotion)
         {
-                BOOST_ASSERT(!promotion_);
-                promotion_ = true;
                 BOOST_ASSERT(invariant());
         }
 
-        void clear_promotion()
+        // modifiers
+
+        void toggle_promotion()
         {
-                BOOST_ASSERT(promotion_);
-                promotion_ = false;
+                promotion_ ^= true;
                 BOOST_ASSERT(invariant());
         }
 

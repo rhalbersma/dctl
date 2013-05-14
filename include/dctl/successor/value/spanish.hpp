@@ -27,6 +27,14 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
+        Value(int num_pawns, int num_kings)
+        :
+                num_pieces_(num_pawns + num_kings),
+                num_kings_(num_kings)
+        {
+                BOOST_ASSERT(invariant());
+        }
+
         // modifiers
 
         void increment(bool is_king)
@@ -47,7 +55,7 @@ public:
 
         // queries
 
-        int count() const
+        int size() const
         {
                 return num_pieces_;
         }

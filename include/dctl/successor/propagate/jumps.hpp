@@ -100,16 +100,10 @@ public:
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
 
-        void set_promotion()
+        void toggle_promotion()
         {
                 BOOST_MPL_ASSERT((std::is_same<typename rules::traits<Rules>::pawn_promotion, rules::promotion::en_passant>));
-                current_.set_promotion();
-        }
-
-        void clear_promotion()
-        {
-                BOOST_MPL_ASSERT((std::is_same<typename rules::traits<Rules>::pawn_promotion, rules::promotion::en_passant>));
-                current_.clear_promotion();
+                current_.toggle_promotion();
         }
 
         void improve()
@@ -200,7 +194,7 @@ public:
 
         bool is_large() const
         {
-                return count() >= rules::traits<Rules>::large_jump::value;
+                return size() >= rules::traits<Rules>::large_jump::value;
         }
 
         bool is_promotion() const
@@ -338,22 +332,22 @@ private:
                 return remaining_targets_ & king_targets_;
         }
 
-        int count() const
+        int size() const
         {
                 // tag dispatching on majority capture precedence
-                return count_dispatch(typename rules::traits<Rules>::is_precedence());
+                return size_dispatch(typename rules::traits<Rules>::is_precedence());
         }
 
         // overload for no majority capture precedence
-        int count_dispatch(std::false_type) const
+        int size_dispatch(std::false_type) const
         {
                 return bit::count(captured_pieces());
         }
 
         // overload for majority capture precedence
-        int count_dispatch(std::true_type) const
+        int size_dispatch(std::true_type) const
         {
-                return current_.count();
+                return current_.size();
         }
 
         // overload for pawn jumps without promotion
