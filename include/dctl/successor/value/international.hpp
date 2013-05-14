@@ -25,6 +25,13 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
+        explicit Value(int n)
+        :
+                num_pieces_(n)
+        {
+                BOOST_ASSERT(invariant());
+        }
+
         // modifiers
 
         void increment()
@@ -43,7 +50,7 @@ public:
 
         // queries
 
-        int count() const
+        int size() const
         {
                 return num_pieces_;
         }
