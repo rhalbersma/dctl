@@ -8,25 +8,30 @@
 namespace dctl {
 namespace algorithm {
 
-BOOST_AUTO_TEST_SUITE(TestAlgorithm)
+BOOST_AUTO_TEST_SUITE(Algorithm)
 
-BOOST_AUTO_TEST_CASE(InsertionSelectionSort)
+BOOST_AUTO_TEST_CASE(InsertionSort)
 {
         auto const N = 100;
         std::vector<int> v;
         v.reserve(N);
-
         std::srand(47110815);
-        std::generate_n(std::back_inserter(v), N, [](){
-                return std::rand();
-        });
-        auto w = v;
+        std::generate_n(std::back_inserter(v), N, [](){ return std::rand(); });
 
         insertion_sort(begin(v), end(v));
-        selection_sort(begin(w), end(w));
-
         BOOST_CHECK(std::is_sorted(begin(v), end(v)));
-        BOOST_CHECK(std::is_sorted(begin(w), end(w)));
+}
+
+BOOST_AUTO_TEST_CASE(SelectionSort)
+{
+        auto const N = 100;
+        std::vector<int> v;
+        v.reserve(N);
+        std::srand(47110815);
+        std::generate_n(std::back_inserter(v), N, [](){ return std::rand(); });
+
+        selection_sort(begin(v), end(v));
+        BOOST_CHECK(std::is_sorted(begin(v), end(v)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
