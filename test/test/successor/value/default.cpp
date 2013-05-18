@@ -16,8 +16,7 @@ typedef boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Equal, T, NoMajorityCapturePrecedence)
 {
-        Value<T> const v;
-        Value<T> const w;
+        Value<T> v, w;
 
         // all captures are equal
         BOOST_CHECK(v == w);
@@ -26,8 +25,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Equal, T, NoMajorityCapturePrecedence)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Less, T, NoMajorityCapturePrecedence)
 {
-        Value<T> const v;
-        Value<T> const w;
+        Value<T> v, w;
 
         // all captures are equivalent
         BOOST_CHECK(v <= w);

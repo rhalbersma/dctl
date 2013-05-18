@@ -1,30 +1,31 @@
 #pragma once
-#include <tuple>                        // tuple
+#include <tuple>                        // make_tuple, tuple
+#include <utility>                      // pair
 #include <vector>                       // vector
 
 namespace dctl {
 namespace variadic {
 namespace detail {
 
-// the lambda is fully bound with one element from each of the vectors in the tuple
-template<typename F>
-inline void cross(F f)
+// the lambda is fully bound with one element from each of the ranges
+template<class Op>
+void insert_tuples(Op op)
 {
-        // evaluate the lambda
-        f();
+        // evaluating the lambda will insert the currently bound tuple
+        op();
 }
 
-// "peal off" the first vector from the remaining tuple of vectors
-template<typename F, typename Head, typename... Tail>
-inline void cross(F f, std::vector<Head> const& head, std::vector<Tail> const&... tail)
+// "peal off" the first vector from the remaining tuple of ranges
+template<class Op, class InputIterator1, class... InputIterator2>
+void insert_tuples(Op op, std::pair<InputIterator1, InputIterator1> head, std::pair<InputIterator2, InputIterator2>... tail)
 {
-        // "peal off" the elements from the first of the remaining vectors
+        // "peal off" the elements from the first of the remaining ranges
         // NOTE: the recursion will effectively generate the multiple nested for-loops
-        for (auto const& h: head) {
+        for (auto it = head.first; it != head.second; ++it) {
                 // bind the first free variable in the lambda, and
-                // keep one free variable for each of the remaining vectors
-                detail::cross(
-                        [&](Tail const&... elems){ f(h, elems...); },
+                // keep one free variable for each of the remaining ranges
+                detail::insert_tuples(
+                        [=](InputIterator2... elems) mutable { op(it, elems...); },
                         tail...
                 );
         }
@@ -32,17 +33,14 @@ inline void cross(F f, std::vector<Head> const& head, std::vector<Tail> const&..
 
 }       // namespace detail
 
-// convert a variadic tuple of vectors to a vector of tuples representing the Cartesian product
-// freely adapted from this StackOverflow answer: http://stackoverflow.com/a/13841673/819272
-template<typename... Args>
-std::vector< std::tuple<Args...> > cartesian_product(std::vector<Args> const&... args)
+// convert a tuple of ranges to the range of tuples representing the Cartesian product
+template<class OutputIterator, class... InputIterator>
+void cartesian_product(OutputIterator result, std::pair<InputIterator, InputIterator>... dimensions)
 {
-        std::vector< std::tuple<Args...> > result;
-        detail::cross(
-                 [&](Args const&... elems){ result.emplace_back(elems...); },
-                 args...
+        detail::insert_tuples(
+                 [=](InputIterator... elems) mutable { *result++ = std::make_tuple(*elems...); },
+                 dimensions...
         );
-        return result;
 }
 
 }       // namespace variadic

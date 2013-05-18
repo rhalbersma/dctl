@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE(DefaultConstructor)
 
 BOOST_AUTO_TEST_CASE(CompleteConstructor)
 {
-        int const pieces [] = { 0, 1, 2, std::numeric_limits<int>::max() };
+        int const pieces[] = { 0, 1, 2, std::numeric_limits<int>::max() };
 
         for (auto const& p: pieces) {
                 auto const v = value_type { p };
