@@ -19,14 +19,14 @@ public:
 
         Value()
         :
-                promotion_(false)
+                is_promotion_(false)
         {
                 BOOST_ASSERT(invariant());
         }
 
-        explicit Value(bool promotion)
+        explicit Value(bool p)
         :
-                promotion_(promotion)
+                is_promotion_(p)
         {
                 BOOST_ASSERT(invariant());
         }
@@ -35,7 +35,7 @@ public:
 
         void toggle_promotion()
         {
-                promotion_ ^= true;
+                is_promotion_ ^= true;
                 BOOST_ASSERT(invariant());
         }
 
@@ -43,7 +43,7 @@ public:
 
         bool is_promotion() const
         {
-                return promotion_;
+                return is_promotion_;
         }
 
         // predicates
@@ -68,7 +68,7 @@ private:
 
         // representation
 
-        bool promotion_;
+        bool is_promotion_;
 };
 
 }       // namespace successor
