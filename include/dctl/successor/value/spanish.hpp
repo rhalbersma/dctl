@@ -27,6 +27,11 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
+        explicit Value(std::tuple<int, int> const& t)
+        :
+                Value(std::get<0>(t), std::get<1>(t))
+        {}
+
         Value(int num_pawns, int num_kings)
         :
                 num_pieces_(num_pawns + num_kings),
