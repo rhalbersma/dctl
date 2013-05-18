@@ -82,16 +82,10 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        void set_with_king()
+        void toggle_with_king()
         {
                 BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_relative_king_precedence>));
-                current_.set_with_king();
-        }
-
-        void clear_with_king()
-        {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_relative_king_precedence>));
-                current_.clear_with_king();
+                current_.toggle_with_king();
         }
 
         void toggle_king_targets()

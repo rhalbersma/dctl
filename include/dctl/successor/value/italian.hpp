@@ -27,7 +27,7 @@ public:
         :
                 num_pieces_(0),
                 num_kings_(0),
-                with_king_(false),
+                is_with_king_(false),
                 king_order_()
         {
                 BOOST_ASSERT(invariant());
@@ -58,17 +58,9 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        void set_with_king()
+        void toggle_with_king()
         {
-                BOOST_ASSERT(!with_king_);
-                with_king_ = true;
-                BOOST_ASSERT(invariant());
-        }
-
-        void clear_with_king()
-        {
-                BOOST_ASSERT(with_king_);
-                with_king_ = false;
+                is_with_king_ ^= true;
                 BOOST_ASSERT(invariant());
         }
 
@@ -87,8 +79,8 @@ public:
                 // delegate to std::tuple::operator==
                 // NOTE: this will -in turn- delegate to std::vector::operator== for the last tuple element
                 return (
-                        std::tie(lhs.num_pieces_, lhs.num_kings_, lhs.with_king_, lhs.king_order_) ==
-                        std::tie(rhs.num_pieces_, rhs.num_kings_, rhs.with_king_, rhs.king_order_)
+                        std::tie(lhs.num_pieces_, lhs.num_kings_, lhs.is_with_king_, lhs.king_order_) ==
+                        std::tie(rhs.num_pieces_, rhs.num_kings_, rhs.is_with_king_, rhs.king_order_)
                 );
         }
 
@@ -98,8 +90,8 @@ public:
                 // delegate to std::tuple::operator<
                 // NOTE: this will -in turn- delegate to std::vector::operator< for the last tuple element
                 return (
-                        std::tie(lhs.num_pieces_, lhs.num_kings_, lhs.with_king_, lhs.king_order_) <
-                        std::tie(rhs.num_pieces_, rhs.num_kings_, rhs.with_king_, rhs.king_order_)
+                        std::tie(lhs.num_pieces_, lhs.num_kings_, lhs.is_with_king_, lhs.king_order_) <
+                        std::tie(rhs.num_pieces_, rhs.num_kings_, rhs.is_with_king_, rhs.king_order_)
                 );
         }
 
@@ -113,7 +105,7 @@ private:
                          num_kings_ <= num_pieces_ &&
                         num_pieces_ <= std::numeric_limits<int>::max() &&
                          num_kings_ == static_cast<int>(king_order_.size()) &&
-                        (!num_kings_ || with_king_)
+                        (!num_kings_ || is_with_king_)
                 );
         }
 
@@ -131,7 +123,7 @@ private:
 
         int num_pieces_;
         int num_kings_;
-        bool with_king_;
+        bool is_with_king_;
         std::vector<int> king_order_;
 };
 

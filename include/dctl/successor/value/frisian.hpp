@@ -23,7 +23,7 @@ public:
         :
                 num_pieces_(0),
                 num_kings_(0),
-                with_king_(false)
+                is_with_king_(false)
         {
                 BOOST_ASSERT(invariant());
         }
@@ -46,17 +46,9 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        void set_with_king()
+        void toggle_with_king()
         {
-                BOOST_ASSERT(!with_king_);
-                with_king_ = true;
-                BOOST_ASSERT(invariant());
-        }
-
-        void clear_with_king()
-        {
-                BOOST_ASSERT(with_king_);
-                with_king_ = false;
+                is_with_king_ ^= true;
                 BOOST_ASSERT(invariant());
         }
 
@@ -74,8 +66,8 @@ public:
         {
                 // delegate to std::tuple::operator==
                 return (
-                        std::tie(lhs.num_pieces_, lhs.num_kings_, lhs.with_king_) ==
-                        std::tie(rhs.num_pieces_, rhs.num_kings_, rhs.with_king_)
+                        std::tie(lhs.num_pieces_, lhs.num_kings_, lhs.is_with_king_) ==
+                        std::tie(rhs.num_pieces_, rhs.num_kings_, rhs.is_with_king_)
                 );
         }
 
@@ -95,8 +87,8 @@ public:
                         // delta_kings or delta_pawns is zero or they have equal sign
                         // delegate to std::tuple::operator<
                         return (
-                                std::tie(lhs.num_pieces_, lhs.with_king_) <
-                                std::tie(rhs.num_pieces_, rhs.with_king_)
+                                std::tie(lhs.num_pieces_, lhs.is_with_king_) <
+                                std::tie(rhs.num_pieces_, rhs.is_with_king_)
                         );
         }
 
@@ -129,7 +121,7 @@ private:
 
         int num_pieces_;
         int num_kings_;
-        bool with_king_;
+        bool is_with_king_;
 };
 
 }       // namespace successor
