@@ -153,7 +153,7 @@ private:
         void precedence(BitIndex jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch<Direction>(jumper, typename rules::traits<Rules>::is_precedence());
+                precedence_dispatch<Direction>(jumper, typename rules::is_precedence<Rules>());
         }
 
         // overload for no majority precedence
@@ -245,7 +245,7 @@ private:
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on man turn directions
-                return turn_dispatch<Direction>(jumper, typename rules::traits<Rules>::pawn_turn_directions());
+                return turn_dispatch<Direction>(jumper, rules::pawn_turn_directions<Rules>());
         }
 
         // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
@@ -316,7 +316,7 @@ private:
         void add_pawn_jump(BitIndex dest_sq) const
         {
                 // tag dispatching on ambiguity of pawn jumps
-                add_pawn_jump_dispatch(dest_sq, typename rules::traits<Rules>::is_unambiguous_pawn_jump());
+                add_pawn_jump_dispatch(dest_sq, rules::is_unambiguous_pawn_jump<Rules>());
         }
 
         // overload for pawn jumps that are always unambiguous

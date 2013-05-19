@@ -71,14 +71,14 @@ public:
         void make(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                make_dispatch(target_sq, rules::jump_removal<Rules>());
+                make_dispatch(target_sq, rules::captures_removal<Rules>());
                 BOOST_ASSERT(invariant());
         }
 
         void undo(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                undo_dispatch(target_sq, rules::jump_removal<Rules>());
+                undo_dispatch(target_sq, rules::captures_removal<Rules>());
                 BOOST_ASSERT(invariant());
         }
 
@@ -102,7 +102,7 @@ public:
 
         void improve()
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_precedence>));
+                BOOST_MPL_ASSERT((rules::is_precedence<Rules>));
                 BOOST_ASSERT(best_ < current_);
                 best_ = current_;
         }
@@ -168,14 +168,14 @@ public:
 
         bool greater_equal() const
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_precedence>));
+                BOOST_MPL_ASSERT((rules::is_precedence<Rules>));
                 BOOST_ASSERT(is_totally_ordered(best_, current_));
                 return current_ >= best_;
         }
 
         bool not_equal_to() const
         {
-                BOOST_MPL_ASSERT((boost::mpl::identity<typename rules::traits<Rules>::is_precedence>));
+                BOOST_MPL_ASSERT((rules::is_precedence<Rules>));
                 BOOST_ASSERT(greater_equal());
                 return current_ != best_;
         }
@@ -188,7 +188,7 @@ public:
 
         bool is_large() const
         {
-                return size() >= rules::traits<Rules>::large_jump::value;
+                return size() >= rules::large_jump<Rules>::value;
         }
 
         bool is_promotion() const
@@ -329,7 +329,7 @@ private:
         int size() const
         {
                 // tag dispatching on majority capture precedence
-                return size_dispatch(typename rules::traits<Rules>::is_precedence());
+                return size_dispatch(rules::is_precedence<Rules>());
         }
 
         // overload for no majority capture precedence

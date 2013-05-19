@@ -143,7 +143,7 @@ bool is_no_progress(Position const& p, std::true_type)
 {
         typedef typename Position::rules_type Rules;
 
-        return p.reversible_moves() >= rules::traits<Rules>::max_reversible_moves::value;
+        return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }
 
 }       // namespace detail
@@ -154,7 +154,7 @@ bool is_no_progress(Position const& p)
         typedef typename Position::rules_type Rules;
 
         // tag dispatching on restrictions on consecutive reversible moves
-        return detail::is_no_progress(p, typename rules::traits<Rules>::is_restricted_reversible_moves());
+        return detail::is_no_progress(p, rules::is_restricted_reversible_moves<Rules>());
 }
 
 template<typename Position>

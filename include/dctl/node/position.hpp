@@ -27,7 +27,7 @@ public:
         typedef Rules rules_type;
         typedef Board board_type;
         typedef Position const* TreeIterator;
-        BOOST_STATIC_CONSTANT(int, gap = rules::traits<rules_type>::initial_gap::value + board_type::height::value % 2);
+        BOOST_STATIC_CONSTANT(int, gap = rules::initial_gap<rules_type>::value + board_type::height::value % 2);
 
         /*
         Position()
@@ -134,7 +134,7 @@ private:
         void make_irreversible(Move const& m)
         {
                 // tag dispatching on restrictions on consecutive moves with the same king
-                make_irreversible(m, typename rules::traits<Rules>::is_restricted_same_king_moves());
+                make_irreversible(m, rules::is_restricted_same_king_moves<Rules>());
         }
 
         // overload for restricted consecutive moves with the same king

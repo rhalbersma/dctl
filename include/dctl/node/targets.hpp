@@ -9,7 +9,7 @@ template<bool Color, typename Position>
 BitBoard targets(Position const& p)
 {
         // tag dispatching on whether pawns can capture kings
-        return detail::targets<Color>(p, typename rules::traits<typename Position::rules_type>::is_pawns_jump_kings());
+        return detail::targets<Color>(p, rules::is_pawns_jump_kings<typename Position::rules_type>());
 }
 
 }       // namespace dctl
