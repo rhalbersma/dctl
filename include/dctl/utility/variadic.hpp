@@ -15,7 +15,7 @@ void insert_tuples(Op op)
         op();
 }
 
-// "peal off" the first vector from the remaining tuple of ranges
+// "peal off" the first range from the remaining tuple of ranges
 template<class Op, class InputIterator1, class... InputIterator2>
 void insert_tuples(Op op, std::pair<InputIterator1, InputIterator1> head, std::pair<InputIterator2, InputIterator2>... tail)
 {

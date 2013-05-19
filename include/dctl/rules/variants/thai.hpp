@@ -12,7 +12,7 @@ struct Thai
 {
         // main rules
         typedef range::distance_N king_range;
-        typedef directions::diag pawn_jump_directions;
+        typedef directions::up pawn_jump_directions;
         typedef precedence::none jump_precedence;
 
         // additional rules

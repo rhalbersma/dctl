@@ -57,7 +57,7 @@ public:
         {
                 // tag dispatching on relative king jump precedence
                 if (active_kings)
-                        select_dispatch(active_kings, typename rules::traits<Rules>::is_relative_king_precedence());
+                        select_dispatch(active_kings, rules::is_relative_king_precedence<Rules>());
         }
 
         template<typename Direction>
@@ -177,7 +177,7 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return find_next_dispatch<Direction>(jumper, typename rules::traits<Rules>::is_jump_direction_reversal());
+                return find_next_dispatch<Direction>(jumper, rules::is_jump_direction_reversal<Rules>());
         }
 
         // overload for kings that cannot reverse their capture direction
@@ -204,7 +204,7 @@ private:
         bool land(BitIndex jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
-                return land_dispatch<Direction>(jumper, typename rules::traits<Rules>::land_range());
+                return land_dispatch<Direction>(jumper, rules::land_range<Rules>());
         }
 
         // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
@@ -289,7 +289,7 @@ private:
         void slide(BitIndex& jumper, BitBoard path) const
         {
                 // tag dispatching on king range
-                slide_dispatch<Direction>(jumper, path, typename rules::traits<Rules>::king_range());
+                slide_dispatch<Direction>(jumper, path, rules::king_range<Rules>());
         }
 
         // overload for short ranged kings
@@ -324,7 +324,7 @@ private:
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
 
                 // tag dispatching on king halt after final capture
-                add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, typename rules::traits<Rules>::halt_range());
+                add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::halt_range<Rules>());
         }
 
         // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
@@ -360,7 +360,7 @@ private:
         void add_king_jump(BitIndex dest_sq, bool check_duplicate) const
         {
                 // tag dispatching on promotion condition
-                add_king_jump_dispatch(dest_sq, typename rules::traits<Rules>::pawn_promotion());
+                add_king_jump_dispatch(dest_sq, rules::pawn_promotion<Rules>());
                 if (check_duplicate && algorithm::is_duplicate_back(moves_))
                         moves_.pop_back();
         }

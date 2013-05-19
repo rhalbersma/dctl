@@ -59,7 +59,7 @@ public:
         {
                 // tag dispatching on whether pawns can capture kings
                 if (active_pawns)
-                        select_dispatch(active_pawns, typename rules::traits<Rules>::is_pawns_jump_kings());
+                        select_dispatch(active_pawns, rules::is_pawns_jump_kings<Rules>());
         }
 
 private:
@@ -80,7 +80,7 @@ private:
         void branch(BitBoard active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                branch_dispatch(active_pawns, typename rules::traits<Rules>::pawn_jump_directions());
+                branch_dispatch(active_pawns, rules::pawn_jump_directions<Rules>());
         }
 
         // overload for pawns that capture in the 8 diagonal and orthogonal directions
@@ -186,7 +186,7 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on promotion condition
-                return find_next_dispatch<Direction>(jumper, typename rules::traits<Rules>::pawn_promotion());
+                return find_next_dispatch<Direction>(jumper, rules::pawn_promotion<Rules>());
         }
 
         // overload for pawns that promote apres-fini
@@ -216,7 +216,7 @@ private:
         bool promote_en_passant(BitIndex jumper) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return promote_en_passant_dispatch<Direction>(jumper, typename rules::traits<Rules>::is_pawns_jump_kings());
+                return promote_en_passant_dispatch<Direction>(jumper, rules::is_pawns_jump_kings<Rules>());
         }
 
         // overload for pawns that can capture kings

@@ -85,6 +85,16 @@ BOOST_AUTO_TEST_CASE(ItalianInitial)
         test(p, leafs);
 }
 
+// The alternative game rules thread on the FMJD forum
+// http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+
+BOOST_AUTO_TEST_CASE(ThaiInitial)
+{
+        auto const p = Position<rules::Thai, board::Checkers>::initial<2>();
+        NodeCount const leafs[] = { 7, 49, 302, 1469, 7361, 36768, 179740, 845931, 3963648, 18363523, 84892793, 385713660, 1745666630 };
+        test(p, leafs);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace walk

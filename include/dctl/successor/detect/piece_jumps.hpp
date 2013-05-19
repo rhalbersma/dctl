@@ -37,10 +37,10 @@ public:
                                                 rules::range::distance_1
                                         >,
                                         std::is_same< typename
-                                                rules::traits<Rules>::king_jump_directions, typename
-                                                rules::traits<Rules>::pawn_jump_directions
-                                        >, typename
-                                        rules::traits<Rules>::is_pawns_jump_kings
+                                                rules::traits<Rules>::king_jump_directions,
+                                                rules::pawn_jump_directions<Rules>
+                                        >,
+                                        rules::is_pawns_jump_kings<Rules>
                                 >::value
                         >()
                 );
