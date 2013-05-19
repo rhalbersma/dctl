@@ -101,7 +101,7 @@ private:
         void branch(BitIndex jumper) const
         {
                 // tag dispatching on king jump directions
-                branch_dispatch(jumper, typename rules::traits<Rules>::king_jump_directions());
+                branch_dispatch(jumper, rules::king_jump_directions<Rules>());
         }
 
         // overload for kings that capture in the 8 diagonal and orthogonal directions
@@ -144,7 +144,7 @@ private:
         void precedence(BitIndex jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch<Direction>(jumper, typename rules::traits<Rules>::is_precedence());
+                precedence_dispatch<Direction>(jumper, rules::is_precedence<Rules>());
         }
 
         // overload for no majority precedence
@@ -243,7 +243,7 @@ private:
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on king turn directions
-                return turn_dispatch<Direction>(jumper, typename rules::traits<Rules>::king_turn_directions());
+                return turn_dispatch<Direction>(jumper, rules::king_turn_directions<Rules>());
         }
 
         // overload for turns in all the 6 non-parallel diagonal and orthogonal directions

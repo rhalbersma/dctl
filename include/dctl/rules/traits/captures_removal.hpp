@@ -7,15 +7,15 @@
 namespace dctl {
 namespace rules {
 
-DCTL_PP_DEFINE_HAS_TYPE(jump_removal)
-DCTL_PP_DEFINE_GET_TYPE(jump_removal)
+DCTL_PP_DEFINE_HAS_TYPE(captures_removal)
+DCTL_PP_DEFINE_GET_TYPE(captures_removal)
 
 template<typename Rules>
-struct jump_removal
+struct captures_removal
 :
         boost::mpl::eval_if<
-                has_jump_removal<Rules>,
-                get_jump_removal<Rules>,
+                has_captures_removal<Rules>,
+                get_captures_removal<Rules>,
                 removal::apres_fini
         >::type
 {};

@@ -18,7 +18,7 @@ struct Thai
         // additional rules
         typedef range::distance_1 land_range;
         typedef std::true_type is_jump_direction_reversal;
-        typedef removal::en_passant jump_removal;
+        typedef removal::en_passant captures_removal;
         typedef std::integral_constant<int, 4> initial_gap;
 };
 
