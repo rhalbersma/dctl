@@ -51,7 +51,7 @@ private:
         bool branch(BitBoard active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                return branch_dispatch(active_pawns, typename rules::traits<Rules>::pawn_jump_directions());
+                return branch_dispatch(active_pawns, rules::pawn_jump_directions<Rules>());
         }
 
         // overload for pawns that capture in the 8 diagonal and orthogonal directions

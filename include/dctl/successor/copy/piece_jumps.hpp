@@ -25,7 +25,7 @@ public:
                 typedef typename Position::rules_type Rules;
 
                 // tag dispatching on absolute king jump precedence
-                precedence_dispatch(p, moves, typename rules::traits<Rules>::is_absolute_king_precedence());
+                precedence_dispatch(p, moves, rules::is_absolute_king_precedence<Rules>());
         }
 
 private:

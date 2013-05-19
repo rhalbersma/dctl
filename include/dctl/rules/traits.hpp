@@ -8,6 +8,21 @@
 #include <dctl/preprocessor/has_type.hpp>
 #include <dctl/preprocessor/get_type.hpp>
 
+#include <dctl/rules/traits/king_range.hpp>
+#include <dctl/rules/traits/pawn_jump_directions.hpp>
+#include <dctl/rules/traits/jump_precedence.hpp>
+
+#include <dctl/rules/traits/land_range.hpp>
+#include <dctl/rules/traits/halt_range.hpp>
+#include <dctl/rules/traits/king_jump_orthogonality.hpp>
+#include <dctl/rules/traits/king_move_orthogonality.hpp>
+#include <dctl/rules/traits/is_pawns_jump_kings.hpp>
+#include <dctl/rules/traits/is_jump_direction_reversal.hpp>
+#include <dctl/rules/traits/jump_removal.hpp>
+#include <dctl/rules/traits/pawn_promotion.hpp>
+#include <dctl/rules/traits/is_absolute_king_precedence.hpp>
+#include <dctl/rules/traits/is_relative_king_precedence.hpp>
+
 namespace dctl {
 namespace rules {
 
@@ -24,16 +39,6 @@ struct turn_directions<directions::orth>
         boost::mpl::identity<directions::diag>
 {};
 
-DCTL_PP_DEFINE_HAS_TYPE(land_range)
-DCTL_PP_DEFINE_HAS_TYPE(halt_range)
-DCTL_PP_DEFINE_HAS_TYPE(king_jump_orthogonality)
-DCTL_PP_DEFINE_HAS_TYPE(king_move_orthogonality)
-DCTL_PP_DEFINE_HAS_TYPE(is_pawns_jump_kings)
-DCTL_PP_DEFINE_HAS_TYPE(is_jump_direction_reversal)
-DCTL_PP_DEFINE_HAS_TYPE(jump_removal)
-DCTL_PP_DEFINE_HAS_TYPE(pawn_promotion)
-DCTL_PP_DEFINE_HAS_TYPE(is_absolute_king_precedence)
-DCTL_PP_DEFINE_HAS_TYPE(is_relative_king_precedence)
 DCTL_PP_DEFINE_HAS_TYPE(initial_gap)
 DCTL_PP_DEFINE_HAS_TYPE(max_repetitions)
 DCTL_PP_DEFINE_HAS_TYPE(max_reversible_moves)
@@ -44,16 +49,6 @@ DCTL_PP_DEFINE_HAS_TYPE(max_2Kv1K_majority_moves)
 DCTL_PP_DEFINE_HAS_TYPE(max_3Kv1K_minority_moves)
 DCTL_PP_DEFINE_HAS_TYPE(max_LLv1K_majority_moves)
 
-DCTL_PP_DEFINE_GET_TYPE(land_range)
-DCTL_PP_DEFINE_GET_TYPE(halt_range)
-DCTL_PP_DEFINE_GET_TYPE(king_jump_orthogonality)
-DCTL_PP_DEFINE_GET_TYPE(king_move_orthogonality)
-DCTL_PP_DEFINE_GET_TYPE(is_pawns_jump_kings)
-DCTL_PP_DEFINE_GET_TYPE(is_jump_direction_reversal)
-DCTL_PP_DEFINE_GET_TYPE(jump_removal)
-DCTL_PP_DEFINE_GET_TYPE(pawn_promotion)
-DCTL_PP_DEFINE_GET_TYPE(is_absolute_king_precedence)
-DCTL_PP_DEFINE_GET_TYPE(is_relative_king_precedence)
 DCTL_PP_DEFINE_GET_TYPE(initial_gap)
 DCTL_PP_DEFINE_GET_TYPE(max_repetitions)
 DCTL_PP_DEFINE_GET_TYPE(max_reversible_moves)
@@ -70,76 +65,6 @@ struct traits
         typedef Rules rules_type;
 
         // extract required parameters
-
-        typedef typename Rules::king_range king_range;
-        typedef typename Rules::pawn_jump_directions pawn_jump_directions;
-        typedef typename Rules::jump_precedence jump_precedence;
-
-        // extract optional parameters
-
-        typedef typename boost::mpl::eval_if<
-                has_land_range<Rules>,
-                get_land_range<Rules>,
-                boost::mpl::identity<king_range>
-        >::type land_range;
-
-        typedef typename boost::mpl::eval_if<
-                has_halt_range<Rules>,
-                get_halt_range<Rules>,
-                boost::mpl::identity<land_range>
-        >::type halt_range;
-
-        typedef typename boost::mpl::eval_if<
-                has_king_jump_orthogonality<Rules>,
-                get_king_jump_orthogonality<Rules>,
-                boost::mpl::eval_if<
-                        std::is_same<pawn_jump_directions, directions::all>,
-                        boost::mpl::identity<orthogonality::absolute>,
-                        boost::mpl::identity<orthogonality::none    >
-                >
-        >::type king_jump_orthogonality;
-
-        typedef typename boost::mpl::eval_if<
-                has_king_move_orthogonality<Rules>,
-                get_king_move_orthogonality<Rules>,
-                boost::mpl::identity<orthogonality::none>
-        >::type king_move_orthogonality;
-
-        typedef typename boost::mpl::eval_if<
-                has_is_pawns_jump_kings<Rules>,
-                get_is_pawns_jump_kings<Rules>,
-                std::true_type
-        >::type is_pawns_jump_kings;
-
-        typedef typename boost::mpl::eval_if<
-                has_is_jump_direction_reversal<Rules>,
-                get_is_jump_direction_reversal<Rules>,
-                std::false_type
-        >::type is_jump_direction_reversal;
-
-        typedef typename boost::mpl::eval_if<
-                has_jump_removal<Rules>,
-                get_jump_removal<Rules>,
-                boost::mpl::identity<removal::apres_fini>
-        >::type jump_removal;
-
-        typedef typename boost::mpl::eval_if<
-                has_pawn_promotion<Rules>,
-                get_pawn_promotion<Rules>,
-                boost::mpl::identity<promotion::apres_fini>
-        >::type pawn_promotion;
-
-        typedef typename boost::mpl::eval_if<
-                has_is_absolute_king_precedence<Rules>,
-                get_is_absolute_king_precedence<Rules>,
-                std::false_type
-        >::type is_absolute_king_precedence;
-
-        typedef typename boost::mpl::eval_if<
-                has_is_relative_king_precedence<Rules>,
-                get_is_relative_king_precedence<Rules>,
-                std::false_type
-        >::type is_relative_king_precedence;
 
         typedef typename boost::mpl::eval_if<
                 has_initial_gap<Rules>,
@@ -198,7 +123,7 @@ struct traits
         // compute auxiliary parameters
 
         typedef typename boost::mpl::eval_if<
-                std::is_same<king_jump_orthogonality, orthogonality::none>,
+                std::is_same<typename king_jump_orthogonality<Rules>::type, orthogonality::none>,
                 boost::mpl::identity<directions::diag>,
                 boost::mpl::identity<directions::all >
         >::type king_jump_directions;
@@ -208,16 +133,16 @@ struct traits
         >::type king_turn_directions;
 
         typedef typename turn_directions<
-                pawn_jump_directions
+                typename pawn_jump_directions<Rules>::type
         >::type pawn_turn_directions;
 
         typedef std::integral_constant<
                 bool,
                 boost::mpl::or_<
-                        std::is_same<pawn_jump_directions, directions::down>,
+                        std::is_same<typename pawn_jump_directions<Rules>::type, directions::down>,
                         boost::mpl::and_<
-                                std::is_same<pawn_jump_directions, directions::up>,
-                                std::is_same<pawn_promotion, promotion::apres_fini>
+                                std::is_same<typename pawn_jump_directions<Rules>::type, directions::up>,
+                                std::is_same<typename pawn_promotion<Rules>::type, promotion::apres_fini>
                         >
                 >::value
         > is_unambiguous_pawn_jump;
@@ -225,10 +150,10 @@ struct traits
         typedef typename boost::mpl::eval_if<
                 boost::mpl::or_<
                         boost::mpl::and_<
-                                std::is_same<jump_removal, removal::apres_fini>,
-                                std::is_same<is_jump_direction_reversal, std::true_type>
+                                std::is_same<typename jump_removal<Rules>::type, removal::apres_fini>,
+                                std::is_same<typename is_jump_direction_reversal<Rules>::type, std::true_type>
                         >,
-                        std::is_same<pawn_jump_directions, directions::all>
+                        std::is_same<typename pawn_jump_directions<Rules>::type, directions::all>
                 >,
                 std::integral_constant<int, 3>,
                 std::integral_constant<int, 4>
@@ -237,7 +162,7 @@ struct traits
         typedef std::integral_constant<
                 bool,
                 boost::mpl::not_<
-                        std::is_same<jump_precedence, precedence::none>
+                        std::is_same<typename jump_precedence<Rules>::type, precedence::none>
                 >::value
         > is_precedence;
 

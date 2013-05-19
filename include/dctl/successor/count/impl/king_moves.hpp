@@ -65,7 +65,7 @@ private:
         int parallelize(BitBoard active_kings) const
         {
                 return bit::count(
-                        Sink<Board, Direction, typename rules::traits<Rules>::king_range>()(active_kings, propagate_.path())
+                        Sink<Board, Direction, typename rules::king_range<Rules>::type>()(active_kings, propagate_.path())
                 );
         }
 };
