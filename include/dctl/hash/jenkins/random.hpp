@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
@@ -15,7 +16,7 @@ public:
         // xor with a random number conditional on the boolean
         static void mix(Index& index, bool color)
         {
-                index = (0 - color) & SIDE;
+                index = static_cast<Index>((Index(0) - color) & SIDE);
         }
 
         // apply a sequence of bitwise shifts
