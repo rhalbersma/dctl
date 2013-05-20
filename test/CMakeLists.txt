@@ -21,12 +21,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wdisabled-optimization")
 # Boost libraries
 ###############################################################
 
-# statically link against Boost.Test
-#set(Boost_USE_STATIC_LIBS ON)
-
 # locate the Boost libraries
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
-add_definitions(-DBOOST_TEST_DYN_LINK)
+
+# dynamically link against Boost
+add_definitions(-DBOOST_ALL_DYN_LINK)
 
 ###############################################################
 # DCTL library
@@ -52,6 +51,11 @@ foreach(h ${dctl_headers})
 
   # check if header is standalone
   check_include_file_cxx("${h}" ${header_name}_IS_STANDALONE)
+
+  # fail early, fail hard
+  if(NOT ${header_name}_IS_STANDALONE)
+      message(FATAL_ERROR "Found a non-standalone header (see CMakeFiles/CMakeError.log for details).")
+  endif()
 endforeach(h)
 
 ###############################################################
