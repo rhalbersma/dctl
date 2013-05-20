@@ -3,7 +3,7 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                 // vector
 #include <dctl/bit/bit.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>                 // num_bits
 
 namespace dctl {
 namespace bit {

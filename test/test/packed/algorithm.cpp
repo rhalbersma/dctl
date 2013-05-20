@@ -15,10 +15,11 @@ BOOST_AUTO_TEST_CASE(SetIntersection)
         bitset const b { 0, 1, 4, 5 };
 
         auto const i = set_intersection(a, b);
-
         BOOST_CHECK(includes(a, i));
         BOOST_CHECK(includes(b, i));
-        BOOST_CHECK(i == (a & b));
+
+        auto const j = a & b;
+        BOOST_CHECK_EQUAL_COLLECTIONS(begin(i), end(i), begin(j), end(j));
 }
 
 BOOST_AUTO_TEST_CASE(SetUnion)
@@ -27,10 +28,11 @@ BOOST_AUTO_TEST_CASE(SetUnion)
         bitset const b { 0, 1, 4, 5 };
 
         auto const u = set_union(a, b);
-
         BOOST_CHECK(includes(u, a));
         BOOST_CHECK(includes(u, b));
-        BOOST_CHECK(u == (a | b));
+
+        auto const v = a | b;
+        BOOST_CHECK_EQUAL_COLLECTIONS(begin(u), end(u), begin(v), end(v));
 }
 
 BOOST_AUTO_TEST_CASE(SetSymmetricDifference)
@@ -39,12 +41,13 @@ BOOST_AUTO_TEST_CASE(SetSymmetricDifference)
         bitset const b { 0, 1, 4, 5 };
 
         auto const s = set_symmetric_difference(a, b);
+        auto const t = a ^ b;
+        BOOST_CHECK_EQUAL_COLLECTIONS(begin(s), end(s), begin(t), end(t));
+
         auto const d_ab = set_difference(a, b);
         auto const d_ba = set_difference(b, a);
         auto const u = set_union(d_ab, d_ba);
-
-        BOOST_CHECK(s == u);
-        BOOST_CHECK(s == (a ^ b));
+        BOOST_CHECK_EQUAL_COLLECTIONS(begin(s), end(s), begin(u), end(u));
 }
 
 BOOST_AUTO_TEST_CASE(SetDifference)

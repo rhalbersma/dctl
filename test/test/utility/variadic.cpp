@@ -1,13 +1,9 @@
-#include <iterator>
+#include <iterator>                             // back_inserter
 #include <string>                               // string
 #include <tuple>                                // make_tuple, tuple
 #include <vector>                               // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/utility/variadic.hpp>            // cartesian_product
-#include<iostream>
-#include<set>
-#include<list>
-#include<utility>
 
 namespace dctl {
 namespace variadic {
@@ -19,8 +15,6 @@ BOOST_AUTO_TEST_CASE(CartesianProduct)
         bool b[] = { false, true };
         int i[] = { 0, 1 };
         std::string s[] = { "Hello", "World" };
-
-        //auto result = cartesian_product(b, i, s);
 
         std::vector< std::tuple<bool, int, std::string> > cp = {
                 std::make_tuple(false, 0, "Hello") ,

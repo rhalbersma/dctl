@@ -4,15 +4,14 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/intrinsic.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>                 // num_bits
 
 namespace dctl {
 namespace bit {
 
 BOOST_AUTO_TEST_SUITE(TestIntrinsic)
 
-typedef boost::mpl::vector
-<
+typedef boost::mpl::vector<
         uint64_t
 > UnsignedIntegerTypes;
 
