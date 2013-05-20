@@ -4,7 +4,7 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/lookup.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>                 // num_bits
 
 namespace dctl {
 namespace bit {
