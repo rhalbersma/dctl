@@ -63,7 +63,7 @@ The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org)
 
 ### Boost libraries
 
-The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_53_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a static library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_53_0/more/getting_started/index.html) on how to do this on your system.
+The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_53_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_53_0/more/getting_started/index.html) on how to do this on your system.
 
 * **NOTE:** compilation of the Boost libraries is **ONLY** a requirement for running the test-suite, and **NOT** for using the DCTL headers with your application.  
 
