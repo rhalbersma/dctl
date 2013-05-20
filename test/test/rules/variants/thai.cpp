@@ -1,4 +1,4 @@
-#include <type_traits>
+#include <type_traits>                  // is_same
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/rules/enum.hpp>

@@ -1,4 +1,7 @@
+#include <algorithm>                    // transform
+#include <iterator>                     // back_inserter
 #include <string>                       // string
+#include <vector>                       // vector
 #include <boost/mpl/vector.hpp>         // vector
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_CHECK_EQUAL
 #include <dctl/dxp/i_message.hpp>       // IMessage
@@ -20,7 +23,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
 
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm
-        std::string const messages[] = {
+        std::vector<std::string> messages = {
                 "R01Tornado voor Windows 4.0        W060065A",
                 "ATornado voor Windows 4.0        0",
                 "M0012061100",
@@ -31,12 +34,15 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
                 "K1"
         };
 
-        for (auto const& m: messages) {
-                if (auto const parsed = factory.create(m))
-                        BOOST_CHECK_EQUAL(m, parsed->str());
-                else
-                        BOOST_CHECK_MESSAGE(false, "Factory cannot create an unregistered message type.");
-        }
+        std::vector<std::string> parsed;
+        parsed.reserve(messages.size());
+        std::transform(begin(messages), end(messages), std::back_inserter(parsed),
+                [&](std::string const& m) {
+                auto const p = factory.create(m);
+                return p->str();
+        });
+
+        BOOST_CHECK_EQUAL_COLLECTIONS(begin(messages), end(messages), begin(parsed), end(parsed));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
