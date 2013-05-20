@@ -19,8 +19,9 @@ BOOST_AUTO_TEST_CASE(DeBruijn)
         BOOST_CHECK_EQUAL(size(b), v1.size());
 
         std::vector<int> v2;
+        v2.reserve(v1.size());
         std::copy(begin(b), end(b), std::back_inserter(v2));
-        BOOST_CHECK(v1 == v2);
+        BOOST_CHECK_EQUAL_COLLECTIONS(begin(v1), end(v1), begin(v2), end(v2));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
