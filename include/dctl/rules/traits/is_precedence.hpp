@@ -2,6 +2,7 @@
 #include <type_traits>                                  // integral_constant, is_same
 #include <boost/mpl/logical.hpp>                        // not_
 #include <dctl/rules/traits/jump_precedence.hpp>        // jump_precedence
+#include <dctl/rules/enum.hpp>
 
 namespace dctl {
 namespace rules {

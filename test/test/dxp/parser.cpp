@@ -3,7 +3,7 @@
 #include <string>                       // string
 #include <vector>                       // vector
 #include <boost/mpl/vector.hpp>         // vector
-#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_CHECK_EQUAL
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/dxp/i_message.hpp>       // IMessage
 #include <dctl/dxp/types.hpp>           // GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
 #include <dctl/factory/factory.hpp>     // Factory
