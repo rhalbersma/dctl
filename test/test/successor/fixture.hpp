@@ -39,9 +39,7 @@ struct Fixture
 
                 // check whether the vector of generated moves is a permutation of the array of legal moves
                 BOOST_CHECK(
-                        std::is_permutation(
-                                std::begin(legal), std::end(legal),
-                                begin(notations),
+                        std::is_permutation(std::begin(legal), std::end(legal), begin(notations),
                                 [](std::string const& lhs, std::string const& rhs) {
                                 return boost::algorithm::trim_copy(lhs) == boost::algorithm::trim_copy(rhs);
                         })

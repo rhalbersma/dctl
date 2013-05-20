@@ -9,7 +9,7 @@ namespace rules {
 template<typename T>
 struct turn_directions
 :
-        boost::mpl::identity<T>
+        T
 {};
 
 template<>
