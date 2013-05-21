@@ -7,13 +7,13 @@
 namespace dctl {
 namespace rules {
 
-template<typename Rules>
+template<class Rules>
 struct is_precedence
 :
         std::integral_constant<
                 bool,
                 boost::mpl::not_<
-                        std::is_same<typename
+                        std::is_same< typename
                                 jump_precedence<Rules>::type,
                                 precedence::none
                         >

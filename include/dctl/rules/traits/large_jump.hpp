@@ -9,22 +9,22 @@
 namespace dctl {
 namespace rules {
 
-template<typename Rules>
+template<class Rules>
 struct large_jump
 :
         boost::mpl::eval_if<
                 boost::mpl::or_<
                         boost::mpl::and_<
-                                std::is_same<typename
+                                std::is_same< typename
                                         captures_removal<Rules>::type,
                                         removal::apres_fini
                                 >,
-                                std::is_same<typename
+                                std::is_same< typename
                                         is_jump_direction_reversal<Rules>::type,
                                         std::true_type
                                 >
                         >,
-                        std::is_same<typename
+                        std::is_same< typename
                                 pawn_jump_directions<Rules>::type,
                                 directions::all
                         >

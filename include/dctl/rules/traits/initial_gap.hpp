@@ -10,7 +10,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(initial_gap)
 DCTL_PP_DEFINE_GET_TYPE(initial_gap)
 
-template<typename Rules>
+template<class Rules>
 struct initial_gap
 :
         boost::mpl::eval_if<

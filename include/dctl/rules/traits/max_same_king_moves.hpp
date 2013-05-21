@@ -11,7 +11,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(max_same_king_moves)
 DCTL_PP_DEFINE_GET_TYPE(max_same_king_moves)
 
-template<typename Rules>
+template<class Rules>
 struct max_same_king_moves
 :
         boost::mpl::eval_if<

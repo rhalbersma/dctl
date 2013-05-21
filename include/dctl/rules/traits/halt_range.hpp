@@ -10,7 +10,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(halt_range)
 DCTL_PP_DEFINE_GET_TYPE(halt_range)
 
-template<typename Rules>
+template<class Rules>
 struct halt_range
 :
         boost::mpl::eval_if<

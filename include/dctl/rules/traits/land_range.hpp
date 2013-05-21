@@ -10,7 +10,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(land_range)
 DCTL_PP_DEFINE_GET_TYPE(land_range)
 
-template<typename Rules>
+template<class Rules>
 struct land_range
 :
         boost::mpl::eval_if<

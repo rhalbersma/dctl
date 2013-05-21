@@ -4,7 +4,7 @@
 namespace dctl {
 namespace rules {
 
-template<typename>
+template<class>
 struct is_remove_duplicates
 :
         std::true_type

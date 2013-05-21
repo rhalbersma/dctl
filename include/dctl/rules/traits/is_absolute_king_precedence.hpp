@@ -10,7 +10,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(is_absolute_king_precedence)
 DCTL_PP_DEFINE_GET_TYPE(is_absolute_king_precedence)
 
-template<typename Rules>
+template<class Rules>
 struct is_absolute_king_precedence
 :
         boost::mpl::eval_if<

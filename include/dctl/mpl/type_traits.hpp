@@ -8,7 +8,7 @@ namespace dctl {
 namespace mpl {
 
 // F(F(X)) = X
-template<typename F, typename X>
+template<class F, class X>
 struct is_idempotent
 :
         std::is_same< typename
@@ -21,7 +21,7 @@ struct is_idempotent
 {};
 
 // Value lies within the range [First, Last), i.e. First <= Value < Last
-template<typename Value, typename First, typename Last>
+template<class Value, class First, class Last>
 struct is_within_range
 :
         boost::mpl::and_<

@@ -6,7 +6,7 @@
 namespace dctl {
 namespace rules {
 
-template<typename Rules>
+template<class Rules>
 struct pawn_turn_directions
 :
         turn_directions<

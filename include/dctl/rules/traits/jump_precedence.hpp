@@ -3,7 +3,7 @@
 namespace dctl {
 namespace rules {
 
-template<typename Rules>
+template<class Rules>
 struct jump_precedence
 :
         Rules::jump_precedence

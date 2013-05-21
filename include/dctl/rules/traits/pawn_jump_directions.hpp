@@ -3,7 +3,7 @@
 namespace dctl {
 namespace rules {
 
-template<typename Rules>
+template<class Rules>
 struct pawn_jump_directions
 :
         Rules::pawn_jump_directions

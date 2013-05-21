@@ -3,7 +3,7 @@
 namespace dctl {
 namespace rules {
 
-template<typename Rules>
+template<class Rules>
 struct king_range
 :
         Rules::king_range

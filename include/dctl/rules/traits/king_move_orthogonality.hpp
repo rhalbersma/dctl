@@ -10,7 +10,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(king_move_orthogonality)
 DCTL_PP_DEFINE_GET_TYPE(king_move_orthogonality)
 
-template<typename Rules>
+template<class Rules>
 struct king_move_orthogonality
 :
         boost::mpl::eval_if<

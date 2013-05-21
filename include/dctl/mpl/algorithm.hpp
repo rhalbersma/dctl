@@ -9,7 +9,7 @@ namespace dctl {
 namespace mpl {
 
 // predicate extension of boost::mpl::contains
-template<typename Sequence, typename Pred>
+template<class Sequence, class Pred>
 struct contains_if
 :
         boost::mpl::not_<
@@ -21,21 +21,21 @@ struct contains_if
 {};
 
 // compile-time equivalent of std::any_of
-template<typename Sequence, typename Pred>
+template<class Sequence, class Pred>
 struct any_of
 :
         contains_if<Sequence, Pred>
 {};
 
 // compile-time equivalent of std::all_of
-template<typename Sequence, typename Pred>
+template<class Sequence, class Pred>
 struct all_of
 :
         boost::mpl::not_< contains_if< Sequence, boost::mpl::not_< Pred > > >
 {};
 
 // compile-time equivalent of std::none_of
-template<typename Sequence, typename Pred>
+template<class Sequence, class Pred>
 struct none_of
 :
         boost::mpl::not_< contains_if< Sequence, Pred > >
@@ -43,7 +43,7 @@ struct none_of
 
 // equivalent to boost::mpl::contains
 // dctl::mpl::detect / boost::mpl::count / boost::mpl::find / boost::mpl::copy
-template<typename Sequence, typename T>
+template<class Sequence, class T>
 struct detect
 :
         boost::mpl::contains< Sequence, T >
@@ -51,7 +51,7 @@ struct detect
 
 // equivalent to dctl::mpl::contains_if
 // dctl::mpl::detect_if / boost::mpl::count_if / boost::mpl::find_if / boost::mpl::copy_if
-template<typename Sequence, typename Pred>
+template<class Sequence, class Pred>
 struct detect_if
 :
         contains_if< Sequence, Pred >

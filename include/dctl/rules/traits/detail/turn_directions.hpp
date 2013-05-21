@@ -6,7 +6,7 @@ namespace dctl {
 namespace rules {
 
 // intermediate capture directions
-template<typename T>
+template<class T>
 struct turn_directions
 :
         T

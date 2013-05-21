@@ -10,7 +10,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(is_jump_direction_reversal)
 DCTL_PP_DEFINE_GET_TYPE(is_jump_direction_reversal)
 
-template<typename Rules>
+template<class Rules>
 struct is_jump_direction_reversal
 :
         boost::mpl::eval_if<

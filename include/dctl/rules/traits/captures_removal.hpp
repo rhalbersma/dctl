@@ -10,7 +10,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(captures_removal)
 DCTL_PP_DEFINE_GET_TYPE(captures_removal)
 
-template<typename Rules>
+template<class Rules>
 struct captures_removal
 :
         boost::mpl::eval_if<
