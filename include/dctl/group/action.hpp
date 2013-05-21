@@ -11,7 +11,7 @@ namespace group {
 namespace action {
 namespace detail {
 
-template<typename X, typename Op, typename A, typename B>
+template<class X, class Op, class A, class B>
 struct is_associativity_primitive
 :
         std::is_same< typename
@@ -24,13 +24,13 @@ struct is_associativity_primitive
         >
 {};
 
-template<typename X, typename G, typename A, typename B>
+template<class X, class G, class A, class B>
 struct is_associativity_pair
 :
         is_associativity_primitive< X, typename plus<G>::type, A, B >
 {};
 
-template<typename X, typename G, typename A>
+template<class X, class G, class A>
 struct is_associativity_element
 :
         boost::mpl::fold< typename
@@ -45,7 +45,7 @@ struct is_associativity_element
         >
 {};
 
-template<typename X, typename Op, typename E>
+template<class X, class Op, class E>
 struct is_identity_primitive
 :
         std::is_same< typename boost::mpl::apply< Op, X, E >::type, X >
@@ -53,7 +53,7 @@ struct is_identity_primitive
 
 }       // namespace right_action
 
-template<typename X, typename G>
+template<class X, class G>
 struct is_associativity
 :
         boost::mpl::fold< typename
@@ -68,7 +68,7 @@ struct is_associativity
         >
 {};
 
-template<typename X, typename G>
+template<class X, class G>
 struct is_identity
 :
         detail::is_identity_primitive<
@@ -78,7 +78,7 @@ struct is_identity
         >
 {};
 
-template<typename X, typename G>
+template<class X, class G>
 struct is_realized
 :
         boost::mpl::and_<

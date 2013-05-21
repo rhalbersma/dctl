@@ -10,7 +10,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(pawn_promotion)
 DCTL_PP_DEFINE_GET_TYPE(pawn_promotion)
 
-template<typename Rules>
+template<class Rules>
 struct pawn_promotion
 :
         boost::mpl::eval_if<

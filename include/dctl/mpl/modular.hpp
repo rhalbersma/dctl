@@ -10,8 +10,8 @@ namespace mpl {
 
 template
 <
-        typename Numerator,
-        typename Denominator
+        class Numerator,
+        class Denominator
 >
 struct abs_modulus
 :

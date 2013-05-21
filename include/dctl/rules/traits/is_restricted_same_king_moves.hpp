@@ -7,11 +7,11 @@
 namespace dctl {
 namespace rules {
 
-template<typename Rules>
+template<class Rules>
 struct is_restricted_same_king_moves
 :
         boost::mpl::eval_if<
-                std::is_same<typename
+                std::is_same< typename
                         max_same_king_moves<Rules>::type,
                         std::integral_constant<int, INT_MAX>
                 >,

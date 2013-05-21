@@ -5,7 +5,7 @@
 namespace dctl {
 namespace rules {
 
-template<typename Rules>
+template<class Rules>
 struct king_turn_directions
 :
         turn_directions<

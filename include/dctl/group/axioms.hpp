@@ -13,7 +13,7 @@ namespace group {
 namespace axioms {
 namespace detail {
 
-template<typename S, typename Op, typename A, typename B>
+template<class S, class Op, class A, class B>
 struct is_closure_primitive
 :
         boost::mpl::contains<
@@ -22,7 +22,7 @@ struct is_closure_primitive
         >
 {};
 
-template<typename G, typename A, typename B>
+template<class G, class A, class B>
 struct is_closure_pair
 :
         is_closure_primitive< typename
@@ -32,7 +32,7 @@ struct is_closure_pair
         >
 {};
 
-template<typename G, typename A>
+template<class G, class A>
 struct is_closure_element
 :
         boost::mpl::fold< typename
@@ -47,7 +47,7 @@ struct is_closure_element
         >
 {};
 
-template<typename Op, typename A, typename B, typename C>
+template<class Op, class A, class B, class C>
 struct is_associativity_primitive
 :
         std::is_same< typename
@@ -60,7 +60,7 @@ struct is_associativity_primitive
         >
 {};
 
-template<typename G, typename A, typename B, typename C>
+template<class G, class A, class B, class C>
 struct is_associativity_triplet
 :
         is_associativity_primitive< typename
@@ -68,7 +68,7 @@ struct is_associativity_triplet
         >
 {};
 
-template<typename G, typename A, typename B>
+template<class G, class A, class B>
 struct is_associativity_pair
 :
         boost::mpl::fold< typename
@@ -83,7 +83,7 @@ struct is_associativity_pair
         >
 {};
 
-template<typename G, typename A>
+template<class G, class A>
 struct is_associativity_element
 :
         boost::mpl::fold< typename
@@ -98,7 +98,7 @@ struct is_associativity_element
         >
 {};
 
-template<typename S, typename Op, typename E, typename A>
+template<class S, class Op, class E, class A>
 struct is_identity_primitive
 :
         boost::mpl::and_<
@@ -108,7 +108,7 @@ struct is_identity_primitive
         >
 {};
 
-template<typename G, typename A>
+template<class G, class A>
 struct is_identity_element
 :
         is_identity_primitive< typename
@@ -119,7 +119,7 @@ struct is_identity_element
         >
 {};
 
-template<typename S, typename Op, typename E, typename I, typename A>
+template<class S, class Op, class E, class I, class A>
 struct is_inverse_primitive
 :
         boost::mpl::and_<
@@ -129,7 +129,7 @@ struct is_inverse_primitive
         >
 {};
 
-template<typename G, typename A>
+template<class G, class A>
 struct is_inverse_element
 :
         is_inverse_primitive< typename
@@ -145,7 +145,7 @@ struct is_inverse_element
 
 }       // namespace detail 
 
-template<typename G>
+template<class G>
 struct is_closure
 :
         boost::mpl::fold< typename
@@ -160,7 +160,7 @@ struct is_closure
         >
 {};
 
-template<typename G>
+template<class G>
 struct is_associativity
 :
         boost::mpl::fold< typename
@@ -175,7 +175,7 @@ struct is_associativity
         >
 {};
 
-template<typename G>
+template<class G>
 struct is_identity
 :
         boost::mpl::fold< typename
@@ -190,7 +190,7 @@ struct is_identity
         >
 {};
 
-template<typename G>
+template<class G>
 struct is_inverse
 :
         boost::mpl::fold< typename
@@ -205,7 +205,7 @@ struct is_inverse
         >
 {};
 
-template<typename G>
+template<class G>
 struct is_realized
 :
         boost::mpl::and_<

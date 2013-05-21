@@ -10,7 +10,7 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(is_pawns_jump_kings)
 DCTL_PP_DEFINE_GET_TYPE(is_pawns_jump_kings)
 
-template<typename Rules>
+template<class Rules>
 struct is_pawns_jump_kings
 :
         boost::mpl::eval_if<

@@ -9,35 +9,35 @@ namespace group {
 
 template
 <
-        typename Set,
-        typename Plus,
-        typename Identity,
-        typename Minus
+        class Set,
+        class Plus,
+        class Identity,
+        class Minus
 >
 struct tuple
 :
         boost::mpl::vector<Set, Plus, Identity, Minus>
 {};
 
-template<typename G>
+template<class G>
 struct set
 :
         boost::mpl::at< G, boost::mpl::int_<0> >
 {};
 
-template<typename G>
+template<class G>
 struct plus
 :
         boost::mpl::at< G, boost::mpl::int_<1> >
 {};
 
-template<typename G>
+template<class G>
 struct identity
 :
         boost::mpl::at< G, boost::mpl::int_<2> >
 {};
 
-template<typename G>
+template<class G>
 struct minus
 :
         boost::mpl::at< G, boost::mpl::int_<3> >

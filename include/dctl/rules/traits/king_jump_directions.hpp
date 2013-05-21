@@ -7,11 +7,11 @@
 namespace dctl {
 namespace rules {
 
-template<typename Rules>
+template<class Rules>
 struct king_jump_directions
 :
         boost::mpl::eval_if<
-                std::is_same<typename
+                std::is_same< typename
                         king_jump_orthogonality<Rules>::type,
                         orthogonality::none
                 >,

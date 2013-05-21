@@ -12,14 +12,14 @@ namespace rules {
 DCTL_PP_DEFINE_HAS_TYPE(king_jump_orthogonality)
 DCTL_PP_DEFINE_GET_TYPE(king_jump_orthogonality)
 
-template<typename Rules>
+template<class Rules>
 struct king_jump_orthogonality
 :
         boost::mpl::eval_if<
                 has_king_jump_orthogonality<Rules>,
                 get_king_jump_orthogonality<Rules>,
                 boost::mpl::eval_if<
-                        std::is_same<typename
+                        std::is_same< typename
                                 pawn_jump_directions<Rules>::type,
                                 directions::all
                         >,
