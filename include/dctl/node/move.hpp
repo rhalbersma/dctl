@@ -9,6 +9,7 @@
 #include <dctl/node/side.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
+#include <dctl/packed/algorithm.hpp>
 
 namespace dctl {
 namespace detail {
@@ -242,7 +243,7 @@ private:
                 return (
                         bit::is_double(delta) &&
                         !bit::is_multiple(promotion) &&
-                        bit::is_subset_of(promotion, delta)
+                        packed::set_includes(delta, promotion)
                 );
         }
 
@@ -254,12 +255,12 @@ private:
                         (bit::is_double(delta) || bit::is_zero(delta)) &&
                         !bit::is_zero(captured_pieces) &&
                         (
-                                bit::is_exclusive(delta, captured_pieces) ||
+                                packed::set_exclusive(delta, captured_pieces) ||
 
                                 // EXCEPTION: for intersecting captures, delta overlaps with captured pieces
                                 is_intersecting_capture<Rules>(delta, captured_pieces)
                         ) &&
-                        bit::is_subset_of(captured_kings, captured_pieces)
+                        packed::set_includes(captured_pieces, captured_kings)
                 );
         }
 
@@ -271,14 +272,14 @@ private:
                         (bit::is_double(delta) || bit::is_zero(delta)) &&
                         !bit::is_multiple(promotion) &&
                         !bit::is_zero(captured_pieces) &&
-                        bit::is_exclusive(delta, captured_pieces) &&
+                        packed::set_exclusive(delta, captured_pieces) &&
                         (
-                                bit::is_subset_of(promotion, delta) ||
+                                packed::set_includes(delta, promotion) ||
 
                                 // EXCEPTION: for intersecting promotions, delta is empty, and promotion is non-empty
                                 is_intersecting_promotion<Rules>(promotion, delta)
                         ) &&
-                        bit::is_subset_of(captured_kings, captured_pieces)
+                        packed::set_includes(captured_pieces, captured_kings)
                 );
         }
 
@@ -311,13 +312,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::is_exclusive(this->pieces(Side::black), this->pieces(Side::white));
+                return packed::set_exclusive(this->pieces(Side::black), this->pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::is_subset_of(this->kings(), this->pieces());
+                return packed::set_includes(this->pieces(), this->kings());
         }
 
         // representation

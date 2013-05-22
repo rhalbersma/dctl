@@ -11,6 +11,7 @@
 #include <dctl/node/predicates_fwd.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
+#include <dctl/packed/algorithm.hpp>
 
 namespace dctl {
 
@@ -204,8 +205,8 @@ private:
                 if (
                         restricted.moves() && is_capture(*this, m) &&
                         (
-                                bit::is_subset_of(restricted.king()   , captured_pieces(*this, m)) ||
-                                bit::is_subset_of(passive_pawns(*this), captured_pieces(*this, m))
+                                packed::set_includes(captured_pieces(*this, m), restricted.king()) ||
+                                packed::set_includes(captured_pieces(*this, m), passive_pawns(*this))
                         )
                 ) {
                         hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, passive_color(*this)));
@@ -236,7 +237,7 @@ private:
         {
                 return (
                         //material_.invariant() &&
-                        bit::is_subset_of(material().pieces(), Board::squares)
+                        packed::set_includes(Board::squares, material().pieces())
                 );
         }
 

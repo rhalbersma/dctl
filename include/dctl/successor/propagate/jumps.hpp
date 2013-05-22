@@ -18,6 +18,7 @@
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/total_order.hpp>
+#include <dctl/packed/algorithm.hpp>
 
 namespace dctl {
 namespace successor {
@@ -291,7 +292,7 @@ private:
         bool invariant() const
         {
                 return (
-                        bit::is_subset_of(remaining_targets_, initial_targets_) &&
+                        packed::set_includes(initial_targets_, remaining_targets_) &&
                         !bit::is_multiple(from_sq_)
                 );
         }

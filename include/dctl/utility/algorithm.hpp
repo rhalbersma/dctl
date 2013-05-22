@@ -10,8 +10,8 @@ namespace algorithm {
 // runtime equivalent of boost::mpl::contains
 // dctl::detect / std::count / std::find / std::copy
 // O(N) complexity
-template<typename InputIterator, typename EqualityComparable>
-bool detect(InputIterator first, InputIterator last, EqualityComparable const& value)
+template<class InputIterator>
+bool detect(InputIterator first, InputIterator last, typename std::iterator_traits<InputIterator>::value_type const& value)
 {
         return std::find(first, last, value) != last;
 }
@@ -19,14 +19,14 @@ bool detect(InputIterator first, InputIterator last, EqualityComparable const& v
 // equivalent to std::any_of
 // dctl::detect_if / std::count_if / std::find_if / std::copy_if
 // O(N) complexity
-template<typename InputIterator, typename Predicate>
+template<class InputIterator, class Predicate>
 bool detect_if(InputIterator first, InputIterator last, Predicate pred)
 {
         return std::find_if(first, last, pred) != last;
 }
 
 // O(N) complexity
-template<typename Container>
+template<class Container>
 bool is_duplicate_back(Container const& c)
 {
         return detect(c.begin(), c.end() - 1, c.back());
@@ -35,8 +35,8 @@ bool is_duplicate_back(Container const& c)
 // mutating sequence algorithms
 
 // O(N) complexity: weak range extension of std::iota
-template<typename OutputIterator, typename Size, typename Assignable>
-void iota_n(OutputIterator first, Size n, Assignable value)
+template<class OutputIterator, class Size>
+void iota_n(OutputIterator first, Size n, typename std::iterator_traits<OutputIterator>::value_type value)
 {
         std::generate_n(first, n, [&]() { return value++; });
 }
@@ -44,7 +44,7 @@ void iota_n(OutputIterator first, Size n, Assignable value)
 // sorting algorithms
 
 // O(N^2) complexity
-template< typename ForwardIterator, typename Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type> >
+template<class ForwardIterator, class Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type>>
 void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare())
 {
         for (auto it = first; it != last; ++it) {
@@ -54,7 +54,7 @@ void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = C
 }
 
 // O(N^2) complexity
-template< typename ForwardIterator, typename Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type> >
+template<class ForwardIterator, typename Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type>>
 void selection_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare())
 {
         for (auto it = first; it != last; ++it) {

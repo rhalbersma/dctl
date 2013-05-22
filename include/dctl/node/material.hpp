@@ -3,10 +3,11 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable1
-#include <dctl/bit/bit.hpp>             // is_exclusive, is_subset
+#include <dctl/bit/bit.hpp>             // is_subset
 #include <dctl/node/i_pieces.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/utility/int.hpp>
+#include <dctl/packed/algorithm.hpp>
 
 namespace dctl {
 
@@ -135,13 +136,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::is_exclusive(this->pieces(Side::black), this->pieces(Side::white));
+                return packed::set_exclusive(this->pieces(Side::black), this->pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::is_subset_of(this->kings(), this->pieces());
+                return packed::set_includes(this->pieces(), this->kings());
         }
 
         // representation

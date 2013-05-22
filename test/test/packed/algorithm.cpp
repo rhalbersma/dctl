@@ -15,8 +15,8 @@ BOOST_AUTO_TEST_CASE(SetIntersection)
         bitset const b { 0, 1, 4, 5 };
 
         auto const i = set_intersection(a, b);
-        BOOST_CHECK(includes(a, i));
-        BOOST_CHECK(includes(b, i));
+        BOOST_CHECK(set_includes(a, i));
+        BOOST_CHECK(set_includes(b, i));
 
         auto const j = a & b;
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(i), end(i), begin(j), end(j));
@@ -28,8 +28,8 @@ BOOST_AUTO_TEST_CASE(SetUnion)
         bitset const b { 0, 1, 4, 5 };
 
         auto const u = set_union(a, b);
-        BOOST_CHECK(includes(u, a));
-        BOOST_CHECK(includes(u, b));
+        BOOST_CHECK(set_includes(u, a));
+        BOOST_CHECK(set_includes(u, b));
 
         auto const v = a | b;
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(u), end(u), begin(v), end(v));
@@ -58,10 +58,10 @@ BOOST_AUTO_TEST_CASE(SetDifference)
         auto const d_ab = set_difference(a, b);
         auto const d_ba = set_difference(b, a);
 
-        BOOST_CHECK( includes(a, d_ab));
-        BOOST_CHECK(!includes(a, d_ba));
-        BOOST_CHECK( includes(b, d_ba));
-        BOOST_CHECK(!includes(b, d_ab));
+        BOOST_CHECK( set_includes(a, d_ab));
+        BOOST_CHECK(!set_includes(a, d_ba));
+        BOOST_CHECK( set_includes(b, d_ba));
+        BOOST_CHECK(!set_includes(b, d_ab));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
