@@ -73,7 +73,7 @@ public:
                 return begin() <= square && square < end();
         }
 
-       static int square2bit(int number)
+        static int square2bit(int number)
         {
                 return SQUARE2BIT[number];
         }
