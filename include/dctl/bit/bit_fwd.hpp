@@ -43,9 +43,6 @@ template<typename T> bool is_single(T);
 template<typename T> bool is_double(T);
 template<typename T> bool is_multiple(T);
 
-template<typename T> bool is_subset_of(T, T);
-template<typename T> bool is_exclusive(T, T);
-
 template<typename Iterator, typename Board>
 bool is_element(Iterator, Board);
 

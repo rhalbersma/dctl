@@ -205,20 +205,6 @@ bool is_multiple(T b)
         return !is_zero(first::not_equal_to(b));
 }
 
-// a contained within b
-template<typename T>
-bool is_subset_of(T a, T b)
-{
-        return is_zero(a & ~b);
-}
-
-// a and b mutually exclusive
-template<typename T>
-bool is_exclusive(T a, T b)
-{
-        return is_zero(a & b);
-}
-
 template<typename Iterator, typename Board>
 bool is_element(Iterator it, Board b)
 {

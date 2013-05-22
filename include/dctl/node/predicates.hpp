@@ -5,6 +5,7 @@
 #include <dctl/node/detail/predicates.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/node/unary_projections.hpp>
+#include <dctl/packed/algorithm.hpp>
 
 namespace dctl {
 
@@ -53,10 +54,10 @@ bool is_pseudo_legal(Position const& p, Move const& m)
                 !(bit::is_multiple(from_sq(p, m)) || bit::is_multiple(dest_sq(p, m))) &&
 
                 // only capture existing pieces
-                bit::is_subset_of(captured_pieces(p, m), passive_pieces(p)) &&
+                packed::set_includes(passive_pieces(p), captured_pieces(p, m)) &&
                 (
                         // only capture existing kings
-                        bit::is_subset_of(captured_kings(p, m), passive_kings(p)) ||
+                        packed::set_includes(passive_kings(p), captured_kings(p, m)) ||
 
                         // EXCEPTION: for intersecting captures, a man-capturing king can appear as a captured king
                         is_intersecting_capture(p, m)

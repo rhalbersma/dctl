@@ -5,10 +5,7 @@
 
 namespace dctl {
 
-template
-<
-        typename Derived
->
+template<class Derived>
 class enable_down_cast
 {
 private:

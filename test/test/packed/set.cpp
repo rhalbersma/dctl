@@ -61,8 +61,8 @@ BOOST_AUTO_TEST_CASE(Members)
         //for (auto it = d2.begin(); it != d2.end(); ++it) std::cout << *it << ","; std::cout << "\n";
 
         // x and y don't include each other
-        BOOST_CHECK(!includes(y, x));
-        BOOST_CHECK(!includes(x, y));
+        BOOST_CHECK(!set_includes(y, x));
+        BOOST_CHECK(!set_includes(x, y));
 
         // plain for-loop summation equals accumulate algorithm
         auto sum = 0; for (auto it = x.begin(); it != x.end(); ++it) sum += *it;

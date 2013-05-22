@@ -6,14 +6,24 @@
 namespace dctl {
 namespace packed {
 
-//      begin()/end() for iteration over builtin unsigned integral types.
-//
-//      Note that C++11 ranged-for loop applies argument-dependent-lookup,
-//      with std as associated namespace, finding std::begin() and std::end()
-//      for containers with corresponding member functions and for C-arrays.
-//      Unfortunately, adding overloads or specializations for builtin types to
-//      namespace std leads to undefined behavior.
-//      This rules out the C++11 ranged-for loop construct for builtin types.
+/*
+      begin()/end() for iteration over builtin unsigned integral types.
+
+      NOTE: a C++11 ranged-based for() loop applies argument-dependent-lookup
+      with std as associated namespace, finding std::begin() and std::end(),
+      which will delegate to member functions begin()/end() where appropriate,
+      as well as to overloads for C-style arrays.
+
+      Unfortunately, the builtin types neither have any asssociated namespaces,
+      nor is ordinary unqualified name lookup being applied. This means that
+      the functions begin()/end() defined below for builtin types will NOT be
+      found by a C++11 ranged-based for() loop.
+
+      Furthermore, adding overloads or specializations for builtin types to
+      namespace std (where they would be found) leads to undefined behavior.
+
+      This rules out a C++11 ranged-based for() loop for builtin types.
+*/
 
 template<class U, class Requires = typename std::enable_if<std::is_unsigned<U>::value>::type>
 auto begin(U u) -> decltype(bit_iterator<int, U>(u))

@@ -13,10 +13,10 @@ namespace dctl {
 namespace packed {
 
 template<class T, class U = uint64_t, std::size_t N = 1>
-struct set;
+class set;
 
 template<class T, class U>
-struct set<T, U, 1>
+class set<T, U, 1>
 :       boost::totally_ordered< set<T, U, 1>
 ,       boost::bitwise< set<T, U, 1>
 ,       boost::shiftable< set<T, U, 1>, std::size_t
@@ -300,6 +300,18 @@ template<class T, class U, std::size_t N>
 auto end(set<T, U, N> const& s) -> decltype(s.end())
 {
         return s.end();
+}
+
+template<class T, class U, std::size_t N>
+auto empty(set<T, U, N> const& s) -> decltype(s.empty())
+{
+        return s.empty();
+}
+
+template<class T, class U, std::size_t N>
+auto size(set<T, U, N> const& s) -> decltype(s.size())
+{
+        return s.size();
 }
 
 }       // namespace packed
