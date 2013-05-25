@@ -53,18 +53,19 @@ BOOST_AUTO_TEST_CASE(Equal)
 
         for (auto const& p: pieces) {
                 auto const u = value_type { p };
-                auto v = u;
+                auto const v = u;
                 BOOST_CHECK(u == v);
                 BOOST_CHECK(v == u);
 
-                v.increment();
-                BOOST_CHECK(u != v);
-                BOOST_CHECK(v != u);
+                auto x = u;
+                x.increment();
+                BOOST_CHECK(u != x);
+                BOOST_CHECK(x != u);
 
-                auto w = u;
-                w.decrement();
-                BOOST_CHECK(u != w);
-                BOOST_CHECK(w != u);
+                auto y = u;
+                y.decrement();
+                BOOST_CHECK(u != y);
+                BOOST_CHECK(y != u);
         }
 }
 
@@ -74,18 +75,30 @@ BOOST_AUTO_TEST_CASE(Less)
 
         for (auto const& p: pieces) {
                 auto const u = value_type { p };
-                auto v = u;
+                auto const v = u;
                 BOOST_CHECK(u <= v);
                 BOOST_CHECK(v >= u);
 
-                v.increment();
-                BOOST_CHECK(u < v);
-                BOOST_CHECK(v > u);
+                auto x = u;
+                x.increment();
+                BOOST_CHECK(u < x);
+                BOOST_CHECK(x > u);
 
-                auto w = u;
-                w.decrement();
-                BOOST_CHECK(u > w);
-                BOOST_CHECK(w < u);
+                auto y = u;
+                y.decrement();
+                BOOST_CHECK(u > y);
+                BOOST_CHECK(y < u);
+        }
+}
+
+BOOST_AUTO_TEST_CASE(Quantity)
+{
+        int const pieces[] = { 1, 2, 3, std::numeric_limits<int>::max() - 1 };
+
+        for (auto const& p: pieces) {
+                // capturing one more piece takes precedence
+                BOOST_CHECK(value_type(p - 1) < value_type(p    ));
+                BOOST_CHECK(value_type(p    ) < value_type(p + 1));
         }
 }
 

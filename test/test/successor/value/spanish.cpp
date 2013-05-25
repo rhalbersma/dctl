@@ -49,13 +49,14 @@ BOOST_AUTO_TEST_CASE(Increment)
         );
 
         for (auto const& c: cases) {
-                auto v = value_type { c };
-                auto const n = v.size();
+                auto const u = value_type { c };
 
-                v.increment(false);
-                BOOST_CHECK_EQUAL(v.size(), n + 1);
-                v.increment(true);
-                BOOST_CHECK_EQUAL(v.size(), n + 2);
+                bool const incr[] = { false, true };
+                for (auto const& i: incr) {
+                        auto v = u;
+                        v.increment(i);
+                        BOOST_CHECK_EQUAL(v.size(), u.size() + 1);
+                }
         }
 }
 
@@ -71,13 +72,14 @@ BOOST_AUTO_TEST_CASE(Decrement)
         );
 
         for (auto const& c: cases) {
-                auto v = value_type { c };
-                auto const n = v.size();
+                auto const u = value_type { c };
 
-                v.decrement(false);
-                BOOST_CHECK_EQUAL(v.size(), n - 1);
-                v.decrement(true);
-                BOOST_CHECK_EQUAL(v.size(), n - 2);
+                bool const decr[] = { false, true };
+                for (auto const& d: decr) {
+                        auto v = u;
+                        v.decrement(d);
+                        BOOST_CHECK_EQUAL(v.size(), u.size() - 1);
+                }
         }
 }
 
@@ -98,24 +100,18 @@ BOOST_AUTO_TEST_CASE(Equal)
                 BOOST_CHECK(u == v);
                 BOOST_CHECK(v == u);
 
-                v.increment(false);
-                BOOST_CHECK(u != v);
-                BOOST_CHECK(v != u);
+                bool const delta[] = { false, true };
+                for (auto const& b: delta) {
+                        auto x = u;
+                        x.increment(b);
+                        BOOST_CHECK(u != x);
+                        BOOST_CHECK(x != u);
 
-                auto w = u;
-                w.increment(true);
-                BOOST_CHECK(u != w);
-                BOOST_CHECK(w != u);
-
-                auto x = u;
-                x.decrement(false);
-                BOOST_CHECK(u != x);
-                BOOST_CHECK(x != u);
-
-                auto y = u;
-                y.decrement(true);
-                BOOST_CHECK(u != y);
-                BOOST_CHECK(y != u);
+                        auto y = u;
+                        y.decrement(b);
+                        BOOST_CHECK(u != y);
+                        BOOST_CHECK(y != u);
+                };
         }
 }
 
@@ -132,28 +128,66 @@ BOOST_AUTO_TEST_CASE(Less)
 
         for (auto const& c: cases) {
                 auto const u = value_type { c };
-                auto v = u;
+                auto const v = u;
                 BOOST_CHECK(u <= v);
                 BOOST_CHECK(v >= u);
 
-                v.increment(false);
-                BOOST_CHECK(u < v);
-                BOOST_CHECK(v > u);
+                bool const delta[] = { false, true };
+                for (auto const& b: delta) {
+                        auto x = u;
+                        x.increment(b);
+                        BOOST_CHECK(u < x);
+                        BOOST_CHECK(x > u);
 
-                auto w = u;
-                w.increment(true);
-                BOOST_CHECK(u < w);
-                BOOST_CHECK(w > u);
+                        auto y = u;
+                        y.decrement(b);
+                        BOOST_CHECK(u > y);
+                        BOOST_CHECK(y < u);
+                };
+        }
+}
 
-                auto x = u;
-                x.decrement(false);
-                BOOST_CHECK(u > x);
-                BOOST_CHECK(x < u);
+BOOST_AUTO_TEST_CASE(Quantity)
+{
+        int const pawns[] = { 1, 2, 3, std::numeric_limits<int>::max() / 2 };
+        int const kings[] = { 1, 2, 3, std::numeric_limits<int>::max() / 2 };
+        std::vector< std::tuple<int, int> > cases;
+        variadic::cartesian_product(
+                std::back_inserter(cases),
+                std::make_pair(std::begin(pawns), std::end(pawns)),
+                std::make_pair(std::begin(kings), std::end(kings))
+        );
 
-                auto y = u;
-                y.decrement(true);
-                BOOST_CHECK(u > y);
-                BOOST_CHECK(y < u);
+        for (auto const& c: cases) {
+                auto const p = std::get<0>(c);
+                auto const k = std::get<1>(c);
+
+                // capturing one more pawn or one more king takes precedence
+                BOOST_CHECK(value_type(p    , k - 1) < value_type(p    , k     ));
+                BOOST_CHECK(value_type(p - 1, k    ) < value_type(p    , k     ));
+                BOOST_CHECK(value_type(p    , k    ) < value_type(p + 1, k     ));
+                BOOST_CHECK(value_type(p    , k    ) < value_type(p    , k  + 1));
+        }
+}
+
+BOOST_AUTO_TEST_CASE(Quality)
+{
+        int const pawns[] = { 1, 2, 3, std::numeric_limits<int>::max() / 2 };
+        int const kings[] = { 1, 2, 3, std::numeric_limits<int>::max() / 2 };
+        std::vector< std::tuple<int, int> > cases;
+        variadic::cartesian_product(
+                std::back_inserter(cases),
+                std::make_pair(std::begin(pawns), std::end(pawns)),
+                std::make_pair(std::begin(kings), std::end(kings))
+        );
+
+        for (auto const& c: cases) {
+                auto const p = std::get<0>(c);
+                auto const k = std::get<1>(c);
+
+                // capturing one more king for one less pawn takes precedence
+                BOOST_CHECK(value_type(p + 1, k - 1) < value_type(p    , k     ));
+                BOOST_CHECK(value_type(p    , k    ) < value_type(p - 1, k  + 1));
         }
 }
 

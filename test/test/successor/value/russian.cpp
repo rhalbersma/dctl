@@ -47,6 +47,7 @@ BOOST_AUTO_TEST_CASE(Equal)
                 BOOST_CHECK(v == w);
                 BOOST_CHECK(w == v);
 
+                // promotion status has no effect on capture precedence
                 v.toggle_promotion();
                 BOOST_CHECK(v == w);
                 BOOST_CHECK(w == v);
@@ -63,6 +64,7 @@ BOOST_AUTO_TEST_CASE(Less)
                 BOOST_CHECK(v <= w);
                 BOOST_CHECK(w >= v);
 
+                // promotion status has no effect on capture precedence
                 v.toggle_promotion();
                 BOOST_CHECK(v <= w);
                 BOOST_CHECK(w >= v);
