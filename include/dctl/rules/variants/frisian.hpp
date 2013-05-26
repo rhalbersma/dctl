@@ -12,9 +12,9 @@ namespace rules {
 struct Frisian
 {
         // main rules
-        typedef range::distance_N king_range;
-        typedef directions::all pawn_jump_directions;
-        typedef precedence::quality jump_precedence;
+        typedef range::distance_N range_king;
+        typedef directions::all directions_pawn_jump;
+        typedef precedence::quality precedence_jump;
 
         // additional rules
         typedef std::true_type is_relative_king_precedence;

@@ -14,13 +14,13 @@ typedef rules::Thai T;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {
-        BOOST_MPL_ASSERT((std::is_same<                 king_range<T>::type, range::distance_N              >));
-        BOOST_MPL_ASSERT((std::is_same<       pawn_jump_directions<T>::type, directions::up                 >));
-        BOOST_MPL_ASSERT((std::is_same<            jump_precedence<T>::type, precedence::none               >));
+        BOOST_MPL_ASSERT((std::is_same<                 range_king<T>::type, range::distance_N              >));
+        BOOST_MPL_ASSERT((std::is_same<       directions_pawn_jump<T>::type, directions::up                 >));
+        BOOST_MPL_ASSERT((std::is_same<            precedence_jump<T>::type, precedence::none               >));
 
-        BOOST_MPL_ASSERT((std::is_same<                 land_range<T>::type, range::distance_1              >));
+        BOOST_MPL_ASSERT((std::is_same<                 range_land<T>::type, range::distance_1              >));
         BOOST_MPL_ASSERT((std::is_same< is_jump_direction_reversal<T>::type, std::true_type                 >));
-        BOOST_MPL_ASSERT((std::is_same<           captures_removal<T>::type, removal::en_passant            >));
+        BOOST_MPL_ASSERT((std::is_same<           phase_capture<T>::type, phase::en_passant            >));
         BOOST_MPL_ASSERT((std::is_same<                initial_gap<T>::type, std::integral_constant<int, 4> >));
 }
 

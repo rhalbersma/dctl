@@ -4,9 +4,9 @@ namespace dctl {
 namespace rules {
 
 template<class Rules>
-struct jump_precedence
+struct directions_pawn_jump
 :
-        Rules::jump_precedence
+        Rules::directions_pawn_jump
 {};
 
 }       // namespace rules

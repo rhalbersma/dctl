@@ -80,7 +80,7 @@ private:
         void branch(BitBoard active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                branch_dispatch(active_pawns, rules::pawn_jump_directions<Rules>());
+                branch_dispatch(active_pawns, rules::directions_pawn_jump<Rules>());
         }
 
         // overload for pawns that capture in the 8 diagonal and orthogonal directions
@@ -145,7 +145,7 @@ private:
                 Increment<Board, Direction>()(jumper);
                 BOOST_ASSERT(bit::is_element(jumper, capture_.template targets_with_pawn<Direction>()));
                 capture_.make(jumper);
-                precedence<Direction>(jumper); // recursively find more jumps
+                precedence<Direction>(jumper);  // recursively find more jumps
                 capture_.undo(jumper);
         }
 
@@ -186,19 +186,19 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on promotion condition
-                return find_next_dispatch<Direction>(jumper, rules::pawn_promotion<Rules>());
+                return find_next_dispatch<Direction>(jumper, rules::phase_promotion<Rules>());
         }
 
         // overload for pawns that promote apres-fini
         template<typename Direction>
-        bool find_next_dispatch(BitIndex jumper, rules::promotion::apres_fini) const
+        bool find_next_dispatch(BitIndex jumper, rules::phase::apres_fini) const
         {
                 return find_next_impl<Direction>(jumper);
         }
 
         // overload for pawns that promote en-passant
         template<typename Direction>
-        bool find_next_dispatch(BitIndex jumper, rules::promotion::en_passant) const
+        bool find_next_dispatch(BitIndex jumper, rules::phase::en_passant) const
         {
                 return (!is_promotion_sq<Color, Board>(jumper))?
                         find_next_impl<Direction>(jumper) :
@@ -245,7 +245,7 @@ private:
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on man turn directions
-                return turn_dispatch<Direction>(jumper, rules::pawn_turn_directions<Rules>());
+                return turn_dispatch<Direction>(jumper, rules::directions_pawn_turn<Rules>());
         }
 
         // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
@@ -308,7 +308,7 @@ private:
                         return false;
 
                 capture_.make(jumper);
-                precedence<Direction>(jumper); // recursively find more jumps
+                precedence<Direction>(jumper);  // recursively find more jumps
                 capture_.undo(jumper);
                 return true;
         }

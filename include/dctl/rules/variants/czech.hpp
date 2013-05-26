@@ -13,9 +13,9 @@ namespace rules {
 struct Czech
 {
         // main rules
-        typedef range::distance_N king_range;
-        typedef directions::up pawn_jump_directions;
-        typedef precedence::none jump_precedence;
+        typedef range::distance_N range_king;
+        typedef directions::up directions_pawn_jump;
+        typedef precedence::none precedence_jump;
 
         // additional rules
         typedef std::true_type is_absolute_king_precedence;

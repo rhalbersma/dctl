@@ -15,7 +15,7 @@ struct Hoogland
         International
 {
         // additional rules
-        typedef orthogonality::relative king_jump_orthogonality;
+        typedef orthogonality::relative orthogonality_king_jump;
 };
 
 }       // namespace rules

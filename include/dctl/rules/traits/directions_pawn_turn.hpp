@@ -1,16 +1,16 @@
 #pragma once
 #include <boost/mpl/eval_if.hpp>                        // eval_if
-#include <dctl/rules/traits/detail/turn_directions.hpp>
-#include <dctl/rules/traits/pawn_jump_directions.hpp>
+#include <dctl/rules/traits/detail/directions_turn.hpp>
+#include <dctl/rules/traits/directions_pawn_jump.hpp>
 
 namespace dctl {
 namespace rules {
 
 template<class Rules>
-struct pawn_turn_directions
+struct directions_pawn_turn
 :
-        turn_directions<
-                pawn_jump_directions<Rules>
+        directions_turn<
+                directions_pawn_jump<Rules>
         >
 {};
 

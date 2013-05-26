@@ -1,18 +1,18 @@
 #pragma once
 #include <type_traits>
 #include <boost/mpl/eval_if.hpp>                                // eval_if
-#include <dctl/rules/traits/king_jump_orthogonality.hpp>
+#include <dctl/rules/traits/orthogonality_king_jump.hpp>
 #include <dctl/rules/enum.hpp>
 
 namespace dctl {
 namespace rules {
 
 template<class Rules>
-struct king_jump_directions
+struct directions_king_jump
 :
         boost::mpl::eval_if<
                 std::is_same< typename
-                        king_jump_orthogonality<Rules>::type,
+                        orthogonality_king_jump<Rules>::type,
                         orthogonality::none
                 >,
                 directions::diag,

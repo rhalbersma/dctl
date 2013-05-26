@@ -11,9 +11,9 @@ namespace rules {
 struct Pool
 {
         // main rules
-        typedef range::distance_N king_range;                                   // 15
-        typedef directions::diag pawn_jump_directions;                          // 13
-        typedef precedence::none jump_precedence;                               // 20
+        typedef range::distance_N range_king;                                   // 15
+        typedef directions::diag directions_pawn_jump;                          // 13
+        typedef precedence::none precedence_jump;                               // 20
 
         // drawing rules
         typedef std::integral_constant<int,  3> max_repetitions;                // 26

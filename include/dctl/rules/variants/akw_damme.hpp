@@ -15,7 +15,7 @@ struct Damme
         International
 {
         // additional rules
-        typedef range::distance_1 halt_range;
+        typedef range::distance_1 range_halt;
 };
 
 }       // namespace rules

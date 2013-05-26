@@ -1,7 +1,7 @@
 #pragma once
 #include <type_traits>                                  // integral_constant, is_same
 #include <boost/mpl/logical.hpp>                        // not_
-#include <dctl/rules/traits/jump_precedence.hpp>        // jump_precedence
+#include <dctl/rules/traits/precedence_jump.hpp>        // precedence_jump
 #include <dctl/rules/enum.hpp>
 
 namespace dctl {
@@ -14,7 +14,7 @@ struct is_precedence
                 bool,
                 boost::mpl::not_<
                         std::is_same< typename
-                                jump_precedence<Rules>::type,
+                                precedence_jump<Rules>::type,
                                 precedence::none
                         >
                 >::value

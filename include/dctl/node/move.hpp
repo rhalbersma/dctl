@@ -16,14 +16,14 @@ namespace detail {
 
 // overload for apres-fini capture removal
 template<typename T>
-bool is_intersecting_capture(T /* delta */, T /* captured_pieces */, rules::removal::apres_fini)
+bool is_intersecting_capture(T /* delta */, T /* captured_pieces */, rules::phase::apres_fini)
 {
         return false;
 }
 
 // overload for en-passant capture removal
 template<typename T>
-bool is_intersecting_capture(T delta, T captured_pieces, rules::removal::en_passant)
+bool is_intersecting_capture(T delta, T captured_pieces, rules::phase::en_passant)
 {
         // [FEN "W:WK25:B8,9,20,23,24"] (Thai draughts)
         // white has to capture 25x20, landing on a square it also captured on
@@ -32,14 +32,14 @@ bool is_intersecting_capture(T delta, T captured_pieces, rules::removal::en_pass
 
 // overload for apres-fini promotion
 template<typename T>
-bool is_intersecting_promotion(T /* promotion */, T /* delta */, rules::promotion::apres_fini)
+bool is_intersecting_promotion(T /* promotion */, T /* delta */, rules::phase::apres_fini)
 {
         return false;
 }
 
 // overload for en-passant promotion
 template<typename T>
-bool is_intersecting_promotion(T promotion, T delta, rules::promotion::en_passant)
+bool is_intersecting_promotion(T promotion, T delta, rules::phase::en_passant)
 {
         // [FEN "W:W15:B10,13,20,23"] (Russian draughts)
         // white has to capture 15x15, promoting on its original square
@@ -52,14 +52,14 @@ template<typename Rules, typename T>
 bool is_intersecting_capture(T delta, T captured_pieces)
 {
         // tag dispatching on capture removal
-        return detail::is_intersecting_capture(delta, captured_pieces, rules::captures_removal<Rules>());
+        return detail::is_intersecting_capture(delta, captured_pieces, rules::phase_capture<Rules>());
 }
 
 template<typename Rules, typename T>
 bool is_intersecting_promotion(T promotion, T delta)
 {
         // tag dispatching on pawn promotion
-        return detail::is_intersecting_promotion(promotion, delta, rules::pawn_promotion<Rules>());
+        return detail::is_intersecting_promotion(promotion, delta, rules::phase_promotion<Rules>());
 }
 
 template<typename T>

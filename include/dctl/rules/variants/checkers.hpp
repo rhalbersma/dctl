@@ -11,9 +11,9 @@ namespace rules {
 struct Checkers
 {
         // main rules
-        typedef range::distance_1 king_range;                           // 1.17
-        typedef directions::up pawn_jump_directions;                    // 1.18
-        typedef precedence::none jump_precedence;                       // 1.20
+        typedef range::distance_1 range_king;                           // 1.17
+        typedef directions::up directions_pawn_jump;                    // 1.18
+        typedef precedence::none precedence_jump;                       // 1.20
 
         // drawing rules
         typedef std::integral_constant<int,  3> max_repetitions;        // 1.32.1

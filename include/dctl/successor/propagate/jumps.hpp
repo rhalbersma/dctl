@@ -72,14 +72,14 @@ public:
         void make(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                make_dispatch(target_sq, rules::captures_removal<Rules>());
+                make_dispatch(target_sq, rules::phase_capture<Rules>());
                 BOOST_ASSERT(invariant());
         }
 
         void undo(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                undo_dispatch(target_sq, rules::captures_removal<Rules>());
+                undo_dispatch(target_sq, rules::phase_capture<Rules>());
                 BOOST_ASSERT(invariant());
         }
 
@@ -97,7 +97,7 @@ public:
 
         void toggle_promotion()
         {
-                BOOST_MPL_ASSERT((std::is_same<typename rules::pawn_promotion<Rules>::type, rules::promotion::en_passant>));
+                BOOST_MPL_ASSERT((std::is_same<typename rules::phase_promotion<Rules>::type, rules::phase::en_passant>));
                 current_.toggle_promotion();
         }
 
@@ -194,7 +194,7 @@ public:
 
         bool is_promotion() const
         {
-                BOOST_MPL_ASSERT((std::is_same<typename rules::pawn_promotion<Rules>::type, rules::promotion::en_passant>));
+                BOOST_MPL_ASSERT((std::is_same<typename rules::phase_promotion<Rules>::type, rules::phase::en_passant>));
                 return current_.is_promotion();
         }
 
@@ -202,13 +202,13 @@ private:
         // modifiers
 
         // overload for apres-fini capture removal
-        void make_dispatch(BitIndex target_sq, rules::removal::apres_fini)
+        void make_dispatch(BitIndex target_sq, rules::phase::apres_fini)
         {
                 make_impl(target_sq);
         }
 
         // overload for en-passant capture removal
-        void make_dispatch(BitIndex target_sq, rules::removal::en_passant)
+        void make_dispatch(BitIndex target_sq, rules::phase::en_passant)
         {
                 not_occupied_ ^= target_sq;
                 make_impl(target_sq);
@@ -221,13 +221,13 @@ private:
         }
 
         // overload for apres-fini capture removal
-        void undo_dispatch(BitIndex target_sq, rules::removal::apres_fini)
+        void undo_dispatch(BitIndex target_sq, rules::phase::apres_fini)
         {
                 undo_impl(target_sq);
         }
 
         // overload for en-passant capture removal
-        void undo_dispatch(BitIndex target_sq, rules::removal::en_passant)
+        void undo_dispatch(BitIndex target_sq, rules::phase::en_passant)
         {
                 undo_impl(target_sq);
                 not_occupied_ ^= target_sq;
@@ -242,7 +242,7 @@ private:
         void increment(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                increment_dispatch(is_king, rules::jump_precedence<Rules>());
+                increment_dispatch(is_king, rules::precedence_jump<Rules>());
         }
 
         // overload for no capture precedence
@@ -266,7 +266,7 @@ private:
         void decrement(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                decrement_dispatch(is_king, rules::jump_precedence<Rules>());
+                decrement_dispatch(is_king, rules::precedence_jump<Rules>());
         }
 
         // overload for no capture precedence
@@ -307,7 +307,7 @@ private:
                                 boost::mpl::and_<
                                         angle::lazy::is_orthogonal<Direction>,
                                         std::is_same<typename
-                                                rules::king_jump_orthogonality<Rules>::type,
+                                                rules::orthogonality_king_jump<Rules>::type,
                                                 rules::orthogonality::relative
                                         >
                                 >::value

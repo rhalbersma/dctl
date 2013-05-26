@@ -101,7 +101,7 @@ private:
         void branch(BitIndex jumper) const
         {
                 // tag dispatching on king jump directions
-                branch_dispatch(jumper, rules::king_jump_directions<Rules>());
+                branch_dispatch(jumper, rules::directions_king_jump<Rules>());
         }
 
         // overload for kings that capture in the 8 diagonal and orthogonal directions
@@ -135,7 +135,7 @@ private:
                 slide<Direction>(jumper, capture_.template path<Direction>());
                 if (bit::is_element(jumper, capture_.template targets_with_king<Direction>())) {
                         capture_.make(jumper);
-                        precedence<Direction>(jumper); // recursively find more jumps
+                        precedence<Direction>(jumper);  // recursively find more jumps
                         capture_.undo(jumper);
                 }
         }
@@ -204,7 +204,7 @@ private:
         bool land(BitIndex jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
-                return land_dispatch<Direction>(jumper, rules::land_range<Rules>());
+                return land_dispatch<Direction>(jumper, rules::range_land<Rules>());
         }
 
         // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
@@ -243,7 +243,7 @@ private:
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on king turn directions
-                return turn_dispatch<Direction>(jumper, rules::king_turn_directions<Rules>());
+                return turn_dispatch<Direction>(jumper, rules::directions_king_turn<Rules>());
         }
 
         // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
@@ -289,7 +289,7 @@ private:
         void slide(BitIndex& jumper, BitBoard path) const
         {
                 // tag dispatching on king range
-                slide_dispatch<Direction>(jumper, path, rules::king_range<Rules>());
+                slide_dispatch<Direction>(jumper, path, rules::range_king<Rules>());
         }
 
         // overload for short ranged kings
@@ -313,7 +313,7 @@ private:
                         return false;
 
                 capture_.make(jumper);
-                precedence<Direction>(jumper); // recursively find more jumps
+                precedence<Direction>(jumper);  // recursively find more jumps
                 capture_.undo(jumper);
                 return true;
         }
@@ -324,7 +324,7 @@ private:
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
 
                 // tag dispatching on king halt after final capture
-                add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::halt_range<Rules>());
+                add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::range_halt<Rules>());
         }
 
         // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
@@ -360,19 +360,19 @@ private:
         void add_king_jump(BitIndex dest_sq, bool check_duplicate) const
         {
                 // tag dispatching on promotion condition
-                add_king_jump_dispatch(dest_sq, rules::pawn_promotion<Rules>());
+                add_king_jump_dispatch(dest_sq, rules::phase_promotion<Rules>());
                 if (check_duplicate && algorithm::is_duplicate_back(moves_))
                         moves_.pop_back();
         }
 
         // overload for pawns that promote apres-fini
-        void add_king_jump_dispatch(BitIndex dest_sq, rules::promotion::apres_fini) const
+        void add_king_jump_dispatch(BitIndex dest_sq, rules::phase::apres_fini) const
         {
                 capture_.template add_king_jump<Color>(dest_sq, moves_);
         }
 
         // overload for pawns that promote en-passant
-        void add_king_jump_dispatch(BitIndex dest_sq, rules::promotion::en_passant) const
+        void add_king_jump_dispatch(BitIndex dest_sq, rules::phase::en_passant) const
         {
                 if (!capture_.is_promotion())
                         capture_.template add_king_jump<Color>(dest_sq, moves_);

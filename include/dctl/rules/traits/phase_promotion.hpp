@@ -7,16 +7,16 @@
 namespace dctl {
 namespace rules {
 
-DCTL_PP_DEFINE_HAS_TYPE(captures_removal)
-DCTL_PP_DEFINE_GET_TYPE(captures_removal)
+DCTL_PP_DEFINE_HAS_TYPE(phase_promotion)
+DCTL_PP_DEFINE_GET_TYPE(phase_promotion)
 
 template<class Rules>
-struct captures_removal
+struct phase_promotion
 :
         boost::mpl::eval_if<
-                has_captures_removal<Rules>,
-                get_captures_removal<Rules>,
-                removal::apres_fini
+                has_phase_promotion<Rules>,
+                get_phase_promotion<Rules>,
+                phase::apres_fini
         >::type
 {};
 
