@@ -11,7 +11,7 @@ template<bool Color, typename Material, typename Select, typename Position>
 bool detect(Position const& p)
 {
         typedef typename Position::rules_type Rules;
-        typedef typename rules::king_range<Rules>::type Range;
+        typedef typename rules::range_king<Rules>::type Range;
         return detail::detect<Color, Material, Select, Range>()(p);
 }
 

@@ -12,9 +12,9 @@ namespace rules {
 struct Italian
 {
         // main rules
-        typedef range::distance_1 king_range;                           // 4.7
-        typedef directions::up pawn_jump_directions;                    // 5.3(a)
-        typedef precedence::quality jump_precedence;                    // 6.1 - 6.10
+        typedef range::distance_1 range_king;                           // 4.7
+        typedef directions::up directions_pawn_jump;                    // 5.3(a)
+        typedef precedence::quality precedence_jump;                    // 6.1 - 6.10
 
         // additional rules
         typedef std::false_type is_pawns_jump_kings;                    // 5.3(b)

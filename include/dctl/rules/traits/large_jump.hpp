@@ -2,9 +2,9 @@
 #include <type_traits>
 #include <boost/mpl/eval_if.hpp>                // eval_if
 #include <boost/mpl/logical.hpp>
-#include <dctl/rules/traits/captures_removal.hpp>
+#include <dctl/rules/traits/phase_capture.hpp>
 #include <dctl/rules/traits/is_jump_direction_reversal.hpp>
-#include <dctl/rules/traits/pawn_jump_directions.hpp>
+#include <dctl/rules/traits/directions_pawn_jump.hpp>
 
 namespace dctl {
 namespace rules {
@@ -16,8 +16,8 @@ struct large_jump
                 boost::mpl::or_<
                         boost::mpl::and_<
                                 std::is_same< typename
-                                        captures_removal<Rules>::type,
-                                        removal::apres_fini
+                                        phase_capture<Rules>::type,
+                                        phase::apres_fini
                                 >,
                                 std::is_same< typename
                                         is_jump_direction_reversal<Rules>::type,
@@ -25,7 +25,7 @@ struct large_jump
                                 >
                         >,
                         std::is_same< typename
-                                pawn_jump_directions<Rules>::type,
+                                directions_pawn_jump<Rules>::type,
                                 directions::all
                         >
                 >,

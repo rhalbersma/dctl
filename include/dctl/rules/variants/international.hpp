@@ -11,9 +11,9 @@ namespace rules {
 struct International
 {
         // main rules
-        typedef range::distance_N king_range;                           // 3.9
-        typedef directions::diag pawn_jump_directions;                  // 4.1
-        typedef precedence::quantity jump_precedence;                   // 4.13
+        typedef range::distance_N range_king;                           // 3.9
+        typedef directions::diag directions_pawn_jump;                  // 4.1
+        typedef precedence::quantity precedence_jump;                   // 4.13
 
         // drawing rules
         typedef std::integral_constant<int,  3> max_repetitions;        // 6.1

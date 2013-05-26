@@ -7,13 +7,13 @@ namespace rules {
 
 // intermediate capture directions
 template<class T>
-struct turn_directions
+struct directions_turn
 :
         T
 {};
 
 template<>
-struct turn_directions<directions::orth>
+struct directions_turn<directions::orth>
 :
         directions::diag
 {};

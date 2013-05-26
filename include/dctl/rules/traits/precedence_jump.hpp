@@ -4,9 +4,9 @@ namespace dctl {
 namespace rules {
 
 template<class Rules>
-struct king_range
+struct precedence_jump
 :
-        Rules::king_range
+        Rules::precedence_jump
 {};
 
 }       // namespace rules

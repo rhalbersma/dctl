@@ -15,7 +15,7 @@ struct Killer
         International
 {
         // additional rules
-        typedef range::distance_1K halt_range;
+        typedef range::distance_1K range_halt;
 };
 
 }       // namespace rules

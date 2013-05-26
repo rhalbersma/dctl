@@ -11,9 +11,9 @@ namespace rules {
 struct Spanish
 {
         // main rules
-        typedef range::distance_N king_range;
-        typedef directions::up pawn_jump_directions;
-        typedef precedence::quality jump_precedence;
+        typedef range::distance_N range_king;
+        typedef directions::up directions_pawn_jump;
+        typedef precedence::quality precedence_jump;
 };
 
 }       // namespace rules

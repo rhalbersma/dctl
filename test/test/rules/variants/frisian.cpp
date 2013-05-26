@@ -14,9 +14,9 @@ typedef rules::Frisian T;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {
-        BOOST_MPL_ASSERT((std::is_same<                  king_range<T>::type, range::distance_N   >));
-        BOOST_MPL_ASSERT((std::is_same<        pawn_jump_directions<T>::type, directions::all     >));
-        BOOST_MPL_ASSERT((std::is_same<             jump_precedence<T>::type, precedence::quality >));
+        BOOST_MPL_ASSERT((std::is_same<                  range_king<T>::type, range::distance_N   >));
+        BOOST_MPL_ASSERT((std::is_same<        directions_pawn_jump<T>::type, directions::all     >));
+        BOOST_MPL_ASSERT((std::is_same<             precedence_jump<T>::type, precedence::quality >));
 
         BOOST_MPL_ASSERT((std::is_same< is_relative_king_precedence<T>::type, std::true_type      >));
 }

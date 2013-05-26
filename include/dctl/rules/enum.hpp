@@ -20,14 +20,8 @@ namespace directions {
         struct all: boost::mpl::identity<all>  {};
 }
 
-// capture removal
-namespace removal {
-        struct apres_fini: boost::mpl::identity<apres_fini> {};   // having finished
-        struct en_passant: boost::mpl::identity<en_passant> {};   // in passing
-}
-
-// pawn promotion
-namespace promotion {
+// capture removal and pawn promotion
+namespace phase {
         struct apres_fini: boost::mpl::identity<apres_fini> {};   // having finished
         struct en_passant: boost::mpl::identity<en_passant> {};   // in passing
 }

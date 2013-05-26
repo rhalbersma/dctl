@@ -7,16 +7,16 @@
 namespace dctl {
 namespace rules {
 
-DCTL_PP_DEFINE_HAS_TYPE(pawn_promotion)
-DCTL_PP_DEFINE_GET_TYPE(pawn_promotion)
+DCTL_PP_DEFINE_HAS_TYPE(phase_capture)
+DCTL_PP_DEFINE_GET_TYPE(phase_capture)
 
 template<class Rules>
-struct pawn_promotion
+struct phase_capture
 :
         boost::mpl::eval_if<
-                has_pawn_promotion<Rules>,
-                get_pawn_promotion<Rules>,
-                promotion::apres_fini
+                has_phase_capture<Rules>,
+                get_phase_capture<Rules>,
+                phase::apres_fini
         >::type
 {};
 
