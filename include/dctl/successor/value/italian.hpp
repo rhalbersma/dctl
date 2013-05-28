@@ -20,14 +20,6 @@ class Value<rules::Italian>
         // Curiously Recurring Template Pattern (CRTP)
         private boost::totally_ordered< Value<rules::Italian> > // < >= > <= == !=
 {
-private:
-        // representation
-
-        int num_pieces_;
-        int num_kings_;
-        bool is_with_king_;
-        std::vector<int> king_order_;
-
 public:
         // structors
 
@@ -107,7 +99,8 @@ public:
                 return is_with_king_;
         }
 
-        auto king_order() const -> decltype(std::make_pair(king_order_.cbegin(), king_order_.cend()))
+        // should also work with auto alone, but Clang 3.3 only accepts decltype(auto)
+        decltype(auto) king_order() const
         {
                 return std::make_pair(king_order_.cbegin(), king_order_.cend());
         }
@@ -159,6 +152,13 @@ private:
         {
                 return num_pieces_ == std::numeric_limits<int>::max();
         }
+
+        // representation
+
+        int num_pieces_;
+        int num_kings_;
+        bool is_with_king_;
+        std::vector<int> king_order_;
 };
 
 }       // namespace successor
