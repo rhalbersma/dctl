@@ -8,10 +8,12 @@ namespace successor {
 
 // specialization for Killer draughts
 template<>
-struct Value<rules::Killer>
+class Value<rules::Killer>
 :
-        Value<rules::International>
-{};
+        public Value<rules::International>
+{
+        using Value<rules::International>::Value;
+};
 
 }       // namespace successor
 }       // namespace dctl

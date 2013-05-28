@@ -11,7 +11,7 @@ namespace successor {
 
 // specialization for Frisian draughts
 template<>
-struct Value<rules::Frisian>
+class Value<rules::Frisian>
 :
         // Curiously Recurring Template Pattern (CRTP)
         private boost::totally_ordered< Value<rules::Frisian> >  // < >= > <= == !=
