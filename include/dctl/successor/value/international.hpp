@@ -10,7 +10,7 @@ namespace successor {
 
 // partial specialization for International draughts
 template<>
-struct Value<rules::International>
+class Value<rules::International>
 :
         // Curiously Recurring Template Pattern (CRTP)
         private boost::totally_ordered< Value<rules::International> >   // < >= > <= == !=

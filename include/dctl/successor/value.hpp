@@ -7,11 +7,12 @@ namespace successor {
 
 // primary template
 template<typename Rules>
-struct Value
+class Value
 :
         // Curiously Recurring Template Pattern (CRTP)
         private boost::totally_ordered< Value<Rules> >  // < >= > <= == !=
 {
+public:
         // predicates
 
         // operator!= provided by boost::totally_ordered

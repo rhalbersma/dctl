@@ -8,10 +8,12 @@ namespace successor {
 
 // specialization for A.K.W. Damme's proposal
 template<>
-struct Value<rules::Damme>
+class Value<rules::Damme>
 :
-        Value<rules::International>
-{};
+        public Value<rules::International>
+{
+        using Value<rules::International>::Value;
+};
 
 }       // namespace successor
 }       // namespace dctl

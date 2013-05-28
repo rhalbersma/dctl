@@ -9,7 +9,7 @@ namespace successor {
 
 // specialization for Russian draughts
 template<>
-struct Value<rules::Russian>
+class Value<rules::Russian>
 :
         // Curiously Recurring Template Pattern (CRTP)
         private boost::totally_ordered< Value<rules::Russian> > // < >= > <= == !=

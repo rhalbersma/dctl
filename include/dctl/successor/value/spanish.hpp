@@ -11,7 +11,7 @@ namespace successor {
 
 // specialization for Spanish draughts
 template<>
-struct Value<rules::Spanish>
+class Value<rules::Spanish>
 :
         // Curiously Recurring Template Pattern (CRTP)
         private boost::totally_ordered< Value<rules::Spanish> > // < >= > <= == !=
@@ -32,10 +32,10 @@ public:
                 Value(std::get<0>(t), std::get<1>(t))
         {}
 
-        Value(int num_pawns, int num_kings)
+        Value(int pawns, int kings)
         :
-                num_pieces_(num_pawns + num_kings),
-                num_kings_(num_kings)
+                num_pieces_(pawns + kings),
+                num_kings_(kings)
         {
                 BOOST_ASSERT(invariant());
         }
@@ -63,6 +63,16 @@ public:
         int size() const
         {
                 return num_pieces_;
+        }
+
+        int num_pawns() const
+        {
+                return num_pieces_ - num_kings_;
+        }
+
+        int num_kings() const
+        {
+                return num_kings_;
         }
 
         // predicates

@@ -8,10 +8,12 @@ namespace successor {
 
 // specialization for H. Hoogland's proposal
 template<>
-struct Value<rules::Hoogland>
+class Value<rules::Hoogland>
 :
-        Value<rules::International>
-{};
+        public Value<rules::International>
+{
+        using Value<rules::International>::Value;
+};
 
 }       // namespace successor
 }       // namespace dctl

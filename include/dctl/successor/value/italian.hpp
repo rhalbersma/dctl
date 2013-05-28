@@ -3,10 +3,10 @@
 #include <iterator>                             // begin, end
 #include <limits>                               // numeric_limits
 #include <tuple>                                // tie
+#include <utility>                              // make_pair
 #include <vector>                               // vector
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/operators.hpp>                  // totally_ordered
-#include <dctl/bit/bit.hpp>                     // count, reverse_singlet
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
 #include <dctl/rules/variants/italian_fwd.hpp>  // Italian
 
@@ -15,11 +15,19 @@ namespace successor {
 
 // specialization for Italian draughts
 template<>
-struct Value<rules::Italian>
+class Value<rules::Italian>
 :
         // Curiously Recurring Template Pattern (CRTP)
         private boost::totally_ordered< Value<rules::Italian> > // < >= > <= == !=
 {
+private:
+        // representation
+
+        int num_pieces_;
+        int num_kings_;
+        bool is_with_king_;
+        std::vector<int> king_order_;
+
 public:
         // structors
 
@@ -32,6 +40,19 @@ public:
         {
                 BOOST_ASSERT(invariant());
         }
+
+        explicit Value(std::tuple< int, int, bool, std::vector<int> > const& t)
+        :
+                Value(std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t))
+        {}
+
+        Value(int pawns, int kings, bool with, std::vector<int> order)
+        :
+                num_pieces_(pawns + kings),
+                num_kings_(kings),
+                is_with_king_(with),
+                king_order_(order)
+        {}
 
         // modifiers
 
@@ -69,6 +90,26 @@ public:
         int size() const
         {
                 return num_pieces_;
+        }
+
+        int num_pawns() const
+        {
+                return num_pieces_ - num_kings_;
+        }
+
+        int num_kings() const
+        {
+                return num_kings_;
+        }
+
+        bool is_with_king() const
+        {
+                return is_with_king_;
+        }
+
+        auto king_order() const -> decltype(std::make_pair(king_order_.cbegin(), king_order_.cend()))
+        {
+                return std::make_pair(king_order_.cbegin(), king_order_.cend());
         }
 
         // predicates
@@ -118,13 +159,6 @@ private:
         {
                 return num_pieces_ == std::numeric_limits<int>::max();
         }
-
-        // representation
-
-        int num_pieces_;
-        int num_kings_;
-        bool is_with_king_;
-        std::vector<int> king_order_;
 };
 
 }       // namespace successor
