@@ -34,6 +34,9 @@ BOOST_AUTO_TEST_CASE(TogglePromotion)
 
                 v.toggle_promotion();
                 BOOST_CHECK_NE(v.is_promotion(), b);
+
+                v.toggle_promotion();
+                BOOST_CHECK_EQUAL(v.is_promotion(), b);
         }
 }
 
@@ -47,7 +50,6 @@ BOOST_AUTO_TEST_CASE(Equal)
                 BOOST_CHECK(v == w);
                 BOOST_CHECK(w == v);
 
-                // promotion status has no effect on capture precedence
                 v.toggle_promotion();
                 BOOST_CHECK(v == w);
                 BOOST_CHECK(w == v);
@@ -62,11 +64,14 @@ BOOST_AUTO_TEST_CASE(Less)
                 auto v = value_type { p };
                 auto const w = v;
                 BOOST_CHECK(v <= w);
+                BOOST_CHECK(v >= w);
+                BOOST_CHECK(w <= v);
                 BOOST_CHECK(w >= v);
 
-                // promotion status has no effect on capture precedence
                 v.toggle_promotion();
                 BOOST_CHECK(v <= w);
+                BOOST_CHECK(v >= w);
+                BOOST_CHECK(w <= v);
                 BOOST_CHECK(w >= v);
         }
 }
