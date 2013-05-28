@@ -9,12 +9,12 @@ namespace successor {
 
 BOOST_AUTO_TEST_SUITE(TestDefault)
 
-// rules variants without majority capture precedence
+// rules variants without capture precedence
 typedef boost::mpl::vector<
         rules::Checkers, rules::Czech, rules::Pool, rules::Thai
-> NoMajorityCapturePrecedence;
+> PrecedenceNone;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Equal, T, NoMajorityCapturePrecedence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Equal, T, PrecedenceNone)
 {
         Value<T> v, w;
 
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Equal, T, NoMajorityCapturePrecedence)
         BOOST_CHECK(w == v);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Less, T, NoMajorityCapturePrecedence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Less, T, PrecedenceNone)
 {
         Value<T> v, w;
 

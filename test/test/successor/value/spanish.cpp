@@ -32,8 +32,13 @@ BOOST_AUTO_TEST_CASE(TupleConstructor)
 
         for (auto const& c: cases) {
                 auto const v = value_type { c };
-                auto const n = std::get<0>(c) + std::get<1>(c);
+                auto const p = std::get<0>(c);
+                auto const k = std::get<1>(c);
+                auto const n = p + k;
+
                 BOOST_CHECK_EQUAL(v.size(), n);
+                BOOST_CHECK_EQUAL(v.num_pawns(), p);
+                BOOST_CHECK_EQUAL(v.num_kings(), k);
         }
 }
 
@@ -56,6 +61,10 @@ BOOST_AUTO_TEST_CASE(Increment)
                         auto v = u;
                         v.increment(i);
                         BOOST_CHECK_EQUAL(v.size(), u.size() + 1);
+                        if (i)
+                                BOOST_CHECK_EQUAL(v.num_kings(), u.num_kings() + 1);
+                        else
+                                BOOST_CHECK_EQUAL(v.num_pawns(), u.num_pawns() + 1);
                 }
         }
 }
@@ -79,6 +88,10 @@ BOOST_AUTO_TEST_CASE(Decrement)
                         auto v = u;
                         v.decrement(d);
                         BOOST_CHECK_EQUAL(v.size(), u.size() - 1);
+                        if (d)
+                                BOOST_CHECK_EQUAL(v.num_kings(), u.num_kings() - 1);
+                        else
+                                BOOST_CHECK_EQUAL(v.num_pawns(), u.num_pawns() - 1);
                 }
         }
 }
@@ -103,14 +116,24 @@ BOOST_AUTO_TEST_CASE(Equal)
                 bool const delta[] = { false, true };
                 for (auto const& b: delta) {
                         auto x = u;
+
                         x.increment(b);
                         BOOST_CHECK(u != x);
                         BOOST_CHECK(x != u);
 
+                        x.decrement(b);
+                        BOOST_CHECK(u == x);
+                        BOOST_CHECK(x == u);
+
                         auto y = u;
+
                         y.decrement(b);
                         BOOST_CHECK(u != y);
                         BOOST_CHECK(y != u);
+
+                        y.increment(b);
+                        BOOST_CHECK(u == y);
+                        BOOST_CHECK(y == u);
                 };
         }
 }
@@ -130,19 +153,35 @@ BOOST_AUTO_TEST_CASE(Less)
                 auto const u = value_type { c };
                 auto const v = u;
                 BOOST_CHECK(u <= v);
+                BOOST_CHECK(u >= v);
+                BOOST_CHECK(v <= u);
                 BOOST_CHECK(v >= u);
 
                 bool const delta[] = { false, true };
                 for (auto const& b: delta) {
                         auto x = u;
+
                         x.increment(b);
                         BOOST_CHECK(u < x);
                         BOOST_CHECK(x > u);
 
+                        x.decrement(b);
+                        BOOST_CHECK(u <= x);
+                        BOOST_CHECK(u >= x);
+                        BOOST_CHECK(x <= u);
+                        BOOST_CHECK(x >= u);
+
                         auto y = u;
+
                         y.decrement(b);
                         BOOST_CHECK(u > y);
                         BOOST_CHECK(y < u);
+
+                        y.increment(b);
+                        BOOST_CHECK(u <= y);
+                        BOOST_CHECK(u >= y);
+                        BOOST_CHECK(y <= u);
+                        BOOST_CHECK(y >= u);
                 };
         }
 }
