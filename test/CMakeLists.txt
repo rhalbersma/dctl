@@ -50,12 +50,12 @@ foreach(h ${dctl_headers})
   get_filename_component(header_name ${h} NAME_WE)
 
   # check if header is standalone
-  #check_include_file_cxx("${h}" ${header_name}_IS_STANDALONE)
+  check_include_file_cxx("${h}" ${header_name}_IS_STANDALONE)
 
   # fail early, fail hard
-  #if(NOT ${header_name}_IS_STANDALONE)
-  #    message(FATAL_ERROR "Found a non-standalone header (see CMakeFiles/CMakeError.log for details).")
-  #endif()
+  if(NOT ${header_name}_IS_STANDALONE)
+      message(FATAL_ERROR "Found a non-standalone header (see CMakeFiles/CMakeError.log for details).")
+  endif()
 endforeach(h)
 
 ###############################################################
