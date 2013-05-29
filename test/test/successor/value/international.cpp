@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(TestInternational)
 
 // rules variants with the international capture precedence
 typedef boost::mpl::vector<
-        rules::International, rules::Damme, rules::Hoogland, rules::Killer
+        rules::International /*, rules::Damme, rules::Hoogland, rules::Killer*/
 > PrecedenceInternational;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructor, T, PrecedenceInternational)
@@ -64,17 +64,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Equal, T, PrecedenceInternational)
                 BOOST_CHECK(v == u);
 
                 auto x = u;
+
                 x.increment();
                 BOOST_CHECK(u != x);
                 BOOST_CHECK(x != u);
+
                 x.decrement();
                 BOOST_CHECK(u == x);
                 BOOST_CHECK(x == u);
 
                 auto y = u;
+
                 y.decrement();
                 BOOST_CHECK(u != y);
                 BOOST_CHECK(y != u);
+
                 y.increment();
                 BOOST_CHECK(u == y);
                 BOOST_CHECK(y == u);
@@ -92,9 +96,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Less, T, PrecedenceInternational)
                 BOOST_CHECK(v >= u);
 
                 auto x = u;
+
                 x.increment();
                 BOOST_CHECK(u < x);
                 BOOST_CHECK(x > u);
+
                 x.decrement();
                 BOOST_CHECK(u <= x);
                 BOOST_CHECK(u >= x);
@@ -102,9 +108,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Less, T, PrecedenceInternational)
                 BOOST_CHECK(x >= u);
 
                 auto y = u;
+
                 y.decrement();
                 BOOST_CHECK(u > y);
                 BOOST_CHECK(y < u);
+
                 y.increment();
                 BOOST_CHECK(u <= y);
                 BOOST_CHECK(u >= y);

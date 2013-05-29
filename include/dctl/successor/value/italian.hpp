@@ -98,13 +98,13 @@ public:
         {
                 return is_with_king_;
         }
-
+/*
         // should also work with auto alone, but Clang 3.3 only accepts decltype(auto)
         decltype(auto) king_order() const
         {
                 return std::make_pair(king_order_.cbegin(), king_order_.cend());
         }
-
+*/
         // predicates
 
         // operator!= provided by boost::totally_ordered

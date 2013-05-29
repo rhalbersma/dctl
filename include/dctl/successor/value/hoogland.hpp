@@ -12,7 +12,7 @@ class Value<rules::Hoogland>
 :
         public Value<rules::International>
 {
-        using Value<rules::International>::Value;
+        //using Value<rules::International>::Value;
 };
 
 }       // namespace successor
