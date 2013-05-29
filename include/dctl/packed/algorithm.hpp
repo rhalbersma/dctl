@@ -5,9 +5,9 @@ namespace dctl {
 namespace packed {
 
 template<class Set>
-auto set_complement(Set const& set) -> decltype(~set)
+Set set_complement(Set const& lhs)
 {
-        return ~set;
+        return ~lhs;
 }
 
 template<class Set>
