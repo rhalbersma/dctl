@@ -51,10 +51,10 @@ private:
         bool branch(BitBoard active_kings) const
         {
                 // tag dispatching on king jump directions
-                return branch_dispatch(active_kings, rules::directions_king_jump<Rules>());
+                return branch_dispatch(active_kings, rules::directions::king_jump<Rules>());
         }
 
-        // overload for kings that capture in the 8 diagonal and orthogonal directions
+        // overload for kings that jump in the 8 diagonal and orthogonal directions
         bool branch_dispatch(BitBoard active_kings, rules::directions::all) const
         {
                 return (
@@ -63,7 +63,7 @@ private:
                 );
         }
 
-        // overload for kings that capture in the 4 diagonal directions
+        // overload for kings that jump in the 4 diagonal directions
         bool branch_dispatch(BitBoard active_kings, rules::directions::diag) const
         {
                 return (
@@ -74,7 +74,7 @@ private:
                 );
         }
 
-        // overload for kings that capture in the 4 orthogonal directions
+        // overload for kings that jump in the 4 orthogonal directions
         bool branch_dispatch(BitBoard active_kings, rules::directions::orth) const
         {
                 return (

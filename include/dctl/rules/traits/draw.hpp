@@ -4,7 +4,7 @@
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/types.hpp>
 #include <dctl/preprocessor/has_type.hpp>
 #include <dctl/preprocessor/get_type.hpp>
 

@@ -6,19 +6,21 @@
 
 namespace dctl {
 namespace rules {
+namespace precedence {
 
-DCTL_PP_DEFINE_HAS_TYPE(is_jump_direction_reversal)
-DCTL_PP_DEFINE_GET_TYPE(is_jump_direction_reversal)
+DCTL_PP_DEFINE_HAS_TYPE(precedence_is_relative_king)
+DCTL_PP_DEFINE_GET_TYPE(precedence_is_relative_king)
 
 template<class Rules>
-struct is_jump_direction_reversal
+struct is_relative_king
 :
         boost::mpl::eval_if<
-                has_is_jump_direction_reversal<Rules>,
-                get_is_jump_direction_reversal<Rules>,
+                has_precedence_is_relative_king<Rules>,
+                get_precedence_is_relative_king<Rules>,
                 std::false_type
         >::type
 {};
 
+}       // namespace precedence
 }       // namespace rules
 }       // namespace dctl

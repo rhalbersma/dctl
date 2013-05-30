@@ -18,7 +18,7 @@ struct Italian
 
         // additional rules
         typedef std::false_type is_pawns_jump_kings;                    // 5.3(b)
-        typedef std::true_type is_relative_king_precedence;             // 6.7
+        typedef std::true_type precedence_is_relative_king;             // 6.7
 
         // drawing rules
         typedef std::integral_constant<int,  4> max_repetitions;        // 9.3(b1)

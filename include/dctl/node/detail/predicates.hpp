@@ -2,7 +2,7 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/detail/unary_projections.hpp>
 #include <dctl/node/binary_projections.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/types.hpp>
 
 namespace dctl {
 namespace detail {

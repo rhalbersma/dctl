@@ -6,19 +6,21 @@
 
 namespace dctl {
 namespace rules {
+namespace precedence {
 
-DCTL_PP_DEFINE_HAS_TYPE(is_absolute_king_precedence)
-DCTL_PP_DEFINE_GET_TYPE(is_absolute_king_precedence)
+DCTL_PP_DEFINE_HAS_TYPE(precedence_is_absolute_king)
+DCTL_PP_DEFINE_GET_TYPE(precedence_is_absolute_king)
 
 template<class Rules>
-struct is_absolute_king_precedence
+struct is_absolute_king
 :
         boost::mpl::eval_if<
-                has_is_absolute_king_precedence<Rules>,
-                get_is_absolute_king_precedence<Rules>,
+                has_precedence_is_absolute_king<Rules>,
+                get_precedence_is_absolute_king<Rules>,
                 std::false_type
         >::type
 {};
 
+}       // namespace precedence
 }       // namespace rules
 }       // namespace dctl

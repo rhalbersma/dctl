@@ -37,8 +37,8 @@ public:
                                                 rules::range::distance_1
                                         >,
                                         std::is_same< typename
-                                                rules::directions_king_jump<Rules>, typename
-                                                rules::directions_pawn_jump<Rules>
+                                                rules::directions::king_jump<Rules>, typename
+                                                rules::directions::pawn_jump<Rules>
                                         >,
                                         rules::is_pawns_jump_kings<Rules>
                                 >::value

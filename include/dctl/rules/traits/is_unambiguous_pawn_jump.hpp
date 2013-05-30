@@ -1,8 +1,10 @@
 #pragma once
-#include <type_traits>
-#include <boost/mpl/logical.hpp>                // eval_if
-#include <dctl/rules/traits/directions_pawn_jump.hpp>
-#include <dctl/rules/traits/phase_promotion.hpp>
+#include <type_traits>                                  // is_same
+#include <boost/mpl/logical.hpp>                        // and_, or_
+#include <dctl/rules/traits/directions/pawn_jump.hpp>   // pawn_jump
+#include <dctl/rules/traits/phase/promotion.hpp>        // promotion
+#include <dctl/rules/types/directions.hpp>              // up, down
+#include <dctl/rules/types/phase.hpp>                   // apres_fini
 
 namespace dctl {
 namespace rules {
@@ -14,16 +16,16 @@ struct is_unambiguous_pawn_jump
                 bool,
                 boost::mpl::or_<
                         std::is_same< typename
-                                directions_pawn_jump<Rules>::type,
+                                directions::pawn_jump<Rules>::type,
                                 directions::down
                         >,
                         boost::mpl::and_<
                                 std::is_same< typename
-                                        directions_pawn_jump<Rules>::type,
+                                        directions::pawn_jump<Rules>::type,
                                         directions::up
                                 >,
                                 std::is_same< typename
-                                        phase_promotion<Rules>::type,
+                                        phase::promotion<Rules>::type,
                                         phase::apres_fini
                                 >
                         >

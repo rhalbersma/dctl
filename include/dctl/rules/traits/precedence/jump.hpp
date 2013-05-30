@@ -2,12 +2,14 @@
 
 namespace dctl {
 namespace rules {
+namespace precedence {
 
 template<class Rules>
-struct range_king
+struct jump
 :
-        Rules::range_king
+        Rules::precedence_jump
 {};
 
+}       // namespace precedence
 }       // namespace rules
 }       // namespace dctl

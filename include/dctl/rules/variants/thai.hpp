@@ -17,7 +17,7 @@ struct Thai
 
         // additional rules
         typedef range::distance_1 range_land;
-        typedef std::true_type is_jump_direction_reversal;
+        typedef std::true_type directions_is_reversal;
         typedef phase::en_passant phase_capture;
         typedef std::integral_constant<int, 4> initial_gap;
 };

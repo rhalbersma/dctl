@@ -51,10 +51,10 @@ private:
         bool branch(BitBoard active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                return branch_dispatch(active_pawns, rules::directions_pawn_jump<Rules>());
+                return branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>());
         }
 
-        // overload for pawns that capture in the 8 diagonal and orthogonal directions
+        // overload for pawns that jump in the 8 diagonal and orthogonal directions
         bool branch_dispatch(BitBoard active_pawns, rules::directions::all) const
         {
                 return (
@@ -63,7 +63,7 @@ private:
                 );
         }
 
-        // overload for pawns that capture in the 4 diagonal directions
+        // overload for pawns that jump in the 4 diagonal directions
         bool branch_dispatch(BitBoard active_pawns, rules::directions::diag) const
         {
                 return (
@@ -72,7 +72,7 @@ private:
                 );
         }
 
-        // overload for pawns that capture in the 2 forward diagonal directions
+        // overload for pawns that jump in the 2 forward diagonal directions
         bool branch_dispatch(BitBoard active_pawns, rules::directions::up) const
         {
                 return (
@@ -81,7 +81,7 @@ private:
                 );
         }
 
-        // overload for pawns that capture in the 2 backward diagonal directions
+        // overload for pawns that jump in the 2 backward diagonal directions
         bool branch_dispatch(BitBoard active_pawns, rules::directions::down) const
         {
                 return (
@@ -90,7 +90,7 @@ private:
                 );
         }
 
-        // overload for pawns that capture in the 4 orthogonal directions
+        // overload for pawns that jump in the 4 orthogonal directions
         bool branch_dispatch(BitBoard active_pawns, rules::directions::orth) const
         {
                 return (

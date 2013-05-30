@@ -75,7 +75,7 @@ private:
         void find(BitIndex from_sq) const
         {
                 // tag dispatching on king range
-                find_dispatch<Direction>(from_sq, rules::range_king<Rules>());
+                find_dispatch<Direction>(from_sq, rules::range::scan<Rules>());
         }
 
         // overload for short ranged kings

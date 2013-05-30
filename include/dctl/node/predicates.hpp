@@ -43,7 +43,7 @@ template<typename Position, typename Move>
 bool is_intersecting_capture(Position const& p, Move const& m)
 {
         // tag dispatching on capture removal
-        return detail::is_intersecting_capture(p, m, rules::phase_capture<typename Position::rules_type>());
+        return detail::is_intersecting_capture(p, m, rules::phase::capture<typename Position::rules_type>());
 }
 
 template<typename Position, typename Move>
