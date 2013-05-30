@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/rules/traits/range/scan.hpp>
 
 namespace dctl {
 namespace successor {
@@ -8,7 +9,7 @@ namespace impl {
 template
 <
         bool, typename, typename, typename Position,
-        typename Range = typename Position::rules_type::range_king
+        class Range = typename rules::range::scan<typename Position::rules_type>::type
 >
 struct detect;
 

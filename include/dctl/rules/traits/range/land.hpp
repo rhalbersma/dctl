@@ -2,23 +2,25 @@
 #include <boost/mpl/eval_if.hpp>                // eval_if
 #include <dctl/preprocessor/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
 #include <dctl/preprocessor/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
-#include <dctl/rules/enum.hpp>                  // apres_fini
+#include <dctl/rules/traits/range/scan.hpp>     // scan
 
 namespace dctl {
 namespace rules {
+namespace range {
 
-DCTL_PP_DEFINE_HAS_TYPE(phase_promotion)
-DCTL_PP_DEFINE_GET_TYPE(phase_promotion)
+DCTL_PP_DEFINE_HAS_TYPE(range_land)
+DCTL_PP_DEFINE_GET_TYPE(range_land)
 
 template<class Rules>
-struct phase_promotion
+struct land
 :
         boost::mpl::eval_if<
-                has_phase_promotion<Rules>,
-                get_phase_promotion<Rules>,
-                phase::apres_fini
+                has_range_land<Rules>,
+                get_range_land<Rules>,
+                scan<Rules>
         >::type
 {};
 
+}       // namespace range
 }       // namespace rules
 }       // namespace dctl

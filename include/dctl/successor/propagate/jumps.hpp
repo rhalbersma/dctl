@@ -14,6 +14,7 @@
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
+#include <dctl/rules/types.hpp>
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/utility/int.hpp>
@@ -72,20 +73,20 @@ public:
         void make(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                make_dispatch(target_sq, rules::phase_capture<Rules>());
+                make_dispatch(target_sq, rules::phase::capture<Rules>());
                 BOOST_ASSERT(invariant());
         }
 
         void undo(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                undo_dispatch(target_sq, rules::phase_capture<Rules>());
+                undo_dispatch(target_sq, rules::phase::capture<Rules>());
                 BOOST_ASSERT(invariant());
         }
 
         void toggle_with_king()
         {
-                BOOST_MPL_ASSERT((rules::is_relative_king_precedence<Rules>));
+                BOOST_MPL_ASSERT((rules::precedence::is_relative_king<Rules>));
                 current_.toggle_with_king();
         }
 
@@ -97,7 +98,7 @@ public:
 
         void toggle_promotion()
         {
-                BOOST_MPL_ASSERT((std::is_same<typename rules::phase_promotion<Rules>::type, rules::phase::en_passant>));
+                BOOST_MPL_ASSERT((std::is_same<typename rules::phase::promotion<Rules>::type, rules::phase::en_passant>));
                 current_.toggle_promotion();
         }
 
@@ -194,7 +195,7 @@ public:
 
         bool is_promotion() const
         {
-                BOOST_MPL_ASSERT((std::is_same<typename rules::phase_promotion<Rules>::type, rules::phase::en_passant>));
+                BOOST_MPL_ASSERT((std::is_same<typename rules::phase::promotion<Rules>::type, rules::phase::en_passant>));
                 return current_.is_promotion();
         }
 
@@ -242,7 +243,7 @@ private:
         void increment(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                increment_dispatch(is_king, rules::precedence_jump<Rules>());
+                increment_dispatch(is_king, rules::precedence::jump<Rules>());
         }
 
         // overload for no capture precedence
@@ -266,7 +267,7 @@ private:
         void decrement(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                decrement_dispatch(is_king, rules::precedence_jump<Rules>());
+                decrement_dispatch(is_king, rules::precedence::jump<Rules>());
         }
 
         // overload for no capture precedence
@@ -307,7 +308,7 @@ private:
                                 boost::mpl::and_<
                                         angle::lazy::is_orthogonal<Direction>,
                                         std::is_same<typename
-                                                rules::orthogonality_king_jump<Rules>::type,
+                                                rules::orthogonality::king_jump<Rules>::type,
                                                 rules::orthogonality::relative
                                         >
                                 >::value

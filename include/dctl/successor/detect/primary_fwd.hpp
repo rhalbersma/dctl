@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/types.hpp>
 
 namespace dctl {
 namespace successor {

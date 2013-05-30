@@ -1,7 +1,7 @@
 #pragma once
 #include <type_traits>
 #include <dctl/rules/variants/czech_fwd.hpp>
-#include <dctl/rules/enum.hpp>
+#include <dctl/rules/types.hpp>
 #include <dctl/successor/value.hpp>
 #include <dctl/notation/czech.hpp>
 
@@ -18,7 +18,7 @@ struct Czech
         typedef precedence::none precedence_jump;
 
         // additional rules
-        typedef std::true_type is_absolute_king_precedence;
+        typedef std::true_type precedence_is_absolute_king;
 };
 
 }       // namespace rules

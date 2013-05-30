@@ -17,7 +17,7 @@ struct Frisian
         typedef precedence::quality precedence_jump;
 
         // additional rules
-        typedef std::true_type is_relative_king_precedence;
+        typedef std::true_type precedence_is_relative_king;
 
         // drawing rules
         typedef std::integral_constant<int, 6> max_same_king_moves;

@@ -52,14 +52,14 @@ template<typename Rules, typename T>
 bool is_intersecting_capture(T delta, T captured_pieces)
 {
         // tag dispatching on capture removal
-        return detail::is_intersecting_capture(delta, captured_pieces, rules::phase_capture<Rules>());
+        return detail::is_intersecting_capture(delta, captured_pieces, rules::phase::capture<Rules>());
 }
 
 template<typename Rules, typename T>
 bool is_intersecting_promotion(T promotion, T delta)
 {
         // tag dispatching on pawn promotion
-        return detail::is_intersecting_promotion(promotion, delta, rules::phase_promotion<Rules>());
+        return detail::is_intersecting_promotion(promotion, delta, rules::phase::promotion<Rules>());
 }
 
 template<typename T>

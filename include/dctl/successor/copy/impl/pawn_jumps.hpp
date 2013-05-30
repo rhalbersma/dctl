@@ -80,38 +80,38 @@ private:
         void branch(BitBoard active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                branch_dispatch(active_pawns, rules::directions_pawn_jump<Rules>());
+                branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>());
         }
 
-        // overload for pawns that capture in the 8 diagonal and orthogonal directions
+        // overload for pawns that jump in the 8 diagonal and orthogonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::all) const
         {
                 branch_dispatch(active_pawns, rules::directions::diag());
                 branch_dispatch(active_pawns, rules::directions::orth());
         }
 
-        // overload for pawns that capture in the 4 diagonal directions
+        // overload for pawns that jump in the 4 diagonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::diag) const
         {
                 branch_dispatch(active_pawns, rules::directions::up  ());
                 branch_dispatch(active_pawns, rules::directions::down());
         }
 
-        // overload for pawns that capture in the 2 forward diagonal directions
+        // overload for pawns that jump in the 2 forward diagonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::up) const
         {
                 serialize<typename Compass::left_up >(active_pawns);
                 serialize<typename Compass::right_up>(active_pawns);
         }
 
-        // overload for pawns that capture in the 2 backward diagonal directions
+        // overload for pawns that jump in the 2 backward diagonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::down) const
         {
                 serialize<typename Compass::left_down >(active_pawns);
                 serialize<typename Compass::right_down>(active_pawns);
         }
 
-        // overload for pawns that capture in the 4 orthogonal directions
+        // overload for pawns that jump in the 4 orthogonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::orth) const
         {
                 serialize<typename Compass::left >(active_pawns);
@@ -186,7 +186,7 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on promotion condition
-                return find_next_dispatch<Direction>(jumper, rules::phase_promotion<Rules>());
+                return find_next_dispatch<Direction>(jumper, rules::phase::promotion<Rules>());
         }
 
         // overload for pawns that promote apres-fini
@@ -244,11 +244,11 @@ private:
         template<typename Direction>
         bool turn(BitIndex jumper) const
         {
-                // tag dispatching on man turn directions
-                return turn_dispatch<Direction>(jumper, rules::directions_pawn_turn<Rules>());
+                // tag dispatching on pawn turn directions
+                return turn_dispatch<Direction>(jumper, rules::directions::pawn_turn<Rules>());
         }
 
-        // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
+        // overload for pawns that turn in all the 6 non-parallel diagonal and orthogonal directions
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::all) const
         {
@@ -258,7 +258,7 @@ private:
                 );
         }
 
-        // overload for turns in the 2 sideways directions
+        // overload for pawns that turn in the 2 sideways directions
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
@@ -268,21 +268,21 @@ private:
                 );
         }
 
-        // overload for turns in the 1 mirrored forward direction
+        // overload for pawns that turn in the 1 mirrored forward direction
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::up) const
         {
                 return scan< typename mpl::lazy::mirror< Direction, typename Compass::up >::type >(jumper);
         }
 
-        // overload for turns in the 1 mirrored backward direction
+        // overload for pawns that turn in the 1 mirrored backward direction
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::down) const
         {
                 return scan< typename mpl::lazy::mirror< Direction, typename Compass::down >::type >(jumper);
         }
 
-        // overload for turns in the remaining 4 diagonal or orthogonal directions
+        // overload for pawns that turn in the remaining 4 diagonal or orthogonal directions
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {

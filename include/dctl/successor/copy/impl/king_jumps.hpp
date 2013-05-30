@@ -57,7 +57,7 @@ public:
         {
                 // tag dispatching on relative king jump precedence
                 if (active_kings)
-                        select_dispatch(active_kings, rules::is_relative_king_precedence<Rules>());
+                        select_dispatch(active_kings, rules::precedence::is_relative_king<Rules>());
         }
 
         template<typename Direction>
@@ -101,17 +101,17 @@ private:
         void branch(BitIndex jumper) const
         {
                 // tag dispatching on king jump directions
-                branch_dispatch(jumper, rules::directions_king_jump<Rules>());
+                branch_dispatch(jumper, rules::directions::king_jump<Rules>());
         }
 
-        // overload for kings that capture in the 8 diagonal and orthogonal directions
+        // overload for kings that jump in the 8 diagonal and orthogonal directions
         void branch_dispatch(BitIndex jumper, rules::directions::all) const
         {
                 branch_dispatch(jumper, rules::directions::diag());
                 branch_dispatch(jumper, rules::directions::orth());
         }
 
-        // overload for kings that capture in the 4 diagonal directions
+        // overload for kings that jump in the 4 diagonal directions
         void branch_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 find_first<typename Compass::left_up   >(jumper);
@@ -120,7 +120,7 @@ private:
                 find_first<typename Compass::right_down>(jumper);
         }
 
-        // overload for kings that capture in the 4 orthogonal directions
+        // overload for kings that jump in the 4 orthogonal directions
         void branch_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 find_first<typename Compass::left >(jumper);
@@ -177,7 +177,7 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return find_next_dispatch<Direction>(jumper, rules::is_jump_direction_reversal<Rules>());
+                return find_next_dispatch<Direction>(jumper, rules::directions::is_reversal<Rules>());
         }
 
         // overload for kings that cannot reverse their capture direction
@@ -204,7 +204,7 @@ private:
         bool land(BitIndex jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
-                return land_dispatch<Direction>(jumper, rules::range_land<Rules>());
+                return land_dispatch<Direction>(jumper, rules::range::land<Rules>());
         }
 
         // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
@@ -243,10 +243,10 @@ private:
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on king turn directions
-                return turn_dispatch<Direction>(jumper, rules::directions_king_turn<Rules>());
+                return turn_dispatch<Direction>(jumper, rules::directions::king_turn<Rules>());
         }
 
-        // overload for turns in all the 6 non-parallel diagonal and orthogonal directions
+        // overload for kings that turn in all the 6 non-parallel diagonal and orthogonal directions
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::all) const
         {
@@ -256,7 +256,7 @@ private:
                 );
         }
 
-        // overload for turns in the 2 sideways directions
+        // overload for kings that turn in the 2 sideways directions
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
@@ -266,7 +266,7 @@ private:
                 );
         }
 
-        // overload for turns in the remaining 4 diagonal or orthogonal directions
+        // overload for kings that turn in the remaining 4 diagonal or orthogonal directions
         template<typename Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
@@ -289,7 +289,7 @@ private:
         void slide(BitIndex& jumper, BitBoard path) const
         {
                 // tag dispatching on king range
-                slide_dispatch<Direction>(jumper, path, rules::range_king<Rules>());
+                slide_dispatch<Direction>(jumper, path, rules::range::scan<Rules>());
         }
 
         // overload for short ranged kings
@@ -324,7 +324,7 @@ private:
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
 
                 // tag dispatching on king halt after final capture
-                add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::range_halt<Rules>());
+                add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::range::halt<Rules>());
         }
 
         // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
@@ -360,7 +360,7 @@ private:
         void add_king_jump(BitIndex dest_sq, bool check_duplicate) const
         {
                 // tag dispatching on promotion condition
-                add_king_jump_dispatch(dest_sq, rules::phase_promotion<Rules>());
+                add_king_jump_dispatch(dest_sq, rules::phase::promotion<Rules>());
                 if (check_duplicate && algorithm::is_duplicate_back(moves_))
                         moves_.pop_back();
         }
