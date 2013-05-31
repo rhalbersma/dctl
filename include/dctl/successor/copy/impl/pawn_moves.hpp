@@ -16,7 +16,7 @@ namespace successor {
 namespace detail {
 namespace impl {
 
-template<bool Color, typename Position, typename Vector>
+template<bool Color, class Position, class Vector>
 struct copy<Color, material::pawn, select::moves, Position, Vector>
 :
         // enforce reference semantics
@@ -59,7 +59,7 @@ private:
                 serialize<typename Compass::right_up>(active_pawns);
         }
 
-        template<typename Direction>
+        template<class Direction>
         void serialize(BitBoard active_pawns) const
         {
                 for (
@@ -70,7 +70,7 @@ private:
                         find<Direction>(bit::first::equal(active_pawns));
         }
 
-        template<typename Direction>
+        template<class Direction>
         void find(BitIndex from_sq) const
         {
                 auto const dest_sq = Next<Board, Direction>()(from_sq);

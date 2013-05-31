@@ -22,7 +22,7 @@ namespace detail {
 namespace impl {
 
 // partial specialization for king jumps generation
-template<bool Color, typename Position, typename Vector>
+template<bool Color, class Position, class Vector>
 struct copy<Color, material::king, select::jumps, Position, Vector>
 :
         // enforce reference semantics
@@ -129,7 +129,7 @@ private:
                 find_first<typename Compass::down >(jumper);
         }
 
-        template<typename Direction>
+        template<class Direction>
         void find_first(BitIndex jumper) const
         {
                 slide<Direction>(jumper, capture_.template path<Direction>());
@@ -140,7 +140,7 @@ private:
                 }
         }
 
-        template<typename Direction>
+        template<class Direction>
         void precedence(BitIndex jumper) const
         {
                 // tag dispatching on majority precedence
@@ -148,7 +148,7 @@ private:
         }
 
         // overload for no majority precedence
-        template<typename Direction>
+        template<class Direction>
         void precedence_dispatch(BitIndex jumper, std::false_type) const
         {
                 Increment<Board, Direction>()(jumper);
@@ -157,7 +157,7 @@ private:
         }
 
         // overload for majority precedence
-        template<typename Direction>
+        template<class Direction>
         void precedence_dispatch(BitIndex jumper, std::true_type) const
         {
                 Increment<Board, Direction>()(jumper);
@@ -173,7 +173,7 @@ private:
                 }
         }
 
-        template<typename Direction>
+        template<class Direction>
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on king jump direction reversal
@@ -181,26 +181,26 @@ private:
         }
 
         // overload for kings that cannot reverse their capture direction
-        template<typename Direction>
+        template<class Direction>
         bool find_next_dispatch(BitIndex jumper, std::false_type) const
         {
                 return land<Direction>(jumper);
         }
 
         // overload for kings that can reverse their capture direction
-        template<typename Direction>
+        template<class Direction>
         bool find_next_dispatch(BitIndex jumper, std::true_type) const
         {
                 return land<Direction>(jumper) | reverse<Direction>(jumper);
         }
 
-        template<typename Direction>
+        template<class Direction>
         bool reverse(BitIndex jumper) const
         {
                 return scan< typename mpl::lazy::rotate< Direction, angle::D180 >::type >(jumper);
         }
 
-        template<typename Direction>
+        template<class Direction>
         bool land(BitIndex jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
@@ -208,7 +208,7 @@ private:
         }
 
         // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
-        template<typename Direction>
+        template<class Direction>
         void land_dispatch(BitIndex jumper, rules::range::distance_1K) const
         {
                 if (capture_.is_king(Prev<Board, Direction>()(jumper)))
@@ -218,14 +218,14 @@ private:
         }
 
         // overload for kings that can only land on the immediately adjacent square
-        template<typename Direction>
+        template<class Direction>
         bool land_dispatch(BitIndex jumper, rules::range::distance_1) const
         {
                 return turn<Direction>(jumper) | scan<Direction>(jumper);
         }
 
         // overload for kings that can land on any square along the current direction
-        template<typename Direction>
+        template<class Direction>
         bool land_dispatch(BitIndex jumper, rules::range::distance_N) const
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
@@ -239,7 +239,7 @@ private:
                 return found_next |= jump<Direction>(jumper);
         }
 
-        template<typename Direction>
+        template<class Direction>
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on king turn directions
@@ -247,7 +247,7 @@ private:
         }
 
         // overload for kings that turn in all the 6 non-parallel diagonal and orthogonal directions
-        template<typename Direction>
+        template<class Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::all) const
         {
                 return (
@@ -257,7 +257,7 @@ private:
         }
 
         // overload for kings that turn in the 2 sideways directions
-        template<typename Direction>
+        template<class Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
@@ -267,7 +267,7 @@ private:
         }
 
         // overload for kings that turn in the remaining 4 diagonal or orthogonal directions
-        template<typename Direction>
+        template<class Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
@@ -278,14 +278,14 @@ private:
                 );
         }
 
-        template<typename Direction>
+        template<class Direction>
         bool scan(BitIndex jumper) const
         {
                 slide<Direction>(jumper, capture_.template path<Direction>());
                 return jump<Direction>(jumper);
         }
 
-        template<typename Direction>
+        template<class Direction>
         void slide(BitIndex& jumper, BitBoard path) const
         {
                 // tag dispatching on king range
@@ -293,20 +293,20 @@ private:
         }
 
         // overload for short ranged kings
-        template<typename Direction>
+        template<class Direction>
         void slide_dispatch(BitIndex& jumper, BitBoard /* path */, rules::range::distance_1) const
         {
                 Increment<Board, Direction>()(jumper);
         }
 
         // overload for long ranged kings
-        template<typename Direction>
+        template<class Direction>
         void slide_dispatch(BitIndex& jumper, BitBoard path, rules::range::distance_N) const
         {
                 do Increment<Board, Direction>()(jumper); while (bit::is_element(jumper, path));
         }
 
-        template<typename Direction>
+        template<class Direction>
         bool jump(BitIndex jumper) const
         {
                 if (!bit::is_element(jumper, capture_.template targets_with_king<Direction>()))
@@ -318,7 +318,7 @@ private:
                 return true;
         }
 
-        template<typename Direction>
+        template<class Direction>
         void add_king_jump(BitIndex dest_sq) const
         {
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
@@ -328,7 +328,7 @@ private:
         }
 
         // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
-        template<typename Direction>
+        template<class Direction>
         void add_king_jump_dispatch(BitIndex dest_sq, bool check_duplicate, rules::range::distance_1K) const
         {
                 if (capture_.is_king(Prev<Board, Direction>()(dest_sq)))
@@ -338,14 +338,14 @@ private:
         }
 
         // overload for kings that halt immediately after the final capture
-        template<typename Direction>
+        template<class Direction>
         void add_king_jump_dispatch(BitIndex dest_sq, bool check_duplicate, rules::range::distance_1) const
         {
                 add_king_jump(dest_sq, check_duplicate);
         }
 
         // overload for kings that slide through after the final capture
-        template<typename Direction>
+        template<class Direction>
         void add_king_jump_dispatch(BitIndex dest_sq, bool check_duplicate, rules::range::distance_N) const
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
