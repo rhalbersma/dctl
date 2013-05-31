@@ -8,10 +8,10 @@ project(dctl_test)
 # use C++11 features
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-# highest general warning level
+# general warning level
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -pedantic -pedantic-errors")
 
-# specific conversion warnings
+# integral conversion and promotion warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wconversion -Wsign-conversion -Wsign-promo")
 
 # optimizations
@@ -41,8 +41,8 @@ file(GLOB_RECURSE dctl_headers FOLLOW_SYMLINKS "${dctl_include_dirs}/*.hpp")
 # Standalone headers
 ###############################################################
 
-# cmake -DCHECKINCLUDEFILECXX=true runs this test
-if(CHECKINCLUDEFILECXX)
+# cmake -DCHECKSTANDALONE=true runs this test
+if(CHECKSTANDALONE)
   set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
   set(CMAKE_REQUIRED_INCLUDES ${dctl_include_dirs})
   include(CheckIncludeFileCXX)

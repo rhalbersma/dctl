@@ -17,7 +17,7 @@ typedef boost::mpl::vector<
         Thai
 > VariantsEnPassant;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(CaptureEnPassant, T, VariantsEnPassant)
+BOOST_AUTO_TEST_CASE_TEMPLATE(EnPassant, T, VariantsEnPassant)
 {
         BOOST_MPL_ASSERT((std::is_same< typename capture<T>::type, en_passant >));
 }
@@ -26,7 +26,7 @@ typedef boost::mpl::vector<
         AKWDamme, Checkers, Czech, Frisian, HHoogland, International, Italian, Killer, Pool, Russian, Spanish
 > VariantsApresFini;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(CaptureApresFini, T, VariantsApresFini)
+BOOST_AUTO_TEST_CASE_TEMPLATE(ApresFini, T, VariantsApresFini)
 {
         BOOST_MPL_ASSERT((std::is_same< typename capture<T>::type, apres_fini >));
 }

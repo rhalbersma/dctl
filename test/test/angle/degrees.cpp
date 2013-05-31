@@ -9,14 +9,14 @@
 namespace dctl {
 namespace angle {
 
-BOOST_AUTO_TEST_SUITE(TestDegrees)
+BOOST_AUTO_TEST_SUITE(AngleDegrees)
 
 typedef boost::mpl::vector<
         D000, D045, D090, D135,
         D180, D225, D270, D315
-> DegreesSequence;
+> Octants;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, DegreesSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, Octants)
 {
         BOOST_MPL_ASSERT(( group::action::is_realized< T, group::C1 > ));
         BOOST_MPL_ASSERT(( group::action::is_realized< T, group::C2 > ));

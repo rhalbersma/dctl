@@ -16,7 +16,7 @@ typedef boost::mpl::vector<
         Thai
 > VariantsTrueType;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsReversalTrueType, T, VariantsTrueType)
+BOOST_AUTO_TEST_CASE_TEMPLATE(TrueType, T, VariantsTrueType)
 {
         BOOST_MPL_ASSERT(( is_reversal<T> ));
 }
@@ -25,7 +25,7 @@ typedef boost::mpl::vector<
         AKWDamme, Checkers, Czech, Frisian, HHoogland, International, Italian, Killer, Pool, Russian, Spanish
 > VariantsFalseType;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsReversalFalseType, T, VariantsFalseType)
+BOOST_AUTO_TEST_CASE_TEMPLATE(FalseType, T, VariantsFalseType)
 {
         BOOST_MPL_ASSERT_NOT(( is_reversal<T> ));
 }

@@ -10,7 +10,7 @@ namespace packed {
 
 typedef set<int> bitset;
 
-BOOST_AUTO_TEST_SUITE(BitSet)
+BOOST_AUTO_TEST_SUITE(PackedSet)
 
 BOOST_AUTO_TEST_CASE(Members)
 {

@@ -9,13 +9,13 @@
 namespace dctl {
 namespace bit {
 
-BOOST_AUTO_TEST_SUITE(TestLoop)
+BOOST_AUTO_TEST_SUITE(BitLoop)
 
 typedef boost::mpl::vector<
         uint32_t, uint64_t
 > UnsignedIntegerTypes;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Count, T, UnsignedIntegerTypes)
 {
         BOOST_CHECK_EQUAL(0, loop::count(zero<T>()));
 
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(LoopCount, T, UnsignedIntegerTypes)
         BOOST_CHECK_EQUAL(num_bits<T>::value, loop::count(universe<T>()));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(LoopIndex, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Index, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);

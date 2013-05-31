@@ -8,7 +8,7 @@
 namespace dctl {
 namespace successor {
 
-BOOST_AUTO_TEST_SUITE(TestInternational)
+BOOST_AUTO_TEST_SUITE(SuccessorValueInternational)
 
 // rules variants with the international capture precedence
 typedef boost::mpl::vector<

@@ -1,24 +1,20 @@
-#include <test/config.hpp>        // SUCCESSOR_TEST
-
-#if SUCCESSOR_TEST == 1
-
 #include <string>                       // string
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <test/successor/fixture.hpp>   // run
 #include <dctl/board/types.hpp>         // Roman
-#include <dctl/rules/variants.hpp>         // Italian
+#include <dctl/rules/variants.hpp>      // Italian
 
 namespace dctl {
 namespace successor {
 
-typedef Fixture<rules::Italian, board::Roman> FixtureItalian;
-
-BOOST_AUTO_TEST_SUITE(TestItalian)
+BOOST_AUTO_TEST_SUITE(SuccessorRulebookItalian)
 
 // Positions from the official Italian rules:
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 
-BOOST_FIXTURE_TEST_CASE(pawnJumpDirections, FixtureItalian)
+typedef Fixture<rules::Italian, board::Roman> F;
+
+BOOST_FIXTURE_TEST_CASE(PawnJumpDirections, F)
 {
         // Art. 5.6 (pawn jump directions)
         auto const FEN = "W:W30:B27";
@@ -26,7 +22,7 @@ BOOST_FIXTURE_TEST_CASE(pawnJumpDirections, FixtureItalian)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(pawnJumpContinuation, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(PawnJumpContinuation, F)
 {
         // Art. 5.7 (pawn jump continuation)
         auto const FEN = "W:W31:B12,20,28";
@@ -34,7 +30,7 @@ BOOST_FIXTURE_TEST_CASE(pawnJumpContinuation, FixtureItalian)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(kingJumpDirection, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(KingJumpDirection, F)
 {
         // Art. 5.8 (king jump directions)
         auto const FEN = "W:WK22:B18,19,27";
@@ -42,7 +38,7 @@ BOOST_FIXTURE_TEST_CASE(kingJumpDirection, FixtureItalian)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(kingJumpContinuation, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(KingJumpContinuation, F)
 {
         // Art. 5.9 (king jump continuation)
         auto const FEN = "W:WK27:B5,6,13,15,21,23";
@@ -50,7 +46,7 @@ BOOST_FIXTURE_TEST_CASE(kingJumpContinuation, FixtureItalian)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(jumpMostPieces, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(JumpMostPieces, F)
 {
         // Art. 6.6 (jump most pieces)
         auto const FEN = "W:WK21,31:B10,18,27";
@@ -58,7 +54,7 @@ BOOST_FIXTURE_TEST_CASE(jumpMostPieces, FixtureItalian)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(jumpWithKing, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(JumpWithKing, F)
 {
         // Art. 6.7 (jump with king)
         auto const FEN = "W:WK23,31:B19,26,27";
@@ -66,7 +62,7 @@ BOOST_FIXTURE_TEST_CASE(jumpWithKing, FixtureItalian)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(jumpMostKings, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(JumpMostKings, F)
 {
         // Art. 6.8 (jump most kings)
         auto const FEN = "W:WK23:B19,K28";
@@ -74,7 +70,7 @@ BOOST_FIXTURE_TEST_CASE(jumpMostKings, FixtureItalian)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(jumpFirstKing, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(JumpFirstKing, F)
 {
         // Art. 6.9 (jump first king)
         auto const FEN = "W:WK30:B10,12,18,K20,K26,27";
@@ -82,7 +78,7 @@ BOOST_FIXTURE_TEST_CASE(jumpFirstKing, FixtureItalian)
         run(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(equivalentJump, FixtureItalian)
+BOOST_FIXTURE_TEST_CASE(EquivalentJump, F)
 {
         // Art. 6.10 (equivalent jump)
         auto const FEN = "W:WK31:B18,20,K27,K28";
@@ -94,5 +90,3 @@ BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace successor
 }       // namespace dctl
-
-#endif

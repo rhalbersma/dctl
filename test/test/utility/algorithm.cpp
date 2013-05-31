@@ -8,7 +8,7 @@
 namespace dctl {
 namespace algorithm {
 
-BOOST_AUTO_TEST_SUITE(Algorithm)
+BOOST_AUTO_TEST_SUITE(UtilityAlgorithm)
 
 BOOST_AUTO_TEST_CASE(InsertionSort)
 {

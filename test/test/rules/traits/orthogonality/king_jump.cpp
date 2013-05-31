@@ -17,7 +17,7 @@ typedef boost::mpl::vector<
         AKWDamme, Checkers, Czech, International, Italian, Killer, Pool, Russian, Spanish, Thai
 > VariantsNone;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(KingJumpNone, T, VariantsNone)
+BOOST_AUTO_TEST_CASE_TEMPLATE(None, T, VariantsNone)
 {
         BOOST_MPL_ASSERT((std::is_same< typename king_jump<T>::type, none >));
 }
@@ -26,7 +26,7 @@ typedef boost::mpl::vector<
         HHoogland
 > VariantsRelative;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(KingJumpRelative, T, VariantsRelative)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Relative, T, VariantsRelative)
 {
         BOOST_MPL_ASSERT((std::is_same< typename king_jump<T>::type, relative >));
 }
@@ -35,7 +35,7 @@ typedef boost::mpl::vector<
         Frisian
 > VariantsAbsolute;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(KingJumpAbsolute, T, VariantsAbsolute)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Absolute, T, VariantsAbsolute)
 {
         BOOST_MPL_ASSERT((std::is_same< typename king_jump<T>::type, absolute >));
 }

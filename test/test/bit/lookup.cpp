@@ -9,13 +9,13 @@
 namespace dctl {
 namespace bit {
 
-BOOST_AUTO_TEST_SUITE(TestLookup)
+BOOST_AUTO_TEST_SUITE(BitLookup)
 
 typedef boost::mpl::vector<
         uint32_t, uint64_t
 > UnsignedIntegerTypes;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(LookupCount, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Count, T, UnsignedIntegerTypes)
 {
         BOOST_CHECK_EQUAL(0, lookup::count(zero<T>()));
 
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(LookupCount, T, UnsignedIntegerTypes)
         BOOST_CHECK_EQUAL(num_bits<T>::value, lookup::count(universe<T>()));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(LookupIndex, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Index, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);

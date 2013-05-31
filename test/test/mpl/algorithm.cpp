@@ -9,7 +9,7 @@
 namespace dctl {
 namespace mpl {
 
-BOOST_AUTO_TEST_SUITE(TestAlgorithm)
+BOOST_AUTO_TEST_SUITE(MPLAlgorithm)
 
 typedef int P;
 typedef std::string N;
@@ -26,7 +26,7 @@ typedef boost::mpl::vector<B, D> derived_types;
 typedef boost::mpl::vector<B, D, E> both_types;
 typedef boost::mpl::vector<E> independent_types;
 
-BOOST_AUTO_TEST_CASE(allOf)
+BOOST_AUTO_TEST_CASE(AllOf)
 {
         BOOST_MPL_ASSERT    (( all_of< pod_types,     std::is_pod< boost::mpl::_1 > > ));
         BOOST_MPL_ASSERT_NOT(( all_of< mixed_types,   std::is_pod< boost::mpl::_1 > > ));
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(allOf)
         BOOST_MPL_ASSERT_NOT(( all_of< independent_types, std::is_base_of< B, boost::mpl::_1 > > ));
 }
 
-BOOST_AUTO_TEST_CASE(noneOf)
+BOOST_AUTO_TEST_CASE(NoneOf)
 {
         BOOST_MPL_ASSERT_NOT(( none_of< pod_types,     std::is_pod< boost::mpl::_1 > > ));
         BOOST_MPL_ASSERT_NOT(( none_of< mixed_types,   std::is_pod< boost::mpl::_1 > > ));
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(noneOf)
         BOOST_MPL_ASSERT    (( none_of< independent_types, std::is_base_of< B, boost::mpl::_1 > > ));
 }
 
-BOOST_AUTO_TEST_CASE(anyOf)
+BOOST_AUTO_TEST_CASE(AnyOf)
 {
         BOOST_MPL_ASSERT    (( any_of< pod_types,     std::is_pod< boost::mpl::_1 > > ));
         BOOST_MPL_ASSERT    (( any_of< mixed_types,   std::is_pod< boost::mpl::_1 > > ));
