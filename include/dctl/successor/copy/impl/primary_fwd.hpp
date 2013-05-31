@@ -7,11 +7,11 @@ namespace impl {
 
 template
 <
-        bool,           // Color
-        typename,       // Material
-        typename,       // Select
-        typename,       // Position
-        typename        // Vector
+        bool,   // Color
+        class,  // Material
+        class,  // Select
+        class,  // Position
+        class   // Vector
 >
 struct copy;
 

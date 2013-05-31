@@ -18,7 +18,7 @@ namespace detail {
 namespace impl {
 
 // partial specialization for king moves generation
-template<bool Color, typename Position, typename Vector>
+template<bool Color, class Position, class Vector>
 struct copy<Color, material::king, select::moves, Position, Vector>
 :
         // enforce reference semantics
@@ -71,7 +71,7 @@ private:
                 find<typename Compass::right_up  >(from_sq);
         }
 
-        template<typename Direction>
+        template<class Direction>
         void find(BitIndex from_sq) const
         {
                 // tag dispatching on king range
@@ -79,7 +79,7 @@ private:
         }
 
         // overload for short ranged kings
-        template<typename Direction>
+        template<class Direction>
         void find_dispatch(BitIndex from_sq, rules::range::distance_1) const
         {
                 if (auto const dest_sq = Next<Board, Direction>()(from_sq) & propagate_.path())
@@ -87,7 +87,7 @@ private:
         }
 
         // overload for long ranged kings
-        template<typename Direction>
+        template<class Direction>
         void find_dispatch(BitIndex from_sq, rules::range::distance_N) const
         {
                 for (
