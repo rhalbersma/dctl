@@ -1,7 +1,10 @@
 #pragma once
-#include <dctl/rules/variants/checkers_fwd.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/successor/value.hpp>
+#include <type_traits>                          // integral_constant
+#include <dctl/rules/variants/checkers_fwd.hpp> // Checkers
+#include <dctl/rules/types/range.hpp>           // distance_1
+#include <dctl/rules/types/directions.hpp>      // up
+#include <dctl/rules/types/precedence.hpp>      // none
+#include <dctl/successor/value.hpp>             // Value (primary template)
 
 namespace dctl {
 namespace rules {

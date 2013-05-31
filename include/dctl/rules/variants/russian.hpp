@@ -1,7 +1,11 @@
 #pragma once
-#include <dctl/rules/variants/russian_fwd.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/successor/value/russian.hpp>
+#include <type_traits>                          // integral_constant
+#include <dctl/rules/variants/russian_fwd.hpp>  // Russian
+#include <dctl/rules/types/range.hpp>           // distance_N
+#include <dctl/rules/types/directions.hpp>      // diag
+#include <dctl/rules/types/precedence.hpp>      // none
+#include <dctl/rules/types/phase.hpp>           // en_passant
+#include <dctl/successor/value/russian.hpp>     // Value (Russian specialization)
 #include <dctl/notation/russian.hpp>
 
 namespace dctl {

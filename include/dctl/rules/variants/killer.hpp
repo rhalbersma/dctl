@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/rules/variants/killer_fwd.hpp>
-#include <dctl/rules/variants/international.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/successor/value/killer.hpp>
+#include <dctl/rules/variants/killer_fwd.hpp>           // Killer
+#include <dctl/rules/variants/international.hpp>        // International
+#include <dctl/rules/types/range.hpp>                   // distance_1K
+#include <dctl/successor/value/killer.hpp>              // Value (Killer specialization)
 
 namespace dctl {
 namespace rules {

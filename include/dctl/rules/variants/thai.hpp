@@ -1,8 +1,11 @@
 #pragma once
-#include <type_traits>
-#include <dctl/rules/variants/thai_fwd.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/successor/value.hpp>
+#include <type_traits>                          // true_type, integral_constant
+#include <dctl/rules/variants/thai_fwd.hpp>     // Thai
+#include <dctl/rules/types/range.hpp>           // distance_1, distance_N
+#include <dctl/rules/types/directions.hpp>      // up
+#include <dctl/rules/types/precedence.hpp>      // none
+#include <dctl/rules/types/phase.hpp>           // en_passant
+#include <dctl/successor/value.hpp>             // Value (Thai specialization)
 #include <dctl/notation/thai.hpp>
 
 namespace dctl {

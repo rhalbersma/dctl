@@ -1,18 +1,18 @@
-#include <type_traits>                  // is_same
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
-#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/rules/types.hpp>
+#include <type_traits>                          // is_same
+#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
+#include <dctl/rules/variants/akw_damme.hpp>    // AKWDamme
 #include <dctl/rules/traits.hpp>
-#include <dctl/rules/variants.hpp>
+#include <dctl/rules/types.hpp>
 
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(TestDamme)
+BOOST_AUTO_TEST_SUITE(RulesVariantsAKWDamme)
 
-typedef rules::Damme T;
+typedef AKWDamme T;
 
-BOOST_AUTO_TEST_CASE(Traits)
+BOOST_AUTO_TEST_CASE(AKWDammeTraits)
 {
         BOOST_MPL_ASSERT((std::is_same< range::halt<T>::type, range::distance_1 >));
 }

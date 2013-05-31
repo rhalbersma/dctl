@@ -1,23 +1,26 @@
-#include <type_traits>                          // is_same
-#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
-#include <boost/mpl/vector.hpp>                 // vector
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
-#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <dctl/rules/types.hpp>
+#include <type_traits>                                  // is_same
+#include <boost/mpl/assert.hpp>                         // BOOST_MPL_ASSERT
+#include <boost/mpl/vector.hpp>                         // vector
+#include <boost/test/unit_test.hpp>                     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
+#include <boost/test/test_case_template.hpp>            // BOOST_AUTO_TEST_CASE_TEMPLATE
+#include <dctl/rules/variants/akw_damme.hpp>            // AKWDamme
+#include <dctl/rules/variants/h_hoogland.hpp>           // HHoogland
+#include <dctl/rules/variants/international.hpp>        // International
+#include <dctl/rules/variants/killer.hpp>               // Killer
 #include <dctl/rules/traits.hpp>
-#include <dctl/rules/variants.hpp>
+#include <dctl/rules/types.hpp>
 
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(TestInternational)
+BOOST_AUTO_TEST_SUITE(RulesVariantsInternational)
 
 // rules variants derived from international draughts
 typedef boost::mpl::vector<
-        rules::International, rules::Damme, rules::Hoogland, rules::Killer
-> DerivedFromInternational;
+        AKWDamme, International, HHoogland, Killer
+> VariantsDerivedFromInternational;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Traits, T, DerivedFromInternational)
+BOOST_AUTO_TEST_CASE_TEMPLATE(InternationalTraits, T, VariantsDerivedFromInternational)
 {
         BOOST_MPL_ASSERT((std::is_same< typename           range::scan<T>::type, range::distance_N    >));
         BOOST_MPL_ASSERT((std::is_same< typename directions::pawn_jump<T>::type, directions::diag     >));

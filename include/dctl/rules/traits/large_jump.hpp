@@ -19,12 +19,9 @@ struct large_jump
                         boost::mpl::and_<
                                 std::is_same< typename
                                         phase::capture<Rules>::type,
-                                        phase::apres_fini
+                                        phase::en_passant
                                 >,
-                                std::is_same< typename
-                                        directions::is_reversal<Rules>::type,
-                                        std::true_type
-                                >
+                                directions::is_reversal<Rules>
                         >,
                         std::is_same< typename
                                 directions::pawn_jump<Rules>::type,
@@ -32,7 +29,7 @@ struct large_jump
                         >
                 >,
                 std::integral_constant<int, 3>,
-                std::integral_constant<int, 3>
+                std::integral_constant<int, 4>
         >::type
 {};
 

@@ -1,8 +1,10 @@
 #pragma once
-#include <type_traits>
-#include <dctl/rules/variants/czech_fwd.hpp>
-#include <dctl/rules/types.hpp>
-#include <dctl/successor/value.hpp>
+#include <type_traits>                          // true_type
+#include <dctl/rules/variants/czech_fwd.hpp>    // Czech
+#include <dctl/rules/types/range.hpp>           // distance_N
+#include <dctl/rules/types/directions.hpp>      // up
+#include <dctl/rules/types/precedence.hpp>      // none
+#include <dctl/successor/value.hpp>             // Value (primary template)
 #include <dctl/notation/czech.hpp>
 
 namespace dctl {

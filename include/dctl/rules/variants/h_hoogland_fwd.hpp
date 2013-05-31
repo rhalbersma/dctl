@@ -3,10 +3,10 @@
 namespace dctl {
 namespace rules {
 
-struct Hoogland;
+struct HHoogland;
 
 // aliases
-typedef Hoogland NieuweSpeelwijze;
+typedef HHoogland NieuweSpeelwijze;
 
 }       // namespace rules
 }       // namespace dctl
