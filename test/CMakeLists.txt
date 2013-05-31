@@ -41,22 +41,25 @@ file(GLOB_RECURSE dctl_headers FOLLOW_SYMLINKS "${dctl_include_dirs}/*.hpp")
 # Standalone headers
 ###############################################################
 
-set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
-set(CMAKE_REQUIRED_INCLUDES ${dctl_include_dirs})
-include(CheckIncludeFileCXX)
+# cmake -DCHECKINCLUDEFILECXX=true runs this test
+if(CHECKINCLUDEFILECXX)
+  set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
+  set(CMAKE_REQUIRED_INCLUDES ${dctl_include_dirs})
+  include(CheckIncludeFileCXX)
 
-foreach(h ${dctl_headers})
-  # header name without extension
-  get_filename_component(header_name ${h} NAME_WE)
+  foreach(h ${dctl_headers})
+    # header name without extension
+    get_filename_component(header_name ${h} NAME_WE)
 
-  # check if header is standalone
-  check_include_file_cxx("${h}" ${header_name}_IS_STANDALONE)
+    # check if header is standalone
+    check_include_file_cxx("${h}" ${header_name}_IS_STANDALONE)
 
-  # fail early, fail hard
-  if(NOT ${header_name}_IS_STANDALONE)
+    # fail early, fail hard
+    if(NOT ${header_name}_IS_STANDALONE)
       message(FATAL_ERROR "Found a non-standalone header (see CMakeFiles/CMakeError.log for details).")
-  endif()
-endforeach(h)
+    endif()
+  endforeach()
+endif()
 
 ###############################################################
 # Test suite
