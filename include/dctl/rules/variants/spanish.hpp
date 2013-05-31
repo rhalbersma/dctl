@@ -1,7 +1,9 @@
 #pragma once
-#include <dctl/rules/variants/spanish_fwd.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/successor/value/spanish.hpp>
+#include <dctl/rules/variants/spanish_fwd.hpp>  // Spanish
+#include <dctl/rules/types/range.hpp>           // distance_N
+#include <dctl/rules/types/directions.hpp>      // up
+#include <dctl/rules/types/precedence.hpp>      // quality
+#include <dctl/successor/value/spanish.hpp>     // Value (Spanish specialization)
 
 namespace dctl {
 namespace rules {

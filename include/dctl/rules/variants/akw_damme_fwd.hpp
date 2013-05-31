@@ -3,7 +3,7 @@
 namespace dctl {
 namespace rules {
 
-struct Damme;
+struct AKWDamme;
 
 }       // namespace rules
 }       // namespace dctl

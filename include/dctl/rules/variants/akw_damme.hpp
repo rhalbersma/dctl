@@ -1,15 +1,15 @@
 #pragma once
-#include <dctl/rules/variants/akw_damme_fwd.hpp>
-#include <dctl/rules/variants/international.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/successor/value/akw_damme.hpp>
+#include <dctl/rules/variants/akw_damme_fwd.hpp>        // AKWDamme
+#include <dctl/rules/variants/international.hpp>        // International
+#include <dctl/rules/types/range.hpp>                   // distance_1
+#include <dctl/successor/value/akw_damme.hpp>           // Value (AKWDamme specialization)
 
 namespace dctl {
 namespace rules {
 
 // A.K.W. Damme's proposal (1922)
 
-struct Damme
+struct AKWDamme
 :
         // main rules
         International

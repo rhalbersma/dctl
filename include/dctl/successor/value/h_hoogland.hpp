@@ -1,14 +1,14 @@
 #pragma once
 #include <dctl/successor/value_fwd.hpp>                 // Value (primary template)
 #include <dctl/successor/value/international.hpp>       // International (specialization)
-#include <dctl/rules/variants/hoogland_fwd.hpp>         // Hoogland
+#include <dctl/rules/variants/h_hoogland_fwd.hpp>       // HHoogland
 
 namespace dctl {
 namespace successor {
 
 // specialization for H. Hoogland's proposal
 template<>
-class Value<rules::Hoogland>
+class Value<rules::HHoogland>
 :
         public Value<rules::International>
 {

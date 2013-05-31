@@ -1,8 +1,10 @@
 #pragma once
-#include <type_traits>
-#include <dctl/rules/variants/frisian_fwd.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/successor/value/frisian.hpp>
+#include <type_traits>                          // true_type, integral_constant
+#include <dctl/rules/variants/frisian_fwd.hpp>  // Frisian
+#include <dctl/rules/types/range.hpp>           // distance_N
+#include <dctl/rules/types/directions.hpp>      // all
+#include <dctl/rules/types/precedence.hpp>      // quality
+#include <dctl/successor/value/frisian.hpp>     // Value (Frisian specialization)
 
 namespace dctl {
 namespace rules {

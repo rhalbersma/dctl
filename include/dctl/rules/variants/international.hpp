@@ -1,7 +1,10 @@
 #pragma once
-#include <dctl/rules/variants/international_fwd.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/successor/value/international.hpp>
+#include <type_traits>                                  // integral_constant
+#include <dctl/rules/variants/international_fwd.hpp>    // International
+#include <dctl/rules/types/range.hpp>                   // distance_N
+#include <dctl/rules/types/directions.hpp>              // diag
+#include <dctl/rules/types/precedence.hpp>              // quantity
+#include <dctl/successor/value/international.hpp>       // Value (International specialization)
 
 namespace dctl {
 namespace rules {

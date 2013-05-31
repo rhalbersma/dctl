@@ -1,8 +1,10 @@
 #pragma once
-#include <type_traits>
-#include <dctl/rules/variants/italian_fwd.hpp>
-#include <dctl/rules/traits.hpp>
-#include <dctl/successor/value/italian.hpp>
+#include <type_traits>                          // false_type, true_type, integral_constant
+#include <dctl/rules/variants/italian_fwd.hpp>  // Italian
+#include <dctl/rules/types/range.hpp>           // distance_1
+#include <dctl/rules/types/directions.hpp>      // up
+#include <dctl/rules/types/precedence.hpp>      // quality
+#include <dctl/successor/value/italian.hpp>     // Value (Italian specialization)
 
 namespace dctl {
 namespace rules {
