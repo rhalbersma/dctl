@@ -17,7 +17,7 @@ typedef boost::mpl::vector<
         AKWDamme, Checkers, Italian, Thai
 > VariantsDistance1;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(HaltDistance1, T, VariantsDistance1)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Distance1, T, VariantsDistance1)
 {
         BOOST_MPL_ASSERT((std::is_same< typename halt<T>::type, distance_1  >));
 }
@@ -26,7 +26,7 @@ typedef boost::mpl::vector<
         Killer
 > VariantsDistance1K;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(HaltDistance1K, T, VariantsDistance1K)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Distance1K, T, VariantsDistance1K)
 {
         BOOST_MPL_ASSERT((std::is_same< typename halt<T>::type, distance_1K >));
 }
@@ -35,7 +35,7 @@ typedef boost::mpl::vector<
         Czech, Frisian, HHoogland, International, Pool, Russian, Spanish
 > VariantsDistanceN;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(HaltDistanceN, T, VariantsDistanceN)
+BOOST_AUTO_TEST_CASE_TEMPLATE(DistanceN, T, VariantsDistanceN)
 {
         BOOST_MPL_ASSERT((std::is_same< typename halt<T>::type, distance_N  >));
 }

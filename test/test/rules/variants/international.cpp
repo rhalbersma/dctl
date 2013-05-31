@@ -20,7 +20,7 @@ typedef boost::mpl::vector<
         AKWDamme, International, HHoogland, Killer
 > VariantsDerivedFromInternational;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(InternationalTraits, T, VariantsDerivedFromInternational)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Traits, T, VariantsDerivedFromInternational)
 {
         BOOST_MPL_ASSERT((std::is_same< typename           range::scan<T>::type, range::distance_N    >));
         BOOST_MPL_ASSERT((std::is_same< typename directions::pawn_jump<T>::type, directions::diag     >));

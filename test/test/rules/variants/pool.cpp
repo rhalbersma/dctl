@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(RulesVariantsPool)
 
 typedef Pool T;
 
-BOOST_AUTO_TEST_CASE(PoolTraits)
+BOOST_AUTO_TEST_CASE(Traits)
 {
         BOOST_MPL_ASSERT((std::is_same<           range::scan<T>::type, range::distance_N >));
         BOOST_MPL_ASSERT((std::is_same< directions::pawn_jump<T>::type, directions::diag  >));

@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(RulesVariantsKiller)
 
 typedef Killer T;
 
-BOOST_AUTO_TEST_CASE(KillerTraits)
+BOOST_AUTO_TEST_CASE(Traits)
 {
         BOOST_MPL_ASSERT((std::is_same< range::halt<T>::type, range::distance_1K >));
 }

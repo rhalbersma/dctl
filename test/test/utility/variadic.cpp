@@ -8,7 +8,7 @@
 namespace dctl {
 namespace variadic {
 
-BOOST_AUTO_TEST_SUITE(Variadic)
+BOOST_AUTO_TEST_SUITE(UtilityVariadic)
 
 BOOST_AUTO_TEST_CASE(CartesianProduct)
 {

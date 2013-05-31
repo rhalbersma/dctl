@@ -17,7 +17,7 @@ typedef boost::mpl::vector<
         Checkers, Czech, Pool, Russian, Thai
 > VariantsNone;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(JumpNone, T, VariantsNone)
+BOOST_AUTO_TEST_CASE_TEMPLATE(None, T, VariantsNone)
 {
         BOOST_MPL_ASSERT((std::is_same< typename jump<T>::type, none >));
 }
@@ -26,7 +26,7 @@ typedef boost::mpl::vector<
         AKWDamme, HHoogland, International, Killer
 > VariantsQuantity;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(JumpQuantity, T, VariantsQuantity)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Quantity, T, VariantsQuantity)
 {
         BOOST_MPL_ASSERT((std::is_same< typename jump<T>::type, quantity >));
 }
@@ -35,7 +35,7 @@ typedef boost::mpl::vector<
         Frisian, Italian, Spanish
 > VariantsQuality;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(JumpQuality, T, VariantsQuality)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Quality, T, VariantsQuality)
 {
         BOOST_MPL_ASSERT((std::is_same< typename jump<T>::type, quality >));
 }

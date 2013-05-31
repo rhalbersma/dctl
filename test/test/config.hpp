@@ -1,7 +1,5 @@
 #pragma once
 
-#define SUCCESSOR_TEST                  1
-
 #define WALK_INITIAL_BOARD8x8           1
 #define WALK_INITIAL_RECTANGULAR        0
 #define WALK_INTERNATIONAL_FMJD         0

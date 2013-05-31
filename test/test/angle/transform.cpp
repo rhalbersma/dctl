@@ -12,7 +12,7 @@ namespace dctl {
 namespace mpl {
 namespace lazy {
 
-BOOST_AUTO_TEST_SUITE(TestTransform)
+BOOST_AUTO_TEST_SUITE(AngleTransform)
 
 typedef boost::mpl::vector<
         angle::D000, angle::D045, angle::D090, angle::D135,

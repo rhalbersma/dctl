@@ -9,13 +9,13 @@
 namespace dctl {
 namespace bit {
 
-BOOST_AUTO_TEST_SUITE(TestIntrinsic)
+BOOST_AUTO_TEST_SUITE(BitIntrinsic)
 
 typedef boost::mpl::vector<
         uint64_t
 > UnsignedIntegerTypes;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IntrinsicCount, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Count, T, UnsignedIntegerTypes)
 {
         BOOST_CHECK_EQUAL(0, intrinsic::count(zero<T>()));
 
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IntrinsicCount, T, UnsignedIntegerTypes)
         BOOST_CHECK_EQUAL(num_bits<T>::value, intrinsic::count(universe<T>()));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IntrinsicIndex, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Index, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);

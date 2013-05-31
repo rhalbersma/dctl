@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(RulesVariantsHHoogland)
 
 typedef HHoogland T;
 
-BOOST_AUTO_TEST_CASE(HHooglandTraits)
+BOOST_AUTO_TEST_CASE(Traits)
 {
         BOOST_MPL_ASSERT((std::is_same< orthogonality::king_jump<T>::type, orthogonality::relative >));
 }

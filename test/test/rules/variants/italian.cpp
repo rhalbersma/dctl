@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(RulesVariantsItalian)
 
 typedef Italian T;
 
-BOOST_AUTO_TEST_CASE(ItalianTraits)
+BOOST_AUTO_TEST_CASE(Traits)
 {
         BOOST_MPL_ASSERT((std::is_same<           range::scan<T>::type, range::distance_1   >));
         BOOST_MPL_ASSERT((std::is_same< directions::pawn_jump<T>::type, directions::up      >));

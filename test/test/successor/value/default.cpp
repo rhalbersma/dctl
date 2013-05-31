@@ -7,7 +7,7 @@
 namespace dctl {
 namespace successor {
 
-BOOST_AUTO_TEST_SUITE(TestDefault)
+BOOST_AUTO_TEST_SUITE(SuccessorValueDefault)
 
 // rules variants without capture precedence
 typedef boost::mpl::vector<

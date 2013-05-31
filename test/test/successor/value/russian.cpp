@@ -4,7 +4,7 @@
 namespace dctl {
 namespace successor {
 
-BOOST_AUTO_TEST_SUITE(TestRussian)
+BOOST_AUTO_TEST_SUITE(SuccessorValueRussian)
 
 typedef Value<rules::Russian> value_type;
 

@@ -8,7 +8,7 @@
 namespace dctl {
 namespace bit {
 
-BOOST_AUTO_TEST_SUITE(TestBit)
+BOOST_AUTO_TEST_SUITE(BitBit)
 
 typedef boost::mpl::vector<
         uint32_t, uint64_t

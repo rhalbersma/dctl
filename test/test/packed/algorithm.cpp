@@ -7,7 +7,7 @@ namespace packed {
 
 typedef set<int> bitset;
 
-BOOST_AUTO_TEST_SUITE(Algorithms)
+BOOST_AUTO_TEST_SUITE(PackedAlgorithm)
 
 BOOST_AUTO_TEST_CASE(SetIntersection)
 {

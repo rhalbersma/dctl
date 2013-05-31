@@ -8,7 +8,7 @@
 namespace dctl {
 namespace packed {
 
-BOOST_AUTO_TEST_SUITE(Raw)
+BOOST_AUTO_TEST_SUITE(PackedRaw)
 
 BOOST_AUTO_TEST_CASE(DeBruijn)
 {

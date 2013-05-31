@@ -17,7 +17,7 @@ typedef boost::mpl::vector<
         Checkers, Italian, Thai
 > VariantsDistance1;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(LandDistance1, T, VariantsDistance1)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Distance1, T, VariantsDistance1)
 {
         BOOST_MPL_ASSERT((std::is_same< typename land<T>::type, distance_1 >));
 }
@@ -26,7 +26,7 @@ typedef boost::mpl::vector<
         AKWDamme, Czech, Frisian, HHoogland, International, Killer, Pool, Russian, Spanish
 > VariantsDistanceN;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(LandDistanceN, T, VariantsDistanceN)
+BOOST_AUTO_TEST_CASE_TEMPLATE(DistanceN, T, VariantsDistanceN)
 {
         BOOST_MPL_ASSERT((std::is_same< typename land<T>::type, distance_N >));
 }

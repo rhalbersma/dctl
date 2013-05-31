@@ -7,9 +7,9 @@ namespace dctl {
 namespace group {
 namespace axioms {
 
-BOOST_AUTO_TEST_SUITE(TestAxioms)
+BOOST_AUTO_TEST_SUITE(GroupAxioms)
 
-BOOST_AUTO_TEST_CASE(isRealized)
+BOOST_AUTO_TEST_CASE(IsRealized)
 {
         BOOST_MPL_ASSERT(( is_realized<C1> ));
         BOOST_MPL_ASSERT(( is_realized<C2> ));

@@ -17,7 +17,7 @@ typedef boost::mpl::vector<
         Checkers, Czech, Italian, Spanish, Thai
 > VariantsUp;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(PawnJumpUp, T, VariantsUp)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Up, T, VariantsUp)
 {
         BOOST_MPL_ASSERT((std::is_same< typename pawn_jump<T>::type, up >));
 }
@@ -26,7 +26,7 @@ typedef boost::mpl::vector<
         AKWDamme, HHoogland, International, Killer, Pool, Russian
 > VariantsDiag;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(PawnJumpDiag, T, VariantsDiag)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Diag, T, VariantsDiag)
 {
         BOOST_MPL_ASSERT((std::is_same< typename pawn_jump<T>::type, diag >));
 }
@@ -35,7 +35,7 @@ typedef boost::mpl::vector<
         Frisian
 > VariantsAll;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(PawnJumpAll, T, VariantsAll)
+BOOST_AUTO_TEST_CASE_TEMPLATE(All, T, VariantsAll)
 {
         BOOST_MPL_ASSERT((std::is_same< typename pawn_jump<T>::type, all >));
 }

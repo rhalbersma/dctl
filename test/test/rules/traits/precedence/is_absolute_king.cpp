@@ -16,7 +16,7 @@ typedef boost::mpl::vector<
         AKWDamme, Checkers, Frisian, HHoogland, International, Italian, Killer, Pool, Russian, Spanish, Thai
 > VariantsFalseType;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsAbsoluteKingFalseType, T, VariantsFalseType)
+BOOST_AUTO_TEST_CASE_TEMPLATE(FalseType, T, VariantsFalseType)
 {
         BOOST_MPL_ASSERT_NOT(( is_absolute_king<T> ));
 }
@@ -25,7 +25,7 @@ typedef boost::mpl::vector<
         Czech
 > VariantsTrueType;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsAbsoluteKingTrueType, T, VariantsTrueType)
+BOOST_AUTO_TEST_CASE_TEMPLATE(TrueType, T, VariantsTrueType)
 {
         BOOST_MPL_ASSERT(( is_absolute_king<T> ));
 }

@@ -9,7 +9,7 @@
 namespace dctl {
 namespace successor {
 
-BOOST_AUTO_TEST_SUITE(TestSpanish)
+BOOST_AUTO_TEST_SUITE(SuccessorValueSpanish)
 
 typedef Value<rules::Spanish> value_type;
 

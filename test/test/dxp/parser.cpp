@@ -11,7 +11,7 @@
 namespace dctl {
 namespace dxp {
 
-BOOST_AUTO_TEST_SUITE(TestParser)
+BOOST_AUTO_TEST_SUITE(DXPParser)
 
 BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
