@@ -13,7 +13,7 @@
 namespace dctl {
 namespace walk {
 
-BOOST_AUTO_TEST_SUITE(TestInitialBoard8x8)
+BOOST_AUTO_TEST_SUITE(WalkInitialBoard8x8)
 
 // The alternative game rules thread on the Shashki forum
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html

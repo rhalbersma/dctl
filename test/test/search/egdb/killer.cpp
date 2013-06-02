@@ -10,11 +10,11 @@
 namespace dctl {
 namespace search {
 
-BOOST_AUTO_TEST_SUITE(TestKiller)
+BOOST_AUTO_TEST_SUITE(SearchEGDBKiller)
 
-typedef Fixture< Position<rules::Killer, board::International>, DefaultObjective > KillerFixture;
+typedef Fixture< Position<rules::Killer, board::International>, DefaultObjective > F;
 
-BOOST_FIXTURE_TEST_CASE(KillerDavidGoliath, KillerFixture)
+BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W23:B5,6", 29),    // David & Goliath
@@ -26,7 +26,7 @@ BOOST_FIXTURE_TEST_CASE(KillerDavidGoliath, KillerFixture)
 // Michel Grimminkc's statistics on longest wins in the Killer endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html
 
-BOOST_FIXTURE_TEST_CASE(Killer11, KillerFixture)
+BOOST_FIXTURE_TEST_CASE(Longest11, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W31:B5"   , 17),   // 1010
@@ -37,7 +37,7 @@ BOOST_FIXTURE_TEST_CASE(Killer11, KillerFixture)
         run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(Killer21, KillerFixture)
+BOOST_FIXTURE_TEST_CASE(Longest21, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W41,46:B24"  , 63),        // 2010
@@ -56,7 +56,7 @@ BOOST_FIXTURE_TEST_CASE(Killer21, KillerFixture)
         run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(Killer22, KillerFixture)
+BOOST_FIXTURE_TEST_CASE(Longest22, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W31,49:B9,14"    , 77),    // 2020
@@ -72,7 +72,7 @@ BOOST_FIXTURE_TEST_CASE(Killer22, KillerFixture)
         run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(Killer31, KillerFixture)
+BOOST_FIXTURE_TEST_CASE(Longest31, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W37,43,46:B44"    , 69),   // 3010

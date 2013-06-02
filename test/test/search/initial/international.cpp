@@ -13,9 +13,9 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestInternational)
 
-typedef Fixture< Position<rules::International, board::International>, DefaultObjective > InternationalFixture;
+typedef Fixture< Position<rules::International, board::International>, DefaultObjective > F;
 
-BOOST_FIXTURE_TEST_CASE(InternationalInitial, InternationalFixture)
+BOOST_FIXTURE_TEST_CASE(Initial, F)
 {
         auto const p = Position<rules::International, board::International>::initial();
         std::cout << sizeof(decltype(p)) << "\n";
