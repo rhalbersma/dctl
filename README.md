@@ -34,7 +34,7 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 * support for the [DamExchange protocol](http://www.mesander.nl/damexchange/edxpmain.htm)  
 * endgame database generation   
 
-[Requirements](../doc/requirements.md)
+[Requirements](doc/requirements.md)
 ------------
 
 ### Platforms
