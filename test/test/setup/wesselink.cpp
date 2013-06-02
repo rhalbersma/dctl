@@ -6,9 +6,9 @@
 namespace dctl {
 namespace setup {
 
-BOOST_AUTO_TEST_SUITE(TestSetup)
+BOOST_AUTO_TEST_SUITE(SetupWesselink)
 
-BOOST_AUTO_TEST_CASE(wiegerWesselink)
+BOOST_AUTO_TEST_CASE(WiegerWesselink)
 {
         // Test position from email conversation with Wieger Wesselink
         auto const w = "O     \

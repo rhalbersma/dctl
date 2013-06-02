@@ -14,7 +14,7 @@
 namespace dctl {
 namespace walk {
 
-BOOST_AUTO_TEST_SUITE(TestInternationalFMJD)
+BOOST_AUTO_TEST_SUITE(WalkInternationalFMJD)
 
 // The original perft thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308

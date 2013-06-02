@@ -8,7 +8,7 @@
 namespace dctl {
 namespace setup {
 
-BOOST_AUTO_TEST_SUITE(TestDiagram)
+BOOST_AUTO_TEST_SUITE(SetupLayout)
 
 typedef boost::mpl::vector<
         board::Micro, board::Mini, board::Checkers, board::Roman, board::International,

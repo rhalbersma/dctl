@@ -10,11 +10,11 @@
 namespace dctl {
 namespace search {
 
-BOOST_AUTO_TEST_SUITE(TestInternational)
+BOOST_AUTO_TEST_SUITE(SearchEGDBInternational)
 
-typedef Fixture< Position<rules::International, board::International>, DefaultObjective > InternationalFixture;
+typedef Fixture< Position<rules::International, board::International>, DefaultObjective > F;
 
-BOOST_FIXTURE_TEST_CASE(InternationalDavidGoliath, InternationalFixture)
+BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W23:B5,6", 29)     // David & Goliath
@@ -25,7 +25,7 @@ BOOST_FIXTURE_TEST_CASE(InternationalDavidGoliath, InternationalFixture)
 // Michel Grimminkc's statistics on longest wins in the International endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 
-BOOST_FIXTURE_TEST_CASE(International11, InternationalFixture)
+BOOST_FIXTURE_TEST_CASE(Longestl11, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W33:B2"  , 17),   // 1010
@@ -36,7 +36,7 @@ BOOST_FIXTURE_TEST_CASE(International11, InternationalFixture)
         run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(International21, InternationalFixture)
+BOOST_FIXTURE_TEST_CASE(Longest21, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W40,44:B3"   , 23),        // 2010
@@ -55,7 +55,7 @@ BOOST_FIXTURE_TEST_CASE(International21, InternationalFixture)
         run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(International22, InternationalFixture)
+BOOST_FIXTURE_TEST_CASE(Longest22, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W33,46:B4,5"     , 39),    // 2020
@@ -71,7 +71,7 @@ BOOST_FIXTURE_TEST_CASE(International22, InternationalFixture)
         run(tests);
 }
 
-BOOST_FIXTURE_TEST_CASE(International31, InternationalFixture)
+BOOST_FIXTURE_TEST_CASE(Longest31, F)
 {
         FEN_depth tests[] = {
                 FEN_depth("W:W12,13,16:B30"    , 23),   // 3010
