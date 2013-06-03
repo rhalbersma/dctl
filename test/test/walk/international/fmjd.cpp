@@ -1,7 +1,3 @@
-#include <test/config.hpp>
-
-#if WALK_INTERNATIONAL_FMJD == 1
-
 #include <boost/test/unit_test.hpp>
 #include <test/walk/fixture.hpp>
 #include <dctl/walk/root.hpp>
@@ -48,5 +44,3 @@ BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace walk
 }       // namespace dctl
-
-#endif
