@@ -35,8 +35,8 @@ bool is_duplicate_back(Container const& c)
 // mutating sequence algorithms
 
 // O(N) complexity: weak range extension of std::iota
-template<class OutputIterator, class Size>
-void iota_n(OutputIterator first, Size n, typename std::iterator_traits<OutputIterator>::value_type value)
+template<class OutputIterator, class Size, class T>
+void iota_n(OutputIterator first, Size n, T value)
 {
         std::generate_n(first, n, [&]() { return value++; });
 }

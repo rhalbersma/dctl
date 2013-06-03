@@ -20,9 +20,6 @@ static int score (Position const& p)
 template<typename Position>
 static void print_break_down(Position const& p)
 {
-        typedef typename Position::rules_type Rules;
-        typedef typename Position::board_type Board;
-
         std::cout << "Term    " << " BLACK"                                                                         << " WHITE"                                         << " DELTA"                                                      << "\n";
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";

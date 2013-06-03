@@ -1,7 +1,3 @@
-#include <test/config.hpp>
-
-#if SEARCH_EGDB_KILLER == 1
-
 #include <boost/test/unit_test.hpp>
 #include <test/search/fixture.hpp>
 #include <dctl/board/types.hpp>
@@ -99,5 +95,3 @@ BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace search
 }       // namespace dctl
-
-#endif
