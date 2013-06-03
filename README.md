@@ -52,7 +52,7 @@ The DCTL is a cross-platform library
 The DCTL is a modern [C++](http://isocpp.org) library that is dependent on many of the features that have come available with the new [C++11 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf). The C++11 features that the DCTL currently depends on consist of `auto`, initializer lists, lambda expressions, `nullptr`, range-based `for`-loop, rvalue references, `static_assert`, and variadic templates. Unfortunately, feature support for C++11 [differs across compiler vendors](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport). 
 
 * **Supported**:
-    * **tested:** the recommended and actively tested compilers are [g++](http://gcc.gnu.org/projects/cxx0x.html) and [Clang](http://clang.llvm.org/cxx_status.html). Current development takes place with g++ 4.7.2 and Clang 3.3 (on Linux), and MinGW g++ 4.8.0 (on Windows).
+    * **tested:** the recommended and actively tested compilers are [g++](http://gcc.gnu.org/projects/cxx0x.html) and [Clang](http://clang.llvm.org/cxx_status.html). Current development takes place with g++ 4.8.0 and Clang 3.2 (on Linux), and MinGW g++ 4.8.0 (on Windows).
     * **untested:** the minimally required but untested compilers are [Intel](http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler) 13.0, g++ 4.6.3, and Clang 3.1. However, it is strongly recommended to use the most recently available version of the compiler vendor of your choice.
 * **Unsupported:** 
     * the [Microsoft Visual C++ 2012](http://msdn.microsoft.com/en-us/library/vstudio/hh567368.aspx) compiler, even with its [November CTP](http://blogs.msdn.com/b/vcblog/archive/2012/11/02/visual-c-c-11-and-the-future-of-c.aspx), currently has insufficient(ly stable) C++11 support to reliably compile the DCTL test-suite. This could be subject to change when new updates come available.
@@ -99,14 +99,16 @@ To make sure that your build environment is compatible with the DCTL requirement
       mkdir build
       cd build
       cmake ..
-      make
-      make test
+      make -j10
+      ctest -j10 -Q -E "walk|search"
 
-The build will take about 35 seconds on a single 3.2 GHz Intel i7 core. You can speed up the build with a `make -j N` on a system supporting up to `N` (hyper)threads. To completely regenerate the test-suite's build solution, simply delete the contents of the entire `build/` directory and rerun the above commands. To only rebuild and rerun the test-suite, simply type 
+The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a fraction of second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
+
+To completely regenerate the test-suite's build solution, simply delete the contents of the entire `build/` directory and rerun the above commands. To skip the `cmake` configuration step, and only rebuild and rerun the test-suite, simply type 
 
       make clean
-      make
-      make test 
+      make -j10
+      ctest -j10 -Q -E "walk|search" 
 
 The test-suite runner follows the [UNIX rule of silence](http://www.linfo.org/rule_of_silence.html): if you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
