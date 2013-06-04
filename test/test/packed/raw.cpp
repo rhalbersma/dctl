@@ -1,8 +1,8 @@
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <algorithm>                            // is_sorted
 #include <cstdint>                              // uint64_t
 #include <iterator>                             // back_inserter
 #include <vector>                               // vector
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/packed/raw.hpp>                  // begin, end
 
 namespace dctl {
