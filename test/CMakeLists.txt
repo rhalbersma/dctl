@@ -1,5 +1,12 @@
+###############################################################
+# Test project settings
+###############################################################
+
+# require a recent CMake version
 cmake_minimum_required(VERSION 2.8)
-project(dctl_test)
+
+# this is a C++ only project
+project(TestProject CXX)
 
 ###############################################################
 # Compiler settings
@@ -25,29 +32,37 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wdisabled-optimization")
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
 # dynamically link against Boost
-add_definitions(-DBOOST_ALL_DYN_LINK -DBOOST_TEST_MAIN)
+add_definitions(-D BOOST_ALL_DYN_LINK)
+
+# define a main() entry point for each test
+add_definitions(-D BOOST_TEST_MAIN)
 
 ###############################################################
-# DCTL library
+# Parent project headers
 ###############################################################
 
-# locate the DCTL library
-set(dctl_include_dirs ${PROJECT_SOURCE_DIR}/../include)
+# locate the project under test
+set(ParentProject_include_dirs ${PROJECT_SOURCE_DIR}/../include)
 
-# the DCTL headers
-file(GLOB_RECURSE dctl_headers ${dctl_include_dirs}/*.hpp)
+# find the parent project headers
+file(GLOB_RECURSE ParentProject_headers ${ParentProject_include_dirs}/*.hpp)
 
 ###############################################################
-# Standalone headers
+# Standalone parent project headers
 ###############################################################
 
-# cmake -DCheckStandalone=true runs this test
+# to enable this part: cmake -D CheckStandalone=true
 if(CheckStandalone)
+  # compile with project wide compiler settings
   set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
-  set(CMAKE_REQUIRED_INCLUDES ${dctl_include_dirs})
+
+  # compile against the parent project headers
+  set(CMAKE_REQUIRED_INCLUDES ${ParentProject_include_dirs})
+
+  # enable standalone testing of the header files
   include(CheckIncludeFileCXX)
 
-  foreach(h ${dctl_headers})
+  foreach(h ${ParentProject_headers})
     # header name without extension
     get_filename_component(header_name ${h} NAME_WE)
 
@@ -65,35 +80,47 @@ endif()
 # Test suite
 ###############################################################
 
+# get the test sources
+file(GLOB_RECURSE test_sources RELATIVE ${PROJECT_SOURCE_DIR} *.cpp)
+
+# except any CMake generated sources under build/
+string(REGEX REPLACE "build/[^;]+;?" "" test_sources "${test_sources}")
+
+# get the test headers
+file(GLOB_RECURSE test_headers RELATIVE ${PROJECT_SOURCE_DIR} *.hpp)
+
+# except any CMake generated headers under build/
+string(REGEX REPLACE "build/[^;]+;?" "" test_headers "${test_headers}")
+
+# compile against the test headers, the parent project, and the Boost libraries
+include_directories(${PROJECT_SOURCE_DIR} ${ParentProject_include_dirs} ${Boost_INCLUDE_DIRS})
+
+# calls enable_testing()
 include(CTest)
-include_directories(${PROJECT_SOURCE_DIR} ${dctl_include_dirs} ${Boost_INCLUDE_DIRS})
 
+foreach(t ${test_sources} )
+  # get the relative path in the source tree
+  get_filename_component(test_path ${t} PATH)
 
-file(GLOB_RECURSE test_suites RELATIVE ${PROJECT_SOURCE_DIR} *.cpp)
+  # get the source name without extension
+  get_filename_component(test_name ${t} NAME_WE)
 
-string(REGEX REPLACE "build/[^;]+;?" "" test_suites "${test_suites}")
+  # concatenate the relative path and name in an underscore separated identifier
+  string(REPLACE "/" "_" test_concat "${test_path}/${test_name}")
 
-foreach(t ${test_suites} )
-    # Get the path to the test-case, relative to the ${CMAKE_CURRENT_SOURCE_DIR} 
-    # thanks to the RELATIVE flag in file( GLOB_RECURSE ... )
-    get_filename_component(test_path ${t} PATH)
+  # strip the leading "test_" part from the test ID
+  string(REGEX REPLACE "^test_" "" test_id ${test_concat})
 
-    # Get the name without extension
-    get_filename_component(test_name ${t} NAME_WE)
+  # depend on the current source file, all the test headers, and the parent project headers
+  add_executable(${test_id} ${t} ${test_headers} ${ParentProject_headers})
 
-    # construct a 'unique' test-name
-    string(REPLACE "/" "_" full_testcase "${test_path}/${test_name}")
+  # link against the Boost libraries
+  target_link_libraries(${test_id} ${Boost_LIBRARIES})
 
-    # Add an executable using the 'unique' test-name
-    message(STATUS "  added " ${full_testcase})
+  # match the relative path in the build tree with the corresponding one in the source tree 
+  set_target_properties(${test_id} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${test_path})
 
-    # depend on test sources and the DCTL headers
-    add_executable(${full_testcase} ${t} ${dctl_headers})
-
-    # and modify its output paths. 
-    set_target_properties(${full_testcase} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${test_path} )
-    target_link_libraries(${full_testcase} ${Boost_LIBRARIES})
-
-    add_test(${full_testcase} ${test_path}/${full_testcase})
+  # add a test with executable in the relative path of the build tree
+  add_test(${test_id} ${test_path}/${test_id})
 endforeach()
 
