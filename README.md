@@ -100,7 +100,7 @@ To make sure that your build environment is compatible with the DCTL requirement
       cd build
       cmake ..
       make -j10
-      ctest -j10 -Q -E "walk|search"
+      ctest -j10 -E "walk|search"
 
 The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a fraction of second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
 
@@ -108,7 +108,7 @@ To completely regenerate the test-suite's build solution, simply delete the cont
 
       make clean
       make -j10
-      ctest -j10 -Q -E "walk|search" 
+      ctest -j10 -E "walk|search" 
 
 The test-suite runner follows the [UNIX rule of silence](http://www.linfo.org/rule_of_silence.html): if you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
