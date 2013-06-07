@@ -12,6 +12,11 @@ namespace walk {
 
 BOOST_AUTO_TEST_SUITE(WalkItalianGilbert)
 
+BOOST_AUTO_TEST_CASE(Dummy)
+{
+        BOOST_CHECK(true);
+}
+
 // The alternative game rules thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 /*

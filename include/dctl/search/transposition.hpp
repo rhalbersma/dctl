@@ -22,11 +22,11 @@ public:
         Transposition(int v, int t, int d, int m)
         :
                 value_(static_cast<int16_t>(v)),
-                rest_(0)
+                rest_(static_cast<uint16_t>(0))
         {
-                rest_ ^= (t &  TYPE_MASK) <<  TYPE_SHIFT;
-                rest_ ^= (d & DEPTH_MASK) << DEPTH_SHIFT;
-                rest_ ^= (m &  MOVE_MASK) <<  MOVE_SHIFT;
+                rest_ = static_cast<uint16_t>(rest_ ^ ((t &  TYPE_MASK) <<  TYPE_SHIFT));
+                rest_ = static_cast<uint16_t>(rest_ ^ ((d & DEPTH_MASK) << DEPTH_SHIFT));
+                rest_ = static_cast<uint16_t>(rest_ ^ ((m &  MOVE_MASK) <<  MOVE_SHIFT));
         }
 
         // value
@@ -56,7 +56,7 @@ public:
         // index of the best move
         int move() const
         {
-                return (rest_ & (MOVE_MASK << MOVE_SHIFT)) >> MOVE_SHIFT;
+                return static_cast<int>((rest_ & (MOVE_MASK << MOVE_SHIFT)) >> MOVE_SHIFT);
         }
 
         // check for a cutoff against a non-null window
@@ -102,12 +102,6 @@ public:
 
         // modifiers
 
-        void set_move(int m)
-        {
-                rest_ ^= (move() & MOVE_MASK) << MOVE_SHIFT;
-                rest_ ^= (m      & MOVE_MASK) << MOVE_SHIFT;
-        }
-
         static int no_move()
         {
                 return MOVE_MASK;
@@ -148,9 +142,9 @@ private:
         BOOST_STATIC_CONSTANT(auto, DEPTH_SHIFT = TYPE_SHIFT + TYPE_BITS);
         BOOST_STATIC_CONSTANT(auto, MOVE_SHIFT = DEPTH_SHIFT + DEPTH_BITS);
 
-        BOOST_STATIC_CONSTANT(auto, TYPE_MASK = ((1 << TYPE_BITS) - 1));
         BOOST_STATIC_CONSTANT(auto, DEPTH_MASK = ((1 << DEPTH_BITS) - 1));
         BOOST_STATIC_CONSTANT(auto, MOVE_MASK = ((1 << MOVE_BITS) - 1));
+        BOOST_STATIC_CONSTANT(auto, TYPE_MASK = ((1 << TYPE_BITS) - 1));
 
         // representation
          int16_t value_;        // value
