@@ -176,11 +176,11 @@ private:
 
                 // move ordering
                 if (TT_entry && TT_entry->has_move()) {
-                        auto const TT_move = TT_entry->move() % moves.size();
+                        auto const TT_move = static_cast<std::size_t>(TT_entry->move()) % moves.size();
                         std::swap(move_order[0], move_order[TT_move]);
                 }
 
-                // search moves
+                // search movesa
                 auto const original_alpha = alpha;
                 auto best_value = -infinity();
                 auto best_move = Transposition::no_move();
@@ -192,7 +192,7 @@ private:
                 continuation.reserve(DCTL_PP_STACK_RESERVE);
 
                 for (auto const& i: move_order) {
-                        auto q = successor::make_copy(p, moves[i]);
+                        auto q = successor::make_copy(p, moves[static_cast<std::size_t>(i)]);
 
                         // TODO: TT singular extension
 
@@ -285,9 +285,9 @@ private:
 
                 Arena<Move>::type a;
                 auto const moves = successor::copy(p, a);
-                int const index = pv[ply] % moves.size();
+                auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
                 auto const best_move = moves[index];
-                TT.insert(p, Transposition(value, Bound::exact, depth, index));
+                TT.insert(p, Transposition(value, Bound::exact, depth, static_cast<int>(index)));
 
                 insert_pv(successor::make_copy(p, best_move), pv, -stretch(value), ply + 1);
         }
@@ -303,7 +303,7 @@ private:
 
                 Arena<Move>::type a;
                 auto const moves = successor::copy(p, a);
-                auto const best_move = moves[pv[ply] % moves.size()];
+                auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
                 std::cout << notation::write(p, best_move);
