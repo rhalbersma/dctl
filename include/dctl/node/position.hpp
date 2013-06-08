@@ -2,7 +2,7 @@
 #include <type_traits>                  // false_type, true_type
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/bit/bit.hpp>
-#include <dctl/hash/zobrist/init.hpp>
+#include <dctl/zobrist/hash.hpp>
 #include <dctl/node/position_fwd.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/move.hpp>
@@ -45,7 +45,7 @@ public:
                 distance_to_root_(0),
                 to_move_(to_move)
         {
-                hash_index_ = hash::zobrist::hash<HashIndex>(*this);
+                hash_index_ = zobrist::hash(*this);
                 BOOST_ASSERT(material_invariant());
         }
 
@@ -177,7 +177,7 @@ private:
 
                 if (active_kings(*this) && active_pawns(*this)) {
                         if (restricted.moves())
-                                hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, active_color(*this)));
+                                hash_index_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
 
                         if (!is_reversible(*this, m)) {
                                 if (restricted.moves())
@@ -194,7 +194,7 @@ private:
                                 BOOST_ASSERT(!restricted.moves() || bit::count(active_kings(*this)) > 1);
                                 restricted.init(dest_sq(*this, m));
                         }
-                        hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, active_color(*this)));
+                        hash_index_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
                 }
         }
 
@@ -209,7 +209,7 @@ private:
                                 packed::set_includes(captured_pieces(*this, m), passive_pawns(*this))
                         )
                 ) {
-                        hash_index_ ^= hash::zobrist::hash<HashIndex>(std::make_pair(restricted, passive_color(*this)));
+                        hash_index_ ^= zobrist::hash(std::make_pair(restricted, passive_color(*this)));
                         restricted.reset();
                 }
         }
@@ -223,13 +223,13 @@ private:
         void make_material(Move const& m)
         {
                 material_ ^= m;
-                hash_index_ ^= hash::zobrist::hash<HashIndex>(m);
+                hash_index_ ^= zobrist::hash(m);
         }
 
         void make_to_move()
         {
                 to_move_ ^= Side::pass;
-                hash_index_ ^= hash::zobrist::hash<HashIndex>(bool(Side::pass));
+                hash_index_ ^= zobrist::hash(bool(Side::pass));
         }
 
         // post-conditions for the constructors and modifiers
@@ -243,7 +243,7 @@ private:
 
         bool hash_index_invariant() const
         {
-                return hash_index_ == hash::zobrist::hash<HashIndex>(*this);
+                return hash_index_ == zobrist::hash(*this);
         }
 
         // representation
@@ -284,27 +284,4 @@ KingMoves const& active_restricted(Position const& p)
 template<typename Position>
 KingMoves const& passive_restricted(Position const&);
 
-namespace hash {
-namespace zobrist {
-
-// primary template
-template<typename Key, typename Index>
-struct Init;
-
-// partial specialization for ab initio hashing of positions
-template<typename Index, template<typename, typename> class Position, typename Rules, typename Board>
-struct Init< Index, Position<Rules, Board> >
-{
-        Index operator()(Position<Rules, Board> const& p) const
-        {
-                return (
-                        Init<Index, Material  >()(p.material())     ^
-                        Init<Index, bool      >()(p.to_move()) ^
-                        Init<Index, Restricted>()(p.restricted())
-                );
-        }
-};
-
-}       // namespace zobrist
-}       // namespace hash
 }       // namespace dctl
