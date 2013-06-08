@@ -7,25 +7,43 @@ namespace bit {
 namespace intrinsic {
 namespace detail {
 
-template<typename T>
+template<class T>
 struct count;
+
+template<>
+struct count<uint32_t>
+{
+        int operator()(uint32_t b) const
+        {
+                return static_cast<int>(__builtin_popcountl(b));
+        }
+};
 
 template<>
 struct count<uint64_t>
 {
-        int operator()(uint64_t b)
+        int operator()(uint64_t b) const
         {
                 return static_cast<int>(__builtin_popcountll(b));
         }
 };
 
-template<typename T>
-struct index;
+template<class T>
+struct find;
 
 template<>
-struct index<uint64_t>
+struct find<uint32_t>
 {
-        int operator()(uint64_t b)
+        int operator()(uint32_t b) const
+        {
+                return static_cast<int>(__builtin_ctzl(b));
+        }
+};
+
+template<>
+struct find<uint64_t>
+{
+        int operator()(uint64_t b) const
         {
                 return static_cast<int>(__builtin_ctzll(b));
         }
@@ -35,16 +53,16 @@ struct index<uint64_t>
 
 }       // namespace detail
 
-template<typename T>
+template<class T>
 int count(T b)
 {
         return detail::count<T>()(b);
 }
 
-template<typename T>
-int index(T b)
+template<class T>
+int find(T b)
 {
-        return detail::index<T>()(b);
+        return detail::find<T>()(b);
 }
 
 }       // namespace intrinsic

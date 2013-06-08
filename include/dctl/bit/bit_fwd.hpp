@@ -36,7 +36,7 @@ template<typename T> T less_equal(int);
 }       // namespace range
 
 template<typename T> int count(T);
-template<typename T> int index(T);
+template<typename T> int find(T);
 
 template<typename T> bool is_zero(T);
 template<typename T> bool is_single(T);

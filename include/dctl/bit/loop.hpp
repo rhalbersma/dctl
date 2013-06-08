@@ -22,7 +22,7 @@ struct count
 };
 
 template<typename T>
-struct index
+struct find
 {
         int operator()(T b)
         {
@@ -44,9 +44,9 @@ int count(T b)
 }
 
 template<typename T>
-int index(T b)
+int find(T b)
 {
-        return detail::index<T>()(b);
+        return detail::find<T>()(b);
 }
 
 }       // namespace loop

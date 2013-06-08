@@ -42,11 +42,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Count, T, UnsignedIntegerTypes)
         BOOST_CHECK_EQUAL(num_bits<T>::value, loop::count(universe<T>()));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Index, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Find, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(i, loop::index(b));
+                BOOST_CHECK_EQUAL(i, loop::find(b));
         }
 }
 

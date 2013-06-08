@@ -2,9 +2,9 @@
 #include <functional>                   // function
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/bit/bit_fwd.hpp>         // forward declarations
-#include <dctl/bit/intrinsic.hpp>       // count, index
-#include <dctl/bit/lookup.hpp>          // count, index
-#include <dctl/bit/loop.hpp>            // count, index
+#include <dctl/bit/intrinsic.hpp>       // count, find
+#include <dctl/bit/lookup.hpp>          // count, find
+#include <dctl/bit/loop.hpp>            // count, find
 #include <dctl/utility/int.hpp>         // num_bits
 
 namespace dctl {
@@ -100,13 +100,6 @@ T not_equal_to(T b)
         return detail::not_equal_to<T>()(b);
 }
 
-// index of the least significant 1-bit
-template<typename T>
-int find(T b)
-{
-        return index(equal(b));
-}
-
 // clear the least significant 1-bit
 template<typename T>
 void clear(T& b)
@@ -169,12 +162,11 @@ int count(T b)
         return intrinsic::count(b);
 }
 
-// index of a set 1-bit
+// index of the least significant 1-bit
 template<typename T>
-int index(T b)
+int find(T b)
 {
-        BOOST_ASSERT(is_single(b));
-        return intrinsic::index(b);
+        return intrinsic::find(b);
 }
 
 // 0 bits set to 1

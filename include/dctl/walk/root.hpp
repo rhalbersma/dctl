@@ -164,9 +164,9 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
         e.collect_statistics(ply);
 
         // (1)
-        auto const find = e.find(p, depth);
-        if (find.first)
-                return find.second;
+        auto const found = e.find(p, depth);
+        if (found.first)
+                return found.second;
 
         NodeCount nodes = 0;
 

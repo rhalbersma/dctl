@@ -12,7 +12,7 @@ namespace bit {
 BOOST_AUTO_TEST_SUITE(BitIntrinsic)
 
 typedef boost::mpl::vector<
-        uint64_t
+        uint32_t, uint64_t
 > UnsignedIntegerTypes;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Count, T, UnsignedIntegerTypes)
@@ -42,11 +42,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Count, T, UnsignedIntegerTypes)
         BOOST_CHECK_EQUAL(num_bits<T>::value, intrinsic::count(universe<T>()));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Index, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Find, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(i, intrinsic::index(b));
+                BOOST_CHECK_EQUAL(i, intrinsic::find(b));
         }
 }
 
