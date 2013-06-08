@@ -1,25 +1,40 @@
 #pragma once
-#include <utility>                      //pair
-#include <dctl/hash/zobrist/random.hpp>
+#include <utility>                              //pair
+#include <dctl/zobrist/detail/random.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/move.hpp>
 #include <dctl/node/restricted.hpp>
 #include <dctl/node/side.hpp>
+#include <dctl/node/position_fwd.hpp>
 
 namespace dctl {
 
 typedef std::pair<KingMoves, bool> KingMovesColor;
 
-namespace hash {
 namespace zobrist {
+namespace detail {
 
 // primary template
-template<typename Index, typename Key>
-struct Init;
+template<class Index, class Key>
+struct hash;
+
+// partial specialization for ab initio hashing of positions
+template<class Index, template<class, class> class Position, class Rules, class Board>
+struct hash< Index, Position<Rules, Board> >
+{
+        Index operator()(Position<Rules, Board> const& p) const
+        {
+                return (
+                        hash<Index, Material  >()(p.material())         ^
+                        hash<Index, bool      >()(p.to_move())          ^
+                        hash<Index, Restricted>()(p.restricted())
+                );
+        }
+};
 
 // partial specialization for ab initio hashing of material
-template<typename Index>
-struct Init<Index, Material>
+template<class Index>
+struct hash<Index, Material>
 {
         Index operator()(Material const& m) const
         {
@@ -32,8 +47,8 @@ struct Init<Index, Material>
 };
 
 // partial specialization for ab initio hashing of moves
-template<typename Index>
-struct Init<Index, Move>
+template<class Index>
+struct hash<Index, Move>
 {
         Index operator()(Move const& m) const
         {
@@ -46,8 +61,8 @@ struct Init<Index, Move>
 };
 
 // partial specialization for ab initio hashing of side to move
-template<typename Index>
-struct Init<Index, bool>
+template<class Index>
+struct hash<Index, bool>
 {
         Index operator()(bool color) const
         {
@@ -56,8 +71,8 @@ struct Init<Index, bool>
 };
 
 // partial specialization for ab initio hashing of restricted consecutive same king moves
-template<typename Index>
-struct Init<Index, KingMovesColor>
+template<class Index>
+struct hash<Index, KingMovesColor>
 {
         Index operator()(KingMovesColor const& restricted) const
         {
@@ -69,24 +84,18 @@ struct Init<Index, KingMovesColor>
 };
 
 // partial specialization for ab initio hashing of restricted consecutive same king moves
-template<typename Index>
-struct Init<Index, Restricted>
+template<class Index>
+struct hash<Index, Restricted>
 {
         Index operator()(Restricted const& restricted) const
         {
                 return (
-                        Init<Index, KingMovesColor>()(std::make_pair(restricted[Side::black], Side::black)) ^
-                        Init<Index, KingMovesColor>()(std::make_pair(restricted[Side::white], Side::white))
+                        hash<Index, KingMovesColor>()(std::make_pair(restricted[Side::black], Side::black)) ^
+                        hash<Index, KingMovesColor>()(std::make_pair(restricted[Side::white], Side::white))
                 );
         }
 };
 
-template<typename Index, typename T>
-Index hash(T const& t)
-{
-        return Init<Index, T>()(t);
-}
-
+}       // namespace detail
 }       // namespace zobrist
-}       // namespace hash
 }       // namespace dctl

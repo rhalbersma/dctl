@@ -3,13 +3,10 @@
 #include <dctl/utility/int.hpp>
 
 namespace dctl {
-namespace hash {
 namespace zobrist {
+namespace detail {
 
-template
-<
-        typename Index = uint64_t
->
+template<class Index>
 struct Random
 {
         // xor with random numbers matching a bitboard's set 1-bits
@@ -40,8 +37,9 @@ struct Random
         static Index const RESTRICTED_MOVES[2][8];
 };
 
-template<typename Index>
-Index const Random<Index>::PIECES[2][64] = {
+template<class Index>
+Index const Random<Index>::PIECES[2][64] =
+{
         {
                 0x9904662fb3c24ae1, 0xc59adcabb4a95f90, 0x9dbe36bc60dda6e9, 0xb1766ba9896d953c,
                 0x772183cf804c8124, 0xe881b24726834db7, 0x7a9bce6cd689074d, 0x8c8879aee145a6a6,
@@ -80,8 +78,9 @@ Index const Random<Index>::PIECES[2][64] = {
         }
 };
 
-template<typename Index>
-Index const Random<Index>::KINGS[64] = {
+template<class Index>
+Index const Random<Index>::KINGS[64] =
+{
         0x863029ce1230836b, 0x8642409881fcba54, 0x0efcecdc6e8bce48, 0x8e01b2a4a6148a1d,
         0x676532e665b948db, 0x4ac38afe80a7a237, 0x83b6b8ac17caef57, 0x5b9bf4203936176d,
         0xde6e98f67dc59943, 0x5cc23e823652f1f6, 0x92f7b3bdd0f5a015, 0x8c9c05786db03d8f,
@@ -100,10 +99,10 @@ Index const Random<Index>::KINGS[64] = {
         0x3cd30ec35fabdfeb, 0x78f342f7fb027268, 0x20f44fb568735fa4, 0x64179d1df2af998d
 };
 
-template<typename Index>
+template<class Index>
 Index const Random<Index>::SIDE = 0x461aea9b6bcff19a;
 
-template<typename Index>
+template<class Index>
 Index const Random<Index>::RESTRICTED_KING[2][64] = {
         {
                 0x30d1f0b5b2955a21, 0x4bb531b53a827011, 0x14e30ca35ed706bb, 0x3003989830651c20,
@@ -143,7 +142,7 @@ Index const Random<Index>::RESTRICTED_KING[2][64] = {
         }
 };
 
-template<typename Index>
+template<class Index>
 Index const Random<Index>::RESTRICTED_MOVES[2][8] = {
         {
                 0xd0155d45da58e0ae, 0x51a0ad8a6b634382, 0xfd6508b01ff7ef6a, 0x2f88513a4e1f888b,
@@ -156,10 +155,10 @@ Index const Random<Index>::RESTRICTED_MOVES[2][8] = {
 };
 
 // explicit instantiation
-template struct Random<>;
+template struct Random<uint64_t>;
 
+}       // namespace detail
 }       // namespace zobrist
-}       // namespace hash
 }       // namespace dctl
 
 /*
