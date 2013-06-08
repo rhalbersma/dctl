@@ -1,15 +1,12 @@
 #pragma once
-#include <cstdint>
-#include <dctl/utility/int.hpp>
+#include <cstdint>                      // uint64_t
+#include <dctl/utility/int.hpp>         // BitBoard
 
 namespace dctl {
-namespace hash {
 namespace jenkins {
+namespace detail {
 
-template
-<
-        typename Index = uint64_t
->
+template<class Index>
 struct Random
 {
 public:
@@ -52,18 +49,18 @@ private:
         static int const XOR_SHIFT_R[NUM_MIX];          // shift lengths used in the exclusive-OR steps
 };
 
-template<typename Index>
+template<class Index>
 Index const Random<Index>::SIDE = 0xd2d84a61;
 
-template<typename Index>
+template<class Index>
 int const Random<Index>::ADD_SHIFT_L[NUM_MIX] = { 25, 4,  8, 26 };
 
-template<typename Index>
+template<class Index>
 int const Random<Index>::XOR_SHIFT_R[NUM_MIX] = { 23, 6, 10, 31 };
 
 // explicit instantiation
-template struct Random<>;
+template struct Random<uint64_t>;
 
+}       // namespace detail
 }       // namespace jenkins
-}       // namespace hash
 }       // namespace dctl
