@@ -6,6 +6,7 @@
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade, iterator_core_acces
 #include <dctl/packed/iterator_fwd.hpp>         // bit_iterator, bit_reference
+#include <dctl/bit/bit.hpp>
 
 namespace dctl {
 namespace packed {
@@ -109,7 +110,7 @@ public:
         // yes, we really want implicit conversion to the value type
         operator T() const
         {
-                return static_cast<T>(__builtin_ctzll(mask_));
+                return static_cast<T>(bit::find(mask_));
         }
 
         bit_iterator<T, U> operator&() const

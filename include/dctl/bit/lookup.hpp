@@ -24,13 +24,13 @@ public:
         }
 
         template<typename T>
-        static int index(T t)
+        static int find(T t)
         {
                 BOOST_ASSERT(is_single(t));
                 auto const num_blocks = static_cast<int>(sizeof(T) / sizeof(Block));
                 for (auto i = 0; i < num_blocks; ++i)
                         if (auto const b = block(t, i))
-                                return offset(i) + index_[b];
+                                return offset(i) + find_[b];
                 BOOST_ASSERT(false);
                 return 0;
         }
@@ -53,7 +53,7 @@ private:
 
         BOOST_STATIC_CONSTANT(int, bits_per_block = num_bits<Block>::value);
         static int const count_[];
-        static int const index_[];
+        static int const find_[];
 };
 
 template<typename Block>
@@ -77,7 +77,7 @@ int const table<Block>::count_[] = {
 };
 
 template<typename Block>
-int const table<Block>::index_[] = {
+int const table<Block>::find_[] = {
          0,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
          4,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
          5,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
@@ -105,9 +105,9 @@ int count(T b)
 }
 
 template<typename T>
-int index(T b)
+int find(T b)
 {
-        return detail::index(b);
+        return detail::find(b);
 }
 
 }       // namespace lookup

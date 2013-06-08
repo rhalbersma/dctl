@@ -17,7 +17,7 @@ struct Random
         {
                 Index hash = 0;
                 for (; b; bit::first::clear(b))
-                        hash ^= random[bit::first::find(b)];
+                        hash ^= random[bit::find(b)];
                 return hash;
         }
 

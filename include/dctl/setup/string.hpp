@@ -120,7 +120,7 @@ struct write<pdn::protocol, Token>
                         for (auto bb = p.material().pieces(c); bb; bit::first::clear(bb)) {
                                 if (bit::is_element(bit::first::equal(bb), p.material().kings()))
                                         sstr << Token::king;                    // king tag
-                                auto b = bit::first::find(bb);                  // bit index
+                                auto b = bit::find(bb);                         // bit index
                                 sstr << Board::bit2square(b) + 1;               // square number
                                 if (bit::is_multiple(bb))                       // still pieces remaining
                                         sstr << Token::comma;                   // comma separator

@@ -8,6 +8,7 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered, bitwise, shiftable
 #include <dctl/packed/iterator.hpp>     // bit_iterator, bit_reference
+#include <dctl/bit/bit.hpp>
 
 namespace dctl {
 namespace packed {
@@ -105,7 +106,7 @@ public:
 
         size_type size() const
         {
-                return static_cast<size_type>(__builtin_popcountll(data_));
+                return static_cast<size_type>(bit::find(data_));
         }
 
         size_type max_size() const
@@ -165,7 +166,7 @@ public:
         {
                 for (auto it = first; it != last; ++it)
                         erase(*it);
-                 BOOST_ASSERT(invariant());
+                BOOST_ASSERT(invariant());
         }
 
         void erase(key_type const& key)
