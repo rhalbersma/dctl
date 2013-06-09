@@ -88,7 +88,7 @@ private:
         template<typename Direction>
         bool parallelize(BitBoard active_kings) const
         {
-                return !bit::is_zero(
+                return !bit::empty(
                         Sandwich<Board, Direction, Range>()(active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path())
                 );
         }

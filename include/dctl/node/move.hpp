@@ -9,7 +9,7 @@
 #include <dctl/node/side.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
-#include <dctl/packed/algorithm.hpp>
+#include <dctl/bit/algorithm.hpp>
 
 namespace dctl {
 namespace detail {
@@ -43,7 +43,7 @@ bool is_intersecting_promotion(T promotion, T delta, rules::phase::en_passant)
 {
         // [FEN "W:W15:B10,13,20,23"] (Russian draughts)
         // white has to capture 15x15, promoting on its original square
-        return bit::is_single(promotion) && bit::is_zero(delta);
+        return bit::is_single(promotion) && bit::empty(delta);
 }
 
 }       // namespace detail
@@ -243,7 +243,7 @@ private:
                 return (
                         bit::is_double(delta) &&
                         !bit::is_multiple(promotion) &&
-                        packed::set_includes(delta, promotion)
+                        bit::set_includes(delta, promotion)
                 );
         }
 
@@ -252,15 +252,15 @@ private:
         static bool pre_condition(T delta, T captured_pieces, T captured_kings)
         {
                 return (
-                        (bit::is_double(delta) || bit::is_zero(delta)) &&
-                        !bit::is_zero(captured_pieces) &&
+                        (bit::is_double(delta) || bit::empty(delta)) &&
+                        !bit::empty(captured_pieces) &&
                         (
-                                packed::set_exclusive(delta, captured_pieces) ||
+                                bit::set_exclusive(delta, captured_pieces) ||
 
                                 // EXCEPTION: for intersecting captures, delta overlaps with captured pieces
                                 is_intersecting_capture<Rules>(delta, captured_pieces)
                         ) &&
-                        packed::set_includes(captured_pieces, captured_kings)
+                        bit::set_includes(captured_pieces, captured_kings)
                 );
         }
 
@@ -269,17 +269,17 @@ private:
         static bool pre_condition(T delta, T promotion, T captured_pieces, T captured_kings)
         {
                 return (
-                        (bit::is_double(delta) || bit::is_zero(delta)) &&
+                        (bit::is_double(delta) || bit::empty(delta)) &&
                         !bit::is_multiple(promotion) &&
-                        !bit::is_zero(captured_pieces) &&
-                        packed::set_exclusive(delta, captured_pieces) &&
+                        !bit::empty(captured_pieces) &&
+                        bit::set_exclusive(delta, captured_pieces) &&
                         (
-                                packed::set_includes(delta, promotion) ||
+                                bit::set_includes(delta, promotion) ||
 
                                 // EXCEPTION: for intersecting promotions, delta is empty, and promotion is non-empty
                                 is_intersecting_promotion<Rules>(promotion, delta)
                         ) &&
-                        packed::set_includes(captured_pieces, captured_kings)
+                        bit::set_includes(captured_pieces, captured_kings)
                 );
         }
 
@@ -312,13 +312,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return packed::set_exclusive(this->pieces(Side::black), this->pieces(Side::white));
+                return bit::set_exclusive(this->pieces(Side::black), this->pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return packed::set_includes(this->pieces(), this->kings());
+                return bit::set_includes(this->pieces(), this->kings());
         }
 
         // representation

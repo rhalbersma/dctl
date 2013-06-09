@@ -3,10 +3,10 @@
 #include <iterator>
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <dctl/packed/packed.hpp>
+#include <dctl/bit/bit.hpp>
 
 namespace dctl {
-namespace packed {
+namespace bit {
 
 typedef set<int> bitset;
 
@@ -71,5 +71,5 @@ BOOST_AUTO_TEST_CASE(Members)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace packed
+}       // namespace bit
 }       // namespace dctl

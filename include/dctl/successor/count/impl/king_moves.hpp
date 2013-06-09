@@ -64,7 +64,7 @@ private:
         template<typename Direction>
         int parallelize(BitBoard active_kings) const
         {
-                return bit::count(
+                return bit::size(
                         Sink<Board, Direction, typename rules::range::scan<Rules>::type>()(active_kings, propagate_.path())
                 );
         }

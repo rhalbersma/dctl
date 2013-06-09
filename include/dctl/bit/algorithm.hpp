@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/packed/raw.hpp>
+#include <dctl/bit/raw.hpp>             // empty
 
 namespace dctl {
-namespace packed {
+namespace bit {
 
 template<class Set>
 Set set_complement(Set const& lhs)
@@ -46,5 +46,5 @@ auto set_includes(Set const& lhs, Set const& rhs) -> decltype(empty(set_differen
         return empty(set_difference(rhs, lhs));
 }
 
-}       // namespace packed
+}       // namespace bit
 }       // namespace dctl

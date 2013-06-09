@@ -58,8 +58,8 @@ private:
         void serialize(BitBoard active_kings) const
         {
                 while (active_kings) {
-                        branch(bit::first::equal(active_kings));
-                        bit::first::clear(active_kings);
+                        branch(bit::minimal_element(active_kings));
+                        bit::pop_front(active_kings);
                 }
         }
 

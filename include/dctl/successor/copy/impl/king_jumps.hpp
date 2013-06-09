@@ -84,10 +84,10 @@ private:
 
         void serialize(BitBoard active_kings) const
         {
-                BOOST_ASSERT(!bit::is_zero(active_kings));
+                BOOST_ASSERT(!bit::empty(active_kings));
                 do {
-                        find(bit::first::equal(active_kings));
-                        bit::first::clear(active_kings);
+                        find(bit::minimal_element(active_kings));
+                        bit::pop_front(active_kings);
                 } while (active_kings);
         }
 

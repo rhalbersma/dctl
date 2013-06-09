@@ -117,10 +117,10 @@ struct write<pdn::protocol, Token>
                                 sstr << Token::colon;                           // colon
                                 sstr << Token::color[c];                        // color tag
                         }
-                        for (auto bb = p.material().pieces(c); bb; bit::first::clear(bb)) {
-                                if (bit::is_element(bit::first::equal(bb), p.material().kings()))
+                        for (auto bb = p.material().pieces(c); !bit::empty(bb); bit::pop_front(bb)) {
+                                if (bit::is_element(bit::minimal_element(bb), p.material().kings()))
                                         sstr << Token::king;                    // king tag
-                                auto b = bit::find(bb);                         // bit index
+                                auto b = bit::front(bb);                        // bit index
                                 sstr << Board::bit2square(b) + 1;               // square number
                                 if (bit::is_multiple(bb))                       // still pieces remaining
                                         sstr << Token::comma;                   // comma separator
@@ -145,7 +145,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                 sstr >> ch;
                 p_side = read_color<Token>(ch);
 
-                for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
+                 for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
                         auto b = Board::square2bit(sq);         // convert square to bit
                         auto bb = bit::singlet<BitBoard>(b);    // create bitboard
                         sstr >> ch;

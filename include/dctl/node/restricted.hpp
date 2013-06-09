@@ -38,7 +38,7 @@ public:
 
         void reset()
         {
-                BOOST_ASSERT(!bit::is_zero(king_) && moves_);
+                BOOST_ASSERT(!bit::empty(king_) && moves_);
                 king_ = 0;
                 moves_ = 0;
                 BOOST_ASSERT(invariant());
@@ -63,7 +63,7 @@ private:
         {
                 return (
                         !bit::is_multiple(king_) &&
-                        bit::is_zero(king_) == !moves_
+                        bit::empty(king_) == !moves_
                 );
         }
 

@@ -13,8 +13,8 @@ struct Random
         static Index xor_rand(BitBoard b, Index const* random)
         {
                 Index hash = 0;
-                for (; b; bit::first::clear(b))
-                        hash ^= random[bit::find(b)];
+                for (; !bit::empty(b); bit::pop_front(b))
+                        hash ^= random[bit::front(b)];
                 return hash;
         }
 

@@ -14,7 +14,7 @@ BitBoard promotion_sq(BitBoard dest_sq)
 template<bool Color, typename Board>
 bool is_promotion_sq(BitBoard dest_sq)
 {
-        return !bit::is_zero(promotion_sq<Color, Board>(dest_sq));
+        return !bit::empty(promotion_sq<Color, Board>(dest_sq));
 }
 
 template<bool Color, typename Position>
