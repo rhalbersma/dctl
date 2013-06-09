@@ -61,7 +61,7 @@ private:
         template<typename Direction>
         int parallelize(BitBoard active_pawns) const
         {
-                return bit::count(
+                return bit::size(
                         Sink<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.path())
                 );
         }

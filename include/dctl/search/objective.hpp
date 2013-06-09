@@ -40,7 +40,7 @@ struct is_terminal<Kingscourt>
         bool operator()(Position const& p) const
         {
                 return (
-                        (bit::count(active_kings(p)) - bit::count(passive_kings(p)) < 0) ||
+                        (bit::size(active_kings(p)) - bit::size(passive_kings(p)) < 0) ||
                         is_terminal<NoMovesLeft>()(p)
                 );
         }

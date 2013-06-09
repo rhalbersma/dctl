@@ -5,11 +5,11 @@
 #include <type_traits>                          // enable_if, is_unsigned, is_convertible
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade, iterator_core_acces
-#include <dctl/packed/iterator_fwd.hpp>         // bit_iterator, bit_reference
-#include <dctl/bit/bit.hpp>
+#include <dctl/bit/iterator_fwd.hpp>            // bit_iterator, bit_reference
+#include <dctl/bit/raw.hpp>                     // empty, pop_front, front
 
 namespace dctl {
-namespace packed {
+namespace bit {
 
 template<class T, class U, class /* Requires */>
 class bit_iterator
@@ -53,7 +53,7 @@ private:
         {
                 // cannot increment a null pointer
                 BOOST_ASSERT(!is_null());
-                mask_ &= mask_ - 1;
+                pop_front(mask_);
         }
 
         // views
@@ -76,7 +76,7 @@ private:
 
         bool is_null() const
         {
-                return mask_ == 0;
+                return empty(mask_);
         }
 
         // representation
@@ -93,11 +93,12 @@ public:
         // references have to be initialized
         bit_reference() = delete;
 
+        // references cannot be null
         explicit bit_reference(U m)
         :
                 mask_(m)
         {
-                BOOST_ASSERT(invariant());
+                BOOST_ASSERT(!is_null());
         }
 
         // modifiers
@@ -110,7 +111,7 @@ public:
         // yes, we really want implicit conversion to the value type
         operator T() const
         {
-                return static_cast<T>(bit::find(mask_));
+                return static_cast<T>(front(mask_));
         }
 
         bit_iterator<T, U> operator&() const
@@ -121,10 +122,10 @@ public:
 private:
         // predicates
 
-        bool invariant() const
+        bool is_null() const
         {
                 // references cannot be null
-                return mask_ != 0;
+                return empty(mask_);
         }
 
         // representation
@@ -132,5 +133,5 @@ private:
         U mask_;
 };
 
-}       // namespace packed
+}       // namespace bit
 }       // namespace dctl

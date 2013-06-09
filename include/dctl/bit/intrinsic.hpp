@@ -1,6 +1,5 @@
 #pragma once
-#include <cstdint>
-#include <dctl/bit/bit_fwd.hpp>         // first::clear, is_element, singlet
+#include <cstdint>                      // uint32_t, uint64_t
 
 namespace dctl {
 namespace bit {
@@ -8,31 +7,10 @@ namespace intrinsic {
 namespace detail {
 
 template<class T>
-struct count;
+struct front;
 
 template<>
-struct count<uint32_t>
-{
-        int operator()(uint32_t b) const
-        {
-                return static_cast<int>(__builtin_popcountl(b));
-        }
-};
-
-template<>
-struct count<uint64_t>
-{
-        int operator()(uint64_t b) const
-        {
-                return static_cast<int>(__builtin_popcountll(b));
-        }
-};
-
-template<class T>
-struct find;
-
-template<>
-struct find<uint32_t>
+struct front<uint32_t>
 {
         int operator()(uint32_t b) const
         {
@@ -41,7 +19,7 @@ struct find<uint32_t>
 };
 
 template<>
-struct find<uint64_t>
+struct front<uint64_t>
 {
         int operator()(uint64_t b) const
         {
@@ -49,20 +27,66 @@ struct find<uint64_t>
         }
 };
 
-// TODO: partial specializations for bit arrays
+template<class T>
+struct back;
+
+template<>
+struct back<uint32_t>
+{
+        int operator()(uint32_t b) const
+        {
+                return static_cast<int>(__builtin_clzl(b));
+        }
+};
+
+template<>
+struct back<uint64_t>
+{
+        int operator()(uint64_t b) const
+        {
+                return static_cast<int>(__builtin_clzll(b));
+        }
+};
+
+template<class T>
+struct size;
+
+template<>
+struct size<uint32_t>
+{
+        int operator()(uint32_t b) const
+        {
+                return static_cast<int>(__builtin_popcountl(b));
+        }
+};
+
+template<>
+struct size<uint64_t>
+{
+        int operator()(uint64_t b) const
+        {
+                return static_cast<int>(__builtin_popcountll(b));
+        }
+};
 
 }       // namespace detail
 
 template<class T>
-int count(T b)
+int front(T b)
 {
-        return detail::count<T>()(b);
+        return detail::front<T>()(b);
 }
 
 template<class T>
-int find(T b)
+int back(T b)
 {
-        return detail::find<T>()(b);
+        return detail::back<T>()(b);
+}
+
+template<class T>
+int size(T b)
+{
+        return detail::size<T>()(b);
 }
 
 }       // namespace intrinsic

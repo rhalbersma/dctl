@@ -5,7 +5,7 @@
 #include <dctl/node/detail/predicates.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/node/unary_projections.hpp>
-#include <dctl/packed/algorithm.hpp>
+#include <dctl/bit/algorithm.hpp>
 
 namespace dctl {
 
@@ -24,13 +24,13 @@ bool is_promotion(Position const& p, Move const& m)
 template<typename Position, typename Move>
 bool is_with_king(Position const& p, Move const& m)
 {
-        return !bit::is_zero(moving_kings(p, m) & active_kings(p));
+        return !bit::empty(moving_kings(p, m) & active_kings(p));
 }
 
 template<typename Position, typename Move>
 bool is_capture(Position const& p, Move const& m)
 {
-        return !bit::is_zero(captured_pieces(p, m));
+        return !bit::empty(captured_pieces(p, m));
 }
 
 template<typename Position, typename Move>
@@ -54,10 +54,10 @@ bool is_pseudo_legal(Position const& p, Move const& m)
                 !(bit::is_multiple(from_sq(p, m)) || bit::is_multiple(dest_sq(p, m))) &&
 
                 // only capture existing pieces
-                packed::set_includes(passive_pieces(p), captured_pieces(p, m)) &&
+                bit::set_includes(passive_pieces(p), captured_pieces(p, m)) &&
                 (
                         // only capture existing kings
-                        packed::set_includes(passive_kings(p), captured_kings(p, m)) ||
+                        bit::set_includes(passive_kings(p), captured_kings(p, m)) ||
 
                         // EXCEPTION: for intersecting captures, a man-capturing king can appear as a captured king
                         is_intersecting_capture(p, m)

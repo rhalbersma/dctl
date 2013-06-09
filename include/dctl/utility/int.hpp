@@ -11,10 +11,16 @@ typedef uint64_t HashIndex;
 typedef uint64_t BitBoard;
 typedef uint64_t BitIndex;
 
-template<typename T>
+template<class T>
 struct num_bits
 :
         std::integral_constant<int, 8 * sizeof(T)>
+{};
+
+template<class T, class U>
+struct num_blocks
+:
+        std::integral_constant<int, sizeof(T) / sizeof(U)>
 {};
 
 // primary template

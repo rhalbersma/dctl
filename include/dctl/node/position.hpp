@@ -11,7 +11,7 @@
 #include <dctl/node/predicates_fwd.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
-#include <dctl/packed/algorithm.hpp>
+#include <dctl/bit/algorithm.hpp>
 
 namespace dctl {
 
@@ -191,7 +191,7 @@ private:
                                 restricted.increment(dest_sq(*this, m));
                         } else {
                                 // a first irreversible move with a new king
-                                BOOST_ASSERT(!restricted.moves() || bit::count(active_kings(*this)) > 1);
+                                BOOST_ASSERT(!restricted.moves() || bit::size(active_kings(*this)) > 1);
                                 restricted.init(dest_sq(*this, m));
                         }
                         hash_index_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
@@ -205,8 +205,8 @@ private:
                 if (
                         restricted.moves() && is_capture(*this, m) &&
                         (
-                                packed::set_includes(captured_pieces(*this, m), restricted.king()) ||
-                                packed::set_includes(captured_pieces(*this, m), passive_pawns(*this))
+                                bit::set_includes(captured_pieces(*this, m), restricted.king()) ||
+                                bit::set_includes(captured_pieces(*this, m), passive_pawns(*this))
                         )
                 ) {
                         hash_index_ ^= zobrist::hash(std::make_pair(restricted, passive_color(*this)));
@@ -237,7 +237,7 @@ private:
         {
                 return (
                         //material_.invariant() &&
-                        packed::set_includes(Board::squares, material().pieces())
+                        bit::set_includes(Board::squares, material().pieces())
                 );
         }
 

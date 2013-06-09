@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/bit/bit_fwd.hpp>         // first::clear, is_element, singlet
+#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/utility/int.hpp>         // num_bits
 
 namespace dctl {
@@ -7,46 +7,64 @@ namespace bit {
 namespace loop {
 namespace detail {
 
-template<typename T>
-struct count
+template<class T>
+struct front
 {
-        int operator()(T b)
+        int operator()(T b) const
+        {
+                for (auto i = 0; i < num_bits<T>::value; ++i)
+                        if (b & (T{1} << i))
+                                return i;
+                BOOST_ASSERT(false);
+                return num_bits<T>::value;
+        }
+};
+
+template<class T>
+struct back
+{
+        int operator()(T b) const
+        {
+                for (auto i = num_bits<T>::value - 1; i > 0; --i)
+                        if (b & (T{1} << i))
+                                return i;
+                BOOST_ASSERT(false);
+                return num_bits<T>::value;
+        }
+};
+
+template<class T>
+struct size
+{
+        int operator()(T b) const
         {
                 // Kernighan & Ritchie, The C programming language, 2nd Ed.
                 // https://chessprogramming.wikispaces.com/Population+Count
                 auto n = 0;
-                for (; b; first::clear(b))
+                for (; b; b &= b - T{1})
                         ++n;
                 return n;
         }
 };
 
-template<typename T>
-struct find
-{
-        int operator()(T b)
-        {
-                for (auto i = 0; i < num_bits<T>::value; ++i)
-                        if (is_element(singlet<T>(i), b))
-                                return i;
-                return 0;
-        }
-};
-
-// TODO: partial specializations for bit arrays
-
 }       // namespace detail
 
-template<typename T>
-int count(T b)
+template<class T>
+int front(T b)
 {
-        return detail::count<T>()(b);
+        return detail::front<T>()(b);
 }
 
-template<typename T>
-int find(T b)
+template<class T>
+int back(T b)
 {
-        return detail::find<T>()(b);
+        return detail::back<T>()(b);
+}
+
+template<class T>
+int size(T b)
+{
+        return detail::size<T>()(b);
 }
 
 }       // namespace loop

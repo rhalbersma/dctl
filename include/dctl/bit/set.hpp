@@ -7,11 +7,11 @@
 #include <utility>                      // swap
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered, bitwise, shiftable
-#include <dctl/packed/iterator.hpp>     // bit_iterator, bit_reference
-#include <dctl/bit/bit.hpp>
+#include <dctl/bit/iterator.hpp>        // bit_iterator, bit_reference
+#include <dctl/bit/raw.hpp>             // size
 
 namespace dctl {
-namespace packed {
+namespace bit {
 
 template<class T, class U = uint64_t, std::size_t N = 1>
 class set;
@@ -106,7 +106,7 @@ public:
 
         size_type size() const
         {
-                return static_cast<size_type>(bit::find(data_));
+                return static_cast<size_type>(bit::size(data_));
         }
 
         size_type max_size() const
@@ -315,5 +315,5 @@ auto size(set<T, U, N> const& s) -> decltype(s.size())
         return s.size();
 }
 
-}       // namespace packed
+}       // namespace bit
 }       // namespace dctl

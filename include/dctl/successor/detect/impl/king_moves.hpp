@@ -63,7 +63,7 @@ private:
         template<typename Direction>
         bool parallelize(BitBoard active_kings) const
         {
-                return !bit::is_zero(
+                return !bit::empty(
                         Sink<Board, Direction, rules::range::distance_1>()(active_kings, propagate_.path())
                 );
         }

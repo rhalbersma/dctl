@@ -8,6 +8,7 @@
 #include <boost/mpl/logical.hpp>        // and
 #include <dctl/angle/traits.hpp>
 #include <dctl/bit/bit.hpp>
+#include <dctl/bit/algorithm.hpp>
 #include <dctl/board/iterator.hpp>
 #include <dctl/successor/value.hpp>
 #include <dctl/node/material.hpp>
@@ -19,7 +20,6 @@
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/total_order.hpp>
-#include <dctl/packed/algorithm.hpp>
 
 namespace dctl {
 namespace successor {
@@ -293,7 +293,7 @@ private:
         bool invariant() const
         {
                 return (
-                        packed::set_includes(initial_targets_, remaining_targets_) &&
+                        bit::set_includes(initial_targets_, remaining_targets_) &&
                         !bit::is_multiple(from_sq_)
                 );
         }
@@ -337,7 +337,7 @@ private:
         // overload for no majority capture precedence
         int size_dispatch(std::false_type) const
         {
-                return bit::count(captured_pieces());
+                return bit::size(captured_pieces());
         }
 
         // overload for majority capture precedence

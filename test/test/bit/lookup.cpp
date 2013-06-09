@@ -15,39 +15,39 @@ typedef boost::mpl::vector<
         uint32_t, uint64_t
 > UnsignedIntegerTypes;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Count, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Front, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(0, lookup::count(zero<T>()));
+        for (auto i = 0; i < num_bits<T>::value; ++i) {
+                auto const b = singlet<T>(i);
+                BOOST_CHECK_EQUAL(i, lookup::front(b));
+        }
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(Size, T, UnsignedIntegerTypes)
+{
+        BOOST_CHECK_EQUAL(0, lookup::size(zero<T>()));
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(1, lookup::count(b));
+                BOOST_CHECK_EQUAL(1, lookup::size(b));
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 for (auto j = 0; j < num_bits<T>::value; ++j) {
                         auto const b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j)
-                                BOOST_CHECK_EQUAL(0, lookup::count(b));
+                                BOOST_CHECK_EQUAL(0, lookup::size(b));
                         else
-                                BOOST_CHECK_EQUAL(2, lookup::count(b));
+                                BOOST_CHECK_EQUAL(2, lookup::size(b));
                 }
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i) - 1;
-                BOOST_CHECK_EQUAL(i, lookup::count(b));
+                BOOST_CHECK_EQUAL(i, lookup::size(b));
         }
 
-        BOOST_CHECK_EQUAL(num_bits<T>::value, lookup::count(universe<T>()));
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(Find, T, UnsignedIntegerTypes)
-{
-        for (auto i = 0; i < num_bits<T>::value; ++i) {
-                auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(i, lookup::find(b));
-        }
+        BOOST_CHECK_EQUAL(num_bits<T>::value, lookup::size(universe<T>()));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

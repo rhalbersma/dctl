@@ -1,10 +1,9 @@
 #pragma once
 #include <type_traits>                          // enable_if, is_unsigned
-#include <dctl/bit/bit.hpp>                     // count
-#include <dctl/packed/iterator.hpp>             // bit_iterator
+#include <dctl/bit/iterator.hpp>             // bit_iterator
 
 namespace dctl {
-namespace packed {
+namespace bit {
 
 /*
       begin()/end() for iteration over builtin unsigned integral types.
@@ -37,17 +36,5 @@ auto end(U /* u */) -> decltype(bit_iterator<int, U>())
         return bit_iterator<int, U>();
 }
 
-template<class U, class Requires = typename std::enable_if<std::is_unsigned<U>::value>::type>
-auto empty(U u) -> decltype(begin(u) == end(u))
-{
-        return begin(u) == end(u);
-}
-
-template<class U, class Requires = typename std::enable_if<std::is_unsigned<U>::value>::type>
-auto size(U u) -> decltype(bit::count(u))
-{
-        return bit::count(u);
-}
-
-}       // namespace packed
+}       // namespace bit
 }       // namespace dctl
