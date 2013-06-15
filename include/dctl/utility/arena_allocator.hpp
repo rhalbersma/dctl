@@ -14,7 +14,7 @@ namespace dctl {
 // http://home.roadrunner.com/~hinnant/stack_alloc.html
 
 template <std::size_t N>
-struct arena
+class arena
 {
 public:
         arena() DCTL_PP_NOEXCEPT
@@ -85,8 +85,8 @@ private:
         char* ptr_;
 };
 
-template <typename T, std::size_t N>
-struct short_alloc
+template <class T, std::size_t N>
+class short_alloc
 :
         boost::equality_comparable< short_alloc<T, N> > // ==, !=
 {
@@ -98,7 +98,7 @@ public:
         typedef std::true_type propagate_on_container_move_assignment;
         typedef std::true_type propagate_on_container_swap;
         */
-        template <typename U>
+        template <class U>
         struct rebind
         {
                 typedef short_alloc<U, N> other;
@@ -109,7 +109,7 @@ public:
                 a_(a)
         {}
 
-        template <typename U>
+        template <class U>
         short_alloc(short_alloc<U, N> const& a) DCTL_PP_NOEXCEPT
         :
                 a_(a.a_)
@@ -129,14 +129,14 @@ public:
         }
 
         // operator!= provided by boost::equality_comparible
-        template<typename U, std::size_t M>
+        template<class U, std::size_t M>
         friend bool operator==(short_alloc<T, N> const& x, short_alloc<U, M> const& y) DCTL_PP_NOEXCEPT
         {
                 return (N * sizeof(T) == M * sizeof(U)) && &x.a_ == &y.a_;
         }
 
         template <typename U, std::size_t M>
-        friend struct short_alloc;
+        friend class short_alloc;
 
 private:
         arena<num_bytes>& a_;

@@ -7,7 +7,7 @@ struct ActiveColorExtractor
 {
         typedef bool result_type;
 
-        template<typename Key>
+        template<class Key>
         result_type operator()(Key const& key) const
         {
                 return key.active_color();

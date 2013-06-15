@@ -5,8 +5,8 @@
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 #include <dctl/rules/types.hpp>
-#include <dctl/preprocessor/has_type.hpp>
-#include <dctl/preprocessor/get_type.hpp>
+#include <dctl/preprocessor/sfinae/has_type.hpp>
+#include <dctl/preprocessor/sfinae/get_type.hpp>
 
 namespace dctl {
 namespace rules {
@@ -25,7 +25,7 @@ DCTL_PP_DEFINE_GET_TYPE(max_2Kv1K_majority_moves)
 DCTL_PP_DEFINE_GET_TYPE(max_3Kv1K_minority_moves)
 DCTL_PP_DEFINE_GET_TYPE(max_LLv1K_majority_moves)
 
-template<typename Rules>
+template<class Rules>
 struct draw_traits
 {
         typedef Rules rules_type;
@@ -33,38 +33,38 @@ struct draw_traits
         // extract required parameters
 
         typedef typename boost::mpl::eval_if<
-                has_max_repetitions<Rules>,
-                get_max_repetitions<Rules>,
+                has_type_max_repetitions<Rules>,
+                get_type_max_repetitions<Rules>,
                 std::integral_constant<int, 3>
         >::type max_repetitions;
 
         typedef typename boost::mpl::eval_if<
-                has_max_3v1_moves<Rules>,
-                get_max_3v1_moves<Rules>,
+                has_type_max_3v1_moves<Rules>,
+                get_type_max_3v1_moves<Rules>,
                 std::integral_constant<int, INT_MAX>
         >::type max_3v1_moves;
 
         typedef typename boost::mpl::eval_if<
-                has_max_2v1_moves<Rules>,
-                get_max_2v1_moves<Rules>,
+                has_type_max_2v1_moves<Rules>,
+                get_type_max_2v1_moves<Rules>,
                 std::integral_constant<int, INT_MAX>
         >::type max_2v1_moves;
 
         typedef typename boost::mpl::eval_if<
-                has_max_2Kv1K_majority_moves<Rules>,
-                get_max_2Kv1K_majority_moves<Rules>,
+                has_type_max_2Kv1K_majority_moves<Rules>,
+                get_type_max_2Kv1K_majority_moves<Rules>,
                 std::integral_constant<int, INT_MAX>
         >::type max_2Kv1K_majority_moves;
 
         typedef typename boost::mpl::eval_if<
-                has_max_3Kv1K_minority_moves<Rules>,
-                get_max_3Kv1K_minority_moves<Rules>,
+                has_type_max_3Kv1K_minority_moves<Rules>,
+                get_type_max_3Kv1K_minority_moves<Rules>,
                 std::integral_constant<int, INT_MAX>
         >::type max_3Kv1K_minority_moves;
 
         typedef typename boost::mpl::eval_if<
-                has_max_LLv1K_majority_moves<Rules>,
-                get_max_LLv1K_majority_moves<Rules>,
+                has_type_max_LLv1K_majority_moves<Rules>,
+                get_type_max_LLv1K_majority_moves<Rules>,
                 std::integral_constant<int, INT_MAX>
         >::type max_LLv1K_majority_moves;
 

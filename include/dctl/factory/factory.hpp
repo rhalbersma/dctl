@@ -62,7 +62,7 @@ private:
         public:
                 explicit call_insert(XRegistry& r): registry_(r) {};
 
-                template<typename T>
+                template<class T>
                 void operator()(boost::mpl::identity<T> I)
                 {
                         registry_.insert(I);
@@ -81,7 +81,7 @@ private:
         public:
                 explicit call_erase(XRegistry& r): registry_(r) {};
 
-                template<typename T>
+                template<class T>
                 void operator()(boost::mpl::identity<T> I)
                 {
                 	registry_.erase(I);

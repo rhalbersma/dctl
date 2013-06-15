@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/utility.hpp>
 #include <dctl/successor/count/impl/primary_fwd.hpp>
-#include <dctl/successor/material/pawn.hpp>
 #include <dctl/successor/propagate/moves.hpp>
 #include <dctl/successor/select/moves.hpp>
+#include <dctl/pieces/pawn.hpp>
 
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
@@ -17,8 +17,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for pawn moves enumeration
-template<bool Color, typename Position>
-struct count<Color, material::pawn, select::moves, Position>
+template<bool Color, class Position>
+struct count<Color, pieces::pawn, select::moves, Position>
 :
         // enforce reference semantics
         boost::noncopyable
@@ -58,7 +58,7 @@ private:
                 );
         }
 
-        template<typename Direction>
+        template<class Direction>
         int parallelize(BitBoard active_pawns) const
         {
                 return bit::size(

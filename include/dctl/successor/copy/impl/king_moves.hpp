@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
-#include <dctl/successor/material/king.hpp>             // king
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/pieces/king.hpp>           // king
 
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
@@ -18,8 +18,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for king moves generation
-template<bool Color, class Position, class Vector>
-struct copy<Color, material::king, select::moves, Position, Vector>
+template<bool Color, class Position, class Sequence>
+struct copy<Color, pieces::king, select::moves, Position, Sequence>
 :
         // enforce reference semantics
         private boost::noncopyable
@@ -29,19 +29,19 @@ private:
 
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
-        typedef typename Vector::value_type Move;
+        typedef typename Sequence::value_type Move;
         typedef board::Compass<Color, Board> Compass;
         typedef Propagate<select::moves, Position> State;
 
         // representation
 
         State const& propagate_;
-        Vector& moves_;
+        Sequence& moves_;
 
 public:
         // structors
 
-        explicit copy(State const& p, Vector& m)
+        explicit copy(State const& p, Sequence& m)
         :
                 propagate_(p),
                 moves_(m)
@@ -75,7 +75,7 @@ private:
         void find(BitIndex from_sq) const
         {
                 // tag dispatching on king range
-                find_dispatch<Direction>(from_sq, rules::range::scan<Rules>());
+                find_dispatch<Direction>(from_sq, rules::range::move<Rules>());
         }
 
         // overload for short ranged kings

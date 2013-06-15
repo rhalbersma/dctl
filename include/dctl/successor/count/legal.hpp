@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
 #include <dctl/successor/count/jumps.hpp>               // count (jumps specialization)
-#include <dctl/successor/count/piece_moves.hpp>         // count (piece moves specialization)
+#include <dctl/successor/count/all_moves.hpp>         // count (piece moves specialization)
 #include <dctl/successor/count/king_moves.hpp>          // count (king moves specialization)
 #include <dctl/successor/count/pawn_moves.hpp>          // count (pawn moves specialization)
 #include <dctl/successor/select/legal.hpp>              // legal
@@ -13,14 +13,14 @@ namespace successor {
 namespace detail {
 
 // partial specialization for legal successors
-template<bool Color, typename Material>
-struct count<Color, Material, select::legal>
+template<bool Color, class Pieces>
+struct count<Color, Pieces, select::legal>
 {
-        template<typename Position>
+        template<class Position>
         int operator()(Position const& p)
         {
-                typedef count<Color, Material, select::jumps> DoJumps;
-                typedef count<Color, Material, select::moves> DoMoves;
+                typedef count<Color, Pieces, select::jumps> DoJumps;
+                typedef count<Color, Pieces, select::moves> DoMoves;
 
                 auto num_moves = DoJumps()(p);
                 if (!num_moves)

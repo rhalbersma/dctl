@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/utility.hpp>
 #include <dctl/successor/count/impl/primary_fwd.hpp>
-#include <dctl/successor/material/king.hpp>
 #include <dctl/successor/propagate/moves.hpp>
 #include <dctl/successor/select/moves.hpp>
+#include <dctl/pieces/king.hpp>
 
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>
@@ -17,8 +17,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for king moves enumeration
-template<bool Color, typename Position>
-struct count<Color, material::king, select::moves, Position>
+template<bool Color, class Position>
+struct count<Color, pieces::king, select::moves, Position>
 :
         // enforce reference semantics
         boost::noncopyable
@@ -61,11 +61,11 @@ private:
                 );
         }
 
-        template<typename Direction>
+        template<class Direction>
         int parallelize(BitBoard active_kings) const
         {
                 return bit::size(
-                        Sink<Board, Direction, typename rules::range::scan<Rules>::type>()(active_kings, propagate_.path())
+                        Sink<Board, Direction, typename rules::range::move<Rules>::type>()(active_kings, propagate_.path())
                 );
         }
 };

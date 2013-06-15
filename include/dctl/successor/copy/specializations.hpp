@@ -3,10 +3,10 @@
 #include <dctl/successor/copy/primary.hpp>
 #include <dctl/successor/copy/legal.hpp>
 #include <dctl/successor/copy/conversions.hpp>
-#include <dctl/successor/copy/piece_jumps.hpp>
-#include <dctl/successor/copy/piece_moves.hpp>
-#include <dctl/successor/copy/piece_promotions.hpp>
-#include <dctl/successor/copy/piece_reverse.hpp>
+#include <dctl/successor/copy/all_jumps.hpp>
+#include <dctl/successor/copy/all_moves.hpp>
+#include <dctl/successor/copy/all_promotions.hpp>
+#include <dctl/successor/copy/all_reverse.hpp>
 #include <dctl/successor/copy/king_jumps.hpp>
 #include <dctl/successor/copy/king_moves.hpp>
 // there are no king promotions

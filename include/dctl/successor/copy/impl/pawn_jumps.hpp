@@ -4,9 +4,11 @@
 #include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
 #include <dctl/successor/copy/impl/king_jumps.hpp>      // promote_en_passant
-#include <dctl/successor/material/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
+#include <dctl/pieces/pawn.hpp>           // pawn
+#include <dctl/pieces/king.hpp>
+
 
 #include <dctl/angle/degrees.hpp>
 #include <dctl/angle/transform.hpp>
@@ -24,8 +26,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for pawn jumps generation
-template<bool Color, class Position, class Vector>
-struct copy<Color, material::pawn, select::jumps, Position, Vector>
+template<bool Color, class Position, class Sequence>
+struct copy<Color, pieces::pawn, select::jumps, Position, Sequence>
 :
         // enforce reference semantics
         private boost::noncopyable
@@ -33,7 +35,7 @@ struct copy<Color, material::pawn, select::jumps, Position, Vector>
 private:
         // typedefs
 
-        typedef copy<Color, material::king, select::jumps, Position, Vector> KingJumps;
+        typedef copy<Color, pieces::king, select::jumps, Position, Sequence> KingJumps;
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
         typedef board::Compass<Color, Board> Compass;
@@ -42,12 +44,12 @@ private:
         // representation
 
         State& capture_;
-        Vector& moves_;
+        Sequence& moves_;
 
 public:
         // structors
 
-        explicit copy(State& c, Vector& m)
+        explicit copy(State& c, Sequence& m)
         :
                 capture_(c),
                 moves_(m)
@@ -59,7 +61,7 @@ public:
         {
                 // tag dispatching on whether pawns can capture kings
                 if (active_pawns)
-                        select_dispatch(active_pawns, rules::is_pawns_jump_kings<Rules>());
+                        select_dispatch(active_pawns, rules::can_jump<Rules, pieces::pawn, pieces::king>());
         }
 
 private:
@@ -216,7 +218,7 @@ private:
         bool promote_en_passant(BitIndex jumper) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return promote_en_passant_dispatch<Direction>(jumper, rules::is_pawns_jump_kings<Rules>());
+                return promote_en_passant_dispatch<Direction>(jumper, rules::can_jump<Rules, pieces::pawn, pieces::king>());
         }
 
         // overload for pawns that can capture kings

@@ -257,31 +257,31 @@ private:
         BitBoard padding_[6];
 };
 
-template<typename Position>
+template<class Position>
 typename Position::TreeIterator grand_parent(Position const& p)
 {
         return p.parent() ? p.parent()->parent() : nullptr;
 }
 
-template<typename Position>
+template<class Position>
 bool active_color(Position const& p)
 {
         return p.to_move();
 }
 
-template<typename Position>
+template<class Position>
 bool passive_color(Position const& p)
 {
         return !p.to_move();
 }
 
-template<typename Position>
+template<class Position>
 KingMoves const& active_restricted(Position const& p)
 {
         return p.restricted()[active_color(p)];
 }
 
-template<typename Position>
+template<class Position>
 KingMoves const& passive_restricted(Position const&);
 
 }       // namespace dctl

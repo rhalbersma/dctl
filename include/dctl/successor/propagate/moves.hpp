@@ -6,7 +6,7 @@
 namespace dctl {
 namespace successor {
 
-template<typename Position>
+template<class Position>
 struct Propagate<select::moves, Position>
 {
 public:

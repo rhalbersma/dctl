@@ -2,7 +2,7 @@
 
 #define DCTL_PP_DEFINE_GET_TYPE(U)      \
 template<class T>                       \
-struct get_ ## U                        \
+struct get_type_ ## U                   \
 {                                       \
         typedef typename T::U type;     \
 };

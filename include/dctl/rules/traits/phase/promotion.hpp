@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/mpl/eval_if.hpp>                // eval_if
-#include <dctl/preprocessor/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
-#include <dctl/preprocessor/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
+#include <dctl/preprocessor/sfinae/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
+#include <dctl/preprocessor/sfinae/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
 #include <dctl/rules/types/phase.hpp>           // apres_fini
 
 namespace dctl {
@@ -15,8 +15,8 @@ template<class Rules>
 struct promotion
 :
         boost::mpl::eval_if<
-                has_phase_promotion<Rules>,
-                get_phase_promotion<Rules>,
+                has_type_phase_promotion<Rules>,
+                get_type_phase_promotion<Rules>,
                 apres_fini
         >::type
 {};

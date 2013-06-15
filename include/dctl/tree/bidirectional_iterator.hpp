@@ -9,7 +9,7 @@
 namespace dctl {
 namespace tree {
 
-template<typename T>
+template<class T>
 struct bidirectional_iterator
         // http://www.boost.org/doc/libs/1_52_0/libs/utility/operators.htm#chaining
         // use base class chaining to ensure Empty Base Optimization

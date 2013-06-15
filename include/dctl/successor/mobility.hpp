@@ -1,21 +1,21 @@
 #pragma once
-#include <dctl/successor/count.hpp>                     // count
-#include <dctl/successor/material/piece.hpp>            // both
-#include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/successor/count.hpp>             // count
+#include <dctl/successor/select/moves.hpp>      // moves
+#include <dctl/pieces/all.hpp>    // all
 
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Material, typename Select, typename Position>
+template<bool Color, class Pieces, class Select, class Position>
 int mobility(Position const& p)
 {
-        return count<Color, Material, Select>(p);
+        return count<Color, Pieces, Select>(p);
 }
 
-template<bool Color, typename Position>
+template<bool Color, class Position>
 int mobility(Position const& p)
 {
-        return count<Color, material::piece, select::moves>(p);
+        return count<Color, pieces::all, select::moves>(p);
 }
 
 }       // namespace successor

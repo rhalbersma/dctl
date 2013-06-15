@@ -5,7 +5,7 @@ namespace successor {
 namespace detail {
 namespace impl {
 
-template<bool, typename, typename, typename>
+template<bool, class, class, class>
 struct count;
 
 }       // namespace impl

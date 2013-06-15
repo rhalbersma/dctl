@@ -14,6 +14,7 @@
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/unary_projections.hpp>
+#include <dctl/pieces/pieces.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/rules/types.hpp>
 #include <dctl/successor/propagate_fwd.hpp>
@@ -30,7 +31,7 @@ struct pawn {};
 
 }       // namespace with
 
-template<typename Position>
+template<class Position>
 struct Propagate<select::jumps, Position>
 {
 public:
@@ -92,7 +93,7 @@ public:
 
         void toggle_king_targets()
         {
-                BOOST_MPL_ASSERT_NOT((rules::is_pawns_jump_kings<Rules>));
+                BOOST_MPL_ASSERT_NOT((rules::can_jump<Rules, pieces::pawn, pieces::king>));
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
 
@@ -109,10 +110,10 @@ public:
                 best_ = current_;
         }
 
-        template<bool Color, typename Vector>
-        void add_king_jump(BitIndex dest_sq, Vector& moves) const
+        template<bool Color, class Sequence>
+        void add_king_jump(BitIndex dest_sq, Sequence& moves) const
         {
-                typedef typename Vector::value_type Move;
+                typedef typename Sequence::value_type Move;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
@@ -123,10 +124,10 @@ public:
                 );
         }
 
-        template<bool Color, typename WithPiece, typename Vector>
-        void add_pawn_jump(BitIndex dest_sq, Vector& moves) const
+        template<bool Color, class WithPiece, class Sequence>
+        void add_pawn_jump(BitIndex dest_sq, Sequence& moves) const
         {
-                typedef typename Vector::value_type Move;
+                typedef typename Sequence::value_type Move;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
@@ -140,13 +141,13 @@ public:
 
         // queries
 
-        template<typename Direction>
+        template<class Direction>
         BitBoard targets_with_king() const
         {
                 return remaining_targets<Direction>() & Prev<Board, Direction>()(path());
         }
 
-        template<typename Direction>
+        template<class Direction>
         BitBoard targets_with_pawn() const
         {
                 return remaining_targets_ & Prev<Board, Direction>()(path());
@@ -157,7 +158,7 @@ public:
                 return not_occupied_;
         }
 
-        template<typename Direction>
+        template<class Direction>
         BitBoard path() const
         {
                 return path() & jump_start<Board, Direction>::value;
@@ -182,8 +183,8 @@ public:
                 return current_ != best_;
         }
 
-        template<typename Vector>
-        bool is_potential_duplicate(Vector const& moves) const
+        template<class Sequence>
+        bool is_potential_duplicate(Sequence const& moves) const
         {
                 return !moves.empty() && is_large();
         }
@@ -298,7 +299,7 @@ private:
                 );
         }
 
-        template<typename Direction>
+        template<class Direction>
         BitBoard remaining_targets() const
         {
         	// tag dispatching based on direction and king jump orthogonality
@@ -363,7 +364,7 @@ private:
         BitBoard captured_kings(with::pawn) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return captured_kings_dispatch(rules::is_pawns_jump_kings<Rules>());
+                return captured_kings_dispatch(rules::can_jump<Rules, pieces::pawn, pieces::king>());
         }
 
         // overload for pawns that can capture kings

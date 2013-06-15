@@ -1,8 +1,8 @@
 #pragma once
 #include <type_traits>                          // false_type
 #include <boost/mpl/eval_if.hpp>                // eval_if
-#include <dctl/preprocessor/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
-#include <dctl/preprocessor/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
+#include <dctl/preprocessor/sfinae/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
+#include <dctl/preprocessor/sfinae/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
 
 namespace dctl {
 namespace rules {
@@ -15,8 +15,8 @@ template<class Rules>
 struct is_reversal
 :
         boost::mpl::eval_if<
-                has_directions_is_reversal<Rules>,
-                get_directions_is_reversal<Rules>,
+                has_type_directions_is_reversal<Rules>,
+                get_type_directions_is_reversal<Rules>,
                 std::false_type
         >::type
 {};

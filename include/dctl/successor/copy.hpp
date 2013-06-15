@@ -2,7 +2,7 @@
 #include <dctl/successor/select/legal.hpp>              // DefaultSelection
 #include <dctl/successor/copy/specializations.hpp>      // copy
 #include <dctl/successor/invariant.hpp>                 // invariant
-#include <dctl/successor/material/piece.hpp>            // piece
+#include <dctl/pieces/pieces.hpp>                // pawn, king, piece
 #include <dctl/node/move.hpp>                           // Move
 #include <dctl/node/side.hpp>                           // black, white
 #include <dctl/utility/stack_vector.hpp>                // stack_vector
@@ -10,41 +10,41 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Material, typename Select, typename Position, typename Vector>
-void copy(Position const& p, Vector& moves)
+template<bool Color, class Pieces, class Select, class Position, class Sequence>
+void copy(Position const& p, Sequence& moves)
 {
-        detail::copy<Color, Material, Select>()(p, moves);
+        detail::copy<Color, Pieces, Select>()(p, moves);
 }
 
-template<bool Color, typename Material, typename Select, typename Position>
+template<bool Color, class Pieces, class Select, class Position>
 stack_vector<Move>::type copy(Position const& p, Arena<Move>::type& mar)
 {
         Alloc<Move>::type mal(mar);
         stack_vector<Move>::type moves(mal);
         moves.reserve(DCTL_PP_STACK_RESERVE);
 
-        copy<Color, Material, Select>(p, moves);
+        copy<Color, Pieces, Select>(p, moves);
 
-        BOOST_ASSERT((invariant<Color, Material, Select>(p, static_cast<int>(moves.size()))));
+        BOOST_ASSERT((invariant<Color, Pieces, Select>(p, static_cast<int>(moves.size()))));
         return moves;
 }
 
-template<typename Material, typename Select, typename Position>
+template<class Pieces, class Select, class Position>
 stack_vector<Move>::type copy(Position const& p, Arena<Move>::type& mar)
 {
         return (p.to_move() == Side::black)?
-                copy<Side::black, Material, Select>(p, mar) :
-                copy<Side::white, Material, Select>(p, mar)
+                copy<Side::black, Pieces, Select>(p, mar) :
+                copy<Side::white, Pieces, Select>(p, mar)
         ;
 }
 
-template<typename Position>
+template<class Position>
 stack_vector<Move>::type copy(Position const& p, Arena<Move>::type& mar)
 {
-        return copy<material::piece, select::legal>(p, mar);
+        return copy<pieces::all, select::legal>(p, mar);
 }
 
-template<typename Position, typename Move>
+template<class Position, class Move>
 Position make_copy(Position const& p, Move const& m)
 {
         auto q = p;

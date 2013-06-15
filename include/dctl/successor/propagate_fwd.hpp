@@ -3,7 +3,7 @@
 namespace dctl {
 namespace successor {
 
-template<typename, typename>
+template<class, class>
 struct Propagate;
 
 }       // namespace successor

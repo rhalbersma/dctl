@@ -4,10 +4,7 @@
 namespace dctl {
 namespace evaluate {
 
-template
-<
-        bool Color
->
+template<bool Color>
 class Delta
 {
 private:
@@ -16,38 +13,38 @@ private:
         typedef Feature<!Color> Passive;
 
 public:
-        template<typename Position>
+        template<class Position>
         static int value(Position const& p)
         {
                 return Active::value(p) - Passive::value(p);
         }
 
 private:
-        template<typename Position>
+        template<class Position>
         static int material(Position const& p)
         {
                 return Active::material(p) - Passive::material(p);
         }
 
-        template<typename Position>
+        template<class Position>
         static int tempo(Position const& p)
         {
                 return Active::tempo(p) - Passive::tempo(p);
         }
 
-        template<typename Position>
+        template<class Position>
         static int center(Position const& p)
         {
                 return Active::center(p) - Passive::center(p);
         }
 
-        template<typename Position>
+        template<class Position>
         static int balance(Position const& p)
         {
                 return Active::balance(p) - Passive::balance(p);
         }
 
-        template<typename Position>
+        template<class Position>
         static int mobility(Position const& p)
         {
                 return static_cast<int>(Active::mobility(p) - Passive::mobility(p));

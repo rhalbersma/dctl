@@ -9,10 +9,10 @@
 namespace dctl {
 namespace hash {
 
-template<typename Predicate>
+template<class Predicate>
 struct EmptyOldUnderCutMin
 {
-        template<typename ForwardIterator, typename value_type>
+        template<class ForwardIterator, class value_type>
         bool operator()(ForwardIterator first, ForwardIterator last, value_type const& value) const
         {
                 BOOST_MPL_ASSERT(( std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, value_type> ));
@@ -46,7 +46,7 @@ struct EmptyOldUnderCutMin
 
 struct Shallowest
 {
-        template<typename T>
+        template<class T>
         bool operator()(T const& lhs, T const& rhs) const
         {
                 return lhs.second.depth() < rhs.second.depth();
@@ -55,7 +55,7 @@ struct Shallowest
 
 struct Smallest
 {
-        template<typename T>
+        template<class T>
         bool operator()(T const& lhs, T const& rhs) const
         {
                 return lhs.second.nodes() < rhs.second.nodes();

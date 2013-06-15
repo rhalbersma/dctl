@@ -97,7 +97,7 @@ struct diagram
 {
 public:
         // position content in diagram layout
-        template<typename Position>
+        template<class Position>
         std::string operator()(Position const& p) const
         {
                 typedef typename Position::board_type Board;

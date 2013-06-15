@@ -26,21 +26,21 @@
 namespace dctl {
 namespace walk {
 
-template<typename Tag, typename Position>
+template<class Tag, class Position>
 struct Data;
 
-template<typename Tag, typename Position>
+template<class Tag, class Position>
 struct Enhancements;
 
 struct default_tag {};
 
-template<typename Position>
+template<class Position>
 struct Data<default_tag, Position>
 {
         Statistics statistics_;
 };
 
-template<typename Position>
+template<class Position>
 struct Enhancements<default_tag, Position>
 {
         typedef Data<default_tag, Position> value_type;
@@ -70,13 +70,13 @@ struct Enhancements<default_tag, Position>
 
 struct bulk_tag {};
 
-template<typename Position>
+template<class Position>
 struct Data<bulk_tag, Position>
 :
         Data<default_tag, Position>
 {};
 
-template<typename Position>
+template<class Position>
 struct Enhancements<bulk_tag, Position>
 {
         typedef Data<bulk_tag, Position> value_type;
@@ -106,7 +106,7 @@ struct Enhancements<bulk_tag, Position>
 
 struct hash_tag {};
 
-template<typename Position>
+template<class Position>
 struct Data<hash_tag, Position>
 {
         hash::Map<
@@ -119,7 +119,7 @@ struct Data<hash_tag, Position>
         Statistics statistics_;
 };
 
-template<typename Position>
+template<class Position>
 struct Enhancements<hash_tag, Position>
 {
         typedef Data<hash_tag, Position> value_type;
@@ -157,7 +157,7 @@ struct Enhancements<hash_tag, Position>
         value_type* handle_;
 };
 
-template<typename Position, typename Enhancements>
+template<class Position, class Enhancements>
 NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
 {
         // (0)
@@ -187,7 +187,7 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
         return nodes;
 }
 
-template<typename Position>
+template<class Position>
 void announce(Position const& p, int depth)
 {
         std::cout << setup::diagram<pdn::protocol>()(p);
@@ -195,7 +195,7 @@ void announce(Position const& p, int depth)
         std::cout << "Searching to nominal depth=" << depth << "\n\n";
 }
 
-template<typename Position>
+template<class Position>
 void announce(Position const& p, int depth, int num_moves)
 {
         announce(p, depth);
@@ -209,7 +209,7 @@ void print_move(std::string const& move, int i)
         std::cout << std::setw(2) << (i + 1) << "." << move << " ";
 }
 
-template<typename Enhancements>
+template<class Enhancements>
 void report(int depth, NodeCount leafs, Timer const& timer, Enhancements e)
 {
         std::cout << "info";
@@ -245,7 +245,7 @@ void summary(NodeCount leafs)
         std::cout << "Total leafs: " << leafs << "\n\n";
 }
 
-template<typename Position, typename Enhancements>
+template<class Position, class Enhancements>
 NodeCount perft(Position const& p, int depth, Enhancements e)
 {
         NodeCount nodes = 0;
@@ -260,7 +260,7 @@ NodeCount perft(Position const& p, int depth, Enhancements e)
         return nodes;
 }
 
-template<typename Position, typename Enhancements>
+template<class Position, class Enhancements>
 NodeCount divide(Position const& p, int depth, Enhancements e)
 {
         NodeCount leaf_nodes = 0;

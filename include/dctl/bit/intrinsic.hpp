@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>                      // uint32_t, uint64_t
+#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
+#include <dctl/utility/int.hpp>         // num_bits
 
 namespace dctl {
 namespace bit {
@@ -12,15 +14,17 @@ struct front;
 template<>
 struct front<uint32_t>
 {
+        BOOST_STATIC_ASSERT(num_bits<uint32_t>::value == num_bits<unsigned int>::value);
         int operator()(uint32_t b) const
         {
-                return static_cast<int>(__builtin_ctzl(b));
+                return static_cast<int>(__builtin_ctz(b));
         }
 };
 
 template<>
 struct front<uint64_t>
 {
+        BOOST_STATIC_ASSERT(num_bits<uint64_t>::value == num_bits<unsigned long long int>::value);
         int operator()(uint64_t b) const
         {
                 return static_cast<int>(__builtin_ctzll(b));
@@ -33,18 +37,20 @@ struct back;
 template<>
 struct back<uint32_t>
 {
+        BOOST_STATIC_ASSERT(num_bits<uint32_t>::value == num_bits<unsigned int>::value);
         int operator()(uint32_t b) const
         {
-                return static_cast<int>(__builtin_clzl(b));
+                return num_bits<uint32_t>::value - 1 - static_cast<int>(__builtin_clz(b));
         }
 };
 
 template<>
 struct back<uint64_t>
 {
+        BOOST_STATIC_ASSERT(num_bits<uint64_t>::value == num_bits<unsigned long long int>::value);
         int operator()(uint64_t b) const
         {
-                return static_cast<int>(__builtin_clzll(b));
+                return num_bits<uint64_t>::value - 1 - static_cast<int>(__builtin_clzll(b));
         }
 };
 
@@ -54,15 +60,17 @@ struct size;
 template<>
 struct size<uint32_t>
 {
+        BOOST_STATIC_ASSERT(num_bits<uint32_t>::value == num_bits<unsigned int>::value);
         int operator()(uint32_t b) const
         {
-                return static_cast<int>(__builtin_popcountl(b));
+                return static_cast<int>(__builtin_popcount(b));
         }
 };
 
 template<>
 struct size<uint64_t>
 {
+        BOOST_STATIC_ASSERT(num_bits<uint64_t>::value == num_bits<unsigned long long int>::value);
         int operator()(uint64_t b) const
         {
                 return static_cast<int>(__builtin_popcountll(b));

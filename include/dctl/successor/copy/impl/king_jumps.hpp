@@ -3,9 +3,9 @@
 #include <boost/assert.hpp>                             // BOOST_ASSERT
 #include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
-#include <dctl/successor/material/king.hpp>             // king
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate
 #include <dctl/successor/select/jumps.hpp>              // jumps
+#include <dctl/pieces/king.hpp>             // king
 
 #include <dctl/angle/degrees.hpp>                       // Degrees
 #include <dctl/angle/transform.hpp>                     // rotate
@@ -22,8 +22,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for king jumps generation
-template<bool Color, class Position, class Vector>
-struct copy<Color, material::king, select::jumps, Position, Vector>
+template<bool Color, class Position, class Sequence>
+struct copy<Color, pieces::king, select::jumps, Position, Sequence>
 :
         // enforce reference semantics
         private boost::noncopyable
@@ -33,19 +33,19 @@ private:
 
         typedef typename Position::rules_type Rules;
         typedef typename Position::board_type Board;
-        typedef typename Vector::value_type Move;
+        typedef typename Sequence::value_type Move;
         typedef board::Compass<Color, Board> Compass;
         typedef Propagate<select::jumps, Position> State;
 
         // representation
 
         State& capture_;
-        Vector& moves_;
+        Sequence& moves_;
 
 public:
         // structors
 
-        explicit copy(State& c, Vector& m)
+        explicit copy(State& c, Sequence& m)
         :
                 capture_(c),
                 moves_(m)
@@ -60,7 +60,7 @@ public:
                         select_dispatch(active_kings, rules::precedence::is_relative_king<Rules>());
         }
 
-        template<typename Direction>
+        template<class Direction>
         bool promote_en_passant(BitIndex jumper) const
         {
                 BOOST_ASSERT((is_promotion_sq<Color, Board>(jumper)));

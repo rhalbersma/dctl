@@ -4,7 +4,7 @@ namespace dctl {
 namespace successor {
 
 // primary template
-template<typename /* Rules */>
+template<class /* Rules */>
 class Value;
 
 }       // namespace successor

@@ -33,7 +33,7 @@ T fill(T copy, T propagator)
 template<typename Board, typename Direction>
 struct Fill
 {
-        template<typename T>
+        template<class T>
         T operator()(T copy, T propagator) const
         {
                 return detail::fill< typename

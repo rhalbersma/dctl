@@ -64,7 +64,7 @@ struct FactoryCreate
         BOOST_STATIC_CONSTANT(auto, identifier_ = ID);
 };
 
-template<typename T>
+template<class T>
 struct has_header_body_terminator
 :
         std::is_base_of<
@@ -77,7 +77,7 @@ struct has_header_body_terminator
         >
 {};
 
-template<typename T>
+template<class T>
 struct has_factory_create
 :
         std::is_base_of<

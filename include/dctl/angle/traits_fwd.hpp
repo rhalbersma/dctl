@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/preprocessor/lazy_unary_metafunction_def.hpp>    // DCTL_PP_LAZY_UNARY_METAFUNCTION_DEF
-#include <dctl/preprocessor/lazy_binary_metafunction_def.hpp>   // DCTL_PP_LAZY_BINARY_METAFUNCTION_DEF
+#include <dctl/preprocessor/mpl/lazy_unary_metafunction_def.hpp>    // DCTL_PP_LAZY_UNARY_METAFUNCTION_DEF
+#include <dctl/preprocessor/mpl/lazy_binary_metafunction_def.hpp>   // DCTL_PP_LAZY_BINARY_METAFUNCTION_DEF
 
 namespace dctl {
 namespace angle {

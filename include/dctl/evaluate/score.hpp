@@ -8,7 +8,7 @@
 namespace dctl {
 namespace evaluate {
 
-template<typename Position>
+template<class Position>
 static int score (Position const& p)
 {
         return (p.to_move() == Side::black)?
@@ -17,7 +17,7 @@ static int score (Position const& p)
         ;
 }
 
-template<typename Position>
+template<class Position>
 static void print_break_down(Position const& p)
 {
         std::cout << "Term    " << " BLACK"                                                                         << " WHITE"                                         << " DELTA"                                                      << "\n";
