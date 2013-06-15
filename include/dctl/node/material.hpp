@@ -11,7 +11,7 @@
 
 namespace dctl {
 
-template<typename T>
+template<class T>
 struct Material_
         // http://www.boost.org/doc/libs/1_51_0/libs/utility/operators.htm#chaining
         // use base class chaining to ensure Empty Base Optimization

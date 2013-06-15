@@ -8,7 +8,7 @@ struct IndexExtractor
 {
         typedef uint64_t result_type;
 
-        template<typename Key>
+        template<class Key>
         result_type operator()(Key const& key) const
         {
                 return key.hash_index();

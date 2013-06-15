@@ -5,12 +5,12 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Material, typename Select, typename Position>
+template<bool Color, class Pieces, class Select, class Position>
 bool invariant(Position const& p, int n)
 {
         return (
-                ( count<Color, Material, Select>(p) ==  n     ) &&
-                (detect<Color, Material, Select>(p) == (n > 0))
+                ( count<Color, Pieces, Select>(p) ==  n     ) &&
+                (detect<Color, Pieces, Select>(p) == (n > 0))
         );
 }
 

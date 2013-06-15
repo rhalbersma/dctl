@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/utility.hpp>
 #include <dctl/successor/detect/impl/primary_fwd.hpp>
-#include <dctl/successor/material/king.hpp>             // king
+#include <dctl/pieces/king.hpp>             // king
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>
 
@@ -17,8 +17,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for king moves detection
-template<bool Color, typename Position, typename Range>
-struct detect<Color, material::king, select::moves, Position, Range>
+template<bool Color, typename Position, class Range>
+struct detect<Color, pieces::king, select::moves, Position, Range>
 :
         // enforce reference semantics
         boost::noncopyable
@@ -60,7 +60,7 @@ private:
                 );
         }
 
-        template<typename Direction>
+        template<class Direction>
         bool parallelize(BitBoard active_kings) const
         {
                 return !bit::empty(

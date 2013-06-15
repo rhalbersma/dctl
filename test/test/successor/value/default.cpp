@@ -29,6 +29,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Less, T, PrecedenceNone)
 
         // all captures are equivalent
         BOOST_CHECK(v <= w);
+        BOOST_CHECK(v >= w);
+        BOOST_CHECK(w <= v);
         BOOST_CHECK(w >= v);
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/copy/primary_fwd.hpp>          // copy (primary template)
-#include <dctl/successor/copy/piece_jumps.hpp>          // copy (piece jumps specialization)
-#include <dctl/successor/copy/piece_promotions.hpp>     // copy (piece promotions specialization)
+#include <dctl/successor/copy/all_jumps.hpp>            // copy (all jumps specialization)
+#include <dctl/successor/copy/all_promotions.hpp>       // copy (all promotions specialization)
 #include <dctl/successor/copy/king_jumps.hpp>           // copy (king jumps specialization)
 // there are no king promotions
 #include <dctl/successor/copy/pawn_jumps.hpp>           // copy (pawn jumps specialization)
@@ -15,14 +15,14 @@ namespace successor {
 namespace detail {
 
 // partial specialization for conversions
-template<bool Color, class Material>
-struct copy<Color, Material, select::conversions>
+template<bool Color, class Pieces>
+struct copy<Color, Pieces, select::conversions>
 {
-        template<class Position, class Vector>
-        void operator()(Position const& p, Vector& moves) const
+        template<class Position, class Sequence>
+        void operator()(Position const& p, Sequence& moves) const
         {
-                typedef copy<Color, Material, select::jumps     > DoJumps;
-                typedef copy<Color, Material, select::promotions> DoPromotions;
+                typedef copy<Color, Pieces, select::jumps     > DoJumps;
+                typedef copy<Color, Pieces, select::promotions> DoPromotions;
 
                 DoJumps()(p, moves);
                 if (moves.empty())

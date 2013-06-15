@@ -6,14 +6,11 @@
 namespace dctl {
 namespace evaluate {
 
-template
-<
-        bool Color
->
+template<bool Color>
 class Feature
 {
 public:
-        template<typename Position>
+        template<class Position>
         static int value(Position const& p)
         {
                 int score = 0;
@@ -26,7 +23,7 @@ public:
                 return score;
         }
 
-        template<template<typename, typename> class Position, typename Rules, typename Board>
+        template<template<class, class> class Position, class Rules, class Board>
         static int material(Position<Rules, Board> const& p)
         {
                 return (
@@ -35,7 +32,7 @@ public:
                 );
         }
 
-        template<template<typename, typename> class Position, typename Rules, typename Board>
+        template<template<class, class> class Position, class Rules, class Board>
         static int tempo(Position<Rules, Board> const& p)
         {
                 int score = 0;
@@ -44,7 +41,7 @@ public:
                 return score;
         }
 
-        template<template<typename, typename> class Position, typename Rules, typename Board>
+        template<template<class, class> class Position, class Rules, class Board>
         static int center(Position<Rules, Board> const& p)
         {
                 int score = 0;
@@ -58,7 +55,7 @@ public:
                 return score;
         }
 
-        template<template<typename, typename> class Position, typename Rules, typename Board>
+        template<template<class, class> class Position, class Rules, class Board>
         static int balance(Position<Rules, Board> const& p)
         {
                 int score = 0;
@@ -72,13 +69,13 @@ public:
                 return -abs(score);
         }
 
-        template<template<typename, typename> class Position, typename Rules, typename Board>
+        template<template<class, class> class Position, class Rules, class Board>
         static int mobility(Position<Rules, Board> const& p)
         {
                 return Weight<Rules, Board>::mobility * successor::mobility<Color>(p);
         }
 
-        template<template<typename, typename> class Position, typename Rules, typename Board>
+        template<template<class, class> class Position, class Rules, class Board>
         static int king_monopoly(Position<Rules, Board> const& p)
         {
                 return Weight<Rules, Board>::king_monopoly * (!bit::empty(p.material().kings(Color)) && bit::empty(p.material().kings(!Color)));

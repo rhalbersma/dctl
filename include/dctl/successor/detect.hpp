@@ -1,33 +1,34 @@
 #pragma once
 #include <dctl/successor/select/legal.hpp>              // DefaultSelection
 #include <dctl/successor/detect/specializations.hpp>    // detect
-#include <dctl/successor/material/piece.hpp>            // piece
 #include <dctl/node/side.hpp>                           // black, white
+#include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
+#include <dctl/rules/traits.hpp>
 
 namespace dctl {
 namespace successor {
 
-template<bool Color, typename Material, typename Select, typename Position>
+template<bool Color, class Pieces, class Select, class Position>
 bool detect(Position const& p)
 {
         typedef typename Position::rules_type Rules;
-        typedef typename rules::range::scan<Rules>::type Range;
-        return detail::detect<Color, Material, Select, Range>()(p);
+        typedef typename rules::range::king<Rules>::type Range;
+        return detail::detect<Color, Pieces, Select, Range>()(p);
 }
 
-template<typename Material, typename Select, typename Position>
+template<class Pieces, class Select, class Position>
 bool detect(Position const& p)
 {
         return (p.to_move() == Side::black)?
-                detect<Side::black, Material, Select>(p) :
-                detect<Side::white, Material, Select>(p)
+                detect<Side::black, Pieces, Select>(p) :
+                detect<Side::white, Pieces, Select>(p)
         ;
 }
 
-template<typename Position>
+template<class Position>
 bool detect(Position const& p)
 {
-        return detect<material::piece, select::legal>(p);
+        return detect<pieces::all, select::legal>(p);
 }
 
 }       // namespace successor

@@ -5,13 +5,10 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template
-<
-        bool /* Color */, typename /* Material */, typename /* Select */
->
+template<bool /* Color */, class /* Pieces */, class /* Select */>
 struct count
 {
-        template<typename Position>
+        template<class Position>
         int operator()(Position const& /* p */) const
         {
                 return 0;

@@ -41,13 +41,13 @@ public:
 
         typedef BitBoard bit_type;
 
-        template<typename Direction>
+        template<class Direction>
         struct shift_size
         :
                 ShiftSize<InternalGrid, Direction>
         {};
 
-        template<typename Direction>
+        template<class Direction>
         struct jump_start
         :
                 mask::init<

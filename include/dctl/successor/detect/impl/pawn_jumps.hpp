@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/successor/detect/impl/primary_fwd.hpp>
-#include <dctl/successor/material/pawn.hpp>             // pawn
+#include <dctl/pieces/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>
 
@@ -17,8 +17,8 @@ namespace detail {
 namespace impl {
 
 // partial specialization for pawn jumps detection
-template<bool Color, typename Position, typename Range>
-struct detect<Color, material::pawn, select::jumps, Position, Range>
+template<bool Color, typename Position, class Range>
+struct detect<Color, pieces::pawn, select::jumps, Position, Range>
 {
 private:
         // typedefs
@@ -101,7 +101,7 @@ private:
                 );
         }
 
-        template<typename Direction>
+        template<class Direction>
         bool parallelize(BitBoard active_pawns) const
         {
                 return !bit::empty(

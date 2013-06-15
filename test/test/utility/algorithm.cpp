@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(UtilityAlgorithm)
 
 BOOST_AUTO_TEST_CASE(InsertionSort)
 {
-        auto const N = 100;
+        auto const N = 1 << 10;
         std::vector<int> v;
         v.reserve(N);
         std::srand(47110815);
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(InsertionSort)
 
 BOOST_AUTO_TEST_CASE(SelectionSort)
 {
-        auto const N = 100;
+        auto const N = 1 << 10;
         std::vector<int> v;
         v.reserve(N);
         std::srand(47110815);

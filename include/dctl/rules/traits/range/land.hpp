@@ -1,8 +1,8 @@
 #pragma once
-#include <boost/mpl/eval_if.hpp>                // eval_if
-#include <dctl/preprocessor/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
-#include <dctl/preprocessor/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
-#include <dctl/rules/traits/range/scan.hpp>     // scan
+#include <boost/mpl/eval_if.hpp>                        // eval_if
+#include <dctl/preprocessor/sfinae/has_type.hpp>        // DCTL_PP_DEFINE_HAS_TYPE
+#include <dctl/preprocessor/sfinae/get_type.hpp>        // DCTL_PP_DEFINE_GET_TYPE
+#include <dctl/rules/traits/range/scan.hpp>             // scan
 
 namespace dctl {
 namespace rules {
@@ -15,8 +15,8 @@ template<class Rules>
 struct land
 :
         boost::mpl::eval_if<
-                has_range_land<Rules>,
-                get_range_land<Rules>,
+                has_type_range_land<Rules>,
+                get_type_range_land<Rules>,
                 scan<Rules>
         >::type
 {};

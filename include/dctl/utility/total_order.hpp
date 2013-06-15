@@ -2,7 +2,7 @@
 
 namespace dctl {
 
-template<typename T>
+template<class T>
 bool is_totally_ordered(T const& left, T const& right)
 {
         auto const equivalence = !((left < right) || (right < left));

@@ -5,7 +5,7 @@ namespace bit {
 namespace first {
 namespace detail {
 
-template<typename T>
+template<class T>
 struct equal
 {
         T operator()(T b) const
@@ -14,7 +14,7 @@ struct equal
         }
 };
 
-template<typename T>
+template<class T>
 struct not_equal_to
 {
         T operator()(T b) const
@@ -23,7 +23,7 @@ struct not_equal_to
         }
 };
 
-template<typename T>
+template<class T>
 struct less
 {
         T operator()(T b) const
@@ -32,7 +32,7 @@ struct less
         }
 };
 
-template<typename T>
+template<class T>
 struct less_equal
 {
         T operator()(T b) const
@@ -47,14 +47,14 @@ struct less_equal
 }       // namespace detail
 
 // least significant 1-bit
-template<typename T>
+template<class T>
 T equal(T b)
 {
         return detail::equal<T>()(b);
 }
 
 // most significant 1-bits
-template<typename T>
+template<class T>
 T not_equal_to(T b)
 {
         return detail::not_equal_to<T>()(b);

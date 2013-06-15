@@ -24,7 +24,7 @@ struct num_blocks
 {};
 
 // primary template
-template<typename> struct log2_sizeof;
+template<class> struct log2_sizeof;
 
 // specializations for integral types
 template<> struct log2_sizeof<uint8_t> : std::integral_constant<int, 3> {};

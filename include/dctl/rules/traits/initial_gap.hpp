@@ -1,8 +1,8 @@
 #pragma once
 #include <type_traits>                          // integral_constant
 #include <boost/mpl/eval_if.hpp>                // eval_if
-#include <dctl/preprocessor/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
-#include <dctl/preprocessor/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
+#include <dctl/preprocessor/sfinae/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
+#include <dctl/preprocessor/sfinae/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
 
 namespace dctl {
 namespace rules {
@@ -14,8 +14,8 @@ template<class Rules>
 struct initial_gap
 :
         boost::mpl::eval_if<
-                has_initial_gap<Rules>,
-                get_initial_gap<Rules>,
+                has_type_initial_gap<Rules>,
+                get_type_initial_gap<Rules>,
                 std::integral_constant<int, 2>
         >::type
 {};

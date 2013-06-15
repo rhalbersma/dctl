@@ -3,12 +3,10 @@
 #include <dctl/successor/copy/primary_fwd.hpp>          // copy (primary template)
 #include <dctl/successor/copy/impl/king_jumps.hpp>      // copy (king jumps specialization)
 #include <dctl/successor/copy/impl/pawn_jumps.hpp>      // copy (pawn jumps specialization)
-#include <dctl/successor/material/piece.hpp>            // piece
-#include <dctl/successor/material/king.hpp>             // king
-#include <dctl/successor/material/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/rules/traits.hpp>                        // traits
+#include <dctl/pieces/pieces.hpp>                  // all, king, pawn
 
 namespace dctl {
 namespace successor {
@@ -16,11 +14,11 @@ namespace detail {
 
 // partial specialization for piece jumps
 template<bool Color>
-struct copy<Color, material::piece, select::jumps>
+struct copy<Color, pieces::all, select::jumps>
 {
 public:
-        template<typename Position, typename Vector>
-        void operator()(Position const& p, Vector& moves) const
+        template<class Position, class Sequence>
+        void operator()(Position const& p, Sequence& moves) const
         {
                 typedef typename Position::rules_type Rules;
 
@@ -29,37 +27,37 @@ public:
         }
 
 private:
-        // template aliases
+        // TODO: use template aliases
 
-        template<typename Position, typename Vector>
+        template<class Position, class Sequence>
         struct KingJumps
         {
-                typedef impl::copy<Color, material::king, select::jumps, Position, Vector> type;
+                typedef impl::copy<Color, pieces::king, select::jumps, Position, Sequence> type;
         };
 
-        template<typename Position, typename Vector>
+        template<class Position, class Sequence>
         struct PawnJumps
         {
-                typedef impl::copy<Color, material::pawn, select::jumps, Position, Vector> type;
+                typedef impl::copy<Color, pieces::pawn, select::jumps, Position, Sequence> type;
         };
 
         // overload for no absolute king jump precedence
-        template<typename Position, typename Vector>
-        void precedence_dispatch(Position const& p, Vector& moves, std::false_type) const
+        template<class Position, class Sequence>
+        void precedence_dispatch(Position const& p, Sequence& moves, std::false_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                typename KingJumps<Position, Vector>::type{propagate, moves}(p.material().kings(Color));
-                typename PawnJumps<Position, Vector>::type{propagate, moves}(p.material().pawns(Color));
+                typename KingJumps<Position, Sequence>::type{propagate, moves}(p.material().kings(Color));
+                typename PawnJumps<Position, Sequence>::type{propagate, moves}(p.material().pawns(Color));
         }
 
         // overload for absolute king jump precedence
-        template<typename Position, typename Vector>
-        void precedence_dispatch(Position const& p, Vector& moves, std::true_type) const
+        template<class Position, class Sequence>
+        void precedence_dispatch(Position const& p, Sequence& moves, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                typename KingJumps<Position, Vector>::type{propagate, moves}(p.material().kings(Color));
+                typename KingJumps<Position, Sequence>::type{propagate, moves}(p.material().kings(Color));
                 if (moves.empty())
-                        typename PawnJumps<Position, Vector>::type{propagate, moves}(p.material().pawns(Color));
+                        typename PawnJumps<Position, Sequence>::type{propagate, moves}(p.material().pawns(Color));
         }
 };
 

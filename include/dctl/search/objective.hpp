@@ -26,7 +26,7 @@ struct is_terminal;
 template<>
 struct is_terminal<NoMovesLeft>
 {
-        template<typename Position>
+        template<class Position>
         bool operator()(Position const& p) const
         {
                 return !successor::detect(p);
@@ -36,7 +36,7 @@ struct is_terminal<NoMovesLeft>
 template<>
 struct is_terminal<Kingscourt>
 {
-        template<typename Position>
+        template<class Position>
         bool operator()(Position const& p) const
         {
                 return (
@@ -67,7 +67,7 @@ struct terminal<Misere>
         }
 };
 
-template<typename Position>
+template<class Position>
 bool is_cycle(Position const& p)
 {
         // a cycle needs at least 4 reversible moves
@@ -101,7 +101,7 @@ struct cycle;
 template<>
 struct cycle<HeuristicDraw>
 {
-        template<typename Position>
+        template<class Position>
         static int value(Position const& /* p */)
         {
                 return draw_value();
@@ -111,7 +111,7 @@ struct cycle<HeuristicDraw>
 template<>
 struct cycle<FirstPlayerWin>
 {
-        template<typename Position>
+        template<class Position>
         static int value(Position const& p)
         {
                 return (p.distance_to_root() % 2)? loss_min() : win_min();
@@ -121,7 +121,7 @@ struct cycle<FirstPlayerWin>
 template<>
 struct cycle<SecondPlayerWin>
 {
-        template<typename Position>
+        template<class Position>
         static int value(Position const& p)
         {
                 return -cycle<FirstPlayerWin>::value(p);
@@ -131,14 +131,14 @@ struct cycle<SecondPlayerWin>
 namespace detail {
 
 // overload for no restrictions on consecutive reversible moves
-template<typename Position>
+template<class Position>
 bool is_no_progress(Position const& /* p */, std::false_type)
 {
         return false;
 }
 
 // overload for a maximum of consecutive reversible moves
-template<typename Position>
+template<class Position>
 bool is_no_progress(Position const& p, std::true_type)
 {
         typedef typename Position::rules_type Rules;
@@ -148,7 +148,7 @@ bool is_no_progress(Position const& p, std::true_type)
 
 }       // namespace detail
 
-template<typename Position>
+template<class Position>
 bool is_no_progress(Position const& p)
 {
         typedef typename Position::rules_type Rules;
@@ -157,7 +157,7 @@ bool is_no_progress(Position const& p)
         return detail::is_no_progress(p, rules::is_restricted_reversible_moves<Rules>());
 }
 
-template<typename Position>
+template<class Position>
 bool is_draw(Position const& p)
 {
         return is_cycle(p) || is_no_progress(p);
@@ -171,7 +171,7 @@ template
 >
 struct GameObjective
 {
-        template<typename Position>
+        template<class Position>
         static int value(Position const& p)
         {
                 if (is_cycle(p))

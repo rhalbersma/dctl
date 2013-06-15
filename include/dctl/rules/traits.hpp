@@ -1,14 +1,17 @@
 #pragma once
 
-#include <dctl/rules/traits/range/scan.hpp>
+#include <dctl/rules/traits/range/king.hpp>
 #include <dctl/rules/traits/directions/pawn_jump.hpp>
 #include <dctl/rules/traits/precedence/jump.hpp>
 
+#include <dctl/rules/traits/range/move.hpp>
+#include <dctl/rules/traits/range/scan.hpp>
 #include <dctl/rules/traits/range/land.hpp>
 #include <dctl/rules/traits/range/halt.hpp>
 #include <dctl/rules/traits/orthogonality/king_jump.hpp>
 #include <dctl/rules/traits/orthogonality/king_move.hpp>
-#include <dctl/rules/traits/is_pawns_jump_kings.hpp>
+#include <dctl/rules/traits/targets/can_jump.hpp>
+
 #include <dctl/rules/traits/directions/is_reversal.hpp>
 #include <dctl/rules/traits/phase/capture.hpp>
 #include <dctl/rules/traits/phase/promotion.hpp>

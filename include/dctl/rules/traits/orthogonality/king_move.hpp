@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/mpl/eval_if.hpp>                // eval_if
-#include <dctl/preprocessor/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
-#include <dctl/preprocessor/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
+#include <dctl/preprocessor/sfinae/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
+#include <dctl/preprocessor/sfinae/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
 #include <dctl/rules/types/orthogonality.hpp>   // none
 
 namespace dctl {
@@ -15,8 +15,8 @@ template<class Rules>
 struct king_move
 :
         boost::mpl::eval_if<
-                has_orthogonality_king_move<Rules>,
-                get_orthogonality_king_move<Rules>,
+                has_type_orthogonality_king_move<Rules>,
+                get_type_orthogonality_king_move<Rules>,
                 none
         >::type
 {};

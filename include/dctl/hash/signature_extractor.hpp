@@ -10,7 +10,7 @@ struct MaterialExtractor
 {
         typedef Material result_type;
 
-        template<typename Key, typename Index>
+        template<class Key, class Index>
         result_type const& operator()(Key const& key, Index /* index */) const
         {
                 return key.material();
@@ -21,7 +21,7 @@ struct UpperHashBitsExtractor
 {
         typedef std::size_t result_type;
 
-        template<typename Key, typename Index>
+        template<class Key, class Index>
         result_type operator()(Key const& /* key */, Index index) const
         {
                 static_assert(std::is_integral<Index>::value,      "Bitwise shift only applicable to integral types.");
@@ -31,7 +31,7 @@ struct UpperHashBitsExtractor
                 return static_cast<result_type>(index >> (num_bits<Index>::value - num_bits<result_type>::value));
         }
 
-        template<typename Index>
+        template<class Index>
         result_type operator()(Index index) const
         {
                 static_assert(std::is_integral<Index>::value,      "Bitwise shift only applicable to integral types.");

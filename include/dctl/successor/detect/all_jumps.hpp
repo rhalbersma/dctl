@@ -1,25 +1,23 @@
 #pragma once
-#include <type_traits>                  // integral_constant, is_same, false_type, true_type
-#include <boost/mpl/logical.hpp>        // and_
+#include <type_traits>                                  // integral_constant, is_same, false_type, true_type
+#include <boost/mpl/logical.hpp>                        // and_
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/impl/king_jumps.hpp>
 #include <dctl/successor/detect/impl/pawn_jumps.hpp>
-#include <dctl/successor/material/piece.hpp>            // piece
-#include <dctl/successor/material/king.hpp>             // king
-#include <dctl/successor/material/pawn.hpp>             // pawn
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/rules/traits.hpp>
+#include <dctl/pieces/pieces.hpp>                // all, king, pawn
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-template<bool Color, typename Range>
-struct detect<Color, material::piece, select::jumps, Range>
+template<bool Color, class Range>
+struct detect<Color, pieces::all, select::jumps, Range>
 {
 public:
-        template<typename Position>
+        template<class Position>
         bool operator()(Position const& p) const
         {
                 typedef typename Position::rules_type Rules;
@@ -40,7 +38,7 @@ public:
                                                 rules::directions::king_jump<Rules>, typename
                                                 rules::directions::pawn_jump<Rules>
                                         >,
-                                        rules::is_pawns_jump_kings<Rules>
+                                        rules::can_jump<Rules, pieces::pawn, pieces::king>
                                 >::value
                         >()
                 );
@@ -51,20 +49,20 @@ private:
 
         // the existence of pawn jumps is independent of Range,
         // but we always use rules::range::distance_1 to avoid template bloat
-        template<typename Position>
+        template<class Position>
         struct PawnJumps
         {
-                typedef impl::detect<Color, material::pawn, select::jumps, Position, rules::range::distance_1> type;
+                typedef impl::detect<Color, pieces::pawn, select::jumps, Position, rules::range::distance_1> type;
         };
 
-        template<typename Position>
+        template<class Position>
         struct KingJumps
         {
-                typedef impl::detect<Color, material::king, select::jumps, Position, Range> type;
+                typedef impl::detect<Color, pieces::king, select::jumps, Position, Range> type;
         };
 
         // overload for piece jump detection
-        template<typename Position>
+        template<class Position>
         bool combined_dispatch(Position const& p, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
@@ -72,7 +70,7 @@ private:
         }
 
         // overload for separate king and pawn jump detection
-        template<typename Position>
+        template<class Position>
         bool combined_dispatch(Position const& p, std::false_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);

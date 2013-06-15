@@ -25,7 +25,7 @@ struct back
 {
         int operator()(T b) const
         {
-                for (auto i = num_bits<T>::value - 1; i > 0; --i)
+                for (auto i = num_bits<T>::value - 1; i >= 0; --i)
                         if (b & (T{1} << i))
                                 return i;
                 BOOST_ASSERT(false);

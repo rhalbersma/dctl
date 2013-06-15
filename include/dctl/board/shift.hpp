@@ -32,7 +32,7 @@ struct Shift;
 template<typename N>
 struct Shift<L, N>
 {
-        template<typename T>
+        template<class T>
         T operator()(T square) const
         {
                 return square << N::value;
@@ -43,7 +43,7 @@ struct Shift<L, N>
 template<typename N>
 struct Shift<R, N>
 {
-        template<typename T>
+        template<class T>
         T operator()(T square) const
         {
                 return square >> N::value;
@@ -58,7 +58,7 @@ struct ShiftAssign;
 template<typename N>
 struct ShiftAssign<L, N>
 {
-        template<typename T>
+        template<class T>
         void operator()(T& square) const
         {
                 square <<= N::value;
@@ -69,7 +69,7 @@ struct ShiftAssign<L, N>
 template<typename N>
 struct ShiftAssign<R, N>
 {
-        template<typename T>
+        template<class T>
         void operator()(T& square) const
         {
                 square >>= N::value;

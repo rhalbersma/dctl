@@ -6,13 +6,13 @@
 namespace dctl {
 
 // primary template
-template<typename Board, typename Direction, typename Range>
+template<typename Board, typename Direction, class Range>
 struct Sink;
 
 template<typename Board, typename Direction>
 struct Sink<Board, Direction, rules::range::distance_1>
 {
-        template<typename T>
+        template<class T>
         T operator()(T from, T dest) const
         {
                 return Next<Board, Direction>()(from) & dest;
@@ -22,7 +22,7 @@ struct Sink<Board, Direction, rules::range::distance_1>
 template<typename Board, typename Direction>
 struct Sink<Board, Direction, rules::range::distance_N>
 {
-        template<typename T>
+        template<class T>
         T operator()(T from, T dest) const
         {
                 return from ^ Fill<Board, Direction>()(from, dest);
@@ -30,13 +30,13 @@ struct Sink<Board, Direction, rules::range::distance_N>
 };
 
 // primary template
-template<typename Board, typename Direction, typename Range>
+template<typename Board, typename Direction, class Range>
 struct Sandwich;
 
 template<typename Board, typename Direction>
 struct Sandwich<Board, Direction, rules::range::distance_1>
 {
-        template<typename T>
+        template<class T>
         T operator()(T from, T through, T dest) const
         {
                 return (
@@ -50,7 +50,7 @@ struct Sandwich<Board, Direction, rules::range::distance_1>
 template<typename Board, typename Direction>
 struct Sandwich<Board, Direction, rules::range::distance_N>
 {
-        template<typename T>
+        template<class T>
         T operator()(T from, T through, T dest) const
         {
                 return (

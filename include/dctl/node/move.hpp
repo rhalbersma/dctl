@@ -15,14 +15,14 @@ namespace dctl {
 namespace detail {
 
 // overload for apres-fini capture removal
-template<typename T>
+template<class T>
 bool is_intersecting_capture(T /* delta */, T /* captured_pieces */, rules::phase::apres_fini)
 {
         return false;
 }
 
 // overload for en-passant capture removal
-template<typename T>
+template<class T>
 bool is_intersecting_capture(T delta, T captured_pieces, rules::phase::en_passant)
 {
         // [FEN "W:WK25:B8,9,20,23,24"] (Thai draughts)
@@ -31,14 +31,14 @@ bool is_intersecting_capture(T delta, T captured_pieces, rules::phase::en_passan
 }
 
 // overload for apres-fini promotion
-template<typename T>
+template<class T>
 bool is_intersecting_promotion(T /* promotion */, T /* delta */, rules::phase::apres_fini)
 {
         return false;
 }
 
 // overload for en-passant promotion
-template<typename T>
+template<class T>
 bool is_intersecting_promotion(T promotion, T delta, rules::phase::en_passant)
 {
         // [FEN "W:W15:B10,13,20,23"] (Russian draughts)
@@ -62,7 +62,7 @@ bool is_intersecting_promotion(T promotion, T delta)
         return detail::is_intersecting_promotion(promotion, delta, rules::phase::promotion<Rules>());
 }
 
-template<typename T>
+template<class T>
 struct Move_
         // http://www.boost.org/doc/libs/1_51_0/libs/utility/operators.htm#chaining
         // use base class chaining to ensure Empty Base Optimization

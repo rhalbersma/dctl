@@ -14,7 +14,7 @@
 namespace dctl {
 namespace successor {
 
-template<typename Rules, typename Board>
+template<class Rules, class Board>
 struct Fixture
 {
         template<int N>

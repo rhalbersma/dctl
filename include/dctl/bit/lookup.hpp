@@ -24,7 +24,7 @@ public:
         template<class T>
         static int back(T t)
         {
-                for (auto i = num_blocks<T , U>::value - 1; i > 0; --i)
+                for (auto i = num_blocks<T , U>::value - 1; i >= 0; --i)
                         if (auto const b = block(t, i))
                                 return offset(i) + back_[b];
                 BOOST_ASSERT(false);
@@ -43,7 +43,7 @@ public:
 private:
         // implementation
 
-        template<typename T>
+        template<class T>
         static U block(T t, int i)
         {
                 return static_cast<U>(t >> offset(i));

@@ -12,12 +12,12 @@ namespace dctl {
 
 template
 <
-        typename Base,
-        typename BasePointer = std::unique_ptr<Base>,
-        typename Identifier = std::string,
-        typename Creator = std::function<BasePointer(Identifier const&)>
+        class Base,
+        class BasePointer = std::unique_ptr<Base>,
+        class Identifier = std::string,
+        class Creator = std::function<BasePointer(Identifier const&)>
 >
-struct Registry
+class Registry
 {
 public:
 	// typedefs
@@ -29,14 +29,14 @@ public:
 
 	// modifiers
 
-        template<typename Derived>
+        template<class Derived>
         bool insert(boost::mpl::identity<Derived>)
         {
                 BOOST_MPL_ASSERT((mixin::has_factory_create<Derived>));
                 return insert(Derived::identifier(), Derived::create);
         }
 
-        template<typename Derived>
+        template<class Derived>
         bool erase(boost::mpl::identity<Derived>)
         {
                 BOOST_MPL_ASSERT((mixin::has_factory_create<Derived>));

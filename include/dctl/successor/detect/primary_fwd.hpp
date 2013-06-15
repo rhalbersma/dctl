@@ -5,10 +5,7 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template
-<
-        bool /* Color */, typename /* Material */, typename /* Select */, typename Range = rules::range::distance_1
->
+template<bool /* Color */, class /* Material */, class /* Select */, class Range = rules::range::distance_1>
 struct detect;
 
 }       // namespace detail

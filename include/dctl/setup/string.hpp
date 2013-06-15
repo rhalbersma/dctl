@@ -47,7 +47,7 @@ template
 >
 struct write;
 
-template<typename Rules, typename Board, typename Token>
+template<class Rules, class Board, typename Token>
 struct read<Rules, Board, pdn::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
@@ -102,7 +102,7 @@ struct read<Rules, Board, pdn::protocol, Token>
 template<typename Token>
 struct write<pdn::protocol, Token>
 {
-        template<typename Position>
+        template<class Position>
         std::string operator()(Position const& p) const
         {
                 typedef typename Position::board_type Board;
@@ -131,7 +131,7 @@ struct write<pdn::protocol, Token>
         }
 };
 
-template<typename Rules, typename Board, typename Token>
+template<class Rules, class Board, typename Token>
 struct read<Rules, Board, dxp::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
@@ -172,7 +172,7 @@ struct read<Rules, Board, dxp::protocol, Token>
 template<typename Token>
 struct write<dxp::protocol, Token>
 {
-        template<typename Rules, typename Board>
+        template<class Rules, class Board>
         std::string operator()(Position<Rules, Board> const& p) const
         {
                 std::stringstream sstr;
