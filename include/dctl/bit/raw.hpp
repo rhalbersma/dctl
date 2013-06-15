@@ -8,21 +8,27 @@ namespace dctl {
 namespace bit {
 
 template<class T>
-void pop_front(T& b)
-{
-        b &= b - T(1);
-}
-
-template<class T>
 int front(T b)
 {
         return intrinsic::front(b);
 }
 
 template<class T>
+void pop_front(T& b)
+{
+        b &= b - T(1);
+}
+
+template<class T>
 int back(T b)
 {
         return intrinsic::back(b);
+}
+
+template<class T>
+void pop_back(T& b)
+{
+        b ^= T(1) << back(b);
 }
 
 template<class T>
