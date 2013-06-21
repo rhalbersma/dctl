@@ -3,8 +3,8 @@
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <boost/lexical_cast.hpp>       // lexical_cast
-#include <dctl/dxp/i_message.hpp>       // IMessage
-#include <dctl/factory/mixin.hpp>       // FactoryCreate
+#include <dctl/dxp/message.hpp>         // Message
+#include <dctl/factory/creatable.hpp>   // make_creatable
 
 namespace dctl {
 namespace dxp {
@@ -19,7 +19,7 @@ namespace dxp {
 class BackRequest final
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::FactoryCreate<'B', BackRequest, IMessage>
+        public factory::make_creatable<Message, BackRequest, 'B'>
 {
 public:
         // structors

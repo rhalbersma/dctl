@@ -4,8 +4,8 @@
 #include <string>                       // string
 #include <vector>                       // vector
 #include <boost/lexical_cast.hpp>       // lexical_cast
-#include <dctl/dxp/i_message.hpp>       // IMessage
-#include <dctl/factory/mixin.hpp>       // FactoryCreate
+#include <dctl/dxp/message.hpp>         // Message
+#include <dctl/factory/creatable.hpp>   // make_creatable
 
 namespace dctl {
 namespace dxp {
@@ -20,7 +20,7 @@ namespace dxp {
 class Move final
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::FactoryCreate<'M', Move, IMessage>
+        public factory::make_creatable<Message, Move, 'M'>
 {
 public:
         // structors

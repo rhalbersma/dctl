@@ -1,29 +1,29 @@
 #pragma once
-#include <string>                               // string
-#include <boost/assert.hpp>                     // BOOST_ASSERT
-#include <boost/config.hpp>                     // BOOST_STATIC_CONSTANT
-#include <boost/utility.hpp>                    // noncopyable
-#include <dctl/factory/mixin.hpp>               // HeaderBodyTerminator
-#include <dctl/preprocessor/cpp11/default.hpp>  // DCTL_PP_IS_DEFAULT
+#include <string>                                       // string
+#include <boost/assert.hpp>                             // BOOST_ASSERT
+#include <boost/config.hpp>                             // BOOST_STATIC_CONSTANT
+#include <boost/utility.hpp>                            // noncopyable
+#include <dctl/factory/header_body_terminator.hpp>      // make_header_body_terminator
+#include <dctl/preprocessor/cpp11/default.hpp>          // DCTL_PP_IS_DEFAULT
 
 namespace dctl {
 namespace dxp {
 
 /*
 
-        The format and semantics of IMessage are defined at:
+        The format and semantics of Message are defined at:
         http://www.mesander.nl/damexchange/edxplg2.htm
 
 */
 
-class IMessage
+class Message
 :
-        public mixin::HeaderBodyTerminator< 1, 126, '\0' >,
+        public factory::make_header_body_terminator< 1, 126, '\0' >,
         private boost::noncopyable
 {
 public:
         // enable deletion of a Derived* through a Base*
-        virtual ~IMessage() DCTL_PP_IS_DEFAULT
+        virtual ~Message() DCTL_PP_IS_DEFAULT
 
         // non-virtual interface
         std::string str() const

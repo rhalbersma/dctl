@@ -1,7 +1,7 @@
 #pragma once
 #include <string>                       // string
-#include <dctl/dxp/i_message.hpp>       // IMessage
-#include <dctl/factory/mixin.hpp>       // FactoryCreate
+#include <dctl/dxp/message.hpp>         // Message
+#include <dctl/factory/creatable.hpp>   // make_creatable
 
 namespace dctl {
 namespace dxp {
@@ -16,7 +16,7 @@ namespace dxp {
 class Chat final
 :
         // Curiously Recurring Template Pattern (CRTP)
-        public mixin::FactoryCreate<'C', Chat, IMessage>
+        public factory::make_creatable<Message, Chat, 'C'>
 {
 public:
         // structors
