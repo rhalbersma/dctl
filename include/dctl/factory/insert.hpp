@@ -34,7 +34,7 @@ public:
         }
 
 private:
-        Factory& factory_;
+        // implementation
 
         struct polymorphic_lambda
         {
@@ -48,6 +48,10 @@ private:
 
                 Insert* i_;
         };
+
+        // representation
+
+        Factory& factory_;
 };
 
 }       // namespace detail
