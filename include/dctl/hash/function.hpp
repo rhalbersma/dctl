@@ -1,3 +1,3 @@
 #pragma once
-#include <dctl/hash/zobrist/init.hpp>
-#include <dctl/hash/jenkins/init.hpp>
+#include <dctl/zobrist/hash.hpp>
+#include <dctl/jenkins/hash.hpp>

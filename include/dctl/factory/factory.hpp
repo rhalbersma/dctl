@@ -1,100 +1,67 @@
 #pragma once
-#include <functional>                           // function
-#include <map>                                  // map
-#include <memory>                               // unique_ptr
-#include <string>                               // string
-#include <type_traits>                          // is_base_of
-#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
-#include <boost/mpl/for_each.hpp>               // for_each
-#include <boost/mpl/identity.hpp>               // identity, make_identity
-#include <boost/mpl/placeholders.hpp>           // _1
-#include <dctl/factory/mixin.hpp>               // has_header_body_terminator
-#include <dctl/factory/registry.hpp>            // Registry
-#include <dctl/mpl/algorithm.hpp>               // all_of
-#include <dctl/preprocessor/cpp11/delete.hpp>   // DCTL_PP_IS_DELETE
+#include <functional>                                   // function
+#include <map>                                          // map
+#include <memory>                                       // unique_ptr
+#include <string>                                       // string
+#include <boost/mpl/assert.hpp>                         // BOOST_MPL_ASSERT
+#include <boost/mpl/identity.hpp>                       // identity
+#include <dctl/factory/creatable.hpp>                   // is_creatable
+#include <dctl/factory/header_body_terminator.hpp>      // has_header_body_terminator
 
 namespace dctl {
 
 template
 <
-        typename DerivedSequence,
-        typename Base,
-        typename BasePointer = std::unique_ptr<Base>,
-        typename Input = std::string,
-        typename Identifier = std::string,
-        typename Creator = std::function<BasePointer(Identifier const&)>
+        class Base,
+        class Ret = std::unique_ptr<Base>,
+        class Arg = std::string,
+        class Creator = std::function<Ret(Arg const&)>
 >
-struct Factory
+class Factory
 {
 public:
-        // Base must have header / body / terminator functionality mixed in
-        BOOST_MPL_ASSERT((mixin::has_header_body_terminator<Base>));
+        // typedefs
+        typedef Base base_type;
+        BOOST_MPL_ASSERT((factory::has_header_body_terminator<Base>));
 
-        // all DerivedSequence must be derived from Base
-        BOOST_MPL_ASSERT((mpl::all_of<DerivedSequence, std::is_base_of< Base, boost::mpl::_1 > >));
+	// modifiers
 
-        Factory()
+        template<class Derived>
+        bool insert(boost::mpl::identity<Derived>)
         {
-                boost::mpl::for_each<DerivedSequence, boost::mpl::make_identity<> >(
-                        call_insert(registry_)
-                );
+                BOOST_MPL_ASSERT((factory::is_creatable<Base, Derived>));
+                return insert(Derived::identifier(), Derived::create);
         }
 
-        ~Factory()
+        bool insert(Arg const& id, Creator fun)
         {
-                boost::mpl::for_each<DerivedSequence, boost::mpl::make_identity<> >(
-                        call_erase(registry_)
-                );
+                return registry_.emplace(id, fun).second;
         }
 
-        BasePointer create(Input const& input) const
+        template<class Derived>
+        bool erase(boost::mpl::identity<Derived>)
         {
-                auto const fun = registry_.find(Base::header(input));
-                return fun? (fun)(Base::body(input)) : nullptr;
+                BOOST_MPL_ASSERT((factory::is_creatable<Base, Derived>));
+                return erase(Derived::identifier());
+        }
+
+        bool erase(Arg const& id)
+        {
+                return registry_.erase(id) == 1;
+        }
+
+        // queries
+
+        Ret create(Arg const& input) const
+        {
+                auto const it = registry_.find(Base::header(input));
+                return (it != std::end(registry_))? (it->second)(Base::body(input)) : nullptr;
         }
 
 private:
-        typedef Registry<Base, BasePointer, Identifier, Creator> XRegistry;
+        // representation
 
-        // TODO: refactor into polymorphic lambda expresssion whenever C++11 supports this
-        struct call_insert
-        {
-        public:
-                explicit call_insert(XRegistry& r): registry_(r) {};
-
-                template<class T>
-                void operator()(boost::mpl::identity<T> I)
-                {
-                        registry_.insert(I);
-                }
-
-        private:
-                // suppress warning about the compiler-generated assignment operator
-                call_insert& operator=(call_insert const&) DCTL_PP_IS_DELETE
-
-                XRegistry& registry_;
-        };
-
-        // TODO: refactor into polymorphic lambda expresssion whenever C++11 supports this
-        struct call_erase
-        {
-        public:
-                explicit call_erase(XRegistry& r): registry_(r) {};
-
-                template<class T>
-                void operator()(boost::mpl::identity<T> I)
-                {
-                	registry_.erase(I);
-                }
-
-        private:
-                // suppress warning about the compiler-generated assignment operator
-                call_erase& operator=(call_erase const&) DCTL_PP_IS_DELETE
-
-                XRegistry& registry_;
-        };
-
-        XRegistry registry_;
+        std::map<Arg, Creator> registry_;
 };
 
 }       // namespace dctl

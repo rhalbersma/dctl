@@ -4,9 +4,10 @@
 #include <vector>                       // vector
 #include <boost/mpl/vector.hpp>         // vector
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/dxp/i_message.hpp>       // IMessage
+#include <dctl/dxp/message.hpp>         // Message
 #include <dctl/dxp/types.hpp>           // GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
 #include <dctl/factory/factory.hpp>     // Factory
+#include <dctl/factory/insert.hpp>      // insert
 
 namespace dctl {
 namespace dxp {
@@ -15,11 +16,13 @@ BOOST_AUTO_TEST_SUITE(DXPParser)
 
 BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
+        Factory<Message> f;
+
         typedef boost::mpl::vector<
                 GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
-        > MessageTypes;
+        > Messages;
 
-        Factory<MessageTypes, IMessage> factory;
+        factory::insert<Messages>(f);
 
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm
@@ -38,7 +41,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
         parsed.reserve(messages.size());
         std::transform(begin(messages), end(messages), std::back_inserter(parsed),
                 [&](std::string const& m) {
-                auto const p = factory.create(m);
+                auto const p = f.create(m);
                 return p->str();
         });
 
