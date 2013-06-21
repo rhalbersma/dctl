@@ -34,6 +34,8 @@ public:
         }
 
 private:
+        // implementation
+
         struct polymorphic_lambda
         {
                 explicit polymorphic_lambda(Erase* e): e_(e) {}
@@ -46,6 +48,8 @@ private:
 
                 Erase* e_;
         };
+
+        // representation
 
         Factory& factory_;
 };
