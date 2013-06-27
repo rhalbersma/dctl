@@ -11,9 +11,10 @@ namespace successor {
 BOOST_AUTO_TEST_SUITE(SuccessorValueInternational)
 
 // rules variants with the international capture precedence
-typedef boost::mpl::vector<
+using PrecedenceInternational = boost::mpl::vector
+<
         rules::International /*, rules::Damme, rules::Hoogland, rules::Killer*/
-> PrecedenceInternational;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructor, T, PrecedenceInternational)
 {
@@ -90,7 +91,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Less, T, PrecedenceInternational)
         int const pieces[] = { 1, 2, 3, std::numeric_limits<int>::max() - 1 };
 
         for (auto const& p: pieces) {
-                auto const u = Value<T> { p };
+                auto const u = Value<T>{p};
                 auto const v = u;
                 BOOST_CHECK(u <= v);
                 BOOST_CHECK(v >= u);
@@ -127,8 +128,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Quantity, T, PrecedenceInternational)
 
         for (auto const& p: pieces) {
                 // capturing one more piece takes precedence
-                BOOST_CHECK(Value<T>(p - 1) < Value<T>(p    ));
-                BOOST_CHECK(Value<T>(p    ) < Value<T>(p + 1));
+                BOOST_CHECK(Value<T> { p - 1 } < Value<T> { p     });
+                BOOST_CHECK(Value<T> { p     } < Value<T> { p + 1 });
         }
 }
 
