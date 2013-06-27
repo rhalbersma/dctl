@@ -10,9 +10,10 @@ namespace successor {
 BOOST_AUTO_TEST_SUITE(SuccessorValueDefault)
 
 // rules variants without capture precedence
-typedef boost::mpl::vector<
+using PrecedenceNone = boost::mpl::vector
+<
         rules::Checkers, rules::Czech, rules::Pool, rules::Thai
-> PrecedenceNone;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Equal, T, PrecedenceNone)
 {
