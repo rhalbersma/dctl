@@ -25,12 +25,12 @@ struct Fixture
                 root_.resize_hash(1);
         }
 
-        typedef std::pair<std::string, int> FEN_depth;
-        typedef typename Position::rules_type Rules;
-        typedef typename Position::board_type Board;
+        using Test = std::pair<std::string, int>;
+        using Rules = typename Position::rules_type;
+        using Board = typename Position::board_type;
 
         template<std::size_t N>
-        void run(FEN_depth const (&tests)[N])
+        void run(Test const (&tests)[N])
         {
                 for (auto const& t: tests) {
                         root_.clear_hash();
