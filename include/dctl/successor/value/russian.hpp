@@ -17,16 +17,11 @@ class Value<rules::Russian>
 public:
         // structors
 
-        Value()
-        :
-                is_promotion_(false)
-        {
-                BOOST_ASSERT(invariant());
-        }
+        Value() = default;
 
         explicit Value(bool p)
         :
-                is_promotion_(p)
+                is_promotion_{p}
         {
                 BOOST_ASSERT(invariant());
         }
@@ -68,7 +63,7 @@ private:
 
         // representation
 
-        bool is_promotion_;
+        bool is_promotion_ = false;
 };
 
 }       // namespace successor

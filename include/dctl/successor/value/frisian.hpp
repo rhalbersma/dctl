@@ -19,14 +19,7 @@ class Value<rules::Frisian>
 public:
         // structors
 
-        Value()
-        :
-                num_pieces_(0),
-                num_kings_(0),
-                is_with_king_(false)
-        {
-                BOOST_ASSERT(invariant());
-        }
+        Value() = default;
 
         // modifiers
 
@@ -119,9 +112,9 @@ private:
 
         // representation
 
-        int num_pieces_;
-        int num_kings_;
-        bool is_with_king_;
+        int num_pieces_ = 0;
+        int num_kings_ = 0;
+        bool is_with_king_ = false;
 };
 
 }       // namespace successor
