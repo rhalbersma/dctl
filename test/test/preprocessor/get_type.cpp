@@ -16,7 +16,7 @@ struct empty {};
 
 struct dummy
 {
-        typedef std::true_type U;
+        using U = std::true_type;
 };
 
 template<class T>

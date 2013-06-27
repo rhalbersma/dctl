@@ -5,7 +5,7 @@
 namespace dctl {
 namespace bit {
 
-typedef set<int> bitset;
+using bitset = set<int>;
 
 BOOST_AUTO_TEST_SUITE(PackedAlgorithm)
 

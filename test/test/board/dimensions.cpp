@@ -12,7 +12,8 @@ namespace board {
 
 BOOST_AUTO_TEST_SUITE(TestDimensions)
 
-typedef boost::mpl::vector<
+using DimensionsSequence = boost::mpl::vector
+<
         Dimensions< 4,  4>,
         Dimensions< 6,  6>,
         Dimensions< 8,  8>,
@@ -20,7 +21,7 @@ typedef boost::mpl::vector<
         Dimensions<10,  8, true>,
         Dimensions<11, 10, true>,
         Dimensions<12, 10, true>
-> DimensionsSequence;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, DimensionsSequence)
 {
