@@ -11,9 +11,10 @@ namespace lazy {
 
 BOOST_AUTO_TEST_SUITE(AngleTraits)
 
-typedef boost::mpl::vector<
+using OrthogonalAngles = boost::mpl::vector
+<
         D000, D090, D180, D270
-> OrthogonalAngles;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsOrthogonal, T, OrthogonalAngles)
 {
@@ -21,9 +22,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsOrthogonal, T, OrthogonalAngles)
         BOOST_MPL_ASSERT_NOT(( is_diagonal  <T> ));
 }
 
-typedef boost::mpl::vector<
+using DiagonalAngles = boost::mpl::vector
+<
         D045, D135, D225, D315
-> DiagonalAngles;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsDiagonal, T, DiagonalAngles)
 {
@@ -31,9 +33,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsDiagonal, T, DiagonalAngles)
         BOOST_MPL_ASSERT_NOT(( is_orthogonal<T> ));
 }
 
-typedef boost::mpl::vector<
+using UpAngles = boost::mpl::vector
+<
         D045, D090, D135
-> UpAngles;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsUp, T, UpAngles)
 {
@@ -41,9 +44,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsUp, T, UpAngles)
         BOOST_MPL_ASSERT_NOT(( is_down<T> ));
 }
 
-typedef boost::mpl::vector<
+using DownAngles = boost::mpl::vector
+<
         D225, D270, D315
-> DownAngles;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsDown, T, DownAngles)
 {
@@ -51,9 +55,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsDown, T, DownAngles)
         BOOST_MPL_ASSERT_NOT(( is_up  <T> ));
 }
 
-typedef boost::mpl::vector<
+using LeftAngles = boost::mpl::vector
+<
         D135, D180, D225
-> LeftAngles;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsLeft, T, LeftAngles)
 {
@@ -61,9 +66,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsLeft, T, LeftAngles)
         BOOST_MPL_ASSERT_NOT(( is_right<T> ));
 }
 
-typedef boost::mpl::vector<
+using RightAngles = boost::mpl::vector
+<
         D315, D000, D045
-> RightAngles;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsRight, T, RightAngles)
 {
@@ -71,9 +77,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsRight, T, RightAngles)
         BOOST_MPL_ASSERT_NOT(( is_left <T> ));
 }
 
-typedef boost::mpl::vector<
+using PositiveAngles = boost::mpl::vector
+<
         D045, D090, D135, D180
-> PositiveAngles;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsPositive, T, PositiveAngles)
 {
@@ -81,9 +88,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsPositive, T, PositiveAngles)
         BOOST_MPL_ASSERT_NOT(( is_negative<T> ));
 }
 
-typedef boost::mpl::vector<
+using NegativeAngles = boost::mpl::vector
+<
         D225, D270, D315, D000
-> NegativeAngles;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsNegative, T, NegativeAngles)
 {

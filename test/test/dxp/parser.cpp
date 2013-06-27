@@ -14,19 +14,20 @@ namespace dxp {
 
 BOOST_AUTO_TEST_SUITE(DXPParser)
 
+using Messages = boost::mpl::vector
+<
+        GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
+>;
+
 BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
         Factory<Message> f;
-
-        typedef boost::mpl::vector<
-                GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
-        > Messages;
-
         factory::insert<Messages>(f);
 
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm
-        std::vector<std::string> messages = {
+        std::vector<std::string> messages =
+        {
                 "R01Tornado voor Windows 4.0        W060065A",
                 "ATornado voor Windows 4.0        0",
                 "M0012061100",

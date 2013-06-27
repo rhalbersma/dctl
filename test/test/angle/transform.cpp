@@ -14,10 +14,11 @@ namespace lazy {
 
 BOOST_AUTO_TEST_SUITE(AngleTransform)
 
-typedef boost::mpl::vector<
+using DegreesSequence = boost::mpl::vector
+<
         angle::D000, angle::D045, angle::D090, angle::D135,
         angle::D180, angle::D225, angle::D270, angle::D315
-> DegreesSequence;
+> ;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentInverse, T, DegreesSequence)
 {
