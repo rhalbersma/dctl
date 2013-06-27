@@ -9,7 +9,7 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestInternational)
 
-typedef Fixture< Position<rules::International, board::International>, DefaultObjective > F;
+using F = Fixture< Position<rules::International, board::International>, DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(Initial, F)
 {

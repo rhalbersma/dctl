@@ -9,7 +9,7 @@ namespace walk {
 template<typename Position, int N>
 void test(Position const& p, NodeCount const (&leafs)[N])
 {
-        typedef hash_tag impl_tag;
+        using impl_tag = hash_tag;
         Data<impl_tag, Position> d;
         Enhancements<impl_tag, Position> e(&d);
         e.resize_TT(1024);

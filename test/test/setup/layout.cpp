@@ -10,10 +10,11 @@ namespace setup {
 
 BOOST_AUTO_TEST_SUITE(SetupLayout)
 
-typedef boost::mpl::vector<
+using BoardSequence = boost::mpl::vector
+<
         board::Micro, board::Mini, board::Checkers, board::Roman, board::International,
         board::Frisian, board::Spantsireti, board::Ktar11, board::Ktar12
-> BoardSequence;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, BoardSequence)
 {

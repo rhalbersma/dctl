@@ -14,7 +14,8 @@ namespace board {
 
 BOOST_AUTO_TEST_SUITE(TestDimensions)
 
-typedef boost::mpl::vector<
+using DimensionsSequence = boost::mpl::vector
+<
         Dimensions< 4,  4>,
         Dimensions< 6,  6>,
         Dimensions< 8,  8>,
@@ -22,18 +23,19 @@ typedef boost::mpl::vector<
         Dimensions<10,  8, true>,
         Dimensions<11, 10, true>,
         Dimensions<12, 10, true>
-> DimensionsSequence;
+>;
 
 template<typename Dim>
 struct make_grid
 {
-        typedef Grid<Dim, boost::mpl::int_<2> > type;
+        using type = Grid<Dim, boost::mpl::int_<2> > ;
 };
 
-typedef boost::mpl::transform< 
+using GridSequence = boost::mpl::transform
+<
         DimensionsSequence, 
         make_grid< boost::mpl::_1 >
->::type GridSequence;
+>::type;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ShiftSizeSymmetry, T, GridSequence)
 {

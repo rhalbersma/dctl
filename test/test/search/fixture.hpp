@@ -43,7 +43,7 @@ struct Fixture
         Root<Position, Objective> root_;
 };
 
-typedef GameObjective<NoMovesLeft> DefaultObjective;
+using DefaultObjective = GameObjective<NoMovesLeft>;
 
 }       // namespace search
 }       // namespace dctl

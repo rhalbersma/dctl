@@ -11,20 +11,20 @@ namespace mpl {
 
 BOOST_AUTO_TEST_SUITE(MPLAlgorithm)
 
-typedef int P;
-typedef std::string N;
+using P = int;
+using N = std::string;
 
-typedef boost::mpl::vector<P> pod_types;
-typedef boost::mpl::vector<P, N> mixed_types;
-typedef boost::mpl::vector<N> non_pod_types;
+using pod_types = boost::mpl::vector<P>;
+using mixed_types = boost::mpl::vector<P, N>;
+using non_pod_types = boost::mpl::vector<N>;
 
 struct B {};
 struct D: B {};
-struct E {};
+struct S {};
 
-typedef boost::mpl::vector<B, D> derived_types;
-typedef boost::mpl::vector<B, D, E> both_types;
-typedef boost::mpl::vector<E> independent_types;
+using derived_types = boost::mpl::vector<B, D>;
+using both_types = boost::mpl::vector<B, D, S>;
+using independent_types = boost::mpl::vector<S>;
 
 BOOST_AUTO_TEST_CASE(AllOf)
 {

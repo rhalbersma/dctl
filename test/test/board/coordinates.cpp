@@ -15,13 +15,9 @@ namespace board {
 
 BOOST_AUTO_TEST_SUITE(TestCoordinates)
 
-typedef Grid< Dimensions< 4,  4>, boost::mpl::int_<2> > G;
-
-typedef Coordinates< G, 0, 0 > Coord;
-
-typedef boost::mpl::vector<
-        Coord
-> CoordinatesSequence;
+using G = Grid< Dimensions< 4,  4>, boost::mpl::int_<2> >;
+using Coord = Coordinates< G, 0, 0 >;
+using CoordinatesSequence = boost::mpl::vector< Coord >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, CoordinatesSequence)
 {

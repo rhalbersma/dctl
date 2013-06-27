@@ -12,7 +12,7 @@ struct empty {};
 
 struct dummy
 {
-        typedef void U;
+        using U = void;
 };
 
 BOOST_AUTO_TEST_CASE(Empty)
