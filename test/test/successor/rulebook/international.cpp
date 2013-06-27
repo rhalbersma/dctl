@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(SucessorRulebookInternational)
 // Positions from the official International rules (Italian translation):
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_II.pdf
 
-typedef Fixture<rules::International, board::International> F;
+using F = Fixture<rules::International, board::International>;
 
 BOOST_FIXTURE_TEST_CASE(KingMoveRange, F)
 {
