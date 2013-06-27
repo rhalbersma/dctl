@@ -12,8 +12,9 @@ typedef Fixture< Position<rules::Frisian, board::International>, DefaultObjectiv
 
 BOOST_FIXTURE_TEST_CASE(Walinga, F)
 {
-        FEN_depth tests[] = {
-                FEN_depth("W:WK46,28:BK43", 39),        // Walinga book
+        Test const tests[] =
+        {
+                { "W:WK46,28:BK43", 39 },       // Walinga book
         };
         run(tests);
 }
