@@ -11,9 +11,10 @@ namespace bit {
 
 BOOST_AUTO_TEST_SUITE(BitIntrinsic)
 
-typedef boost::mpl::vector<
+using UnsignedIntegerTypes = boost::mpl::vector
+<
         uint32_t, uint64_t
-> UnsignedIntegerTypes;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Front, T, UnsignedIntegerTypes)
 {
