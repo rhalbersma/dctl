@@ -18,16 +18,11 @@ class Value<rules::International>
 public:
         // structors
 
-        Value()
-        :
-                num_pieces_(0)
-        {
-                BOOST_ASSERT(invariant());
-        }
+        Value() = default;
 
         explicit Value(int n)
         :
-                num_pieces_(n)
+                num_pieces_{n}
         {
                 BOOST_ASSERT(invariant());
         }
@@ -87,7 +82,7 @@ private:
 
         // representation
 
-        int num_pieces_;
+        int num_pieces_ = 0;
 };
 
 }       // namespace successor

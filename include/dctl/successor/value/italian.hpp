@@ -23,19 +23,11 @@ class Value<rules::Italian>
 public:
         // structors
 
-        Value()
-        :
-                num_pieces_(0),
-                num_kings_(0),
-                is_with_king_(false),
-                king_order_()
-        {
-                BOOST_ASSERT(invariant());
-        }
+        Value() = default;
 
         explicit Value(std::tuple< int, int, bool, std::vector<int> > const& t)
         :
-                Value(std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t))
+                Value{std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t)}
         {}
 
         Value(int pawns, int kings, bool with, std::vector<int> order)
@@ -155,9 +147,9 @@ private:
 
         // representation
 
-        int num_pieces_;
-        int num_kings_;
-        bool is_with_king_;
+        int num_pieces_ = 0;
+        int num_kings_ = 0;
+        bool is_with_king_ = false;
         std::vector<int> king_order_;
 };
 

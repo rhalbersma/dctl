@@ -19,23 +19,17 @@ class Value<rules::Spanish>
 public:
         // structors
 
-        Value()
-        :
-                num_pieces_(0),
-                num_kings_(0)
-        {
-                BOOST_ASSERT(invariant());
-        }
+        Value() = default;
 
         explicit Value(std::tuple<int, int> const& t)
         :
-                Value(std::get<0>(t), std::get<1>(t))
+                Value{std::get<0>(t), std::get<1>(t)}
         {}
 
         Value(int pawns, int kings)
         :
-                num_pieces_(pawns + kings),
-                num_kings_(kings)
+                num_pieces_{pawns + kings},
+                num_kings_{kings}
         {
                 BOOST_ASSERT(invariant());
         }
@@ -121,8 +115,8 @@ private:
 
         // representation
 
-        int num_pieces_;
-        int num_kings_;
+        int num_pieces_ = 0;
+        int num_kings_ = 0;
 };
 
 }       // namespace successor
