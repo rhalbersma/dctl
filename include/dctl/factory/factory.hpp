@@ -21,10 +21,10 @@ class Factory
 {
 public:
         // typedefs
-        typedef Base base_type;
+        using base_type = Base;
         BOOST_MPL_ASSERT((factory::has_header_body_terminator<Base>));
 
-	// modifiers
+        // modifiers
 
         template<class Derived>
         bool insert(boost::mpl::identity<Derived>)

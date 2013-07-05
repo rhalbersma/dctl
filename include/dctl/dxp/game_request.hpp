@@ -85,12 +85,12 @@ public:
 private:
         // virtual implementation
 
-        virtual std::string do_header() const override
+        std::string do_header() const override
         {
                 return identifier();
         }
 
-        virtual std::string do_body() const override
+        std::string do_body() const override
         {
                 return body(name_initiator(), color_follower(), minutes(), moves(), setup_code(), position());
         }

@@ -4,7 +4,7 @@ namespace dctl {
 namespace dxp {
 
 struct v1 {};
-typedef v1 protocol;
+using protocol = v1;
 
 }       // namespace dxp
 }       // namespace dctl
