@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(TupleConstructor)
         );
 
         for (auto const& c: cases) {
-                auto const v = T { c };
+                auto const v = T{c};
                 auto const p = std::get<0>(c);
                 auto const k = std::get<1>(c);
                 auto const n = p + k;
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(Increment)
         );
 
         for (auto const& c: cases) {
-                auto const u = T { c };
+                auto const u = T{c};
 
                 bool const incr[] = { false, true };
                 for (auto const& i: incr) {
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(Decrement)
         );
 
         for (auto const& c: cases) {
-                auto const u = T { c };
+                auto const u = T{c};
 
                 bool const decr[] = { false, true };
                 for (auto const& d: decr) {
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(Equal)
         );
 
         for (auto const& c: cases) {
-                auto const u = T { c };
+                auto const u = T{c};
                 auto v = u;
                 BOOST_CHECK(u == v);
                 BOOST_CHECK(v == u);
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(Less)
         );
 
         for (auto const& c: cases) {
-                auto const u = T { c };
+                auto const u = T{c};
                 auto const v = u;
                 BOOST_CHECK(u <= v);
                 BOOST_CHECK(u >= v);
@@ -202,10 +202,10 @@ BOOST_AUTO_TEST_CASE(Quantity)
                 auto const k = std::get<1>(c);
 
                 // capturing one more pawn or one more king takes precedence
-                BOOST_CHECK(T(p    , k - 1) < T(p    , k     ));
-                BOOST_CHECK(T(p - 1, k    ) < T(p    , k     ));
-                BOOST_CHECK(T(p    , k    ) < T(p + 1, k     ));
-                BOOST_CHECK(T(p    , k    ) < T(p    , k  + 1));
+                BOOST_CHECK((T{p    , k - 1}) < (T{p    , k     }));
+                BOOST_CHECK((T{p - 1, k    }) < (T{p    , k     }));
+                BOOST_CHECK((T{p    , k    }) < (T{p + 1, k     }));
+                BOOST_CHECK((T{p    , k    }) < (T{p    , k  + 1}));
         }
 }
 
@@ -225,8 +225,8 @@ BOOST_AUTO_TEST_CASE(Quality)
                 auto const k = std::get<1>(c);
 
                 // capturing one more king for one less pawn takes precedence
-                BOOST_CHECK( (T { p + 1, k - 1 }) < (T { p    , k     }) );
-                BOOST_CHECK( (T { p    , k     }) < (T { p - 1, k  + 1}) );
+                BOOST_CHECK((T{p + 1, k - 1}) < (T{p    , k     }));
+                BOOST_CHECK((T{p    , k    }) < (T{p - 1, k  + 1}));
         }
 }
 
