@@ -1,10 +1,8 @@
 #pragma once
 #include <dctl/setup/i_token.hpp>
+#include <dctl/dxp/version.hpp>
 
 namespace dctl {
-
-namespace dxp { struct protocol; }
-
 namespace setup {
 
 template<>
