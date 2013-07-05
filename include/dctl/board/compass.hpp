@@ -30,29 +30,29 @@ namespace board {
 template
 <
         bool Color,
-        typename Board
+        class Board
 >
 struct Compass
 {
 private:
-        typedef mpl::lazy::rotate< typename
+        using A = mpl::lazy::rotate< typename
         	Board::inverse_angle,
                 boost::mpl::eval_if<
                         boost::mpl::bool_<Color>,
                         angle::D000,
                         angle::D180
                 >
-        > A;
+        >;
 
 public:
-        typedef typename mpl::lazy::rotate< angle::D000, A >::type right;
-        typedef typename mpl::lazy::rotate< angle::D045, A >::type right_up;
-        typedef typename mpl::lazy::rotate< angle::D090, A >::type up;
-        typedef typename mpl::lazy::rotate< angle::D135, A >::type left_up;
-        typedef typename mpl::lazy::rotate< angle::D180, A >::type left;
-        typedef typename mpl::lazy::rotate< angle::D225, A >::type left_down;
-        typedef typename mpl::lazy::rotate< angle::D270, A >::type down;
-        typedef typename mpl::lazy::rotate< angle::D315, A >::type right_down;
+        using right      = typename mpl::lazy::rotate< angle::D000, A >::type;
+        using right_up   = typename mpl::lazy::rotate< angle::D045, A >::type;
+        using up         = typename mpl::lazy::rotate< angle::D090, A >::type;
+        using left_up    = typename mpl::lazy::rotate< angle::D135, A >::type;
+        using left       = typename mpl::lazy::rotate< angle::D180, A >::type;
+        using left_down  = typename mpl::lazy::rotate< angle::D225, A >::type;
+        using down       = typename mpl::lazy::rotate< angle::D270, A >::type;
+        using right_down = typename mpl::lazy::rotate< angle::D315, A >::type;
 };
 
 }       // namespace board

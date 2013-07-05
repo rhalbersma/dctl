@@ -16,7 +16,7 @@ struct Degrees
         };
 
         // lazily evaluable metadata == nullary metafunction
-        typedef Degrees<value> type;
+        using type = Degrees<value>;
 };
 
 /*
@@ -40,22 +40,31 @@ struct Degrees
 
 */
 
-typedef Degrees<  0> D000;
-typedef Degrees< 45> D045;
-typedef Degrees< 90> D090;
-typedef Degrees<135> D135;
-typedef Degrees<180> D180;
-typedef Degrees<225> D225;
-typedef Degrees<270> D270;
-typedef Degrees<315> D315;
-typedef Degrees<360> D360;
+using D000 = Degrees<  0>;
+using D045 = Degrees< 45>;
+using D090 = Degrees< 90>;
+using D135 = Degrees<135>;
+using D180 = Degrees<180>;
+using D225 = Degrees<225>;
+using D270 = Degrees<270>;
+using D315 = Degrees<315>;
+using D360 = Degrees<360>;
 
-typedef D045 L045;      // counterclockwise
-typedef D090 L090;      // counterclockwise
-typedef D135 L135;      // counterclockwise
-typedef D225 R135;      // clockwise
-typedef D270 R090;      // clockwise
-typedef D315 R045;      // clockwise
+// counterclockwise
+
+using L000 = D000;
+using L045 = D045;
+using L090 = D090;
+using L135 = D135;
+using L180 = D180;
+
+// clockwise
+
+using R180 = D180;
+using R135 = D225;
+using R090 = D270;
+using R045 = D315;
+using R000 = D360;
 
 }       // namespace angle
 }       // namespace dctl

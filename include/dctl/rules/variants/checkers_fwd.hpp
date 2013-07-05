@@ -6,8 +6,8 @@ namespace rules {
 struct Checkers;
 
 // aliases
-typedef Checkers English;
-typedef Checkers American;
+using English  = Checkers;
+using American = Checkers;
 
 }       // namespace rules
 }       // namespace dctl

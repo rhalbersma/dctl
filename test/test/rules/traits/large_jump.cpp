@@ -11,18 +11,18 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesTraitsLargeJump)
 
-typedef boost::mpl::vector<
+using VariantsIntegralConstantInt3 = boost::mpl::vector<
         Frisian, Thai
-> VariantsIntegralConstantInt3;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IntegralConstantInt3, T, VariantsIntegralConstantInt3)
 {
         BOOST_MPL_ASSERT((std::is_same< typename large_jump<T>::type, std::integral_constant<int, 3> >));
 }
 
-typedef boost::mpl::vector<
+using VariantsIntegralConstantInt4 = boost::mpl::vector<
         AKWDamme, Checkers, Czech, HHoogland, International, Italian, Killer, Pool, Russian, Spanish
-> VariantsIntegralConstantInt4;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IntegralConstantInt4, T, VariantsIntegralConstantInt4)
 {

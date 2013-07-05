@@ -14,13 +14,15 @@ namespace rules {
 struct Checkers
 {
         // main rules
-        typedef range::distance_1 range_king;                           // 1.17
-        typedef directions::up directions_pawn_jump;                    // 1.18
-        typedef precedence::none precedence_jump;                       // 1.20
+
+        using range_king = range::distance_1;                           // 1.17
+        using directions_pawn_jump = directions::up;                    // 1.18
+        using precedence_jump = precedence::none;                       // 1.20
 
         // drawing rules
-        typedef std::integral_constant<int,  3> max_repetitions;        // 1.32.1
-        typedef std::integral_constant<int, 80> max_reversible_moves;   // 1.32.2
+
+        using max_repetitions = std::integral_constant<int,  3>;        // 1.32.1
+        using max_reversible_moves = std::integral_constant<int, 80>;   // 1.32.2
 };
 
 }       // namespace rules

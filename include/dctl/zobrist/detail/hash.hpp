@@ -9,7 +9,7 @@
 
 namespace dctl {
 
-typedef std::pair<KingMoves, bool> KingMovesColor;
+using KingMovesColor = std::pair<KingMoves, bool>;
 
 namespace zobrist {
 namespace detail {
