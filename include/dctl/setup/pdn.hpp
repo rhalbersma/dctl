@@ -1,11 +1,9 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <dctl/setup/i_token.hpp>
+#include <dctl/pdn/version.hpp>
 
 namespace dctl {
-
-namespace pdn { struct protocol; }
-
 namespace setup {
 
 template<>
