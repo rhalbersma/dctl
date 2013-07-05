@@ -16,13 +16,13 @@ public:
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend bool operator==(Value const & /* lhs */, Value const& /* rhs */)
+        friend bool operator==(Value const& /* lhs */, Value const& /* rhs */)
         {
                 return true;
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend bool operator<(Value const & /* lhs */, Value const& /* rhs */)
+        friend bool operator<(Value const& /* lhs */, Value const& /* rhs */)
         {
                 return false;
         }

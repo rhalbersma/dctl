@@ -27,7 +27,7 @@ public:
 
         explicit Value(std::tuple< int, int, bool, std::vector<int> > const& t)
         :
-                Value{std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t)}
+                Value {std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t)}
         {}
 
         Value(int pawns, int kings, bool with, std::vector<int> order)
@@ -150,7 +150,7 @@ private:
         int num_pieces_ = 0;
         int num_kings_ = 0;
         bool is_with_king_ = false;
-        std::vector<int> king_order_;
+        std::vector<int> king_order_ = {};
 };
 
 }       // namespace successor

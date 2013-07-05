@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(CompleteConstructor)
         bool const promotion[] = { false, true };
 
         for (auto const& p: promotion ) {
-                auto const v = T { p };
+                auto const v = T{p};
                 BOOST_CHECK_EQUAL(v.is_promotion(), p);
         }
 }
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(TogglePromotion)
         bool const promotion[] = { false, true };
 
         for (auto const& p: promotion ) {
-                auto v = T { p };
+                auto v = T{p};
                 auto const b = v.is_promotion();
 
                 v.toggle_promotion();
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(Equal)
         bool const promotion[] = { false, true };
 
         for (auto const& p: promotion ) {
-                auto v = T { p };
+                auto v = T{p};
                 auto const w = v;
                 BOOST_CHECK(v == w);
                 BOOST_CHECK(w == v);
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(Less)
         bool const promotion[] = { false, true };
 
         for (auto const& p: promotion ) {
-                auto v = T { p };
+                auto v = T {p};
                 auto const w = v;
                 BOOST_CHECK(v <= w);
                 BOOST_CHECK(v >= w);
