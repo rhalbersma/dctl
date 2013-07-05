@@ -24,8 +24,8 @@ class set<T, U, 1>
 > > >
 {
 public:
-        typedef U block_type;
-        typedef T key_type;
+        using block_type = U;
+        using key_type = T;
         typedef T value_type;
         typedef std::size_t size_type;
         typedef std::ptrdiff_t difference_type;

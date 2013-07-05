@@ -121,7 +121,7 @@ int const table<U>::size_[] = {
          4,  5,  5,  6,  5,  6,  6,  7,  5,  6,  6,  7,  6,  7,  7,  8
 };
 
-typedef table<uint8_t> detail;
+using detail = table<uint8_t>;
 
 template<class T>
 int front(T b)

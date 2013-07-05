@@ -15,7 +15,7 @@ struct AKWDamme
         International
 {
         // additional rules
-        typedef range::distance_1 range_halt;
+        using range_halt = range::distance_1;
 };
 
 }       // namespace rules
