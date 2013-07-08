@@ -43,7 +43,7 @@ struct Data<default_tag, Position>
 template<class Position>
 struct Enhancements<default_tag, Position>
 {
-        typedef Data<default_tag, Position> value_type;
+        using value_type = Data<default_tag, Position>;
 
         explicit Enhancements(value_type* p): handle_(p) {}
 
@@ -79,7 +79,7 @@ struct Data<bulk_tag, Position>
 template<class Position>
 struct Enhancements<bulk_tag, Position>
 {
-        typedef Data<bulk_tag, Position> value_type;
+        using value_type = Data<bulk_tag, Position>;
 
         explicit Enhancements(value_type* p): handle_(p) {}
 
@@ -122,7 +122,7 @@ struct Data<hash_tag, Position>
 template<class Position>
 struct Enhancements<hash_tag, Position>
 {
-        typedef Data<hash_tag, Position> value_type;
+        using value_type = Data<hash_tag, Position>;
 
         explicit Enhancements(value_type* p): handle_(p) {}
 
@@ -175,7 +175,7 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
         if (terminal.first) {
                 nodes = terminal.second;
         } else {
-                Arena<Move>::type a;
+                Arena<Move> a;
                 auto const moves = successor::copy(p, a);
                 for (auto const& m: moves)
                         nodes += walk(successor::make_copy(p, m), depth - 1, ply + 1, e);
@@ -267,7 +267,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
         NodeCount sub_count;
 
         Timer timer;
-        Arena<Move>::type a;
+        Arena<Move> a;
         auto const moves = successor::copy(p, a);
 
         announce(p, depth, moves.size());

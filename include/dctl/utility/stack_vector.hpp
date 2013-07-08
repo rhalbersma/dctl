@@ -7,25 +7,16 @@ namespace dctl {
 
 #define DCTL_PP_STACK_RESERVE 16
 
-template<class T>
-struct Arena
-{
-        typedef arena<DCTL_PP_STACK_RESERVE * sizeof(T)> type;
-};
+template<class T, std::size_t N = DCTL_PP_STACK_RESERVE>
+using Arena = arena<N * sizeof(T)>;
 
-template<class T>
-struct Alloc
-{
-        typedef short_alloc<T, DCTL_PP_STACK_RESERVE> type;
-};
+template<class T, std::size_t N = DCTL_PP_STACK_RESERVE>
+using Alloc = short_alloc<T, N>;
 
-template<class T>
-struct stack_vector
-{
-        typedef std::vector<T, typename Alloc<T>::type > type;
-};
+template<class T, std::size_t N = DCTL_PP_STACK_RESERVE>
+using stack_vector = std::vector< T, Alloc<T, N> >;
 
-typedef stack_vector<int>::type Variation;
-typedef stack_vector<int>::type Order;
+using Variation = stack_vector<int>;
+using Order = stack_vector<int>;
 
 }       // namespace dctl

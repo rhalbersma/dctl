@@ -89,8 +89,8 @@ private:
                 auto score = -infinity();
                 int alpha, beta;
 
-                Arena<int>::type iar;
-                Alloc<int>::type ial(iar);
+                Arena<int> iar;
+                Alloc<int> ial(iar);
                 Variation pv(ial);
                 Timer timer;
                 announce(p, depth);
@@ -154,12 +154,12 @@ private:
                         return TT_entry->value();
 
                 // generate moves
-                Arena<Move>::type a;
+                Arena<Move> a;
                 auto const moves = successor::copy(p, a);
                 BOOST_ASSERT(!moves.empty());
 
-                Arena<int>::type oar;
-                Alloc<int>::type oal(oar);
+                Arena<int> oar;
+                Alloc<int> oal(oar);
                 Order move_order(oal);
                 move_order.reserve(moves.size());                                       // reserve enough room for all indices
                 algorithm::iota_n(std::back_inserter(move_order), moves.size(), 0);     // generate indices [0, moves.size() - 1]
@@ -186,8 +186,8 @@ private:
                 auto best_move = Transposition::no_move();
                 int value;
 
-                Arena<int>::type car;
-                Alloc<int>::type cal(car);
+                Arena<int> car;
+                Alloc<int> cal(car);
                 Variation continuation(cal);
                 continuation.reserve(DCTL_PP_STACK_RESERVE);
 
@@ -283,7 +283,7 @@ private:
                         return;
                 }
 
-                Arena<Move>::type a;
+                Arena<Move> a;
                 auto const moves = successor::copy(p, a);
                 auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
                 auto const best_move = moves[index];
@@ -301,7 +301,7 @@ private:
                         return;
                 }
 
-                Arena<Move>::type a;
+                Arena<Move> a;
                 auto const moves = successor::copy(p, a);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
