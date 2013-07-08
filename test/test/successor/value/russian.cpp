@@ -10,7 +10,7 @@ using T = Value<rules::Russian>;
 
 BOOST_AUTO_TEST_CASE(DefaultConstructor)
 {
-        T v;
+        T /* const */ v;
         BOOST_CHECK(!v.is_promotion());
 }
 

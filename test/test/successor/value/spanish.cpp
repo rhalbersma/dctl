@@ -15,7 +15,7 @@ using T = Value<rules::Spanish>;
 
 BOOST_AUTO_TEST_CASE(DefaultConstructor)
 {
-        T v;
+        T /* const */ v;
         BOOST_CHECK_EQUAL(v.size(), 0);
 }
 
