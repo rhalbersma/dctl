@@ -17,7 +17,7 @@ using PrecedenceNone = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Equal, T, PrecedenceNone)
 {
-        Value<T> v, w;
+        Value<T> /* const */ v, w;
 
         // all captures are equal
         BOOST_CHECK(v == w);
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Equal, T, PrecedenceNone)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Less, T, PrecedenceNone)
 {
-        Value<T> v, w;
+        Value<T> /* const */ v, w;
 
         // all captures are equivalent
         BOOST_CHECK(v <= w);

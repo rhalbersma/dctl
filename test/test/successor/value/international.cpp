@@ -18,7 +18,7 @@ using PrecedenceInternational = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructor, T, PrecedenceInternational)
 {
-        Value<T> v;
+        Value<T> /* const */ v;
         BOOST_CHECK_EQUAL(v.size(), 0);
 }
 
