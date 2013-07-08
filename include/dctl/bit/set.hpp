@@ -26,13 +26,13 @@ class set<T, U, 1>
 public:
         using block_type = U;
         using key_type = T;
-        typedef T value_type;
-        typedef std::size_t size_type;
-        typedef std::ptrdiff_t difference_type;
-        typedef bit_reference<T, U> reference;
-        typedef bit_reference<T, U> const_reference;
-        typedef bit_iterator<T, U> iterator;
-        typedef bit_iterator<T, U> const_iterator;
+        using value_type = T;
+        using size_type = std::size_t;
+        using difference_type = std::ptrdiff_t;
+        using reference = bit_reference<T, U>;
+        using const_reference = reference;
+        using iterator = bit_iterator<T, U>;
+        using const_iterator = iterator;
 
         set()
         :

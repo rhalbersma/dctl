@@ -36,9 +36,9 @@ template<> struct log2_sizeof<uint64_t>: std::integral_constant<int, 6> {};
 template<int> struct exp2_typeof;
 
 // specializations for integral types
-template<> struct exp2_typeof<3>        { typedef uint8_t  type; };
-template<> struct exp2_typeof<4>        { typedef uint16_t type; };
-template<> struct exp2_typeof<5>        { typedef uint32_t type; };
-template<> struct exp2_typeof<6>        { typedef uint64_t type; };
+template<> struct exp2_typeof<3>        { using type = uint8_t; };
+template<> struct exp2_typeof<4>        { using type = uint16_t; };
+template<> struct exp2_typeof<5>        { using type = uint32_t; };
+template<> struct exp2_typeof<6>        { using type = uint64_t; };
 
 }       // namespace dctl

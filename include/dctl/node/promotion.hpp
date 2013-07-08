@@ -5,13 +5,13 @@
 
 namespace dctl {
 
-template<bool Color, typename Board>
+template<bool Color, class Board>
 BitBoard promotion_sq(BitBoard dest_sq)
 {
         return dest_sq & Board::promotion_mask[Color][0];
 }
 
-template<bool Color, typename Board>
+template<bool Color, class Board>
 bool is_promotion_sq(BitBoard dest_sq)
 {
         return !bit::empty(promotion_sq<Color, Board>(dest_sq));

@@ -54,7 +54,7 @@ void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = C
 }
 
 // O(N^2) complexity
-template<class ForwardIterator, typename Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type>>
+template<class ForwardIterator, class Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type>>
 void selection_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare())
 {
         for (auto it = first; it != last; ++it) {
