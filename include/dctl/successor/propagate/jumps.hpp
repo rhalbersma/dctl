@@ -52,8 +52,8 @@ public:
 
         // typedefs
 
-        typedef typename Position::rules_type Rules;
-        typedef typename Position::board_type Board;
+        using Rules = typename Position::rules_type;
+        using Board = typename Position::board_type;
 
         // modifiers
 
@@ -113,7 +113,7 @@ public:
         template<bool Color, class Sequence>
         void add_king_jump(BitIndex dest_sq, Sequence& moves) const
         {
-                typedef typename Sequence::value_type Move;
+                using Move = typename Sequence::value_type;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
@@ -127,7 +127,7 @@ public:
         template<bool Color, class WithPiece, class Sequence>
         void add_pawn_jump(BitIndex dest_sq, Sequence& moves) const
         {
-                typedef typename Sequence::value_type Move;
+                using Move = typename Sequence::value_type;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
