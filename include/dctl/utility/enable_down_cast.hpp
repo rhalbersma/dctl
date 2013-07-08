@@ -1,7 +1,6 @@
 #pragma once
 #include <type_traits>                          // is_base_of
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
-#include <dctl/preprocessor/cpp11/default.hpp>  // DCTL_PP_IS_DEFAULT
 
 namespace dctl {
 
@@ -9,9 +8,9 @@ template<class Derived>
 class enable_down_cast
 {
 private:
-        // typedefs
+        // types
 
-        typedef enable_down_cast Base;
+        using Base = enable_down_cast;
 
 public:
         Derived const* self() const
@@ -31,7 +30,7 @@ public:
 protected:
         // disable deletion of Derived* through Base*
         // enable deletion of Base* through Derived*
-        ~enable_down_cast() DCTL_PP_IS_DEFAULT
+        ~enable_down_cast() = default;
 };
 
 }       // namespace dctl

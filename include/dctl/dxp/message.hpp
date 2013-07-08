@@ -4,7 +4,6 @@
 #include <boost/config.hpp>                             // BOOST_STATIC_CONSTANT
 #include <boost/utility.hpp>                            // noncopyable
 #include <dctl/factory/header_body_terminator.hpp>      // make_header_body_terminator
-#include <dctl/preprocessor/cpp11/default.hpp>          // DCTL_PP_IS_DEFAULT
 
 namespace dctl {
 namespace dxp {
@@ -23,7 +22,7 @@ class Message
 {
 public:
         // enable deletion of a Derived* through a Base*
-        virtual ~Message() DCTL_PP_IS_DEFAULT
+        virtual ~Message() = default;
 
         // non-virtual interface
         std::string str() const
