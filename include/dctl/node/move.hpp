@@ -48,14 +48,14 @@ bool is_intersecting_promotion(T promotion, T delta, rules::phase::en_passant)
 
 }       // namespace detail
 
-template<typename Rules, typename T>
+template<class Rules, class T>
 bool is_intersecting_capture(T delta, T captured_pieces)
 {
         // tag dispatching on capture removal
         return detail::is_intersecting_capture(delta, captured_pieces, rules::phase::capture<Rules>());
 }
 
-template<typename Rules, typename T>
+template<class Rules, class T>
 bool is_intersecting_promotion(T promotion, T delta)
 {
         // tag dispatching on pawn promotion
@@ -77,10 +77,7 @@ public:
         // structors
 
         // default constructor
-        Move_()
-        {
-                // no-op
-        }
+        Move_() = default;
 
         // zero initialize
         explicit Move_(T /* MUST be zero */)
@@ -127,7 +124,7 @@ public:
         }
 
         // king jump
-        template<bool Color, typename Rules>
+        template<bool Color, class Rules>
         static Move_ create(T delta, T captured_pieces, T captured_kings)
         {
                 BOOST_ASSERT(pre_condition<Rules>(delta, captured_pieces, captured_kings));
@@ -142,7 +139,7 @@ public:
         }
 
         // pawn jump
-        template<bool Color, typename Rules>
+        template<bool Color, class Rules>
         static Move_ create(T delta, T promotion, T captured_pieces, T captured_kings)
         {
                 BOOST_ASSERT(pre_condition<Rules>(delta, promotion, captured_pieces, captured_kings));
@@ -265,7 +262,7 @@ private:
         }
 
         // pawn jump
-        template<typename Rules>
+        template<class Rules>
         static bool pre_condition(T delta, T promotion, T captured_pieces, T captured_kings)
         {
                 return (
@@ -290,7 +287,7 @@ private:
         }
 
         // logical consistency of a king jump
-        template<typename Rules>
+        template<class Rules>
         bool king_jump_invariant(T delta, T captured_pieces) const
         {
                 return (
@@ -300,7 +297,7 @@ private:
         }
 
         // logical consistency of a pawn jump
-        template<typename Rules>
+        template<class Rules>
         bool pawn_jump_invariant(T delta, T promotion) const
         {
                 return (

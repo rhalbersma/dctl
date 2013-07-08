@@ -32,10 +32,7 @@ public:
         // structors
 
         // default constructor
-        Material_()
-        {
-                // no-op
-        }
+        Material_() = default;
 
         // zero initialize
         explicit Material_(T /* MUST be zero */)
@@ -54,7 +51,7 @@ public:
         // modifiers
 
         // xor-assign the set bits of another piece set
-        template<template<typename> class U>
+        template<template<class> class U>
         Material_& operator^=(U<T> const& m)
         {
                 BOOST_MPL_ASSERT((std::is_base_of< IPieces<U, T>, U<T> >));
@@ -151,6 +148,6 @@ private:
         T kings_;       // kings
 };
 
-typedef Material_<BitBoard> Material;
+using Material = Material_<BitBoard>;
 
 }       // namespace dctl

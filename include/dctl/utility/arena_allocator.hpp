@@ -5,7 +5,6 @@
 #include <boost/operators.hpp>
 #include <dctl/preprocessor/cpp11/alignas.hpp>
 #include <dctl/preprocessor/cpp11/constexpr.hpp>
-#include <dctl/preprocessor/cpp11/delete.hpp>
 #include <dctl/preprocessor/cpp11/noexcept.hpp>
 
 namespace dctl {
@@ -27,8 +26,8 @@ public:
                 reset();
         }
 
-        arena(arena const&) DCTL_PP_IS_DELETE
-        arena& operator=(arena const&) DCTL_PP_IS_DELETE
+        arena(arena const&) = delete;
+        arena& operator=(arena const&) = delete;
 
         static DCTL_PP_CONSTEXPR std::size_t size()
         {
@@ -115,8 +114,8 @@ public:
                 a_(a.a_)
         {}
 
-        //short_alloc(short_alloc const&) = default;
-        short_alloc& operator=(short_alloc const&) DCTL_PP_IS_DELETE
+        short_alloc(short_alloc const&) = default;
+        short_alloc& operator=(short_alloc const&) = delete;
 
         T* allocate(std::size_t n)
         {

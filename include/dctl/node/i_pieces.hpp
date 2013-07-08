@@ -1,13 +1,12 @@
 #pragma once
 #include <dctl/utility/enable_down_cast.hpp>    // enable_down_cast
-#include <dctl/preprocessor/cpp11/default.hpp>  // DCTL_PP_IS_DEFAULT
 
 namespace dctl {
 
 template
 <
-        template<typename> class Impl,
-        typename T
+        template<class> class Impl,
+        class T
 >
 class IPieces
 :
@@ -60,7 +59,7 @@ public:
 protected:
         // disable deletion of Derived* through Base*
         // enable deletion of Base* through Derived*
-        ~IPieces() DCTL_PP_IS_DEFAULT
+        ~IPieces() = default;
 };
 
 }       // namespace dctl
