@@ -2,7 +2,7 @@
 #include <dctl/successor/select/legal.hpp>              // DefaultSelection
 #include <dctl/successor/copy/specializations.hpp>      // copy
 #include <dctl/successor/invariant.hpp>                 // invariant
-#include <dctl/pieces/pieces.hpp>                // pawn, king, piece
+#include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
 #include <dctl/node/move.hpp>                           // Move
 #include <dctl/node/side.hpp>                           // black, white
 #include <dctl/utility/stack_vector.hpp>                // stack_vector

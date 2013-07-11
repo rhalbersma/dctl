@@ -9,7 +9,8 @@ template<int N>
 struct Degrees
 {
         // nullary metadata subject to arithmetic modulo 360 degrees
-        enum { value = mpl::abs_modulus<
+        enum {
+                value = mpl::abs_modulus<
         	        boost::mpl::int_<N>,
         		boost::mpl::int_<360>
                 >::value
