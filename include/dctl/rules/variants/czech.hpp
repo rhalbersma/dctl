@@ -15,12 +15,12 @@ namespace rules {
 struct Czech
 {
         // main rules
-        typedef range::distance_N range_king;
-        typedef directions::up directions_pawn_jump;
-        typedef precedence::none precedence_jump;
+        using range_king = range::distance_N;
+        using directions_pawn_jump = directions::up;
+        using precedence_jump = precedence::none;
 
         // additional rules
-        typedef std::true_type precedence_is_absolute_king;
+        using precedence_is_absolute_king = std::true_type;
 };
 
 }       // namespace rules
