@@ -41,6 +41,12 @@ private:
         typedef board::Compass<Color, Board> Compass;
         typedef Propagate<select::jumps, Position> State;
 
+        template<class Direction, class Angle>
+        using rotate = typename mpl::lazy::rotate< Direction, Angle >::type;
+
+        template<class DirectionLeft, class DirectionRight>
+        using mirror = typename mpl::lazy::mirror< DirectionLeft, DirectionRight >::type;
+
         // representation
 
         State& capture_;
@@ -265,8 +271,8 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan< typename mpl::lazy::rotate< Direction, angle::R090 >::type >(jumper) |
-                        scan< typename mpl::lazy::rotate< Direction, angle::L090 >::type >(jumper)
+                        scan< rotate< Direction, angle::R090 > >(jumper) |
+                        scan< rotate< Direction, angle::L090 > >(jumper)
                 );
         }
 
@@ -274,14 +280,14 @@ private:
         template<class Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::up) const
         {
-                return scan< typename mpl::lazy::mirror< Direction, typename Compass::up >::type >(jumper);
+                return scan< mirror< Direction, typename Compass::up > >(jumper);
         }
 
         // overload for pawns that turn in the 1 mirrored backward direction
         template<class Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::down) const
         {
-                return scan< typename mpl::lazy::mirror< Direction, typename Compass::down >::type >(jumper);
+                return scan< mirror< Direction, typename Compass::down > >(jumper);
         }
 
         // overload for pawns that turn in the remaining 4 diagonal or orthogonal directions
@@ -289,10 +295,10 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan< typename mpl::lazy::rotate< Direction, angle::R045 >::type >(jumper) |
-                        scan< typename mpl::lazy::rotate< Direction, angle::L045 >::type >(jumper) |
-                        scan< typename mpl::lazy::rotate< Direction, angle::R135 >::type >(jumper) |
-                        scan< typename mpl::lazy::rotate< Direction, angle::L135 >::type >(jumper)
+                        scan< rotate< Direction, angle::R045 > >(jumper) |
+                        scan< rotate< Direction, angle::L045 > >(jumper) |
+                        scan< rotate< Direction, angle::R135 > >(jumper) |
+                        scan< rotate< Direction, angle::L135 > >(jumper)
                 );
         }
 
