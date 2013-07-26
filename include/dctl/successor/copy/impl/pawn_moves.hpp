@@ -76,6 +76,16 @@ private:
                 auto const dest_sq = Next<Board, Direction>()(from_sq);
                 moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq)));
         }
+
+        /* replace with
+         *
+         * active_pawns &= Prev<Board, Direction>()(propagate_.path());
+         * std::transform(begin(active_pawns), end(active_pawns), std::back_inserter(moves_), [](Square const& from_sq) -> Move {
+         *      auto const dest_sq = Next<Board, Direction>()(from_sq);
+         *      return Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq));
+         * });
+         *
+         */
 };
 
 }       // namespace impl
