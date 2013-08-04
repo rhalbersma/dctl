@@ -36,7 +36,7 @@ public:
                 return *this;
         }
 
-        // operator-(StridedCursor, int) provided by boost::additive
+        // operator-(self_type, int) provided by boost::additive
         self_type& operator-=(int n)
         {
                 cursor_ -= N * n;

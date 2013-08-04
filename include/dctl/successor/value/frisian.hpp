@@ -67,8 +67,8 @@ public:
         // operator>=, operator>, operator<= provided by boost::totally_ordered
         friend bool operator<(Value const& lhs, Value const& rhs)
         {
-                auto const delta_kings  = static_cast<int>(lhs.num_kings_  - rhs.num_kings_ );
-                auto const delta_pieces = static_cast<int>(lhs.num_pieces_ - rhs.num_pieces_);
+                auto const delta_kings  = lhs.num_kings_  - rhs.num_kings_ ;
+                auto const delta_pieces = lhs.num_pieces_ - rhs.num_pieces_;
                 auto const delta_pawns = delta_pieces - delta_kings;
 
                 // Art. 11
@@ -100,7 +100,7 @@ private:
         bool empty() const
         {
                 return (
-                                 0 == num_kings_&&
+                                 0 == num_kings_ &&
                         num_kings_ == num_pieces_
                 );
         }
