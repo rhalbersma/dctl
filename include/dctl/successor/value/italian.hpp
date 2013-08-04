@@ -17,8 +17,7 @@ namespace successor {
 template<>
 class Value<rules::Italian>
 :
-        // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Italian> > // < >= > <= == !=
+        boost::totally_ordered< Value<rules::Italian> > // < >= > <= == !=
 {
 public:
         // structors
