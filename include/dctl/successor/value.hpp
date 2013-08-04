@@ -9,8 +9,7 @@ namespace successor {
 template<class Rules>
 class Value
 :
-        // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<Rules> >  // < >= > <= == !=
+        boost::totally_ordered< Value<Rules> >  // < >= > <= == !=
 {
 public:
         // predicates

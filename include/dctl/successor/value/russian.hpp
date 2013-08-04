@@ -11,8 +11,7 @@ namespace successor {
 template<>
 class Value<rules::Russian>
 :
-        // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Russian> > // < >= > <= == !=
+        boost::totally_ordered< Value<rules::Russian> > // < >= > <= == !=
 {
 public:
         // structors
@@ -44,13 +43,13 @@ public:
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend bool operator==(Value const&, Value const&)
+        friend bool operator==(Value const& /* lhs */, Value const& /* rhs */)
         {
                 return true;
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend bool operator<(Value const&, Value const&)
+        friend bool operator<(Value const& /* lhs */, Value const& /* rhs */)
         {
                 return false;
         }

@@ -13,8 +13,7 @@ namespace successor {
 template<>
 class Value<rules::Frisian>
 :
-        // Curiously Recurring Template Pattern (CRTP)
-        private boost::totally_ordered< Value<rules::Frisian> >  // < >= > <= == !=
+        boost::totally_ordered< Value<rules::Frisian> > // < >= > <= == !=
 {
 public:
         // structors
