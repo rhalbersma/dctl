@@ -6,10 +6,10 @@
 namespace dctl {
 namespace ray {
 
-template<int N>
+template<class StridedCursor>
 using StridedIterator = boost::counting_iterator
 <
-        StridedCursor<N>,
+        StridedCursor,
         std::random_access_iterator_tag
 >;
 
