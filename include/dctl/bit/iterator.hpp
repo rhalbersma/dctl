@@ -11,40 +11,34 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class U, class /* Requires */>
-class bit_iterator
+template<class T>
+class bit_iterator<T, 1>
 :
         public boost::iterator_facade<
-                bit_iterator<T, U>,
+                bit_iterator<T, 1>,
                 T,
                 std::forward_iterator_tag,
-                bit_reference<T, U>,
+                bit_reference<T, 1>,
                 std::ptrdiff_t
         >
 {
 public:
+        using block_type = uint64_t;
+
         // structors
 
         bit_iterator()
         :
-                mask_(0)
+                mask_{0}
         {}
 
-        explicit bit_iterator(U m)
+        explicit bit_iterator(block_type m)
         :
-                mask_(m)
-        {}
-
-        // yes, we really want implicit conversion from other iterators
-        template<class V, class W, class Requires = typename std::enable_if<std::is_convertible<V, T>::value && std::is_convertible<W, U>::value>::type>
-        bit_iterator(bit_iterator<V, W> other)
-        :
-                mask_(other->mask_)
+                mask_{m}
         {}
 
 private:
         friend class boost::iterator_core_access;
-        template<class, class, class> friend class bit_iterator;
 
         // modifiers
 
@@ -59,11 +53,11 @@ private:
         // views
 
         // operator* provided by boost::iterator_facade
-        bit_reference<T, U> dereference() const
+        bit_reference<T, 1> dereference() const
         {
                 // cannot dereference a null pointer
                 BOOST_ASSERT(!is_null());
-                return bit_reference<T, U>(mask_);
+                return bit_reference<T, 1>{mask_};
         }
 
         // predicates
@@ -81,22 +75,24 @@ private:
 
         // representation
 
-        U mask_;
+        block_type mask_;
 };
 
-template<class T, class U, class /* Requires */>
-class bit_reference
+template<class T>
+class bit_reference<T, 1>
 {
 public:
+        using block_type = uint64_t;
+
         // structors
 
         // references have to be initialized
         bit_reference() = delete;
 
         // references cannot be null
-        explicit bit_reference(U m)
+        explicit bit_reference(block_type m)
         :
-                mask_(m)
+                mask_{m}
         {
                 BOOST_ASSERT(!is_null());
         }
@@ -111,12 +107,12 @@ public:
         // yes, we really want implicit conversion to the value type
         operator T() const
         {
-                return static_cast<T>(front(mask_));
+                return T{front(mask_)};
         }
 
-        bit_iterator<T, U> operator&() const
+        bit_iterator<T, 1> operator&() const
         {
-                return bit_iterator<T, U>(mask_);
+                return bit_iterator<T, 1>{mask_};
         }
 
 private:
@@ -130,7 +126,7 @@ private:
 
         // representation
 
-        U mask_;
+        block_type mask_;
 };
 
 }       // namespace bit
