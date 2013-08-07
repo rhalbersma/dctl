@@ -30,6 +30,9 @@ BOOST_AUTO_TEST_CASE(Members)
         // initialize-list
         bitset x {17, 31, 61};
 
+        BOOST_CHECK(std::is_sorted(begin(x), end(x)));
+        BOOST_CHECK(std::adjacent_find(begin(x), end(x)) == end(x));
+
         BOOST_CHECK((x.find(17) != x.end()) == x.count(17));
         BOOST_CHECK((x.find(18) != x.end()) == x.count(18));
 

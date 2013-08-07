@@ -34,12 +34,7 @@ public:
         using iterator = bit_iterator<T, 1>;
         using const_iterator = iterator;
 
-        set()
-        :
-                data_()
-        {
-                BOOST_ASSERT(invariant());
-        }
+        set() = default;
 
         explicit set(block_type const& b)
         :
@@ -266,7 +261,8 @@ private:
         {
                 return (
                         std::distance(begin(), end()) == static_cast<std::ptrdiff_t>(size()) &&
-                        std::is_sorted(begin(), end())
+                        std::is_sorted(begin(), end()) &&
+                        std::adjacent_find(begin(), end()) == end()
                 );
         }
 
