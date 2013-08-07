@@ -13,25 +13,25 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class U = uint64_t, std::size_t N = 1>
+template<class T, std::size_t N = 1>
 class set;
 
-template<class T, class U>
-class set<T, U, 1>
-:       boost::totally_ordered< set<T, U, 1>
-,       boost::bitwise< set<T, U, 1>
-,       boost::shiftable< set<T, U, 1>, std::size_t
+template<class T>
+class set<T, 1>
+:       boost::totally_ordered< set<T, 1>
+,       boost::bitwise< set<T, 1>
+,       boost::shiftable< set<T, 1>, std::size_t
 > > >
 {
 public:
-        using block_type = U;
+        using block_type = uint64_t;
         using key_type = T;
         using value_type = T;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
-        using reference = bit_reference<T, U>;
+        using reference = bit_reference<T, 1>;
         using const_reference = reference;
-        using iterator = bit_iterator<T, U>;
+        using iterator = bit_iterator<T, 1>;
         using const_iterator = iterator;
 
         set()
@@ -43,7 +43,7 @@ public:
 
         explicit set(block_type const& b)
         :
-                data_(b)
+                data_{b}
         {
                 BOOST_ASSERT(invariant());
         }
@@ -51,7 +51,7 @@ public:
         template<class InputIt>
         set(InputIt first, InputIt last)
         :
-                data_(0)
+                data_{0}
         {
                 BOOST_ASSERT(empty());
                 for (auto it = first; it != last; ++it)
@@ -61,7 +61,7 @@ public:
 
         set(std::initializer_list<value_type> init)
         :
-                data_(0)
+                data_{0}
         {
                 BOOST_ASSERT(empty());
                 for (auto i: init)
@@ -71,32 +71,32 @@ public:
 
         iterator begin()
         {
-                return iterator(data_);
+                return iterator{data_};
         }
 
         const_iterator begin() const
         {
-                return const_iterator(data_);
+                return const_iterator{data_};
         }
 
         const_iterator cbegin() const
         {
-                return const_iterator(data_);
+                return const_iterator{data_};
         }
 
         iterator end()
         {
-                return iterator();
+                return iterator{};
         }
 
         const_iterator end() const
         {
-                return const_iterator();
+                return const_iterator{};
         }
 
         const_iterator cend() const
         {
-                return const_iterator();
+                return const_iterator{};
         }
 
         bool empty() const
@@ -125,21 +125,21 @@ public:
         {
                 data_ |= element(value);
                 BOOST_ASSERT(invariant());
-                return std::make_pair(iterator(data_), true);
+                return std::make_pair(iterator{data_}, true);
         }
 
         std::pair<iterator, bool> insert(value_type&& value)
         {
                 data_ |= element(std::move(value));
                 BOOST_ASSERT(invariant());
-                return std::make_pair(iterator(data_), true);
+                return std::make_pair(iterator{data_}, true);
         }
 
         iterator insert(const_iterator /*hint*/, value_type value)
         {
                 insert(value);
                 BOOST_ASSERT(invariant());
-                return iterator(data_);
+                return iterator{data_};
         }
 
         template<class InputIt>
@@ -191,13 +191,13 @@ public:
         {
                 auto result = data_ & element(key);
                 BOOST_ASSERT(invariant());
-                return result? iterator(result) : end();
+                return result? iterator{result} : end();
         }
 
         const_iterator find(key_type const& key) const
         {
                 auto result = data_ & element(key);
-                return result? const_iterator(&data_, result) : end();
+                return result? const_iterator{result} : end();
         }
 
         // operator!= provided by boost::totally_ordered
@@ -265,52 +265,52 @@ private:
         bool invariant() const
         {
                 return (
-                        std::is_sorted(begin(), end()) &&
-                        std::distance(begin(), end()) == static_cast<std::ptrdiff_t>(size())
+                        std::distance(begin(), end()) == static_cast<std::ptrdiff_t>(size()) &&
+                        std::is_sorted(begin(), end())
                 );
         }
 
         block_type element(key_type const& key) const
         {
                 BOOST_ASSERT(key < static_cast<key_type>(max_size()));
-                return block_type(1) << key;
+                return block_type{1} << key;
         }
 
         block_type data_;
 };
 
-template<class T, class U, std::size_t N>
-set<T, U, N> operator~(set<T, U, N> const& lhs)
+template<class T, std::size_t N>
+set<T, N> operator~(set<T, N> const& lhs)
 {
-        return set<T, U, N>(lhs).flip();
+        return set<T, N>{lhs}.flip();
 }
 
-template<class T, class U, std::size_t N>
-void swap(set<T, U, N>& lhs, set<T, U, N>& rhs)
+template<class T, std::size_t N>
+void swap(set<T, N>& lhs, set<T, N>& rhs)
 {
         lhs.swap(rhs);
 }
 
-template<class T, class U, std::size_t N>
-auto begin(set<T, U, N> const& s) -> decltype(s.begin())
+template<class T, std::size_t N>
+auto begin(set<T, N> const& s) -> decltype(s.begin())
 {
         return s.begin();
 }
 
-template<class T, class U, std::size_t N>
-auto end(set<T, U, N> const& s) -> decltype(s.end())
+template<class T, std::size_t N>
+auto end(set<T, N> const& s) -> decltype(s.end())
 {
         return s.end();
 }
 
-template<class T, class U, std::size_t N>
-auto empty(set<T, U, N> const& s) -> decltype(s.empty())
+template<class T, std::size_t N>
+auto empty(set<T, N> const& s) -> decltype(s.empty())
 {
         return s.empty();
 }
 
-template<class T, class U, std::size_t N>
-auto size(set<T, U, N> const& s) -> decltype(s.size())
+template<class T, std::size_t N>
+auto size(set<T, N> const& s) -> decltype(s.size())
 {
         return s.size();
 }
