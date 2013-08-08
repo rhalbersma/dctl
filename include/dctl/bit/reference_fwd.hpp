@@ -5,7 +5,7 @@
 namespace dctl {
 namespace bit {
 
-template<class Key, class Storage = uint64_t> class bit_iterator;
+template<class Key, class Storage = uint64_t> class bit_reference;
 
 }       // namespace bit
 }       // namespace dctl

@@ -5,34 +5,32 @@
 #include <type_traits>                          // enable_if, is_unsigned, is_convertible
 #include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade, iterator_core_acces
-#include <dctl/bit/iterator_fwd.hpp>            // bit_iterator, bit_reference
+#include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
+#include <dctl/bit/reference_fwd.hpp>           // bit_reference
 #include <dctl/bit/raw.hpp>                     // empty, pop_front, front
 
 namespace dctl {
 namespace bit {
 
-template<class T>
-class bit_iterator<T, 1>
+template<class Key>
+class bit_iterator<Key, uint64_t>
 :
         public boost::iterator_facade<
-                bit_iterator<T, 1>,
-                T,
+                bit_iterator<Key, uint64_t>,
+                Key,
                 std::forward_iterator_tag,
-                bit_reference<T, 1>,
+                bit_reference<Key, uint64_t>,
                 std::ptrdiff_t
         >
 {
 public:
-        using block_type = uint64_t;
+        using storage_type = uint64_t;
 
         // structors
 
-        bit_iterator()
-        :
-                mask_{0}
-        {}
+        bit_iterator() = default;
 
-        explicit bit_iterator(block_type m)
+        explicit bit_iterator(storage_type m)
         :
                 mask_{m}
         {}
@@ -53,11 +51,11 @@ private:
         // views
 
         // operator* provided by boost::iterator_facade
-        bit_reference<T, 1> dereference() const
+        bit_reference<Key, storage_type> dereference() const
         {
                 // cannot dereference a null pointer
                 BOOST_ASSERT(!is_null());
-                return bit_reference<T, 1>{mask_};
+                return bit_reference<Key, storage_type>{mask_};
         }
 
         // predicates
@@ -75,58 +73,7 @@ private:
 
         // representation
 
-        block_type mask_;
-};
-
-template<class T>
-class bit_reference<T, 1>
-{
-public:
-        using block_type = uint64_t;
-
-        // structors
-
-        // references have to be initialized
-        bit_reference() = delete;
-
-        // references cannot be null
-        explicit bit_reference(block_type m)
-        :
-                mask_{m}
-        {
-                BOOST_ASSERT(!is_null());
-        }
-
-        // modifiers
-
-        // references cannot be rebound
-        bit_reference& operator=(bit_reference const&) = delete;
-
-        // views
-
-        // yes, we really want implicit conversion to the value type
-        operator T() const
-        {
-                return T{front(mask_)};
-        }
-
-        bit_iterator<T, 1> operator&() const
-        {
-                return bit_iterator<T, 1>{mask_};
-        }
-
-private:
-        // predicates
-
-        bool is_null() const
-        {
-                // references cannot be null
-                return empty(mask_);
-        }
-
-        // representation
-
-        block_type mask_;
+        storage_type mask_ = 0;
 };
 
 }       // namespace bit
