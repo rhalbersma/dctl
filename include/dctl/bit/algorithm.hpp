@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/bit/raw.hpp>             // empty
+#include <dctl/bit/raw.hpp>
 
 namespace dctl {
 namespace bit {
@@ -11,37 +11,37 @@ Set set_complement(Set const& lhs)
 }
 
 template<class Set>
-auto set_intersection(Set const& lhs, Set const& rhs) -> decltype(lhs & rhs)
+Set set_intersection(Set const& lhs, Set const& rhs)
 {
         return lhs & rhs;
 }
 
 template<class Set>
-auto set_union(Set const& lhs, Set const& rhs) -> decltype(lhs | rhs)
+Set set_union(Set const& lhs, Set const& rhs)
 {
         return lhs | rhs;
 }
 
 template<class Set>
-auto set_symmetric_difference(Set const& lhs, Set const& rhs) -> decltype(lhs ^ rhs)
+Set set_symmetric_difference(Set const& lhs, Set const& rhs)
 {
         return lhs ^ rhs;
 }
 
 template<class Set>
-auto set_difference(Set const& lhs, Set const& rhs) -> decltype(set_intersection(lhs, set_complement(rhs)))
+Set set_difference(Set const& lhs, Set const& rhs)
 {
         return set_intersection(lhs, set_complement(rhs));
 }
 
 template<class Set>
-auto set_exclusive(Set const& lhs, Set const& rhs) -> decltype(empty(set_intersection(lhs, rhs)))
+bool set_exclusive(Set const& lhs, Set const& rhs)
 {
         return empty(set_intersection(lhs, rhs));
 }
 
 template<class Set>
-auto set_includes(Set const& lhs, Set const& rhs) -> decltype(empty(set_difference(rhs, lhs)))
+bool set_includes(Set const& lhs, Set const& rhs)
 {
         return empty(set_difference(rhs, lhs));
 }

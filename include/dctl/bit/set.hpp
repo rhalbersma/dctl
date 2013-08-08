@@ -1,120 +1,128 @@
 #pragma once
 #include <cstddef>                      // ptrdiff_t, size_t
-#include <cstdint>                      // uint64_t
+#include <cstdint>                      // CHAR_BIT, uint64_t
 #include <algorithm>                    // is_sorted
+#include <functional>                   // less
 #include <initializer_list>             // initializer_list
 #include <iterator>                     // distance
 #include <utility>                      // swap
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // totally_ordered, bitwise, shiftable
-#include <dctl/bit/iterator.hpp>        // bit_iterator, bit_reference
+#include <dctl/bit/iterator.hpp>        // bit_iterator
+#include <dctl/bit/reference.hpp>       // bit_reference
 #include <dctl/bit/raw.hpp>             // size
 
 namespace dctl {
 namespace bit {
 
-template<class T, std::size_t N = 1>
+template<class Key, class Compare = std::less<Key>, class Storage = uint64_t>
 class set;
 
-template<class T>
-class set<T, 1>
-:       boost::totally_ordered< set<T, 1>
-,       boost::bitwise< set<T, 1>
-,       boost::shiftable< set<T, 1>, std::size_t
+template<class Key, class Compare>
+class set<Key, Compare, uint64_t>
+:       boost::totally_ordered< set<Key, Compare, uint64_t>
+,       boost::bitwise< set<Key, Compare, uint64_t>
+,       boost::shiftable< set<Key, Compare, uint64_t>, std::size_t
 > > >
 {
 public:
-        using block_type = uint64_t;
-        using key_type = T;
-        using value_type = T;
+        using storage_type = uint64_t;
+        using key_type = Key;
+        using value_type = Key;
+        using key_compare = Compare;
+        using value_compare = Compare;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
-        using reference = bit_reference<T, 1>;
+        using reference = bit_reference<key_type, storage_type>;
         using const_reference = reference;
-        using iterator = bit_iterator<T, 1>;
+        using iterator = bit_iterator<key_type, storage_type>;
         using const_iterator = iterator;
 
         set() = default;
 
-        explicit set(block_type const& b)
+        explicit set(storage_type const& data)
         :
-                data_{b}
+                data_{data}
         {
                 BOOST_ASSERT(invariant());
         }
 
         template<class InputIt>
         set(InputIt first, InputIt last)
-        :
-                data_{0}
         {
                 BOOST_ASSERT(empty());
-                for (auto it = first; it != last; ++it)
-                         insert(*it);
-                BOOST_ASSERT(invariant());
+                insert(first, last);
         }
 
-        set(std::initializer_list<value_type> init)
-        :
-                data_{0}
+        set(std::initializer_list<value_type> ilist)
         {
                 BOOST_ASSERT(empty());
-                for (auto i: init)
-                        insert(i);
-                BOOST_ASSERT(invariant());
+                insert(ilist);
         }
 
-        iterator begin()
+        set& operator=(std::initializer_list<value_type> ilist)
+        {
+                clear();
+                insert(ilist);
+                return *this;
+        }
+
+        // iterators
+
+        iterator begin() noexcept
         {
                 return iterator{data_};
         }
 
-        const_iterator begin() const
+        const_iterator begin() const noexcept
         {
                 return const_iterator{data_};
         }
 
-        const_iterator cbegin() const
+        const_iterator cbegin() const noexcept
         {
-                return const_iterator{data_};
+                return begin();
         }
 
-        iterator end()
+        iterator end() noexcept
         {
                 return iterator{};
         }
 
-        const_iterator end() const
+        const_iterator end() const noexcept
         {
                 return const_iterator{};
         }
 
-        const_iterator cend() const
+        const_iterator cend() const noexcept
         {
-                return const_iterator{};
+                return end();
         }
 
-        bool empty() const
+        // capacity
+
+        bool empty() const noexcept
         {
                 return begin() == end();
         }
 
-        size_type size() const
+        size_type size() const noexcept
         {
                 return static_cast<size_type>(bit::size(data_));
         }
 
-        size_type max_size() const
+        size_type max_size() const noexcept
         {
-                return 8 * sizeof(block_type);
+                return CHAR_BIT * sizeof(storage_type);
         }
 
-        void clear()
-        {
-                data_ = 0;
-                BOOST_ASSERT(empty());
-                BOOST_ASSERT(invariant());
-        }
+        // modifiers
+
+        template<class... Args>
+        std::pair<iterator, bool> emplace(Args&&... args);
+
+        template <class... Args>
+        iterator emplace_hint(const_iterator /* position */, Args&&... args);
 
         std::pair<iterator, bool> insert(value_type const& value)
         {
@@ -133,7 +141,6 @@ public:
         iterator insert(const_iterator /*hint*/, value_type value)
         {
                 insert(value);
-                BOOST_ASSERT(invariant());
                 return iterator{data_};
         }
 
@@ -142,14 +149,11 @@ public:
         {
                 for (auto it = first; it != last; ++it)
                         insert(*it);
-                BOOST_ASSERT(invariant());
         }
 
-        void insert(std::initializer_list<value_type> const& ilist)
+        void insert(std::initializer_list<value_type> ilist)
         {
-                for (auto const& i: ilist)
-                        insert(i);
-                BOOST_ASSERT(invariant());
+                insert(ilist.begin(), ilist.end());
         }
 
         void erase(iterator pos)
@@ -161,7 +165,6 @@ public:
         {
                 for (auto it = first; it != last; ++it)
                         erase(*it);
-                BOOST_ASSERT(invariant());
         }
 
         void erase(key_type const& key)
@@ -174,6 +177,13 @@ public:
         {
                 using std::swap;
                 swap(data_, other.data_);
+                BOOST_ASSERT(invariant());
+        }
+
+        void clear() noexcept
+        {
+                data_ = 0;
+                BOOST_ASSERT(empty());
                 BOOST_ASSERT(invariant());
         }
 
@@ -261,54 +271,56 @@ private:
         {
                 return (
                         std::distance(begin(), end()) == static_cast<std::ptrdiff_t>(size()) &&
-                        std::is_sorted(begin(), end()) &&
-                        std::adjacent_find(begin(), end()) == end()
+                        std::is_sorted(begin(), end(), key_compare()) &&
+                        is_unique()
                 );
         }
 
-        block_type element(key_type const& key) const
+        bool is_unique() const
         {
-                BOOST_ASSERT(key < static_cast<key_type>(max_size()));
-                return block_type{1} << key;
+                return std::adjacent_find(begin(), end(), [](key_type const& lhs, key_type const& rhs){
+                        return !key_compare()(lhs, rhs) && !key_compare()(rhs, lhs);
+                }) == end();
         }
 
-        block_type data_;
+        storage_type element(key_type const& key) const
+        {
+                BOOST_ASSERT(key < static_cast<key_type>(max_size()));
+                return storage_type{1} << key;
+        }
+
+        // representation
+        storage_type data_ = 0;
 };
 
-template<class T, std::size_t N>
-set<T, N> operator~(set<T, N> const& lhs)
+template<class Key, class Compare, class Storage>
+set<Key, Compare, Storage> operator~(set<Key, Compare, Storage> const& lhs)
 {
-        return set<T, N>{lhs}.flip();
+        return set<Key, Compare, Storage>{lhs}.flip();
 }
 
-template<class T, std::size_t N>
-void swap(set<T, N>& lhs, set<T, N>& rhs)
+template<class Key, class Compare, class Storage>
+void swap(set<Key, Compare, Storage>& lhs, set<Key, Compare, Storage>& rhs)
 {
         lhs.swap(rhs);
 }
 
-template<class T, std::size_t N>
-auto begin(set<T, N> const& s) -> decltype(s.begin())
+template<class Key, class Compare, class Storage>
+auto begin(set<Key, Compare, Storage> const& s) -> decltype(s.begin())
 {
         return s.begin();
 }
 
-template<class T, std::size_t N>
-auto end(set<T, N> const& s) -> decltype(s.end())
+template<class Key, class Compare, class Storage>
+auto end(set<Key, Compare, Storage> const& s) -> decltype(s.end())
 {
         return s.end();
 }
 
-template<class T, std::size_t N>
-auto empty(set<T, N> const& s) -> decltype(s.empty())
+template<class Key, class Compare, class Storage>
+auto empty(set<Key, Compare, Storage> const& s) -> decltype(s.empty())
 {
         return s.empty();
-}
-
-template<class T, std::size_t N>
-auto size(set<T, N> const& s) -> decltype(s.size())
-{
-        return s.size();
 }
 
 }       // namespace bit
