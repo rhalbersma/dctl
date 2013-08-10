@@ -18,8 +18,8 @@ struct detect<Color, pieces::all, select::moves, Range>
         template<class Position>
         bool operator()(Position const& p) const
         {
-                typedef impl::detect<Color, pieces::king, select::moves, Position, rules::range::distance_1> KingMoves;
-                typedef impl::detect<Color, pieces::pawn, select::moves, Position, rules::range::distance_1> PawnMoves;
+                using KingMoves = impl::detect<Color, pieces::king, select::moves, Position, rules::range::distance_1>;
+                using PawnMoves = impl::detect<Color, pieces::pawn, select::moves, Position, rules::range::distance_1>;
 
                 Propagate<select::moves, Position> const propagate(p);
                 return KingMoves{propagate}(moveable_kings(p, Color)) || PawnMoves{propagate}(p.material().pawns(Color));

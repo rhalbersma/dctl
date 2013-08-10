@@ -6,14 +6,14 @@ namespace tree {
 
 template
 <
-        typename Link,
-        typename T
+        class Link,
+        class T
 >
 struct node
 :
         Link
 {
-        template<typename... Args>
+        template<class... Args>
         node(Args&&... args)
         :
                 Link(),

@@ -16,7 +16,7 @@ struct copy<Color, pieces::king, select::jumps>
         template<class Position, class Sequence>
         void operator()(Position const& p, Sequence& moves) const
         {
-                typedef impl::copy<Color, pieces::king, select::jumps, Position, Sequence> KingJumps;
+                using KingJumps = impl::copy<Color, pieces::king, select::jumps, Position, Sequence>;
 
                 Propagate<select::jumps, Position> propagate(p);
                 KingJumps{propagate, moves}(p.material().kings(Color));

@@ -8,14 +8,14 @@ namespace dctl {
 namespace detail {
 
 // overload for apres-fini capture removal
-template<typename Position, typename Move>
+template<class Position, class Move>
 bool is_intersecting_capture(Position const& /* p */, Move const& /* m */, rules::phase::apres_fini)
 {
         return false;
 }
 
 // overload for en-passant capture removal
-template<typename Position, typename Move>
+template<class Position, class Move>
 bool is_intersecting_capture(Position const& p, Move const& m, rules::phase::en_passant)
 {
         // for intersecting captures, a man-capturing king can appear as a captured king

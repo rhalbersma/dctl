@@ -11,73 +11,73 @@ namespace board {
 
 template
 <
-        typename G,
+        class G,
         int R,
         int C
 >
 struct Coordinates
 {
-        typedef G grid;
-        typedef boost::mpl::int_<R> row;
-        typedef boost::mpl::int_<C> col;
+        using grid = G;
+        using row = boost::mpl::int_<R>;
+        using col = boost::mpl::int_<C>;
 
         // lazily evaluable metadata == nullary metafunction
-        typedef Coordinates<G, R, C> type;
+        using type = Coordinates<G, R, C>;
 };
 
 template
 <
-        typename G,
-        typename N
+        class G,
+        class N
 >
 struct Square
 {
-        typedef G grid;
-        typedef N number;
+        using grid = G;
+        using number = N;
 };
 
-template<typename C>
+template<class C>
 struct Coordinates2Square
 {
 private:
-        typedef typename C::grid G;
+        using G = typename C::grid;
 
         // row parity
-        typedef boost::mpl::modulus< typename
+        using P = boost::mpl::modulus< typename
                 C::row,
                 boost::mpl::int_<2>
-        > P;
+        >;
 
         // number of row pairs
-        typedef boost::mpl::divides< typename
+        using Q = boost::mpl::divides< typename
                 C::row,
                 boost::mpl::int_<2>
-        > Q;
+        >;
 
         // the left edge
-        typedef typename boost::mpl::eval_if<
+        using L = typename boost::mpl::eval_if<
                 P, typename
                 G::edge_lo, typename
                 G::edge_le
-        >::type L;
+        >::type;
 
         // number of column pairs
-        typedef boost::mpl::divides< typename
+        using S = boost::mpl::divides< typename
                 C::col,
                 boost::mpl::int_<2>
-        > S;
+        >;
 
         // squares from the left edge
-        typedef boost::mpl::modulus<
+        using R = boost::mpl::modulus<
                 boost::mpl::plus<
                         L,
                         S
                 >, typename
                 G::modulo
-        > R;
+        >;
 
 public:
-        typedef Square<
+        using type = Square<
                 G, typename
                 boost::mpl::plus<
                         boost::mpl::times< typename
@@ -86,53 +86,53 @@ public:
                         >,
                         R
                 >::type
-        > type;
+        >;
 };
 
-template<typename SQ>
+template<class SQ>
 struct Square2Coordinates
 {
 private:
-        typedef typename SQ::grid G;
+        using G = typename SQ::grid;
 
         // number of row pairs
-        typedef boost::mpl::divides< typename
+        using Q = boost::mpl::divides< typename
                 SQ::number, typename
                 G::modulo
-        > Q;
+        >;
 
         // left edge of the zeroth row
-        typedef boost::mpl::modulus< typename
+        using R0 = boost::mpl::modulus< typename
                 SQ::number, typename
                 G::modulo
-        > R0;
+        >;
 
         // left edge of the first row
-        typedef boost::mpl::minus<
+        using R1 = boost::mpl::minus<
                 R0, typename
                 G::edge_lo
-        > R1;
+        >;
 
         // R0 is in the zeroth or first row
-        typedef boost::mpl::greater_equal<
+        using P = boost::mpl::greater_equal<
                 R1,
                 boost::mpl::int_<0>
-        > P;
+        >;
 
         // squares from the left edge
-        typedef typename boost::mpl::eval_if< P, R1, R0 >::type R;
+        using R = typename boost::mpl::eval_if< P, R1, R0 >::type;
 
         // 2x the row pairs + the row parity
-        typedef boost::mpl::plus<
+        using ROW = boost::mpl::plus<
                 boost::mpl::times<
                         boost::mpl::int_<2>,
                         Q
                 >,
                 P
-        > ROW;
+        >;
 
         // 2x the range from the left edge + the row parity XOR the opposite board coloring
-        typedef boost::mpl::plus<
+        using COL = boost::mpl::plus<
                 boost::mpl::times<
                         boost::mpl::int_<2>,
                         R
@@ -143,14 +143,14 @@ private:
                                 G::parity
                         >
                 >
-        > COL;
+        >;
 
 public:
-        typedef Coordinates<
+        using type = Coordinates<
                 G,
                 ROW::value,
                 COL::value
-        > type;
+        >;
 };
 
 }       // namespace board

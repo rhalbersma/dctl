@@ -16,15 +16,13 @@ namespace detail {
 namespace impl {
 
 // partial specialization for pawn moves detection
-template<bool Color, typename Position, class Range>
+template<bool Color, class Position, class Range>
 struct detect<Color, pieces::pawn, select::moves, Position, Range>
 {
 private:
-        // typedefs
-
-        typedef typename Position::board_type Board;
-        typedef board::Compass<Color, Board> Compass;
-        typedef Propagate<select::moves, Position> State;
+        using Board = typename Position::board_type;
+        using Compass = board::Compass<Color, Board>;
+        using State = Propagate<select::moves, Position>;
 
         // representation
 

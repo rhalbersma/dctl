@@ -5,7 +5,7 @@ namespace hash {
 
 struct ActiveColorExtractor
 {
-        typedef bool result_type;
+        using result_type = bool;
 
         template<class Key>
         result_type operator()(Key const& key) const

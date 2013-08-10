@@ -5,13 +5,13 @@ namespace dctl {
 namespace dxp {
 
 // type traits
-template<typename>
+template<class>
 struct port
 {
         BOOST_STATIC_CONSTANT(unsigned short, value = 27531);
 };
 
-template<typename>
+template<class>
 struct terminator
 {
         BOOST_STATIC_CONSTANT(auto, value = '\0');

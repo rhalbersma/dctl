@@ -20,20 +20,18 @@ struct bidirectional_iterator
 private:
         // dependent names now in scope
 
-        typedef std::iterator<std::bidirectional_iterator_tag, T> Base;
+        using Base = std::iterator<std::bidirectional_iterator_tag, T>;
         using typename Base::value_type; // T
         using typename Base::pointer;    // T*
         using typename Base::reference;  // T&
 
-        // typedefs
-
-        typedef bidirectional_iterator self_type;
-        typedef bidirectional_link link_type;
+        using self_type = bidirectional_iterator;
+        using link_type = bidirectional_link;
 public:
-        typedef node<link_type, value_type> node_type;
+        using node_type = node<link_type, value_type>;
 private:
-        typedef link_type* link_ptr;
-        typedef node_type* node_ptr;
+        using link_ptr = link_type*;
+        using node_ptr = node_type*;
 
 public:
         // structors

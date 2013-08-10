@@ -90,17 +90,13 @@ class short_alloc
         boost::equality_comparable< short_alloc<T, N> > // ==, !=
 {
 public:
-        typedef T value_type;
+        using value_type = T;
         static auto const num_bytes = N * sizeof(T);
-        /*
-        typedef std::true_type propagate_on_container_copy_assignment;
-        typedef std::true_type propagate_on_container_move_assignment;
-        typedef std::true_type propagate_on_container_swap;
-        */
+
         template <class U>
         struct rebind
         {
-                typedef short_alloc<U, N> other;
+                using other = short_alloc<U, N>;
         };
 
         short_alloc(arena<num_bytes>& a) DCTL_PP_NOEXCEPT
@@ -134,7 +130,7 @@ public:
                 return (N * sizeof(T) == M * sizeof(U)) && &x.a_ == &y.a_;
         }
 
-        template <typename U, std::size_t M>
+        template <class U, std::size_t M>
         friend class short_alloc;
 
 private:

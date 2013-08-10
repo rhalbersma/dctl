@@ -24,8 +24,6 @@ class GameRequest final
         public factory::make_creatable<Message, GameRequest, 'R'>
 {
 public:
-        // constants and typedefs
-
         BOOST_STATIC_CONSTANT(auto, protocol_version = 1);
         enum SetupCode { initial = 'A', special = 'B' };
 

@@ -16,7 +16,7 @@ struct detect<Color, pieces::king, select::jumps, Range>
         template<class Position>
         bool operator()(Position const& p) const
         {
-                typedef impl::detect<Color, pieces::king, select::jumps, Position, Range> KingJumps;
+                using KingJumps = impl::detect<Color, pieces::king, select::jumps, Position, Range>;
 
                 Propagate<select::jumps, Position> const propagate(p);
                 return KingJumps{propagate}(p.material().kings(Color));

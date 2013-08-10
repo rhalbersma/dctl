@@ -16,42 +16,40 @@ namespace hash {
 
 template
 <
-        typename Key,
-        typename T,
-        typename Signature,
-        typename Replace,
-        typename Hash = IndexExtractor,
-        typename KeyEqual = std::equal_to<typename Signature::result_type>,
-        typename Allocator = std::allocator< std::pair<typename Signature::result_type, T> >
+        class Key,
+        class T,
+        class Signature,
+        class Replace,
+        class Hash = IndexExtractor,
+        class KeyEqual = std::equal_to<typename Signature::result_type>,
+        class Allocator = std::allocator< std::pair<typename Signature::result_type, T> >
 >
 struct Map
 {
 public:
-        typedef typename Signature::result_type key_type;
-        typedef T mapped_type;
-        typedef std::pair<key_type, mapped_type> value_type;
-        typedef std::size_t size_type;
-        typedef std::ptrdiff_t differrence_type;
-        typedef Hash hasher;
-        typedef KeyEqual key_equal;
-        typedef Allocator allocator;
-        typedef value_type& reference;
-        typedef value_type const& const_reference;
-        //typedef std::allocator_traits<allocator>::pointer pointer;
-        //typedef std::allocator_traits<allocator>::const_pointer const_pointer;
+        using key_type = typename Signature::result_type;
+        using mapped_type = T;
+        using value_type = std::pair<key_type, mapped_type>;
+        using size_type = std::size_t;
+        using differrence_type = std::ptrdiff_t;
+        using hasher = Hash;
+        using key_equal = KeyEqual;
+        using allocator = Allocator;
+        using reference = value_type&;
+        using const_reference = value_type const&;
 
 public:
-        typedef typename hasher::result_type index_type;
-        typedef value_type* iterator;
-        typedef value_type const* const_iterator;
-        typedef mapped_type* mapped_pointer;
-        typedef mapped_type const* const_mapped_pointer;
+        using index_type = typename hasher::result_type;
+        using iterator = value_type*;
+        using const_iterator = value_type const*;
+        using mapped_pointer = mapped_type*;
+        using const_mapped_pointer = mapped_type const*;
 
 private:
         static auto const N = 64 / sizeof(value_type);
-        typedef std::array<value_type, N> bucket_type;
+        using bucket_type = std::array<value_type, N>;
         static_assert(sizeof(bucket_type) == 64, "non-aligned hash table");
-        typedef std::vector<bucket_type> map_type;
+        using map_type = std::vector<bucket_type>;
 
 public:
         // structors
@@ -133,8 +131,8 @@ public:
 
 private:
         // bucket interface
-        typedef typename bucket_type::iterator local_iterator;
-        typedef typename bucket_type::const_iterator const_local_iterator;
+        using local_iterator = typename bucket_type::iterator;
+        using const_local_iterator = typename bucket_type::const_iterator;
 
         local_iterator begin(size_type n)
         {

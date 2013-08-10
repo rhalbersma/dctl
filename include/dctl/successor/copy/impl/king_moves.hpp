@@ -25,13 +25,11 @@ struct copy<Color, pieces::king, select::moves, Position, Sequence>
         private boost::noncopyable
 {
 private:
-        // typedefs
-
-        typedef typename Position::rules_type Rules;
-        typedef typename Position::board_type Board;
-        typedef typename Sequence::value_type Move;
-        typedef board::Compass<Color, Board> Compass;
-        typedef Propagate<select::moves, Position> State;
+        using Rules = typename Position::rules_type;
+        using Board = typename Position::board_type;
+        using Move = typename Sequence::value_type;
+        using Compass = board::Compass<Color, Board>;
+        using State = Propagate<select::moves, Position>;
 
         // representation
 

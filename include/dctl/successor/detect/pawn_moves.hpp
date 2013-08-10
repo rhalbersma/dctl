@@ -17,7 +17,7 @@ struct detect<Color, pieces::pawn, select::moves, Range>
         template<class Position>
         bool operator()(Position const& p) const
         {
-                typedef impl::detect<Color, pieces::pawn, select::moves, Position, rules::range::distance_1> PawnMoves;
+                using PawnMoves = impl::detect<Color, pieces::pawn, select::moves, Position, rules::range::distance_1>;
 
                 Propagate<select::moves, Position> const propagate(p);
                 return PawnMoves{propagate}(p.material().pawns(Color));

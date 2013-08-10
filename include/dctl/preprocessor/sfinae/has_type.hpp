@@ -6,12 +6,12 @@ template<class T>                                               \
 struct has_type_ ## U                                           \
 {                                                               \
 private:                                                        \
-        typedef char                      yes;                  \
-        typedef struct { char array[2]; } no;                   \
+        using yes = char;                                       \
+        using no = struct { char array[2]; };                   \
                                                                 \
         template<class C> static yes test(typename C::U*);      \
         template<class C> static no  test(...);                 \
 public:                                                         \
         enum { value = sizeof(test<T>(0)) == sizeof(yes) };     \
-        typedef std::integral_constant<bool, value> type;       \
+        using type = std::integral_constant<bool, value>;       \
 };

@@ -3,10 +3,10 @@
 namespace dctl {
 namespace notation {
 
-template<typename>
+template<class>
 struct Format;
 
-template<typename>
+template<class>
 struct Separator;
 
 }       // namespace notation

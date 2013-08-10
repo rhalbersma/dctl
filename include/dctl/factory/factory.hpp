@@ -20,7 +20,6 @@ template
 class Factory
 {
 public:
-        // typedefs
         using base_type = Base;
         BOOST_MPL_ASSERT((factory::has_header_body_terminator<Base>));
 

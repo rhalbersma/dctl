@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
-#include <dctl/pieces/pawn.hpp>             // pawn
+#include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // select
 
@@ -23,12 +23,10 @@ struct copy<Color, pieces::pawn, select::moves, Position, Sequence>
         boost::noncopyable
 {
 private:
-        // typedefs
-
-        typedef typename Position::board_type Board;
-        typedef typename Sequence::value_type Move;
-        typedef board::Compass<Color, Board> Compass;
-        typedef Propagate<select::moves, Position> State;
+        using Board = typename Position::board_type;
+        using Move = typename Sequence::value_type;
+        using Compass = board::Compass<Color, Board>;
+        using State = Propagate<select::moves, Position>;
 
         // representation
 
@@ -55,37 +53,30 @@ public:
 private:
         void branch(BitBoard active_pawns) const
         {
-                serialize<typename Compass::left_up >(active_pawns);
-                serialize<typename Compass::right_up>(active_pawns);
+                copy_if<typename Compass::left_up >(active_pawns);
+                copy_if<typename Compass::right_up>(active_pawns);
         }
 
         template<class Direction>
-        void serialize(BitBoard active_pawns) const
+        void copy_if(BitBoard active_pawns) const
         {
-                for (
-                        active_pawns &= Prev<Board, Direction>()(propagate_.path());
-                        active_pawns;
-                        bit::pop_front(active_pawns)
-                )
-                        find<Direction>(bit::minimal_element(active_pawns));
+                transform<Direction>(
+                        bit::set_intersection(
+                                active_pawns,
+                                Prev<Board, Direction>()(propagate_.path())
+                        )
+                );
         }
 
         template<class Direction>
-        void find(BitIndex from_sq) const
+        void transform(BitBoard movers) const
         {
-                auto const dest_sq = Next<Board, Direction>()(from_sq);
-                moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq)));
+                for (; movers; bit::pop_front(movers)) {
+                        auto const from_sq = bit::minimal_element(movers);
+                        auto const dest_sq = Next<Board, Direction>()(from_sq);
+                        moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq)));
+                }
         }
-
-        /* replace with
-         *
-         * active_pawns &= Prev<Board, Direction>()(propagate_.path());
-         * std::transform(begin(active_pawns), end(active_pawns), std::back_inserter(moves_), [](Square const& from_sq) -> Move {
-         *      auto const dest_sq = Next<Board, Direction>()(from_sq);
-         *      return Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq));
-         * });
-         *
-         */
 };
 
 }       // namespace impl

@@ -16,7 +16,7 @@ struct EmptyOldUnderCutMin
         bool operator()(ForwardIterator first, ForwardIterator last, value_type const& value) const
         {
                 BOOST_MPL_ASSERT(( std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, value_type> ));
-                typedef typename value_type::first_type key_type;
+                using key_type = typename value_type::first_type;
 
                 // 1) fill an empty slot or replace an existing entry with the same key
                 for (auto it = first; it != last; ++it) {

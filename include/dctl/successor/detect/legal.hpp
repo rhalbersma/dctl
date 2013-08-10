@@ -21,8 +21,8 @@ struct detect<Color, Pieces, select::legal, Range>
         template<class Position>
         bool operator()(Position const& p) const
         {
-                typedef detect<Color, Pieces, select::moves, rules::range::distance_1> ShortMoves;
-                typedef detect<Color, Pieces, select::jumps, rules::range::distance_1> ShortJumps;
+                using ShortMoves = detect<Color, Pieces, select::moves, rules::range::distance_1>;
+                using ShortJumps = detect<Color, Pieces, select::jumps, rules::range::distance_1>;
 
                 // speculate #moves > #jumps, so that the logical OR is more likely to short-circuit
                 return ShortMoves()(p) || ShortJumps()(p);

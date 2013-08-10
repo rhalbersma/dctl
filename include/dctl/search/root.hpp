@@ -38,8 +38,8 @@ namespace search {
 
 template
 <
-        typename Position,
-        typename Objective
+        class Position,
+        class Objective
 >
 class Root
 {
@@ -326,12 +326,12 @@ private:
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content
         // 8-way buckets on 64-byte cache lines, (1 Gb = 2^27 entries)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
-        typedef hash::Map< 
+        using TranspositionTable = hash::Map<
                 Position, 
                 Transposition, 
                 hash::UpperHashBitsExtractor, 
                 hash::EmptyOldUnderCutMin<hash::Shallowest> 
-        > TranspositionTable;
+        >;
 
         TranspositionTable TT;
 

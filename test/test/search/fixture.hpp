@@ -12,7 +12,7 @@
 namespace dctl {
 namespace search {
 
-template<typename Position, typename Objective>
+template<class Position, class Objective>
 struct Fixture
 {
         Fixture()

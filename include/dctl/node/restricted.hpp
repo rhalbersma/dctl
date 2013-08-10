@@ -73,10 +73,10 @@ private:
         PlyCount moves_;
 };
 
-typedef KingMoves Restricted[2];
+using Restricted = KingMoves[2];
 
 // predicates
-template<typename Rules>
+template<class Rules>
 bool is_max(PlyCount moves)
 {
         return (moves == Rules::max_same_king_moves::value);

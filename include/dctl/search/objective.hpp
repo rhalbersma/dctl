@@ -20,7 +20,7 @@ struct FirstPlayerWin;
 struct SecondPlayerWin;
 struct HeuristicDraw;
 
-template<typename>
+template<class>
 struct is_terminal;
 
 template<>
@@ -46,7 +46,7 @@ struct is_terminal<Kingscourt>
         }
 };
 
-template<typename>
+template<class>
 struct terminal;
 
 template<>
@@ -95,7 +95,7 @@ bool is_cycle(Position const& p)
         return false;
 }
 
-template<typename>
+template<class>
 struct cycle;
 
 template<>
@@ -141,7 +141,7 @@ bool is_no_progress(Position const& /* p */, std::false_type)
 template<class Position>
 bool is_no_progress(Position const& p, std::true_type)
 {
-        typedef typename Position::rules_type Rules;
+        using Rules = typename Position::rules_type;
 
         return p.reversible_moves() >= rules::max_reversible_moves<Rules>::value;
 }
@@ -151,7 +151,7 @@ bool is_no_progress(Position const& p, std::true_type)
 template<class Position>
 bool is_no_progress(Position const& p)
 {
-        typedef typename Position::rules_type Rules;
+        using Rules = typename Position::rules_type;
 
         // tag dispatching on restrictions on consecutive reversible moves
         return detail::is_no_progress(p, rules::is_restricted_reversible_moves<Rules>());
@@ -165,9 +165,9 @@ bool is_draw(Position const& p)
 
 template
 <
-        typename TerminalDetection = NoMovesLeft,
-        typename TerminalScoring = Regular,
-        typename CycleScoring = HeuristicDraw
+        class TerminalDetection = NoMovesLeft,
+        class TerminalScoring = Regular,
+        class CycleScoring = HeuristicDraw
 >
 struct GameObjective
 {

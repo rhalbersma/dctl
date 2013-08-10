@@ -8,7 +8,7 @@ namespace hash {
 
 struct MaterialExtractor
 {
-        typedef Material result_type;
+        using result_type = Material;
 
         template<class Key, class Index>
         result_type const& operator()(Key const& key, Index /* index */) const
@@ -19,7 +19,7 @@ struct MaterialExtractor
 
 struct UpperHashBitsExtractor
 {
-        typedef std::size_t result_type;
+        using result_type = std::size_t;
 
         template<class Key, class Index>
         result_type operator()(Key const& /* key */, Index index) const

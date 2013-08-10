@@ -20,8 +20,8 @@ namespace board {
 
 template
 <
-        typename Dimensions,            // height, width and parity
-        typename Layout = Ghosts<>      // columns and internal rotation
+        class Dimensions,            // height, width and parity
+        class Layout = Ghosts<>      // columns and internal rotation
 >
 struct Board
 :
@@ -30,16 +30,16 @@ struct Board
 {
 public:
         // external and internal grids
-        typedef Grid<Dimensions, no_ghosts> ExternalGrid;
-        typedef Grid<typename
+        using ExternalGrid = Grid<Dimensions, no_ghosts>;
+        using InternalGrid = Grid<typename
                 mpl::lazy::rotate<
                         Dimensions, typename
                         Layout::full_angle
                 >::type, typename
                 Layout::columns
-        > InternalGrid;
+        >;
 
-        typedef BitBoard bit_type;
+        using bit_type = BitBoard;
 
         template<class Direction>
         struct shift_size
@@ -100,13 +100,13 @@ private:
         static int const BIT2SQUARE[];                          // convert a bit to a square
 };
 
-template<typename Dimensions, typename Layout>
+template<class Dimensions, class Layout>
 BitBoard const Board<Dimensions, Layout>::squares = mask::init< mask::is_square<Board, boost::mpl::_1> >::value;
 
 #define DCTL_PP_INITIAL_MASK(z, i, data)      \
         mask::init< mask::is_initial< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
 
-template<typename Dimensions, typename Layout>
+template<class Dimensions, class Layout>
 BitBoard const Board<Dimensions, Layout>::initial_mask[][5] = {
         { BOOST_PP_ENUM(5, DCTL_PP_INITIAL_MASK, Side::black) },
         { BOOST_PP_ENUM(5, DCTL_PP_INITIAL_MASK, Side::white) }
@@ -117,13 +117,13 @@ BitBoard const Board<Dimensions, Layout>::initial_mask[][5] = {
 #define DCTL_PP_ROW_MASK(z, i, data)      \
         mask::init< mask::is_row< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
 
-template<typename Dimensions, typename Layout>
+template<class Dimensions, class Layout>
 BitBoard const Board<Dimensions, Layout>::promotion_mask[][2] = {
         { BOOST_PP_ENUM(2, DCTL_PP_ROW_MASK, Side::white) },
         { BOOST_PP_ENUM(2, DCTL_PP_ROW_MASK, Side::black) }
 };
 
-template<typename Dimensions, typename Layout>
+template<class Dimensions, class Layout>
 BitBoard const Board<Dimensions, Layout>::row_mask[][12] = {
         { BOOST_PP_ENUM(12, DCTL_PP_ROW_MASK, Side::black) },
         { BOOST_PP_ENUM(12, DCTL_PP_ROW_MASK, Side::white) }
@@ -134,7 +134,7 @@ BitBoard const Board<Dimensions, Layout>::row_mask[][12] = {
 #define DCTL_PP_COL_MASK(z, i, data)      \
         mask::init< mask::is_col< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
 
-template<typename Dimensions, typename Layout>
+template<class Dimensions, class Layout>
 BitBoard const Board<Dimensions, Layout>::col_mask[][12] = {
         { BOOST_PP_ENUM(12, DCTL_PP_COL_MASK, Side::black) },
         { BOOST_PP_ENUM(12, DCTL_PP_COL_MASK, Side::white) }
@@ -145,7 +145,7 @@ BitBoard const Board<Dimensions, Layout>::col_mask[][12] = {
 #define DCTL_PP_SQUARE2BIT(z, i, data) \
         square_to_bit< Board, boost::mpl::int_<i> >::type::number::value
 
-template<typename Dimensions, typename Layout>
+template<class Dimensions, class Layout>
 int const Board<Dimensions, Layout>::SQUARE2BIT[] = {
         BOOST_PP_ENUM(64, DCTL_PP_SQUARE2BIT, ~)
 };
@@ -155,20 +155,20 @@ int const Board<Dimensions, Layout>::SQUARE2BIT[] = {
 #define DCTL_PP_BIT2SQUARE(z, i, data) \
         bit_to_square< Board, boost::mpl::int_<i> >::type::number::value
 
-template<typename Dimensions, typename Layout>
+template<class Dimensions, class Layout>
 int const Board<Dimensions, Layout>::BIT2SQUARE[] = {
         BOOST_PP_ENUM(64, DCTL_PP_BIT2SQUARE, ~)
 };
 
 #undef DCTL_PP_BIT2SQUARE
 
-template<typename Dimensions, typename Layout>
+template<class Dimensions, class Layout>
 BitBoard const Board<Dimensions, Layout>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
         (bit::singlet<BitBoard>(1)) ^ (bit::singlet<BitBoard>(1 + (InternalGrid::left_down::value  << 1))),
         (bit::singlet<BitBoard>(0)) ^ (bit::singlet<BitBoard>(0 + (InternalGrid::right_down::value << 1)))
 };
 
-template<typename Dimensions, typename Layout>
+template<class Dimensions, class Layout>
 BitBoard const Board<Dimensions, Layout>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 

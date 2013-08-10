@@ -5,31 +5,23 @@
 
 namespace dctl {
 
-// TODO: use C+11 template aliases
-template<typename Board, typename Direction>
-struct jump_start
-:
-        Board::template jump_start<Direction>
-{};
+template<class Board, class Direction>
+using jump_start = typename Board::template jump_start<Direction>::type;
 
-// TODO: use C++11 template aliases
-template<typename Board, typename Direction>
-struct shift_size
-:
-        Board::template shift_size<Direction>
-{};
+template<class Board, class Direction>
+using shift_size = typename Board::template shift_size<Direction>::type;
 
 // left and right direction
 
-typedef boost::mpl::false_ L;
-typedef boost::mpl::true_ R;
+using L = boost::mpl::false_;
+using R = boost::mpl::true_;
 
 // primary template
-template<typename, typename>
+template<class, class>
 struct Shift;
 
 // partial specialization for bitwise shift-left
-template<typename N>
+template<class N>
 struct Shift<L, N>
 {
         template<class T>
@@ -40,7 +32,7 @@ struct Shift<L, N>
 };
 
 // partial specialization for bitwise shift-right
-template<typename N>
+template<class N>
 struct Shift<R, N>
 {
         template<class T>
@@ -51,11 +43,11 @@ struct Shift<R, N>
 };
 
 // primary template
-template<typename, typename>
+template<class, class>
 struct ShiftAssign;
 
 // partial specialization for bitwise shift-left assignment
-template<typename N>
+template<class N>
 struct ShiftAssign<L, N>
 {
         template<class T>
@@ -66,7 +58,7 @@ struct ShiftAssign<L, N>
 };
 
 // partial specialization for bitwise shift-right assignment
-template<typename N>
+template<class N>
 struct ShiftAssign<R, N>
 {
         template<class T>

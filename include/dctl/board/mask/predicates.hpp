@@ -16,7 +16,7 @@ namespace dctl {
 namespace board {
 namespace mask {
 
-template<typename Board, typename SQ>
+template<class Board, class SQ>
 struct is_square
 :
         mpl::is_within_range<
@@ -26,7 +26,7 @@ struct is_square
         >
 {};
 
-template<typename Board, typename SQ, typename Color, typename Separation>
+template<class Board, class SQ, class Color, class Separation>
 struct is_initial
 :
         mpl::is_within_range< typename
@@ -59,7 +59,7 @@ struct is_initial
         >
 {};
 
-template<typename Board, typename SQ, typename Color, typename Row>
+template<class Board, class SQ, class Color, class Row>
 struct is_row
 :
         boost::mpl::equal_to< typename
@@ -76,7 +76,7 @@ struct is_row
         >
 {};
 
-template<typename Board, typename SQ, typename Color, typename Column>
+template<class Board, class SQ, class Color, class Column>
 struct is_col
 :
         boost::mpl::equal_to< typename
@@ -95,7 +95,7 @@ struct is_col
 
 namespace detail {
 
-template<typename R0, typename C0, typename R1, typename C1>
+template<class R0, class C0, class R1, class C1>
 struct is_even_or_odd_jump_difference
 :
         // a diagonal or orthogonal man jump between square <FROM> and square <DEST> is possible if
@@ -111,7 +111,7 @@ struct is_even_or_odd_jump_difference
         >
 {};
 
-template<typename R, typename C>
+template<class R, class C>
 struct is_jump_difference
 :
         is_even_or_odd_jump_difference<
@@ -128,7 +128,7 @@ struct is_jump_difference
         >
 {};
 
-template<typename From, typename Dest>
+template<class From, class Dest>
 struct is_jump_connected
 :
         is_jump_difference<
@@ -143,7 +143,7 @@ struct is_jump_connected
         >
 {};
 
-template<typename Grid, typename FromSq, typename DestSq>
+template<class Grid, class FromSq, class DestSq>
 struct is_jump_group
 :
         is_jump_connected< typename
@@ -154,7 +154,7 @@ struct is_jump_group
 
 }       // namespace detail
 
-template<typename Board, typename SQ, typename Group>
+template<class Board, class SQ, class Group>
 struct is_jump_group
 :
         detail::is_jump_group< typename
@@ -166,7 +166,7 @@ struct is_jump_group
 
 namespace detail {
 
-template<typename Board, typename Direction, typename SQ, typename Grid, typename Offset>
+template<class Board, class Direction, class SQ, class Grid, class Offset>
 struct is_jump_start
 :
         boost::mpl::and_<
@@ -209,7 +209,7 @@ struct is_jump_start
 
 }       // namespace detail
 
-template<typename Board, typename SQ, typename Direction>
+template<class Board, class SQ, class Direction>
 struct is_jump_start
 :
         detail::is_jump_start<
@@ -227,7 +227,7 @@ struct is_jump_start
 
 namespace detail {
 
-template<typename FromGrid, typename DestGrid, typename Angle, typename N>
+template<class FromGrid, class DestGrid, class Angle, class N>
 struct transform
 :
         Coordinates2Square<
@@ -247,7 +247,7 @@ struct transform
 
 }       // namespace detail
 
-template<typename Board, typename Number>
+template<class Board, class Number>
 struct square_to_bit
 :
         detail::transform< typename
@@ -258,7 +258,7 @@ struct square_to_bit
         >
 {};
 
-template<typename Board, typename Number>
+template<class Board, class Number>
 struct bit_to_square
 :
         detail::transform< typename

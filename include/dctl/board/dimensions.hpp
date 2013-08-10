@@ -17,12 +17,12 @@ struct Dimensions
         BOOST_STATIC_ASSERT(H > 0 && W > 0);
 
         // reflection on template parameters
-        typedef boost::mpl::int_<H> height;
-        typedef boost::mpl::int_<W> width;
-        typedef boost::mpl::bool_<P> parity;
+        using height = boost::mpl::int_<H>;
+        using width = boost::mpl::int_<W>;
+        using parity = boost::mpl::bool_<P>;
 
         // lazily evaluable metadata == nullary metafunction
-        typedef Dimensions<H, W, P> type;
+        using type = Dimensions<H, W, P>;
 };
 
 }       // namespace board

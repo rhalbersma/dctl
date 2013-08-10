@@ -4,12 +4,12 @@
 
 namespace dctl {
 
-typedef uint8_t MoveCount;
-typedef uint8_t PlyCount;
-typedef uint64_t NodeCount;
-typedef uint64_t HashIndex;
-typedef uint64_t BitBoard;
-typedef uint64_t BitIndex;
+using MoveCount = uint8_t;
+using PlyCount = uint8_t;
+using NodeCount = uint64_t;
+using HashIndex = uint64_t;
+using BitBoard = uint64_t;
+using BitIndex = uint64_t;
 
 template<class T>
 struct num_bits

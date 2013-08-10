@@ -21,8 +21,6 @@ class BackAcknowledge final
         public factory::make_creatable<Message, BackAcknowledge, 'K'>
 {
 public:
-        // typedefs
-
         enum AcceptanceCode: int { accept = 0, not_supported = 1, decline = 2 };
 
         // structors

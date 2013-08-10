@@ -33,13 +33,11 @@ struct copy<Color, pieces::pawn, select::jumps, Position, Sequence>
         private boost::noncopyable
 {
 private:
-        // typedefs
-
-        typedef copy<Color, pieces::king, select::jumps, Position, Sequence> KingJumps;
-        typedef typename Position::rules_type Rules;
-        typedef typename Position::board_type Board;
-        typedef board::Compass<Color, Board> Compass;
-        typedef Propagate<select::jumps, Position> State;
+        using KingJumps = copy<Color, pieces::king, select::jumps, Position, Sequence>;
+        using Rules = typename Position::rules_type;
+        using Board = typename Position::board_type;
+        using Compass = board::Compass<Color, Board>;
+        using State = Propagate<select::jumps, Position>;
 
         template<class Direction, class Angle>
         using rotate = typename mpl::lazy::rotate< Direction, Angle >::type;

@@ -6,7 +6,7 @@
 namespace dctl {
 namespace walk {
 
-template<typename Position, int N>
+template<class Position, int N>
 void test(Position const& p, NodeCount const (&leafs)[N])
 {
         using impl_tag = hash_tag;

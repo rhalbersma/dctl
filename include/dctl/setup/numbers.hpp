@@ -4,17 +4,17 @@
 
 namespace dctl {
 
-namespace board { template<typename, typename> struct Board; }
+namespace board { template<class, class> struct Board; }
 
 namespace setup {
 
 struct bits {};
 struct squares {};
 
-template<typename Dimensions, typename Structure>
+template<class Dimensions, class Structure>
 struct Token< board::Board<Dimensions, Structure> >
 {
-        typedef squares type;
+        using type = squares;
 };
 
 }       // namespace setup

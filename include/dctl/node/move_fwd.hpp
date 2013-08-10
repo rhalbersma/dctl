@@ -3,9 +3,9 @@
 
 namespace dctl {
 
-template<typename>
+template<class>
 struct Move_;
 
-typedef Move_<BitBoard> Move;
+using Move = Move_<BitBoard>;
 
 }       // namespace dctl

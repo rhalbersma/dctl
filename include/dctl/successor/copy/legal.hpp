@@ -21,8 +21,8 @@ struct copy<Color, Pieces, select::legal>
         template<class Position, class Sequence>
         void operator()(Position const& p, Sequence& moves) const
         {
-                typedef copy<Color, Pieces, select::jumps> DoJumps;
-                typedef copy<Color, Pieces, select::moves> DoMoves;
+                using DoJumps = copy<Color, Pieces, select::jumps>;
+                using DoMoves = copy<Color, Pieces, select::moves>;
 
                 DoJumps()(p, moves);
                 if (moves.empty())

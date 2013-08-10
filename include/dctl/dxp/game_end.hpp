@@ -22,8 +22,6 @@ class GameEnd final
         public factory::make_creatable<Message, GameEnd, 'E'>
 {
 public:
-        // typedefs
-
         enum Reason: int { forfeit = 0, resign = 1, claim_draw = 2, claim_win = 3 };
         enum StopCode: int { stop_game = 0, stop_always = 1 };
 

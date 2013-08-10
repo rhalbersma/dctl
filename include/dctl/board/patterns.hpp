@@ -6,10 +6,10 @@
 namespace dctl {
 
 // primary template
-template<typename Board, typename Direction, class Range>
+template<class Board, class Direction, class Range>
 struct Sink;
 
-template<typename Board, typename Direction>
+template<class Board, class Direction>
 struct Sink<Board, Direction, rules::range::distance_1>
 {
         template<class T>
@@ -19,7 +19,7 @@ struct Sink<Board, Direction, rules::range::distance_1>
         }
 };
 
-template<typename Board, typename Direction>
+template<class Board, class Direction>
 struct Sink<Board, Direction, rules::range::distance_N>
 {
         template<class T>
@@ -30,10 +30,10 @@ struct Sink<Board, Direction, rules::range::distance_N>
 };
 
 // primary template
-template<typename Board, typename Direction, class Range>
+template<class Board, class Direction, class Range>
 struct Sandwich;
 
-template<typename Board, typename Direction>
+template<class Board, class Direction>
 struct Sandwich<Board, Direction, rules::range::distance_1>
 {
         template<class T>
@@ -47,7 +47,7 @@ struct Sandwich<Board, Direction, rules::range::distance_1>
         }
 };
 
-template<typename Board, typename Direction>
+template<class Board, class Direction>
 struct Sandwich<Board, Direction, rules::range::distance_N>
 {
         template<class T>
