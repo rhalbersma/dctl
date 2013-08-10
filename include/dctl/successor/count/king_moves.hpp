@@ -17,7 +17,7 @@ struct count<Color, pieces::king, select::moves>
         template<class Position>
         int operator()(Position const& p) const
         {
-                typedef impl::count<Color, pieces::king, select::moves, Position> KingMoves;
+                using KingMoves = impl::count<Color, pieces::king, select::moves, Position>;
 
                 Propagate<select::moves, Position> const propagate(p);
                 return KingMoves{propagate}(moveable_kings(p, Color));

@@ -9,14 +9,14 @@ namespace board {
 template
 <
         int Columns = 2,
-        typename Angle = angle::D000    // rotation from external to internal grid
+        class Angle = angle::D000    // rotation from external to internal grid
 >
 struct Ghosts
 {
         // reflection on template parameters
-        typedef boost::mpl::int_<Columns> columns;
-        typedef Angle full_angle;
-        typedef typename mpl::lazy::inverse< full_angle >::type inverse_angle;
+        using columns = boost::mpl::int_<Columns>;
+        using full_angle = Angle;
+        using inverse_angle = typename mpl::lazy::inverse< full_angle >::type;
 };
 
 }       // namespace board

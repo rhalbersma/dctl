@@ -13,20 +13,20 @@ namespace detail {
 // primary template
 template
 <
-        typename Rules,
-        typename Format = typename notation::Format<Rules>::type,
-        typename Separator = notation::Separator<Rules>
+        class Rules,
+        class Format = typename notation::Format<Rules>::type,
+        class Separator = notation::Separator<Rules>
 >
 struct write;
 
 // partial specialization for numeric notation
-template<typename Rules, typename Separator>
+template<class Rules, class Separator>
 struct write<Rules, numeric, Separator>
 {
-        template<typename Position, typename Move>
+        template<class Position, class Move>
         std::string operator()(Position const& p, Move const& m) const
         {
-                typedef typename Position::board_type Board;
+                using Board = typename Position::board_type;
 
                 std::stringstream sstr;
                 sstr << std::setw(2) << std::right << Board::bit2square(bit::front(from_sq(p, m))) + 1;
@@ -38,9 +38,9 @@ struct write<Rules, numeric, Separator>
 
 template
 <
-        typename Rules,
-        typename Format = typename notation::Format<Rules>::type,
-        typename Separator = notation::Separator<Rules>
+        class Rules,
+        class Format = typename notation::Format<Rules>::type,
+        class Separator = notation::Separator<Rules>
 >
 struct read;
 
@@ -48,10 +48,10 @@ struct read;
 
 }       // namespace detail
 
-template<typename Position, typename Move>
+template<class Position, class Move>
 std::string write(Position const& p, Move const& m)
 {
-        typedef typename Position::rules_type Rules;
+        using Rules = typename Position::rules_type;
 
         return detail::write<Rules>()(p, m);
 }

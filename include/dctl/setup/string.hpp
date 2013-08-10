@@ -11,7 +11,7 @@
 namespace dctl {
 namespace setup {
 
-template<typename Token>
+template<class Token>
 bool read_color(char c)
 {
         switch(c) {
@@ -25,7 +25,7 @@ bool read_color(char c)
         }
 }
 
-template<typename Token>
+template<class Token>
 char write_color(bool color)
 {
         return Token::color[color];
@@ -33,21 +33,21 @@ char write_color(bool color)
 
 template
 <
-        typename Rules,
-        typename Board,
-        typename Protocol,
-        typename Content = typename Token<Protocol>::type
+        class Rules,
+        class Board,
+        class Protocol,
+        class Content = typename Token<Protocol>::type
 >
 struct read;
 
 template
 <
-        typename Protocol,
-        typename Content = typename Token<Protocol>::type
+        class Protocol,
+        class Content = typename Token<Protocol>::type
 >
 struct write;
 
-template<class Rules, class Board, typename Token>
+template<class Rules, class Board, class Token>
 struct read<Rules, Board, pdn::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
@@ -99,13 +99,13 @@ struct read<Rules, Board, pdn::protocol, Token>
         }
 };
 
-template<typename Token>
+template<class Token>
 struct write<pdn::protocol, Token>
 {
         template<class Position>
         std::string operator()(Position const& p) const
         {
-                typedef typename Position::board_type Board;
+                using Board = typename Position::board_type;
 
                 std::stringstream sstr;
                 sstr << Token::quote;                                           // opening quotes
@@ -131,7 +131,7 @@ struct write<pdn::protocol, Token>
         }
 };
 
-template<class Rules, class Board, typename Token>
+template<class Rules, class Board, class Token>
 struct read<Rules, Board, dxp::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
@@ -169,7 +169,7 @@ struct read<Rules, Board, dxp::protocol, Token>
         }
 };
 
-template<typename Token>
+template<class Token>
 struct write<dxp::protocol, Token>
 {
         template<class Rules, class Board>

@@ -6,7 +6,7 @@
 namespace dctl {
 namespace setup {
 
-template<typename Token>
+template<class Token>
 std::string content(Material const& m, int i)
 {
         auto const b = bit::singlet<BitBoard>(i);

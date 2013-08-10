@@ -6,9 +6,7 @@ namespace tree {
 struct bidirectional_link
 {
 private:
-        // typedefs
-
-        typedef bidirectional_link self_type;
+        using self_type = bidirectional_link;
 
 public:
         // structors

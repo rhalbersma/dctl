@@ -5,13 +5,13 @@ namespace dctl {
 namespace board {
 
 // primary template declaration
-template<typename Dimensions, typename GhostColumns>
+template<class Dimensions, class GhostColumns>
 struct Grid;
 
-typedef boost::mpl::int_<0> no_ghosts;
+using no_ghosts = boost::mpl::int_<0>;
 
 // partial template declaration
-template<typename Dimensions>
+template<class Dimensions>
 struct Grid<Dimensions, no_ghosts>;
 
 }       // namespace board

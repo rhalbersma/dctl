@@ -11,8 +11,8 @@ namespace successor {
 template<bool Color, class Pieces, class Select, class Position>
 bool detect(Position const& p)
 {
-        typedef typename Position::rules_type Rules;
-        typedef typename rules::range::king<Rules>::type Range;
+        using Rules = typename Position::rules_type;
+        using Range = typename rules::range::king<Rules>::type;
         return detail::detect<Color, Pieces, Select, Range>()(p);
 }
 

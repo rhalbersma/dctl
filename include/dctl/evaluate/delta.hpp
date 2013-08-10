@@ -8,9 +8,8 @@ template<bool Color>
 class Delta
 {
 private:
-        // typedefs
-        typedef Feature< Color> Active;
-        typedef Feature<!Color> Passive;
+        using Active = Feature<Color>;
+        using Passive = Feature<!Color>;
 
 public:
         template<class Position>

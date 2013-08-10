@@ -17,9 +17,9 @@ namespace mask {
 // partial specialization definitions
 template
 <
-        template<typename, typename, typename...> class Predicate,
-        typename Board,
-        typename... Args
+        template<class, class, class...> class Predicate,
+        class Board,
+        class... Args
 >
 struct init< Predicate<Board, boost::mpl::_1, Args...> >
 :
@@ -29,7 +29,7 @@ struct init< Predicate<Board, boost::mpl::_1, Args...> >
 namespace detail {
 
 // primary template definition
-template<typename Board, typename Predicate, typename Square>
+template<class Board, class Predicate, class Square>
 struct init
 :
         boost::mpl::bitxor_<
@@ -39,13 +39,13 @@ struct init
 {};
 
 // partial specialization definition
-template<typename Board, typename Predicate>
+template<class Board, class Predicate>
 struct init<Board, Predicate, boost::mpl::int_<0> >
 :
         test< Board, Predicate, boost::mpl::int_<0> >
 {};
 
-template<typename Board, typename Predicate, typename Square>
+template<class Board, class Predicate, class Square>
 struct test
 :
         boost::mpl::eval_if< typename

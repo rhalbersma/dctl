@@ -17,17 +17,15 @@ namespace dctl {
 
 template
 <
-        typename Rules,
-        typename Board
+        class Rules,
+        class Board
 >
 struct Position
 {
 public:
-        // typedefs
-
-        typedef Rules rules_type;
-        typedef Board board_type;
-        typedef Position const* TreeIterator;
+        using rules_type = Rules;
+        using board_type = Board ;
+        using TreeIterator = Position const*;
         BOOST_STATIC_CONSTANT(int, gap = rules::initial_gap<rules_type>::value + board_type::height::value % 2);
 
         /*

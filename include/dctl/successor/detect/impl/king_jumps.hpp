@@ -21,12 +21,10 @@ template<bool Color, typename Position, class Range>
 struct detect<Color, pieces::king, select::jumps, Position, Range>
 {
 private:
-        // typedefs
-
-        typedef typename Position::rules_type Rules;
-        typedef typename Position::board_type Board;
-        typedef board::Compass<Color, Board> Compass;
-        typedef Propagate<select::jumps, Position> State;
+        using Rules = typename Position::rules_type;
+        using Board = typename Position::board_type;
+        using Compass = board::Compass<Color, Board>;
+        using State = Propagate<select::jumps, Position>;
 
         // representation
 

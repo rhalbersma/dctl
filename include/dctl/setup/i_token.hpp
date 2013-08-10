@@ -5,13 +5,13 @@
 namespace dctl {
 namespace setup {
 
-template<typename>
+template<class>
 struct TokenSet;
 
-template<typename Protocol>
+template<class Protocol>
 struct Token
 {
-        typedef TokenSet<Protocol> type;
+        using type = TokenSet<Protocol>;
 };
 
 template<char B, char W, char E>

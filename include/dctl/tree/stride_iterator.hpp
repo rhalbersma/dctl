@@ -10,7 +10,7 @@ namespace tree {
 
 template
 <
-        typename ForwardIterator,
+        class ForwardIterator,
         std::size_t N = 2
 >
 struct stride_forward_iterator
@@ -27,13 +27,11 @@ struct stride_forward_iterator
 private:
         // dependent names now in scope
 
-        typedef std::iterator<std::forward_iterator_tag, typename std::iterator_traits<ForwardIterator>::value_type> Base;
+        using Base = std::iterator<std::forward_iterator_tag, typename std::iterator_traits<ForwardIterator>::value_type>;
         using typename Base::pointer;    // T*
         using typename Base::reference;  // T&
 
-        // typedefs
-
-        typedef stride_forward_iterator self_type;
+        using self_type = stride_forward_iterator;
 
 public:
         // structors

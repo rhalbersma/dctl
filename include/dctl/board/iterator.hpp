@@ -4,36 +4,36 @@
 
 namespace dctl {
 
-template<typename Board, typename Direction>
+template<class Board, class Direction>
 struct Increment
 {
-        template<typename BidirectionalIterator>
+        template<class BidirectionalIterator>
         void operator()(BidirectionalIterator& square) const
         {
                 ShiftAssign< typename
-                        angle::lazy::is_positive<Direction>::type, typename
-                        shift_size<Board, Direction>::type
+                        angle::lazy::is_positive<Direction>::type,
+                        shift_size<Board, Direction>
                 >()(square);
         }
 };
 
-template<typename Board, typename Direction>
+template<class Board, class Direction>
 struct Decrement
 {
-        template<typename BidirectionalIterator>
+        template<class BidirectionalIterator>
         void operator()(BidirectionalIterator& square) const
         {
                 ShiftAssign< typename
-                        angle::lazy::is_negative<Direction>::type, typename
-                        shift_size<Board, Direction>::type
+                        angle::lazy::is_negative<Direction>::type,
+                        shift_size<Board, Direction>
                 >()(square);
         }
 };
 
-template<typename Board, typename Direction, int N>
+template<class Board, class Direction, int N>
 struct Advance
 {
-        template<typename BidirectionalIterator>
+        template<class BidirectionalIterator>
         void operator()(BidirectionalIterator& square) const
         {
                 for (auto i = 0; i < N; ++i)
@@ -41,10 +41,10 @@ struct Advance
         }
 };
 
-template<typename Board, typename Direction, int N>
+template<class Board, class Direction, int N>
 struct Retreat
 {
-        template<typename BidirectionalIterator>
+        template<class BidirectionalIterator>
         void operator()(BidirectionalIterator& square) const
         {
                 for (auto i = 0; i < N; ++i)
@@ -52,10 +52,10 @@ struct Retreat
         }
 };
 
-template<typename Board, typename Direction, int N = 1>
+template<class Board, class Direction, int N = 1>
 struct Next
 {
-        template<typename BidirectionalIterator>
+        template<class BidirectionalIterator>
         BidirectionalIterator operator()(BidirectionalIterator square) const
         {
                 Advance<Board, Direction, N>()(square);
@@ -63,10 +63,10 @@ struct Next
         }
 };
 
-template<typename Board, typename Direction, int N = 1>
+template<class Board, class Direction, int N = 1>
 struct Prev
 {
-        template<typename BidirectionalIterator>
+        template<class BidirectionalIterator>
         BidirectionalIterator operator()(BidirectionalIterator square) const
         {
                 Retreat<Board, Direction, N>()(square);

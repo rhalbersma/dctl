@@ -8,34 +8,34 @@
 namespace dctl {
 namespace group {
 
-typedef tuple<
+using C1 = tuple<
         boost::mpl::vector<
                 angle::D000
         >,
         boost::mpl::quote2< mpl::lazy::rotate >,
         angle::D000,
         boost::mpl::quote1< mpl::lazy::inverse >
-> C1;
+>;
 
-typedef tuple<
+using C2 = tuple<
         boost::mpl::vector<
                 angle::D000, angle::D180
         >,
         boost::mpl::quote2< mpl::lazy::rotate >,
         angle::D000,
         boost::mpl::quote1< mpl::lazy::inverse >
-> C2;
+>;
 
-typedef tuple<
+using C4 = tuple<
         boost::mpl::vector<
                 angle::D000, angle::D090, angle::D180, angle::D270
         >,
         boost::mpl::quote2< mpl::lazy::rotate >,
         angle::D000,
         boost::mpl::quote1< mpl::lazy::inverse >
-> C4;
+>;
 
-typedef tuple<
+using C8 = tuple<
         boost::mpl::vector<
                 angle::D000, angle::D045, angle::D090, angle::D135,
                 angle::D180, angle::D225, angle::D270, angle::D315
@@ -43,7 +43,7 @@ typedef tuple<
         boost::mpl::quote2< mpl::lazy::rotate >,
         angle::D000,
         boost::mpl::quote1< mpl::lazy::inverse >
-> C8;
+>;
 
 }       // namespace group
 }       // namespace dctl

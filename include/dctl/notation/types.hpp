@@ -15,7 +15,7 @@ struct token
 }
 
 struct numeric {};              // numeric
-typedef numeric algebraic;      // algebraic
+using algebraic = numeric;      // algebraic
 
 }       // namespace notation
 }       // namespace dctl

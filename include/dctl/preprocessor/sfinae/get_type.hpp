@@ -4,5 +4,5 @@
 template<class T>                       \
 struct get_type_ ## U                   \
 {                                       \
-        typedef typename T::U type;     \
+        using type = typename T::U;     \
 };

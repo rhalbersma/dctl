@@ -16,7 +16,7 @@ struct copy<Color, pieces::pawn, select::moves>
         template<class Position, class Sequence>
         void operator()(Position const& p, Sequence& moves) const
         {
-                typedef impl::copy<Color, pieces::pawn, select::moves, Position, Sequence> PawnMoves;
+                using PawnMoves = impl::copy<Color, pieces::pawn, select::moves, Position, Sequence>;
 
                 Propagate<select::moves, Position> const propagate(p);
                 PawnMoves{propagate, moves}(p.material().pawns(Color));

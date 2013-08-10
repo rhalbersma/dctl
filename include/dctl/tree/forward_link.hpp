@@ -6,9 +6,7 @@ namespace tree {
 struct forward_link
 {
 private:
-        // typedefs
-
-        typedef forward_link self_type;
+        using self_type = forward_link;
 
 public:
         // structors

@@ -20,7 +20,7 @@ public:
         template<class Position>
         bool operator()(Position const& p) const
         {
-                typedef typename Position::rules_type Rules;
+                using Rules = typename Position::rules_type;
 
                 // tag dispatching on piece jump detection
                 // kings and pawns need to jump identically: i.e. have the same
@@ -45,21 +45,13 @@ public:
         }
 
 private:
-        // template aliases
-
         // the existence of pawn jumps is independent of Range,
         // but we always use rules::range::distance_1 to avoid template bloat
         template<class Position>
-        struct PawnJumps
-        {
-                typedef impl::detect<Color, pieces::pawn, select::jumps, Position, rules::range::distance_1> type;
-        };
+        using PawnJumps = impl::detect<Color, pieces::pawn, select::jumps, Position, rules::range::distance_1>;
 
         template<class Position>
-        struct KingJumps
-        {
-                typedef impl::detect<Color, pieces::king, select::jumps, Position, Range> type;
-        };
+        using KingJumps = impl::detect<Color, pieces::king, select::jumps, Position, Range>;
 
         // overload for piece jump detection
         template<class Position>
@@ -76,7 +68,7 @@ private:
                 Propagate<select::jumps, Position> propagate(p);
 
                 // speculate #pawns > #kings so that the logical OR is more likely to short-circuit
-                return typename PawnJumps<Position>::type{propagate}(p.material().pawns(Color)) || typename KingJumps<Position>::type{propagate}(p.material().kings(Color));
+                return PawnJumps<Position>{propagate}(p.material().pawns(Color)) || KingJumps<Position>{propagate}(p.material().kings(Color));
         }
 };
 

@@ -50,8 +50,6 @@ public:
                 BOOST_ASSERT(invariant());
         }
 
-        // typedefs
-
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
 

@@ -11,7 +11,7 @@ namespace tree {
 
 template
 <
-        typename T
+        class T
 >
 struct forward_iterator
         // http://www.boost.org/doc/libs/1_52_0/libs/utility/operators.htm#chaining
@@ -23,20 +23,18 @@ struct forward_iterator
 private:
         // dependent names now in scope
 
-        typedef std::iterator<std::forward_iterator_tag, T> Base;
+        using Base = std::iterator<std::forward_iterator_tag, T>;
         using typename Base::value_type; // T
         using typename Base::pointer;    // T*
         using typename Base::reference;  // T&
 
-        // typedefs
-
-        typedef forward_iterator self_type;
-        typedef forward_link link_type;
+        using self_type = forward_iterator;
+        using link_type = forward_link;
 public:
-        typedef node<link_type, value_type> node_type;
+        using node_type = node<link_type, value_type>;
 private:
-        typedef link_type* link_ptr;
-        typedef node_type* node_ptr;
+        using link_ptr = link_type*;
+        using node_ptr = node_type*;
 
 public:
         // structors

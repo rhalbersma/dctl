@@ -15,7 +15,7 @@ namespace dctl {
 namespace setup {
 
 // partial specialization definition to write square numbers in diagram layout
-template<typename Board>
+template<class Board>
 struct diagram<Board, squares>
 {
 public:
@@ -26,7 +26,7 @@ public:
         }
 
         // parameterized board square content
-        template<typename Functor>
+        template<class Functor>
         std::string operator()(Functor f) const
         {
                 std::stringstream sstr;
@@ -69,7 +69,7 @@ private:
 };
 
 // partial specialization definition to write bit numbers in diagram layout
-template<typename Board>
+template<class Board>
 struct diagram<Board, bits>
 {
 public:
@@ -80,7 +80,7 @@ public:
         }
 
         // parameterized board bit content
-        template<typename Functor>
+        template<class Functor>
         std::string operator()(Functor f) const
         {
                 return diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
@@ -90,8 +90,8 @@ public:
 // primary template definition
 template
 <
-        typename Protocol,
-        typename Content
+        class Protocol,
+        class Content
 >
 struct diagram
 {
@@ -100,7 +100,7 @@ public:
         template<class Position>
         std::string operator()(Position const& p) const
         {
-                typedef typename Position::board_type Board;
+                using Board = typename Position::board_type;
 
                 return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
         }

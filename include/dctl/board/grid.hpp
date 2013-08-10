@@ -12,77 +12,77 @@ namespace board {
 // primary template definition
 template
 <
-        typename Dimensions,
-        typename GhostColumns
+        class Dimensions,
+        class GhostColumns
 >
 struct Grid
 :
-        Dimensions
+        public Dimensions
 {
 public:
         BOOST_STATIC_ASSERT(GhostColumns::value > 0);
 
-        typedef Grid<Dimensions, no_ghosts> BaseGrid;
+        using BaseGrid = Grid<Dimensions, no_ghosts>;
 
         // diagonal directions
 
-        typedef boost::mpl::divides<
+        using left_down = boost::mpl::divides<
                 boost::mpl::plus< typename
                         Dimensions::width,
                         GhostColumns
                 >,
                 boost::mpl::int_<2>
-        > left_down;
+        >;
 
-        typedef boost::mpl::plus<
+        using right_down = boost::mpl::plus<
                 left_down,
                 boost::mpl::int_<1>
-        > right_down;
+        >;
 
         // orthogonal directions
 
-        typedef boost::mpl::minus<
+        using right = boost::mpl::minus<
                 right_down,
                 left_down
-        > right;
+        >;
 
-        typedef boost::mpl::plus<
+        using down = boost::mpl::plus<
                 right_down,
                 left_down
-        > down;
+        >;
 
         // equivalent directions
 
-        typedef right_down      left_up;
-        typedef left_down       right_up;
-        typedef right           left;
-        typedef down            up;
+        using left_up = right_down;
+        using right_up = left_down;
+        using left = right;
+        using up = down;
 
         // range of row pairs
 
-        typedef down modulo;
+        using modulo = down;
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
 
-        typedef typename BaseGrid::edge_le edge_le;
-        typedef typename BaseGrid::edge_re edge_re;
+        using edge_le = typename BaseGrid::edge_le;
+        using edge_re = typename BaseGrid::edge_re;
 
-        typedef boost::mpl::plus<
+        using edge_lo = boost::mpl::plus<
                 left_down, typename
                 Dimensions::parity
-        > edge_lo;
+        >;
 
-        typedef boost::mpl::plus<
+        using edge_ro = boost::mpl::plus<
                 edge_lo,
                 boost::mpl::minus< typename
                         BaseGrid::edge_ro, typename
                         BaseGrid::edge_lo
                 >
-        > edge_ro;
+        >;
 
         // grid size
 
-        typedef boost::mpl::plus<
+        using size = boost::mpl::plus<
                 boost::mpl::times<
                         modulo,
                         boost::mpl::divides<
@@ -102,11 +102,11 @@ public:
                         edge_ro
                 >::type,
                 boost::mpl::int_<1>
-        > size;
+        >;
 };
 
 // partial specialization definition
-template<typename Dimensions>
+template<class Dimensions>
 struct Grid< Dimensions, no_ghosts >
 :
         public Dimensions
@@ -114,15 +114,15 @@ struct Grid< Dimensions, no_ghosts >
 private:
         // range of even (e) and odd (o) rows
 
-        typedef boost::mpl::divides<
+        using row_e = boost::mpl::divides<
                 boost::mpl::plus< typename
                         Dimensions::width, typename
                         Dimensions::parity
                 >,
                 boost::mpl::int_<2>
-        > row_e;
+        >;
 
-        typedef boost::mpl::divides<
+        using row_o = boost::mpl::divides<
                 boost::mpl::plus< typename
                         Dimensions::width,
                         boost::mpl::not_< typename
@@ -130,39 +130,39 @@ private:
                         >
                 >,
                 boost::mpl::int_<2>
-        > row_o;
+        >;
 
 public:
         // range of row pairs
 
-        typedef typename Dimensions::width modulo;
+        using modulo = typename Dimensions::width;
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
 
-        typedef boost::mpl::int_<0> edge_le;
+        using edge_le = boost::mpl::int_<0>;
 
-        typedef boost::mpl::plus<
+        using edge_re = boost::mpl::plus<
                 edge_le,
                 boost::mpl::minus<
                         row_e,
                         boost::mpl::int_<1>
                 >
-        > edge_re;
+        >;
 
-        typedef boost::mpl::plus<
+        using edge_lo = boost::mpl::plus<
                 edge_re,
                 boost::mpl::int_<1>
-        > edge_lo;
+        >;
 
-        typedef boost::mpl::plus<
+        using edge_ro = boost::mpl::plus<
                 edge_lo,
                 boost::mpl::minus<
                         row_o,
                         boost::mpl::int_<1>
                 >
-        > edge_ro;
+        >;
 
-        typedef boost::mpl::plus<
+        using size = boost::mpl::plus<
                 boost::mpl::times<
                         modulo,
                         boost::mpl::divides<
@@ -182,7 +182,7 @@ public:
                         edge_ro
                 >::type,
                 boost::mpl::int_<1>
-        > size;
+        >;
 
         // equivalent grid size
         /*

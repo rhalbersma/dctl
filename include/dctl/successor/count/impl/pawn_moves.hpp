@@ -24,11 +24,9 @@ struct count<Color, pieces::pawn, select::moves, Position>
         boost::noncopyable
 {
 private:
-        // typedefs
-
-        typedef typename Position::board_type Board;
-        typedef board::Compass<Color, Board> Compass;
-        typedef Propagate<select::moves, Position> State;
+        using Board = typename Position::board_type;
+        using Compass = board::Compass<Color, Board>;
+        using State = Propagate<select::moves, Position>;
 
         // representation
 

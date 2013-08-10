@@ -25,7 +25,7 @@ using DimensionsSequence = boost::mpl::vector
         Dimensions<12, 10, true>
 >;
 
-template<typename Dim>
+template<class Dim>
 struct make_grid
 {
         using type = Grid<Dim, boost::mpl::int_<2> > ;

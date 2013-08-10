@@ -7,7 +7,7 @@ namespace dctl {
 namespace jenkins {
 
 // primary template
-template<typename Index = uint64_t, class Position>
+template<class Index = uint64_t, class Position>
 Index hash(Position const& p)
 {
         auto index = Index { 0 };

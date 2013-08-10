@@ -16,7 +16,7 @@ struct count<Color, pieces::pawn, select::moves>
         template<class Position>
         int operator()(Position const& p) const
         {
-                typedef impl::count<Color, pieces::pawn, select::moves, Position> PawnMoves;
+                using PawnMoves = impl::count<Color, pieces::pawn, select::moves, Position>;
 
                 Propagate<select::moves, Position> const propagate(p);
                 return PawnMoves{propagate}(p.material().pawns(Color));

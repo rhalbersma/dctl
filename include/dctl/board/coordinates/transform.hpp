@@ -10,7 +10,7 @@ namespace mpl {
 namespace lazy {
 namespace detail {
 
-template<typename Size, int N>
+template<class Size, int N>
 struct Dual
 :
         boost::mpl::minus<
@@ -28,7 +28,7 @@ struct Dual
 // partial specialization definitions
 
 // partial specialization for identity rotations
-template<typename Grid, int Row, int Column>
+template<class Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
 :
         board::Coordinates<
@@ -39,7 +39,7 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
 {};
 
 // partial specialization for 90 degrees left rotations
-template<typename Grid, int Row, int Column>
+template<class Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
 :
         board::Coordinates<
@@ -53,7 +53,7 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
 {};
 
 // partial specialization for 90 degrees right rotations
-template<typename Grid, int Row, int Column>
+template<class Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 :
         board::Coordinates<
@@ -67,7 +67,7 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 {};
 
 // partial specialization for 180 degrees rotations
-template<typename Grid, int Row, int Column>
+template<class Grid, int Row, int Column>
 struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
 :
         board::Coordinates<

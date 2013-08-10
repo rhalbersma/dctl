@@ -6,7 +6,7 @@ namespace hash {
 
 struct IndexExtractor
 {
-        typedef uint64_t result_type;
+        using result_type = uint64_t;
 
         template<class Key>
         result_type operator()(Key const& key) const

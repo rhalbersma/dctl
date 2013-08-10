@@ -19,8 +19,8 @@ struct count<Color, Pieces, select::legal>
         template<class Position>
         int operator()(Position const& p)
         {
-                typedef count<Color, Pieces, select::jumps> DoJumps;
-                typedef count<Color, Pieces, select::moves> DoMoves;
+                using DoJumps = count<Color, Pieces, select::jumps>;
+                using DoMoves = count<Color, Pieces, select::moves>;
 
                 auto num_moves = DoJumps()(p);
                 if (!num_moves)

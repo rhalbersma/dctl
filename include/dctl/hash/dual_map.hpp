@@ -11,23 +11,21 @@ namespace hash {
 
 template
 <
-        typename Key,
-        typename T,
-        typename Signature,
-        typename Parity = ActiveColorExtractor,
-        typename Container = Map< Key, T, Signature, EmptyOldUnderCutMin<Smallest> >
+        class Key,
+        class T,
+        class Signature,
+        class Parity = ActiveColorExtractor,
+        class Container = Map< Key, T, Signature, EmptyOldUnderCutMin<Smallest> >
 >
 struct DualMap
 {
 private:
-        // typedefs
-
-        typedef Container map_type;
-        typedef typename map_type::size_type size_type;
-        typedef typename map_type::iterator iterator;
-        typedef typename map_type::const_iterator const_iterator;
-        typedef typename map_type::mapped_pointer mapped_pointer;
-        typedef typename map_type::const_mapped_pointer const_mapped_pointer;
+        using map_type = Container;
+        using size_type = typename map_type::size_type;
+        using iterator = typename map_type::iterator;
+        using const_iterator = typename map_type::const_iterator;
+        using mapped_pointer = typename map_type::mapped_pointer;
+        using const_mapped_pointer = typename map_type::const_mapped_pointer;
 
 public:
         // structors

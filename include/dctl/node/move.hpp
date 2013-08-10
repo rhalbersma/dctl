@@ -245,7 +245,7 @@ private:
         }
 
         // king jump
-        template<typename Rules>
+        template<class Rules>
         static bool pre_condition(T delta, T captured_pieces, T captured_kings)
         {
                 return (

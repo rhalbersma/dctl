@@ -7,15 +7,15 @@ namespace board {
 namespace mask {
 
 // primary template declaration
-template<typename>
+template<class>
 struct init;
 
 // partial specialization declarations
 template
 <
-        template<typename, typename, typename...> class Predicate,
-        typename Board,
-        typename... Args
+        template<class, class, class...> class Predicate,
+        class Board,
+        class... Args
 >
 struct init< Predicate<Board, boost::mpl::_1, Args...> >;
 
@@ -24,17 +24,17 @@ namespace detail {
 // primary template declaration
 template
 <
-        typename Board,
-        typename Predicate,
-        typename Square = boost::mpl::int_<Board::ExternalGrid::size::value - 1>
+        class Board,
+        class Predicate,
+        class Square = boost::mpl::int_<Board::ExternalGrid::size::value - 1>
 >
 struct init;
 
 // partial specialization declaration
-template<typename Board, typename Predicate>
+template<class Board, class Predicate>
 struct init<Board, Predicate, boost::mpl::int_<0> >;
 
-template<typename, typename, typename>
+template<class, class, class>
 struct test;
 
 }       // namespace detail

@@ -4,13 +4,13 @@
 namespace dctl {
 namespace notation {
 
-template<typename>
+template<class>
 struct Format
 {
-        typedef numeric type;
+        using type = numeric;
 };
 
-template<typename>
+template<class>
 struct Separator
 :
         detail::token<'-', 'x'>
