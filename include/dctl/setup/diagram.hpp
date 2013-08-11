@@ -62,7 +62,7 @@ private:
                 auto const indent_LE = r == Board::ExternalGrid::edge_le::value;        // left of even rows
                 auto const indent_LO = r == Board::ExternalGrid::edge_lo::value;        // left of odd rows
 
-                return Board::parity::value? indent_LO : indent_LE;
+                return Board::parity? indent_LO : indent_LE;
         }
 
         BOOST_STATIC_CONSTANT(auto, WHITE_SPACE = ' ');

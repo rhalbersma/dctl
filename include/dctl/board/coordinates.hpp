@@ -139,8 +139,8 @@ private:
                 >,
                 boost::mpl::bitxor_<
                         P,
-                        boost::mpl::not_< typename
-                                G::parity
+                        boost::mpl::not_<
+                                boost::mpl::bool_<G::parity>
                         >
                 >
         >;

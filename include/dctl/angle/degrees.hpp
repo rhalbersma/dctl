@@ -1,22 +1,29 @@
 #pragma once
-#include <boost/mpl/int.hpp>            // int_
-#include <dctl/mpl/modular.hpp>         // abs_modulus
 
 namespace dctl {
 namespace angle {
+namespace detail {
+
+template<class T>
+constexpr T abs(T const& t)
+{
+        return (t < 0)? -t : t;
+}
+
+template<class T>
+constexpr T abs_modulus(T const& n, T const& d)
+{
+        return n % d + ((n % d < 0)? detail::abs(d) : 0);
+}
+
+}       // detail
 
 template<int N>
 struct Degrees
 {
-        // nullary metadata subject to arithmetic modulo 360 degrees
-        enum {
-                value = mpl::abs_modulus<
-        	        boost::mpl::int_<N>,
-        		boost::mpl::int_<360>
-                >::value
-        };
+        static constexpr auto value = detail::abs_modulus(N, 360);
+        static_assert(0 <= value && value < 360, "Angles have to lie in the range [0, 360)");
 
-        // lazily evaluable metadata == nullary metafunction
         using type = Degrees<value>;
 };
 
@@ -24,20 +31,20 @@ struct Degrees
 
         Degrees are denoted as <D><XXX>, where XXX is exactly three characters
         long, running from 000 until 360 in steps of 45. Counterclockwise
-        rotations are denoted as <L><XXX>, where <XXX> runs from 45 until 135.
+        rotations are denoted as <L><XXX>, where <XXX> runs from 0 until 180.
         Clockwise rotations are similarly denoted as <R><XXX>.
 
-                D090 = L090
-                     |
-        D135 = L135  |  D045 = L045
-                   \ | /
-                    \|/
-           D180 ----- ----- D000 = D360
-                    /|\
-                   / | \
-        D225 = R135  |  D315 = R045
-                     |
-                D270 = R090
+                           D090 = L090
+                                |
+                   L135 = D135  |  D045 = L045
+                              \ | /
+                               \|/
+        L180 = R180 = D180 ----- ----- D000 = D360 = L000 = R000
+                               /|\
+                              / | \
+                   R135 = D225  |  D315 = R045
+                                |
+                           D270 = R090
 
 */
 

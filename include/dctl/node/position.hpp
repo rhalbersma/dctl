@@ -26,7 +26,7 @@ public:
         using rules_type = Rules;
         using board_type = Board ;
         using TreeIterator = Position const*;
-        BOOST_STATIC_CONSTANT(int, gap = rules::initial_gap<rules_type>::value + board_type::height::value % 2);
+        BOOST_STATIC_CONSTANT(int, gap = rules::initial_gap<rules_type>::value + board_type::height % 2);
 
         /*
         Position()

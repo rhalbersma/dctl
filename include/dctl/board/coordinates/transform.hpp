@@ -10,11 +10,11 @@ namespace mpl {
 namespace lazy {
 namespace detail {
 
-template<class Size, int N>
+template<int Size, int N>
 struct Dual
 :
         boost::mpl::minus<
-                Size,
+                boost::mpl::int_<Size>,
                 boost::mpl::int_<1>,
                 boost::mpl::int_<N>
         >
@@ -45,7 +45,7 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
         board::Coordinates<
                 Grid,
                 Column,
-                detail::Dual< typename
+                detail::Dual<
                         Grid::height, 
                         Row
                 >::value
@@ -58,7 +58,7 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 :
         board::Coordinates<
                 Grid,
-                detail::Dual< typename
+                detail::Dual<
                         Grid::width, 
                         Column
                 >::value,
@@ -72,11 +72,11 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
 :
         board::Coordinates<
                 Grid,
-                detail::Dual< typename
+                detail::Dual<
                         Grid::height, 
                         Row
                 >::value,
-                detail::Dual< typename
+                detail::Dual<
                         Grid::width, 
                         Column
                 >::value

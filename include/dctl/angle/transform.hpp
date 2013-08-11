@@ -1,9 +1,6 @@
 #pragma once
-#include <boost/mpl/arithmetic.hpp>     // negate, plus
-#include <boost/mpl/int.hpp>            // int_
 #include <dctl/angle/degrees.hpp>       // Degrees
 #include <dctl/angle/transform_fwd.hpp> // inverse, rotate, mirror (partial specialization declarations)
-#include <dctl/mpl/modular.hpp>         // abs_modulus
 
 namespace dctl {
 namespace mpl {
@@ -14,38 +11,29 @@ namespace lazy {
 
 // partial specialization definitions
 
-template<int N>
-struct inverse< angle::Degrees<N> >
+template<int Object>
+struct inverse< angle::Degrees<Object> >
 :
-        angle::Degrees<  
-                boost::mpl::negate<
-                        boost::mpl::int_<N>
-                >::value
-        >
+        angle::Degrees< -Object >
 {};
 
-template<int N1, int N2>
-struct rotate< angle::Degrees<N1>, angle::Degrees<N2> >
+template<int Object, int Angle>
+struct rotate< angle::Degrees<Object>, angle::Degrees<Angle> >
 :
-        angle::Degrees<  
-                boost::mpl::plus<
-                        boost::mpl::int_<N1>,
-                        boost::mpl::int_<N2>
-                >::value
-        >
+        angle::Degrees< Object + Angle >
 {};
 
-template<int N1, int N2>
-struct mirror< angle::Degrees<N1>, angle::Degrees<N2> >
+template<int Object, int Axis>
+struct mirror< angle::Degrees<Object>, angle::Degrees<Axis> >
 :
         rotate<
                 inverse<
                         rotate<
-                                angle::Degrees<N1>,
-                                inverse< angle::Degrees<N2> >
+                                angle::Degrees<Object>,
+                                inverse< angle::Degrees<Axis> >
                         >
                 >,
-                angle::Degrees<N2>
+                angle::Degrees<Axis>
         >
 {};
 
