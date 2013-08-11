@@ -25,7 +25,7 @@ using Frisian = Board< Dimensions<10, 10>, Ghosts<2> >;
 // and require internal rotations for 12x10 to fit within 64-bits
 using Spantsireti  = Board< Dimensions<10,  8, true> > ;
 using Ktar11 = Board< Dimensions<11, 10, true>, Ghosts<1> >;
-using Ktar12 = Board< Dimensions<12, 10, true>, Ghosts<1, angle::R090> >;
+using Ktar12 = Board< Dimensions<12, 10, true>, Ghosts<1, angle::R090::value > >;
 
 }       // namespace board
 }       // namespace dctl

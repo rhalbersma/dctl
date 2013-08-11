@@ -33,10 +33,10 @@ public:
         using ExternalGrid = Grid<Dimensions, no_ghosts>;
         using InternalGrid = Grid<typename
                 mpl::lazy::rotate<
-                        Dimensions, typename
-                        Layout::full_angle
-                >::type, typename
-                Layout::columns
+                        Dimensions,
+                        angle::Degrees<Layout::full_angle>
+                >::type,
+                boost::mpl::int_<Layout::columns>
         >;
 
         using bit_type = BitBoard;
@@ -53,7 +53,7 @@ public:
                 mask::init<
                         mask::is_jump_start<
                                 Board, boost::mpl::_1,
-                                mpl::lazy::rotate< Direction, typename Layout::full_angle >
+                                mpl::lazy::rotate< Direction, angle::Degrees<Layout::full_angle> >
                         >
                 >
         {};

@@ -27,8 +27,8 @@ public:
         // diagonal directions
 
         using left_down = boost::mpl::divides<
-                boost::mpl::plus< typename
-                        Dimensions::width,
+                boost::mpl::plus<
+                        boost::mpl::int_<Dimensions::width>,
                         GhostColumns
                 >,
                 boost::mpl::int_<2>
@@ -68,8 +68,8 @@ public:
         using edge_re = typename BaseGrid::edge_re;
 
         using edge_lo = boost::mpl::plus<
-                left_down, typename
-                Dimensions::parity
+                left_down,
+                boost::mpl::bool_<Dimensions::parity>
         >;
 
         using edge_ro = boost::mpl::plus<
@@ -86,16 +86,16 @@ public:
                 boost::mpl::times<
                         modulo,
                         boost::mpl::divides<
-                                boost::mpl::minus< typename
-                                        Dimensions::height,
+                                boost::mpl::minus<
+                                        boost::mpl::int_<Dimensions::height>,
                                         boost::mpl::int_<1>
                                 >,
                                 boost::mpl::int_<2>
                         >
                 >, typename
                 boost::mpl::eval_if<
-                        boost::mpl::modulus< typename
-                                Dimensions::height,
+                        boost::mpl::modulus<
+                                boost::mpl::int_<Dimensions::height>,
                                 boost::mpl::int_<2>
                         >,
                         edge_re,
@@ -115,18 +115,18 @@ private:
         // range of even (e) and odd (o) rows
 
         using row_e = boost::mpl::divides<
-                boost::mpl::plus< typename
-                        Dimensions::width, typename
-                        Dimensions::parity
+                boost::mpl::plus<
+                        boost::mpl::int_<Dimensions::width>,
+                        boost::mpl::bool_<Dimensions::parity>
                 >,
                 boost::mpl::int_<2>
         >;
 
         using row_o = boost::mpl::divides<
-                boost::mpl::plus< typename
-                        Dimensions::width,
-                        boost::mpl::not_< typename
-                                Dimensions::parity
+                boost::mpl::plus<
+                        boost::mpl::int_<Dimensions::width>,
+                        boost::mpl::not_<
+                                boost::mpl::bool_<Dimensions::parity>
                         >
                 >,
                 boost::mpl::int_<2>
@@ -135,7 +135,7 @@ private:
 public:
         // range of row pairs
 
-        using modulo = typename Dimensions::width;
+        using modulo = boost::mpl::int_<Dimensions::width>;
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
 
@@ -166,16 +166,16 @@ public:
                 boost::mpl::times<
                         modulo,
                         boost::mpl::divides<
-                                boost::mpl::minus< typename
-                                        Dimensions::height,
+                                boost::mpl::minus<
+                                        boost::mpl::int_<Dimensions::height>,
                                         boost::mpl::int_<1>
                                 >,
                                 boost::mpl::int_<2>
                         >
                 >, typename
                 boost::mpl::eval_if<
-                        boost::mpl::modulus< typename
-                                Dimensions::height,
+                        boost::mpl::modulus<
+                                boost::mpl::int_<Dimensions::height>,
                                 boost::mpl::int_<2>
                         >,
                         edge_re,

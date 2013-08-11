@@ -33,11 +33,11 @@ struct is_initial
                 Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row, typename
                 boost::mpl::eval_if<
                         Color,
-                        boost::mpl::minus< typename
-                                Board::height,
+                        boost::mpl::minus<
+                                boost::mpl::int_<Board::height>,
                                 boost::mpl::divides<
-                                        boost::mpl::minus< typename
-                                                Board::height, 
+                                        boost::mpl::minus<
+                                                boost::mpl::int_<Board::height>,
                                                 Separation
                                         >,
                                         boost::mpl::int_<2>
@@ -46,11 +46,11 @@ struct is_initial
                         boost::mpl::int_<0>
                 >::type, typename
                 boost::mpl::eval_if<
-                        Color, typename
-                        Board::height,
+                        Color,
+                        boost::mpl::int_<Board::height>,
                         boost::mpl::divides<
-                                boost::mpl::minus< typename
-                                        Board::height,
+                                boost::mpl::minus<
+                                        boost::mpl::int_<Board::height>,
                                         Separation
                                 >,
                                 boost::mpl::int_<2>
@@ -66,8 +66,8 @@ struct is_row
                 Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::row, typename
                 boost::mpl::eval_if<
                         Color,
-                        boost::mpl::minus< typename
-                                Board::height,
+                        boost::mpl::minus<
+                                boost::mpl::int_<Board::height>,
                                 boost::mpl::int_<1>,
                                 Row
                         >,
@@ -83,8 +83,8 @@ struct is_col
                 Square2Coordinates< Square<typename Board::ExternalGrid, SQ> >::type::col, typename
                 boost::mpl::eval_if<
                         Color,
-                        boost::mpl::minus< typename
-                                Board::width,
+                        boost::mpl::minus<
+                                boost::mpl::int_<Board::width>,
                                 boost::mpl::int_<1>,
                                 Column
                         >,
@@ -178,8 +178,8 @@ struct is_jump_start
                                 Offset, 
                                 boost::mpl::int_<0> 
                         >::type,
-                        boost::mpl::minus< typename
-                                Board::height, typename
+                        boost::mpl::minus<
+                                boost::mpl::int_<Board::height>, typename
                                 boost::mpl::eval_if< 
                                         angle::lazy::is_down<Direction>, 
                                         Offset, 
@@ -195,8 +195,8 @@ struct is_jump_start
                                 Offset, 
                                 boost::mpl::int_<0> 
                         >::type,
-                        boost::mpl::minus< typename
-                                Board::width, typename
+                        boost::mpl::minus<
+                                boost::mpl::int_<Board::width>, typename
                                 boost::mpl::eval_if< 
                                         angle::lazy::is_right<Direction>, 
                                         Offset, 
@@ -252,8 +252,8 @@ struct square_to_bit
 :
         detail::transform< typename
                 Board::ExternalGrid, typename
-                Board::InternalGrid, typename
-                Board::full_angle,
+                Board::InternalGrid,
+                angle::Degrees<Board::full_angle>,
                 Number
         >
 {};
@@ -263,8 +263,8 @@ struct bit_to_square
 :
         detail::transform< typename
                 Board::InternalGrid, typename
-                Board::ExternalGrid, typename
-                Board::inverse_angle,
+                Board::ExternalGrid,
+                angle::Degrees<Board::inverse_angle>,
                 Number
         >
 {};
