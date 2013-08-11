@@ -36,7 +36,7 @@ struct Compass
 {
 private:
         using A = mpl::lazy::rotate<
-        	angle::Degrees<Board::inverse_angle>,
+        	mpl::lazy::inverse< angle::Degrees< Board::orientation > >,
                 boost::mpl::eval_if<
                         boost::mpl::bool_<Color>,
                         angle::D000,

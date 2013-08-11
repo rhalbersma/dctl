@@ -1,195 +1,80 @@
 #pragma once
-#include <boost/mpl/arithmetic.hpp>     // divides, minus, modulus, plus, times
-#include <boost/mpl/eval_if.hpp>        // eval_if
-#include <boost/mpl/logical.hpp>        // not_
-#include <boost/mpl/int.hpp>            // int_
-#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
 #include <dctl/board/grid_fwd.hpp>      // primary template and partial specialization declarations
+#include <dctl/board/edge.hpp>          // ColumnLessEdge
 
 namespace dctl {
 namespace board {
 
 // primary template definition
-template
-<
-        class Dimensions,
-        class GhostColumns
->
+template<class Dimensions, class Edge>
 struct Grid
 :
-        public Dimensions
+        public Dimensions, public Edge
 {
 public:
-        BOOST_STATIC_ASSERT(GhostColumns::value > 0);
-
-        using BaseGrid = Grid<Dimensions, no_ghosts>;
+        using BaseGrid = Grid<Dimensions, ColumnLessEdge>;
 
         // diagonal directions
 
-        using left_down = boost::mpl::divides<
-                boost::mpl::plus<
-                        boost::mpl::int_<Dimensions::width>,
-                        GhostColumns
-                >,
-                boost::mpl::int_<2>
-        >;
-
-        using right_down = boost::mpl::plus<
-                left_down,
-                boost::mpl::int_<1>
-        >;
+        static constexpr auto left_down = (Dimensions::width + Edge::num_columns) / 2;
+        static constexpr auto right_down = left_down + 1;
 
         // orthogonal directions
 
-        using right = boost::mpl::minus<
-                right_down,
-                left_down
-        >;
-
-        using down = boost::mpl::plus<
-                right_down,
-                left_down
-        >;
+        static constexpr auto right = right_down - left_down;
+        static constexpr auto down = right_down + left_down;
 
         // equivalent directions
 
-        using left_up = right_down;
-        using right_up = left_down;
-        using left = right;
-        using up = down;
+        static constexpr auto left_up = right_down;
+        static constexpr auto right_up = left_down;
+        static constexpr auto left = right;
+        static constexpr auto up = down;
 
         // range of row pairs
 
-        using modulo = down;
+        static constexpr auto modulo = down;
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
 
-        using edge_le = typename BaseGrid::edge_le;
-        using edge_re = typename BaseGrid::edge_re;
-
-        using edge_lo = boost::mpl::plus<
-                left_down,
-                boost::mpl::bool_<Dimensions::parity>
-        >;
-
-        using edge_ro = boost::mpl::plus<
-                edge_lo,
-                boost::mpl::minus< typename
-                        BaseGrid::edge_ro, typename
-                        BaseGrid::edge_lo
-                >
-        >;
+        static constexpr auto edge_le = BaseGrid::edge_le;
+        static constexpr auto edge_re = BaseGrid::edge_re;
+        static constexpr auto edge_lo = left_down + Dimensions::parity;
+        static constexpr auto edge_ro = edge_lo + (BaseGrid::edge_ro - BaseGrid::edge_lo);
 
         // grid size
 
-        using size = boost::mpl::plus<
-                boost::mpl::times<
-                        modulo,
-                        boost::mpl::divides<
-                                boost::mpl::minus<
-                                        boost::mpl::int_<Dimensions::height>,
-                                        boost::mpl::int_<1>
-                                >,
-                                boost::mpl::int_<2>
-                        >
-                >, typename
-                boost::mpl::eval_if<
-                        boost::mpl::modulus<
-                                boost::mpl::int_<Dimensions::height>,
-                                boost::mpl::int_<2>
-                        >,
-                        edge_re,
-                        edge_ro
-                >::type,
-                boost::mpl::int_<1>
-        >;
+        static constexpr auto size = modulo * ((Dimensions::height - 1) / 2) + ((Dimensions::height % 2)? edge_re : edge_ro)  + 1;
 };
 
 // partial specialization definition
 template<class Dimensions>
-struct Grid< Dimensions, no_ghosts >
+struct Grid<Dimensions, ColumnLessEdge>
 :
         public Dimensions
 {
 private:
         // range of even (e) and odd (o) rows
 
-        using row_e = boost::mpl::divides<
-                boost::mpl::plus<
-                        boost::mpl::int_<Dimensions::width>,
-                        boost::mpl::bool_<Dimensions::parity>
-                >,
-                boost::mpl::int_<2>
-        >;
-
-        using row_o = boost::mpl::divides<
-                boost::mpl::plus<
-                        boost::mpl::int_<Dimensions::width>,
-                        boost::mpl::not_<
-                                boost::mpl::bool_<Dimensions::parity>
-                        >
-                >,
-                boost::mpl::int_<2>
-        >;
+        static constexpr auto row_e = (Dimensions::width +  Dimensions::parity) / 2;
+        static constexpr auto row_o = (Dimensions::width + !Dimensions::parity) / 2;
 
 public:
         // range of row pairs
 
-        using modulo = boost::mpl::int_<Dimensions::width>;
+        static constexpr auto modulo = Dimensions::width;
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
 
-        using edge_le = boost::mpl::int_<0>;
+        static constexpr auto edge_le = 0;
+        static constexpr auto edge_re = edge_le + (row_e - 1);
+        static constexpr auto edge_lo = edge_re + 1;
+        static constexpr auto edge_ro = edge_lo + (row_o - 1);
 
-        using edge_re = boost::mpl::plus<
-                edge_le,
-                boost::mpl::minus<
-                        row_e,
-                        boost::mpl::int_<1>
-                >
-        >;
+        // grid size
 
-        using edge_lo = boost::mpl::plus<
-                edge_re,
-                boost::mpl::int_<1>
-        >;
-
-        using edge_ro = boost::mpl::plus<
-                edge_lo,
-                boost::mpl::minus<
-                        row_o,
-                        boost::mpl::int_<1>
-                >
-        >;
-
-        using size = boost::mpl::plus<
-                boost::mpl::times<
-                        modulo,
-                        boost::mpl::divides<
-                                boost::mpl::minus<
-                                        boost::mpl::int_<Dimensions::height>,
-                                        boost::mpl::int_<1>
-                                >,
-                                boost::mpl::int_<2>
-                        >
-                >, typename
-                boost::mpl::eval_if<
-                        boost::mpl::modulus<
-                                boost::mpl::int_<Dimensions::height>,
-                                boost::mpl::int_<2>
-                        >,
-                        edge_re,
-                        edge_ro
-                >::type,
-                boost::mpl::int_<1>
-        >;
-
-        // equivalent grid size
-        /*
-        BOOST_STATIC_ASSERT(size == (Dimensions::height::value * Dimensions::width::value) / 2 +
-                (Dimensions::parity::value * Dimensions::height::value * Dimensions::width::value) % 2
-        );
-        */
+        static constexpr auto size = modulo * ((Dimensions::height - 1) / 2) + ((Dimensions::height % 2)? edge_re : edge_ro)  + 1;
+        static_assert(size == (Dimensions::height * Dimensions::width) / 2 + (Dimensions::parity * Dimensions::height * Dimensions::width) % 2, "");
 };
 
 }       // namespace board

@@ -1,18 +1,16 @@
 #pragma once
-#include <boost/mpl/int.hpp>            // int_
+#include <dctl/board/edge.hpp>          // ColumnLessEdge
 
 namespace dctl {
 namespace board {
 
 // primary template declaration
-template<class Dimensions, class GhostColumns>
+template<class Dimensions, class Edge>
 struct Grid;
-
-using no_ghosts = boost::mpl::int_<0>;
 
 // partial template declaration
 template<class Dimensions>
-struct Grid<Dimensions, no_ghosts>;
+struct Grid<Dimensions, ColumnLessEdge>;
 
 }       // namespace board
 }       // namespace dctl

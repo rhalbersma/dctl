@@ -3,17 +3,17 @@
 namespace dctl {
 namespace board {
 
-template<int H, int W, bool P = false>
+template<int Height, int Width, bool Parity = false>
 struct Dimensions
 {
-        static_assert(H > 0, "A board cannot have non-positive height.");
-        static_assert(W > 0, "A board cannot have non-positive width.");
+        static_assert(Height > 0, "The height needs to be positive.");
+        static_assert(Width > 0, "The width needs to be positive.");
 
-        static constexpr auto height = H;
-        static constexpr auto width = W;
-        static constexpr auto parity = P;
+        static constexpr auto height = Height;
+        static constexpr auto width = Width;
+        static constexpr auto parity = Parity;
 
-        using type = Dimensions<H, W, P>;
+        using type = Dimensions<Height, Width, Parity>;
 };
 
 }       // namespace board
