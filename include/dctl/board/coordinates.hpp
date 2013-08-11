@@ -56,9 +56,9 @@ private:
 
         // the left edge
         using L = typename boost::mpl::eval_if<
-                P, typename
-                G::edge_lo, typename
-                G::edge_le
+                P,
+                boost::mpl::int_<G::edge_lo>,
+                boost::mpl::int_<G::edge_le>
         >::type;
 
         // number of column pairs
@@ -72,16 +72,16 @@ private:
                 boost::mpl::plus<
                         L,
                         S
-                >, typename
-                G::modulo
+                >,
+                boost::mpl::int_<G::modulo>
         >;
 
 public:
         using type = Square<
                 G, typename
                 boost::mpl::plus<
-                        boost::mpl::times< typename
-                                G::modulo,
+                        boost::mpl::times<
+                                boost::mpl::int_<G::modulo>,
                                 Q
                         >,
                         R
@@ -97,20 +97,20 @@ private:
 
         // number of row pairs
         using Q = boost::mpl::divides< typename
-                SQ::number, typename
-                G::modulo
+                SQ::number,
+                boost::mpl::int_<G::modulo>
         >;
 
         // left edge of the zeroth row
         using R0 = boost::mpl::modulus< typename
-                SQ::number, typename
-                G::modulo
+                SQ::number,
+                boost::mpl::int_<G::modulo>
         >;
 
         // left edge of the first row
         using R1 = boost::mpl::minus<
-                R0, typename
-                G::edge_lo
+                R0,
+                boost::mpl::int_<G::edge_lo>
         >;
 
         // R0 is in the zeroth or first row

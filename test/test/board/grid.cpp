@@ -7,6 +7,7 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/board/dimensions.hpp>            // Dimensions
+#include <dctl/board/edge.hpp>
 #include <dctl/board/grid.hpp>                  // Grid
 
 namespace dctl {
@@ -28,7 +29,7 @@ using DimensionsSequence = boost::mpl::vector
 template<class Dim>
 struct make_grid
 {
-        using type = Grid<Dim, boost::mpl::int_<2> > ;
+        using type = Grid<Dim, DoubleColumnEdge> ;
 };
 
 using GridSequence = boost::mpl::transform
@@ -39,10 +40,10 @@ using GridSequence = boost::mpl::transform
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ShiftSizeSymmetry, T, GridSequence)
 {
-        BOOST_MPL_ASSERT(( std::is_same<typename T::right   , typename T::left      > ));
-        BOOST_MPL_ASSERT(( std::is_same<typename T::right_up, typename T::left_down > ));
-        BOOST_MPL_ASSERT(( std::is_same<typename T::up      , typename T::down      > ));
-        BOOST_MPL_ASSERT(( std::is_same<typename T::left_up , typename T::right_down> ));
+        BOOST_STATIC_ASSERT( T::right    == T::left       );
+        BOOST_STATIC_ASSERT( T::right_up == T::left_down  );
+        BOOST_STATIC_ASSERT( T::up       == T::down       );
+        BOOST_STATIC_ASSERT( T::left_up  == T::right_down );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

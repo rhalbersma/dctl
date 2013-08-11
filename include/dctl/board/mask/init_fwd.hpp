@@ -26,7 +26,7 @@ template
 <
         class Board,
         class Predicate,
-        class Square = boost::mpl::int_<Board::ExternalGrid::size::value - 1>
+        class Square = boost::mpl::int_<Board::ExternalGrid::size - 1>
 >
 struct init;
 

@@ -21,8 +21,8 @@ struct is_square
 :
         mpl::is_within_range<
                 SQ,
-                boost::mpl::int_<0>, typename
-                Board::ExternalGrid::size
+                boost::mpl::int_<0>,
+                boost::mpl::int_<Board::ExternalGrid::size>
         >
 {};
 
@@ -253,7 +253,7 @@ struct square_to_bit
         detail::transform< typename
                 Board::ExternalGrid, typename
                 Board::InternalGrid,
-                angle::Degrees<Board::full_angle>,
+                angle::Degrees<Board::orientation>,
                 Number
         >
 {};
@@ -264,7 +264,7 @@ struct bit_to_square
         detail::transform< typename
                 Board::InternalGrid, typename
                 Board::ExternalGrid,
-                angle::Degrees<Board::inverse_angle>,
+                mpl::lazy::inverse< angle::Degrees<Board::orientation> >,
                 Number
         >
 {};

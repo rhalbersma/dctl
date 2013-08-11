@@ -7,7 +7,7 @@
 #include <dctl/angle/degrees.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/dimensions/transform.hpp>
-#include <dctl/board/ghosts.hpp>
+#include <dctl/board/edge.hpp>
 #include <dctl/board/grid.hpp>
 #include <dctl/board/mask/init.hpp>
 #include <dctl/board/mask/predicates.hpp>
@@ -18,26 +18,19 @@
 namespace dctl {
 namespace board {
 
-template
-<
-        class Dimensions,            // height, width and parity
-        class Layout = Ghosts<>      // columns and internal rotation
->
+template<class Dimensions, class Edge = DoubleColumnEdge>
 struct Board
 :
-        public Dimensions,
-        public Layout
+        public Dimensions, public Edge
 {
+        using ReOrientedDimensions = typename mpl::lazy::rotate<
+                Dimensions,
+                angle::Degrees<Edge::orientation>
+        >::type;
 public:
-        // external and internal grids
-        using ExternalGrid = Grid<Dimensions, no_ghosts>;
-        using InternalGrid = Grid<typename
-                mpl::lazy::rotate<
-                        Dimensions,
-                        angle::Degrees<Layout::full_angle>
-                >::type,
-                boost::mpl::int_<Layout::columns>
-        >;
+        // internal and external grids
+        using InternalGrid = Grid<ReOrientedDimensions, Edge>;
+        using ExternalGrid = Grid<Dimensions, ColumnLessEdge>;
 
         using bit_type = BitBoard;
 
@@ -53,7 +46,7 @@ public:
                 mask::init<
                         mask::is_jump_start<
                                 Board, boost::mpl::_1,
-                                mpl::lazy::rotate< Direction, angle::Degrees<Layout::full_angle> >
+                                mpl::lazy::rotate< Direction, angle::Degrees<Edge::orientation> >
                         >
                 >
         {};
@@ -65,7 +58,7 @@ public:
 
         static int end()
         {
-                return ExternalGrid::size::value;
+                return ExternalGrid::size;
         }
 
         static bool is_valid(int square)
@@ -100,14 +93,14 @@ private:
         static int const BIT2SQUARE[];                          // convert a bit to a square
 };
 
-template<class Dimensions, class Layout>
-BitBoard const Board<Dimensions, Layout>::squares = mask::init< mask::is_square<Board, boost::mpl::_1> >::value;
+template<class Dimensions, class Edge>
+BitBoard const Board<Dimensions, Edge>::squares = mask::init< mask::is_square<Board, boost::mpl::_1> >::value;
 
 #define DCTL_PP_INITIAL_MASK(z, i, data)      \
         mask::init< mask::is_initial< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
 
-template<class Dimensions, class Layout>
-BitBoard const Board<Dimensions, Layout>::initial_mask[][5] = {
+template<class Dimensions, class Edge>
+BitBoard const Board<Dimensions, Edge>::initial_mask[][5] = {
         { BOOST_PP_ENUM(5, DCTL_PP_INITIAL_MASK, Side::black) },
         { BOOST_PP_ENUM(5, DCTL_PP_INITIAL_MASK, Side::white) }
 };
@@ -117,14 +110,14 @@ BitBoard const Board<Dimensions, Layout>::initial_mask[][5] = {
 #define DCTL_PP_ROW_MASK(z, i, data)      \
         mask::init< mask::is_row< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
 
-template<class Dimensions, class Layout>
-BitBoard const Board<Dimensions, Layout>::promotion_mask[][2] = {
+template<class Dimensions, class Edge>
+BitBoard const Board<Dimensions, Edge>::promotion_mask[][2] = {
         { BOOST_PP_ENUM(2, DCTL_PP_ROW_MASK, Side::white) },
         { BOOST_PP_ENUM(2, DCTL_PP_ROW_MASK, Side::black) }
 };
 
-template<class Dimensions, class Layout>
-BitBoard const Board<Dimensions, Layout>::row_mask[][12] = {
+template<class Dimensions, class Edge>
+BitBoard const Board<Dimensions, Edge>::row_mask[][12] = {
         { BOOST_PP_ENUM(12, DCTL_PP_ROW_MASK, Side::black) },
         { BOOST_PP_ENUM(12, DCTL_PP_ROW_MASK, Side::white) }
 };
@@ -134,8 +127,8 @@ BitBoard const Board<Dimensions, Layout>::row_mask[][12] = {
 #define DCTL_PP_COL_MASK(z, i, data)      \
         mask::init< mask::is_col< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
 
-template<class Dimensions, class Layout>
-BitBoard const Board<Dimensions, Layout>::col_mask[][12] = {
+template<class Dimensions, class Edge>
+BitBoard const Board<Dimensions, Edge>::col_mask[][12] = {
         { BOOST_PP_ENUM(12, DCTL_PP_COL_MASK, Side::black) },
         { BOOST_PP_ENUM(12, DCTL_PP_COL_MASK, Side::white) }
 };
@@ -145,8 +138,8 @@ BitBoard const Board<Dimensions, Layout>::col_mask[][12] = {
 #define DCTL_PP_SQUARE2BIT(z, i, data) \
         square_to_bit< Board, boost::mpl::int_<i> >::type::number::value
 
-template<class Dimensions, class Layout>
-int const Board<Dimensions, Layout>::SQUARE2BIT[] = {
+template<class Dimensions, class Edge>
+int const Board<Dimensions, Edge>::SQUARE2BIT[] = {
         BOOST_PP_ENUM(64, DCTL_PP_SQUARE2BIT, ~)
 };
 
@@ -155,21 +148,21 @@ int const Board<Dimensions, Layout>::SQUARE2BIT[] = {
 #define DCTL_PP_BIT2SQUARE(z, i, data) \
         bit_to_square< Board, boost::mpl::int_<i> >::type::number::value
 
-template<class Dimensions, class Layout>
-int const Board<Dimensions, Layout>::BIT2SQUARE[] = {
+template<class Dimensions, class Edge>
+int const Board<Dimensions, Edge>::BIT2SQUARE[] = {
         BOOST_PP_ENUM(64, DCTL_PP_BIT2SQUARE, ~)
 };
 
 #undef DCTL_PP_BIT2SQUARE
 
-template<class Dimensions, class Layout>
-BitBoard const Board<Dimensions, Layout>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
+template<class Dimensions, class Edge>
+BitBoard const Board<Dimensions, Edge>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
         (bit::singlet<BitBoard>(1)) ^ (bit::singlet<BitBoard>(1 + (InternalGrid::left_down::value  << 1))),
         (bit::singlet<BitBoard>(0)) ^ (bit::singlet<BitBoard>(0 + (InternalGrid::right_down::value << 1)))
 };
 
-template<class Dimensions, class Layout>
-BitBoard const Board<Dimensions, Layout>::QUAD_NEAREST_NEIGHBOR_MAGIC =
+template<class Dimensions, class Edge>
+BitBoard const Board<Dimensions, Edge>::QUAD_NEAREST_NEIGHBOR_MAGIC =
         DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1];
 
 }       // namespace board
