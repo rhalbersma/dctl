@@ -9,12 +9,7 @@
 namespace dctl {
 namespace board {
 
-template
-<
-        class G,
-        int R,
-        int C
->
+template<class G, int R, int C>
 struct Coordinates
 {
         using grid = G;
@@ -39,50 +34,22 @@ private:
         using G = typename C::grid;
 
         // row parity
-        using P = boost::mpl::modulus< typename
-                C::row,
-                boost::mpl::int_<2>
-        >;
+        static constexpr auto P = C::row::value % 2;
 
         // number of row pairs
-        using Q = boost::mpl::divides< typename
-                C::row,
-                boost::mpl::int_<2>
-        >;
+        static constexpr auto Q = C::row::value / 2;
 
         // the left edge
-        using L = typename boost::mpl::eval_if<
-                P,
-                boost::mpl::int_<G::edge_lo>,
-                boost::mpl::int_<G::edge_le>
-        >::type;
+        static constexpr auto L = P? G::edge_lo : G::edge_le;
 
         // number of column pairs
-        using S = boost::mpl::divides< typename
-                C::col,
-                boost::mpl::int_<2>
-        >;
+        static constexpr auto S = C::col::value / 2;
 
         // squares from the left edge
-        using R = boost::mpl::modulus<
-                boost::mpl::plus<
-                        L,
-                        S
-                >,
-                boost::mpl::int_<G::modulo>
-        >;
+        static constexpr auto R = (L + S) % G::modulo;
 
 public:
-        using type = Square<
-                G,
-                boost::mpl::plus<
-                        boost::mpl::times<
-                                boost::mpl::int_<G::modulo>,
-                                Q
-                        >,
-                        R
-                >::value
-        >;
+        using type = Square<G, G::modulo *  Q + R>;
 };
 
 template<class SQ>
@@ -92,61 +59,28 @@ private:
         using G = typename SQ::grid;
 
         // number of row pairs
-        using Q = boost::mpl::divides< typename
-                boost::mpl::int_<SQ::value>,
-                boost::mpl::int_<G::modulo>
-        >;
+        static constexpr auto Q =  SQ::value / G::modulo;
 
         // left edge of the zeroth row
-        using R0 = boost::mpl::modulus< typename
-                boost::mpl::int_<SQ::value>,
-                boost::mpl::int_<G::modulo>
-        >;
+        static constexpr auto R0 = SQ::value % G::modulo;
 
         // left edge of the first row
-        using R1 = boost::mpl::minus<
-                R0,
-                boost::mpl::int_<G::edge_lo>
-        >;
+        static constexpr auto R1 = R0 - G::edge_lo;
 
         // R0 is in the zeroth or first row
-        using P = boost::mpl::greater_equal<
-                R1,
-                boost::mpl::int_<0>
-        >;
+        static constexpr auto P = R1 >= 0;
 
         // squares from the left edge
-        using R = typename boost::mpl::eval_if< P, R1, R0 >::type;
+        static constexpr auto R = P? R1 : R0;
 
         // 2x the row pairs + the row parity
-        using ROW = boost::mpl::plus<
-                boost::mpl::times<
-                        boost::mpl::int_<2>,
-                        Q
-                >,
-                P
-        >;
+        static constexpr auto ROW = 2 * Q + P;
 
         // 2x the range from the left edge + the row parity XOR the opposite board coloring
-        using COL = boost::mpl::plus<
-                boost::mpl::times<
-                        boost::mpl::int_<2>,
-                        R
-                >,
-                boost::mpl::bitxor_<
-                        P,
-                        boost::mpl::not_<
-                                boost::mpl::bool_<G::parity>
-                        >
-                >
-        >;
+        static constexpr auto COL = 2 * R + (P ^ !G::parity);
 
 public:
-        using type = Coordinates<
-                G,
-                ROW::value,
-                COL::value
-        >;
+        using type = Coordinates<G, ROW, COL>;
 };
 
 }       // namespace board
