@@ -51,8 +51,8 @@ struct test
         boost::mpl::eval_if< typename
                 boost::mpl::apply< Predicate, Square >::type,
                 boost::mpl::shift_left<
-                        boost::mpl::integral_c<BitBoard, 1>, typename
-                        square_to_bit< Board, Square >::type::number
+                        boost::mpl::integral_c<BitBoard, 1>,
+                        boost::mpl::int_<square_to_bit< Board, Square >::type::value>
                 >,
                 boost::mpl::integral_c<BitBoard, 0>
         >::type

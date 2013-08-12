@@ -136,7 +136,7 @@ BitBoard const Board<Dimensions, Edge>::col_mask[][12] = {
 #undef DCTL_PP_COL_MASK
 
 #define DCTL_PP_SQUARE2BIT(z, i, data) \
-        square_to_bit< Board, boost::mpl::int_<i> >::type::number::value
+        square_to_bit< Board, boost::mpl::int_<i> >::type::value
 
 template<class Dimensions, class Edge>
 int const Board<Dimensions, Edge>::SQUARE2BIT[] = {
@@ -146,7 +146,7 @@ int const Board<Dimensions, Edge>::SQUARE2BIT[] = {
 #undef DCTL_PP_SQUARE2BIT
 
 #define DCTL_PP_BIT2SQUARE(z, i, data) \
-        bit_to_square< Board, boost::mpl::int_<i> >::type::number::value
+        bit_to_square< Board, boost::mpl::int_<i> >::type::value
 
 template<class Dimensions, class Edge>
 int const Board<Dimensions, Edge>::BIT2SQUARE[] = {
