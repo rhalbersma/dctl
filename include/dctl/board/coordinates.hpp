@@ -25,15 +25,11 @@ struct Coordinates
         using type = Coordinates<G, R, C>;
 };
 
-template
-<
-        class G,
-        class N
->
+template<class G, int N>
 struct Square
 {
         using grid = G;
-        using number = N;
+        static constexpr auto value = N;
 };
 
 template<class C>
@@ -78,14 +74,14 @@ private:
 
 public:
         using type = Square<
-                G, typename
+                G,
                 boost::mpl::plus<
                         boost::mpl::times<
                                 boost::mpl::int_<G::modulo>,
                                 Q
                         >,
                         R
-                >::type
+                >::value
         >;
 };
 
@@ -97,13 +93,13 @@ private:
 
         // number of row pairs
         using Q = boost::mpl::divides< typename
-                SQ::number,
+                boost::mpl::int_<SQ::value>,
                 boost::mpl::int_<G::modulo>
         >;
 
         // left edge of the zeroth row
         using R0 = boost::mpl::modulus< typename
-                SQ::number,
+                boost::mpl::int_<SQ::value>,
                 boost::mpl::int_<G::modulo>
         >;
 
