@@ -29,8 +29,8 @@ struct is_square
 template<class Board, class SQ, class Color, class Separation>
 struct is_initial
 :
-        mpl::is_within_range< typename
-                Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row, typename
+        mpl::is_within_range<
+                boost::mpl::int_< Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
@@ -62,8 +62,8 @@ struct is_initial
 template<class Board, class SQ, class Color, class Row>
 struct is_row
 :
-        boost::mpl::equal_to< typename
-                Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row, typename
+        boost::mpl::equal_to<
+                boost::mpl::int_< Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
@@ -79,8 +79,8 @@ struct is_row
 template<class Board, class SQ, class Color, class Column>
 struct is_col
 :
-        boost::mpl::equal_to< typename
-                Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::col, typename
+        boost::mpl::equal_to<
+                boost::mpl::int_< Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::col >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
@@ -132,13 +132,13 @@ template<class From, class Dest>
 struct is_jump_connected
 :
         is_jump_difference<
-                boost::mpl::minus< typename
-                        From::row, typename
-                        Dest::row
+                boost::mpl::minus<
+                        boost::mpl::int_<From::row>,
+                        boost::mpl::int_<Dest::row>
                 >,
-                boost::mpl::minus< typename
-                        From::col, typename
-                        Dest::col
+                boost::mpl::minus<
+                        boost::mpl::int_<From::col>,
+                        boost::mpl::int_<Dest::col>
                 >
         >
 {};
@@ -171,8 +171,8 @@ struct is_jump_start
 :
         boost::mpl::and_<
                 // row_min <= row < row_max
-                mpl::is_within_range< typename
-                        Square2Coordinates< Square<Grid, SQ::value> >::type::row, typename
+                mpl::is_within_range<
+                        boost::mpl::int_< Square2Coordinates< Square<Grid, SQ::value> >::type::row >, typename
                         boost::mpl::eval_if< 
                                 angle::lazy::is_up<Direction>, 
                                 Offset, 
@@ -188,8 +188,8 @@ struct is_jump_start
                         >
                 >,
                 // col_min <= col < col_max
-                mpl::is_within_range< typename
-                        Square2Coordinates< Square<Grid, SQ::value> >::type::col, typename
+                mpl::is_within_range<
+                        boost::mpl::int_< Square2Coordinates< Square<Grid, SQ::value> >::type::col >, typename
                         boost::mpl::eval_if< 
                                 angle::lazy::is_left<Direction>, 
                                 Offset, 
@@ -236,11 +236,11 @@ struct transform
                         mpl::lazy::rotate<
                                 Square2Coordinates< Square<FromGrid, N::value> >,
                                 Angle
-                        >::type::row::value,
+                        >::type::row,
                         mpl::lazy::rotate<
                                 Square2Coordinates< Square<FromGrid, N::value> >,
                                 Angle
-                        >::type::col::value
+                        >::type::col
                 >
         >
 {};
