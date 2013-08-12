@@ -1,6 +1,4 @@
 #pragma once
-#include <boost/mpl/arithmetic.hpp>                     // minus
-#include <boost/mpl/int.hpp>                            // int_
 #include <dctl/angle/degrees.hpp>                       // D000, L090, R090, D180
 #include <dctl/board/coordinates.hpp>                   // Coordinates
 #include <dctl/board/coordinates/transform_fwd.hpp>     // rotate (partial specialization declarations)
@@ -10,15 +8,11 @@ namespace mpl {
 namespace lazy {
 namespace detail {
 
-template<int Size, int N>
-struct Dual
-:
-        boost::mpl::minus<
-                boost::mpl::int_<Size>,
-                boost::mpl::int_<1>,
-                boost::mpl::int_<N>
-        >
-{};
+template<class T>
+constexpr T dual(T const& size, T const& n)
+{
+        return size - n - 1;
+}
 
 }       // namespace detail
 
@@ -45,10 +39,7 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
         board::Coordinates<
                 Grid,
                 Column,
-                detail::Dual<
-                        Grid::height, 
-                        Row
-                >::value
+                detail::dual(Grid::height, Row)
         >
 {};
 
@@ -58,10 +49,7 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 :
         board::Coordinates<
                 Grid,
-                detail::Dual<
-                        Grid::width, 
-                        Column
-                >::value,
+                detail::dual(Grid::width, Column),
                 Row
         >
 {};
@@ -72,14 +60,8 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
 :
         board::Coordinates<
                 Grid,
-                detail::Dual<
-                        Grid::height, 
-                        Row
-                >::value,
-                detail::Dual<
-                        Grid::width, 
-                        Column
-                >::value
+                detail::dual(Grid::height, Row),
+                detail::dual(Grid::width, Column)
         >
 {};
 
