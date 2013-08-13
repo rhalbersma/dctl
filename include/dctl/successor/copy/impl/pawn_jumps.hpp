@@ -13,7 +13,7 @@
 #include <dctl/angle/degrees.hpp>
 #include <dctl/angle/transform.hpp>
 #include <dctl/bit/bit.hpp>
-#include <dctl/board/compass.hpp>
+#include <dctl/angle/compass.hpp>
 #include <dctl/board/iterator.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/rules/traits.hpp>
@@ -36,7 +36,7 @@ private:
         using KingJumps = copy<Color, pieces::king, select::jumps, Position, Sequence>;
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
-        using Compass = board::Compass<Color, Board>;
+        using Compass = angle::Compass<Color, Board>;
         using State = Propagate<select::jumps, Position>;
 
         template<class Direction, class Angle>
@@ -106,24 +106,24 @@ private:
         // overload for pawns that jump in the 2 forward diagonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::up) const
         {
-                serialize<typename Compass::left_up >(active_pawns);
-                serialize<typename Compass::right_up>(active_pawns);
+                serialize< angle::Degrees< Compass::left_up  > >(active_pawns);
+                serialize< angle::Degrees< Compass::right_up > >(active_pawns);
         }
 
         // overload for pawns that jump in the 2 backward diagonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::down) const
         {
-                serialize<typename Compass::left_down >(active_pawns);
-                serialize<typename Compass::right_down>(active_pawns);
+                serialize< angle::Degrees< Compass::left_down  > >(active_pawns);
+                serialize< angle::Degrees< Compass::right_down > >(active_pawns);
         }
 
         // overload for pawns that jump in the 4 orthogonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::orth) const
         {
-                serialize<typename Compass::left >(active_pawns);
-                serialize<typename Compass::right>(active_pawns);
-                serialize<typename Compass::up   >(active_pawns);
-                serialize<typename Compass::down >(active_pawns);
+                serialize< angle::Degrees< Compass::left  > >(active_pawns);
+                serialize< angle::Degrees< Compass::right > >(active_pawns);
+                serialize< angle::Degrees< Compass::up    > >(active_pawns);
+                serialize< angle::Degrees< Compass::down  > >(active_pawns);
         }
 
         template<class Direction>
@@ -278,14 +278,14 @@ private:
         template<class Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::up) const
         {
-                return scan< mirror< Direction, typename Compass::up > >(jumper);
+                return scan< mirror< Direction, angle::Degrees< Compass::up > > >(jumper);
         }
 
         // overload for pawns that turn in the 1 mirrored backward direction
         template<class Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::down) const
         {
-                return scan< mirror< Direction, typename Compass::down > >(jumper);
+                return scan< mirror< Direction, angle::Degrees< Compass::down > > >(jumper);
         }
 
         // overload for pawns that turn in the remaining 4 diagonal or orthogonal directions

@@ -18,8 +18,8 @@ using OrthogonalAngles = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsOrthogonal, T, OrthogonalAngles)
 {
-        BOOST_MPL_ASSERT    (( is_orthogonal<T> ));
-        BOOST_MPL_ASSERT_NOT(( is_diagonal  <T> ));
+        BOOST_STATIC_ASSERT( is_orthogonal(T::value));
+        BOOST_STATIC_ASSERT(!is_diagonal  (T::value));
 }
 
 using DiagonalAngles = boost::mpl::vector
@@ -29,8 +29,8 @@ using DiagonalAngles = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsDiagonal, T, DiagonalAngles)
 {
-        BOOST_MPL_ASSERT    (( is_diagonal  <T> ));
-        BOOST_MPL_ASSERT_NOT(( is_orthogonal<T> ));
+        BOOST_STATIC_ASSERT( is_diagonal  (T::value));
+        BOOST_STATIC_ASSERT(!is_orthogonal(T::value));
 }
 
 using UpAngles = boost::mpl::vector
@@ -40,8 +40,8 @@ using UpAngles = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsUp, T, UpAngles)
 {
-        BOOST_MPL_ASSERT    (( is_up  <T> ));
-        BOOST_MPL_ASSERT_NOT(( is_down<T> ));
+        BOOST_STATIC_ASSERT( is_up  (T::value));
+        BOOST_STATIC_ASSERT(!is_down(T::value));
 }
 
 using DownAngles = boost::mpl::vector
@@ -51,8 +51,8 @@ using DownAngles = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsDown, T, DownAngles)
 {
-        BOOST_MPL_ASSERT    (( is_down<T> ));
-        BOOST_MPL_ASSERT_NOT(( is_up  <T> ));
+        BOOST_STATIC_ASSERT( is_down(T::value));
+        BOOST_STATIC_ASSERT(!is_up  (T::value));
 }
 
 using LeftAngles = boost::mpl::vector
@@ -62,8 +62,8 @@ using LeftAngles = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsLeft, T, LeftAngles)
 {
-        BOOST_MPL_ASSERT    (( is_left <T> ));
-        BOOST_MPL_ASSERT_NOT(( is_right<T> ));
+        BOOST_STATIC_ASSERT( is_left (T::value));
+        BOOST_STATIC_ASSERT(!is_right(T::value));
 }
 
 using RightAngles = boost::mpl::vector
@@ -73,8 +73,8 @@ using RightAngles = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsRight, T, RightAngles)
 {
-        BOOST_MPL_ASSERT    (( is_right<T> ));
-        BOOST_MPL_ASSERT_NOT(( is_left <T> ));
+        BOOST_STATIC_ASSERT( is_right(T::value));
+        BOOST_STATIC_ASSERT(!is_left (T::value));
 }
 
 using PositiveAngles = boost::mpl::vector
@@ -84,8 +84,8 @@ using PositiveAngles = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsPositive, T, PositiveAngles)
 {
-        BOOST_MPL_ASSERT    (( is_positive<T> ));
-        BOOST_MPL_ASSERT_NOT(( is_negative<T> ));
+        BOOST_STATIC_ASSERT( is_positive(T::value));
+        BOOST_STATIC_ASSERT(!is_negative(T::value));
 }
 
 using NegativeAngles = boost::mpl::vector
@@ -95,8 +95,8 @@ using NegativeAngles = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsNegative, T, NegativeAngles)
 {
-        BOOST_MPL_ASSERT    (( is_negative<T> ));
-        BOOST_MPL_ASSERT_NOT(( is_positive<T> ));
+        BOOST_STATIC_ASSERT( is_negative(T::value));
+        BOOST_STATIC_ASSERT(!is_positive(T::value));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

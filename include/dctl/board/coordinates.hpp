@@ -17,7 +17,7 @@ struct Coordinates
         static constexpr auto row = R;
         static constexpr auto col = C;
 
-        using type = Coordinates<grid, R, C>;
+        using type = Coordinates<grid, row, col>;
 };
 
 template<class SQ>

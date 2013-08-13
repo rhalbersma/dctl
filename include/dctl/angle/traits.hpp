@@ -1,19 +1,9 @@
 #pragma once
-#include <boost/mpl/arithmetic.hpp>     // divides, modulus
-#include <boost/mpl/comparison.hpp>     // equal_to, not_equal_to
-#include <boost/mpl/int.hpp>            // int_
-#include <boost/mpl/logical.hpp>        // not_, and_, or_
-#include <dctl/angle/degrees.hpp>       // L090, D090, D180
-#include <dctl/angle/traits_fwd.hpp>    // is_orthogonal, is_diagonal, is_up, is_down, is_left, is_right, is_positive, is_negative (primary template definitions)
-#include <dctl/angle/transform.hpp>	// rotate
 
 namespace dctl {
 namespace angle {
-namespace lazy {
 
 /*
-
-         <-- LEAST SIGNIFICANT BITS
 
                 D090 = L090
                      |
@@ -27,107 +17,55 @@ namespace lazy {
                      |
                 D270 = R090
 
-          MOST SIGNIFICANT BITS -->
-
 */
 
-// NOTE: because is_orthogonal, is_diagonal, is_up, is_down, is_left, is_right, is_positive, is_negative 
-// are LAZY metafunctions, their primary template definitions need to have been seen at this point
+template<class T>
+constexpr bool is_orthogonal(T const& t)
+{
+        return t % 90 == 0;
+}
 
-// partial specialization definitions
+template<class T>
+constexpr bool is_diagonal(T const& t)
+{
+        return t % 90 == 45;
+}
 
-template<int N>
-struct is_orthogonal< Degrees<N> >
-:
-        boost::mpl::equal_to<
-                boost::mpl::modulus<
-                        boost::mpl::int_<N>,
-                        boost::mpl::int_<D090::value>
-                >,
-                boost::mpl::int_<0>
-        >
-{};
+template<class T>
+constexpr bool is_up(T const& t)
+{
+        return 0 < t && t < 180;
+}
 
-template<int N>
-struct is_diagonal< Degrees<N> >
-:
-        boost::mpl::not_< is_orthogonal< Degrees<N> > >
-{};
+template<class T>
+constexpr bool is_down(T const& t)
+{
+        return 180 < t;
+}
 
-template<int N>
-struct is_up< Degrees<N> >
-:
-        boost::mpl::and_<
-                boost::mpl::equal_to<
-                        boost::mpl::divides<
-                                boost::mpl::int_<N>,
-                                boost::mpl::int_<D180::value>
-                        >,
-                        boost::mpl::int_<0>
-                >,
-                boost::mpl::not_equal_to<
-                        boost::mpl::modulus<
-                                boost::mpl::int_<N>,
-                                boost::mpl::int_<D180::value>
-                        >,
-                        boost::mpl::int_<0>
-                >
-        >
-{};
+template<class T>
+constexpr bool is_left(T const& t)
+{
+        return 90 < t && t < 270;
+}
 
-template<int N>
-struct is_down< Degrees<N> >
-:
-        boost::mpl::and_<
-                boost::mpl::not_equal_to<
-                        boost::mpl::divides<
-                                boost::mpl::int_<N>,
-                                boost::mpl::int_<D180::value>
-                        >,
-                        boost::mpl::int_<0>
-                >,
-                boost::mpl::not_equal_to<
-                        boost::mpl::modulus<
-                                boost::mpl::int_<N>,
-                                boost::mpl::int_<D180::value>
-                        >,
-                        boost::mpl::int_<0>
-                >
-        >
-{};
+template<class T>
+constexpr bool is_right(T const& t)
+{
+        return 270 < t || (0 <= t && t < 90);
+}
 
-template<int N>
-struct is_left< Degrees<N> >
-:
-        is_down< mpl::lazy::rotate< Degrees<N>, L090 > >
-{};
+template<class T>
+constexpr bool is_positive(T const& t)
+{
+        return 0 < t && t <= 180;
+}
 
-template<int N>
-struct is_right< Degrees<N> >
-:
-        is_up< mpl::lazy::rotate< Degrees<N>, L090 > >
-{};
+template<class T>
+constexpr bool is_negative(T const& t)
+{
+        return t == 0 || 180 < t;
+}
 
-template<int N>
-struct is_positive< Degrees<N> >
-:
-        boost::mpl::or_<
-                is_up< Degrees<N> >,
-                boost::mpl::and_<
-                        is_left< Degrees<N> >,
-                        boost::mpl::not_<
-                                is_down< Degrees<N> >
-                        >
-                >
-        >
-{};
-
-template<int N>
-struct is_negative< Degrees<N> >
-:
-        boost::mpl::not_< is_positive< Degrees<N> > >
-{};
-
-}       // namespace lazy
 }       // namespace angle
 }       // namespace dctl

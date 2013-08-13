@@ -18,10 +18,16 @@ constexpr T abs_modulus(T const& n, T const& d)
 
 }       // detail
 
+template<class T>
+constexpr T make_angle(T const& n)
+{
+        return detail::abs_modulus(n, 360);
+}
+
 template<int N>
 struct Degrees
 {
-        static constexpr auto value = detail::abs_modulus(N, 360);
+        static constexpr auto value = make_angle(N);
         static_assert(0 <= value && value < 360, "Angles have to lie in the range [0, 360)");
 
         using type = Degrees<value>;

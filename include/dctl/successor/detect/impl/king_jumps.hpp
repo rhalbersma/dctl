@@ -5,7 +5,7 @@
 #include <dctl/successor/select/jumps.hpp>
 
 #include <dctl/bit/bit.hpp>
-#include <dctl/board/compass.hpp>
+#include <dctl/angle/compass.hpp>
 #include <dctl/board/patterns.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
@@ -23,7 +23,7 @@ struct detect<Color, pieces::king, select::jumps, Position, Range>
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
-        using Compass = board::Compass<Color, Board>;
+        using Compass = angle::Compass<Color, Board>;
         using State = Propagate<select::jumps, Position>;
 
         // representation
@@ -65,10 +65,10 @@ private:
         bool branch_dispatch(BitBoard active_kings, rules::directions::diag) const
         {
                 return (
-                        parallelize<typename Compass::left_up   >(active_kings) ||
-                        parallelize<typename Compass::right_up  >(active_kings) ||
-                        parallelize<typename Compass::left_down >(active_kings) ||
-                        parallelize<typename Compass::right_down>(active_kings)
+                        parallelize< angle::Degrees< Compass::left_up    > >(active_kings) ||
+                        parallelize< angle::Degrees< Compass::right_up   > >(active_kings) ||
+                        parallelize< angle::Degrees< Compass::left_down  > >(active_kings) ||
+                        parallelize< angle::Degrees< Compass::right_down > >(active_kings)
                 );
         }
 
@@ -76,10 +76,10 @@ private:
         bool branch_dispatch(BitBoard active_kings, rules::directions::orth) const
         {
                 return (
-                        parallelize<typename Compass::left >(active_kings) ||
-                        parallelize<typename Compass::right>(active_kings) ||
-                        parallelize<typename Compass::up   >(active_kings) ||
-                        parallelize<typename Compass::down >(active_kings)
+                        parallelize< angle::Degrees< Compass::left  > >(active_kings) ||
+                        parallelize< angle::Degrees< Compass::right > >(active_kings) ||
+                        parallelize< angle::Degrees< Compass::up    > >(active_kings) ||
+                        parallelize< angle::Degrees< Compass::down  > >(active_kings)
                 );
         }
 

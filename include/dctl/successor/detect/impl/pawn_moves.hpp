@@ -5,7 +5,7 @@
 #include <dctl/successor/select/moves.hpp>
 
 #include <dctl/bit/bit.hpp>
-#include <dctl/board/compass.hpp>
+#include <dctl/angle/compass.hpp>
 #include <dctl/board/patterns.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
@@ -21,7 +21,7 @@ struct detect<Color, pieces::pawn, select::moves, Position, Range>
 {
 private:
         using Board = typename Position::board_type;
-        using Compass = board::Compass<Color, Board>;
+        using Compass = angle::Compass<Color, Board>;
         using State = Propagate<select::moves, Position>;
 
         // representation
@@ -47,8 +47,8 @@ private:
         bool branch(BitBoard active_pawns) const
         {
                 return (
-                        parallelize<typename Compass::left_up >(active_pawns) ||
-                        parallelize<typename Compass::right_up>(active_pawns)
+                        parallelize< angle::Degrees< Compass::left_up  > >(active_pawns) ||
+                        parallelize< angle::Degrees< Compass::right_up > >(active_pawns)
                 );
         }
 
