@@ -6,7 +6,7 @@
 #include <dctl/pieces/king.hpp>           // king
 
 #include <dctl/bit/bit.hpp>
-#include <dctl/board/compass.hpp>
+#include <dctl/angle/compass.hpp>
 #include <dctl/board/iterator.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
@@ -28,7 +28,7 @@ private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Move = typename Sequence::value_type;
-        using Compass = board::Compass<Color, Board>;
+        using Compass = angle::Compass<Color, Board>;
         using State = Propagate<select::moves, Position>;
 
         // representation
@@ -63,10 +63,10 @@ private:
 
         void branch(BitIndex from_sq) const
         {
-                find<typename Compass::left_down >(from_sq);
-                find<typename Compass::right_down>(from_sq);
-                find<typename Compass::left_up   >(from_sq);
-                find<typename Compass::right_up  >(from_sq);
+                find< angle::Degrees< Compass::left_down  > >(from_sq);
+                find< angle::Degrees< Compass::right_down > >(from_sq);
+                find< angle::Degrees< Compass::left_up    > >(from_sq);
+                find< angle::Degrees< Compass::right_up   > >(from_sq);
         }
 
         template<class Direction>

@@ -10,7 +10,7 @@
 #include <dctl/angle/degrees.hpp>                       // Degrees
 #include <dctl/angle/transform.hpp>                     // rotate
 #include <dctl/bit/bit.hpp>
-#include <dctl/board/compass.hpp>
+#include <dctl/angle/compass.hpp>
 #include <dctl/board/iterator.hpp>                      // Next
 #include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/utility/int.hpp>                         // BitBoard, BitIndex
@@ -32,7 +32,7 @@ private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Move = typename Sequence::value_type;
-        using Compass = board::Compass<Color, Board>;
+        using Compass = angle::Compass<Color, Board>;
         using State = Propagate<select::jumps, Position>;
 
         template<class Direction, class Angle>
@@ -115,19 +115,19 @@ private:
         // overload for kings that jump in the 4 diagonal directions
         void branch_dispatch(BitIndex jumper, rules::directions::diag) const
         {
-                find_first<typename Compass::left_up   >(jumper);
-                find_first<typename Compass::right_up  >(jumper);
-                find_first<typename Compass::left_down >(jumper);
-                find_first<typename Compass::right_down>(jumper);
+                find_first< angle::Degrees< Compass::left_up    > >(jumper);
+                find_first< angle::Degrees< Compass::right_up   > >(jumper);
+                find_first< angle::Degrees< Compass::left_down  > >(jumper);
+                find_first< angle::Degrees< Compass::right_down > >(jumper);
         }
 
         // overload for kings that jump in the 4 orthogonal directions
         void branch_dispatch(BitIndex jumper, rules::directions::orth) const
         {
-                find_first<typename Compass::left >(jumper);
-                find_first<typename Compass::right>(jumper);
-                find_first<typename Compass::up   >(jumper);
-                find_first<typename Compass::down >(jumper);
+                find_first< angle::Degrees< Compass::left  > >(jumper);
+                find_first< angle::Degrees< Compass::right > >(jumper);
+                find_first< angle::Degrees< Compass::up    > >(jumper);
+                find_first< angle::Degrees< Compass::down  > >(jumper);
         }
 
         template<class Direction>

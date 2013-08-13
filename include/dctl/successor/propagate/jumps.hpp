@@ -305,7 +305,7 @@ private:
                         std::integral_constant<
                                 bool,
                                 boost::mpl::and_<
-                                        angle::lazy::is_orthogonal<Direction>,
+                                        boost::mpl::bool_< angle::is_orthogonal(Direction::value) >,
                                         std::is_same<typename
                                                 rules::orthogonality::king_jump<Rules>::type,
                                                 rules::orthogonality::relative

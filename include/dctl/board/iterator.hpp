@@ -10,8 +10,8 @@ struct Increment
         template<class BidirectionalIterator>
         void operator()(BidirectionalIterator& square) const
         {
-                ShiftAssign< typename
-                        angle::lazy::is_positive<Direction>::type,
+                ShiftAssign<
+                        boost::mpl::bool_< angle::is_positive(Direction::value) >,
                         shift_size<Board, Direction>
                 >()(square);
         }
@@ -24,7 +24,7 @@ struct Decrement
         void operator()(BidirectionalIterator& square) const
         {
                 ShiftAssign< typename
-                        angle::lazy::is_negative<Direction>::type,
+                        boost::mpl::bool_< angle::is_negative(Direction::value) >,
                         shift_size<Board, Direction>
                 >()(square);
         }

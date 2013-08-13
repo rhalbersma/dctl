@@ -6,6 +6,7 @@
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 #include <boost/mpl/placeholders.hpp>   // _1
 #include <dctl/angle/traits.hpp>
+#include <dctl/angle/transform.hpp>
 #include <dctl/board/coordinates.hpp>
 #include <dctl/board/coordinates/transform.hpp>
 #include <dctl/board/dimensions.hpp>
@@ -174,14 +175,14 @@ struct is_jump_start
                 mpl::is_within_range<
                         boost::mpl::int_< Square2Coordinates< Square<Grid, SQ::value> >::type::row >, typename
                         boost::mpl::eval_if< 
-                                angle::lazy::is_up<Direction>, 
+                                boost::mpl::bool_< angle::is_up(Direction::value) >,
                                 Offset, 
                                 boost::mpl::int_<0> 
                         >::type,
                         boost::mpl::minus<
                                 boost::mpl::int_<Board::height>, typename
                                 boost::mpl::eval_if< 
-                                        angle::lazy::is_down<Direction>, 
+                                        boost::mpl::bool_< angle::is_down(Direction::value) >,
                                         Offset, 
                                         boost::mpl::int_<0> 
                                 >::type
@@ -191,14 +192,14 @@ struct is_jump_start
                 mpl::is_within_range<
                         boost::mpl::int_< Square2Coordinates< Square<Grid, SQ::value> >::type::col >, typename
                         boost::mpl::eval_if< 
-                                angle::lazy::is_left<Direction>, 
+                                boost::mpl::bool_< angle::is_left(Direction::value) >,
                                 Offset, 
                                 boost::mpl::int_<0> 
                         >::type,
                         boost::mpl::minus<
                                 boost::mpl::int_<Board::width>, typename
                                 boost::mpl::eval_if< 
-                                        angle::lazy::is_right<Direction>, 
+                                        boost::mpl::bool_< angle::is_right(Direction::value) >,
                                         Offset, 
                                         boost::mpl::int_<0> 
                                 >::type
@@ -216,7 +217,7 @@ struct is_jump_start
                 Board, Direction, SQ, typename
                 Board::ExternalGrid, typename
                 boost::mpl::eval_if<
-                        angle::lazy::is_diagonal<Direction>,
+                        boost::mpl::bool_< angle::is_diagonal(Direction::value) >,
                         boost::mpl::int_<2>,
                         boost::mpl::int_<4>
                 >::type

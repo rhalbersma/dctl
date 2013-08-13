@@ -36,8 +36,8 @@ struct Fill
         template<class T>
         T operator()(T copy, T propagator) const
         {
-                return detail::fill< typename
-                        angle::lazy::is_positive<Direction>::type,
+                return detail::fill<
+                        boost::mpl::bool_< angle::is_positive(Direction::value) >,
                         shift_size<Board, Direction>
                 >(copy, propagator);
         }

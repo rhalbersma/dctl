@@ -6,7 +6,7 @@
 #include <dctl/pieces/king.hpp>
 
 #include <dctl/bit/bit.hpp>
-#include <dctl/board/compass.hpp>
+#include <dctl/angle/compass.hpp>
 #include <dctl/board/patterns.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
@@ -26,7 +26,7 @@ struct count<Color, pieces::king, select::moves, Position>
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
-        using Compass = board::Compass<Color, Board>;
+        using Compass = angle::Compass<Color, Board>;
         using State = Propagate<select::moves, Position>;
 
         // representation
@@ -52,10 +52,10 @@ private:
         int branch(BitBoard active_kings) const
         {
                 return (
-                        parallelize<typename Compass::left_down >(active_kings) +
-                        parallelize<typename Compass::right_down>(active_kings) +
-                        parallelize<typename Compass::left_up   >(active_kings) +
-                        parallelize<typename Compass::right_up  >(active_kings)
+                        parallelize< angle::Degrees< Compass::left_down  > >(active_kings) +
+                        parallelize< angle::Degrees< Compass::right_down > >(active_kings) +
+                        parallelize< angle::Degrees< Compass::left_up    > >(active_kings) +
+                        parallelize< angle::Degrees< Compass::right_up   > >(active_kings)
                 );
         }
 

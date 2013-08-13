@@ -9,9 +9,9 @@ namespace lazy {
 namespace detail {
 
 template<class T>
-constexpr T dual(T const& size, T const& n)
+constexpr T reverse_index(T const& n, T const& i)
 {
-        return size - n - 1;
+        return n - i - 1;
 }
 
 }       // namespace detail
@@ -39,7 +39,7 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
         board::Coordinates<
                 Grid,
                 Column,
-                detail::dual(Grid::height, Row)
+                detail::reverse_index(Grid::height, Row)
         >
 {};
 
@@ -49,7 +49,7 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
 :
         board::Coordinates<
                 Grid,
-                detail::dual(Grid::width, Column),
+                detail::reverse_index(Grid::width, Column),
                 Row
         >
 {};
@@ -60,8 +60,8 @@ struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
 :
         board::Coordinates<
                 Grid,
-                detail::dual(Grid::height, Row),
-                detail::dual(Grid::width, Column)
+                detail::reverse_index(Grid::height, Row),
+                detail::reverse_index(Grid::width, Column)
         >
 {};
 
