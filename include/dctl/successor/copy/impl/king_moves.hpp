@@ -63,13 +63,13 @@ private:
 
         void branch(BitIndex from_sq) const
         {
-                find< angle::Degrees< Compass::left_down  > >(from_sq);
-                find< angle::Degrees< Compass::right_down > >(from_sq);
-                find< angle::Degrees< Compass::left_up    > >(from_sq);
-                find< angle::Degrees< Compass::right_up   > >(from_sq);
+                find< Compass::left_down  >(from_sq);
+                find< Compass::right_down >(from_sq);
+                find< Compass::left_up    >(from_sq);
+                find< Compass::right_up   >(from_sq);
         }
 
-        template<class Direction>
+        template<int Direction>
         void find(BitIndex from_sq) const
         {
                 // tag dispatching on king range
@@ -77,7 +77,7 @@ private:
         }
 
         // overload for short ranged kings
-        template<class Direction>
+        template<int Direction>
         void find_dispatch(BitIndex from_sq, rules::range::distance_1) const
         {
                 if (auto const dest_sq = Next<Board, Direction>()(from_sq) & propagate_.path())
@@ -85,7 +85,7 @@ private:
         }
 
         // overload for long ranged kings
-        template<class Direction>
+        template<int Direction>
         void find_dispatch(BitIndex from_sq, rules::range::distance_N) const
         {
                 for (

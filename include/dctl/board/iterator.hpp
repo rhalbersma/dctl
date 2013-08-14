@@ -1,36 +1,31 @@
 #pragma once
 #include <dctl/angle/traits.hpp>        // is_negative, is_positive
-#include <dctl/board/shift.hpp>         // shift_size, ShiftAssign
+#include <dctl/board/nested.hpp>        // shift_size
+#include <dctl/board/shift.hpp>         // ShiftAssign
 
 namespace dctl {
 
-template<class Board, class Direction>
+template<class Board, int Direction>
 struct Increment
 {
         template<class BidirectionalIterator>
         void operator()(BidirectionalIterator& square) const
         {
-                ShiftAssign<
-                        boost::mpl::bool_< angle::is_positive(Direction::value) >,
-                        shift_size<Board, Direction>
-                >()(square);
+                ShiftAssign< angle::is_positive(Direction) >()(square, board::shift_size<Board, Direction>::value);
         }
 };
 
-template<class Board, class Direction>
+template<class Board, int Direction>
 struct Decrement
 {
         template<class BidirectionalIterator>
         void operator()(BidirectionalIterator& square) const
         {
-                ShiftAssign< typename
-                        boost::mpl::bool_< angle::is_negative(Direction::value) >,
-                        shift_size<Board, Direction>
-                >()(square);
+                ShiftAssign< angle::is_negative(Direction) >()(square, board::shift_size<Board, Direction>::value);
         }
 };
 
-template<class Board, class Direction, int N>
+template<class Board, int Direction, int N>
 struct Advance
 {
         template<class BidirectionalIterator>
@@ -41,7 +36,7 @@ struct Advance
         }
 };
 
-template<class Board, class Direction, int N>
+template<class Board, int Direction, int N>
 struct Retreat
 {
         template<class BidirectionalIterator>
@@ -52,7 +47,7 @@ struct Retreat
         }
 };
 
-template<class Board, class Direction, int N = 1>
+template<class Board, int Direction, int N = 1>
 struct Next
 {
         template<class BidirectionalIterator>
@@ -63,7 +58,7 @@ struct Next
         }
 };
 
-template<class Board, class Direction, int N = 1>
+template<class Board, int Direction, int N = 1>
 struct Prev
 {
         template<class BidirectionalIterator>
