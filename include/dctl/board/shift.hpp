@@ -1,70 +1,65 @@
 #pragma once
-#include <boost/mpl/bool.hpp>           // false_, true_
-#include <boost/mpl/int.hpp>            // int_
 #include <dctl/angle/traits.hpp>
 
 namespace dctl {
-
-template<class Board, class Direction>
-using jump_start = typename Board::template jump_start<Direction>::type;
-
-template<class Board, class Direction>
-using shift_size = typename Board::template shift_size<Direction>::type;
+namespace {     // anonymous
 
 // left and right direction
 
-using L = boost::mpl::false_;
-using R = boost::mpl::true_;
+static constexpr auto L = false;
+static constexpr auto R = true;
+
+}               // anonymous
 
 // primary template
-template<class, class>
+template<bool>
 struct Shift;
 
-// partial specialization for bitwise shift-left
-template<class N>
-struct Shift<L, N>
+// explicit specialization for bitwise shift-left
+template<>
+struct Shift<L>
 {
         template<class T>
-        T operator()(T square) const
+        constexpr T operator()(T square, std::size_t n) const
         {
-                return square << N::value;
+                return square << n;
         }
 };
 
-// partial specialization for bitwise shift-right
-template<class N>
-struct Shift<R, N>
+// explicit specialization for bitwise shift-right
+template<>
+struct Shift<R>
 {
         template<class T>
-        T operator()(T square) const
+        constexpr T operator()(T square, std::size_t n) const
         {
-                return square >> N::value;
+                return square >> n;
         }
 };
 
 // primary template
-template<class, class>
+template<bool>
 struct ShiftAssign;
 
-// partial specialization for bitwise shift-left assignment
-template<class N>
-struct ShiftAssign<L, N>
+// explicit specialization for bitwise shift-left assignment
+template<>
+struct ShiftAssign<L>
 {
         template<class T>
-        void operator()(T& square) const
+        void operator()(T& square, std::size_t n) const
         {
-                square <<= N::value;
+                square <<= n;
         }
 };
 
-// partial specialization for bitwise shift-right assignment
-template<class N>
-struct ShiftAssign<R, N>
+// explicit specialization for bitwise shift-right assignment
+template<>
+struct ShiftAssign<R>
 {
         template<class T>
-        void operator()(T& square) const
+        void operator()(T& square, std::size_t n) const
         {
-                square >>= N::value;
+                square >>= n;
         }
 };
 

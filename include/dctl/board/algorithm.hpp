@@ -8,13 +8,13 @@ namespace loop {
 
 // Chess Programming Wiki, "Fill Loop" algorithm
 // http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
-template<class Sign, class N, class T>
-T fill(T copy, T propagator)
+template<bool Sign, class N, class T>
+T fill(T generator, T propagator)
 {
         T flood(0);
-        while (copy) {
-                flood |= copy;
-                copy = Shift<Sign, N>()(copy) & propagator;
+        while (generator) {
+                flood |= generator;
+                generator = Shift<Sign>()(generator, N::value) & propagator;
         }
         return flood;
 }
@@ -22,24 +22,24 @@ T fill(T copy, T propagator)
 }       // namespace loop
 
 // direction-wise flood-fill copy over propagator
-template<class Sign, class N, class T>
-T fill(T copy, T propagator)
+template<bool Sign, class N, class T>
+T fill(T generator, T propagator)
 {
-        return loop::fill<Sign, N>(copy, propagator);
+        return loop::fill<Sign, N>(generator, propagator);
 }
 
 }       // namespace detail
 
-template<class Board, class Direction>
+template<class Board, int Direction>
 struct Fill
 {
         template<class T>
-        T operator()(T copy, T propagator) const
+        T operator()(T generator, T propagator) const
         {
                 return detail::fill<
-                        boost::mpl::bool_< angle::is_positive(Direction::value) >,
-                        shift_size<Board, Direction>
-                >(copy, propagator);
+                        angle::is_positive(Direction),
+                        board::shift_size<Board, Direction>
+                >(generator, propagator);
         }
 };
 

@@ -5,23 +5,47 @@ namespace angle {
 namespace detail {
 
 template<class T>
-constexpr T abs(T const& t)
+constexpr T abs(T const& t) noexcept
 {
         return (t < 0)? -t : t;
 }
 
 template<class T>
-constexpr T abs_modulus(T const& n, T const& d)
+constexpr T abs_modulus(T const& n, T const& d) noexcept
 {
-        return n % d + ((n % d < 0)? detail::abs(d) : 0);
+        return n % d + ((n % d < 0)? detail::abs(d) : T{0});
 }
 
 }       // detail
 
 template<class T>
-constexpr T make_angle(T const& n)
+constexpr auto make_angle(T const& n) noexcept
 {
         return detail::abs_modulus(n, 360);
+}
+
+template<class T>
+constexpr bool is_angle(T const& n) noexcept
+{
+        return 0 <= n && n < 360;
+}
+
+template<class T>
+constexpr auto inverse(T const& alpha) noexcept
+{
+        return make_angle(-alpha);
+}
+
+template<class T>
+constexpr auto rotate(T const& alpha, T const& theta) noexcept
+{
+        return make_angle(alpha + theta);
+}
+
+template<class T>
+constexpr auto mirror(T const& alpha, T const& theta) noexcept
+{
+        return rotate(inverse(rotate(alpha, inverse(theta))), theta);
 }
 
 template<int N>
@@ -54,6 +78,8 @@ struct Degrees
 
 */
 
+// named multiples of 45 degrees
+
 using D000 = Degrees<  0>;
 using D045 = Degrees< 45>;
 using D090 = Degrees< 90>;
@@ -64,7 +90,7 @@ using D270 = Degrees<270>;
 using D315 = Degrees<315>;
 using D360 = Degrees<360>;
 
-// counterclockwise
+// counterclockwise (left)
 
 using L000 = D000;
 using L045 = D045;
@@ -72,7 +98,7 @@ using L090 = D090;
 using L135 = D135;
 using L180 = D180;
 
-// clockwise
+// clockwise (right)
 
 using R180 = D180;
 using R135 = D225;

@@ -34,22 +34,14 @@ public:
 
         using bit_type = BitBoard;
 
-        template<class Direction>
-        struct shift_size
-        :
-                ShiftSize<InternalGrid, Direction>
-        {};
+        template<int Direction>
+        using shift_size = ShiftSize<InternalGrid, Direction>;
 
-        template<class Direction>
-        struct jump_start
-        :
-                mask::init<
-                        mask::is_jump_start<
-                                Board, boost::mpl::_1,
-                                mpl::lazy::rotate< Direction, angle::Degrees<Edge::orientation> >
-                        >
-                >
-        {};
+        template<int Direction>
+        using jump_start = mask::init<
+                mask::is_jump_start< Board, boost::mpl::_1, angle::Degrees< angle::rotate(Direction, Edge::orientation)> >
+        >;
+        //angle::rotate(Direction, Edge::orientation)
 
         static int begin()
         {

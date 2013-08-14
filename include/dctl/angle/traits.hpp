@@ -20,49 +20,49 @@ namespace angle {
 */
 
 template<class T>
-constexpr bool is_orthogonal(T const& t)
+constexpr auto is_orthogonal(T const& t) noexcept
 {
         return t % 90 == 0;
 }
 
 template<class T>
-constexpr bool is_diagonal(T const& t)
+constexpr auto is_diagonal(T const& t) noexcept
 {
         return t % 90 == 45;
 }
 
 template<class T>
-constexpr bool is_up(T const& t)
+constexpr auto is_up(T const& t) noexcept
 {
         return 0 < t && t < 180;
 }
 
 template<class T>
-constexpr bool is_down(T const& t)
+constexpr auto is_down(T const& t) noexcept
 {
         return 180 < t;
 }
 
 template<class T>
-constexpr bool is_left(T const& t)
+constexpr auto is_left(T const& t) noexcept
 {
         return 90 < t && t < 270;
 }
 
 template<class T>
-constexpr bool is_right(T const& t)
+constexpr auto is_right(T const& t) noexcept
 {
         return 270 < t || (0 <= t && t < 90);
 }
 
 template<class T>
-constexpr bool is_positive(T const& t)
+constexpr auto is_positive(T const& t) noexcept
 {
         return 0 < t && t <= 180;
 }
 
 template<class T>
-constexpr bool is_negative(T const& t)
+constexpr auto is_negative(T const& t) noexcept
 {
         return t == 0 || 180 < t;
 }

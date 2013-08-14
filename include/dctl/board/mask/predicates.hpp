@@ -167,7 +167,7 @@ struct is_jump_group
 
 namespace detail {
 
-template<class Board, class Direction, class SQ, class Grid, class Offset>
+template<class Board, class SQ, int Direction, class Grid, class Offset>
 struct is_jump_start
 :
         boost::mpl::and_<
@@ -175,14 +175,14 @@ struct is_jump_start
                 mpl::is_within_range<
                         boost::mpl::int_< Square2Coordinates< Square<Grid, SQ::value> >::type::row >, typename
                         boost::mpl::eval_if< 
-                                boost::mpl::bool_< angle::is_up(Direction::value) >,
+                                boost::mpl::bool_< angle::is_up(Direction) >,
                                 Offset, 
                                 boost::mpl::int_<0> 
                         >::type,
                         boost::mpl::minus<
                                 boost::mpl::int_<Board::height>, typename
                                 boost::mpl::eval_if< 
-                                        boost::mpl::bool_< angle::is_down(Direction::value) >,
+                                        boost::mpl::bool_< angle::is_down(Direction) >,
                                         Offset, 
                                         boost::mpl::int_<0> 
                                 >::type
@@ -192,14 +192,14 @@ struct is_jump_start
                 mpl::is_within_range<
                         boost::mpl::int_< Square2Coordinates< Square<Grid, SQ::value> >::type::col >, typename
                         boost::mpl::eval_if< 
-                                boost::mpl::bool_< angle::is_left(Direction::value) >,
+                                boost::mpl::bool_< angle::is_left(Direction) >,
                                 Offset, 
                                 boost::mpl::int_<0> 
                         >::type,
                         boost::mpl::minus<
                                 boost::mpl::int_<Board::width>, typename
                                 boost::mpl::eval_if< 
-                                        boost::mpl::bool_< angle::is_right(Direction::value) >,
+                                        boost::mpl::bool_< angle::is_right(Direction) >,
                                         Offset, 
                                         boost::mpl::int_<0> 
                                 >::type
@@ -214,7 +214,7 @@ template<class Board, class SQ, class Direction>
 struct is_jump_start
 :
         detail::is_jump_start<
-                Board, Direction, SQ, typename
+                Board, SQ, Direction::value, typename
                 Board::ExternalGrid, typename
                 boost::mpl::eval_if<
                         boost::mpl::bool_< angle::is_diagonal(Direction::value) >,

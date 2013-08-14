@@ -74,8 +74,8 @@ private:
         bool branch_dispatch(BitBoard active_pawns, rules::directions::up) const
         {
                 return (
-                        parallelize< angle::Degrees< Compass::left_up  > >(active_pawns) ||
-                        parallelize< angle::Degrees< Compass::right_up > >(active_pawns)
+                        parallelize< Compass::left_up  >(active_pawns) ||
+                        parallelize< Compass::right_up >(active_pawns)
                 );
         }
 
@@ -83,8 +83,8 @@ private:
         bool branch_dispatch(BitBoard active_pawns, rules::directions::down) const
         {
                 return (
-                        parallelize< angle::Degrees< Compass::left_down  > >(active_pawns) ||
-                        parallelize< angle::Degrees< Compass::right_down > >(active_pawns)
+                        parallelize< Compass::left_down  >(active_pawns) ||
+                        parallelize< Compass::right_down >(active_pawns)
                 );
         }
 
@@ -92,14 +92,14 @@ private:
         bool branch_dispatch(BitBoard active_pawns, rules::directions::orth) const
         {
                 return (
-                        parallelize< angle::Degrees< Compass::left  > >(active_pawns) ||
-                        parallelize< angle::Degrees< Compass::right > >(active_pawns) ||
-                        parallelize< angle::Degrees< Compass::up    > >(active_pawns) ||
-                        parallelize< angle::Degrees< Compass::down  > >(active_pawns)
+                        parallelize< Compass::left  >(active_pawns) ||
+                        parallelize< Compass::right >(active_pawns) ||
+                        parallelize< Compass::up    >(active_pawns) ||
+                        parallelize< Compass::down  >(active_pawns)
                 );
         }
 
-        template<class Direction>
+        template<int Direction>
         bool parallelize(BitBoard active_pawns) const
         {
                 return !bit::empty(

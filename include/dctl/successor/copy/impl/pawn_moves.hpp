@@ -53,11 +53,11 @@ public:
 private:
         void branch(BitBoard active_pawns) const
         {
-                copy_if< angle::Degrees< Compass::left_up  > >(active_pawns);
-                copy_if< angle::Degrees< Compass::right_up > >(active_pawns);
+                copy_if< Compass::left_up  >(active_pawns);
+                copy_if< Compass::right_up >(active_pawns);
         }
 
-        template<class Direction>
+        template<int Direction>
         void copy_if(BitBoard active_pawns) const
         {
                 transform<Direction>(
@@ -68,7 +68,7 @@ private:
                 );
         }
 
-        template<class Direction>
+        template<int Direction>
         void transform(BitBoard movers) const
         {
                 for (; movers; bit::pop_front(movers)) {

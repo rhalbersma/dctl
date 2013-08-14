@@ -51,14 +51,14 @@ private:
         bool branch(BitBoard active_kings) const
         {
                 return (
-                        parallelize< angle::Degrees< Compass::left_down  > >(active_kings) ||
-                        parallelize< angle::Degrees< Compass::right_down > >(active_kings) ||
-                        parallelize< angle::Degrees< Compass::left_up    > >(active_kings) ||
-                        parallelize< angle::Degrees< Compass::right_up   > >(active_kings)
+                        parallelize< Compass::left_down  >(active_kings) ||
+                        parallelize< Compass::right_down >(active_kings) ||
+                        parallelize< Compass::left_up    >(active_kings) ||
+                        parallelize< Compass::right_up   >(active_kings)
                 );
         }
 
-        template<class Direction>
+        template<int Direction>
         bool parallelize(BitBoard active_kings) const
         {
                 return !bit::empty(

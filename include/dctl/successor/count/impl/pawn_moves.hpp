@@ -51,12 +51,12 @@ private:
         int branch(BitBoard active_pawns) const
         {
                 return (
-                        parallelize< angle::Degrees< Compass::left_up  > >(active_pawns) +
-                        parallelize< angle::Degrees< Compass::right_up > >(active_pawns)
+                        parallelize< Compass::left_up  >(active_pawns) +
+                        parallelize< Compass::right_up >(active_pawns)
                 );
         }
 
-        template<class Direction>
+        template<int Direction>
         int parallelize(BitBoard active_pawns) const
         {
                 return bit::size(

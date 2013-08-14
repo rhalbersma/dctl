@@ -10,7 +10,7 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/successor/value.hpp>
+#include <dctl/board/nested.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/unary_projections.hpp>
@@ -19,6 +19,7 @@
 #include <dctl/rules/types.hpp>
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/jumps.hpp>
+#include <dctl/successor/value.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/total_order.hpp>
 
@@ -139,13 +140,13 @@ public:
 
         // queries
 
-        template<class Direction>
+        template<int Direction>
         BitBoard targets_with_king() const
         {
                 return remaining_targets<Direction>() & Prev<Board, Direction>()(path());
         }
 
-        template<class Direction>
+        template<int Direction>
         BitBoard targets_with_pawn() const
         {
                 return remaining_targets_ & Prev<Board, Direction>()(path());
@@ -156,10 +157,10 @@ public:
                 return not_occupied_;
         }
 
-        template<class Direction>
+        template<int Direction>
         BitBoard path() const
         {
-                return path() & jump_start<Board, Direction>::value;
+                return path() & board::jump_start<Board, Direction>::value;
         }
 
         bool is_king(BitIndex target_sq) const
@@ -297,7 +298,7 @@ private:
                 );
         }
 
-        template<class Direction>
+        template<int Direction>
         BitBoard remaining_targets() const
         {
         	// tag dispatching based on direction and king jump orthogonality
@@ -305,7 +306,7 @@ private:
                         std::integral_constant<
                                 bool,
                                 boost::mpl::and_<
-                                        boost::mpl::bool_< angle::is_orthogonal(Direction::value) >,
+                                        boost::mpl::bool_< angle::is_orthogonal(Direction) >,
                                         std::is_same<typename
                                                 rules::orthogonality::king_jump<Rules>::type,
                                                 rules::orthogonality::relative

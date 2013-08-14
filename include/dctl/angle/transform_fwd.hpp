@@ -8,14 +8,14 @@ namespace lazy {
 
 // partial specialization declarations
 
-template<int N>
-struct inverse< angle::Degrees<N> >;
+template<int Alpha>
+struct inverse< angle::Degrees<Alpha> >;
 
-template<int N1, int N2>
-struct rotate< angle::Degrees<N1>, angle::Degrees<N2> >;
+template<int Alpha, int Theta>
+struct rotate< angle::Degrees<Alpha>, angle::Degrees<Theta> >;
 
-template<int N1, int N2>
-struct mirror< angle::Degrees<N1>, angle::Degrees<N2> >;
+template<int Alpha, int Theta>
+struct mirror< angle::Degrees<Alpha>, angle::Degrees<Theta> >;
 
 }       // namespace lazy
 }	// namespace mpl

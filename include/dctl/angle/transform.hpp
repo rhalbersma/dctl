@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle/degrees.hpp>       // Degrees
+#include <dctl/angle/degrees.hpp>       // Degrees, inverse, rotate, mirror (constexpr function templates)
 #include <dctl/angle/transform_fwd.hpp> // inverse, rotate, mirror (partial specialization declarations)
 
 namespace dctl {
@@ -11,30 +11,22 @@ namespace lazy {
 
 // partial specialization definitions
 
-template<int Object>
-struct inverse< angle::Degrees<Object> >
+template<int Alpha>
+struct inverse< angle::Degrees<Alpha> >
 :
-        angle::Degrees< -Object >
+        angle::Degrees< angle::inverse(Alpha) >
 {};
 
-template<int Object, int Angle>
-struct rotate< angle::Degrees<Object>, angle::Degrees<Angle> >
+template<int Alpha, int Theta>
+struct rotate< angle::Degrees<Alpha>, angle::Degrees<Theta> >
 :
-        angle::Degrees< Object + Angle >
+        angle::Degrees< angle::rotate(Alpha, Theta) >
 {};
 
-template<int Object, int Axis>
-struct mirror< angle::Degrees<Object>, angle::Degrees<Axis> >
+template<int Alpha, int Theta>
+struct mirror< angle::Degrees<Alpha>, angle::Degrees<Theta> >
 :
-        rotate<
-                inverse<
-                        rotate<
-                                angle::Degrees<Object>,
-                                inverse< angle::Degrees<Axis> >
-                        >
-                >,
-                angle::Degrees<Axis>
-        >
+        angle::Degrees< angle::mirror(Alpha, Theta) >
 {};
 
 }       // namespace lazy

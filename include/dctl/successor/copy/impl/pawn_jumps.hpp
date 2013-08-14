@@ -39,12 +39,6 @@ private:
         using Compass = angle::Compass<Color, Board>;
         using State = Propagate<select::jumps, Position>;
 
-        template<class Direction, class Angle>
-        using rotate = typename mpl::lazy::rotate< Direction, Angle >::type;
-
-        template<class DirectionLeft, class DirectionRight>
-        using mirror = typename mpl::lazy::mirror< DirectionLeft, DirectionRight >::type;
-
         // representation
 
         State& capture_;
@@ -106,27 +100,27 @@ private:
         // overload for pawns that jump in the 2 forward diagonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::up) const
         {
-                serialize< angle::Degrees< Compass::left_up  > >(active_pawns);
-                serialize< angle::Degrees< Compass::right_up > >(active_pawns);
+                serialize< Compass::left_up  >(active_pawns);
+                serialize< Compass::right_up >(active_pawns);
         }
 
         // overload for pawns that jump in the 2 backward diagonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::down) const
         {
-                serialize< angle::Degrees< Compass::left_down  > >(active_pawns);
-                serialize< angle::Degrees< Compass::right_down > >(active_pawns);
+                serialize< Compass::left_down  >(active_pawns);
+                serialize< Compass::right_down >(active_pawns);
         }
 
         // overload for pawns that jump in the 4 orthogonal directions
         void branch_dispatch(BitBoard active_pawns, rules::directions::orth) const
         {
-                serialize< angle::Degrees< Compass::left  > >(active_pawns);
-                serialize< angle::Degrees< Compass::right > >(active_pawns);
-                serialize< angle::Degrees< Compass::up    > >(active_pawns);
-                serialize< angle::Degrees< Compass::down  > >(active_pawns);
+                serialize< Compass::left  >(active_pawns);
+                serialize< Compass::right >(active_pawns);
+                serialize< Compass::up    >(active_pawns);
+                serialize< Compass::down  >(active_pawns);
         }
 
-        template<class Direction>
+        template<int Direction>
         void serialize(BitBoard active_pawns) const
         {
                 for (
@@ -137,7 +131,7 @@ private:
                         find<Direction>(bit::minimal_element(active_pawns));
         }
 
-        template<class Direction>
+        template<int Direction>
         void find(BitIndex jumper) const
         {
                 capture_.launch(jumper);
@@ -145,7 +139,7 @@ private:
                 capture_.finish(jumper);
         }
 
-        template<class Direction>
+        template<int Direction>
         void find_first(BitIndex jumper) const
         {
                 Increment<Board, Direction>()(jumper);
@@ -155,7 +149,7 @@ private:
                 capture_.undo(jumper);
         }
 
-        template<class Direction>
+        template<int Direction>
         void precedence(BitIndex jumper) const
         {
                 // tag dispatching on majority precedence
@@ -163,7 +157,7 @@ private:
         }
 
         // overload for no majority precedence
-        template<class Direction>
+        template<int Direction>
         void precedence_dispatch(BitIndex jumper, std::false_type) const
         {
                 Increment<Board, Direction>()(jumper);
@@ -172,7 +166,7 @@ private:
         }
 
         // overload for majority precedence
-        template<class Direction>
+        template<int Direction>
         void precedence_dispatch(BitIndex jumper, std::true_type) const
         {
                 Increment<Board, Direction>()(jumper);
@@ -188,7 +182,7 @@ private:
                 }
         }
 
-        template<class Direction>
+        template<int Direction>
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on promotion condition
@@ -196,14 +190,14 @@ private:
         }
 
         // overload for pawns that promote apres-fini
-        template<class Direction>
+        template<int Direction>
         bool find_next_dispatch(BitIndex jumper, rules::phase::apres_fini) const
         {
                 return find_next_impl<Direction>(jumper);
         }
 
         // overload for pawns that promote en-passant
-        template<class Direction>
+        template<int Direction>
         bool find_next_dispatch(BitIndex jumper, rules::phase::en_passant) const
         {
                 return (!is_promotion_sq<Color, Board>(jumper))?
@@ -212,13 +206,13 @@ private:
                 ;
         }
 
-        template<class Direction>
+        template<int Direction>
         bool find_next_impl(BitIndex jumper) const
         {
                 return turn<Direction>(jumper) | scan<Direction>(jumper);
         }
 
-        template<class Direction>
+        template<int Direction>
         bool promote_en_passant(BitIndex jumper) const
         {
                 // tag dispatching on whether pawns can capture kings
@@ -226,7 +220,7 @@ private:
         }
 
         // overload for pawns that can capture kings
-        template<class Direction>
+        template<int Direction>
         bool promote_en_passant_dispatch(BitIndex jumper, std::true_type) const
         {
                 capture_.toggle_promotion();
@@ -236,7 +230,7 @@ private:
         }
 
         // overload for pawns that cannot capture kings
-        template<class Direction>
+        template<int Direction>
         bool promote_en_passant_dispatch(BitIndex jumper, std::false_type) const
         {
                 capture_.toggle_promotion();    // no longer a pawn
@@ -247,7 +241,7 @@ private:
                 return found_next;
         }
 
-        template<class Direction>
+        template<int Direction>
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on pawn turn directions
@@ -255,7 +249,7 @@ private:
         }
 
         // overload for pawns that turn in all the 6 non-parallel diagonal and orthogonal directions
-        template<class Direction>
+        template<int Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::all) const
         {
                 return (
@@ -265,49 +259,49 @@ private:
         }
 
         // overload for pawns that turn in the 2 sideways directions
-        template<class Direction>
+        template<int Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan< rotate< Direction, angle::R090 > >(jumper) |
-                        scan< rotate< Direction, angle::L090 > >(jumper)
+                        scan< angle::rotate(Direction, angle::R090::value) >(jumper) |
+                        scan< angle::rotate(Direction, angle::L090::value) >(jumper)
                 );
         }
 
         // overload for pawns that turn in the 1 mirrored forward direction
-        template<class Direction>
+        template<int Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::up) const
         {
-                return scan< mirror< Direction, angle::Degrees< Compass::up > > >(jumper);
+                return scan< angle::mirror(Direction, Compass::up) >(jumper);
         }
 
         // overload for pawns that turn in the 1 mirrored backward direction
-        template<class Direction>
+        template<int Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::down) const
         {
-                return scan< mirror< Direction, angle::Degrees< Compass::down > > >(jumper);
+                return scan< angle::mirror(Direction, Compass::down) >(jumper);
         }
 
         // overload for pawns that turn in the remaining 4 diagonal or orthogonal directions
-        template<class Direction>
+        template<int Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan< rotate< Direction, angle::R045 > >(jumper) |
-                        scan< rotate< Direction, angle::L045 > >(jumper) |
-                        scan< rotate< Direction, angle::R135 > >(jumper) |
-                        scan< rotate< Direction, angle::L135 > >(jumper)
+                        scan< angle::rotate(Direction, angle::R045::value) >(jumper) |
+                        scan< angle::rotate(Direction, angle::L045::value) >(jumper) |
+                        scan< angle::rotate(Direction, angle::R135::value) >(jumper) |
+                        scan< angle::rotate(Direction, angle::L135::value) >(jumper)
                 );
         }
 
-        template<class Direction>
+        template<int Direction>
         bool scan(BitIndex jumper) const
         {
                 Increment<Board, Direction>()(jumper);
                 return jump<Direction>(jumper);
         }
 
-        template<class Direction>
+        template<int Direction>
         bool jump(BitIndex jumper) const
         {
                 if (!bit::is_element(jumper, capture_.template targets_with_pawn<Direction>()))
