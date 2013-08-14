@@ -225,50 +225,5 @@ struct is_jump_start
 {};
 
 }       // namespace mask
-
-namespace detail {
-
-template<class FromGrid, class DestGrid, class Angle, class N>
-struct transform
-:
-        Coordinates2Square<
-                Coordinates<
-                        DestGrid,
-                        mpl::lazy::rotate<
-                                Square2Coordinates< Square<FromGrid, N::value> >,
-                                Angle
-                        >::type::row,
-                        mpl::lazy::rotate<
-                                Square2Coordinates< Square<FromGrid, N::value> >,
-                                Angle
-                        >::type::col
-                >
-        >
-{};
-
-}       // namespace detail
-
-template<class Board, class Number>
-struct square_to_bit
-:
-        detail::transform< typename
-                Board::ExternalGrid, typename
-                Board::InternalGrid,
-                angle::Degrees<Board::orientation>,
-                Number
-        >
-{};
-
-template<class Board, class Number>
-struct bit_to_square
-:
-        detail::transform< typename
-                Board::InternalGrid, typename
-                Board::ExternalGrid,
-                mpl::lazy::inverse< angle::Degrees<Board::orientation> >,
-                Number
-        >
-{};
-
 }       // namespace board
 }       // namespace dctl
