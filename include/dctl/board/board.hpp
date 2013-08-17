@@ -41,7 +41,6 @@ public:
         using jump_start = mask::init<
                 mask::is_jump_start< Board, boost::mpl::_1, angle::Degrees< angle::rotate(Direction, Edge::orientation)> >
         >;
-        //angle::rotate(Direction, Edge::orientation)
 
         static int begin()
         {

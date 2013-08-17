@@ -1,57 +1,43 @@
 #pragma once
+#include <dctl/utility/constexpr.hpp>
 
 namespace dctl {
 namespace angle {
-namespace detail {
-
-template<class T>
-constexpr T abs(T const& t) noexcept
-{
-        return (t < 0)? -t : t;
-}
-
-template<class T>
-constexpr T abs_modulus(T const& n, T const& d) noexcept
-{
-        return n % d + ((n % d < 0)? detail::abs(d) : T{0});
-}
-
-}       // detail
 
 template<class T>
 constexpr auto make_angle(T const& n) noexcept
 {
-        return detail::abs_modulus(n, 360);
+        return util::abs_modulus(n, 360);
 }
 
 template<class T>
-constexpr bool is_angle(T const& n) noexcept
+constexpr auto is_angle(T const& n) noexcept
 {
-        return 0 <= n && n < 360;
+        return util::is_abs_modulus(n, 360);
 }
 
 template<class T>
 constexpr auto inverse(T const& alpha) noexcept
 {
-        return make_angle(-alpha);
+        return angle::make_angle(-alpha);
 }
 
 template<class T>
 constexpr auto rotate(T const& alpha, T const& theta) noexcept
 {
-        return make_angle(alpha + theta);
+        return angle::make_angle(alpha + theta);
 }
 
 template<class T>
 constexpr auto mirror(T const& alpha, T const& theta) noexcept
 {
-        return rotate(inverse(rotate(alpha, inverse(theta))), theta);
+        return angle::rotate(angle::inverse(angle::rotate(alpha, angle::inverse(theta))), theta);
 }
 
 template<int N>
 struct Degrees
 {
-        static constexpr auto value = make_angle(N);
+        static constexpr auto value = make_angle(N); // N is of non-class type, so no ADL for make_angle
         static_assert(0 <= value && value < 360, "Angles have to lie in the range [0, 360)");
 
         using type = Degrees<value>;
