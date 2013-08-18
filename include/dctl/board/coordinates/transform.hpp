@@ -6,15 +6,6 @@
 namespace dctl {
 namespace mpl {
 namespace lazy {
-namespace detail {
-
-template<class T>
-constexpr T reverse_index(T const& n, T const& i)
-{
-        return n - i - 1;
-}
-
-}       // namespace detail
 
 // NOTE: because rotate is a LAZY metafunction, 
 // its primary template definition needs to have been seen at this point
@@ -22,47 +13,31 @@ constexpr T reverse_index(T const& n, T const& i)
 // partial specialization definitions
 
 // partial specialization for identity rotations
-template<class Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >
+template<int Row, int Column>
+struct rotate< board::Coordinates<Row, Column>, angle::D000 >
 :
-        board::Coordinates<
-                Grid,
-                Row,
-                Column
-        >
+        board::Coordinates<Row, Column>
 {};
 
 // partial specialization for 90 degrees left rotations
-template<class Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >
+template<int Row, int Column>
+struct rotate< board::Coordinates<Row, Column>, angle::L090 >
 :
-        board::Coordinates<
-                Grid,
-                Column,
-                detail::reverse_index(Grid::height, Row)
-        >
+        board::Coordinates<Column, -Row>
 {};
 
 // partial specialization for 90 degrees right rotations
-template<class Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >
+template<int Row, int Column>
+struct rotate< board::Coordinates<Row, Column>, angle::R090 >
 :
-        board::Coordinates<
-                Grid,
-                detail::reverse_index(Grid::width, Column),
-                Row
-        >
+        board::Coordinates<-Column, Row>
 {};
 
 // partial specialization for 180 degrees rotations
-template<class Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >
+template<int Row, int Column>
+struct rotate< board::Coordinates<Row, Column>, angle::D180 >
 :
-        board::Coordinates<
-                Grid,
-                detail::reverse_index(Grid::height, Row),
-                detail::reverse_index(Grid::width, Column)
-        >
+        board::Coordinates<-Row, -Column>
 {};
 
 }       // namespace lazy

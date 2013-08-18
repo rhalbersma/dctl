@@ -31,7 +31,7 @@ template<class Board, class SQ, class Color, class Separation>
 struct is_initial
 :
         mpl::is_within_range<
-                boost::mpl::int_< Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row >, typename
+                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row, Board::ExternalGrid::height) >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
@@ -64,7 +64,7 @@ template<class Board, class SQ, class Color, class Row>
 struct is_row
 :
         boost::mpl::equal_to<
-                boost::mpl::int_< Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row >, typename
+                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row, Board::ExternalGrid::height) >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
@@ -81,7 +81,7 @@ template<class Board, class SQ, class Color, class Column>
 struct is_col
 :
         boost::mpl::equal_to<
-                boost::mpl::int_< Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::col >, typename
+                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::col, Board::ExternalGrid::width) >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
@@ -129,17 +129,17 @@ struct is_jump_difference
         >
 {};
 
-template<class From, class Dest>
+template<class FromCoord, class DestCoord>
 struct is_jump_connected
 :
         is_jump_difference<
                 boost::mpl::minus<
-                        boost::mpl::int_<From::row>,
-                        boost::mpl::int_<Dest::row>
+                        boost::mpl::int_<FromCoord::row>,
+                        boost::mpl::int_<DestCoord::row>
                 >,
                 boost::mpl::minus<
-                        boost::mpl::int_<From::col>,
-                        boost::mpl::int_<Dest::col>
+                        boost::mpl::int_<FromCoord::col>,
+                        boost::mpl::int_<DestCoord::col>
                 >
         >
 {};
@@ -173,7 +173,7 @@ struct is_jump_start
         boost::mpl::and_<
                 // row_min <= row < row_max
                 mpl::is_within_range<
-                        boost::mpl::int_< Square2Coordinates< Square<Grid, SQ::value> >::type::row >, typename
+                        boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::row, Grid::height) >, typename
                         boost::mpl::eval_if< 
                                 boost::mpl::bool_< angle::is_up(Direction) >,
                                 Offset, 
@@ -190,7 +190,7 @@ struct is_jump_start
                 >,
                 // col_min <= col < col_max
                 mpl::is_within_range<
-                        boost::mpl::int_< Square2Coordinates< Square<Grid, SQ::value> >::type::col >, typename
+                        boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::col, Grid::width) >, typename
                         boost::mpl::eval_if< 
                                 boost::mpl::bool_< angle::is_left(Direction) >,
                                 Offset, 

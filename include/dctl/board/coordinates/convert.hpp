@@ -11,8 +11,8 @@ template<class FromGrid, class DestGrid, int Angle, int N>
 struct transform
 :
         Coordinates2Square<
+                DestGrid,
                 Coordinates<
-                        DestGrid,
                         mpl::lazy::rotate<
                                 Square2Coordinates< Square<FromGrid, N> >,
                                 angle::Degrees< Angle >
