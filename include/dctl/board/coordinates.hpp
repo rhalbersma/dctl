@@ -2,6 +2,21 @@
 
 namespace dctl {
 namespace board {
+namespace detail {
+
+template<class T>
+constexpr auto centralize(T const& t, T const& c)
+{
+        return 2 * t - (c - 1);
+}
+
+template<class T>
+constexpr auto decentralize(T const& t, T const& c)
+{
+        return (t + (c - 1)) / 2;
+}
+
+}       // namespace detail
 
 template<class Grid, int N>
 struct Square
@@ -10,14 +25,13 @@ struct Square
         static constexpr auto value = N;
 };
 
-template<class Grid, int R, int C>
+template<int R, int C>
 struct Coordinates
 {
-        using grid = Grid;
         static constexpr auto row = R;
         static constexpr auto col = C;
 
-        using type = Coordinates<grid, row, col>;
+        using type = Coordinates<row, col>;
 };
 
 template<class SQ>
@@ -27,7 +41,7 @@ private:
         using grid = typename SQ::grid;
 
         // number of row pairs
-        static constexpr auto Q =  SQ::value / grid::modulo;
+        static constexpr auto Q = SQ::value / grid::modulo;
 
         // left edge of the zeroth row
         static constexpr auto R0 = SQ::value % grid::modulo;
@@ -47,34 +61,38 @@ private:
         // 2x the range from the left edge + the row parity XOR the opposite board coloring
         static constexpr auto COL = 2 * R + (P ^ !grid::parity);
 
+        static constexpr auto CENTRAL_ROW = detail::centralize(ROW, grid::height);
+        static constexpr auto CENTRAL_COL = detail::centralize(COL, grid::width);
+
 public:
-        using type = Coordinates<grid, ROW, COL>;
+        using type = Coordinates<CENTRAL_ROW, CENTRAL_COL>;
 };
 
-template<class Coord>
+template<class Grid, class Coord>
 struct Coordinates2Square
 {
 private:
-        using grid = typename Coord::grid;
+        static constexpr auto DECENTRAL_ROW = detail::decentralize(Coord::row, Grid::height);
+        static constexpr auto DECENTRAL_COL = detail::decentralize(Coord::col, Grid::width);
 
         // row parity
-        static constexpr auto P = Coord::row % 2;
+        static constexpr auto P = DECENTRAL_ROW % 2;
 
         // number of row pairs
-        static constexpr auto Q = Coord::row / 2;
+        static constexpr auto Q = DECENTRAL_ROW / 2;
 
         // the left edge
-        static constexpr auto L = P? grid::edge_lo : grid::edge_le;
+        static constexpr auto L = P? Grid::edge_lo : Grid::edge_le;
 
         // number of column pairs
-        static constexpr auto S = Coord::col / 2;
+        static constexpr auto S = DECENTRAL_COL / 2;
 
         // squares from the left edge
-        static constexpr auto R = (L + S) % grid::modulo;
+        static constexpr auto R = (L + S) % Grid::modulo;
 
-        static constexpr auto NUM = grid::modulo *  Q + R;
+        static constexpr auto NUM = Grid::modulo * Q + R;
 public:
-        using type = Square<grid, NUM>;
+        using type = Square<Grid, NUM>;
 };
 
 }       // namespace board

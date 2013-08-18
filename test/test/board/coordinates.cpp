@@ -7,7 +7,6 @@
 #include <dctl/board/coordinates/transform.hpp> // rotate
 #include <dctl/board/dimensions.hpp>            // Dimensions
 #include <dctl/board/edge.hpp>
-#include <dctl/board/grid.hpp>                  // Grid
 #include <dctl/group/action.hpp>                // is_realized
 #include <dctl/group/cyclic.hpp>                // C1, C2, C4
 
@@ -16,8 +15,7 @@ namespace board {
 
 BOOST_AUTO_TEST_SUITE(TestCoordinates)
 
-using G = Grid< Dimensions< 4,  4>, DoubleColumnEdge >;
-using Coord = Coordinates< G, 0, 0 >;
+using Coord = Coordinates< 0, 0 >;
 using CoordinatesSequence = boost::mpl::vector< Coord >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, CoordinatesSequence)

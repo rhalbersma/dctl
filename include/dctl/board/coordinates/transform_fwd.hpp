@@ -10,20 +10,20 @@ namespace lazy {
 // partial specialization declarations
 
 // partial specialization for identity rotations
-template<class Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::D000 >;
+template<int Row, int Column>
+struct rotate< board::Coordinates<Row, Column>, angle::D000 >;
 
 // partial specialization for 90 degrees left rotations
-template<class Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::L090 >;
+template<int Row, int Column>
+struct rotate< board::Coordinates<Row, Column>, angle::L090 >;
 
 // partial specialization for 90 degrees right rotations
-template<class Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::R090 >;
+template<int Row, int Column>
+struct rotate< board::Coordinates<Row, Column>, angle::R090 >;
 
 // partial specialization for 180 degrees rotations
-template<class Grid, int Row, int Column>
-struct rotate< board::Coordinates<Grid, Row, Column>, angle::D180 >;
+template<int Row, int Column>
+struct rotate< board::Coordinates<Row, Column>, angle::D180 >;
 
 }       // namespace lazy
 }	// namespace mpl

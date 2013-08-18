@@ -44,7 +44,7 @@ public:
 
         // grid size
 
-        static constexpr auto size = modulo * ((Dimensions::height - 1) / 2) + ((Dimensions::height % 2)? edge_re : edge_ro)  + 1;
+        static constexpr auto size = modulo * (Dimensions::height / 2) + (Dimensions::height % 2) * (edge_re + 1);
 };
 
 // partial specialization definition
@@ -73,8 +73,8 @@ public:
 
         // grid size
 
-        static constexpr auto size = modulo * ((Dimensions::height - 1) / 2) + ((Dimensions::height % 2)? edge_re : edge_ro)  + 1;
-        static_assert(size == (Dimensions::height * Dimensions::width) / 2 + (Dimensions::parity * Dimensions::height * Dimensions::width) % 2, "");
+        static constexpr auto size = modulo * (Dimensions::height / 2) + (Dimensions::height % 2) * (edge_re + 1);
+        static_assert(size == (Dimensions::width * Dimensions::height) / 2 + (Dimensions::width * Dimensions::height * Dimensions::parity) % 2, "");
 };
 
 }       // namespace board
