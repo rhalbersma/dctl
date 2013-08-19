@@ -1,8 +1,6 @@
 #pragma once
-#include <boost/mpl/arithmetic.hpp>             // plus
 #include <boost/mpl/bool.hpp>                   // bool_
 #include <boost/mpl/int.hpp>                    // int_
-#include <boost/mpl/placeholders.hpp>
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include <dctl/angle/degrees.hpp>
 #include <dctl/bit/bit.hpp>
@@ -24,8 +22,7 @@ struct Board
         public Dimensions, public Edge
 {
         using ReOrientedDimensions = typename mpl::lazy::rotate<
-                Dimensions,
-                angle::Degrees<Edge::orientation>
+                Dimensions, angle::Degrees<Edge::orientation>
         >::type;
 public:
         // internal and external grids
@@ -39,7 +36,7 @@ public:
 
         template<int Direction>
         using jump_start = mask::init<
-                mask::is_jump_start< Board, boost::mpl::_1, angle::Degrees< angle::rotate(Direction, Edge::orientation)> >
+                mask::is_jump_start, Board, angle::Degrees< angle::rotate(Direction, Edge::orientation) >
         >;
 
         static int begin()
@@ -85,10 +82,10 @@ private:
 };
 
 template<class Dimensions, class Edge>
-BitBoard const Board<Dimensions, Edge>::squares = mask::init< mask::is_square<Board, boost::mpl::_1> >::value;
+BitBoard const Board<Dimensions, Edge>::squares = mask::init< mask::is_square, Board >::value;
 
 #define DCTL_PP_INITIAL_MASK(z, i, data)      \
-        mask::init< mask::is_initial< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
+        mask::init< mask::is_initial, Board, boost::mpl::bool_<data>, boost::mpl::int_<i> >::value
 
 template<class Dimensions, class Edge>
 BitBoard const Board<Dimensions, Edge>::initial_mask[][5] = {
@@ -99,7 +96,7 @@ BitBoard const Board<Dimensions, Edge>::initial_mask[][5] = {
 #undef DCTL_PP_INITIAL_MASK
 
 #define DCTL_PP_ROW_MASK(z, i, data)      \
-        mask::init< mask::is_row< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
+        mask::init< mask::is_row, Board, boost::mpl::bool_<data>, boost::mpl::int_<i> >::value
 
 template<class Dimensions, class Edge>
 BitBoard const Board<Dimensions, Edge>::promotion_mask[][2] = {
@@ -116,7 +113,7 @@ BitBoard const Board<Dimensions, Edge>::row_mask[][12] = {
 #undef DCTL_PP_ROW_MASK
 
 #define DCTL_PP_COL_MASK(z, i, data)      \
-        mask::init< mask::is_col< Board, boost::mpl::_1, boost::mpl::bool_<data>, boost::mpl::int_<i> > >::value
+        mask::init< mask::is_col, Board, boost::mpl::bool_<data>, boost::mpl::int_<i> >::value
 
 template<class Dimensions, class Edge>
 BitBoard const Board<Dimensions, Edge>::col_mask[][12] = {

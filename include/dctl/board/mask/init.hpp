@@ -14,35 +14,43 @@ namespace dctl {
 namespace board {
 namespace mask {
 
-// partial specialization definitions
+// primary template definition
 template
 <
         template<class, class, class...> class Predicate,
         class Board,
         class... Args
 >
-struct init< Predicate<Board, boost::mpl::_1, Args...> >
+struct init
 :
-        detail::init< Board, Predicate<Board, boost::mpl::_1, Args...> >
+        detail::init< Predicate, Board, boost::mpl::int_<Board::ExternalGrid::size - 1>, Args...>
 {};
 
 namespace detail {
 
 // primary template definition
-template<class Board, class Predicate, class Square>
+template
+<
+        template<class, class, class...> class Predicate,
+        class Board, class Square, class... Args
+>
 struct init
 :
         boost::mpl::bitxor_<
-                init< Board, Predicate, typename boost::mpl::prior<Square>::type >,
-                test< Board, Predicate, Square >
+                init< Predicate, Board, typename boost::mpl::prior<Square>::type, Args... >,
+                test< Board, Predicate<typename Board::ExternalGrid, boost::mpl::_1, Args...>, Square >
         >
 {};
 
 // partial specialization definition
-template<class Board, class Predicate>
-struct init<Board, Predicate, boost::mpl::int_<0> >
+template
+<
+        template<class, class, class...> class Predicate,
+        class Board, class... Args
+>
+struct init<Predicate, Board, boost::mpl::int_<0>, Args... >
 :
-        test< Board, Predicate, boost::mpl::int_<0> >
+        test< Board, Predicate<typename Board::ExternalGrid, boost::mpl::_1, Args...>, boost::mpl::int_<0> >
 {};
 
 template<class Board, class Predicate, class Square>

@@ -17,28 +17,28 @@ namespace dctl {
 namespace board {
 namespace mask {
 
-template<class Board, class SQ>
+template<class Grid, class SQ>
 struct is_square
 :
         mpl::is_within_range<
                 boost::mpl::int_<SQ::value>,
                 boost::mpl::int_<0>,
-                boost::mpl::int_<Board::ExternalGrid::size>
+                boost::mpl::int_<Grid::size>
         >
 {};
 
-template<class Board, class SQ, class Color, class Separation>
+template<class Grid, class SQ, class Color, class Separation>
 struct is_initial
 :
         mpl::is_within_range<
-                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row, Board::ExternalGrid::height) >, typename
+                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::row, Grid::height) >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
-                                boost::mpl::int_<Board::height>,
+                                boost::mpl::int_<Grid::height>,
                                 boost::mpl::divides<
                                         boost::mpl::minus<
-                                                boost::mpl::int_<Board::height>,
+                                                boost::mpl::int_<Grid::height>,
                                                 Separation
                                         >,
                                         boost::mpl::int_<2>
@@ -48,10 +48,10 @@ struct is_initial
                 >::type, typename
                 boost::mpl::eval_if<
                         Color,
-                        boost::mpl::int_<Board::height>,
+                        boost::mpl::int_<Grid::height>,
                         boost::mpl::divides<
                                 boost::mpl::minus<
-                                        boost::mpl::int_<Board::height>,
+                                        boost::mpl::int_<Grid::height>,
                                         Separation
                                 >,
                                 boost::mpl::int_<2>
@@ -60,15 +60,15 @@ struct is_initial
         >
 {};
 
-template<class Board, class SQ, class Color, class Row>
+template<class Grid, class SQ, class Color, class Row>
 struct is_row
 :
         boost::mpl::equal_to<
-                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::row, Board::ExternalGrid::height) >, typename
+                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::row, Grid::height) >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
-                                boost::mpl::int_<Board::height>,
+                                boost::mpl::int_<Grid::height>,
                                 boost::mpl::int_<1>,
                                 Row
                         >,
@@ -77,15 +77,15 @@ struct is_row
         >
 {};
 
-template<class Board, class SQ, class Color, class Column>
+template<class Grid, class SQ, class Color, class Column>
 struct is_col
 :
         boost::mpl::equal_to<
-                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<typename Board::ExternalGrid, SQ::value> >::type::col, Board::ExternalGrid::width) >, typename
+                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::col, Grid::width) >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
-                                boost::mpl::int_<Board::width>,
+                                boost::mpl::int_<Grid::width>,
                                 boost::mpl::int_<1>,
                                 Column
                         >,
@@ -155,11 +155,11 @@ struct is_jump_group
 
 }       // namespace detail
 
-template<class Board, class SQ, class Group>
+template<class Grid, class SQ, class Group>
 struct is_jump_group
 :
-        detail::is_jump_group< typename
-                Board::ExternalGrid,
+        detail::is_jump_group<
+                Grid,
                 Group,
                 SQ
         >
@@ -167,7 +167,7 @@ struct is_jump_group
 
 namespace detail {
 
-template<class Board, class SQ, int Direction, class Grid, class Offset>
+template<class Grid, class SQ, int Direction, class Offset>
 struct is_jump_start
 :
         boost::mpl::and_<
@@ -180,7 +180,7 @@ struct is_jump_start
                                 boost::mpl::int_<0> 
                         >::type,
                         boost::mpl::minus<
-                                boost::mpl::int_<Board::height>, typename
+                                boost::mpl::int_<Grid::height>, typename
                                 boost::mpl::eval_if< 
                                         boost::mpl::bool_< angle::is_down(Direction) >,
                                         Offset, 
@@ -197,7 +197,7 @@ struct is_jump_start
                                 boost::mpl::int_<0> 
                         >::type,
                         boost::mpl::minus<
-                                boost::mpl::int_<Board::width>, typename
+                                boost::mpl::int_<Grid::width>, typename
                                 boost::mpl::eval_if< 
                                         boost::mpl::bool_< angle::is_right(Direction) >,
                                         Offset, 
@@ -210,12 +210,11 @@ struct is_jump_start
 
 }       // namespace detail
 
-template<class Board, class SQ, class Direction>
+template<class Grid, class SQ, class Direction>
 struct is_jump_start
 :
         detail::is_jump_start<
-                Board, SQ, Direction::value, typename
-                Board::ExternalGrid, typename
+                Grid, SQ, Direction::value, typename
                 boost::mpl::eval_if<
                         boost::mpl::bool_< angle::is_diagonal(Direction::value) >,
                         boost::mpl::int_<2>,
