@@ -1,4 +1,5 @@
 #pragma once
+#include <climits>              // CHAR_BIT
 #include <cstdint>              // uint<X>_t for X = 8, 16, 32, 64
 #include <type_traits>          // integral_constant
 
@@ -14,7 +15,7 @@ using BitIndex = uint64_t;
 template<class T>
 struct num_bits
 :
-        std::integral_constant<int, 8 * sizeof(T)>
+        std::integral_constant<int, CHAR_BIT * sizeof(T)>
 {};
 
 template<class T, class U>

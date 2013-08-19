@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>                      // size_t
 #include <dctl/angle/traits.hpp>
 
 namespace dctl {

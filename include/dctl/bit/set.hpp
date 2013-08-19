@@ -1,6 +1,7 @@
 #pragma once
+#include <climits>                      // CHAR_BIT
 #include <cstddef>                      // ptrdiff_t, size_t
-#include <cstdint>                      // CHAR_BIT, uint64_t
+#include <cstdint>                      // uint64_t
 #include <algorithm>                    // is_sorted
 #include <functional>                   // less
 #include <initializer_list>             // initializer_list
