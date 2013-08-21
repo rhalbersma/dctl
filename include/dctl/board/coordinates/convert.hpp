@@ -7,47 +7,57 @@ namespace dctl {
 namespace board {
 namespace detail {
 
-template<class FromGrid, class DestGrid, int Angle, int N>
+template<class FromSquare, class DestGrid, int Angle>
 struct transform
 :
         Coordinates2Square<
-                DestGrid,
-                Coordinates<
-                        mpl::lazy::rotate<
-                                Square2Coordinates< Square<FromGrid, N> >,
-                                angle::Degrees< Angle >
-                        >::type::row,
-                        mpl::lazy::rotate<
-                                Square2Coordinates< Square<FromGrid, N> >,
-                                angle::Degrees< Angle >
-                        >::type::col
-                >
+                DestGrid, typename
+                mpl::lazy::rotate<
+                        Square2Coordinates< FromSquare >,
+                        angle::Degrees< Angle >
+                >::type
         >
 {};
+
+template<class DestGrid, class FromGrid>
+constexpr auto xtransform(xSquare<FromGrid> const& square, int theta)
+{
+        return coordtosq<DestGrid>(xrotate(sqtocoord(square), theta));
+}
 
 }       // namespace detail
 
 template<class Board, int N>
 struct square_to_bit
 :
-        detail::transform< typename
-                Board::ExternalGrid, typename
+        detail::transform<
+                Square<typename Board::ExternalGrid, N>, typename
                 Board::InternalGrid,
-                Board::orientation,
-                N
+                Board::orientation
         >
 {};
+
+template<class Board>
+constexpr auto xsquare_to_bit(int N)
+{
+        return detail::xtransform<typename Board::InternalGrid>(xSquare<typename Board::ExternalGrid>{N}, Board::orientation);
+}
 
 template<class Board, int N>
 struct bit_to_square
 :
-        detail::transform< typename
-                Board::InternalGrid, typename
+        detail::transform<
+                Square<typename Board::InternalGrid, N>, typename
                 Board::ExternalGrid,
-                angle::inverse(Board::orientation),
-                N
+                angle::inverse(Board::orientation)
         >
 {};
+
+template<class Board>
+constexpr auto xbit_to_square(int N)
+{
+        return detail::xtransform<typename Board::ExternalGrid>(xSquare<typename Board::InternalGrid>{N}, Board::orientation);
+}
 
 }       // namespace board
 }       // namespace dctl
