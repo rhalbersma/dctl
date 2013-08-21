@@ -25,6 +25,12 @@ struct Square
         static constexpr auto value = N;
 };
 
+template<class Grid>
+struct xSquare
+{
+        int value;
+};
+
 template<int R, int C>
 struct Coordinates
 {
@@ -32,6 +38,12 @@ struct Coordinates
         static constexpr auto col = C;
 
         using type = Coordinates<row, col>;
+};
+
+struct xCoordinates
+{
+        int row;
+        int col;
 };
 
 template<class SQ>
@@ -68,6 +80,37 @@ public:
         using type = Coordinates<CENTRAL_ROW, CENTRAL_COL>;
 };
 
+template<class Grid>
+constexpr auto sqtocoord(xSquare<Grid> const& square) noexcept
+{
+        // number of row pairs
+        constexpr auto Q = square.value / Grid::modulo;
+
+        // left edge of the zeroth row
+        constexpr auto R0 = square.value % Grid::modulo;
+
+        // left edge of the first row
+        constexpr auto R1 = R0 - Grid::edge_lo;
+
+        // R0 is in the zeroth or first row
+        constexpr auto P = R1 >= 0;
+
+        // squares from the left edge
+        constexpr auto R = P? R1 : R0;
+
+        // 2x the row pairs + the row parity
+        constexpr auto ROW = 2 * Q + P;
+
+        // 2x the range from the left edge + the row parity XOR the opposite board coloring
+        constexpr auto COL = 2 * R + (P ^ !Grid::parity);
+
+        return xCoordinates
+        {
+                detail::centralize(ROW, Grid::height),
+                detail::centralize(COL, Grid::width)
+        };
+}
+
 template<class Grid, class Coord>
 struct Coordinates2Square
 {
@@ -94,6 +137,32 @@ private:
 public:
         using type = Square<Grid, NUM>;
 };
+
+template<class Grid>
+constexpr auto coordtosq(xCoordinates const& coord)
+{
+        constexpr auto DECENTRAL_ROW = detail::decentralize(coord.row, Grid::height);
+        constexpr auto DECENTRAL_COL = detail::decentralize(coord.col, Grid::width);
+
+        // row parity
+        constexpr auto P = DECENTRAL_ROW % 2;
+
+        // number of row pairs
+        constexpr auto Q = DECENTRAL_ROW / 2;
+
+        // the left edge
+        constexpr auto L = P? Grid::edge_lo : Grid::edge_le;
+
+        // number of column pairs
+        constexpr auto S = DECENTRAL_COL / 2;
+
+        // squares from the left edge
+        constexpr auto R = (L + S) % Grid::modulo;
+
+        constexpr auto NUM = Grid::modulo * Q + R;
+
+        return xSquare<Grid>{ NUM };
+}
 
 }       // namespace board
 }       // namespace dctl

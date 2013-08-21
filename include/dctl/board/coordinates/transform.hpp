@@ -42,4 +42,19 @@ struct rotate< board::Coordinates<Row, Column>, angle::D180 >
 
 }       // namespace lazy
 }	// namespace mpl
+
+namespace board {
+
+constexpr auto xrotate(xCoordinates const& coord, int theta)
+{
+        switch(angle::make_angle(theta)) {
+        case angle::D000::value: return coord;
+        case angle::L090::value: return xCoordinates{ coord.col, -coord.row };
+        case angle::R090::value: return xCoordinates{-coord.col,  coord.row };
+        case angle::D180::value: return xCoordinates{-coord.row, -coord.col };
+        default: return throw "Error", coord;
+        }
+}
+
+}       // namespace board
 }       // namespace dctl
