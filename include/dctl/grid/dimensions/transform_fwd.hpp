@@ -1,29 +1,27 @@
 #pragma once
 #include <dctl/angle/degrees.hpp>       // D000, L090, R090, D180
-#include <dctl/board/coordinates.hpp>   // Coordinates
+#include <dctl/grid/dimensions.hpp>     // Dimensions
 #include <dctl/mpl/transform.hpp>       // rotate (primary template definition)
 
 namespace dctl {
 namespace mpl {
 namespace lazy {
 
-// partial specialization declarations
-
 // partial specialization for identity rotations
-template<int Row, int Column>
-struct rotate< board::Coordinates<Row, Column>, angle::D000 >;
+template<int H, int W, bool P>
+struct rotate< grid::Dimensions<H, W, P>, angle::Degrees<angle::D000> >;
 
 // partial specialization for 90 degrees left rotations
-template<int Row, int Column>
-struct rotate< board::Coordinates<Row, Column>, angle::L090 >;
+template<int H, int W, bool P>
+struct rotate< grid::Dimensions<H, W, P>, angle::Degrees<angle::L090> >;
 
 // partial specialization for 90 degrees right rotations
-template<int Row, int Column>
-struct rotate< board::Coordinates<Row, Column>, angle::R090 >;
+template<int H, int W, bool P>
+struct rotate< grid::Dimensions<H, W, P>, angle::Degrees<angle::R090> >;
 
 // partial specialization for 180 degrees rotations
-template<int Row, int Column>
-struct rotate< board::Coordinates<Row, Column>, angle::D180 >;
+template<int H, int W, bool P>
+struct rotate< grid::Dimensions<H, W, P>, angle::Degrees<angle::D180> >;
 
 }       // namespace lazy
 }	// namespace mpl

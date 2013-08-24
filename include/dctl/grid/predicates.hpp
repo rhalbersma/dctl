@@ -7,15 +7,14 @@
 #include <boost/mpl/placeholders.hpp>   // _1
 #include <dctl/angle/traits.hpp>
 #include <dctl/angle/transform.hpp>
-#include <dctl/board/coordinates.hpp>
-#include <dctl/board/coordinates/transform.hpp>
-#include <dctl/board/dimensions.hpp>
-#include <dctl/board/grid.hpp>
+#include <dctl/grid/coordinates.hpp>
+#include <dctl/grid/coordinates/transform.hpp>
+#include <dctl/grid/dimensions.hpp>
+#include <dctl/grid/grid.hpp>
 #include <dctl/mpl/type_traits.hpp>
 
 namespace dctl {
-namespace board {
-namespace mask {
+namespace grid {
 
 template<class Grid, class SQ>
 struct is_square
@@ -31,7 +30,7 @@ template<class Grid, class SQ, class Color, class Separation>
 struct is_initial
 :
         mpl::is_within_range<
-                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::row, Grid::height) >, typename
+                boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).row(), Grid::height) >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
@@ -64,7 +63,7 @@ template<class Grid, class SQ, class Color, class Row>
 struct is_row
 :
         boost::mpl::equal_to<
-                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::row, Grid::height) >, typename
+                boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).row(), Grid::height) >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
@@ -81,7 +80,7 @@ template<class Grid, class SQ, class Color, class Column>
 struct is_col
 :
         boost::mpl::equal_to<
-                boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::col, Grid::width) >, typename
+                boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).col(), Grid::width) >, typename
                 boost::mpl::eval_if<
                         Color,
                         boost::mpl::minus<
@@ -96,74 +95,49 @@ struct is_col
 
 namespace detail {
 
-template<class R0, class C0, class R1, class C1>
-struct is_even_or_odd_jump_difference
-:
+constexpr auto is_even_or_odd_jump_difference(int R0, int C0, int R1, int C1) noexcept
+{
         // a diagonal or orthogonal man jump between square <FROM> and square <DEST> is possible if
-        boost::mpl::or_<
-                // either both row and column numbers difference == 0 mod 4 (even number of jumps)
-                boost::mpl::and_<
-                        boost::mpl::not_<R0>, boost::mpl::not_<C0>
-                >,
-                // or both row and column numbers difference == 2 mod 4 (odd number of jumps)
-                boost::mpl::and_<
-                        boost::mpl::not_<R1>, boost::mpl::not_<C1>
-                >
-        >
-{};
+        // either both row and column numbers difference == 0 mod 4 (even number of jumps)
+        // or both row and column numbers difference == 2 mod 4 (odd number of jumps)
+        return (!R0 && !C0) || (!R1 && !C1);
+}
 
-template<class R, class C>
-struct is_jump_difference
-:
-        is_even_or_odd_jump_difference<
-                boost::mpl::modulus< R, boost::mpl::int_<4> >,
-                boost::mpl::modulus< C, boost::mpl::int_<4> >,
-                boost::mpl::modulus<
-                        boost::mpl::plus< R, boost::mpl::int_<2> >,
-                        boost::mpl::int_<4>
-                >,
-                boost::mpl::modulus<
-                        boost::mpl::plus< C, boost::mpl::int_<2> >,
-                        boost::mpl::int_<4>
-                >
-        >
-{};
+constexpr auto is_jump_difference(int delta_row, int delta_col) noexcept
+{
+        return is_even_or_odd_jump_difference(
+                delta_row % 4,
+                delta_col % 4,
+                (delta_row + 2) % 4,
+                (delta_col + 2) % 4
+        );
+}
 
-template<class FromCoord, class DestCoord>
-struct is_jump_connected
-:
-        is_jump_difference<
-                boost::mpl::minus<
-                        boost::mpl::int_<FromCoord::row>,
-                        boost::mpl::int_<DestCoord::row>
-                >,
-                boost::mpl::minus<
-                        boost::mpl::int_<FromCoord::col>,
-                        boost::mpl::int_<DestCoord::col>
-                >
-        >
-{};
+template<class Coordinates>
+constexpr auto is_jump_connected(Coordinates const& from_coord, Coordinates const& dest_coord) noexcept
+{
+        return is_jump_difference(
+                from_coord.row() - dest_coord.row(),
+                from_coord.col() - dest_coord.col()
+        );
+}
 
-template<class Grid, class FromSq, class DestSq>
-struct is_jump_group
-:
-        is_jump_connected< typename
-                Square2Coordinates< Square<Grid, FromSq::value> >::type, typename
-                Square2Coordinates< Square<Grid, DestSq::value> >::type
-        >
-{};
+template<class Square>
+constexpr auto is_jump_group(Square const& from_sq, Square const& dest_sq) noexcept
+{
+        return is_jump_connected(
+                sqtocoord( Square{from_sq.value()} ),
+                sqtocoord( Square{dest_sq.value()} )
+        );
+}
 
 }       // namespace detail
 
-template<class Grid, class SQ, class Group>
-struct is_jump_group
-:
-        detail::is_jump_group<
-                Grid,
-                Group,
-                SQ
-        >
-{};
+template<class Square>
+constexpr auto is_jump_group(int group, int square) noexcept
+{
+        return detail::is_jump_group( Square{group}, Square{square} );
+}
 
 namespace detail {
 
@@ -173,7 +147,7 @@ struct is_jump_start
         boost::mpl::and_<
                 // row_min <= row < row_max
                 mpl::is_within_range<
-                        boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::row, Grid::height) >, typename
+                        boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).row(), Grid::height) >, typename
                         boost::mpl::eval_if< 
                                 boost::mpl::bool_< angle::is_up(Direction) >,
                                 Offset, 
@@ -190,7 +164,7 @@ struct is_jump_start
                 >,
                 // col_min <= col < col_max
                 mpl::is_within_range<
-                        boost::mpl::int_< board::detail::decentralize(Square2Coordinates< Square<Grid, SQ::value> >::type::col, Grid::width) >, typename
+                        boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).col(), Grid::width) >, typename
                         boost::mpl::eval_if< 
                                 boost::mpl::bool_< angle::is_left(Direction) >,
                                 Offset, 
@@ -223,6 +197,5 @@ struct is_jump_start
         >
 {};
 
-}       // namespace mask
-}       // namespace board
+}       // namespace grid
 }       // namespace dctl

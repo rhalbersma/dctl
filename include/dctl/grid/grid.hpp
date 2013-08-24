@@ -1,9 +1,9 @@
 #pragma once
-#include <dctl/board/grid_fwd.hpp>      // primary template and partial specialization declarations
-#include <dctl/board/edge.hpp>          // ColumnLessEdge
+#include <dctl/grid/grid_fwd.hpp>      // primary template and partial specialization declarations
+#include <dctl/grid/edge.hpp>          // ColumnLessEdge
 
 namespace dctl {
-namespace board {
+namespace grid {
 
 // primary template definition
 template<class Dimensions, class Edge>
@@ -77,5 +77,5 @@ public:
         static_assert(size == (Dimensions::width * Dimensions::height) / 2 + (Dimensions::width * Dimensions::height * Dimensions::parity) % 2, "");
 };
 
-}       // namespace board
+}       // namespace grid
 }       // namespace dctl

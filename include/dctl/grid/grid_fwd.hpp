@@ -1,16 +1,16 @@
 #pragma once
-#include <dctl/board/edge.hpp>          // ColumnLessEdge
+#include <dctl/grid/edge.hpp>          // ColumnLessEdge
 
 namespace dctl {
-namespace board {
+namespace grid {
 
 // primary template declaration
 template<class Dimensions, class Edge>
 struct Grid;
 
-// partial template declaration
+// partial template specialization declaration
 template<class Dimensions>
 struct Grid<Dimensions, ColumnLessEdge>;
 
-}       // namespace board
+}       // namespace grid
 }       // namespace dctl
