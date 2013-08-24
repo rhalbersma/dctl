@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace board {
+namespace grid {
 
 template<int NumColumns, int Orientation = 0>
 struct Edge
@@ -17,5 +17,5 @@ using ColumnLessEdge = Edge<0>;
 using SingleColumnEdge = Edge<1>;
 using DoubleColumnEdge = Edge<2>;
 
-}       // namespace board
+}       // namespace grid
 }       // namespace dctl

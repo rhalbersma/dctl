@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/angle/degrees.hpp>                       // D000, L090, R090, D180
-#include <dctl/board/dimensions.hpp>                    // Dimensions
-#include <dctl/board/dimensions/transform_fwd.hpp>      // rotate (partial specialization declarations)
+#include <dctl/grid/dimensions.hpp>                    // Dimensions
+#include <dctl/grid/dimensions/transform_fwd.hpp>      // rotate (partial specialization declarations)
 
 namespace dctl {
 namespace mpl {
@@ -14,30 +14,30 @@ namespace lazy {
 
 // partial specialization for identity rotations
 template<int H, int W, bool P>
-struct rotate< board::Dimensions<H, W, P>, angle::D000 >
+struct rotate< grid::Dimensions<H, W, P>, angle::Degrees<angle::D000> >
 :
-        board::Dimensions<H, W, P>
+        grid::Dimensions<H, W, P>
 {};
 
 // partial specialization for 90 degrees left rotations
 template<int H, int W, bool P>
-struct rotate< board::Dimensions<H, W, P>, angle::L090 >
+struct rotate< grid::Dimensions<H, W, P>, angle::Degrees<angle::L090> >
 :
-        board::Dimensions<W, H, (H % 2) ^ (!P)>
+        grid::Dimensions<W, H, (H % 2) ^ (!P)>
 {};
 
 // partial specialization for 90 degrees right rotations
 template<int H, int W, bool P>
-struct rotate< board::Dimensions<H, W, P>, angle::R090 >
+struct rotate< grid::Dimensions<H, W, P>, angle::Degrees<angle::R090> >
 :
-        board::Dimensions<W, H, (W % 2) ^ (!P)>
+        grid::Dimensions<W, H, (W % 2) ^ (!P)>
 {};
 
 // partial specialization for 180 degrees rotations
 template<int H, int W, bool P>
-struct rotate< board::Dimensions<H, W, P>, angle::D180 >
+struct rotate< grid::Dimensions<H, W, P>, angle::Degrees<angle::D180> >
 :
-        board::Dimensions<H, W, (H % 2) ^ (W % 2) ^ (!!P)>
+        grid::Dimensions<H, W, (H % 2) ^ (W % 2) ^ (!!P)>
 {};
 
 }       // namespace lazy

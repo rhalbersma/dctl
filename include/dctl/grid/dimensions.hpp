@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace board {
+namespace grid {
 
 template<int Height, int Width, bool Parity = false>
 struct Dimensions
@@ -16,5 +16,5 @@ struct Dimensions
         using type = Dimensions<Height, Width, Parity>;
 };
 
-}       // namespace board
+}       // namespace grid
 }       // namespace dctl
