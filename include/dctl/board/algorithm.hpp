@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/angle/traits.hpp>        // is_positive
-#include <dctl/board/shift.hpp>         // Shift
 #include <dctl/board/nested.hpp>        // shift_size
+#include <dctl/utility/shift.hpp>       // shift
 
 namespace dctl {
 namespace detail {
@@ -9,13 +9,13 @@ namespace loop {
 
 // Chess Programming Wiki, "Fill Loop" algorithm
 // http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
-template<bool Sign, class N, class T>
+template<bool Sign, int N, class T>
 T fill(T generator, T propagator)
 {
         T flood(0);
         while (generator) {
                 flood |= generator;
-                generator = Shift<Sign>()(generator, N::value) & propagator;
+                generator = util::shift<Sign>()(generator, N) & propagator;
         }
         return flood;
 }
@@ -23,7 +23,7 @@ T fill(T generator, T propagator)
 }       // namespace loop
 
 // direction-wise flood-fill copy over propagator
-template<bool Sign, class N, class T>
+template<bool Sign, int N, class T>
 T fill(T generator, T propagator)
 {
         return loop::fill<Sign, N>(generator, propagator);
@@ -39,7 +39,7 @@ struct Fill
         {
                 return detail::fill<
                         angle::is_positive(Direction),
-                        board::shift_size<Board, Direction>
+                        Board::shift_size(Direction)
                 >(generator, propagator);
         }
 };

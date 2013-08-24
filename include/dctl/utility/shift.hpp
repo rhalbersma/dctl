@@ -1,67 +1,60 @@
 #pragma once
 #include <cstddef>                      // size_t
-#include <dctl/angle/traits.hpp>
 
 namespace dctl {
-namespace {     // anonymous
-
-// left and right direction
-
-static constexpr auto L = false;
-static constexpr auto R = true;
-
-}               // anonymous
+namespace util {
 
 // primary template
 template<bool>
-struct Shift;
+struct shift;
 
 // explicit specialization for bitwise shift-left
 template<>
-struct Shift<L>
+struct shift<false>
 {
         template<class T>
-        constexpr T operator()(T square, std::size_t n) const
+        constexpr T operator()(T const& t, std::size_t n) const
         {
-                return square << n;
+                return t << n;
         }
 };
 
 // explicit specialization for bitwise shift-right
 template<>
-struct Shift<R>
+struct shift<true>
 {
         template<class T>
-        constexpr T operator()(T square, std::size_t n) const
+        constexpr T operator()(T const& t, std::size_t n) const
         {
-                return square >> n;
+                return t >> n;
         }
 };
 
 // primary template
 template<bool>
-struct ShiftAssign;
+struct shift_assign;
 
 // explicit specialization for bitwise shift-left assignment
 template<>
-struct ShiftAssign<L>
+struct shift_assign<false>
 {
         template<class T>
-        void operator()(T& square, std::size_t n) const
+        void operator()(T& t, std::size_t n) const
         {
-                square <<= n;
+                t <<= n;
         }
 };
 
 // explicit specialization for bitwise shift-right assignment
 template<>
-struct ShiftAssign<R>
+struct shift_assign<true>
 {
         template<class T>
-        void operator()(T& square, std::size_t n) const
+        void operator()(T& t, std::size_t n) const
         {
-                square >>= n;
+                t >>= n;
         }
 };
 
+}       // namespace util
 }       // namespace dctl
