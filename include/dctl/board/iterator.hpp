@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/angle/traits.hpp>        // is_negative, is_positive
-#include <dctl/board/nested.hpp>        // shift_size
-#include <dctl/board/shift.hpp>         // ShiftAssign
+#include <dctl/utility/shift.hpp>       // shift_assign
 
 namespace dctl {
 
@@ -11,7 +10,7 @@ struct Increment
         template<class BidirectionalIterator>
         void operator()(BidirectionalIterator& square) const
         {
-                ShiftAssign< angle::is_positive(Direction) >()(square, board::shift_size<Board, Direction>::value);
+                util::shift_assign< angle::is_positive(Direction) >()(square, boost::mpl::int_<Board::shift_size(Direction)>::value);
         }
 };
 
@@ -21,7 +20,7 @@ struct Decrement
         template<class BidirectionalIterator>
         void operator()(BidirectionalIterator& square) const
         {
-                ShiftAssign< angle::is_negative(Direction) >()(square, board::shift_size<Board, Direction>::value);
+                util::shift_assign< angle::is_negative(Direction) >()(square, boost::mpl::int_<Board::shift_size(Direction)>::value);
         }
 };
 

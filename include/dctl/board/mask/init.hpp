@@ -7,7 +7,7 @@
 #include <boost/mpl/next_prior.hpp>             // prior
 #include <boost/mpl/placeholders.hpp>           // _1
 #include <dctl/board/mask/init_fwd.hpp>         // init, detail::init, detail::test (primary template and partial specialization declarations)
-#include <dctl/board/coordinates/convert.hpp>   // square2bit
+#include <dctl/board/convert.hpp>               // square2bit
 #include <dctl/utility/int.hpp>                 // BitBoard
 
 namespace dctl {
@@ -60,7 +60,7 @@ struct test
                 boost::mpl::apply< Predicate, Square >::type,
                 boost::mpl::shift_left<
                         boost::mpl::integral_c<BitBoard, 1>,
-                        boost::mpl::int_<square_to_bit< Board, Square::value >::type::value>
+                        boost::mpl::int_< board::square_to_bit< Board >(Square::value).value() >
                 >,
                 boost::mpl::integral_c<BitBoard, 0>
         >::type
