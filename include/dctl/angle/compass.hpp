@@ -32,17 +32,17 @@ template
 struct Compass
 {
 private:
-        static constexpr auto A = rotate(inverse(Board::orientation), (Color? D000::value : D180::value));
+        static constexpr auto theta = rotate(inverse(Board::orientation), (Color? D000 : D180));
 
 public:
-        static constexpr auto right      = rotate(D000::value, A);
-        static constexpr auto right_up   = rotate(D045::value, A);
-        static constexpr auto up         = rotate(D090::value, A);
-        static constexpr auto left_up    = rotate(D135::value, A);
-        static constexpr auto left       = rotate(D180::value, A);
-        static constexpr auto left_down  = rotate(D225::value, A);
-        static constexpr auto down       = rotate(D270::value, A);
-        static constexpr auto right_down = rotate(D315::value, A);
+        static constexpr auto right      = rotate(D000, theta);
+        static constexpr auto right_up   = rotate(D045, theta);
+        static constexpr auto up         = rotate(D090, theta);
+        static constexpr auto left_up    = rotate(D135, theta);
+        static constexpr auto left       = rotate(D180, theta);
+        static constexpr auto left_down  = rotate(D225, theta);
+        static constexpr auto down       = rotate(D270, theta);
+        static constexpr auto right_down = rotate(D315, theta);
 };
 
 }       // namespace angle

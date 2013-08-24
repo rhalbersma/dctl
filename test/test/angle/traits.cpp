@@ -1,106 +1,77 @@
-#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
-#include <boost/mpl/vector.hpp>                 // vector
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
 #include <dctl/angle/degrees.hpp>               // D000, D045, D090, D135, D180, D225, D270, D315
 #include <dctl/angle/traits.hpp>                // is_orthogonal, is_diagonal, is_up, is_down, is_left, is_right, is_positive, is_negative
 
 namespace dctl {
 namespace angle {
-namespace lazy {
 
 BOOST_AUTO_TEST_SUITE(AngleTraits)
 
-using OrthogonalAngles = boost::mpl::vector
-<
-        D000, D090, D180, D270
->;
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsOrthogonal, T, OrthogonalAngles)
+BOOST_AUTO_TEST_CASE(IsOrthogonal)
 {
-        BOOST_STATIC_ASSERT( is_orthogonal(T::value));
-        BOOST_STATIC_ASSERT(!is_diagonal  (T::value));
+        for (auto const& a: { D000, D090, D180, D270 }) {
+                BOOST_CHECK( is_orthogonal(a));
+                BOOST_CHECK(!is_diagonal  (a));
+        }
 }
 
-using DiagonalAngles = boost::mpl::vector
-<
-        D045, D135, D225, D315
->;
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsDiagonal, T, DiagonalAngles)
+BOOST_AUTO_TEST_CASE(IsDiagonal)
 {
-        BOOST_STATIC_ASSERT( is_diagonal  (T::value));
-        BOOST_STATIC_ASSERT(!is_orthogonal(T::value));
+        for (auto const& a: { D045, D135, D225, D315 }) {
+                BOOST_CHECK( is_diagonal  (a));
+                BOOST_CHECK(!is_orthogonal(a));
+        }
 }
 
-using UpAngles = boost::mpl::vector
-<
-        D045, D090, D135
->;
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsUp, T, UpAngles)
+BOOST_AUTO_TEST_CASE(IsUp)
 {
-        BOOST_STATIC_ASSERT( is_up  (T::value));
-        BOOST_STATIC_ASSERT(!is_down(T::value));
+        for (auto const& a: { D045, D090, D135 }) {
+                BOOST_CHECK( is_up  (a));
+                BOOST_CHECK(!is_down(a));
+        }
 }
 
-using DownAngles = boost::mpl::vector
-<
-        D225, D270, D315
->;
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsDown, T, DownAngles)
+BOOST_AUTO_TEST_CASE(IsDown)
 {
-        BOOST_STATIC_ASSERT( is_down(T::value));
-        BOOST_STATIC_ASSERT(!is_up  (T::value));
+        for (auto const& a: { D225, D270, D315 }) {
+                BOOST_CHECK( is_down(a));
+                BOOST_CHECK(!is_up  (a));
+        }
 }
 
-using LeftAngles = boost::mpl::vector
-<
-        D135, D180, D225
->;
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsLeft, T, LeftAngles)
+BOOST_AUTO_TEST_CASE(IsLeft)
 {
-        BOOST_STATIC_ASSERT( is_left (T::value));
-        BOOST_STATIC_ASSERT(!is_right(T::value));
+        for (auto const& a: { D135, D180, D225 }) {
+                BOOST_CHECK( is_left (a));
+                BOOST_CHECK(!is_right(a));
+        }
 }
 
-using RightAngles = boost::mpl::vector
-<
-        D315, D000, D045
->;
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsRight, T, RightAngles)
+BOOST_AUTO_TEST_CASE(IsRight)
 {
-        BOOST_STATIC_ASSERT( is_right(T::value));
-        BOOST_STATIC_ASSERT(!is_left (T::value));
+        for (auto const& a: { D315, D000, D045 }) {
+                BOOST_CHECK( is_right(a));
+                BOOST_CHECK(!is_left (a));
+        }
 }
 
-using PositiveAngles = boost::mpl::vector
-<
-        D045, D090, D135, D180
->;
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsPositive, T, PositiveAngles)
+BOOST_AUTO_TEST_CASE(IsPositive)
 {
-        BOOST_STATIC_ASSERT( is_positive(T::value));
-        BOOST_STATIC_ASSERT(!is_negative(T::value));
+        for (auto const& a: { D045, D090, D135, D180 }) {
+                BOOST_CHECK( is_positive(a));
+                BOOST_CHECK(!is_negative(a));
+        }
 }
 
-using NegativeAngles = boost::mpl::vector
-<
-        D225, D270, D315, D000
->;
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsNegative, T, NegativeAngles)
+BOOST_AUTO_TEST_CASE(IsNegative)
 {
-        BOOST_STATIC_ASSERT( is_negative(T::value));
-        BOOST_STATIC_ASSERT(!is_positive(T::value));
+        for (auto const& a: { D225, D270, D315, D000 }) {
+                BOOST_CHECK( is_negative(a));
+                BOOST_CHECK(!is_positive(a));
+        }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace lazy
 }       // namespace angle
 }       // namespace dctl

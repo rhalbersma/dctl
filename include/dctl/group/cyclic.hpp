@@ -10,38 +10,41 @@ namespace group {
 
 using C1 = tuple<
         boost::mpl::vector<
-                angle::D000
+                angle::Degrees<angle::D000>
         >,
         boost::mpl::quote2< mpl::lazy::rotate >,
-        angle::D000,
+        angle::Degrees<angle::D000>,
         boost::mpl::quote1< mpl::lazy::inverse >
 >;
 
 using C2 = tuple<
         boost::mpl::vector<
-                angle::D000, angle::D180
+                angle::Degrees<angle::D000>, angle::Degrees<angle::D180>
         >,
         boost::mpl::quote2< mpl::lazy::rotate >,
-        angle::D000,
+        angle::Degrees<angle::D000>,
         boost::mpl::quote1< mpl::lazy::inverse >
 >;
 
 using C4 = tuple<
         boost::mpl::vector<
-                angle::D000, angle::D090, angle::D180, angle::D270
+                angle::Degrees<angle::D000>, angle::Degrees<angle::D090>,
+                angle::Degrees<angle::D180>, angle::Degrees<angle::D270>
         >,
         boost::mpl::quote2< mpl::lazy::rotate >,
-        angle::D000,
+        angle::Degrees<angle::D000>,
         boost::mpl::quote1< mpl::lazy::inverse >
 >;
 
 using C8 = tuple<
         boost::mpl::vector<
-                angle::D000, angle::D045, angle::D090, angle::D135,
-                angle::D180, angle::D225, angle::D270, angle::D315
+                angle::Degrees<angle::D000>, angle::Degrees<angle::D045>,
+                angle::Degrees<angle::D090>, angle::Degrees<angle::D135>,
+                angle::Degrees<angle::D180>, angle::Degrees<angle::D225>,
+                angle::Degrees<angle::D270>, angle::Degrees<angle::D315>
         >,
         boost::mpl::quote2< mpl::lazy::rotate >,
-        angle::D000,
+        angle::Degrees<angle::D000>,
         boost::mpl::quote1< mpl::lazy::inverse >
 >;
 
