@@ -263,8 +263,8 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan< angle::rotate(Direction, angle::R090::value) >(jumper) |
-                        scan< angle::rotate(Direction, angle::L090::value) >(jumper)
+                        scan< angle::rotate(Direction, angle::R090) >(jumper) |
+                        scan< angle::rotate(Direction, angle::L090) >(jumper)
                 );
         }
 
@@ -287,10 +287,10 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan< angle::rotate(Direction, angle::R045::value) >(jumper) |
-                        scan< angle::rotate(Direction, angle::L045::value) >(jumper) |
-                        scan< angle::rotate(Direction, angle::R135::value) >(jumper) |
-                        scan< angle::rotate(Direction, angle::L135::value) >(jumper)
+                        scan< angle::rotate(Direction, angle::R045) >(jumper) |
+                        scan< angle::rotate(Direction, angle::L045) >(jumper) |
+                        scan< angle::rotate(Direction, angle::R135) >(jumper) |
+                        scan< angle::rotate(Direction, angle::L135) >(jumper)
                 );
         }
 

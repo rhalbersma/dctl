@@ -16,8 +16,10 @@ BOOST_AUTO_TEST_SUITE(AngleTransform)
 
 using DegreesSequence = boost::mpl::vector
 <
-        angle::D000, angle::D045, angle::D090, angle::D135,
-        angle::D180, angle::D225, angle::D270, angle::D315
+        angle::Degrees<angle::D000>, angle::Degrees<angle::D045>,
+        angle::Degrees<angle::D090>, angle::Degrees<angle::D135>,
+        angle::Degrees<angle::D180>, angle::Degrees<angle::D225>,
+        angle::Degrees<angle::D270>, angle::Degrees<angle::D315>
 > ;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentInverse, T, DegreesSequence)
@@ -27,19 +29,19 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentInverse, T, DegreesSequence)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentRotate180, T, DegreesSequence)
 {
-        BOOST_MPL_ASSERT(( is_idempotent< rotate< boost::mpl::_1, angle::D180 >, T > ));
+        BOOST_MPL_ASSERT(( is_idempotent< rotate< boost::mpl::_1, angle::Degrees<angle::D180> >, T > ));
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IdemPotentMirror, T, DegreesSequence)
 {
-        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::D000 >, T > ));
-        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::D045 >, T > ));
-        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::D090 >, T > ));
-        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::D135 >, T > ));
-        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::D180 >, T > ));
-        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::D225 >, T > ));
-        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::D270 >, T > ));
-        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::D315 >, T > ));
+        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::Degrees<angle::D000> >, T > ));
+        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::Degrees<angle::D045> >, T > ));
+        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::Degrees<angle::D090> >, T > ));
+        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::Degrees<angle::D135> >, T > ));
+        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::Degrees<angle::D180> >, T > ));
+        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::Degrees<angle::D225> >, T > ));
+        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::Degrees<angle::D270> >, T > ));
+        BOOST_MPL_ASSERT(( is_idempotent< mirror< boost::mpl::_1, angle::Degrees<angle::D315> >, T > ));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

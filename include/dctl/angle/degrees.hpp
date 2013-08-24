@@ -66,31 +66,31 @@ struct Degrees
 
 // named multiples of 45 degrees
 
-using D000 = Degrees<  0>;
-using D045 = Degrees< 45>;
-using D090 = Degrees< 90>;
-using D135 = Degrees<135>;
-using D180 = Degrees<180>;
-using D225 = Degrees<225>;
-using D270 = Degrees<270>;
-using D315 = Degrees<315>;
-using D360 = Degrees<360>;
+static constexpr auto D000 =   0;
+static constexpr auto D045 =  45;
+static constexpr auto D090 =  90;
+static constexpr auto D135 = 135;
+static constexpr auto D180 = 180;
+static constexpr auto D225 = 225;
+static constexpr auto D270 = 270;
+static constexpr auto D315 = 315;
+static constexpr auto D360 = 360;
 
 // counterclockwise (left)
 
-using L000 = D000;
-using L045 = D045;
-using L090 = D090;
-using L135 = D135;
-using L180 = D180;
+static constexpr auto L000 = D000;
+static constexpr auto L045 = D045;
+static constexpr auto L090 = D090;
+static constexpr auto L135 = D135;
+static constexpr auto L180 = D180;
 
 // clockwise (right)
 
-using R180 = D180;
-using R135 = D225;
-using R090 = D270;
-using R045 = D315;
-using R000 = D360;
+static constexpr auto R180 = D180;
+static constexpr auto R135 = D225;
+static constexpr auto R090 = D270;
+static constexpr auto R045 = D315;
+static constexpr auto R000 = D360;
 
 }       // namespace angle
 }       // namespace dctl

@@ -13,8 +13,10 @@ BOOST_AUTO_TEST_SUITE(AngleDegrees)
 
 using Octants = boost::mpl::vector
 <
-        D000, D045, D090, D135,
-        D180, D225, D270, D315
+        angle::Degrees<angle::D000>, angle::Degrees<angle::D045>,
+        angle::Degrees<angle::D090>, angle::Degrees<angle::D135>,
+        angle::Degrees<angle::D180>, angle::Degrees<angle::D225>,
+        angle::Degrees<angle::D270>, angle::Degrees<angle::D315>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RightAction, T, Octants)
