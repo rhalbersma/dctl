@@ -3,11 +3,11 @@
 #include <iterator>                     // iterator_traits, iter_swap, next
 
 namespace dctl {
-namespace algorithm {
+namespace util {
 
 // non-mutating sequence algorithms
 
-// runtime equivalent of boost::mpl::contains
+// runtime equivalent of Boost.MPL contains()
 // dctl::detect / std::count / std::find / std::copy
 // O(N) complexity
 template<class InputIterator>
@@ -29,7 +29,7 @@ bool detect_if(InputIterator first, InputIterator last, Predicate pred)
 template<class Container>
 bool is_duplicate_back(Container const& c)
 {
-        return algorithm::detect(c.begin(), c.end() - 1, c.back());
+        return util::detect(c.begin(), c.end() - 1, c.back());
 }
 
 // mutating sequence algorithms
@@ -63,5 +63,5 @@ void selection_sort(ForwardIterator first, ForwardIterator last, Compare cmp = C
         }
 }
 
-}       // namespace algorithm
+}       // namespace util
 }       // namespace dctl

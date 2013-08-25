@@ -161,8 +161,8 @@ private:
                 Arena<int> oar;
                 Alloc<int> oal(oar);
                 Order move_order(oal);
-                move_order.reserve(moves.size());                                       // reserve enough room for all indices
-                algorithm::iota_n(std::back_inserter(move_order), moves.size(), 0);     // generate indices [0, moves.size() - 1]
+                move_order.reserve(moves.size());                               // reserve enough room for all indices
+                util::iota_n(std::back_inserter(move_order), moves.size(), 0);  // generate indices [0, moves.size() - 1]
 
                 // internal iterative deepening (IID)
                 if (!(TT_entry && TT_entry->has_move())) {

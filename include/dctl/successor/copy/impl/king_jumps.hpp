@@ -359,7 +359,7 @@ private:
         {
                 // tag dispatching on promotion condition
                 add_king_jump_dispatch(dest_sq, rules::phase::promotion<Rules>());
-                if (check_duplicate && algorithm::is_duplicate_back(moves_))
+                if (check_duplicate && util::is_duplicate_back(moves_))
                         moves_.pop_back();
         }
 
