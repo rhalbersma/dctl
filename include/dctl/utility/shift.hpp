@@ -13,7 +13,7 @@ template<>
 struct shift<false>
 {
         template<class T>
-        constexpr T operator()(T const& t, std::size_t n) const
+        constexpr auto operator()(T const& t, std::size_t n) const noexcept
         {
                 return t << n;
         }
@@ -24,7 +24,7 @@ template<>
 struct shift<true>
 {
         template<class T>
-        constexpr T operator()(T const& t, std::size_t n) const
+        constexpr auto operator()(T const& t, std::size_t n) const noexcept
         {
                 return t >> n;
         }
@@ -39,9 +39,9 @@ template<>
 struct shift_assign<false>
 {
         template<class T>
-        void operator()(T& t, std::size_t n) const
+        constexpr auto operator()(T& t, std::size_t n) const noexcept
         {
-                t <<= n;
+                return t <<= n;
         }
 };
 
@@ -50,9 +50,9 @@ template<>
 struct shift_assign<true>
 {
         template<class T>
-        void operator()(T& t, std::size_t n) const
+        constexpr auto operator()(T& t, std::size_t n) const noexcept
         {
-                t >>= n;
+                return t >>= n;
         }
 };
 

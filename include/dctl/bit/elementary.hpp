@@ -19,7 +19,7 @@ T universe()
 template<class T>
 T singlet(int i)
 {
-        return T(1) << i;
+        return T{1} << i;
 }
 
 template<class T>
