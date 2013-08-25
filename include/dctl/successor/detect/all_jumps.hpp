@@ -1,13 +1,12 @@
 #pragma once
 #include <type_traits>                                  // integral_constant, is_same, false_type, true_type
-#include <boost/mpl/logical.hpp>                        // and_
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/successor/detect/impl/king_jumps.hpp>
 #include <dctl/successor/detect/impl/pawn_jumps.hpp>
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/pieces/pieces.hpp>                // all, king, pawn
+#include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 
 namespace dctl {
 namespace successor {
@@ -29,17 +28,15 @@ public:
                         p,
                         std::integral_constant<
                                 bool,
-                                boost::mpl::and_<
-                                        std::is_same<
-                                                Range,
-                                                rules::range::distance_1
-                                        >,
-                                        std::is_same< typename
-                                                rules::directions::king_jump<Rules>, typename
-                                                rules::directions::pawn_jump<Rules>
-                                        >,
-                                        rules::can_jump<Rules, pieces::pawn, pieces::king>
-                                >::value
+                                std::is_same<
+                                        Range,
+                                        rules::range::distance_1
+                                >::value &&
+                                std::is_same< typename
+                                        rules::directions::king_jump<Rules>, typename
+                                        rules::directions::pawn_jump<Rules>
+                                >::value &&
+                                rules::can_jump<Rules, pieces::pawn, pieces::king>::value
                         >()
                 );
         }

@@ -4,8 +4,6 @@
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
-#include <boost/mpl/identity.hpp>       // identity
-#include <boost/mpl/logical.hpp>        // and
 #include <dctl/angle/traits.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/algorithm.hpp>
@@ -305,12 +303,10 @@ private:
                 return remaining_targets_dispatch(
                         std::integral_constant<
                                 bool,
-                                boost::mpl::and_<
-                                        boost::mpl::bool_< angle::is_orthogonal(Direction) >,
-                                        std::is_same<typename
-                                                rules::orthogonality::king_jump<Rules>::type,
-                                                rules::orthogonality::relative
-                                        >
+                                angle::is_orthogonal(Direction) &&
+                                std::is_same< typename
+                                        rules::orthogonality::king_jump<Rules>::type,
+                                        rules::orthogonality::relative
                                 >::value
                         >()
                 );
