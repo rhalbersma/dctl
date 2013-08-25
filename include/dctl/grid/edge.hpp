@@ -13,7 +13,7 @@ struct Edge
         static constexpr auto orientation = Orientation;
 };
 
-using ColumnLessEdge = Edge<0>;
+using   ZeroColumnEdge = Edge<0>;
 using SingleColumnEdge = Edge<1>;
 using DoubleColumnEdge = Edge<2>;
 
