@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/grid/edge.hpp>          // ColumnLessEdge
+#include <dctl/grid/edge.hpp>          // ZeroColumnEdge
 
 namespace dctl {
 namespace grid {
@@ -10,7 +10,7 @@ struct Grid;
 
 // partial template specialization declaration
 template<class Dimensions>
-struct Grid<Dimensions, ColumnLessEdge>;
+struct Grid<Dimensions, ZeroColumnEdge>;
 
 }       // namespace grid
 }       // namespace dctl
