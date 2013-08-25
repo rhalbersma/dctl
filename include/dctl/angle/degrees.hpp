@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/utility/constexpr.hpp>
+#include <dctl/utility/abs.hpp>
 
 namespace dctl {
 namespace angle {
@@ -7,13 +7,13 @@ namespace angle {
 template<class T>
 constexpr auto make_angle(T const& n) noexcept
 {
-        return util::abs_modulus(n, 360);
+        return util::abs_remainder(n, 360);
 }
 
 template<class T>
 constexpr auto is_angle(T const& n) noexcept
 {
-        return util::is_abs_modulus(n, 360);
+        return util::is_bounded(n, {0, 360});
 }
 
 template<class T>
@@ -34,11 +34,11 @@ constexpr auto mirror(T const& alpha, T const& theta) noexcept
         return angle::rotate(angle::inverse(angle::rotate(alpha, angle::inverse(theta))), theta);
 }
 
-template<int N>
+template<int Theta>
 struct Degrees
 {
-        static constexpr auto value = make_angle(N); // N is of non-class type, so no ADL for make_angle
-        static_assert(0 <= value && value < 360, "Angles have to lie in the range [0, 360)");
+        static constexpr auto value = make_angle(Theta); // Theta is of non-class type, so no ADL for make_angle
+        static_assert(is_angle(value), "Angles have to lie in the range [0, 360)");
 
         using type = Degrees<value>;
 };
