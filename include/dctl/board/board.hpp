@@ -4,11 +4,11 @@
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include <dctl/angle/degrees.hpp>
 #include <dctl/bit/bit.hpp>
+#include <dctl/grid/coordinates/transform.hpp>
 #include <dctl/grid/dimensions/transform.hpp>
 #include <dctl/grid/edge.hpp>
 #include <dctl/grid/grid.hpp>
 #include <dctl/grid/predicates.hpp>
-#include <dctl/grid/shift_size.hpp>
 #include <dctl/board/mask/init.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/utility/int.hpp>
@@ -27,19 +27,19 @@ struct Board
 public:
         // internal and external grids
         using InternalGrid = grid::Grid<ReOrientedDimensions, Edge>;
-        using ExternalGrid = grid::Grid<Dimensions, grid::ColumnLessEdge>;
+        using ExternalGrid = grid::Grid<Dimensions, grid::ZeroColumnEdge>;
 
         using bit_type = BitBoard;
-
-        static constexpr auto shift_size(int direction) noexcept
-        {
-                return grid::shift_size<InternalGrid>(direction);
-        }
 
         template<int Direction>
         using jump_start = mask::init<
                 grid::is_jump_start, Board, angle::Degrees< angle::rotate(Direction, Edge::orientation) >
         >;
+
+        static constexpr auto shift_size(int direction)
+        {
+                return InternalGrid::shift_size(direction);
+        }
 
         static constexpr auto begin() noexcept
         {
@@ -56,6 +56,42 @@ public:
                 return begin() <= square && square < end();
         }
 
+private:
+        template<class DestGrid, class FromSquare>
+        static constexpr auto transform(FromSquare const& from_sq, int theta)
+        {
+                return grid::coordtosq<DestGrid>(grid::rotate(grid::sqtocoord(from_sq), theta));
+        }
+
+        static constexpr auto square_to_bit(int n)
+        {
+                return transform<InternalGrid>(grid::Square<ExternalGrid>{n}, Edge::orientation);
+        }
+
+        static constexpr auto bit_to_square(int n)
+        {
+                return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, angle::inverse(Edge::orientation));
+        }
+
+#define DCTL_PP_SQUARE2BIT(z, i, data) \
+        square_to_bit(i).value()
+
+        static constexpr int SQUARE2BIT[] = {
+                BOOST_PP_ENUM(64, DCTL_PP_SQUARE2BIT, ~)
+        };
+
+#undef DCTL_PP_SQUARE2BIT
+
+#define DCTL_PP_BIT2SQUARE(z, i, data) \
+        bit_to_square(i).value()
+
+        static constexpr int BIT2SQUARE[] = {
+                BOOST_PP_ENUM(64, DCTL_PP_BIT2SQUARE, ~)
+        };
+
+#undef DCTL_PP_BIT2SQUARE
+
+public:
         static constexpr auto square2bit(int number) noexcept
         {
                 return SQUARE2BIT[number];
@@ -65,8 +101,6 @@ public:
         {
                 return BIT2SQUARE[number];
         }
-
-        // essential bitboard mask
 
         static constexpr BitBoard squares = mask::init< grid::is_square, Board >::value;
 
@@ -112,27 +146,6 @@ public:
         // auxiliary bitboard mask
         static BitBoard const DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
         static BitBoard const QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
-
-private:
-
-#define DCTL_PP_SQUARE2BIT(z, i, data) \
-        board::square_to_bit< Board >(i).value()
-
-        static constexpr int SQUARE2BIT[] = {
-                BOOST_PP_ENUM(64, DCTL_PP_SQUARE2BIT, ~)
-        };
-
-#undef DCTL_PP_SQUARE2BIT
-
-#define DCTL_PP_BIT2SQUARE(z, i, data) \
-        board::bit_to_square< Board >(i).value()
-
-        static constexpr int BIT2SQUARE[] = {
-                BOOST_PP_ENUM(64, DCTL_PP_BIT2SQUARE, ~)
-        };
-
-#undef DCTL_PP_BIT2SQUARE
-
 };
 
 template<class Dimensions, class Edge>
