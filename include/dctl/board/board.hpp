@@ -57,6 +57,12 @@ public:
         }
 
 private:
+        template<class DestGrid, class FromSquare>
+        static constexpr auto transform(FromSquare const& from_sq, int theta)
+        {
+                return grid::coordtosq<DestGrid>(grid::rotate(grid::sqtocoord(from_sq), theta));
+        }
+
         static constexpr auto init_square2bit(int n) noexcept
         {
                 return transform<InternalGrid>(grid::Square<ExternalGrid>{n}, Edge::orientation).value();
@@ -67,25 +73,19 @@ private:
                 return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, angle::inverse(Edge::orientation)).value();
         }
 
-        template<class DestGrid, class FromSquare>
-        static constexpr auto transform(FromSquare const& from_sq, int theta)
+#define DCTL_PP_SQUARE2BIT(z, i, data) init_square2bit(i)
+
+        static constexpr int table_square2bit[] =
         {
-                return grid::coordtosq<DestGrid>(grid::rotate(grid::sqtocoord(from_sq), theta));
-        }
-
-#define DCTL_PP_SQUARE2BIT(z, i, data) \
-        init_square2bit(i)
-
-        static constexpr int table_square2bit[] = {
                 BOOST_PP_ENUM(64, DCTL_PP_SQUARE2BIT, ~)
         };
 
 #undef DCTL_PP_SQUARE2BIT
 
-#define DCTL_PP_BIT2SQUARE(z, i, data) \
-        init_bit2square(i)
+#define DCTL_PP_BIT2SQUARE(z, i, data) init_bit2square(i)
 
-        static constexpr int table_bit2square[] = {
+        static constexpr int table_bit2square[] =
+        {
                 BOOST_PP_ENUM(64, DCTL_PP_BIT2SQUARE, ~)
         };
 
@@ -104,8 +104,8 @@ public:
 
         static constexpr BitBoard squares = mask::init< grid::is_square, Board >::value;
 
-#define DCTL_PP_INITIAL_MASK(z, i, data)      \
-        mask::init< grid::is_initial, Board, boost::mpl::bool_<data>, boost::mpl::int_<i> >::value
+#define DCTL_PP_INITIAL_MASK(z, i, data)        \
+        mask::init< grid::is_initial, Board, boost::mpl::int_<i>, boost::mpl::bool_<data> >::value
 
         static constexpr BitBoard initial_mask[][5] =
         {
@@ -115,8 +115,8 @@ public:
 
 #undef DCTL_PP_INITIAL_MASK
 
-#define DCTL_PP_ROW_MASK(z, i, data)      \
-        mask::init< grid::is_row, Board, boost::mpl::bool_<data>, boost::mpl::int_<i> >::value
+#define DCTL_PP_ROW_MASK(z, i, data)            \
+        mask::init< grid::is_row, Board, boost::mpl::int_<i>, boost::mpl::bool_<data> >::value
 
         static constexpr BitBoard promotion_mask[][2] =
         {
@@ -132,8 +132,8 @@ public:
 
 #undef DCTL_PP_ROW_MASK
 
-#define DCTL_PP_COL_MASK(z, i, data)      \
-        mask::init< grid::is_col, Board, boost::mpl::bool_<data>, boost::mpl::int_<i> >::value
+#define DCTL_PP_COL_MASK(z, i, data)            \
+        mask::init< grid::is_col, Board, boost::mpl::int_<i>, boost::mpl::bool_<data> >::value
 
         static constexpr BitBoard col_mask[][12] =
         {
@@ -144,6 +144,12 @@ public:
 #undef DCTL_PP_COL_MASK
 
 };
+
+template<class Dimensions, class Edge>
+constexpr int Board<Dimensions, Edge>::table_square2bit[];
+
+template<class Dimensions, class Edge>
+constexpr int Board<Dimensions, Edge>::table_bit2square[];
 
 template<class Dimensions, class Edge>
 constexpr BitBoard Board<Dimensions, Edge>::squares;
@@ -159,12 +165,6 @@ constexpr BitBoard Board<Dimensions, Edge>::row_mask[][12];
 
 template<class Dimensions, class Edge>
 constexpr BitBoard Board<Dimensions, Edge>::col_mask[][12];
-
-template<class Dimensions, class Edge>
-constexpr int Board<Dimensions, Edge>::table_square2bit[];
-
-template<class Dimensions, class Edge>
-constexpr int Board<Dimensions, Edge>::table_bit2square[];
 
 }       // namespace board
 }       // namespace dctl
