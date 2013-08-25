@@ -7,7 +7,7 @@ namespace angle {
 
 BOOST_AUTO_TEST_SUITE(AngleTraits)
 
-BOOST_AUTO_TEST_CASE(IsOrthogonal)
+BOOST_AUTO_TEST_CASE(OnlyOrthogonalIsOrthogonal)
 {
         for (auto const& a: { D000, D090, D180, D270 }) {
                 BOOST_CHECK( is_orthogonal(a));
@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(IsOrthogonal)
         }
 }
 
-BOOST_AUTO_TEST_CASE(IsDiagonal)
+BOOST_AUTO_TEST_CASE(OnlyDiagonalIsDiagonal)
 {
         for (auto const& a: { D045, D135, D225, D315 }) {
                 BOOST_CHECK( is_diagonal  (a));
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(IsDiagonal)
         }
 }
 
-BOOST_AUTO_TEST_CASE(IsUp)
+BOOST_AUTO_TEST_CASE(OnlyUpIsUp)
 {
         for (auto const& a: { D045, D090, D135 }) {
                 BOOST_CHECK( is_up  (a));
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(IsUp)
         }
 }
 
-BOOST_AUTO_TEST_CASE(IsDown)
+BOOST_AUTO_TEST_CASE(OnlyDownIsDown)
 {
         for (auto const& a: { D225, D270, D315 }) {
                 BOOST_CHECK( is_down(a));
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(IsDown)
         }
 }
 
-BOOST_AUTO_TEST_CASE(IsLeft)
+BOOST_AUTO_TEST_CASE(OnlyLeftIsLeft)
 {
         for (auto const& a: { D135, D180, D225 }) {
                 BOOST_CHECK( is_left (a));
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(IsLeft)
         }
 }
 
-BOOST_AUTO_TEST_CASE(IsRight)
+BOOST_AUTO_TEST_CASE(OnlyRightIsRight)
 {
         for (auto const& a: { D315, D000, D045 }) {
                 BOOST_CHECK( is_right(a));
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(IsRight)
         }
 }
 
-BOOST_AUTO_TEST_CASE(IsPositive)
+BOOST_AUTO_TEST_CASE(OnlyPositiveIsPositive)
 {
         for (auto const& a: { D045, D090, D135, D180 }) {
                 BOOST_CHECK( is_positive(a));
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(IsPositive)
         }
 }
 
-BOOST_AUTO_TEST_CASE(IsNegative)
+BOOST_AUTO_TEST_CASE(OnlyNegativeIsNegative)
 {
         for (auto const& a: { D225, D270, D315, D000 }) {
                 BOOST_CHECK( is_negative(a));

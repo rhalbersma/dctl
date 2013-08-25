@@ -7,7 +7,7 @@
 
 BOOST_AUTO_TEST_SUITE(UtilityAlgorithm)
 
-BOOST_AUTO_TEST_CASE(InsertionSort)
+BOOST_AUTO_TEST_CASE(IsSortedAfterInsertionSort)
 {
         auto const N = 1 << 10;
         std::vector<int> v;
@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(InsertionSort)
         BOOST_CHECK(std::is_sorted(begin(v), end(v)));
 }
 
-BOOST_AUTO_TEST_CASE(SelectionSort)
+BOOST_AUTO_TEST_CASE(IsSortedAfterSelectionSort)
 {
         auto const N = 1 << 10;
         std::vector<int> v;
