@@ -90,7 +90,7 @@ constexpr auto sqtocoord(Square<Grid> const& square) noexcept
 }
 
 template<class Grid>
-constexpr auto coordtosq(Coordinates const& coord)
+constexpr auto coordtosq(Coordinates const& coord) noexcept
 {
         auto const DECENTRAL_ROW = detail::decentralize(coord.row(), Grid::height);
         auto const DECENTRAL_COL = detail::decentralize(coord.col(), Grid::width);
