@@ -57,35 +57,35 @@ public:
         }
 
 private:
+        static constexpr auto init_square2bit(int n) noexcept
+        {
+                return transform<InternalGrid>(grid::Square<ExternalGrid>{n}, Edge::orientation).value();
+        }
+
+        static constexpr auto init_bit2square(int n) noexcept
+        {
+                return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, angle::inverse(Edge::orientation)).value();
+        }
+
         template<class DestGrid, class FromSquare>
         static constexpr auto transform(FromSquare const& from_sq, int theta)
         {
                 return grid::coordtosq<DestGrid>(grid::rotate(grid::sqtocoord(from_sq), theta));
         }
 
-        static constexpr auto square_to_bit(int n)
-        {
-                return transform<InternalGrid>(grid::Square<ExternalGrid>{n}, Edge::orientation);
-        }
-
-        static constexpr auto bit_to_square(int n)
-        {
-                return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, angle::inverse(Edge::orientation));
-        }
-
 #define DCTL_PP_SQUARE2BIT(z, i, data) \
-        square_to_bit(i).value()
+        init_square2bit(i)
 
-        static constexpr int SQUARE2BIT[] = {
+        static constexpr int table_square2bit[] = {
                 BOOST_PP_ENUM(64, DCTL_PP_SQUARE2BIT, ~)
         };
 
 #undef DCTL_PP_SQUARE2BIT
 
 #define DCTL_PP_BIT2SQUARE(z, i, data) \
-        bit_to_square(i).value()
+        init_bit2square(i)
 
-        static constexpr int BIT2SQUARE[] = {
+        static constexpr int table_bit2square[] = {
                 BOOST_PP_ENUM(64, DCTL_PP_BIT2SQUARE, ~)
         };
 
@@ -94,12 +94,12 @@ private:
 public:
         static constexpr auto square2bit(int number) noexcept
         {
-                return SQUARE2BIT[number];
+                return table_square2bit[number];
         }
 
         static constexpr auto bit2square(int number) noexcept
         {
-                return BIT2SQUARE[number];
+                return table_bit2square[number];
         }
 
         static constexpr BitBoard squares = mask::init< grid::is_square, Board >::value;
@@ -143,9 +143,6 @@ public:
 
 #undef DCTL_PP_COL_MASK
 
-        // auxiliary bitboard mask
-        static BitBoard const DOUBLE_NEAREST_NEIGHBOR_MAGIC[];  // shifting bits in 2 directions
-        static BitBoard const QUAD_NEAREST_NEIGHBOR_MAGIC;      // shifting bits in 4 directions
 };
 
 template<class Dimensions, class Edge>
@@ -164,21 +161,10 @@ template<class Dimensions, class Edge>
 constexpr BitBoard Board<Dimensions, Edge>::col_mask[][12];
 
 template<class Dimensions, class Edge>
-constexpr int Board<Dimensions, Edge>::SQUARE2BIT[];
+constexpr int Board<Dimensions, Edge>::table_square2bit[];
 
 template<class Dimensions, class Edge>
-constexpr int Board<Dimensions, Edge>::BIT2SQUARE[];
-
-template<class Dimensions, class Edge>
-BitBoard const Board<Dimensions, Edge>::DOUBLE_NEAREST_NEIGHBOR_MAGIC[] = {
-        (bit::singlet<BitBoard>(1)) ^ (bit::singlet<BitBoard>(1 + (InternalGrid::left_down::value  << 1))),
-        (bit::singlet<BitBoard>(0)) ^ (bit::singlet<BitBoard>(0 + (InternalGrid::right_down::value << 1)))
-};
-
-template<class Dimensions, class Edge>
-BitBoard const Board<Dimensions, Edge>::QUAD_NEAREST_NEIGHBOR_MAGIC =
-        DOUBLE_NEAREST_NEIGHBOR_MAGIC[0] ^ DOUBLE_NEAREST_NEIGHBOR_MAGIC[1]
-;
+constexpr int Board<Dimensions, Edge>::table_bit2square[];
 
 }       // namespace board
 }       // namespace dctl
