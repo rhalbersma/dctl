@@ -26,7 +26,7 @@ struct is_square
         >
 {};
 
-template<class Grid, class SQ, class Color, class Separation>
+template<class Grid, class SQ, class Separation, class Color>
 struct is_initial
 :
         mpl::is_within_range<
@@ -76,7 +76,7 @@ struct is_row
         >
 {};
 
-template<class Grid, class SQ, class Color, class Column>
+template<class Grid, class SQ, class Column, class Color>
 struct is_col
 :
         boost::mpl::equal_to<
