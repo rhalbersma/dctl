@@ -1,6 +1,8 @@
 #pragma once
-#include <dctl/grid/grid_fwd.hpp>      // primary template and partial specialization declarations
-#include <dctl/grid/edge.hpp>          // ColumnLessEdge
+#include <stdexcept>                    // logic_error
+#include <dctl/angle/degrees.hpp>       // D00, D045, D090, D135, D180, D225, D270, D315
+#include <dctl/grid/grid_fwd.hpp>       // primary template and partial specialization declarations
+#include <dctl/grid/edge.hpp>           // ColumnLessEdge
 
 namespace dctl {
 namespace grid {
@@ -12,7 +14,7 @@ struct Grid
         public Dimensions, public Edge
 {
 public:
-        using BaseGrid = Grid<Dimensions, ColumnLessEdge>;
+        using BaseGrid = Grid<Dimensions, ZeroColumnEdge>;
 
         // diagonal directions
 
@@ -45,11 +47,26 @@ public:
         // grid size
 
         static constexpr auto size = modulo * (Dimensions::height / 2) + (Dimensions::height % 2) * (edge_re + 1);
+
+        static constexpr auto shift_size(int direction)
+        {
+                switch(angle::make_angle(direction)) {
+                case angle::D000: return right     ;
+                case angle::D045: return right_up  ;
+                case angle::D090: return up        ;
+                case angle::D135: return left_up   ;
+                case angle::D180: return left      ;
+                case angle::D225: return left_down ;
+                case angle::D270: return down      ;
+                case angle::D315: return right_down;
+                default: return throw std::logic_error("Bitwise shifts shall be along directions that are a multiple of 45 degrees"), direction;
+                }
+        }
 };
 
 // partial specialization definition
 template<class Dimensions>
-struct Grid<Dimensions, ColumnLessEdge>
+struct Grid<Dimensions, ZeroColumnEdge>
 :
         public Dimensions
 {
