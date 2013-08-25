@@ -7,20 +7,20 @@ namespace dctl {
 template<class Board, int Direction>
 struct Increment
 {
-        template<class BidirectionalIterator>
+        template<class BidirectionalIterator, int N = Board::shift_size(Direction)>
         void operator()(BidirectionalIterator& square) const
         {
-                util::shift_assign< angle::is_positive(Direction) >()(square, boost::mpl::int_<Board::shift_size(Direction)>::value);
+                util::shift_assign< angle::is_positive(Direction) >()(square, N);
         }
 };
 
 template<class Board, int Direction>
 struct Decrement
 {
-        template<class BidirectionalIterator>
+        template<class BidirectionalIterator, int N = Board::shift_size(Direction)>
         void operator()(BidirectionalIterator& square) const
         {
-                util::shift_assign< angle::is_negative(Direction) >()(square, boost::mpl::int_<Board::shift_size(Direction)>::value);
+                util::shift_assign< angle::is_negative(Direction) >()(square, N);
         }
 };
 
