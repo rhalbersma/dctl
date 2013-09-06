@@ -1,7 +1,6 @@
 #pragma once
 #include <type_traits>
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/mpl/identity.hpp>       // identity
 #include <boost/operators.hpp>          // equality_comparable, xorable
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/move_fwd.hpp>

@@ -59,7 +59,7 @@ public:
                 case angle::D225: return left_down ;
                 case angle::D270: return down      ;
                 case angle::D315: return right_down;
-                default: return throw std::logic_error("Bitwise shifts shall be along directions that are a multiple of 45 degrees"), direction;
+                default: return throw std::logic_error("Direction angles shall be a multiple of 45 degrees"), direction;
                 }
         }
 };

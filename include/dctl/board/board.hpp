@@ -1,6 +1,4 @@
 #pragma once
-#include <boost/mpl/bool.hpp>                   // bool_
-#include <boost/mpl/int.hpp>                    // int_
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include <dctl/angle/degrees.hpp>
 #include <dctl/bit/bit.hpp>
@@ -9,7 +7,6 @@
 #include <dctl/grid/edge.hpp>
 #include <dctl/grid/grid.hpp>
 #include <dctl/grid/predicates.hpp>
-#include <dctl/board/mask/init.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/utility/int.hpp>
 
@@ -30,11 +27,6 @@ public:
         using ExternalGrid = grid::Grid<Dimensions, grid::ZeroColumnEdge>;
 
         using bit_type = BitBoard;
-
-        template<int Direction>
-        using jump_start = mask::init<
-                grid::is_jump_start, Board, angle::Degrees< angle::rotate(Direction, Edge::orientation) >
-        >;
 
         static constexpr auto shift_size(int direction)
         {
@@ -102,10 +94,21 @@ public:
                 return table_bit2square[number];
         }
 
-        static constexpr BitBoard squares = mask::init< grid::is_square, Board >::value;
+private:
+        template<class Predicate /* NOTE: no lambda in constexpr */>
+        static constexpr auto copy_if(Predicate pred) noexcept
+        {
+                auto result = BitBoard{0};
+                for (auto sq = 0; sq < ExternalGrid::size; ++sq)
+                        if (pred(sq))
+                                result ^= BitBoard{1} << square2bit(sq);
+                return result;
+        }
 
-#define DCTL_PP_INITIAL_MASK(z, i, data)        \
-        mask::init< grid::is_initial, Board, boost::mpl::int_<i>, boost::mpl::bool_<data> >::value
+public:
+        static constexpr BitBoard squares = copy_if(grid::is_square<ExternalGrid>{});
+
+#define DCTL_PP_INITIAL_MASK(z, i, data) copy_if(grid::is_initial<ExternalGrid, i, data>{})
 
         static constexpr BitBoard initial_mask[][5] =
         {
@@ -115,8 +118,7 @@ public:
 
 #undef DCTL_PP_INITIAL_MASK
 
-#define DCTL_PP_ROW_MASK(z, i, data)            \
-        mask::init< grid::is_row, Board, boost::mpl::int_<i>, boost::mpl::bool_<data> >::value
+#define DCTL_PP_ROW_MASK(z, i, data) copy_if(grid::is_row<ExternalGrid, i, data>{})
 
         static constexpr BitBoard promotion_mask[][2] =
         {
@@ -132,8 +134,7 @@ public:
 
 #undef DCTL_PP_ROW_MASK
 
-#define DCTL_PP_COL_MASK(z, i, data)            \
-        mask::init< grid::is_col, Board, boost::mpl::int_<i>, boost::mpl::bool_<data> >::value
+#define DCTL_PP_COL_MASK(z, i, data) copy_if(grid::is_col<ExternalGrid, i, data>{})
 
         static constexpr BitBoard col_mask[][12] =
         {
@@ -143,6 +144,22 @@ public:
 
 #undef DCTL_PP_COL_MASK
 
+private:
+
+#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<ExternalGrid, angle::rotate(i * 45, Edge::orientation)>{})
+
+        static constexpr BitBoard table_jump_start[] =
+        {
+                BOOST_PP_ENUM(8, DCTL_PP_JUMP_START, ~)
+        };
+
+#undef DCTL_PP_JUMP_START
+
+public:
+        static constexpr auto jump_start(int direction) noexcept
+        {
+                return table_jump_start[angle::make_angle(direction) / 45];
+        }
 };
 
 template<class Dimensions, class Edge>
@@ -165,6 +182,9 @@ constexpr BitBoard Board<Dimensions, Edge>::row_mask[][12];
 
 template<class Dimensions, class Edge>
 constexpr BitBoard Board<Dimensions, Edge>::col_mask[][12];
+
+template<class Dimensions, class Edge>
+constexpr BitBoard Board<Dimensions, Edge>::table_jump_start[];
 
 }       // namespace board
 }       // namespace dctl

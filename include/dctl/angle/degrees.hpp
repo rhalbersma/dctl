@@ -13,7 +13,7 @@ constexpr auto make_angle(T const& n) noexcept
 template<class T>
 constexpr auto is_angle(T const& n) noexcept
 {
-        return util::is_bounded(n, {0, 360});
+        return util::is_element(n, {0, 360});
 }
 
 template<class T>
