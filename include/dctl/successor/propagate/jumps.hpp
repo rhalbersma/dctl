@@ -8,7 +8,6 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/board/iterator.hpp>
-#include <dctl/board/nested.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/unary_projections.hpp>
@@ -158,7 +157,7 @@ public:
         template<int Direction>
         BitBoard path() const
         {
-                return path() & board::jump_start<Board, Direction>::value;
+                return path() & Board::jump_start(Direction);
         }
 
         bool is_king(BitIndex target_sq) const

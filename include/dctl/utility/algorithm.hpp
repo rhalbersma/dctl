@@ -45,7 +45,7 @@ void iota_n(OutputIterator first, Size n, T value)
 
 // O(N^2) complexity
 template<class ForwardIterator, class Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type>>
-void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare())
+void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare{})
 {
         for (auto it = first; it != last; ++it) {
                 auto const insertion = std::upper_bound(first, it, *it, cmp);
@@ -55,7 +55,7 @@ void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = C
 
 // O(N^2) complexity
 template<class ForwardIterator, class Compare = std::less<typename std::iterator_traits<ForwardIterator>::value_type>>
-void selection_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare())
+void selection_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare{})
 {
         for (auto it = first; it != last; ++it) {
                 auto const selection = std::min_element(it, last, cmp);

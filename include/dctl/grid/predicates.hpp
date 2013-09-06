@@ -1,10 +1,4 @@
 #pragma once
-#include <boost/mpl/arithmetic.hpp>     // minus, modulus, plus
-#include <boost/mpl/comparison.hpp>     // equal_to
-#include <boost/mpl/eval_if.hpp>        // eval_if
-#include <boost/mpl/int.hpp>            // int_
-#include <boost/mpl/logical.hpp>        // and_, not_, or_
-#include <boost/mpl/placeholders.hpp>   // _1
 #include <dctl/angle/traits.hpp>
 #include <dctl/angle/transform.hpp>
 #include <dctl/grid/coordinates.hpp>
@@ -12,86 +6,71 @@
 #include <dctl/grid/dimensions.hpp>
 #include <dctl/grid/grid.hpp>
 #include <dctl/mpl/type_traits.hpp>
+#include <dctl/utility/abs.hpp>
 
 namespace dctl {
 namespace grid {
 
-template<class Grid, class SQ>
+template<class Grid>
 struct is_square
-:
-        mpl::is_within_range<
-                boost::mpl::int_<SQ::value>,
-                boost::mpl::int_<0>,
-                boost::mpl::int_<Grid::size>
-        >
-{};
+{
+        constexpr auto operator()(int sq) const noexcept
+        {
+                return util::is_element(sq, {0, Grid::size});
+        }
+};
 
-template<class Grid, class SQ, class Separation, class Color>
+template<class Grid, int Separation, bool Color>
 struct is_initial
-:
-        mpl::is_within_range<
-                boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).row(), Grid::height) >, typename
-                boost::mpl::eval_if<
-                        Color,
-                        boost::mpl::minus<
-                                boost::mpl::int_<Grid::height>,
-                                boost::mpl::divides<
-                                        boost::mpl::minus<
-                                                boost::mpl::int_<Grid::height>,
-                                                Separation
-                                        >,
-                                        boost::mpl::int_<2>
-                                >
-                        >,
-                        boost::mpl::int_<0>
-                >::type, typename
-                boost::mpl::eval_if<
-                        Color,
-                        boost::mpl::int_<Grid::height>,
-                        boost::mpl::divides<
-                                boost::mpl::minus<
-                                        boost::mpl::int_<Grid::height>,
-                                        Separation
-                                >,
-                                boost::mpl::int_<2>
-                        >
-                >::type
-        >
-{};
+{
+        constexpr auto operator()(int sq) const noexcept
+        {
+                auto const row = grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height);
+                auto const min_row = Color? Grid::height - (Grid::height - Separation) / 2 : 0;
+                auto const max_row = Color? Grid::height : (Grid::height - Separation) / 2;
+                return util::is_element(row, {min_row, max_row});
+        }
+};
 
-template<class Grid, class SQ, class Color, class Row>
+
+template<class Grid, int Row, bool Color>
 struct is_row
-:
-        boost::mpl::equal_to<
-                boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).row(), Grid::height) >, typename
-                boost::mpl::eval_if<
-                        Color,
-                        boost::mpl::minus<
-                                boost::mpl::int_<Grid::height>,
-                                boost::mpl::int_<1>,
-                                Row
-                        >,
-                        Row
-                >::type
-        >
-{};
+{
+        constexpr auto operator()(int sq) const noexcept
+        {
+                return grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height) == (Color? Grid::height - 1 - Row : Row);
+        }
+};
 
-template<class Grid, class SQ, class Column, class Color>
+template<class Grid, int Column, bool Color>
 struct is_col
-:
-        boost::mpl::equal_to<
-                boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).col(), Grid::width) >, typename
-                boost::mpl::eval_if<
-                        Color,
-                        boost::mpl::minus<
-                                boost::mpl::int_<Grid::width>,
-                                boost::mpl::int_<1>,
-                                Column
-                        >,
-                        Column
-                >::type
-        >
-{};
+{
+        constexpr auto operator()(int sq) const noexcept
+        {
+                return grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).col(), Grid::width) == (Color? Grid::width - 1 - Column : Column);
+        }
+};
+
+template<class Grid, int Direction>
+struct is_jump_start
+{
+        static_assert(Direction % 45 == 0, "Direction angles have to be a multiple of 45 degrees.");
+
+        constexpr auto operator()(int sq) const
+        {
+                auto const offset = angle::is_diagonal(Direction)? 2 : 4;
+
+                auto const row = grid::detail::decentralize( grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height);
+                auto const min_row = angle::is_up(Direction)? offset : 0;
+                auto const max_row = Grid::height - (angle::is_down(Direction)? offset : 0);
+
+                auto const col = grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).col(), Grid::width);
+                auto const min_col = angle::is_left(Direction)? offset : 0;
+                auto const max_col = Grid::width - (angle::is_right(Direction)? offset : 0);
+
+                return util::is_element(row, {min_row, max_row}) && util::is_element(col, {min_col, max_col});
+        }
+};
 
 namespace detail {
 
@@ -138,64 +117,6 @@ constexpr auto is_jump_group(int group, int square) noexcept
 {
         return detail::is_jump_group( Square{group}, Square{square} );
 }
-
-namespace detail {
-
-template<class Grid, class SQ, int Direction, class Offset>
-struct is_jump_start
-:
-        boost::mpl::and_<
-                // row_min <= row < row_max
-                mpl::is_within_range<
-                        boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).row(), Grid::height) >, typename
-                        boost::mpl::eval_if< 
-                                boost::mpl::bool_< angle::is_up(Direction) >,
-                                Offset, 
-                                boost::mpl::int_<0> 
-                        >::type,
-                        boost::mpl::minus<
-                                boost::mpl::int_<Grid::height>, typename
-                                boost::mpl::eval_if< 
-                                        boost::mpl::bool_< angle::is_down(Direction) >,
-                                        Offset, 
-                                        boost::mpl::int_<0> 
-                                >::type
-                        >
-                >,
-                // col_min <= col < col_max
-                mpl::is_within_range<
-                        boost::mpl::int_< grid::detail::decentralize( grid::sqtocoord( Square<Grid>(SQ::value) ).col(), Grid::width) >, typename
-                        boost::mpl::eval_if< 
-                                boost::mpl::bool_< angle::is_left(Direction) >,
-                                Offset, 
-                                boost::mpl::int_<0> 
-                        >::type,
-                        boost::mpl::minus<
-                                boost::mpl::int_<Grid::width>, typename
-                                boost::mpl::eval_if< 
-                                        boost::mpl::bool_< angle::is_right(Direction) >,
-                                        Offset, 
-                                        boost::mpl::int_<0> 
-                                >::type
-                        >
-                >
-        >
-{};
-
-}       // namespace detail
-
-template<class Grid, class SQ, class Direction>
-struct is_jump_start
-:
-        detail::is_jump_start<
-                Grid, SQ, Direction::value, typename
-                boost::mpl::eval_if<
-                        boost::mpl::bool_< angle::is_diagonal(Direction::value) >,
-                        boost::mpl::int_<2>,
-                        boost::mpl::int_<4>
-                >::type
-        >
-{};
 
 }       // namespace grid
 }       // namespace dctl

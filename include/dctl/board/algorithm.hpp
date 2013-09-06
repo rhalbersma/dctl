@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/angle/traits.hpp>        // is_positive
-#include <dctl/board/nested.hpp>        // shift_size
 #include <dctl/utility/shift.hpp>       // shift
 
 namespace dctl {
