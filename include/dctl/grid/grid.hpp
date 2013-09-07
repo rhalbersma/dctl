@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>                    // logic_error
+#include <dctl/angle/angle.hpp>         // make_angle
 #include <dctl/angle/degrees.hpp>       // D00, D045, D090, D135, D180, D225, D270, D315
 #include <dctl/grid/grid_fwd.hpp>       // primary template and partial specialization declarations
 #include <dctl/grid/edge.hpp>           // ColumnLessEdge
@@ -50,7 +51,7 @@ public:
 
         static constexpr auto shift_size(int direction)
         {
-                switch(angle::make_angle(direction)) {
+                switch(make_angle(direction)) {
                 case angle::D000: return right     ;
                 case angle::D045: return right_up  ;
                 case angle::D090: return up        ;

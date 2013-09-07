@@ -5,66 +5,68 @@ namespace angle {
 
 /*
 
-                 D090
-                  |
-            D135  |  D045
-                \ | /
-                 \|/
-        D180 ----- ----- D000
-                 /|\
-                / | \
-            D225  |  D315
-                  |
-                 D270
+        The standard enumeration of angles
+
+                 90
+                 |
+            135  |  45
+               \ | /
+                \|/
+        180 ----- ----- 0
+                /|\
+               / | \
+            225  |  315
+                 |
+                270
 
 */
 
 template<class T>
-constexpr auto is_orthogonal(T const& t) noexcept
+constexpr auto is_orthogonal(T const& alpha) noexcept
 {
-        return t % 90 == 0;
+        return alpha % T{90} == T{0};
 }
 
 template<class T>
-constexpr auto is_diagonal(T const& t) noexcept
+constexpr auto is_diagonal(T const& alpha) noexcept
 {
-        return t % 90 == 45;
+        return alpha % T{90} == T{45};
 }
 
 template<class T>
-constexpr auto is_up(T const& t) noexcept
+constexpr auto is_up(T const& alpha) noexcept
 {
-        return 0 < t && t < 180;
+        return T{0} < alpha && alpha < T{180};
 }
 
 template<class T>
-constexpr auto is_down(T const& t) noexcept
+constexpr auto is_down(T const& alpha) noexcept
 {
-        return 180 < t;
+        return T{180} < alpha;
 }
 
 template<class T>
-constexpr auto is_left(T const& t) noexcept
+constexpr auto is_left(T const& alpha) noexcept
 {
-        return 90 < t && t < 270;
+        return T{90} < alpha && alpha < T{270};
 }
 
 template<class T>
-constexpr auto is_right(T const& t) noexcept
+constexpr auto is_right(T const& alpha) noexcept
 {
-        return 270 < t || (0 <= t && t < 90);
+        return T{270} < alpha || (T{0} <= alpha && alpha < T{90});
 }
 
 template<class T>
-constexpr auto is_positive(T const& t) noexcept
+constexpr auto is_positive(T const& alpha) noexcept
 {
-        return 0 < t && t <= 180;
+        return T{0} < alpha && alpha <= T{180};
 }
 
 template<class T>
-constexpr auto is_negative(T const& t) noexcept
+constexpr auto is_negative(T const& alpha) noexcept
 {
-        return t == 0 || 180 < t;
+        return alpha == T{0} || T{180} < alpha;
 }
 
 }       // namespace angle
