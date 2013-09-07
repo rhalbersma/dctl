@@ -1,5 +1,6 @@
 #pragma once
-#include <dctl/angle/degrees.hpp>       // D000, D045, D090, D135, D180, D225, D270, D315, rotate, inverse
+#include <dctl/angle/degrees.hpp>       // D000, D045, D090, D135, D180, D225, D270, D315
+#include <dctl/angle/transform.hpp>     // inverse, rotate
 
 namespace dctl {
 namespace angle {

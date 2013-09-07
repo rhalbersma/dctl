@@ -1,54 +1,15 @@
 #pragma once
-#include <dctl/utility/abs.hpp>
+#include <dctl/preprocessor/static_constexpr_variable.hpp>      // DCTL_PP_STATIC_CONSTEXPR_VARIABLE
 
 namespace dctl {
 namespace angle {
 
-template<class T>
-constexpr auto make_angle(T const& n) noexcept
-{
-        return util::abs_remainder(n, 360);
-}
-
-template<class T>
-constexpr auto is_angle(T const& n) noexcept
-{
-        return util::is_element(n, {0, 360});
-}
-
-template<class T>
-constexpr auto inverse(T const& alpha) noexcept
-{
-        return angle::make_angle(-alpha);
-}
-
-template<class T>
-constexpr auto rotate(T const& alpha, T const& theta) noexcept
-{
-        return angle::make_angle(alpha + theta);
-}
-
-template<class T>
-constexpr auto mirror(T const& alpha, T const& theta) noexcept
-{
-        return angle::rotate(angle::inverse(angle::rotate(alpha, angle::inverse(theta))), theta);
-}
-
-template<int Theta>
-struct Degrees
-{
-        static constexpr auto value = make_angle(Theta); // Theta is of non-class type, so no ADL for make_angle
-        static_assert(is_angle(value), "Angles have to lie in the range [0, 360)");
-
-        using type = Degrees<value>;
-};
-
 /*
 
-        Degrees are denoted as <D><XXX>, where XXX is exactly three characters
-        long, running from 000 until 360 in steps of 45. Counterclockwise
-        rotations are denoted as <L><XXX>, where <XXX> runs from 0 until 180.
-        Clockwise rotations are similarly denoted as <R><XXX>.
+        Degrees are denoted as <DXXX>, where XXX is exactly three characters
+        long, running from 000 until 360 in steps of 45. Counterclockwise and
+        clockwise rotations are denoted as <LXXX> and <RXXX>, respectively,
+        where XXX runs from 0 until 180.
 
                            D090 = L090
                                 |
@@ -64,33 +25,32 @@ struct Degrees
 
 */
 
-// named multiples of 45 degrees
+// named angles
 
-static constexpr auto D000 =   0;
-static constexpr auto D045 =  45;
-static constexpr auto D090 =  90;
-static constexpr auto D135 = 135;
-static constexpr auto D180 = 180;
-static constexpr auto D225 = 225;
-static constexpr auto D270 = 270;
-static constexpr auto D315 = 315;
-static constexpr auto D360 = 360;
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, D000,   0)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, D045,  45)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, D090,  90)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, D135, 135)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, D180, 180)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, D225, 225)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, D270, 270)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, D315, 315)
 
-// counterclockwise (left)
+// named counterclockwise (left) angles
 
-static constexpr auto L000 = D000;
-static constexpr auto L045 = D045;
-static constexpr auto L090 = D090;
-static constexpr auto L135 = D135;
-static constexpr auto L180 = D180;
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, L000,   0)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, L045,  45)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, L090,  90)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, L135, 135)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, L180, 180)
 
-// clockwise (right)
+// named clockwise (right) angles
 
-static constexpr auto R180 = D180;
-static constexpr auto R135 = D225;
-static constexpr auto R090 = D270;
-static constexpr auto R045 = D315;
-static constexpr auto R000 = D360;
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, R180, 180)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, R135, 225)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, R090, 270)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, R045, 315)
+DCTL_PP_STATIC_CONSTEXPR_VARIABLE(int, R000,   0)
 
 }       // namespace angle
 }       // namespace dctl
