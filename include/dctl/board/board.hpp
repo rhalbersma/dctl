@@ -18,9 +18,9 @@ struct Board
 :
         public Dimensions, public Edge
 {
-        using ReOrientedDimensions = typename mpl::lazy::rotate<
-                Dimensions, angle::Degrees<Edge::orientation>
-        >::type;
+        static constexpr auto dim = grid::detail::rotate(Dimensions::Object(), Edge::orientation);
+        using ReOrientedDimensions = grid::Dimensions< dim.height(), dim.width(), dim.parity() >;
+
 public:
         // internal and external grids
         using InternalGrid = grid::Grid<ReOrientedDimensions, Edge>;
@@ -158,7 +158,7 @@ private:
 public:
         static constexpr auto jump_start(int direction) noexcept
         {
-                return table_jump_start[angle::make_angle(direction) / 45];
+                return table_jump_start[make_angle(direction) / 45];
         }
 };
 
