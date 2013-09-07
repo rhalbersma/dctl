@@ -2,6 +2,40 @@
 
 namespace dctl {
 namespace grid {
+namespace detail {
+
+class Dimensions
+{
+public:
+        constexpr Dimensions(int h, int w, bool p) noexcept
+        :
+                height_(h),
+                width_(w),
+                parity_(p)
+        {}
+
+        constexpr auto height() const noexcept
+        {
+                return height_;
+        }
+
+        constexpr auto width() const noexcept
+        {
+                return width_;
+        }
+
+        constexpr auto parity() const noexcept
+        {
+                return parity_;
+        }
+
+private:
+        int height_;
+        int width_;
+        bool parity_;
+};
+
+}       // namespace detail
 
 template<int Height, int Width, bool Parity = false>
 struct Dimensions
@@ -13,7 +47,10 @@ struct Dimensions
         static constexpr auto width = Width;
         static constexpr auto parity = Parity;
 
-        using type = Dimensions<Height, Width, Parity>;
+        static constexpr auto Object() noexcept
+        {
+                return detail::Dimensions{height, width, parity};
+        }
 };
 
 }       // namespace grid
