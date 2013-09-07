@@ -21,13 +21,10 @@ using BoardSequence = boost::mpl::vector
         Ktar12
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(SquareBitConversion, T, BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, BoardSequence)
 {
-        for (auto sq = T::begin(); sq != T::end(); ++sq) {
-                auto b = T::square2bit(sq);
-                auto s = T::bit2square(b);
-                BOOST_CHECK_EQUAL(s, sq);
-        }
+        for (auto sq = T::begin(); sq != T::end(); ++sq)
+                BOOST_CHECK_EQUAL(T::bit2square(T::square2bit(sq)), sq);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
