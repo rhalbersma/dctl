@@ -10,8 +10,8 @@ template<int Height, int Width, bool Parity = false>
 class Dimensions
 {
 public:
-        static_assert(Height > 0, "Dimensions height shall be positive.");
-        static_assert(Width > 0, "Dimensions width shall be positive.");
+        static_assert(0 < Height, "Dimensions height shall be positive.");
+        static_assert(0 < Width, "Dimensions width shall be positive.");
 
         static constexpr auto height = Height;
         static constexpr auto width = Width;
@@ -71,7 +71,7 @@ public:
 };
 
 template<class T, int Theta>
-using Rotate_t = typename T::template Rotate<Theta>::type;
+using Rotate = typename T::template Rotate<Theta>::type;
 
 }       // namespace grid
 }       // namespace dctl

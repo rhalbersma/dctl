@@ -4,31 +4,34 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/grid/coordinates/transform.hpp>
 #include <dctl/grid/dimensions.hpp>             // Rotate_t
-#include <dctl/grid/edge.hpp>                   // ZeroColumnEdge, DoubleColumnEdge
 #include <dctl/grid/grid.hpp>                   // Grid
-#include <dctl/grid/shift.hpp>                  // Shift
+#include <dctl/grid/shift_size.hpp>             // shift_size
 #include <dctl/grid/predicates.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/utility/int.hpp>
+#include <dctl/utility/range.hpp>               // is_element
 
 namespace dctl {
 namespace board {
 
-template<class Dimensions, class Edge = grid::DoubleColumnEdge>
+template<class Dimensions, int EdgeColumns = 2, int Orientation = angle::D000>
 struct Board
 :
-        public Dimensions, public Edge
+        public Dimensions
 {
 public:
+        static constexpr auto edge_columns = EdgeColumns;
+        static constexpr auto orientation = Orientation;
+
         // internal and external grids
-        using InternalGrid = grid::Grid<grid::Rotate_t<Dimensions, Edge::orientation>, Edge>;
-        using ExternalGrid = grid::Grid<Dimensions, grid::ZeroColumnEdge>;
+        using InternalGrid = grid::Grid<grid::Rotate<Dimensions, orientation>, edge_columns>;
+        using ExternalGrid = grid::Grid<Dimensions, 0>;
 
         using bit_type = BitBoard;
 
         static constexpr auto shift_size(int direction)
         {
-                return grid::Shift<InternalGrid>::size(direction);
+                return grid::shift_size<InternalGrid>(direction);
         }
 
         static constexpr auto begin() noexcept
@@ -43,7 +46,7 @@ public:
 
         static constexpr auto is_valid(int square) noexcept
         {
-                return begin() <= square && square < end();
+                return util::is_element(square, {begin(), end()});
         }
 
 private:
@@ -55,12 +58,12 @@ private:
 
         static constexpr auto init_square2bit(int n) noexcept
         {
-                return transform<InternalGrid>(grid::Square<ExternalGrid>{n}, Edge::orientation).value();
+                return transform<InternalGrid>(grid::Square<ExternalGrid>{n}, orientation).value();
         }
 
         static constexpr auto init_bit2square(int n) noexcept
         {
-                return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, angle::inverse(Edge::orientation)).value();
+                return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, angle::inverse(orientation)).value();
         }
 
 #define DCTL_PP_SQUARE2BIT(z, i, data) init_square2bit(i)
@@ -144,7 +147,7 @@ public:
 
 private:
 
-#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<ExternalGrid, angle::rotate(i * 45, Edge::orientation)>{})
+#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<ExternalGrid, angle::rotate(i * 45, orientation)>{})
 
         static constexpr BitBoard table_jump_start[] =
         {
@@ -160,29 +163,29 @@ public:
         }
 };
 
-template<class Dimensions, class Edge>
-constexpr int Board<Dimensions, Edge>::table_square2bit[];
+template<class Dimensions, int EdgeColumns, int Orientation>
+constexpr int Board<Dimensions, EdgeColumns, Orientation>::table_square2bit[];
 
-template<class Dimensions, class Edge>
-constexpr int Board<Dimensions, Edge>::table_bit2square[];
+template<class Dimensions, int EdgeColumns, int Orientation>
+constexpr int Board<Dimensions, EdgeColumns, Orientation>::table_bit2square[];
 
-template<class Dimensions, class Edge>
-constexpr BitBoard Board<Dimensions, Edge>::squares;
+template<class Dimensions, int EdgeColumns, int Orientation>
+constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::squares;
 
-template<class Dimensions, class Edge>
-constexpr BitBoard Board<Dimensions, Edge>::initial_mask[][5];
+template<class Dimensions, int EdgeColumns, int Orientation>
+constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::initial_mask[][5];
 
-template<class Dimensions, class Edge>
-constexpr BitBoard Board<Dimensions, Edge>::promotion_mask[][2];
+template<class Dimensions, int EdgeColumns, int Orientation>
+constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::promotion_mask[][2];
 
-template<class Dimensions, class Edge>
-constexpr BitBoard Board<Dimensions, Edge>::row_mask[][12];
+template<class Dimensions, int EdgeColumns, int Orientation>
+constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::row_mask[][12];
 
-template<class Dimensions, class Edge>
-constexpr BitBoard Board<Dimensions, Edge>::col_mask[][12];
+template<class Dimensions, int EdgeColumns, int Orientation>
+constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::col_mask[][12];
 
-template<class Dimensions, class Edge>
-constexpr BitBoard Board<Dimensions, Edge>::table_jump_start[];
+template<class Dimensions, int EdgeColumns, int Orientation>
+constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::table_jump_start[];
 
 }       // namespace board
 }       // namespace dctl

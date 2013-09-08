@@ -19,7 +19,6 @@ public:
                 score += center(p);
                 score += balance(p);
                 score += mobility(p);
-                //score += king_monopoly(p);
                 return score;
         }
 
@@ -73,12 +72,6 @@ public:
         static int mobility(Position<Rules, Board> const& p)
         {
                 return Weight<Rules, Board>::mobility * successor::mobility<Color>(p);
-        }
-
-        template<template<class, class> class Position, class Rules, class Board>
-        static int king_monopoly(Position<Rules, Board> const& p)
-        {
-                return Weight<Rules, Board>::king_monopoly * (!bit::empty(p.material().kings(Color)) && bit::empty(p.material().kings(!Color)));
         }
 };
 

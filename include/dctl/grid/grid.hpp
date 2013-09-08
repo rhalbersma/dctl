@@ -1,21 +1,22 @@
 #pragma once
 #include <dctl/grid/grid_fwd.hpp>       // primary template and partial specialization declarations
-#include <dctl/grid/edge.hpp>           // ColumnLessEdge
 
 namespace dctl {
 namespace grid {
 
 // primary template definition
-template<class Dimensions, class Edge>
-struct Grid
+template<class Dimensions, int EdgeColumns>
+class Grid
 :
-        public Dimensions, public Edge
+        public Dimensions
 {
 private:
-        using BaseGrid = Grid<Dimensions, ZeroColumnEdge>;
-        static constexpr auto left_down = (Dimensions::width + Edge::num_columns) / 2;
+        using BaseGrid = Grid<Dimensions, 0>;
+        static constexpr auto left_down = (Dimensions::width + EdgeColumns) / 2;
 
 public:
+        static constexpr auto edge_columns = EdgeColumns;
+
         // range of row pairs
 
         static constexpr auto modulo = 2 * left_down + 1;
@@ -34,7 +35,7 @@ public:
 
 // partial specialization definition
 template<class Dimensions>
-struct Grid<Dimensions, ZeroColumnEdge>
+class Grid<Dimensions, 0>
 :
         public Dimensions
 {
@@ -45,6 +46,8 @@ private:
         static constexpr auto row_o = (Dimensions::width + !Dimensions::parity) / 2;
 
 public:
+        static constexpr auto edge_columns = 0;
+
         // range of row pairs
 
         static constexpr auto modulo = Dimensions::width;
