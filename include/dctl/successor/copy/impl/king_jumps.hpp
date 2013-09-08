@@ -10,7 +10,7 @@
 #include <dctl/angle/degrees.hpp>                       // Degrees
 #include <dctl/angle/transform.hpp>                     // rotate
 #include <dctl/bit/bit.hpp>
-#include <dctl/angle/compass.hpp>
+#include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Next
 #include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/utility/int.hpp>                         // BitBoard, BitIndex
@@ -32,7 +32,7 @@ private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Move = typename Sequence::value_type;
-        using Compass = angle::Compass<Color, Board>;
+        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jumps, Position>;
 
         // representation

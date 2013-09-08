@@ -6,7 +6,7 @@
 #include <dctl/pieces/king.hpp>
 
 #include <dctl/bit/bit.hpp>
-#include <dctl/angle/compass.hpp>
+#include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/patterns.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/int.hpp>
@@ -26,7 +26,7 @@ struct count<Color, pieces::king, select::moves, Position>
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
-        using Compass = angle::Compass<Color, Board>;
+        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::moves, Position>;
 
         // representation
