@@ -1,16 +1,15 @@
 #pragma once
-#include <dctl/grid/edge.hpp>          // ZeroColumnEdge
 
 namespace dctl {
 namespace grid {
 
 // primary template declaration
-template<class Dimensions, class Edge>
-struct Grid;
+template<class Dimensions, int EdgeColumns>
+class Grid;
 
 // partial template specialization declaration
 template<class Dimensions>
-struct Grid<Dimensions, ZeroColumnEdge>;
+class Grid<Dimensions, 0>;
 
 }       // namespace grid
 }       // namespace dctl
