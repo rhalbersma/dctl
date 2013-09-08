@@ -10,7 +10,7 @@ namespace grid {
 template<class T>
 constexpr auto rotate(Coordinates const& coord, T const& theta)
 {
-        switch(make_angle(theta)) {
+        switch(dctl::make_angle(theta)) {
         case angle::D000: return coord;
         case angle::L090: return Coordinates{  coord.col(), -coord.row() };
         case angle::R090: return Coordinates{ -coord.col(),  coord.row() };

@@ -32,5 +32,5 @@
                 struct placeholder {};                                                          \
         }                                                                                       \
         namespace {                                                                             \
-                auto constexpr& var = var##detail::wrapper<var##detail::placeholder>::var;      \
+                auto const& var = var##detail::wrapper<var##detail::placeholder>::var;          \
         }
