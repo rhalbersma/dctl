@@ -6,7 +6,7 @@
 #include <dctl/successor/select/moves.hpp>              // select
 
 #include <dctl/bit/bit.hpp>
-#include <dctl/angle/compass.hpp>
+#include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/utility/int.hpp>
@@ -25,7 +25,7 @@ struct copy<Color, pieces::pawn, select::moves, Position, Sequence>
 private:
         using Board = typename Position::board_type;
         using Move = typename Sequence::value_type;
-        using Compass = angle::Compass<Color, Board>;
+        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::moves, Position>;
 
         // representation

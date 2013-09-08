@@ -5,7 +5,7 @@
 #include <dctl/successor/select/jumps.hpp>
 
 #include <dctl/bit/bit.hpp>
-#include <dctl/angle/compass.hpp>
+#include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/patterns.hpp>
 #include <dctl/node/targets.hpp>
 #include <dctl/rules/traits.hpp>
@@ -23,7 +23,7 @@ struct detect<Color, pieces::pawn, select::jumps, Position, Range>
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
-        using Compass = angle::Compass<Color, Board>;
+        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jumps, Position>;
 
         // representation
