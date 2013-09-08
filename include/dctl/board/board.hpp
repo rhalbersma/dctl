@@ -3,9 +3,10 @@
 #include <dctl/angle/degrees.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/grid/coordinates/transform.hpp>
-#include <dctl/grid/dimensions/transform.hpp>
-#include <dctl/grid/edge.hpp>
-#include <dctl/grid/grid.hpp>
+#include <dctl/grid/dimensions.hpp>             // Rotate_t
+#include <dctl/grid/edge.hpp>                   // ZeroColumnEdge, DoubleColumnEdge
+#include <dctl/grid/grid.hpp>                   // Grid
+#include <dctl/grid/shift.hpp>                  // Shift
 #include <dctl/grid/predicates.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/utility/int.hpp>
@@ -18,19 +19,16 @@ struct Board
 :
         public Dimensions, public Edge
 {
-        static constexpr auto dim = grid::detail::rotate(Dimensions::Object(), Edge::orientation);
-        using ReOrientedDimensions = grid::Dimensions< dim.height(), dim.width(), dim.parity() >;
-
 public:
         // internal and external grids
-        using InternalGrid = grid::Grid<ReOrientedDimensions, Edge>;
+        using InternalGrid = grid::Grid<grid::Rotate_t<Dimensions, Edge::orientation>, Edge>;
         using ExternalGrid = grid::Grid<Dimensions, grid::ZeroColumnEdge>;
 
         using bit_type = BitBoard;
 
         static constexpr auto shift_size(int direction)
         {
-                return InternalGrid::shift_size(direction);
+                return grid::Shift<InternalGrid>::size(direction);
         }
 
         static constexpr auto begin() noexcept
@@ -158,7 +156,7 @@ private:
 public:
         static constexpr auto jump_start(int direction) noexcept
         {
-                return table_jump_start[make_angle(direction) / 45];
+                return table_jump_start[dctl::make_angle(direction) / 45];
         }
 };
 
