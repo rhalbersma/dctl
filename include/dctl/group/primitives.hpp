@@ -1,47 +1,35 @@
 #pragma once
-#include <type_traits>                  // is_same
-#include <boost/mpl/at.hpp>             // at
-#include <boost/mpl/int.hpp>            // int_
-#include <boost/mpl/vector.hpp>         // vector
+#include <tuple>                        // tuple
 
 namespace dctl {
 namespace group {
 
-template
-<
-        class Set,
-        class Plus,
-        class Identity,
-        class Minus
->
-struct tuple
-:
-        boost::mpl::vector<Set, Plus, Identity, Minus>
-{};
+template<class Set, class Op, class Id, class Inv>
+using Group = std::tuple<Set, Op, Id, Inv>;
 
-template<class G>
-struct set
-:
-        boost::mpl::at< G, boost::mpl::int_<0> >
-{};
+template<class Group>
+constexpr auto set(Group const& group) noexcept
+{
+        return std::get<0>(group);
+}
 
-template<class G>
-struct plus
-:
-        boost::mpl::at< G, boost::mpl::int_<1> >
-{};
+template<class Group>
+constexpr auto op(Group const& group) noexcept
+{
+        return std::get<1>(group);
+}
 
-template<class G>
-struct identity
-:
-        boost::mpl::at< G, boost::mpl::int_<2> >
-{};
+template<class Group>
+constexpr auto id(Group const& group) noexcept
+{
+        return std::get<2>(group);
+}
 
-template<class G>
-struct minus
-:
-        boost::mpl::at< G, boost::mpl::int_<3> >
-{};
+template<class Group>
+constexpr auto inv(Group const& group) noexcept
+{
+        return std::get<3>(group);
+}
 
 }       // namespace group
 }       // namespace dctl

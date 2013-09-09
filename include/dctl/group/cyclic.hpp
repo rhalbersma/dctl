@@ -1,52 +1,49 @@
 #pragma once
-#include <boost/mpl/quote.hpp>          // quote1, quote2
-#include <boost/mpl/vector.hpp>         // vector
-#include <dctl/angle/degrees.hpp>       // D000, D045, D090, D135, D180, D225, D270, D315
-#include <dctl/angle/transform.hpp>     // inverse, rotate (partial specialization definitions)
-#include <dctl/group/primitives.hpp>    // tuple
+#include <dctl/angle/transform.hpp>     // inverse, rotate, mirror
 
 namespace dctl {
 namespace group {
+namespace cyclic {
 
-using C1 = tuple<
-        boost::mpl::vector<
-                angle::Degrees<angle::D000>
-        >,
-        boost::mpl::quote2< mpl::lazy::rotate >,
-        angle::Degrees<angle::D000>,
-        boost::mpl::quote1< mpl::lazy::inverse >
->;
+struct Inverse
+{
+        template<class T>
+        constexpr auto operator()(T const& alpha) const noexcept
+        {
+                return angle::inverse(alpha);
+        }
+};
 
-using C2 = tuple<
-        boost::mpl::vector<
-                angle::Degrees<angle::D000>, angle::Degrees<angle::D180>
-        >,
-        boost::mpl::quote2< mpl::lazy::rotate >,
-        angle::Degrees<angle::D000>,
-        boost::mpl::quote1< mpl::lazy::inverse >
->;
+struct Rotate
+{
+        template<class T>
+        constexpr auto operator()(T const& alpha, T const& theta) const noexcept
+        {
+                return angle::rotate(alpha, theta);
+        }
+/*
+        template<class Object, class T>
+        constexpr auto operator()(Object const& object, T const& theta) noexcept
+        {
+                return rotate(object, theta);
+        }*/
+};
 
-using C4 = tuple<
-        boost::mpl::vector<
-                angle::Degrees<angle::D000>, angle::Degrees<angle::D090>,
-                angle::Degrees<angle::D180>, angle::Degrees<angle::D270>
-        >,
-        boost::mpl::quote2< mpl::lazy::rotate >,
-        angle::Degrees<angle::D000>,
-        boost::mpl::quote1< mpl::lazy::inverse >
->;
+struct Mirror
+{
+        template<class T>
+        constexpr auto operator()(T const& alpha, T const& theta) const noexcept
+        {
+                return angle::mirror(alpha, theta);
+        }
+/*
+        template<class Object, class T>
+        constexpr auto operator()(Object const& object, T const& theta) noexcept
+        {
+                return mirror(object, theta);
+        }*/
+};
 
-using C8 = tuple<
-        boost::mpl::vector<
-                angle::Degrees<angle::D000>, angle::Degrees<angle::D045>,
-                angle::Degrees<angle::D090>, angle::Degrees<angle::D135>,
-                angle::Degrees<angle::D180>, angle::Degrees<angle::D225>,
-                angle::Degrees<angle::D270>, angle::Degrees<angle::D315>
-        >,
-        boost::mpl::quote2< mpl::lazy::rotate >,
-        angle::Degrees<angle::D000>,
-        boost::mpl::quote1< mpl::lazy::inverse >
->;
-
+}       // namespace cyclic
 }       // namespace group
 }       // namespace dctl

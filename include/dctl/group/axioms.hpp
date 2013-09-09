@@ -1,220 +1,94 @@
 #pragma once
-#include <type_traits>                  // is_same
-#include <boost/mpl/apply.hpp>          // apply
-#include <boost/mpl/contains.hpp>       // contains
-#include <boost/mpl/fold.hpp>           // fold
-#include <boost/mpl/lambda.hpp>         // lambda
-#include <boost/mpl/logical.hpp>        // and_, not_, true_
-#include <boost/mpl/placeholders.hpp>   // _1, _2
-#include <dctl/group/primitives.hpp>    // set, plus, identity, minus
+#include <algorithm>                    // all_of, find, find_if
+#include <iterator>                     // begin, end
+#include <dctl/group/primitives.hpp>    // set, op, id
 
 namespace dctl {
 namespace group {
 namespace axioms {
-namespace detail {
 
-template<class S, class Op, class A, class B>
-struct is_closure_primitive
-:
-        boost::mpl::contains<
-                S, typename
-                boost::mpl::apply< Op, A, B >::type
-        >
-{};
+template<class Group>
+auto is_closure(Group const& g) noexcept
+{
+        auto const first = std::begin(group::set(g));
+        auto const last = std::end(group::set(g));
+        auto const op = group::op(g);
+        using Element = decltype(*first);
 
-template<class G, class A, class B>
-struct is_closure_pair
-:
-        is_closure_primitive< typename
-                set<G>::type, typename
-                plus<G>::type,
-                A, B
-        >
-{};
+        return std::all_of(first, last, [=](Element const& a) {
+                return std::all_of(first, last, [=](Element const& b){
+                        return last != std::find(first, last, op(a, b));
+                });
+        });
+}
 
-template<class G, class A>
-struct is_closure_element
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                is_closure_pair< G, A, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
+template<class Group>
+auto is_associativity(Group const& g) noexcept
+{
+        auto const first = std::begin(group::set(g));
+        auto const last = std::end(group::set(g));
+        auto const op = group::op(g);
+        using Element = decltype(*first);
 
-template<class Op, class A, class B, class C>
-struct is_associativity_primitive
-:
-        std::is_same< typename
-                boost::mpl::apply<
-                        Op, A, typename boost::mpl::apply< Op, B, C >::type
-                >::type, typename
-                boost::mpl::apply<
-                        Op, typename boost::mpl::apply< Op, A, B >::type, C
-                >::type
-        >
-{};
+        return std::all_of(first, last, [=](Element const& a) {
+                return std::all_of(first, last, [=](Element const& b){
+                        return std::all_of(first, last, [=](Element const& c) {
+                                return (
+                                        op(a, op(b, c)) ==
+                                        op(op(a, b), c)
+                                );
+                        });
+                });
+        });
+}
 
-template<class G, class A, class B, class C>
-struct is_associativity_triplet
-:
-        is_associativity_primitive< typename
-                plus<G>::type, A, B, C
-        >
-{};
+template<class Group>
+auto is_identity(Group const& g) noexcept
+{
+        auto const first = std::begin(group::set(g));
+        auto const last = std::end(group::set(g));
+        auto const op = group::op(g);
+        using Element = decltype(*first);
 
-template<class G, class A, class B>
-struct is_associativity_pair
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                is_associativity_triplet< G, A, B, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
+        return last != std::find_if(first, last, [=](Element const& id) {
+                return std::all_of(first, last, [=](Element const& elem){
+                        return (
+                                op(elem, id) == elem &&
+                                op(id, elem) == elem
+                        );
+                });
+        });
+}
 
-template<class G, class A>
-struct is_associativity_element
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                is_associativity_pair< G, A, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
+template<class Group>
+auto is_inverse(Group const& g) noexcept
+{
+        auto const first = std::begin(group::set(g));
+        auto const last = std::end(group::set(g));
+        auto const op = group::op(g);
+        auto const id = group::id(g);
+        using Element = decltype(*first);
 
-template<class S, class Op, class E, class A>
-struct is_identity_primitive
-:
-        boost::mpl::and_<
-                boost::mpl::contains< S, E >,
-                std::is_same<typename boost::mpl::apply< Op, A, E >::type, A>,
-                std::is_same<typename boost::mpl::apply< Op, E, A >::type, A>
-        >
-{};
+        return std::all_of(first, last, [=](Element const& elem) {
+                return last != std::find_if(first, last, [=](Element const& elem_1){
+                        return (
+                                op(elem, elem_1) == id &&
+                                op(elem_1, elem) == id
+                        );
+                });
+        });
+}
 
-template<class G, class A>
-struct is_identity_element
-:
-        is_identity_primitive< typename
-                set<G>::type, typename
-                plus<G>::type, typename
-                identity<G>::type,
-                A
-        >
-{};
-
-template<class S, class Op, class E, class I, class A>
-struct is_inverse_primitive
-:
-        boost::mpl::and_<
-                boost::mpl::contains< S, I >,
-                std::is_same<typename boost::mpl::apply< Op, A, I >::type, E>,
-                std::is_same<typename boost::mpl::apply< Op, I, A >::type, E>
-        >
-{};
-
-template<class G, class A>
-struct is_inverse_element
-:
-        is_inverse_primitive< typename
-                set<G>::type, typename
-                plus<G>::type, typename
-                identity<G>::type, typename
-                boost::mpl::apply< typename
-                        minus<G>::type, A
-                >::type,
-                A
-        >
-{};
-
-}       // namespace detail 
-
-template<class G>
-struct is_closure
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                detail::is_closure_element< G, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
-
-template<class G>
-struct is_associativity
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                detail::is_associativity_element< G, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
-
-template<class G>
-struct is_identity
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                detail::is_identity_element< G, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
-
-template<class G>
-struct is_inverse
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                detail::is_inverse_element< G, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
-
-template<class G>
-struct is_realized
-:
-        boost::mpl::and_<
-                is_closure<G>,
-                is_associativity<G>,
-                is_identity<G>,
-                is_inverse<G>
-        >
-{};
+template<class Group>
+auto is_realized(Group const& g) noexcept
+{
+        return (
+                group::axioms::is_closure(g) &&
+                group::axioms::is_associativity(g) &&
+                group::axioms::is_identity(g) &&
+                group::axioms::is_inverse(g)
+        );
+}
 
 }       // namespace axioms
 }       // namespace group
