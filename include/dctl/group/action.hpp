@@ -1,91 +1,43 @@
 #pragma once
-#include <type_traits>                  // is_same
-#include <boost/mpl/apply.hpp>          // apply
-#include <boost/mpl/fold.hpp>           // fold
-#include <boost/mpl/lambda.hpp>         // lambda, _1, _2
-#include <boost/mpl/logical.hpp>        // and_, not_, true_
-#include <dctl/group/primitives.hpp>    // set, plus, identity, minus
+#include <algorithm>                    // all_of
+#include <iterator>                     // begin, end
+#include <dctl/group/primitives.hpp>    // set, op, id
 
 namespace dctl {
 namespace group {
 namespace action {
-namespace detail {
 
-template<class X, class Op, class A, class B>
-struct is_associativity_primitive
-:
-        std::is_same< typename
-                boost::mpl::apply<
-                        Op, X, typename boost::mpl::apply< Op, A, B >::type
-                >::type, typename
-                boost::mpl::apply<
-                        Op, typename boost::mpl::apply< Op, X, A >::type, B
-                >::type
-        >
-{};
+template<class Object, class Group>
+constexpr auto is_associativity(Object const& obj, Group const& g) noexcept
+{
+        auto const first = std::begin(group::set(g));
+        auto const last = std::end(group::set(g));
+        auto const op = group::op(g);
+        using Element = decltype(*first);
 
-template<class X, class G, class A, class B>
-struct is_associativity_pair
-:
-        is_associativity_primitive< X, typename plus<G>::type, A, B >
-{};
+        return std::all_of(first, last, [=](Element const& a) {
+                return std::all_of(first, last, [=](Element const& b){
+                        return op(obj, op(a, b)) == op(op(obj, a), b);
+                });
+        });
+}
 
-template<class X, class G, class A>
-struct is_associativity_element
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                is_associativity_pair< X, G, A, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
+template<class Object, class Group>
+constexpr auto is_identity(Object const& obj, Group const& g) noexcept
+{
+        auto const op = group::op(g);
+        auto const id = group::id(g);
+        return op(obj, id) == obj;
+}
 
-template<class X, class Op, class E>
-struct is_identity_primitive
-:
-        std::is_same< typename boost::mpl::apply< Op, X, E >::type, X >
-{};
-
-}       // namespace right_action
-
-template<class X, class G>
-struct is_associativity
-:
-        boost::mpl::fold< typename
-                set<G>::type,
-                boost::mpl::true_,
-                boost::mpl::lambda<
-                        boost::mpl::and_<
-                                boost::mpl::_1,
-                                detail::is_associativity_element< X, G, boost::mpl::_2 >
-                        >
-                >
-        >
-{};
-
-template<class X, class G>
-struct is_identity
-:
-        detail::is_identity_primitive<
-                X, typename
-                plus<G>::type, typename
-                identity<G>::type
-        >
-{};
-
-template<class X, class G>
-struct is_realized
-:
-        boost::mpl::and_<
-                is_associativity< X, G >,
-                is_identity< X, G >
-        >
-{};
+template<class Object, class Group>
+constexpr auto is_realized(Object const& obj, Group const& g) noexcept
+{
+        return (
+                is_associativity(obj, g) &&
+                is_identity(obj, g)
+        );
+}
 
 }       // namespace action
 }       // namespace group

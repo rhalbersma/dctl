@@ -25,16 +25,12 @@ BOOST_AUTO_TEST_CASE(WiegerWesselink)
           .   .   .   .   .   \
         ";
 
-        std::cout << "Entering test" << std::endl;
-
         // parse the above diagram into a position with the DamExchange protocol
         // with a modified character set (default is <'Z', 'W', 'E'>)
         auto const pos_w = read<
                 rules::International, board::International,
                 dxp::protocol, TokenInterface<'X', 'O', '.'>
         >()(w);
-
-        std::cout << "Read in position" << std::endl;
 
         // write the above position as a FEN string with the PDN protocol
         auto const FEN_w = write<pdn::protocol>()(pos_w);
