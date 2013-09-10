@@ -2,7 +2,6 @@
 #include <dctl/angle/traits.hpp>
 #include <dctl/angle/transform.hpp>
 #include <dctl/grid/coordinates.hpp>
-#include <dctl/grid/coordinates/transform.hpp>
 #include <dctl/grid/dimensions.hpp>
 #include <dctl/grid/grid.hpp>
 #include <dctl/mpl/type_traits.hpp>
@@ -31,7 +30,6 @@ struct is_initial
                 return util::is_element(row, {min_row, max_row});
         }
 };
-
 
 template<class Grid, int Row, bool Color>
 struct is_row

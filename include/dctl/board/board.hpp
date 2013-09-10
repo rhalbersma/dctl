@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include <dctl/angle/degrees.hpp>
-#include <dctl/grid/coordinates/transform.hpp>
+#include <dctl/grid/coordinates.hpp>
 #include <dctl/grid/dimensions.hpp>             // Rotate_t
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
