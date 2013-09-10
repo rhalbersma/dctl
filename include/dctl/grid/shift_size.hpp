@@ -32,10 +32,16 @@ struct ShiftSize
 
 }       // namespace detail
 
+template<class T>
+constexpr auto identity(T const& t) noexcept
+{
+        return t;
+}
+
 template<class Grid, class T>
 constexpr auto shift_size(T const& direction)
 {
-        switch(dctl::make_angle(direction)) {
+        switch (dctl::make_angle(direction)) {
         case angle::D000: return detail::ShiftSize<Grid>::right     ;
         case angle::D045: return detail::ShiftSize<Grid>::right_up  ;
         case angle::D090: return detail::ShiftSize<Grid>::up        ;
@@ -44,7 +50,7 @@ constexpr auto shift_size(T const& direction)
         case angle::D225: return detail::ShiftSize<Grid>::left_down ;
         case angle::D270: return detail::ShiftSize<Grid>::down      ;
         case angle::D315: return detail::ShiftSize<Grid>::right_down;
-        default: return throw std::logic_error("Shift direction angles shall be a multiple of 45 degrees"), 0;
+        default: return throw std::logic_error("Shift direction angles shall be a multiple of 45 degrees"), -1;
         }
 }
 
