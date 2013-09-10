@@ -67,11 +67,13 @@ auto is_inverse(Group const& g) noexcept
         auto const last = std::end(group::set(g));
         auto const op = group::op(g);
         auto const id = group::id(g);
+        auto const inv = group::inv(g);
         using Element = decltype(*first);
 
         return std::all_of(first, last, [=](Element const& elem) {
                 return last != std::find_if(first, last, [=](Element const& elem_1){
                         return (
+                                inv(elem) == elem_1 &&
                                 op(elem, elem_1) == id &&
                                 op(elem_1, elem) == id
                         );
