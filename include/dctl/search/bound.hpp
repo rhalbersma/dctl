@@ -25,7 +25,7 @@ struct Bound
         static std::string print(int bound)
         {
                 std::stringstream sstr;
-                switch(bound) {
+                switch (bound) {
                 case lower:
                         sstr << ">=";
                         break;

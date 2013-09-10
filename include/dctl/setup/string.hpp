@@ -14,7 +14,7 @@ namespace setup {
 template<class Token>
 bool read_color(char c)
 {
-        switch(c) {
+        switch (c) {
         case Token::black:
                 return Side::black;
         case Token::white:
@@ -68,7 +68,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                 int sq;
 
                 for (sstr >> ch; sstr; sstr >> ch) {
-                        switch(ch) {
+                        switch (ch) {
                         case Token::black:
                         case Token::white:
                                 p_side = read_color<Token>(ch);
@@ -149,7 +149,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::square2bit(sq);         // convert square to bit
                         auto bb = bit::singlet<BitBoard>(b);    // create bitboard
                         sstr >> ch;
-                        switch(toupper(ch)) {
+                        switch (toupper(ch)) {
                         case Token::black:
                                 p_pieces[Side::black] ^= bb;    // black piece
                                 break;
