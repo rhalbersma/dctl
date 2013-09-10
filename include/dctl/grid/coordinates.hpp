@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>                    // logic_error
+#include <tuple>                        // tie
 #include <dctl/angle/angle.hpp>         // make_angle
 #include <dctl/angle/degrees.hpp>       // D000, L090, R090, D180
 #include <dctl/grid/coordinates.hpp>    // Coordinates
@@ -57,6 +58,17 @@ public:
         {
                 return col_;
         }
+
+        friend auto operator==(Coordinates const& L, Coordinates const& R) noexcept
+        {
+                return std::tie(L.row_, L.col_) == std::tie(R.row_, R.col_);
+        }
+
+        friend auto operator!=(Coordinates const& L, Coordinates const& R) noexcept
+        {
+                return !(L == R);
+        }
+
 private:
         int row_;
         int col_;
@@ -65,7 +77,7 @@ private:
 template<class T>
 constexpr auto rotate(Coordinates const& coord, T const& theta)
 {
-        switch(dctl::make_angle(theta)) {
+        switch (dctl::make_angle(theta)) {
         case angle::D000: return coord;
         case angle::L090: return Coordinates{  coord.col(), -coord.row() };
         case angle::R090: return Coordinates{ -coord.col(),  coord.row() };
