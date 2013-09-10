@@ -7,7 +7,7 @@ namespace angle {
 
 BOOST_AUTO_TEST_SUITE(AngleDegrees)
 
-BOOST_AUTO_TEST_CASE(LeftIsInverseRight)
+BOOST_AUTO_TEST_CASE(LeftIsInverseOfRight)
 {
         BOOST_CHECK_EQUAL(L000, inverse(R000));
         BOOST_CHECK_EQUAL(L045, inverse(R045));
@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(LeftIsInverseRight)
         BOOST_CHECK_EQUAL(L180, inverse(R180));
 }
 
-BOOST_AUTO_TEST_CASE(RightIsInverseLeft)
+BOOST_AUTO_TEST_CASE(RightIsInverseOfLeft)
 {
         BOOST_CHECK_EQUAL(R000, inverse(L000));
         BOOST_CHECK_EQUAL(R045, inverse(L045));
