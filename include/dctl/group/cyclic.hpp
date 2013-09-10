@@ -1,48 +1,45 @@
 #pragma once
-#include <dctl/angle/transform.hpp>     // inverse, rotate, mirror
+#include <set>                          // set
+#include <dctl/angle/transform.hpp>     // rotate, inverse
+#include <dctl/group/primitives.hpp>    // Group, make_group
 
 namespace dctl {
 namespace group {
 namespace cyclic {
 
-struct Inverse
+using Element = int;
+using Set = std::set<Element>;
+
+struct Op
 {
-        template<class T>
-        constexpr auto operator()(T const& alpha) const noexcept
+        constexpr auto operator()(Element const& a, Element const& b) const
         {
-                return angle::inverse(alpha);
+                return angle::rotate(a, b);
+        }
+
+        template<class Object>
+        constexpr auto operator()(Object const& obj, Element const& a) const
+        {
+                return rotate(obj, a);  // ADL on Object
         }
 };
 
-struct Rotate
+using Id = Element;
+
+struct Inv
 {
-        template<class T>
-        constexpr auto operator()(T const& alpha, T const& theta) const noexcept
+        constexpr auto operator()(Element const& a) const
         {
-                return angle::rotate(alpha, theta);
+                return angle::inverse(a);
         }
-/*
-        template<class Object, class T>
-        constexpr auto operator()(Object const& object, T const& theta) noexcept
-        {
-                return rotate(object, theta);
-        }*/
 };
 
-struct Mirror
+using CyclicGroup = Group<Set, Op, Id, Inv>;
+
+auto make_cyclic_group(Set const& elements)
 {
-        template<class T>
-        constexpr auto operator()(T const& alpha, T const& theta) const noexcept
-        {
-                return angle::mirror(alpha, theta);
-        }
-/*
-        template<class Object, class T>
-        constexpr auto operator()(Object const& object, T const& theta) noexcept
-        {
-                return mirror(object, theta);
-        }*/
-};
+        return group::make_group(elements, Op(), Id(), Inv());
+}
 
 }       // namespace cyclic
 }       // namespace group

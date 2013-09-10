@@ -8,7 +8,7 @@ namespace group {
 namespace action {
 
 template<class Object, class Group>
-constexpr auto is_associativity(Object const& obj, Group const& g) noexcept
+auto is_associativity(Object const& obj, Group const& g) noexcept
 {
         auto const first = std::begin(group::set(g));
         auto const last = std::end(group::set(g));
@@ -23,7 +23,7 @@ constexpr auto is_associativity(Object const& obj, Group const& g) noexcept
 }
 
 template<class Object, class Group>
-constexpr auto is_identity(Object const& obj, Group const& g) noexcept
+auto is_identity(Object const& obj, Group const& g) noexcept
 {
         auto const op = group::op(g);
         auto const id = group::id(g);
@@ -31,7 +31,7 @@ constexpr auto is_identity(Object const& obj, Group const& g) noexcept
 }
 
 template<class Object, class Group>
-constexpr auto is_realized(Object const& obj, Group const& g) noexcept
+auto is_realized(Object const& obj, Group const& g) noexcept
 {
         return (
                 is_associativity(obj, g) &&
