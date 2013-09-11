@@ -8,7 +8,6 @@
 #include <iterator>                     // distance
 #include <utility>                      // swap
 #include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/operators.hpp>          // totally_ordered, bitwise, shiftable
 #include <dctl/bit/iterator.hpp>        // bit_iterator
 #include <dctl/bit/reference.hpp>       // bit_reference
 #include <dctl/bit/raw.hpp>             // size
@@ -16,27 +15,20 @@
 namespace dctl {
 namespace bit {
 
-template<class Key, class Compare = std::less<Key>, class Storage = uint64_t>
-class set;
+template<int, class = void> class set;
 
-template<class Key, class Compare>
-class set<Key, Compare, uint64_t>
-:       boost::totally_ordered< set<Key, Compare, uint64_t>
-,       boost::bitwise< set<Key, Compare, uint64_t>
-,       boost::shiftable< set<Key, Compare, uint64_t>, std::size_t
-> > >
+template<class _>
+class set<1, _>
 {
 public:
         using storage_type = uint64_t;
-        using key_type = Key;
-        using value_type = Key;
-        using key_compare = Compare;
-        using value_compare = Compare;
+        using key_type = int;
+        using value_type = int;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
-        using reference = bit_reference<key_type, storage_type>;
+        using reference = bit_reference<1, _>;
         using const_reference = reference;
-        using iterator = bit_iterator<key_type, storage_type>;
+        using iterator = bit_iterator<1, _>;
         using const_iterator = iterator;
 
         set() = default;
@@ -72,12 +64,12 @@ public:
 
         iterator begin() noexcept
         {
-                return iterator{data_};
+                return iterator{&data_};
         }
 
         const_iterator begin() const noexcept
         {
-                return const_iterator{data_};
+                return const_iterator{&data_};
         }
 
         const_iterator cbegin() const noexcept
@@ -87,12 +79,12 @@ public:
 
         iterator end() noexcept
         {
-                return iterator{};
+                return iterator{&data_, 64};
         }
 
         const_iterator end() const noexcept
         {
-                return const_iterator{};
+                return const_iterator{&data_, 64};
         }
 
         const_iterator cend() const noexcept
@@ -104,7 +96,7 @@ public:
 
         bool empty() const noexcept
         {
-                return begin() == end();
+                return data_ == 0;
         }
 
         size_type size() const noexcept
@@ -129,20 +121,20 @@ public:
         {
                 data_ |= element(value);
                 BOOST_ASSERT(invariant());
-                return std::make_pair(iterator{data_}, true);
+                return std::make_pair(iterator{&data_, value}, true);
         }
 
         std::pair<iterator, bool> insert(value_type&& value)
         {
                 data_ |= element(std::move(value));
                 BOOST_ASSERT(invariant());
-                return std::make_pair(iterator{data_}, true);
+                return std::make_pair(iterator{&data_, value}, true);
         }
 
         iterator insert(const_iterator /*hint*/, value_type value)
         {
                 insert(value);
-                return iterator{data_};
+                return iterator{&data_, value};
         }
 
         template<class InputIt>
@@ -197,28 +189,45 @@ public:
         {
                 auto result = data_ & element(key);
                 BOOST_ASSERT(invariant());
-                return result? iterator{result} : end();
+                return result? iterator{&data_, key} : end();
         }
 
         const_iterator find(key_type const& key) const
         {
                 auto result = data_ & element(key);
-                return result? const_iterator{result} : end();
+                return result? const_iterator{&data_, key} : end();
         }
 
-        // operator!= provided by boost::totally_ordered
         friend bool operator==(set const& lhs, set const& rhs)
         {
                 return lhs.data_ == rhs.data_;
         }
 
-        // operator>=, operator>, operator<= provided by boost::totally_ordered
+        friend bool operator!=(set const& lhs, set const& rhs)
+        {
+                return !(lhs == rhs);
+        }
+
         friend bool operator<(set const& lhs, set const& rhs)
         {
                 return lhs.data_ < rhs.data_;
         }
 
-        // operator& provided by boost::bitwise
+        friend bool operator>=(set const& lhs, set const& rhs)
+        {
+                return !(lhs < rhs);
+        }
+
+        friend bool operator>(set const& lhs, set const& rhs)
+        {
+                return rhs < lhs;
+        }
+
+        friend bool operator<=(set const& lhs, set const& rhs)
+        {
+                return !(rhs < lhs);
+        }
+
         set& operator&=(set const& other)
         {
                 data_ &= other.data_;
@@ -226,7 +235,13 @@ public:
                 return *this;
         }
 
-        // operator| provided by boost::bitwise
+        friend set operator&(set const& lhs, set const& rhs)
+        {
+                set nrv{lhs};
+                nrv &= rhs;
+                return nrv;
+        }
+
         set& operator|=(set const& other)
         {
                 data_ |= other.data_;
@@ -234,7 +249,13 @@ public:
                 return *this;
         }
 
-        // operator^ provided by boost::bitwise
+        friend set operator|(set const& lhs, set const& rhs)
+        {
+                set nrv{lhs};
+                nrv |= rhs;
+                return nrv;
+        }
+
         set& operator^=(set const& other)
         {
                 data_ ^= other.data_;
@@ -242,7 +263,13 @@ public:
                 return *this;
         }
 
-        // operator<< provided by boost::shiftable
+        friend set operator^(set const& lhs, set const& rhs)
+        {
+                set nrv{lhs};
+                nrv ^= rhs;
+                return nrv;
+        }
+
         set& operator<<=(std::size_t n)
         {
                 BOOST_ASSERT(n < max_size());
@@ -251,7 +278,13 @@ public:
                 return *this;
         }
 
-        // operator>> provided by boost::shiftable
+        friend set operator<<(set const& lhs, std::size_t n)
+        {
+                set nrv{lhs};
+                nrv <<= n;
+                return nrv;
+        }
+
         set& operator>>=(std::size_t n)
         {
                 BOOST_ASSERT(n < max_size());
@@ -260,11 +293,24 @@ public:
                 return *this;
         }
 
+        friend set operator>>(set const& lhs, std::size_t n)
+        {
+                set nrv{lhs};
+                nrv >>= n;
+                return nrv;
+        }
+
         set& flip()
         {
                 data_ = ~data_;
-                BOOST_ASSERT(invariant());
                 return *this;
+        }
+
+        friend set operator~(set const& lhs)
+        {
+                set nrv{lhs};
+                nrv.flip();
+                return nrv;
         }
 
 private:
@@ -272,7 +318,7 @@ private:
         {
                 return (
                         std::distance(begin(), end()) == static_cast<std::ptrdiff_t>(size()) &&
-                        std::is_sorted(begin(), end(), key_compare()) &&
+                        std::is_sorted(begin(), end()) &&
                         is_unique()
                 );
         }
@@ -280,7 +326,7 @@ private:
         bool is_unique() const
         {
                 return std::adjacent_find(begin(), end(), [](key_type const& lhs, key_type const& rhs){
-                        return !key_compare()(lhs, rhs) && !key_compare()(rhs, lhs);
+                        return !(lhs < rhs) && !(rhs < lhs);
                 }) == end();
         }
 
@@ -291,35 +337,30 @@ private:
         }
 
         // representation
+
         storage_type data_ = 0;
 };
 
-template<class Key, class Compare, class Storage>
-set<Key, Compare, Storage> operator~(set<Key, Compare, Storage> const& lhs)
-{
-        return set<Key, Compare, Storage>{lhs}.flip();
-}
-
-template<class Key, class Compare, class Storage>
-void swap(set<Key, Compare, Storage>& lhs, set<Key, Compare, Storage>& rhs)
+template<int N>
+void swap(set<N>& lhs, set<N>& rhs)
 {
         lhs.swap(rhs);
 }
 
-template<class Key, class Compare, class Storage>
-auto begin(set<Key, Compare, Storage> const& s) -> decltype(s.begin())
+template<int N>
+auto begin(set<N> const& s) -> decltype(s.begin())
 {
         return s.begin();
 }
 
-template<class Key, class Compare, class Storage>
-auto end(set<Key, Compare, Storage> const& s) -> decltype(s.end())
+template<int N>
+auto end(set<N> const& s) -> decltype(s.end())
 {
         return s.end();
 }
 
-template<class Key, class Compare, class Storage>
-auto empty(set<Key, Compare, Storage> const& s) -> decltype(s.empty())
+template<int N>
+auto empty(set<N> const& s) -> decltype(s.empty())
 {
         return s.empty();
 }

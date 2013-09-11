@@ -1,11 +1,10 @@
 #pragma once
-#include <cstddef>                      // size_t
-#include <cstdint>                      // uint64_t
 
 namespace dctl {
 namespace bit {
 
-template<class Key, class Storage = uint64_t> class bit_iterator;
+template<int, class = void> class bit_iterator;
+template<class _> class bit_iterator<1, _>;
 
 }       // namespace bit
 }       // namespace dctl

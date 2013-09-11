@@ -8,7 +8,7 @@
 namespace dctl {
 namespace bit {
 
-using bitset = set<int>;
+using bitset = set<1>;
 
 BOOST_AUTO_TEST_SUITE(PackedSet)
 
@@ -29,10 +29,11 @@ BOOST_AUTO_TEST_CASE(Members)
 
         // initialize-list
         bitset x {17, 31, 61};
+        std::copy(begin(x), end(x), std::ostream_iterator<int>(std::cout, ",")); std::cout << "\n";
 
         BOOST_CHECK(std::is_sorted(begin(x), end(x)));
         BOOST_CHECK(std::adjacent_find(begin(x), end(x)) == end(x));
-
+/*
         BOOST_CHECK((x.find(17) != end(x)) == x.count(17));
         BOOST_CHECK((x.find(18) != end(x)) == x.count(18));
 
@@ -69,7 +70,7 @@ BOOST_AUTO_TEST_CASE(Members)
 
         // plain for-loop summation equals accumulate algorithm
         auto sum = 0; for (auto it = begin(x); it != end(x); ++it) sum += *it;
-        BOOST_CHECK(sum == std::accumulate(begin(x), end(x), 0));
+        BOOST_CHECK(sum == std::accumulate(begin(x), end(x), 0));*/
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,17 +1,13 @@
 #pragma once
-#include <cstddef>                              // ptrdiff_t
 #include <cstdint>                              // uint64_t
-#include <type_traits>                          // enable_if, is_unsigned, is_convertible
-#include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
 #include <dctl/bit/reference_fwd.hpp>           // bit_reference
-#include <dctl/bit/raw.hpp>                     // empty, pop_front, front
 
 namespace dctl {
 namespace bit {
 
-template<class Key>
-class bit_reference<Key, uint64_t>
+template<class _>
+class bit_reference<1, _>
 {
 public:
         using storage_type = uint64_t;
@@ -22,12 +18,11 @@ public:
         bit_reference() = delete;
 
         // references cannot be null
-        explicit bit_reference(storage_type m)
+        bit_reference(storage_type const* s, int i)
         :
-                mask_{m}
-        {
-                BOOST_ASSERT(!is_null());
-        }
+                segment_{s},
+                index_{i}
+        {}
 
         // modifiers
 
@@ -37,28 +32,21 @@ public:
         // views
 
         // yes, we really want implicit conversion to the value type
-        operator Key() const
+        operator int() const
         {
-                return Key{front(mask_)};
+                return index_;
         }
 
-        bit_iterator<Key, storage_type> operator&() const
+        bit_iterator<1, _> operator&() const
         {
-                return bit_iterator<Key, storage_type>{mask_};
+                return bit_iterator<1, _>{segment_, index_};
         }
 
 private:
-        // predicates
-
-        bool is_null() const
-        {
-                // references cannot be null
-                return empty(mask_);
-        }
-
         // representation
 
-        storage_type mask_;
+        storage_type const* segment_;
+        int index_;
 };
 
 }       // namespace bit

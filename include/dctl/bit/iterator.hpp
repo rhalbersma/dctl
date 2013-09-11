@@ -1,79 +1,101 @@
 #pragma once
 #include <cstddef>                              // ptrdiff_t
 #include <cstdint>                              // uint64_t
-#include <iterator>                             // iterator
-#include <type_traits>                          // enable_if, is_unsigned, is_convertible
-#include <boost/assert.hpp>                     // BOOST_ASSERT
-#include <boost/iterator/iterator_facade.hpp>   // iterator_facade, iterator_core_acces
+#include <iterator>                             // iterator, bidirectional_iterator_tag
 #include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
 #include <dctl/bit/reference_fwd.hpp>           // bit_reference
-#include <dctl/bit/raw.hpp>                     // empty, pop_front, front
 
 namespace dctl {
 namespace bit {
 
-template<class Key>
-class bit_iterator<Key, uint64_t>
+template<class _>
+class bit_iterator<1, _>
 :
-        public boost::iterator_facade<
-                bit_iterator<Key, uint64_t>,
-                Key,
-                std::forward_iterator_tag,
-                bit_reference<Key, uint64_t>,
-                std::ptrdiff_t
+        public std::iterator<
+                std::bidirectional_iterator_tag,
+                int,
+                std::ptrdiff_t,
+                bit_iterator<1, _>,
+                bit_reference<1, _>
         >
 {
 public:
         using storage_type = uint64_t;
+        static constexpr auto N = static_cast<int>(sizeof(storage_type) * CHAR_BIT);
+        static constexpr auto incr_mask = ~storage_type{0} << 1;
+        static constexpr auto decr_mask = ~storage_type{0} >> 1;
+        using self_type = bit_iterator;
 
         // structors
 
-        bit_iterator() = default;
+        //bit_iterator() = default;
 
-        explicit bit_iterator(storage_type m)
+        explicit bit_iterator(storage_type const* s)
         :
-                mask_{m}
+                segment_{s},
+                index_{(*s)? static_cast<int>(__builtin_ctzll(*s)) : N}
         {}
 
-private:
-        friend class boost::iterator_core_access;
+        bit_iterator(storage_type const* s, int i)
+        :
+                segment_{s},
+                index_{i}
+        {}
 
         // modifiers
 
-        // operator++(), operator++(int) provided by boost::iterator_facade
-        void increment()
+        self_type& operator++()
         {
-                // cannot increment a null pointer
-                BOOST_ASSERT(!is_null());
-                pop_front(mask_);
+                auto const mask = *segment_ & (incr_mask << index_);
+                index_ = mask? static_cast<int>(__builtin_ctzll(mask)) : N;
+                return *this;
+        }
+
+        self_type operator++(int)
+        {
+                auto const tmp = *this;
+                ++(*this);
+                return tmp;
+        }
+
+        self_type& operator--()
+        {
+                auto const mask = *segment_ & (decr_mask >> index_);
+                index_ = mask? static_cast<int>(__builtin_clzll(mask)) : 0;
+                return *this;
+        }
+
+        self_type operator--(int)
+        {
+                auto const tmp = *this;
+                --(*this);
+                return tmp;
         }
 
         // views
 
-        // operator* provided by boost::iterator_facade
-        bit_reference<Key, storage_type> dereference() const
+        bit_reference<1, _> operator*() const
         {
-                // cannot dereference a null pointer
-                BOOST_ASSERT(!is_null());
-                return bit_reference<Key, storage_type>{mask_};
+                return bit_reference<1, _>{segment_, index_};
         }
 
         // predicates
 
-        // operator==, operator!= provided by boost::iterator_facade
-        bool equal(bit_iterator const& other) const
+        friend bool operator==(bit_iterator const& L, bit_iterator const& R)
         {
-                return this->mask_ == other.mask_;
+                return L.segment_ == R.segment_ && L.index_ == R.index_;
         }
 
-        bool is_null() const
+        friend bool operator!=(bit_iterator const& L, bit_iterator const& R)
         {
-                return empty(mask_);
+                return !(L == R);
         }
 
+private:
         // representation
 
-        storage_type mask_ = 0;
+        storage_type const* segment_;
+        int index_;
 };
 
 }       // namespace bit
