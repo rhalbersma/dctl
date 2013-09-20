@@ -290,7 +290,7 @@ private:
         bool invariant() const
         {
                 return (
-                        bit::set_includes(initial_targets_, remaining_targets_) &&
+                        bit::raw_set_includes(initial_targets_, remaining_targets_) &&
                         !bit::is_multiple(from_sq_)
                 );
         }

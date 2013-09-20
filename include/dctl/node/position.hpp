@@ -203,8 +203,8 @@ private:
                 if (
                         restricted.moves() && is_capture(*this, m) &&
                         (
-                                bit::set_includes(captured_pieces(*this, m), restricted.king()) ||
-                                bit::set_includes(captured_pieces(*this, m), passive_pawns(*this))
+                                bit::raw_set_includes(captured_pieces(*this, m), restricted.king()) ||
+                                bit::raw_set_includes(captured_pieces(*this, m), passive_pawns(*this))
                         )
                 ) {
                         hash_index_ ^= zobrist::hash(std::make_pair(restricted, passive_color(*this)));
@@ -235,7 +235,7 @@ private:
         {
                 return (
                         //material_.invariant() &&
-                        bit::set_includes(Board::squares, material().pieces())
+                        bit::raw_set_includes(Board::squares, material().pieces())
                 );
         }
 

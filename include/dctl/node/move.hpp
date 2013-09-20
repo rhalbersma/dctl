@@ -239,7 +239,7 @@ private:
                 return (
                         bit::is_double(delta) &&
                         !bit::is_multiple(promotion) &&
-                        bit::set_includes(delta, promotion)
+                        bit::raw_set_includes(delta, promotion)
                 );
         }
 
@@ -251,12 +251,12 @@ private:
                         (bit::is_double(delta) || bit::empty(delta)) &&
                         !bit::empty(captured_pieces) &&
                         (
-                                bit::set_exclusive(delta, captured_pieces) ||
+                                bit::raw_set_exclusive(delta, captured_pieces) ||
 
                                 // EXCEPTION: for intersecting captures, delta overlaps with captured pieces
                                 is_intersecting_capture<Rules>(delta, captured_pieces)
                         ) &&
-                        bit::set_includes(captured_pieces, captured_kings)
+                        bit::raw_set_includes(captured_pieces, captured_kings)
                 );
         }
 
@@ -268,14 +268,14 @@ private:
                         (bit::is_double(delta) || bit::empty(delta)) &&
                         !bit::is_multiple(promotion) &&
                         !bit::empty(captured_pieces) &&
-                        bit::set_exclusive(delta, captured_pieces) &&
+                        bit::raw_set_exclusive(delta, captured_pieces) &&
                         (
-                                bit::set_includes(delta, promotion) ||
+                                bit::raw_set_includes(delta, promotion) ||
 
                                 // EXCEPTION: for intersecting promotions, delta is empty, and promotion is non-empty
                                 is_intersecting_promotion<Rules>(promotion, delta)
                         ) &&
-                        bit::set_includes(captured_pieces, captured_kings)
+                        bit::raw_set_includes(captured_pieces, captured_kings)
                 );
         }
 
@@ -308,13 +308,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::set_exclusive(this->pieces(Side::black), this->pieces(Side::white));
+                return bit::raw_set_exclusive(this->pieces(Side::black), this->pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::set_includes(this->pieces(), this->kings());
+                return bit::raw_set_includes(this->pieces(), this->kings());
         }
 
         // representation
