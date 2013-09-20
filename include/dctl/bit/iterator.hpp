@@ -1,7 +1,8 @@
 #pragma once
 #include <cstddef>                              // ptrdiff_t
-#include <cstdint>                              // uint64_t
+#include <cstdint>                              // uint64_t, CHAR_BIT
 #include <iterator>                             // iterator, bidirectional_iterator_tag
+#include <dctl/bit/intrinsic.hpp>               // ctz, clz
 #include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
 #include <dctl/bit/reference_fwd.hpp>           // bit_reference
 
@@ -21,22 +22,18 @@ class bit_iterator<1, _>
 {
 public:
         using storage_type = uint64_t;
-        static constexpr auto N = static_cast<int>(sizeof(storage_type) * CHAR_BIT);
-        static constexpr auto incr_mask = ~storage_type{0} << 1;
-        static constexpr auto decr_mask = ~storage_type{0} >> 1;
-        using self_type = bit_iterator;
+        static constexpr auto N = static_cast<int>(CHAR_BIT * sizeof(storage_type));
 
         // structors
 
-        //bit_iterator() = default;
+        constexpr bit_iterator() = default;
 
-        explicit bit_iterator(storage_type const* s)
+        constexpr explicit bit_iterator(storage_type const* s) noexcept
         :
-                segment_{s},
-                index_{(*s)? static_cast<int>(__builtin_ctzll(*s)) : N}
+                bit_iterator(s, (s && *s)? bit::intrinsic::ctz(*s) : N)
         {}
 
-        bit_iterator(storage_type const* s, int i)
+        constexpr bit_iterator(storage_type const* s, int i) noexcept
         :
                 segment_{s},
                 index_{i}
@@ -44,49 +41,51 @@ public:
 
         // modifiers
 
-        self_type& operator++()
+        constexpr auto& operator++() noexcept
         {
-                auto const mask = *segment_ & (incr_mask << index_);
-                index_ = mask? static_cast<int>(__builtin_ctzll(mask)) : N;
+                if (N <= ++index_) return *this;
+                auto const mask = *segment_ >> index_;
+                index_ = mask? index_ + bit::intrinsic::ctz(mask) : N;
                 return *this;
         }
 
-        self_type operator++(int)
+        constexpr auto operator++(int) noexcept
         {
-                auto const tmp = *this;
+                auto const old = *this;
                 ++(*this);
-                return tmp;
+                return old;
         }
 
-        self_type& operator--()
+        constexpr auto& operator--() noexcept
         {
-                auto const mask = *segment_ & (decr_mask >> index_);
-                index_ = mask? static_cast<int>(__builtin_clzll(mask)) : 0;
+                if (--index_ <= -1) return *this;
+                auto const mask = *segment_ << (N - 1 - index_);
+                index_ = mask? index_ - bit::intrinsic::clz(mask) : -1;
                 return *this;
         }
 
-        self_type operator--(int)
+        constexpr auto operator--(int) noexcept
         {
-                auto const tmp = *this;
+                auto const old = *this;
                 --(*this);
-                return tmp;
+                return old;
         }
 
         // views
 
-        bit_reference<1, _> operator*() const
+        constexpr auto operator*() const noexcept(false) -> bit_reference<1, _>
         {
-                return bit_reference<1, _>{segment_, index_};
+                return {*segment_, index_};
         }
 
         // predicates
 
-        friend bool operator==(bit_iterator const& L, bit_iterator const& R)
+        friend constexpr auto operator==(bit_iterator const& L, bit_iterator const& R) noexcept -> bool
         {
                 return L.segment_ == R.segment_ && L.index_ == R.index_;
         }
 
-        friend bool operator!=(bit_iterator const& L, bit_iterator const& R)
+        friend constexpr auto operator!=(bit_iterator const& L, bit_iterator const& R) noexcept -> bool
         {
                 return !(L == R);
         }
@@ -94,8 +93,8 @@ public:
 private:
         // representation
 
-        storage_type const* segment_;
-        int index_;
+        storage_type const* segment_ = nullptr;
+        int index_ = N;
 };
 
 }       // namespace bit

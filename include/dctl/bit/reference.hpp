@@ -14,11 +14,7 @@ public:
 
         // structors
 
-        // references have to be initialized
-        bit_reference() = delete;
-
-        // references cannot be null
-        bit_reference(storage_type const* s, int i)
+        constexpr bit_reference(storage_type const& s, int i) noexcept
         :
                 segment_{s},
                 index_{i}
@@ -26,26 +22,24 @@ public:
 
         // modifiers
 
-        // references cannot be rebound
         bit_reference& operator=(bit_reference const&) = delete;
 
         // views
 
-        // yes, we really want implicit conversion to the value type
-        operator int() const
+        constexpr operator int() const noexcept
         {
                 return index_;
         }
 
-        bit_iterator<1, _> operator&() const
+        constexpr auto operator&() const noexcept -> bit_iterator<1, _>
         {
-                return bit_iterator<1, _>{segment_, index_};
+                return {&segment_, index_};
         }
 
 private:
         // representation
 
-        storage_type const* segment_;
+        storage_type const& segment_;
         int index_;
 };
 
