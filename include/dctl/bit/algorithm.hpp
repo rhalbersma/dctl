@@ -1,49 +1,61 @@
 #pragma once
-#include <dctl/bit/raw.hpp>
+#include <cstddef>                      // size_t
 
 namespace dctl {
 namespace bit {
 
 template<class Set>
-Set set_complement(Set const& lhs)
+constexpr auto set_complement(Set const& lhs) noexcept
 {
         return ~lhs;
 }
 
 template<class Set>
-Set set_intersection(Set const& lhs, Set const& rhs)
+constexpr auto set_intersection(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs & rhs;
 }
 
 template<class Set>
-Set set_union(Set const& lhs, Set const& rhs)
+constexpr auto set_union(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs | rhs;
 }
 
 template<class Set>
-Set set_symmetric_difference(Set const& lhs, Set const& rhs)
+constexpr auto set_symmetric_difference(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs ^ rhs;
 }
 
 template<class Set>
-Set set_difference(Set const& lhs, Set const& rhs)
+constexpr auto set_plus(Set const& lhs, std::size_t n) noexcept
+{
+        return lhs << n;
+}
+
+template<class Set>
+constexpr auto set_minus(Set const& lhs, std::size_t n) noexcept
+{
+        return lhs >> n;
+}
+
+template<class Set>
+constexpr auto set_difference(Set const& lhs, Set const& rhs) noexcept
 {
         return set_intersection(lhs, set_complement(rhs));
 }
 
 template<class Set>
-bool set_exclusive(Set const& lhs, Set const& rhs)
+constexpr auto set_exclusive(Set const& lhs, Set const& rhs) noexcept
 {
-        return empty(set_intersection(lhs, rhs));
+        return set_intersection(lhs, rhs).empty();
 }
 
 template<class Set>
-bool set_includes(Set const& lhs, Set const& rhs)
+constexpr auto set_includes(Set const& lhs, Set const& rhs) noexcept
 {
-        return empty(set_difference(rhs, lhs));
+        return set_difference(rhs, lhs).empty();
 }
 
 }       // namespace bit

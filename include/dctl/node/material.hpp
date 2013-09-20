@@ -133,13 +133,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::set_exclusive(this->pieces(Side::black), this->pieces(Side::white));
+                return bit::raw_set_exclusive(this->pieces(Side::black), this->pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::set_includes(this->pieces(), this->kings());
+                return bit::raw_set_includes(this->pieces(), this->kings());
         }
 
         // representation
