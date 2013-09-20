@@ -32,6 +32,7 @@ BOOST_AUTO_TEST_CASE(Members)
         std::copy(begin(x), end(x), std::ostream_iterator<int>(std::cout, ",")); std::cout << "\n";
 
         BOOST_CHECK(std::is_sorted(begin(x), end(x)));
+        BOOST_CHECK(std::is_sorted(x.crbegin(), x.crend(), std::greater<int>()));
         BOOST_CHECK(std::adjacent_find(begin(x), end(x)) == end(x));
 /*
         BOOST_CHECK((x.find(17) != end(x)) == x.count(17));

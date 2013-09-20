@@ -9,48 +9,48 @@ namespace intrinsic {
 namespace detail {
 
 template<class T>
-struct front;
+struct ctz;
 
 template<>
-struct front<uint32_t>
+struct ctz<uint32_t>
 {
         BOOST_STATIC_ASSERT(num_bits<uint32_t>::value == num_bits<unsigned int>::value);
-        int operator()(uint32_t b) const
+        constexpr auto operator()(uint32_t b) const
         {
-                return static_cast<int>(__builtin_ctz(b));
+                return __builtin_ctz(b);
         }
 };
 
 template<>
-struct front<uint64_t>
+struct ctz<uint64_t>
 {
         BOOST_STATIC_ASSERT(num_bits<uint64_t>::value == num_bits<unsigned long long int>::value);
-        int operator()(uint64_t b) const
+        constexpr auto operator()(uint64_t b) const
         {
-                return static_cast<int>(__builtin_ctzll(b));
+                return __builtin_ctzll(b);
         }
 };
 
 template<class T>
-struct back;
+struct clz;
 
 template<>
-struct back<uint32_t>
+struct clz<uint32_t>
 {
         BOOST_STATIC_ASSERT(num_bits<uint32_t>::value == num_bits<unsigned int>::value);
-        int operator()(uint32_t b) const
+        constexpr auto operator()(uint32_t b) const
         {
-                return num_bits<uint32_t>::value - 1 - static_cast<int>(__builtin_clz(b));
+                return __builtin_clz(b);
         }
 };
 
 template<>
-struct back<uint64_t>
+struct clz<uint64_t>
 {
         BOOST_STATIC_ASSERT(num_bits<uint64_t>::value == num_bits<unsigned long long int>::value);
-        int operator()(uint64_t b) const
+        constexpr auto operator()(uint64_t b) const
         {
-                return num_bits<uint64_t>::value - 1 - static_cast<int>(__builtin_clzll(b));
+                return __builtin_clzll(b);
         }
 };
 
@@ -61,9 +61,9 @@ template<>
 struct size<uint32_t>
 {
         BOOST_STATIC_ASSERT(num_bits<uint32_t>::value == num_bits<unsigned int>::value);
-        int operator()(uint32_t b) const
+        constexpr auto operator()(uint32_t b) const
         {
-                return static_cast<int>(__builtin_popcount(b));
+                return __builtin_popcount(b);
         }
 };
 
@@ -71,28 +71,40 @@ template<>
 struct size<uint64_t>
 {
         BOOST_STATIC_ASSERT(num_bits<uint64_t>::value == num_bits<unsigned long long int>::value);
-        int operator()(uint64_t b) const
+        constexpr auto operator()(uint64_t b) const
         {
-                return static_cast<int>(__builtin_popcountll(b));
+                return __builtin_popcountll(b);
         }
 };
 
 }       // namespace detail
 
 template<class T>
-int front(T b)
+constexpr auto ctz(T b)
 {
-        return detail::front<T>()(b);
+        return detail::ctz<T>()(b);
 }
 
 template<class T>
-int back(T b)
+constexpr auto clz(T b)
 {
-        return detail::back<T>()(b);
+        return detail::clz<T>()(b);
 }
 
 template<class T>
-int size(T b)
+constexpr auto front(T b)
+{
+        return intrinsic::ctz(b);
+}
+
+template<class T>
+constexpr auto back(T b)
+{
+        return num_bits<T>::value - 1 - intrinsic::clz(b);
+}
+
+template<class T>
+constexpr auto size(T b)
 {
         return detail::size<T>()(b);
 }
