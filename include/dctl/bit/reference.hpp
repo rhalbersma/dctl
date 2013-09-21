@@ -6,10 +6,10 @@
 namespace dctl {
 namespace bit {
 
-template<class _>
-class bit_reference<1, _>
+template<int N, class>
+class bit_reference
 {
-public:
+private:
         using storage_type = uint64_t;
 
         // structors
@@ -20,10 +20,13 @@ public:
                 index_{i}
         {}
 
+        friend class bit_iterator<N>;
+
         // modifiers
 
         bit_reference& operator=(bit_reference const&) = delete;
 
+public:
         // views
 
         constexpr operator int() const noexcept
@@ -31,7 +34,7 @@ public:
                 return index_;
         }
 
-        constexpr auto operator&() const noexcept -> bit_iterator<1, _>
+        constexpr auto operator&() const noexcept -> bit_iterator<N>
         {
                 return {&segment_, index_};
         }

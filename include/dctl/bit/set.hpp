@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>                      // assert
 #include <cstddef>                      // ptrdiff_t, size_t
 #include <cstdint>                      // uint64_t, CHAR_BIT
 #include <algorithm>                    // is_sorted
@@ -14,20 +15,20 @@
 namespace dctl {
 namespace bit {
 
-template<int> class set;
+template<int N = 1>
+class set;
 
 template<>
 class set<1>
 {
 public:
         using storage_type = uint64_t;
-        static constexpr auto N = static_cast<int>(CHAR_BIT * sizeof(storage_type));
+        static constexpr auto M = static_cast<int>(CHAR_BIT * sizeof(storage_type));
 
         using key_type = int;
         using value_type = int;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
-
         using reference = bit_reference<1>;
         using const_reference = reference;
         using iterator = bit_iterator<1>;
@@ -35,12 +36,9 @@ public:
         using reverse_iterator = std::reverse_iterator<iterator>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-        constexpr set() = default;
+        // structors
 
-        constexpr explicit set(storage_type const& data) noexcept
-        :
-                data_{data}
-        {}
+        constexpr set() noexcept = default;
 
         template<class InputIt>
         constexpr set(InputIt first, InputIt last)
@@ -49,9 +47,9 @@ public:
         }
 
         constexpr set(std::initializer_list<value_type> ilist)
-        {
-                insert(ilist);
-        }
+        :
+                set(ilist.begin(), ilist.end())
+        {}
 
         constexpr auto& operator=(std::initializer_list<value_type> ilist)
         {
@@ -74,12 +72,12 @@ public:
 
         constexpr auto end() noexcept
         {
-                return iterator{&data_, N};
+                return iterator{&data_, M};
         }
 
         constexpr auto end() const noexcept
         {
-                return const_iterator{&data_, N};
+                return const_iterator{&data_, M};
         }
 
         auto rbegin() noexcept
@@ -129,39 +127,29 @@ public:
                 return data_ == 0;
         }
 
-        constexpr size_type size() const noexcept
+        constexpr auto size() const noexcept
         {
                 return static_cast<size_type>(bit::intrinsic::size(data_));
         }
 
         constexpr auto max_size() const noexcept
         {
-                return CHAR_BIT * sizeof(storage_type);
+                return static_cast<size_type>(M);
         }
 
         // modifiers
 
-        template<class... Args>
-        std::pair<iterator, bool> emplace(Args&&... args);
-
-        template <class... Args>
-        iterator emplace_hint(const_iterator /* position */, Args&&... args);
-
         constexpr auto insert(value_type const& value)
         {
-                data_ |= element(value);
-                return std::make_pair(iterator{&data_, value}, true);
+                auto const present = is_mask(value);
+                if (!present)
+                        set_mask(value);
+                return std::make_pair(iterator{&data_, value}, !present);
         }
 
-        constexpr auto insert(value_type&& value)
+        constexpr auto insert(const_iterator /*hint*/, value_type const& value)
         {
-                data_ |= element(std::move(value));
-                return std::make_pair(iterator{&data_, value}, true);
-        }
-
-        constexpr iterator insert(const_iterator /*hint*/, value_type value)
-        {
-                insert(value);
+                set_mask(value);
                 return iterator{&data_, value};
         }
 
@@ -169,7 +157,7 @@ public:
         constexpr void insert(InputIt first, InputIt last)
         {
                 for (auto it = first; it != last; ++it)
-                        insert(*it);
+                        set_mask(*it);
         }
 
         constexpr void insert(std::initializer_list<value_type> ilist)
@@ -177,20 +165,37 @@ public:
                 insert(ilist.begin(), ilist.end());
         }
 
-        constexpr void erase(iterator pos)
+        template<class... Args>
+        constexpr auto emplace(Args&&... args)
         {
-                erase(*pos);
+                return insert(std::forward<Args>(args)...);
         }
 
-        constexpr void erase(iterator first, iterator last)
+        template <class... Args>
+        constexpr auto emplace_hint(const_iterator position, Args&&... args)
         {
-                for (auto it = first; it != last; ++it)
-                        erase(*it);
+                return insert(position, std::forward<Args>(args)...);
         }
 
-        constexpr void erase(key_type const& key)
+        constexpr auto erase(key_type const& key)
         {
-                data_ &= ~element(key);
+                auto const n = static_cast<size_type>(is_mask(key));
+                clear_mask(key);
+                return n;
+        }
+
+        constexpr const_iterator erase(const_iterator pos)
+        {
+                clear_mask(*pos++);
+                return pos;
+        }
+
+        constexpr auto erase(const_iterator first, const_iterator last)
+        {
+                auto it = first;
+                while (it != last)
+                        clear_mask(*it++);
+                return it;
         }
 
         constexpr void swap(set& other) noexcept
@@ -206,49 +211,62 @@ public:
 
         constexpr auto count(key_type const& key) const
         {
-                return (data_ & element(key)) != 0;
+                return static_cast<size_type>(is_mask(key));
         }
 
         constexpr auto find(key_type const& key)
         {
-                auto result = data_ & element(key);
+                auto const result = is_mask(key);
                 return result? iterator{&data_, key} : end();
         }
 
         constexpr auto find(key_type const& key) const
         {
-                auto result = data_ & element(key);
-                return result? const_iterator{&data_, key} : end();
+                auto const result = is_mask(key);
+                return result? const_iterator{&data_, key} : cend();
         }
 
-        friend constexpr bool operator==(set const& lhs, set const& rhs) noexcept
+        friend constexpr auto operator==(set const& lhs, set const& rhs) noexcept -> bool
         {
                 return lhs.data_ == rhs.data_;
         }
 
-        friend constexpr bool operator!=(set const& lhs, set const& rhs) noexcept
+        friend constexpr auto operator!=(set const& lhs, set const& rhs) noexcept -> bool
         {
                 return !(lhs == rhs);
         }
 
-        friend constexpr bool operator<(set const& lhs, set const& rhs) noexcept
+        friend constexpr auto operator<(set const& lhs, set const& rhs) noexcept -> bool
         {
                 return lhs.data_ < rhs.data_;
         }
 
-        friend constexpr bool operator>=(set const& lhs, set const& rhs) noexcept
+        friend constexpr auto operator>=(set const& lhs, set const& rhs) noexcept -> bool
         {
                 return !(lhs < rhs);
         }
 
-        friend constexpr bool operator>(set const& lhs, set const& rhs) noexcept
+        friend constexpr auto operator>(set const& lhs, set const& rhs) noexcept -> bool
         {
                 return rhs < lhs;
         }
 
-        friend bool operator<=(set const& lhs, set const& rhs) noexcept
+        friend constexpr auto operator<=(set const& lhs, set const& rhs) noexcept -> bool
         {
                 return !(rhs < lhs);
+        }
+
+        constexpr auto& flip() noexcept
+        {
+                data_ = ~data_;
+                return *this;
+        }
+
+        friend constexpr auto operator~(set const& lhs) noexcept -> set
+        {
+                set nrv{lhs};
+                nrv.flip();
+                return nrv;
         }
 
         constexpr auto& operator&=(set const& other) noexcept
@@ -257,7 +275,7 @@ public:
                 return *this;
         }
 
-        friend constexpr set operator&(set const& lhs, set const& rhs) noexcept
+        friend constexpr auto operator&(set const& lhs, set const& rhs) noexcept -> set
         {
                 set nrv{lhs};
                 nrv &= rhs;
@@ -270,7 +288,7 @@ public:
                 return *this;
         }
 
-        friend constexpr set operator|(set const& lhs, set const& rhs) noexcept
+        friend constexpr auto operator|(set const& lhs, set const& rhs) noexcept -> set
         {
                 set nrv{lhs};
                 nrv |= rhs;
@@ -283,7 +301,7 @@ public:
                 return *this;
         }
 
-        friend constexpr set operator^(set const& lhs, set const& rhs) noexcept
+        friend constexpr auto operator^(set const& lhs, set const& rhs) noexcept -> set
         {
                 set nrv{lhs};
                 nrv ^= rhs;
@@ -292,11 +310,12 @@ public:
 
         constexpr auto& operator<<=(std::size_t n)
         {
+                assert(n < M);
                 data_ <<= n;
                 return *this;
         }
 
-        friend constexpr set operator<<(set const& lhs, std::size_t n)
+        friend constexpr auto operator<<(set const& lhs, std::size_t n) -> set
         {
                 set nrv{lhs};
                 nrv <<= n;
@@ -305,51 +324,38 @@ public:
 
         constexpr auto& operator>>=(std::size_t n)
         {
+                assert(n < M);
                 data_ >>= n;
                 return *this;
         }
 
-        friend constexpr set operator>>(set const& lhs, std::size_t n)
+        friend constexpr auto operator>>(set const& lhs, std::size_t n) -> set
         {
                 set nrv{lhs};
                 nrv >>= n;
                 return nrv;
         }
 
-        constexpr auto& flip() noexcept
-        {
-                data_ = ~data_;
-                return *this;
-        }
-
-        friend constexpr set operator~(set const& lhs) noexcept
-        {
-                set nrv{lhs};
-                nrv.flip();
-                return nrv;
-        }
-
 private:
-        bool invariant() const
+        constexpr auto mask(key_type n) const
         {
-                return (
-                        std::distance(begin(), end()) == static_cast<std::ptrdiff_t>(size()) &&
-                        std::is_sorted(begin(), end()) &&
-                        is_unique()
-                );
+                assert(n < M);
+                return storage_type{1} << n;
         }
 
-        bool is_unique() const
+        constexpr void set_mask(key_type n)
         {
-                return std::adjacent_find(begin(), end(), [](key_type const& lhs, key_type const& rhs){
-                        return !(lhs < rhs) && !(rhs < lhs);
-                }) == end();
+                data_ |= mask(n);
         }
 
-        storage_type element(key_type const& key) const
+        constexpr void clear_mask(key_type n)
         {
-                BOOST_ASSERT(key < static_cast<key_type>(max_size()));
-                return storage_type{1} << key;
+                data_ &= ~mask(n);
+        }
+
+        constexpr auto is_mask(key_type n) const -> bool
+        {
+                return (data_ & mask(n)) != 0;
         }
 
         // representation
@@ -365,25 +371,25 @@ constexpr auto swap(set<N>& lhs, set<N>& rhs) noexcept
 }
 
 template<int N>
-constexpr auto begin(set<N> const& s) noexcept -> decltype(s.begin())
+constexpr decltype(auto) begin(set<N> const& s) noexcept
 {
         return s.begin();
 }
 
 template<int N>
-constexpr auto end(set<N> const& s) noexcept -> decltype(s.end())
+constexpr decltype(auto) end(set<N> const& s) noexcept
 {
         return s.end();
 }
 
 template<int N>
-constexpr auto cbegin(set<N> const& s) noexcept -> decltype(s.cbegin())
+constexpr decltype(auto) cbegin(set<N> const& s) noexcept
 {
         return s.cbegin();
 }
 
 template<int N>
-constexpr auto cend(set<N> const& s) noexcept -> decltype(s.cend())
+constexpr decltype(auto) cend(set<N> const& s) noexcept
 {
         return s.cend();
 }

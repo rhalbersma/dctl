@@ -1,7 +1,6 @@
 #pragma once
-#include <cstdint>                      // uint32_t, uint64_t
-#include <boost/static_assert.hpp>      // BOOST_STATIC_ASSERT
-#include <dctl/utility/int.hpp>         // num_bits
+#include <cassert>                      // assert
+#include <cstdint>                      // uint32_t, uint64_t, CHAR_BIT
 
 namespace dctl {
 namespace bit {
@@ -14,9 +13,10 @@ struct ctz;
 template<>
 struct ctz<uint32_t>
 {
-        BOOST_STATIC_ASSERT(num_bits<uint32_t>::value == num_bits<unsigned int>::value);
+        static_assert(sizeof(uint32_t) == sizeof(unsigned), "");
         constexpr auto operator()(uint32_t b) const
         {
+                assert(b != 0);
                 return __builtin_ctz(b);
         }
 };
@@ -24,9 +24,10 @@ struct ctz<uint32_t>
 template<>
 struct ctz<uint64_t>
 {
-        BOOST_STATIC_ASSERT(num_bits<uint64_t>::value == num_bits<unsigned long long int>::value);
+        static_assert(sizeof(uint64_t) == sizeof(unsigned long long), "");
         constexpr auto operator()(uint64_t b) const
         {
+                assert(b != 0);
                 return __builtin_ctzll(b);
         }
 };
@@ -37,9 +38,10 @@ struct clz;
 template<>
 struct clz<uint32_t>
 {
-        BOOST_STATIC_ASSERT(num_bits<uint32_t>::value == num_bits<unsigned int>::value);
+        static_assert(sizeof(uint32_t) == sizeof(unsigned), "");
         constexpr auto operator()(uint32_t b) const
         {
+                assert(b != 0);
                 return __builtin_clz(b);
         }
 };
@@ -47,9 +49,10 @@ struct clz<uint32_t>
 template<>
 struct clz<uint64_t>
 {
-        BOOST_STATIC_ASSERT(num_bits<uint64_t>::value == num_bits<unsigned long long int>::value);
+        static_assert(sizeof(uint64_t) == sizeof(unsigned long long), "");
         constexpr auto operator()(uint64_t b) const
         {
+                assert(b != 0);
                 return __builtin_clzll(b);
         }
 };
@@ -60,8 +63,8 @@ struct size;
 template<>
 struct size<uint32_t>
 {
-        BOOST_STATIC_ASSERT(num_bits<uint32_t>::value == num_bits<unsigned int>::value);
-        constexpr auto operator()(uint32_t b) const
+        static_assert(sizeof(uint32_t) == sizeof(unsigned), "");
+        constexpr auto operator()(uint32_t b) const noexcept
         {
                 return __builtin_popcount(b);
         }
@@ -70,8 +73,8 @@ struct size<uint32_t>
 template<>
 struct size<uint64_t>
 {
-        BOOST_STATIC_ASSERT(num_bits<uint64_t>::value == num_bits<unsigned long long int>::value);
-        constexpr auto operator()(uint64_t b) const
+        static_assert(sizeof(uint64_t) == sizeof(unsigned long long), "");
+        constexpr auto operator()(uint64_t b) const noexcept
         {
                 return __builtin_popcountll(b);
         }
@@ -100,11 +103,11 @@ constexpr auto front(T b)
 template<class T>
 constexpr auto back(T b)
 {
-        return num_bits<T>::value - 1 - intrinsic::clz(b);
+        return static_cast<int>(CHAR_BIT * sizeof(T)) - 1 - intrinsic::clz(b);
 }
 
 template<class T>
-constexpr auto size(T b)
+constexpr auto size(T b) noexcept
 {
         return detail::size<T>()(b);
 }

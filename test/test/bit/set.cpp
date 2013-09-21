@@ -1,7 +1,7 @@
 #include <algorithm>
-#include <iostream>
-#include <iterator>
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
+#include <initializer_list>                     // initializer_list
+#include <iterator>                             // begin, end, cbegin, cend, distance
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <dctl/bit/bit.hpp>
 
@@ -10,7 +10,47 @@ namespace bit {
 
 using bitset = set<1>;
 
-BOOST_AUTO_TEST_SUITE(PackedSet)
+BOOST_AUTO_TEST_SUITE(BitSet)
+
+BOOST_AUTO_TEST_CASE(DefaultConstructorZeroInitializes)
+{
+        /* constexpr */ bit::set<1> b;
+        BOOST_CHECK(b.empty());
+        BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
+        BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
+        BOOST_CHECK(begin(b) == end(b));
+        BOOST_CHECK(cbegin(b) == cend(b));
+        BOOST_CHECK(b.rbegin() == b.rend());
+        BOOST_CHECK(b.crbegin() == b.crend());
+}
+
+BOOST_AUTO_TEST_CASE(IteratorPairConstructorListInitializes)
+{
+        constexpr int a[] = { 0, 1, 2, 63 };
+        /* constexpr */ auto b = bit::set<1>{std::begin(a), std::end(a)};
+        BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
+        BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
+        BOOST_CHECK_EQUAL_COLLECTIONS(begin(b), end(b), std::begin(a), std::end(a));
+}
+
+BOOST_AUTO_TEST_CASE(InitializerListConstructorListInitializes)
+{
+        constexpr int a[] = { 0, 1, 2, 63 };
+        constexpr auto b = bit::set<1>{ 0, 1, 2, 63 };
+        BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
+        BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
+        BOOST_CHECK_EQUAL_COLLECTIONS(begin(b), end(b), std::begin(a), std::end(a));
+}
+
+BOOST_AUTO_TEST_CASE(InitializerListAssignmentOperatorListAssigns)
+{
+        constexpr int a[] = { 0, 1, 2, 63 };
+        bit::set<1> b;
+        b = { 0, 1, 2, 63 };
+        BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
+        BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
+        BOOST_CHECK_EQUAL_COLLECTIONS(begin(b), end(b), std::begin(a), std::end(a));
+}
 
 BOOST_AUTO_TEST_CASE(Members)
 {
