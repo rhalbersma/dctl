@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t
 #include <cstdint>                              // uint64_t, CHAR_BIT
 #include <iterator>                             // iterator, bidirectional_iterator_tag
@@ -22,34 +23,40 @@ class bit_iterator<1, _>
 {
 public:
         using storage_type = uint64_t;
-        static constexpr auto N = static_cast<int>(CHAR_BIT * sizeof(storage_type));
+        static constexpr auto M = static_cast<int>(CHAR_BIT * sizeof(storage_type));
 
         // structors
 
-        constexpr bit_iterator() = default;
+        bit_iterator() = delete;
 
         constexpr explicit bit_iterator(storage_type const* s) noexcept
         :
-                bit_iterator(s, (s && *s)? bit::intrinsic::ctz(*s) : N)
-        {}
+                bit_iterator{s, (s && *s)? bit::intrinsic::ctz(*s) : M}
+        {
+                assert(segment_ != nullptr && -1 < index_ && index_ <= M);
+        }
 
         constexpr bit_iterator(storage_type const* s, int i) noexcept
         :
                 segment_{s},
                 index_{i}
-        {}
+        {
+                assert(segment_ != nullptr && -1 <= index_ && index_ <= M);
+        }
 
         // modifiers
 
         constexpr auto& operator++() noexcept
         {
-                if (N <= ++index_) return *this;
+                assert(index_ < M);
+                if (M <= ++index_) return *this;
                 auto const mask = *segment_ >> index_;
-                index_ = mask? index_ + bit::intrinsic::ctz(mask) : N;
+                index_ = mask? index_ + bit::intrinsic::ctz(mask) : M;
+                assert(-1 < index_);
                 return *this;
         }
 
-        constexpr auto operator++(int) noexcept
+        constexpr bit_iterator operator++(int) noexcept
         {
                 auto const old = *this;
                 ++(*this);
@@ -58,9 +65,11 @@ public:
 
         constexpr auto& operator--() noexcept
         {
+                assert(-1 < index_);
                 if (--index_ <= -1) return *this;
-                auto const mask = *segment_ << (N - 1 - index_);
+                auto const mask = *segment_ << (M - 1 - index_);
                 index_ = mask? index_ - bit::intrinsic::clz(mask) : -1;
+                assert(index_ < M);
                 return *this;
         }
 
@@ -73,8 +82,9 @@ public:
 
         // views
 
-        constexpr auto operator*() const noexcept(false) -> bit_reference<1, _>
+        constexpr auto operator*() const -> bit_reference<1, _>
         {
+                assert(-1 < index_ && index_ < M);
                 return {*segment_, index_};
         }
 
@@ -93,8 +103,8 @@ public:
 private:
         // representation
 
-        storage_type const* segment_ = nullptr;
-        int index_ = N;
+        storage_type const* segment_;
+        int index_;
 };
 
 }       // namespace bit
