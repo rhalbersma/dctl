@@ -6,21 +6,19 @@
 namespace dctl {
 namespace bit {
 
-template<int N, class>
+template<class T, int Nw>
 class bit_reference
 {
 private:
-        using storage_type = uint64_t;
-
         // structors
 
-        constexpr bit_reference(storage_type const& s, int i) noexcept
+        constexpr bit_reference(T const& s, int i) noexcept
         :
                 segment_{s},
                 index_{i}
         {}
 
-        friend class bit_iterator<N>;
+        friend class bit_iterator<T, Nw>;
 
         // modifiers
 
@@ -34,7 +32,7 @@ public:
                 return index_;
         }
 
-        constexpr auto operator&() const noexcept -> bit_iterator<N>
+        constexpr auto operator&() const noexcept -> bit_iterator<T, Nw>
         {
                 return {&segment_, index_};
         }
@@ -42,7 +40,7 @@ public:
 private:
         // representation
 
-        storage_type const& segment_;
+        T const& segment_;
         int index_;
 };
 

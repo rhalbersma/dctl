@@ -3,7 +3,7 @@
 namespace dctl {
 namespace bit {
 
-template<int, class = void>
+template<class T, int Nw>
 class bit_reference;
 
 }       // namespace bit
