@@ -3,8 +3,8 @@
 namespace dctl {
 namespace bit {
 
-template<int, class = void> class bit_iterator;
-template<class _> class bit_iterator<1, _>;
+template<class WordT, int Nw>
+class bit_iterator;
 
 }       // namespace bit
 }       // namespace dctl

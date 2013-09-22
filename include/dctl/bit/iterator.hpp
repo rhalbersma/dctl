@@ -1,58 +1,48 @@
 #pragma once
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t
-#include <cstdint>                              // uint64_t, CHAR_BIT
-#include <iterator>                             // iterator, bidirectional_iterator_tag
-#include <dctl/bit/intrinsic.hpp>               // ctz, clz
+#include <iterator>                             // bidirectional_iterator_tag
 #include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
 #include <dctl/bit/reference_fwd.hpp>           // bit_reference
+#include <dctl/bit/detail/base_iterator.hpp>    // base_iterator
 
 namespace dctl {
 namespace bit {
 
-template<class _>
-class bit_iterator<1, _>
+template<class WordT, int Nw>
+class bit_iterator
 :
-        public std::iterator<
-                std::bidirectional_iterator_tag,
-                int,
-                std::ptrdiff_t,
-                bit_iterator<1, _>,
-                bit_reference<1, _>
-        >
+        private detail::base_iterator<WordT, Nw>
 {
 public:
-        using storage_type = uint64_t;
-        static constexpr auto M = static_cast<int>(CHAR_BIT * sizeof(storage_type));
+        using Base = detail::base_iterator<WordT, Nw>;
+        using Base::Base;
+
+        using value_type        = int;
+        using difference_type   = std::ptrdiff_t;
+        using pointer           = bit_iterator<WordT, Nw>;
+        using reference         = bit_reference<WordT, Nw>;
+        using iterator_category = std::bidirectional_iterator_tag;
 
         // structors
 
         bit_iterator() = delete;
 
-        constexpr explicit bit_iterator(storage_type const* s) noexcept
+        constexpr explicit bit_iterator(WordT const* s) noexcept
         :
-                bit_iterator{s, (s && *s)? bit::intrinsic::ctz(*s) : M}
-        {
-                assert(segment_ != nullptr && -1 < index_ && index_ <= M);
-        }
+                Base{s, Base::do_find(s)}
+        {}
 
-        constexpr bit_iterator(storage_type const* s, int i) noexcept
+        constexpr bit_iterator(WordT const* s, int i) noexcept
         :
-                segment_{s},
-                index_{i}
-        {
-                assert(segment_ != nullptr && -1 <= index_ && index_ <= M);
-        }
+                Base{s, i}
+        {}
 
         // modifiers
 
-        constexpr auto& operator++() noexcept
+        constexpr bit_iterator& operator++() noexcept
         {
-                assert(index_ < M);
-                if (M <= ++index_) return *this;
-                auto const mask = *segment_ >> index_;
-                index_ = mask? index_ + bit::intrinsic::ctz(mask) : M;
-                assert(-1 < index_);
+                this->do_increment();
                 return *this;
         }
 
@@ -63,17 +53,13 @@ public:
                 return old;
         }
 
-        constexpr auto& operator--() noexcept
+        constexpr bit_iterator& operator--() noexcept
         {
-                assert(-1 < index_);
-                if (--index_ <= -1) return *this;
-                auto const mask = *segment_ << (M - 1 - index_);
-                index_ = mask? index_ - bit::intrinsic::clz(mask) : -1;
-                assert(index_ < M);
+                this->do_decrement();
                 return *this;
         }
 
-        constexpr auto operator--(int) noexcept
+        constexpr bit_iterator operator--(int) noexcept
         {
                 auto const old = *this;
                 --(*this);
@@ -82,29 +68,22 @@ public:
 
         // views
 
-        constexpr auto operator*() const -> bit_reference<1, _>
+        constexpr reference operator*()
         {
-                assert(-1 < index_ && index_ < M);
-                return {*segment_, index_};
+                return {*(this->segment_), this->index_};
         }
 
         // predicates
 
-        friend constexpr auto operator==(bit_iterator const& L, bit_iterator const& R) noexcept -> bool
+        friend constexpr bool operator==(bit_iterator const& L, bit_iterator const& R) noexcept
         {
                 return L.segment_ == R.segment_ && L.index_ == R.index_;
         }
 
-        friend constexpr auto operator!=(bit_iterator const& L, bit_iterator const& R) noexcept -> bool
+        friend constexpr bool operator!=(bit_iterator const& L, bit_iterator const& R) noexcept
         {
                 return !(L == R);
         }
-
-private:
-        // representation
-
-        storage_type const* segment_;
-        int index_;
 };
 
 }       // namespace bit

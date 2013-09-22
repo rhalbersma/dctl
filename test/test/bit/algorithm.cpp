@@ -6,7 +6,7 @@
 namespace dctl {
 namespace bit {
 
-using bitset = set<1>;
+using bitset = set<64>;
 
 BOOST_AUTO_TEST_SUITE(PackedAlgorithm)
 
