@@ -8,13 +8,13 @@
 namespace dctl {
 namespace bit {
 
-using bitset = set<64>;
+using bitset = bit_set<int, 64>;
 
 BOOST_AUTO_TEST_SUITE(BitSet)
 
 BOOST_AUTO_TEST_CASE(DefaultConstructorZeroInitializes)
 {
-        /* constexpr */ bit::set<64> b;
+        /* constexpr */ bit_set<int, 64> b;
         BOOST_CHECK(b.empty());
         BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
         BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(DefaultConstructorZeroInitializes)
 BOOST_AUTO_TEST_CASE(IteratorPairConstructorListInitializes)
 {
         constexpr int a[] = { 0, 1, 2, 63 };
-        /* constexpr */ auto b = bit::set<64>{std::begin(a), std::end(a)};
+        /* constexpr */ auto b = bit_set<int, 64>{std::begin(a), std::end(a)};
         BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
         BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(b), end(b), std::begin(a), std::end(a));
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(IteratorPairConstructorListInitializes)
 BOOST_AUTO_TEST_CASE(InitializerListConstructorListInitializes)
 {
         constexpr int a[] = { 0, 1, 2, 63 };
-        constexpr auto b = bit::set<64>{ 0, 1, 2, 63 };
+        constexpr auto b = bit_set<int, 64>{ 0, 1, 2, 63 };
         BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
         BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(b), end(b), std::begin(a), std::end(a));
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(InitializerListConstructorListInitializes)
 BOOST_AUTO_TEST_CASE(InitializerListAssignmentOperatorListAssigns)
 {
         constexpr int a[] = { 0, 1, 2, 63 };
-        bit::set<64> b;
+        bit_set<int, 64> b;
         b = { 0, 1, 2, 63 };
         BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
         BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));

@@ -58,10 +58,10 @@ struct clz<uint64_t>
 };
 
 template<class T>
-struct size;
+struct popcount;
 
 template<>
-struct size<uint32_t>
+struct popcount<uint32_t>
 {
         static_assert(sizeof(uint32_t) == sizeof(unsigned), "");
         constexpr auto operator()(uint32_t b) const noexcept
@@ -71,7 +71,7 @@ struct size<uint32_t>
 };
 
 template<>
-struct size<uint64_t>
+struct popcount<uint64_t>
 {
         static_assert(sizeof(uint64_t) == sizeof(unsigned long long), "");
         constexpr auto operator()(uint64_t b) const noexcept
@@ -95,6 +95,12 @@ constexpr auto clz(T b)
 }
 
 template<class T>
+constexpr auto popcount(T b) noexcept
+{
+        return detail::popcount<T>()(b);
+}
+
+template<class T>
 constexpr auto front(T b)
 {
         return intrinsic::ctz(b);
@@ -109,7 +115,7 @@ constexpr auto back(T b)
 template<class T>
 constexpr auto size(T b) noexcept
 {
-        return detail::size<T>()(b);
+        return detail::popcount<T>()(b);
 }
 
 }       // namespace intrinsic

@@ -5,72 +5,50 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class WordT>
-struct base_set<WordT, 1>
+template<class T, class WordT>
+struct base_set<T, WordT, 1>
 {
         // structors
 
         constexpr base_set() noexcept = default;
 
-        // pointers
+        // element access
 
-        constexpr auto begin_ptr() noexcept
+        constexpr auto segment_ptr(T /* n */) noexcept
         {
                 return &data_;
         }
 
-        constexpr auto begin_ptr() const noexcept
+        constexpr auto segment_ptr(T /* n */) const noexcept
         {
                 return &data_;
         }
 
-        constexpr auto end_ptr() noexcept
+        constexpr auto& segment(T /* n */) noexcept
         {
-                return &data_;
+                return data_;
         }
 
-        constexpr auto end_ptr() const noexcept
+        constexpr auto const& segment(T /* n */) const noexcept
         {
-                return &data_;
+                return data_;
         }
 
-        constexpr auto word_ptr(int /* n */) noexcept
-        {
-                return &data_;
-        }
-
-        constexpr auto word_ptr(int /* n */) const noexcept
-        {
-                return &data_;
-        }
-
-        constexpr auto word_offset(int n) noexcept
+        static constexpr auto index(T n) noexcept
         {
                 return n;
         }
 
-        constexpr auto word_offset(int n) const noexcept
-        {
-                return n;
-        }
+        // bitwise operations
 
-        // capacity
-
-        constexpr auto do_empty() const noexcept
-        {
-                return data_ == 0;
-        }
-
-        constexpr auto do_size() const noexcept
-        {
-                return bit::intrinsic::size(data_);
-        }
-
-        // modifiers
-
-        constexpr void do_clear() noexcept
+        constexpr void do_reset() noexcept
         {
                 data_ = 0;
+        }
+
+        constexpr void do_set() noexcept
+        {
+                data_ = ~0;
         }
 
         constexpr void do_flip() noexcept
@@ -101,6 +79,28 @@ struct base_set<WordT, 1>
         constexpr void do_right_shift(std::size_t n)
         {
                 data_ >>= n;
+        }
+
+        // bitwise algorithms
+
+        constexpr auto do_none() const noexcept
+        {
+                return data_ == 0;
+        }
+
+        constexpr auto do_any() const noexcept
+        {
+                return data_ != 0;
+        }
+
+        constexpr auto do_all() const noexcept
+        {
+                return data_ == ~0;
+        }
+
+        constexpr auto do_count() const noexcept
+        {
+                return bit::intrinsic::popcount(data_);
         }
 
         // representation

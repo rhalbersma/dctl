@@ -13,12 +13,12 @@ struct base_iterator<WordT, 1>
 {
         static constexpr auto Nb = static_cast<int>(CHAR_BIT * sizeof(WordT));
 
-        static constexpr auto do_find(WordT const* s) noexcept
+        static constexpr auto find_first(WordT const* s) noexcept
         {
                 return (s && *s)? bit::intrinsic::ctz(*s) : Nb;
         }
 
-        constexpr void do_increment() noexcept
+        constexpr void find_next() noexcept
         {
                 assert(index_ < Nb);
                 if (Nb <= ++index_) return;
@@ -27,7 +27,7 @@ struct base_iterator<WordT, 1>
                 assert(-1 < index_);
         }
 
-        constexpr void do_decrement() noexcept
+        constexpr void find_prev() noexcept
         {
                 assert(-1 < index_);
                 if (--index_ <= -1) return;

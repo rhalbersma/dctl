@@ -1,38 +1,38 @@
 #pragma once
-#include <cstdint>                              // uint64_t
+#include <type_traits>                          // is_convertible
 #include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
 #include <dctl/bit/reference_fwd.hpp>           // bit_reference
 
 namespace dctl {
 namespace bit {
 
-template<class T, int Nw>
+template<class T, class WordT, int Nw>
 class bit_reference
 {
-private:
+public:
         // structors
 
-        constexpr bit_reference(T const& s, int i) noexcept
+        template<class U>
+        constexpr bit_reference(WordT const& s, U u) noexcept
         :
                 segment_{s},
-                index_{i}
-        {}
-
-        friend class bit_iterator<T, Nw>;
+                index_{static_cast<T>(u)}
+        {
+                static_assert(std::is_convertible<U, T>::value, "");
+        }
 
         // modifiers
 
         bit_reference& operator=(bit_reference const&) = delete;
 
-public:
         // views
 
-        constexpr operator int() const noexcept
+        constexpr operator T() const noexcept
         {
                 return index_;
         }
 
-        constexpr auto operator&() const noexcept -> bit_iterator<T, Nw>
+        constexpr auto operator&() const noexcept -> bit_iterator<T, WordT, Nw>
         {
                 return {&segment_, index_};
         }
@@ -40,8 +40,8 @@ public:
 private:
         // representation
 
-        T const& segment_;
-        int index_;
+        WordT const& segment_;
+        T index_;
 };
 
 }       // namespace bit

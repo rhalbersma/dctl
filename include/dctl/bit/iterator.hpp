@@ -2,6 +2,7 @@
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t
 #include <iterator>                             // bidirectional_iterator_tag
+#include <type_traits>                          // is_convertible
 #include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
 #include <dctl/bit/reference_fwd.hpp>           // bit_reference
 #include <dctl/bit/detail/base_iterator.hpp>    // base_iterator
@@ -9,7 +10,7 @@
 namespace dctl {
 namespace bit {
 
-template<class WordT, int Nw>
+template<class T, class WordT, int Nw>
 class bit_iterator
 :
         private detail::base_iterator<WordT, Nw>
@@ -18,11 +19,11 @@ public:
         using Base = detail::base_iterator<WordT, Nw>;
         using Base::Base;
 
-        using value_type        = int;
-        using difference_type   = std::ptrdiff_t;
-        using pointer           = bit_iterator<WordT, Nw>;
-        using reference         = bit_reference<WordT, Nw>;
         using iterator_category = std::bidirectional_iterator_tag;
+        using value_type        = T;
+        using difference_type   = std::ptrdiff_t;
+        using pointer           = bit_iterator<T, WordT, Nw>;
+        using reference         = bit_reference<T, WordT, Nw>;
 
         // structors
 
@@ -30,19 +31,22 @@ public:
 
         constexpr explicit bit_iterator(WordT const* s) noexcept
         :
-                Base{s, Base::do_find(s)}
+                Base{s, Base::find_first(s)}
         {}
 
-        constexpr bit_iterator(WordT const* s, int i) noexcept
+        template<class U>
+        constexpr bit_iterator(WordT const* s, U u) noexcept
         :
-                Base{s, i}
-        {}
+                Base{s, static_cast<int>(u)}
+        {
+                static_assert(std::is_convertible<U, int>::value, "");
+        }
 
         // modifiers
 
         constexpr bit_iterator& operator++() noexcept
         {
-                this->do_increment();
+                this->find_next();
                 return *this;
         }
 
@@ -55,7 +59,7 @@ public:
 
         constexpr bit_iterator& operator--() noexcept
         {
-                this->do_decrement();
+                this->find_prev();
                 return *this;
         }
 
@@ -70,7 +74,8 @@ public:
 
         constexpr reference operator*()
         {
-                return {*(this->segment_), this->index_};
+                static_assert(std::is_convertible<int, T>::value, "");
+                return {*(this->segment_), static_cast<T>(this->index_)};
         }
 
         // predicates
