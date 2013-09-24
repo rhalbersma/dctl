@@ -6,6 +6,7 @@
 #include <functional>                   // less
 #include <initializer_list>             // initializer_list
 #include <iterator>                     // distance
+#include <stdexcept>                    // logic_error
 #include <utility>                      // swap
 #include <dctl/bit/iterator.hpp>        // bit_iterator
 #include <dctl/bit/reference.hpp>       // bit_reference
@@ -14,39 +15,40 @@
 namespace dctl {
 namespace bit {
 
-template<int N>
-class set
+template<class T, int Nb>
+class bit_set
 :
-        private detail::base_set<uint64_t, 1>
+        private detail::base_set<T, uint64_t, 1>
 {
 public:
         using WordT = uint64_t;
         static constexpr auto Nw = 1;//(N - 1) / (CHAR_BIT * sizeof(WordT)) + 1;
+        using Base = detail::base_set<T, WordT, Nw>;
 
-        using key_type = int;
-        using value_type = int;
+        using key_type = T;
+        using value_type = T;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
-        using reference = bit_reference<WordT, Nw>;
+        using reference = bit_reference<T, WordT, Nw>;
         using const_reference = reference;
-        using iterator = bit_iterator<WordT, Nw>;
+        using iterator = bit_iterator<T, WordT, Nw>;
         using const_iterator = iterator;
         using reverse_iterator = std::reverse_iterator<iterator>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
         // structors
 
-        constexpr set() noexcept = default;
+        constexpr bit_set() noexcept = default;
 
         template<class InputIt>
-        constexpr set(InputIt first, InputIt last)
+        constexpr bit_set(InputIt first, InputIt last)
         {
                 insert(first, last);
         }
 
-        constexpr set(std::initializer_list<value_type> ilist)
+        constexpr bit_set(std::initializer_list<value_type> ilist)
         :
-                set{ilist.begin(), ilist.end()}
+                bit_set{ilist.begin(), ilist.end()}
         {}
 
         constexpr auto& operator=(std::initializer_list<value_type> ilist)
@@ -60,22 +62,22 @@ public:
 
         constexpr auto begin() noexcept
         {
-                return iterator{this->begin_ptr()};
+                return iterator{this->segment_ptr(0)};
         }
 
         constexpr auto begin() const noexcept
         {
-                return const_iterator{this->begin_ptr()};
+                return const_iterator{this->segment_ptr(0)};
         }
 
         constexpr auto end() noexcept
         {
-                return iterator{this->end_ptr(), N};
+                return iterator{this->segment_ptr(Nb), Base::index(Nb)};
         }
 
         constexpr auto end() const noexcept
         {
-                return const_iterator{this->end_ptr(), N};
+                return const_iterator{this->segment_ptr(Nb), Base::index(Nb)};
         }
 
         auto rbegin() noexcept
@@ -122,40 +124,40 @@ public:
 
         constexpr auto empty() const noexcept
         {
-                return data_ == 0;
+                return this->do_none();
         }
 
         constexpr auto size() const noexcept
         {
-                return static_cast<size_type>(bit::intrinsic::size(data_));
+                return this->do_count();
         }
 
         constexpr auto max_size() const noexcept
         {
-                return N;
+                return static_cast<size_type>(Nb);
         }
 
         // modifiers
 
         constexpr auto insert(value_type const& value)
         {
-                auto const present = is_mask(value);
-                if (!present)
-                        set_mask(value);
-                return std::make_pair(iterator{this->word_ptr(value), this->word_offset(value)}, !present);
+                auto const not_set = !is_mask(value);
+                if (not_set)
+                        set(value);
+                return std::make_pair(iterator{this->segment_ptr(value), Base::index(value)}, not_set);
         }
 
         constexpr auto insert(const_iterator /*hint*/, value_type const& value)
         {
-                set_mask(value);
-                return iterator{this->word_ptr(value), this->word_offset(value)};
+                set(value);
+                return iterator{this->segment_ptr(value), Base::index(value)};
         }
 
         template<class InputIt>
         constexpr void insert(InputIt first, InputIt last)
         {
                 for (auto it = first; it != last; ++it)
-                        set_mask(*it);
+                        set(*it);
         }
 
         constexpr void insert(std::initializer_list<value_type> ilist)
@@ -177,14 +179,14 @@ public:
 
         constexpr auto erase(key_type const& key)
         {
-                auto const n = static_cast<size_type>(is_mask(key));
-                clear_mask(key);
+                auto const n = count(key);
+                reset(key);
                 return n;
         }
 
-        constexpr const_iterator erase(const_iterator pos)
+        constexpr auto erase(const_iterator pos)
         {
-                clear_mask(*pos++);
+                reset(*pos++);
                 return pos;
         }
 
@@ -192,11 +194,11 @@ public:
         {
                 auto it = first;
                 while (it != last)
-                        clear_mask(*it++);
+                        reset(*it++);
                 return it;
         }
 
-        constexpr void swap(set& other) noexcept
+        constexpr void swap(bit_set& other) noexcept
         {
                 using std::swap;
                 swap(this->data_, other.data_);
@@ -204,7 +206,7 @@ public:
 
         constexpr void clear() noexcept
         {
-                this->do_clear();
+                this->do_reset();
         }
 
         constexpr auto count(key_type const& key) const
@@ -214,44 +216,100 @@ public:
 
         constexpr auto find(key_type const& key)
         {
-                auto const result = is_mask(key);
-                return result? iterator{this->word_ptr(key), this->word_offset(key)} : end();
+                auto const found = is_mask(key);
+                return found? iterator{this->segment(key), this->index(key)} : end();
         }
 
         constexpr auto find(key_type const& key) const
         {
-                auto const result = is_mask(key);
-                return result? const_iterator{this->word_ptr(key), this->word_offset(key)} : cend();
+                auto const found = is_mask(key);
+                return found? const_iterator{this->segment(key), this->index(key)} : cend();
         }
 
-        friend constexpr auto operator==(set const& lhs, set const& rhs) noexcept -> bool
+        // relational operators
+
+        friend constexpr auto operator==(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
         {
                 return lhs.data_ == rhs.data_;
         }
 
-        friend constexpr auto operator!=(set const& lhs, set const& rhs) noexcept -> bool
+        friend constexpr auto operator!=(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
         {
                 return !(lhs == rhs);
         }
 
-        friend constexpr auto operator<(set const& lhs, set const& rhs) noexcept -> bool
+        friend constexpr auto operator<(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
         {
                 return lhs.data_ < rhs.data_;
         }
 
-        friend constexpr auto operator>=(set const& lhs, set const& rhs) noexcept -> bool
+        friend constexpr auto operator>=(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
         {
                 return !(lhs < rhs);
         }
 
-        friend constexpr auto operator>(set const& lhs, set const& rhs) noexcept -> bool
+        friend constexpr auto operator>(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
         {
                 return rhs < lhs;
         }
 
-        friend constexpr auto operator<=(set const& lhs, set const& rhs) noexcept -> bool
+        friend constexpr auto operator<=(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
         {
                 return !(rhs < lhs);
+        }
+
+        // bit access
+
+        constexpr auto operator[](key_type n)
+        {
+                return reference{*this, n};
+        }
+
+        constexpr auto operator[](key_type n) const
+        {
+                return is_mask(n);
+        }
+
+        constexpr auto test(key_type n) const
+        {
+                if (!(0 <= n && n < Nb))
+                        throw std::out_of_range("");
+                return this->operator[](n);
+        }
+
+        constexpr auto& reset(key_type n)
+        {
+                this->segment(n) &= ~mask(n);
+                return *this;
+        }
+
+        constexpr auto& set(key_type n, bool value = true)
+        {
+                if (value)
+                        this->segment(n) |= mask(n);
+                else
+                        this->segment(n) &= ~mask(n);
+                return *this;
+        }
+
+        constexpr auto& flip(key_type n)
+        {
+                this->segment(n) ^= mask(n);
+                return *this;
+        }
+
+        // bitwise operations
+
+        constexpr auto& reset() noexcept
+        {
+                this->do_reset();
+                return *this;
+        }
+
+        constexpr auto& set() noexcept
+        {
+                this->do_set();
+                return *this;
         }
 
         constexpr auto& flip() noexcept
@@ -260,19 +318,19 @@ public:
                 return *this;
         }
 
-        constexpr auto& operator&=(set const& other) noexcept
+        constexpr auto& operator&=(bit_set const& other) noexcept
         {
                 this->do_and(other);
                 return *this;
         }
 
-        constexpr auto& operator|=(set const& other) noexcept
+        constexpr auto& operator|=(bit_set const& other) noexcept
         {
                 this->do_or(other);
                 return *this;
         }
 
-        constexpr auto& operator^=(set const& other) noexcept
+        constexpr auto& operator^=(bit_set const& other) noexcept
         {
                 this->do_xor(other);
                 return *this;
@@ -290,97 +348,109 @@ public:
                 return *this;
         }
 
-        friend constexpr auto operator~(set const& lhs) noexcept -> set
+        friend constexpr auto operator~(bit_set const& lhs) noexcept -> bit_set
         {
-                set nrv{lhs};
+                bit_set nrv{lhs};
                 nrv.flip();
                 return nrv;
         }
 
-        friend constexpr auto operator&(set const& lhs, set const& rhs) noexcept -> set
+        friend constexpr auto operator&(bit_set const& lhs, bit_set const& rhs) noexcept -> bit_set
         {
-                set nrv{lhs};
+                bit_set nrv{lhs};
                 nrv &= rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator|(set const& lhs, set const& rhs) noexcept -> set
+        friend constexpr auto operator|(bit_set const& lhs, bit_set const& rhs) noexcept -> bit_set
         {
-                set nrv{lhs};
+                bit_set nrv{lhs};
                 nrv |= rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator^(set const& lhs, set const& rhs) noexcept -> set
+        friend constexpr auto operator^(bit_set const& lhs, bit_set const& rhs) noexcept -> bit_set
         {
-                set nrv{lhs};
+                bit_set nrv{lhs};
                 nrv ^= rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator<<(set const& lhs, std::size_t n) -> set
+        friend constexpr auto operator<<(bit_set const& lhs, std::size_t n) -> bit_set
         {
-                set nrv{lhs};
+                bit_set nrv{lhs};
                 nrv <<= n;
                 return nrv;
         }
 
-        friend constexpr auto operator>>(set const& lhs, std::size_t n) -> set
+        friend constexpr auto operator>>(bit_set const& lhs, std::size_t n) -> bit_set
         {
-                set nrv{lhs};
+                bit_set nrv{lhs};
                 nrv >>= n;
                 return nrv;
         }
 
+        // bitwise algorithms
+
+        constexpr auto none() const noexcept
+        {
+                return this->do_none();
+        }
+
+        constexpr auto any() const noexcept
+        {
+                return this->do_any();
+        }
+
+        constexpr auto all() const noexcept
+        {
+                return this->do_all();
+        }
+
+        constexpr auto count() const noexcept
+        {
+                return this->do_count();
+        }
+
 private:
-        constexpr auto mask(key_type n) const
+        static constexpr auto mask(key_type n)
         {
                 return WordT{1} << n;
         }
 
-        constexpr void set_mask(key_type n)
+        static constexpr auto is_mask(key_type n)
         {
-                this->data_ |= mask(n);
-        }
-
-        constexpr void clear_mask(key_type n)
-        {
-                this->data_ &= ~mask(n);
-        }
-
-        constexpr auto is_mask(key_type n) const -> bool
-        {
-                return (this->data_ & mask(n)) != 0;
+                return mask(n) == 0;
         }
 };
 
-template<int N>
-constexpr auto swap(set<N>& lhs, set<N>& rhs) noexcept
+template<class T, int N>
+constexpr auto swap(bit_set<T, N>& lhs, bit_set<T, N>& rhs) noexcept
 {
         lhs.swap(rhs);
         return;
 }
 
-template<int N>
-constexpr decltype(auto) begin(set<N> const& s) noexcept
+template<class T, int N>
+constexpr decltype(auto) begin(bit_set<T, N> const& s) noexcept
 {
         return s.begin();
 }
 
-template<int N>
-constexpr decltype(auto) end(set<N> const& s) noexcept
+template<class T, int N>
+constexpr decltype(auto) end(bit_set<T, N> const& s) noexcept
 {
         return s.end();
 }
 
-template<int N>
-constexpr decltype(auto) cbegin(set<N> const& s) noexcept
+template<class T, int N>
+constexpr decltype(auto) cbegin(bit_set<T, N> const& s) noexcept
 {
         return s.cbegin();
 }
 
-template<int N>
-constexpr decltype(auto) cend(set<N> const& s) noexcept
+template<class T, int N>
+constexpr decltype(auto) cend(bit_set<T, N> const& s) noexcept
 {
         return s.cend();
 }
