@@ -75,7 +75,7 @@ struct base_iterator
                 --block_;
 
                 for (auto i = storage::block(index_) - 1; i >= 0; --i, --block_) {
-                        mask = *block_;
+                        auto const mask = *block_;
                         if (mask != 0) {
                                 index_ = i * storage::block_size + (storage::block_size - 1 - bit::intrinsic::clz(mask));
                                 return;

@@ -76,11 +76,10 @@ BOOST_AUTO_TEST_CASE(Members)
         BOOST_CHECK(std::is_sorted(x.crbegin(), x.crend(), std::greater<int>()));
         BOOST_CHECK(std::adjacent_find(begin(x), end(x)) == end(x));
 
-        int tr[] = { 0, 1, 64, 127 };
+        int tr[] = { 0, 1, 63, 64, 68, 127 };
         bitset128 b2;
-        std::cout << "Copying into bitset128\n";
         std::copy(std::begin(tr), std::end(tr), std::insert_iterator<bitset128>(b2, b2.end()));
-        std::copy(begin(b2), end(b2), std::ostream_iterator<int>(std::cout, ",")); std::cout << "\n";
+        std::copy(b2.rbegin(), b2.rend(), std::ostream_iterator<int>(std::cout, ",")); std::cout << "\n";
 /*
         BOOST_CHECK((x.find(17) != end(x)) == x.count(17));
         BOOST_CHECK((x.find(18) != end(x)) == x.count(18));

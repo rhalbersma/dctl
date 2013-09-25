@@ -6,7 +6,6 @@
 #include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
 #include <dctl/bit/reference_fwd.hpp>           // bit_reference
 #include <dctl/bit/detail/base_iterator.hpp>    // base_iterator
-#include <iostream>
 
 namespace dctl {
 namespace bit {
@@ -33,16 +32,13 @@ public:
         constexpr explicit bit_iterator(Block const* s) noexcept
         :
                 Base{s, this->find_first()}
-        {
-                std::cout << "explicit bit iterator constructor: " << this->index_ << "\n";
-        }
+        {}
 
         template<class U>
         constexpr bit_iterator(Block const* s, U u) noexcept
         :
                 Base{s, static_cast<int>(u)}
         {
-                std::cout << "bit iterator constructor: " << u << "\n";
                 static_assert(std::is_convertible<U, int>::value, "");
         }
 
@@ -50,9 +46,7 @@ public:
 
         constexpr bit_iterator& operator++() noexcept
         {
-                std::cout << "Incrementing from: " << this->index_ << " to: ";
                 this->find_next();
-                std::cout << this->index_ << "\n";
                 return *this;
         }
 
