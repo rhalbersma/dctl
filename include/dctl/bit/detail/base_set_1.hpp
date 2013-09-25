@@ -83,6 +83,16 @@ struct base_set<T, WordT, 1>
 
         // bitwise algorithms
 
+        constexpr bool do_equal(base_set const& other) const noexcept
+        {
+                return data_ == other.data_;
+        }
+
+        constexpr bool do_lexicographical_compare(base_set const& other) const noexcept
+        {
+                return data_ < other.data_;
+        }
+
         constexpr auto do_none() const noexcept
         {
                 return data_ == 0;
