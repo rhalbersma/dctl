@@ -9,6 +9,7 @@
 #include <dctl/node/side.hpp>
 #include <dctl/utility/int.hpp>
 #include <dctl/utility/range.hpp>               // is_element
+#include <dctl/bit/bit_set.hpp>
 
 namespace dctl {
 namespace board {
@@ -98,11 +99,11 @@ private:
         template<class Predicate /* NOTE: no lambda in constexpr */>
         static constexpr auto copy_if(Predicate pred) noexcept
         {
-                auto result = BitBoard{0};
+                bit::bit_set<int, uint64_t, 1> result;
                 for (auto sq = 0; sq < ExternalGrid::size; ++sq)
                         if (pred(sq))
-                                result ^= BitBoard{1} << square2bit(sq);
-                return result;
+                                result.set(square2bit(sq));
+                return result.data();
         }
 
 public:

@@ -6,39 +6,43 @@
 #include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
 #include <dctl/bit/reference_fwd.hpp>           // bit_reference
 #include <dctl/bit/detail/base_iterator.hpp>    // base_iterator
+#include <iostream>
 
 namespace dctl {
 namespace bit {
 
-template<class T, class WordT, int Nw>
+template<class T, class Block, int Nb>
 class bit_iterator
 :
-        private detail::base_iterator<WordT, Nw>
+        private detail::base_iterator<Block, Nb>
 {
 public:
-        using Base = detail::base_iterator<WordT, Nw>;
+        using Base = detail::base_iterator<Block, Nb>;
         using Base::Base;
 
         using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = T;
         using difference_type   = std::ptrdiff_t;
-        using pointer           = bit_iterator<T, WordT, Nw>;
-        using reference         = bit_reference<T, WordT, Nw>;
+        using pointer           = bit_iterator<T, Block, Nb>;
+        using reference         = bit_reference<T, Block, Nb>;
 
         // structors
 
         bit_iterator() = delete;
 
-        constexpr explicit bit_iterator(WordT const* s) noexcept
+        constexpr explicit bit_iterator(Block const* s) noexcept
         :
-                Base{s, Base::find_first(s)}
-        {}
+                Base{s, this->find_first()}
+        {
+                std::cout << "explicit bit iterator constructor: " << this->index_ << "\n";
+        }
 
         template<class U>
-        constexpr bit_iterator(WordT const* s, U u) noexcept
+        constexpr bit_iterator(Block const* s, U u) noexcept
         :
                 Base{s, static_cast<int>(u)}
         {
+                std::cout << "bit iterator constructor: " << u << "\n";
                 static_assert(std::is_convertible<U, int>::value, "");
         }
 
@@ -46,7 +50,9 @@ public:
 
         constexpr bit_iterator& operator++() noexcept
         {
+                std::cout << "Incrementing from: " << this->index_ << " to: ";
                 this->find_next();
+                std::cout << this->index_ << "\n";
                 return *this;
         }
 
@@ -75,14 +81,14 @@ public:
         constexpr reference operator*()
         {
                 static_assert(std::is_convertible<int, T>::value, "");
-                return {*(this->segment_), static_cast<T>(this->index_)};
+                return {*(this->block_), static_cast<T>(this->index_)};
         }
 
         // predicates
 
         friend constexpr bool operator==(bit_iterator const& L, bit_iterator const& R) noexcept
         {
-                return L.segment_ == R.segment_ && L.index_ == R.index_;
+                return L.block_ == R.block_ && L.index_ == R.index_;
         }
 
         friend constexpr bool operator!=(bit_iterator const& L, bit_iterator const& R) noexcept

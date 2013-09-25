@@ -5,8 +5,8 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class T, class WordT>
-struct base_set<T, WordT, 1>
+template<class T, class Block>
+struct base_set<T, Block, 1>
 {
         // structors
 
@@ -14,24 +14,14 @@ struct base_set<T, WordT, 1>
 
         // element access
 
-        constexpr auto segment_ptr(T /* n */) noexcept
+        constexpr auto block_ptr(T /* n */) noexcept
         {
                 return &data_;
         }
 
-        constexpr auto segment_ptr(T /* n */) const noexcept
+        constexpr auto block_ptr(T /* n */) const noexcept
         {
                 return &data_;
-        }
-
-        constexpr auto& segment(T /* n */) noexcept
-        {
-                return data_;
-        }
-
-        constexpr auto const& segment(T /* n */) const noexcept
-        {
-                return data_;
         }
 
         static constexpr auto index(T n) noexcept
@@ -83,14 +73,14 @@ struct base_set<T, WordT, 1>
 
         // bitwise algorithms
 
-        constexpr bool do_equal(base_set const& other) const noexcept
+        static constexpr auto do_equal(base_set const& lhs, base_set const& rhs) noexcept
         {
-                return data_ == other.data_;
+                return lhs.data_ == rhs.data_;
         }
 
-        constexpr bool do_lexicographical_compare(base_set const& other) const noexcept
+        static constexpr auto do_lexicographical_compare(base_set const& lhs, base_set const& rhs) noexcept
         {
-                return data_ < other.data_;
+                return lhs.data_ < rhs.data_;
         }
 
         constexpr auto do_none() const noexcept
@@ -115,7 +105,7 @@ struct base_set<T, WordT, 1>
 
         // representation
 
-        WordT data_ = { 0 };
+        Block data_ = { 0 };
 };
 
 }       // namespace detail

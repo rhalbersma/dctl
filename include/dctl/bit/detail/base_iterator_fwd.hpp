@@ -4,11 +4,11 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class WordT, int Nw>
+template<class Block, int Nb>
 struct base_iterator;
 
-template<class WordT>
-struct base_iterator<WordT, 1>;
+template<class Block>
+struct base_iterator<Block, 1>;
 
 }       // namespace detail
 }       // namespace bit

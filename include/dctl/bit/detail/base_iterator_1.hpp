@@ -3,27 +3,30 @@
 #include <cstdint>                                      // CHAR_BIT
 #include <dctl/bit/detail/base_iterator_fwd.hpp>        // base_iterator
 #include <dctl/bit/intrinsic.hpp>                       // clz, ctz
+#include <dctl/bit/detail/storage.hpp>                  // storage
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class WordT>
-struct base_iterator<WordT, 1>
+template<class Block>
+struct base_iterator<Block, 1>
 {
-        static constexpr auto Nb = static_cast<int>(CHAR_BIT * sizeof(WordT));
+        using storage = storage<Block, 1>;
+        static constexpr auto N = storage::max_size;
 
-        static constexpr auto find_first(WordT const* s) noexcept
+        constexpr auto find_first() noexcept
         {
-                return (s && *s)? bit::intrinsic::ctz(*s) : Nb;
+                auto mask = *block_;
+                return mask? bit::intrinsic::ctz(mask) : N;
         }
 
         constexpr void find_next() noexcept
         {
-                assert(index_ < Nb);
-                if (Nb <= ++index_) return;
-                auto const mask = *segment_ >> index_;
-                index_ = mask? index_ + bit::intrinsic::ctz(mask) : Nb;
+                assert(index_ < N);
+                if (N <= ++index_) return;
+                auto const mask = *block_ >> index_;
+                index_ = mask? index_ + bit::intrinsic::ctz(mask) : N;
                 assert(-1 < index_);
         }
 
@@ -31,12 +34,12 @@ struct base_iterator<WordT, 1>
         {
                 assert(-1 < index_);
                 if (--index_ <= -1) return;
-                auto const mask = *segment_ << (Nb - 1 - index_);
+                auto const mask = *block_ << (N - 1 - index_);
                 index_ = mask? index_ - bit::intrinsic::clz(mask) : -1;
-                assert(index_ < Nb);
+                assert(index_ < N);
         }
 
-        WordT const* segment_;
+        Block const* block_;
         int index_;
 };
 
