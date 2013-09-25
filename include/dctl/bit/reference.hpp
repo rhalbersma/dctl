@@ -6,16 +6,16 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class WordT, int Nw>
+template<class T, class Block, int Nb>
 class bit_reference
 {
 public:
         // structors
 
         template<class U>
-        constexpr bit_reference(WordT const& s, U u) noexcept
+        constexpr bit_reference(Block const& s, U u) noexcept
         :
-                segment_{s},
+                block_{s},
                 index_{static_cast<T>(u)}
         {
                 static_assert(std::is_convertible<U, T>::value, "");
@@ -32,15 +32,15 @@ public:
                 return index_;
         }
 
-        constexpr auto operator&() const noexcept -> bit_iterator<T, WordT, Nw>
+        constexpr auto operator&() const noexcept -> bit_iterator<T, Block, Nb>
         {
-                return {&segment_, index_};
+                return {&block_, index_};
         }
 
 private:
         // representation
 
-        WordT const& segment_;
+        Block const& block_;
         T index_;
 };
 

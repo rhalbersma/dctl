@@ -8,13 +8,14 @@
 namespace dctl {
 namespace bit {
 
-using bitset = bit_set<int, 64>;
+using bitset64  = bit_set<int, uint64_t, 1>;
+using bitset128 = bit_set<int, uint64_t, 2>;
 
 BOOST_AUTO_TEST_SUITE(BitSet)
 
 BOOST_AUTO_TEST_CASE(DefaultConstructorZeroInitializes)
 {
-        /* constexpr */ bit_set<int, 64> b;
+        /* constexpr */ bitset64 b;
         BOOST_CHECK(b.empty());
         BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
         BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
@@ -27,7 +28,7 @@ BOOST_AUTO_TEST_CASE(DefaultConstructorZeroInitializes)
 BOOST_AUTO_TEST_CASE(IteratorPairConstructorListInitializes)
 {
         constexpr int a[] = { 0, 1, 2, 63 };
-        /* constexpr */ auto b = bit_set<int, 64>{std::begin(a), std::end(a)};
+        /* constexpr */ auto b = bitset64{std::begin(a), std::end(a)};
         BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
         BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(b), end(b), std::begin(a), std::end(a));
@@ -36,7 +37,7 @@ BOOST_AUTO_TEST_CASE(IteratorPairConstructorListInitializes)
 BOOST_AUTO_TEST_CASE(InitializerListConstructorListInitializes)
 {
         constexpr int a[] = { 0, 1, 2, 63 };
-        constexpr auto b = bit_set<int, 64>{ 0, 1, 2, 63 };
+        constexpr auto b = bitset64{ 0, 1, 2, 63 };
         BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
         BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(b), end(b), std::begin(a), std::end(a));
@@ -45,7 +46,7 @@ BOOST_AUTO_TEST_CASE(InitializerListConstructorListInitializes)
 BOOST_AUTO_TEST_CASE(InitializerListAssignmentOperatorListAssigns)
 {
         constexpr int a[] = { 0, 1, 2, 63 };
-        bit_set<int, 64> b;
+        bitset64 b;
         b = { 0, 1, 2, 63 };
         BOOST_CHECK_EQUAL(b.size(), std::distance(begin(b), end(b)));
         BOOST_CHECK_EQUAL(b.size(), std::distance(b.rbegin(), b.rend()));
@@ -58,22 +59,28 @@ BOOST_AUTO_TEST_CASE(Members)
         //std::copy(z.begin(), z.end(), std::ostream_iterator<std::size_t>(std::cout, ",")); std::cout << "\n";
 
         int a[] = { 17, 31, 61 };
-        bitset aa;
+        bitset64 aa;
         aa.insert(std::begin(a), std::end(a));
-        bitset bb(std::begin(a), std::end(a));
-        bitset cc(aa);
+        bitset64 bb(std::begin(a), std::end(a));
+        bitset64 cc(aa);
         BOOST_CHECK(aa == bb);
         BOOST_CHECK(aa == cc);
 
-        std::copy(std::begin(a), std::end(a), std::insert_iterator<bitset>(aa, aa.end()));
+        std::copy(std::begin(a), std::end(a), std::insert_iterator<bitset64>(aa, aa.end()));
 
         // initialize-list
-        bitset x {17, 31, 61};
+        bitset64 x {17, 31, 63};
         std::copy(begin(x), end(x), std::ostream_iterator<int>(std::cout, ",")); std::cout << "\n";
 
         BOOST_CHECK(std::is_sorted(begin(x), end(x)));
         BOOST_CHECK(std::is_sorted(x.crbegin(), x.crend(), std::greater<int>()));
         BOOST_CHECK(std::adjacent_find(begin(x), end(x)) == end(x));
+
+        int tr[] = { 0, 1, 64, 127 };
+        bitset128 b2;
+        std::cout << "Copying into bitset128\n";
+        std::copy(std::begin(tr), std::end(tr), std::insert_iterator<bitset128>(b2, b2.end()));
+        std::copy(begin(b2), end(b2), std::ostream_iterator<int>(std::cout, ",")); std::cout << "\n";
 /*
         BOOST_CHECK((x.find(17) != end(x)) == x.count(17));
         BOOST_CHECK((x.find(18) != end(x)) == x.count(18));
