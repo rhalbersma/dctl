@@ -14,13 +14,13 @@ struct storage
         template<class T>
         static constexpr auto block(T n) noexcept
         {
-                return static_cast<int>(n / max_size);
+                return static_cast<int>(n / block_size);
         }
 
         template<class T>
         static constexpr auto index(T n) noexcept
         {
-                return static_cast<int>(n % max_size);
+                return static_cast<int>(n % block_size);
         }
 };
 
