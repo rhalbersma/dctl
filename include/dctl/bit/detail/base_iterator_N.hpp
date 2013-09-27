@@ -12,15 +12,15 @@ namespace detail {
 template<class Block, int Nb>
 struct base_iterator
 {
-        using storage = detail::storage<Block, Nb>;
-        static constexpr auto N = storage::max_size;
+        using storage = detail::storage<Block>;
+        static constexpr auto N = Nb * storage::size;
 
         constexpr auto find_first() noexcept
         {
                 for (auto i = 0; i < Nb; ++i, ++block_) {
                         auto const mask = *block_;
                         if (mask)
-                                return i * storage::block_size + bit::intrinsic::ctz(mask);
+                                return i * storage::size + bit::intrinsic::ctz(mask);
                 }
                 return N;
         }
@@ -35,7 +35,7 @@ struct base_iterator
 
                 auto const idx = storage::index(index_);
                 if (idx == 0) {
-                        index_ = storage::block(index_) * storage::block_size;
+                        index_ = storage::block(index_) * storage::size;
                         ++block_;
                 }
                 auto const mask = *block_ >> idx;
@@ -48,7 +48,7 @@ struct base_iterator
                 for (auto i = storage::block(index_) + 1; i < Nb; ++i, ++block_) {
                         auto const mask = *block_;
                         if (mask != 0) {
-                                index_ = i * storage::block_size + bit::intrinsic::ctz(mask);
+                                index_ = i * storage::size + bit::intrinsic::ctz(mask);
                                 return;
                         }
                 }
@@ -65,9 +65,9 @@ struct base_iterator
                 }
 
                 auto const idx = storage::index(index_);
-                if (idx == storage::block_size - 1)
+                if (idx == storage::size - 1)
                         --block_;
-                auto const mask = *block_ << (storage::block_size - 1 - idx);
+                auto const mask = *block_ << (storage::size - 1 - idx);
                 if (mask) {
                         index_ -= bit::intrinsic::clz(mask);
                         return;
@@ -77,7 +77,7 @@ struct base_iterator
                 for (auto i = storage::block(index_) - 1; i >= 0; --i, --block_) {
                         auto const mask = *block_;
                         if (mask != 0) {
-                                index_ = i * storage::block_size + (storage::block_size - 1 - bit::intrinsic::clz(mask));
+                                index_ = i * storage::size + (storage::size - 1 - bit::intrinsic::clz(mask));
                                 return;
                         }
                 }

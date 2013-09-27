@@ -10,7 +10,7 @@ namespace detail {
 template<class T, class Block, int Nb>
 struct base_set
 {
-        using storage = detail::storage<Block, Nb>;
+        using storage = detail::storage<Block>;
 
         // structors
 
@@ -82,7 +82,7 @@ struct base_set
                         for (auto i = Nb - 1; i >= d_block; --i)
                                 data_[i] = data_[i - d_block];
                 } else {
-                        auto const r_index = storage::block_size - d_index;
+                        auto const r_index = storage::size - d_index;
 
                         for (auto i = Nb - 1; i > d_block; --i)
                                 data_[i] =
@@ -100,14 +100,14 @@ struct base_set
         {
                 if (n == 0) return;
 
-                auto const d_block = storage::which_block(n);
-                auto const d_index = storage::which_index(n);
+                auto const d_block = storage::block(n);
+                auto const d_index = storage::index(n);
 
                 if (d_index == 0) {
                         for (auto i = 0; i < Nb - d_block; ++i)
                                 data_[i] = data_[i + d_block];
                 } else {
-                        auto const r_index = storage::block_size - d_index;
+                        auto const r_index = storage::size - d_index;
 
                         for (auto i = 0; i < Nb - d_block - 1; ++i)
                                 data_[i] =

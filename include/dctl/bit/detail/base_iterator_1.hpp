@@ -12,8 +12,8 @@ namespace detail {
 template<class Block>
 struct base_iterator<Block, 1>
 {
-        using storage = storage<Block, 1>;
-        static constexpr auto N = storage::max_size;
+        using storage = storage<Block>;
+        static constexpr auto N = storage::size;
 
         constexpr auto find_first() noexcept
         {

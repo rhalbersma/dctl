@@ -5,22 +5,21 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class Block, int Nb>
+template<class Block>
 struct storage
 {
-        static constexpr auto block_size = static_cast<int>(CHAR_BIT * sizeof(Block));
-        static constexpr auto max_size = Nb * block_size;
+        static constexpr auto size = static_cast<int>(CHAR_BIT * sizeof(Block));
 
         template<class T>
         static constexpr auto block(T n) noexcept
         {
-                return static_cast<int>(n / block_size);
+                return static_cast<int>(n / size);
         }
 
         template<class T>
         static constexpr auto index(T n) noexcept
         {
-                return static_cast<int>(n % block_size);
+                return static_cast<int>(n % size);
         }
 };
 
