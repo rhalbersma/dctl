@@ -266,7 +266,7 @@ public:
 
         constexpr auto operator[](key_type n)
         {
-                return reference{this->block(n), Base::index(n)};
+                return reference{this->block(n), n};
         }
 
         constexpr auto operator[](key_type n) const
@@ -276,7 +276,7 @@ public:
 
         constexpr auto test(key_type n) const
         {
-                if (!(0 <= n && n < detail::storage<Block>::size))
+                if (!(0 <= n && n < N))
                         throw std::out_of_range("");
                 return operator[](n);
         }
