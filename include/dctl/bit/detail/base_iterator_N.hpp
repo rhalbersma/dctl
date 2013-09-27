@@ -34,10 +34,8 @@ struct base_iterator
                 }
 
                 auto const idx = storage::index(index_);
-                if (idx == 0) {
-                        index_ = storage::block(index_) * storage::size;
+                if (idx == 0)
                         ++block_;
-                }
                 auto const mask = *block_ >> idx;
                 if (mask) {
                         index_ += bit::intrinsic::ctz(mask);
