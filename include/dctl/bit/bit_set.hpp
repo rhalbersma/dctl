@@ -20,7 +20,7 @@ class bit_set
 {
 public:
         using Base = detail::base_set<T, Block, Nb>;
-        static constexpr auto N = Nb * detail::storage<Block, Nb>::block_size;
+        static constexpr auto N = Nb * detail::storage<Block>::size;
 
         using key_type = T;
         using value_type = T;
@@ -276,7 +276,7 @@ public:
 
         constexpr auto test(key_type n) const
         {
-                if (!(0 <= n && n < Nb))
+                if (!(0 <= n && n < detail::storage<Block>::size))
                         throw std::out_of_range("");
                 return operator[](n);
         }
