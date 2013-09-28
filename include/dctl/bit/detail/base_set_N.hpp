@@ -10,7 +10,7 @@ namespace detail {
 template<class T, class Block, int Nb>
 struct base_set
 {
-        using storage = detail::storage<Block>;
+        using storage = storage<Block>;
 
         // structors
 
@@ -26,11 +26,6 @@ struct base_set
         constexpr auto block_ptr(T n) const noexcept
         {
                 return &data_[0] + storage::block(n);
-        }
-
-        static constexpr auto index(T n ) noexcept
-        {
-                return storage::index(n);
         }
 
         // bitwise operations
@@ -82,12 +77,12 @@ struct base_set
                         for (auto i = Nb - 1; i >= d_block; --i)
                                 data_[i] = data_[i - d_block];
                 } else {
-                        auto const r_index = storage::size - d_index;
+                        auto const c_index = storage::size - d_index;
 
                         for (auto i = Nb - 1; i > d_block; --i)
                                 data_[i] =
                                         data_[i - d_block    ] << d_index |
-                                        data_[i - d_block - 1] >> r_index
+                                        data_[i - d_block - 1] >> c_index
                                 ;
                         data_[d_block] = data_[0] << d_index;
                 }
@@ -107,12 +102,12 @@ struct base_set
                         for (auto i = 0; i < Nb - d_block; ++i)
                                 data_[i] = data_[i + d_block];
                 } else {
-                        auto const r_index = storage::size - d_index;
+                        auto const c_index = storage::size - d_index;
 
                         for (auto i = 0; i < Nb - d_block - 1; ++i)
                                 data_[i] =
                                         data_[i + d_block    ] >> d_index |
-                                        data_[i + d_block + 1] << r_index
+                                        data_[i + d_block + 1] << c_index
                                 ;
                         data_[Nb - d_block - 1] = data_[Nb] >> d_index;
                 }
@@ -134,8 +129,8 @@ struct base_set
         static constexpr auto do_lexicographical_compare(base_set const& lhs, base_set const& rhs) noexcept
         {
                 for (auto i = 0; i < Nb; ++i) {
-                        if (lhs.data_ < rhs.data_) return true;
-                        if (rhs.data_ < lhs.data_) return false;
+                        if (lhs.data_[i] < rhs.data_[i]) return true;
+                        if (rhs.data_[i] < lhs.data_[i]) return false;
                 }
                 return false;
         }
@@ -143,7 +138,7 @@ struct base_set
         constexpr auto do_none() const noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
-                        if (data_ != 0)
+                        if (data_[i] != 0)
                                 return false;
                 return true;
         }
@@ -151,7 +146,7 @@ struct base_set
         constexpr auto do_any() const noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
-                        if (data_ != 0)
+                        if (data_[i] != 0)
                                 return true;
                 return false;
         }
@@ -159,7 +154,7 @@ struct base_set
         constexpr auto do_all() const noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
-                        if (data_ != ~0)
+                        if (data_[i] != ~0)
                                 return false;
                 return true;
         }
