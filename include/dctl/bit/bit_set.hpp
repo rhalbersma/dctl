@@ -20,7 +20,7 @@ class bit_set
 {
 public:
         using Base = detail::base_set<T, Block, Nb>;
-        static constexpr auto N = Nb * detail::storage<Block>::size;
+        static constexpr auto N = Nb * Base::storage::size;
 
         using key_type = T;
         using value_type = T;
@@ -143,18 +143,18 @@ public:
 
         // modifiers
 
-        constexpr auto insert(value_type const& value)
+        constexpr std::pair<iterator, bool> insert(value_type const& value)
         {
                 auto const not_set = !is_mask(value);
                 if (not_set)
                         set(value);
-                return std::make_pair(iterator{this->block_ptr(value), value}, not_set);
+                return { { this->block_ptr(value), value }, not_set };
         }
 
-        constexpr auto insert(const_iterator /*hint*/, value_type const& value)
+        constexpr iterator insert(const_iterator /*hint*/, value_type const& value)
         {
                 set(value);
-                return iterator{this->block_ptr(value), value};
+                return { this->block_ptr(value), value };
         }
 
         template<class InputIt>
@@ -232,7 +232,7 @@ public:
 
         // relational operators
 
-        friend constexpr bool operator==(bit_set const& lhs, bit_set const& rhs) noexcept
+        friend constexpr auto operator==(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
         {
                 return Base::do_equal(lhs, rhs);
         }
@@ -242,7 +242,7 @@ public:
                 return !(lhs == rhs);
         }
 
-        friend constexpr bool operator<(bit_set const& lhs, bit_set const& rhs) noexcept
+        friend constexpr auto operator< (bit_set const& lhs, bit_set const& rhs) noexcept -> bool
         {
                 return Base::do_lexicograhical_compare(lhs, rhs);
         }
@@ -252,7 +252,7 @@ public:
                 return !(lhs < rhs);
         }
 
-        friend constexpr auto operator>(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
+        friend constexpr auto operator> (bit_set const& lhs, bit_set const& rhs) noexcept -> bool
         {
                 return rhs < lhs;
         }
@@ -264,9 +264,9 @@ public:
 
         // bit access
 
-        constexpr auto operator[](key_type n)
+        constexpr reference operator[](key_type n)
         {
-                return reference{this->block(n), n};
+                return { this->block(n), n };
         }
 
         constexpr auto operator[](key_type n) const
@@ -278,27 +278,27 @@ public:
         {
                 if (!(0 <= n && n < N))
                         throw std::out_of_range("");
-                return operator[](n);
+                return is_mask(n);
         }
 
         constexpr auto& reset(key_type n)
         {
-                this->block(n) &= ~mask(n);
+                block(n) &= ~mask(n);
                 return *this;
         }
 
         constexpr auto& set(key_type n, bool value = true)
         {
                 if (value)
-                        this->block(n) |= mask(n);
+                        block(n) |= mask(n);
                 else
-                        this->block(n) &= ~mask(n);
+                        block(n) &= ~mask(n);
                 return *this;
         }
 
         constexpr auto& flip(key_type n)
         {
-                this->block(n) ^= mask(n);
+                block(n) ^= mask(n);
                 return *this;
         }
 
@@ -417,19 +417,19 @@ public:
         }
 
 private:
-        constexpr auto& block(key_type n) noexcept
+        constexpr decltype(auto) block(key_type n) noexcept
         {
                 return *(this->block_ptr(n));
         }
 
-        constexpr auto const& block(key_type n) const noexcept
+        constexpr decltype(auto) block(key_type n) const noexcept
         {
                 return *(this->block_ptr(n));
         }
 
         static constexpr auto mask(key_type n)
         {
-                return Block{1} << Base::index(n);
+                return Block{1} << Base::storage::index(n);
         }
 
         static constexpr auto is_mask(key_type n)

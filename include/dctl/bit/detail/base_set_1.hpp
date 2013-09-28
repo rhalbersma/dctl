@@ -8,6 +8,8 @@ namespace detail {
 template<class T, class Block>
 struct base_set<T, Block, 1>
 {
+        using storage = storage<Block>;
+
         // structors
 
         constexpr base_set() noexcept = default;
