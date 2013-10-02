@@ -38,7 +38,7 @@ CyclicGroup const C_N[] =
 BOOST_AUTO_TEST_CASE(AllGroupAxiomsIsRealized)
 {
         BOOST_CHECK(
-                std::all_of(std::begin(C_N), std::end(C_N), [](CyclicGroup const& g){
+                std::all_of(std::begin(C_N), std::end(C_N), [](auto const& g){
                         return axioms::is_realized(g);
                 })
         );
