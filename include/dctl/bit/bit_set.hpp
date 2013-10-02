@@ -8,7 +8,7 @@
 #include <utility>                              // swap
 #include <dctl/bit/iterator.hpp>                // bit_iterator
 #include <dctl/bit/reference.hpp>               // bit_reference
-#include <dctl/bit/detail/base_set.hpp>
+#include <dctl/bit/detail/base_set.hpp>         // base_set
 
 namespace dctl {
 namespace bit {

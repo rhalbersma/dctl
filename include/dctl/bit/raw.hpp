@@ -1,8 +1,6 @@
 #pragma once
 #include <dctl/utility/int.hpp>         // num_bits
 #include <dctl/bit/intrinsic.hpp>
-#include <dctl/bit/lookup.hpp>
-#include <dctl/bit/loop.hpp>
 #include <dctl/bit/algorithm.hpp>
 
 namespace dctl {
@@ -11,25 +9,13 @@ namespace bit {
 template<class T>
 int front(T b)
 {
-        return intrinsic::front(b);
+        return intrinsic::ctz(b);
 }
 
 template<class T>
 void pop_front(T& b)
 {
         b &= b - T(1);
-}
-
-template<class T>
-int back(T b)
-{
-        return intrinsic::back(b);
-}
-
-template<class T>
-void pop_back(T& b)
-{
-        b ^= T(1) << back(b);
 }
 
 template<class T>
@@ -41,7 +27,7 @@ bool empty(T b)
 template<class T>
 int size(T b)
 {
-        return intrinsic::size(b);
+        return intrinsic::popcount(b);
 }
 
 template<class T>

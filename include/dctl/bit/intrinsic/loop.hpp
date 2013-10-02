@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/assert.hpp>             // BOOST_ASSERT
+#include <cassert>                      // assert
 #include <dctl/utility/int.hpp>         // num_bits
 
 namespace dctl {
@@ -8,41 +8,38 @@ namespace loop {
 namespace detail {
 
 template<class T>
-struct front
+struct ctz
 {
-        int operator()(T b) const
+        int operator()(T x) const
         {
                 for (auto i = 0; i < num_bits<T>::value; ++i)
-                        if (b & (T{1} << i))
+                        if (x & (T{1} << i))
                                 return i;
-                BOOST_ASSERT(false);
                 return num_bits<T>::value;
         }
 };
 
 template<class T>
-struct back
+struct clz
 {
-        int operator()(T b) const
+        int operator()(T x) const
         {
                 for (auto i = num_bits<T>::value - 1; i >= 0; --i)
-                        if (b & (T{1} << i))
-                                return i;
-                BOOST_ASSERT(false);
+                        if (x & (T{1} << i))
+                                return num_bits<T>::value - 1 - i;
                 return num_bits<T>::value;
         }
 };
 
 template<class T>
-struct size
+struct popcount
 {
-        int operator()(T b) const
+        int operator()(T x) const
         {
-                // Kernighan & Ritchie, The C programming language, 2nd Ed.
-                // https://chessprogramming.wikispaces.com/Population+Count
                 auto n = 0;
-                for (; b; b &= b - T{1})
+                for (; x; x &= x - T{1})
                         ++n;
+                assert(0 <= n && n <= num_bits<T>::value);
                 return n;
         }
 };
@@ -50,21 +47,21 @@ struct size
 }       // namespace detail
 
 template<class T>
-int front(T b)
+int ctz(T x)
 {
-        return detail::front<T>()(b);
+        return detail::ctz<T>()(x);
 }
 
 template<class T>
-int back(T b)
+int clz(T x)
 {
-        return detail::back<T>()(b);
+        return detail::clz<T>()(x);
 }
 
 template<class T>
-int size(T b)
+int popcount(T x)
 {
-        return detail::size<T>()(b);
+        return detail::popcount<T>()(x);
 }
 
 }       // namespace loop

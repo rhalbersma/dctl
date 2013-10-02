@@ -3,7 +3,7 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                 // vector
 #include <dctl/bit/bit.hpp>
-#include <dctl/bit/loop.hpp>
+#include <dctl/bit/intrinsic/loop.hpp>
 #include <dctl/utility/int.hpp>                 // num_bits
 
 namespace dctl {
@@ -16,47 +16,47 @@ using UnsignedIntegerTypes = boost::mpl::vector
         uint32_t, uint64_t
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Front, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Ctz, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(i, loop::front(b));
+                BOOST_CHECK_EQUAL(loop::ctz(b), i);
         }
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Back, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Clz, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(i, loop::back(b));
+                BOOST_CHECK_EQUAL(loop::clz(b), num_bits<T>::value - 1 - i);
         }
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Size, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Popcount, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(0, loop::size(zero<T>()));
+        BOOST_CHECK_EQUAL(loop::popcount(zero<T>()), 0);
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(1, loop::size(b));
+                BOOST_CHECK_EQUAL(loop::popcount(b), 1);
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 for (auto j = 0; j < num_bits<T>::value; ++j) {
                         auto const b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j)
-                                BOOST_CHECK_EQUAL(0, loop::size(b));
+                                BOOST_CHECK_EQUAL(loop::popcount(b), 0);
                         else
-                                BOOST_CHECK_EQUAL(2, loop::size(b));
+                                BOOST_CHECK_EQUAL(loop::popcount(b), 2);
                 }
         }
 
         for (auto i = 0; i < num_bits<T>::value; ++i) {
                 auto const b = singlet<T>(i) - 1;
-                BOOST_CHECK_EQUAL(i, loop::size(b));
+                BOOST_CHECK_EQUAL(loop::popcount(b), i);
         }
 
-        BOOST_CHECK_EQUAL(num_bits<T>::value, loop::size(universe<T>()));
+        BOOST_CHECK_EQUAL(loop::popcount(universe<T>()), num_bits<T>::value);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

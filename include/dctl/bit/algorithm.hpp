@@ -32,13 +32,13 @@ constexpr auto set_count(Set const& lhs) noexcept
 template<class Set>
 constexpr auto set_min_element(Set const& lhs) noexcept
 {
-        return *lhs.begin();
+        return lhs.begin();
 }
 
 template<class Set>
-constexpr auto set_max_element(Set const& lhs) noexcept
+/* constexpr */ auto set_max_element(Set const& lhs) noexcept
 {
-        return *lhs.rbegin();
+        return lhs.rbegin().base();
 }
 
 template<class Set>
