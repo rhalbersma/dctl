@@ -11,10 +11,9 @@ template<class T>
 struct ctz;
 
 template<>
-struct ctz<uint32_t>
+struct ctz<unsigned>
 {
-        static_assert(sizeof(uint32_t) == sizeof(unsigned), "");
-        constexpr auto operator()(uint32_t x) const
+        constexpr auto operator()(unsigned x) const
         {
                 assert(x != 0);
                 return __builtin_ctz(x);
@@ -22,10 +21,19 @@ struct ctz<uint32_t>
 };
 
 template<>
-struct ctz<uint64_t>
+struct ctz<unsigned long>
 {
-        static_assert(sizeof(uint64_t) == sizeof(unsigned long long), "");
-        constexpr auto operator()(uint64_t x) const
+        constexpr auto operator()(unsigned long x) const
+        {
+                assert(x != 0);
+                return __builtin_ctzl(x);
+        }
+};
+
+template<>
+struct ctz<unsigned long long>
+{
+        constexpr auto operator()(unsigned long long x) const
         {
                 assert(x != 0);
                 return __builtin_ctzll(x);
@@ -36,10 +44,9 @@ template<class T>
 struct clz;
 
 template<>
-struct clz<uint32_t>
+struct clz<unsigned>
 {
-        static_assert(sizeof(uint32_t) == sizeof(unsigned), "");
-        constexpr auto operator()(uint32_t x) const
+        constexpr auto operator()(unsigned x) const
         {
                 assert(x != 0);
                 return __builtin_clz(x);
@@ -47,10 +54,19 @@ struct clz<uint32_t>
 };
 
 template<>
-struct clz<uint64_t>
+struct clz<unsigned long>
 {
-        static_assert(sizeof(uint64_t) == sizeof(unsigned long long), "");
-        constexpr auto operator()(uint64_t x) const
+        constexpr auto operator()(unsigned long x) const
+        {
+                assert(x != 0);
+                return __builtin_clzl(x);
+        }
+};
+
+template<>
+struct clz<unsigned long long>
+{
+        constexpr auto operator()(unsigned long long x) const
         {
                 assert(x != 0);
                 return __builtin_clzll(x);
@@ -61,20 +77,27 @@ template<class T>
 struct popcount;
 
 template<>
-struct popcount<uint32_t>
+struct popcount<unsigned>
 {
-        static_assert(sizeof(uint32_t) == sizeof(unsigned), "");
-        constexpr auto operator()(uint32_t x) const noexcept
+        constexpr auto operator()(unsigned x) const noexcept
         {
                 return __builtin_popcount(x);
         }
 };
 
 template<>
-struct popcount<uint64_t>
+struct popcount<unsigned long>
 {
-        static_assert(sizeof(uint64_t) == sizeof(unsigned long long), "");
-        constexpr auto operator()(uint64_t x) const noexcept
+        constexpr auto operator()(unsigned long x) const noexcept
+        {
+                return __builtin_popcountl(x);
+        }
+};
+
+template<>
+struct popcount<unsigned long long>
+{
+        constexpr auto operator()(unsigned long long x) const noexcept
         {
                 return __builtin_popcountll(x);
         }
