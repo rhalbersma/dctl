@@ -1,6 +1,6 @@
 #pragma once
+#include <cassert>                      // assert
 #include <cstdint>                      // uint8_t
-#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/utility/int.hpp>         // num_bits, num_blocks
 
 namespace dctl {
@@ -12,31 +12,31 @@ class table
 {
 public:
         template<class T>
-        static int front(T t)
+        static int ctz(T t)
         {
                 for (auto i = 0; i < num_blocks<T, U>::value; ++i)
                         if (auto const b = block(t, i))
-                                return offset(i) + front_[b];
-                BOOST_ASSERT(false);
+                                return index(i) + ctz_[b];
+                assert(false);
                 return 0;
         }
 
         template<class T>
-        static int back(T t)
+        static int clz(T t)
         {
                 for (auto i = num_blocks<T , U>::value - 1; i >= 0; --i)
                         if (auto const b = block(t, i))
-                                return offset(i) + back_[b];
-                BOOST_ASSERT(false);
+                                return index(num_blocks<T, U>::value - 1 - i) + clz_[b];
+                assert(false);
                 return 0;
         }
 
         template<class T>
-        static int size(T t)
+        static int popcount(T t)
         {
                 auto n = 0;
                 for (auto i = 0; i < num_blocks<T, U>::value; ++i)
-                        n += size_[block(t, i)];
+                        n += popcount_[block(t, i)];
                 return n;
         }
 
@@ -46,24 +46,24 @@ private:
         template<class T>
         static U block(T t, int i)
         {
-                return static_cast<U>(t >> offset(i));
+                return static_cast<U>(t >> index(i));
         }
 
-        static int offset(int i)
+        static int index(int i)
         {
                 return i * num_bits<U>::value;
         }
 
         // representation
 
-        static int const front_[];
-        static int const back_[];
-        static int const size_[];
+        static int const ctz_[];
+        static int const clz_[];
+        static int const popcount_[];
 };
 
 template<class U>
-int const table<U>::front_[] = {
-         0,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
+int const table<U>::ctz_[] = {
+         8,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
          4,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
          5,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
          4,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
@@ -82,27 +82,27 @@ int const table<U>::front_[] = {
 };
 
 template<class U>
-int const table<U>::back_[] = {
-         0,  0,  1,  1,  2,  2,  2,  2,  3,  3,  3,  3,  3,  3,  3,  3,
-         4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-         5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,
-         5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,
-         6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,
-         6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,
-         6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,
-         6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,
-         7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,
-         7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,
-         7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,
-         7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,
-         7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,
-         7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,
-         7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,
-         7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
+int const table<U>::clz_[] = {
+         8,  7,  6,  6,  5,  5,  5,  5,  4,  4,  4,  4,  4,  4,  4,  4,
+         3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,
+         2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,
+         2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,
+         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
+         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
+         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
+         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 };
 
 template<class U>
-int const table<U>::size_[] = {
+int const table<U>::popcount_[] = {
          0,  1,  1,  2,  1,  2,  2,  3,  1,  2,  2,  3,  2,  3,  3,  4,
          1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
          1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
@@ -124,21 +124,21 @@ int const table<U>::size_[] = {
 using detail = table<uint8_t>;
 
 template<class T>
-int front(T b)
+int ctz(T b)
 {
-        return detail::front(b);
+        return detail::ctz(b);
 }
 
 template<class T>
-int back(T b)
+int clz(T b)
 {
-        return detail::back(b);
+        return detail::clz(b);
 }
 
 template<class T>
-int size(T b)
+int popcount(T b)
 {
-        return detail::size(b);
+        return detail::popcount(b);
 }
 
 }       // namespace lookup

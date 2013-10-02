@@ -18,28 +18,10 @@ struct num_bits
         std::integral_constant<int, CHAR_BIT * sizeof(T)>
 {};
 
-template<class T, class U>
+template<class U, class T>
 struct num_blocks
 :
-        std::integral_constant<int, sizeof(T) / sizeof(U)>
+        std::integral_constant<int, sizeof(U) / sizeof(T)>
 {};
-
-// primary template
-template<class> struct log2_sizeof;
-
-// specializations for integral types
-template<> struct log2_sizeof<uint8_t> : std::integral_constant<int, 3> {};
-template<> struct log2_sizeof<uint16_t>: std::integral_constant<int, 4> {};
-template<> struct log2_sizeof<uint32_t>: std::integral_constant<int, 5> {};
-template<> struct log2_sizeof<uint64_t>: std::integral_constant<int, 6> {};
-
-// primary template
-template<int> struct exp2_typeof;
-
-// specializations for integral types
-template<> struct exp2_typeof<3>        { using type = uint8_t; };
-template<> struct exp2_typeof<4>        { using type = uint16_t; };
-template<> struct exp2_typeof<5>        { using type = uint32_t; };
-template<> struct exp2_typeof<6>        { using type = uint64_t; };
 
 }       // namespace dctl

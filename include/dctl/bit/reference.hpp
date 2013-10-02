@@ -10,6 +10,8 @@ template<class T, class Block, int Nb>
 class bit_reference
 {
 public:
+        using iterator = bit_iterator<T, Block, Nb>;
+
         // structors
 
         template<class U>
@@ -32,7 +34,7 @@ public:
                 return index_;
         }
 
-        constexpr auto operator&() const noexcept -> bit_iterator<T, Block, Nb>
+        constexpr iterator operator&() const noexcept
         {
                 return {&block_, index_};
         }
