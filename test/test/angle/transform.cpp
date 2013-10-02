@@ -19,7 +19,7 @@ auto const omega = boost::counting_iterator<int>(angle::D360);
 BOOST_AUTO_TEST_CASE(InverseIsIdempotentOnAllAngles)
 {
         BOOST_CHECK(
-                std::all_of(alpha, omega, [](int const& i){
+                std::all_of(alpha, omega, [](auto const& i){
                         return group::IsIdempotent()(std::bind(angle::inverse<int>, _1), i);
                 })
         );
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(InverseIsIdempotentOnAllAngles)
 BOOST_AUTO_TEST_CASE(Rotate180IsIdempotentOnAllAngles)
 {
         BOOST_CHECK(
-                std::all_of(alpha, omega, [](int const& i){
+                std::all_of(alpha, omega, [](auto const& i){
                         return group::IsIdempotent()(std::bind(angle::rotate<int>, _1, D180), i);
                 })
         );
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(Rotate180IsIdempotentOnAllAngles)
 BOOST_AUTO_TEST_CASE(MirrorIsIdempotentOnAllAnglePairs)
 {
         BOOST_CHECK(
-                std::all_of(alpha, omega, [](int const& i){
+                std::all_of(alpha, omega, [](auto const& i){
                         return std::all_of(alpha, omega, [=](int const& j) {
                                 return group::IsIdempotent()(std::bind(angle::mirror<int>, _1, j), i);
                         });

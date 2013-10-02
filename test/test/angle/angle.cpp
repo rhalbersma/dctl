@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(MakeAngleIsAngle)
         auto const omega = boost::counting_iterator<int>( 2 * angle::D360 + 1);
 
         BOOST_CHECK(
-                std::all_of(alpha, omega, [](int const& i){
+                std::all_of(alpha, omega, [](auto const& i){
                         return is_angle(make_angle(i));
                 })
         );
