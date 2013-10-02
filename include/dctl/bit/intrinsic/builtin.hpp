@@ -1,6 +1,5 @@
 #pragma once
 #include <cassert>                      // assert
-#include <cstdint>                      // uint32_t, uint64_t
 
 namespace dctl {
 namespace bit {
@@ -15,7 +14,6 @@ struct ctz<unsigned>
 {
         constexpr auto operator()(unsigned x) const
         {
-                assert(x != 0);
                 return __builtin_ctz(x);
         }
 };
@@ -25,7 +23,6 @@ struct ctz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const
         {
-                assert(x != 0);
                 return __builtin_ctzl(x);
         }
 };
@@ -35,7 +32,6 @@ struct ctz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const
         {
-                assert(x != 0);
                 return __builtin_ctzll(x);
         }
 };
@@ -48,7 +44,6 @@ struct clz<unsigned>
 {
         constexpr auto operator()(unsigned x) const
         {
-                assert(x != 0);
                 return __builtin_clz(x);
         }
 };
@@ -58,7 +53,6 @@ struct clz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const
         {
-                assert(x != 0);
                 return __builtin_clzl(x);
         }
 };
@@ -68,7 +62,6 @@ struct clz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const
         {
-                assert(x != 0);
                 return __builtin_clzll(x);
         }
 };
@@ -108,12 +101,14 @@ struct popcount<unsigned long long>
 template<class T>
 constexpr auto ctz(T x)
 {
+        assert(x != 0);
         return detail::ctz<T>()(x);
 }
 
 template<class T>
 constexpr auto clz(T x)
 {
+        assert(x != 0);
         return detail::clz<T>()(x);
 }
 
