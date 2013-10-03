@@ -9,7 +9,7 @@
 namespace dctl {
 namespace bit {
 
-BOOST_AUTO_TEST_SUITE(BitLoop)
+BOOST_AUTO_TEST_SUITE(BitIntrinsicLoop)
 
 using UnsignedIntegerTypes = boost::mpl::vector
 <
