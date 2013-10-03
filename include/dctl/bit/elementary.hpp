@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/utility/int.hpp>
+#include <limits>                       // digits
 
 namespace dctl {
 namespace bit {
@@ -25,7 +25,7 @@ T singlet(int i)
 template<class T>
 T reverse_singlet(int i)
 {
-        return singlet<T>(num_bits<T>::value - 1 - i);
+        return singlet<T>(std::numeric_limits<T>::digits - 1 - i);
 }
 
 }       // namespace bit

@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // base_set
+#include <dctl/bit/intrinsic.hpp>               // popcount
 
 namespace dctl {
 namespace bit {
@@ -8,8 +9,6 @@ namespace detail {
 template<class T, class Block>
 struct base_set<T, Block, 1>
 {
-        using storage = storage<Block>;
-
         // structors
 
         constexpr base_set() noexcept = default;
@@ -35,12 +34,12 @@ struct base_set<T, Block, 1>
 
         constexpr void do_reset() noexcept
         {
-                data_ = 0;
+                data_ = Block{0};
         }
 
         constexpr void do_set() noexcept
         {
-                data_ = ~0;
+                data_ = ~Block{0};
         }
 
         constexpr void do_flip() noexcept
@@ -87,22 +86,22 @@ struct base_set<T, Block, 1>
 
         constexpr auto do_none() const noexcept
         {
-                return data_ == 0;
+                return data_ == Block{0};
         }
 
         constexpr auto do_any() const noexcept
         {
-                return data_ != 0;
+                return data_ != Block{0};
         }
 
         constexpr auto do_all() const noexcept
         {
-                return data_ == ~0;
+                return data_ == ~Block{0};
         }
 
         constexpr auto do_count() const noexcept
         {
-                return bit::intrinsic::popcount(data_);
+                return intrinsic::popcount(data_);
         }
 
         // representation

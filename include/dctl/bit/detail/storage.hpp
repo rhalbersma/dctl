@@ -1,5 +1,5 @@
 #pragma once
-#include <cstdint>                      // CHAR_BIT
+#include <limits>                       // digits
 
 namespace dctl {
 namespace bit {
@@ -8,18 +8,16 @@ namespace detail {
 template<class Block>
 struct storage
 {
-        static constexpr auto size = static_cast<int>(CHAR_BIT * sizeof(Block));
-
         template<class T>
-        static constexpr auto block(T n) noexcept
+        static constexpr auto block_idx(T n) noexcept
         {
-                return static_cast<int>(n / size);
+                return static_cast<int>(n / std::numeric_limits<Block>::digits);
         }
 
         template<class T>
-        static constexpr auto index(T n) noexcept
+        static constexpr auto shift_idx(T n) noexcept
         {
-                return static_cast<int>(n % size);
+                return static_cast<int>(n % std::numeric_limits<Block>::digits);
         }
 };
 

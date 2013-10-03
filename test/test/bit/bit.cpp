@@ -1,9 +1,9 @@
-#include <cstdint>				// uint8_t, uint16_t, uint32_t, uint64_t
+#include <cstdint>				// uint32_t, uint64_t
+#include <limits>                               // digits
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                 // vector
 #include <dctl/bit/bit.hpp>
-#include <dctl/utility/int.hpp>                 // num_bits
 
 namespace dctl {
 namespace bit {
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, UnsignedIntegerTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, UnsignedIntegerTypes)
 {
-        for (auto i = 0; i < num_bits<T>::value; ++i) {
+        for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
                 auto const b = singlet<T>(i);
                 BOOST_CHECK(!empty(b));
                 BOOST_CHECK( is_single(b));
@@ -43,8 +43,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, UnsignedIntegerTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, UnsignedIntegerTypes)
 {
-        for (auto i = 0; i < num_bits<T>::value; ++i) {
-                for (auto j = 0; j < num_bits<T>::value; ++j) {
+        for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
+                for (auto j = 0; j < std::numeric_limits<T>::digits; ++j) {
                         auto const b = singlet<T>(i) ^ singlet<T>(j);
                         if (i == j) {
                                 BOOST_CHECK(empty(b));
@@ -60,8 +60,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, UnsignedIntegerTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsMultiple, T, UnsignedIntegerTypes)
 {
-        for (auto i = 0; i < num_bits<T>::value; ++i) {
-                for (auto j = 0; j < num_bits<T>::value - i; ++j) {
+        for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
+                for (auto j = 0; j < std::numeric_limits<T>::digits - i; ++j) {
                         auto const b = (singlet<T>(i) - T(1)) << j;
                         switch (i) {
                         case 0:
