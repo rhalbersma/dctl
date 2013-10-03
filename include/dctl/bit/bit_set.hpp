@@ -1,14 +1,15 @@
 #pragma once
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t, size_t
-#include <cstdint>                              // uint64_t, CHAR_BIT
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // distance
+#include <limits>                               // digits
 #include <stdexcept>                            // out_of_range
 #include <utility>                              // swap
 #include <dctl/bit/iterator.hpp>                // bit_iterator
 #include <dctl/bit/reference.hpp>               // bit_reference
 #include <dctl/bit/detail/base_set.hpp>         // base_set
+#include <dctl/bit/detail/storage.hpp>          // storage
 
 namespace dctl {
 namespace bit {
@@ -20,7 +21,7 @@ class bit_set
 {
 public:
         using Base = detail::base_set<T, Block, Nb>;
-        static constexpr auto N = Nb * Base::storage::size;
+        static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
         using key_type = T;
         using value_type = T;
@@ -67,14 +68,14 @@ public:
                 return const_iterator{this->block_ptr(0)};
         }
 
-        constexpr auto end() noexcept
+        constexpr iterator end() noexcept
         {
-                return iterator{this->block_ptr(N), N};
+                return { this->block_ptr(N), N };
         }
 
-        constexpr auto end() const noexcept
+        constexpr const_iterator end() const noexcept
         {
-                return const_iterator{this->block_ptr(N), N};
+                return { this->block_ptr(N), N };
         }
 
         auto rbegin() noexcept
@@ -221,13 +222,13 @@ public:
         constexpr auto find(key_type const& key)
         {
                 auto const found = is_mask(key);
-                return found? iterator{this->block(key), key} : end();
+                return found? iterator{this->block_ptr(key), key} : end();
         }
 
         constexpr auto find(key_type const& key) const
         {
                 auto const found = is_mask(key);
-                return found? const_iterator{this->block(key), key} : cend();
+                return found? const_iterator{this->block_ptr(key), key} : cend();
         }
 
         // relational operators
@@ -266,7 +267,7 @@ public:
 
         constexpr reference operator[](key_type n)
         {
-                return { this->block(n), n };
+                return { block_ref(n), n };
         }
 
         constexpr auto operator[](key_type n) const
@@ -283,22 +284,22 @@ public:
 
         constexpr auto& reset(key_type n)
         {
-                block(n) &= ~mask(n);
+                block_ref(n) &= ~mask(n);
                 return *this;
         }
 
         constexpr auto& set(key_type n, bool value = true)
         {
                 if (value)
-                        block(n) |= mask(n);
+                        block_ref(n) |= mask(n);
                 else
-                        block(n) &= ~mask(n);
+                        block_ref(n) &= ~mask(n);
                 return *this;
         }
 
         constexpr auto& flip(key_type n)
         {
-                block(n) ^= mask(n);
+                block_ref(n) ^= mask(n);
                 return *this;
         }
 
@@ -417,24 +418,24 @@ public:
         }
 
 private:
-        constexpr decltype(auto) block(key_type n) noexcept
+        constexpr decltype(auto) block_ref(key_type n)
         {
                 return *(this->block_ptr(n));
         }
 
-        constexpr decltype(auto) block(key_type n) const noexcept
+        constexpr decltype(auto) block_ref(key_type n) const
         {
                 return *(this->block_ptr(n));
         }
 
         static constexpr auto mask(key_type n)
         {
-                return Block{1} << Base::storage::index(n);
+                return Block{1} << detail::storage<Block>::shift_idx(n);
         }
 
         static constexpr auto is_mask(key_type n)
         {
-                return mask(n) == 0;
+                return mask(n) == Block{0};
         }
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>                      // assert
-#include <cstdint>                      // uint8_t
-#include <dctl/utility/int.hpp>         // num_bits, num_blocks
+#include <limits>                       // digits
+#include <type_traits>                  // integral_constant
 
 namespace dctl {
 namespace bit {
@@ -11,32 +11,39 @@ template<class U>
 class table
 {
 public:
+
         template<class T>
-        static int ctz(T t)
+        struct num_blocks
+        :
+                std::integral_constant<int, sizeof(T) / sizeof(U)>
+        {};
+
+        template<class T>
+        static constexpr auto ctz(T x) noexcept
         {
-                for (auto i = 0; i < num_blocks<T, U>::value; ++i)
-                        if (auto const b = block(t, i))
-                                return index(i) + ctz_[b];
+                for (auto i = 0; i < num_blocks<T>::value; ++i)
+                        if (auto const b = block_mask(x, i))
+                                return block_shift(i) + ctz_[b];
                 assert(false);
                 return 0;
         }
 
         template<class T>
-        static int clz(T t)
+        static constexpr auto clz(T x) noexcept
         {
-                for (auto i = num_blocks<T , U>::value - 1; i >= 0; --i)
-                        if (auto const b = block(t, i))
-                                return index(num_blocks<T, U>::value - 1 - i) + clz_[b];
+                for (auto i = num_blocks<T>::value - 1; i >= 0; --i)
+                        if (auto const b = block_mask(x, i))
+                                return block_shift(num_blocks<T>::value - 1 - i) + clz_[b];
                 assert(false);
                 return 0;
         }
 
         template<class T>
-        static int popcount(T t)
+        static constexpr auto popcount(T x) noexcept
         {
                 auto n = 0;
-                for (auto i = 0; i < num_blocks<T, U>::value; ++i)
-                        n += popcount_[block(t, i)];
+                for (auto i = 0; i < num_blocks<T>::value; ++i)
+                        n += popcount_[block_mask(x, i)];
                 return n;
         }
 
@@ -44,14 +51,14 @@ private:
         // implementation
 
         template<class T>
-        static U block(T t, int i)
+        static constexpr auto block_mask(T x, int i)
         {
-                return static_cast<U>(t >> index(i));
+                return static_cast<U>(x >> block_shift(i));
         }
 
-        static int index(int i)
+        static constexpr auto block_shift(int i) noexcept
         {
-                return i * num_bits<U>::value;
+                return i * std::numeric_limits<U>::digits;
         }
 
         // representation
@@ -121,24 +128,24 @@ int const table<U>::popcount_[] = {
          4,  5,  5,  6,  5,  6,  6,  7,  5,  6,  6,  7,  6,  7,  7,  8
 };
 
-using detail = table<uint8_t>;
+using detail = table<unsigned char>;
 
 template<class T>
-int ctz(T b)
+int ctz(T x)
 {
-        return detail::ctz(b);
+        return detail::ctz(x);
 }
 
 template<class T>
-int clz(T b)
+int clz(T x)
 {
-        return detail::clz(b);
+        return detail::clz(x);
 }
 
 template<class T>
-int popcount(T b)
+int popcount(T x)
 {
-        return detail::popcount(b);
+        return detail::popcount(x);
 }
 
 }       // namespace lookup

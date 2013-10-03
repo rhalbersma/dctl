@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>                      // size_t
+#include <limits>                       // digits
 #include <type_traits>                  // is_integral
 #include <dctl/node/material.hpp>
 
@@ -28,7 +29,7 @@ struct UpperHashBitsExtractor
                 static_assert(std::is_integral<result_type>::value, "Bitwise shift only applicable to integral types.");
                 static_assert(sizeof(result_type) <= sizeof(Index), "Key cannot be of larger type than the hash.");
 
-                return static_cast<result_type>(index >> (num_bits<Index>::value - num_bits<result_type>::value));
+                return static_cast<result_type>(index >> (std::numeric_limits<Index>::digits - std::numeric_limits<result_type>::digits));
         }
 
         template<class Index>
@@ -38,7 +39,7 @@ struct UpperHashBitsExtractor
                 static_assert(std::is_integral<result_type>::value, "Bitwise shift only applicable to integral types.");
                 static_assert(sizeof(result_type) <= sizeof(Index), "Key cannot be of larger type than the hash.");
 
-                return static_cast<result_type>(index >> (num_bits<Index>::value - num_bits<result_type>::value));
+                return static_cast<result_type>(index >> (std::numeric_limits<Index>::digits - std::numeric_limits<result_type>::digits));
         }
 };
 

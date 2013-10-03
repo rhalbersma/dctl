@@ -1,9 +1,9 @@
 #pragma once
 #include <cassert>                                      // assert
-#include <cstdint>                                      // CHAR_BIT
+#include <limits>                                       // digits
 #include <dctl/bit/detail/base_iterator_fwd.hpp>        // base_iterator
-#include <dctl/bit/intrinsic.hpp>                       // clz, ctz
 #include <dctl/bit/detail/storage.hpp>                  // storage
+#include <dctl/bit/intrinsic.hpp>                       // clz, ctz
 
 namespace dctl {
 namespace bit {
@@ -12,15 +12,15 @@ namespace detail {
 template<class Block, int Nb>
 struct base_iterator
 {
-        using storage = detail::storage<Block>;
-        static constexpr auto N = Nb * storage::size;
+        static constexpr auto digits = std::numeric_limits<Block>::digits;
+        static constexpr auto N = Nb * digits;
 
         constexpr auto find_first() noexcept
         {
                 for (auto i = 0; i < Nb; ++i, ++block_) {
                         auto const mask = *block_;
                         if (mask)
-                                return i * storage::size + bit::intrinsic::ctz(mask);
+                                return i * digits + intrinsic::ctz(mask);
                 }
                 return N;
         }
@@ -33,20 +33,20 @@ struct base_iterator
                         return;
                 }
 
-                auto const idx = storage::index(index_);
+                auto const idx = storage<Block>::shift_idx(index_);
                 if (idx == 0)
                         ++block_;
                 auto const mask = *block_ >> idx;
                 if (mask) {
-                        index_ += bit::intrinsic::ctz(mask);
+                        index_ += intrinsic::ctz(mask);
                         return;
                 }
                 ++block_;
 
-                for (auto i = storage::block(index_) + 1; i < Nb; ++i, ++block_) {
+                for (auto i = storage<Block>::block_idx(index_) + 1; i < Nb; ++i, ++block_) {
                         auto const mask = *block_;
                         if (mask != 0) {
-                                index_ = i * storage::size + bit::intrinsic::ctz(mask);
+                                index_ = i * digits + intrinsic::ctz(mask);
                                 return;
                         }
                 }
@@ -62,20 +62,20 @@ struct base_iterator
                         return;
                 }
 
-                auto const idx = storage::index(index_);
-                if (idx == storage::size - 1)
+                auto const idx = storage<Block>::shift_idx(index_);
+                if (idx == digits - 1)
                         --block_;
-                auto const mask = *block_ << (storage::size - 1 - idx);
+                auto const mask = *block_ << (digits - 1 - idx);
                 if (mask) {
-                        index_ -= bit::intrinsic::clz(mask);
+                        index_ -= intrinsic::clz(mask);
                         return;
                 }
                 --block_;
 
-                for (auto i = storage::block(index_) - 1; i >= 0; --i, --block_) {
+                for (auto i = storage<Block>::block_idx(index_) - 1; i >= 0; --i, --block_) {
                         auto const mask = *block_;
                         if (mask != 0) {
-                                index_ = i * storage::size + (storage::size - 1 - bit::intrinsic::clz(mask));
+                                index_ = i * digits + (digits - 1 - intrinsic::clz(mask));
                                 return;
                         }
                 }

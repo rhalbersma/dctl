@@ -1,7 +1,9 @@
 #pragma once
 #include <array>                                // array
+#include <limits>                               // digits
 #include <dctl/bit/detail/base_set_fwd.hpp>     // base_set
 #include <dctl/bit/detail/storage.hpp>          // storage
+#include <dctl/bit/intrinsic.hpp>               // popcount
 
 namespace dctl {
 namespace bit {
@@ -10,8 +12,6 @@ namespace detail {
 template<class T, class Block, int Nb>
 struct base_set
 {
-        using storage = storage<Block>;
-
         // structors
 
         constexpr base_set() noexcept = default;
@@ -20,12 +20,12 @@ struct base_set
 
         constexpr auto block_ptr(T n) noexcept
         {
-                return &data_[0] + storage::block(n);
+                return &data_[0] + storage<Block>::block_idx(n);
         }
 
         constexpr auto block_ptr(T n) const noexcept
         {
-                return &data_[0] + storage::block(n);
+                return &data_[0] + storage<Block>::block_idx(n);
         }
 
         // bitwise operations
@@ -33,13 +33,13 @@ struct base_set
         constexpr void do_reset() noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
-                        data_[i] = 0;
+                        data_[i] = Block{0};
         }
 
         constexpr void do_set() noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
-                        data_[i] = ~0;
+                        data_[i] = ~Block{0};
         }
 
         constexpr void do_flip() noexcept
@@ -70,50 +70,50 @@ struct base_set
         {
                 if (n == 0) return;
 
-                auto const d_block = storage::block(n);
-                auto const d_index = storage::index(n);
+                auto const n_block = storage<Block>::block_idx(n);
+                auto const L_shift = storage<Block>::shift_idx(n);
 
-                if (d_index == 0) {
-                        for (auto i = Nb - 1; i >= d_block; --i)
-                                data_[i] = data_[i - d_block];
+                if (L_shift == 0) {
+                        for (auto i = Nb - 1; i >= n_block; --i)
+                                data_[i] = data_[i - n_block];
                 } else {
-                        auto const c_index = storage::size - d_index;
+                        auto const R_shift = std::numeric_limits<Block>::digits - L_shift;
 
-                        for (auto i = Nb - 1; i > d_block; --i)
+                        for (auto i = Nb - 1; i > n_block; --i)
                                 data_[i] =
-                                        data_[i - d_block    ] << d_index |
-                                        data_[i - d_block - 1] >> c_index
+                                        data_[i - n_block    ] << L_shift |
+                                        data_[i - n_block - 1] >> R_shift
                                 ;
-                        data_[d_block] = data_[0] << d_index;
+                        data_[n_block] = data_[0] << L_shift;
                 }
 
-                for (auto i = d_block - 1; i >= 0; --i)
-                        data_[i] = 0;
+                for (auto i = n_block - 1; i >= 0; --i)
+                        data_[i] = Block{0};
         }
 
         constexpr void do_right_shift(std::size_t n)
         {
                 if (n == 0) return;
 
-                auto const d_block = storage::block(n);
-                auto const d_index = storage::index(n);
+                auto const n_block = storage<Block>::block_idx(n);
+                auto const R_shift = storage<Block>::shift_idx(n);
 
-                if (d_index == 0) {
-                        for (auto i = 0; i < Nb - d_block; ++i)
-                                data_[i] = data_[i + d_block];
+                if (R_shift == 0) {
+                        for (auto i = 0; i < Nb - n_block; ++i)
+                                data_[i] = data_[i + n_block];
                 } else {
-                        auto const c_index = storage::size - d_index;
+                        auto const L_shift = std::numeric_limits<Block>::digits - R_shift;
 
-                        for (auto i = 0; i < Nb - d_block - 1; ++i)
+                        for (auto i = 0; i < Nb - n_block - 1; ++i)
                                 data_[i] =
-                                        data_[i + d_block    ] >> d_index |
-                                        data_[i + d_block + 1] << c_index
+                                        data_[i + n_block    ] >> R_shift |
+                                        data_[i + n_block + 1] << L_shift
                                 ;
-                        data_[Nb - d_block - 1] = data_[Nb] >> d_index;
+                        data_[Nb - n_block - 1] = data_[Nb] >> R_shift;
                 }
 
-                for (auto i = Nb - d_block; i < Nb; ++i)
-                        data_[i] = 0;
+                for (auto i = Nb - n_block; i < Nb; ++i)
+                        data_[i] = Block{0};
         }
 
         // bitwise algorithms
@@ -138,7 +138,7 @@ struct base_set
         constexpr auto do_none() const noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
-                        if (data_[i] != 0)
+                        if (data_[i] != Block{0})
                                 return false;
                 return true;
         }
@@ -146,7 +146,7 @@ struct base_set
         constexpr auto do_any() const noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
-                        if (data_[i] != 0)
+                        if (data_[i] != Block{0})
                                 return true;
                 return false;
         }
@@ -154,7 +154,7 @@ struct base_set
         constexpr auto do_all() const noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
-                        if (data_[i] != ~0)
+                        if (data_[i] != ~Block{0})
                                 return false;
                 return true;
         }
@@ -163,7 +163,7 @@ struct base_set
         {
                 auto sum = 0;
                 for (auto i = 0; i < Nb; ++i)
-                        sum += bit::intrinsic::popcount(data_[i]);
+                        sum += intrinsic::popcount(data_[i]);
                 return sum;
         }
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <cassert>                      // assert
-#include <dctl/utility/int.hpp>         // num_bits
+#include <limits>                       // digits
 
 namespace dctl {
 namespace bit {
@@ -10,36 +10,37 @@ namespace detail {
 template<class T>
 struct ctz
 {
-        int operator()(T x) const
+        constexpr auto operator()(T x) const noexcept
         {
-                for (auto i = 0; i < num_bits<T>::value; ++i)
+
+                for (auto i = 0; i < std::numeric_limits<T>::digits; ++i)
                         if (x & (T{1} << i))
                                 return i;
-                return num_bits<T>::value;
+                return std::numeric_limits<T>::digits;
         }
 };
 
 template<class T>
 struct clz
 {
-        int operator()(T x) const
+        constexpr auto operator()(T x) const noexcept
         {
-                for (auto i = num_bits<T>::value - 1; i >= 0; --i)
+                for (auto i = std::numeric_limits<T>::digits - 1; i >= 0; --i)
                         if (x & (T{1} << i))
-                                return num_bits<T>::value - 1 - i;
-                return num_bits<T>::value;
+                                return std::numeric_limits<T>::digits - 1 - i;
+                return std::numeric_limits<T>::digits;;
         }
 };
 
 template<class T>
 struct popcount
 {
-        int operator()(T x) const
+        constexpr auto operator()(T x) const noexcept
         {
                 auto n = 0;
                 for (; x; x &= x - T{1})
                         ++n;
-                assert(0 <= n && n <= num_bits<T>::value);
+                assert(0 <= n && n <= std::numeric_limits<T>::digits);
                 return n;
         }
 };
@@ -47,19 +48,19 @@ struct popcount
 }       // namespace detail
 
 template<class T>
-int ctz(T x)
+constexpr auto ctz(T x) noexcept
 {
         return detail::ctz<T>()(x);
 }
 
 template<class T>
-int clz(T x)
+constexpr auto clz(T x) noexcept
 {
         return detail::clz<T>()(x);
 }
 
 template<class T>
-int popcount(T x)
+constexpr auto popcount(T x) noexcept
 {
         return detail::popcount<T>()(x);
 }

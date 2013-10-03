@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include <dctl/angle/degrees.hpp>
 #include <dctl/grid/coordinates.hpp>

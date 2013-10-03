@@ -1,6 +1,7 @@
 #pragma once
+#include <cstdint>                      // uint64_t
 #include <dctl/bit/bit.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>         // BitBoard
 
 namespace dctl {
 namespace zobrist {
