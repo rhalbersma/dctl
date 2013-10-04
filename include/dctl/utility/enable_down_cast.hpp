@@ -1,6 +1,5 @@
 #pragma once
 #include <type_traits>                          // is_base_of
-#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 
 namespace dctl {
 
@@ -16,7 +15,7 @@ public:
         Derived const* self() const
         {
                 // casting "down" the inheritance hierarchy
-                BOOST_MPL_ASSERT(( std::is_base_of<Base, Derived> ));
+                static_assert(std::is_base_of<Base, Derived>::value, "");
                 return static_cast<Derived const*>(this);
         }
 
