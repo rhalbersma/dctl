@@ -7,6 +7,7 @@
 #include <dctl/angle/traits.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/algorithm.hpp>
+#include <dctl/bit/bitboard.hpp>
 #include <dctl/board/iterator.hpp>
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
@@ -17,8 +18,8 @@
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/successor/value.hpp>
-#include <dctl/utility/int.hpp>
 #include <dctl/utility/total_order.hpp>
+#include <dctl/bit/bitboard.hpp>        // BitBoard, BitIndex
 
 namespace dctl {
 namespace successor {
@@ -138,41 +139,41 @@ public:
         // queries
 
         template<int Direction>
-        BitBoard targets_with_king() const
+        auto targets_with_king() const
         {
                 return remaining_targets<Direction>() & Prev<Board, Direction>()(path());
         }
 
         template<int Direction>
-        BitBoard targets_with_pawn() const
+        auto targets_with_pawn() const
         {
                 return remaining_targets_ & Prev<Board, Direction>()(path());
         }
 
-        BitBoard path() const
+        auto path() const
         {
                 return not_occupied_;
         }
 
         template<int Direction>
-        BitBoard path() const
+        auto path() const
         {
                 return path() & Board::jump_start(Direction);
         }
 
-        bool is_king(BitIndex target_sq) const
+        auto is_king(BitIndex target_sq) const
         {
                 return bit::is_element(target_sq, king_targets_);
         }
 
-        bool greater_equal() const
+        auto greater_equal() const
         {
                 BOOST_MPL_ASSERT((rules::is_precedence<Rules>));
                 BOOST_ASSERT(is_totally_ordered(best_, current_));
                 return current_ >= best_;
         }
 
-        bool not_equal_to() const
+        auto not_equal_to() const
         {
                 BOOST_MPL_ASSERT((rules::is_precedence<Rules>));
                 BOOST_ASSERT(greater_equal());
@@ -180,17 +181,17 @@ public:
         }
 
         template<class Sequence>
-        bool is_potential_duplicate(Sequence const& moves) const
+        auto is_potential_duplicate(Sequence const& moves) const
         {
                 return !moves.empty() && is_large();
         }
 
-        bool is_large() const
+        auto is_large() const
         {
                 return size() >= rules::large_jump<Rules>::value;
         }
 
-        bool is_promotion() const
+        auto is_promotion() const
         {
                 BOOST_MPL_ASSERT((std::is_same<typename rules::phase::promotion<Rules>::type, rules::phase::en_passant>));
                 return current_.is_promotion();
@@ -287,7 +288,7 @@ private:
 
         // queries
 
-        bool invariant() const
+        auto invariant() const
         {
                 return (
                         bit::raw_set_includes(initial_targets_, remaining_targets_) &&
@@ -296,7 +297,7 @@ private:
         }
 
         template<int Direction>
-        BitBoard remaining_targets() const
+        auto remaining_targets() const
         {
         	// tag dispatching based on direction and king jump orthogonality
                 return remaining_targets_dispatch(
@@ -312,73 +313,73 @@ private:
         }
 
         // overload for diagonal direction or king jump
-        BitBoard remaining_targets_dispatch(std::false_type) const
+        auto remaining_targets_dispatch(std::false_type) const
         {
                 return remaining_targets_;
         }
 
         // overload for orthogonal direction and king jump
-        BitBoard remaining_targets_dispatch(std::true_type) const
+        auto remaining_targets_dispatch(std::true_type) const
         {
                 return remaining_targets_ & king_targets_;
         }
 
-        int size() const
+        auto size() const
         {
                 // tag dispatching on majority capture precedence
                 return size_dispatch(rules::is_precedence<Rules>());
         }
 
         // overload for no majority capture precedence
-        int size_dispatch(std::false_type) const
+        auto size_dispatch(std::false_type) const
         {
                 return bit::size(captured_pieces());
         }
 
         // overload for majority capture precedence
-        int size_dispatch(std::true_type) const
+        auto size_dispatch(std::true_type) const
         {
                 return current_.size();
         }
 
         // overload for pawn jumps without promotion
         template<bool Color>
-        BitBoard promotion(BitIndex dest_sq, with::pawn) const
+        auto promotion(BitIndex dest_sq, with::pawn) const
         {
                 return promotion_sq<Color, Board>(dest_sq);
         }
 
         // overload for pawn jumps with an en-passant promotion
         template<bool Color>
-        BitBoard promotion(BitIndex dest_sq, with::king) const
+        auto promotion(BitIndex dest_sq, with::king) const
         {
                 return dest_sq;
         }
 
-        BitBoard captured_kings(with::pawn) const
+        auto captured_kings(with::pawn) const
         {
                 // tag dispatching on whether pawns can capture kings
                 return captured_kings_dispatch(rules::can_jump<Rules, pieces::pawn, pieces::king>());
         }
 
         // overload for pawns that can capture kings
-        BitBoard captured_kings_dispatch(std::true_type) const
+        auto captured_kings_dispatch(std::true_type) const
         {
                 return captured_kings(with::king());
         }
 
         // overload for pawns that cannot capture kings
-        BitBoard captured_kings_dispatch(std::false_type) const
+        auto captured_kings_dispatch(std::false_type) const
         {
                 return BitBoard(0);
         }
 
-        BitBoard captured_kings(with::king) const
+        auto captured_kings(with::king) const
         {
                 return captured_pieces() & king_targets_;
         }
 
-        BitBoard captured_pieces() const
+        auto captured_pieces() const
         {
                 return initial_targets_ ^ remaining_targets_;
         }

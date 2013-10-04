@@ -9,7 +9,6 @@
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>
 #include <dctl/node/promotion.hpp>
-#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace successor {
@@ -44,21 +43,23 @@ public:
 
         // function call operators
 
-        void operator()(BitBoard active_pawns) const
+        template<class Set>
+        void operator()(Set const& active_pawns) const
         {
                 if (active_pawns)
                         branch(active_pawns);
         }
 
 private:
-        void branch(BitBoard active_pawns) const
+        template<class Set>
+        void branch(Set const& active_pawns) const
         {
                 copy_if< Compass::left_up  >(active_pawns);
                 copy_if< Compass::right_up >(active_pawns);
         }
 
-        template<int Direction>
-        void copy_if(BitBoard active_pawns) const
+        template<int Direction, class Set>
+        void copy_if(Set const& active_pawns) const
         {
                 transform<Direction>(
                         bit::set_intersection(
@@ -68,8 +69,8 @@ private:
                 );
         }
 
-        template<int Direction>
-        void transform(BitBoard movers) const
+        template<int Direction, class Set>
+        void transform(Set movers) const
         {
                 for (; movers; bit::pop_front(movers)) {
                         auto const from_sq = bit::minimal_element(movers);

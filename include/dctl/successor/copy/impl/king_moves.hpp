@@ -10,7 +10,7 @@
 #include <dctl/board/iterator.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/bit/bitboard.hpp>                        // BitIndex
 
 namespace dctl {
 namespace successor {
@@ -47,13 +47,15 @@ public:
 
         // function call operators
 
-        void operator()(BitBoard active_kings) const
+        template<class Set>
+        void operator()(Set const& active_kings) const
         {
                 serialize(active_kings);
         }
 
 private:
-        void serialize(BitBoard active_kings) const
+        template<class Set>
+        void serialize(Set active_kings) const
         {
                 while (active_kings) {
                         branch(bit::minimal_element(active_kings));

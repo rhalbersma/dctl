@@ -3,7 +3,7 @@
 #include <dctl/successor/copy/impl/pawn_jumps.hpp>      // copy (pawn jumps specialization)
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
-#include <dctl/pieces/pawn.hpp>             // pawn
+#include <dctl/pieces/pawn.hpp>                         // pawn
 
 namespace dctl {
 namespace successor {

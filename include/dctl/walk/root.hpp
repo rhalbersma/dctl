@@ -12,7 +12,7 @@
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/successor/count.hpp>
 #include <dctl/successor/copy.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>         // NodeCount
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/timer.hpp>
 

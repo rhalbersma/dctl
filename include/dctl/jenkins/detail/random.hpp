@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>                      // uint64_t
-#include <dctl/utility/int.hpp>         // BitBoard
+#include <dctl/bit/bitboard.hpp>        // BitBoard
 
 namespace dctl {
 namespace jenkins {

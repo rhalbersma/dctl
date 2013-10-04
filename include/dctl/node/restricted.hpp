@@ -1,7 +1,8 @@
 #pragma once
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/bit/bit.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/bit/bitboard.hpp>        // BitBoard
+#include <dctl/utility/int.hpp>         // PlyCount
 
 namespace dctl {
 
@@ -46,12 +47,12 @@ public:
 
         // queries
 
-        BitBoard king() const
+        auto king() const
         {
                 return king_;
         }
 
-        PlyCount moves() const
+        auto moves() const
         {
                 return moves_;
         }
@@ -77,7 +78,7 @@ using Restricted = KingMoves[2];
 
 // predicates
 template<class Rules>
-bool is_max(PlyCount moves)
+auto is_max(PlyCount moves)
 {
         return (moves == Rules::max_same_king_moves::value);
 }

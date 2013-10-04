@@ -6,8 +6,8 @@
 #include <dctl/bit/bit.hpp>             // is_subset
 #include <dctl/node/i_pieces.hpp>
 #include <dctl/node/side.hpp>
-#include <dctl/utility/int.hpp>
 #include <dctl/bit/algorithm.hpp>
+#include <dctl/bit/bitboard.hpp>        // BitBoard
 
 namespace dctl {
 
@@ -89,37 +89,37 @@ private:
         // queries
 
         // black or white pawns
-        T do_pawns(bool color) const
+        auto do_pawns(bool color) const
         {
                 return do_pieces(color) & ~do_kings();
         }
 
         // black or white kings
-        T do_kings(bool color) const
+        auto do_kings(bool color) const
         {
                 return do_pieces(color) & do_kings();
         }
 
         // black or white pieces
-        T do_pieces(bool color) const
+        auto do_pieces(bool color) const
         {
                 return pieces_[color];
         }
 
         // black and white pawns
-        T do_pawns() const
+        auto do_pawns() const
         {
                 return do_pieces() & ~do_kings();
         }
 
         // black and white kings
-        T do_kings() const
+        auto do_kings() const
         {
                 return kings_;
         }
 
         // black and white pieces
-        T do_pieces() const
+        auto do_pieces() const
         {
                 return do_pieces(Side::black) ^ do_pieces(Side::white);
         }

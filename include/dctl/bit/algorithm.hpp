@@ -42,9 +42,9 @@ template<class Set>
 }
 
 template<class Set>
-constexpr auto set_minmax_element(Set const& lhs) noexcept
+/* constexpr */ auto set_minmax_element(Set const& lhs) noexcept
 {
-        return std::make_pair(set_min_element(lhs, set_max_element(lhs)));
+        return std::make_pair(set_min_element(lhs), set_max_element(lhs));
 }
 
 template<class Set>

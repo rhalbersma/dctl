@@ -24,7 +24,7 @@
 
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/utility/ply.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>         // PlyCount
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/timer.hpp>

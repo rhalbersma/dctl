@@ -9,7 +9,6 @@
 #include <vector>                       // vector
 #include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/hash/index_extractor.hpp>
-#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace hash {

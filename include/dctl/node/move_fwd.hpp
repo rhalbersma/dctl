@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/utility/int.hpp>
+#include <dctl/bit/bitboard.hpp>        // BitBoard
 
 namespace dctl {
 

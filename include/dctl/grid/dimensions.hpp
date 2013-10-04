@@ -14,13 +14,13 @@ public:
         : height_(h), width_(w), parity_(p) {}
 
         constexpr auto height() const noexcept { return height_; }
-        constexpr auto width()  const noexcept { return width_ ; }
+        constexpr auto width () const noexcept { return width_ ; }
         constexpr auto parity() const noexcept { return parity_; }
 
-        friend auto operator==(DimensionsObject const& L, DimensionsObject const& R) noexcept
+        friend /* constexpr */ auto operator==(DimensionsObject const& L, DimensionsObject const& R) noexcept
         { return std::tie(L.height_, L.width_, L.parity_) == std::tie(R.height_, R.width_, R.parity_); }
 
-        friend auto operator!=(DimensionsObject const& L, DimensionsObject const& R) noexcept
+        friend /* constexpr */ auto operator!=(DimensionsObject const& L, DimensionsObject const& R) noexcept
         { return !(L == R); }
 
 private:

@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>         // NodeCount
 
 namespace dctl {
 namespace walk {
