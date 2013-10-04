@@ -5,6 +5,7 @@
 namespace dctl {
 namespace bit {
 
+// *set.begin()
 template<class T>
 int front(T b)
 {
@@ -17,12 +18,14 @@ void pop_front(T& b)
         b &= b - T{1};
 }
 
+// set.empty()
 template<class T>
 bool empty(T b)
 {
         return b == T{0};
 }
 
+// set.size()
 template<class T>
 int size(T b)
 {

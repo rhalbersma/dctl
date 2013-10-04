@@ -6,21 +6,33 @@ namespace dctl {
 namespace bit {
 
 template<class Set>
-constexpr auto set_none_of(Set const& lhs) noexcept
+constexpr auto set_none(Set const& lhs) noexcept
 {
         return lhs.none();
 }
 
 template<class Set>
-constexpr auto set_any_of(Set const& lhs) noexcept
+constexpr auto set_any(Set const& lhs) noexcept
 {
         return lhs.any();
 }
 
 template<class Set>
-constexpr auto set_all_of(Set const& lhs) noexcept
+constexpr auto set_all(Set const& lhs) noexcept
 {
         return lhs.all();
+}
+
+template<class Set>
+constexpr auto set_count_equal_to(Set const& lhs, std::size_t n) noexcept
+{
+        return lhs.count_equal_to(n);
+}
+
+template<class Set>
+constexpr auto set_count_less(Set const& lhs, std::size_t n) noexcept
+{
+        return lhs.count_less(n);
 }
 
 template<class Set>
