@@ -6,27 +6,28 @@
 namespace dctl {
 namespace bit {
 
-// 2 or more bits set to 1
+// !set_count_less(2)
 template<class T>
 bool is_multiple(T b)
 {
         return !empty(first::not_equal_to(b));
 }
 
+// set[i] == true
 template<class Iterator, class Board>
 bool is_element(Iterator it, Board b)
 {
         return !empty(it & b);
 }
 
-// 1 bit set to 1
+// set_count_equal_to(1)
 template<class T>
 bool is_single(T b)
 {
         return !(empty(b) || is_multiple(b));
 }
 
-// 2 bits set to 1
+// set_count_equal_to(2)
 template<class T>
 bool is_double(T b)
 {

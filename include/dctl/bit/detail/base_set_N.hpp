@@ -159,6 +159,28 @@ struct base_set
                 return true;
         }
 
+        constexpr auto do_count_equal_to(std::size_t n) const noexcept
+        {
+                auto sum = 0;
+                for (auto i = 0; i < Nb; ++i) {
+                        sum += intrinsic::popcount(data_[i]);
+                        if (sum > n)
+                                return false;
+                }
+                return sum == n;
+        }
+
+        constexpr auto do_count_less(std::size_t n) const noexcept
+        {
+                auto sum = 0;
+                for (auto i = 0; i < Nb; ++i) {
+                        sum += intrinsic::popcount(data_[i]);
+                        if (sum >= n)
+                                return false;
+                }
+                return true;
+        }
+
         constexpr auto do_count() const noexcept
         {
                 auto sum = 0;

@@ -412,6 +412,16 @@ public:
                 return this->do_all();
         }
 
+        constexpr auto count_equal_to(std::size_t n) const noexcept
+        {
+                return this->do_count_equal_to(n);
+        }
+
+        constexpr auto count_less(std::size_t n) const noexcept
+        {
+                return this->do_count_less(n);
+        }
+
         constexpr auto count() const noexcept
         {
                 return this->do_count();

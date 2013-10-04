@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>                              // size_t
 #include <dctl/bit/detail/base_set_fwd.hpp>     // base_set
 #include <dctl/bit/intrinsic.hpp>               // popcount
 
@@ -97,6 +98,16 @@ struct base_set<T, Block, 1>
         constexpr auto do_all() const noexcept
         {
                 return data_ == ~Block{0};
+        }
+
+        constexpr auto do_count_equal_to(std::size_t n) const noexcept
+        {
+                return do_count() == n;
+        }
+
+        constexpr auto do_count_less(std::size_t n) const noexcept
+        {
+                return do_count() < n;
         }
 
         constexpr auto do_count() const noexcept
