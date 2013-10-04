@@ -9,7 +9,6 @@
 #include <dctl/board/patterns.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace successor {
@@ -40,20 +39,23 @@ public:
 
         // function call operators
 
-        bool operator()(BitBoard active_kings) const
+        template<class Set>
+        bool operator()(Set const& active_kings) const
         {
                 return active_kings? branch(active_kings) : false;
         }
 
 private:
-        bool branch(BitBoard active_kings) const
+        template<class Set>
+        bool branch(Set const& active_kings) const
         {
                 // tag dispatching on king jump directions
                 return branch_dispatch(active_kings, rules::directions::king_jump<Rules>());
         }
 
         // overload for kings that jump in the 8 diagonal and orthogonal directions
-        bool branch_dispatch(BitBoard active_kings, rules::directions::all) const
+        template<class Set>
+        bool branch_dispatch(Set const& active_kings, rules::directions::all) const
         {
                 return (
                         branch_dispatch(active_kings, rules::directions::diag()) ||
@@ -62,7 +64,8 @@ private:
         }
 
         // overload for kings that jump in the 4 diagonal directions
-        bool branch_dispatch(BitBoard active_kings, rules::directions::diag) const
+        template<class Set>
+        bool branch_dispatch(Set const& active_kings, rules::directions::diag) const
         {
                 return (
                         parallelize< Compass::left_up    >(active_kings) ||
@@ -73,7 +76,8 @@ private:
         }
 
         // overload for kings that jump in the 4 orthogonal directions
-        bool branch_dispatch(BitBoard active_kings, rules::directions::orth) const
+        template<class Set>
+        bool branch_dispatch(Set const& active_kings, rules::directions::orth) const
         {
                 return (
                         parallelize< Compass::left  >(active_kings) ||
@@ -83,8 +87,8 @@ private:
                 );
         }
 
-        template<int Direction>
-        bool parallelize(BitBoard active_kings) const
+        template<int Direction, class Set>
+        bool parallelize(Set const& active_kings) const
         {
                 return !bit::empty(
                         Sandwich<Board, Direction, Range>()(active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path())

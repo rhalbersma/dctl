@@ -17,7 +17,7 @@ void copy(Position const& p, Sequence& moves)
 }
 
 template<bool Color, class Pieces, class Select, class Position>
-stack_vector<Move> copy(Position const& p, Arena<Move>& mar)
+auto copy(Position const& p, Arena<Move>& mar)
 {
         Alloc<Move> mal(mar);
         stack_vector<Move> moves(mal);
@@ -30,7 +30,7 @@ stack_vector<Move> copy(Position const& p, Arena<Move>& mar)
 }
 
 template<class Pieces, class Select, class Position>
-stack_vector<Move> copy(Position const& p, Arena<Move>& mar)
+auto copy(Position const& p, Arena<Move>& mar)
 {
         return (p.to_move() == Side::black)?
                 copy<Side::black, Pieces, Select>(p, mar) :
@@ -39,13 +39,13 @@ stack_vector<Move> copy(Position const& p, Arena<Move>& mar)
 }
 
 template<class Position>
-stack_vector<Move> copy(Position const& p, Arena<Move>& mar)
+auto copy(Position const& p, Arena<Move>& mar)
 {
         return copy<pieces::all, select::legal>(p, mar);
 }
 
 template<class Position, class Move>
-Position make_copy(Position const& p, Move const& m)
+auto make_copy(Position const& p, Move const& m)
 {
         auto q = p;
         q.attach(p);

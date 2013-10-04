@@ -9,7 +9,6 @@
 #include <dctl/board/patterns.hpp>
 #include <dctl/node/targets.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace successor {
@@ -40,20 +39,23 @@ public:
 
         // function call operators
 
-        bool operator()(BitBoard active_pawns) const
+        template<class Set>
+        bool operator()(Set const& active_pawns) const
         {
                 return active_pawns? branch(active_pawns) : false;
         }
 
 private:
-        bool branch(BitBoard active_pawns) const
+        template<class Set>
+        bool branch(Set const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
                 return branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>());
         }
 
         // overload for pawns that jump in the 8 diagonal and orthogonal directions
-        bool branch_dispatch(BitBoard active_pawns, rules::directions::all) const
+        template<class Set>
+        bool branch_dispatch(Set const& active_pawns, rules::directions::all) const
         {
                 return (
                         branch_dispatch(active_pawns, rules::directions::diag()) ||
@@ -62,7 +64,8 @@ private:
         }
 
         // overload for pawns that jump in the 4 diagonal directions
-        bool branch_dispatch(BitBoard active_pawns, rules::directions::diag) const
+        template<class Set>
+        bool branch_dispatch(Set const& active_pawns, rules::directions::diag) const
         {
                 return (
                         branch_dispatch(active_pawns, rules::directions::up  ()) ||
@@ -71,7 +74,8 @@ private:
         }
 
         // overload for pawns that jump in the 2 forward diagonal directions
-        bool branch_dispatch(BitBoard active_pawns, rules::directions::up) const
+        template<class Set>
+        bool branch_dispatch(Set const& active_pawns, rules::directions::up) const
         {
                 return (
                         parallelize< Compass::left_up  >(active_pawns) ||
@@ -80,7 +84,8 @@ private:
         }
 
         // overload for pawns that jump in the 2 backward diagonal directions
-        bool branch_dispatch(BitBoard active_pawns, rules::directions::down) const
+        template<class Set>
+        bool branch_dispatch(Set const& active_pawns, rules::directions::down) const
         {
                 return (
                         parallelize< Compass::left_down  >(active_pawns) ||
@@ -89,7 +94,8 @@ private:
         }
 
         // overload for pawns that jump in the 4 orthogonal directions
-        bool branch_dispatch(BitBoard active_pawns, rules::directions::orth) const
+        template<class Set>
+        bool branch_dispatch(Set const& active_pawns, rules::directions::orth) const
         {
                 return (
                         parallelize< Compass::left  >(active_pawns) ||
@@ -99,8 +105,8 @@ private:
                 );
         }
 
-        template<int Direction>
-        bool parallelize(BitBoard active_pawns) const
+        template<int Direction, class Set>
+        bool parallelize(Set const& active_pawns) const
         {
                 return !bit::empty(
                         Sandwich<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.template targets_with_pawn<Direction>(), propagate_.path())

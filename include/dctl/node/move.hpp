@@ -7,7 +7,6 @@
 #include <dctl/node/i_pieces.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
 #include <dctl/bit/algorithm.hpp>
 
 namespace dctl {

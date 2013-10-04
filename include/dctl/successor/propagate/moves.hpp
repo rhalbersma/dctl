@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/moves.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/bit/bitboard.hpp>                // BitBoard
 
 namespace dctl {
 namespace successor {

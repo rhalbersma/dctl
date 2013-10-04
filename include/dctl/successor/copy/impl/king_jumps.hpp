@@ -13,7 +13,7 @@
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Next
 #include <dctl/rules/traits.hpp>                        // traits
-#include <dctl/utility/int.hpp>                         // BitBoard, BitIndex
+#include <dctl/bit/bitboard.hpp>                        // BitIndex
 #include <dctl/utility/algorithm.hpp>
 
 namespace dctl {
@@ -51,7 +51,8 @@ public:
 
         // function call operators
 
-        void operator()(BitBoard active_kings) const
+        template<class Set>
+        void operator()(Set const& active_kings) const
         {
                 // tag dispatching on relative king jump precedence
                 if (active_kings)
@@ -67,20 +68,23 @@ public:
 
 private:
         // overload for no relative king jump precedence
-        void select_dispatch(BitBoard active_kings, std::false_type) const
+        template<class Set>
+        void select_dispatch(Set const& active_kings, std::false_type) const
         {
                 serialize(active_kings);
         }
 
         // overload for relative king jump precedence
-        void select_dispatch(BitBoard active_kings, std::true_type) const
+        template<class Set>
+        void select_dispatch(Set const& active_kings, std::true_type) const
         {
                 capture_.toggle_with_king();
                 serialize(active_kings);
                 capture_.toggle_with_king();
         }
 
-        void serialize(BitBoard active_kings) const
+        template<class Set>
+        void serialize(Set active_kings) const
         {
                 BOOST_ASSERT(!bit::empty(active_kings));
                 do {
@@ -283,23 +287,23 @@ private:
                 return jump<Direction>(jumper);
         }
 
-        template<int Direction>
-        void slide(BitIndex& jumper, BitBoard path) const
+        template<int Direction, class Set>
+        void slide(BitIndex& jumper, Set const& path) const
         {
                 // tag dispatching on king range
                 slide_dispatch<Direction>(jumper, path, rules::range::scan<Rules>());
         }
 
         // overload for short ranged kings
-        template<int Direction>
-        void slide_dispatch(BitIndex& jumper, BitBoard /* path */, rules::range::distance_1) const
+        template<int Direction, class Set>
+        void slide_dispatch(BitIndex& jumper, Set const& /* path */, rules::range::distance_1) const
         {
                 Increment<Board, Direction>()(jumper);
         }
 
         // overload for long ranged kings
-        template<int Direction>
-        void slide_dispatch(BitIndex& jumper, BitBoard path, rules::range::distance_N) const
+        template<int Direction, class Set>
+        void slide_dispatch(BitIndex& jumper, Set const& path, rules::range::distance_N) const
         {
                 do Increment<Board, Direction>()(jumper); while (bit::is_element(jumper, path));
         }

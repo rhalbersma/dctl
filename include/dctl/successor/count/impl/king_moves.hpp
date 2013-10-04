@@ -9,7 +9,6 @@
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/patterns.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace successor {
@@ -43,13 +42,15 @@ public:
 
         // function call operators
 
-        int operator()(BitBoard active_kings) const
+        template<class Set>
+        int operator()(Set const& active_kings) const
         {
                 return active_kings? branch(active_kings) : 0;
         }
 
 private:
-        int branch(BitBoard active_kings) const
+        template<class Set>
+        int branch(Set const& active_kings) const
         {
                 return (
                         parallelize< Compass::left_down  >(active_kings) +
@@ -59,8 +60,8 @@ private:
                 );
         }
 
-        template<int Direction>
-        int parallelize(BitBoard active_kings) const
+        template<int Direction, class Set>
+        int parallelize(Set const& active_kings) const
         {
                 return bit::size(
                         Sink<Board, Direction, typename rules::range::move<Rules>::type>()(active_kings, propagate_.path())

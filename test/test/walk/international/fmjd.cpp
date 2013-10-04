@@ -5,7 +5,7 @@
 #include <dctl/setup/setup.hpp>
 #include <dctl/board/types.hpp>
 #include <dctl/rules/variants.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>         // NodeCount
 
 namespace dctl {
 namespace walk {

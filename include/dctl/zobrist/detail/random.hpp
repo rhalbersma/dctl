@@ -1,7 +1,8 @@
 #pragma once
 #include <cstdint>                      // uint64_t
 #include <dctl/bit/bit.hpp>
-#include <dctl/utility/int.hpp>         // BitBoard
+#include <dctl/bit/bitboard.hpp>        // BitBoard
+#include <dctl/utility/int.hpp>         // PlyCount
 
 namespace dctl {
 namespace zobrist {
@@ -31,15 +32,15 @@ struct Random
                 return to_move? random : 0;
         }
 
-        static Index const PIECES[2][64];
-        static Index const KINGS[64];
+        static Index const PIECES[][64];
+        static Index const KINGS[];
         static Index const SIDE;
-        static Index const RESTRICTED_KING[2][64];
-        static Index const RESTRICTED_MOVES[2][8];
+        static Index const RESTRICTED_KING[][64];
+        static Index const RESTRICTED_MOVES[][8];
 };
 
 template<class Index>
-Index const Random<Index>::PIECES[2][64] =
+Index const Random<Index>::PIECES[][64] =
 {
         {
                 0x9904662fb3c24ae1, 0xc59adcabb4a95f90, 0x9dbe36bc60dda6e9, 0xb1766ba9896d953c,
@@ -80,7 +81,7 @@ Index const Random<Index>::PIECES[2][64] =
 };
 
 template<class Index>
-Index const Random<Index>::KINGS[64] =
+Index const Random<Index>::KINGS[] =
 {
         0x863029ce1230836b, 0x8642409881fcba54, 0x0efcecdc6e8bce48, 0x8e01b2a4a6148a1d,
         0x676532e665b948db, 0x4ac38afe80a7a237, 0x83b6b8ac17caef57, 0x5b9bf4203936176d,
@@ -104,7 +105,7 @@ template<class Index>
 Index const Random<Index>::SIDE = 0x461aea9b6bcff19a;
 
 template<class Index>
-Index const Random<Index>::RESTRICTED_KING[2][64] = {
+Index const Random<Index>::RESTRICTED_KING[][64] = {
         {
                 0x30d1f0b5b2955a21, 0x4bb531b53a827011, 0x14e30ca35ed706bb, 0x3003989830651c20,
                 0xf0ebb5758217ac45, 0x3cc52df5fed45159, 0xc7a1bbfa85130ced, 0x5249dd6013c22fd9,
@@ -144,7 +145,7 @@ Index const Random<Index>::RESTRICTED_KING[2][64] = {
 };
 
 template<class Index>
-Index const Random<Index>::RESTRICTED_MOVES[2][8] = {
+Index const Random<Index>::RESTRICTED_MOVES[][8] = {
         {
                 0xd0155d45da58e0ae, 0x51a0ad8a6b634382, 0xfd6508b01ff7ef6a, 0x2f88513a4e1f888b,
                 0x1329e62c4cc57a77, 0x7bd2096bab82649f, 0xdedadb0490930d7f, 0xce75c4bf3922ae01

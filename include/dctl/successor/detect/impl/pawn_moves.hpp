@@ -8,7 +8,6 @@
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/patterns.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace successor {
@@ -38,13 +37,15 @@ public:
 
         // function call operators
 
-        bool operator()(BitBoard active_pawns) const
+        template<class Set>
+        bool operator()(Set const& active_pawns) const
         {
                 return active_pawns? branch(active_pawns) : false;
         }
 
 private:
-        bool branch(BitBoard active_pawns) const
+        template<class Set>
+        bool branch(Set const& active_pawns) const
         {
                 return (
                         parallelize< Compass::left_up  >(active_pawns) ||
@@ -52,8 +53,8 @@ private:
                 );
         }
 
-        template<int Direction>
-        bool parallelize(BitBoard active_pawns) const
+        template<int Direction, class Set>
+        bool parallelize(Set const& active_pawns) const
         {
                 return !bit::empty(
                         Sink<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.path())

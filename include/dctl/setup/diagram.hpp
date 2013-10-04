@@ -9,7 +9,6 @@
 #include <dctl/setup/numbers.hpp>
 #include <dctl/setup/i_token.hpp>
 #include <dctl/node/side.hpp>
-#include <dctl/utility/int.hpp>
 
 namespace dctl {
 namespace setup {

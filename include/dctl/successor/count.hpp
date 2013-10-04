@@ -8,13 +8,13 @@ namespace dctl {
 namespace successor {
 
 template<bool Color, class Pieces, class Select, class Position>
-int count(Position const& p)
+auto count(Position const& p)
 {
         return detail::count<Color, Pieces, Select>()(p);
 }
 
 template<class Pieces, class Select, class Position>
-int count(Position const& p)
+auto count(Position const& p)
 {
         return (p.to_move() == Side::black)?
                 count<Side::black, Pieces, Select>(p) :
@@ -23,7 +23,7 @@ int count(Position const& p)
 }
 
 template<class Position>
-int count(Position const& p)
+auto count(Position const& p)
 {
         return count<pieces::all, select::legal>(p);
 }

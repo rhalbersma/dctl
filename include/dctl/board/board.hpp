@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint>
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include <dctl/angle/degrees.hpp>
 #include <dctl/grid/coordinates.hpp>
@@ -8,9 +7,8 @@
 #include <dctl/grid/shift_size.hpp>             // shift_size
 #include <dctl/grid/predicates.hpp>
 #include <dctl/node/side.hpp>
-#include <dctl/utility/int.hpp>
 #include <dctl/utility/range.hpp>               // is_element
-#include <dctl/bit/bit_set.hpp>
+#include <dctl/bit/bitboard.hpp>                // BitBoard
 
 namespace dctl {
 namespace board {
@@ -164,29 +162,15 @@ public:
         }
 };
 
-template<class Dimensions, int EdgeColumns, int Orientation>
-constexpr int Board<Dimensions, EdgeColumns, Orientation>::table_square2bit[];
+template<class D, int E, int O> constexpr int Board<D, E, O>::table_square2bit[];
+template<class D, int E, int O> constexpr int Board<D, E, O>::table_bit2square[];
 
-template<class Dimensions, int EdgeColumns, int Orientation>
-constexpr int Board<Dimensions, EdgeColumns, Orientation>::table_bit2square[];
-
-template<class Dimensions, int EdgeColumns, int Orientation>
-constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::squares;
-
-template<class Dimensions, int EdgeColumns, int Orientation>
-constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::initial_mask[][5];
-
-template<class Dimensions, int EdgeColumns, int Orientation>
-constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::promotion_mask[][2];
-
-template<class Dimensions, int EdgeColumns, int Orientation>
-constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::row_mask[][12];
-
-template<class Dimensions, int EdgeColumns, int Orientation>
-constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::col_mask[][12];
-
-template<class Dimensions, int EdgeColumns, int Orientation>
-constexpr BitBoard Board<Dimensions, EdgeColumns, Orientation>::table_jump_start[];
+template<class D, int E, int O> constexpr BitBoard Board<D, E, O>::squares;
+template<class D, int E, int O> constexpr BitBoard Board<D, E, O>::initial_mask[][5];
+template<class D, int E, int O> constexpr BitBoard Board<D, E, O>::promotion_mask[][2];
+template<class D, int E, int O> constexpr BitBoard Board<D, E, O>::row_mask[][12];
+template<class D, int E, int O> constexpr BitBoard Board<D, E, O>::col_mask[][12];
+template<class D, int E, int O> constexpr BitBoard Board<D, E, O>::table_jump_start[];
 
 }       // namespace board
 }       // namespace dctl

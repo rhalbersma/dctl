@@ -10,8 +10,9 @@
 #include <dctl/node/side.hpp>
 #include <dctl/node/predicates_fwd.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>         // PlyCount, HashIndex
 #include <dctl/bit/algorithm.hpp>
+#include <dctl/bit/bitboard.hpp>        // BitBoard
 
 namespace dctl {
 
@@ -256,30 +257,33 @@ private:
 };
 
 template<class Position>
-typename Position::TreeIterator grand_parent(Position const& p)
+auto grand_parent(Position const& p)
 {
         return p.parent() ? p.parent()->parent() : nullptr;
 }
 
 template<class Position>
-bool active_color(Position const& p)
+auto active_color(Position const& p)
 {
         return p.to_move();
 }
 
 template<class Position>
-bool passive_color(Position const& p)
+auto passive_color(Position const& p)
 {
         return !p.to_move();
 }
 
 template<class Position>
-KingMoves const& active_restricted(Position const& p)
+decltype(auto) active_restricted(Position const& p)
 {
         return p.restricted()[active_color(p)];
 }
 
 template<class Position>
-KingMoves const& passive_restricted(Position const&);
+decltype(auto) passive_restricted(Position const& p)
+{
+        return p.restricted()[passive_color(p)];
+}
 
 }       // namespace dctl

@@ -4,7 +4,7 @@
 #include <boost/accumulators/statistics/mean.hpp>
 #include <boost/accumulators/statistics/max.hpp>
 #include <boost/accumulators/statistics/count.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/utility/int.hpp>                         // NodeCount
 
 namespace dctl {
 

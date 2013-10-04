@@ -17,7 +17,7 @@
 #include <dctl/board/iterator.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>
+#include <dctl/bit/bitboard.hpp>                        // BitIndex
 #include <dctl/utility/algorithm.hpp>
 
 namespace dctl {
@@ -55,7 +55,8 @@ public:
 
         // function call operators
 
-        void operator()(BitBoard active_pawns) const
+        template<class Set>
+        void operator()(Set const& active_pawns) const
         {
                 // tag dispatching on whether pawns can capture kings
                 if (active_pawns)
@@ -64,55 +65,63 @@ public:
 
 private:
         // overload for pawns that can capture kings
-        void select_dispatch(BitBoard active_pawns, std::true_type) const
+        template<class Set>
+        void select_dispatch(Set const& active_pawns, std::true_type) const
         {
                 branch(active_pawns);
         }
 
         // overload for pawns that cannot capture kings
-        void select_dispatch(BitBoard active_pawns, std::false_type) const
+        template<class Set>
+        void select_dispatch(Set const& active_pawns, std::false_type) const
         {
                 capture_.toggle_king_targets();
                 branch(active_pawns);
                 capture_.toggle_king_targets();
         }
 
-        void branch(BitBoard active_pawns) const
+        template<class Set>
+        void branch(Set const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
                 branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>());
         }
 
         // overload for pawns that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(BitBoard active_pawns, rules::directions::all) const
+        template<class Set>
+        void branch_dispatch(Set const& active_pawns, rules::directions::all) const
         {
                 branch_dispatch(active_pawns, rules::directions::diag());
                 branch_dispatch(active_pawns, rules::directions::orth());
         }
 
         // overload for pawns that jump in the 4 diagonal directions
-        void branch_dispatch(BitBoard active_pawns, rules::directions::diag) const
+        template<class Set>
+        void branch_dispatch(Set const& active_pawns, rules::directions::diag) const
         {
                 branch_dispatch(active_pawns, rules::directions::up  ());
                 branch_dispatch(active_pawns, rules::directions::down());
         }
 
         // overload for pawns that jump in the 2 forward diagonal directions
-        void branch_dispatch(BitBoard active_pawns, rules::directions::up) const
+        template<class Set>
+        void branch_dispatch(Set const& active_pawns, rules::directions::up) const
         {
                 serialize< Compass::left_up  >(active_pawns);
                 serialize< Compass::right_up >(active_pawns);
         }
 
         // overload for pawns that jump in the 2 backward diagonal directions
-        void branch_dispatch(BitBoard active_pawns, rules::directions::down) const
+        template<class Set>
+        void branch_dispatch(Set const& active_pawns, rules::directions::down) const
         {
                 serialize< Compass::left_down  >(active_pawns);
                 serialize< Compass::right_down >(active_pawns);
         }
 
         // overload for pawns that jump in the 4 orthogonal directions
-        void branch_dispatch(BitBoard active_pawns, rules::directions::orth) const
+        template<class Set>
+        void branch_dispatch(Set const& active_pawns, rules::directions::orth) const
         {
                 serialize< Compass::left  >(active_pawns);
                 serialize< Compass::right >(active_pawns);
@@ -120,8 +129,8 @@ private:
                 serialize< Compass::down  >(active_pawns);
         }
 
-        template<int Direction>
-        void serialize(BitBoard active_pawns) const
+        template<int Direction, class Set>
+        void serialize(Set active_pawns) const
         {
                 for (
                         active_pawns &= Prev<Board, Direction>()(capture_.template targets_with_pawn<Direction>());

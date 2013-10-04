@@ -30,12 +30,6 @@ int size(T b)
 }
 
 template<class T>
-int max_size(T)
-{
-        return std::numeric_limits<T>::digits;
-}
-
-template<class T>
 T minimal_element(T b)
 {
         return b & (T{0} - b);
