@@ -72,8 +72,8 @@ private:
         template<int Direction, class Set>
         void transform(Set movers) const
         {
-                for (; movers; bit::pop_front(movers)) {
-                        auto const from_sq = bit::minimal_element(movers);
+                for (auto sq: bit::bit_set<int, uint64_t, 1>(movers)) {
+                        auto const from_sq = BitBoard{1} << sq;
                         auto const dest_sq = Next<Board, Direction>()(from_sq);
                         moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq)));
                 }

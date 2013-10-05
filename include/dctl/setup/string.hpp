@@ -118,12 +118,12 @@ struct write<pdn::protocol, Token>
                                 sstr << Token::colon;                           // colon
                                 sstr << Token::color[c];                        // color tag
                         }
-                        for (auto bb = p.material().pieces(c); !bit::empty(bb); bit::pop_front(bb)) {
-                                if (bit::is_element(bit::minimal_element(bb), p.material().kings()))
+                        auto bs = bit::bit_set<int, uint64_t, 1>(p.material().pieces(c));
+                        for (auto sq: bs) {
+                                if (bit::is_element(BitBoard{1} << sq, p.material().kings()))
                                         sstr << Token::king;                    // king tag
-                                auto b = bit::front(bb);                        // bit index
-                                sstr << Board::bit2square(b) + 1;               // square number
-                                if (bit::is_multiple(bb))                       // still pieces remaining
+                                sstr << Board::bit2square(sq) + 1;              // square number
+                                if (bit::is_multiple(bs.data()))                // still pieces remaining
                                         sstr << Token::comma;                   // comma separator
                         }
                 }

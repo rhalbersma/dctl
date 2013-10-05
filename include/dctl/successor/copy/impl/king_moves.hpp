@@ -55,12 +55,10 @@ public:
 
 private:
         template<class Set>
-        void serialize(Set active_kings) const
+        void serialize(Set const& active_kings) const
         {
-                while (active_kings) {
-                        branch(bit::minimal_element(active_kings));
-                        bit::pop_front(active_kings);
-                }
+                for (auto sq: bit::bit_set<int, uint64_t, 1>(active_kings))
+                        branch(BitBoard{1} << sq);
         }
 
         void branch(BitIndex from_sq) const
