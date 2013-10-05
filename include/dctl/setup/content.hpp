@@ -2,7 +2,7 @@
 #include <sstream>                      // stringstream
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/material.hpp>
-#include <dctl/bit/bitboard.hpp>
+#include <dctl/bit/bitboard.hpp>        // BitBoard
 
 namespace dctl {
 namespace setup {

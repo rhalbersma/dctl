@@ -7,6 +7,7 @@
 #include <dctl/setup/i_token.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/position.hpp>
+#include <dctl/bit/bitboard.hpp>        // BitBoard
 
 namespace dctl {
 namespace setup {
