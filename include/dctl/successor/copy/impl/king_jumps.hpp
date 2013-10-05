@@ -84,13 +84,11 @@ private:
         }
 
         template<class Set>
-        void serialize(Set active_kings) const
+        void serialize(Set const& active_kings) const
         {
                 BOOST_ASSERT(!bit::empty(active_kings));
-                do {
-                        find(bit::minimal_element(active_kings));
-                        bit::pop_front(active_kings);
-                } while (active_kings);
+                for (auto sq: bit::bit_set<int, uint64_t, 1>(active_kings))
+                        find(BitBoard{1} << sq);
         }
 
         void find(BitIndex jumper) const

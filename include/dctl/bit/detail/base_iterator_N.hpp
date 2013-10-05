@@ -37,7 +37,7 @@ struct base_iterator
                 if (idx == 0)
                         ++block_;
                 auto const mask = *block_ >> idx;
-                if (mask) {
+                if (mask != 0) {
                         index_ += intrinsic::ctz(mask);
                         return;
                 }
@@ -66,7 +66,7 @@ struct base_iterator
                 if (idx == digits - 1)
                         --block_;
                 auto const mask = *block_ << (digits - 1 - idx);
-                if (mask) {
+                if (mask != 0) {
                         index_ -= intrinsic::clz(mask);
                         return;
                 }

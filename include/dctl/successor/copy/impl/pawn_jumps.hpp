@@ -130,14 +130,10 @@ private:
         }
 
         template<int Direction, class Set>
-        void serialize(Set active_pawns) const
+        void serialize(Set const& active_pawns) const
         {
-                for (
-                        active_pawns &= Prev<Board, Direction>()(capture_.template targets_with_pawn<Direction>());
-                        active_pawns;
-                        bit::pop_front(active_pawns)
-                )
-                        find<Direction>(bit::minimal_element(active_pawns));
+                for (auto sq: bit::bit_set<int, uint64_t, 1>(active_pawns & Prev<Board, Direction>()(capture_.template targets_with_pawn<Direction>())))
+                        find<Direction>(BitBoard{1} << sq);
         }
 
         template<int Direction>

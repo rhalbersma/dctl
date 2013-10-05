@@ -36,7 +36,9 @@ public:
 
         // structors
 
-        constexpr bit_set() noexcept = default;
+        constexpr bit_set() = default;
+
+        constexpr bit_set(Block block): Base{block} {}
 
         template<class InputIt>
         constexpr bit_set(InputIt first, InputIt last)
