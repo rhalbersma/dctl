@@ -13,7 +13,7 @@
 #include <dctl/angle/transform.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/board/iterator.hpp>
+#include <dctl/board/iterator.hpp>                      // Increment, Prev
 #include <dctl/node/promotion.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/bit/bitboard.hpp>                        // BitIndex

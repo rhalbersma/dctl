@@ -10,7 +10,7 @@
 #include <dctl/angle/transform.hpp>                     // rotate
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/board/iterator.hpp>                      // Next
+#include <dctl/board/iterator.hpp>                      // Increment, Next, Prev
 #include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/bit/bitboard.hpp>                        // BitIndex
 #include <dctl/utility/algorithm.hpp>

@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>                                    // transform
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
 #include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
@@ -6,7 +7,7 @@
 
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/board/iterator.hpp>
+#include <dctl/board/iterator.hpp>                      // Next, Prev
 #include <dctl/node/promotion.hpp>
 
 namespace dctl {
@@ -72,11 +73,12 @@ private:
         template<int Direction, class Set>
         void transform(Set movers) const
         {
-                for (auto sq: bit::bit_set<int, uint64_t, 1>(movers)) {
+                auto const bs = bit::bit_set<int, uint64_t, 1>(movers);
+                std::transform(begin(bs), end(bs), std::back_inserter(moves_), [](int const& sq){
                         auto const from_sq = BitBoard{1} << sq;
                         auto const dest_sq = Next<Board, Direction>()(from_sq);
-                        moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq)));
-                }
+                        return Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq));
+                });
         }
 };
 
