@@ -85,7 +85,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 if (isdigit(ch)) {
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
-                                        BOOST_ASSERT(Board::is_valid(sq - 1));
+                                        assert(Board::is_valid(sq - 1));
                                         auto b = Board::square2bit(sq - 1);     // convert square to bit
                                         auto bb = bit::singlet<BitBoard>(b);    // create bitboard
                                         p_pieces[setup_color] ^= bb;

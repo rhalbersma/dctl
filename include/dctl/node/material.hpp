@@ -1,7 +1,6 @@
 #pragma once
+#include <cassert>                      // assert
 #include <type_traits>                  // is_base_of
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable1
 #include <dctl/bit/bit.hpp>             // is_subset
 #include <dctl/node/i_pieces.hpp>
@@ -38,14 +37,14 @@ public:
         explicit Material_(T /* MUST be zero */)
         {
                 init<Side::black>(0, 0, 0);
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // initialize with a set of bitboards
         Material_(T black_pieces, T white_pieces, T kings)
         {
                 init<Side::black>(black_pieces, white_pieces, kings);
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // modifiers
@@ -54,11 +53,11 @@ public:
         template<template<class> class U>
         Material_& operator^=(U<T> const& m)
         {
-                BOOST_MPL_ASSERT((std::is_base_of< IPieces<U, T>, U<T> >));
+                static_assert(std::is_base_of< IPieces<U, T>, U<T> >::value, "");
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);
                 kings_ ^= m.kings();
-                BOOST_ASSERT(invariant());
+                assert(invariant());
                 return *this;
         }
 

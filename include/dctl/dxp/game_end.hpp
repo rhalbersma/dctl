@@ -1,8 +1,7 @@
 #pragma once
 #include <iomanip>                      // setw
 #include <sstream>                      // stringstream
-#include <string>                       // string
-#include <boost/lexical_cast.hpp>       // lexical_cast
+#include <string>                       // string, stoi
 #include <dctl/dxp/message.hpp>         // Message
 #include <dctl/factory/creatable.hpp>   // make_creatable
 
@@ -29,8 +28,8 @@ public:
 
         explicit GameEnd(std::string const& message)
         :
-                reason_(static_cast<Reason>(boost::lexical_cast<int>(message.substr(0, 1).c_str()))),
-                stop_code_(static_cast<StopCode>(boost::lexical_cast<int>(message.substr(1, 1).c_str())))
+                reason_(static_cast<Reason>(std::stoi(message.substr(0, 1).c_str()))),
+                stop_code_(static_cast<StopCode>(std::stoi(message.substr(1, 1).c_str())))
         {}
 
         // queries

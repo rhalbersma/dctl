@@ -1,7 +1,7 @@
 #pragma once
+#include <cassert>                              // assert
 #include <limits>                               // numeric_limits
 #include <tuple>                                // get, tie
-#include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
 #include <dctl/rules/variants/spanish_fwd.hpp>  // Spanish
@@ -30,25 +30,25 @@ public:
                 num_pieces_{pawns + kings},
                 num_kings_{kings}
         {
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // modifiers
 
         void increment(bool is_king)
         {
-                BOOST_ASSERT(!full());
+                assert(!full());
                 num_kings_ += is_king;
                 ++num_pieces_;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void decrement(bool is_king)
         {
-                BOOST_ASSERT(!empty());
+                assert(!empty());
                 --num_pieces_;
                 num_kings_ -= is_king;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // queries

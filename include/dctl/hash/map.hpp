@@ -7,7 +7,6 @@
 #include <type_traits>                  // integral_constant, is_integral, false_type, true_type
 #include <utility>                      // make_pair, pair
 #include <vector>                       // vector
-#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/hash/index_extractor.hpp>
 
 namespace dctl {

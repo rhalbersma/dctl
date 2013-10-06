@@ -1,7 +1,6 @@
 #pragma once
 #include <chrono>                       // clock_t
 #include <vector>                       // vector
-#include <boost/assert.hpp>             // BOOST_ASSERT
 
 namespace dctl {
 

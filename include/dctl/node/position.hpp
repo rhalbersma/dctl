@@ -1,6 +1,6 @@
 #pragma once
+#include <cassert>                      // assert
 #include <type_traits>                  // false_type, true_type
-#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/bit/bit.hpp>
 #include <dctl/zobrist/hash.hpp>
 #include <dctl/node/position_fwd.hpp>
@@ -27,7 +27,7 @@ public:
         using rules_type = Rules;
         using board_type = Board ;
         using TreeIterator = Position const*;
-        BOOST_STATIC_CONSTANT(int, gap = rules::initial_gap<rules_type>::value + board_type::height % 2);
+        static const int gap = rules::initial_gap<rules_type>::value + board_type::height % 2;
 
         /*
         Position()
@@ -45,7 +45,7 @@ public:
                 to_move_(to_move)
         {
                 hash_index_ = zobrist::hash(*this);
-                BOOST_ASSERT(material_invariant());
+                assert(material_invariant());
         }
 
         // initial position
@@ -114,13 +114,13 @@ public:
 
         void make(Move const& m)
         {
-                BOOST_ASSERT(is_pseudo_legal(*this, m));
+                assert(is_pseudo_legal(*this, m));
 
                 make_irreversible(m);
                 make_incremental(m);
 
-                BOOST_ASSERT(material_invariant());
-                BOOST_ASSERT(hash_index_invariant());
+                assert(material_invariant());
+                assert(hash_index_invariant());
         }
         
         void attach(Position const& other)
@@ -186,11 +186,11 @@ private:
 
                         if (restricted.moves() && bit::is_element(restricted.king(), from_sq(*this, m))) {
                                 // a consecutive irreversible move with the same king
-                                BOOST_ASSERT(!is_max<Rules>(restricted.moves()));
+                                assert(!is_max<Rules>(restricted.moves()));
                                 restricted.increment(dest_sq(*this, m));
                         } else {
                                 // a first irreversible move with a new king
-                                BOOST_ASSERT(!restricted.moves() || bit::size(active_kings(*this)) > 1);
+                                assert(!restricted.moves() || bit::size(active_kings(*this)) > 1);
                                 restricted.init(dest_sq(*this, m));
                         }
                         hash_index_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));

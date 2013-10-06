@@ -1,7 +1,6 @@
 #pragma once
+#include <cassert>                                      // assert
 #include <type_traits>                                  // false_type, true_type
-#include <boost/assert.hpp>                             // BOOST_ASSERT
-#include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate
 #include <dctl/successor/select/jumps.hpp>              // jumps
@@ -24,10 +23,11 @@ namespace impl {
 // partial specialization for king jumps generation
 template<bool Color, class Position, class Sequence>
 struct copy<Color, pieces::king, select::jumps, Position, Sequence>
-:
-        // enforce reference semantics
-        private boost::noncopyable
 {
+        // enforce reference semantics
+        copy(copy const&) = delete;
+        copy& operator=(copy const&) = delete;
+
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
@@ -62,7 +62,7 @@ public:
         template<int Direction>
         bool promote_en_passant(BitIndex jumper) const
         {
-                BOOST_ASSERT((is_promotion_sq<Color, Board>(jumper)));
+                assert((is_promotion_sq<Color, Board>(jumper)));
                 return find_next<Direction>(jumper);
         }
 
@@ -86,7 +86,7 @@ private:
         template<class Set>
         void serialize(Set const& active_kings) const
         {
-                BOOST_ASSERT(!bit::empty(active_kings));
+                assert(!bit::empty(active_kings));
                 for (auto sq: bit::bit_set<int, uint64_t, 1>(active_kings))
                         find(BitBoard{1} << sq);
         }
@@ -230,7 +230,7 @@ private:
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
-                BOOST_ASSERT(bit::is_element(jumper, capture_.path()));
+                assert(bit::is_element(jumper, capture_.path()));
                 auto found_next = false;
                 do {
                         found_next |= turn<Direction>(jumper);
@@ -350,7 +350,7 @@ private:
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
-                BOOST_ASSERT(bit::is_element(dest_sq, capture_.path()));
+                assert(bit::is_element(dest_sq, capture_.path()));
                 do {
                         add_king_jump(dest_sq, check_duplicate);
                         Increment<Board, Direction>()(dest_sq);

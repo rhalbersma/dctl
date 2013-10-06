@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
 #include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
@@ -17,10 +16,11 @@ namespace impl {
 
 template<bool Color, class Position, class Sequence>
 struct copy<Color, pieces::pawn, select::moves, Position, Sequence>
-:
-        // enforce reference semantics
-        boost::noncopyable
 {
+        // enforce reference semantics
+        copy(copy const&) = delete;
+        copy& operator=(copy const&) = delete;
+
 private:
         using Board = typename Position::board_type;
         using Move = typename Sequence::value_type;

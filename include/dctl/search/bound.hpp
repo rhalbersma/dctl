@@ -1,7 +1,7 @@
 #pragma once
 #include <sstream>                      // stringstream
+#include <stdexcept>                    // logic_error
 #include <string>                       // string
-#include <boost/assert.hpp>             // BOOST_ASSERT
 
 namespace dctl {
 
@@ -36,7 +36,7 @@ struct Bound
                         sstr << "==";
                         break;
                 default:
-                        BOOST_ASSERT(false);
+                        throw std::logic_error("Search bound must be >=, <= or ==");
                         break;
                 }
                 return sstr.str();

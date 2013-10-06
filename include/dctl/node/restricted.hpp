@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/assert.hpp>             // BOOST_ASSERT
+#include <cassert>                      // assert
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/bitboard.hpp>        // BitBoard
 #include <dctl/utility/int.hpp>         // PlyCount
@@ -16,33 +16,33 @@ public:
                 king_(0),
                 moves_(0)
         {
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // modifiers
 
         void init(BitBoard dest)
         {
-                BOOST_ASSERT(bit::is_single(dest));
+                assert(bit::is_single(dest));
                 king_ = dest;
                 moves_ = 1;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void increment(BitBoard dest)
         {
-                BOOST_ASSERT(bit::is_single(dest));
+                assert(bit::is_single(dest));
                 king_= dest;
                 ++moves_;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void reset()
         {
-                BOOST_ASSERT(!bit::empty(king_) && moves_);
+                assert(!bit::empty(king_) && moves_);
                 king_ = 0;
                 moves_ = 0;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // queries

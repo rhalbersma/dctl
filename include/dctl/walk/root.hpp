@@ -4,7 +4,6 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>                     // distance
-#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/walk/transposition.hpp>
 #include <dctl/hash/dual_map.hpp>
 #include <dctl/hash/signature_extractor.hpp>

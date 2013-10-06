@@ -3,7 +3,6 @@
 #include <iomanip>                      // setw
 #include <sstream>                      // stringstream
 #include <string>                       // string
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <dctl/setup/content.hpp>
 #include <dctl/setup/diagram_fwd.hpp>
 #include <dctl/setup/numbers.hpp>
@@ -64,7 +63,7 @@ private:
                 return Board::parity? indent_LO : indent_LE;
         }
 
-        BOOST_STATIC_CONSTANT(auto, WHITE_SPACE = ' ');
+        static const auto WHITE_SPACE = ' ';
 };
 
 // partial specialization definition to write bit numbers in diagram layout

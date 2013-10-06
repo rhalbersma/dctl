@@ -1,7 +1,5 @@
 #pragma once
 #include <cstdint>
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <dctl/search/bound.hpp>
 #include <dctl/search/score.hpp>
 
@@ -134,17 +132,17 @@ private:
                 return type() == Bound::exact;
         }
 
-        BOOST_STATIC_CONSTANT(auto, TYPE_BITS = 2);
-        BOOST_STATIC_CONSTANT(auto, DEPTH_BITS = 7);
-        BOOST_STATIC_CONSTANT(auto, MOVE_BITS = 7);
+        static const auto TYPE_BITS = 2;
+        static const auto DEPTH_BITS = 7;
+        static const auto MOVE_BITS = 7;
 
-        BOOST_STATIC_CONSTANT(auto, TYPE_SHIFT = 0);
-        BOOST_STATIC_CONSTANT(auto, DEPTH_SHIFT = TYPE_SHIFT + TYPE_BITS);
-        BOOST_STATIC_CONSTANT(auto, MOVE_SHIFT = DEPTH_SHIFT + DEPTH_BITS);
+        static const auto TYPE_SHIFT = 0;
+        static const auto DEPTH_SHIFT = TYPE_SHIFT + TYPE_BITS;
+        static const auto MOVE_SHIFT = DEPTH_SHIFT + DEPTH_BITS;
 
-        BOOST_STATIC_CONSTANT(auto, DEPTH_MASK = ((1 << DEPTH_BITS) - 1));
-        BOOST_STATIC_CONSTANT(auto, MOVE_MASK = ((1 << MOVE_BITS) - 1));
-        BOOST_STATIC_CONSTANT(auto, TYPE_MASK = ((1 << TYPE_BITS) - 1));
+        static const auto DEPTH_MASK = ((1 << DEPTH_BITS) - 1);
+        static const auto MOVE_MASK = ((1 << MOVE_BITS) - 1);
+        static const auto TYPE_MASK = ((1 << TYPE_BITS) - 1);
 
         // representation
          int16_t value_;        // value

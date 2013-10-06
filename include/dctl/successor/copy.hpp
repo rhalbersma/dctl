@@ -25,7 +25,7 @@ auto copy(Position const& p, Arena<Move>& mar)
 
         copy<Color, Pieces, Select>(p, moves);
 
-        BOOST_ASSERT((invariant<Color, Pieces, Select>(p, static_cast<int>(moves.size()))));
+        assert((invariant<Color, Pieces, Select>(p, static_cast<int>(moves.size()))));
         return moves;
 }
 

@@ -1,12 +1,11 @@
 #pragma once
+#include <cassert>                                      // assert
 #include <type_traits>                                  // false_type, true_type
-#include <boost/assert.hpp>                             // BOOST_ASSERT
-#include <boost/utility.hpp>                            // noncopyable
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
 #include <dctl/successor/copy/impl/king_jumps.hpp>      // promote_en_passant
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
-#include <dctl/pieces/pawn.hpp>           // pawn
+#include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/pieces/king.hpp>
 
 
@@ -28,10 +27,11 @@ namespace impl {
 // partial specialization for pawn jumps generation
 template<bool Color, class Position, class Sequence>
 struct copy<Color, pieces::pawn, select::jumps, Position, Sequence>
-:
-        // enforce reference semantics
-        private boost::noncopyable
 {
+        // enforce reference semantics
+        copy(copy const&) = delete;
+        copy& operator=(copy const&) = delete;
+
 private:
         using KingJumps = copy<Color, pieces::king, select::jumps, Position, Sequence>;
         using Rules = typename Position::rules_type;
@@ -148,7 +148,7 @@ private:
         void find_first(BitIndex jumper) const
         {
                 Increment<Board, Direction>()(jumper);
-                BOOST_ASSERT(bit::is_element(jumper, capture_.template targets_with_pawn<Direction>()));
+                assert(bit::is_element(jumper, capture_.template targets_with_pawn<Direction>()));
                 capture_.make(jumper);
                 precedence<Direction>(jumper);  // recursively find more jumps
                 capture_.undo(jumper);

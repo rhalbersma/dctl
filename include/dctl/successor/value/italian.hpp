@@ -1,11 +1,11 @@
 #pragma once
 #include <algorithm>                            // count
+#include <cassert>                              // assert
 #include <iterator>                             // begin, end
 #include <limits>                               // numeric_limits
 #include <tuple>                                // tie
 #include <utility>                              // make_pair
 #include <vector>                               // vector
-#include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
 #include <dctl/rules/variants/italian_fwd.hpp>  // Italian
@@ -41,31 +41,31 @@ public:
 
         void increment(bool is_king)
         {
-                BOOST_ASSERT(!full());
+                assert(!full());
                 if (is_king) {
                         king_order_.push_back(-num_pieces_);
                         ++num_kings_;
                 }
                 ++num_pieces_;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void decrement(bool is_king)
         {
-                BOOST_ASSERT(!empty());
+                assert(!empty());
                 --num_pieces_;
                 if (is_king) {
                         --num_kings_;
-                        BOOST_ASSERT(king_order_.back() == -num_pieces_);
+                        assert(king_order_.back() == -num_pieces_);
                         king_order_.pop_back();
                 }
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void toggle_with_king()
         {
                 is_with_king_ ^= true;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // queries

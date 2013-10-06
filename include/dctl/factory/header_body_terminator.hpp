@@ -1,7 +1,6 @@
 #pragma once
 #include <string>                       // string
 #include <type_traits>                  // is_base_of
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 
 namespace dctl {
 namespace factory {
@@ -29,9 +28,9 @@ struct make_header_body_terminator
                 return terminator_;
         }
 
-        BOOST_STATIC_CONSTANT(auto, header_length_ = HeaderLength);
-        BOOST_STATIC_CONSTANT(auto, max_body_length_ = MaxBodyLength);
-        BOOST_STATIC_CONSTANT(auto, terminator_ = Terminator);
+        static const auto header_length_ = HeaderLength;
+        static const auto max_body_length_ = MaxBodyLength;
+        static const auto terminator_ = Terminator;
 };
 
 template<class T>

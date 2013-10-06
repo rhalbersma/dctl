@@ -1,6 +1,6 @@
 #pragma once
+#include <cassert>                              // assert
 #include <limits>                               // numeric_limits
-#include <boost/assert.hpp>                     // BOOST_ASSERT
 #include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
 #include <dctl/rules/variants/international_fwd.hpp>     // International
@@ -23,23 +23,23 @@ public:
         :
                 num_pieces_{n}
         {
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // modifiers
 
         void increment()
         {
-                BOOST_ASSERT(!full());
+                assert(!full());
                 ++num_pieces_;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void decrement()
         {
-                BOOST_ASSERT(!empty());
+                assert(!empty());
                 --num_pieces_;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // queries

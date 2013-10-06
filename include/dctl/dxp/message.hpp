@@ -1,8 +1,6 @@
 #pragma once
+#include <cassert>                                      // assert
 #include <string>                                       // string
-#include <boost/assert.hpp>                             // BOOST_ASSERT
-#include <boost/config.hpp>                             // BOOST_STATIC_CONSTANT
-#include <boost/utility.hpp>                            // noncopyable
 #include <dctl/factory/header_body_terminator.hpp>      // make_header_body_terminator
 
 namespace dctl {
@@ -17,8 +15,7 @@ namespace dxp {
 
 class Message
 :
-        public factory::make_header_body_terminator< 1, 126, '\0' >,
-        private boost::noncopyable
+        public factory::make_header_body_terminator< 1, 126, '\0' >
 {
 public:
         // enable deletion of a Derived* through a Base*
@@ -27,7 +24,7 @@ public:
         // non-virtual interface
         std::string str() const
         {
-                BOOST_ASSERT(invariant());
+                assert(invariant());
                 return do_header() + do_body();
         }
 
