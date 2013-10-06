@@ -114,8 +114,8 @@ private:
 
         // representation
 
-        int num_pieces_ = 0;
-        int num_kings_ = 0;
+        int num_pieces_ {};
+        int num_kings_ {};
 };
 
 }       // namespace successor

@@ -81,7 +81,7 @@ private:
 
         // representation
 
-        int num_pieces_ = 0;
+        int num_pieces_ {};
 };
 
 }       // namespace successor

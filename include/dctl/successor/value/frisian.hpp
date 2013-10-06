@@ -111,9 +111,9 @@ private:
 
         // representation
 
-        int num_pieces_ = 0;
-        int num_kings_ = 0;
-        bool is_with_king_ = false;
+        int num_pieces_ {};
+        int num_kings_ {};
+        bool is_with_king_ {};
 };
 
 }       // namespace successor
