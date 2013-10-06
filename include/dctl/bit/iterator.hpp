@@ -29,41 +29,41 @@ public:
 
         bit_iterator() = delete;
 
-        constexpr explicit bit_iterator(Block const* s) noexcept
+        constexpr explicit bit_iterator(Block const* b) noexcept
         :
-                Base{s, this->find_first()}
+                Base{b, this->find_first()}
         {}
 
         template<class U>
-        constexpr bit_iterator(Block const* s, U u) noexcept
+        constexpr bit_iterator(Block const* b, U u) noexcept
         :
-                Base{s, static_cast<int>(u)}
+                Base{b, static_cast<int>(u)}
         {
                 static_assert(std::is_convertible<U, int>::value, "");
         }
 
         // modifiers
 
-        constexpr bit_iterator& operator++() noexcept
+        constexpr bit_iterator& operator++()
         {
                 this->find_next();
                 return *this;
         }
 
-        constexpr bit_iterator operator++(int) noexcept
+        constexpr bit_iterator operator++(int)
         {
                 auto const old = *this;
                 ++(*this);
                 return old;
         }
 
-        constexpr bit_iterator& operator--() noexcept
+        constexpr bit_iterator& operator--()
         {
                 this->find_prev();
                 return *this;
         }
 
-        constexpr bit_iterator operator--(int) noexcept
+        constexpr bit_iterator operator--(int)
         {
                 auto const old = *this;
                 --(*this);
