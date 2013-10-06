@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>                      // size_t
 #include <utility>                      // make_pair
 
 namespace dctl {
@@ -24,13 +23,13 @@ constexpr auto set_all(Set const& lhs) noexcept
 }
 
 template<class Set>
-constexpr auto set_count_equal_to(Set const& lhs, std::size_t n) noexcept
+constexpr auto set_count_equal_to(Set const& lhs, int n) noexcept
 {
         return lhs.count_equal_to(n);
 }
 
 template<class Set>
-constexpr auto set_count_less(Set const& lhs, std::size_t n) noexcept
+constexpr auto set_count_less(Set const& lhs, int n) noexcept
 {
         return lhs.count_less(n);
 }
@@ -114,13 +113,13 @@ constexpr auto set_includes(Set const& lhs, Set const& rhs) noexcept
 }
 
 template<class Set>
-constexpr auto set_transform_plus(Set const& lhs, std::size_t n) noexcept
+constexpr auto set_transform_plus(Set const& lhs, int n) noexcept
 {
         return lhs << n;
 }
 
 template<class Set>
-constexpr auto set_transform_minus(Set const& lhs, std::size_t n) noexcept
+constexpr auto set_transform_minus(Set const& lhs, int n) noexcept
 {
         return lhs >> n;
 }

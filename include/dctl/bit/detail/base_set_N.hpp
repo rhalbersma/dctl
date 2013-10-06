@@ -66,7 +66,7 @@ struct base_set
                         data_[i] ^= other.data_[i];
         }
 
-        constexpr void do_left_shift(std::size_t n)
+        constexpr void do_left_shift(int n)
         {
                 if (n == 0) return;
 
@@ -91,7 +91,7 @@ struct base_set
                         data_[i] = Block{0};
         }
 
-        constexpr void do_right_shift(std::size_t n)
+        constexpr void do_right_shift(int n)
         {
                 if (n == 0) return;
 
@@ -159,7 +159,7 @@ struct base_set
                 return true;
         }
 
-        constexpr auto do_count_equal_to(std::size_t n) const noexcept
+        constexpr auto do_count_equal_to(int n) const noexcept
         {
                 auto sum = 0;
                 for (auto i = 0; i < Nb; ++i) {
@@ -170,7 +170,7 @@ struct base_set
                 return sum == n;
         }
 
-        constexpr auto do_count_less(std::size_t n) const noexcept
+        constexpr auto do_count_less(int n) const noexcept
         {
                 auto sum = 0;
                 for (auto i = 0; i < Nb; ++i) {
@@ -191,7 +191,7 @@ struct base_set
 
         // representation
 
-        std::array<Block, Nb> data_ = {{ 0 }};
+        std::array<Block, Nb> data_ {};
 };
 
 }       // namespace detail

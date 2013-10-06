@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>                              // size_t
 #include <dctl/bit/detail/base_set_fwd.hpp>     // base_set
 #include <dctl/bit/intrinsic.hpp>               // popcount
 
@@ -68,12 +67,12 @@ struct base_set<T, Block, 1>
                 data_ ^= other.data_;
         }
 
-        constexpr void do_left_shift(std::size_t n)
+        constexpr void do_left_shift(int n)
         {
                 data_ <<= n;
         }
 
-        constexpr void do_right_shift(std::size_t n)
+        constexpr void do_right_shift(int n)
         {
                 data_ >>= n;
         }
@@ -105,12 +104,12 @@ struct base_set<T, Block, 1>
                 return data_ == ~Block{0};
         }
 
-        constexpr auto do_count_equal_to(std::size_t n) const noexcept
+        constexpr auto do_count_equal_to(int n) const noexcept
         {
                 return do_count() == n;
         }
 
-        constexpr auto do_count_less(std::size_t n) const noexcept
+        constexpr auto do_count_less(int n) const noexcept
         {
                 return do_count() < n;
         }
@@ -122,7 +121,7 @@ struct base_set<T, Block, 1>
 
         // representation
 
-        Block data_ = { 0 };
+        Block data_ {};
 };
 
 }       // namespace detail

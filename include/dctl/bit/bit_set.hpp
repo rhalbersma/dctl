@@ -343,13 +343,13 @@ public:
                 return *this;
         }
 
-        constexpr auto& operator<<=(std::size_t n)
+        constexpr auto& operator<<=(int n)
         {
                 this->do_left_shift(n);
                 return *this;
         }
 
-        constexpr auto& operator>>=(std::size_t n)
+        constexpr auto& operator>>=(int n)
         {
                 this->do_right_shift(n);
                 return *this;
@@ -383,14 +383,14 @@ public:
                 return nrv;
         }
 
-        friend constexpr auto operator<<(bit_set const& lhs, std::size_t n) -> bit_set
+        friend constexpr auto operator<<(bit_set const& lhs, int n) -> bit_set
         {
                 bit_set nrv{lhs};
                 nrv <<= n;
                 return nrv;
         }
 
-        friend constexpr auto operator>>(bit_set const& lhs, std::size_t n) -> bit_set
+        friend constexpr auto operator>>(bit_set const& lhs, int n) -> bit_set
         {
                 bit_set nrv{lhs};
                 nrv >>= n;
@@ -414,12 +414,12 @@ public:
                 return this->do_all();
         }
 
-        constexpr auto count_equal_to(std::size_t n) const noexcept
+        constexpr auto count_equal_to(int n) const noexcept
         {
                 return this->do_count_equal_to(n);
         }
 
-        constexpr auto count_less(std::size_t n) const noexcept
+        constexpr auto count_less(int n) const noexcept
         {
                 return this->do_count_less(n);
         }
