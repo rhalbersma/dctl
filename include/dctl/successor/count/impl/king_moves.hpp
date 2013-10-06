@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/utility.hpp>
 #include <dctl/successor/count/impl/primary_fwd.hpp>
 #include <dctl/successor/propagate/moves.hpp>
 #include <dctl/successor/select/moves.hpp>
@@ -18,10 +17,11 @@ namespace impl {
 // partial specialization for king moves enumeration
 template<bool Color, class Position>
 struct count<Color, pieces::king, select::moves, Position>
-:
-        // enforce reference semantics
-        boost::noncopyable
 {
+        // enforce reference semantics
+        count(count const&) = delete;
+        count& operator=(count const&) = delete;
+
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;

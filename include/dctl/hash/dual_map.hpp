@@ -1,6 +1,5 @@
 #pragma once
 #include <cstddef>                      // size_t
-#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <dctl/hash/index_extractor.hpp>
 #include <dctl/hash/map.hpp>
 #include <dctl/hash/parity_extractor.hpp>

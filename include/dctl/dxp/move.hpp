@@ -3,7 +3,6 @@
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <vector>                       // vector
-#include <boost/lexical_cast.hpp>       // lexical_cast
 #include <dctl/dxp/message.hpp>         // Message
 #include <dctl/factory/creatable.hpp>   // make_creatable
 
@@ -27,14 +26,14 @@ public:
 
         explicit Move(std::string const& message)
         :
-                seconds_(boost::lexical_cast<int>(message.substr(0, 4).c_str())),
-                from_sq_(boost::lexical_cast<int>(message.substr(4, 2).c_str())),
-                dest_sq_(boost::lexical_cast<int>(message.substr(6, 2).c_str())),
-                num_captured_(boost::lexical_cast<int>(message.substr(8, 2).c_str()))
+                seconds_(std::stoi(message.substr(0, 4).c_str())),
+                from_sq_(std::stoi(message.substr(4, 2).c_str())),
+                dest_sq_(std::stoi(message.substr(6, 2).c_str())),
+                num_captured_(std::stoi(message.substr(8, 2).c_str()))
         {
                 for (auto i = 0; i < num_captured(); ++i) {
                         auto const index = static_cast<std::size_t>(10 + 2 * i);
-                        captured_pieces_.push_back(boost::lexical_cast<int>(message.substr(index, 2).c_str()));
+                        captured_pieces_.push_back(std::stoi(message.substr(index, 2).c_str()));
                 }
         }
 

@@ -2,8 +2,6 @@
 #include <iomanip>                      // setfill, setw
 #include <sstream>                      // stringstream
 #include <string>                       // string
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <boost/lexical_cast.hpp>       // lexical_cast
 #include <dctl/dxp/message.hpp>         // Message
 #include <dctl/factory/creatable.hpp>   // make_creatable
@@ -24,7 +22,7 @@ class GameRequest final
         public factory::make_creatable<Message, GameRequest, 'R'>
 {
 public:
-        BOOST_STATIC_CONSTANT(auto, protocol_version = 1);
+        static const auto protocol_version = 1;
         enum SetupCode { initial = 'A', special = 'B' };
 
         // structors
@@ -33,8 +31,8 @@ public:
         :
                 name_initiator_(message.substr(2, 32)),
                 color_follower_ (*(std::begin(message.substr(34, 1)))),
-                minutes_ (boost::lexical_cast<int>(message.substr(35, 3).c_str())),
-                moves_(boost::lexical_cast<int>(message.substr(38, 3).c_str())),
+                minutes_ (std::stoi(message.substr(35, 3).c_str())),
+                moves_(std::stoi(message.substr(38, 3).c_str())),
                 setup_code_(static_cast<SetupCode>(boost::lexical_cast<char>(*(std::begin(message.substr(41, 1))))))
         {
                 if (setup_code() == special)

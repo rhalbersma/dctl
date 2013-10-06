@@ -2,7 +2,6 @@
 #include <memory>                       // unique_ptr
 #include <string>                       // string
 #include <type_traits>                  // is_base_of
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <dctl/utility/make_unique.hpp> // make_unique
 
 namespace dctl {
@@ -30,7 +29,7 @@ struct make_creatable
                 return std::make_unique<Derived>(arg);
         }
 
-        BOOST_STATIC_CONSTANT(auto, identifier_ = ID);
+        static const auto identifier_ = ID;
 };
 
 template

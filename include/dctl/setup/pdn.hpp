@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 #include <dctl/setup/i_token.hpp>
 #include <dctl/pdn/version.hpp>
 
@@ -11,10 +10,10 @@ struct TokenSet<pdn::protocol>
 :
         public TokenInterface<'B', 'W', '.'>
 {
-        BOOST_STATIC_CONSTANT(auto, king  = 'K');
-        BOOST_STATIC_CONSTANT(auto, colon = ':');
-        BOOST_STATIC_CONSTANT(auto, comma = ',');
-        BOOST_STATIC_CONSTANT(auto, quote = '"');
+        static const auto king  = 'K';
+        static const auto colon = ':';
+        static const auto comma = ',';
+        static const auto quote = '"';
 };
 
 }       // namespace setup

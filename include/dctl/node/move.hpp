@@ -1,6 +1,6 @@
 #pragma once
+#include <cassert>                      // assert
 #include <type_traits>
-#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // equality_comparable, xorable
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/move_fwd.hpp>
@@ -81,28 +81,28 @@ public:
         explicit Move_(T /* MUST be zero */)
         {
                 init<Side::black>(0, 0, 0);
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // initialize with a set of bitboards
         Move_(T black_pieces, T white_pieces, T kings)
         {
                 init<Side::black>(black_pieces, white_pieces, kings);
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // king move
         template<bool Color>
         static Move_ create(T delta)
         {
-                BOOST_ASSERT(pre_condition(delta));
+                assert(pre_condition(delta));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,  // move a king between the from and destination squares
                         0,
                         delta   // move a king between the from and destination squares
                 );
-                BOOST_ASSERT(tmp.invariant());
+                assert(tmp.invariant());
                 return tmp;
         }
 
@@ -110,14 +110,14 @@ public:
         template<bool Color>
         static Move_ create(T delta, T promotion)
         {
-                BOOST_ASSERT(pre_condition(delta, promotion));
+                assert(pre_condition(delta, promotion));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,          // move a pawn between the from and destination squares
                         0,
                         promotion       // crown a pawn to a king
                 );
-                BOOST_ASSERT(tmp.invariant());
+                assert(tmp.invariant());
                 return tmp;
         }
 
@@ -125,14 +125,14 @@ public:
         template<bool Color, class Rules>
         static Move_ create(T delta, T captured_pieces, T captured_kings)
         {
-                BOOST_ASSERT(pre_condition<Rules>(delta, captured_pieces, captured_kings));
+                assert(pre_condition<Rules>(delta, captured_pieces, captured_kings));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,                  // move a king between the from and destination square
                         captured_pieces,        // remove the captured pieces
                         delta ^ captured_kings  // move a king and remove the captured kings
                 );
-                BOOST_ASSERT(tmp.king_jump_invariant<Rules>(delta, captured_pieces));
+                assert(tmp.king_jump_invariant<Rules>(delta, captured_pieces));
                 return tmp;
         }
 
@@ -140,14 +140,14 @@ public:
         template<bool Color, class Rules>
         static Move_ create(T delta, T promotion, T captured_pieces, T captured_kings)
         {
-                BOOST_ASSERT(pre_condition<Rules>(delta, promotion, captured_pieces, captured_kings));
+                assert(pre_condition<Rules>(delta, promotion, captured_pieces, captured_kings));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,                          // move a pawn between the from and destination squares
                         captured_pieces,                // remove the captured pieces
                         promotion ^ captured_kings      // crown a pawn to a king and remove the captured kings
                 );
-                BOOST_ASSERT(tmp.pawn_jump_invariant<Rules>(delta, promotion));
+                assert(tmp.pawn_jump_invariant<Rules>(delta, promotion));
                 return tmp;
         }
 
@@ -160,7 +160,7 @@ public:
                 pieces_[Side::black] ^= other.pieces(Side::black);
                 pieces_[Side::white] ^= other.pieces(Side::white);
                 kings_ ^= other.kings();
-                BOOST_ASSERT(invariant());
+                assert(invariant());
                 return *this;
         }
 

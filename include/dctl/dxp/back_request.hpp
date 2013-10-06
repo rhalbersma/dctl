@@ -1,8 +1,7 @@
 #pragma once
 #include <iomanip>                      // setfill, setw
 #include <sstream>                      // stringstream
-#include <string>                       // string
-#include <boost/lexical_cast.hpp>       // lexical_cast
+#include <string>                       // string, stoi
 #include <dctl/dxp/message.hpp>         // Message
 #include <dctl/factory/creatable.hpp>   // make_creatable
 

@@ -3,8 +3,6 @@
 #include <iterator>                     // begin, end, iterator_traits
 #include <type_traits>                  // is_same
 #include <utility>                      // pair, make_pair
-#include <tuple>
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 
 namespace dctl {
 namespace hash {
@@ -15,7 +13,7 @@ struct EmptyOldUnderCutMin
         template<class ForwardIterator, class value_type>
         bool operator()(ForwardIterator first, ForwardIterator last, value_type const& value) const
         {
-                BOOST_MPL_ASSERT(( std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, value_type> ));
+                static_assert(std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, value_type>::value, "");
                 using key_type = typename value_type::first_type;
 
                 // 1) fill an empty slot or replace an existing entry with the same key

@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/assert.hpp>                     // BOOST_ASSERT
+#include <cassert>                              // assert
 #include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
 #include <dctl/rules/variants/russian_fwd.hpp>  // Russian
@@ -22,7 +22,7 @@ public:
         :
                 is_promotion_{p}
         {
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // modifiers
@@ -30,7 +30,7 @@ public:
         void toggle_promotion()
         {
                 is_promotion_ ^= true;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         // queries

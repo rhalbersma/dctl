@@ -1,13 +1,11 @@
 #pragma once
 #include <algorithm>                    // generate
+#include <cassert>                      // assert
 #include <cstddef>
 #include <iostream>
 #include <iomanip>
 #include <iterator>                     // back_inserter
 #include <vector>                       // vector
-
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
 
 #include <dctl/search/bound.hpp>
 #include <dctl/search/objective.hpp>
@@ -116,7 +114,7 @@ private:
                         return alpha;
 
                 // -INF <= alpha < beta <= +INF
-                BOOST_ASSERT(-infinity() <= alpha && alpha < beta && beta <= infinity());
+                assert(-infinity() <= alpha && alpha < beta && beta <= infinity());
 
                 // alpha < beta <= +INF implies alpha <= win_min
                 // with equality, any finite score will fail low
@@ -130,7 +128,7 @@ private:
 
                 // alpha < beta implies alpha <= beta - 1,
                 // with the strict inequality if and only if is_pv(NodeType)
-                BOOST_ASSERT(is_pv(NodeType) == (alpha <  beta - 1));
+                assert(is_pv(NodeType) == (alpha <  beta - 1));
 
                 // terminal positions
                 auto const terminal_value = Objective::value(p);
@@ -156,7 +154,7 @@ private:
                 // generate moves
                 Arena<Move> a;
                 auto const moves = successor::copy(p, a);
-                BOOST_ASSERT(!moves.empty());
+                assert(!moves.empty());
 
                 Arena<int> oar;
                 Alloc<int> oal(oar);
@@ -170,7 +168,7 @@ private:
                         if (IID_depth > 0) {
                                 pvs<NodeType>(p, alpha, beta, IID_depth, ply, refutation);
                                 TT_entry = TT.find(p);
-                                BOOST_ASSERT(TT_entry);
+                                assert(TT_entry);
                         }
                 }
 
@@ -222,8 +220,8 @@ private:
                 }
 
                 // we must have found a best move with a finite value
-                BOOST_ASSERT(is_finite(best_value));
-                BOOST_ASSERT(best_move != Transposition::no_move());
+                assert(is_finite(best_value));
+                assert(best_move != Transposition::no_move());
 
                 auto const type = Bound::type(best_value, original_alpha, beta);
                 TT.insert(p, { best_value, type, depth, best_move } );
@@ -273,7 +271,7 @@ private:
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
-                        BOOST_ASSERT(
+                        assert(
                                 (value == evaluate::score(p)) ||
                                 (value == draw_value() && is_draw(p)) ||
                                 (value == loss_min() && !successor::detect(p))
@@ -321,7 +319,7 @@ private:
         }
 
         // implementation
-        BOOST_STATIC_CONSTANT(auto, ROOT_ID_INCREMENT = 2);
+        static const auto ROOT_ID_INCREMENT = 2;
 
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content
         // 8-way buckets on 64-byte cache lines, (1 Gb = 2^27 entries)

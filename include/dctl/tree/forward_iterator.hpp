@@ -1,7 +1,7 @@
 #pragma once
+#include <cassert>                      // assert
 #include <iterator>                     // forward_iterator_tag, iterator, iterator_traits, next
 #include <type_traits>                  // enable_if, is_same
-#include <boost/assert.hpp>             // BOOST_ASSERT
 #include <boost/operators.hpp>          // equality_comparable1
 #include <dctl/tree/forward_link.hpp>   // forward_link
 #include <dctl/tree/node.hpp>           // node
@@ -67,7 +67,7 @@ public:
         friend void set_successor(self_type& lhs, self_type& rhs)
         {
                 set_successor(lhs.plink_, rhs.plink_);
-                BOOST_ASSERT(is_successor(lhs, rhs));
+                assert(is_successor(lhs, rhs));
         }
 
         // queries

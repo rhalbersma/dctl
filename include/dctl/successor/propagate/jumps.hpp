@@ -1,9 +1,7 @@
 #pragma once
+#include <cassert>                      // assert
 #include <iterator>                     // begin, end
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
-#include <boost/assert.hpp>             // BOOST_ASSERT
-#include <boost/config.hpp>             // BOOST_STATIC_CONSTANT
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <dctl/angle/traits.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/algorithm.hpp>
@@ -46,7 +44,7 @@ public:
                 current_(),
                 best_()
         {
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         using Rules = typename Position::rules_type;
@@ -58,52 +56,52 @@ public:
         {
                 from_sq_ = jump_sq;
                 not_occupied_ ^= jump_sq;
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void finish(BitIndex jump_sq)
         {
                 not_occupied_ ^= jump_sq;
                 from_sq_ = BitIndex(0);
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void make(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
                 make_dispatch(target_sq, rules::phase::capture<Rules>());
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void undo(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
                 undo_dispatch(target_sq, rules::phase::capture<Rules>());
-                BOOST_ASSERT(invariant());
+                assert(invariant());
         }
 
         void toggle_with_king()
         {
-                BOOST_MPL_ASSERT((rules::precedence::is_relative_king<Rules>));
+                static_assert(rules::precedence::is_relative_king<Rules>::value, "");
                 current_.toggle_with_king();
         }
 
         void toggle_king_targets()
         {
-                BOOST_MPL_ASSERT_NOT((rules::can_jump<Rules, pieces::pawn, pieces::king>));
+                static_assert(!rules::can_jump<Rules, pieces::pawn, pieces::king>::value, "");
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
 
         void toggle_promotion()
         {
-                BOOST_MPL_ASSERT((std::is_same<typename rules::phase::promotion<Rules>::type, rules::phase::en_passant>));
+                static_assert(std::is_same<typename rules::phase::promotion<Rules>::type, rules::phase::en_passant>::value, "");
                 current_.toggle_promotion();
         }
 
         void improve()
         {
-                BOOST_MPL_ASSERT((rules::is_precedence<Rules>));
-                BOOST_ASSERT(best_ < current_);
+                static_assert(rules::is_precedence<Rules>::value, "");
+                assert(best_ < current_);
                 best_ = current_;
         }
 
@@ -168,15 +166,15 @@ public:
 
         auto greater_equal() const
         {
-                BOOST_MPL_ASSERT((rules::is_precedence<Rules>));
-                BOOST_ASSERT(is_totally_ordered(best_, current_));
+                static_assert(rules::is_precedence<Rules>::value, "");
+                assert(is_totally_ordered(best_, current_));
                 return current_ >= best_;
         }
 
         auto not_equal_to() const
         {
-                BOOST_MPL_ASSERT((rules::is_precedence<Rules>));
-                BOOST_ASSERT(greater_equal());
+                static_assert(rules::is_precedence<Rules>::value, "");
+                assert(greater_equal());
                 return current_ != best_;
         }
 
@@ -193,7 +191,7 @@ public:
 
         auto is_promotion() const
         {
-                BOOST_MPL_ASSERT((std::is_same<typename rules::phase::promotion<Rules>::type, rules::phase::en_passant>));
+                static_assert(std::is_same<typename rules::phase::promotion<Rules>::type, rules::phase::en_passant>::value, "");
                 return current_.is_promotion();
         }
 
