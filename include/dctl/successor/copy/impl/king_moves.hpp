@@ -6,7 +6,7 @@
 
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/board/iterator.hpp>
+#include <dctl/board/iterator.hpp>                      // Increment, Next
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/bit/bitboard.hpp>                        // BitIndex

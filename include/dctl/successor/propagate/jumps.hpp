@@ -6,7 +6,7 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/bit/bitboard.hpp>
-#include <dctl/board/iterator.hpp>
+#include <dctl/board/iterator.hpp>      // Prev
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/unary_projections.hpp>
