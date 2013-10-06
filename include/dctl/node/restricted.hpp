@@ -11,13 +11,7 @@ struct KingMoves
 public:
         // structors
 
-        KingMoves()
-        :
-                king_(0),
-                moves_(0)
-        {
-                assert(invariant());
-        }
+        KingMoves() = default;
 
         // modifiers
 
@@ -70,8 +64,8 @@ private:
 
         // representation
 
-        BitBoard king_;
-        PlyCount moves_;
+        BitBoard king_ {};
+        PlyCount moves_ {};
 };
 
 using Restricted = KingMoves[2];

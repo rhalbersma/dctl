@@ -146,10 +146,10 @@ private:
 
         // representation
 
-        int num_pieces_ = 0;
-        int num_kings_ = 0;
-        bool is_with_king_ = false;
-        std::vector<int> king_order_ = {};
+        int num_pieces_ {};
+        int num_kings_ {};
+        bool is_with_king_ {};
+        std::vector<int> king_order_ {};
 };
 
 }       // namespace successor

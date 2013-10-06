@@ -29,19 +29,10 @@ public:
         using TreeIterator = Position const*;
         static const int gap = rules::initial_gap<rules_type>::value + board_type::height % 2;
 
-        /*
-        Position()
-        {
-                // no-op
-        }
-        */
         // initialize with a set of bitboards and a color
         Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
         :
-                parent_(nullptr),
                 material_(black_pieces, white_pieces, kings),
-                reversible_moves_(0),
-                distance_to_root_(0),
                 to_move_(to_move)
         {
                 hash_index_ = zobrist::hash(*this);
@@ -246,12 +237,12 @@ private:
         }
 
         // representation
-        TreeIterator parent_;
+        TreeIterator parent_ {};
         HashIndex hash_index_;
         Material material_;
-        Restricted restricted_;
-        PlyCount reversible_moves_;
-        PlyCount distance_to_root_;
+        Restricted restricted_ {};
+        PlyCount reversible_moves_ {};
+        PlyCount distance_to_root_ {};
         bool to_move_;
         BitBoard padding_[6];
 };

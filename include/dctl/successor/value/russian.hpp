@@ -62,7 +62,7 @@ private:
 
         // representation
 
-        bool is_promotion_ = false;
+        bool is_promotion_ {};
 };
 
 }       // namespace successor
