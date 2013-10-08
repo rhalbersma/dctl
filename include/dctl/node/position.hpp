@@ -10,7 +10,8 @@
 #include <dctl/node/side.hpp>
 #include <dctl/node/predicates_fwd.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/int.hpp>         // PlyCount, HashIndex
+#include <dctl/utility/ply.hpp>         // PlyCount
+#include <dctl/utility/int.hpp>         // HashIndex
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/bit/bitboard.hpp>        // BitBoard
 
