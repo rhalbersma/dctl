@@ -2,7 +2,7 @@
 #include <memory>                       // unique_ptr
 #include <string>                       // string
 #include <type_traits>                  // is_base_of
-#include <dctl/utility/make_unique.hpp> // make_unique
+#include <dctl/cpp14/make_unique.hpp>   // make_unique
 
 namespace dctl {
 namespace factory {
@@ -26,7 +26,7 @@ struct make_creatable
 
         static Ret create(Arg const& arg)
         {
-                return std::make_unique<Derived>(arg);
+                return cpp14::make_unique<Derived>(arg);
         }
 
         static const auto identifier_ = ID;

@@ -42,3 +42,7 @@ namespace std {
         typename _Unique_if<T>::_Known_bound
         make_unique(Args&&...) = delete;
 }
+
+namespace cpp14 {
+        using std::make_unique;
+}       // cpp14
