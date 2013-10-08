@@ -58,7 +58,7 @@ struct is_jump_start
         {
                 auto const offset = angle::is_diagonal(Direction)? 2 : 4;
 
-                auto const row = grid::detail::decentralize( grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height);
+                auto const row = grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height);
                 auto const min_row = angle::is_up(Direction)? offset : 0;
                 auto const max_row = Grid::height - (angle::is_down(Direction)? offset : 0);
 

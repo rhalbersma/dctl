@@ -95,7 +95,8 @@ public:
         }
 
 private:
-        template<class Predicate /* NOTE: no lambda in constexpr */>
+        /* NOTE: for C++11/14, constexpr predicate != lambda expression */
+        template<class Predicate>
         static constexpr auto copy_if(Predicate pred) noexcept
         {
                 bit::bit_set<int, uint64_t, 1> result;
