@@ -3,7 +3,6 @@
 
 namespace dctl {
 
-using PlyCount = uint8_t;
 using NodeCount = uint64_t;
 using HashIndex = uint64_t;
 

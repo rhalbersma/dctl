@@ -2,7 +2,7 @@
 #include <cassert>                      // assert
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/bitboard.hpp>        // BitBoard
-#include <dctl/utility/int.hpp>         // PlyCount
+#include <dctl/utility/ply.hpp>         // PlyCount
 
 namespace dctl {
 
