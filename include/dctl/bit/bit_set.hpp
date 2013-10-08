@@ -4,7 +4,6 @@
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // distance
 #include <limits>                               // digits
-#include <stdexcept>                            // out_of_range
 #include <utility>                              // swap
 #include <dctl/bit/iterator.hpp>                // bit_iterator
 #include <dctl/bit/reference.hpp>               // bit_reference
@@ -25,7 +24,7 @@ public:
 
         using key_type = T;
         using value_type = T;
-        using size_type = std::size_t;
+        using size_type = int;
         using difference_type = std::ptrdiff_t;
         using reference = bit_reference<T, Block, Nb>;
         using const_reference = reference;
@@ -277,11 +276,9 @@ public:
                 return is_mask(n);
         }
 
-        constexpr auto test(key_type n) const
+        constexpr auto test(key_type n) const noexcept
         {
-                if (!(0 <= n && n < N))
-                        throw std::out_of_range("");
-                return is_mask(n);
+                return 0 <= n && n < N && is_mask(n);
         }
 
         constexpr auto& reset(key_type n)

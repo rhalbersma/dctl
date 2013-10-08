@@ -6,7 +6,7 @@ namespace util {
 template<class T>
 constexpr auto abs(T const& value) noexcept
 {
-        return (value < 0)? -value : value;
+        return (value < 0) ? -value : value;
 }
 
 template<class T>
