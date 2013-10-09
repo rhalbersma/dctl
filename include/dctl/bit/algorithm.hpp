@@ -23,15 +23,15 @@ constexpr auto set_all(Set const& lhs) noexcept
 }
 
 template<class Set>
-constexpr auto set_count_equal_to(Set const& lhs, int n) noexcept
+constexpr auto set_is_count_equal_to(Set const& lhs, int n) noexcept
 {
-        return lhs.count_equal_to(n);
+        return lhs.is_count_equal_to(n);
 }
 
 template<class Set>
-constexpr auto set_count_less(Set const& lhs, int n) noexcept
+constexpr auto set_is_count_less(Set const& lhs, int n) noexcept
 {
-        return lhs.count_less(n);
+        return lhs.is_count_less(n);
 }
 
 template<class Set>

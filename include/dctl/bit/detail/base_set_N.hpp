@@ -175,7 +175,7 @@ struct base_set
                 return true;
         }
 
-        constexpr auto do_count_equal_to(int n) const noexcept
+        constexpr auto do_is_count_equal_to(int n) const noexcept
         {
                 auto sum = 0;
                 for (auto i = 0; i < Nb; ++i) {
@@ -186,7 +186,7 @@ struct base_set
                 return sum == n;
         }
 
-        constexpr auto do_count_less(int n) const noexcept
+        constexpr auto do_is_count_less(int n) const noexcept
         {
                 auto sum = 0;
                 for (auto i = 0; i < Nb; ++i) {

@@ -114,12 +114,12 @@ struct base_set<T, Block, 1>
                 return data_ == ~Block{0};
         }
 
-        constexpr auto do_count_equal_to(int n) const noexcept
+        constexpr auto do_is_count_equal_to(int n) const noexcept
         {
                 return do_count() == n;
         }
 
-        constexpr auto do_count_less(int n) const noexcept
+        constexpr auto do_is_count_less(int n) const noexcept
         {
                 return do_count() < n;
         }

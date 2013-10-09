@@ -421,12 +421,12 @@ public:
                 return this->do_all();
         }
 
-        constexpr auto count_equal_to(int n) const noexcept
+        constexpr auto is_count_equal_to(int n) const noexcept
         {
                 return this->do_count_equal_to(n);
         }
 
-        constexpr auto count_less(int n) const noexcept
+        constexpr auto is_count_less(int n) const noexcept
         {
                 return this->do_count_less(n);
         }
