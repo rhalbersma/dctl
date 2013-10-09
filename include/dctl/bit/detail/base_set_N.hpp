@@ -135,6 +135,22 @@ struct base_set
                 return false;
         }
 
+        constexpr auto do_includes(base_set const& other) const noexcept
+        {
+                for (auto i = 0; i < Nb; ++i)
+                        if ((other.data_[i] & ~data_[i]) != Block{0})
+                                return false;
+                return true;
+        }
+
+        constexpr auto do_intersects(base_set const& other) const noexcept
+        {
+                for (auto i = 0; i < Nb; ++i)
+                        if ((data_ & other.data_) != Block{0})
+                                return true;
+                return false;
+        }
+
         constexpr auto do_none() const noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
