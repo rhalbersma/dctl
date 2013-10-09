@@ -396,6 +396,16 @@ public:
 
         // bitwise algorithms
 
+        constexpr auto includes(bit_set const& other) const noexcept
+        {
+                return this->do_includes(other);
+        }
+
+        constexpr auto intersects(bit_set const& other) const noexcept
+        {
+                return this->do_intersects(other);
+        }
+
         constexpr auto none() const noexcept
         {
                 return this->do_none();

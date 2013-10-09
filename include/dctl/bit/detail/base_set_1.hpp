@@ -89,6 +89,16 @@ struct base_set<T, Block, 1>
                 return lhs.data_ < rhs.data_;
         }
 
+        constexpr auto do_includes(base_set const& other) const noexcept
+        {
+                return (other.data_ & ~data_) == Block{0};
+        }
+
+        constexpr auto do_intersects(base_set const& other) const noexcept
+        {
+                return (data_ & other.data_) != Block{0};
+        }
+
         constexpr auto do_none() const noexcept
         {
                 return data_ == Block{0};

@@ -71,6 +71,18 @@ constexpr auto set_lexicographical_compare(Set const& lhs, Set const& rhs) noexc
 }
 
 template<class Set>
+constexpr auto set_includes(Set const& lhs, Set const& rhs) noexcept
+{
+        return lhs.includes(rhs);
+}
+
+template<class Set>
+constexpr auto set_exclusive(Set const& lhs, Set const& rhs) noexcept
+{
+        return !lhs.intersects(rhs);
+}
+
+template<class Set>
 constexpr auto set_complement(Set const& lhs) noexcept
 {
         return ~lhs;
@@ -80,12 +92,6 @@ template<class Set>
 constexpr auto set_intersection(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs & rhs;
-}
-
-template<class Set>
-constexpr auto set_exclusive(Set const& lhs, Set const& rhs) noexcept
-{
-        return set_intersection(lhs, rhs).empty();
 }
 
 template<class Set>
@@ -104,12 +110,6 @@ template<class Set>
 constexpr auto set_difference(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs & ~rhs;
-}
-
-template<class Set>
-constexpr auto set_includes(Set const& lhs, Set const& rhs) noexcept
-{
-        return set_difference(rhs, lhs).empty();
 }
 
 template<class Set>
