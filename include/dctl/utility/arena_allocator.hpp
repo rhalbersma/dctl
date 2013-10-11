@@ -3,9 +3,6 @@
 #include <cstddef>
 #include <type_traits>
 #include <boost/operators.hpp>
-#include <dctl/preprocessor/cpp11/alignas.hpp>
-#include <dctl/preprocessor/cpp11/constexpr.hpp>
-#include <dctl/preprocessor/cpp11/noexcept.hpp>
 
 namespace dctl {
 
@@ -16,7 +13,7 @@ template <std::size_t N>
 class arena
 {
 public:
-        arena() DCTL_PP_NOEXCEPT
+        arena() noexcept
         :
                 ptr_(buf_)
         {}
@@ -29,7 +26,7 @@ public:
         arena(arena const&) = delete;
         arena& operator=(arena const&) = delete;
 
-        static DCTL_PP_CONSTEXPR std::size_t size()
+        static constexpr std::size_t size()
         {
                 return N;
         }
@@ -56,7 +53,7 @@ public:
                 return static_cast<char*>(::operator new(n));
         }
 
-        void deallocate(char* p, std::size_t n) DCTL_PP_NOEXCEPT
+        void deallocate(char* p, std::size_t n) noexcept
         {
                 assert(pointer_in_buffer(ptr_) && "short_alloc has outlived arena");
                 if (pointer_in_buffer(p)) {
@@ -69,18 +66,18 @@ public:
         }
 
 private:
-        std::size_t align_up(std::size_t n) DCTL_PP_NOEXCEPT
+        std::size_t align_up(std::size_t n) noexcept
         {
                 return (n + (alignment - 1)) & ~(alignment - 1);
         }
 
-        bool pointer_in_buffer(char* p) DCTL_PP_NOEXCEPT
+        bool pointer_in_buffer(char* p) noexcept
         {
                 return buf_ <= p && p <= buf_ + N;
         }
 
         static const std::size_t alignment = 16;
-        DCTL_PP_ALIGNAS(alignment) char buf_[N];
+        alignas(alignment) char buf_[N];
         char* ptr_;
 };
 
@@ -99,13 +96,13 @@ public:
                 using other = short_alloc<U, N>;
         };
 
-        short_alloc(arena<num_bytes>& a) DCTL_PP_NOEXCEPT
+        short_alloc(arena<num_bytes>& a) noexcept
         :
                 a_(a)
         {}
 
         template <class U>
-        short_alloc(short_alloc<U, N> const& a) DCTL_PP_NOEXCEPT
+        short_alloc(short_alloc<U, N> const& a) noexcept
         :
                 a_(a.a_)
         {}
@@ -118,14 +115,14 @@ public:
                 return reinterpret_cast<T*>(a_.allocate(n * sizeof(T)));
         }
 
-        void deallocate(T* p, std::size_t n) DCTL_PP_NOEXCEPT
+        void deallocate(T* p, std::size_t n) noexcept
         {
                 a_.deallocate(reinterpret_cast<char*>(p), n * sizeof(T));
         }
 
         // operator!= provided by boost::equality_comparible
         template<class U, std::size_t M>
-        friend bool operator==(short_alloc<T, N> const& x, short_alloc<U, M> const& y) DCTL_PP_NOEXCEPT
+        friend bool operator==(short_alloc<T, N> const& x, short_alloc<U, M> const& y) noexcept
         {
                 return (N * sizeof(T) == M * sizeof(U)) && &x.a_ == &y.a_;
         }
