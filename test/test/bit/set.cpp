@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <initializer_list>                     // initializer_list
+#include <iostream>
 #include <iterator>                             // begin, end, cbegin, cend, distance
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
