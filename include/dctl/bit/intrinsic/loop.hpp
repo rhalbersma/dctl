@@ -12,8 +12,7 @@ constexpr auto unchecked_ctz(T x)
 {
         assert(x != 0);
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i)
-                if (x & (T{1} << i))
-                        return i;
+                if (x & (T{1} << i)) return i;
         throw std::invalid_argument("unchecked_ctz requires non-zero argument");
 }
 
@@ -22,8 +21,7 @@ constexpr auto unchecked_clz(T x)
 {
         assert(x != 0);
         for (auto i = std::numeric_limits<T>::digits - 1; i >= 0; --i)
-                if (x & (T{1} << i))
-                        return std::numeric_limits<T>::digits - 1 - i;
+                if (x & (T{1} << i)) return std::numeric_limits<T>::digits - 1 - i;
         throw std::invalid_argument("unchecked_clz requires non-zero argument");
 }
 

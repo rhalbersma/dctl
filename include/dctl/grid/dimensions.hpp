@@ -1,5 +1,5 @@
 #pragma once
-#include <stdexcept>                    // logic_error
+#include <stdexcept>                    // invalid_argument
 #include <tuple>                        // tie
 #include <dctl/angle/angle.hpp>         // make_angle
 #include <dctl/angle/degrees.hpp>       // D000, L090, R090, D180
@@ -37,7 +37,7 @@ constexpr auto rotate(DimensionsObject const& dim, T const& theta)
         case angle::L090: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.height() % 2) ^ !dim.parity()) };
         case angle::R090: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.width()  % 2) ^ !dim.parity()) };
         case angle::D180: return DimensionsObject{ dim.height(), dim.width() , static_cast<bool>((dim.height() % 2) ^ (dim.width() % 2) ^ (!!dim.parity())) };
-        default: return throw std::logic_error("Dimensions rotation angles shall be a multiple of 90 degrees."), dim;
+        default: return throw std::invalid_argument("Dimensions rotation angles shall be a multiple of 90 degrees."), dim;
         }
 }
 

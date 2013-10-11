@@ -1,5 +1,5 @@
 #pragma once
-#include <stdexcept>                    // logic_error
+#include <stdexcept>                    // invalid_argument
 #include <tuple>                        // tie
 #include <dctl/angle/angle.hpp>         // make_angle
 #include <dctl/angle/degrees.hpp>       // D000, L090, R090, D180
@@ -82,7 +82,7 @@ constexpr auto rotate(Coordinates const& coord, T const& theta)
         case angle::L090: return Coordinates{  coord.col(), -coord.row() };
         case angle::R090: return Coordinates{ -coord.col(),  coord.row() };
         case angle::D180: return Coordinates{ -coord.row(), -coord.col() };
-        default: return throw std::logic_error("Coordinates rotation angles shall be a multiple of 90 degrees."), coord;
+        default: return throw std::invalid_argument("Coordinates rotation angles shall be a multiple of 90 degrees."), coord;
         }
 }
 
