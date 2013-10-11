@@ -16,11 +16,11 @@ using UnsignedIntegerTypes = boost::mpl::vector
         uint32_t, uint64_t
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Ctz, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(UncheckedCtz, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
                 auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(lookup::ctz(b), i);
+                BOOST_CHECK_EQUAL(lookup::unchecked_ctz(b), i);
         }
 }
 
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Clz, T, UnsignedIntegerTypes)
 {
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
                 auto const b = singlet<T>(i);
-                BOOST_CHECK_EQUAL(lookup::clz(b), std::numeric_limits<T>::digits - 1 - i);
+                BOOST_CHECK_EQUAL(lookup::unchecked_clz(b), std::numeric_limits<T>::digits - 1 - i);
         }
 }
 

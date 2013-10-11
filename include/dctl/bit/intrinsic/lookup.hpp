@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>                      // assert
 #include <limits>                       // digits
+#include <stdexcept>                    // invalid_argument
 #include <type_traits>                  // integral_constant
 
 namespace dctl {
@@ -12,33 +13,27 @@ class table
 {
 public:
         template<class T>
-        static constexpr auto ctz(T x) noexcept
+        static constexpr auto unchecked_ctz(T x)
         {
-                auto n = 0;
-                for (auto i = 0; i < num_blocks<T>::value; ++i) {
-                        if (auto const b = block_mask(x, i)) {
-                                n += ctz_[b];
-                                break;
-                        }
-                        n += std::numeric_limits<U>::digits;
+                for (auto i = 0, n = 0; i < num_blocks<T>::value; ++i) {
+                        auto const b = block_mask(x, i);
+                        n += unchecked_ctz_[b];
+                        if (b)
+                                return n;
                 }
-                assert(post_condition<T>(n));
-                return n;
+                throw std::invalid_argument("unchecked_ctz requires non-zero argument");
         }
 
         template<class T>
-        static constexpr auto clz(T x) noexcept
+        static constexpr auto unchecked_clz(T x)
         {
-                auto n = 0;
-                for (auto i = num_blocks<T>::value - 1; i >= 0; --i) {
-                        if (auto const b = block_mask(x, i)) {
-                                n += clz_[b];
-                                break;
-                        }
-                        n += std::numeric_limits<U>::digits;
+                for (auto i = num_blocks<T>::value - 1, n = 0; i >= 0; --i) {
+                        auto const b = block_mask(x, i);
+                        n += unchecked_clz_[b];
+                        if (b)
+                                return n;
                 }
-                assert(post_condition<T>(n));
-                return n;
+                throw std::invalid_argument("unchecked_clz requires non-zero argument");
         }
 
         template<class T>
@@ -47,7 +42,7 @@ public:
                 auto n = 0;
                 for (auto i = 0; i < num_blocks<T>::value; ++i)
                         n += popcount_[block_mask(x, i)];
-                assert(post_condition<T>(n));
+                assert(0 <= n && n <= std::numeric_limits<T>::digits);
                 return n;
         }
 
@@ -55,10 +50,7 @@ private:
         // implementation
 
         template<class T>
-        struct num_blocks
-        :
-                std::integral_constant<int, sizeof(T) / sizeof(U)>
-        {};
+        using num_blocks = std::integral_constant<int, sizeof(T) / sizeof(U)>;
 
         template<class T>
         static constexpr auto block_mask(T x, int i)
@@ -66,15 +58,9 @@ private:
                 return static_cast<U>(x >> (i * std::numeric_limits<U>::digits));
         }
 
-        template<class T>
-        static constexpr auto post_condition(int n) noexcept
-        {
-                return 0 <= n && n <= std::numeric_limits<T>::digits;
-        }
-
         // representation
 
-        static constexpr int ctz_[] =
+        static constexpr int unchecked_ctz_[] =
         {
                 8,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
                 4,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0,
@@ -94,7 +80,7 @@ private:
                 4,  0,  1,  0,  2,  0,  1,  0,  3,  0,  1,  0,  2,  0,  1,  0
         };
 
-        static constexpr int clz_[] =
+        static constexpr int unchecked_clz_[] =
         {
                 8,  7,  6,  6,  5,  5,  5,  5,  4,  4,  4,  4,  4,  4,  4,  4,
                 3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,
@@ -136,22 +122,24 @@ private:
 
 };
 
-template<class U> constexpr int table<U>::ctz_[];
-template<class U> constexpr int table<U>::clz_[];
+template<class U> constexpr int table<U>::unchecked_ctz_[];
+template<class U> constexpr int table<U>::unchecked_clz_[];
 template<class U> constexpr int table<U>::popcount_[];
 
 using detail = table<>;
 
 template<class T>
-constexpr auto ctz(T x) noexcept
+constexpr auto unchecked_ctz(T x) noexcept
 {
-        return detail::ctz(x);
+        assert(x != 0);
+        return detail::unchecked_ctz(x);
 }
 
 template<class T>
-constexpr auto clz(T x) noexcept
+constexpr auto unchecked_clz(T x) noexcept
 {
-        return detail::clz(x);
+        assert(x != 0);
+        return detail::unchecked_clz(x);
 }
 
 template<class T>
