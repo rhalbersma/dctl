@@ -32,7 +32,7 @@ auto copy(Position const& p, Arena<Move>& mar)
 template<class Pieces, class Select, class Position>
 auto copy(Position const& p, Arena<Move>& mar)
 {
-        return (p.to_move() == Side::black)?
+        return (p.to_move() == Side::black) ?
                 copy<Side::black, Pieces, Select>(p, mar) :
                 copy<Side::white, Pieces, Select>(p, mar)
         ;

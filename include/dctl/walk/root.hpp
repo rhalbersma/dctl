@@ -134,7 +134,7 @@ struct Enhancements<hash_tag, Position>
         std::pair<bool, NodeCount> find(Position const& p, int depth) const
         {
                 auto const TT_entry = handle_->TT_.find(p);
-                return (TT_entry && TT_entry->depth() == depth)?
+                return (TT_entry && TT_entry->depth() == depth) ?
                         std::make_pair(true, NodeCount(TT_entry->nodes())) :
                         std::make_pair(false, NodeCount(0))
                 ;
@@ -142,7 +142,7 @@ struct Enhancements<hash_tag, Position>
 
         std::pair<bool, NodeCount> terminal(Position const& p, int depth) const
         {
-                return (depth == 1)?
+                return (depth == 1) ?
                         std::make_pair(true, NodeCount(successor::count(p))) :
                         std::make_pair(false, NodeCount(0))
                 ;

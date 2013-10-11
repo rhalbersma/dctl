@@ -121,7 +121,7 @@ std::string print(int value)
         std::stringstream sstr;
 
         if (is_infinite(value))
-                sstr << (value < 0? "-" : "+") << "INF";
+                sstr << (value < 0 ? "-" : "+") << "INF";
         else if (is_loss(value))
                 sstr << "L" << loss_ply(value);
         else if (is_win(value))

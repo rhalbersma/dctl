@@ -54,7 +54,7 @@ public:
         Ret create(Arg const& input) const
         {
                 auto const it = registry_.find(Base::header(input));
-                return (it != std::end(registry_))? (it->second)(Base::body(input)) : nullptr;
+                return (it != std::end(registry_)) ? (it->second)(Base::body(input)) : nullptr;
         }
 
 private:

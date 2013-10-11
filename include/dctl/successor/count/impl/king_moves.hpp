@@ -45,7 +45,7 @@ public:
         template<class Set>
         int operator()(Set const& active_kings) const
         {
-                return active_kings? branch(active_kings) : 0;
+                return active_kings ? branch(active_kings) : 0;
         }
 
 private:
