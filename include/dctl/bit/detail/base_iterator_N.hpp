@@ -17,70 +17,50 @@ struct base_iterator
 
         constexpr auto find_first() noexcept
         {
-                for (auto i = 0; i < Nb; ++i, ++block_) {
+                for (auto i = 0; i < Nb; ++i) {
                         auto const mask = *block_;
-                        if (mask)
-                                return i * digits + bit::bsf(mask);
+                        if (mask) return i * digits + bit::bsf(mask);
+                        ++block_;
                 }
                 return N;
         }
 
         constexpr void find_next() noexcept
         {
-                assert(index_ < N);
-                if (N <= ++index_) {
-                        ++block_;
-                        return;
-                }
+                assert(0 <= index_ && index_ < N);
+                if (N <= ++index_) { ++block_; return; }
 
                 auto const idx = storage<Block>::shift_idx(index_);
-                if (idx == 0)
-                        ++block_;
+                if (idx == 0) ++block_;
                 auto const mask = *block_ >> idx;
-                if (mask) {
-                        index_ += bit::unchecked_ctz(mask);
-                        return;
-                }
+                if (mask) { index_ += bit::unchecked_ctz(mask); return; }
                 ++block_;
 
-                for (auto i = storage<Block>::block_idx(index_) + 1; i < Nb; ++i, ++block_) {
+                for (auto i = storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
                         auto const mask = *block_;
-                        if (mask) {
-                                index_ = i * digits + bit::bsf(mask);
-                                return;
-                        }
+                        if (mask) { index_ = i * digits + bit::bsf(mask); return; }
+                        ++block_;
                 }
                 index_ = N;
-                assert(-1 < index_);
+                assert(0 < index_ && index_ <= N);
         }
 
         constexpr void find_prev() noexcept
         {
-                assert(-1 < index_);
-                if (--index_ <= -1) {
-                        --block_;
-                        return;
-                }
+                assert(0 < index_ && index_ <= N);
+                --index_;
 
                 auto const idx = storage<Block>::shift_idx(index_);
-                if (idx == digits - 1)
-                        --block_;
+                if (idx == digits - 1) --block_;
                 auto const mask = *block_ << (digits - 1 - idx);
-                if (mask) {
-                        index_ -= bit::unchecked_clz(mask);
-                        return;
-                }
-                --block_;
+                if (mask) { index_ -= bit::unchecked_clz(mask); return; }
 
-                for (auto i = storage<Block>::block_idx(index_) - 1; i >= 0; --i, --block_) {
-                        auto const mask = *block_;
-                        if (mask) {
-                                index_ = i * digits + bit::bsr(mask);
-                                return;
-                        }
+                for (auto i = storage<Block>::block_idx(index_) - 1; i >= 0; --i) {
+                        auto const mask = *--block_;
+                        if (mask) { index_ = i * digits + bit::bsr(mask); return; }
                 }
-                index_ = -1;
-                assert(index_ < N);
+                index_ = 0;
+                assert(0 <= index_ && index_ < N);
         }
 
         Block const* block_;

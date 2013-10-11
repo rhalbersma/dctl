@@ -15,26 +15,31 @@ struct base_iterator<Block, 1>
 
         constexpr auto find_first() noexcept
         {
-                auto mask = *block_;
-                return bit::ctz(mask);
+                return bit::ctz(*block_);
         }
 
         constexpr void find_next() noexcept
         {
-                assert(index_ < N);
+                assert(0 <= index_ && index_ < N);
                 if (N <= ++index_) return;
                 auto const mask = *block_ >> index_;
-                index_ = mask ? index_ + bit::unchecked_ctz(mask) : N;
-                assert(-1 < index_);
+                if (mask)
+                        index_ += bit::unchecked_ctz(mask);
+                else
+                        index_ = N;
+                assert(0 < index_ && index_ <= N);
         }
 
         constexpr void find_prev() noexcept
         {
-                assert(-1 < index_);
-                if (--index_ <= -1) return;
+                assert(0 < index_ && index_ <= N);
+                --index_;
                 auto const mask = *block_ << (N - 1 - index_);
-                index_ = mask ? index_ - bit::unchecked_clz(mask) : -1;
-                assert(index_ < N);
+                if (mask)
+                        index_ -= bit::unchecked_clz(mask);
+                else
+                        index_ = 0;
+                assert(0 <= index_ && index_ < N);
         }
 
         Block const* block_;
