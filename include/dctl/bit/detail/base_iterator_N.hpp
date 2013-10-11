@@ -3,7 +3,7 @@
 #include <limits>                                       // digits
 #include <dctl/bit/detail/base_iterator_fwd.hpp>        // base_iterator
 #include <dctl/bit/detail/storage.hpp>                  // storage
-#include <dctl/bit/intrinsic.hpp>                       // clz, ctz
+#include <dctl/bit/intrinsic.hpp>                       // bsf, bsr, unchecked_clz, unchecked_ctz
 
 namespace dctl {
 namespace bit {
@@ -20,7 +20,7 @@ struct base_iterator
                 for (auto i = 0; i < Nb; ++i, ++block_) {
                         auto const mask = *block_;
                         if (mask)
-                                return i * digits + intrinsic::ctz(mask);
+                                return i * digits + bit::bsf(mask);
                 }
                 return N;
         }
@@ -37,16 +37,16 @@ struct base_iterator
                 if (idx == 0)
                         ++block_;
                 auto const mask = *block_ >> idx;
-                if (mask != 0) {
-                        index_ += intrinsic::ctz(mask);
+                if (mask) {
+                        index_ += bit::unchecked_ctz(mask);
                         return;
                 }
                 ++block_;
 
                 for (auto i = storage<Block>::block_idx(index_) + 1; i < Nb; ++i, ++block_) {
                         auto const mask = *block_;
-                        if (mask != 0) {
-                                index_ = i * digits + intrinsic::ctz(mask);
+                        if (mask) {
+                                index_ = i * digits + bit::bsf(mask);
                                 return;
                         }
                 }
@@ -66,16 +66,16 @@ struct base_iterator
                 if (idx == digits - 1)
                         --block_;
                 auto const mask = *block_ << (digits - 1 - idx);
-                if (mask != 0) {
-                        index_ -= intrinsic::clz(mask);
+                if (mask) {
+                        index_ -= bit::unchecked_clz(mask);
                         return;
                 }
                 --block_;
 
                 for (auto i = storage<Block>::block_idx(index_) - 1; i >= 0; --i, --block_) {
                         auto const mask = *block_;
-                        if (mask != 0) {
-                                index_ = i * digits + (digits - 1 - intrinsic::clz(mask));
+                        if (mask) {
+                                index_ = i * digits + bit::bsr(mask);
                                 return;
                         }
                 }

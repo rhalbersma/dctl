@@ -1,6 +1,5 @@
 #pragma once
-#include <limits>                       // digits
-#include <dctl/bit/intrinsic.hpp>       // ctz, popcount
+#include <dctl/bit/intrinsic.hpp>       // popcount
 
 namespace dctl {
 namespace bit {
@@ -16,7 +15,7 @@ bool empty(T b)
 template<class T>
 int size(T b)
 {
-        return intrinsic::popcount(b);
+        return bit::popcount(b);
 }
 
 template<class T>

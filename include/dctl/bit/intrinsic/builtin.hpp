@@ -6,11 +6,15 @@ namespace bit {
 namespace builtin {
 namespace detail {
 
+// gcc has built-in functions for trailing zero count
+// for unsigned, unsigned long and unsigned long long
+// for zero input, the result is undefined
+
 template<class T>
-struct ctz;
+struct unchecked_ctz;
 
 template<>
-struct ctz<unsigned>
+struct unchecked_ctz<unsigned>
 {
         constexpr auto operator()(unsigned x) const
         {
@@ -19,7 +23,7 @@ struct ctz<unsigned>
 };
 
 template<>
-struct ctz<unsigned long>
+struct unchecked_ctz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const
         {
@@ -28,7 +32,7 @@ struct ctz<unsigned long>
 };
 
 template<>
-struct ctz<unsigned long long>
+struct unchecked_ctz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const
         {
@@ -36,11 +40,15 @@ struct ctz<unsigned long long>
         }
 };
 
+// gcc has built-in functions for leading zero count
+// for unsigned, unsigned long and unsigned long long
+// for zero input, the result is undefined
+
 template<class T>
-struct clz;
+struct unchecked_clz;
 
 template<>
-struct clz<unsigned>
+struct unchecked_clz<unsigned>
 {
         constexpr auto operator()(unsigned x) const
         {
@@ -49,7 +57,7 @@ struct clz<unsigned>
 };
 
 template<>
-struct clz<unsigned long>
+struct unchecked_clz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const
         {
@@ -58,13 +66,16 @@ struct clz<unsigned long>
 };
 
 template<>
-struct clz<unsigned long long>
+struct unchecked_clz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const
         {
                 return __builtin_clzll(x);
         }
 };
+
+// gcc has built-in functions for population count
+// for unsigned, unsigned long and unsigned long long,
 
 template<class T>
 struct popcount;
@@ -99,17 +110,17 @@ struct popcount<unsigned long long>
 }       // namespace detail
 
 template<class T>
-constexpr auto ctz(T x)
+constexpr auto unchecked_ctz(T x)
 {
         assert(x != 0);
-        return detail::ctz<T>()(x);
+        return detail::unchecked_ctz<T>()(x);
 }
 
 template<class T>
-constexpr auto clz(T x)
+constexpr auto unchecked_clz(T x)
 {
         assert(x != 0);
-        return detail::clz<T>()(x);
+        return detail::unchecked_clz<T>()(x);
 }
 
 template<class T>

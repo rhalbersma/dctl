@@ -116,17 +116,17 @@ struct base_set<T, Block, 1>
 
         constexpr auto do_is_count_equal_to(int n) const noexcept
         {
-                return do_count() == n;
+                return bit::popcount(data_) == n;
         }
 
         constexpr auto do_is_count_less(int n) const noexcept
         {
-                return do_count() < n;
+                return bit::popcount(data_) < n;
         }
 
         constexpr auto do_count() const noexcept
         {
-                return intrinsic::popcount(data_);
+                return bit::popcount(data_);
         }
 
         // representation
