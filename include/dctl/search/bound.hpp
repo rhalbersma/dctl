@@ -1,6 +1,6 @@
 #pragma once
 #include <sstream>                      // stringstream
-#include <stdexcept>                    // logic_error
+#include <stdexcept>                    // invalid_argument
 #include <string>                       // string
 
 namespace dctl {
@@ -36,7 +36,7 @@ struct Bound
                         sstr << "==";
                         break;
                 default:
-                        throw std::logic_error("Search bound must be >=, <= or ==");
+                        throw std::invalid_argument("Search bound must be >=, <= or ==");
                         break;
                 }
                 return sstr.str();

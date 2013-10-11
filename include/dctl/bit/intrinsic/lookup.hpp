@@ -18,8 +18,7 @@ public:
                 for (auto i = 0, n = 0; i < num_blocks<T>::value; ++i) {
                         auto const b = block_mask(x, i);
                         n += unchecked_ctz_[b];
-                        if (b)
-                                return n;
+                        if (b) return n;
                 }
                 throw std::invalid_argument("unchecked_ctz requires non-zero argument");
         }
@@ -30,8 +29,7 @@ public:
                 for (auto i = num_blocks<T>::value - 1, n = 0; i >= 0; --i) {
                         auto const b = block_mask(x, i);
                         n += unchecked_clz_[b];
-                        if (b)
-                                return n;
+                        if (b) return n;
                 }
                 throw std::invalid_argument("unchecked_clz requires non-zero argument");
         }

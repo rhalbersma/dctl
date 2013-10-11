@@ -1,5 +1,5 @@
 #pragma once
-#include <stdexcept>                    // logic_error
+#include <stdexcept>                    // invalid_argument
 #include <dctl/angle/angle.hpp>         // make_angle
 #include <dctl/angle/degrees.hpp>       // D00, D045, D090, D135, D180, D225, D270, D315
 
@@ -50,7 +50,7 @@ constexpr auto shift_size(T const& direction)
         case angle::D225: return detail::ShiftSize<Grid>::left_down ;
         case angle::D270: return detail::ShiftSize<Grid>::down      ;
         case angle::D315: return detail::ShiftSize<Grid>::right_down;
-        default: return throw std::logic_error("Shift direction angles shall be a multiple of 45 degrees"), -1;
+        default: return throw std::invalid_argument("Shift direction angles shall be a multiple of 45 degrees"), -1;
         }
 }
 
