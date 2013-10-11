@@ -16,7 +16,7 @@ auto count(Position const& p)
 template<class Pieces, class Select, class Position>
 auto count(Position const& p)
 {
-        return (p.to_move() == Side::black)?
+        return (p.to_move() == Side::black) ?
                 count<Side::black, Pieces, Select>(p) :
                 count<Side::white, Pieces, Select>(p)
         ;

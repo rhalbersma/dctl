@@ -223,13 +223,13 @@ public:
         constexpr auto find(key_type const& key)
         {
                 auto const found = is_mask(key);
-                return found? iterator{this->block_ptr(key), key} : end();
+                return found ? iterator{this->block_ptr(key), key} : end();
         }
 
         constexpr auto find(key_type const& key) const
         {
                 auto const found = is_mask(key);
-                return found? const_iterator{this->block_ptr(key), key} : cend();
+                return found ? const_iterator{this->block_ptr(key), key} : cend();
         }
 
         // relational operators

@@ -102,7 +102,7 @@ constexpr auto sqtocoord(Square<Grid> const& square) noexcept
         auto const P = R1 >= 0;
 
         // squares from the left edge
-        auto const R = P? R1 : R0;
+        auto const R = P ? R1 : R0;
 
         // 2x the row pairs + the row parity
         auto const ROW = 2 * Q + P;
@@ -130,7 +130,7 @@ constexpr auto coordtosq(Coordinates const& coord) noexcept
         auto const Q = DECENTRAL_ROW / 2;
 
         // the left edge
-        auto const L = P? Grid::edge_lo : Grid::edge_le;
+        auto const L = P ? Grid::edge_lo : Grid::edge_le;
 
         // number of column pairs
         auto const S = DECENTRAL_COL / 2;

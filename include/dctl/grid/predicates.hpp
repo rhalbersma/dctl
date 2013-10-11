@@ -25,8 +25,8 @@ struct is_initial
         constexpr auto operator()(int sq) const noexcept
         {
                 auto const row = grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height);
-                auto const min_row = Color? Grid::height - (Grid::height - Separation) / 2 : 0;
-                auto const max_row = Color? Grid::height : (Grid::height - Separation) / 2;
+                auto const min_row = Color ? Grid::height - (Grid::height - Separation) / 2 : 0;
+                auto const max_row = Color ? Grid::height : (Grid::height - Separation) / 2;
                 return util::is_element(row, {min_row, max_row});
         }
 };
@@ -36,7 +36,7 @@ struct is_row
 {
         constexpr auto operator()(int sq) const noexcept
         {
-                return grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height) == (Color? Grid::height - 1 - Row : Row);
+                return grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height) == (Color ? Grid::height - 1 - Row : Row);
         }
 };
 
@@ -45,7 +45,7 @@ struct is_col
 {
         constexpr auto operator()(int sq) const noexcept
         {
-                return grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).col(), Grid::width) == (Color? Grid::width - 1 - Column : Column);
+                return grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).col(), Grid::width) == (Color ? Grid::width - 1 - Column : Column);
         }
 };
 
@@ -56,15 +56,15 @@ struct is_jump_start
 
         constexpr auto operator()(int sq) const
         {
-                auto const offset = angle::is_diagonal(Direction)? 2 : 4;
+                auto const offset = angle::is_diagonal(Direction) ? 2 : 4;
 
                 auto const row = grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height);
-                auto const min_row = angle::is_up(Direction)? offset : 0;
+                auto const min_row = angle::is_up(Direction) ? offset : 0;
                 auto const max_row = Grid::height - (angle::is_down(Direction)? offset : 0);
 
                 auto const col = grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).col(), Grid::width);
-                auto const min_col = angle::is_left(Direction)? offset : 0;
-                auto const max_col = Grid::width - (angle::is_right(Direction)? offset : 0);
+                auto const min_col = angle::is_left(Direction) ? offset : 0;
+                auto const max_col = Grid::width - (angle::is_right(Direction) ? offset : 0);
 
                 return util::is_element(row, {min_row, max_row}) && util::is_element(col, {min_col, max_col});
         }

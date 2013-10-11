@@ -40,7 +40,7 @@ public:
         template<class Set>
         bool operator()(Set const& active_pawns) const
         {
-                return active_pawns? branch(active_pawns) : false;
+                return active_pawns ? branch(active_pawns) : false;
         }
 
 private:

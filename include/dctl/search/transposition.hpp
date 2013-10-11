@@ -36,7 +36,7 @@ public:
         // refined value
         int refined_value(int score) const
         {
-                return is_cutoff(score)? value() : score;
+                return is_cutoff(score) ? value() : score;
         }
 
         // upper or lower bound, or exact

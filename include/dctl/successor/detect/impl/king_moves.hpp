@@ -42,7 +42,7 @@ public:
         template<class Set>
         bool operator()(Set const& active_kings) const
         {
-                return active_kings? branch(active_kings) : false;
+                return active_kings ? branch(active_kings) : false;
         }
 
 private:

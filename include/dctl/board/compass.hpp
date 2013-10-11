@@ -10,7 +10,7 @@ template<class Board, bool Color>
 using Compass = angle::Compass<
         angle::rotate(
                 angle::inverse(Board::orientation),
-                Color? angle::D000 : angle::D180
+                Color ? angle::D000 : angle::D180
         )
 >;
 

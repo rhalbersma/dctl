@@ -114,7 +114,7 @@ struct cycle<FirstPlayerWin>
         template<class Position>
         static int value(Position const& p)
         {
-                return (p.distance_to_root() % 2)? loss_min() : win_min();
+                return (p.distance_to_root() % 2) ? loss_min() : win_min();
         }
 };
 

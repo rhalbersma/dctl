@@ -124,7 +124,7 @@ public:
                         [&](value_type const& entry) {
                         return key_equal()(entry.first, Signature()(/*key,*/ index));
                 });
-                return (it != last)? &(it->second) : nullptr;
+                return (it != last) ? &(it->second) : nullptr;
         }
 
 private:

@@ -163,7 +163,7 @@ private:
 
                 // internal iterative deepening (IID)
                 if (!(TT_entry && TT_entry->has_move())) {
-                        auto const IID_depth = is_pv(NodeType)? depth - 2 : depth / 2;
+                        auto const IID_depth = is_pv(NodeType) ? depth - 2 : depth / 2;
                         if (IID_depth > 0) {
                                 pvs<NodeType>(p, alpha, beta, IID_depth, ply, refutation);
                                 TT_entry = TT.find(p);
@@ -304,7 +304,7 @@ private:
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
                 std::cout << notation::write(p, best_move);
-                std::cout << ((ply % 10 == 9)? '\n' : ' ');
+                std::cout << ((ply % 10 == 9) ? '\n' : ' ');
 
                 auto q = successor::make_copy(p, best_move);
                 //if (q.same_king_moves(!q.to_move()))

@@ -205,7 +205,7 @@ private:
         template<int Direction>
         bool find_next_dispatch(BitIndex jumper, rules::phase::en_passant) const
         {
-                return (!is_promotion_sq<Color, Board>(jumper))?
+                return (!is_promotion_sq<Color, Board>(jumper)) ?
                         find_next_impl<Direction>(jumper) :
                         promote_en_passant<Direction>(jumper)
                 ;

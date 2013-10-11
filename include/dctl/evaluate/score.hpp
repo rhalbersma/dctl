@@ -11,7 +11,7 @@ namespace evaluate {
 template<class Position>
 static int score (Position const& p)
 {
-        return (p.to_move() == Side::black)?
+        return (p.to_move() == Side::black) ?
                 Delta<Side::black>::value(p) :
                 Delta<Side::white>::value(p)
         ;
