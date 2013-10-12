@@ -127,14 +127,14 @@ template<class U> constexpr int table<U>::popcount_[];
 using detail = table<>;
 
 template<class T>
-constexpr auto unchecked_ctz(T x) noexcept
+constexpr auto unchecked_ctz(T x)
 {
         assert(x != 0);
         return detail::unchecked_ctz(x);
 }
 
 template<class T>
-constexpr auto unchecked_clz(T x) noexcept
+constexpr auto unchecked_clz(T x)
 {
         assert(x != 0);
         return detail::unchecked_clz(x);
