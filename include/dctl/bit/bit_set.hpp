@@ -38,7 +38,8 @@ public:
 
         constexpr bit_set() = default;
 
-        constexpr bit_set(Block block)
+        // TODO: remove
+        explicit constexpr bit_set(Block block)
         :
                 Base{block}
         {}
