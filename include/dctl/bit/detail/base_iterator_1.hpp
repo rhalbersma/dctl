@@ -13,12 +13,12 @@ struct base_iterator<Block, 1>
 {
         static constexpr auto N = std::numeric_limits<Block>::digits;
 
-        constexpr auto find_first() noexcept
+        constexpr int find_first() noexcept
         {
                 return bit::ctz(*block_);
         }
 
-        constexpr void find_next() noexcept
+        constexpr void find_next()
         {
                 assert(0 <= index_ && index_ < N);
                 if (N <= ++index_) return;
@@ -30,7 +30,7 @@ struct base_iterator<Block, 1>
                 assert(0 < index_ && index_ <= N);
         }
 
-        constexpr void find_prev() noexcept
+        constexpr void find_prev()
         {
                 assert(0 < index_ && index_ <= N);
                 --index_;

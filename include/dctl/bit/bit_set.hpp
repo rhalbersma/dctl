@@ -2,8 +2,9 @@
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t, size_t
 #include <initializer_list>                     // initializer_list
-#include <iterator>                             // distance
+#include <iterator>                             // distance, iterator_traits
 #include <limits>                               // digits
+#include <type_traits>                          // is_convertible
 #include <utility>                              // swap
 #include <dctl/bit/iterator.hpp>                // bit_iterator
 #include <dctl/bit/reference.hpp>               // bit_reference
@@ -37,7 +38,10 @@ public:
 
         constexpr bit_set() = default;
 
-        constexpr bit_set(Block block): Base{block} {}
+        constexpr bit_set(Block block)
+        :
+                Base{block}
+        {}
 
         template<class InputIt>
         constexpr bit_set(InputIt first, InputIt last)
@@ -162,8 +166,9 @@ public:
         template<class InputIt>
         constexpr void insert(InputIt first, InputIt last)
         {
+                static_assert(std::is_convertible<typename std::iterator_traits<InputIt>::value_type, key_type>::value, "");
                 for (auto it = first; it != last; ++it)
-                        set(*it);
+                        set(static_cast<key_type>(*it));
         }
 
         constexpr void insert(std::initializer_list<value_type> ilist)
