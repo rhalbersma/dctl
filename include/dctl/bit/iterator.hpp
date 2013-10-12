@@ -26,6 +26,8 @@ public:
 
         // structors
 
+        constexpr bit_iterator() noexcept = default;
+
         constexpr explicit bit_iterator(Block const* b) noexcept
         :
                 Base{b, this->find_first()}
