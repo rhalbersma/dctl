@@ -15,7 +15,7 @@ struct base_iterator
         static constexpr auto digits = std::numeric_limits<Block>::digits;
         static constexpr auto N = Nb * digits;
 
-        constexpr auto find_first() noexcept
+        constexpr int find_first() noexcept
         {
                 for (auto i = 0; i < Nb; ++i) {
                         auto const mask = *block_;
@@ -25,7 +25,7 @@ struct base_iterator
                 return N;
         }
 
-        constexpr void find_next() noexcept
+        constexpr void find_next()
         {
                 assert(0 <= index_ && index_ < N);
                 if (N <= ++index_) { ++block_; return; }
@@ -45,7 +45,7 @@ struct base_iterator
                 assert(0 < index_ && index_ <= N);
         }
 
-        constexpr void find_prev() noexcept
+        constexpr void find_prev()
         {
                 assert(0 < index_ && index_ <= N);
                 --index_;

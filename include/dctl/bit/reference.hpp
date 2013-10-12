@@ -15,23 +15,20 @@ public:
         // structors
 
         template<class U>
-        constexpr bit_reference(Block const& s, U u) noexcept
+        constexpr bit_reference(Block const& b, U value) noexcept
         :
-                block_{s},
-                index_{static_cast<T>(u)}
+                block_{b},
+                index_{static_cast<int>(value)}
         {
-                static_assert(std::is_convertible<U, T>::value, "");
+                static_assert(std::is_convertible<U, int>::value, "");
         }
-
-        // modifiers
-
-        bit_reference& operator=(bit_reference const&) = delete;
 
         // views
 
         constexpr operator T() const noexcept
         {
-                return index_;
+                static_assert(std::is_convertible<int, T>::value, "");
+                return static_cast<T>(index_);
         }
 
         constexpr iterator operator&() const noexcept
@@ -43,7 +40,7 @@ private:
         // representation
 
         Block const& block_;
-        T index_;
+        int index_;
 };
 
 }       // namespace bit

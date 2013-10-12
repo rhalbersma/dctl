@@ -1,5 +1,4 @@
 #pragma once
-#include <array>                                // array
 #include <limits>                               // digits
 #include <dctl/bit/detail/base_set_fwd.hpp>     // base_set
 #include <dctl/bit/detail/storage.hpp>          // storage
@@ -207,7 +206,7 @@ struct base_set
 
         // representation
 
-        std::array<Block, Nb> data_ {};
+        Block data_[Nb] {};
 };
 
 }       // namespace detail
