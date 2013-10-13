@@ -34,13 +34,12 @@ struct base_iterator
                 if (idx == 0) ++block_;
                 auto const mask = *block_ >> idx;
                 if (mask) { index_ += bit::unchecked_ctz(mask); return; }
-                ++block_;
 
                 for (auto i = storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
-                        auto const mask = *block_;
+                        auto const mask = *++block_;
                         if (mask) { index_ = i * digits + bit::bsf(mask); return; }
-                        ++block_;
                 }
+                ++block_;
                 index_ = N;
                 assert(0 < index_ && index_ <= N);
         }
@@ -48,7 +47,7 @@ struct base_iterator
         constexpr void find_prev()
         {
                 assert(0 < index_ && index_ <= N);
-                --index_;
+                if (--index_ <= 0) return;
 
                 auto const idx = storage<Block>::shift_idx(index_);
                 if (idx == digits - 1) --block_;

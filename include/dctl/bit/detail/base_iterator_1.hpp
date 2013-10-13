@@ -33,7 +33,7 @@ struct base_iterator<Block, 1>
         constexpr void find_prev()
         {
                 assert(0 < index_ && index_ <= N);
-                --index_;
+                if (--index_ <= 0) return;
                 auto const mask = *block_ << (N - 1 - index_);
                 if (mask)
                         index_ -= bit::unchecked_clz(mask);
