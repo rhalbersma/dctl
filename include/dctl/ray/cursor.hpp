@@ -19,7 +19,7 @@ public:
         {}
 
         template<int M>
-        explicit constexpr StridedCursor(StridedCursor<M> const& other) noexcept
+        constexpr StridedCursor(StridedCursor<M> const& other) noexcept
         :
                 cursor_ { other.cursor_ }
         {}
