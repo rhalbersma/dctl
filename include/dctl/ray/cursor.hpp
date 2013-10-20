@@ -13,13 +13,13 @@ class StridedCursor
 {
         using self_type = StridedCursor;
 public:
-        explicit StridedCursor(int c)
+        explicit constexpr StridedCursor(int c) noexcept
         :
                 cursor_ { c }
         {}
 
         template<int M>
-        StridedCursor(StridedCursor<M> const& other)
+        explicit constexpr StridedCursor(StridedCursor<M> const& other) noexcept
         :
                 cursor_ { other.cursor_ }
         {}
@@ -57,13 +57,13 @@ public:
                 return *this;
         }
 
-        operator int() const
+        constexpr operator int() const noexcept
         {
                 return cursor_;
         }
 
 private:
-        int cursor_;
+        int cursor_ {};
 };
 
 }       // namespace ray
