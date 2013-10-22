@@ -2,7 +2,7 @@
 #include <cassert>                                      // assert
 #include <limits>                                       // digits
 #include <dctl/bit/detail/base_iterator_fwd.hpp>        // base_iterator
-#include <dctl/bit/intrinsic.hpp>                       // unchecked_clz, unchecked_ctz
+#include <dctl/bit/intrinsic.hpp>                       // clznz, ctznz
 
 namespace dctl {
 namespace bit {
@@ -24,7 +24,7 @@ struct base_iterator<Block, 1>
                 if (N <= ++index_) return;
                 auto const mask = *block_ >> index_;
                 if (mask)
-                        index_ += bit::unchecked_ctz(mask);
+                        index_ += bit::ctznz(mask);
                 else
                         index_ = N;
                 assert(0 < index_ && index_ <= N);
@@ -36,7 +36,7 @@ struct base_iterator<Block, 1>
                 if (--index_ <= 0) return;
                 auto const mask = *block_ << (N - 1 - index_);
                 if (mask)
-                        index_ -= bit::unchecked_clz(mask);
+                        index_ -= bit::clznz(mask);
                 else
                         index_ = 0;
                 assert(0 <= index_ && index_ < N);

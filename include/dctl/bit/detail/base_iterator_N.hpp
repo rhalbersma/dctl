@@ -3,7 +3,7 @@
 #include <limits>                                       // digits
 #include <dctl/bit/detail/base_iterator_fwd.hpp>        // base_iterator
 #include <dctl/bit/detail/storage.hpp>                  // storage
-#include <dctl/bit/intrinsic.hpp>                       // bsf, bsr, unchecked_clz, unchecked_ctz
+#include <dctl/bit/intrinsic.hpp>                       // bsf, bsr, clznz, ctznz
 
 namespace dctl {
 namespace bit {
@@ -33,7 +33,7 @@ struct base_iterator
                 auto const idx = storage<Block>::shift_idx(index_);
                 if (idx == 0) ++block_;
                 auto const mask = *block_ >> idx;
-                if (mask) { index_ += bit::unchecked_ctz(mask); return; }
+                if (mask) { index_ += bit::ctznz(mask); return; }
 
                 for (auto i = storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
                         auto const mask = *++block_;
@@ -52,7 +52,7 @@ struct base_iterator
                 auto const idx = storage<Block>::shift_idx(index_);
                 if (idx == digits - 1) --block_;
                 auto const mask = *block_ << (digits - 1 - idx);
-                if (mask) { index_ -= bit::unchecked_clz(mask); return; }
+                if (mask) { index_ -= bit::clznz(mask); return; }
 
                 for (auto i = storage<Block>::block_idx(index_) - 1; i >= 0; --i) {
                         auto const mask = *--block_;
