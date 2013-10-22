@@ -11,10 +11,10 @@ namespace detail {
 // for zero input, the result is undefined
 
 template<class T>
-struct unchecked_ctz;
+struct ctznz;
 
 template<>
-struct unchecked_ctz<unsigned>
+struct ctznz<unsigned>
 {
         constexpr auto operator()(unsigned x) const
         {
@@ -23,7 +23,7 @@ struct unchecked_ctz<unsigned>
 };
 
 template<>
-struct unchecked_ctz<unsigned long>
+struct ctznz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const
         {
@@ -32,7 +32,7 @@ struct unchecked_ctz<unsigned long>
 };
 
 template<>
-struct unchecked_ctz<unsigned long long>
+struct ctznz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const
         {
@@ -45,10 +45,10 @@ struct unchecked_ctz<unsigned long long>
 // for zero input, the result is undefined
 
 template<class T>
-struct unchecked_clz;
+struct clznz;
 
 template<>
-struct unchecked_clz<unsigned>
+struct clznz<unsigned>
 {
         constexpr auto operator()(unsigned x) const
         {
@@ -57,7 +57,7 @@ struct unchecked_clz<unsigned>
 };
 
 template<>
-struct unchecked_clz<unsigned long>
+struct clznz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const
         {
@@ -66,7 +66,7 @@ struct unchecked_clz<unsigned long>
 };
 
 template<>
-struct unchecked_clz<unsigned long long>
+struct clznz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const
         {
@@ -110,17 +110,17 @@ struct popcount<unsigned long long>
 }       // namespace detail
 
 template<class T>
-constexpr auto unchecked_ctz(T x)
+constexpr auto ctznz(T x)
 {
         assert(x != 0);
-        return detail::unchecked_ctz<T>()(x);
+        return detail::ctznz<T>()(x);
 }
 
 template<class T>
-constexpr auto unchecked_clz(T x)
+constexpr auto clznz(T x)
 {
         assert(x != 0);
-        return detail::unchecked_clz<T>()(x);
+        return detail::clznz<T>()(x);
 }
 
 template<class T>
