@@ -133,50 +133,50 @@ private:
         void serialize(Set const& active_pawns) const
         {
                 for (auto sq: bit::bit_set<int, uint64_t, 1>(active_pawns & Prev<Board, Direction>()(capture_.template targets_with_pawn<Direction>())))
-                        find(SquareIterator<Board, Direction>{sq});
+                        find<Direction>(BitBoard{1} << sq);
         }
 
-        template<class Direction>
-        void find(Direction jumper) const
+        template<int Direction>
+        void find(BitIndex jumper) const
         {
                 capture_.launch(jumper);
-                find_first(jumper);
+                find_first<Direction>(jumper);
                 capture_.finish(jumper);
         }
 
-        template<class Direction>
-        void find_first(Direction jumper) const
+        template<int Direction>
+        void find_first(BitIndex jumper) const
         {
-                ++jumper;
+                Increment<Board, Direction>()(jumper);
                 assert(bit::is_element(jumper, capture_.template targets_with_pawn<Direction>()));
                 capture_.make(jumper);
-                precedence(jumper);  // recursively find more jumps
+                precedence<Direction>(jumper);  // recursively find more jumps
                 capture_.undo(jumper);
         }
 
-        template<class Direction>
-        void precedence(Direction jumper) const
+        template<int Direction>
+        void precedence(BitIndex jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch(jumper, typename rules::is_precedence<Rules>());
+                precedence_dispatch<Direction>(jumper, typename rules::is_precedence<Rules>());
         }
 
         // overload for no majority precedence
-        template<class Direction>
-        void precedence_dispatch(Direction jumper, std::false_type) const
+        template<int Direction>
+        void precedence_dispatch(BitIndex jumper, std::false_type) const
         {
-                ++jumper;
-                if (!find_next(jumper))
+                Increment<Board, Direction>()(jumper);
+                if (!find_next<Direction>(jumper))
                         add_pawn_jump(jumper);
         }
 
         // overload for majority precedence
-        template<class Direction>
-        void precedence_dispatch(Direction jumper, std::true_type) const
+        template<int Direction>
+        void precedence_dispatch(BitIndex jumper, std::true_type) const
         {
-                ++jumper;
+                Increment<Board, Direction>()(jumper);
                 if (
-                        !find_next(jumper) &&
+                        !find_next<Direction>(jumper) &&
                         capture_.greater_equal()
                 ) {
                         if (capture_.not_equal_to()) {
@@ -187,154 +187,151 @@ private:
                 }
         }
 
-        template<class Direction>
-        bool find_next(Direction jumper) const
+        template<int Direction>
+        bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on promotion condition
-                return find_next_dispatch(jumper, rules::phase::promotion<Rules>());
+                return find_next_dispatch<Direction>(jumper, rules::phase::promotion<Rules>());
         }
 
         // overload for pawns that promote apres-fini
-        template<class Direction>
-        bool find_next_dispatch(Diretion jumper, rules::phase::apres_fini) const
+        template<int Direction>
+        bool find_next_dispatch(BitIndex jumper, rules::phase::apres_fini) const
         {
-                return find_next_impl(jumper);
+                return find_next_impl<Direction>(jumper);
         }
 
         // overload for pawns that promote en-passant
-        template<class Direction>
-        bool find_next_dispatch(Direction jumper, rules::phase::en_passant) const
+        template<int Direction>
+        bool find_next_dispatch(BitIndex jumper, rules::phase::en_passant) const
         {
                 return (!is_promotion_sq<Color, Board>(jumper)) ?
-                        find_next_impl(jumper) :
-                        promote_en_passant(jumper)
+                        find_next_impl<Direction>(jumper) :
+                        promote_en_passant<Direction>(jumper)
                 ;
         }
 
-        template<class Direction>
-        bool find_next_impl(Direction jumper) const
+        template<int Direction>
+        bool find_next_impl(BitIndex jumper) const
         {
-                return turn(jumper) | scan(jumper);
+                return turn<Direction>(jumper) | scan<Direction>(jumper);
         }
 
-        template<class Direction>
-        bool promote_en_passant(Direction jumper) const
+        template<int Direction>
+        bool promote_en_passant(BitIndex jumper) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return promote_en_passant_dispatch(jumper, rules::can_jump<Rules, pieces::pawn, pieces::king>());
+                return promote_en_passant_dispatch<Direction>(jumper, rules::can_jump<Rules, pieces::pawn, pieces::king>());
         }
 
         // overload for pawns that can capture kings
-        template<class Direction>
-        bool promote_en_passant_dispatch(Direction jumper, std::true_type) const
+        template<int Direction>
+        bool promote_en_passant_dispatch(BitIndex jumper, std::true_type) const
         {
                 capture_.toggle_promotion();
-                auto const found_next = KingJumps(capture_, moves_).promote_en_passant(jumper);
+                auto const found_next = KingJumps(capture_, moves_).template promote_en_passant<Direction>(jumper);
                 capture_.toggle_promotion();
                 return found_next;
         }
 
         // overload for pawns that cannot capture kings
-        template<class Direction>
-        bool promote_en_passant_dispatch(Direction jumper, std::false_type) const
+        template<int Direction>
+        bool promote_en_passant_dispatch(BitIndex jumper, std::false_type) const
         {
                 capture_.toggle_promotion();    // no longer a pawn
                 capture_.set_king_targets();    // can now capture kings
-                auto const found_next = KingJumps(capture_, moves_).promote_en_passant(jumper);
+                auto const found_next = KingJumps(capture_, moves_).template promote_en_passant<Direction>(jumper);
                 capture_.clear_king_targets();  // can no longer capture kings
                 capture_.toggle_promotion();    // now a pawn again
                 return found_next;
         }
 
-        template<class Direction>
-        bool turn(Direction jumper) const
+        template<int Direction>
+        bool turn(BitIndex jumper) const
         {
                 // tag dispatching on pawn turn directions
-                return turn_dispatch(jumper, rules::directions::pawn_turn<Rules>());
+                return turn_dispatch<Direction>(jumper, rules::directions::pawn_turn<Rules>());
         }
 
         // overload for pawns that turn in all the 6 non-parallel diagonal and orthogonal directions
-        template<class Direction>
-        bool turn_dispatch(Direction jumper, rules::directions::all) const
+        template<int Direction>
+        bool turn_dispatch(BitIndex jumper, rules::directions::all) const
         {
                 return (
-                        turn_dispatch(jumper, rules::directions::diag()) |
-                        turn_dispatch(jumper, rules::directions::orth())
+                        turn_dispatch<Direction>(jumper, rules::directions::diag()) |
+                        turn_dispatch<Direction>(jumper, rules::directions::orth())
                 );
         }
 
         // overload for pawns that turn in the 2 sideways directions
-        template<class Direction>
-        bool turn_dispatch(Direction jumper, rules::directions::diag) const
+        template<int Direction>
+        bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan(angle::rotate(jumper, angle::R090)) |
-                        scan(angle::rotate(jumper, angle::L090))
+                        scan< angle::rotate(Direction, angle::R090) >(jumper) |
+                        scan< angle::rotate(Direction, angle::L090) >(jumper)
                 );
         }
 
         // overload for pawns that turn in the 1 mirrored forward direction
-        template<class Direction>
-        bool turn_dispatch(Direction jumper, rules::directions::up) const
+        template<int Direction>
+        bool turn_dispatch(BitIndex jumper, rules::directions::up) const
         {
-                return scan(angle::mirror(jumper, Compass::up));
+                return scan< angle::mirror(Direction, Compass::up) >(jumper);
         }
 
         // overload for pawns that turn in the 1 mirrored backward direction
-        template<class Direction>
-        bool turn_dispatch(Direction jumper, rules::directions::down) const
+        template<int Direction>
+        bool turn_dispatch(BitIndex jumper, rules::directions::down) const
         {
-                return scan(angle::mirror(jumper, Compass::down));
+                return scan< angle::mirror(Direction, Compass::down) >(jumper);
         }
 
         // overload for pawns that turn in the remaining 4 diagonal or orthogonal directions
-        template<class Direction>
-        bool turn_dispatch(Direction jumper, rules::directions::orth) const
+        template<int Direction>
+        bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan(angle::rotate(jumper, angle::R045)) |
-                        scan(angle::rotate(jumper, angle::L045)) |
-                        scan(angle::rotate(jumper, angle::R135)) |
-                        scan(angle::rotate(jumper, angle::L135))
+                        scan< angle::rotate(Direction, angle::R045) >(jumper) |
+                        scan< angle::rotate(Direction, angle::L045) >(jumper) |
+                        scan< angle::rotate(Direction, angle::R135) >(jumper) |
+                        scan< angle::rotate(Direction, angle::L135) >(jumper)
                 );
         }
 
-        template<class Direction>
-        bool scan(Direction jumper) const
+        template<int Direction>
+        bool scan(BitIndex jumper) const
         {
-                ++jumper;
-                return jump(jumper);
+                Increment<Board, Direction>()(jumper);
+                return jump<Direction>(jumper);
         }
 
-        template<class Direction>
-        bool jump(Direction jumper) const
+        template<int Direction>
+        bool jump(BitIndex jumper) const
         {
                 if (!bit::is_element(jumper, capture_.template targets_with_pawn<Direction>()))
                         return false;
 
                 capture_.make(jumper);
-                precedence(jumper);  // recursively find more jumps
+                precedence<Direction>(jumper);  // recursively find more jumps
                 capture_.undo(jumper);
                 return true;
         }
 
-        template<class Square>
-        void add_pawn_jump(Square dest_sq) const
+        void add_pawn_jump(BitIndex dest_sq) const
         {
                 // tag dispatching on ambiguity of pawn jumps
                 add_pawn_jump_dispatch(dest_sq, rules::is_unambiguous_pawn_jump<Rules>());
         }
 
         // overload for pawn jumps that are always unambiguous
-        template<class Square>
-        void add_pawn_jump_dispatch(Square dest_sq, std::true_type) const
+        void add_pawn_jump_dispatch(BitIndex dest_sq, std::true_type) const
         {
                 capture_.template add_pawn_jump<Color, with::pawn>(dest_sq, moves_);
         }
 
         // overload for pawn jumps that are potentially ambiguous
-        template<class Square>
-        void add_pawn_jump_dispatch(Square dest_sq, std::false_type) const
+        void add_pawn_jump_dispatch(BitIndex dest_sq, std::false_type) const
         {
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
                 capture_.template add_pawn_jump<Color, with::pawn>(dest_sq, moves_);
