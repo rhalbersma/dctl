@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(InitializerListAssignmentOperatorListAssigns, T, B
         BOOST_CHECK_EQUAL_COLLECTIONS(std::begin(a), std::end(a), begin(b), end(b));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorTraversesRange, T, BitSetTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorsTraverseRange, T, BitSetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorTraversesRange, T, BitSetTypes)
         }
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsBoundedSortedUnique, T, BitSetTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, BitSetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
         decltype(begin(b)) min, max;
@@ -111,6 +111,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsBoundedSortedUnique, T, BitSetTypes)
 
         BOOST_CHECK(0 <= *begin(b) && *begin(b) == *min);
         BOOST_CHECK(*max == *b.rbegin() && *b.rbegin() < b.max_size());
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsStrictlyIncreasing, T, BitSetTypes)
+{
+        constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 
         BOOST_CHECK(std::adjacent_find(begin(b), end(b), std::greater_equal<U>()) == end(b));
         BOOST_CHECK(std::adjacent_find(b.rbegin(), b.rend(), std::less_equal<U>()) == b.rend());
