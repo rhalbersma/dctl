@@ -1,5 +1,7 @@
 #pragma once
 #include <cassert>                      // assert
+#include <limits>                       // digits
+#include <type_traits>                  // enable_if
 
 namespace dctl {
 namespace bit {
@@ -16,7 +18,7 @@ struct ctznz;
 template<>
 struct ctznz<unsigned>
 {
-        constexpr auto operator()(unsigned x) const
+        constexpr auto operator()(unsigned x) const noexcept
         {
                 return __builtin_ctz(x);
         }
@@ -25,7 +27,7 @@ struct ctznz<unsigned>
 template<>
 struct ctznz<unsigned long>
 {
-        constexpr auto operator()(unsigned long x) const
+        constexpr auto operator()(unsigned long x) const noexcept
         {
                 return __builtin_ctzl(x);
         }
@@ -34,7 +36,7 @@ struct ctznz<unsigned long>
 template<>
 struct ctznz<unsigned long long>
 {
-        constexpr auto operator()(unsigned long long x) const
+        constexpr auto operator()(unsigned long long x) const noexcept
         {
                 return __builtin_ctzll(x);
         }
@@ -50,7 +52,7 @@ struct clznz;
 template<>
 struct clznz<unsigned>
 {
-        constexpr auto operator()(unsigned x) const
+        constexpr auto operator()(unsigned x) const noexcept
         {
                 return __builtin_clz(x);
         }
@@ -59,7 +61,7 @@ struct clznz<unsigned>
 template<>
 struct clznz<unsigned long>
 {
-        constexpr auto operator()(unsigned long x) const
+        constexpr auto operator()(unsigned long x) const noexcept
         {
                 return __builtin_clzl(x);
         }
@@ -68,7 +70,7 @@ struct clznz<unsigned long>
 template<>
 struct clznz<unsigned long long>
 {
-        constexpr auto operator()(unsigned long long x) const
+        constexpr auto operator()(unsigned long long x) const noexcept
         {
                 return __builtin_clzll(x);
         }
@@ -110,17 +112,29 @@ struct popcount<unsigned long long>
 }       // namespace detail
 
 template<class T>
-constexpr auto ctznz(T x)
+constexpr auto ctznz(T x) noexcept
 {
         assert(x != 0);
         return detail::ctznz<T>()(x);
 }
 
 template<class T>
-constexpr auto clznz(T x)
+constexpr auto clznz(T x) noexcept
 {
         assert(x != 0);
         return detail::clznz<T>()(x);
+}
+
+template<class T>
+constexpr auto ctz(T x) noexcept
+{
+        return x ? ctznz(x) : std::numeric_limits<T>::digits;
+}
+
+template<class T>
+constexpr auto clz(T x) noexcept
+{
+        return x ? clznz(x) : std::numeric_limits<T>::digits;
 }
 
 template<class T>

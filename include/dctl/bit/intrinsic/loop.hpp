@@ -1,28 +1,38 @@
 #pragma once
-#include <cassert>                      // assert
 #include <limits>                       // digits
-#include <stdexcept>                    // invalid argument
 
 namespace dctl {
 namespace bit {
 namespace loop {
 
 template<class T>
-constexpr auto ctznz(T x)
+constexpr auto ctz(T x) noexcept
 {
-        assert(x != 0);
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i)
-                if (x & (T{1} << i)) return i;
-        throw std::invalid_argument("ctznz requires non-zero argument");
+                if (x & (T{1} << i))
+                        return i;
+        return std::numeric_limits<T>::digits;
 }
 
 template<class T>
-constexpr auto clznz(T x)
+constexpr auto clz(T x) noexcept
 {
-        assert(x != 0);
         for (auto i = std::numeric_limits<T>::digits - 1; i >= 0; --i)
-                if (x & (T{1} << i)) return std::numeric_limits<T>::digits - 1 - i;
-        throw std::invalid_argument("clznz requires non-zero argument");
+                if (x & (T{1} << i))
+                        return std::numeric_limits<T>::digits - 1 - i;
+        return std::numeric_limits<T>::digits;
+}
+
+template<class T>
+constexpr auto ctznz(T x) noexcept
+{
+        return ctz(x);
+}
+
+template<class T>
+constexpr auto clznz(T x) noexcept
+{
+        return clz(x);
 }
 
 template<class T>
@@ -31,7 +41,6 @@ constexpr auto popcount(T x) noexcept
         auto n = 0;
         for (; x; x &= x - T{1})
                 ++n;
-        assert(0 <= n && n <= std::numeric_limits<T>::digits);
         return n;
 }
 
