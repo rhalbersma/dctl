@@ -27,6 +27,8 @@ template<class Grid>
 class Square
 {
 public:
+        using grid_type = Grid;
+
         explicit constexpr Square(int v) noexcept
         :
                 value_(v)
