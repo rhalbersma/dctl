@@ -101,15 +101,15 @@ private:
         {
                 bit::bit_set<int, uint64_t, 1> result;
                 for (auto sq = 0; sq < ExternalGrid::size; ++sq)
-                        if (pred(sq))
+                        if (pred(grid::Square<ExternalGrid>{sq}))
                                 result.set(square2bit(sq));
                 return result.data();
         }
 
 public:
-        static constexpr BitBoard squares = copy_if(grid::is_square<ExternalGrid>{});
+        static constexpr BitBoard squares = copy_if(grid::is_square{});
 
-#define DCTL_PP_INITIAL_MASK(z, i, data) copy_if(grid::is_initial<ExternalGrid, i, data>{})
+#define DCTL_PP_INITIAL_MASK(z, i, data) copy_if(grid::is_initial<i, data>{})
 
         static constexpr BitBoard initial_mask[][5] =
         {
@@ -119,7 +119,7 @@ public:
 
 #undef DCTL_PP_INITIAL_MASK
 
-#define DCTL_PP_ROW_MASK(z, i, data) copy_if(grid::is_row<ExternalGrid, i, data>{})
+#define DCTL_PP_ROW_MASK(z, i, data) copy_if(grid::is_row<i, data>{})
 
         static constexpr BitBoard promotion_mask[][2] =
         {
@@ -135,7 +135,7 @@ public:
 
 #undef DCTL_PP_ROW_MASK
 
-#define DCTL_PP_COL_MASK(z, i, data) copy_if(grid::is_col<ExternalGrid, i, data>{})
+#define DCTL_PP_COL_MASK(z, i, data) copy_if(grid::is_col<i, data>{})
 
         static constexpr BitBoard col_mask[][12] =
         {
@@ -147,7 +147,7 @@ public:
 
 private:
 
-#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<ExternalGrid, angle::rotate(i * 45, orientation)>{})
+#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<angle::rotate(i * 45, orientation)>{})
 
         static constexpr BitBoard table_jump_start[] =
         {

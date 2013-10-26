@@ -10,59 +10,73 @@
 namespace dctl {
 namespace grid {
 
-template<class Grid>
 struct is_square
 {
-        constexpr auto operator()(int sq) const noexcept
+        template<class Square>
+        constexpr auto operator()(Square const& sq) const noexcept
         {
-                return util::is_element(sq, {0, Grid::size});
+                using Grid = typename Square::grid_type;
+
+                return util::is_element(sq.value(), {0, Grid::size});
         }
 };
 
-template<class Grid, int Separation, bool Color>
+template<int Separation, bool Color>
 struct is_initial
 {
-        constexpr auto operator()(int sq) const noexcept
+        template<class Square>
+        constexpr auto operator()(Square const& sq) const noexcept
         {
-                auto const row = grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height);
+                using Grid = typename Square::grid_type;
+
+                auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);
                 auto const min_row = Color ? Grid::height - (Grid::height - Separation) / 2 : 0;
                 auto const max_row = Color ? Grid::height : (Grid::height - Separation) / 2;
                 return util::is_element(row, {min_row, max_row});
         }
 };
 
-template<class Grid, int Row, bool Color>
+template<int Row, bool Color>
 struct is_row
 {
-        constexpr auto operator()(int sq) const noexcept
+        template<class Square>
+        constexpr auto operator()(Square const& sq) const noexcept
         {
-                return grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height) == (Color ? Grid::height - 1 - Row : Row);
+                using Grid = typename Square::grid_type;
+
+                return grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height) == (Color ? Grid::height - 1 - Row : Row);
         }
 };
 
-template<class Grid, int Column, bool Color>
+template<int Column, bool Color>
 struct is_col
 {
-        constexpr auto operator()(int sq) const noexcept
+        template<class Square>
+        constexpr auto operator()(Square const& sq) const noexcept
         {
-                return grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).col(), Grid::width) == (Color ? Grid::width - 1 - Column : Column);
+                using Grid = typename Square::grid_type;
+
+                return grid::detail::decentralize(grid::sqtocoord(sq).col(), Grid::width) == (Color ? Grid::width - 1 - Column : Column);
         }
 };
 
-template<class Grid, int Direction>
+template<int Direction>
 struct is_jump_start
 {
         static_assert(Direction % 45 == 0, "Direction angles have to be a multiple of 45 degrees.");
 
-        constexpr auto operator()(int sq) const
+        template<class Square>
+        constexpr auto operator()(Square const& sq) const
         {
+                using Grid = typename Square::grid_type;
+
                 auto const offset = angle::is_diagonal(Direction) ? 2 : 4;
 
-                auto const row = grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).row(), Grid::height);
+                auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);
                 auto const min_row = angle::is_up(Direction) ? offset : 0;
                 auto const max_row = Grid::height - (angle::is_down(Direction)? offset : 0);
 
-                auto const col = grid::detail::decentralize(grid::sqtocoord(Square<Grid>{sq}).col(), Grid::width);
+                auto const col = grid::detail::decentralize(grid::sqtocoord(sq).col(), Grid::width);
                 auto const min_col = angle::is_left(Direction) ? offset : 0;
                 auto const max_col = Grid::width - (angle::is_right(Direction) ? offset : 0);
 
