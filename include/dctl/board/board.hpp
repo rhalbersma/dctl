@@ -13,7 +13,7 @@
 namespace dctl {
 namespace board {
 
-template<class Dimensions, int EdgeColumns = 2, int Orientation = angle::D000>
+template<class Dimensions, int EdgeColumns = 2, int Orientation = 0_deg>
 struct Board
 :
         public Dimensions
@@ -147,7 +147,7 @@ public:
 
 private:
 
-#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<angle::rotate(i * 45, orientation)>{})
+#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<angle::rotate(i * 45_deg, orientation)>{})
 
         static constexpr BitBoard table_jump_start[] =
         {
@@ -159,7 +159,7 @@ private:
 public:
         static constexpr auto jump_start(int direction) noexcept
         {
-                return table_jump_start[dctl::make_angle(direction) / 45];
+                return table_jump_start[dctl::make_angle(direction) / 45_deg];
         }
 };
 

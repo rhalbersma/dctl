@@ -1,7 +1,15 @@
 #pragma once
+#include <dctl/angle/angle.hpp>
 #include <dctl/preprocessor/static_constexpr_variable.hpp>      // DCTL_PP_STATIC_CONSTEXPR_VARIABLE
 
 namespace dctl {
+
+inline
+constexpr int operator"" _deg(unsigned long long alpha)
+{
+    return static_cast<int>(alpha);
+}
+
 namespace angle {
 
 /*
