@@ -2,20 +2,40 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <dctl/ray/cursor.hpp>
+#include <dctl/ray/iterator.hpp>
+#include <dctl/ray/transform.hpp>
+#include <dctl/board/types.hpp>
+#include <dctl/angle/degrees.hpp>
 
 namespace dctl {
 namespace ray {
 
 BOOST_AUTO_TEST_SUITE(RayCursor)
 
+template<class Board, int N>
+int fun(RayIterator<Board, N> const& x)
+{
+        return *x;
+}
+
+using B = board::International;
+static constexpr auto dir = 135_deg;
+
 BOOST_AUTO_TEST_CASE(Members)
 {
-        auto c = StridedCursor<2>(0);
+        auto c = StridedCursor<B, dir>(0);
         for (auto i = 0; i < 5; ++i) {
                 ++c;
                 std::cout << c << std::endl;
         }
-        std::cout << (StridedCursor<2>(3) - StridedCursor<2>(5));
+
+        constexpr auto stride = B::shift_size(dir);
+        std::cout << "stride: " << stride << "\n";
+        auto it = RayIterator<board::International, dir>{c};
+        auto rt = rotate<+135_deg>(it);
+
+        for (auto i = 0; i < 5; ++i)
+                std::cout << fun(rt++) << "\n";
 }
 
 BOOST_AUTO_TEST_SUITE_END()
