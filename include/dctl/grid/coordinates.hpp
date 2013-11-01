@@ -80,10 +80,10 @@ template<class T>
 constexpr auto rotate(Coordinates const& coord, T const& theta)
 {
         switch (dctl::make_angle(theta)) {
-        case angle::D000: return coord;
-        case angle::L090: return Coordinates{  coord.col(), -coord.row() };
-        case angle::R090: return Coordinates{ -coord.col(),  coord.row() };
-        case angle::D180: return Coordinates{ -coord.row(), -coord.col() };
+        case   0_deg: return coord;
+        case  90_deg: return Coordinates{  coord.col(), -coord.row() };
+        case 180_deg: return Coordinates{ -coord.row(), -coord.col() };
+        case 270_deg: return Coordinates{ -coord.col(),  coord.row() };
         default: return throw std::invalid_argument("Coordinates rotation angles shall be a multiple of 90 degrees."), coord;
         }
 }

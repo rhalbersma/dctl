@@ -33,10 +33,10 @@ template<class T>
 constexpr auto rotate(DimensionsObject const& dim, T const& theta)
 {
         switch (dctl::make_angle(theta)) {
-        case angle::D000: return dim;
-        case angle::L090: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.height() % 2) ^ !dim.parity()) };
-        case angle::R090: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.width()  % 2) ^ !dim.parity()) };
-        case angle::D180: return DimensionsObject{ dim.height(), dim.width() , static_cast<bool>((dim.height() % 2) ^ (dim.width() % 2) ^ (!!dim.parity())) };
+        case   0_deg: return dim;
+        case  90_deg: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.height() % 2) ^ !dim.parity()) };
+        case 180_deg: return DimensionsObject{ dim.height(), dim.width() , static_cast<bool>((dim.height() % 2) ^ (dim.width() % 2) ^ (!!dim.parity())) };
+        case 270_deg: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.width()  % 2) ^ !dim.parity()) };
         default: return throw std::invalid_argument("Dimensions rotation angles shall be a multiple of 90 degrees."), dim;
         }
 }
