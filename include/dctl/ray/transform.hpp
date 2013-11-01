@@ -1,20 +1,15 @@
 #pragma once
-#include <dctl/ray/iterator.hpp>        // SquareIterator
+#include <dctl/ray/iterator.hpp>        // RayIterator
 #include <dctl/angle/transform.hpp>     // rotate, mirror
 
 namespace dctl {
 namespace ray {
 
-template<class Board, int Direction, class T>
-auto rotate(SquareIterator<Board, Direction> it, T const& theta)
+template<int Theta, class Board, int Direction>
+auto rotate(RayIterator<Board, Direction> const& it)
+-> RayIterator<Board, angle::rotate(Direction, Theta)>
 {
-        return SquareIterator<Board, angle::rotate(Direction, theta)>{it.base()};
-}
-
-template<class Board, int Direction, class T>
-auto mirror(SquareIterator<Board, Direction> it, T const& theta)
-{
-        return SquareIterator<Board, angle::mirror(Direction, theta)>{it.base()};
+        return {it.base()};
 }
 
 }       // namespace ray

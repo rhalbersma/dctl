@@ -1,69 +1,101 @@
 #pragma once
-#include <boost/operators.hpp>          // additive, unit_steppable
+#include <boost/operators.hpp>          // totally_ordered, unit_steppable, additive
 
 namespace dctl {
 namespace ray {
 
-template<int N>
+template<class Board, int Direction>
 class StridedCursor
 :
-        boost::additive      < StridedCursor<N>, int    // +, -
-,       boost::unit_steppable< StridedCursor<N>         // ++, --
-> >
+        boost::totally_ordered< StridedCursor<Board, Direction>         // != >= > <=
+,       boost::unit_steppable < StridedCursor<Board, Direction>         // ++, --
+,       boost::additive       < StridedCursor<Board, Direction>, int    // +, -
+> > >
 {
+        static constexpr auto N = Board::shift_size(Direction);
+        static_assert(N > 0, "Cursors need a non-zero stride.");
         using self_type = StridedCursor;
+
 public:
-        explicit StridedCursor(int c)
+        // structors
+
+        StridedCursor() noexcept = default;
+
+        explicit StridedCursor(int c) noexcept
         :
-                cursor_ { c }
+                cursor_{c}
         {}
+
+        template<class, int>
+        friend class StridedCursor;
 
         template<int M>
-        StridedCursor(StridedCursor<M> const& other)
+        StridedCursor(StridedCursor<Board, M> const& other) noexcept
         :
-                cursor_ { other.cursor_ }
+                cursor_{other.cursor_}
         {}
 
-        friend int operator-(self_type const& lhs, self_type const& rhs)
-        {
-                return (lhs.cursor_ - rhs.cursor_) / N;
-        }
-
-        // operator+(self_type, int) provided by boost::additive
-        self_type& operator+=(int n)
-        {
-                cursor_ += N * n;
-                return *this;
-        }
-
-        // operator-(self_type, int) provided by boost::additive
-        self_type& operator-=(int n)
-        {
-                cursor_ -= N * n;
-                return *this;
-        }
+        // modifiers
 
         // operator++(int) provided by boost::unit_steppable
-        self_type& operator++()
+        self_type& operator++() noexcept
         {
                 cursor_ += N;
                 return *this;
         }
 
         // operator--(int) provided by boost::unit_steppable
-        self_type& operator--()
+        self_type& operator--() noexcept
         {
                 cursor_ -= N;
                 return *this;
         }
 
-        operator int() const
+        // operator+(self_type, int) provided by boost::additive
+        self_type& operator+=(int n) noexcept
+        {
+                cursor_ += n * N;
+                return *this;
+        }
+
+        // operator-(self_type, int) provided by boost::additive
+        self_type& operator-=(int n) noexcept
+        {
+                cursor_ -= n * N;
+                return *this;
+        }
+
+        // number of increments / decrements between lhs and rhs
+        friend int operator-(self_type const& lhs, self_type const& rhs) noexcept
+        {
+                return (lhs.cursor_ - rhs.cursor_) / N;
+        }
+
+        // predicates
+
+        // operator!= provided by boost::totally_ordered
+        friend bool operator==(self_type const& lhs, self_type const& rhs) noexcept
+        {
+                return lhs.cursor_ == rhs.cursor_;
+        }
+
+        // operator>=, operator>, operator<= provided by boost::totally_ordered
+        friend bool operator<(self_type const& lhs, self_type const& rhs) noexcept
+        {
+                return lhs.cursor_ < rhs.cursor_;
+        }
+
+        // views
+
+        operator int() const noexcept
         {
                 return cursor_;
         }
 
 private:
-        int cursor_;
+        // representation
+
+        int cursor_ {};
 };
 
 }       // namespace ray
