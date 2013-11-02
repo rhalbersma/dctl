@@ -13,7 +13,7 @@
 #include <dctl/successor/copy.hpp>
 #include <dctl/utility/int.hpp>         // NodeCount
 #include <dctl/utility/statistics.hpp>
-#include <dctl/utility/timer.hpp>
+#include <dctl/utility/stopwatch.hpp>
 
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>
@@ -209,7 +209,7 @@ void print_move(std::string const& move, int i)
 }
 
 template<class Enhancements>
-void report(int depth, NodeCount leafs, Timer const& timer, Enhancements e)
+void report(int depth, NodeCount leafs, Stopwatch const& stopwatch, Enhancements e)
 {
         std::cout << "info";
 
@@ -224,9 +224,9 @@ void report(int depth, NodeCount leafs, Timer const& timer, Enhancements e)
         std::cout << std::setw(12) << std::right << node_count;
 
         std::cout << " time ";
-        std::cout << std::setw( 6) << timer.lap().count();
+        std::cout << std::setw( 6) << stopwatch.split().count();
 
-        double const nps = static_cast<double>(1000 * node_count) / static_cast<double>(timer.lap().count());
+        double const nps = static_cast<double>(1000 * node_count) / static_cast<double>(stopwatch.split().count());
         std::cout << " nps ";
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
         std::cout << std::setw( 7) << nps;
@@ -248,13 +248,14 @@ template<class Position, class Enhancements>
 NodeCount perft(Position const& p, int depth, Enhancements e)
 {
         NodeCount nodes = 0;
-        Timer timer;
+        Stopwatch stopwatch;
         announce(p, depth);
+        stopwatch.start();
         for (auto d = 1; d <= depth; ++d) {
                 e.reset_statistics();
                 nodes = walk(p, d, 0, e);
-                timer.split();
-                report(d, nodes, timer, e);
+                stopwatch.lap();
+                report(d, nodes, stopwatch, e);
         }
         return nodes;
 }
@@ -265,11 +266,12 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
         NodeCount leaf_nodes = 0;
         NodeCount sub_count;
 
-        Timer timer;
+        Stopwatch stopwatch;
         Arena<Move> a;
         auto const moves = successor::copy(p, a);
 
         announce(p, depth, moves.size());
+        stopwatch.start();
         for (auto const& m: moves) {
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
@@ -277,8 +279,8 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
                 sub_count = walk(successor::make_copy(p, moves[i]), depth - 1, 1, e);
                 leaf_nodes += sub_count;
 
-                timer.split();
-                report(depth - 1, sub_count, timer, e);
+                stopwatch.lap();
+                report(depth - 1, sub_count, stopwatch, e);
         }
         summary(leaf_nodes);
         return leaf_nodes;

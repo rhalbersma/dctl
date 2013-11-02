@@ -24,7 +24,7 @@
 #include <dctl/utility/ply.hpp>         // PlyCount
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/utility/statistics.hpp>
-#include <dctl/utility/timer.hpp>
+#include <dctl/utility/stopwatch.hpp>
 
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>
@@ -89,16 +89,17 @@ private:
                 Arena<int> iar;
                 Alloc<int> ial(iar);
                 Variation pv(ial);
-                Timer timer;
+                Stopwatch stopwatch;
                 announce(p, depth);
                 statistics_.reset();
+                stopwatch.start();
                 for (auto i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
                         alpha = -infinity();
                         beta = infinity();
                         score = pvs<PV>(p, alpha, beta, i, 0, pv);
                         insert_pv(p, pv, score);
-                        timer.split();
-                        report(i, score, timer, p, pv);
+                        stopwatch.lap();
+                        report(i, score, stopwatch, p, pv);
                 }
 
                 return (score);
@@ -233,7 +234,7 @@ private:
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
-        void report(int depth, int value, Timer const& timer, Position const& p, Variation const& pv)
+        void report(int depth, int value, Stopwatch const& stopwatch, Position const& p, Variation const& pv)
         {
                 std::cout << "info";
 
@@ -251,9 +252,9 @@ private:
                 std::cout << std::setw(11) << std::right << node_count;
 
                 std::cout << " time ";
-                std::cout << std::setw( 6) << timer.elapsed().count();
+                std::cout << std::setw( 6) << stopwatch.time().count();
 
-                double const nps = static_cast<double>(1000 * node_count) / static_cast<double>(timer.elapsed().count());
+                double const nps = static_cast<double>(1000 * node_count) / static_cast<double>(stopwatch.time().count());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
