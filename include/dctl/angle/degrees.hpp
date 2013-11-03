@@ -5,9 +5,15 @@
 namespace dctl {
 
 inline
-constexpr int operator"" _deg(unsigned long long alpha)
+constexpr int operator"" _deg(unsigned long long n)
 {
-    return static_cast<int>(alpha);
+        return static_cast<int>(n);
+}
+
+inline
+constexpr Angle operator"" _deg2(unsigned long long n)
+{
+        return Angle{static_cast<int>(n)};
 }
 
 namespace angle {
