@@ -1,16 +1,14 @@
 #pragma once
-#include <tuple>                        // get, make_tuple, tuple
+#include <set>                          // set
+#include <tuple>                        // make_tuple, get
 
 namespace dctl {
 namespace group {
 
-template<class Set, class Op, class Id, class Inv>
-using Group = std::tuple<Set, Op, Id, Inv>;
-
-template<class Set, class Op, class Id, class Inv>
-constexpr auto make_group(Set const& elements, Op op, Id id, Inv inv)
+template<class Set, class Op, class Inv, class Element = typename Set::value_type>
+auto make(Set set, Op op, Inv inv, Element id = Element{})
 {
-        return std::make_tuple(elements, op, id, inv);
+        return std::make_tuple(set, op, inv, id);
 }
 
 template<class Group>
@@ -26,13 +24,13 @@ constexpr auto const& op(Group const& g) noexcept
 }
 
 template<class Group>
-constexpr auto const& id(Group const& g) noexcept
+constexpr auto const& inv(Group const& g) noexcept
 {
         return std::get<2>(g);
 }
 
 template<class Group>
-constexpr auto const& inv(Group const& g) noexcept
+constexpr auto const& id(Group const& g) noexcept
 {
         return std::get<3>(g);
 }

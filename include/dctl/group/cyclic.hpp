@@ -1,46 +1,36 @@
 #pragma once
 #include <set>                          // set
-#include <dctl/angle/transform.hpp>     // rotate, inverse
-#include <dctl/group/primitives.hpp>    // Group, make_group
+#include <dctl/angle/angle.hpp>         // Angle
+#include <dctl/angle/transform.hpp>     // rotate2, inverse2
+#include <dctl/group/primitives.hpp>    // make
 
 namespace dctl {
 namespace group {
 namespace cyclic {
 
-using Element = int;
-using Set = std::set<Element>;
-
 struct Op
 {
-        constexpr auto operator()(Element const& a, Element const& b) const
-        {
-                return angle::rotate(a, b);
-        }
-
         template<class Object>
-        constexpr auto operator()(Object const& obj, Element const& a) const
+        auto operator()(Object const& obj, Angle const& a) const
         {
-                return rotate(obj, a);  // ADL on Object
+                return rotate2(obj, a);
         }
 };
-
-using Id = Element;
 
 struct Inv
 {
-        constexpr auto operator()(Element const& a) const
+        auto operator()(Angle const& a) const
         {
-                return angle::inverse(a);
+                return inverse2(a);
         }
 };
 
-using CyclicGroup = Group<Set, Op, Id, Inv>;
+}       // namespace cyclic
 
-auto make_cyclic_group(Set const& elements)
+auto make_cyclic(std::initializer_list<Angle> set)
 {
-        return group::make_group(elements, Op(), Id(), Inv());
+        return group::make(std::set<Angle>{set}, cyclic::Op{}, cyclic::Inv{});
 }
 
-}       // namespace cyclic
 }       // namespace group
 }       // namespace dctl
