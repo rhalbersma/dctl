@@ -22,7 +22,7 @@ public:
         }
 
         template<class T>
-        static constexpr auto clz(T x)
+        static constexpr auto clz(T x) noexcept
         {
                 for (auto i = num_blocks<T>::value - 1, n = 0; i >= 0; --i) {
                         auto const b = block_mask(x, i);
