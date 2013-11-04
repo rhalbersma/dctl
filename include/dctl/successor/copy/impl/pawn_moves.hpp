@@ -74,7 +74,7 @@ private:
         void transform(Set movers) const
         {
                 auto const bs = bit::bit_set<int, uint64_t, 1>(movers);
-                std::transform(begin(bs), end(bs), std::back_inserter(moves_), [](int const& sq){
+                std::transform(begin(bs), end(bs), std::back_inserter(moves_), [](auto const& sq){
                         auto const from_sq = BitBoard{1} << sq;
                         auto const dest_sq = Next<Board, Direction>()(from_sq);
                         return Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq));
