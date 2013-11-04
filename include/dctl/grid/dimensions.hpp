@@ -41,6 +41,18 @@ constexpr auto rotate(DimensionsObject const& dim, T const& theta)
         }
 }
 
+inline
+constexpr auto rotate2(DimensionsObject const& dim, Angle const& theta)
+{
+        switch (theta) {
+        case   0: return dim;
+        case  90: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.height() % 2) ^ !dim.parity()) };
+        case 180: return DimensionsObject{ dim.height(), dim.width() , static_cast<bool>((dim.height() % 2) ^ (dim.width() % 2) ^ (!!dim.parity())) };
+        case 270: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.width()  % 2) ^ !dim.parity()) };
+        default: return throw std::invalid_argument("Dimensions rotation angles shall be a multiple of 90 degrees."), dim;
+        }
+}
+
 template<int Height, int Width, bool Parity = false>
 class Dimensions
 {

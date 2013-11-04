@@ -88,6 +88,18 @@ constexpr auto rotate(Coordinates const& coord, T const& theta)
         }
 }
 
+inline
+constexpr auto rotate2(Coordinates const& coord, Angle const& theta)
+{
+        switch (theta) {
+        case   0: return coord;
+        case  90: return Coordinates{  coord.col(), -coord.row() };
+        case 180: return Coordinates{ -coord.row(), -coord.col() };
+        case 270: return Coordinates{ -coord.col(),  coord.row() };
+        default: return throw std::invalid_argument("Coordinates rotation angles shall be a multiple of 90 degrees."), coord;
+        }
+}
+
 template<class Grid>
 constexpr auto sqtocoord(Square<Grid> const& square) noexcept
 {
