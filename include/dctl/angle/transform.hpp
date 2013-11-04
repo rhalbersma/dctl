@@ -30,6 +30,8 @@ constexpr auto mirror(T const& alpha, T const& theta) noexcept
         );
 }
 
+}       // namespace angle
+
 inline
 constexpr auto inverse2(Angle const& alpha) noexcept
 {
@@ -45,8 +47,7 @@ constexpr auto rotate2(Angle const& alpha, Angle const& theta) noexcept
 inline
 constexpr auto mirror2(Angle const& alpha, Angle const& theta) noexcept
 {
-        return rotate2(inverse2(rotate2(alpha,inverse2(theta))),theta);
+        return rotate2(inverse2(rotate2(alpha, inverse2(theta))), theta);
 }
 
-}       // namespace angle
 }       // namespace dctl

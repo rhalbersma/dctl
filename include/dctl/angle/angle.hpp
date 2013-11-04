@@ -34,34 +34,6 @@ public:
 
         // modifiers
 
-        constexpr auto& operator++() noexcept
-        {
-                value_ = make_angle(value_ + 1);
-                assert(invariant());
-                return *this;
-        }
-
-        constexpr auto operator++(int) noexcept
-        {
-                auto const old = *this;
-                ++(*this);
-                return old;
-        }
-
-        constexpr auto& operator--() noexcept
-        {
-                value_ = make_angle(value_ - 1);
-                assert(invariant());
-                return *this;
-        }
-
-        constexpr auto operator--(int) noexcept
-        {
-                auto const old = *this;
-                --(*this);
-                return old;
-        }
-
         constexpr auto& operator+=(Angle const& other) noexcept
         {
                 value_ = make_angle(value_ + other.value_);
@@ -114,9 +86,15 @@ public:
                 return !(L == R);
         }
 
+        friend constexpr auto operator<(Angle const& L, Angle const& R) noexcept
+        {
+                return L.value_ < R.value_;
+        }
+
+
         // views
 
-        constexpr operator int() noexcept
+        constexpr operator int() const noexcept
         {
                 return value_;
         }
@@ -141,7 +119,7 @@ private:
 
         // representation
 
-        int value_{};
+        int value_{0};
 };
 
 }       // namespace dctl
