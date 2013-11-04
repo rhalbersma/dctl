@@ -49,7 +49,7 @@ int const directions[] =
 BOOST_AUTO_TEST_CASE_TEMPLATE(RotateAngle180SymmetryForAllDirections, T, GridSequence)
 {
         BOOST_CHECK(
-                std::all_of(std::begin(directions), std::end(directions), [](int const& direction) {
+                std::all_of(std::begin(directions), std::end(directions), [](auto const& direction) {
                         return grid::shift_size<T>(direction) == grid::shift_size<T>(angle::rotate(direction, angle::D180));
                 })
         );

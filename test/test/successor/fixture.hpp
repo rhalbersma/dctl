@@ -1,9 +1,9 @@
 #pragma once
-#include <algorithm>                    // is_permutation, transform
-#include <iterator>                     // back_inserter, begin, end
-#include <string>                       // string
-#include <vector>                       // vector
-#include <boost/algorithm/string.hpp>   // trim_copy
+#include <algorithm>                            // is_permutation, transform
+#include <iterator>                             // back_inserter, begin, end
+#include <string>                               // string
+#include <vector>                               // vector
+#include <boost/algorithm/string.hpp>           // trim_copy
 #include <boost/test/unit_test.hpp>
 #include <dctl/successor/copy.hpp>
 #include <dctl/node/position.hpp>
@@ -20,16 +20,14 @@ struct Fixture
         template<int N>
         void run(std::string const& FEN, std::string const (&legal)[N])
         {
-                // setup the position and generate all legal moves
                 auto const p = setup::read<Rules, Board, pdn::protocol>()(FEN);
                 Arena<Move> a;
                 auto const moves = successor::copy(p, a);
 
-                // check whether the number of generated moves is equal to the number of legal moves
                 BOOST_CHECK_EQUAL(static_cast<int>(moves.size()), N);
 
-                // write each move as a string into the vector notations
                 std::vector<std::string> notations;
+                notations.reserve(moves.size());
                 std::transform(
                         begin(moves), end(moves),
                         std::back_inserter(notations),
@@ -37,11 +35,13 @@ struct Fixture
                         return notation::write(p, m);
                 });
 
-                // check whether the vector of generated moves is a permutation of the array of legal moves
+                using boost::algorithm::trim_copy;
                 BOOST_CHECK(
-                        std::is_permutation(std::begin(legal), std::end(legal), begin(notations),
-                                [](std::string const& lhs, std::string const& rhs) {
-                                return boost::algorithm::trim_copy(lhs) == boost::algorithm::trim_copy(rhs);
+                        std::is_permutation(
+                                std::begin(legal), std::end(legal),
+                                begin(notations),
+                                [](auto const& lhs, auto const& rhs) {
+                                return trim_copy(lhs) == trim_copy(rhs);
                         })
                 );
         }
