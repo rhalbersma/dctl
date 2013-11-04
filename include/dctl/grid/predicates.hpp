@@ -4,7 +4,6 @@
 #include <dctl/grid/coordinates.hpp>
 #include <dctl/grid/dimensions.hpp>
 #include <dctl/grid/grid.hpp>
-#include <dctl/mpl/type_traits.hpp>
 #include <dctl/utility/abs.hpp>
 
 namespace dctl {
