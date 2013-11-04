@@ -38,7 +38,6 @@ private:
                 template<class T>
                 void operator()(boost::mpl::identity<T> Id)
                 {
-                        static_assert(std::is_base_of<typename Factory::base_type, T>::value, "");
                         i_->factory_.insert(Id);
                 }
 
