@@ -1,7 +1,7 @@
 #pragma once
 #include <set>                          // set
 #include <dctl/angle/angle.hpp>         // Angle
-#include <dctl/angle/transform.hpp>     // rotate2, inverse2
+#include <dctl/angle/transform.hpp>     // rotate, inverse
 #include <dctl/group/primitives.hpp>    // make
 
 namespace dctl {
@@ -13,7 +13,7 @@ struct Op
         template<class Object>
         auto operator()(Object const& obj, Angle const& a) const
         {
-                return rotate2(obj, a);
+                return rotate(obj, a);
         }
 };
 
@@ -21,7 +21,7 @@ struct Inv
 {
         auto operator()(Angle const& a) const
         {
-                return inverse2(a);
+                return inverse(a);
         }
 };
 

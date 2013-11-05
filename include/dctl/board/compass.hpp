@@ -8,8 +8,8 @@ namespace board {
 
 template<class Board, bool Color>
 using Compass = angle::Compass<
-        angle::rotate(
-                angle::inverse(Board::orientation),
+        rotate(
+                inverse(Board::orientation),
                 Color ? 0_deg : 180_deg
         )
 >;

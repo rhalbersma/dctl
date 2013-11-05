@@ -23,17 +23,18 @@ namespace angle {
 
 */
 
-template<int Orientation>
+template<int Direction>
 struct Compass
 {
-        static constexpr auto right      = rotate(  0_deg, Orientation);
-        static constexpr auto right_up   = rotate( 45_deg, Orientation);
-        static constexpr auto up         = rotate( 90_deg, Orientation);
-        static constexpr auto left_up    = rotate(135_deg, Orientation);
-        static constexpr auto left       = rotate(180_deg, Orientation);
-        static constexpr auto left_down  = rotate(225_deg, Orientation);
-        static constexpr auto down       = rotate(270_deg, Orientation);
-        static constexpr auto right_down = rotate(315_deg, Orientation);
+        static constexpr auto orientation = Angle{Direction};
+        static constexpr auto right       = rotate(  0_deg, orientation);
+        static constexpr auto right_up    = rotate( 45_deg, orientation);
+        static constexpr auto up          = rotate( 90_deg, orientation);
+        static constexpr auto left_up     = rotate(135_deg, orientation);
+        static constexpr auto left        = rotate(180_deg, orientation);
+        static constexpr auto left_down   = rotate(225_deg, orientation);
+        static constexpr auto down        = rotate(270_deg, orientation);
+        static constexpr auto right_down  = rotate(315_deg, orientation);
 };
 
 }       // namespace angle

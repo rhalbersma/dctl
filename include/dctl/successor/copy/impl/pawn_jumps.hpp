@@ -268,8 +268,8 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan< angle::rotate(Direction, -90_deg) >(jumper) |
-                        scan< angle::rotate(Direction, +90_deg) >(jumper)
+                        scan< rotate(Angle{Direction}, -90_deg) >(jumper) |
+                        scan< rotate(Angle{Direction}, +90_deg) >(jumper)
                 );
         }
 
@@ -277,14 +277,14 @@ private:
         template<int Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::up) const
         {
-                return scan< angle::mirror(Direction, Compass::up) >(jumper);
+                return scan< mirror(Angle{Direction}, Compass::up) >(jumper);
         }
 
         // overload for pawns that turn in the 1 mirrored backward direction
         template<int Direction>
         bool turn_dispatch(BitIndex jumper, rules::directions::down) const
         {
-                return scan< angle::mirror(Direction, Compass::down) >(jumper);
+                return scan< mirror(Angle{Direction}, Compass::down) >(jumper);
         }
 
         // overload for pawns that turn in the remaining 4 diagonal or orthogonal directions
@@ -292,10 +292,10 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan< angle::rotate(Direction,  -45_deg) >(jumper) |
-                        scan< angle::rotate(Direction,  +45_deg) >(jumper) |
-                        scan< angle::rotate(Direction, -135_deg) >(jumper) |
-                        scan< angle::rotate(Direction, +135_deg) >(jumper)
+                        scan< rotate(Angle{Direction},  -45_deg) >(jumper) |
+                        scan< rotate(Angle{Direction},  +45_deg) >(jumper) |
+                        scan< rotate(Angle{Direction}, -135_deg) >(jumper) |
+                        scan< rotate(Angle{Direction}, +135_deg) >(jumper)
                 );
         }
 

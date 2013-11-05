@@ -76,20 +76,8 @@ private:
         int col_;
 };
 
-template<class T>
-constexpr auto rotate(Coordinates const& coord, T const& theta)
-{
-        switch (dctl::make_angle(theta)) {
-        case   0_deg: return coord;
-        case  90_deg: return Coordinates{  coord.col(), -coord.row() };
-        case 180_deg: return Coordinates{ -coord.row(), -coord.col() };
-        case 270_deg: return Coordinates{ -coord.col(),  coord.row() };
-        default: return throw std::invalid_argument("Coordinates rotation angles shall be a multiple of 90 degrees."), coord;
-        }
-}
-
 inline
-constexpr auto rotate2(Coordinates const& coord, Angle const& theta)
+constexpr auto rotate(Coordinates const& coord, Angle const& theta)
 {
         switch (theta) {
         case   0: return coord;

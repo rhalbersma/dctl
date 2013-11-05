@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/operators.hpp>          // totally_ordered, unit_steppable, additive
+#include <dctl/angle/angle.hpp>
 
 namespace dctl {
 namespace ray {
@@ -12,7 +13,7 @@ class StridedCursor
 ,       boost::additive       < StridedCursor<Board, Direction>, int    // +, -
 > > >
 {
-        static constexpr auto N = Board::shift_size(Direction);
+        static constexpr auto N = Board::shift_size(Angle{Direction});
         static_assert(N > 0, "Cursors need a non-zero stride.");
         using self_type = StridedCursor;
 

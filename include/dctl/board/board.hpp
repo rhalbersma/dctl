@@ -20,7 +20,7 @@ struct Board
 {
 public:
         static constexpr auto edge_columns = EdgeColumns;
-        static constexpr auto orientation = Orientation;
+        static constexpr auto orientation = Angle{Orientation};
 
         // internal and external grids
         using InternalGrid = grid::Grid<grid::Rotate<Dimensions, orientation>, edge_columns>;
@@ -28,7 +28,7 @@ public:
 
         using bit_type = BitBoard;
 
-        static constexpr auto shift_size(int direction)
+        static constexpr auto shift_size(Angle const& direction)
         {
                 return grid::shift_size<InternalGrid>(direction);
         }
@@ -50,9 +50,9 @@ public:
 
 private:
         template<class DestGrid, class FromSquare>
-        static constexpr auto transform(FromSquare const& from_sq, int theta)
+        static constexpr auto transform(FromSquare const& from_sq, Angle const& theta)
         {
-                return grid::coordtosq<DestGrid>(grid::rotate(grid::sqtocoord(from_sq), theta));
+                return grid::coordtosq<DestGrid>(rotate(grid::sqtocoord(from_sq), theta));
         }
 
         static constexpr auto init_square2bit(int n) noexcept
@@ -62,7 +62,7 @@ private:
 
         static constexpr auto init_bit2square(int n) noexcept
         {
-                return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, angle::inverse(orientation)).value();
+                return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, inverse(orientation)).value();
         }
 
 #define DCTL_PP_SQUARE2BIT(z, i, data) init_square2bit(i)
@@ -147,7 +147,7 @@ public:
 
 private:
 
-#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<angle::rotate(i * 45_deg, orientation)>{})
+#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<rotate(Angle{i * 45_deg}, orientation)>{})
 
         static constexpr BitBoard table_jump_start[] =
         {
@@ -157,9 +157,9 @@ private:
 #undef DCTL_PP_JUMP_START
 
 public:
-        static constexpr auto jump_start(int direction) noexcept
+        static constexpr auto jump_start(Angle const& direction) noexcept
         {
-                return table_jump_start[dctl::make_angle(direction) / 45_deg];
+                return table_jump_start[direction / 45_deg];
         }
 };
 

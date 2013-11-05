@@ -40,17 +40,17 @@ using GridSequence = boost::mpl::transform<
         make_grid< boost::mpl::_1 >
 >::type;
 
-int const directions[] =
+Angle const directions[] =
 {
-         angle::D000, angle::D045, angle::D090, angle::D135,
-         angle::D180, angle::D225, angle::D270, angle::D315
+           0_deg,  45_deg,  90_deg, 135_deg,
+         180_deg, 225_deg, 270_deg, 315_deg
 };
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RotateAngle180SymmetryForAllDirections, T, GridSequence)
 {
         BOOST_CHECK(
                 std::all_of(std::begin(directions), std::end(directions), [](auto const& direction) {
-                        return grid::shift_size<T>(direction) == grid::shift_size<T>(angle::rotate(direction, angle::D180));
+                        return grid::shift_size<T>(direction) == grid::shift_size<T>(rotate(direction, 180_deg));
                 })
         );
 }

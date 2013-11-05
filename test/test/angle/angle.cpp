@@ -1,7 +1,8 @@
 #include <algorithm>                            // any_of
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
-#include <dctl/angle/angle.hpp>                 // is_angle, make_angle
+#include <dctl/angle/angle.hpp>                 // Angle
+#include <dctl/utility/range.hpp>
 
 namespace dctl {
 namespace angle {
@@ -15,7 +16,7 @@ BOOST_AUTO_TEST_CASE(MakeAngleIsAngle)
 
         BOOST_CHECK(
                 std::all_of(alpha, omega, [](auto const& i){
-                        return is_angle(int{Angle{i}});
+                        return util::is_element(int{Angle{i}}, {0, 360});
                 })
         );
 }
