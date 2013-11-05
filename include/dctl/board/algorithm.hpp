@@ -34,12 +34,14 @@ T fill(T generator, T propagator)
 template<class Board, int Direction>
 struct Fill
 {
+        static constexpr auto theta = Angle{Direction};
+
         template<class T>
         T operator()(T generator, T propagator) const
         {
                 return detail::fill<
-                        angle::is_positive(Direction),
-                        Board::shift_size(Angle{Direction})
+                        is_positive(theta),
+                        Board::shift_size(theta)
                 >(generator, propagator);
         }
 };

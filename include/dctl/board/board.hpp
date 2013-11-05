@@ -147,7 +147,7 @@ public:
 
 private:
 
-#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<rotate(Angle{i * 45_deg}, orientation)>{})
+#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<rotate(i * 45_deg, orientation)>{})
 
         static constexpr BitBoard table_jump_start[] =
         {

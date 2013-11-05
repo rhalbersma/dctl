@@ -1,8 +1,8 @@
 #pragma once
 #include <stdexcept>                    // invalid_argument
 #include <tuple>                        // tie
-#include <dctl/angle/angle.hpp>         // make_angle
-#include <dctl/angle/degrees.hpp>       // D000, L090, R090, D180
+#include <dctl/angle/angle.hpp>         // Angle
+#include <dctl/angle/degrees.hpp>       // _deg
 
 namespace dctl {
 namespace grid {
@@ -52,10 +52,11 @@ public:
         static constexpr auto width = Width;
         static constexpr auto parity = Parity;
 
-        template<int Theta>
+        template<int Direction>
         struct Rotate
         {
-                static constexpr auto rotated = rotate(DimensionsObject{height, width, parity}, Angle{Theta});
+                static constexpr auto theta = Angle{Direction};
+                static constexpr auto rotated = rotate(DimensionsObject{height, width, parity}, theta);
                 using type = Dimensions<rotated.height(), rotated.width(), rotated.parity()>;
         };
 };

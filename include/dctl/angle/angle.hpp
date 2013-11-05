@@ -1,6 +1,5 @@
 #pragma once
 #include <cassert>                      // assert
-#include <iosfwd>                       // ostream
 #include <dctl/utility/abs.hpp>         // abs_remainder
 #include <dctl/utility/range.hpp>       // is_element
 
@@ -36,6 +35,20 @@ public:
                 return *this;
         }
 
+        constexpr auto& operator*=(int n) noexcept
+        {
+                value_ = make_angle(value_ * n);
+                assert(invariant());
+                return *this;
+        }
+
+        constexpr auto& operator/=(int n) noexcept
+        {
+                value_ = make_angle(value_ / n);
+                assert(invariant());
+                return *this;
+        }
+
         // operators
 
         friend constexpr auto operator+(Angle const& a) noexcept
@@ -62,34 +75,32 @@ public:
                 return nrv;
         }
 
-        // predicates
-
-        friend constexpr auto operator==(Angle const& L, Angle const& R) noexcept
+        friend constexpr auto operator*(Angle const& a, int n) noexcept
         {
-                return L.value_ == R.value_;
+                Angle nrv{a};
+                nrv *= n;
+                return nrv;
         }
 
-        friend constexpr auto operator!=(Angle const& L, Angle const& R) noexcept
+        friend constexpr auto operator*(int n, Angle const& a) noexcept
         {
-                return !(L == R);
+                Angle nrv{a};
+                nrv *= n;
+                return nrv;
         }
 
-        friend constexpr auto operator<(Angle const& L, Angle const& R) noexcept
+        friend constexpr auto operator/(Angle const& a, int n) noexcept
         {
-                return L.value_ < R.value_;
+                Angle nrv{a};
+                nrv /= n;
+                return nrv;
         }
-
 
         // views
 
         constexpr operator int() const noexcept
         {
                 return value_;
-        }
-
-        friend auto& operator<<(std::ostream& os, Angle const& a)
-        {
-                return os << a.value_;
         }
 
 private:
@@ -107,7 +118,7 @@ private:
 
         // representation
 
-        int value_{0};
+        int value_{};
 };
 
 }       // namespace dctl
