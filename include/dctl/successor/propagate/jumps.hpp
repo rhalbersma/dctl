@@ -2,6 +2,7 @@
 #include <cassert>                      // assert
 #include <iterator>                     // begin, end
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
+#include <dctl/angle/angle.hpp>
 #include <dctl/angle/traits.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/algorithm.hpp>
@@ -156,7 +157,7 @@ public:
         template<int Direction>
         auto path() const
         {
-                return path() & Board::jump_start(Direction);
+                return path() & Board::jump_start(Angle{Direction});
         }
 
         auto is_king(BitIndex target_sq) const

@@ -29,20 +29,8 @@ private:
         bool parity_;
 };
 
-template<class T>
-constexpr auto rotate(DimensionsObject const& dim, T const& theta)
-{
-        switch (dctl::make_angle(theta)) {
-        case   0_deg: return dim;
-        case  90_deg: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.height() % 2) ^ !dim.parity()) };
-        case 180_deg: return DimensionsObject{ dim.height(), dim.width() , static_cast<bool>((dim.height() % 2) ^ (dim.width() % 2) ^ (!!dim.parity())) };
-        case 270_deg: return DimensionsObject{ dim.width() , dim.height(), static_cast<bool>((dim.width()  % 2) ^ !dim.parity()) };
-        default: return throw std::invalid_argument("Dimensions rotation angles shall be a multiple of 90 degrees."), dim;
-        }
-}
-
 inline
-constexpr auto rotate2(DimensionsObject const& dim, Angle const& theta)
+constexpr auto rotate(DimensionsObject const& dim, Angle const& theta)
 {
         switch (theta) {
         case   0: return dim;
@@ -67,7 +55,7 @@ public:
         template<int Theta>
         struct Rotate
         {
-                static constexpr auto rotated = grid::rotate(DimensionsObject{height, width, parity}, Theta);
+                static constexpr auto rotated = rotate(DimensionsObject{height, width, parity}, Angle{Theta});
                 using type = Dimensions<rotated.height(), rotated.width(), rotated.parity()>;
         };
 };

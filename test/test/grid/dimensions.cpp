@@ -5,7 +5,7 @@
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
-#include <dctl/angle/degrees.hpp>               // _deg2
+#include <dctl/angle/degrees.hpp>               // _deg
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
 #include <dctl/grid/dimensions.hpp>             // Dimensions
 #include <dctl/grid/grid.hpp>                   // Grid
@@ -32,15 +32,15 @@ using BoardSequence = boost::mpl::vector
 >;
 
 auto const C1 = group::make_cyclic({
-        0_deg2
+        0_deg
 });
 
 auto const C2 = group::make_cyclic({
-        0_deg2, 180_deg2
+        0_deg, 180_deg
 });
 
 auto const C4 = group::make_cyclic({
-        0_deg2,  90_deg2, 180_deg2, 270_deg2
+        0_deg,  90_deg, 180_deg, 270_deg
 });
 
 using CyclicGroup = std::common_type<decltype(C1), decltype(C2), decltype(C4)>::type;

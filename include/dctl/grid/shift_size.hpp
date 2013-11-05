@@ -38,18 +38,18 @@ constexpr auto identity(T const& t) noexcept
         return t;
 }
 
-template<class Grid, class T>
-constexpr auto shift_size(T const& direction)
+template<class Grid>
+constexpr auto shift_size(Angle const& direction)
 {
-        switch (dctl::make_angle(direction)) {
-        case   0_deg: return detail::ShiftSize<Grid>::right     ;
-        case  45_deg: return detail::ShiftSize<Grid>::right_up  ;
-        case  90_deg: return detail::ShiftSize<Grid>::up        ;
-        case 135_deg: return detail::ShiftSize<Grid>::left_up   ;
-        case 180_deg: return detail::ShiftSize<Grid>::left      ;
-        case 225_deg: return detail::ShiftSize<Grid>::left_down ;
-        case 270_deg: return detail::ShiftSize<Grid>::down      ;
-        case 315_deg: return detail::ShiftSize<Grid>::right_down;
+        switch (direction) {
+        case   0: return detail::ShiftSize<Grid>::right     ;
+        case  45: return detail::ShiftSize<Grid>::right_up  ;
+        case  90: return detail::ShiftSize<Grid>::up        ;
+        case 135: return detail::ShiftSize<Grid>::left_up   ;
+        case 180: return detail::ShiftSize<Grid>::left      ;
+        case 225: return detail::ShiftSize<Grid>::left_down ;
+        case 270: return detail::ShiftSize<Grid>::down      ;
+        case 315: return detail::ShiftSize<Grid>::right_down;
         default: return throw std::invalid_argument("Shift direction angles shall be a multiple of 45 degrees"), -1;
         }
 }

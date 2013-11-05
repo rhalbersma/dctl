@@ -197,7 +197,7 @@ private:
         template<int Direction>
         bool reverse(BitIndex jumper) const
         {
-                return scan< angle::rotate(Direction, 180_deg) >(jumper);
+                return scan< rotate(Angle{Direction}, 180_deg) >(jumper);
         }
 
         template<int Direction>
@@ -261,8 +261,8 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
         {
                 return (
-                        scan< angle::rotate(Direction, -90_deg) >(jumper) |
-                        scan< angle::rotate(Direction, +90_deg) >(jumper)
+                        scan< rotate(Angle{Direction}, -90_deg) >(jumper) |
+                        scan< rotate(Angle{Direction}, +90_deg) >(jumper)
                 );
         }
 
@@ -271,10 +271,10 @@ private:
         bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
         {
                 return (
-                        scan< angle::rotate(Direction,  -45_deg) >(jumper) |
-                        scan< angle::rotate(Direction,  +45_deg) >(jumper) |
-                        scan< angle::rotate(Direction, -135_deg) >(jumper) |
-                        scan< angle::rotate(Direction, +135_deg) >(jumper)
+                        scan< rotate(Angle{Direction},  -45_deg) >(jumper) |
+                        scan< rotate(Angle{Direction},  +45_deg) >(jumper) |
+                        scan< rotate(Angle{Direction}, -135_deg) >(jumper) |
+                        scan< rotate(Angle{Direction}, +135_deg) >(jumper)
                 );
         }
 

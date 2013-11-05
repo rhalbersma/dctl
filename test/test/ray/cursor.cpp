@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(Members)
                 std::cout << c << std::endl;
         }
 
-        constexpr auto stride = B::shift_size(dir);
+        constexpr auto stride = B::shift_size(Angle{dir});
         std::cout << "stride: " << stride << "\n";
         auto it = RayIterator<board::International, dir>{c};
         auto rt = rotate<+135_deg>(it);

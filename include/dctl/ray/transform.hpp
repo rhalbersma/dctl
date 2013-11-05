@@ -7,7 +7,7 @@ namespace ray {
 
 template<int Theta, class Board, int Direction>
 auto rotate(RayIterator<Board, Direction> const& it)
--> RayIterator<Board, angle::rotate(Direction, Theta)>
+-> RayIterator<Board, rotate(Angle{Direction}, Angle{Theta})>
 {
         return {it.base()};
 }
