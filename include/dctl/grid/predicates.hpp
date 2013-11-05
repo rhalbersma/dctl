@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/angle/angle.hpp>
 #include <dctl/angle/traits.hpp>
 #include <dctl/angle/transform.hpp>
 #include <dctl/grid/coordinates.hpp>
@@ -62,22 +63,23 @@ struct is_col
 template<int Direction>
 struct is_jump_start
 {
-        static_assert(Direction % 45 == 0, "Direction angles have to be a multiple of 45 degrees.");
+        static constexpr auto theta = Angle{Direction};
+        static_assert(theta % 45_deg == 0_deg, "Direction angles have to be a multiple of 45 degrees.");
 
         template<class Square>
         constexpr auto operator()(Square const& sq) const
         {
                 using Grid = typename Square::grid_type;
 
-                auto const offset = angle::is_diagonal(Direction) ? 2 : 4;
+                auto const offset = is_diagonal(theta) ? 2 : 4;
 
                 auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);
-                auto const min_row = angle::is_up(Direction) ? offset : 0;
-                auto const max_row = Grid::height - (angle::is_down(Direction)? offset : 0);
+                auto const min_row = is_up(theta) ? offset : 0;
+                auto const max_row = Grid::height - (is_down(theta)? offset : 0);
 
                 auto const col = grid::detail::decentralize(grid::sqtocoord(sq).col(), Grid::width);
-                auto const min_col = angle::is_left(Direction) ? offset : 0;
-                auto const max_col = Grid::width - (angle::is_right(Direction) ? offset : 0);
+                auto const min_col = is_left(theta) ? offset : 0;
+                auto const max_col = Grid::width - (is_right(theta) ? offset : 0);
 
                 return util::is_element(row, {min_row, max_row}) && util::is_element(col, {min_col, max_col});
         }

@@ -1,7 +1,8 @@
 #pragma once
+#include <dctl/angle/angle.hpp>         // Angle
+#include <dctl/angle/degrees.hpp>       // _deg
 
 namespace dctl {
-namespace angle {
 
 /*
 
@@ -21,53 +22,52 @@ namespace angle {
 
 */
 
-template<class T>
-constexpr auto is_orthogonal(T const& alpha) noexcept
+inline
+constexpr auto is_orthogonal(Angle const& alpha) noexcept
 {
-        return alpha % T{90} == T{0};
+        return alpha % 90_deg == 0_deg;
 }
 
-template<class T>
-constexpr auto is_diagonal(T const& alpha) noexcept
+inline
+constexpr auto is_diagonal(Angle const& alpha) noexcept
 {
-        return alpha % T{90} == T{45};
+        return alpha % 90_deg == 45_deg;
 }
 
-template<class T>
-constexpr auto is_up(T const& alpha) noexcept
+inline
+constexpr auto is_up(Angle const& alpha) noexcept
 {
-        return T{0} < alpha && alpha < T{180};
+        return 0_deg < alpha && alpha < 180_deg;
 }
 
-template<class T>
-constexpr auto is_down(T const& alpha) noexcept
+inline
+constexpr auto is_down(Angle const& alpha) noexcept
 {
-        return T{180} < alpha;
+        return 180_deg < alpha;
 }
 
-template<class T>
-constexpr auto is_left(T const& alpha) noexcept
+inline
+constexpr auto is_left(Angle const& alpha) noexcept
 {
-        return T{90} < alpha && alpha < T{270};
+        return 90_deg < alpha && alpha < 270_deg;
 }
 
-template<class T>
-constexpr auto is_right(T const& alpha) noexcept
+inline
+constexpr auto is_right(Angle const& alpha) noexcept
 {
-        return T{270} < alpha || (T{0} <= alpha && alpha < T{90});
+        return 270_deg < alpha || (0_deg <= alpha && alpha < 90_deg);
 }
 
-template<class T>
-constexpr auto is_positive(T const& alpha) noexcept
+inline
+constexpr auto is_positive(Angle const& alpha) noexcept
 {
-        return T{0} < alpha && alpha <= T{180};
+        return 0_deg < alpha && alpha <= 180_deg;
 }
 
-template<class T>
-constexpr auto is_negative(T const& alpha) noexcept
+inline
+constexpr auto is_negative(Angle const& alpha) noexcept
 {
-        return alpha == T{0} || T{180} < alpha;
+        return alpha == 0_deg || 180_deg < alpha;
 }
 
-}       // namespace angle
 }       // namespace dctl

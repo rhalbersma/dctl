@@ -1,8 +1,8 @@
 #pragma once
 #include <stdexcept>                    // invalid_argument
 #include <tuple>                        // tie
-#include <dctl/angle/angle.hpp>         // make_angle
-#include <dctl/angle/degrees.hpp>       // D000, L090, R090, D180
+#include <dctl/angle/angle.hpp>         // Angle
+#include <dctl/angle/degrees.hpp>       // _deg
 #include <dctl/grid/coordinates.hpp>    // Coordinates
 
 namespace dctl {

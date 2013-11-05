@@ -1,7 +1,7 @@
 #pragma once
 #include <stdexcept>                    // invalid_argument
-#include <dctl/angle/angle.hpp>         // make_angle
-#include <dctl/angle/degrees.hpp>       // D00, D045, D090, D135, D180, D225, D270, D315
+#include <dctl/angle/angle.hpp>         // Angle
+#include <dctl/angle/degrees.hpp>       // _deg
 
 namespace dctl {
 namespace grid {

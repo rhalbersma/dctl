@@ -302,7 +302,7 @@ private:
                 return remaining_targets_dispatch(
                         std::integral_constant<
                                 bool,
-                                angle::is_orthogonal(Direction) &&
+                                is_orthogonal(Angle{Direction}) &&
                                 std::is_same< typename
                                         rules::orthogonality::king_jump<Rules>::type,
                                         rules::orthogonality::relative
