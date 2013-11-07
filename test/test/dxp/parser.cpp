@@ -23,7 +23,7 @@ using Messages = boost::mpl::vector
 BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
         Factory<Message> f;
-        boost::mpl::for_each<Messages, boost::mpl::make_identity<> >([&](auto Id) {
+        boost::mpl::for_each<TypeList, boost::mpl::make_identity<> >([&](auto Id) {
                 using T = typename decltype(Id)::type;
                 f.insert(T::identifier(), T::create);
         });
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
         std::transform(begin(messages), end(messages), std::back_inserter(parsed), [&](auto const& m) {
                 std::cout << m << "\n";
                 auto const p = f.create(m);
-                return (p == nullptr)? "BAD" : p->str();
+                return p->str();
         });
 
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(messages), end(messages), begin(parsed), end(parsed));
