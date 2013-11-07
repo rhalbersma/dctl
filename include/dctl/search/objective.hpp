@@ -144,7 +144,7 @@ bool is_no_progress(Position const& p)
         using Rules = typename Position::rules_type;
 
         // tag dispatching on restrictions on consecutive reversible moves
-        return detail::is_no_progress(p, rules::is_restricted_reversible_moves<Rules>());
+        return detail::is_no_progress(p, rules::is_restricted_reversible_moves<Rules>{});
 }
 
 template<class Position>

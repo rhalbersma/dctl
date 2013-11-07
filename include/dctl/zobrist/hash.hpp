@@ -8,7 +8,7 @@ namespace zobrist {
 template<class Index = uint64_t, class Key>
 Index hash(Key const& key)
 {
-        return detail::hash<Index, Key>()(key);
+        return detail::hash<Index, Key>{}(key);
 }
 
 }       // namespace zobrist

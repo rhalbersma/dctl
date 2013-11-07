@@ -19,10 +19,10 @@ struct count<Color, Pieces, select::jumps>
         int operator()(Position const& p) const
         {
                 Arena<Move> mar_;
-                Alloc<Move> mal_(mar_);
-                stack_vector<Move> moves_(mal_);
+                Alloc<Move> mal_{mar_};
+                stack_vector<Move> moves_{mal_};
 
-                copy<Color, Pieces, select::jumps>()(p, moves_);
+                copy<Color, Pieces, select::jumps>{}(p, moves_);
                 return static_cast<int>(moves_.size());
         }
 };

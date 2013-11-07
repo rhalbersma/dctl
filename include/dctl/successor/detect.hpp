@@ -13,7 +13,7 @@ auto detect(Position const& p)
 {
         using Rules = typename Position::rules_type;
         using Range = typename rules::range::king<Rules>::type;
-        return detail::detect<Color, Pieces, Select, Range>()(p);
+        return detail::detect<Color, Pieces, Select, Range>{}(p);
 }
 
 template<class Pieces, class Select, class Position>

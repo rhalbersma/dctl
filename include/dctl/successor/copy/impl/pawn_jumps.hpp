@@ -49,8 +49,8 @@ public:
 
         explicit copy(State& c, Sequence& m)
         :
-                capture_(c),
-                moves_(m)
+                capture_{c},
+                moves_{m}
         {}
 
         // function call operators
@@ -84,7 +84,7 @@ private:
         void branch(Set const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>());
+                branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>{});
         }
 
         // overload for pawns that jump in the 8 diagonal and orthogonal directions
@@ -132,7 +132,7 @@ private:
         template<int Direction, class Set>
         void serialize(Set const& active_pawns) const
         {
-                for (auto sq: bit::bit_set<int, uint64_t, 1>(active_pawns & Prev<Board, Direction>()(capture_.template targets_with_pawn<Direction>())))
+                for (auto sq: bit::bit_set<int, uint64_t, 1>(active_pawns & Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>())))
                         find<Direction>(BitBoard{1} << sq);
         }
 
@@ -147,7 +147,7 @@ private:
         template<int Direction>
         void find_first(BitIndex jumper) const
         {
-                Increment<Board, Direction>()(jumper);
+                Increment<Board, Direction>{}(jumper);
                 assert(bit::is_element(jumper, capture_.template targets_with_pawn<Direction>()));
                 capture_.make(jumper);
                 precedence<Direction>(jumper);  // recursively find more jumps
@@ -158,14 +158,14 @@ private:
         void precedence(BitIndex jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch<Direction>(jumper, typename rules::is_precedence<Rules>());
+                precedence_dispatch<Direction>(jumper, typename rules::is_precedence<Rules>{});
         }
 
         // overload for no majority precedence
         template<int Direction>
         void precedence_dispatch(BitIndex jumper, std::false_type) const
         {
-                Increment<Board, Direction>()(jumper);
+                Increment<Board, Direction>{}(jumper);
                 if (!find_next<Direction>(jumper))
                         add_pawn_jump(jumper);
         }
@@ -174,7 +174,7 @@ private:
         template<int Direction>
         void precedence_dispatch(BitIndex jumper, std::true_type) const
         {
-                Increment<Board, Direction>()(jumper);
+                Increment<Board, Direction>{}(jumper);
                 if (
                         !find_next<Direction>(jumper) &&
                         capture_.greater_equal()
@@ -191,7 +191,7 @@ private:
         bool find_next(BitIndex jumper) const
         {
                 // tag dispatching on promotion condition
-                return find_next_dispatch<Direction>(jumper, rules::phase::promotion<Rules>());
+                return find_next_dispatch<Direction>(jumper, rules::phase::promotion<Rules>{});
         }
 
         // overload for pawns that promote apres-fini
@@ -229,7 +229,7 @@ private:
         bool promote_en_passant_dispatch(BitIndex jumper, std::true_type) const
         {
                 capture_.toggle_promotion();
-                auto const found_next = KingJumps(capture_, moves_).template promote_en_passant<Direction>(jumper);
+                auto const found_next = KingJumps{capture_, moves_}.template promote_en_passant<Direction>(jumper);
                 capture_.toggle_promotion();
                 return found_next;
         }
@@ -240,7 +240,7 @@ private:
         {
                 capture_.toggle_promotion();    // no longer a pawn
                 capture_.set_king_targets();    // can now capture kings
-                auto const found_next = KingJumps(capture_, moves_).template promote_en_passant<Direction>(jumper);
+                auto const found_next = KingJumps{capture_, moves_}.template promote_en_passant<Direction>(jumper);
                 capture_.clear_king_targets();  // can no longer capture kings
                 capture_.toggle_promotion();    // now a pawn again
                 return found_next;
@@ -250,7 +250,7 @@ private:
         bool turn(BitIndex jumper) const
         {
                 // tag dispatching on pawn turn directions
-                return turn_dispatch<Direction>(jumper, rules::directions::pawn_turn<Rules>());
+                return turn_dispatch<Direction>(jumper, rules::directions::pawn_turn<Rules>{});
         }
 
         // overload for pawns that turn in all the 6 non-parallel diagonal and orthogonal directions
@@ -302,7 +302,7 @@ private:
         template<int Direction>
         bool scan(BitIndex jumper) const
         {
-                Increment<Board, Direction>()(jumper);
+                Increment<Board, Direction>{}(jumper);
                 return jump<Direction>(jumper);
         }
 
@@ -321,7 +321,7 @@ private:
         void add_pawn_jump(BitIndex dest_sq) const
         {
                 // tag dispatching on ambiguity of pawn jumps
-                add_pawn_jump_dispatch(dest_sq, rules::is_unambiguous_pawn_jump<Rules>());
+                add_pawn_jump_dispatch(dest_sq, rules::is_unambiguous_pawn_jump<Rules>{});
         }
 
         // overload for pawn jumps that are always unambiguous

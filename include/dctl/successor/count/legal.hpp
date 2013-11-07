@@ -22,9 +22,9 @@ struct count<Color, Pieces, select::legal>
                 using DoJumps = count<Color, Pieces, select::jumps>;
                 using DoMoves = count<Color, Pieces, select::moves>;
 
-                auto num_moves = DoJumps()(p);
+                auto num_moves = DoJumps{}(p);
                 if (!num_moves)
-                        num_moves += DoMoves()(p);
+                        num_moves += DoMoves{}(p);
                 return num_moves;
         }
 };

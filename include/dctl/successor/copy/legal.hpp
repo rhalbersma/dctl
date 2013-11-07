@@ -24,9 +24,9 @@ struct copy<Color, Pieces, select::legal>
                 using DoJumps = copy<Color, Pieces, select::jumps>;
                 using DoMoves = copy<Color, Pieces, select::moves>;
 
-                DoJumps()(p, moves);
+                DoJumps{}(p, moves);
                 if (moves.empty())
-                        DoMoves()(p, moves);
+                        DoMoves{}(p, moves);
         }
 };
 

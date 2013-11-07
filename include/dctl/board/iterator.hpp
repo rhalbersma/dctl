@@ -36,7 +36,7 @@ struct Advance
         void operator()(BidirectionalIterator& square) const
         {
                 for (auto i = 0; i < N; ++i)
-                        Increment<Board, Direction>()(square);
+                        Increment<Board, Direction>{}(square);
         }
 };
 
@@ -47,7 +47,7 @@ struct Retreat
         void operator()(BidirectionalIterator& square) const
         {
                 for (auto i = 0; i < N; ++i)
-                        Decrement<Board, Direction>()(square);
+                        Decrement<Board, Direction>{}(square);
         }
 };
 

@@ -15,7 +15,7 @@ struct Sink<Board, Direction, rules::range::distance_1>
         template<class T>
         T operator()(T from, T dest) const
         {
-                return Next<Board, Direction>()(from) & dest;
+                return Next<Board, Direction>{}(from) & dest;
         }
 };
 
@@ -25,7 +25,7 @@ struct Sink<Board, Direction, rules::range::distance_N>
         template<class T>
         T operator()(T from, T dest) const
         {
-                return from ^ Fill<Board, Direction>()(from, dest);
+                return from ^ Fill<Board, Direction>{}(from, dest);
         }
 };
 
@@ -40,9 +40,9 @@ struct Sandwich<Board, Direction, rules::range::distance_1>
         T operator()(T from, T through, T dest) const
         {
                 return (
-                        Next<Board, Direction>()(from) &
+                        Next<Board, Direction>{}(from) &
                         through &
-                        Prev<Board, Direction>()(dest)
+                        Prev<Board, Direction>{}(dest)
                 );
         }
 };
@@ -54,9 +54,9 @@ struct Sandwich<Board, Direction, rules::range::distance_N>
         T operator()(T from, T through, T dest) const
         {
                 return (
-                        Next<Board, Direction>()(Fill<Board, Direction>()(from, dest)) &
+                        Next<Board, Direction>{}(Fill<Board, Direction>{}(from, dest)) &
                         through &
-                        Prev<Board, Direction>()(dest)
+                        Prev<Board, Direction>{}(dest)
                 );
         }
 };
