@@ -25,7 +25,7 @@ public:
 
         explicit BackRequest(std::string const& message)
         :
-                move_number_ ( std::stoi(message.substr(0, 3).c_str()) ),
+                move_number_ { std::stoi(message.substr(0, 3).c_str()) },
                 side_to_move_ { *(std::begin(message.substr(3, 1))) }
         {}
 

@@ -29,11 +29,11 @@ public:
 
         explicit GameRequest(std::string const& message)
         :
-                name_initiator_(message.substr(2, 32)),
-                color_follower_ (*(std::begin(message.substr(34, 1)))),
-                minutes_ (std::stoi(message.substr(35, 3).c_str())),
-                moves_(std::stoi(message.substr(38, 3).c_str())),
-                setup_code_(static_cast<SetupCode>(boost::lexical_cast<char>(*(std::begin(message.substr(41, 1))))))
+                name_initiator_{message.substr(2, 32)},
+                color_follower_ {*(std::begin(message.substr(34, 1)))},
+                minutes_ {std::stoi(message.substr(35, 3).c_str())},
+                moves_{std::stoi(message.substr(38, 3).c_str())},
+                setup_code_{static_cast<SetupCode>(boost::lexical_cast<char>(*(std::begin(message.substr(41, 1)))))}
         {
                 if (setup_code() == special)
                         position_ = message.substr(42);
