@@ -28,8 +28,8 @@ public:
 
         explicit GameEnd(std::string const& message)
         :
-                reason_(static_cast<Reason>(std::stoi(message.substr(0, 1).c_str()))),
-                stop_code_(static_cast<StopCode>(std::stoi(message.substr(1, 1).c_str())))
+                reason_{static_cast<Reason>(std::stoi(message.substr(0, 1).c_str()))},
+                stop_code_{static_cast<StopCode>(std::stoi(message.substr(1, 1).c_str()))}
         {}
 
         // queries
