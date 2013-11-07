@@ -41,8 +41,8 @@ public:
 
         explicit copy(State const& p, Sequence& m)
         :
-                propagate_(p),
-                moves_(m)
+                propagate_{p},
+                moves_{m}
         {}
 
         // function call operators
@@ -73,14 +73,14 @@ private:
         void find(BitIndex from_sq) const
         {
                 // tag dispatching on king range
-                find_dispatch<Direction>(from_sq, rules::range::move<Rules>());
+                find_dispatch<Direction>(from_sq, rules::range::move<Rules>{});
         }
 
         // overload for short ranged kings
         template<int Direction>
         void find_dispatch(BitIndex from_sq, rules::range::distance_1) const
         {
-                if (auto const dest_sq = Next<Board, Direction>()(from_sq) & propagate_.path())
+                if (auto const dest_sq = Next<Board, Direction>{}(from_sq) & propagate_.path())
                         moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
         }
 
@@ -89,9 +89,9 @@ private:
         void find_dispatch(BitIndex from_sq, rules::range::distance_N) const
         {
                 for (
-                        auto dest_sq = Next<Board, Direction>()(from_sq);
+                        auto dest_sq = Next<Board, Direction>{}(from_sq);
                         bit::is_element(dest_sq, propagate_.path());
-                        Increment<Board, Direction>()(dest_sq)
+                        Increment<Board, Direction>{}(dest_sq)
                 )
                         moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
         }

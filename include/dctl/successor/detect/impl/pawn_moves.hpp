@@ -32,7 +32,7 @@ public:
 
         explicit detect(State const& p)
         :
-                propagate_(p)
+                propagate_{p}
         {}
 
         // function call operators

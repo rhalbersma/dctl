@@ -33,8 +33,8 @@ public:
         // initialize with a set of bitboards and a color
         Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
         :
-                material_(black_pieces, white_pieces, kings),
-                to_move_(to_move)
+                material_{black_pieces, white_pieces, kings},
+                to_move_{to_move}
         {
                 hash_index_ = zobrist::hash(*this);
                 assert(material_invariant());
@@ -49,12 +49,12 @@ public:
         template<int N>
         static Position initial()
         {
-                return Position(
+                return Position{
                         Board::initial_mask[Side::black][N],
                         Board::initial_mask[Side::white][N],
                         0,
                         Side::white
-                );
+                };
         }
 
         // queries
@@ -126,7 +126,7 @@ private:
         void make_irreversible(Move const& m)
         {
                 // tag dispatching on restrictions on consecutive moves with the same king
-                make_irreversible(m, rules::is_restricted_same_king_moves<Rules>());
+                make_irreversible(m, rules::is_restricted_same_king_moves<Rules>{});
         }
 
         // overload for restricted consecutive moves with the same king

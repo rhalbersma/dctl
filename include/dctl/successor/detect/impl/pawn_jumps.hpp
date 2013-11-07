@@ -34,7 +34,7 @@ public:
 
         explicit detect(State& p)
         :
-                propagate_(p)
+                propagate_{p}
         {}
 
         // function call operators
@@ -50,7 +50,7 @@ private:
         bool branch(Set const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                return branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>());
+                return branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>{});
         }
 
         // overload for pawns that jump in the 8 diagonal and orthogonal directions

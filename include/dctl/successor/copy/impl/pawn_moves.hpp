@@ -38,8 +38,8 @@ public:
 
         explicit copy(State const& p, Sequence& m)
         :
-                propagate_(p),
-                moves_(m)
+                propagate_{p},
+                moves_{m}
         {}
 
         // function call operators
@@ -65,7 +65,7 @@ private:
                 transform<Direction>(
                         bit::set_intersection(
                                 active_pawns,
-                                Prev<Board, Direction>()(propagate_.path())
+                                Prev<Board, Direction>{}(propagate_.path())
                         )
                 );
         }
@@ -76,7 +76,7 @@ private:
                 auto const bs = bit::bit_set<int, uint64_t, 1>(movers);
                 std::transform(begin(bs), end(bs), std::back_inserter(moves_), [](auto const& sq){
                         auto const from_sq = BitBoard{1} << sq;
-                        auto const dest_sq = Next<Board, Direction>()(from_sq);
+                        auto const dest_sq = Next<Board, Direction>{}(from_sq);
                         return Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq));
                 });
         }

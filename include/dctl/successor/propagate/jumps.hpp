@@ -70,14 +70,14 @@ public:
         void make(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                make_dispatch(target_sq, rules::phase::capture<Rules>());
+                make_dispatch(target_sq, rules::phase::capture<Rules>{});
                 assert(invariant());
         }
 
         void undo(BitIndex target_sq)
         {
                 // tag dispatching on capture removal
-                undo_dispatch(target_sq, rules::phase::capture<Rules>());
+                undo_dispatch(target_sq, rules::phase::capture<Rules>{});
                 assert(invariant());
         }
 
@@ -140,13 +140,13 @@ public:
         template<int Direction>
         auto targets_with_king() const
         {
-                return remaining_targets<Direction>() & Prev<Board, Direction>()(path());
+                return remaining_targets<Direction>() & Prev<Board, Direction>{}(path());
         }
 
         template<int Direction>
         auto targets_with_pawn() const
         {
-                return remaining_targets_ & Prev<Board, Direction>()(path());
+                return remaining_targets_ & Prev<Board, Direction>{}(path());
         }
 
         auto path() const
@@ -240,7 +240,7 @@ private:
         void increment(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                increment_dispatch(is_king, rules::precedence::jump<Rules>());
+                increment_dispatch(is_king, rules::precedence::jump<Rules>{});
         }
 
         // overload for no capture precedence
@@ -264,7 +264,7 @@ private:
         void decrement(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                decrement_dispatch(is_king, rules::precedence::jump<Rules>());
+                decrement_dispatch(is_king, rules::precedence::jump<Rules>{});
         }
 
         // overload for no capture precedence
@@ -326,7 +326,7 @@ private:
         auto size() const
         {
                 // tag dispatching on majority capture precedence
-                return size_dispatch(rules::is_precedence<Rules>());
+                return size_dispatch(rules::is_precedence<Rules>{});
         }
 
         // overload for no majority capture precedence

@@ -34,7 +34,7 @@ public:
 
         explicit detect(State const& p)
         :
-                propagate_(p)
+                propagate_{p}
         {}
 
         // function call operators
@@ -50,7 +50,7 @@ private:
         bool branch(Set const& active_kings) const
         {
                 // tag dispatching on king jump directions
-                return branch_dispatch(active_kings, rules::directions::king_jump<Rules>());
+                return branch_dispatch(active_kings, rules::directions::king_jump<Rules>{});
         }
 
         // overload for kings that jump in the 8 diagonal and orthogonal directions
@@ -91,7 +91,7 @@ private:
         bool parallelize(Set const& active_kings) const
         {
                 return !bit::empty(
-                        Sandwich<Board, Direction, Range>()(active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path())
+                        Sandwich<Board, Direction, Range>{}(active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path())
                 );
         }
 };

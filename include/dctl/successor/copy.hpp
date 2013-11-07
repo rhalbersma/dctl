@@ -13,14 +13,14 @@ namespace successor {
 template<bool Color, class Pieces, class Select, class Position, class Sequence>
 void copy(Position const& p, Sequence& moves)
 {
-        detail::copy<Color, Pieces, Select>()(p, moves);
+        detail::copy<Color, Pieces, Select>{}(p, moves);
 }
 
 template<bool Color, class Pieces, class Select, class Position>
 auto copy(Position const& p, Arena<Move>& mar)
 {
-        Alloc<Move> mal(mar);
-        stack_vector<Move> moves(mal);
+        Alloc<Move> mal{mar};
+        stack_vector<Move> moves{mal};
         moves.reserve(DCTL_PP_STACK_RESERVE);
 
         copy<Color, Pieces, Select>(p, moves);

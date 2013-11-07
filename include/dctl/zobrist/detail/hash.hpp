@@ -25,9 +25,9 @@ struct hash< Index, Position<Rules, Board> >
         Index operator()(Position<Rules, Board> const& p) const
         {
                 return (
-                        hash<Index, Material  >()(p.material())         ^
-                        hash<Index, bool      >()(p.to_move())          ^
-                        hash<Index, Restricted>()(p.restricted())
+                        hash<Index, Material  >{}(p.material())         ^
+                        hash<Index, bool      >{}(p.to_move())          ^
+                        hash<Index, Restricted>{}(p.restricted())
                 );
         }
 };
@@ -90,8 +90,8 @@ struct hash<Index, Restricted>
         Index operator()(Restricted const& restricted) const
         {
                 return (
-                        hash<Index, KingMovesColor>()(std::make_pair(restricted[Side::black], Side::black)) ^
-                        hash<Index, KingMovesColor>()(std::make_pair(restricted[Side::white], Side::white))
+                        hash<Index, KingMovesColor>{}(std::make_pair(restricted[Side::black], Side::black)) ^
+                        hash<Index, KingMovesColor>{}(std::make_pair(restricted[Side::white], Side::white))
                 );
         }
 };

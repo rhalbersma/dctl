@@ -25,7 +25,7 @@ struct detect<Color, Pieces, select::legal, Range>
                 using ShortJumps = detect<Color, Pieces, select::jumps, rules::range::distance_1>;
 
                 // speculate #moves > #jumps, so that the logical OR is more likely to short-circuit
-                return ShortMoves()(p) || ShortJumps()(p);
+                return ShortMoves{}(p) || ShortJumps{}(p);
         }
 };
 

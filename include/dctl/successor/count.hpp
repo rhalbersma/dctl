@@ -10,7 +10,7 @@ namespace successor {
 template<bool Color, class Pieces, class Select, class Position>
 auto count(Position const& p)
 {
-        return detail::count<Color, Pieces, Select>()(p);
+        return detail::count<Color, Pieces, Select>{}(p);
 }
 
 template<class Pieces, class Select, class Position>

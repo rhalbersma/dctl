@@ -37,7 +37,7 @@ public:
 
         explicit count(State const& p)
         :
-                propagate_(p)
+                propagate_{p}
         {}
 
         // function call operators

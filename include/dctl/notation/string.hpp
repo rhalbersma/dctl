@@ -56,7 +56,7 @@ std::string write(Position const& p, Move const& m)
 {
         using Rules = typename Position::rules_type;
 
-        return detail::write<Rules>()(p, m);
+        return detail::write<Rules>{}(p, m);
 }
 
 }       // namespace notation
