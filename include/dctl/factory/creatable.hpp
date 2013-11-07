@@ -21,7 +21,7 @@ struct make_creatable
 {
         static Arg identifier()
         {
-                // TODO: find out why "return {1, identifier};" fails here
+                // NOT: Arg{1, identifier_} because 1 is converted without narrowing to '\1'
                 return Arg(1, identifier_);
         }
 
