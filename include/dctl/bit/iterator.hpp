@@ -78,14 +78,14 @@ public:
 
         // predicates
 
-        friend constexpr bool operator==(bit_iterator const& L, bit_iterator const& R) noexcept
+        friend constexpr bool operator==(bit_iterator const& lhs, bit_iterator const& rhs) noexcept
         {
-                return L.block_ == R.block_ && L.index_ == R.index_;
+                return lhs.block_ == rhs.block_ && lhs.index_ == rhs.index_;
         }
 
-        friend constexpr bool operator!=(bit_iterator const& L, bit_iterator const& R) noexcept
+        friend constexpr bool operator!=(bit_iterator const& lhs, bit_iterator const& rhs) noexcept
         {
-                return !(L == R);
+                return !(lhs == rhs);
         }
 };
 

@@ -31,7 +31,7 @@ public:
 
         explicit constexpr Square(int v) noexcept
         :
-                value_(v)
+                value_{v}
         {}
 
         constexpr auto value () const noexcept
@@ -47,8 +47,8 @@ class Coordinates
 public:
         constexpr Coordinates(int r, int c) noexcept
         :
-                row_(r),
-                col_(c)
+                row_{r},
+                col_{c}
         {}
 
         constexpr auto row() const noexcept
@@ -61,14 +61,14 @@ public:
                 return col_;
         }
 
-        friend auto operator==(Coordinates const& L, Coordinates const& R) noexcept
+        friend auto operator==(Coordinates const& lhs, Coordinates const& rhs) noexcept
         {
-                return std::tie(L.row_, L.col_) == std::tie(R.row_, R.col_);
+                return std::tie(lhs.row_, rhs.col_) == std::tie(rhs.row_, rhs.col_);
         }
 
-        friend auto operator!=(Coordinates const& L, Coordinates const& R) noexcept
+        friend auto operator!=(Coordinates const& lhs, Coordinates const& rhs) noexcept
         {
-                return !(L == R);
+                return !(lhs == rhs);
         }
 
 private:
