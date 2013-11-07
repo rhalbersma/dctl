@@ -36,8 +36,8 @@ BOOST_AUTO_TEST_CASE(MirrorIsInvolutionOnAllAnglePairs)
 {
         BOOST_CHECK(
                 std::all_of(alpha, omega, [](auto i){
-                        return std::all_of(alpha, omega, [=](int j) {
-                                return group::IsInvolution()([=](int k) { return mirror(Angle{k}, Angle{i}); }, j);
+                        return std::all_of(alpha, omega, [=](auto j) {
+                                return group::IsInvolution()([=](auto k) { return mirror(Angle{k}, Angle{i}); }, j);
                         });
                 })
         );

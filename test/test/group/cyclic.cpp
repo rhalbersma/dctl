@@ -53,8 +53,8 @@ BOOST_AUTO_TEST_CASE(AllGroupActionIsRealizedOnAllAngles)
         auto const omega = boost::counting_iterator<int>{360};
 
         BOOST_CHECK(
-                std::all_of(std::begin(C_N), std::end(C_N), [=](CyclicGroup const& g){
-                        return std::all_of(alpha, omega, [&](int const& i){
+                std::all_of(std::begin(C_N), std::end(C_N), [=](auto const& g){
+                        return std::all_of(alpha, omega, [&](auto i){
                                 return action::is_realized(Angle{i}, g);
                         });
                 })

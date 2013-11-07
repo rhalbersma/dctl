@@ -20,7 +20,7 @@ struct Fixture
         template<int N>
         void run(std::string const& FEN, std::string const (&legal)[N])
         {
-                auto const p = setup::read<Rules, Board, pdn::protocol>()(FEN);
+                auto const p = setup::read<Rules, Board, pdn::protocol>{}(FEN);
                 Arena<Move> a;
                 auto const moves = successor::copy(p, a);
 
@@ -31,16 +31,14 @@ struct Fixture
                 std::transform(
                         begin(moves), end(moves),
                         std::back_inserter(notations),
-                        [&](Move const& m) {
+                        [&](auto const& m) {
                         return notation::write(p, m);
                 });
 
                 using boost::algorithm::trim_copy;
                 BOOST_CHECK(
                         std::is_permutation(
-                                std::begin(legal), std::end(legal),
-                                begin(notations),
-                                [](auto const& lhs, auto const& rhs) {
+                                std::begin(legal), std::end(legal), begin(notations), [](auto const& lhs, auto const& rhs) {
                                 return trim_copy(lhs) == trim_copy(rhs);
                         })
                 );

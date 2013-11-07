@@ -119,10 +119,8 @@ public:
                 auto const first = begin(bucket(index));
                 auto const last = first + bucket_size();
 
-                auto it = std::find_if(
-                        first, last,
-                        [&](value_type const& entry) {
-                        return key_equal()(entry.first, Signature()(/*key,*/ index));
+                auto it = std::find_if(first, last, [&](auto const& entry) {
+                        return key_equal{}(entry.first, Signature()(/*key,*/ index));
                 });
                 return (it != last) ? &(it->second) : nullptr;
         }
