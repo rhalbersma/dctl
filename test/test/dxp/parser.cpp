@@ -23,7 +23,7 @@ using Messages = boost::mpl::vector
 BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
         Factory<Message> f;
-        boost::mpl::for_each<TypeList, boost::mpl::make_identity<> >([&](auto Id) {
+        boost::mpl::for_each<Messages, boost::mpl::make_identity<> >([&](auto Id) {
                 using T = typename decltype(Id)::type;
                 f.insert(T::identifier(), T::create);
         });
