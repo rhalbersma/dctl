@@ -2,12 +2,13 @@
 #include <iterator>                     // back_inserter
 #include <string>                       // string
 #include <vector>                       // vector
+#include <boost/mpl/for_each.hpp>       // for_each
+#include <boost/mpl/identity.hpp>       // make_identity
 #include <boost/mpl/vector.hpp>         // vector
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/dxp/message.hpp>         // Message
 #include <dctl/dxp/types.hpp>           // GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
 #include <dctl/factory/factory.hpp>     // Factory
-#include <dctl/factory/insert.hpp>      // insert
 
 namespace dctl {
 namespace dxp {
@@ -22,7 +23,10 @@ using Messages = boost::mpl::vector
 BOOST_AUTO_TEST_CASE(MesanderExamples)
 {
         Factory<Message> f;
-        factory::insert<Messages>(f);
+        boost::mpl::for_each<Messages, boost::mpl::make_identity<> >([&](auto Id) {
+                using T = typename decltype(Id)::type;
+                f.insert(T::identifier(), T::create);
+        });
 
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm
@@ -41,8 +45,9 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
         std::vector<std::string> parsed;
         parsed.reserve(messages.size());
         std::transform(begin(messages), end(messages), std::back_inserter(parsed), [&](auto const& m) {
+                std::cout << m << "\n";
                 auto const p = f.create(m);
-                return p->str();
+                return (p == nullptr)? "BAD" : p->str();
         });
 
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(messages), end(messages), begin(parsed), end(parsed));
