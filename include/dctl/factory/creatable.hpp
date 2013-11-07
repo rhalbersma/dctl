@@ -21,6 +21,7 @@ struct make_creatable
 {
         static Arg identifier()
         {
+                // TODO: find out why "return {1, identifier};" fails here
                 return Arg(1, identifier_);
         }
 
@@ -29,7 +30,7 @@ struct make_creatable
                 return cpp14::make_unique<Derived>(arg);
         }
 
-        static const auto identifier_ = ID;
+        static constexpr auto identifier_ = ID;
 };
 
 template
