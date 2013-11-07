@@ -20,7 +20,7 @@ public:
         // the board square numbers (starting at 1)
         std::string operator()() const
         {
-                return diagram<Board, squares>()(std::bind(std::plus<int>(), std::placeholders::_1, 1));
+                return diagram<Board, squares>{}(std::bind(std::plus<int>(), std::placeholders::_1, 1));
         }
 
         // parameterized board square content
@@ -74,14 +74,14 @@ public:
         // the board bit numbers (starting at 0)
         std::string operator()() const
         {
-                return diagram<Board, bits>()(std::bind(std::plus<int>(), std::placeholders::_1, 0));
+                return diagram<Board, bits>{}(std::bind(std::plus<int>(), std::placeholders::_1, 0));
         }
 
         // parameterized board bit content
         template<class Functor>
         std::string operator()(Functor f) const
         {
-                return diagram<Board, squares>()(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
+                return diagram<Board, squares>{}(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
         }
 };
 
@@ -100,7 +100,7 @@ public:
         {
                 using Board = typename Position::board_type;
 
-                return diagram<Board, bits>()(std::bind(content<Content>, p.material(), std::placeholders::_1));
+                return diagram<Board, bits>{}(std::bind(content<Content>, p.material(), std::placeholders::_1));
         }
 };
 
