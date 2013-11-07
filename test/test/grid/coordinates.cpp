@@ -54,8 +54,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AllGroupActionIsRealizedOnAllSquareCoordinates, T,
         auto const last  = boost::counting_iterator<int>{T::end()  };
 
         BOOST_CHECK(
-                std::all_of(std::begin(C_N), std::end(C_N), [=](CyclicGroup const& g) {
-                        return std::all_of(first, last, [&](int const& i) {
+                std::all_of(std::begin(C_N), std::end(C_N), [=](auto const& g) {
+                        return std::all_of(first, last, [&](auto i) {
                                 auto const coord = grid::sqtocoord(grid::Square<typename T::ExternalGrid>{i});
                                 return group::action::is_realized(coord, g);
                         });

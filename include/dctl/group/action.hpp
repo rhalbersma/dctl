@@ -13,10 +13,9 @@ auto is_associativity(Object const& obj, Group const& g) noexcept
         auto const first = std::begin(group::set(g));
         auto const last = std::end(group::set(g));
         auto const op = group::op(g);
-        using Element = decltype(*first);
 
-        return std::all_of(first, last, [=](Element const& a) {
-                return std::all_of(first, last, [=](Element const& b){
+        return std::all_of(first, last, [=](auto const& a) {
+                return std::all_of(first, last, [=](auto const& b){
                         return op(obj, op(a, b)) == op(op(obj, a), b);
                 });
         });
@@ -27,6 +26,7 @@ auto is_identity(Object const& obj, Group const& g) noexcept
 {
         auto const op = group::op(g);
         auto const id = group::id(g);
+
         return op(obj, id) == obj;
 }
 

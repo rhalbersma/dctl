@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AllGroupActionIsRealizedOnAllDimensions, T, BoardS
         auto const dim = grid::DimensionsObject{ T::height, T::width, T::parity };
 
         BOOST_CHECK(
-                std::all_of(std::begin(C_N), std::end(C_N), [&](CyclicGroup const& g) {
+                std::all_of(std::begin(C_N), std::end(C_N), [&](auto const& g) {
                         return group::action::is_realized(dim, g);
                 })
         );

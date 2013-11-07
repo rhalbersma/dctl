@@ -25,7 +25,7 @@ void insert_tuples(Op op, std::pair<InputIterator1, InputIterator1> head, std::p
                 // bind the first free variable in the lambda, and
                 // keep one free variable for each of the remaining ranges
                 detail::insert_tuples(
-                        [=](InputIterator2... elems) mutable { op(it, elems...); },
+                        [=](auto... elems) mutable { op(it, elems...); },
                         tail...
                 );
         }
@@ -38,7 +38,7 @@ template<class OutputIterator, class... InputIterator>
 void cartesian_product(OutputIterator result, std::pair<InputIterator, InputIterator>... dimensions)
 {
         detail::insert_tuples(
-                 [=](InputIterator... elems) mutable { *result++ = std::make_tuple(*elems...); },
+                 [=](auto... elems) mutable { *result++ = std::make_tuple(*elems...); },
                  dimensions...
         );
 }
