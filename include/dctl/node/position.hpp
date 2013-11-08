@@ -238,12 +238,12 @@ private:
         }
 
         // representation
-        TreeIterator parent_ {};
+        TreeIterator parent_{};
         HashIndex hash_index_;
         Material material_;
-        Restricted restricted_ {};
-        PlyCount reversible_moves_ {};
-        PlyCount distance_to_root_ {};
+        Restricted restricted_{};
+        PlyCount reversible_moves_{};
+        PlyCount distance_to_root_{};
         bool to_move_;
         BitBoard padding_[6];
 };

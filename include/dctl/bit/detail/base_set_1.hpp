@@ -131,7 +131,7 @@ struct base_set<T, Block, 1>
 
         // representation
 
-        Block data_ {};
+        Block data_{};
 };
 
 }       // namespace detail

@@ -62,8 +62,8 @@ struct base_iterator
                 assert(0 <= index_ && index_ < N);
         }
 
-        Block const* block_ {};
-        int index_ {};
+        Block const* block_{};
+        int index_{};
 };
 
 }       // namespace detail

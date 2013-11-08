@@ -39,13 +39,16 @@ public:
         auto time() const
         {
                 using namespace std::chrono;
+
                 return duration_cast<milliseconds>(splits_.back() - splits_.front());
         }
 
         auto split() const
         {
                 using namespace std::chrono;
-                auto const i = splits_.size() - 1;
+
+                assert(splits_.size() > 0);
+                auto const i = splits_.size();
                 return duration_cast<milliseconds>(splits_[i] - splits_[i - 1]);
         }
 
@@ -60,8 +63,8 @@ private:
         // representation
 
         using clock = std::chrono::high_resolution_clock;
-        bool running_ = false;
-        std::vector<clock::time_point> splits_ {};
+        std::vector<clock::time_point> splits_{};
+        bool running_{};
 };
 
 }       // namespace dctl

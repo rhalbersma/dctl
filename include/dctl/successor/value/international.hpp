@@ -44,7 +44,7 @@ public:
 
         // queries
 
-        int size() const
+        auto size() const
         {
                 return num_pieces_;
         }
@@ -52,13 +52,13 @@ public:
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend bool operator==(Value const& lhs, Value const& rhs)
+        friend auto operator==(Value const& lhs, Value const& rhs)
         {
                 return lhs.num_pieces_ == rhs.num_pieces_;
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend bool operator<(Value const& lhs, Value const& rhs)
+        friend auto operator<(Value const& lhs, Value const& rhs)
         {
                 return lhs.num_pieces_ < rhs.num_pieces_;
         }
@@ -81,7 +81,7 @@ private:
 
         // representation
 
-        int num_pieces_ {};
+        int num_pieces_{};
 };
 
 }       // namespace successor

@@ -23,7 +23,7 @@ public:
                 static_assert(std::is_convertible<U, int>::value, "");
         }
 
-        // views
+        // queries
 
         constexpr operator T() const noexcept
         {

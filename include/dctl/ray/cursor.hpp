@@ -15,7 +15,6 @@ class StridedCursor
 {
         static constexpr auto N = Board::shift_size(Angle{Direction});
         static_assert(N > 0, "Cursors need a non-zero stride.");
-        using self_type = StridedCursor;
 
 public:
         // structors
@@ -39,54 +38,40 @@ public:
         // modifiers
 
         // operator++(int) provided by boost::unit_steppable
-        self_type& operator++() noexcept
+        auto& operator++() noexcept
         {
                 cursor_ += N;
                 return *this;
         }
 
         // operator--(int) provided by boost::unit_steppable
-        self_type& operator--() noexcept
+        auto& operator--() noexcept
         {
                 cursor_ -= N;
                 return *this;
         }
 
         // operator+(self_type, int) provided by boost::additive
-        self_type& operator+=(int n) noexcept
+        auto& operator+=(int n) noexcept
         {
                 cursor_ += n * N;
                 return *this;
         }
 
         // operator-(self_type, int) provided by boost::additive
-        self_type& operator-=(int n) noexcept
+        auto& operator-=(int n) noexcept
         {
                 cursor_ -= n * N;
                 return *this;
         }
 
         // number of increments / decrements between lhs and rhs
-        friend int operator-(self_type const& lhs, self_type const& rhs) noexcept
+        friend auto operator-(StridedCursor const& lhs, StridedCursor const& rhs) noexcept
         {
                 return (lhs.cursor_ - rhs.cursor_) / N;
         }
 
-        // predicates
-
-        // operator!= provided by boost::totally_ordered
-        friend bool operator==(self_type const& lhs, self_type const& rhs) noexcept
-        {
-                return lhs.cursor_ == rhs.cursor_;
-        }
-
-        // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend bool operator<(self_type const& lhs, self_type const& rhs) noexcept
-        {
-                return lhs.cursor_ < rhs.cursor_;
-        }
-
-        // views
+        // queries
 
         operator int() const noexcept
         {
@@ -96,7 +81,7 @@ public:
 private:
         // representation
 
-        int cursor_ {};
+        int cursor_{};
 };
 
 }       // namespace ray

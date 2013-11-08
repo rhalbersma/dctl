@@ -240,32 +240,32 @@ public:
 
         // relational operators
 
-        friend constexpr auto operator==(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
+        friend constexpr auto operator==(bit_set const& lhs, bit_set const& rhs) noexcept
         {
                 return Base::do_equal(lhs, rhs);
         }
 
-        friend constexpr auto operator!=(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
+        friend constexpr auto operator!=(bit_set const& lhs, bit_set const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
 
-        friend constexpr auto operator< (bit_set const& lhs, bit_set const& rhs) noexcept -> bool
+        friend constexpr auto operator< (bit_set const& lhs, bit_set const& rhs) noexcept
         {
                 return Base::do_lexicograhical_compare(lhs, rhs);
         }
 
-        friend constexpr auto operator>=(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
+        friend constexpr auto operator>=(bit_set const& lhs, bit_set const& rhs) noexcept
         {
                 return !(lhs < rhs);
         }
 
-        friend constexpr auto operator> (bit_set const& lhs, bit_set const& rhs) noexcept -> bool
+        friend constexpr auto operator> (bit_set const& lhs, bit_set const& rhs) noexcept
         {
                 return rhs < lhs;
         }
 
-        friend constexpr auto operator<=(bit_set const& lhs, bit_set const& rhs) noexcept -> bool
+        friend constexpr auto operator<=(bit_set const& lhs, bit_set const& rhs) noexcept
         {
                 return !(rhs < lhs);
         }

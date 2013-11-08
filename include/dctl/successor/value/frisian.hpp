@@ -46,7 +46,7 @@ public:
 
         // queries
 
-        int size() const
+        auto size() const
         {
                 return num_pieces_;
         }
@@ -54,7 +54,7 @@ public:
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend bool operator==(Value const& lhs, Value const& rhs)
+        friend auto operator==(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator==
                 return (
@@ -64,7 +64,7 @@ public:
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend bool operator<(Value const& lhs, Value const& rhs)
+        friend auto operator<(Value const& lhs, Value const& rhs)
         {
                 auto const delta_kings  = lhs.num_kings_  - rhs.num_kings_ ;
                 auto const delta_pieces = lhs.num_pieces_ - rhs.num_pieces_;
@@ -111,9 +111,9 @@ private:
 
         // representation
 
-        int num_pieces_ {};
-        int num_kings_ {};
-        bool is_with_king_ {};
+        int num_pieces_{};
+        int num_kings_{};
+        bool is_with_king_{};
 };
 
 }       // namespace successor

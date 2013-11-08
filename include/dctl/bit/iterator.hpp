@@ -69,7 +69,7 @@ public:
                 return old;
         }
 
-        // views
+        // queries
 
         constexpr reference operator*()
         {
