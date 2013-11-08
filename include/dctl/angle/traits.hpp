@@ -6,8 +6,6 @@ namespace dctl {
 
 /*
 
-        The standard enumeration of angles
-
                  90
                  |
             135  |  45

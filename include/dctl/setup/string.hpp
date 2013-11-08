@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>                      // assert
 #include <cctype>                       // isdigit
 #include <sstream>                      // stringstream
 #include <string>                       // string
@@ -21,7 +22,7 @@ bool read_color(char c)
         case Token::white:
                 return Side::white;
         default:
-                BOOST_ASSERT_MSG(false, "switch statement incomplete");
+                assert(false);
                 return false;
         }
 }
@@ -160,7 +161,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                         case Token::empty:
                                 break;
                         default:
-                                BOOST_ASSERT_MSG(false, "switch statement incomplete");
+                                assert(false);
                                 break;
                         }
                         if (isupper(ch))

@@ -36,7 +36,6 @@ public:
 
         Ret create(Arg const& input) const
         {
-                std::cout << Base::header(input) << " " << Base::body(input) << "\n";
                 auto const it = registry_.find(Base::header(input));
                 return (it != std::end(registry_)) ? (it->second)(Base::body(input)) : nullptr;
         }
