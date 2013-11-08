@@ -3,29 +3,27 @@
 #include <type_traits>                          // common_type
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
-#include <dctl/angle.hpp>                       // _deg, inverse
-#include <dctl/group/action.hpp>                // is_realized
-#include <dctl/group/axioms.hpp>                // is_realized
-#include <dctl/group/cyclic.hpp>                // make_cyclic
+#include <dctl/angle.hpp>                       // _deg
+#include <test/group.hpp>                       // is_realized, make_cyclic
 
 namespace dctl {
 namespace group {
 
 BOOST_AUTO_TEST_SUITE(GroupCyclic)
 
-auto const C1 = group::make_cyclic({
+auto const C1 = make_cyclic({
           0_deg
 });
 
-auto const C2 = group::make_cyclic({
+auto const C2 = make_cyclic({
           0_deg, 180_deg
 });
 
-auto const C4 = group::make_cyclic({
+auto const C4 = make_cyclic({
           0_deg,  90_deg, 180_deg, 270_deg
 });
 
-auto const C8 = group::make_cyclic({
+auto const C8 = make_cyclic({
           0_deg,  45_deg,  90_deg, 135_deg,
         180_deg, 225_deg, 270_deg, 315_deg
 });

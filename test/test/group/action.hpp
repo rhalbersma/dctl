@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>                    // all_of
 #include <iterator>                     // begin, end
-#include <dctl/group/primitives.hpp>    // set, op, id
+#include <test/group/primitives.hpp>    // set, op, id
 
 namespace dctl {
 namespace group {
