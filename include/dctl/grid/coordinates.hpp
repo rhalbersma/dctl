@@ -1,8 +1,7 @@
 #pragma once
 #include <stdexcept>                    // invalid_argument
 #include <tuple>                        // tie
-#include <dctl/angle/angle.hpp>         // Angle
-#include <dctl/angle/degrees.hpp>       // _deg
+#include <dctl/angle.hpp>               // Angle
 #include <dctl/grid/coordinates.hpp>    // Coordinates
 
 namespace dctl {

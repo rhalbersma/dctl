@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/operators.hpp>          // totally_ordered, unit_steppable, additive
-#include <dctl/angle/angle.hpp>
+#include <dctl/angle.hpp>               // Angle
 
 namespace dctl {
 namespace ray {
@@ -51,14 +51,14 @@ public:
                 return *this;
         }
 
-        // operator+(self_type, int) provided by boost::additive
+        // operator+(StridedCursor, int) provided by boost::additive
         auto& operator+=(int n) noexcept
         {
                 cursor_ += n * N;
                 return *this;
         }
 
-        // operator-(self_type, int) provided by boost::additive
+        // operator-(StridedCursor, int) provided by boost::additive
         auto& operator-=(int n) noexcept
         {
                 cursor_ -= n * N;

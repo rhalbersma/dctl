@@ -1,13 +1,12 @@
 #pragma once
 #include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
-#include <dctl/angle/degrees.hpp>
+#include <dctl/angle.hpp>                       // Angle, _deg
 #include <dctl/grid/coordinates.hpp>
 #include <dctl/grid/dimensions.hpp>             // Rotate_t
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
 #include <dctl/grid/predicates.hpp>
 #include <dctl/node/side.hpp>
-#include <dctl/utility/range.hpp>               // is_element
 #include <dctl/bit/bitboard.hpp>                // BitBoard
 
 namespace dctl {
@@ -45,7 +44,7 @@ public:
 
         static constexpr auto is_valid(int square) noexcept
         {
-                return util::is_element(square, {begin(), end()});
+                return begin() <= square && square < end();
         }
 
 private:

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle/degrees.hpp>       // _deg
+#include <dctl/angle.hpp>               // _deg
 #include <dctl/board/board.hpp>         // Board
 #include <dctl/grid/dimensions.hpp>     // Dimensions
 

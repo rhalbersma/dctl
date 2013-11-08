@@ -1,7 +1,6 @@
 #pragma once
-#include <cassert>                      // assert
-#include <dctl/utility/abs.hpp>         // abs_remainder
-#include <dctl/utility/range.hpp>       // is_element
+#include <cassert>                              // assert
+#include <dctl/angle/detail/abs_remainder.hpp>  // abs_remainder
 
 namespace dctl {
 
@@ -108,12 +107,12 @@ private:
 
         static constexpr int make_angle(int n) noexcept
         {
-                return util::abs_remainder(n, 360);
+                return detail::abs_remainder(n, 360);
         }
 
         constexpr bool invariant() const noexcept
         {
-                return util::is_element(value_, {0, 360});
+                return 0 <= value_ && value_ < 360;
         }
 
         // representation

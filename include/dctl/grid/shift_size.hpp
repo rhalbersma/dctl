@@ -1,7 +1,6 @@
 #pragma once
 #include <stdexcept>                    // invalid_argument
-#include <dctl/angle/angle.hpp>         // Angle
-#include <dctl/angle/degrees.hpp>       // _deg
+#include <dctl/angle.hpp>               // Angle
 
 namespace dctl {
 namespace grid {

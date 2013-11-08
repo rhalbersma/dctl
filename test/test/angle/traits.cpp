@@ -1,6 +1,5 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
-#include <dctl/angle/degrees.hpp>       // _deg
-#include <dctl/angle/traits.hpp>        // is_orthogonal, is_diagonal, is_up, is_down, is_left, is_right, is_positive, is_negative
+#include <dctl/angle.hpp>               // _deg, is_orthogonal, is_diagonal, is_up, is_down, is_left, is_right, is_positive, is_negative
 
 namespace dctl {
 

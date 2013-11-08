@@ -9,8 +9,7 @@
 #include <dctl/pieces/king.hpp>
 
 
-#include <dctl/angle/degrees.hpp>
-#include <dctl/angle/transform.hpp>
+#include <dctl/angle.hpp>                               // _deg, rotate, mirror
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Increment, Prev

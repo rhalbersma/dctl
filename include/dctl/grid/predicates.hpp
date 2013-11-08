@@ -1,11 +1,8 @@
 #pragma once
-#include <dctl/angle/angle.hpp>
-#include <dctl/angle/traits.hpp>
-#include <dctl/angle/transform.hpp>
+#include <dctl/angle.hpp>               // Angle, _deg, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/grid/coordinates.hpp>
 #include <dctl/grid/dimensions.hpp>
 #include <dctl/grid/grid.hpp>
-#include <dctl/utility/abs.hpp>
 
 namespace dctl {
 namespace grid {
@@ -17,7 +14,7 @@ struct is_square
         {
                 using Grid = typename Square::grid_type;
 
-                return util::is_element(sq.value(), {0, Grid::size});
+                return 0 <= sq.value() && sq.value() < Grid::size;
         }
 };
 
@@ -32,7 +29,7 @@ struct is_initial
                 auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);
                 auto const min_row = Color ? Grid::height - (Grid::height - Separation) / 2 : 0;
                 auto const max_row = Color ? Grid::height : (Grid::height - Separation) / 2;
-                return util::is_element(row, {min_row, max_row});
+                return min_row <= row && row < max_row;
         }
 };
 
@@ -81,7 +78,10 @@ struct is_jump_start
                 auto const min_col = is_left(theta) ? offset : 0;
                 auto const max_col = Grid::width - (is_right(theta) ? offset : 0);
 
-                return util::is_element(row, {min_row, max_row}) && util::is_element(col, {min_col, max_col});
+                return (
+                        (min_row <= row && row < max_row) &&
+                        (min_col <= col && col < max_col)
+                );
         }
 };
 

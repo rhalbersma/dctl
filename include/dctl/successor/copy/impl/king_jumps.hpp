@@ -6,8 +6,7 @@
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/pieces/king.hpp>                         // king
 
-#include <dctl/angle/degrees.hpp>                       // Degrees
-#include <dctl/angle/transform.hpp>                     // rotate
+#include <dctl/angle.hpp>                               // _deg, rotate
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Increment, Next, Prev

@@ -1,6 +1,5 @@
 #pragma once
-#include <dctl/angle/degrees.hpp>       // _deg
-#include <dctl/angle/transform.hpp>     // inverse, rotate
+#include <dctl/angle.hpp>               // _deg, inverse, rotate
 
 namespace dctl {
 namespace board {

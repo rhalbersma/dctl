@@ -6,9 +6,7 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK_EQUAL
-#include <dctl/angle/angle.hpp>                 // Angle
-#include <dctl/angle/degrees.hpp>               // _deg
-#include <dctl/angle/transform.hpp>             // rotate
+#include <dctl/angle.hpp>                       // Angle, _deg, rotate
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
 #include <dctl/grid/shift_size.hpp>             // shift_size
 
