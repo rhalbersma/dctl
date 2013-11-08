@@ -1,4 +1,4 @@
-#include <algorithm>                            // any_of
+#include <algorithm>                            // all_of
 #include <iterator>                             // begin, end
 #include <boost/mpl/int.hpp>                    // int_
 #include <boost/mpl/placeholders.hpp>           // _1
@@ -15,7 +15,7 @@
 namespace dctl {
 namespace board {
 
-BOOST_AUTO_TEST_SUITE(TestShiftSize)
+BOOST_AUTO_TEST_SUITE(GridShiftSize)
 
 using BoardSequence = boost::mpl::vector
 <
@@ -50,7 +50,7 @@ Angle const directions[] =
 BOOST_AUTO_TEST_CASE_TEMPLATE(RotateAngle180SymmetryForAllDirections, T, GridSequence)
 {
         BOOST_CHECK(
-                std::all_of(std::begin(directions), std::end(directions), [](auto const& direction) {
+                std::all_of(std::begin(directions), std::end(directions), [](auto direction) {
                         return grid::shift_size<T>(direction) == grid::shift_size<T>(rotate(direction, 180_deg));
                 })
         );

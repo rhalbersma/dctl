@@ -38,25 +38,11 @@ CyclicGroup const C_N[] =
         C1, C2, C4, C8
 };
 
-BOOST_AUTO_TEST_CASE(AllGroupAxiomsIsRealized)
+BOOST_AUTO_TEST_CASE(GroupAxiomsAreRealizedOnAllCyclicGroups)
 {
         BOOST_CHECK(
                 std::all_of(std::begin(C_N), std::end(C_N), [](auto const& g){
                         return axioms::is_realized(g);
-                })
-        );
-}
-
-BOOST_AUTO_TEST_CASE(AllGroupActionIsRealizedOnAllAngles)
-{
-        auto const alpha = boost::counting_iterator<int>{  0};
-        auto const omega = boost::counting_iterator<int>{360};
-
-        BOOST_CHECK(
-                std::all_of(std::begin(C_N), std::end(C_N), [=](auto const& g){
-                        return std::all_of(alpha, omega, [&](auto i){
-                                return action::is_realized(Angle{i}, g);
-                        });
                 })
         );
 }

@@ -1,4 +1,4 @@
-#include <algorithm>                            // any_of
+#include <algorithm>                            // all_of
 #include <iterator>                             // begin, end
 #include <type_traits>                          // common_type
 #include <boost/mpl/vector.hpp>                 // vector
@@ -16,7 +16,7 @@
 namespace dctl {
 namespace board {
 
-BOOST_AUTO_TEST_SUITE(TestDimensions)
+BOOST_AUTO_TEST_SUITE(GridDimensions)
 
 using BoardSequence = boost::mpl::vector
 <
@@ -50,7 +50,7 @@ CyclicGroup const C_N[] =
         C1, C2, C4
 };
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(AllGroupActionIsRealizedOnAllDimensions, T, BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimensions, T, BoardSequence)
 {
         auto const dim = grid::DimensionsObject{ T::height, T::width, T::parity };
 
