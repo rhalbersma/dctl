@@ -9,6 +9,15 @@ constexpr Object apply(int n, Function op, Object obj)
         return n ? op(apply(n - 1, op, obj)) : obj;
 }
 
+struct IsIdentity
+{
+        template<class Function, class Object>
+        constexpr auto operator()(Function op, Object obj) const
+        {
+                return apply(1, op, obj) == apply(0, op, obj);
+        }
+};
+
 struct IsInvolution
 {
         template<class Function, class Object>
