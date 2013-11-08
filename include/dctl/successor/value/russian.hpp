@@ -35,7 +35,7 @@ public:
 
         // queries
 
-        bool is_promotion() const
+        auto is_promotion() const
         {
                 return is_promotion_;
         }
@@ -43,13 +43,13 @@ public:
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend bool operator==(Value const& /* lhs */, Value const& /* rhs */)
+        friend auto operator==(Value const& /* lhs */, Value const& /* rhs */)
         {
                 return true;
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend bool operator<(Value const& /* lhs */, Value const& /* rhs */)
+        friend auto operator<(Value const& /* lhs */, Value const& /* rhs */)
         {
                 return false;
         }
@@ -62,7 +62,7 @@ private:
 
         // representation
 
-        bool is_promotion_ {};
+        bool is_promotion_{};
 };
 
 }       // namespace successor

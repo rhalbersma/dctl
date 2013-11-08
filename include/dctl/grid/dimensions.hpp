@@ -19,7 +19,7 @@ public:
                 parity_{p}
         {}
 
-        // views
+        // queries
 
         constexpr auto height() const noexcept { return height_; }
         constexpr auto width () const noexcept { return width_ ; }
@@ -28,10 +28,17 @@ public:
         // predicates
 
         friend /* constexpr */ auto operator==(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
-        { return std::tie(lhs.height_, lhs.width_, lhs.parity_) == std::tie(rhs.height_, rhs.width_, rhs.parity_); }
+        {
+                return (
+                       std::tie(lhs.height_, lhs.width_, lhs.parity_) ==
+                       std::tie(rhs.height_, rhs.width_, rhs.parity_)
+                );
+        }
 
         friend /* constexpr */ auto operator!=(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
-        { return !(lhs == rhs); }
+        {
+                return !(lhs == rhs);
+        }
 
 private:
         // representation

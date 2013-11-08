@@ -53,17 +53,17 @@ public:
 
         // queries
 
-        int size() const
+        auto size() const
         {
                 return num_pieces_;
         }
 
-        int num_pawns() const
+        auto num_pawns() const
         {
                 return num_pieces_ - num_kings_;
         }
 
-        int num_kings() const
+        auto num_kings() const
         {
                 return num_kings_;
         }
@@ -71,7 +71,7 @@ public:
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend bool operator==(Value const& lhs, Value const& rhs)
+        friend auto operator==(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator==
                 return (
@@ -81,7 +81,7 @@ public:
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend bool operator<(Value const& lhs, Value const& rhs)
+        friend auto operator<(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator<
                 return (
@@ -114,8 +114,8 @@ private:
 
         // representation
 
-        int num_pieces_ {};
-        int num_kings_ {};
+        int num_pieces_{};
+        int num_kings_{};
 };
 
 }       // namespace successor

@@ -64,8 +64,8 @@ private:
 
         // representation
 
-        BitBoard king_ {};
-        PlyCount moves_ {};
+        BitBoard king_{};
+        PlyCount moves_{};
 };
 
 using Restricted = KingMoves[2];

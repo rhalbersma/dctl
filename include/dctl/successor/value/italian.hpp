@@ -70,36 +70,35 @@ public:
 
         // queries
 
-        int size() const
+        auto size() const
         {
                 return num_pieces_;
         }
 
-        int num_pawns() const
+        auto num_pawns() const
         {
                 return num_pieces_ - num_kings_;
         }
 
-        int num_kings() const
+        auto num_kings() const
         {
                 return num_kings_;
         }
 
-        bool is_with_king() const
+        auto is_with_king() const
         {
                 return is_with_king_;
         }
-/*
-        // should also work with auto alone, but Clang 3.3 only accepts decltype(auto)
-        decltype(auto) king_order() const
+
+        auto king_order() const
         {
                 return std::make_pair(king_order_.cbegin(), king_order_.cend());
         }
-*/
+
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend bool operator==(Value const& lhs, Value const& rhs)
+        friend auto operator==(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator==
                 // NOTE: this will -in turn- delegate to std::vector::operator== for the last tuple element
@@ -110,7 +109,7 @@ public:
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend bool operator<(Value const& lhs, Value const& rhs)
+        friend auto operator<(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator<
                 // NOTE: this will -in turn- delegate to std::vector::operator< for the last tuple element
@@ -146,10 +145,10 @@ private:
 
         // representation
 
-        int num_pieces_ {};
-        int num_kings_ {};
-        bool is_with_king_ {};
-        std::vector<int> king_order_ {};
+        int num_pieces_{};
+        int num_kings_{};
+        bool is_with_king_{};
+        std::vector<int> king_order_{};
 };
 
 }       // namespace successor
