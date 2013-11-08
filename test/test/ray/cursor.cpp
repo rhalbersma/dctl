@@ -5,7 +5,7 @@
 #include <dctl/ray/iterator.hpp>
 #include <dctl/ray/transform.hpp>
 #include <dctl/board/types.hpp>
-#include <dctl/angle/degrees.hpp>
+#include <dctl/angle.hpp>
 
 namespace dctl {
 namespace ray {

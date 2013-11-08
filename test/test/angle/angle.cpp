@@ -1,8 +1,7 @@
 #include <algorithm>                            // all_of
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
-#include <dctl/angle/angle.hpp>                 // Angle
-#include <dctl/angle/degrees.hpp>               // _deg
+#include <dctl/angle.hpp>                       // Angle, _deg
 #include <dctl/group/action.hpp>                // is_realized
 #include <dctl/group/cyclic.hpp>                // make_cyclic
 

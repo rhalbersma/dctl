@@ -1,6 +1,5 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL
-#include <dctl/angle/degrees.hpp>       // _deg
-#include <dctl/angle/transform.hpp>     // inverse
+#include <dctl/angle.hpp>               // _deg, inverse
 
 namespace dctl {
 namespace angle {

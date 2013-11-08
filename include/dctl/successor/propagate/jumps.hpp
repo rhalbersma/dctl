@@ -2,8 +2,7 @@
 #include <cassert>                      // assert
 #include <iterator>                     // begin, end
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
-#include <dctl/angle/angle.hpp>
-#include <dctl/angle/traits.hpp>
+#include <dctl/angle.hpp>               // Angle, is_orthogonal
 #include <dctl/bit/bit.hpp>
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/bit/bitboard.hpp>
