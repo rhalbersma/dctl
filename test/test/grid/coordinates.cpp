@@ -8,8 +8,7 @@
 #include <dctl/angle.hpp>                       // _deg
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
 #include <dctl/grid/coordinates.hpp>            // Coordinates, Square, rotate, sqtocoord
-#include <dctl/group/action.hpp>                // is_realized
-#include <dctl/group/cyclic.hpp>                // make_cyclic
+#include <test/group.hpp>                       // is_realized, make_cyclic
 
 namespace dctl {
 namespace board {

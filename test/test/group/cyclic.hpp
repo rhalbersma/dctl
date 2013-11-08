@@ -1,7 +1,7 @@
 #pragma once
 #include <set>                          // set
 #include <dctl/angle.hpp>               // Angle, rotate, inverse
-#include <dctl/group/primitives.hpp>    // make
+#include <test/group/primitives.hpp>    // make
 
 namespace dctl {
 namespace group {

@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>                    // all_of, find, find_if
 #include <iterator>                     // begin, end
-#include <dctl/group/primitives.hpp>    // set, op, id
+#include <test/group/primitives.hpp>    // set, op, id, inv
 
 namespace dctl {
 namespace group {
@@ -67,11 +67,11 @@ auto is_inverse(Group const& g) noexcept
         auto const inv = group::inv(g);
 
         return std::all_of(first, last, [=](auto const& elem) {
-                return last != std::find_if(first, last, [=](auto const& elem_1){
+                return last != std::find_if(first, last, [=](auto const& elem_inv){
                         return (
-                                inv(elem) == elem_1 &&
-                                op(elem, elem_1) == id &&
-                                op(elem_1, elem) == id
+                                inv(elem) == elem_inv &&
+                                op(elem, elem_inv) == id &&
+                                op(elem_inv, elem) == id
                         );
                 });
         });

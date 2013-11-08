@@ -10,8 +10,7 @@
 #include <dctl/grid/dimensions.hpp>             // Dimensions
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
-#include <dctl/group/action.hpp>                // is_realized
-#include <dctl/group/cyclic.hpp>                // make_cyclic
+#include <test/group.hpp>                       // is_realized, make_cyclic
 
 namespace dctl {
 namespace board {
