@@ -18,6 +18,7 @@
 #include <dctl/successor/value.hpp>
 #include <dctl/utility/total_order.hpp>
 #include <dctl/bit/bitboard.hpp>        // BitBoard, BitIndex
+#include <dctl/ray/iterator.hpp>
 
 namespace dctl {
 namespace successor {
@@ -52,31 +53,33 @@ public:
 
         // modifiers
 
-        void launch(BitIndex jump_sq)
+        void launch(int sq)
         {
+                auto const jump_sq = BitBoard{1} << sq;
                 from_sq_ = jump_sq;
                 not_occupied_ ^= jump_sq;
                 assert(invariant());
         }
 
-        void finish(BitIndex jump_sq)
+        void finish(int sq)
         {
+                auto const jump_sq = BitBoard{1} << sq;
                 not_occupied_ ^= jump_sq;
-                from_sq_ = BitIndex(0);
+                from_sq_ = BitIndex{0};
                 assert(invariant());
         }
 
-        void make(BitIndex target_sq)
+        void make(int sq)
         {
                 // tag dispatching on capture removal
-                make_dispatch(target_sq, rules::phase::capture<Rules>{});
+                make_dispatch(sq, rules::phase::capture<Rules>{});
                 assert(invariant());
         }
 
-        void undo(BitIndex target_sq)
+        void undo(int sq)
         {
                 // tag dispatching on capture removal
-                undo_dispatch(target_sq, rules::phase::capture<Rules>{});
+                undo_dispatch(sq, rules::phase::capture<Rules>{});
                 assert(invariant());
         }
 
@@ -106,9 +109,10 @@ public:
         }
 
         template<bool Color, class Sequence>
-        void add_king_jump(BitIndex dest_sq, Sequence& moves) const
+        void add_king_jump(int sq, Sequence& moves) const
         {
                 using Move = typename Sequence::value_type;
+                auto const dest_sq = BitBoard{1} << sq;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
@@ -120,14 +124,15 @@ public:
         }
 
         template<bool Color, class WithPiece, class Sequence>
-        void add_pawn_jump(BitIndex dest_sq, Sequence& moves) const
+        void add_pawn_jump(int sq, Sequence& moves) const
         {
                 using Move = typename Sequence::value_type;
+                auto const dest_sq = BitBoard{1} << sq;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
                                 from_sq_ ^ dest_sq,
-                                promotion<Color>(dest_sq, WithPiece()),
+                                promotion<Color>(sq, WithPiece()),
                                 captured_pieces(),
                                 captured_kings(WithPiece())
                         )
@@ -159,8 +164,9 @@ public:
                 return path() & Board::jump_start(Angle{Direction});
         }
 
-        auto is_king(BitIndex target_sq) const
+        auto is_king(int sq) const
         {
+                auto const target_sq = BitBoard{1} << sq;
                 return bit::is_element(target_sq, king_targets_);
         }
 
@@ -199,41 +205,41 @@ private:
         // modifiers
 
         // overload for apres-fini capture removal
-        void make_dispatch(BitIndex target_sq, rules::phase::apres_fini)
+        void make_dispatch(int sq, rules::phase::apres_fini)
         {
-                make_impl(target_sq);
+                make_impl(sq);
         }
 
         // overload for en-passant capture removal
-        void make_dispatch(BitIndex target_sq, rules::phase::en_passant)
+        void make_dispatch(int sq, rules::phase::en_passant)
         {
-                not_occupied_ ^= target_sq;
-                make_impl(target_sq);
+                not_occupied_ ^= BitBoard{1} << sq;
+                make_impl(sq);
         }
 
-        void make_impl(BitIndex target_sq)
+        void make_impl(int sq)
         {
-                remaining_targets_ ^= target_sq;
-                increment(is_king(target_sq));
+                remaining_targets_ ^= BitBoard{1} << sq;
+                increment(is_king(sq));
         }
 
         // overload for apres-fini capture removal
-        void undo_dispatch(BitIndex target_sq, rules::phase::apres_fini)
+        void undo_dispatch(int sq, rules::phase::apres_fini)
         {
-                undo_impl(target_sq);
+                undo_impl(sq);
         }
 
         // overload for en-passant capture removal
-        void undo_dispatch(BitIndex target_sq, rules::phase::en_passant)
+        void undo_dispatch(int sq, rules::phase::en_passant)
         {
-                undo_impl(target_sq);
-                not_occupied_ ^= target_sq;
+                undo_impl(sq);
+                not_occupied_ ^= BitBoard{1} << sq;
         }
 
-        void undo_impl(BitIndex target_sq)
+        void undo_impl(int sq)
         {
-                decrement(is_king(target_sq));
-                remaining_targets_ ^= target_sq;
+                decrement(is_king(sq));
+                remaining_targets_ ^= BitBoard{1} << sq;
         }
 
         void increment(bool is_king)
@@ -342,16 +348,16 @@ private:
 
         // overload for pawn jumps without promotion
         template<bool Color>
-        auto promotion(BitIndex dest_sq, with::pawn) const
+        auto promotion(int dest_sq, with::pawn) const
         {
                 return promotion_sq<Color, Board>(dest_sq);
         }
 
         // overload for pawn jumps with an en-passant promotion
         template<bool Color>
-        auto promotion(BitIndex dest_sq, with::king) const
+        auto promotion(int dest_sq, with::king) const
         {
-                return dest_sq;
+                return BitBoard{1} << dest_sq;
         }
 
         auto captured_kings(with::pawn) const

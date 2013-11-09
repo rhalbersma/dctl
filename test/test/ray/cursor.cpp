@@ -13,7 +13,7 @@ namespace ray {
 BOOST_AUTO_TEST_SUITE(RayCursor)
 
 template<class Board, int N>
-int fun(RayIterator<Board, N> const& x)
+int fun(Iterator<Board, N> const& x)
 {
         return *x;
 }
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(Members)
 
         constexpr auto stride = B::shift_size(dir);
         std::cout << "stride: " << stride << "\n";
-        auto it = RayIterator<board::International, dir>{c};
+        auto it = Iterator<board::International, dir>{c};
         auto rt = rotate<+135_deg>(it);
 
         for (auto i = 0; i < 5; ++i)
