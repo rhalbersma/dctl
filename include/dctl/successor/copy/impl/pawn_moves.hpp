@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>                                    // transform
+#include <iterator>
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
 #include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
@@ -9,6 +10,7 @@
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Next, Prev
 #include <dctl/node/promotion.hpp>
+#include <dctl/ray/iterator.hpp>
 
 namespace dctl {
 namespace successor {
@@ -27,6 +29,8 @@ private:
         using Move = typename Sequence::value_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::moves, Position>;
+
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         // representation
 
@@ -63,22 +67,30 @@ private:
         void copy_if(Set const& active_pawns) const
         {
                 transform<Direction>(
+                        BitSet(
                         bit::set_intersection(
                                 active_pawns,
                                 Prev<Board, Direction>{}(propagate_.path())
-                        )
+                        ))
                 );
         }
 
         template<int Direction, class Set>
         void transform(Set movers) const
         {
-                auto const bs = bit::bit_set<int, uint64_t, 1>(movers);
-                std::transform(begin(bs), end(bs), std::back_inserter(moves_), [](auto const& sq){
-                        auto const from_sq = BitBoard{1} << sq;
-                        auto const dest_sq = Next<Board, Direction>{}(from_sq);
-                        return Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(dest_sq));
+                std::transform(begin(movers), end(movers), std::back_inserter(moves_), [](auto const& sq){
+                        auto const from = make_iterator<Direction>(sq);
+                        auto const dest = std::next(from);
+                        auto const from_sq = BitBoard{1} << *from;
+                        auto const dest_sq = BitBoard{1} << *dest;
+                        return Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(*dest));
                 });
+        }
+
+        template<int Direction>
+        static ray::Iterator<Board, Direction> make_iterator(int sq)
+        {
+                return ray::make_iterator<Board, Direction>(sq);
         }
 };
 

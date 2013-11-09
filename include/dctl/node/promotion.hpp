@@ -6,13 +6,13 @@
 namespace dctl {
 
 template<bool Color, class Board>
-auto promotion_sq(BitBoard dest_sq)
+auto promotion_sq(int dest_sq)
 {
-        return dest_sq & Board::promotion_mask[Color][0];
+        return (BitBoard{1} << dest_sq) & Board::promotion_mask[Color][0];
 }
 
 template<bool Color, class Board>
-auto is_promotion_sq(BitBoard dest_sq)
+auto is_promotion_sq(int dest_sq)
 {
         return !bit::empty(promotion_sq<Color, Board>(dest_sq));
 }

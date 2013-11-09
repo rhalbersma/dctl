@@ -1,4 +1,5 @@
 #pragma once
+#include <iterator>
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
@@ -10,6 +11,7 @@
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/bit/bitboard.hpp>                        // BitIndex
+#include <dctl/ray/iterator.hpp>
 
 namespace dctl {
 namespace successor {
@@ -31,6 +33,8 @@ private:
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::moves, Position>;
 
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
+
         // representation
 
         State const& propagate_;
@@ -50,50 +54,62 @@ public:
         template<class Set>
         void operator()(Set const& active_kings) const
         {
-                serialize(active_kings);
+                serialize(BitSet(active_kings));
         }
 
 private:
         template<class Set>
         void serialize(Set const& active_kings) const
         {
-                for (auto sq: bit::bit_set<int, uint64_t, 1>(active_kings))
-                        branch(BitBoard{1} << sq);
+                for (auto sq: active_kings)
+                        branch(sq);
         }
 
-        void branch(BitIndex from_sq) const
+        void branch(int sq) const
         {
-                find< Compass::left_down  >(from_sq);
-                find< Compass::right_down >(from_sq);
-                find< Compass::left_up    >(from_sq);
-                find< Compass::right_up   >(from_sq);
+                find(make_iterator< Compass::left_down  >(sq));
+                find(make_iterator< Compass::right_down >(sq));
+                find(make_iterator< Compass::left_up    >(sq));
+                find(make_iterator< Compass::right_up   >(sq));
         }
 
-        template<int Direction>
-        void find(BitIndex from_sq) const
+        template<class Iterator>
+        void find(Iterator it) const
         {
                 // tag dispatching on king range
-                find_dispatch<Direction>(from_sq, rules::range::move<Rules>{});
+                find_dispatch(it, rules::range::move<Rules>{});
         }
 
         // overload for short ranged kings
-        template<int Direction>
-        void find_dispatch(BitIndex from_sq, rules::range::distance_1) const
+        template<class Iterator>
+        void find_dispatch(Iterator it, rules::range::distance_1) const
         {
-                if (auto const dest_sq = Next<Board, Direction>{}(from_sq) & propagate_.path())
+                auto const from_sq = BitBoard{1} << *it;
+                auto const dest = std::next(it);
+                auto const dest_sq = BitBoard{1} << *dest;
+                if (BitSet(propagate_.path()).test(*dest))
                         moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
         }
 
         // overload for long ranged kings
-        template<int Direction>
-        void find_dispatch(BitIndex from_sq, rules::range::distance_N) const
+        template<class Iterator>
+        void find_dispatch(Iterator it, rules::range::distance_N) const
         {
+                auto const from_sq = BitBoard{1} << *it;
                 for (
-                        auto dest_sq = Next<Board, Direction>{}(from_sq);
-                        bit::is_element(dest_sq, propagate_.path());
-                        Increment<Board, Direction>{}(dest_sq)
-                )
+                        auto dest = std::next(it);
+                        BitSet(propagate_.path()).test(*dest);
+                        ++dest
+                ) {
+                        auto const dest_sq = BitBoard{1} << *dest;
                         moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
+                }
+        }
+
+        template<int Direction>
+        static ray::Iterator<Board, Direction> make_iterator(int sq)
+        {
+                return ray::make_iterator<Board, Direction>(sq);
         }
 };
 

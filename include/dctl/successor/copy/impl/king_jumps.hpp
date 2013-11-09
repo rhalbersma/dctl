@@ -1,5 +1,6 @@
 #pragma once
 #include <cassert>                                      // assert
+#include <iterator>
 #include <type_traits>                                  // false_type, true_type
 #include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate
@@ -13,6 +14,8 @@
 #include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/bit/bitboard.hpp>                        // BitIndex
 #include <dctl/utility/algorithm.hpp>
+#include <dctl/ray/iterator.hpp>
+#include <dctl/ray/transform.hpp>
 
 namespace dctl {
 namespace successor {
@@ -33,6 +36,8 @@ private:
         using Move = typename Sequence::value_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jumps, Position>;
+
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         // representation
 
@@ -58,11 +63,11 @@ public:
                         select_dispatch(active_kings, rules::precedence::is_relative_king<Rules>{});
         }
 
-        template<int Direction>
-        bool promote_en_passant(BitIndex jumper) const
+        template<class Board, int Direction>
+        bool promote_en_passant(ray::Iterator<Board, Direction> jumper) const
         {
-                assert((is_promotion_sq<Color, Board>(jumper)));
-                return find_next<Direction>(jumper);
+                assert((is_promotion_sq<Color, Board>(*jumper)));
+                return find_next(jumper);
         }
 
 private:
@@ -86,277 +91,278 @@ private:
         void serialize(Set const& active_kings) const
         {
                 assert(!bit::empty(active_kings));
-                for (auto sq: bit::bit_set<int, uint64_t, 1>(active_kings))
-                        find(BitBoard{1} << sq);
+                for (auto sq: BitSet(active_kings))
+                        find(sq);
         }
 
-        void find(BitIndex jumper) const
+        void find(int jumper) const
         {
                 capture_.launch(jumper);
                 branch(jumper);
                 capture_.finish(jumper);
         }
 
-        void branch(BitIndex jumper) const
+        void branch(int jumper) const
         {
                 // tag dispatching on king jump directions
                 branch_dispatch(jumper, rules::directions::king_jump<Rules>{});
         }
 
         // overload for kings that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(BitIndex jumper, rules::directions::all) const
+        void branch_dispatch(int jumper, rules::directions::all) const
         {
                 branch_dispatch(jumper, rules::directions::diag());
                 branch_dispatch(jumper, rules::directions::orth());
         }
 
         // overload for kings that jump in the 4 diagonal directions
-        void branch_dispatch(BitIndex jumper, rules::directions::diag) const
+        void branch_dispatch(int jumper, rules::directions::diag) const
         {
-                find_first< Compass::left_up    >(jumper);
-                find_first< Compass::right_up   >(jumper);
-                find_first< Compass::left_down  >(jumper);
-                find_first< Compass::right_down >(jumper);
+                find_first(make_iterator< Compass::left_up    >(jumper));
+                find_first(make_iterator< Compass::right_up   >(jumper));
+                find_first(make_iterator< Compass::left_down  >(jumper));
+                find_first(make_iterator< Compass::right_down >(jumper));
         }
 
         // overload for kings that jump in the 4 orthogonal directions
-        void branch_dispatch(BitIndex jumper, rules::directions::orth) const
+        void branch_dispatch(int jumper, rules::directions::orth) const
         {
-                find_first< Compass::left  >(jumper);
-                find_first< Compass::right >(jumper);
-                find_first< Compass::up    >(jumper);
-                find_first< Compass::down  >(jumper);
+                find_first(make_iterator< Compass::left  >(jumper));
+                find_first(make_iterator< Compass::right >(jumper));
+                find_first(make_iterator< Compass::up    >(jumper));
+                find_first(make_iterator< Compass::down  >(jumper));
         }
 
-        template<int Direction>
-        void find_first(BitIndex jumper) const
+        template<class Board, int Direction>
+        void find_first(ray::Iterator<Board, Direction> jumper) const
         {
-                slide<Direction>(jumper, capture_.template path<Direction>());
-                if (bit::is_element(jumper, capture_.template targets_with_king<Direction>())) {
-                        capture_.make(jumper);
-                        precedence<Direction>(jumper);  // recursively find more jumps
-                        capture_.undo(jumper);
+                slide(jumper, capture_.template path<Direction>());
+                if (BitSet(capture_.template targets_with_king<Direction>()).test(*jumper)) {
+                        capture_.make(*jumper);
+                        precedence(jumper);  // recursively find more jumps
+                        capture_.undo(*jumper);
                 }
         }
 
-        template<int Direction>
-        void precedence(BitIndex jumper) const
+        template<class Iterator>
+        void precedence(Iterator jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch<Direction>(jumper, rules::is_precedence<Rules>{});
+                precedence_dispatch(jumper, rules::is_precedence<Rules>{});
         }
 
         // overload for no majority precedence
-        template<int Direction>
-        void precedence_dispatch(BitIndex jumper, std::false_type) const
+        template<class Board, int Direction>
+        void precedence_dispatch(ray::Iterator<Board, Direction> jumper, std::false_type) const
         {
-                Increment<Board, Direction>{}(jumper);
-                if (!find_next<Direction>(jumper))
-                        add_king_jump<Direction>(jumper);
+                ++jumper;
+                if (!find_next(jumper))
+                        add_king_jump(jumper);
         }
 
         // overload for majority precedence
-        template<int Direction>
-        void precedence_dispatch(BitIndex jumper, std::true_type) const
+        template<class Board, int Direction>
+        void precedence_dispatch(ray::Iterator<Board, Direction> jumper, std::true_type) const
         {
-                Increment<Board, Direction>{}(jumper);
+                ++jumper;
                 if (
-                        !find_next<Direction>(jumper) &&
+                        !find_next(jumper) &&
                         capture_.greater_equal()
                 ) {
                         if (capture_.not_equal_to()) {
                                 capture_.improve();
                                 moves_.clear();
                         }
-                        add_king_jump<Direction>(jumper);
+                        add_king_jump(jumper);
                 }
         }
 
-        template<int Direction>
-        bool find_next(BitIndex jumper) const
+        template<class Iterator>
+        bool find_next(Iterator jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return find_next_dispatch<Direction>(jumper, rules::directions::is_reversal<Rules>{});
+                return find_next_dispatch(jumper, rules::directions::is_reversal<Rules>{});
         }
 
         // overload for kings that cannot reverse their capture direction
-        template<int Direction>
-        bool find_next_dispatch(BitIndex jumper, std::false_type) const
+        template<class Iterator>
+        bool find_next_dispatch(Iterator jumper, std::false_type) const
         {
-                return land<Direction>(jumper);
+                return land(jumper);
         }
 
         // overload for kings that can reverse their capture direction
-        template<int Direction>
-        bool find_next_dispatch(BitIndex jumper, std::true_type) const
+        template<class Iterator>
+        bool find_next_dispatch(Iterator jumper, std::true_type) const
         {
-                return land<Direction>(jumper) | reverse<Direction>(jumper);
+                return land(jumper) | reverse(jumper);
         }
 
-        template<int Direction>
-        bool reverse(BitIndex jumper) const
+        template<class Iterator>
+        bool reverse(Iterator jumper) const
         {
-                return scan< rotate(Direction, 180_deg) >(jumper);
+                return scan(ray::rotate<180_deg>(jumper));
         }
 
-        template<int Direction>
-        bool land(BitIndex jumper) const
+        template<class Iterator>
+        bool land(Iterator jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
-                return land_dispatch<Direction>(jumper, rules::range::land<Rules>{});
+                return land_dispatch(jumper, rules::range::land<Rules>{});
         }
 
         // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
-        template<int Direction>
-        void land_dispatch(BitIndex jumper, rules::range::distance_1K) const
+        template<class Iterator>
+        void land_dispatch(Iterator jumper, rules::range::distance_1K) const
         {
-                if (capture_.is_king(Prev<Board, Direction>{}(jumper)))
-                        land_dispatch<Direction>(jumper, rules::range::distance_1());
+                if (capture_.is_king(*std::prev(jumper)))
+                        land_dispatch(jumper, rules::range::distance_1());
                 else
-                        land_dispatch<Direction>(jumper, rules::range::distance_N());
+                        land_dispatch(jumper, rules::range::distance_N());
         }
 
         // overload for kings that can only land on the immediately adjacent square
-        template<int Direction>
-        bool land_dispatch(BitIndex jumper, rules::range::distance_1) const
+        template<class Iterator>
+        bool land_dispatch(Iterator jumper, rules::range::distance_1) const
         {
-                return turn<Direction>(jumper) | scan<Direction>(jumper);
+                return turn(jumper) | scan(jumper);
         }
 
         // overload for kings that can land on any square along the current direction
-        template<int Direction>
-        bool land_dispatch(BitIndex jumper, rules::range::distance_N) const
+        template<class Iterator>
+        bool land_dispatch(Iterator jumper, rules::range::distance_N) const
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
-                assert(bit::is_element(jumper, capture_.path()));
+                assert(BitSet(capture_.path()).test(*jumper));
                 auto found_next = false;
                 do {
-                        found_next |= turn<Direction>(jumper);
-                        Increment<Board, Direction>{}(jumper);
-                } while (bit::is_element(jumper, capture_.path()));
-                return found_next |= jump<Direction>(jumper);
+                        found_next |= turn(jumper);
+                        ++jumper;
+                } while (BitSet(capture_.path()).test(*jumper));
+                return found_next |= jump(jumper);
         }
 
-        template<int Direction>
-        bool turn(BitIndex jumper) const
+        template<class Iterator>
+        bool turn(Iterator jumper) const
         {
                 // tag dispatching on king turn directions
-                return turn_dispatch<Direction>(jumper, rules::directions::king_turn<Rules>{});
+                return turn_dispatch(jumper, rules::directions::king_turn<Rules>{});
         }
 
         // overload for kings that turn in all the 6 non-parallel diagonal and orthogonal directions
-        template<int Direction>
-        bool turn_dispatch(BitIndex jumper, rules::directions::all) const
+        template<class Iterator>
+        bool turn_dispatch(Iterator jumper, rules::directions::all) const
         {
                 return (
-                        turn_dispatch<Direction>(jumper, rules::directions::diag()) |
-                        turn_dispatch<Direction>(jumper, rules::directions::orth())
+                        turn_dispatch(jumper, rules::directions::diag()) |
+                        turn_dispatch(jumper, rules::directions::orth())
                 );
         }
 
         // overload for kings that turn in the 2 sideways directions
-        template<int Direction>
-        bool turn_dispatch(BitIndex jumper, rules::directions::diag) const
+        template<class Iterator>
+        bool turn_dispatch(Iterator jumper, rules::directions::diag) const
         {
                 return (
-                        scan< rotate(Direction, -90_deg) >(jumper) |
-                        scan< rotate(Direction, +90_deg) >(jumper)
+                        scan(ray::rotate<-90_deg>(jumper)) |
+                        scan(ray::rotate<+90_deg>(jumper))
                 );
         }
 
         // overload for kings that turn in the remaining 4 diagonal or orthogonal directions
-        template<int Direction>
-        bool turn_dispatch(BitIndex jumper, rules::directions::orth) const
+        template<class Iterator>
+        bool turn_dispatch(Iterator jumper, rules::directions::orth) const
         {
                 return (
-                        scan< rotate(Direction,  -45_deg) >(jumper) |
-                        scan< rotate(Direction,  +45_deg) >(jumper) |
-                        scan< rotate(Direction, -135_deg) >(jumper) |
-                        scan< rotate(Direction, +135_deg) >(jumper)
+                        scan(ray::rotate< -45_deg>(jumper)) |
+                        scan(ray::rotate< +45_deg>(jumper)) |
+                        scan(ray::rotate<-135_deg>(jumper)) |
+                        scan(ray::rotate<+135_deg>(jumper))
                 );
         }
 
-        template<int Direction>
-        bool scan(BitIndex jumper) const
+        template<class Board, int Direction>
+        bool scan(ray::Iterator<Board, Direction> jumper) const
         {
-                slide<Direction>(jumper, capture_.template path<Direction>());
-                return jump<Direction>(jumper);
+                slide(jumper, capture_.template path<Direction>());
+                return jump(jumper);
         }
 
-        template<int Direction, class Set>
-        void slide(BitIndex& jumper, Set const& path) const
+        template<class Iterator, class Set>
+        void slide(Iterator& jumper, Set const& path) const
         {
                 // tag dispatching on king range
-                slide_dispatch<Direction>(jumper, path, rules::range::scan<Rules>{});
+                slide_dispatch(jumper, path, rules::range::scan<Rules>{});
         }
 
         // overload for short ranged kings
-        template<int Direction, class Set>
-        void slide_dispatch(BitIndex& jumper, Set const& /* path */, rules::range::distance_1) const
+        template<class Iterator, class Set>
+        void slide_dispatch(Iterator& jumper, Set const& /* path */, rules::range::distance_1) const
         {
-                Increment<Board, Direction>{}(jumper);
+                ++jumper;
         }
 
         // overload for long ranged kings
-        template<int Direction, class Set>
-        void slide_dispatch(BitIndex& jumper, Set const& path, rules::range::distance_N) const
+        template<class Iterator, class Set>
+        void slide_dispatch(Iterator& jumper, Set const& path, rules::range::distance_N) const
         {
-                do Increment<Board, Direction>{}(jumper); while (bit::is_element(jumper, path));
+                do ++jumper; while (BitSet(path).test(*jumper));
         }
 
-        template<int Direction>
-        bool jump(BitIndex jumper) const
+        template<class Board, int Direction>
+        bool jump(ray::Iterator<Board, Direction> jumper) const
         {
-                if (!bit::is_element(jumper, capture_.template targets_with_king<Direction>()))
+                if (!BitSet(capture_.template targets_with_king<Direction>()).test(*jumper))
                         return false;
 
-                capture_.make(jumper);
-                precedence<Direction>(jumper);  // recursively find more jumps
-                capture_.undo(jumper);
+                capture_.make(*jumper);
+                precedence(jumper);  // recursively find more jumps
+                capture_.undo(*jumper);
                 return true;
         }
 
-        template<int Direction>
-        void add_king_jump(BitIndex dest_sq) const
+        template<class Iterator>
+        void add_king_jump(Iterator dest_sq) const
         {
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
 
                 // tag dispatching on king halt after final capture
-                add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::range::halt<Rules>{});
+                add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::halt<Rules>{});
         }
 
         // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
-        template<int Direction>
-        void add_king_jump_dispatch(BitIndex dest_sq, bool check_duplicate, rules::range::distance_1K) const
+        template<class Iterator>
+        void add_king_jump_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_1K) const
         {
-                if (capture_.is_king(Prev<Board, Direction>{}(dest_sq)))
-                        add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::range::distance_1());
+                if (capture_.is_king(*std::prev(dest_sq)))
+                        add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::distance_1());
                 else
-                        add_king_jump_dispatch<Direction>(dest_sq, check_duplicate, rules::range::distance_N());
+                        add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::distance_N());
         }
 
         // overload for kings that halt immediately after the final capture
-        template<int Direction>
-        void add_king_jump_dispatch(BitIndex dest_sq, bool check_duplicate, rules::range::distance_1) const
+        template<class Iterator>
+        void add_king_jump_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_1) const
         {
                 add_king_jump(dest_sq, check_duplicate);
         }
 
         // overload for kings that slide through after the final capture
-        template<int Direction>
-        void add_king_jump_dispatch(BitIndex dest_sq, bool check_duplicate, rules::range::distance_N) const
+        template<class Iterator>
+        void add_king_jump_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_N) const
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
-                assert(bit::is_element(dest_sq, capture_.path()));
+                assert(BitSet(capture_.path()).test(*dest_sq));
                 do {
                         add_king_jump(dest_sq, check_duplicate);
-                        Increment<Board, Direction>{}(dest_sq);
-                } while (bit::is_element(dest_sq, capture_.path()));
+                        ++dest_sq;
+                } while (BitSet(capture_.path()).test(*dest_sq));
         }
 
-        void add_king_jump(BitIndex dest_sq, bool check_duplicate) const
+        template<class Iterator>
+        void add_king_jump(Iterator dest_sq, bool check_duplicate) const
         {
                 // tag dispatching on promotion condition
                 add_king_jump_dispatch(dest_sq, rules::phase::promotion<Rules>{});
@@ -365,18 +371,26 @@ private:
         }
 
         // overload for pawns that promote apres-fini
-        void add_king_jump_dispatch(BitIndex dest_sq, rules::phase::apres_fini) const
+        template<class Iterator>
+        void add_king_jump_dispatch(Iterator dest_sq, rules::phase::apres_fini) const
         {
-                capture_.template add_king_jump<Color>(dest_sq, moves_);
+                capture_.template add_king_jump<Color>(*dest_sq, moves_);
         }
 
         // overload for pawns that promote en-passant
-        void add_king_jump_dispatch(BitIndex dest_sq, rules::phase::en_passant) const
+        template<class Iterator>
+        void add_king_jump_dispatch(Iterator dest_sq, rules::phase::en_passant) const
         {
                 if (!capture_.is_promotion())
-                        capture_.template add_king_jump<Color>(dest_sq, moves_);
+                        capture_.template add_king_jump<Color>(*dest_sq, moves_);
                 else
-                        capture_.template add_pawn_jump<Color, with::king>(dest_sq, moves_);
+                        capture_.template add_pawn_jump<Color, with::king>(*dest_sq, moves_);
+        }
+
+        template<int Direction>
+        static ray::Iterator<Board, Direction> make_iterator(int sq)
+        {
+                return ray::make_iterator<Board, Direction>(sq);
         }
 };
 

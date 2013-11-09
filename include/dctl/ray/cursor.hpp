@@ -13,8 +13,10 @@ class StridedCursor
 ,       boost::additive       < StridedCursor<Board, Direction>, int    // +, -
 > > >
 {
-        static constexpr auto N = Board::shift_size(Angle{Direction});
-        static_assert(N > 0, "Cursors need a non-zero stride.");
+        static constexpr auto theta = Angle{Direction};
+        static constexpr auto S = Board::shift_size(theta);
+        static constexpr auto N = is_positive(theta)? -S : S;
+        static_assert(N != 0, "Cursors need a non-zero stride.");
 
 public:
         // structors

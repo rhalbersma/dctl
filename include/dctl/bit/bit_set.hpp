@@ -458,9 +458,9 @@ private:
                 return Block{1} << detail::storage<Block>::shift_idx(n);
         }
 
-        static constexpr auto is_mask(key_type n)
+        constexpr auto is_mask(key_type n) const
         {
-                return mask(n) == Block{0};
+                return (block_ref(n) & mask(n)) != Block{0};
         }
 };
 
