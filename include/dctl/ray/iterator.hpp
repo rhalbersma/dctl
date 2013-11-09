@@ -14,11 +14,5 @@ using RayIterator = boost::counting_iterator
         int                                     // DifferenceType
 >;
 
-template<class Board, int Direction>
-RayIterator<Board, Direction> make_iterator(int n)
-{
-        return RayIterator<Board, Direction>{StridedCursor<Board, Direction>{n}};
-}
-
 }       // namespace ray
 }       // namespace dctl
