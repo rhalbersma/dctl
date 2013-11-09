@@ -23,7 +23,7 @@ static constexpr auto dir = 135_deg;
 
 BOOST_AUTO_TEST_CASE(Members)
 {
-        auto c = StridedCursor<B, dir>(0);
+        auto c = StridedCursor<B, dir>{0};
         for (auto i = 0; i < 5; ++i) {
                 ++c;
                 std::cout << c << std::endl;
