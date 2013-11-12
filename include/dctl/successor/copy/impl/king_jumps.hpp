@@ -60,7 +60,7 @@ public:
         {
                 // tag dispatching on relative king jump precedence
                 if (active_kings)
-                        select_dispatch(active_kings, rules::precedence::is_relative_king<Rules>{});
+                        select_dispatch(BitSet(active_kings), rules::precedence::is_relative_king<Rules>{});
         }
 
         template<class Board, int Direction>
@@ -90,47 +90,47 @@ private:
         template<class Set>
         void serialize(Set const& active_kings) const
         {
-                assert(!bit::empty(active_kings));
-                for (auto sq: BitSet(active_kings))
-                        find(sq);
+                assert(!active_kings.empty());
+                for (auto from_sq: active_kings)
+                        find(from_sq);
         }
 
-        void find(int jumper) const
+        void find(int from_sq) const
         {
-                capture_.launch(jumper);
-                branch(jumper);
-                capture_.finish(jumper);
+                capture_.launch(from_sq);
+                branch(from_sq);
+                capture_.finish(from_sq);
         }
 
-        void branch(int jumper) const
+        void branch(int from_sq) const
         {
                 // tag dispatching on king jump directions
-                branch_dispatch(jumper, rules::directions::king_jump<Rules>{});
+                branch_dispatch(from_sq, rules::directions::king_jump<Rules>{});
         }
 
         // overload for kings that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(int jumper, rules::directions::all) const
+        void branch_dispatch(int from_sq, rules::directions::all) const
         {
-                branch_dispatch(jumper, rules::directions::diag());
-                branch_dispatch(jumper, rules::directions::orth());
+                branch_dispatch(from_sq, rules::directions::diag());
+                branch_dispatch(from_sq, rules::directions::orth());
         }
 
         // overload for kings that jump in the 4 diagonal directions
-        void branch_dispatch(int jumper, rules::directions::diag) const
+        void branch_dispatch(int from_sq, rules::directions::diag) const
         {
-                find_first(make_iterator< Compass::left_up    >(jumper));
-                find_first(make_iterator< Compass::right_up   >(jumper));
-                find_first(make_iterator< Compass::left_down  >(jumper));
-                find_first(make_iterator< Compass::right_down >(jumper));
+                find_first(along_ray< Compass::left_up    >(from_sq));
+                find_first(along_ray< Compass::right_up   >(from_sq));
+                find_first(along_ray< Compass::left_down  >(from_sq));
+                find_first(along_ray< Compass::right_down >(from_sq));
         }
 
         // overload for kings that jump in the 4 orthogonal directions
-        void branch_dispatch(int jumper, rules::directions::orth) const
+        void branch_dispatch(int from_sq, rules::directions::orth) const
         {
-                find_first(make_iterator< Compass::left  >(jumper));
-                find_first(make_iterator< Compass::right >(jumper));
-                find_first(make_iterator< Compass::up    >(jumper));
-                find_first(make_iterator< Compass::down  >(jumper));
+                find_first(along_ray< Compass::left  >(from_sq));
+                find_first(along_ray< Compass::right >(from_sq));
+                find_first(along_ray< Compass::up    >(from_sq));
+                find_first(along_ray< Compass::down  >(from_sq));
         }
 
         template<class Board, int Direction>
@@ -388,7 +388,7 @@ private:
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> make_iterator(int sq)
+        static ray::Iterator<Board, Direction> along_ray(int sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }
