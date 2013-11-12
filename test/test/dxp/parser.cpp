@@ -45,7 +45,6 @@ BOOST_AUTO_TEST_CASE(MesanderExamples)
         std::vector<std::string> parsed;
         parsed.reserve(messages.size());
         std::transform(begin(messages), end(messages), std::back_inserter(parsed), [&](auto const& m) {
-                std::cout << m << "\n";
                 auto const p = f.create(m);
                 return p->str();
         });
