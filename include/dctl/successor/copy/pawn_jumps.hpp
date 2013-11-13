@@ -5,6 +5,9 @@
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/pieces/pawn.hpp>                         // pawn
 
+#include <cstdint>
+#include <dctl/bit/bit_set.hpp>
+
 namespace dctl {
 namespace successor {
 namespace detail {
@@ -16,10 +19,11 @@ struct copy<Color, pieces::pawn, select::jumps>
         template<class Position, class Sequence>
         void operator()(Position const& p, Sequence& moves) const
         {
+                using BitSet = bit::bit_set<int, uint64_t, 1>;
                 using PawnJumps = impl::copy<Color, pieces::pawn, select::jumps, Position, Sequence>;
 
                 Propagate<select::jumps, Position> propagate(p);
-                PawnJumps{propagate, moves}(p.material().pawns(Color));
+                PawnJumps{propagate, moves}(BitSet(p.material().pawns(Color)));
         }
 };
 

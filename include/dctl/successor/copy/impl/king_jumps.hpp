@@ -8,11 +8,9 @@
 #include <dctl/pieces/king.hpp>                         // king
 
 #include <dctl/angle.hpp>                               // _deg, rotate
-#include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Increment, Next, Prev
 #include <dctl/rules/traits.hpp>                        // traits
-#include <dctl/bit/bitboard.hpp>                        // BitIndex
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/ray/iterator.hpp>
 #include <dctl/ray/transform.hpp>
@@ -37,8 +35,6 @@ private:
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jumps, Position>;
 
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         // representation
 
         State& capture_;
@@ -59,8 +55,7 @@ public:
         void operator()(Set const& active_kings) const
         {
                 // tag dispatching on relative king jump precedence
-                if (active_kings)
-                        select_dispatch(BitSet(active_kings), rules::precedence::is_relative_king<Rules>{});
+                select_dispatch(active_kings, rules::precedence::is_relative_king<Rules>{});
         }
 
         template<class Board, int Direction>
@@ -90,7 +85,6 @@ private:
         template<class Set>
         void serialize(Set const& active_kings) const
         {
-                assert(!active_kings.empty());
                 for (auto from_sq: active_kings)
                         find(from_sq);
         }
@@ -137,7 +131,7 @@ private:
         void find_first(ray::Iterator<Board, Direction> jumper) const
         {
                 slide(jumper, capture_.template path<Direction>());
-                if (BitSet(capture_.template targets_with_king<Direction>()).test(*jumper)) {
+                if (capture_.template targets_with_king<Direction>().test(*jumper)) {
                         capture_.make(*jumper);
                         precedence(jumper);  // recursively find more jumps
                         capture_.undo(*jumper);
@@ -234,12 +228,12 @@ private:
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
-                assert(BitSet(capture_.path()).test(*jumper));
+                assert(capture_.path().test(*jumper));
                 auto found_next = false;
                 do {
                         found_next |= turn(jumper);
                         ++jumper;
-                } while (BitSet(capture_.path()).test(*jumper));
+                } while (capture_.path().test(*jumper));
                 return found_next |= jump(jumper);
         }
 
@@ -307,13 +301,13 @@ private:
         template<class Iterator, class Set>
         void slide_dispatch(Iterator& jumper, Set const& path, rules::range::distance_N) const
         {
-                do ++jumper; while (BitSet(path).test(*jumper));
+                do ++jumper; while (path.test(*jumper));
         }
 
         template<class Board, int Direction>
         bool jump(ray::Iterator<Board, Direction> jumper) const
         {
-                if (!BitSet(capture_.template targets_with_king<Direction>()).test(*jumper))
+                if (!capture_.template targets_with_king<Direction>().test(*jumper))
                         return false;
 
                 capture_.make(*jumper);
@@ -354,11 +348,11 @@ private:
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
-                assert(BitSet(capture_.path()).test(*dest_sq));
+                assert(capture_.path().test(*dest_sq));
                 do {
                         add_king_jump(dest_sq, check_duplicate);
                         ++dest_sq;
-                } while (BitSet(capture_.path()).test(*dest_sq));
+                } while (capture_.path().test(*dest_sq));
         }
 
         template<class Iterator>

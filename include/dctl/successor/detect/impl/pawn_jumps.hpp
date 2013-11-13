@@ -109,7 +109,7 @@ private:
         bool parallelize(Set const& active_pawns) const
         {
                 return !bit::empty(
-                        Sandwich<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.template targets_with_pawn<Direction>(), propagate_.path())
+                        Sandwich<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.template targets_with_pawn<Direction>().as_block(), propagate_.path().as_block())
                 );
         }
 };

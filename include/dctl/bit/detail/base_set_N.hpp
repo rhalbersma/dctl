@@ -15,6 +15,11 @@ struct base_set
 
         constexpr base_set() noexcept = default;
 
+        constexpr auto to_block() const noexcept
+        {
+                return data_[0];
+        }
+
         // element access
 
         constexpr auto block_ptr(T n) noexcept
