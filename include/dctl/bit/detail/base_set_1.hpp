@@ -18,6 +18,11 @@ struct base_set<T, Block, 1>
                 data_{block}
         {}
 
+        constexpr auto to_block() const noexcept
+        {
+                return data_;
+        }
+
         // element access
 
         constexpr auto block_ptr(T /* n */) noexcept

@@ -44,6 +44,11 @@ public:
                 Base{block}
         {}
 
+        constexpr auto as_block() const noexcept
+        {
+                return this->to_block();
+        }
+
         template<class InputIt>
         constexpr bit_set(InputIt first, InputIt last)
         {

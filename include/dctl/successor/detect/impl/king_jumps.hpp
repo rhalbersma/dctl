@@ -91,7 +91,7 @@ private:
         bool parallelize(Set const& active_kings) const
         {
                 return !bit::empty(
-                        Sandwich<Board, Direction, Range>{}(active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path())
+                        Sandwich<Board, Direction, Range>{}(active_kings, propagate_.template targets_with_king<Direction>().as_block(), propagate_.path().as_block())
                 );
         }
 };

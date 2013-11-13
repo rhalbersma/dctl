@@ -63,7 +63,7 @@ public:
         void operator()(Set const& active_pawns) const
         {
                 // tag dispatching on whether pawns can capture kings
-                if (active_pawns)
+                if (!active_pawns.empty())
                         select_dispatch(active_pawns, rules::can_jump<Rules, pieces::pawn, pieces::king>());
         }
 
@@ -136,7 +136,7 @@ private:
         template<int Direction, class Set>
         void serialize(Set const& active_pawns) const
         {
-                for (auto sq: BitSet(active_pawns & Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>())))
+                for (auto sq: active_pawns & BitSet(Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>().as_block())))
                         find(make_iterator<Direction>(sq));
         }
 
@@ -152,7 +152,7 @@ private:
         void find_first(ray::Iterator<Board, Direction> jumper) const
         {
                 ++jumper;
-                assert(BitSet(capture_.template targets_with_pawn<Direction>()).test(*jumper));
+                assert(capture_.template targets_with_pawn<Direction>().test(*jumper));
                 capture_.make(*jumper);
                 precedence(jumper);  // recursively find more jumps
                 capture_.undo(*jumper);
@@ -313,7 +313,7 @@ private:
         template<class Board, int Direction>
         bool jump(ray::Iterator<Board, Direction> jumper) const
         {
-                if (!BitSet(capture_.template targets_with_pawn<Direction>()).test(*jumper))
+                if (!capture_.template targets_with_pawn<Direction>().test(*jumper))
                         return false;
 
                 capture_.make(*jumper);

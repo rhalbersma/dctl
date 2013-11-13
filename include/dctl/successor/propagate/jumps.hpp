@@ -20,6 +20,10 @@
 #include <dctl/bit/bitboard.hpp>        // BitBoard, BitIndex
 #include <dctl/ray/iterator.hpp>
 
+#include <dctl/bit/bit_set.hpp>
+#include <dctl/bit/algorithm.hpp>
+
+
 namespace dctl {
 namespace successor {
 namespace with {
@@ -37,11 +41,11 @@ public:
 
         explicit Propagate(Position const& p)
         :
-                king_targets_(passive_kings(p)),
-                initial_targets_(passive_pieces(p)),
+                king_targets_(BitSet(passive_kings(p))),
+                initial_targets_(BitSet(passive_pieces(p))),
                 remaining_targets_(initial_targets_),
-                not_occupied_(not_occupied(p)),
-                from_sq_(0),
+                not_occupied_(BitSet(not_occupied(p))),
+                from_sq_(-1),
                 current_(),
                 best_()
         {
@@ -51,21 +55,21 @@ public:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
 
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
+
         // modifiers
 
         void launch(int sq)
         {
-                auto const jump_sq = BitBoard{1} << sq;
-                from_sq_ = jump_sq;
-                not_occupied_ ^= jump_sq;
+                from_sq_ = sq;
+                not_occupied_.set(sq);
                 assert(invariant());
         }
 
         void finish(int sq)
         {
-                auto const jump_sq = BitBoard{1} << sq;
-                not_occupied_ ^= jump_sq;
-                from_sq_ = BitIndex{0};
+                not_occupied_.reset(sq);
+                from_sq_ = -1;
                 assert(invariant());
         }
 
@@ -112,13 +116,14 @@ public:
         void add_king_jump(int sq, Sequence& moves) const
         {
                 using Move = typename Sequence::value_type;
+                auto const from_sq = BitBoard{1} << from_sq_;
                 auto const dest_sq = BitBoard{1} << sq;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
-                                from_sq_ ^ dest_sq,
-                                captured_pieces(),
-                                captured_kings(with::king())
+                                from_sq ^ dest_sq,
+                                captured_pieces().as_block(),
+                                captured_kings(with::king()).as_block()
                         )
                 );
         }
@@ -127,14 +132,15 @@ public:
         void add_pawn_jump(int sq, Sequence& moves) const
         {
                 using Move = typename Sequence::value_type;
+                auto const from_sq = BitBoard{1} << from_sq_;
                 auto const dest_sq = BitBoard{1} << sq;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
-                                from_sq_ ^ dest_sq,
+                                from_sq ^ dest_sq,
                                 promotion<Color>(sq, WithPiece()),
-                                captured_pieces(),
-                                captured_kings(WithPiece())
+                                captured_pieces().as_block(),
+                                captured_kings(WithPiece()).as_block()
                         )
                 );
         }
@@ -144,13 +150,13 @@ public:
         template<int Direction>
         auto targets_with_king() const
         {
-                return remaining_targets<Direction>() & Prev<Board, Direction>{}(path());
+                return remaining_targets<Direction>() & BitSet(Prev<Board, Direction>{}(path().as_block()));
         }
 
         template<int Direction>
         auto targets_with_pawn() const
         {
-                return remaining_targets_ & Prev<Board, Direction>{}(path());
+                return remaining_targets_ & BitSet(Prev<Board, Direction>{}(path().as_block()));
         }
 
         auto path() const
@@ -161,13 +167,12 @@ public:
         template<int Direction>
         auto path() const
         {
-                return path() & Board::jump_start(Angle{Direction});
+                return path() & BitSet(Board::jump_start(Angle{Direction}));
         }
 
         auto is_king(int sq) const
         {
-                auto const target_sq = BitBoard{1} << sq;
-                return bit::is_element(target_sq, king_targets_);
+                return king_targets_.test(sq);
         }
 
         auto greater_equal() const
@@ -213,13 +218,13 @@ private:
         // overload for en-passant capture removal
         void make_dispatch(int sq, rules::phase::en_passant)
         {
-                not_occupied_ ^= BitBoard{1} << sq;
+                not_occupied_.set(sq);
                 make_impl(sq);
         }
 
         void make_impl(int sq)
         {
-                remaining_targets_ ^= BitBoard{1} << sq;
+                remaining_targets_.reset(sq);
                 increment(is_king(sq));
         }
 
@@ -233,13 +238,13 @@ private:
         void undo_dispatch(int sq, rules::phase::en_passant)
         {
                 undo_impl(sq);
-                not_occupied_ ^= BitBoard{1} << sq;
+                not_occupied_.reset(sq);
         }
 
         void undo_impl(int sq)
         {
                 decrement(is_king(sq));
-                remaining_targets_ ^= BitBoard{1} << sq;
+                remaining_targets_.set(sq);
         }
 
         void increment(bool is_king)
@@ -295,8 +300,7 @@ private:
         auto invariant() const
         {
                 return (
-                        bit::raw_set_includes(initial_targets_, remaining_targets_) &&
-                        !bit::is_multiple(from_sq_)
+                        bit::set_includes(initial_targets_, remaining_targets_)
                 );
         }
 
@@ -337,7 +341,7 @@ private:
         // overload for no majority capture precedence
         auto size_dispatch(std::false_type) const
         {
-                return bit::size(captured_pieces());
+                return captured_pieces().size();
         }
 
         // overload for majority capture precedence
@@ -375,7 +379,7 @@ private:
         // overload for pawns that cannot capture kings
         auto captured_kings_dispatch(std::false_type) const
         {
-                return BitBoard(0);
+                return BitSet{};
         }
 
         auto captured_kings(with::king) const
@@ -390,11 +394,11 @@ private:
 
         // representation
 
-        BitBoard const king_targets_;
-        BitBoard initial_targets_;
-        BitBoard remaining_targets_;
-        BitBoard not_occupied_;
-        BitIndex from_sq_;
+        BitSet const king_targets_;
+        BitSet initial_targets_;
+        BitSet remaining_targets_;
+        BitSet not_occupied_;
+        int from_sq_;
         Value<Rules> current_;
         Value<Rules> best_;
 };
