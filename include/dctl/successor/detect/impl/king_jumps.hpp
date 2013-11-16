@@ -15,7 +15,7 @@ namespace detail {
 namespace impl {
 
 // partial specialization for king jumps detection
-template<bool Color, typename Position, class Range>
+template<bool Color, class Position, class Range>
 struct detect<Color, pieces::king, select::jumps, Position, Range>
 {
 private:

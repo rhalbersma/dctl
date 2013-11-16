@@ -60,7 +60,7 @@ private:
         bool combined_dispatch(Position const& p, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                return typename PawnJumps<Position>::type{propagate}(BitSet(p.material().pieces(Color)));
+                return PawnJumps<Position>{propagate}(BitSet(p.material().pieces(Color)));
         }
 
         // overload for separate king and pawn jump detection
