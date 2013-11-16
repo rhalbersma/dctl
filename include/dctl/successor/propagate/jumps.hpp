@@ -23,7 +23,6 @@
 #include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/algorithm.hpp>
 
-
 namespace dctl {
 namespace successor {
 namespace with {
@@ -150,13 +149,13 @@ public:
         template<int Direction>
         auto targets_with_king() const
         {
-                return remaining_targets<Direction>() & BitSet(Prev<Board, Direction>{}(path().as_block()));
+                return remaining_targets<Direction>() & Prev<Board, Direction>{}(path());
         }
 
         template<int Direction>
         auto targets_with_pawn() const
         {
-                return remaining_targets_ & BitSet(Prev<Board, Direction>{}(path().as_block()));
+                return remaining_targets_ & Prev<Board, Direction>{}(path());
         }
 
         auto path() const

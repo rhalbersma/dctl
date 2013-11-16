@@ -4,7 +4,3 @@
 #include <dctl/successor/copy/legal.hpp>
 #include <dctl/successor/copy/all_jumps.hpp>
 #include <dctl/successor/copy/all_moves.hpp>
-#include <dctl/successor/copy/king_jumps.hpp>
-#include <dctl/successor/copy/king_moves.hpp>
-#include <dctl/successor/copy/pawn_jumps.hpp>
-#include <dctl/successor/copy/pawn_moves.hpp>

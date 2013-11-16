@@ -4,7 +4,6 @@
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>
 
-#include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/patterns.hpp>
 #include <dctl/rules/traits.hpp>
@@ -40,7 +39,7 @@ public:
         template<class Set>
         bool operator()(Set const& active_pawns) const
         {
-                return active_pawns ? branch(active_pawns) : false;
+                return active_pawns.empty() ? false : branch(active_pawns);
         }
 
 private:
@@ -56,9 +55,9 @@ private:
         template<int Direction, class Set>
         bool parallelize(Set const& active_pawns) const
         {
-                return !bit::empty(
-                        Sink<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.path())
-                );
+                return !Sink<Board, Direction, rules::range::distance_1>()(
+                        active_pawns, propagate_.path()
+                ).empty();
         }
 };
 

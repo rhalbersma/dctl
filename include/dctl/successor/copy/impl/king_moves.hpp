@@ -54,23 +54,23 @@ public:
         template<class Set>
         void operator()(Set const& active_kings) const
         {
-                serialize(BitSet(active_kings));
+                serialize(active_kings);
         }
 
 private:
         template<class Set>
         void serialize(Set const& active_kings) const
         {
-                for (auto sq: active_kings)
-                        branch(sq);
+                for (auto from_sq: active_kings)
+                        branch(from_sq);
         }
 
-        void branch(int sq) const
+        void branch(int from_sq) const
         {
-                find(make_iterator< Compass::left_down  >(sq));
-                find(make_iterator< Compass::right_down >(sq));
-                find(make_iterator< Compass::left_up    >(sq));
-                find(make_iterator< Compass::right_up   >(sq));
+                find(along_ray< Compass::left_down  >(from_sq));
+                find(along_ray< Compass::right_down >(from_sq));
+                find(along_ray< Compass::left_up    >(from_sq));
+                find(along_ray< Compass::right_up   >(from_sq));
         }
 
         template<class Iterator>
@@ -107,7 +107,7 @@ private:
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> make_iterator(int sq)
+        static ray::Iterator<Board, Direction> along_ray(int sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }

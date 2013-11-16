@@ -4,7 +4,6 @@
 #include <dctl/successor/select/moves.hpp>
 #include <dctl/pieces/king.hpp>
 
-#include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/patterns.hpp>
 #include <dctl/rules/traits.hpp>
@@ -45,7 +44,7 @@ public:
         template<class Set>
         int operator()(Set const& active_kings) const
         {
-                return active_kings ? branch(active_kings) : 0;
+                return active_kings.empty() ? 0 : branch(active_kings);
         }
 
 private:
@@ -63,9 +62,9 @@ private:
         template<int Direction, class Set>
         int parallelize(Set const& active_kings) const
         {
-                return bit::size(
-                        Sink<Board, Direction, typename rules::range::move<Rules>::type>()(active_kings, propagate_.path())
-                );
+                return Sink<Board, Direction, typename rules::range::move<Rules>::type>()(
+                        active_kings, propagate_.path()
+                ).size();
         }
 };
 
