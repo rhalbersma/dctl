@@ -6,7 +6,7 @@
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/rules/traits.hpp>                        // traits
-#include <dctl/pieces/pieces.hpp>                  // all, king, pawn
+#include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 
 #include <cstdint>
 #include <dctl/bit/bit_set.hpp>

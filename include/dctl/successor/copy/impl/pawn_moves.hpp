@@ -51,7 +51,7 @@ public:
         template<class Set>
         void operator()(Set const& active_pawns) const
         {
-                if (active_pawns)
+                if (!active_pawns.empty())
                         branch(active_pawns);
         }
 
@@ -67,11 +67,10 @@ private:
         void copy_if(Set const& active_pawns) const
         {
                 transform<Direction>(
-                        BitSet(
                         bit::set_intersection(
                                 active_pawns,
-                                Prev<Board, Direction>{}(propagate_.path())
-                        ))
+                                BitSet(Prev<Board, Direction>{}(propagate_.path()))
+                        )
                 );
         }
 
@@ -79,7 +78,7 @@ private:
         void transform(Set movers) const
         {
                 std::transform(begin(movers), end(movers), std::back_inserter(moves_), [](auto const& sq){
-                        auto const from = make_iterator<Direction>(sq);
+                        auto const from = along_ray<Direction>(sq);
                         auto const dest = std::next(from);
                         auto const from_sq = BitBoard{1} << *from;
                         auto const dest_sq = BitBoard{1} << *dest;
@@ -88,7 +87,7 @@ private:
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> make_iterator(int sq)
+        static ray::Iterator<Board, Direction> along_ray(int sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }

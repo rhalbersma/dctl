@@ -4,7 +4,6 @@
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>
 
-#include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/patterns.hpp>
 #include <dctl/node/unary_projections.hpp>
@@ -42,7 +41,7 @@ public:
         template<class Set>
         bool operator()(Set const& active_kings) const
         {
-                return active_kings ? branch(active_kings) : false;
+                return active_kings.empty() ? false: branch(active_kings);
         }
 
 private:
@@ -90,9 +89,9 @@ private:
         template<int Direction, class Set>
         bool parallelize(Set const& active_kings) const
         {
-                return !bit::empty(
-                        Sandwich<Board, Direction, Range>{}(active_kings, propagate_.template targets_with_king<Direction>().as_block(), propagate_.path().as_block())
-                );
+                return !Sandwich<Board, Direction, Range>{}(
+                        active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path()
+                ).empty();
         }
 };
 

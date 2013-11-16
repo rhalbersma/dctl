@@ -136,7 +136,7 @@ private:
         template<int Direction, class Set>
         void serialize(Set const& active_pawns) const
         {
-                for (auto sq: active_pawns & BitSet(Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>().as_block())))
+                for (auto sq: active_pawns & Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>()))
                         find(make_iterator<Direction>(sq));
         }
 

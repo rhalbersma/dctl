@@ -4,7 +4,6 @@
 #include <dctl/successor/select/moves.hpp>
 #include <dctl/pieces/pawn.hpp>
 
-#include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/patterns.hpp>
 #include <dctl/rules/traits.hpp>
@@ -44,7 +43,7 @@ public:
         template<class Set>
         int operator()(Set const& active_pawns) const
         {
-                return active_pawns ? branch(active_pawns) : 0;
+                return active_pawns.empty() ? 0 : branch(active_pawns);
         }
 
 private:
@@ -60,9 +59,9 @@ private:
         template<int Direction, class Set>
         int parallelize(Set const& active_pawns) const
         {
-                return bit::size(
-                        Sink<Board, Direction, rules::range::distance_1>()(active_pawns, propagate_.path())
-                );
+                return Sink<Board, Direction, rules::range::distance_1>()(
+                        active_pawns, propagate_.path()
+                ).size();
         }
 };
 

@@ -11,8 +11,8 @@ namespace loop {
 template<bool Sign, int N, class T>
 T fill(T generator, T propagator)
 {
-        T flood(0);
-        while (generator) {
+        T flood {};
+        while (!generator.empty()) {
                 flood |= generator;
                 generator = util::shift<Sign>()(generator, N) & propagator;
         }
