@@ -6,7 +6,7 @@
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // select
 
-#include <dctl/bit/bit.hpp>
+#include <dctl/bit/bitboard.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Next, Prev
 #include <dctl/node/promotion.hpp>
@@ -29,8 +29,6 @@ private:
         using Move = typename Sequence::value_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::moves, Position>;
-
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         // representation
 
@@ -66,12 +64,7 @@ private:
         template<int Direction, class Set>
         void copy_if(Set const& active_pawns) const
         {
-                transform<Direction>(
-                        bit::set_intersection(
-                                active_pawns,
-                                BitSet(Prev<Board, Direction>{}(propagate_.path()))
-                        )
-                );
+                transform<Direction>(active_pawns & Prev<Board, Direction>{}(propagate_.path()));
         }
 
         template<int Direction, class Set>
