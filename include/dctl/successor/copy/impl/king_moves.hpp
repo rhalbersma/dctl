@@ -5,7 +5,7 @@
 #include <dctl/successor/select/moves.hpp>              // moves
 #include <dctl/pieces/king.hpp>           // king
 
-#include <dctl/bit/bit.hpp>
+#include <dctl/bit/bitboard.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Increment, Next
 #include <dctl/node/unary_projections.hpp>
@@ -32,8 +32,6 @@ private:
         using Move = typename Sequence::value_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::moves, Position>;
-
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         // representation
 
@@ -74,31 +72,31 @@ private:
         }
 
         template<class Iterator>
-        void find(Iterator it) const
+        void find(Iterator from) const
         {
                 // tag dispatching on king range
-                find_dispatch(it, rules::range::move<Rules>{});
+                find_dispatch(from, rules::range::move<Rules>{});
         }
 
         // overload for short ranged kings
         template<class Iterator>
-        void find_dispatch(Iterator it, rules::range::distance_1) const
+        void find_dispatch(Iterator from, rules::range::distance_1) const
         {
-                auto const from_sq = BitBoard{1} << *it;
-                auto const dest = std::next(it);
+                auto const from_sq = BitBoard{1} << *from;
+                auto const dest = std::next(from);
                 auto const dest_sq = BitBoard{1} << *dest;
-                if (BitSet(propagate_.path()).test(*dest))
+                if (propagate_.path().test(*dest))
                         moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
         }
 
         // overload for long ranged kings
         template<class Iterator>
-        void find_dispatch(Iterator it, rules::range::distance_N) const
+        void find_dispatch(Iterator from, rules::range::distance_N) const
         {
-                auto const from_sq = BitBoard{1} << *it;
+                auto const from_sq = BitBoard{1} << *from;
                 for (
-                        auto dest = std::next(it);
-                        BitSet(propagate_.path()).test(*dest);
+                        auto dest = std::next(from);
+                        propagate_.path().test(*dest);
                         ++dest
                 ) {
                         auto const dest_sq = BitBoard{1} << *dest;
