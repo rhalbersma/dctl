@@ -136,25 +136,23 @@ private:
         template<int Direction, class Set>
         void serialize(Set const& active_pawns) const
         {
-                for (auto sq: active_pawns & Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>()))
-                        find(make_iterator<Direction>(sq));
+                for (auto from_sq: active_pawns & Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>()))
+                        find(along_ray<Direction>(from_sq));
         }
 
         template<class Iterator>
         void find(Iterator jumper) const
         {
                 capture_.launch(*jumper);
-                find_first(jumper);
+                find_first(std::next(jumper));
                 capture_.finish(*jumper);
         }
 
-        template<class Board, int Direction>
-        void find_first(ray::Iterator<Board, Direction> jumper) const
+        template<class Iterator>
+        void find_first(Iterator jumper) const
         {
-                ++jumper;
-                assert(capture_.template targets_with_pawn<Direction>().test(*jumper));
                 capture_.make(*jumper);
-                precedence(jumper);  // recursively find more jumps
+                precedence(jumper);     // recursively find more jumps
                 capture_.undo(*jumper);
         }
 
@@ -206,8 +204,8 @@ private:
         }
 
         // overload for pawns that promote en-passant
-        template<class Board, int Direction>
-        bool find_next_dispatch(ray::Iterator<Board, Direction> jumper, rules::phase::en_passant) const
+        template<class Iterator>
+        bool find_next_dispatch(Iterator jumper, rules::phase::en_passant) const
         {
                 return (!is_promotion_sq<Color, Board>(*jumper)) ?
                         find_next_impl(jumper) :
@@ -347,7 +345,7 @@ private:
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> make_iterator(int sq)
+        static ray::Iterator<Board, Direction> along_ray(int sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }
