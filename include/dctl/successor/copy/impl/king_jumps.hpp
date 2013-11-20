@@ -131,7 +131,7 @@ private:
         void find_first(ray::Iterator<Board, Direction> jumper) const
         {
                 slide(jumper, capture_.template path<Direction>());
-                if (capture_.template targets_with_king<Direction>().test(*jumper)) {
+                if (capture_.template targets_with_king<Direction>(*jumper)) {
                         capture_.make(*jumper);
                         precedence(jumper);     // recursively find more jumps
                         capture_.undo(*jumper);
@@ -228,12 +228,12 @@ private:
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
-                assert(capture_.path().test(*jumper));
+                assert(capture_.path(*jumper));
                 auto found_next = false;
                 do {
                         found_next |= turn(jumper);
                         ++jumper;
-                } while (capture_.path().test(*jumper));
+                } while (capture_.path(*jumper));
                 return found_next |= jump(jumper);
         }
 
@@ -307,7 +307,7 @@ private:
         template<class Board, int Direction>
         bool jump(ray::Iterator<Board, Direction> jumper) const
         {
-                if (!capture_.template targets_with_king<Direction>().test(*jumper))
+                if (!capture_.template targets_with_king<Direction>(*jumper))
                         return false;
 
                 capture_.make(*jumper);
@@ -348,11 +348,11 @@ private:
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
-                assert(capture_.path().test(*dest_sq));
+                assert(capture_.path(*dest_sq));
                 do {
                         add_king_jump(dest_sq, check_duplicate);
                         ++dest_sq;
-                } while (capture_.path().test(*dest_sq));
+                } while (capture_.path(*dest_sq));
         }
 
         template<class Iterator>
