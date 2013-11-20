@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/moves.hpp>
-#include <dctl/bit/bitboard.hpp>                // BitBoard
 
 #include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/algorithm.hpp>
@@ -29,10 +28,15 @@ public:
                 return not_occupied_;
         }
 
+        auto path(int sq) const
+        {
+                return path().test(sq);
+        }
+
 private:
         // representation
 
-        BitSet not_occupied_;
+        BitSet const not_occupied_;
 };
 
 }       // namespace successor
