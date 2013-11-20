@@ -112,34 +112,30 @@ public:
         }
 
         template<bool Color, class Sequence>
-        void add_king_jump(int sq, Sequence& moves) const
+        void add_king_jump(int dest_sq, Sequence& moves) const
         {
                 using Move = typename Sequence::value_type;
-                auto const from_sq = BitBoard{1} << from_sq_;
-                auto const dest_sq = BitBoard{1} << sq;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
-                                from_sq ^ dest_sq,
-                                captured_pieces().as_block(),
-                                captured_kings(with::king()).as_block()
+                                {from_sq_, dest_sq},
+                                captured_pieces(),
+                                captured_kings(with::king())
                         )
                 );
         }
 
         template<bool Color, class WithPiece, class Sequence>
-        void add_pawn_jump(int sq, Sequence& moves) const
+        void add_pawn_jump(int dest_sq, Sequence& moves) const
         {
                 using Move = typename Sequence::value_type;
-                auto const from_sq = BitBoard{1} << from_sq_;
-                auto const dest_sq = BitBoard{1} << sq;
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
-                                from_sq ^ dest_sq,
-                                promotion<Color>(sq, WithPiece()),
-                                captured_pieces().as_block(),
-                                captured_kings(WithPiece()).as_block()
+                                {from_sq_, dest_sq},
+                                promotion<Color>(dest_sq, WithPiece()),
+                                captured_pieces(),
+                                captured_kings(WithPiece())
                         )
                 );
         }
@@ -153,9 +149,21 @@ public:
         }
 
         template<int Direction>
+        auto targets_with_king(int sq) const
+        {
+                return targets_with_king<Direction>().test(sq);
+        }
+
+        template<int Direction>
         auto targets_with_pawn() const
         {
                 return remaining_targets_ & Prev<Board, Direction>{}(path());
+        }
+
+        template<int Direction>
+        auto targets_with_pawn(int sq) const
+        {
+                return targets_with_pawn<Direction>().test(sq);
         }
 
         auto path() const
@@ -163,10 +171,21 @@ public:
                 return not_occupied_;
         }
 
+        auto path(int sq) const
+        {
+                return not_occupied_.test(sq);
+        }
+
         template<int Direction>
         auto path() const
         {
                 return path() & BitSet(Board::jump_start(Angle{Direction}));
+        }
+
+        template<int Direction>
+        auto path(int sq) const
+        {
+                return path<Direction>().test(sq);
         }
 
         auto is_king(int sq) const

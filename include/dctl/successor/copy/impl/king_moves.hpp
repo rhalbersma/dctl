@@ -82,26 +82,17 @@ private:
         template<class Iterator>
         void find_dispatch(Iterator from, rules::range::distance_1) const
         {
-                auto const from_sq = BitBoard{1} << *from;
                 auto const dest = std::next(from);
-                auto const dest_sq = BitBoard{1} << *dest;
-                if (propagate_.path().test(*dest))
-                        moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
+                if (propagate_.path(*dest))
+                        moves_.push_back(Move::template create<Color>({*from, *dest}));
         }
 
         // overload for long ranged kings
         template<class Iterator>
         void find_dispatch(Iterator from, rules::range::distance_N) const
         {
-                auto const from_sq = BitBoard{1} << *from;
-                for (
-                        auto dest = std::next(from);
-                        propagate_.path().test(*dest);
-                        ++dest
-                ) {
-                        auto const dest_sq = BitBoard{1} << *dest;
-                        moves_.push_back(Move::template create<Color>(from_sq ^ dest_sq));
-                }
+                for (auto dest = std::next(from); propagate_.path(*dest); ++dest)
+                        moves_.push_back(Move::template create<Color>({*from, *dest}));
         }
 
         template<int Direction>
