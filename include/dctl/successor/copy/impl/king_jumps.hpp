@@ -58,8 +58,8 @@ public:
                 select_dispatch(active_kings, rules::precedence::is_relative_king<Rules>{});
         }
 
-        template<class Board, int Direction>
-        bool promote_en_passant(ray::Iterator<Board, Direction> jumper) const
+        template<class Iterator>
+        bool promote_en_passant(Iterator jumper) const
         {
                 assert((is_promotion_sq<Color, Board>(*jumper)));
                 return find_next(jumper);
@@ -133,7 +133,7 @@ private:
                 slide(jumper, capture_.template path<Direction>());
                 if (capture_.template targets_with_king<Direction>().test(*jumper)) {
                         capture_.make(*jumper);
-                        precedence(jumper);  // recursively find more jumps
+                        precedence(jumper);     // recursively find more jumps
                         capture_.undo(*jumper);
                 }
         }
@@ -146,8 +146,8 @@ private:
         }
 
         // overload for no majority precedence
-        template<class Board, int Direction>
-        void precedence_dispatch(ray::Iterator<Board, Direction> jumper, std::false_type) const
+        template<class Iterator>
+        void precedence_dispatch(Iterator jumper, std::false_type) const
         {
                 ++jumper;
                 if (!find_next(jumper))
@@ -155,8 +155,8 @@ private:
         }
 
         // overload for majority precedence
-        template<class Board, int Direction>
-        void precedence_dispatch(ray::Iterator<Board, Direction> jumper, std::true_type) const
+        template<class Iterator>
+        void precedence_dispatch(Iterator jumper, std::true_type) const
         {
                 ++jumper;
                 if (
@@ -311,7 +311,7 @@ private:
                         return false;
 
                 capture_.make(*jumper);
-                precedence(jumper);  // recursively find more jumps
+                precedence(jumper);     // recursively find more jumps
                 capture_.undo(*jumper);
                 return true;
         }
