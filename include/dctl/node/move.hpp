@@ -1,12 +1,16 @@
 #pragma once
 #include <cassert>                      // assert
 #include <type_traits>
+#include <utility>
 #include <boost/operators.hpp>          // equality_comparable, xorable
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/move_fwd.hpp>
 #include <dctl/node/i_pieces.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/rules/traits.hpp>
+#include <dctl/bit/algorithm.hpp>
+
+#include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/algorithm.hpp>
 
 namespace dctl {
@@ -72,6 +76,8 @@ struct Move_
         friend class IPieces< ::dctl::Move_, T >;
 
 public:
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
+
         // structors
 
         // default constructor
@@ -93,8 +99,9 @@ public:
 
         // king move
         template<bool Color>
-        static Move_ create(T delta)
+        static Move_ create(std::pair<int, int> const& from_dest)
         {
+                auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
                 assert(pre_condition(delta));
                 Move_ tmp;
                 tmp.template init<Color>(
@@ -108,8 +115,9 @@ public:
 
         // pawn move
         template<bool Color>
-        static Move_ create(T delta, T promotion)
+        static Move_ create(std::pair<int, int> const& from_dest, T promotion)
         {
+                auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
                 assert(pre_condition(delta, promotion));
                 Move_ tmp;
                 tmp.template init<Color>(
@@ -123,29 +131,31 @@ public:
 
         // king jump
         template<bool Color, class Rules>
-        static Move_ create(T delta, T captured_pieces, T captured_kings)
+        static Move_ create(std::pair<int, int> const& from_dest, BitSet captured_pieces, BitSet captured_kings)
         {
-                assert(pre_condition<Rules>(delta, captured_pieces, captured_kings));
+                auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
+                assert(pre_condition<Rules>(delta, captured_pieces.as_block(), captured_kings.as_block()));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,                  // move a king between the from and destination square
-                        captured_pieces,        // remove the captured pieces
-                        delta ^ captured_kings  // move a king and remove the captured kings
+                        captured_pieces.as_block(),        // remove the captured pieces
+                        delta ^ captured_kings.as_block()  // move a king and remove the captured kings
                 );
-                assert(tmp.king_jump_invariant<Rules>(delta, captured_pieces));
+                assert(tmp.king_jump_invariant<Rules>(delta, captured_pieces.as_block()));
                 return tmp;
         }
 
         // pawn jump
         template<bool Color, class Rules>
-        static Move_ create(T delta, T promotion, T captured_pieces, T captured_kings)
+        static Move_ create(std::pair<int, int> const& from_dest, T promotion, BitSet captured_pieces, BitSet captured_kings)
         {
-                assert(pre_condition<Rules>(delta, promotion, captured_pieces, captured_kings));
+                auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
+                assert(pre_condition<Rules>(delta, promotion, captured_pieces.as_block(), captured_kings.as_block()));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,                          // move a pawn between the from and destination squares
-                        captured_pieces,                // remove the captured pieces
-                        promotion ^ captured_kings      // crown a pawn to a king and remove the captured kings
+                        captured_pieces.as_block(),                // remove the captured pieces
+                        promotion ^ captured_kings.as_block()      // crown a pawn to a king and remove the captured kings
                 );
                 assert(tmp.pawn_jump_invariant<Rules>(delta, promotion));
                 return tmp;

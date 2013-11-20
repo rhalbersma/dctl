@@ -70,12 +70,9 @@ private:
         template<int Direction, class Set>
         void transform(Set movers) const
         {
-                std::transform(begin(movers), end(movers), std::back_inserter(moves_), [](auto const& sq){
-                        auto const from = along_ray<Direction>(sq);
-                        auto const dest = std::next(from);
-                        auto const from_sq = BitBoard{1} << *from;
-                        auto const dest_sq = BitBoard{1} << *dest;
-                        return Move::template create<Color>(from_sq ^ dest_sq, promotion_sq<Color, Board>(*dest));
+                std::transform(begin(movers), end(movers), std::back_inserter(moves_), [](auto const& from_sq) {
+                        auto const dest_sq = *++along_ray<Direction>(from_sq);
+                        return Move::template create<Color>({from_sq, dest_sq}, promotion_sq<Color, Board>(dest_sq));
                 });
         }
 
