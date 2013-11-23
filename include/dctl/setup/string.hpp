@@ -8,7 +8,9 @@
 #include <dctl/setup/i_token.hpp>
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/position.hpp>
-#include <dctl/bit/bitboard.hpp>        // BitBoard
+
+#include <cstdint>
+#include <dctl/bit/bit_set.hpp>
 
 namespace dctl {
 namespace setup {
@@ -52,15 +54,17 @@ struct write;
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, pdn::protocol, Token>
 {
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
+
         Position<Rules, Board> operator()(std::string const& s) const
         {
-                BitBoard p_pieces[2] = {0, 0};
-                BitBoard p_kings = 0;
+                BitSet p_pieces[2] {};
+                BitSet p_kings {};
                 bool p_side = Side::black;
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side };
+                        return { p_pieces[Side::black].as_block(), p_pieces[Side::white].as_block(), p_kings.as_block(), p_side };
 
                 bool setup_kings = false;
                 bool setup_color = p_side;
@@ -88,22 +92,23 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         sstr >> sq;                             // read square
                                         assert(Board::is_valid(sq - 1));
                                         auto b = Board::square2bit(sq - 1);     // convert square to bit
-                                        auto bb = bit::singlet<BitBoard>(b);    // create bitboard
-                                        p_pieces[setup_color] ^= bb;
+                                        p_pieces[setup_color].set(b);
                                         if (setup_kings)
-                                                p_kings ^= bb;
+                                                p_kings.set(b);
                                 }
                                 setup_kings = false;
                                 break;
                         }
                 }
-                return { p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side };
+                return { p_pieces[Side::black].as_block(), p_pieces[Side::white].as_block(), p_kings.as_block(), p_side };
         }
 };
 
 template<class Token>
 struct write<pdn::protocol, Token>
 {
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
+
         template<class Position>
         std::string operator()(Position const& p) const
         {
@@ -115,16 +120,17 @@ struct write<pdn::protocol, Token>
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i != 0;
-                        if (p.material().pieces(c)) {
+                        if (!BitSet(p.material().pieces(c)).empty()) {
                                 sstr << Token::colon;                           // colon
                                 sstr << Token::color[c];                        // color tag
                         }
-                        auto bs = bit::bit_set<int, uint64_t, 1>(p.material().pieces(c));
+                        auto const bs = BitSet(p.material().pieces(c));
+                        auto n = 0;
                         for (auto sq: bs) {
-                                if (bit::is_element(BitBoard{1} << sq, p.material().kings()))
+                                if (BitSet(p.material().kings()).test(sq))
                                         sstr << Token::king;                    // king tag
                                 sstr << Board::bit2square(sq) + 1;              // square number
-                                if (bit::is_multiple(bs.data()))                // still pieces remaining
+                                if (++n != bs.size())                           // still pieces remaining
                                         sstr << Token::comma;                   // comma separator
                         }
                 }
@@ -136,10 +142,12 @@ struct write<pdn::protocol, Token>
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, dxp::protocol, Token>
 {
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
+
         Position<Rules, Board> operator()(std::string const& s) const
         {
-                BitBoard p_pieces[2] = {0, 0};
-                BitBoard p_kings = 0;
+                BitSet p_pieces[2] {};
+                BitSet p_kings {};
                 bool p_side = Side::black;
 
                 std::stringstream sstr(s);
@@ -149,14 +157,13 @@ struct read<Rules, Board, dxp::protocol, Token>
 
                  for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
                         auto b = Board::square2bit(sq);         // convert square to bit
-                        auto bb = bit::singlet<BitBoard>(b);    // create bitboard
                         sstr >> ch;
                         switch (toupper(ch)) {
                         case Token::black:
-                                p_pieces[Side::black] ^= bb;    // black piece
+                                p_pieces[Side::black].set(b);    // black piece
                                 break;
                         case Token::white:
-                                p_pieces[Side::white] ^= bb;    // white piece
+                                p_pieces[Side::white].set(b);    // white piece
                                 break;
                         case Token::empty:
                                 break;
@@ -165,9 +172,9 @@ struct read<Rules, Board, dxp::protocol, Token>
                                 break;
                         }
                         if (isupper(ch))
-                                p_kings ^= bb;                  // king
+                                p_kings.set(b);                  // king
                 }
-                return { p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side };
+                return { p_pieces[Side::black].as_block(), p_pieces[Side::white].as_block(), p_kings.as_block(), p_side };
         }
 };
 

@@ -40,7 +40,7 @@ public:
                         else
                                 sstr << std::setw(2) << WHITE_SPACE;    // space between squares
                 }
-                sstr << std::endl /*"\n"*/;
+                sstr << "\n";
                 return sstr.str();
         }
 

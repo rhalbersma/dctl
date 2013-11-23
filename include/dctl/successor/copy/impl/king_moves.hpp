@@ -5,12 +5,10 @@
 #include <dctl/successor/select/moves.hpp>              // moves
 #include <dctl/pieces/king.hpp>           // king
 
-#include <dctl/bit/bitboard.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Increment, Next
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/bit/bitboard.hpp>                        // BitIndex
 #include <dctl/ray/iterator.hpp>
 
 namespace dctl {

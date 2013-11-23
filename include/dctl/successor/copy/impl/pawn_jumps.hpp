@@ -11,12 +11,10 @@
 
 
 #include <dctl/angle.hpp>                               // _deg, rotate, mirror
-#include <dctl/bit/bit.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Increment, Prev
 #include <dctl/node/promotion.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/bit/bitboard.hpp>                        // BitIndex
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/ray/iterator.hpp>
 #include <dctl/ray/transform.hpp>
@@ -40,8 +38,6 @@ private:
         using Board = typename Position::board_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jumps, Position>;
-
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         // representation
 
@@ -207,9 +203,9 @@ private:
         template<class Iterator>
         bool find_next_dispatch(Iterator jumper, rules::phase::en_passant) const
         {
-                return (!is_promotion_sq<Color, Board>(*jumper)) ?
-                        find_next_impl(jumper) :
-                        promote_en_passant(jumper)
+                return is_promotion(*jumper) ?
+                        promote_en_passant(jumper) :
+                        find_next_impl(jumper)
                 ;
         }
 
@@ -321,25 +317,25 @@ private:
         }
 
         template<class Iterator>
-        void add_pawn_jump(Iterator dest_sq) const
+        void add_pawn_jump(Iterator dest) const
         {
                 // tag dispatching on ambiguity of pawn jumps
-                add_pawn_jump_dispatch(dest_sq, rules::is_unambiguous_pawn_jump<Rules>{});
+                add_pawn_jump_dispatch(dest, rules::is_unambiguous_pawn_jump<Rules>{});
         }
 
         // overload for pawn jumps that are always unambiguous
         template<class Iterator>
-        void add_pawn_jump_dispatch(Iterator dest_sq, std::true_type) const
+        void add_pawn_jump_dispatch(Iterator dest, std::true_type) const
         {
-                capture_.template add_pawn_jump<Color, with::pawn>(*dest_sq, moves_);
+                capture_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
         }
 
         // overload for pawn jumps that are potentially ambiguous
         template<class Iterator>
-        void add_pawn_jump_dispatch(Iterator dest_sq, std::false_type) const
+        void add_pawn_jump_dispatch(Iterator dest, std::false_type) const
         {
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
-                capture_.template add_pawn_jump<Color, with::pawn>(*dest_sq, moves_);
+                capture_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
                 if (check_duplicate && util::is_duplicate_back(moves_))
                         moves_.pop_back();
         }
@@ -348,6 +344,11 @@ private:
         static ray::Iterator<Board, Direction> along_ray(int sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
+        }
+
+        static bool is_promotion(int sq)
+        {
+                return dctl::is_promotion<Color, Board>(sq);
         }
 };
 

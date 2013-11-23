@@ -1,6 +1,5 @@
 #pragma once
 #include <cstdint>                      // uint64_t
-#include <dctl/bit/bit_set.hpp>         // bit_set
 
 namespace dctl {
 

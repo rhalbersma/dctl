@@ -2,7 +2,9 @@
 #include <sstream>                      // stringstream
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/material.hpp>
-#include <dctl/bit/bitboard.hpp>        // BitBoard
+
+#include <cstdint>
+#include <dctl/bit/bit_set.hpp>
 
 namespace dctl {
 namespace setup {
@@ -10,16 +12,16 @@ namespace setup {
 template<class Token>
 std::string content(Material const& m, int i)
 {
-        auto const b = bit::singlet<BitBoard>(i);
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         std::stringstream sstr;
-        if (bit::is_element(b, m.pieces(Side::black))) {
-                if (bit::is_element(b, m.kings()))
+        if (BitSet(m.pieces(Side::black)).test(i)) {
+                if (BitSet(m.kings()).test(i))
                         sstr << Token::upper[Side::black];      // black king
                 else
                         sstr << Token::lower[Side::black];      // black man
-        } else if (bit::is_element(b, m.pieces(Side::white))) {
-                if (bit::is_element(b, m.kings()))
+        } else if (BitSet(m.pieces(Side::white)).test(i)) {
+                if (BitSet(m.kings()).test(i))
                         sstr << Token::upper[Side::white];      // white king
                 else
                         sstr << Token::lower[Side::white];      // white man

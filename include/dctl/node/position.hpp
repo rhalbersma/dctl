@@ -15,6 +15,9 @@
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/bit/bitboard.hpp>        // BitBoard
 
+#include <cstdint>
+#include <dctl/bit/bit_set.hpp>
+
 namespace dctl {
 
 template
@@ -29,6 +32,8 @@ public:
         using board_type = Board ;
         using TreeIterator = Position const*;
         static const int gap = rules::initial_gap<rules_type>::value + board_type::height % 2;
+
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         // initialize with a set of bitboards and a color
         Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
@@ -50,8 +55,8 @@ public:
         static Position initial()
         {
                 return Position{
-                        Board::initial_mask[Side::black][N],
-                        Board::initial_mask[Side::white][N],
+                        Board::initial_mask[Side::black][N].as_block(),
+                        Board::initial_mask[Side::white][N].as_block(),
                         0,
                         Side::white
                 };
@@ -228,7 +233,7 @@ private:
         {
                 return (
                         //material_.invariant() &&
-                        bit::raw_set_includes(Board::squares, material().pieces())
+                        bit::set_includes(Board::squares, BitSet(material().pieces()))
                 );
         }
 
