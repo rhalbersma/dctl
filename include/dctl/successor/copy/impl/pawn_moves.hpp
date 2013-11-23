@@ -6,7 +6,6 @@
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // select
 
-#include <dctl/bit/bitboard.hpp>
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Next, Prev
 #include <dctl/node/promotion.hpp>
@@ -72,7 +71,7 @@ private:
         {
                 std::transform(begin(movers), end(movers), std::back_inserter(moves_), [](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
-                        return Move::template create<Color>({from_sq, dest_sq}, promotion_sq<Color, Board>(dest_sq));
+                        return Move::template create<Color>({from_sq, dest_sq}, is_promotion(dest_sq));
                 });
         }
 
@@ -80,6 +79,11 @@ private:
         static ray::Iterator<Board, Direction> along_ray(int sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
+        }
+
+        static bool is_promotion(int sq)
+        {
+                return dctl::is_promotion<Color, Board>(sq);
         }
 };
 

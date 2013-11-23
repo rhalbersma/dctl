@@ -61,7 +61,6 @@ public:
         template<class Iterator>
         bool promote_en_passant(Iterator jumper) const
         {
-                assert((is_promotion_sq<Color, Board>(*jumper)));
                 return find_next(jumper);
         }
 

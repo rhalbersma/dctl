@@ -115,9 +115,10 @@ public:
 
         // pawn move
         template<bool Color>
-        static Move_ create(std::pair<int, int> const& from_dest, T promotion)
+        static Move_ create(std::pair<int, int> const& from_dest, bool is_promotion)
         {
                 auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
+                auto const promotion = is_promotion? (T{1} << from_dest.second) : T{0};
                 assert(pre_condition(delta, promotion));
                 Move_ tmp;
                 tmp.template init<Color>(
@@ -147,9 +148,10 @@ public:
 
         // pawn jump
         template<bool Color, class Rules>
-        static Move_ create(std::pair<int, int> const& from_dest, T promotion, BitSet captured_pieces, BitSet captured_kings)
+        static Move_ create(std::pair<int, int> const& from_dest, bool is_promotion, BitSet captured_pieces, BitSet captured_kings)
         {
                 auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
+                auto const promotion = is_promotion? (T{1} << from_dest.second) : T{0};
                 assert(pre_condition<Rules>(delta, promotion, captured_pieces.as_block(), captured_kings.as_block()));
                 Move_ tmp;
                 tmp.template init<Color>(

@@ -17,7 +17,6 @@
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/successor/value.hpp>
 #include <dctl/utility/total_order.hpp>
-#include <dctl/bit/bitboard.hpp>        // BitBoard, BitIndex
 #include <dctl/ray/iterator.hpp>
 
 #include <dctl/bit/bit_set.hpp>
@@ -118,7 +117,7 @@ public:
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
-                                {from_sq_, dest_sq},
+                                { from_sq_, dest_sq },
                                 captured_pieces(),
                                 captured_kings(with::king())
                         )
@@ -132,8 +131,8 @@ public:
 
                 moves.push_back(
                         Move::template create<Color, Rules>(
-                                {from_sq_, dest_sq},
-                                promotion<Color>(dest_sq, WithPiece()),
+                                { from_sq_, dest_sq },
+                                is_promotion<Color>(dest_sq, WithPiece()),
                                 captured_pieces(),
                                 captured_kings(WithPiece())
                         )
@@ -179,7 +178,7 @@ public:
         template<int Direction>
         auto path() const
         {
-                return path() & BitSet(Board::jump_start(Angle{Direction}));
+                return path() & Board::jump_start(Angle{Direction});
         }
 
         template<int Direction>
@@ -370,16 +369,16 @@ private:
 
         // overload for pawn jumps without promotion
         template<bool Color>
-        auto promotion(int dest_sq, with::pawn) const
+        static auto is_promotion(int dest_sq, with::pawn)
         {
-                return promotion_sq<Color, Board>(dest_sq);
+                return dctl::is_promotion<Color, Board>(dest_sq);
         }
 
         // overload for pawn jumps with an en-passant promotion
         template<bool Color>
-        auto promotion(int dest_sq, with::king) const
+        static auto is_promotion(int /* dest_sq */, with::king)
         {
-                return BitBoard{1} << dest_sq;
+                return true;
         }
 
         auto captured_kings(with::pawn) const
