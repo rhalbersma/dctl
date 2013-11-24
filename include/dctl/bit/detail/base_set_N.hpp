@@ -113,7 +113,7 @@ struct base_set
                                         data_[i + n_block    ] >> R_shift |
                                         data_[i + n_block + 1] << L_shift
                                 ;
-                        data_[Nb - n_block - 1] = data_[Nb] >> R_shift;
+                        data_[Nb - n_block - 1] = data_[Nb - 1] >> R_shift;
                 }
 
                 for (auto i = Nb - n_block; i < Nb; ++i)

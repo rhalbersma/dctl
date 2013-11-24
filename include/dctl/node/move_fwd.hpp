@@ -7,6 +7,6 @@ namespace dctl {
 template<class>
 struct Move_;
 
-using Move = Move_< bit::bit_set<int, uint64_t, 1> >;
+using Move = Move_< BitSet >;
 
 }       // namespace dctl
