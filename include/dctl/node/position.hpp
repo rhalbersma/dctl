@@ -217,7 +217,7 @@ private:
 
         void make_material(Move const& m)
         {
-                material_ ^= m;
+                material_.make(m);
                 hash_index_ ^= zobrist::hash(m);
         }
 
@@ -230,10 +230,7 @@ private:
         // post-conditions for the constructors and modifiers
         bool material_invariant() const
         {
-                return (
-                        //material_.invariant() &&
-                        bit::set_includes(Board::squares, material().pieces())
-                );
+                return bit::set_includes(Board::squares, material().pieces());
         }
 
         bool hash_index_invariant() const

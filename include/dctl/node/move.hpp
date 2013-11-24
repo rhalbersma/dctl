@@ -155,19 +155,6 @@ public:
                 return tmp;
         }
 
-        // modifiers
-
-        // xor-assign the set bits of another piece set
-        // operator^ provided by boost::xorable1
-        Move_& operator^=(Move_ const& other)
-        {
-                pieces_[Side::black] ^= other.pieces(Side::black);
-                pieces_[Side::white] ^= other.pieces(Side::white);
-                kings_ ^= other.kings();
-                assert(invariant());
-                return *this;
-        }
-
         // predicates
 
         // operator!= provided by boost::equality_comparable1

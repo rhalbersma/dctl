@@ -45,9 +45,8 @@ public:
 
         // modifiers
 
-        // xor-assign the set bits of another piece set
         template<class U>
-        Material_& operator^=(U const& m)
+        Material_& make(U const& m)
         {
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);
