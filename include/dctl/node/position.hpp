@@ -177,7 +177,7 @@ private:
                                 return;
                         }
 
-                        if (restricted.moves() && bit::is_element(restricted.king().as_block(), from_sq(*this, m).as_block())) {
+                        if (restricted.moves() && (restricted.king() == from_sq(*this, m))) {
                                 // a consecutive irreversible move with the same king
                                 assert(!is_max<Rules>(restricted.moves()));
                                 restricted.increment(dest_sq(*this, m));
@@ -236,14 +236,13 @@ private:
         }
 
         // representation
-        TreeIterator parent_{};
-        HashIndex hash_index_;
         Material material_;
+        TreeIterator parent_{};
+        HashIndex hash_index_{};
         Restricted restricted_{};
         PlyCount reversible_moves_{};
         PlyCount distance_to_root_{};
-        bool to_move_;
-        BitSet padding_[6];
+        bool to_move_{};
 };
 
 template<class Position>

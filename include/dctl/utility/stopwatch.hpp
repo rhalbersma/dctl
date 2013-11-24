@@ -47,8 +47,8 @@ public:
         {
                 using namespace std::chrono;
 
-                assert(splits_.size() > 0);
-                auto const i = splits_.size();
+                assert(splits_.size() > 1);
+                auto const i = splits_.size() - 1;
                 return duration_cast<milliseconds>(splits_[i] - splits_[i - 1]);
         }
 

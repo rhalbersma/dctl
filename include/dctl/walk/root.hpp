@@ -230,11 +230,11 @@ void report(int depth, NodeCount leafs, Stopwatch const& stopwatch, Enhancements
         std::cout << " nps ";
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
         std::cout << std::setw( 7) << nps;
-
+/*
         double const hashfull = 1000 * (static_cast<double>(e.handle_->TT_.size()) / static_cast<double>(e.handle_->TT_.capacity()));
         std::cout << " hashfull ";
         std::cout << std::setw( 4) << std::right << hashfull;
-
+*/
         std::cout << std::endl;
 }
 

@@ -2,7 +2,6 @@
 #include <dctl/board/types.hpp>         // International
 #include <dctl/rules/variants.hpp>      // International
 #include <dctl/setup/setup.hpp>         // read, write
-#include <iostream>
 
 namespace dctl {
 namespace setup {
@@ -34,7 +33,6 @@ BOOST_AUTO_TEST_CASE(WiegerWesselink)
 
         // write the above position as a FEN string with the PDN protocol
         auto const FEN_w = write<pdn::protocol>()(pos_w);
-        std::cout << FEN_w << std::endl;
 
         // convert the new FEN string to a new position and back into a new FEN string
         auto const pos_r = read<rules::International, board::International, pdn::protocol>()(FEN_w);

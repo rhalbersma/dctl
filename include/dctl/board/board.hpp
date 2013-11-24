@@ -68,7 +68,7 @@ private:
 
         static constexpr int table_square2bit[] =
         {
-                BOOST_PP_ENUM(64, DCTL_PP_SQUARE2BIT, ~)
+                BOOST_PP_ENUM(128, DCTL_PP_SQUARE2BIT, ~)
         };
 
 #undef DCTL_PP_SQUARE2BIT
@@ -77,7 +77,7 @@ private:
 
         static constexpr int table_bit2square[] =
         {
-                BOOST_PP_ENUM(64, DCTL_PP_BIT2SQUARE, ~)
+                BOOST_PP_ENUM(128, DCTL_PP_BIT2SQUARE, ~)
         };
 
 #undef DCTL_PP_BIT2SQUARE
@@ -110,10 +110,10 @@ public:
 
 #define DCTL_PP_INITIAL_MASK(z, i, data) copy_if(grid::is_initial<i, data>{})
 
-        static constexpr BitSet initial_mask[][5] =
+        static constexpr BitSet initial_mask[][9] =
         {
-                { BOOST_PP_ENUM(5, DCTL_PP_INITIAL_MASK, Side::black) },
-                { BOOST_PP_ENUM(5, DCTL_PP_INITIAL_MASK, Side::white) }
+                { BOOST_PP_ENUM(9, DCTL_PP_INITIAL_MASK, Side::black) },
+                { BOOST_PP_ENUM(9, DCTL_PP_INITIAL_MASK, Side::white) }
         };
 
 #undef DCTL_PP_INITIAL_MASK
@@ -126,20 +126,20 @@ public:
                 { BOOST_PP_ENUM(2, DCTL_PP_ROW_MASK, Side::black) }
         };
 
-        static constexpr BitSet row_mask[][12] =
+        static constexpr BitSet row_mask[][20] =
         {
-                { BOOST_PP_ENUM(12, DCTL_PP_ROW_MASK, Side::black) },
-                { BOOST_PP_ENUM(12, DCTL_PP_ROW_MASK, Side::white) }
+                { BOOST_PP_ENUM(20, DCTL_PP_ROW_MASK, Side::black) },
+                { BOOST_PP_ENUM(20, DCTL_PP_ROW_MASK, Side::white) }
         };
 
 #undef DCTL_PP_ROW_MASK
 
 #define DCTL_PP_COL_MASK(z, i, data) copy_if(grid::is_col<i, data>{})
 
-        static constexpr BitSet col_mask[][12] =
+        static constexpr BitSet col_mask[][20] =
         {
-                { BOOST_PP_ENUM(12, DCTL_PP_COL_MASK, Side::black) },
-                { BOOST_PP_ENUM(12, DCTL_PP_COL_MASK, Side::white) }
+                { BOOST_PP_ENUM(20, DCTL_PP_COL_MASK, Side::black) },
+                { BOOST_PP_ENUM(20, DCTL_PP_COL_MASK, Side::white) }
         };
 
 #undef DCTL_PP_COL_MASK
@@ -166,10 +166,10 @@ template<class D, int E, int O> constexpr int Board<D, E, O>::table_square2bit[]
 template<class D, int E, int O> constexpr int Board<D, E, O>::table_bit2square[];
 
 template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::squares;
-template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::initial_mask[][5];
+template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::initial_mask[][9];
 template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::promotion_mask[][2];
-template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::row_mask[][12];
-template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::col_mask[][12];
+template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::row_mask[][20];
+template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::col_mask[][20];
 template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::table_jump_start[];
 
 }       // namespace board
