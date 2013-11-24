@@ -22,22 +22,22 @@ struct Random
         }
 
         // xor with random numbers conditional on a ply count
-        static Index xor_rand(PlyCount s, Index const* random)
+        static Index xor_rand(int i, Index const* random)
         {
-                return s ? random[s - 1] : 0;
+                return random[i];
         }
 
         // xor with a random number conditional on a boolean
-        static Index xor_rand(bool to_move, Index random)
+        static Index xor_rand(bool b, Index const* random)
         {
-                return to_move ? random : 0;
+                return random[b];
         }
 
         static Index const PIECES[][64];
         static Index const KINGS[];
-        static Index const SIDE;
+        static Index const SIDE[];
         static Index const RESTRICTED_KING[][64];
-        static Index const RESTRICTED_MOVES[][8];
+        static Index const RESTRICTED_MOVES[][9];
 };
 
 template<class Index>
@@ -103,7 +103,7 @@ Index const Random<Index>::KINGS[] =
 };
 
 template<class Index>
-Index const Random<Index>::SIDE = 0x461aea9b6bcff19a;
+Index const Random<Index>::SIDE[] = { 0x0000000000000000, 0x461aea9b6bcff19a };
 
 template<class Index>
 Index const Random<Index>::RESTRICTED_KING[][64] = {
@@ -146,13 +146,13 @@ Index const Random<Index>::RESTRICTED_KING[][64] = {
 };
 
 template<class Index>
-Index const Random<Index>::RESTRICTED_MOVES[][8] = {
+Index const Random<Index>::RESTRICTED_MOVES[][9] = {
         {
-                0xd0155d45da58e0ae, 0x51a0ad8a6b634382, 0xfd6508b01ff7ef6a, 0x2f88513a4e1f888b,
+                0x0000000000000000, 0xd0155d45da58e0ae, 0x51a0ad8a6b634382, 0xfd6508b01ff7ef6a, 0x2f88513a4e1f888b,
                 0x1329e62c4cc57a77, 0x7bd2096bab82649f, 0xdedadb0490930d7f, 0xce75c4bf3922ae01
         },
         {
-                0x461aea9b6bcff19a, 0x76eeb59691183dcd, 0x0cd539696fc3be4b, 0x48f1c8ebd63806ee,
+                0x0000000000000000, 0x461aea9b6bcff19a, 0x76eeb59691183dcd, 0x0cd539696fc3be4b, 0x48f1c8ebd63806ee,
                 0x3c34cbca92129b0a, 0xb0cd7c360fecb3b0, 0xbe011375b2271932, 0x1c302ddde8bbe6fb
         }
 };

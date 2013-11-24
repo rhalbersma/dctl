@@ -3,7 +3,6 @@
 #include <type_traits>                  // is_base_of
 #include <boost/operators.hpp>          // equality_comparable1
 #include <dctl/bit/bit.hpp>             // is_subset
-#include <dctl/node/i_pieces.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/bit/bitboard.hpp>        // BitBoard
@@ -13,13 +12,9 @@ namespace dctl {
 template<class T>
 struct Material_
         // http://www.boost.org/doc/libs/1_51_0/libs/utility/operators.htm#chaining
-        // use base class chaining to ensure Empty Base Optimization
-:       boost::equality_comparable1< Material_<T>       // == !=
-,       IPieces< Material_, T >
-        >
+:
+        boost::equality_comparable1< Material_<T> >     // == !=
 {
-        friend class IPieces< ::dctl::Material_, T >;
-
 public:
         enum {
                 none = 0,
@@ -53,7 +48,6 @@ public:
         template<template<class> class U>
         Material_& operator^=(U<T> const& m)
         {
-                static_assert(std::is_base_of< IPieces<U, T>, U<T> >::value, "");
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);
                 kings_ ^= m.kings();
@@ -73,6 +67,44 @@ public:
                 );
         }
 
+        // queries
+
+        // black or white pawns
+        auto pawns(bool color) const
+        {
+                return pieces(color) & ~kings();
+        }
+
+        // black or white kings
+        auto kings(bool color) const
+        {
+                return pieces(color) & kings();
+        }
+
+        // black or white pieces
+        auto pieces(bool color) const
+        {
+                return pieces_[color];
+        }
+
+        // black and white pawns
+        auto pawns() const
+        {
+                return pieces() & ~kings();
+        }
+
+        // black and white kings
+        auto kings() const
+        {
+                return kings_;
+        }
+
+        // black and white pieces
+        auto pieces() const
+        {
+                return pieces(Side::black) ^ pieces(Side::white);
+        }
+
 private:
         // modifiers
 
@@ -85,44 +117,6 @@ private:
                 kings_ = kings;
         }
 
-        // queries
-
-        // black or white pawns
-        auto do_pawns(bool color) const
-        {
-                return do_pieces(color) & ~do_kings();
-        }
-
-        // black or white kings
-        auto do_kings(bool color) const
-        {
-                return do_pieces(color) & do_kings();
-        }
-
-        // black or white pieces
-        auto do_pieces(bool color) const
-        {
-                return pieces_[color];
-        }
-
-        // black and white pawns
-        auto do_pawns() const
-        {
-                return do_pieces() & ~do_kings();
-        }
-
-        // black and white kings
-        auto do_kings() const
-        {
-                return kings_;
-        }
-
-        // black and white pieces
-        auto do_pieces() const
-        {
-                return do_pieces(Side::black) ^ do_pieces(Side::white);
-        }
-
         // logical consistency of the representation
         bool invariant() const
         {
@@ -132,13 +126,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::raw_set_exclusive(this->pieces(Side::black), this->pieces(Side::white));
+                return bit::raw_set_exclusive(pieces(Side::black), pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::raw_set_includes(this->pieces(), this->kings());
+                return bit::raw_set_includes(pieces(), kings());
         }
 
         // representation
