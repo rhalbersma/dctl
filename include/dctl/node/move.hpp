@@ -26,7 +26,7 @@ bool is_intersecting_capture(T delta, T captured_pieces, rules::phase::en_passan
 {
         // [FEN "W:WK25:B8,9,20,23,24"] (Thai draughts)
         // white has to capture 25x20, landing on a square it also captured on
-        return bit::is_single((delta & captured_pieces).as_block()) && bit::is_multiple(captured_pieces.as_block());
+        return bit::is_single(delta & captured_pieces) && bit::is_multiple(captured_pieces);
 }
 
 // overload for apres-fini promotion
@@ -42,7 +42,7 @@ bool is_intersecting_promotion(T promotion, T delta, rules::phase::en_passant)
 {
         // [FEN "W:W15:B10,13,20,23"] (Russian draughts)
         // white has to capture 15x15, promoting on its original square
-        return bit::is_single(promotion.as_block()) && delta.empty();
+        return bit::is_single(promotion) && delta.empty();
 }
 
 }       // namespace detail
@@ -220,15 +220,15 @@ private:
         // king move
         static bool pre_condition(T delta)
         {
-                return bit::is_double(delta.as_block());
+                return bit::is_double(delta);
         }
 
         // pawn move
         static bool pre_condition(T delta, T promotion)
         {
                 return (
-                        bit::is_double(delta.as_block()) &&
-                        !bit::is_multiple(promotion.as_block()) &&
+                        bit::is_double(delta) &&
+                        !bit::is_multiple(promotion) &&
                         bit::set_includes(delta, promotion)
                 );
         }
@@ -238,7 +238,7 @@ private:
         static bool pre_condition(T delta, T captured_pieces, T captured_kings)
         {
                 return (
-                        (bit::is_double(delta.as_block()) || delta.empty()) &&
+                        (bit::is_double(delta) || delta.empty()) &&
                         !captured_pieces.empty() &&
                         (
                                 bit::set_exclusive(delta, captured_pieces) ||
@@ -255,8 +255,8 @@ private:
         static bool pre_condition(T delta, T promotion, T captured_pieces, T captured_kings)
         {
                 return (
-                        (bit::is_double(delta.as_block()) || delta.empty()) &&
-                        !bit::is_multiple(promotion.as_block()) &&
+                        (bit::is_double(delta) || delta.empty()) &&
+                        !bit::is_multiple(promotion) &&
                         !captured_pieces.empty() &&
                         bit::set_exclusive(delta, captured_pieces) &&
                         (

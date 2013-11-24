@@ -18,7 +18,7 @@ bool is_connected(Position const& /* p */, Move const& /* m1 */, Move const& /* 
 template<class Position, class Move>
 bool is_promotion(Position const& p, Move const& m)
 {
-        return bit::is_single(moving_kings(p, m).as_block());
+        return bit::is_single(moving_kings(p, m));
 }
 
 template<class Position, class Move>
@@ -51,7 +51,7 @@ bool is_pseudo_legal(Position const& p, Move const& m)
 {
         return (
                 // cannot move multiple pieces
-                !(bit::is_multiple(from_sq(p, m).as_block()) || bit::is_multiple(dest_sq(p, m).as_block())) &&
+                !(bit::is_multiple(from_sq(p, m)) || bit::is_multiple(dest_sq(p, m))) &&
 
                 // only capture existing pieces
                 bit::set_includes(passive_pieces(p), captured_pieces(p, m)) &&

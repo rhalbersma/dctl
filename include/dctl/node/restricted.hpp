@@ -17,7 +17,7 @@ public:
 
         void init(BitSet dest)
         {
-                assert(bit::is_single(dest.as_block()));
+                assert(bit::is_single(dest));
                 king_ = dest;
                 moves_ = 1;
                 assert(invariant());
@@ -25,7 +25,7 @@ public:
 
         void increment(BitSet dest)
         {
-                assert(bit::is_single(dest.as_block()));
+                assert(bit::is_single(dest));
                 king_ = dest;
                 ++moves_;
                 assert(invariant());
@@ -57,7 +57,7 @@ private:
         bool invariant() const
         {
                 return (
-                        !bit::is_multiple(king_.as_block()) &&
+                        !bit::is_multiple(king_) &&
                         king_.empty() == !moves_
                 );
         }

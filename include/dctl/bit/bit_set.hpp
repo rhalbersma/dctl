@@ -39,17 +39,6 @@ public:
 
         constexpr bit_set() = default;
 
-        // TODO: remove
-        explicit constexpr bit_set(Block block)
-        :
-                Base{block}
-        {}
-
-        constexpr auto as_block() const noexcept
-        {
-                return this->to_block();
-        }
-
         template<class InputIt>
         constexpr bit_set(InputIt first, InputIt last)
         {
@@ -435,12 +424,12 @@ public:
 
         constexpr auto is_count_equal_to(int n) const noexcept
         {
-                return this->do_count_equal_to(n);
+                return this->do_is_count_equal_to(n);
         }
 
         constexpr auto is_count_less(int n) const noexcept
         {
-                return this->do_count_less(n);
+                return this->do_is_count_less(n);
         }
 
         constexpr auto count() const noexcept
