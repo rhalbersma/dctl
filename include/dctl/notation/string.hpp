@@ -2,7 +2,6 @@
 #include <iomanip>                      // left, right, setw
 #include <sstream>                      // stringstream
 #include <string>                       // string
-#include <dctl/bit/bit.hpp>
 #include <dctl/node/predicates.hpp>
 #include <dctl/notation/notation.hpp>
 
@@ -28,8 +27,8 @@ struct write<Rules, numeric, Separator>
         {
                 using Board = typename Position::board_type;
 
-                auto f = *bit::bit_set<int, uint64_t, 1>(from_sq(p, m)).begin();
-                auto d = *bit::bit_set<int, uint64_t, 1>(dest_sq(p, m)).begin();
+                auto f = *from_sq(p, m).begin();
+                auto d = *dest_sq(p, m).begin();
 
                 std::stringstream sstr;
                 sstr << std::setw(2) << std::right << Board::bit2square(f) + 1;

@@ -7,9 +7,6 @@
 #include <dctl/node/side.hpp>
 #include <dctl/node/position_fwd.hpp>
 
-#include <cstdint>                      // uint64_t
-#include <dctl/bit/bit_set.hpp>         // bit_set
-
 namespace dctl {
 
 using KingMovesColor = std::pair<KingMoves, bool>;
@@ -39,14 +36,12 @@ struct hash< Index, Position<Rules, Board> >
 template<class Index>
 struct hash<Index, Material>
 {
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         Index operator()(Material const& m) const
         {
                 return (
-                        Random<Index>::xor_rand(BitSet(m.pieces(Side::black)), Random<Index>::PIECES[Side::black]) ^
-                        Random<Index>::xor_rand(BitSet(m.pieces(Side::white)), Random<Index>::PIECES[Side::white]) ^
-                        Random<Index>::xor_rand(BitSet(m.kings()            ), Random<Index>::KINGS              )
+                        Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
+                        Random<Index>::xor_rand(m.pieces(Side::white), Random<Index>::PIECES[Side::white]) ^
+                        Random<Index>::xor_rand(m.kings()            , Random<Index>::KINGS              )
                 );
         }
 };
@@ -55,14 +50,12 @@ struct hash<Index, Material>
 template<class Index>
 struct hash<Index, Move>
 {
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         Index operator()(Move const& m) const
         {
                 return (
-                        Random<Index>::xor_rand(BitSet(m.pieces(Side::black)), Random<Index>::PIECES[Side::black]) ^
-                        Random<Index>::xor_rand(BitSet(m.pieces(Side::white)), Random<Index>::PIECES[Side::white]) ^
-                        Random<Index>::xor_rand(BitSet(m.kings()            ), Random<Index>::KINGS              )
+                        Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
+                        Random<Index>::xor_rand(m.pieces(Side::white), Random<Index>::PIECES[Side::white]) ^
+                        Random<Index>::xor_rand(m.kings()            , Random<Index>::KINGS              )
                 );
         }
 };
@@ -81,13 +74,11 @@ struct hash<Index, bool>
 template<class Index>
 struct hash<Index, KingMovesColor>
 {
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         Index operator()(KingMovesColor const& restricted) const
         {
                 return (
-                        Random<Index>::xor_rand(BitSet(restricted.first.king()), Random<Index>::RESTRICTED_KING[restricted.second] ) ^
-                        Random<Index>::xor_rand(restricted.first.moves(),        Random<Index>::RESTRICTED_MOVES[restricted.second])
+                        Random<Index>::xor_rand(restricted.first.king(),  Random<Index>::RESTRICTED_KING[restricted.second] ) ^
+                        Random<Index>::xor_rand(restricted.first.moves(), Random<Index>::RESTRICTED_MOVES[restricted.second])
                 );
         }
 };

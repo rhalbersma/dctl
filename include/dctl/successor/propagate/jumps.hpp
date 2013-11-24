@@ -4,8 +4,6 @@
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <dctl/angle.hpp>               // Angle, is_orthogonal
 #include <dctl/bit/bit.hpp>
-#include <dctl/bit/algorithm.hpp>
-#include <dctl/bit/bitboard.hpp>
 #include <dctl/board/iterator.hpp>      // Prev
 #include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
@@ -39,10 +37,10 @@ public:
 
         explicit Propagate(Position const& p)
         :
-                king_targets_(BitSet(passive_kings(p))),
-                initial_targets_(BitSet(passive_pieces(p))),
+                king_targets_(passive_kings(p)),
+                initial_targets_(passive_pieces(p)),
                 remaining_targets_(initial_targets_),
-                not_occupied_(BitSet(not_occupied(p))),
+                not_occupied_(not_occupied(p)),
                 from_sq_(-1),
                 current_(),
                 best_()

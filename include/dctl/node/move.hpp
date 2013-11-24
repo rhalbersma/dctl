@@ -3,14 +3,12 @@
 #include <type_traits>
 #include <utility>
 #include <boost/operators.hpp>          // equality_comparable, xorable
-#include <dctl/bit/bit.hpp>
 #include <dctl/node/move_fwd.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/bit/algorithm.hpp>
 
-#include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/algorithm.hpp>
+#include <dctl/bit/predicates.hpp>
 
 namespace dctl {
 namespace detail {
@@ -28,7 +26,7 @@ bool is_intersecting_capture(T delta, T captured_pieces, rules::phase::en_passan
 {
         // [FEN "W:WK25:B8,9,20,23,24"] (Thai draughts)
         // white has to capture 25x20, landing on a square it also captured on
-        return bit::is_single(delta & captured_pieces) && bit::is_multiple(captured_pieces);
+        return bit::is_single((delta & captured_pieces).as_block()) && bit::is_multiple(captured_pieces.as_block());
 }
 
 // overload for apres-fini promotion
@@ -44,7 +42,7 @@ bool is_intersecting_promotion(T promotion, T delta, rules::phase::en_passant)
 {
         // [FEN "W:W15:B10,13,20,23"] (Russian draughts)
         // white has to capture 15x15, promoting on its original square
-        return bit::is_single(promotion) && bit::empty(delta);
+        return bit::is_single(promotion.as_block()) && delta.empty();
 }
 
 }       // namespace detail
@@ -72,8 +70,6 @@ struct Move_
         > >
 {
 public:
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         // structors
 
         // default constructor
@@ -82,7 +78,7 @@ public:
         // zero initialize
         explicit Move_(T /* MUST be zero */)
         {
-                init<Side::black>(0, 0, 0);
+                init<Side::black>(T{}, T{}, T{});
                 assert(invariant());
         }
 
@@ -97,12 +93,12 @@ public:
         template<bool Color>
         static Move_ create(std::pair<int, int> const& from_dest)
         {
-                auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
+                auto const delta = T{from_dest.first, from_dest.second};
                 assert(pre_condition(delta));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,  // move a king between the from and destination squares
-                        0,
+                        T{},
                         delta   // move a king between the from and destination squares
                 );
                 assert(tmp.invariant());
@@ -113,13 +109,13 @@ public:
         template<bool Color>
         static Move_ create(std::pair<int, int> const& from_dest, bool is_promotion)
         {
-                auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
-                auto const promotion = is_promotion? (T{1} << from_dest.second) : T{0};
+                auto const delta = T{from_dest.first, from_dest.second};
+                auto const promotion = is_promotion? T{from_dest.second} : T{};
                 assert(pre_condition(delta, promotion));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,          // move a pawn between the from and destination squares
-                        0,
+                        T{},
                         promotion       // crown a pawn to a king
                 );
                 assert(tmp.invariant());
@@ -128,32 +124,32 @@ public:
 
         // king jump
         template<bool Color, class Rules>
-        static Move_ create(std::pair<int, int> const& from_dest, BitSet captured_pieces, BitSet captured_kings)
+        static Move_ create(std::pair<int, int> const& from_dest, T captured_pieces, T captured_kings)
         {
-                auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
-                assert(pre_condition<Rules>(delta, captured_pieces.as_block(), captured_kings.as_block()));
+                auto const delta = (from_dest.first == from_dest.second)? T{} : T{from_dest.first, from_dest.second};
+                assert(pre_condition<Rules>(delta, captured_pieces, captured_kings));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,                  // move a king between the from and destination square
-                        captured_pieces.as_block(),        // remove the captured pieces
-                        delta ^ captured_kings.as_block()  // move a king and remove the captured kings
+                        captured_pieces,        // remove the captured pieces
+                        delta ^ captured_kings  // move a king and remove the captured kings
                 );
-                assert(tmp.king_jump_invariant<Rules>(delta, captured_pieces.as_block()));
+                assert(tmp.king_jump_invariant<Rules>(delta, captured_pieces));
                 return tmp;
         }
 
         // pawn jump
         template<bool Color, class Rules>
-        static Move_ create(std::pair<int, int> const& from_dest, bool is_promotion, BitSet captured_pieces, BitSet captured_kings)
+        static Move_ create(std::pair<int, int> const& from_dest, bool is_promotion, T captured_pieces, T captured_kings)
         {
-                auto const delta = (T{1} << from_dest.first) ^ (T{1} << from_dest.second);
-                auto const promotion = is_promotion? (T{1} << from_dest.second) : T{0};
-                assert(pre_condition<Rules>(delta, promotion, captured_pieces.as_block(), captured_kings.as_block()));
+                auto const delta = (from_dest.first == from_dest.second)? T{} : T{from_dest.first, from_dest.second};
+                auto const promotion = is_promotion? T{from_dest.second} : T{};
+                assert(pre_condition<Rules>(delta, promotion, captured_pieces, captured_kings));
                 Move_ tmp;
                 tmp.template init<Color>(
                         delta,                          // move a pawn between the from and destination squares
-                        captured_pieces.as_block(),                // remove the captured pieces
-                        promotion ^ captured_kings.as_block()      // crown a pawn to a king and remove the captured kings
+                        captured_pieces,                // remove the captured pieces
+                        promotion ^ captured_kings      // crown a pawn to a king and remove the captured kings
                 );
                 assert(tmp.pawn_jump_invariant<Rules>(delta, promotion));
                 return tmp;
@@ -187,37 +183,37 @@ public:
         // queries
 
         // black or white pawns
-        T pawns(bool color) const
+        auto pawns(bool color) const
         {
                 return pieces(color) & ~kings();
         }
 
         // black or white kings
-        T kings(bool color) const
+        auto kings(bool color) const
         {
                 return pieces(color) & kings();
         }
 
         // black or white pieces
-        T pieces(bool color) const
+        auto pieces(bool color) const
         {
                 return pieces_[color];
         }
 
         // black and white pawns
-        T pawns() const
+        auto pawns() const
         {
                 return pieces() & ~kings();
         }
 
         // black and white kings
-        T kings() const
+        auto kings() const
         {
                 return kings_;
         }
 
         // black and white pieces
-        T do_pieces() const
+        auto pieces() const
         {
                 return pieces(Side::black) ^ pieces(Side::white);
         }
@@ -237,16 +233,16 @@ private:
         // king move
         static bool pre_condition(T delta)
         {
-                return bit::is_double(delta);
+                return bit::is_double(delta.as_block());
         }
 
         // pawn move
         static bool pre_condition(T delta, T promotion)
         {
                 return (
-                        bit::is_double(delta) &&
-                        !bit::is_multiple(promotion) &&
-                        bit::raw_set_includes(delta, promotion)
+                        bit::is_double(delta.as_block()) &&
+                        !bit::is_multiple(promotion.as_block()) &&
+                        bit::set_includes(delta, promotion)
                 );
         }
 
@@ -255,15 +251,15 @@ private:
         static bool pre_condition(T delta, T captured_pieces, T captured_kings)
         {
                 return (
-                        (bit::is_double(delta) || bit::empty(delta)) &&
-                        !bit::empty(captured_pieces) &&
+                        (bit::is_double(delta.as_block()) || delta.empty()) &&
+                        !captured_pieces.empty() &&
                         (
-                                bit::raw_set_exclusive(delta, captured_pieces) ||
+                                bit::set_exclusive(delta, captured_pieces) ||
 
                                 // EXCEPTION: for intersecting captures, delta overlaps with captured pieces
                                 is_intersecting_capture<Rules>(delta, captured_pieces)
                         ) &&
-                        bit::raw_set_includes(captured_pieces, captured_kings)
+                        bit::set_includes(captured_pieces, captured_kings)
                 );
         }
 
@@ -272,17 +268,17 @@ private:
         static bool pre_condition(T delta, T promotion, T captured_pieces, T captured_kings)
         {
                 return (
-                        (bit::is_double(delta) || bit::empty(delta)) &&
-                        !bit::is_multiple(promotion) &&
-                        !bit::empty(captured_pieces) &&
-                        bit::raw_set_exclusive(delta, captured_pieces) &&
+                        (bit::is_double(delta.as_block()) || delta.empty()) &&
+                        !bit::is_multiple(promotion.as_block()) &&
+                        !captured_pieces.empty() &&
+                        bit::set_exclusive(delta, captured_pieces) &&
                         (
-                                bit::raw_set_includes(delta, promotion) ||
+                                bit::set_includes(delta, promotion) ||
 
                                 // EXCEPTION: for intersecting promotions, delta is empty, and promotion is non-empty
                                 is_intersecting_promotion<Rules>(promotion, delta)
                         ) &&
-                        bit::raw_set_includes(captured_pieces, captured_kings)
+                        bit::set_includes(captured_pieces, captured_kings)
                 );
         }
 
@@ -315,13 +311,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::raw_set_exclusive(pieces(Side::black), pieces(Side::white));
+                return bit::set_exclusive(pieces(Side::black), pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::raw_set_includes(pieces(), kings());
+                return bit::set_includes(pieces(), kings());
         }
 
         // representation

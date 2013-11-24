@@ -8,9 +8,6 @@
 #include <dctl/rules/traits.hpp>                        // distance_1
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 
-#include <cstdint>
-#include <dctl/bit/bit_set.hpp>
-
 namespace dctl {
 namespace successor {
 namespace detail {
@@ -21,14 +18,13 @@ struct detect<Color, pieces::all, select::moves, Range>
         template<class Position>
         bool operator()(Position const& p) const
         {
-                using BitSet = bit::bit_set<int, uint64_t, 1>;
                 using KingMoves = impl::detect<Color, pieces::king, select::moves, Position, rules::range::distance_1>;
                 using PawnMoves = impl::detect<Color, pieces::pawn, select::moves, Position, rules::range::distance_1>;
 
                 Propagate<select::moves, Position> const propagate(p);
                 return
-                        KingMoves{propagate}(BitSet(moveable_kings(p, Color))) ||
-                        PawnMoves{propagate}(BitSet(p.material().pawns(Color)))
+                        KingMoves{propagate}(moveable_kings(p, Color)) ||
+                        PawnMoves{propagate}(p.material().pawns(Color))
                 ;
         }
 };

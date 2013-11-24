@@ -64,7 +64,7 @@ struct read<Rules, Board, pdn::protocol, Token>
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_pieces[Side::black].as_block(), p_pieces[Side::white].as_block(), p_kings.as_block(), p_side };
+                        return { p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side };
 
                 bool setup_kings = false;
                 bool setup_color = p_side;
@@ -100,15 +100,13 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 break;
                         }
                 }
-                return { p_pieces[Side::black].as_block(), p_pieces[Side::white].as_block(), p_kings.as_block(), p_side };
+                return { p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side };
         }
 };
 
 template<class Token>
 struct write<pdn::protocol, Token>
 {
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         template<class Position>
         std::string operator()(Position const& p) const
         {
@@ -120,14 +118,14 @@ struct write<pdn::protocol, Token>
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i != 0;
-                        if (!BitSet(p.material().pieces(c)).empty()) {
+                        if (!p.material().pieces(c).empty()) {
                                 sstr << Token::colon;                           // colon
                                 sstr << Token::color[c];                        // color tag
                         }
-                        auto const bs = BitSet(p.material().pieces(c));
+                        auto const bs = p.material().pieces(c);
                         auto n = 0;
                         for (auto sq: bs) {
-                                if (BitSet(p.material().kings()).test(sq))
+                                if (p.material().kings().test(sq))
                                         sstr << Token::king;                    // king tag
                                 sstr << Board::bit2square(sq) + 1;              // square number
                                 if (++n != bs.size())                           // still pieces remaining
@@ -174,7 +172,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                         if (isupper(ch))
                                 p_kings.set(b);                  // king
                 }
-                return { p_pieces[Side::black].as_block(), p_pieces[Side::white].as_block(), p_kings.as_block(), p_side };
+                return { p_pieces[Side::black], p_pieces[Side::white], p_kings, p_side };
         }
 };
 

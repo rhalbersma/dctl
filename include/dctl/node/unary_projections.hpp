@@ -2,17 +2,13 @@
 #include <dctl/node/detail/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 
-#include <cstdint>
-#include <dctl/bit/bit_set.hpp>
-
 namespace dctl {
 
 // unoccupied squares
 template<class Position>
 auto not_occupied(Position const& p)
 {
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-        return (Position::board_type::squares ^ BitSet(p.material().pieces())).as_block();
+        return Position::board_type::squares ^ p.material().pieces();
 }
 
 // pawns for the side to move
