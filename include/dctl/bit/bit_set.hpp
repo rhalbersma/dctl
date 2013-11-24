@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t, size_t
+#include <cstdint>                              // uint64_t
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // distance, iterator_traits
 #include <limits>                               // digits
@@ -501,4 +502,7 @@ constexpr decltype(auto) cend(bit_set<T, Block, Nb> const& s) noexcept
 }
 
 }       // namespace bit
+
+using BitSet = bit::bit_set<int, uint64_t, 2>;
+
 }       // namespace dctl

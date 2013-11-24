@@ -12,7 +12,6 @@
 #include <dctl/utility/ply.hpp>         // PlyCount
 #include <dctl/utility/int.hpp>         // HashIndex
 
-#include <cstdint>
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/predicates.hpp>
@@ -31,8 +30,6 @@ public:
         using board_type = Board ;
         using TreeIterator = Position const*;
         static const int gap = rules::initial_gap<rules_type>::value + board_type::height % 2;
-
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         // initialize with a set of bitboards and a color
         Position(BitSet black_pieces, BitSet white_pieces, BitSet kings, bool to_move)

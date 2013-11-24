@@ -3,7 +3,6 @@
 #include <dctl/successor/select/moves.hpp>
 
 #include <dctl/bit/bit_set.hpp>
-#include <dctl/bit/algorithm.hpp>
 
 namespace dctl {
 namespace successor {
@@ -13,8 +12,6 @@ struct Propagate<select::moves, Position>
 {
 public:
         // structors
-
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         explicit Propagate(Position const& p)
         :

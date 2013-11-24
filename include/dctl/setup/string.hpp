@@ -9,7 +9,6 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/position.hpp>
 
-#include <cstdint>
 #include <dctl/bit/bit_set.hpp>
 
 namespace dctl {
@@ -54,8 +53,6 @@ struct write;
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, pdn::protocol, Token>
 {
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         Position<Rules, Board> operator()(std::string const& s) const
         {
                 BitSet p_pieces[2] {};
@@ -140,8 +137,6 @@ struct write<pdn::protocol, Token>
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, dxp::protocol, Token>
 {
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         Position<Rules, Board> operator()(std::string const& s) const
         {
                 BitSet p_pieces[2] {};

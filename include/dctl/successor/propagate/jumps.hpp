@@ -51,8 +51,6 @@ public:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
 
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         // modifiers
 
         void launch(int sq)

@@ -1,6 +1,5 @@
 #pragma once
 #include <cassert>                      // assert
-#include <cstdint>
 #include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/predicates.hpp>
 #include <dctl/utility/ply.hpp>         // PlyCount
@@ -10,8 +9,6 @@ namespace dctl {
 struct KingMoves
 {
 public:
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         // structors
 
         KingMoves() = default;

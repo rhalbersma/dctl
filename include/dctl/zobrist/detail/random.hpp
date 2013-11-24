@@ -1,6 +1,5 @@
 #pragma once
-#include <cstdint>                      // uint64_t
-#include <dctl/bit/bit_set.hpp>         // bit_set
+#include <dctl/bit/bit_set.hpp>         // BitSet
 #include <dctl/utility/ply.hpp>         // PlyCount
 
 namespace dctl {
@@ -10,8 +9,6 @@ namespace detail {
 template<class Index>
 struct Random
 {
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         // xor with random numbers matching a bitboard's set 1-bits
         static Index xor_rand(BitSet b, Index const* random)
         {

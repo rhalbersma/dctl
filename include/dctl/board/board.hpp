@@ -25,7 +25,6 @@ public:
         using InternalGrid = grid::Grid<grid::Rotate<Dimensions, orientation>, edge_columns>;
         using ExternalGrid = grid::Grid<Dimensions, 0>;
 
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
         using bit_type = BitSet;
 
         static constexpr auto shift_size(Angle const& direction)

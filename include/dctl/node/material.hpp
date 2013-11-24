@@ -141,6 +141,6 @@ private:
         T kings_;       // kings
 };
 
-using Material = Material_< bit::bit_set<int, uint64_t, 1> >;
+using Material = Material_< BitSet >;
 
 }       // namespace dctl
