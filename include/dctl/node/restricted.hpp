@@ -1,7 +1,8 @@
 #pragma once
 #include <cassert>                      // assert
-#include <dctl/bit/bit.hpp>
-#include <dctl/bit/bitboard.hpp>        // BitBoard
+#include <cstdint>
+#include <dctl/bit/bit_set.hpp>
+#include <dctl/bit/predicates.hpp>
 #include <dctl/utility/ply.hpp>         // PlyCount
 
 namespace dctl {
@@ -9,32 +10,34 @@ namespace dctl {
 struct KingMoves
 {
 public:
+        using BitSet = bit::bit_set<int, uint64_t, 1>;
+
         // structors
 
         KingMoves() = default;
 
         // modifiers
 
-        void init(BitBoard dest)
+        void init(BitSet dest)
         {
-                assert(bit::is_single(dest));
+                assert(bit::is_single(dest.as_block()));
                 king_ = dest;
                 moves_ = 1;
                 assert(invariant());
         }
 
-        void increment(BitBoard dest)
+        void increment(BitSet dest)
         {
-                assert(bit::is_single(dest));
-                king_= dest;
+                assert(bit::is_single(dest.as_block()));
+                king_ = dest;
                 ++moves_;
                 assert(invariant());
         }
 
         void reset()
         {
-                assert(!bit::empty(king_) && moves_);
-                king_ = 0;
+                assert(!king_.empty() && moves_);
+                king_.reset();
                 moves_ = 0;
                 assert(invariant());
         }
@@ -57,14 +60,14 @@ private:
         bool invariant() const
         {
                 return (
-                        !bit::is_multiple(king_) &&
-                        bit::empty(king_) == !moves_
+                        !bit::is_multiple(king_.as_block()) &&
+                        king_.empty() == !moves_
                 );
         }
 
         // representation
 
-        BitBoard king_{};
+        BitSet king_{};
         PlyCount moves_{};
 };
 

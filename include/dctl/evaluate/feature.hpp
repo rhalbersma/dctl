@@ -3,17 +3,12 @@
 #include <dctl/evaluate/weight.hpp>
 #include <dctl/successor/mobility.hpp>
 
-#include <cstdint>
-#include <dctl/bit/bit_set.hpp>
-
 namespace dctl {
 namespace evaluate {
 
 template<bool Color>
 class Feature
 {
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
 public:
         template<class Position>
         static int value(Position const& p)
@@ -31,8 +26,8 @@ public:
         static int material(Position<Rules, Board> const& p)
         {
                 return (
-                        Weight<Rules, Board>::material[0] * BitSet(p.material().pieces(Color)).size() +
-                        Weight<Rules, Board>::material[1] * BitSet(p.material().kings(Color)).size()
+                        Weight<Rules, Board>::material[0] * p.material().pieces(Color).size() +
+                        Weight<Rules, Board>::material[1] * p.material().kings(Color).size()
                 );
         }
 
@@ -41,7 +36,7 @@ public:
         {
                 int score = 0;
                 for (auto i = 1; i < Board::height; ++i)
-                        score += Weight<Rules, Board>::tempo[i] * (BitSet(p.material().pieces(Color)) & Board::row_mask[Color][i]).size();
+                        score += Weight<Rules, Board>::tempo[i] * (p.material().pieces(Color) & Board::row_mask[Color][i]).size();
                 return score;
         }
 
@@ -52,8 +47,8 @@ public:
                 for (auto i = 1; i < Board::width / 2; ++i) {
                         score += Weight<Rules, Board>::center[i] *
                         (
-                                (BitSet(p.material().pieces(Color)) & Board::col_mask[ Color][i]).size() +
-                                (BitSet(p.material().pieces(Color)) & Board::col_mask[!Color][i]).size()
+                                (p.material().pieces(Color) & Board::col_mask[ Color][i]).size() +
+                                (p.material().pieces(Color) & Board::col_mask[!Color][i]).size()
                         );
                 }
                 return score;
@@ -66,8 +61,8 @@ public:
                 for (auto i = 0; i < Board::width / 2; ++i) {
                         score += Weight<Rules, Board>::balance[i] *
                         (
-                                (BitSet(p.material().pieces(Color)) & Board::col_mask[ Color][i]).size() -
-                                (BitSet(p.material().pieces(Color)) & Board::col_mask[!Color][i]).size()
+                                (p.material().pieces(Color) & Board::col_mask[ Color][i]).size() -
+                                (p.material().pieces(Color) & Board::col_mask[!Color][i]).size()
                         );
                 }
                 return -abs(score);

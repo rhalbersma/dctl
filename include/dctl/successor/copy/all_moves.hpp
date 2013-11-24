@@ -7,9 +7,6 @@
 #include <dctl/node/unary_projections.hpp>              // moveable_kings
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 
-#include <cstdint>
-#include <dctl/bit/bit_set.hpp>
-
 namespace dctl {
 namespace successor {
 namespace detail {
@@ -21,13 +18,12 @@ struct copy<Color, pieces::all, select::moves>
         template<class Position, class Sequence>
         void operator()(Position const& p, Sequence& moves) const
         {
-                using BitSet = bit::bit_set<int, uint64_t, 1>;
                 using KingMoves = impl::copy<Color, pieces::king, select::moves, Position, Sequence>;
                 using PawnMoves = impl::copy<Color, pieces::pawn, select::moves, Position, Sequence>;
 
                 Propagate<select::moves, Position> const propagate(p);
-                KingMoves{propagate, moves}(BitSet(moveable_kings(p, Color)));
-                PawnMoves{propagate, moves}(BitSet(p.material().pawns(Color)));
+                KingMoves{propagate, moves}(moveable_kings(p, Color));
+                PawnMoves{propagate, moves}(p.material().pawns(Color));
         }
 };
 

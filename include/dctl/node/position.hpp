@@ -1,7 +1,6 @@
 #pragma once
 #include <cassert>                      // assert
 #include <type_traits>                  // false_type, true_type
-#include <dctl/bit/bit.hpp>
 #include <dctl/zobrist/hash.hpp>
 #include <dctl/node/position_fwd.hpp>
 #include <dctl/node/material.hpp>
@@ -12,11 +11,11 @@
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/ply.hpp>         // PlyCount
 #include <dctl/utility/int.hpp>         // HashIndex
-#include <dctl/bit/algorithm.hpp>
-#include <dctl/bit/bitboard.hpp>        // BitBoard
 
 #include <cstdint>
+#include <dctl/bit/algorithm.hpp>
 #include <dctl/bit/bit_set.hpp>
+#include <dctl/bit/predicates.hpp>
 
 namespace dctl {
 
@@ -36,7 +35,7 @@ public:
         using BitSet = bit::bit_set<int, uint64_t, 1>;
 
         // initialize with a set of bitboards and a color
-        Position(BitBoard black_pieces, BitBoard white_pieces, BitBoard kings, bool to_move)
+        Position(BitSet black_pieces, BitSet white_pieces, BitSet kings, bool to_move)
         :
                 material_{black_pieces, white_pieces, kings},
                 to_move_{to_move}
@@ -55,9 +54,9 @@ public:
         static Position initial()
         {
                 return Position{
-                        Board::initial_mask[Side::black][N].as_block(),
-                        Board::initial_mask[Side::white][N].as_block(),
-                        0,
+                        Board::initial_mask[Side::black][N],
+                        Board::initial_mask[Side::white][N],
+                        BitSet{},
                         Side::white
                 };
         }
@@ -171,7 +170,7 @@ private:
         {
                 KingMoves& restricted = restricted_[active_color(*this)];
 
-                if (active_kings(*this) && active_pawns(*this)) {
+                if (!active_kings(*this).empty() && !active_pawns(*this).empty()) {
                         if (restricted.moves())
                                 hash_index_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
 
@@ -181,13 +180,13 @@ private:
                                 return;
                         }
 
-                        if (restricted.moves() && bit::is_element(restricted.king(), from_sq(*this, m))) {
+                        if (restricted.moves() && bit::is_element(restricted.king().as_block(), from_sq(*this, m).as_block())) {
                                 // a consecutive irreversible move with the same king
                                 assert(!is_max<Rules>(restricted.moves()));
                                 restricted.increment(dest_sq(*this, m));
                         } else {
                                 // a first irreversible move with a new king
-                                assert(!restricted.moves() || bit::size(active_kings(*this)) > 1);
+                                assert(!restricted.moves() || active_kings(*this).size() > 1);
                                 restricted.init(dest_sq(*this, m));
                         }
                         hash_index_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
@@ -201,8 +200,8 @@ private:
                 if (
                         restricted.moves() && is_capture(*this, m) &&
                         (
-                                bit::raw_set_includes(captured_pieces(*this, m), restricted.king()) ||
-                                bit::raw_set_includes(captured_pieces(*this, m), passive_pawns(*this))
+                                bit::set_includes(captured_pieces(*this, m), restricted.king()) ||
+                                bit::set_includes(captured_pieces(*this, m), passive_pawns(*this))
                         )
                 ) {
                         hash_index_ ^= zobrist::hash(std::make_pair(restricted, passive_color(*this)));
@@ -233,7 +232,7 @@ private:
         {
                 return (
                         //material_.invariant() &&
-                        bit::set_includes(Board::squares, BitSet(material().pieces()))
+                        bit::set_includes(Board::squares, material().pieces())
                 );
         }
 
@@ -250,7 +249,7 @@ private:
         PlyCount reversible_moves_{};
         PlyCount distance_to_root_{};
         bool to_move_;
-        BitBoard padding_[6];
+        BitSet padding_[6];
 };
 
 template<class Position>

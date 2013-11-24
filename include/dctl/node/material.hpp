@@ -2,10 +2,11 @@
 #include <cassert>                      // assert
 #include <type_traits>                  // is_base_of
 #include <boost/operators.hpp>          // equality_comparable1
-#include <dctl/bit/bit.hpp>             // is_subset
 #include <dctl/node/side.hpp>
+
+#include <cstdint>
 #include <dctl/bit/algorithm.hpp>
-#include <dctl/bit/bitboard.hpp>        // BitBoard
+#include <dctl/bit/bit_set.hpp>
 
 namespace dctl {
 
@@ -31,7 +32,7 @@ public:
         // zero initialize
         explicit Material_(T /* MUST be zero */)
         {
-                init<Side::black>(0, 0, 0);
+                init<Side::black>(T{}, T{}, T{});
                 assert(invariant());
         }
 
@@ -45,8 +46,8 @@ public:
         // modifiers
 
         // xor-assign the set bits of another piece set
-        template<template<class> class U>
-        Material_& operator^=(U<T> const& m)
+        template<class U>
+        Material_& operator^=(U const& m)
         {
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);
@@ -126,13 +127,13 @@ private:
         // black and white pieces are mutually exclusive
         bool side_invariant() const
         {
-                return bit::raw_set_exclusive(pieces(Side::black), pieces(Side::white));
+                return bit::set_exclusive(pieces(Side::black), pieces(Side::white));
         }
 
         // kings are a subset of pieces
         bool material_invariant() const
         {
-                return bit::raw_set_includes(pieces(), kings());
+                return bit::set_includes(pieces(), kings());
         }
 
         // representation
@@ -141,6 +142,6 @@ private:
         T kings_;       // kings
 };
 
-using Material = Material_<BitBoard>;
+using Material = Material_< bit::bit_set<int, uint64_t, 1> >;
 
 }       // namespace dctl

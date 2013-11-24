@@ -1,6 +1,5 @@
 #pragma once
 #include <type_traits>                  // false_type, true_type
-#include <dctl/bit/bit.hpp>
 #include <dctl/search/score.hpp>
 #include <dctl/successor/detect.hpp>
 
@@ -40,7 +39,7 @@ struct is_terminal<Kingscourt>
         bool operator()(Position const& p) const
         {
                 return (
-                        (bit::size(active_kings(p)) - bit::size(passive_kings(p)) < 0) ||
+                        (active_kings(p).size() - passive_kings(p).size() < 0) ||
                         is_terminal<NoMovesLeft>()(p)
                 );
         }

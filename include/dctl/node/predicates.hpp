@@ -18,19 +18,19 @@ bool is_connected(Position const& /* p */, Move const& /* m1 */, Move const& /* 
 template<class Position, class Move>
 bool is_promotion(Position const& p, Move const& m)
 {
-        return bit::is_single(moving_kings(p, m));
+        return bit::is_single(moving_kings(p, m).as_block());
 }
 
 template<class Position, class Move>
 bool is_with_king(Position const& p, Move const& m)
 {
-        return !bit::empty(moving_kings(p, m) & active_kings(p));
+        return !(moving_kings(p, m) & active_kings(p)).empty();
 }
 
 template<class Position, class Move>
 bool is_capture(Position const& p, Move const& m)
 {
-        return !bit::empty(captured_pieces(p, m));
+        return !captured_pieces(p, m).empty();
 }
 
 template<class Position, class Move>
@@ -51,13 +51,13 @@ bool is_pseudo_legal(Position const& p, Move const& m)
 {
         return (
                 // cannot move multiple pieces
-                !(bit::is_multiple(from_sq(p, m)) || bit::is_multiple(dest_sq(p, m))) &&
+                !(bit::is_multiple(from_sq(p, m).as_block()) || bit::is_multiple(dest_sq(p, m).as_block())) &&
 
                 // only capture existing pieces
-                bit::raw_set_includes(passive_pieces(p), captured_pieces(p, m)) &&
+                bit::set_includes(passive_pieces(p), captured_pieces(p, m)) &&
                 (
                         // only capture existing kings
-                        bit::raw_set_includes(passive_kings(p), captured_kings(p, m)) ||
+                        bit::set_includes(passive_kings(p), captured_kings(p, m)) ||
 
                         // EXCEPTION: for intersecting captures, a man-capturing king can appear as a captured king
                         is_intersecting_capture(p, m)

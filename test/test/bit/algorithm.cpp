@@ -7,14 +7,14 @@
 namespace dctl {
 namespace bit {
 
-using bitset64 = bit_set<int, uint64_t, 1>;
+using BitSet = bit_set<int, uint64_t, 1>;
 
 BOOST_AUTO_TEST_SUITE(PackedAlgorithm)
 
 BOOST_AUTO_TEST_CASE(SetIntersection)
 {
-        bitset64 const a { 0, 1, 2, 3 };
-        bitset64 const b { 0, 1, 4, 5 };
+        BitSet const a { 0, 1, 2, 3 };
+        BitSet const b { 0, 1, 4, 5 };
 
         auto const i = set_intersection(a, b);
         BOOST_CHECK(set_includes(a, i));
@@ -26,8 +26,8 @@ BOOST_AUTO_TEST_CASE(SetIntersection)
 
 BOOST_AUTO_TEST_CASE(SetUnion)
 {
-        bitset64 const a { 0, 1, 2, 3 };
-        bitset64 const b { 0, 1, 4, 5 };
+        BitSet const a { 0, 1, 2, 3 };
+        BitSet const b { 0, 1, 4, 5 };
 
         auto const u = set_union(a, b);
         BOOST_CHECK(set_includes(u, a));
@@ -39,8 +39,8 @@ BOOST_AUTO_TEST_CASE(SetUnion)
 
 BOOST_AUTO_TEST_CASE(SetSymmetricDifference)
 {
-        bitset64 const a { 0, 1, 2, 3 };
-        bitset64 const b { 0, 1, 4, 5 };
+        BitSet const a { 0, 1, 2, 3 };
+        BitSet const b { 0, 1, 4, 5 };
 
         auto const s = set_symmetric_difference(a, b);
         auto const t = a ^ b;
@@ -54,8 +54,8 @@ BOOST_AUTO_TEST_CASE(SetSymmetricDifference)
 
 BOOST_AUTO_TEST_CASE(SetDifference)
 {
-        bitset64 const a { 0, 1, 2, 3 };
-        bitset64 const b { 0, 1, 4, 5 };
+        BitSet const a { 0, 1, 2, 3 };
+        BitSet const b { 0, 1, 4, 5 };
 
         auto const d_ab = set_difference(a, b);
         auto const d_ba = set_difference(b, a);

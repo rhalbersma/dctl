@@ -8,9 +8,6 @@
 #include <dctl/rules/traits.hpp>
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 
-#include <cstdint>
-#include <dctl/bit/bit_set.hpp>
-
 namespace dctl {
 namespace successor {
 namespace detail {
@@ -45,8 +42,6 @@ public:
         }
 
 private:
-        using BitSet = bit::bit_set<int, uint64_t, 1>;
-
         // the existence of pawn jumps is independent of Range,
         // but we always use rules::range::distance_1 to avoid template bloat
         template<class Position>
@@ -60,7 +55,7 @@ private:
         bool combined_dispatch(Position const& p, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                return PawnJumps<Position>{propagate}(BitSet(p.material().pieces(Color)));
+                return PawnJumps<Position>{propagate}(p.material().pieces(Color));
         }
 
         // overload for separate king and pawn jump detection
@@ -71,8 +66,8 @@ private:
 
                 // speculate #pawns > #kings so that the logical OR is more likely to short-circuit
                 return
-                        PawnJumps<Position>{propagate}(BitSet(p.material().pawns(Color))) ||
-                        KingJumps<Position>{propagate}(BitSet(p.material().kings(Color)))
+                        PawnJumps<Position>{propagate}(p.material().pawns(Color)) ||
+                        KingJumps<Position>{propagate}(p.material().kings(Color))
                 ;
         }
 };
