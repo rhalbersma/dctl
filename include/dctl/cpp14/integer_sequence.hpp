@@ -60,7 +60,7 @@ namespace cpp14
   template<typename T, T N>
     using make_integer_sequence = typename detail::iota<T, N, N>::type;
 
-  template<int N>
+  template<std::size_t N>
     using make_index_sequence = make_integer_sequence<std::size_t, N>;
 
 

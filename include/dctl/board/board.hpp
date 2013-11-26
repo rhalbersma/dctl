@@ -8,6 +8,7 @@
 #include <dctl/grid/predicates.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/bit/bit_set.hpp>
+#include <dctl/utility/make_array.hpp>
 
 namespace dctl {
 namespace board {
@@ -54,43 +55,28 @@ private:
                 return grid::coordtosq<DestGrid>(rotate(grid::sqtocoord(from_sq), theta));
         }
 
-        static constexpr auto init_square2bit(int n) noexcept
+        static constexpr int init_square2bit(int n) noexcept
         {
                 return transform<InternalGrid>(grid::Square<ExternalGrid>{n}, orientation).value();
         }
 
-        static constexpr auto init_bit2square(int n) noexcept
+        static constexpr int init_bit2square(int n) noexcept
         {
                 return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, inverse(orientation)).value();
         }
 
-#define DCTL_PP_SQUARE2BIT(z, i, data) init_square2bit(i)
-
-        static constexpr int table_square2bit[] =
-        {
-                BOOST_PP_ENUM(128, DCTL_PP_SQUARE2BIT, ~)
-        };
-
-#undef DCTL_PP_SQUARE2BIT
-
-#define DCTL_PP_BIT2SQUARE(z, i, data) init_bit2square(i)
-
-        static constexpr int table_bit2square[] =
-        {
-                BOOST_PP_ENUM(128, DCTL_PP_BIT2SQUARE, ~)
-        };
-
-#undef DCTL_PP_BIT2SQUARE
+        static constexpr auto table_square2bit = make_array<128>(init_square2bit);
+        static constexpr auto table_bit2square = make_array<128>(init_bit2square);
 
 public:
         static constexpr auto square2bit(int number) noexcept
         {
-                return table_square2bit[number];
+                return table_square2bit[static_cast<std::size_t>(number)];
         }
 
         static constexpr auto bit2square(int number) noexcept
         {
-                return table_bit2square[number];
+                return table_bit2square[static_cast<std::size_t>(number)];
         }
 
 private:
@@ -162,8 +148,8 @@ public:
         }
 };
 
-template<class D, int E, int O> constexpr int Board<D, E, O>::table_square2bit[];
-template<class D, int E, int O> constexpr int Board<D, E, O>::table_bit2square[];
+template<class D, int E, int O> constexpr std::array<int, 128> Board<D, E, O>::table_square2bit;
+template<class D, int E, int O> constexpr std::array<int, 128> Board<D, E, O>::table_bit2square;
 
 template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::squares;
 template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::initial_mask[][9];
