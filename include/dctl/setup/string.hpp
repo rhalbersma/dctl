@@ -121,7 +121,7 @@ struct write<pdn::protocol, Token>
                         }
                         auto const bs = p.material().pieces(c);
                         auto n = 0;
-                        for (auto sq: bs) {
+                        for (auto sq : bs) {
                                 if (p.material().kings().test(sq))
                                         sstr << Token::king;                    // king tag
                                 sstr << Board::bit2square(sq) + 1;              // square number

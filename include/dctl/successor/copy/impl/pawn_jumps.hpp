@@ -132,7 +132,7 @@ private:
         template<int Direction, class Set>
         void serialize(Set const& active_pawns) const
         {
-                for (auto from_sq: active_pawns & Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>()))
+                for (auto from_sq : active_pawns & Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>()))
                         find(along_ray<Direction>(from_sq));
         }
 

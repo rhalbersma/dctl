@@ -57,7 +57,7 @@ private:
         template<class Set>
         void serialize(Set const& active_kings) const
         {
-                for (auto from_sq: active_kings)
+                for (auto from_sq : active_kings)
                         branch(from_sq);
         }
 

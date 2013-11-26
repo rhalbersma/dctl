@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(TupleConstructor)
                 std::make_pair(std::begin(kings), std::end(kings))
         );
 
-        for (auto const& c: cases) {
+        for (auto const& c : cases) {
                 auto const v = T{c};
                 auto const p = std::get<0>(c);
                 auto const k = std::get<1>(c);
@@ -53,11 +53,11 @@ BOOST_AUTO_TEST_CASE(Increment)
                 std::make_pair(std::begin(kings), std::end(kings))
         );
 
-        for (auto const& c: cases) {
+        for (auto const& c : cases) {
                 auto const u = T{c};
 
                 bool const incr[] = { false, true };
-                for (auto const& i: incr) {
+                for (auto const& i : incr) {
                         auto v = u;
                         v.increment(i);
                         BOOST_CHECK_EQUAL(v.size(), u.size() + 1);
@@ -80,11 +80,11 @@ BOOST_AUTO_TEST_CASE(Decrement)
                 std::make_pair(std::begin(kings), std::end(kings))
         );
 
-        for (auto const& c: cases) {
+        for (auto const& c : cases) {
                 auto const u = T{c};
 
                 bool const decr[] = { false, true };
-                for (auto const& d: decr) {
+                for (auto const& d : decr) {
                         auto v = u;
                         v.decrement(d);
                         BOOST_CHECK_EQUAL(v.size(), u.size() - 1);
@@ -107,14 +107,14 @@ BOOST_AUTO_TEST_CASE(Equal)
                 std::make_pair(std::begin(kings), std::end(kings))
         );
 
-        for (auto const& c: cases) {
+        for (auto const& c : cases) {
                 auto const u = T{c};
                 auto v = u;
                 BOOST_CHECK(u == v);
                 BOOST_CHECK(v == u);
 
                 bool const delta[] = { false, true };
-                for (auto const& b: delta) {
+                for (auto const& b : delta) {
                         auto x = u;
 
                         x.increment(b);
@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE(Less)
                 std::make_pair(std::begin(kings), std::end(kings))
         );
 
-        for (auto const& c: cases) {
+        for (auto const& c : cases) {
                 auto const u = T{c};
                 auto const v = u;
                 BOOST_CHECK(u <= v);
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(Less)
                 BOOST_CHECK(v >= u);
 
                 bool const delta[] = { false, true };
-                for (auto const& b: delta) {
+                for (auto const& b : delta) {
                         auto x = u;
 
                         x.increment(b);
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(Quantity)
                 std::make_pair(std::begin(kings), std::end(kings))
         );
 
-        for (auto const& c: cases) {
+        for (auto const& c : cases) {
                 auto const p = std::get<0>(c);
                 auto const k = std::get<1>(c);
 
@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE(Quality)
                 std::make_pair(std::begin(kings), std::end(kings))
         );
 
-        for (auto const& c: cases) {
+        for (auto const& c : cases) {
                 auto const p = std::get<0>(c);
                 auto const k = std::get<1>(c);
 

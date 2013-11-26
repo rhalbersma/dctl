@@ -13,7 +13,7 @@ struct Random
         static Index xor_rand(BitSet b, Index const* random)
         {
                 Index hash = 0;
-                for (auto sq: b)
+                for (auto sq : b)
                         hash ^= random[sq];
                 return hash;
         }

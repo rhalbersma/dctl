@@ -176,7 +176,7 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
         } else {
                 Arena<Move> a;
                 auto const moves = successor::copy(p, a);
-                for (auto const& m: moves)
+                for (auto const& m : moves)
                         nodes += walk(successor::make_copy(p, m), depth - 1, ply + 1, e);
         }
 
@@ -272,7 +272,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
 
         announce(p, depth, moves.size());
         stopwatch.start();
-        for (auto const& m: moves) {
+        for (auto const& m : moves) {
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
                 print_move(notation::write(p, moves[i]), i);
