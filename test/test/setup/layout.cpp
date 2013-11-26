@@ -12,8 +12,8 @@ BOOST_AUTO_TEST_SUITE(SetupLayout)
 
 using BoardSequence = boost::mpl::vector
 <
-        board::Micro, board::Mini, board::Checkers, board::Roman, board::International,
-        board::Frisian, board::Spantsireti, board::Ktar11, board::Ktar12
+        /*board::Micro, board::Mini, board::Checkers, board::Roman,*/ board::International
+        /*board::Frisian, board::Spantsireti, board::Ktar11, board::Ktar12R, board::Ktar1012, board::Canadian,  board::Ktar12, board::Ktar1012F*/
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, BoardSequence)

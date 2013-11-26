@@ -37,6 +37,7 @@ public:
         {
                 return value_;
         }
+
 private:
         int value_;
 };
