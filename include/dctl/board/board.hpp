@@ -69,17 +69,16 @@ private:
         static constexpr auto table_bit2square = make_array<128>(init_bit2square);
 
 public:
-        static constexpr auto square2bit(int number) noexcept
+        static constexpr auto square2bit(int n) noexcept
         {
-                return table_square2bit[static_cast<std::size_t>(number)];
+                return table_square2bit[static_cast<std::size_t>(n)];
         }
 
-        static constexpr auto bit2square(int number) noexcept
+        static constexpr auto bit2square(int n) noexcept
         {
-                return table_bit2square[static_cast<std::size_t>(number)];
+                return table_bit2square[static_cast<std::size_t>(n)];
         }
 
-private:
         /* NOTE: for C++11/14, constexpr predicate != lambda expression */
         template<class Predicate>
         static constexpr auto copy_if(Predicate pred) noexcept
@@ -130,22 +129,6 @@ public:
 
 #undef DCTL_PP_COL_MASK
 
-private:
-
-#define DCTL_PP_JUMP_START(z, i, data) copy_if(grid::is_jump_start<rotate(i * 45_deg, orientation)>{})
-
-        static constexpr BitSet table_jump_start[] =
-        {
-                BOOST_PP_ENUM(8, DCTL_PP_JUMP_START, ~)
-        };
-
-#undef DCTL_PP_JUMP_START
-
-public:
-        static constexpr auto jump_start(Angle const& direction) noexcept
-        {
-                return table_jump_start[direction / 45_deg];
-        }
 };
 
 template<class D, int E, int O> constexpr std::array<int, 128> Board<D, E, O>::table_square2bit;
@@ -156,7 +139,6 @@ template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Boar
 template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::promotion_mask[][2];
 template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::row_mask[][20];
 template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::col_mask[][20];
-template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::table_jump_start[];
 
 }       // namespace board
 }       // namespace dctl

@@ -150,7 +150,7 @@ struct base_set
         constexpr auto do_intersects(base_set const& other) const noexcept
         {
                 for (auto i = 0; i < Nb; ++i)
-                        if ((data_ & other.data_) != Block{0})
+                        if ((data_[i] & other.data_[i]) != Block{0})
                                 return true;
                 return false;
         }

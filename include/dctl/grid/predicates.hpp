@@ -57,17 +57,14 @@ struct is_col
         }
 };
 
-template<int Direction>
 struct is_jump_start
 {
-        static constexpr auto theta = Angle{Direction};
-        static_assert(theta % 45_deg == 0_deg, "Direction angles have to be a multiple of 45 degrees.");
-
         template<class Square>
-        constexpr auto operator()(Square const& sq) const
+        constexpr auto operator()(int Direction, Square const& sq) noexcept
         {
                 using Grid = typename Square::grid_type;
 
+                auto const theta = Angle{Direction};
                 auto const offset = is_diagonal(theta) ? 2 : 4;
 
                 auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);
@@ -78,10 +75,7 @@ struct is_jump_start
                 auto const min_col = is_left(theta) ? offset : 0;
                 auto const max_col = Grid::width - (is_right(theta) ? offset : 0);
 
-                return (
-                        (min_row <= row && row < max_row) &&
-                        (min_col <= col && col < max_col)
-                );
+                return (min_row <= row && row < max_row) && (min_col <= col && col < max_col);
         }
 };
 
