@@ -15,6 +15,8 @@
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/predicates.hpp>
+#include <dctl/board/mask/initial.hpp>
+#include <dctl/board/mask/squares.hpp>
 
 namespace dctl {
 
@@ -51,8 +53,8 @@ public:
         static Position initial()
         {
                 return Position{
-                        Board::initial_mask[Side::black][N],
-                        Board::initial_mask[Side::white][N],
+                        board::Initial<Board>::mask(Side::black, N),
+                        board::Initial<Board>::mask(Side::white, N),
                         BitSet{},
                         Side::white
                 };
@@ -227,7 +229,7 @@ private:
         // post-conditions for the constructors and modifiers
         bool material_invariant() const
         {
-                return bit::set_includes(Board::squares, material().pieces());
+                return bit::set_includes(board::Squares<Board>::mask(), material().pieces());
         }
 
         bool hash_index_invariant() const

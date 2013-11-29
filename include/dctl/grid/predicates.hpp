@@ -18,53 +18,50 @@ struct is_square
         }
 };
 
-template<int Separation, bool Color>
 struct is_initial
 {
         template<class Square>
-        constexpr auto operator()(Square const& sq) const noexcept
+        constexpr auto operator()(bool color, int separation, Square const& sq) const noexcept
         {
                 using Grid = typename Square::grid_type;
 
                 auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);
-                auto const min_row = Color ? Grid::height - (Grid::height - Separation) / 2 : 0;
-                auto const max_row = Color ? Grid::height : (Grid::height - Separation) / 2;
+                auto const min_row = color ? Grid::height - (Grid::height - separation) / 2 : 0;
+                auto const max_row = color ? Grid::height : (Grid::height - separation) / 2;
                 return min_row <= row && row < max_row;
         }
 };
 
-template<int Row, bool Color>
 struct is_row
 {
         template<class Square>
-        constexpr auto operator()(Square const& sq) const noexcept
+        constexpr auto operator()(bool color, int row, Square const& sq) const noexcept
         {
                 using Grid = typename Square::grid_type;
 
-                return grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height) == (Color ? Grid::height - 1 - Row : Row);
+                return grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height) == (color ? Grid::height - 1 - row : row);
         }
 };
 
-template<int Column, bool Color>
-struct is_col
+struct is_column
 {
         template<class Square>
-        constexpr auto operator()(Square const& sq) const noexcept
+        constexpr auto operator()(bool color, int column, Square const& sq) const noexcept
         {
                 using Grid = typename Square::grid_type;
 
-                return grid::detail::decentralize(grid::sqtocoord(sq).col(), Grid::width) == (Color ? Grid::width - 1 - Column : Column);
+                return grid::detail::decentralize(grid::sqtocoord(sq).col(), Grid::width) == (color ? Grid::width - 1 - column : column);
         }
 };
 
 struct is_jump_start
 {
         template<class Square>
-        constexpr auto operator()(int Direction, Square const& sq) noexcept
+        constexpr auto operator()(int direction, Square const& sq) noexcept
         {
                 using Grid = typename Square::grid_type;
 
-                auto const theta = Angle{Direction};
+                auto const theta = Angle{direction};
                 auto const offset = is_diagonal(theta) ? 2 : 4;
 
                 auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);

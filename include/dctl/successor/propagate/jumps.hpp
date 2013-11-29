@@ -17,7 +17,7 @@
 #include <dctl/utility/total_order.hpp>
 #include <dctl/ray/iterator.hpp>
 
-#include <dctl/board/jump_start.hpp>
+#include <dctl/board/mask/jump_start.hpp>
 #include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/algorithm.hpp>
 
@@ -175,7 +175,7 @@ public:
         template<int Direction>
         auto path() const
         {
-                return path() & board::jump_start<Board>{}(Angle{Direction});
+                return path() & board::JumpStart<Board>::mask(Angle{Direction});
         }
 
         template<int Direction>

@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/preprocessor/repetition.hpp>    // BOOST_PP_ENUM
 #include <dctl/angle.hpp>                       // Angle, _deg
 #include <dctl/grid/coordinates.hpp>
 #include <dctl/grid/dimensions.hpp>             // Rotate_t
@@ -89,56 +88,10 @@ public:
                                 result.set(square2bit(sq));
                 return result;
         }
-
-public:
-        static constexpr BitSet squares = copy_if(grid::is_square{});
-
-#define DCTL_PP_INITIAL_MASK(z, i, data) copy_if(grid::is_initial<i, data>{})
-
-        static constexpr BitSet initial_mask[][9] =
-        {
-                { BOOST_PP_ENUM(9, DCTL_PP_INITIAL_MASK, Side::black) },
-                { BOOST_PP_ENUM(9, DCTL_PP_INITIAL_MASK, Side::white) }
-        };
-
-#undef DCTL_PP_INITIAL_MASK
-
-#define DCTL_PP_ROW_MASK(z, i, data) copy_if(grid::is_row<i, data>{})
-
-        static constexpr BitSet promotion_mask[][2] =
-        {
-                { BOOST_PP_ENUM(2, DCTL_PP_ROW_MASK, Side::white) },
-                { BOOST_PP_ENUM(2, DCTL_PP_ROW_MASK, Side::black) }
-        };
-
-        static constexpr BitSet row_mask[][20] =
-        {
-                { BOOST_PP_ENUM(20, DCTL_PP_ROW_MASK, Side::black) },
-                { BOOST_PP_ENUM(20, DCTL_PP_ROW_MASK, Side::white) }
-        };
-
-#undef DCTL_PP_ROW_MASK
-
-#define DCTL_PP_COL_MASK(z, i, data) copy_if(grid::is_col<i, data>{})
-
-        static constexpr BitSet col_mask[][20] =
-        {
-                { BOOST_PP_ENUM(20, DCTL_PP_COL_MASK, Side::black) },
-                { BOOST_PP_ENUM(20, DCTL_PP_COL_MASK, Side::white) }
-        };
-
-#undef DCTL_PP_COL_MASK
-
 };
 
 template<class D, int E, int O> constexpr std::array<int, 128> Board<D, E, O>::table_square2bit;
 template<class D, int E, int O> constexpr std::array<int, 128> Board<D, E, O>::table_bit2square;
-
-template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::squares;
-template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::initial_mask[][9];
-template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::promotion_mask[][2];
-template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::row_mask[][20];
-template<class D, int E, int O> constexpr typename Board<D, E, O>::bit_type Board<D, E, O>::col_mask[][20];
 
 }       // namespace board
 }       // namespace dctl
