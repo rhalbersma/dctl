@@ -18,7 +18,9 @@ private:
                 }
         };
 
-        static constexpr typename Board::bit_type value = Board::copy_if(lambda{});
+        using value_type = typename Board::bit_type;
+
+        static constexpr value_type value = Board::copy_if(lambda{});
 
 public:
         static constexpr auto mask() noexcept
@@ -28,7 +30,7 @@ public:
 };
 
 template<class Board>
-constexpr typename Board::bit_type Squares<Board>::value;
+constexpr typename Squares<Board>::value_type Squares<Board>::value;
 
 }       // namespace board
 }       // namespace dctl

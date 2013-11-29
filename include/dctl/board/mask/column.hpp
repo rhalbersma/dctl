@@ -36,10 +36,14 @@ private:
                 return Board::copy_if(lambda{Color, column});
         }
 
-        static constexpr std::array<typename Board::bit_type, 20> table[] =
+        using T = typename Board::bit_type;
+        static constexpr auto N = Board::width;
+        using table_type = std::array<T, N>;
+
+        static constexpr table_type table[] =
         {
-                make_array<20>(init<Side::black>),
-                make_array<20>(init<Side::white>)
+                make_array<N>(init<Side::black>),
+                make_array<N>(init<Side::white>)
         };
 
 public:
@@ -50,8 +54,7 @@ public:
 };
 
 template<class Board>
-constexpr std::array<typename Board::bit_type, 20> Column<Board>::table[];
+constexpr typename Column<Board>::table_type Column<Board>::table[];
 
 }       // namespace board
 }       // namespace dctl
-

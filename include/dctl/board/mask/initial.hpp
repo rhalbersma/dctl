@@ -14,27 +14,36 @@ private:
         // TODO: replace if constexpr lambdas become available in C++17
         struct lambda
         {
-                bool const c_;
-                int const n_;
-                constexpr lambda(bool c, int n) noexcept : c_{c}, n_{n} {}
+                bool const color_;
+                int const separation_;
+
+                constexpr lambda(bool color, int separation) noexcept
+                :
+                        color_{color},
+                        separation_{separation}
+                {}
 
                 template<class Square>
                 constexpr auto operator()(Square const& sq) noexcept
                 {
-                        return grid::is_row{}(c_, n_, sq);
+                        return grid::is_initial{}(color_, separation_, sq);
                 }
         };
 
         template<bool Color>
-        static constexpr auto init(int n) noexcept
+        static constexpr auto init(int separation) noexcept
         {
-                return Board::copy_if(lambda{Color, n});
+                return Board::copy_if(lambda{Color, separation});
         }
 
-        static constexpr std::array<typename Board::bit_type, 9> table[] =
+        using T = typename Board::bit_type;
+        static constexpr auto N = Board::height / 2;
+        using table_type = std::array<T, N>;
+
+        static constexpr table_type table[] =
         {
-                make_array<9>(init<Side::black>),
-                make_array<9>(init<Side::white>)
+                make_array<N>(init<Side::black>),
+                make_array<N>(init<Side::white>)
         };
 
 public:
@@ -45,7 +54,7 @@ public:
 };
 
 template<class Board>
-constexpr std::array<typename Board::bit_type, 9> Initial<Board>::table[];
+constexpr typename Initial<Board>::table_type Initial<Board>::table[];
 
 }       // namespace board
 }       // namespace dctl
