@@ -2,6 +2,8 @@
 #include <cstdlib>                      // abs
 #include <dctl/evaluate/weight.hpp>
 #include <dctl/successor/mobility.hpp>
+#include <dctl/board/mask/column.hpp>
+#include <dctl/board/mask/row.hpp>
 
 namespace dctl {
 namespace evaluate {
@@ -36,7 +38,7 @@ public:
         {
                 int score = 0;
                 for (auto i = 1; i < Board::height; ++i)
-                        score += Weight<Rules, Board>::tempo[i] * (p.material().pieces(Color) & Board::row_mask[Color][i]).size();
+                        score += Weight<Rules, Board>::tempo[i] * (p.material().pieces(Color) & board::Row<Board>::mask(Color, i)).size();
                 return score;
         }
 
@@ -47,8 +49,8 @@ public:
                 for (auto i = 1; i < Board::width / 2; ++i) {
                         score += Weight<Rules, Board>::center[i] *
                         (
-                                (p.material().pieces(Color) & Board::col_mask[ Color][i]).size() +
-                                (p.material().pieces(Color) & Board::col_mask[!Color][i]).size()
+                                (p.material().pieces(Color) & board::Column<Board>::mask( Color, i)).size() +
+                                (p.material().pieces(Color) & board::Column<Board>::mask(!Color, i)).size()
                         );
                 }
                 return score;
@@ -61,8 +63,8 @@ public:
                 for (auto i = 0; i < Board::width / 2; ++i) {
                         score += Weight<Rules, Board>::balance[i] *
                         (
-                                (p.material().pieces(Color) & Board::col_mask[ Color][i]).size() -
-                                (p.material().pieces(Color) & Board::col_mask[!Color][i]).size()
+                                (p.material().pieces(Color) & board::Column<Board>::mask( Color, i)).size() -
+                                (p.material().pieces(Color) & board::Column<Board>::mask(!Color, i)).size()
                         );
                 }
                 return -abs(score);

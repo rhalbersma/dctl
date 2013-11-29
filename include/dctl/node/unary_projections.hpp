@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/node/detail/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
+#include <dctl/board/mask/squares.hpp>
 
 namespace dctl {
 
@@ -8,7 +9,7 @@ namespace dctl {
 template<class Position>
 auto not_occupied(Position const& p)
 {
-        return Position::board_type::squares ^ p.material().pieces();
+        return board::Squares<typename Position::board_type>::mask() ^ p.material().pieces();
 }
 
 // pawns for the side to move

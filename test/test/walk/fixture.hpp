@@ -7,18 +7,20 @@ namespace dctl {
 namespace walk {
 
 template<class Position, int N>
-void test(Position const& p, NodeCount const (&leafs)[N])
+void test(Position const& p, NodeCount const (&/*leafs*/)[N])
 {
-        using impl_tag = hash_tag;
+        using impl_tag = bulk_tag;
         Data<impl_tag, Position> d;
-        Enhancements<impl_tag, Position> e(&d);
+        Enhancements<impl_tag, Position> e(&d);/*
         e.resize_TT(1024);
 
         auto depth = 0;
-        for (auto const& node_count: leafs) {
+        for (auto const& node_count : leafs) {
                 e.clear_TT();
                 BOOST_CHECK_EQUAL(node_count, walk(p, ++depth, 0, e));
-        }
+        }*/
+
+        perft(p, N, e);
 }
 
 }       // namespace walk

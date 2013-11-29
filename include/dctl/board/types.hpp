@@ -10,7 +10,7 @@ namespace board {
 using Micro         = Board< grid::Dimensions< 4,  4> >;
 using Mini          = Board< grid::Dimensions< 6,  6> >;
 using Checkers      = Board< grid::Dimensions< 8,  8> >;
-using International = Board< grid::Dimensions<10, 10> >;
+using International = Board< grid::Dimensions<10, 10>, 8 >;
 using Canadian      = Board< grid::Dimensions<12, 12> >;
 
 // the Spanish-Italian board has opposite coloring

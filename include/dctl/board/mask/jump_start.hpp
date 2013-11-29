@@ -9,38 +9,42 @@ namespace dctl {
 namespace board {
 
 template<class Board>
-class jump_start
+class JumpStart
 {
 private:
         // TODO: replace if constexpr lambdas become available in C++17
         struct lambda
         {
-                int const i_;
-                constexpr lambda(int i) noexcept : i_{i} {}
+                int const direction_;
+
+                constexpr lambda(int direction) noexcept
+                :
+                        direction_{direction}
+                {}
 
                 template<class Square>
                 constexpr auto operator()(Square const& sq) noexcept
                 {
-                        return grid::is_jump_start{}(rotate(i_ * 45_deg, Board::orientation), sq);
+                        return grid::is_jump_start{}(rotate(direction_ * 45_deg, Board::orientation), sq);
                 }
         };
 
-        static constexpr auto init(int n) noexcept
+        static constexpr auto init(int direction) noexcept
         {
-                return Board::copy_if(lambda{n});
+                return Board::copy_if(lambda{direction});
         }
 
         static constexpr std::array<typename Board::bit_type, 8> table = make_array<8>(init);
 
 public:
-        constexpr auto operator()(Angle const& direction) noexcept
+        static constexpr auto mask(Angle const& direction) noexcept
         {
                 return table[static_cast<std::size_t>(direction / 45_deg)];
         }
 };
 
 template<class Board>
-constexpr std::array<typename Board::bit_type, 8> jump_start<Board>::table;
+constexpr std::array<typename Board::bit_type, 8> JumpStart<Board>::table;
 
 }       // namespace board
 }       // namespace dctl
