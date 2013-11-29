@@ -25,7 +25,7 @@ private:
                 template<class Square>
                 constexpr auto operator()(Square const& sq) noexcept
                 {
-                        return grid::is_jump_start{}(rotate(direction_ * 45_deg, Board::orientation), sq);
+                        return grid::is_jump_start{}(rotate(direction_ * theta, Board::orientation), sq);
                 }
         };
 
@@ -34,17 +34,26 @@ private:
                 return Board::copy_if(lambda{direction});
         }
 
-        static constexpr std::array<typename Board::bit_type, 8> table = make_array<8>(init);
+        using T = typename Board::bit_type;
+        static constexpr auto N = (Board::edge_columns < 2) ? 4 : 8;
+        static constexpr auto theta = (Board::edge_columns < 2) ? 90_deg : 45_deg;
+        static_assert(N * theta == 360_deg, "");
+        using table_type = std::array<T, N>;
+
+        static constexpr table_type table = make_array<N>(init);
 
 public:
-        static constexpr auto mask(Angle const& direction) noexcept
+        static constexpr auto mask(Angle const& alpha) noexcept
         {
-                return table[static_cast<std::size_t>(direction / 45_deg)];
+                return table[static_cast<std::size_t>(alpha / theta)];
         }
 };
 
 template<class Board>
-constexpr std::array<typename Board::bit_type, 8> JumpStart<Board>::table;
+constexpr Angle JumpStart<Board>::theta;
+
+template<class Board>
+constexpr typename JumpStart<Board>::table_type JumpStart<Board>::table;
 
 }       // namespace board
 }       // namespace dctl
