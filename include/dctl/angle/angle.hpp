@@ -95,6 +95,11 @@ public:
                 return nrv;
         }
 
+        friend constexpr auto operator/(Angle const& L, Angle const& R) noexcept
+        {
+                return L.value_ / R.value_;
+        }
+
         // views
 
         constexpr operator int() const noexcept

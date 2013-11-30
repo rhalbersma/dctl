@@ -15,29 +15,30 @@ private:
         // TODO: replace if constexpr lambdas become available in C++17
         struct lambda
         {
-                int const direction_;
+                int const segment_;
 
-                constexpr lambda(int direction) noexcept
+                constexpr lambda(int segment) noexcept
                 :
-                        direction_{direction}
+                        segment_{segment}
                 {}
 
                 template<class Square>
                 constexpr auto operator()(Square const& sq) noexcept
                 {
-                        return grid::is_jump_start{}(rotate(direction_ * theta, Board::orientation), sq);
+                        auto const alpha = segment_ * theta + beta;
+                        return grid::is_jump_start{}(rotate(alpha, Board::orientation), sq);
                 }
         };
 
-        static constexpr auto init(int direction) noexcept
+        static constexpr auto init(int segment) noexcept
         {
-                return Board::copy_if(lambda{direction});
+                return Board::copy_if(lambda{segment});
         }
 
         using T = typename Board::bit_type;
-        static constexpr auto N = (Board::edge_columns < 2) ? 4 : 8;
+        static constexpr auto N     = (Board::edge_columns < 2) ? 4 : 8;
         static constexpr auto theta = (Board::edge_columns < 2) ? 90_deg : 45_deg;
-        static_assert(N * theta == 360_deg, "");
+        static constexpr auto beta  = (Board::edge_columns < 2) ? 45_deg :  0_deg;
         using table_type = std::array<T, N>;
 
         static constexpr table_type table = make_array<N>(init);
@@ -45,12 +46,16 @@ private:
 public:
         static constexpr auto mask(Angle const& alpha) noexcept
         {
-                return table[static_cast<std::size_t>(alpha / theta)];
+                auto const segment = (alpha - beta) / theta;
+                return table[static_cast<std::size_t>(segment)];
         }
 };
 
 template<class Board>
 constexpr Angle JumpStart<Board>::theta;
+
+template<class Board>
+constexpr Angle JumpStart<Board>::beta;
 
 template<class Board>
 constexpr typename JumpStart<Board>::table_type JumpStart<Board>::table;

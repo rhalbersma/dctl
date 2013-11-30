@@ -57,11 +57,10 @@ struct is_column
 struct is_jump_start
 {
         template<class Square>
-        constexpr auto operator()(int direction, Square const& sq) noexcept
+        constexpr auto operator()(Angle const& theta, Square const& sq) noexcept
         {
                 using Grid = typename Square::grid_type;
 
-                auto const theta = Angle{direction};
                 auto const offset = is_diagonal(theta) ? 2 : 4;
 
                 auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);

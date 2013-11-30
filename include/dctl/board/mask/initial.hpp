@@ -1,5 +1,6 @@
 #pragma once
 #include <array>                        // array
+#include <cassert>                      // assert
 #include <cstddef>                      // size_t
 #include <dctl/grid/predicates.hpp>     // is_initial
 #include <dctl/utility/make_array.hpp>  // make_array
@@ -15,18 +16,20 @@ private:
         struct lambda
         {
                 bool const color_;
-                int const separation_;
+                int const rows_;
 
-                constexpr lambda(bool color, int separation) noexcept
+                constexpr lambda(bool color, int rows) noexcept
                 :
                         color_{color},
-                        separation_{separation}
+                        rows_{rows}
                 {}
 
                 template<class Square>
                 constexpr auto operator()(Square const& sq) noexcept
                 {
-                        return grid::is_initial{}(color_, separation_, sq);
+                        auto const separation = Board::height - 2 * rows_;
+                        assert((Board::height % 2) <= separation && separation <= Board::height);
+                        return grid::is_initial{}(color_, separation, sq);
                 }
         };
 
@@ -37,7 +40,7 @@ private:
         }
 
         using T = typename Board::bit_type;
-        static constexpr auto N = Board::height / 2;
+        static constexpr auto N = (Board::height) / 2 + 1;
         using table_type = std::array<T, N>;
 
         static constexpr table_type table[] =
@@ -49,7 +52,10 @@ private:
 public:
         static constexpr auto mask(bool color, int separation) noexcept
         {
-                return table[color][static_cast<std::size_t>(separation)];
+                assert((Board::height - separation) % 2 == 0);
+                auto const rows = (Board::height - separation) / 2;
+                assert(0 <= rows && rows <= (Board::height / 2));
+                return table[color][static_cast<std::size_t>(rows)];
         }
 };
 
