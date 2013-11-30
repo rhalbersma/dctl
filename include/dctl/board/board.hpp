@@ -1,4 +1,7 @@
 #pragma once
+#include <limits>
+#include <cstdint>
+#include <type_traits>
 #include <dctl/angle.hpp>                       // Angle, _deg
 #include <dctl/grid/coordinates.hpp>
 #include <dctl/grid/dimensions.hpp>             // Rotate_t
@@ -12,20 +15,29 @@
 namespace dctl {
 namespace board {
 
-template<class Dimensions, int EdgeColumns = 2, int Orientation = 0_deg>
+template<class Dimensions, bool IsOrthogonalCaptures = true>
 struct Board
 :
         public Dimensions
 {
 public:
-        static constexpr auto edge_columns = EdgeColumns;
-        static constexpr auto orientation = Angle{Orientation};
+        using is_orthogonal_captures = std::integral_constant<bool, IsOrthogonalCaptures>;
+
+        static constexpr auto edge_columns = IsOrthogonalCaptures ? 2 : 1;
+
+        using G = grid::Grid<grid::Rotate<Dimensions,   0_deg>, edge_columns>;
+        using H = grid::Grid<grid::Rotate<Dimensions, -90_deg>, edge_columns>;
 
         // internal and external grids
-        using InternalGrid = grid::Grid<grid::Rotate<Dimensions, orientation>, edge_columns>;
+
+        static constexpr auto orientation = (G::size <= H::size) ? 0_deg : -90_deg;
+        using InternalGrid = typename std::conditional<orientation == 0_deg, G, H>::type;
         using ExternalGrid = grid::Grid<Dimensions, 0>;
 
-        using bit_type = BitSet;
+        using Block = uint64_t;
+        static constexpr auto Nb = 2;//InternalGrid::size / B + 1;
+        static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
+        using bit_type = bit::bit_set<int, Block, Nb>;
 
         static constexpr auto shift_size(Angle const& direction)
         {
@@ -64,8 +76,8 @@ private:
                 return transform<ExternalGrid>(grid::Square<InternalGrid>{n}, inverse(orientation)).value();
         }
 
-        static constexpr auto table_bit_from_square = make_array<128>(init_bit_from_square);
-        static constexpr auto table_square_from_bit = make_array<128>(init_square_from_bit);
+        static constexpr std::array<int, N> table_bit_from_square = make_array<N>(init_bit_from_square);
+        static constexpr std::array<int, N> table_square_from_bit = make_array<N>(init_square_from_bit);
 
 public:
         static constexpr auto bit_from_square(int n) noexcept
@@ -82,7 +94,7 @@ public:
         template<class Predicate>
         static constexpr auto copy_if(Predicate pred) noexcept
         {
-                BitSet result;
+                bit_type result{};
                 for (auto sq = 0; sq < ExternalGrid::size; ++sq)
                         if (pred(grid::Square<ExternalGrid>{sq}))
                                 result.set(bit_from_square(sq));
@@ -90,11 +102,11 @@ public:
         }
 };
 
-template<class D, int E, int O>
-constexpr std::array<int, 128> Board<D, E, O>::table_bit_from_square;
+template<class D, bool O>
+constexpr std::array<int, Board<D, O>::N> Board<D, O>::table_bit_from_square;
 
-template<class D, int E, int O>
-constexpr std::array<int, 128> Board<D, E, O>::table_square_from_bit;
+template<class D, bool O>
+constexpr std::array<int, Board<D, O>::N> Board<D, O>::table_square_from_bit;
 
 }       // namespace board
 }       // namespace dctl

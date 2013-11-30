@@ -55,13 +55,6 @@ BOOST_AUTO_TEST_CASE(Ktar1012F)
 */
 /*
 
-BOOST_AUTO_TEST_CASE(Ktar12R)
-{
-        auto const p = Position<rules::International, board::Ktar12R>::initial();
-        NodeCount const leafs[11] = {};
-        test(p, leafs);
-}
-
 BOOST_AUTO_TEST_CASE(Ktar1012)
 {
         auto const p = Position<rules::International, board::Ktar1012>::initial();

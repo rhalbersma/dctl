@@ -39,9 +39,9 @@ private:
         }
 
         using T = typename Board::bit_type;
-        static constexpr auto N     = (Board::edge_columns < 2) ? 4 : 8;
-        static constexpr auto theta = (Board::edge_columns < 2) ? 90_deg : 45_deg;
-        static constexpr auto beta  = (Board::edge_columns < 2) ? 45_deg :  0_deg;
+        static constexpr auto N     = Board::is_orthogonal_captures::value ?      4 :      8;
+        static constexpr auto theta = Board::is_orthogonal_captures::value ? 90_deg : 45_deg;
+        static constexpr auto beta  = Board::is_orthogonal_captures::value ? 45_deg :  0_deg;
         using table_type = std::array<T, N>;
 
         static constexpr table_type table = make_array<N>(init);
