@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(ItalianInitial)
 
 BOOST_AUTO_TEST_CASE(ThaiInitial)
 {
-        auto const p = Position<rules::Thai, board::Checkers>::initial<2>();
+        auto const p = Position<rules::Thai, board::Checkers>::initial(2);
         NodeCount const leafs[] = { 7, 49, 302, 1469, 7361, 36768, 179740, 845931, 3963648, 18363523, 84892793, 385713660, 1745666630 };
         test(p, leafs);
 }

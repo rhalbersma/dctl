@@ -31,7 +31,7 @@ public:
         using rules_type = Rules;
         using board_type = Board ;
         using TreeIterator = Position const*;
-        static const int gap = rules::initial_gap<rules_type>::value + board_type::height % 2;
+        static const auto gap = rules::initial_gap<Rules>::value + Board::height % 2;
 
         // initialize with a set of bitboards and a color
         Position(BitSet black_pieces, BitSet white_pieces, BitSet kings, bool to_move)
@@ -43,18 +43,11 @@ public:
                 assert(material_invariant());
         }
 
-        // initial position
-        static Position initial()
-        {
-                return initial<gap>();
-        }
-
-        template<int N>
-        static Position initial()
+        static Position initial(int separation = gap)
         {
                 return Position{
-                        board::Initial<Board>::mask(Side::black, N),
-                        board::Initial<Board>::mask(Side::white, N),
+                        board::Initial<Board>::mask(Side::black, separation),
+                        board::Initial<Board>::mask(Side::white, separation),
                         BitSet{},
                         Side::white
                 };
