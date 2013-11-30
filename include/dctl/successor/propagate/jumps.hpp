@@ -175,8 +175,8 @@ public:
         template<int Direction>
         auto path() const
         {
-                auto constexpr mask = board::JumpStart<Board>::mask(Angle{Direction});
-                return path() & mask;
+                auto constexpr jump_start = board::JumpStart<Board>::mask(Angle{Direction});
+                return path() & jump_start;
         }
 
         template<int Direction>

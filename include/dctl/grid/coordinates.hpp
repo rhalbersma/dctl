@@ -61,12 +61,12 @@ public:
                 return col_;
         }
 
-        friend auto operator==(Coordinates const& lhs, Coordinates const& rhs) noexcept
+        friend /* constexpr */ auto operator==(Coordinates const& lhs, Coordinates const& rhs) noexcept
         {
                 return std::tie(lhs.row_, rhs.col_) == std::tie(rhs.row_, rhs.col_);
         }
 
-        friend auto operator!=(Coordinates const& lhs, Coordinates const& rhs) noexcept
+        friend /* constexpr */ auto operator!=(Coordinates const& lhs, Coordinates const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
@@ -89,7 +89,7 @@ constexpr auto rotate(Coordinates const& coord, Angle const& theta)
 }
 
 template<class Grid>
-constexpr auto sqtocoord(Square<Grid> const& square) noexcept
+constexpr auto coord_from_sq(Square<Grid> const& square) noexcept
 {
         // number of row pairs
         auto const Q = square.value() / Grid::modulo;
@@ -120,7 +120,7 @@ constexpr auto sqtocoord(Square<Grid> const& square) noexcept
 }
 
 template<class Grid>
-constexpr auto coordtosq(Coordinates const& coord) noexcept
+constexpr auto sq_from_coord(Coordinates const& coord) noexcept
 {
         auto const DECENTRAL_ROW = detail::decentralize(coord.row(), Grid::height);
         auto const DECENTRAL_COL = detail::decentralize(coord.col(), Grid::width);

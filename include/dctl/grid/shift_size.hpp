@@ -31,16 +31,10 @@ struct ShiftSize
 
 }       // namespace detail
 
-template<class T>
-constexpr auto identity(T const& t) noexcept
-{
-        return t;
-}
-
 template<class Grid>
-constexpr auto shift_size(Angle const& direction)
+constexpr auto shift_size(Angle const& alpha)
 {
-        switch (direction) {
+        switch (alpha) {
         case   0: return detail::ShiftSize<Grid>::right     ;
         case  45: return detail::ShiftSize<Grid>::right_up  ;
         case  90: return detail::ShiftSize<Grid>::up        ;

@@ -7,7 +7,7 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
 #include <dctl/angle.hpp>                       // _deg
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
-#include <dctl/grid/coordinates.hpp>            // Coordinates, Square, rotate, sqtocoord
+#include <dctl/grid/coordinates.hpp>            // Coordinates, Square, rotate, coord_from_sq
 #include <test/group.hpp>                       // is_realized, make_cyclic
 
 namespace dctl {
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllSquare
         BOOST_CHECK(
                 std::all_of(std::begin(C_N), std::end(C_N), [=](auto const& g) {
                         return std::all_of(first, last, [&](auto i) {
-                                auto const coord = grid::sqtocoord(grid::Square<typename T::ExternalGrid>{i});
+                                auto const coord = grid::coord_from_sq(grid::Square<typename T::ExternalGrid>{i});
                                 return group::action::is_realized(coord, g);
                         });
                 })

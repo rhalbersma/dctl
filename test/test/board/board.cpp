@@ -24,7 +24,7 @@ using BoardSequence = boost::mpl::vector
 BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, BoardSequence)
 {
         for (auto sq = T::begin(); sq != T::end(); ++sq)
-                BOOST_CHECK_EQUAL(T::bit2square(T::square2bit(sq)), sq);
+                BOOST_CHECK_EQUAL(T::square_from_bit(T::bit_from_square(sq)), sq);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

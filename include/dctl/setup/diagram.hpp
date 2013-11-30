@@ -81,7 +81,7 @@ public:
         template<class Functor>
         std::string operator()(Functor f) const
         {
-                return diagram<Board, squares>{}(std::bind(f, std::bind(Board::square2bit, std::placeholders::_1)));
+                return diagram<Board, squares>{}(std::bind(f, std::bind(Board::bit_from_square, std::placeholders::_1)));
         }
 };
 
