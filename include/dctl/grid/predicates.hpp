@@ -1,79 +1,8 @@
 #pragma once
-#include <dctl/angle.hpp>               // Angle, _deg, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/grid/coordinates.hpp>
-#include <dctl/grid/dimensions.hpp>
-#include <dctl/grid/grid.hpp>
 
 namespace dctl {
 namespace grid {
-
-struct is_square
-{
-        template<class Square>
-        constexpr auto operator()(Square const& sq) const noexcept
-        {
-                using Grid = typename Square::grid_type;
-
-                return 0 <= sq.value() && sq.value() < Grid::size;
-        }
-};
-
-struct is_initial
-{
-        template<class Square>
-        constexpr auto operator()(bool color, int separation, Square const& sq) const noexcept
-        {
-                using Grid = typename Square::grid_type;
-
-                auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);
-                auto const min_row = color ? Grid::height - (Grid::height - separation) / 2 : 0;
-                auto const max_row = color ? Grid::height : (Grid::height - separation) / 2;
-                return min_row <= row && row < max_row;
-        }
-};
-
-struct is_row
-{
-        template<class Square>
-        constexpr auto operator()(bool color, int row, Square const& sq) const noexcept
-        {
-                using Grid = typename Square::grid_type;
-
-                return grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height) == (color ? Grid::height - 1 - row : row);
-        }
-};
-
-struct is_column
-{
-        template<class Square>
-        constexpr auto operator()(bool color, int column, Square const& sq) const noexcept
-        {
-                using Grid = typename Square::grid_type;
-
-                return grid::detail::decentralize(grid::sqtocoord(sq).col(), Grid::width) == (color ? Grid::width - 1 - column : column);
-        }
-};
-
-struct is_jump_start
-{
-        template<class Square>
-        constexpr auto operator()(Angle const& theta, Square const& sq) noexcept
-        {
-                using Grid = typename Square::grid_type;
-
-                auto const offset = is_diagonal(theta) ? 2 : 4;
-
-                auto const row = grid::detail::decentralize(grid::sqtocoord(sq).row(), Grid::height);
-                auto const min_row = is_up(theta) ? offset : 0;
-                auto const max_row = Grid::height - (is_down(theta)? offset : 0);
-
-                auto const col = grid::detail::decentralize(grid::sqtocoord(sq).col(), Grid::width);
-                auto const min_col = is_left(theta) ? offset : 0;
-                auto const max_col = Grid::width - (is_right(theta) ? offset : 0);
-
-                return (min_row <= row && row < max_row) && (min_col <= col && col < max_col);
-        }
-};
 
 namespace detail {
 
@@ -108,8 +37,8 @@ template<class Square>
 constexpr auto is_jump_group(Square const& from_sq, Square const& dest_sq) noexcept
 {
         return is_jump_connected(
-                sqtocoord( Square{from_sq.value()} ),
-                sqtocoord( Square{dest_sq.value()} )
+                coord_from_sq( Square{from_sq.value()} ),
+                coord_from_sq( Square{dest_sq.value()} )
         );
 }
 

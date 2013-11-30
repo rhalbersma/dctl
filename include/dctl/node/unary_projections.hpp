@@ -9,7 +9,8 @@ namespace dctl {
 template<class Position>
 auto not_occupied(Position const& p)
 {
-        return board::Squares<typename Position::board_type>::mask() ^ p.material().pieces();
+        auto constexpr squares = board::Squares<typename Position::board_type>::mask();
+        return squares ^ p.material().pieces();
 }
 
 // pawns for the side to move

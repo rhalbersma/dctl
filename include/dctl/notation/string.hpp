@@ -31,9 +31,9 @@ struct write<Rules, numeric, Separator>
                 auto d = *dest_sq(p, m).begin();
 
                 std::stringstream sstr;
-                sstr << std::setw(2) << std::right << Board::bit2square(f) + 1;
+                sstr << std::setw(2) << std::right << Board::square_from_bit(f) + 1;
                 sstr << (is_capture(p, m) ? static_cast<char>(Separator::jump) : static_cast<char>(Separator::move));
-                sstr << std::setw(2) << std::left  << Board::bit2square(d) + 1;
+                sstr << std::setw(2) << std::left  << Board::square_from_bit(d) + 1;
                 return sstr.str();
         }
 };

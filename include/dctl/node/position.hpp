@@ -222,7 +222,8 @@ private:
         // post-conditions for the constructors and modifiers
         bool material_invariant() const
         {
-                return bit::set_includes(board::Squares<Board>::mask(), material().pieces());
+                auto constexpr squares = board::Squares<Board>::mask();
+                return bit::set_includes(squares, material().pieces());
         }
 
         bool hash_index_invariant() const

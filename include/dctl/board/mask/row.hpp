@@ -1,7 +1,7 @@
 #pragma once
 #include <array>                        // array
 #include <cstddef>                      // size_t
-#include <dctl/grid/predicates.hpp>     // is_row
+#include <dctl/grid/coordinates.hpp>    // decentralize, coord_from_sq
 #include <dctl/utility/make_array.hpp>  // make_array
 
 namespace dctl {
@@ -17,16 +17,11 @@ private:
                 bool const color_;
                 int const row_;
 
-                constexpr lambda(bool color, int row) noexcept
-                :
-                        color_{color},
-                        row_{row}
-                {}
-
                 template<class Square>
-                constexpr auto operator()(Square const& sq) noexcept
+                constexpr auto operator()(Square const& sq) const noexcept
                 {
-                        return grid::is_row{}(color_, row_, sq);
+                        using Grid = typename Square::grid_type;
+                        return grid::detail::decentralize(grid::coord_from_sq(sq).row(), Grid::height) == (color_ ? Grid::height - 1 - row_ : row_);
                 }
         };
 
@@ -58,4 +53,3 @@ constexpr typename Row<Board>::table_type Row<Board>::table[];
 
 }       // namespace board
 }       // namespace dctl
-

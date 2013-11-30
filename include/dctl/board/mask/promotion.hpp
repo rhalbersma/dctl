@@ -15,4 +15,3 @@ struct Promotion
 
 }       // namespace board
 }       // namespace dctl
-

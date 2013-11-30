@@ -1,8 +1,8 @@
 #pragma once
 #include <array>                        // array
 #include <cstddef>                      // size_t
-#include <dctl/angle.hpp>               // Angle, _deg, rotate
-#include <dctl/grid/predicates.hpp>     // is_jump_start
+#include <dctl/angle.hpp>               // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
+#include <dctl/grid/coordinates.hpp>    // decentralize, coord_from_sq
 #include <dctl/utility/make_array.hpp>  // make_array
 
 namespace dctl {
@@ -17,16 +17,19 @@ private:
         {
                 int const segment_;
 
-                constexpr lambda(int segment) noexcept
-                :
-                        segment_{segment}
-                {}
-
                 template<class Square>
-                constexpr auto operator()(Square const& sq) noexcept
+                constexpr auto operator()(Square const& sq) const noexcept
                 {
-                        auto const alpha = segment_ * theta + beta;
-                        return grid::is_jump_start{}(rotate(alpha, Board::orientation), sq);
+                        using Grid = typename Square::grid_type;
+                        auto const alpha = rotate(segment_ * theta + beta, Board::orientation);
+                        auto const offset = is_diagonal(alpha) ? 2 : 4;
+                        auto const row = grid::detail::decentralize(grid::coord_from_sq(sq).row(), Grid::height);
+                        auto const min_row = is_up(alpha) ? offset : 0;
+                        auto const max_row = Grid::height - (is_down(alpha)? offset : 0);
+                        auto const col = grid::detail::decentralize(grid::coord_from_sq(sq).col(), Grid::width);
+                        auto const min_col = is_left(alpha) ? offset : 0;
+                        auto const max_col = Grid::width - (is_right(alpha) ? offset : 0);
+                        return (min_row <= row && row < max_row) && (min_col <= col && col < max_col);
                 }
         };
 
@@ -62,4 +65,3 @@ constexpr typename JumpStart<Board>::table_type JumpStart<Board>::table;
 
 }       // namespace board
 }       // namespace dctl
-

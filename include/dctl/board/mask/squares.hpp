@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/grid/predicates.hpp>     // is_square
 
 namespace dctl {
 namespace board {
@@ -12,9 +11,10 @@ private:
         struct lambda
         {
                 template<class Square>
-                constexpr auto operator()(Square const& sq) noexcept
+                constexpr auto operator()(Square const& sq) const noexcept
                 {
-                        return grid::is_square{}(sq);
+                        using Grid = typename Square::grid_type;
+                        return 0 <= sq.value() && sq.value() < Grid::size;
                 }
         };
 
@@ -34,4 +34,3 @@ constexpr typename Squares<Board>::value_type Squares<Board>::value;
 
 }       // namespace board
 }       // namespace dctl
-
