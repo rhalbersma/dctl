@@ -11,6 +11,21 @@
 #include <dctl/node/side.hpp>
 #include <dctl/bit/bit_set.hpp>
 #include <dctl/utility/make_array.hpp>
+#include <tuple>
+
+#include <boost/mpl/vector.hpp>
+#include <boost/mpl/vector_c.hpp>
+#include <boost/mpl/placeholders.hpp>
+#include <boost/mpl/min_element.hpp>
+#include <boost/mpl/at.hpp>
+//#include <boost/mpl/at_c.hpp>
+#include <boost/mpl/begin_end.hpp>
+#include <boost/mpl/transform_view.hpp>
+#include <boost/mpl/identity.hpp>
+#include <boost/mpl/int.hpp>
+#include <boost/mpl/quote.hpp>
+#include <boost/mpl/distance.hpp>
+#include <boost/mpl/less_equal.hpp>
 
 namespace dctl {
 namespace board {
@@ -25,13 +40,28 @@ public:
 
         static constexpr auto edge_columns = IsOrthogonalCaptures ? 2 : 1;
 
-        using G = grid::Grid<grid::Rotate<Dimensions,   0_deg>, edge_columns>;
-        using H = grid::Grid<grid::Rotate<Dimensions, -90_deg>, edge_columns>;
-
+        using Orientations = boost::mpl::vector_c<int, 0, 90, 180, 270>;
+        using Grids = boost::mpl::vector<
+                grid::Grid< grid::Rotate<Dimensions,   0 >, edge_columns >,
+                grid::Grid< grid::Rotate<Dimensions,  90 >, edge_columns >,
+                grid::Grid< grid::Rotate<Dimensions, 180 >, edge_columns >,
+                grid::Grid< grid::Rotate<Dimensions, 270 >, edge_columns >
+        >;
+        using Sizes = boost::mpl::vector_c<int,
+                grid::Grid< grid::Rotate<Dimensions,   0 >, edge_columns >::size,
+                grid::Grid< grid::Rotate<Dimensions,  90 >, edge_columns >::size,
+                grid::Grid< grid::Rotate<Dimensions, 180 >, edge_columns >::size,
+                grid::Grid< grid::Rotate<Dimensions, 270 >, edge_columns >::size
+        >;
         // internal and external grids
+        using Index = boost::mpl::distance
+        <
+                typename boost::mpl::begin<Sizes>::type,
+                typename boost::mpl::min_element<Sizes, boost::mpl::less_equal<boost::mpl::_1, boost::mpl::_2> >::type
+        >;
 
-        static constexpr auto orientation = (G::size <= H::size) ? 0_deg : -90_deg;
-        using InternalGrid = typename std::conditional<orientation == 0_deg, G, H>::type;
+        static constexpr auto orientation = Angle{boost::mpl::at<Orientations, Index >::type::value};
+        using InternalGrid = typename boost::mpl::at<Grids, Index>::type;
         using ExternalGrid = grid::Grid<Dimensions, 0>;
 
         using Block = uint64_t;
