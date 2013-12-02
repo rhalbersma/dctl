@@ -3,6 +3,7 @@
 #include <cassert>                      // assert
 #include <cstddef>                      // size_t
 #include <dctl/grid/coordinates.hpp>    // decentralize, coord_from_sq
+#include <dctl/node/side.hpp>           // black, white
 #include <dctl/utility/make_array.hpp>  // make_array
 
 namespace dctl {

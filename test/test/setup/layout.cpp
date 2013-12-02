@@ -36,7 +36,8 @@ using DimSequence = boost::mpl::vector
         grid::Dimensions<10, 10, false>,
         grid::Dimensions<10, 10, true >,
         grid::Dimensions<12, 10, false>,
-        grid::Dimensions<12, 10, true >
+        grid::Dimensions<12, 10, true >,
+        grid::Dimensions<10, 19>
 >;
 
 
@@ -45,23 +46,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, DimSequence)
         std::cout << "------------\n";
         std::cout << T::height << "x" << T::width << ", " << T::parity << "\n\n";
 
-        static constexpr auto Orth = true;
-        using G = board::Board< T, Orth>;
-        /*using H = board::Board< T, Orth,  90>;
-        using I = board::Board< T, Orth, 180>;
-        using J = board::Board< T, Orth, 270>;*/
-
+        using G = board::Board< T, false>;
         std::cout << diagram<G, bits>()() << "\n";
-        std::cout << "size = " << G::InternalGrid::size << "(" << G::Index::value << ")" << "\n\n";
-/*
+        std::cout << "size = " << G::InternalGrid::size << ", angle = " << G::orientation << "\n\n";
+
+        using H = board::Board< T, true >;
         std::cout << diagram<H, bits>()() << "\n";
-        std::cout << "size = " << H::InternalGrid::size << "\n\n";
-
-        std::cout << diagram<I, bits>()() << "\n";
-        std::cout << "size = " << I::InternalGrid::size << "\n\n";
-
-        std::cout << diagram<J, bits>()() << "\n";
-        std::cout << "size = " << J::InternalGrid::size << "\n\n";*/
+        std::cout << "size = " << H::InternalGrid::size << ", angle = " << H::orientation << "\n\n";
 }
 
 BOOST_AUTO_TEST_SUITE_END()
