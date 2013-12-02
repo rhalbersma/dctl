@@ -1,31 +1,16 @@
 #pragma once
-#include <limits>
-#include <cstdint>
-#include <type_traits>
-#include <dctl/angle.hpp>                       // Angle, _deg
-#include <dctl/grid/coordinates.hpp>
-#include <dctl/grid/dimensions.hpp>             // Rotate_t
-#include <dctl/grid/grid.hpp>                   // Grid
-#include <dctl/grid/shift_size.hpp>             // shift_size
-#include <dctl/grid/predicates.hpp>
-#include <dctl/node/side.hpp>
-#include <dctl/bit/bit_set.hpp>
-#include <dctl/utility/make_array.hpp>
-#include <tuple>
-
-#include <boost/mpl/vector.hpp>
-#include <boost/mpl/vector_c.hpp>
-#include <boost/mpl/placeholders.hpp>
-#include <boost/mpl/min_element.hpp>
-#include <boost/mpl/at.hpp>
-//#include <boost/mpl/at_c.hpp>
-#include <boost/mpl/begin_end.hpp>
-#include <boost/mpl/transform_view.hpp>
-#include <boost/mpl/identity.hpp>
-#include <boost/mpl/int.hpp>
-#include <boost/mpl/quote.hpp>
-#include <boost/mpl/distance.hpp>
-#include <boost/mpl/less_equal.hpp>
+#include <array>                        // array
+#include <cstddef>                      // size_t
+#include <cstdint>                      // uint64_t
+#include <limits>                       // digits
+#include <dctl/angle.hpp>               // Angle, inverse
+#include <dctl/bit/bit_set.hpp>         // bit_set
+#include <dctl/grid/coordinates.hpp>    // Square, coord_from_sq, sq_from_coord, rotate
+#include <dctl/grid/grid.hpp>           // Grid
+#include <dctl/grid/shift_size.hpp>     // shift_size
+#include <dctl/grid/orientation.hpp>    // SizeMinimizingOrientation, Make
+#include <dctl/node/side.hpp>           // black, white
+#include <dctl/utility/make_array.hpp>  // make_array
 
 namespace dctl {
 namespace board {
@@ -36,36 +21,16 @@ struct Board
         public Dimensions
 {
 public:
-        using is_orthogonal_captures = std::integral_constant<bool, IsOrthogonalCaptures>;
-
+        static constexpr auto is_orthogonal_captures = IsOrthogonalCaptures;
         static constexpr auto edge_columns = IsOrthogonalCaptures ? 2 : 1;
+        static constexpr auto orientation = Angle{grid::SizeMinimizingOrientation<Dimensions, edge_columns>::value};
 
-        using Orientations = boost::mpl::vector_c<int, 0, 90, 180, 270>;
-        using Grids = boost::mpl::vector<
-                grid::Grid< grid::Rotate<Dimensions,   0 >, edge_columns >,
-                grid::Grid< grid::Rotate<Dimensions,  90 >, edge_columns >,
-                grid::Grid< grid::Rotate<Dimensions, 180 >, edge_columns >,
-                grid::Grid< grid::Rotate<Dimensions, 270 >, edge_columns >
-        >;
-        using Sizes = boost::mpl::vector_c<int,
-                grid::Grid< grid::Rotate<Dimensions,   0 >, edge_columns >::size,
-                grid::Grid< grid::Rotate<Dimensions,  90 >, edge_columns >::size,
-                grid::Grid< grid::Rotate<Dimensions, 180 >, edge_columns >::size,
-                grid::Grid< grid::Rotate<Dimensions, 270 >, edge_columns >::size
-        >;
-        // internal and external grids
-        using Index = boost::mpl::distance
-        <
-                typename boost::mpl::begin<Sizes>::type,
-                typename boost::mpl::min_element<Sizes, boost::mpl::less_equal<boost::mpl::_1, boost::mpl::_2> >::type
-        >;
-
-        static constexpr auto orientation = Angle{boost::mpl::at<Orientations, Index >::type::value};
-        using InternalGrid = typename boost::mpl::at<Grids, Index>::type;
+        using InternalGrid = grid::Make<Dimensions, edge_columns, orientation>;
         using ExternalGrid = grid::Grid<Dimensions, 0>;
 
         using Block = uint64_t;
-        static constexpr auto Nb = 2;//InternalGrid::size / B + 1;
+        static constexpr auto needed = InternalGrid::size / std::numeric_limits<Block>::digits + 1;
+        static constexpr auto Nb = (needed < 2) ? 2 : needed;
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
         using bit_type = bit::bit_set<int, Block, Nb>;
 
@@ -131,6 +96,15 @@ public:
                 return result;
         }
 };
+
+template<class D, bool O>
+constexpr bool Board<D, O>::is_orthogonal_captures;
+
+template<class D, bool O>
+constexpr int Board<D, O>::edge_columns;
+
+template<class D, bool O>
+constexpr Angle Board<D, O>::orientation;
 
 template<class D, bool O>
 constexpr std::array<int, Board<D, O>::N> Board<D, O>::table_bit_from_square;

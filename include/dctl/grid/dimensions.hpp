@@ -70,10 +70,10 @@ public:
         static constexpr auto width = Width;
         static constexpr auto parity = Parity;
 
-        template<int Direction>
-        struct Rotate
+        template<class Direction>
+        struct DoRotate
         {
-                static constexpr auto theta = Angle{Direction};
+                static constexpr auto theta = Angle{Direction::value};
                 static constexpr auto rotated = rotate(DimensionsObject{height, width, parity}, theta);
                 using type = Dimensions<rotated.height(), rotated.width(), rotated.parity()>;
         };
@@ -88,8 +88,12 @@ constexpr int Dimensions<Height, Width, Parity>::width;
 template<int Height, int Width, bool Parity>
 constexpr bool Dimensions<Height, Width, Parity>::parity;
 
-template<class T, int Theta>
-using Rotate = typename T::template Rotate<Theta>::type;
+// NOTE: a template alias does not work if Theta is a Boost.MPL placeholder expression
+template<class T, class Theta>
+struct Rotate
+:
+        T::template DoRotate<Theta>::type
+{};
 
 }       // namespace grid
 }       // namespace dctl
