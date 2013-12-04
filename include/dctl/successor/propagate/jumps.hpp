@@ -113,7 +113,7 @@ public:
                 using Move = typename Sequence::value_type;
 
                 moves.push_back(
-                        Move::template create<Color, Rules>(
+                        Move::template create<Color>(
                                 { from_sq_, dest_sq },
                                 captured_pieces(),
                                 captured_kings(with::king())
@@ -127,7 +127,7 @@ public:
                 using Move = typename Sequence::value_type;
 
                 moves.push_back(
-                        Move::template create<Color, Rules>(
+                        Move::template create<Color>(
                                 { from_sq_, dest_sq },
                                 is_promotion<Color>(dest_sq, WithPiece()),
                                 captured_pieces(),

@@ -29,7 +29,7 @@ struct Position
 {
 public:
         using rules_type = Rules;
-        using board_type = Board ;
+        using board_type = Board;
         using TreeIterator = Position const*;
         static const auto gap = rules::initial_gap<Rules>::value + Board::height % 2;
 
@@ -100,6 +100,7 @@ public:
                 return to_move_;
         }
 
+        template<class Move>
         void make(Move const& m)
         {
                 assert(is_pseudo_legal(*this, m));
@@ -119,6 +120,7 @@ public:
 private:
         // implementation
 
+        template<class Move>
         void make_irreversible(Move const& m)
         {
                 // tag dispatching on restrictions on consecutive moves with the same king
@@ -126,6 +128,7 @@ private:
         }
 
         // overload for restricted consecutive moves with the same king
+        template<class Move>
         void make_irreversible(Move const& m, std::true_type)
         {
                 make_irreversible(m, std::false_type());
@@ -133,12 +136,14 @@ private:
         }
 
         // overload for unrestricted consecutive moves with the same king
+        template<class Move>
         void make_irreversible(Move const& m, std::false_type)
         {
                 make_reversible_moves(m);
                 make_distance_to_root();
         }
 
+        template<class Move>
         void make_reversible_moves(Move const& m)
         {
                 if (is_reversible(*this, m))
@@ -152,12 +157,14 @@ private:
                 ++distance_to_root_;
         }
 
+        template<class Move>
         void make_restricted(Move const& m)
         {
                 make_active_king_moves(m);
                 make_passive_king_moves(m);
         }
 
+        template<class Move>
         void make_active_king_moves(Move const& m)
         {
                 KingMoves& restricted = restricted_[active_color(*this)];
@@ -185,6 +192,7 @@ private:
                 }
         }
 
+        template<class Move>
         void make_passive_king_moves(Move const& m)
         {
                 KingMoves& restricted = restricted_[passive_color(*this)];
@@ -201,12 +209,14 @@ private:
                 }
         }
 
+        template<class Move>
         void make_incremental(Move const& m)
         {
                 make_material(m);
                 make_to_move();
         }
 
+        template<class Move>
         void make_material(Move const& m)
         {
                 material_.make(m);

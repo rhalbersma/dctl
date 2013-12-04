@@ -3,7 +3,6 @@
 #include <dctl/successor/copy/specializations.hpp>      // copy
 #include <dctl/successor/invariant.hpp>                 // invariant
 #include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
-#include <dctl/node/move.hpp>                           // Move
 #include <dctl/node/side.hpp>                           // black, white
 #include <dctl/utility/stack_vector.hpp>                // stack_vector
 
@@ -16,11 +15,11 @@ void copy(Position const& p, Sequence& moves)
         detail::copy<Color, Pieces, Select>{}(p, moves);
 }
 
-template<bool Color, class Pieces, class Select, class Position>
-auto copy(Position const& p, Arena<Move>& mar)
+template<bool Color, class Pieces, class Select, class Position, class Allocator>
+auto copy(Position const& p, Allocator const& alloc)
 {
-        Alloc<Move> mal{mar};
-        stack_vector<Move> moves{mal};
+        using Move = typename Allocator::value_type;
+        stack_vector<Move> moves(alloc);
         moves.reserve(DCTL_PP_STACK_RESERVE);
 
         copy<Color, Pieces, Select>(p, moves);
@@ -29,19 +28,19 @@ auto copy(Position const& p, Arena<Move>& mar)
         return moves;
 }
 
-template<class Pieces, class Select, class Position>
-auto copy(Position const& p, Arena<Move>& mar)
+template<class Pieces, class Select, class Position, class Allocator>
+auto copy(Position const& p, Allocator const& alloc)
 {
         return (p.to_move() == Side::black) ?
-                copy<Side::black, Pieces, Select>(p, mar) :
-                copy<Side::white, Pieces, Select>(p, mar)
+                copy<Side::black, Pieces, Select>(p, alloc) :
+                copy<Side::white, Pieces, Select>(p, alloc)
         ;
 }
 
-template<class Position>
-auto copy(Position const& p, Arena<Move>& mar)
+template<class Position, class Allocator>
+auto copy(Position const& p, Allocator const& alloc)
 {
-        return copy<pieces::all, select::legal>(p, mar);
+        return copy<pieces::all, select::legal>(p, alloc);
 }
 
 template<class Position, class Move>

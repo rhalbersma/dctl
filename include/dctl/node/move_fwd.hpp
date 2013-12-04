@@ -4,9 +4,7 @@
 
 namespace dctl {
 
-template<class>
-struct Move_;
-
-using Move = Move_< BitSet >;
+template<class, class>
+struct Move;
 
 }       // namespace dctl
