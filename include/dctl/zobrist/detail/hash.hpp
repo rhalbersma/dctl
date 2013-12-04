@@ -47,10 +47,10 @@ struct hash<Index, Material>
 };
 
 // partial specialization for ab initio hashing of moves
-template<class Index>
-struct hash<Index, Move>
+template<class Index, class Rules, class Board>
+struct hash<Index, Move<Rules, Board> >
 {
-        Index operator()(Move const& m) const
+        Index operator()(Move<Rules, Board> const& m) const
         {
                 return (
                         Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^

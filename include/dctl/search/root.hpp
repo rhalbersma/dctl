@@ -152,8 +152,10 @@ private:
                         return TT_entry->value();
 
                 // generate moves
-                Arena<Move> a;
-                auto const moves = successor::copy(p, a);
+                using R = typename Position::rules_type;
+                using B = typename Position::board_type;
+                Arena<Move<R,B> > a;
+                auto const moves = successor::copy(p, Alloc<Move<R,B> >{a});
                 assert(!moves.empty());
 
                 Arena<int> oar;
@@ -281,8 +283,10 @@ private:
                         return;
                 }
 
-                Arena<Move> a;
-                auto const moves = successor::copy(p, a);
+                using R = typename Position::rules_type;
+                using B = typename Position::board_type;
+                Arena<Move<R,B> > a;
+                auto const moves = successor::copy(p, Alloc<Move<R, B> >{a});
                 auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, static_cast<int>(index)));
@@ -299,8 +303,10 @@ private:
                         return;
                 }
 
-                Arena<Move> a;
-                auto const moves = successor::copy(p, a);
+                using R = typename Position::rules_type;
+                using B = typename Position::board_type;
+                Arena<Move<R,B> > a;
+                auto const moves = successor::copy(p, Alloc<Move<R, B> >{a});
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";

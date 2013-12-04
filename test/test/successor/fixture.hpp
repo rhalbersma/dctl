@@ -21,8 +21,8 @@ struct Fixture
         void run(std::string const& FEN, std::string const (&legal)[N])
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>{}(FEN);
-                Arena<Move> a;
-                auto const moves = successor::copy(p, a);
+                Arena<Move<Rules,Board> > a;
+                auto const moves = successor::copy(p, Alloc<Move<Rules, Board> >{a});
 
                 BOOST_CHECK_EQUAL(static_cast<int>(moves.size()), N);
 

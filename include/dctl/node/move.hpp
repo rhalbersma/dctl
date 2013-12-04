@@ -61,29 +61,31 @@ bool is_intersecting_promotion(T promotion, T delta)
         return detail::is_intersecting_promotion(promotion, delta, rules::phase::promotion<Rules>{});
 }
 
-template<class T>
-struct Move_
+template<class Rules, class Board>
+struct Move
         // http://www.boost.org/doc/libs/1_51_0/libs/utility/operators.htm#chaining
         // use base class chaining to ensure Empty Base Optimization
-:       boost::equality_comparable1< Move_<T>
-,       boost::xorable1< Move_<T>
+:       boost::equality_comparable1< Move<Rules, Board>
+,       boost::xorable1< Move<Rules, Board>
         > >
 {
 public:
+        using T = typename Board::bit_type;
+
         // structors
 
         // default constructor
-        Move_() = default;
+        Move() = default;
 
         // zero initialize
-        explicit Move_(T /* MUST be zero */)
+        explicit Move(T /* MUST be zero */)
         {
                 init<Side::black>(T{}, T{}, T{});
                 assert(invariant());
         }
 
         // initialize with a set of bitboards
-        Move_(T black_pieces, T white_pieces, T kings)
+        Move(T black_pieces, T white_pieces, T kings)
         {
                 init<Side::black>(black_pieces, white_pieces, kings);
                 assert(invariant());
@@ -91,11 +93,11 @@ public:
 
         // king move
         template<bool Color>
-        static Move_ create(std::pair<int, int> const& from_dest)
+        static Move create(std::pair<int, int> const& from_dest)
         {
                 auto const delta = T{from_dest.first, from_dest.second};
                 assert(pre_condition(delta));
-                Move_ tmp;
+                Move tmp;
                 tmp.template init<Color>(
                         delta,  // move a king between the from and destination squares
                         T{},
@@ -107,12 +109,12 @@ public:
 
         // pawn move
         template<bool Color>
-        static Move_ create(std::pair<int, int> const& from_dest, bool is_promotion)
+        static Move create(std::pair<int, int> const& from_dest, bool is_promotion)
         {
                 auto const delta = T{from_dest.first, from_dest.second};
                 auto const promotion = is_promotion? T{from_dest.second} : T{};
                 assert(pre_condition(delta, promotion));
-                Move_ tmp;
+                Move tmp;
                 tmp.template init<Color>(
                         delta,          // move a pawn between the from and destination squares
                         T{},
@@ -123,42 +125,42 @@ public:
         }
 
         // king jump
-        template<bool Color, class Rules>
-        static Move_ create(std::pair<int, int> const& from_dest, T captured_pieces, T captured_kings)
+        template<bool Color>
+        static Move create(std::pair<int, int> const& from_dest, T captured_pieces, T captured_kings)
         {
                 auto const delta = (from_dest.first == from_dest.second)? T{} : T{from_dest.first, from_dest.second};
-                assert(pre_condition<Rules>(delta, captured_pieces, captured_kings));
-                Move_ tmp;
+                assert(pre_condition(delta, captured_pieces, captured_kings));
+                Move tmp;
                 tmp.template init<Color>(
                         delta,                  // move a king between the from and destination square
                         captured_pieces,        // remove the captured pieces
                         delta ^ captured_kings  // move a king and remove the captured kings
                 );
-                assert(tmp.king_jump_invariant<Rules>(delta, captured_pieces));
+                assert(tmp.king_jump_invariant(delta, captured_pieces));
                 return tmp;
         }
 
         // pawn jump
-        template<bool Color, class Rules>
-        static Move_ create(std::pair<int, int> const& from_dest, bool is_promotion, T captured_pieces, T captured_kings)
+        template<bool Color>
+        static Move create(std::pair<int, int> const& from_dest, bool is_promotion, T captured_pieces, T captured_kings)
         {
                 auto const delta = (from_dest.first == from_dest.second)? T{} : T{from_dest.first, from_dest.second};
                 auto const promotion = is_promotion? T{from_dest.second} : T{};
-                assert(pre_condition<Rules>(delta, promotion, captured_pieces, captured_kings));
-                Move_ tmp;
+                assert(pre_condition(delta, promotion, captured_pieces, captured_kings));
+                Move tmp;
                 tmp.template init<Color>(
                         delta,                          // move a pawn between the from and destination squares
                         captured_pieces,                // remove the captured pieces
                         promotion ^ captured_kings      // crown a pawn to a king and remove the captured kings
                 );
-                assert(tmp.pawn_jump_invariant<Rules>(delta, promotion));
+                assert(tmp.pawn_jump_invariant(delta, promotion));
                 return tmp;
         }
 
         // predicates
 
         // operator!= provided by boost::equality_comparable1
-        friend bool operator==(Move_ const& lhs, Move_ const& rhs)
+        friend bool operator==(Move const& lhs, Move const& rhs)
         {
                 return (
                         (lhs.pieces(Side::black) == rhs.pieces(Side::black)) &&
@@ -234,7 +236,6 @@ private:
         }
 
         // king jump
-        template<class Rules>
         static bool pre_condition(T delta, T captured_pieces, T captured_kings)
         {
                 return (
@@ -251,8 +252,7 @@ private:
         }
 
         // pawn jump
-        template<class Rules>
-        static bool pre_condition(T delta, T promotion, T captured_pieces, T captured_kings)
+       static bool pre_condition(T delta, T promotion, T captured_pieces, T captured_kings)
         {
                 return (
                         (bit::is_double(delta) || delta.empty()) &&
@@ -276,7 +276,6 @@ private:
         }
 
         // logical consistency of a king jump
-        template<class Rules>
         bool king_jump_invariant(T delta, T captured_pieces) const
         {
                 return (
@@ -286,7 +285,6 @@ private:
         }
 
         // logical consistency of a pawn jump
-        template<class Rules>
         bool pawn_jump_invariant(T delta, T promotion) const
         {
                 return (

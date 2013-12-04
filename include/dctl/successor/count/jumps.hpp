@@ -16,9 +16,10 @@ struct count<Color, Pieces, select::jumps>
         template<class Position>
         int operator()(Position const& p) const
         {
-                Arena<Move> mar_;
-                Alloc<Move> mal_{mar_};
-                stack_vector<Move> moves_{mal_};
+                using R = typename Position::rules_type;
+                using B = typename Position::board_type;
+                Arena<Move<R,B> > a;
+                stack_vector<Move<R,B> > moves_(Alloc<Move<R,B> >{a});
 
                 copy<Color, Pieces, select::jumps>{}(p, moves_);
                 return static_cast<int>(moves_.size());
