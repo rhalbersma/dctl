@@ -39,19 +39,31 @@ Requirements
 
 ### Platforms
 
-The DCTL is aiming to be a cross-platform library
+The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian) with at least libstdc++6 from g++ >= 4.8.1 (i.e. Mint >= 16, Ubuntu >= 13.10, Debian >= jessie). Note that libstdc++6 comes pre-installed on almost every Linux distribution. The following commands get all the other requirements:
 
-* **Supported:** current development takes place on Linux Mint 15 64-bit.
+      # Get a fresh system and install build tools and pre-compiled Boost Libraries
+      sudo apt-get update
+      sudo apt-get install tortoisehg cmake make libboost1.54-all-dev
+
+      # Patch libstdc++ <cstdio> header so that ::gets is removed for C++14
+      sudo sed -i '/using ::gets;/c\#if __cplusplus <= 201103L\n\using ::gets;\n\#endif' /usr/bin/../lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/cstdio
+      
+      # Add LLVM repository and GPG key and install Clang 3.5
+      echo "deb http://llvm.org/apt/saucy/ llvm-toolchain-saucy main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
+      wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
+      sudo apt-get install clang-3.5 lldb-3.5
+
+      # Patch clang 3.5 so that the include directory no longer points to llvm-3.4
+      cd /usr/lib/clang/3.5
+      sudo ln -sf ../../llvm-3.5/lib/clang/3.5/include/ include
 
 ### Compilers
 
-The DCTL is a modern [C++](http://isocpp.org) library that is dependent on many of the features that have come available with both the current C++11 and the upcoming [C++14 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3691.pdf). Unfortunately, feature support for C++11/C++14 [differs across compiler vendors](http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport). 
-
-* **Supported**: the only supported compiler is [Clang](http://clang.llvm.org/cxx_status.html) combined with the libstdc++ library from g++ 4.8.1. Current development takes place with Clang SVN trunk (on Linux). Currently, the relaxed `constexpr` C++14 language feature is the critical dependency that prevents other compilers from being supported.
+The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++14 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3797.pdf). This currently restricts usage of the DCTL to the latest stable version of [Clang](http://clang.llvm.org/cxx_status.html). Note that the clang-3.4 package on Mint 16 and Ubuntu 13.10 does *NOT* correspond to the official Clang 3.4 release, but to a June 2013 SVN version that is not C++14 feature-complete. Instead, download the nightly build for the Clang 3.5 release series. 
 
 ### Boost headers
 
-The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.54.0, and the minimum required version is 1.49.0 (untested). Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_54_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
+The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.54.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_54_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
 
 ### Boost libraries
 
