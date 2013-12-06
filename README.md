@@ -43,7 +43,7 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
 
       # Get a fresh system and install build tools and pre-compiled Boost Libraries
       sudo apt-get update
-      sudo apt-get install tortoisehg cmake make libboost1.54-all-dev
+      sudo apt-get install tortoisehg python-iniparse cmake make libboost1.54-all-dev
 
       # Patch libstdc++ <cstdio> header so that ::gets is removed for C++14
       sudo sed -i '/using ::gets;/c\#if __cplusplus <= 201103L\n\using ::gets;\n\#endif' /usr/bin/../lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/cstdio
