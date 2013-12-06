@@ -59,7 +59,9 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
 
 ### Compilers
 
-The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++14 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3797.pdf). This currently restricts usage of the DCTL to the latest stable version of [Clang](http://clang.llvm.org/cxx_status.html). Note that the clang-3.4 package on Mint 16 and Ubuntu 13.10 does *NOT* correspond to the official Clang 3.4 release, but to a June 2013 SVN version that is not C++14 feature-complete. Instead, download the nightly build for the Clang 3.5 release series. 
+The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++14 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3797.pdf). This currently restricts usage of the DCTL to the latest stable version of [Clang](http://clang.llvm.org/cxx_status.html). 
+
+* **Note** that the clang-3.4 package on Mint 16 and Ubuntu 13.10 does **NOT** correspond to the official Clang 3.4 release, but to a June 2013 SVN version that is not C++14 feature-complete. Instead, download the nightly build for the Clang 3.5 release series as shown above. 
 
 ### Boost headers
 
