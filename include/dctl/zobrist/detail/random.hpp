@@ -68,7 +68,7 @@ Index const Random<Index>::KINGS[] =
 template<class Index>
 Index const Random<Index>::SIDE[] =
 {
-        BOOST_PP_ENUM(2, DCTL_PP_RANDOM64, ~)
+        0x0, BOOST_PP_ENUM(1, DCTL_PP_RANDOM64, ~)
 };
 
 template<class Index>
