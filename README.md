@@ -45,8 +45,8 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
       sudo apt-get update
       sudo apt-get install tortoisehg python-iniparse cmake make libboost1.54-all-dev
 
-      # Patch libstdc++ <cstdio> header so that ::gets is removed for C++14
-      sudo sed -i '/using ::gets;/c\#if __cplusplus <= 201103L\n\using ::gets;\n\#endif' /usr/bin/../lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/cstdio
+      # Patch the libstdc++ <cstdio> header so that ::gets is removed when compilng with -std=c++1y
+      sudo sed -i '/using ::gets;/c\#if __cplusplus <= 201103L\n\using ::gets;\n\#endif' /usr/include/c++/4.8/cstdio
       
       # Add LLVM repository and GPG key and install Clang 3.5
       echo "deb http://llvm.org/apt/saucy/ llvm-toolchain-saucy main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
@@ -116,7 +116,7 @@ To completely regenerate the test-suite's build solution, simply delete the cont
       make -j10
       ctest -j10 -E "walk|search" 
 
-The test-suite runner follows the [UNIX rule of silence](http://www.linfo.org/rule_of_silence.html): if you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
+If you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
 * **NOTE**: your application is completely independent of the test-suite. Building and running the test-suite is a sufficient but not a necessary step in order to use the DCTL headers with your own application. 
 

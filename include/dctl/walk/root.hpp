@@ -272,7 +272,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
         using R = typename Position::rules_type;
         using B = typename Position::board_type;
         Arena<Move<R,B> > a;
-        auto const moves = successor::copy(p, Alloc<Move<R,B> >{a});
+        auto const moves = successor::copy(p, Alloc<Move<R, B> >{a});
 
         announce(p, depth, moves.size());
         stopwatch.start();
