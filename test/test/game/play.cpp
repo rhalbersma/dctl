@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <stack>
@@ -25,7 +26,10 @@ int main()
                 std::cout << setup::diagram<pdn::protocol>()(p);
 
                 Arena<Move<Rules, Board>> a;
-                auto const moves = successor::copy(p, Alloc<Move<Rules, Board>>{a});
+                auto moves = successor::copy(p, Alloc<Move<Rules, Board>>{a});
+                std::sort(begin(moves), end(moves), [=](auto L, auto R) {
+                        return notation::write(p, L) < notation::write(p, R);
+                });
 
                 if (moves.empty()) {
                         std::cout << "\nNo valid moves (-1 to stop / -2 to undo): ";
