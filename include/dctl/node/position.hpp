@@ -109,7 +109,7 @@ public:
                 make_incremental(m);
 
                 assert(material_invariant());
-                assert(hash_index_invariant());
+                //assert(hash_index_invariant());
         }
         
         void attach(Position const& other)
