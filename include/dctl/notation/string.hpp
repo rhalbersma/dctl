@@ -27,13 +27,13 @@ struct write<Rules, numeric, Separator>
         {
                 using Board = typename Position::board_type;
 
-                auto f = *from_sq(p, m).begin();
-                auto d = *dest_sq(p, m).begin();
+                auto const f = *from_sq(p, m).begin();
+                auto const d = *dest_sq(p, m).begin();
 
                 std::stringstream sstr;
-                sstr << std::setw(2) << std::right << Board::square_from_bit(f) + 1;
+                sstr << std::setfill('0') << std::setw(2) << std::right << Board::square_from_bit(f) + 1;
                 sstr << (is_capture(p, m) ? static_cast<char>(Separator::jump) : static_cast<char>(Separator::move));
-                sstr << std::setw(2) << std::left  << Board::square_from_bit(d) + 1;
+                sstr << std::setfill('0') << std::setw(2) << std::left  << Board::square_from_bit(d) + 1;
                 return sstr.str();
         }
 };
