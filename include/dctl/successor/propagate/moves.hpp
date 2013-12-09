@@ -2,8 +2,6 @@
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/moves.hpp>
 
-#include <dctl/bit/bit_set.hpp>
-
 namespace dctl {
 namespace successor {
 
@@ -32,8 +30,8 @@ public:
 
 private:
         // representation
-
-        BitSet const not_occupied_;
+        using T = typename Position::board_type::bit_type;
+        T const not_occupied_;
 };
 
 }       // namespace successor

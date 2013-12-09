@@ -2,17 +2,14 @@
 #include <cstddef>                      // size_t
 #include <limits>                       // digits
 #include <type_traits>                  // is_integral
-#include <dctl/node/material.hpp>
 
 namespace dctl {
 namespace hash {
 
 struct MaterialExtractor
 {
-        using result_type = Material;
-
         template<class Key, class Index>
-        result_type const& operator()(Key const& key, Index /* index */) const
+        auto const& operator()(Key const& key, Index /* index */) const
         {
                 return key.material();
         }

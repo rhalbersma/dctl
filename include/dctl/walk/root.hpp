@@ -7,7 +7,6 @@
 #include <dctl/walk/transposition.hpp>
 #include <dctl/hash/dual_map.hpp>
 #include <dctl/hash/signature_extractor.hpp>
-#include <dctl/node/material.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/successor/count.hpp>
 #include <dctl/successor/copy.hpp>

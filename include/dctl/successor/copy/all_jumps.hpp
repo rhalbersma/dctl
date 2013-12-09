@@ -38,8 +38,8 @@ private:
         void precedence_dispatch(Position const& p, Sequence& moves, std::false_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                KingJumps<Position, Sequence>{propagate, moves}(p.material().kings(Color));
-                PawnJumps<Position, Sequence>{propagate, moves}(p.material().pawns(Color));
+                KingJumps<Position, Sequence>{propagate, moves}(p.kings(Color));
+                PawnJumps<Position, Sequence>{propagate, moves}(p.pawns(Color));
         }
 
         // overload for absolute king jump precedence
@@ -47,9 +47,9 @@ private:
         void precedence_dispatch(Position const& p, Sequence& moves, std::true_type) const
         {
                 Propagate<select::jumps, Position> propagate(p);
-                KingJumps<Position, Sequence>{propagate, moves}(p.material().kings(Color));
+                KingJumps<Position, Sequence>{propagate, moves}(p.kings(Color));
                 if (moves.empty())
-                        PawnJumps<Position, Sequence>{propagate, moves}(p.material().pawns(Color));
+                        PawnJumps<Position, Sequence>{propagate, moves}(p.pawns(Color));
         }
 };
 

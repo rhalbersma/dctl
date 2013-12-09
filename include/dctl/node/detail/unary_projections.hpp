@@ -9,17 +9,17 @@ namespace detail {
 template<class Position>
 auto moveable_kings(Position const& p, bool color, std::false_type)
 {
-        return p.material().kings(color);
+        return p.kings(color);
 }
 
 // overload for restricted consecutive moves with the same king
 template<class Position>
 auto moveable_kings(Position const& p, bool color, std::true_type)
 {
-        if (!p.material().kings(color).empty() && !p.material().pawns(color).empty() && is_max<typename Position::rules_type>(p.restricted(color).moves()))
-                return p.material().kings(color) ^ p.restricted(color).king();
+        if (!p.kings(color).empty() && !p.pawns(color).empty() && is_max<typename Position::rules_type>(p.restricted(color).moves()))
+                return p.kings(color) ^ p.restricted(color).king();
         else
-                return p.material().kings(color);
+                return p.kings(color);
 }
 
 }       // namespace detail

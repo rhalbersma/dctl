@@ -5,7 +5,6 @@
 #include <dctl/angle.hpp>               // Angle, is_orthogonal
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/iterator.hpp>      // Prev
-#include <dctl/node/material.hpp>
 #include <dctl/node/promotion.hpp>
 #include <dctl/node/unary_projections.hpp>
 #include <dctl/pieces/pieces.hpp>
@@ -51,6 +50,7 @@ public:
 
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
+        using T = typename Board::bit_type;
 
         // modifiers
 
@@ -394,7 +394,7 @@ private:
         // overload for pawns that cannot capture kings
         auto captured_kings_dispatch(std::false_type) const
         {
-                return BitSet{};
+                return T{};
         }
 
         auto captured_kings(with::king) const
@@ -409,10 +409,10 @@ private:
 
         // representation
 
-        BitSet const king_targets_;
-        BitSet initial_targets_;
-        BitSet remaining_targets_;
-        BitSet not_occupied_;
+        T const king_targets_;
+        T initial_targets_;
+        T remaining_targets_;
+        T not_occupied_;
         int from_sq_;
         Value<Rules> current_;
         Value<Rules> best_;

@@ -1,9 +1,9 @@
 #pragma once
 #include <cassert>                      // assert
 #include <type_traits>                  // false_type, true_type
+#include <tuple>
 #include <dctl/zobrist/hash.hpp>
 #include <dctl/node/position_fwd.hpp>
-#include <dctl/node/material.hpp>
 #include <dctl/node/move.hpp>
 #include <dctl/node/restricted.hpp>
 #include <dctl/node/side.hpp>
@@ -30,17 +30,20 @@ struct Position
 public:
         using rules_type = Rules;
         using board_type = Board;
+        using T = typename Board::bit_type;
         using TreeIterator = Position const*;
         static const auto gap = rules::initial_gap<Rules>::value + Board::height % 2;
 
         // initialize with a set of bitboards and a color
-        Position(BitSet black_pieces, BitSet white_pieces, BitSet kings, bool to_move)
+        Position(T black_pieces, T white_pieces, T kings, bool to_move)
         :
-                material_{black_pieces, white_pieces, kings},
                 to_move_{to_move}
         {
-                hash_index_ = zobrist::hash(*this);
+                pieces_[Side::black] = black_pieces;
+                pieces_[Side::white] = white_pieces;
+                kings_ = kings;
                 assert(material_invariant());
+                hash_index_ = zobrist::hash(*this);
         }
 
         static Position initial(int separation = gap)
@@ -48,7 +51,7 @@ public:
                 return Position{
                         board::Initial<Board>::mask(Side::black, separation),
                         board::Initial<Board>::mask(Side::white, separation),
-                        BitSet{},
+                        T{},
                         Side::white
                 };
         }
@@ -64,14 +67,45 @@ public:
                 return hash_index_;
         }
 
-        Material const& material() const
+        decltype(auto) material() const
         {
-                return material_;
+                return std::tie(pieces(Side::black), pieces(Side::white), kings());
         }
 
-        Material const& key() const
+        // black or white pawns
+        auto pawns(bool color) const
         {
-                return material();
+                return pieces(color) & ~kings();
+        }
+
+        // black or white kings
+        auto kings(bool color) const
+        {
+                return pieces(color) & kings();
+        }
+
+        // black or white pieces
+        auto pieces(bool color) const
+        {
+                return pieces_[color];
+        }
+
+        // black and white pawns
+        auto pawns() const
+        {
+                return pieces() & ~kings();
+        }
+
+        // black and white kings
+        auto kings() const
+        {
+                return kings_;
+        }
+
+        // black and white pieces
+        auto pieces() const
+        {
+                return pieces(Side::black) ^ pieces(Side::white);
         }
 
         Restricted const& restricted() const
@@ -219,7 +253,10 @@ private:
         template<class Move>
         void make_material(Move const& m)
         {
-                material_.make(m);
+                pieces_[Side::black] ^= m.pieces(Side::black);
+                pieces_[Side::white] ^= m.pieces(Side::white);
+                kings_ ^= m.kings();
+                assert(material_invariant());
                 hash_index_ ^= zobrist::hash(m);
         }
 
@@ -233,7 +270,11 @@ private:
         bool material_invariant() const
         {
                 auto constexpr squares = board::Squares<Board>::mask();
-                return bit::set_includes(squares, material().pieces());
+                return (
+                        bit::set_exclusive(pieces(Side::black), pieces(Side::white)) &&
+                        bit::set_includes(pieces(), kings()) &&
+                        bit::set_includes(squares, pieces())
+                );
         }
 
         bool hash_index_invariant() const
@@ -242,7 +283,8 @@ private:
         }
 
         // representation
-        Material material_;
+        T pieces_[2];   // black and white pieces
+        T kings_;       // kings
         TreeIterator parent_{};
         HashIndex hash_index_{};
         Restricted restricted_{};

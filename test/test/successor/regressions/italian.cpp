@@ -17,7 +17,7 @@ BOOST_FIXTURE_TEST_CASE(AliotoDomenico, F)
 {
         // generalizes the "jump first king" rule (Art. 6.9)
         auto const FEN = "W:WK30:B10,K12,K18,20,K26,K27";
-        std::string const legal[] = { "30x5" };
+        std::string const legal[] = { "30x05" };
         run(FEN, legal);
 }
 

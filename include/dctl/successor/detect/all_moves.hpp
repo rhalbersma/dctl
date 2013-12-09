@@ -24,7 +24,7 @@ struct detect<Color, pieces::all, select::moves, Range>
                 Propagate<select::moves, Position> const propagate(p);
                 return
                         KingMoves{propagate}(moveable_kings(p, Color)) ||
-                        PawnMoves{propagate}(p.material().pawns(Color))
+                        PawnMoves{propagate}(p.pawns(Color))
                 ;
         }
 };

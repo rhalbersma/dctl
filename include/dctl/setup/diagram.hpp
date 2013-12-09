@@ -100,7 +100,7 @@ public:
         {
                 using Board = typename Position::board_type;
 
-                return diagram<Board, bits>{}(std::bind(content<Content>, p.material(), std::placeholders::_1));
+                return diagram<Board, bits>{}(std::bind(content<Content, Position>, p, std::placeholders::_1));
         }
 };
 

@@ -55,8 +55,9 @@ struct read<Rules, Board, pdn::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
         {
-                BitSet p_pieces[2] {};
-                BitSet p_kings {};
+                using T = typename Board::bit_type;
+                T p_pieces[2] {};
+                T p_kings {};
                 bool p_side = Side::black;
 
                 // do not attempt to parse empty strings
@@ -115,14 +116,14 @@ struct write<pdn::protocol, Token>
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i != 0;
-                        if (!p.material().pieces(c).empty()) {
+                        if (!p.pieces(c).empty()) {
                                 sstr << Token::colon;                           // colon
                                 sstr << Token::color[c];                        // color tag
                         }
-                        auto const bs = p.material().pieces(c);
+                        auto const bs = p.pieces(c);
                         auto n = 0;
                         for (auto sq : bs) {
-                                if (p.material().kings().test(sq))
+                                if (p.kings().test(sq))
                                         sstr << Token::king;                    // king tag
                                 sstr << Board::square_from_bit(sq) + 1;              // square number
                                 if (++n != bs.size())                           // still pieces remaining
@@ -139,8 +140,9 @@ struct read<Rules, Board, dxp::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
         {
-                BitSet p_pieces[2] {};
-                BitSet p_kings {};
+                using T = typename Board::bit_type;
+                T p_pieces[2] {};
+                T p_kings {};
                 bool p_side = Side::black;
 
                 std::stringstream sstr(s);
@@ -181,7 +183,7 @@ struct write<dxp::protocol, Token>
                 sstr << write_color<Token>(active_color(p));                // side to move
                 for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
                         auto b = Board::bit_from_square(sq);                 // convert square to bit
-                        sstr << content<Token>(p.material(), b);        // bit content
+                        sstr << content<Token>(p, b);        // bit content
                 }
                 sstr << "\n";
                 return sstr.str();

@@ -1,7 +1,6 @@
 #pragma once
 #include <utility>                              //pair
 #include <dctl/zobrist/detail/random.hpp>
-#include <dctl/node/material.hpp>
 #include <dctl/node/move.hpp>
 #include <dctl/node/restricted.hpp>
 #include <dctl/node/side.hpp>
@@ -25,23 +24,11 @@ struct hash< Index, Position<Rules, Board> >
         Index operator()(Position<Rules, Board> const& p) const
         {
                 return (
-                        hash<Index, Material  >{}(p.material())         ^
-                        hash<Index, bool      >{}(p.to_move())          ^
+                        Random<Index>::xor_rand(p.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
+                        Random<Index>::xor_rand(p.pieces(Side::white), Random<Index>::PIECES[Side::white]) ^
+                        Random<Index>::xor_rand(p.kings()            , Random<Index>::KINGS              ) ^
+                        hash<Index, bool      >{}(p.to_move())                                             ^
                         hash<Index, Restricted>{}(p.restricted())
-                );
-        }
-};
-
-// partial specialization for ab initio hashing of material
-template<class Index>
-struct hash<Index, Material>
-{
-        Index operator()(Material const& m) const
-        {
-                return (
-                        Random<Index>::xor_rand(m.pieces(Side::black), Random<Index>::PIECES[Side::black]) ^
-                        Random<Index>::xor_rand(m.pieces(Side::white), Random<Index>::PIECES[Side::white]) ^
-                        Random<Index>::xor_rand(m.kings()            , Random<Index>::KINGS              )
                 );
         }
 };
