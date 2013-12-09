@@ -28,8 +28,8 @@ public:
         static int material(Position<Rules, Board> const& p)
         {
                 return (
-                        Weight<Rules, Board>::material[0] * p.material().pieces(Color).size() +
-                        Weight<Rules, Board>::material[1] * p.material().kings(Color).size()
+                        Weight<Rules, Board>::material[0] * p.pieces(Color).size() +
+                        Weight<Rules, Board>::material[1] * p.kings(Color).size()
                 );
         }
 
@@ -38,7 +38,7 @@ public:
         {
                 int score = 0;
                 for (auto i = 1; i < Board::height; ++i)
-                        score += Weight<Rules, Board>::tempo[i] * (p.material().pieces(Color) & board::Row<Board>::mask(Color, i)).size();
+                        score += Weight<Rules, Board>::tempo[i] * (p.pieces(Color) & board::Row<Board>::mask(Color, i)).size();
                 return score;
         }
 
@@ -49,8 +49,8 @@ public:
                 for (auto i = 1; i < Board::width / 2; ++i) {
                         score += Weight<Rules, Board>::center[i] *
                         (
-                                (p.material().pieces(Color) & board::Column<Board>::mask( Color, i)).size() +
-                                (p.material().pieces(Color) & board::Column<Board>::mask(!Color, i)).size()
+                                (p.pieces(Color) & board::Column<Board>::mask( Color, i)).size() +
+                                (p.pieces(Color) & board::Column<Board>::mask(!Color, i)).size()
                         );
                 }
                 return score;
@@ -63,8 +63,8 @@ public:
                 for (auto i = 0; i < Board::width / 2; ++i) {
                         score += Weight<Rules, Board>::balance[i] *
                         (
-                                (p.material().pieces(Color) & board::Column<Board>::mask( Color, i)).size() -
-                                (p.material().pieces(Color) & board::Column<Board>::mask(!Color, i)).size()
+                                (p.pieces(Color) & board::Column<Board>::mask( Color, i)).size() -
+                                (p.pieces(Color) & board::Column<Board>::mask(!Color, i)).size()
                         );
                 }
                 return -abs(score);

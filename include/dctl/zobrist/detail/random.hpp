@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/bit/bit_set.hpp>         // BitSet
 #include <dctl/utility/ply.hpp>         // PlyCount
 #include <cstdint>
 #include <random>
@@ -21,7 +20,8 @@ struct Random
         }
 
         // xor with random numbers matching a bitboard's set 1-bits
-        static Index xor_rand(BitSet b, Index const* random)
+        template<template<class, class, int> class Set, class T, class Block, int Nb>
+        static Index xor_rand(Set<T, Block, Nb> b, Index const* random)
         {
                 Index hash = 0;
                 for (auto sq : b)

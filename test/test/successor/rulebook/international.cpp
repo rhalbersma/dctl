@@ -19,8 +19,8 @@ BOOST_FIXTURE_TEST_CASE(KingMoveRange, F)
         // Art. 3.9 (king move range)
         auto const FEN = "W:WK23";
         std::string const legal[] = {
-                "23-18", "23-12", "23-7", "23-1",
-                "23-19", "23-14", "23-10", "23-5",
+                "23-18", "23-12", "23-07", "23-01",
+                "23-19", "23-14", "23-10", "23-05",
                 "23-28", "23-32", "23-37", "23-41", "23-46",
                 "23-29", "23-34", "23-40", "23-45"
         };
@@ -39,7 +39,7 @@ BOOST_FIXTURE_TEST_CASE(KingJumpRange, F)
 {
         // Art. 4.3 (king jump range)
         auto const FEN = "W:WK41:B23";
-        std::string const legal[] = { "41x19", "41x14", "41x10", "41x5" };
+        std::string const legal[] = { "41x19", "41x14", "41x10", "41x05" };
         run(FEN, legal);
 }
 
@@ -55,7 +55,7 @@ BOOST_FIXTURE_TEST_CASE(KingJumpContinuation, F)
 {
         // Art. 4.6 (king jump continuation)
         auto const FEN = "W:WK1:B7,9,17,19,20,30,31,33,43,44";
-        std::string const legal[] = { "1x15" };
+        std::string const legal[] = { "01x15" };
         run(FEN, legal);
 }
 
@@ -79,7 +79,7 @@ BOOST_FIXTURE_TEST_CASE(JumpMostKings, F)
 {
         // Art. 4.14 (jump most kings NOT applicable)
         auto const FEN = "W:W26:B12,K21,31,32";
-        std::string const legal[] = { "26x8", "26x28" };
+        std::string const legal[] = { "26x08", "26x28" };
         run(FEN, legal);
 }
 
