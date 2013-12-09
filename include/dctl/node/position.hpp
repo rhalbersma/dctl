@@ -256,7 +256,6 @@ private:
                 pieces_[Side::black] ^= m.pieces(Side::black);
                 pieces_[Side::white] ^= m.pieces(Side::white);
                 kings_ ^= m.kings();
-                assert(material_invariant());
                 hash_index_ ^= zobrist::hash(m);
         }
 
