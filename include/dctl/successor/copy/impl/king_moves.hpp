@@ -82,7 +82,7 @@ private:
         {
                 auto const dest = std::next(from);
                 if (propagate_.path(*dest))
-                        moves_.push_back(Move::template create<Color>({*from, *dest}));
+                        moves_.emplace_back(*from, *dest);
         }
 
         // overload for long ranged kings
@@ -90,7 +90,7 @@ private:
         void find_dispatch(Iterator from, rules::range::distance_N) const
         {
                 for (auto dest = std::next(from); propagate_.path(*dest); ++dest)
-                        moves_.push_back(Move::template create<Color>({*from, *dest}));
+                        moves_.emplace_back(*from, *dest);
         }
 
         template<int Direction>

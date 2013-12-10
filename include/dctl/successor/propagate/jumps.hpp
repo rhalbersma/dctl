@@ -17,7 +17,6 @@
 #include <dctl/ray/iterator.hpp>
 
 #include <dctl/board/mask/jump_start.hpp>
-#include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/algorithm.hpp>
 
 namespace dctl {
@@ -112,12 +111,11 @@ public:
         {
                 using Move = typename Sequence::value_type;
 
-                moves.push_back(
-                        Move::template create<Color>(
-                                { from_sq_, dest_sq },
-                                captured_pieces(),
-                                captured_kings(with::king())
-                        )
+                moves.emplace_back(
+                        captured_pieces(),
+                        captured_kings(with::king()),
+                        from_sq_,
+                        dest_sq
                 );
         }
 
@@ -126,13 +124,12 @@ public:
         {
                 using Move = typename Sequence::value_type;
 
-                moves.push_back(
-                        Move::template create<Color>(
-                                { from_sq_, dest_sq },
-                                is_promotion<Color>(dest_sq, WithPiece()),
-                                captured_pieces(),
-                                captured_kings(WithPiece())
-                        )
+                moves.emplace_back(
+                        captured_pieces(),
+                        captured_kings(WithPiece()),
+                        from_sq_,
+                        dest_sq,
+                        is_promotion<Color>(dest_sq, WithPiece())
                 );
         }
 

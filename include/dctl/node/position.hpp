@@ -13,7 +13,6 @@
 #include <dctl/utility/int.hpp>         // HashIndex
 
 #include <dctl/bit/algorithm.hpp>
-#include <dctl/bit/bit_set.hpp>
 #include <dctl/bit/predicates.hpp>
 #include <dctl/board/mask/initial.hpp>
 #include <dctl/board/mask/squares.hpp>
@@ -137,13 +136,13 @@ public:
         template<class Move>
         void make(Move const& m)
         {
-                assert(is_pseudo_legal(*this, m));
+                //assert(is_pseudo_legal(*this, m));
 
                 make_irreversible(m);
                 make_incremental(m);
 
                 assert(material_invariant());
-                assert(hash_index_invariant());
+                //assert(hash_index_invariant());
         }
         
         void attach(Position const& other)
@@ -213,14 +212,14 @@ private:
                                 return;
                         }
 
-                        if (restricted.moves() && (restricted.king() == from_sq(*this, m))) {
+                        if (restricted.moves() && (restricted.king() == m.from())) {
                                 // a consecutive irreversible move with the same king
                                 assert(!is_max<Rules>(restricted.moves()));
-                                restricted.increment(dest_sq(*this, m));
+                                restricted.increment(m.dest());
                         } else {
                                 // a first irreversible move with a new king
                                 assert(!restricted.moves() || active_kings(*this).size() > 1);
-                                restricted.init(dest_sq(*this, m));
+                                restricted.init(m.dest());
                         }
                         hash_index_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
                 }
@@ -232,10 +231,10 @@ private:
                 KingMoves& restricted = restricted_[passive_color(*this)];
 
                 if (
-                        restricted.moves() && is_capture(*this, m) &&
+                        restricted.moves() && !m.captured_pieces().empty() &&
                         (
-                                bit::set_includes(captured_pieces(*this, m), restricted.king()) ||
-                                bit::set_includes(captured_pieces(*this, m), passive_pawns(*this))
+                                m.captured_pieces().test(restricted.king()) ||
+                                bit::set_includes(m.captured_pieces(), passive_pawns(*this))
                         )
                 ) {
                         hash_index_ ^= zobrist::hash(std::make_pair(restricted, passive_color(*this)));
@@ -253,10 +252,18 @@ private:
         template<class Move>
         void make_material(Move const& m)
         {
-                pieces_[Side::black] ^= m.pieces(Side::black);
-                pieces_[Side::white] ^= m.pieces(Side::white);
-                kings_ ^= m.kings();
-                hash_index_ ^= zobrist::hash(m);
+                hash_index_ ^= zobrist::hash(std::make_pair(*this, m));
+
+                if (active_kings(*this).test(m.from())) {
+                        kings_.reset(m.from());
+                        kings_.set(m.dest());
+                } else if (m.promotion()) {
+                        kings_.set(m.dest());
+                }
+                pieces_[ to_move_].reset(m.from());
+                pieces_[ to_move_].set(m.dest());
+                pieces_[!to_move_] ^= m.captured_pieces();
+                kings_ ^= m.captured_kings();
         }
 
         void make_to_move()

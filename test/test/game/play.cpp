@@ -17,7 +17,9 @@ int main()
 {
         using Rules = rules::International;
         using Board = board::International;
-        auto initial = Position<Rules, Board>::initial();
+        auto initial = setup::read<rules::International, board::International, pdn::protocol>()(
+                "B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"
+        );//Position<Rules, Board>::initial();
         std::stack<Position<Rules, Board>> game;
         game.push(initial);
 
@@ -27,8 +29,8 @@ int main()
 
                 Arena<Move<Rules, Board>> a;
                 auto moves = successor::copy(p, Alloc<Move<Rules, Board>>{a});
-                std::sort(begin(moves), end(moves), [=](auto L, auto R) {
-                        return notation::write(p, L) < notation::write(p, R);
+                std::sort(begin(moves), end(moves), [](auto L, auto R) {
+                        return notation::write(L) < notation::write(R);
                 });
 
                 if (moves.empty()) {
@@ -36,7 +38,7 @@ int main()
                 } else {
                         auto index = 0;
                         for (auto const& m : moves)
-                                std::cout << std::setw(2) << index++ << "." << notation::write(p, m) << "\n";
+                                std::cout << std::setw(2) << index++ << "." << notation::write(m) << "\n";
                         std::cout << "\nEnter move number (-1 to stop / -2 to undo): ";
                 }
 

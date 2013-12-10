@@ -16,10 +16,10 @@ auto moveable_kings(Position const& p, bool color, std::false_type)
 template<class Position>
 auto moveable_kings(Position const& p, bool color, std::true_type)
 {
+        auto kings = p.kings(color);
         if (!p.kings(color).empty() && !p.pawns(color).empty() && is_max<typename Position::rules_type>(p.restricted(color).moves()))
-                return p.kings(color) ^ p.restricted(color).king();
-        else
-                return p.kings(color);
+                kings.reset(p.restricted(color).king());
+        return kings;
 }
 
 }       // namespace detail

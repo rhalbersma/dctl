@@ -278,7 +278,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
         for (auto const& m : moves) {
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
-                print_move(notation::write(p, moves[i]), i);
+                print_move(notation::write(moves[i]), i);
                 sub_count = walk(successor::make_copy(p, moves[i]), depth - 1, 1, e);
                 leaf_nodes += sub_count;
 

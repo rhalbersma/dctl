@@ -22,18 +22,15 @@ struct write;
 template<class Rules, class Separator>
 struct write<Rules, numeric, Separator>
 {
-        template<class Position, class Move>
-        std::string operator()(Position const& p, Move const& m) const
+        template<class Move>
+        std::string operator()(Move const& m) const
         {
-                using Board = typename Position::board_type;
-
-                auto const f = *from_sq(p, m).begin();
-                auto const d = *dest_sq(p, m).begin();
+                using Board = typename Move::board_type;
 
                 std::stringstream sstr;
-                sstr << std::setfill('0') << std::setw(2) << Board::square_from_bit(f) + 1;
-                sstr << (is_capture(p, m) ? static_cast<char>(Separator::jump) : static_cast<char>(Separator::move));
-                sstr << std::setfill('0') << std::setw(2) << Board::square_from_bit(d) + 1;
+                sstr << std::setfill('0') << std::setw(2) << Board::square_from_bit(m.from()) + 1;
+                sstr << (m.captured_pieces().empty() ? static_cast<char>(Separator::move) : static_cast<char>(Separator::jump));
+                sstr << std::setfill('0') << std::setw(2) << Board::square_from_bit(m.dest()) + 1;
                 return sstr.str();
         }
 };
@@ -50,12 +47,12 @@ struct read;
 
 }       // namespace detail
 
-template<class Position, class Move>
-std::string write(Position const& p, Move const& m)
+template<class Move>
+std::string write(Move const& m)
 {
-        using Rules = typename Position::rules_type;
+        using Rules = typename Move::rules_type;
 
-        return detail::write<Rules>{}(p, m);
+        return detail::write<Rules>{}(m);
 }
 
 }       // namespace notation
