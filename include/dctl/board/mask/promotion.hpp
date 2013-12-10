@@ -9,7 +9,7 @@ struct Promotion
 {
         static constexpr auto mask(bool color) noexcept
         {
-                return Row<Board>::mask(color, 0);
+                return Row<Board>::mask(!color, 0);
         }
 };
 
