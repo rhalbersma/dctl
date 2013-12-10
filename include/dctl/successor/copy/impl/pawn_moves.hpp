@@ -71,7 +71,7 @@ private:
         {
                 std::transform(begin(movers), end(movers), std::back_inserter(moves_), [](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
-                        return Move::template create<Color>({from_sq, dest_sq}, is_promotion(dest_sq));
+                        return Move(from_sq, dest_sq, is_promotion(dest_sq));
                 });
         }
 

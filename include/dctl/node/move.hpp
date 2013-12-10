@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>                      // assert
 #include <type_traits>
+#include <tuple>
 #include <utility>
 #include <boost/operators.hpp>          // equality_comparable, xorable
 #include <dctl/node/move_fwd.hpp>
@@ -70,6 +71,8 @@ struct Move
         > >
 {
 public:
+        using board_type = Board;
+        using rules_type = Rules;
         using T = typename Board::bit_type;
 
         // structors
@@ -77,84 +80,51 @@ public:
         // default constructor
         Move() = default;
 
-        // zero initialize
-        explicit Move(T /* MUST be zero */)
-        {
-                init<Side::black>(T{}, T{}, T{});
-                assert(invariant());
-        }
-
-        // initialize with a set of bitboards
-        Move(T black_pieces, T white_pieces, T kings)
-        {
-                init<Side::black>(black_pieces, white_pieces, kings);
-                assert(invariant());
-        }
-
         // king move
-        template<bool Color>
-        static Move create(std::pair<int, int> const& from_dest)
+        Move(int from, int dest)
+        :
+                from_{from},
+                dest_{dest}
         {
-                auto const delta = T{from_dest.first, from_dest.second};
-                assert(pre_condition(delta));
-                Move tmp;
-                tmp.template init<Color>(
-                        delta,  // move a king between the from and destination squares
-                        T{},
-                        delta   // move a king between the from and destination squares
-                );
-                assert(tmp.invariant());
-                return tmp;
+                //assert(pre_condition(delta));
+                //assert(invariant());
         }
 
         // pawn move
-        template<bool Color>
-        static Move create(std::pair<int, int> const& from_dest, bool is_promotion)
+        Move(int from, int dest, bool promotion)
+        :
+                from_{from},
+                dest_{dest},
+                promotion_{promotion}
         {
-                auto const delta = T{from_dest.first, from_dest.second};
-                auto const promotion = is_promotion? T{from_dest.second} : T{};
-                assert(pre_condition(delta, promotion));
-                Move tmp;
-                tmp.template init<Color>(
-                        delta,          // move a pawn between the from and destination squares
-                        T{},
-                        promotion       // crown a pawn to a king
-                );
-                assert(tmp.invariant());
-                return tmp;
+                //assert(pre_condition(delta, promotion));
+                //assert(tmp.invariant());
         }
 
         // king jump
-        template<bool Color>
-        static Move create(std::pair<int, int> const& from_dest, T captured_pieces, T captured_kings)
+        Move(T captured_pieces, T captured_kings, int from, int dest)
+        :
+                captured_pieces_{captured_pieces},
+                captured_kings_{captured_kings},
+                from_{from},
+                dest_{dest}
         {
-                auto const delta = (from_dest.first == from_dest.second)? T{} : T{from_dest.first, from_dest.second};
-                assert(pre_condition(delta, captured_pieces, captured_kings));
-                Move tmp;
-                tmp.template init<Color>(
-                        delta,                  // move a king between the from and destination square
-                        captured_pieces,        // remove the captured pieces
-                        delta ^ captured_kings  // move a king and remove the captured kings
-                );
-                assert(tmp.king_jump_invariant(delta, captured_pieces));
-                return tmp;
+                //assert(pre_condition(delta, captured_pieces, captured_kings));
+                //assert(tmp.king_jump_invariant(delta, captured_pieces));
         }
 
         // pawn jump
-        template<bool Color>
-        static Move create(std::pair<int, int> const& from_dest, bool is_promotion, T captured_pieces, T captured_kings)
+        Move(T captured_pieces, T captured_kings, int from, int dest, bool promotion)
+        :
+                captured_pieces_{captured_pieces},
+                captured_kings_{captured_kings},
+                from_{from},
+                dest_{dest},
+                promotion_{promotion}
+
         {
-                auto const delta = (from_dest.first == from_dest.second)? T{} : T{from_dest.first, from_dest.second};
-                auto const promotion = is_promotion? T{from_dest.second} : T{};
-                assert(pre_condition(delta, promotion, captured_pieces, captured_kings));
-                Move tmp;
-                tmp.template init<Color>(
-                        delta,                          // move a pawn between the from and destination squares
-                        captured_pieces,                // remove the captured pieces
-                        promotion ^ captured_kings      // crown a pawn to a king and remove the captured kings
-                );
-                assert(tmp.pawn_jump_invariant(delta, promotion));
-                return tmp;
+                //assert(pre_condition(delta, promotion, captured_pieces, captured_kings));
+                //assert(tmp.pawn_jump_invariant(delta, promotion));
         }
 
         // predicates
@@ -162,63 +132,40 @@ public:
         // operator!= provided by boost::equality_comparable1
         friend bool operator==(Move const& lhs, Move const& rhs)
         {
-                return (
-                        (lhs.pieces(Side::black) == rhs.pieces(Side::black)) &&
-                        (lhs.pieces(Side::white) == rhs.pieces(Side::white)) &&
-                                    (lhs.kings() == rhs.kings())
-                );
+                return
+                        std::tie(lhs.captured_pieces_, lhs.captured_kings_, lhs.from_, lhs.dest_, lhs.promotion_) ==
+                        std::tie(rhs.captured_pieces_, rhs.captured_kings_, rhs.from_, rhs.dest_, rhs.promotion_)
+                ;
         }
 
         // queries
 
-        // black or white pawns
-        auto pawns(bool color) const
+        auto captured_pieces() const noexcept
         {
-                return pieces(color) & ~kings();
+                return captured_pieces_;
         }
 
-        // black or white kings
-        auto kings(bool color) const
+        auto captured_kings() const noexcept
         {
-                return pieces(color) & kings();
+                return captured_kings_;
         }
 
-        // black or white pieces
-        auto pieces(bool color) const
+        auto from() const noexcept
         {
-                return pieces_[color];
+                return from_;
         }
 
-        // black and white pawns
-        auto pawns() const
+        auto dest() const noexcept
         {
-                return pieces() & ~kings();
+                return dest_;
         }
 
-        // black and white kings
-        auto kings() const
+        auto promotion() const noexcept
         {
-                return kings_;
-        }
-
-        // black and white pieces
-        auto pieces() const
-        {
-                return pieces(Side::black) ^ pieces(Side::white);
+                return promotion_;
         }
 
 private:
-        // modifiers
-
-        // initialize with a set of bitboards
-        template<bool Color>
-        void init(T active_pieces, T passive_pieces, T kings)
-        {
-                pieces_[ Color] = active_pieces;
-                pieces_[!Color] = passive_pieces;
-                kings_ = kings;
-        }
-
         // king move
         static bool pre_condition(T delta)
         {
@@ -269,18 +216,11 @@ private:
                 );
         }
 
-        // logical consistency of the representation
-        bool invariant() const
-        {
-                return side_invariant() && material_invariant();
-        }
-
         // logical consistency of a king jump
         bool king_jump_invariant(T delta, T captured_pieces) const
         {
                 return (
-                        (side_invariant() || is_intersecting_capture<Rules>(delta, captured_pieces)) &&
-                        material_invariant()
+                        is_intersecting_capture<Rules>(delta, captured_pieces)
                 );
         }
 
@@ -288,27 +228,17 @@ private:
         bool pawn_jump_invariant(T delta, T promotion) const
         {
                 return (
-                        side_invariant() &&
-                        (material_invariant() || is_intersecting_promotion<Rules>(promotion, delta))
+                        is_intersecting_promotion<Rules>(promotion, delta)
                 );
-        }
-
-        // black and white pieces are mutually exclusive
-        bool side_invariant() const
-        {
-                return bit::set_exclusive(pieces(Side::black), pieces(Side::white));
-        }
-
-        // kings are a subset of pieces
-        bool material_invariant() const
-        {
-                return bit::set_includes(pieces(), kings());
         }
 
         // representation
 
-        T pieces_[2];   // black and white pieces
-        T kings_;       // kings
+        T captured_pieces_{};
+        T captured_kings_{};
+        int from_{};
+        int dest_{};
+        bool promotion_{};
 };
 
 }       // namespace dctl

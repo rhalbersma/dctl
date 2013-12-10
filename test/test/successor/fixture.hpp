@@ -31,8 +31,8 @@ struct Fixture
                 std::transform(
                         begin(moves), end(moves),
                         std::back_inserter(notations),
-                        [&](auto const& m) {
-                        return notation::write(p, m);
+                        [](auto const& m) {
+                        return notation::write(m);
                 });
 
                 using boost::algorithm::trim_copy;

@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/bit/predicates.hpp>
 #include <dctl/node/detail/unary_projections.hpp>
-#include <dctl/node/binary_projections.hpp>
 #include <dctl/rules/types.hpp>
 
 namespace dctl {
@@ -19,7 +18,7 @@ template<class Position, class Move>
 bool is_intersecting_capture(Position const& p, Move const& m, rules::phase::en_passant)
 {
         // for intersecting captures, a man-capturing king can appear as a captured king
-        return bit::is_single(moving_kings(p, m) & captured_kings(p, m) & passive_pawns(p));
+        return bit::is_single(active_kings(p).test(m.from()) & m.captured_kings() & passive_pawns(p));
 }
 
 }       // namespace detail

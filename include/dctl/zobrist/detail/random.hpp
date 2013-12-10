@@ -23,7 +23,7 @@ struct Random
         template<template<class, class, int> class Set, class T, class Block, int Nb>
         static Index xor_rand(Set<T, Block, Nb> b, Index const* random)
         {
-                Index hash = 0;
+                auto hash = Index{};
                 for (auto sq : b)
                         hash ^= random[sq];
                 return hash;

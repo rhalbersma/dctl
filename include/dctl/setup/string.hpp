@@ -9,8 +9,6 @@
 #include <dctl/bit/bit.hpp>
 #include <dctl/node/position.hpp>
 
-#include <dctl/bit/bit_set.hpp>
-
 namespace dctl {
 namespace setup {
 
