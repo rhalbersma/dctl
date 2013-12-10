@@ -30,7 +30,7 @@ public:
 
         using Block = uint64_t;
         static constexpr auto needed = InternalGrid::size / std::numeric_limits<Block>::digits + 1;
-        static constexpr auto Nb = (needed < 2) ? 2 : needed;
+        static constexpr auto Nb = needed;
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
         using bit_type = bit::bit_set<int, Block, Nb>;
 
