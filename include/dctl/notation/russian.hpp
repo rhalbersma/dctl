@@ -5,13 +5,13 @@
 
 namespace dctl {
 namespace notation {
-
+/*
 template<>
 struct Format<rules::Russian>
 :
         algebraic
 {};
-
+*/
 template<>
 struct Separator<rules::Russian>
 :
