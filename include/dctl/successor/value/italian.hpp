@@ -129,7 +129,7 @@ private:
                          num_kings_ <= num_pieces_ &&
                         num_pieces_ <= std::numeric_limits<int>::max() &&
                          num_kings_ == static_cast<int>(king_order_.size()) &&
-                        (!num_kings_ || is_with_king_)
+                        !(num_kings_ && !is_with_king_)
                 );
         }
 

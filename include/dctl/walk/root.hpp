@@ -177,8 +177,19 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
                 using B = typename Position::board_type;
                 Arena<Move<R,B> > a;
                 auto const moves = successor::copy(p, Alloc<Move<R, B> >{a});
-                for (auto const& m : moves)
+                for (auto const& m : moves) {/*
+                        auto q = successor::make_copy(p, m);
+                        if (!q.hash_index_invariant()) {
+                                std::cout << "----------------------\n";
+                                std::cout << setup::diagram<pdn::protocol>()(p);
+                                std::cout << notation::write(m) << "\n";
+                                std::cout << setup::diagram<pdn::protocol>()(q);
+                                std::cout << p.hash_index_invariant() << m.is_with_king() << m.is_jump() << m.is_promotion() << "\n";
+                                int i;
+                                std::cin >> i;
+                        }*/
                         nodes += walk(successor::make_copy(p, m), depth - 1, ply + 1, e);
+                }
         }
 
         // (3)

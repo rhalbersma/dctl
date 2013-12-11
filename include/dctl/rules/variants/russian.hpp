@@ -22,9 +22,6 @@ struct Russian
 
         // additional rules
         typedef phase::en_passant phase_promotion;                      // 1.5.15
-
-        // drawing rules
-        typedef std::integral_constant<int, 3> max_same_king_moves;     // 1.9.1.7
 };
 
 }       // namespace rules
