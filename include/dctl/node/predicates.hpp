@@ -9,18 +9,6 @@
 namespace dctl {
 
 template<class Position, class Move>
-bool is_with_king(Position const& p, Move const& m)
-{
-        return active_kings(p).test(m.from());
-}
-
-template<class Position, class Move>
-bool is_reversible(Position const& p, Move const& m)
-{
-        return is_with_king(p, m) && m.captured_pieces().empty() && !m.promotion();
-}
-
-template<class Position, class Move>
 bool is_intersecting_capture(Position const& p, Move const& m)
 {
         // tag dispatching on capture removal

@@ -25,7 +25,7 @@ public:
 
         void reset()
         {
-                king_ = -1;
+                king_ = 255;
                 moves_ = 0;
         }
 
@@ -44,7 +44,7 @@ public:
 private:
         // representation
 
-        int king_{-1};
+        int king_{255};
         int moves_{};
 };
 
