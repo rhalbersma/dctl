@@ -12,17 +12,34 @@ project(TestProject CXX)
 # Compiler settings
 ###############################################################
 
-# use C++11 features
+# use C++1y features
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 
-# general warning level
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -pedantic -pedantic-errors")
+# fail hard
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
 
-# integral conversion and promotion warnings
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wconversion -Wsign-conversion -Wsign-promo")
+# highest general warning level
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
+
+# NOT A DEFECT: no C++98 compatibility
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat -Wno-c++98-compat-pedantic")
+
+# NOT A DEFECT: constexpr switch-statements confuse Clang, and padding is diagnostic only
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unreachable-code -Wno-padded")
+
+# KNOWN ISSUE: Boost.Test does some macro magic that requires static initialization
+# http://hadesmem.googlecode.com/svn-history/r1861/trunk/tests/injector.cpp
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-global-constructors")
+
+# KNOWN ISSUE: BOOST_MPL_ASSERT contains C-style cast to void*
+# https://svn.boost.org/trac/boost/attachment/ticket/5995/old-style-cast.patch
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-old-style-cast")
+
+# TODO: DXP message classes with virtual functions should not be header-only
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
 
 # optimizations
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wdisabled-optimization -march=native")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native")
 
 ###############################################################
 # Boost libraries
@@ -52,6 +69,7 @@ file(GLOB_RECURSE ParentProject_headers ${ParentProject_include_dirs}/*.hpp)
 ###############################################################
 
 # to enable this part: cmake -D CheckStandalone=true
+
 if(CheckStandalone)
   # compile with project wide compiler settings
   set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
