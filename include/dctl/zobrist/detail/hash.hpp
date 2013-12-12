@@ -39,7 +39,7 @@ struct hash<Index, std::pair<Move<Rules, Board>, bool> >
 {
         Index operator()(std::pair<Move<Rules, Board>, bool> const& m) const
         {
-                using T = typename Board::bit_type;
+                using T = typename Board::set_type;
 
                 auto index = Index{};
                 index ^= Random<Index>::xor_rand(m.first.from(), Random<Index>::PIECES[m.second]);

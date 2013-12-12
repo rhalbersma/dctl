@@ -44,8 +44,8 @@ struct Random
         static Index const PIECES[][BOOST_PP_LIMIT_REPEAT];
         static Index const KINGS[];
         static Index const SIDE[];
-        static Index const RESTRICTED_KING[][BOOST_PP_LIMIT_REPEAT];
-        static Index const RESTRICTED_MOVES[][BOOST_PP_LIMIT_REPEAT];
+        static Index const RESTRICTED_KING[][BOOST_PP_LIMIT_REPEAT + 1];
+        static Index const RESTRICTED_MOVES[][1 + BOOST_PP_LIMIT_REPEAT];
 };
 
 #ifndef DCTL_PP_RANDOM64
@@ -68,21 +68,21 @@ Index const Random<Index>::KINGS[] =
 template<class Index>
 Index const Random<Index>::SIDE[] =
 {
-        0x0, BOOST_PP_ENUM(1, DCTL_PP_RANDOM64, ~)
+        0x0000000000000000, BOOST_PP_ENUM(1, DCTL_PP_RANDOM64, ~)
 };
 
 template<class Index>
-Index const Random<Index>::RESTRICTED_KING[][BOOST_PP_LIMIT_REPEAT] =
+Index const Random<Index>::RESTRICTED_KING[][BOOST_PP_LIMIT_REPEAT + 1] =
 {
-        { BOOST_PP_ENUM(BOOST_PP_LIMIT_REPEAT, DCTL_PP_RANDOM64, ~) },
-        { BOOST_PP_ENUM(BOOST_PP_LIMIT_REPEAT, DCTL_PP_RANDOM64, ~) }
+        { BOOST_PP_ENUM(BOOST_PP_LIMIT_REPEAT, DCTL_PP_RANDOM64, ~), 0x0000000000000000 },
+        { BOOST_PP_ENUM(BOOST_PP_LIMIT_REPEAT, DCTL_PP_RANDOM64, ~), 0x0000000000000000 }
 };
 
 template<class Index>
-Index const Random<Index>::RESTRICTED_MOVES[][BOOST_PP_LIMIT_REPEAT] =
+Index const Random<Index>::RESTRICTED_MOVES[][1 + BOOST_PP_LIMIT_REPEAT] =
 {
-        { BOOST_PP_ENUM(BOOST_PP_LIMIT_REPEAT, DCTL_PP_RANDOM64, ~) },
-        { BOOST_PP_ENUM(BOOST_PP_LIMIT_REPEAT, DCTL_PP_RANDOM64, ~) }
+        { 0x0000000000000000, BOOST_PP_ENUM(BOOST_PP_LIMIT_REPEAT, DCTL_PP_RANDOM64, ~) },
+        { 0x0000000000000000, BOOST_PP_ENUM(BOOST_PP_LIMIT_REPEAT, DCTL_PP_RANDOM64, ~) }
 };
 
 #undef PP_RANDOM64
