@@ -15,7 +15,7 @@ struct is_restricted_same_king_moves
                         max_same_king_moves<Rules>::type,
                         std::integral_constant<int, INT_MAX>
                 >,
-                std::false_type,
+                std::true_type,//std::false_type,
                 std::true_type
         >::type
 {};
