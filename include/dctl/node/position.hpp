@@ -29,7 +29,7 @@ struct Position
 public:
         using rules_type = Rules;
         using board_type = Board;
-        using T = typename Board::bit_type;
+        using T = typename Board::set_type;
         using TreeIterator = Position const*;
         static const auto gap = rules::initial_gap<Rules>::value + Board::height % 2;
 

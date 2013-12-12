@@ -53,7 +53,7 @@ struct read<Rules, Board, pdn::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
         {
-                using T = typename Board::bit_type;
+                using T = typename Board::set_type;
                 T p_pieces[2] {};
                 T p_kings {};
                 bool p_side = Side::black;
@@ -138,7 +138,7 @@ struct read<Rules, Board, dxp::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
         {
-                using T = typename Board::bit_type;
+                using T = typename Board::set_type;
                 T p_pieces[2] {};
                 T p_kings {};
                 bool p_side = Side::black;

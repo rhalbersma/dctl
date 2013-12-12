@@ -32,7 +32,7 @@ private:
                 return Board::copy_if(lambda{Color, row});
         }
 
-        using T = typename Board::bit_type;
+        using T = typename Board::set_type;
         static constexpr auto N = Board::height;
         using table_type = std::array<T, N>;
 
