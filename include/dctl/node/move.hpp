@@ -1,38 +1,25 @@
 #pragma once
 #include <cassert>                      // assert
-#include <type_traits>
-#include <tuple>
-#include <utility>
-#include <boost/operators.hpp>          // equality_comparable, xorable
-#include <dctl/node/move_fwd.hpp>
-#include <dctl/node/side.hpp>
-#include <dctl/rules/traits.hpp>
-
-#include <dctl/bit/algorithm.hpp>
-#include <dctl/bit/predicates.hpp>
+#include <tuple>                        // tie
+#include <dctl/bit/algorithm.hpp>       // set_includes
 
 namespace dctl {
 
 template<class Rules, class Board>
 struct Move
-        // http://www.boost.org/doc/libs/1_51_0/libs/utility/operators.htm#chaining
-        // use base class chaining to ensure Empty Base Optimization
-:       boost::equality_comparable1< Move<Rules, Board>
-,       boost::xorable1< Move<Rules, Board>
-        > >
 {
 public:
         using board_type = Board;
         using rules_type = Rules;
-        using T = typename Board::bit_type;
+        using Set = typename Board::set_type;
 
         // structors
 
         // default constructor
-        Move() = default;
+        constexpr Move() = default;
 
         // king move
-        Move(int from, int dest)
+        constexpr Move(int from, int dest)
         :
                 from_{from},
                 dest_{dest},
@@ -43,7 +30,7 @@ public:
         }
 
         // pawn move
-        Move(int from, int dest, bool is_promotion)
+        constexpr Move(int from, int dest, bool is_promotion)
         :
                 from_{from},
                 dest_{dest},
@@ -54,7 +41,7 @@ public:
         }
 
         // king jump
-        Move(T captured_pieces, T captured_kings, int from, int dest)
+        constexpr Move(Set captured_pieces, Set captured_kings, int from, int dest)
         :
                 captured_pieces_{captured_pieces},
                 captured_kings_{captured_kings},
@@ -67,7 +54,7 @@ public:
         }
 
         // pawn jump
-        Move(T captured_pieces, T captured_kings, int from, int dest, bool is_promotion)
+        constexpr Move(Set captured_pieces, Set captured_kings, int from, int dest, bool is_promotion)
         :
                 captured_pieces_{captured_pieces},
                 captured_kings_{captured_kings},
@@ -81,8 +68,7 @@ public:
 
         // predicates
 
-        // operator!= provided by boost::equality_comparable1
-        friend bool operator==(Move const& lhs, Move const& rhs)
+        friend /* constexpr */ bool operator==(Move const& lhs, Move const& rhs) noexcept
         {
                 return
                         std::tie(lhs.captured_pieces_, lhs.captured_kings_, lhs.from_, lhs.dest_, lhs.is_promotion_) ==
@@ -90,44 +76,49 @@ public:
                 ;
         }
 
+        friend /* constexpr */ bool operator!=(Move const& lhs, Move const& rhs) noexcept
+        {
+                return !(lhs == rhs);
+        }
+
         // queries
 
-        auto captured_pieces() const noexcept
+        constexpr auto captured_pieces() const noexcept
         {
                 return captured_pieces_;
         }
 
-        auto captured_kings() const noexcept
+        constexpr auto captured_kings() const noexcept
         {
                 return captured_kings_;
         }
 
-        auto from() const noexcept
+        constexpr auto from() const noexcept
         {
                 return from_;
         }
 
-        auto dest() const noexcept
+        constexpr auto dest() const noexcept
         {
                 return dest_;
         }
 
-        auto is_with_king() const noexcept
+        constexpr auto is_with_king() const noexcept
         {
                 return is_with_king_;
         }
 
-        auto is_jump() const noexcept
+        constexpr auto is_jump() const noexcept
         {
                 return is_jump_;
         }
 
-        auto is_promotion() const noexcept
+        constexpr auto is_promotion() const noexcept
         {
                 return is_promotion_;
         }
 
-        auto is_reversible() const noexcept
+        constexpr auto is_reversible() const noexcept
         {
                 return is_with_king_ && !is_jump_;
         }
@@ -145,8 +136,8 @@ private:
 
         // representation
 
-        T captured_pieces_{};
-        T captured_kings_{};
+        Set captured_pieces_{};
+        Set captured_kings_{};
         int from_{};
         int dest_{};
         bool is_with_king_{};
