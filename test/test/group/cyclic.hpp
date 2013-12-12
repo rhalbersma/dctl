@@ -1,5 +1,6 @@
 #pragma once
 #include <set>                          // set
+#include <initializer_list>
 #include <dctl/angle.hpp>               // Angle, rotate, inverse
 #include <test/group/primitives.hpp>    // make
 
@@ -26,6 +27,7 @@ struct Inv
 
 }       // namespace cyclic
 
+inline
 auto make_cyclic(std::initializer_list<Angle> set)
 {
         return group::make(std::set<Angle>{set}, cyclic::Op{}, cyclic::Inv{});
