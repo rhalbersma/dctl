@@ -14,8 +14,8 @@ auto is_closure(Group const& g) noexcept
         auto const last = std::end(group::set(g));
         auto const op = group::op(g);
 
-        return std::all_of(first, last, [=](auto const& a) {
-                return std::all_of(first, last, [=](auto const& b){
+        return std::all_of(first, last, [&](auto const& a) {
+                return std::all_of(first, last, [&](auto const& b){
                         return last != std::find(first, last, op(a, b));
                 });
         });
@@ -28,9 +28,9 @@ auto is_associativity(Group const& g) noexcept
         auto const last = std::end(group::set(g));
         auto const op = group::op(g);
 
-        return std::all_of(first, last, [=](auto const& a) {
-                return std::all_of(first, last, [=](auto const& b){
-                        return std::all_of(first, last, [=](auto const& c) {
+        return std::all_of(first, last, [&](auto const& a) {
+                return std::all_of(first, last, [&](auto const& b){
+                        return std::all_of(first, last, [&](auto const& c) {
                                 return (
                                         op(a, op(b, c)) ==
                                         op(op(a, b), c)
@@ -47,8 +47,8 @@ auto is_identity(Group const& g) noexcept
         auto const last = std::end(group::set(g));
         auto const op = group::op(g);
 
-        return last != std::find_if(first, last, [=](auto const& id) {
-                return std::all_of(first, last, [=](auto const& elem){
+        return last != std::find_if(first, last, [&](auto const& id) {
+                return std::all_of(first, last, [&](auto const& elem){
                         return (
                                 op(elem, id) == elem &&
                                 op(id, elem) == elem
@@ -66,8 +66,8 @@ auto is_inverse(Group const& g) noexcept
         auto const id = group::id(g);
         auto const inv = group::inv(g);
 
-        return std::all_of(first, last, [=](auto const& elem) {
-                return last != std::find_if(first, last, [=](auto const& elem_inv){
+        return std::all_of(first, last, [&](auto const& elem) {
+                return last != std::find_if(first, last, [&](auto const& elem_inv){
                         return (
                                 inv(elem) == elem_inv &&
                                 op(elem, elem_inv) == id &&
