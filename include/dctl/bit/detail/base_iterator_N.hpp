@@ -32,12 +32,16 @@ struct base_iterator
 
                 auto const idx = storage<Block>::shift_idx(index_);
                 if (idx == 0) ++block_;
-                auto const mask = *block_ >> idx;
-                if (mask) { index_ += bit::ctznz(mask); return; }
+                if (auto const mask = *block_ >> idx) {
+                        index_ += bit::ctznz(mask);
+                        return;
+                }
 
                 for (auto i = storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
-                        auto const mask = *++block_;
-                        if (mask) { index_ = i * digits + bit::bsf(mask); return; }
+                        if (auto const mask = *++block_) {
+                                index_ = i * digits + bit::bsf(mask);
+                                return;
+                        }
                 }
                 ++block_;
                 index_ = N;
@@ -51,12 +55,16 @@ struct base_iterator
 
                 auto const idx = storage<Block>::shift_idx(index_);
                 if (idx == digits - 1) --block_;
-                auto const mask = *block_ << (digits - 1 - idx);
-                if (mask) { index_ -= bit::clznz(mask); return; }
+                if (auto const mask = *block_ << (digits - 1 - idx)) {
+                        index_ -= bit::clznz(mask);
+                        return;
+                }
 
                 for (auto i = storage<Block>::block_idx(index_) - 1; i >= 0; --i) {
-                        auto const mask = *--block_;
-                        if (mask) { index_ = i * digits + bit::bsr(mask); return; }
+                        if (auto const mask = *--block_) {
+                                index_ = i * digits + bit::bsr(mask);
+                                return;
+                        }
                 }
                 index_ = 0;
                 assert(0 <= index_ && index_ < N);
