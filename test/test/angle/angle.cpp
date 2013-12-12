@@ -8,32 +8,32 @@ namespace dctl {
 
 BOOST_AUTO_TEST_SUITE(AngleAngle)
 
-auto const C1 = group::make_cyclic({
-          0_deg
-});
-
-auto const C2 = group::make_cyclic({
-          0_deg, 180_deg
-});
-
-auto const C4 = group::make_cyclic({
-          0_deg,  90_deg, 180_deg, 270_deg
-});
-
-auto const C8 = group::make_cyclic({
-          0_deg,  45_deg,  90_deg, 135_deg,
-        180_deg, 225_deg, 270_deg, 315_deg
-});
-
-using CyclicGroup = std::common_type<decltype(C1), decltype(C2), decltype(C4), decltype(C8)>::type;
-
-CyclicGroup const C_N[] =
-{
-        C1, C2, C4, C8
-};
-
 BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForAllCyclicGroupsOnAllAngles)
 {
+        auto const C1 = group::make_cyclic({
+                  0_deg
+        });
+
+        auto const C2 = group::make_cyclic({
+                  0_deg, 180_deg
+        });
+
+        auto const C4 = group::make_cyclic({
+                  0_deg,  90_deg, 180_deg, 270_deg
+        });
+
+        auto const C8 = group::make_cyclic({
+                  0_deg,  45_deg,  90_deg, 135_deg,
+                180_deg, 225_deg, 270_deg, 315_deg
+        });
+
+        using CyclicGroup = std::common_type<decltype(C1), decltype(C2), decltype(C4), decltype(C8)>::type;
+
+        CyclicGroup const C_N[] =
+        {
+                C1, C2, C4, C8
+        };
+
         auto const alpha = boost::counting_iterator<int>{  0};
         auto const omega = boost::counting_iterator<int>{360};
 
