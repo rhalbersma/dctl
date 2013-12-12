@@ -49,7 +49,7 @@ public:
 
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
-        using T = typename Board::bit_type;
+        using T = typename Board::set_type;
 
         // modifiers
 

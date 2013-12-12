@@ -30,7 +30,7 @@ public:
 
 private:
         // representation
-        using T = typename Position::board_type::bit_type;
+        using T = typename Position::board_type::set_type;
         T const not_occupied_;
 };
 

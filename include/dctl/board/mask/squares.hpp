@@ -18,7 +18,7 @@ private:
                 }
         };
 
-        using value_type = typename Board::bit_type;
+        using value_type = typename Board::set_type;
 
         static constexpr value_type value = Board::copy_if(lambda{});
 

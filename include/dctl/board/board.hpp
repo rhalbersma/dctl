@@ -32,7 +32,7 @@ public:
         static constexpr auto needed = InternalGrid::size / std::numeric_limits<Block>::digits + 1;
         static constexpr auto Nb = needed;
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
-        using bit_type = bit::bit_set<int, Block, Nb>;
+        using set_type = bit::bit_set<int, Block, Nb>;
 
         static constexpr auto shift_size(Angle const& direction)
         {
@@ -89,7 +89,7 @@ public:
         template<class Predicate>
         static constexpr auto copy_if(Predicate pred) noexcept
         {
-                bit_type result{};
+                set_type result{};
                 for (auto sq = 0; sq < ExternalGrid::size; ++sq)
                         if (pred(grid::Square<ExternalGrid>{sq}))
                                 result.set(bit_from_square(sq));
