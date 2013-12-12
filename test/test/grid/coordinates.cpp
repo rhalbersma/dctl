@@ -28,27 +28,27 @@ using BoardSequence = boost::mpl::vector
         Ktar12
 >;
 
-auto const C1 = group::make_cyclic({
-        0_deg
-});
-
-auto const C2 = group::make_cyclic({
-        0_deg, 180_deg
-});
-
-auto const C4 = group::make_cyclic({
-        0_deg,  90_deg, 180_deg, 270_deg
-});
-
-using CyclicGroup = std::common_type<decltype(C1), decltype(C2), decltype(C4)>::type;
-
-CyclicGroup const C_N[] =
-{
-        C1, C2, C4
-};
-
 BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllSquareCoordinates, T, BoardSequence)
 {
+        auto const C1 = group::make_cyclic({
+                0_deg
+        });
+
+        auto const C2 = group::make_cyclic({
+                0_deg, 180_deg
+        });
+
+        auto const C4 = group::make_cyclic({
+                0_deg,  90_deg, 180_deg, 270_deg
+        });
+
+        using CyclicGroup = std::common_type<decltype(C1), decltype(C2), decltype(C4)>::type;
+
+        CyclicGroup const C_N[] =
+        {
+                C1, C2, C4
+        };
+
         auto const first = boost::counting_iterator<int>{T::begin()};
         auto const last  = boost::counting_iterator<int>{T::end()  };
 

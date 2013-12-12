@@ -11,32 +11,32 @@ namespace group {
 
 BOOST_AUTO_TEST_SUITE(GroupCyclic)
 
-auto const C1 = make_cyclic({
-          0_deg
-});
-
-auto const C2 = make_cyclic({
-          0_deg, 180_deg
-});
-
-auto const C4 = make_cyclic({
-          0_deg,  90_deg, 180_deg, 270_deg
-});
-
-auto const C8 = make_cyclic({
-          0_deg,  45_deg,  90_deg, 135_deg,
-        180_deg, 225_deg, 270_deg, 315_deg
-});
-
-using CyclicGroup = std::common_type<decltype(C1), decltype(C2), decltype(C4), decltype(C8)>::type;
-
-CyclicGroup const C_N[] =
-{
-        C1, C2, C4, C8
-};
-
 BOOST_AUTO_TEST_CASE(GroupAxiomsAreRealizedOnAllCyclicGroups)
 {
+        auto const C1 = make_cyclic({
+                  0_deg
+        });
+
+        auto const C2 = make_cyclic({
+                  0_deg, 180_deg
+        });
+
+        auto const C4 = make_cyclic({
+                  0_deg,  90_deg, 180_deg, 270_deg
+        });
+
+        auto const C8 = make_cyclic({
+                  0_deg,  45_deg,  90_deg, 135_deg,
+                180_deg, 225_deg, 270_deg, 315_deg
+        });
+
+        using CyclicGroup = std::common_type<decltype(C1), decltype(C2), decltype(C4), decltype(C8)>::type;
+
+        CyclicGroup const C_N[] =
+        {
+                C1, C2, C4, C8
+        };
+
         BOOST_CHECK(
                 std::all_of(std::begin(C_N), std::end(C_N), [](auto const& g){
                         return axioms::is_realized(g);
