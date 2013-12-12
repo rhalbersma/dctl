@@ -127,7 +127,7 @@ struct Enhancements<hash_tag, Position>
         void reset_statistics() { handle_->statistics_.reset(); }
         void collect_statistics(int ply) { handle_->statistics_.collect(ply); }
 
-        void clear_TT() { handle_->TT_.clear(); };
+        void clear_TT() { handle_->TT_.clear(); }
         void resize_TT(int n) { handle_->TT_.resize(static_cast<std::size_t>(n)); }
 
         std::pair<bool, NodeCount> find(Position const& p, int depth) const
@@ -177,19 +177,8 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
                 using B = typename Position::board_type;
                 Arena<Move<R,B> > a;
                 auto const moves = successor::copy(p, Alloc<Move<R, B> >{a});
-                for (auto const& m : moves) {/*
-                        auto q = successor::make_copy(p, m);
-                        if (!q.hash_index_invariant()) {
-                                std::cout << "----------------------\n";
-                                std::cout << setup::diagram<pdn::protocol>()(p);
-                                std::cout << notation::write(m) << "\n";
-                                std::cout << setup::diagram<pdn::protocol>()(q);
-                                std::cout << p.hash_index_invariant() << m.is_with_king() << m.is_jump() << m.is_promotion() << "\n";
-                                int i;
-                                std::cin >> i;
-                        }*/
+                for (auto const& m : moves)
                         nodes += walk(successor::make_copy(p, m), depth - 1, ply + 1, e);
-                }
         }
 
         // (3)
