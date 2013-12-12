@@ -1,4 +1,6 @@
 #pragma once
+#include <boost/preprocessor/config/limits.hpp>
+#include <dctl/rules/traits.hpp>
 
 namespace dctl {
 
@@ -7,44 +9,48 @@ struct KingMoves
 public:
         // structors
 
-        KingMoves() = default;
+        constexpr KingMoves() = default;
 
         // modifiers
 
-        void init(int dest)
+        constexpr void init(int dest) noexcept
         {
                 king_ = dest;
                 moves_ = 1;
         }
 
-        void increment(int dest)
+        constexpr void increment(int dest) noexcept
         {
                 king_ = dest;
                 ++moves_;
         }
 
-        void reset()
+        constexpr void reset() noexcept
         {
-                king_ = 255;
+                king_ = UNDEFINED;
                 moves_ = 0;
         }
 
         // queries
 
-        auto king() const
+        constexpr auto king() const noexcept
         {
                 return king_;
         }
 
-        auto moves() const
+        constexpr auto moves() const noexcept
         {
                 return moves_;
         }
 
 private:
+        // implementation
+
+        enum { UNDEFINED = BOOST_PP_LIMIT_REPEAT };
+
         // representation
 
-        int king_{255};
+        int king_{UNDEFINED};
         int moves_{};
 };
 
@@ -52,9 +58,9 @@ using Restricted = KingMoves[2];
 
 // predicates
 template<class Rules>
-auto is_max(int moves)
+constexpr auto is_max(int moves) noexcept
 {
-        return (moves == Rules::max_same_king_moves::value);
+        return (moves == rules::max_same_king_moves<Rules>::value);
 }
 
 }       // namespace dctl
