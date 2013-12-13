@@ -16,7 +16,7 @@
 
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>
-#include <dctl/notation/string.hpp>
+#include <dctl/move/ostream.hpp>
 
 #include <memory>
 #include <utility>
@@ -191,7 +191,7 @@ template<class Position>
 void announce(Position const& p, int depth)
 {
         std::cout << setup::diagram<pdn::protocol>()(p);
-        std::cout << setup::write<pdn::protocol>()(p) << "\n";
+        std::cout << setup::write<pdn::protocol>()(p) << '\n';
         std::cout << "Searching to nominal depth=" << depth << "\n\n";
 }
 
@@ -199,12 +199,12 @@ template<class Position>
 void announce(Position const& p, int depth, int num_moves)
 {
         announce(p, depth);
-        std::cout << "Found " << num_moves << " moves, searching each to nominal depth=" << depth - 1 << "\n";
-        std::cout << "\n";
+        std::cout << "Found " << num_moves << " moves, searching each to nominal depth=" << depth - 1 << '\n';
+        std::cout << '\n';
 }
 
-inline
-void print_move(std::string const& move, int i)
+template<class Move>
+void print_move(Move const& move, int i)
 {
         std::cout << std::setw(2) << (i + 1) << "." << move << " ";
 }
@@ -278,7 +278,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
         for (auto const& m : moves) {
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
-                print_move(notation::write(moves[i]), i);
+                print_move(moves[i], i);
                 sub_count = walk(successor::make_copy(p, moves[i]), depth - 1, 1, e);
                 leaf_nodes += sub_count;
 
