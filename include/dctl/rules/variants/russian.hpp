@@ -6,7 +6,6 @@
 #include <dctl/rules/types/precedence.hpp>      // none
 #include <dctl/rules/types/phase.hpp>           // en_passant
 #include <dctl/successor/value/russian.hpp>     // Value (Russian specialization)
-#include <dctl/notation/russian.hpp>
 
 namespace dctl {
 namespace rules {

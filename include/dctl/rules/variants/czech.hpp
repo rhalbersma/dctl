@@ -5,7 +5,6 @@
 #include <dctl/rules/types/directions.hpp>      // up
 #include <dctl/rules/types/precedence.hpp>      // none
 #include <dctl/successor/value.hpp>             // Value (primary template)
-#include <dctl/notation/czech.hpp>
 
 namespace dctl {
 namespace rules {

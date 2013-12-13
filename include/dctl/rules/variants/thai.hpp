@@ -6,7 +6,6 @@
 #include <dctl/rules/types/precedence.hpp>      // none
 #include <dctl/rules/types/phase.hpp>           // en_passant
 #include <dctl/successor/value.hpp>             // Value (Thai specialization)
-#include <dctl/notation/thai.hpp>
 
 namespace dctl {
 namespace rules {
