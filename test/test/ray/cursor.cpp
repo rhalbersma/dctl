@@ -30,12 +30,12 @@ BOOST_AUTO_TEST_CASE(Members)
         }
 
         constexpr auto stride = B::shift_size(dir);
-        std::cout << "stride: " << stride << "\n";
+        std::cout << "stride: " << stride << '\n';
         auto it = Iterator<board::International, dir>{c};
         auto rt = rotate<+135_deg>(it);
 
         for (auto i = 0; i < 5; ++i)
-                std::cout << fun(rt++) << "\n";
+                std::cout << fun(rt++) << '\n';
 }
 
 BOOST_AUTO_TEST_SUITE_END()

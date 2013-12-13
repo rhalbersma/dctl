@@ -28,7 +28,7 @@
 
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>
-#include <dctl/notation/string.hpp>
+#include <dctl/move/ostream.hpp>
 
 namespace dctl {
 namespace search {
@@ -232,7 +232,7 @@ private:
         void announce(Position const& p, int depth)
         {
                 std::cout << setup::diagram<pdn::protocol>()(p);
-                std::cout << setup::write<pdn::protocol>()(p) << "\n";
+                std::cout << setup::write<pdn::protocol>()(p) << '\n';
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
@@ -265,7 +265,7 @@ private:
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
 
-                std::cout << "\n";
+                std::cout << '\n';
                 print_pv(p, pv);
         }
 
@@ -310,7 +310,7 @@ private:
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
-                std::cout << notation::write(best_move);
+                std::cout << best_move;
                 std::cout << ((ply % 10 == 9) ? '\n' : ' ');
 
                 auto q = successor::make_copy(p, best_move);

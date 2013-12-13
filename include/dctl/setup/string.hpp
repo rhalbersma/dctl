@@ -128,7 +128,7 @@ struct write<pdn::protocol, Token>
                                         sstr << Token::comma;                   // comma separator
                         }
                 }
-                sstr << Token::quote << "\n";                                   // closing quotes
+                sstr << Token::quote << '\n';                                   // closing quotes
                 return sstr.str();
         }
 };
@@ -183,7 +183,7 @@ struct write<dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);                 // convert square to bit
                         sstr << content<Token>(p, b);        // bit content
                 }
-                sstr << "\n";
+                sstr << '\n';
                 return sstr.str();
         }
 };

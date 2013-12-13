@@ -36,11 +36,11 @@ public:
                         sstr << std::setw(2) << f(sq);                  // write square content
 
                         if (is_end_row(sq))
-                                sstr << "\n";                           // start of a new row
+                                sstr << '\n';                           // start of a new row
                         else
                                 sstr << std::setw(2) << WHITE_SPACE;    // space between squares
                 }
-                sstr << "\n";
+                sstr << '\n';
                 return sstr.str();
         }
 

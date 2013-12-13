@@ -47,11 +47,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, DimSequence)
         std::cout << T::height << "x" << T::width << ", " << T::parity << "\n\n";
 
         using G = board::Board< T, false>;
-        std::cout << diagram<G, bits>()() << "\n";
+        std::cout << diagram<G, bits>()() << '\n';
         std::cout << "size = " << G::InternalGrid::size << ", angle = " << G::orientation << "\n\n";
 
         using H = board::Board< T, true >;
-        std::cout << diagram<H, bits>()() << "\n";
+        std::cout << diagram<H, bits>()() << '\n';
         std::cout << "size = " << H::InternalGrid::size << ", angle = " << H::orientation << "\n\n";
 }
 

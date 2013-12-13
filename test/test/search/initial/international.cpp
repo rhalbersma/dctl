@@ -14,7 +14,7 @@ using F = Fixture< Position<rules::International, board::International>, Default
 BOOST_FIXTURE_TEST_CASE(Initial, F)
 {
         auto const p = Position<rules::International, board::International>::initial();
-        std::cout << sizeof(decltype(p)) << "\n";
+        std::cout << sizeof(decltype(p)) << '\n';
         root_.analyze(p, 17);
 }
 /*
