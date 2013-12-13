@@ -4,7 +4,7 @@
 #include <tuple>
 #include <dctl/zobrist/hash.hpp>
 #include <dctl/node/position_fwd.hpp>
-#include <dctl/node/move.hpp>
+#include <dctl/move/move.hpp>
 #include <dctl/node/restricted.hpp>
 #include <dctl/node/side.hpp>
 #include <dctl/node/predicates_fwd.hpp>

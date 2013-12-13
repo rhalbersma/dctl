@@ -9,7 +9,7 @@
 #include <dctl/node/position.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/setup/setup.hpp>
-#include <dctl/notation/string.hpp>
+#include <dctl/move/move.hpp>
 
 namespace dctl {
 namespace successor {
@@ -32,7 +32,7 @@ struct Fixture
                         begin(moves), end(moves),
                         std::back_inserter(notations),
                         [](auto const& m) {
-                        return notation::write(m);
+                        return m.notation();
                 });
 
                 using boost::algorithm::trim_copy;

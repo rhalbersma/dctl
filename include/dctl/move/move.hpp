@@ -1,5 +1,7 @@
 #pragma once
 #include <cassert>                      // assert
+#include <iomanip>                      // setw, setfill
+#include <sstream>                      // stringstream
 #include <tuple>                        // tie
 #include <dctl/bit/algorithm.hpp>       // set_includes
 
@@ -19,10 +21,10 @@ public:
         constexpr Move() = default;
 
         // king move
-        constexpr Move(int from, int dest)
+        constexpr Move(int src, int dst)
         :
-                from_{from},
-                dest_{dest},
+                from_{src},
+                dest_{dst},
                 is_with_king_{true}
         {
                 assert(from_ != dest_);
@@ -30,23 +32,23 @@ public:
         }
 
         // pawn move
-        constexpr Move(int from, int dest, bool is_promotion)
+        constexpr Move(int src, int dst, bool prom)
         :
-                from_{from},
-                dest_{dest},
-                is_promotion_{is_promotion}
+                from_{src},
+                dest_{dst},
+                is_promotion_{prom}
         {
                 assert(from_ != dest_);
                 assert(invariant());
         }
 
         // king jump
-        constexpr Move(Set captured_pieces, Set captured_kings, int from, int dest)
+        constexpr Move(Set pieces, Set kings, int src, int dst)
         :
-                captured_pieces_{captured_pieces},
-                captured_kings_{captured_kings},
-                from_{from},
-                dest_{dest},
+                captured_pieces_{pieces},
+                captured_kings_{kings},
+                from_{src},
+                dest_{dst},
                 is_with_king_{true},
                 is_jump_{true}
         {
@@ -54,31 +56,16 @@ public:
         }
 
         // pawn jump
-        constexpr Move(Set captured_pieces, Set captured_kings, int from, int dest, bool is_promotion)
+        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom)
         :
-                captured_pieces_{captured_pieces},
-                captured_kings_{captured_kings},
-                from_{from},
-                dest_{dest},
+                captured_pieces_{pieces},
+                captured_kings_{kings},
+                from_{src},
+                dest_{dst},
                 is_jump_{true},
-                is_promotion_{is_promotion}
+                is_promotion_{prom}
         {
                 assert(invariant());
-        }
-
-        // predicates
-
-        friend /* constexpr */ bool operator==(Move const& lhs, Move const& rhs) noexcept
-        {
-                return
-                        std::tie(lhs.captured_pieces_, lhs.captured_kings_, lhs.from_, lhs.dest_, lhs.is_promotion_) ==
-                        std::tie(rhs.captured_pieces_, rhs.captured_kings_, rhs.from_, rhs.dest_, rhs.is_promotion_)
-                ;
-        }
-
-        friend /* constexpr */ bool operator!=(Move const& lhs, Move const& rhs) noexcept
-        {
-                return !(lhs == rhs);
         }
 
         // queries
@@ -123,15 +110,41 @@ public:
                 return is_with_king_ && !is_jump_;
         }
 
+        // string
+
+        auto notation() const
+        {
+                std::stringstream sstr;
+                sstr << std::setfill('0') << std::setw(2) << Board::square_from_bit(from_) + 1;
+                sstr << (is_jump_ ? 'x' : '-');
+                sstr << std::setfill('0') << std::setw(2) << Board::square_from_bit(dest_) + 1;
+                return sstr.str();
+        }
+
+        // predicates
+
+        friend /* constexpr */ bool operator==(Move const& lhs, Move const& rhs) noexcept
+        {
+                return
+                        std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) ==
+                        std::tie(rhs.from_, rhs.dest_, rhs.captured_pieces_)
+                ;
+        }
+
+        friend /* constexpr */ bool operator!=(Move const& lhs, Move const& rhs) noexcept
+        {
+                return !(lhs == rhs);
+        }
+
 private:
         // implementation
         bool invariant() const
         {
-                return (
+                return
                         bit::set_includes(captured_pieces_, captured_kings_) &&
                         is_jump_ == !captured_pieces_.empty() &&
                         !(is_with_king_ && is_promotion_)
-                );
+                ;
         }
 
         // representation
