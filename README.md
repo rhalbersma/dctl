@@ -13,7 +13,7 @@ Draughts is a family of related board games played in many [regions](http://alem
 Scope
 -----
 
-The DCTL supports all above mentioned draughts variants with official rules, on all board sizes smaller than 12x12. Most existing draughts variants have a high percentage of draws when played between experienced players. Historically, many small tweaks to the game rules have been proposed. Even former world champions such as [Herman Hoogland](http://en.wikipedia.org/wiki/Herman_Hoogland) proposed new variants. The DCTL supports some of these variants. In particular, the recently proposed [Killer Draughts](http://www.killerdraughts.org/) is actively supported.
+The DCTL supports all above mentioned draughts variants with official rules, on all board sizes up to 18x18. Most existing draughts variants have a high percentage of draws when played between experienced players. Historically, many small tweaks to the game rules have been proposed. Even former world champions such as [Herman Hoogland](http://en.wikipedia.org/wiki/Herman_Hoogland) proposed new variants. The DCTL supports some of these variants. In particular, the recently proposed [Killer Draughts](http://www.killerdraughts.org/) is actively supported.
 
 Usage
 -----
@@ -27,7 +27,6 @@ Road-map
 
 The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. It is currently not possible to play a game against a program based on the DCTL. Functionality being planned includes:   
 
-* support for 12x12 and larger boards
 * a generic engine class template   
 * support for the [Checkerboard GUI](http://www.fierz.ch/cbdeveloper.php)   
 * support for the [GUIDE protocol](http://laatste.info/bb3/download/file.php?id=864)   
@@ -39,7 +38,7 @@ Requirements
 
 ### Platforms
 
-The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian) with at least libstdc++6 from g++ >= 4.8.1 (i.e. Mint >= 16, Ubuntu >= 13.10, Debian >= jessie). Note that libstdc++6 comes pre-installed on almost every Linux distribution. The following commands get all the other requirements:
+The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian) with at least `libstdc++6` from `g++` >= 4.8.1 (i.e. Mint >= 16, Ubuntu >= 13.10, Debian >= jessie). Note that `libstdc++6` comes pre-installed on almost every Linux distribution. The following commands get all the other requirements:
 
       # Get a fresh system and install build tools and pre-compiled Boost Libraries
       sudo apt-get update
