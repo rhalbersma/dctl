@@ -118,7 +118,7 @@ To make sure that your build environment is compatible with the DCTL requirement
       make -j10
       ctest -j10 -E "walk|search|game"
 
-The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). One can also use the ninja build tool by specifying `cmake -GNinaj` and running `ninja` instead of `make -j10`. The test-suite itself takes a fraction of second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
+The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). One can also use the ninja build tool by specifying `cmake -GNinja` and running `ninja` instead of `make -j10`. The test-suite itself takes a fraction of second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
 
 To completely regenerate the test-suite's build solution, simply delete the contents of the entire `build/` directory and rerun the above commands. To skip the `cmake` configuration step, and only rebuild and rerun the test-suite, simply type 
 
