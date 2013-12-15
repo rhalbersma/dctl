@@ -1,8 +1,7 @@
 #pragma once
 #include <cstddef>                      // size_t
-#include <dctl/hash/index_extractor.hpp>
+#include <dctl/hash/extract.hpp>
 #include <dctl/hash/map.hpp>
-#include <dctl/hash/parity_extractor.hpp>
 #include <dctl/hash/replace.hpp>
 
 namespace dctl {
@@ -13,7 +12,7 @@ template
         class Key,
         class T,
         class Signature,
-        class Parity = ActiveColorExtractor,
+        class Parity = extract::ActiveColor,
         class Container = Map< Key, T, Signature, EmptyOldUnderCutMin<Smallest> >
 >
 struct DualMap

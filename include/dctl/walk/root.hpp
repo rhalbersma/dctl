@@ -6,7 +6,7 @@
 #include <iterator>                     // distance
 #include <dctl/walk/transposition.hpp>
 #include <dctl/hash/dual_map.hpp>
-#include <dctl/hash/signature_extractor.hpp>
+#include <dctl/hash/extract.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/successor/count.hpp>
 #include <dctl/successor/copy.hpp>
@@ -110,7 +110,7 @@ struct Data<hash_tag, Position>
         hash::Map<
                 Position,
                 Transposition,
-                hash::UpperHashBitsExtractor,
+                extract::UpperBits,
                 hash::EmptyOldUnderCutMin<hash::Smallest>
         > TT_;
 
