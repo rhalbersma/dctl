@@ -11,3 +11,4 @@ syntax: glob
 # cmake output
 build
 .settings/org.eclipse.cdt.codan.core.prefs
+test/CMakeLists.txt.user
