@@ -77,7 +77,7 @@ bool is_cycle(Position const& p)
 
         // compare the ancestor hash indices with the current hash index
         for (auto i = 4; i <= p.reversible_moves(); i += 2) {
-                if (q->hash() == p.hash())
+                if (q->hash_index() == p.hash_index())
                         return true;
                 q = grand_parent(*q);
         }
