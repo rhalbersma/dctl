@@ -142,7 +142,7 @@ public:
                 make_incremental(m);
 
                 assert(material_invariant());
-                assert(hash_index_invariant());
+                assert(hash_invariant());
         }
         
         void attach(Position const& other)
@@ -285,7 +285,7 @@ private:
                 ;
         }
 
-        bool hash_index_invariant() const
+        bool hash_invariant() const
         {
                 return hash_ == zobrist::hash(*this);
         }
