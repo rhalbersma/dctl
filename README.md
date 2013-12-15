@@ -43,19 +43,29 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
 
       # Get a fresh system and install build tools and pre-compiled Boost Libraries
       sudo apt-get update
-      sudo apt-get install tortoisehg python-iniparse cmake make libboost1.54-all-dev
+      sudo apt-get install tortoisehg python-iniparse cmake ninja-build make libboost1.54-all-dev
 
-      # Patch the libstdc++ <cstdio> header so that ::gets is removed when compilng with -std=c++1y
-      sudo sed -i '/using ::gets;/c\#if __cplusplus <= 201103L\n\using ::gets;\n\#endif' /usr/include/c++/4.8/cstdio
+      # Patch the libstdc++ 4.8 <cstdio> header so that ::gets is removed when compilng with -std=c++1y
+      cd /usr/include/c++/4.8/
+      sudo sed -i '/using ::gets;/c\#if __cplusplus <= 201103L\n\using ::gets;\n\#endif' cstdio
       
       # Add LLVM repository and GPG key and install Clang 3.5
       echo "deb http://llvm.org/apt/saucy/ llvm-toolchain-saucy main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
       wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
       sudo apt-get install clang-3.5 lldb-3.5
 
-      # Patch clang 3.5 so that the include directory no longer points to llvm-3.4
+      # Patch clang include directory
       cd /usr/lib/clang/3.5
       sudo ln -sf ../../llvm-3.5/lib/clang/3.5/include/ include
+
+      # Patch clang gold plugin
+      cd /usr/lib/
+      sudo ln -sf llvm-3.5/lib/LLVMgold.so LLVMgold.so
+      sudo ln -sf llvm-3.5/lib/libLTO.so libLTO.so
+
+      # Patch clang -fuse-ld=gold flag
+      cd /usr/bin/
+      sudo ln -sf ld.gold ld
 
 ### Compilers
 
@@ -106,9 +116,9 @@ To make sure that your build environment is compatible with the DCTL requirement
       cd build
       cmake ..
       make -j10
-      ctest -j10 -E "walk|search"
+      ctest -j10 -E "walk|search|game"
 
-The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a fraction of second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
+The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). One can also use the ninja build tool by specifying `cmake -GNinaj` and running `ninja` instead of `make -j10`. The test-suite itself takes a fraction of second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
 
 To completely regenerate the test-suite's build solution, simply delete the contents of the entire `build/` directory and rerun the above commands. To skip the `cmake` configuration step, and only rebuild and rerun the test-suite, simply type 
 
@@ -131,7 +141,7 @@ Any feature requests, ideas and contributions are much appreciated! The recommen
 Acknowledgments
 ----------------
 
-Special thanks to Ed Gilbert, Aart Bik, Wieger Wesselink and Walter Thoen for encouragement, testing, and exchange of ideas.
+Special thanks to Aart Bik, Ed Gilbert, Walter Thoen and Wieger Wesselink for encouragement, testing, and exchange of ideas.
 
 License
 -------
