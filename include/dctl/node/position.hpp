@@ -29,12 +29,12 @@ struct Position
 public:
         using rules_type = Rules;
         using board_type = Board;
-        using T = typename Board::set_type;
+        using Set = typename Board::set_type;
         using TreeIterator = Position const*;
         static const auto gap = rules::initial_gap<Rules>::value + Board::height % 2;
 
         // initialize with a set of bitboards and a color
-        Position(T black_pieces, T white_pieces, T kings, bool to_move)
+        Position(Set black_pieces, Set white_pieces, Set kings, bool to_move)
         :
                 to_move_{to_move}
         {
@@ -42,7 +42,7 @@ public:
                 pieces_[Side::white] = white_pieces;
                 kings_ = kings;
                 assert(material_invariant());
-                hash_index_ = zobrist::hash(*this);
+                hash_ = zobrist::hash(*this);
         }
 
         static Position initial(int separation = gap)
@@ -50,7 +50,7 @@ public:
                 return Position{
                         board::Initial<Board>::mask(Side::black, separation),
                         board::Initial<Board>::mask(Side::white, separation),
-                        T{},
+                        Set{},
                         Side::white
                 };
         }
@@ -61,12 +61,12 @@ public:
                 return parent_;
         }
 
-        HashIndex hash_index() const
+        HashIndex hash() const
         {
-                return hash_index_;
+                return hash_;
         }
 
-        decltype(auto) material() const
+        auto const& material() const
         {
                 return std::tie(pieces(Side::black), pieces(Side::white), kings());
         }
@@ -107,28 +107,28 @@ public:
                 return pieces(Side::black) ^ pieces(Side::white);
         }
 
-        Restricted const& restricted() const
+        auto const& restricted() const
         {
                 return restricted_;
         }
 
-        KingMoves const& restricted(bool color) const
+        auto const& restricted(bool color) const
         {
                 return restricted_[color];
         }
 
-        PlyCount reversible_moves() const
+        auto reversible_moves() const
         {
                 return reversible_moves_;
         }
 
-        PlyCount distance_to_root() const
+        auto distance_to_root() const
         {
                 return distance_to_root_;
         }
 
         // side to move
-        bool to_move() const
+        auto to_move() const
         {
                 return to_move_;
         }
@@ -204,7 +204,7 @@ private:
 
                 if (!active_kings(*this).empty() && !active_pawns(*this).empty()) {
                         if (restricted.moves())
-                                hash_index_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
+                                hash_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
 
                         if (!m.is_reversible()) {
                                 if (restricted.moves())
@@ -221,7 +221,7 @@ private:
                                 assert(!restricted.moves() || active_kings(*this).size() > 0);
                                 restricted.init(m.dest());
                         }
-                        hash_index_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
+                        hash_ ^= zobrist::hash(std::make_pair(restricted, active_color(*this)));
                 }
         }
 
@@ -237,7 +237,7 @@ private:
                                 bit::set_includes(m.captured_pieces(), passive_pawns(*this))
                         )
                 ) {
-                        hash_index_ ^= zobrist::hash(std::make_pair(restricted, passive_color(*this)));
+                        hash_ ^= zobrist::hash(std::make_pair(restricted, passive_color(*this)));
                         restricted.reset();
                 }
         }
@@ -265,39 +265,39 @@ private:
                         kings_ ^= m.captured_kings();
                 }
 
-                hash_index_ ^= zobrist::hash(std::make_pair(m, active_color(*this)));
+                hash_ ^= zobrist::hash(std::make_pair(m, active_color(*this)));
         }
 
         void make_to_move()
         {
                 to_move_ ^= Side::pass;
-                hash_index_ ^= zobrist::hash(bool(Side::pass));
+                hash_ ^= zobrist::hash(bool(Side::pass));
         }
 
         // post-conditions for the constructors and modifiers
         bool material_invariant() const
         {
                 auto constexpr squares = board::Squares<Board>::mask();
-                return (
+                return
                         bit::set_exclusive(pieces(Side::black), pieces(Side::white)) &&
                         bit::set_includes(pieces(), kings()) &&
                         bit::set_includes(squares, pieces())
-                );
+                ;
         }
 
         bool hash_index_invariant() const
         {
-                return hash_index_ == zobrist::hash(*this);
+                return hash_ == zobrist::hash(*this);
         }
 
         // representation
-        T pieces_[2];   // black and white pieces
-        T kings_;       // kings
+        Set pieces_[2];   // black and white pieces
+        Set kings_;       // kings
         TreeIterator parent_{};
-        HashIndex hash_index_{};
+        HashIndex hash_{};
         Restricted restricted_{};
-        PlyCount reversible_moves_{};
-        PlyCount distance_to_root_{};
+        int reversible_moves_{};
+        int distance_to_root_{};
         bool to_move_{};
 };
 

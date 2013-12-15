@@ -7,7 +7,7 @@
 #include <type_traits>                  // integral_constant, is_integral, false_type, true_type
 #include <utility>                      // make_pair, pair
 #include <vector>                       // vector
-#include <dctl/hash/index_extractor.hpp>
+#include <dctl/hash/extract.hpp>
 
 namespace dctl {
 namespace hash {
@@ -18,7 +18,7 @@ template
         class T,
         class Signature,
         class Replace,
-        class Hash = IndexExtractor,
+        class Hash = extract::Hash,
         class KeyEqual = std::equal_to<typename Signature::result_type>,
         class Allocator = std::allocator< std::pair<typename Signature::result_type, T> >
 >

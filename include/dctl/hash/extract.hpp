@@ -1,12 +1,24 @@
 #pragma once
+#include <cstdint>                      // uint64_t
 #include <cstddef>                      // size_t
 #include <limits>                       // digits
 #include <type_traits>                  // is_integral
 
 namespace dctl {
-namespace hash {
+namespace extract {
 
-struct MaterialExtractor
+struct Hash
+{
+        using result_type = uint64_t;
+
+        template<class Key>
+        auto operator()(Key const& key) const
+        {
+                return key.hash();
+        }
+};
+
+struct Material
 {
         template<class Key, class Index>
         auto const& operator()(Key const& key, Index /* index */) const
@@ -15,14 +27,23 @@ struct MaterialExtractor
         }
 };
 
-struct UpperHashBitsExtractor
+struct ActiveColor
+{
+        template<class Key>
+        auto operator()(Key const& key) const
+        {
+                return key.active_color();
+        }
+};
+
+struct UpperBits
 {
         using result_type = std::size_t;
 
         template<class Key, class Index>
-        result_type operator()(Key const& /* key */, Index index) const
+        auto operator()(Key const& /* key */, Index index) const
         {
-                static_assert(std::is_integral<Index>::value,      "Bitwise shift only applicable to integral types.");
+                static_assert(std::is_integral<Index>::value,       "Bitwise shift only applicable to integral types.");
                 static_assert(std::is_integral<result_type>::value, "Bitwise shift only applicable to integral types.");
                 static_assert(sizeof(result_type) <= sizeof(Index), "Key cannot be of larger type than the hash.");
 
@@ -30,9 +51,9 @@ struct UpperHashBitsExtractor
         }
 
         template<class Index>
-        result_type operator()(Index index) const
+        auto operator()(Index index) const
         {
-                static_assert(std::is_integral<Index>::value,      "Bitwise shift only applicable to integral types.");
+                static_assert(std::is_integral<Index>::value,       "Bitwise shift only applicable to integral types.");
                 static_assert(std::is_integral<result_type>::value, "Bitwise shift only applicable to integral types.");
                 static_assert(sizeof(result_type) <= sizeof(Index), "Key cannot be of larger type than the hash.");
 
@@ -40,5 +61,5 @@ struct UpperHashBitsExtractor
         }
 };
 
-}       // namespace hash
+}       // namespace extract
 }       // namespace dctl

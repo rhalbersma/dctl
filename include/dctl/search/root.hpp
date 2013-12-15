@@ -14,7 +14,7 @@
 #include <dctl/search/variation.hpp>
 #include <dctl/evaluate/score.hpp>
 #include <dctl/utility/stack_vector.hpp>
-#include <dctl/hash/signature_extractor.hpp>
+#include <dctl/hash/extract.hpp>
 #include <dctl/hash/map.hpp>
 #include <dctl/hash/replace.hpp>
 #include <dctl/successor/copy.hpp>
@@ -333,7 +333,7 @@ private:
         using TranspositionTable = hash::Map<
                 Position, 
                 Transposition, 
-                hash::UpperHashBitsExtractor, 
+                extract::UpperBits,
                 hash::EmptyOldUnderCutMin<hash::Shallowest> 
         >;
 
