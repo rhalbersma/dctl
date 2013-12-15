@@ -5,7 +5,7 @@ syntax: glob
 *.#
 
 # cmake output
-#build/*
+build/*
 
 # Eclipse settings
 *.*project
