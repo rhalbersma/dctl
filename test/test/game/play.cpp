@@ -8,7 +8,7 @@
 #include <dctl/rules/variants.hpp>
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>
-#include <dctl/successor/copy.hpp>
+#include <dctl/successor/generate.hpp>
 #include <dctl/utility/stack_vector.hpp>
 
 using namespace dctl;
@@ -17,17 +17,18 @@ int main()
 {
         using Rules = rules::International;
         using Board = board::International;
-        auto initial = Position<Rules, Board>::initial();
-        std::stack<Position<Rules, Board>> game;
+        using Pos = Position<Rules, Board>;
+
+        auto initial = Pos::initial();
+        std::stack<Pos> game;
         game.push(initial);
 
         while (true) {
                 auto const p = game.top();
                 std::cout << setup::diagram<pdn::protocol>()(p);
 
-                Arena<Move<Rules, Board>> a;
-                auto moves = successor::copy(p, Alloc<Move<Rules, Board>>{a});
-                std::sort(begin(moves), end(moves), [](auto L, auto R) {
+                auto moves = successor::generate(p);
+                std::sort(begin(moves), end(moves), [](auto const& L, auto const& R) {
                         return L.notation() < R.notation();
                 });
 

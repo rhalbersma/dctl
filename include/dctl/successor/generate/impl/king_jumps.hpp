@@ -2,7 +2,7 @@
 #include <cassert>                                      // assert
 #include <iterator>
 #include <type_traits>                                  // false_type, true_type
-#include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
+#include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/pieces/king.hpp>                         // king
@@ -22,11 +22,11 @@ namespace impl {
 
 // partial specialization for king jumps generation
 template<bool Color, class Position, class Sequence>
-struct copy<Color, pieces::king, select::jumps, Position, Sequence>
+struct generate<Color, pieces::king, select::jumps, Position, Sequence>
 {
         // enforce reference semantics
-        copy(copy const&) = delete;
-        copy& operator=(copy const&) = delete;
+        generate(generate const&) = delete;
+        generate& operator=(generate const&) = delete;
 
 private:
         using Rules = typename Position::rules_type;
@@ -43,7 +43,7 @@ private:
 public:
         // structors
 
-        explicit copy(State& c, Sequence& m)
+        explicit generate(State& c, Sequence& m)
         :
                 capture_{c},
                 moves_{m}
@@ -209,9 +209,9 @@ private:
         void land_dispatch(Iterator jumper, rules::range::distance_1K) const
         {
                 if (capture_.is_king(*std::prev(jumper)))
-                        land_dispatch(jumper, rules::range::distance_1());
+                        land_dispatch(jumper, rules::range::distance_1{});
                 else
-                        land_dispatch(jumper, rules::range::distance_N());
+                        land_dispatch(jumper, rules::range::distance_N{});
         }
 
         // overload for kings that can only land on the immediately adjacent square
@@ -247,32 +247,32 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, rules::directions::all) const
         {
-                return (
-                        turn_dispatch(jumper, rules::directions::diag()) |
-                        turn_dispatch(jumper, rules::directions::orth())
-                );
+                return
+                        turn_dispatch(jumper, rules::directions::diag{}) |
+                        turn_dispatch(jumper, rules::directions::orth{})
+                ;
         }
 
         // overload for kings that turn in the 2 sideways directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, rules::directions::diag) const
         {
-                return (
+                return
                         scan(ray::rotate<-90_deg>(jumper)) |
                         scan(ray::rotate<+90_deg>(jumper))
-                );
+                ;
         }
 
         // overload for kings that turn in the remaining 4 diagonal or orthogonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, rules::directions::orth) const
         {
-                return (
+                return
                         scan(ray::rotate< -45_deg>(jumper)) |
                         scan(ray::rotate< +45_deg>(jumper)) |
                         scan(ray::rotate<-135_deg>(jumper)) |
                         scan(ray::rotate<+135_deg>(jumper))
-                );
+                ;
         }
 
         template<class Board, int Direction>
@@ -329,9 +329,9 @@ private:
         void add_king_jump_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_1K) const
         {
                 if (capture_.is_king(*std::prev(dest_sq)))
-                        add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::distance_1());
+                        add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::distance_1{});
                 else
-                        add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::distance_N());
+                        add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::distance_N{});
         }
 
         // overload for kings that halt immediately after the final capture

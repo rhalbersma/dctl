@@ -5,7 +5,7 @@
 #include <vector>                               // vector
 #include <boost/algorithm/string.hpp>           // trim_copy
 #include <boost/test/unit_test.hpp>
-#include <dctl/successor/copy.hpp>
+#include <dctl/successor/generate.hpp>
 #include <dctl/node/position.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/setup/setup.hpp>
@@ -21,8 +21,7 @@ struct Fixture
         void run(std::string const& FEN, std::string const (&legal)[N])
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>{}(FEN);
-                Arena<Move<Rules,Board> > a;
-                auto const moves = successor::copy(p, Alloc<Move<Rules, Board> >{a});
+                auto const moves = successor::generate(p);
 
                 BOOST_CHECK_EQUAL(static_cast<int>(moves.size()), N);
 

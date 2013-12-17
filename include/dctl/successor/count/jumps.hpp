@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
-#include <dctl/successor/copy/all_jumps.hpp>            // copy (piece jumps specialization)
+#include <dctl/successor/generate/all_jumps.hpp>        // geneate (piece jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/move/move.hpp>                           // Move
 #include <dctl/utility/stack_vector.hpp>                // Vector, Alloc, Arena
@@ -21,7 +21,7 @@ struct count<Color, Pieces, select::jumps>
                 Arena<Move<R,B> > a;
                 stack_vector<Move<R,B> > moves_(Alloc<Move<R,B> >{a});
 
-                copy<Color, Pieces, select::jumps>{}(p, moves_);
+                generate<Color, Pieces, select::jumps>{}(p, moves_);
                 return static_cast<int>(moves_.size());
         }
 };

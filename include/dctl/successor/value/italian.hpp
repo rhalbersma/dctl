@@ -102,10 +102,10 @@ public:
         {
                 // delegate to std::tuple::operator==
                 // NOTE: this will -in turn- delegate to std::vector::operator== for the last tuple element
-                return (
+                return
                         std::tie(lhs.num_pieces_, lhs.num_kings_, lhs.is_with_king_, lhs.king_order_) ==
                         std::tie(rhs.num_pieces_, rhs.num_kings_, rhs.is_with_king_, rhs.king_order_)
-                );
+                ;
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
@@ -113,10 +113,10 @@ public:
         {
                 // delegate to std::tuple::operator<
                 // NOTE: this will -in turn- delegate to std::vector::operator< for the last tuple element
-                return (
+                return
                         std::tie(lhs.num_pieces_, lhs.num_kings_, lhs.is_with_king_, lhs.king_order_) <
                         std::tie(rhs.num_pieces_, rhs.num_kings_, rhs.is_with_king_, rhs.king_order_)
-                );
+                ;
         }
 
 private:
@@ -124,13 +124,13 @@ private:
 
         bool invariant() const
         {
-                return (
+                return
                                   0 <= num_kings_ &&
                          num_kings_ <= num_pieces_ &&
                         num_pieces_ <= std::numeric_limits<int>::max() &&
                          num_kings_ == static_cast<int>(king_order_.size()) &&
                         !(num_kings_ && !is_with_king_)
-                );
+                ;
         }
 
         bool empty() const

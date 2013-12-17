@@ -5,7 +5,7 @@ namespace successor {
 namespace detail {
 
 template<bool /* Color */, class /* Pieces */, class /* Select */>
-struct copy;
+struct generate;
 
 }       // namespace detail
 }       // namespace successor

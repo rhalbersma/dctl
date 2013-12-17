@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>                                    // transform
 #include <iterator>
-#include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
+#include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
 #include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // select
@@ -17,11 +17,11 @@ namespace detail {
 namespace impl {
 
 template<bool Color, class Position, class Sequence>
-struct copy<Color, pieces::pawn, select::moves, Position, Sequence>
+struct generate<Color, pieces::pawn, select::moves, Position, Sequence>
 {
         // enforce reference semantics
-        copy(copy const&) = delete;
-        copy& operator=(copy const&) = delete;
+        generate(generate const&) = delete;
+        generate& operator=(generate const&) = delete;
 
 private:
         using Board = typename Position::board_type;
@@ -37,7 +37,7 @@ private:
 public:
         // structors
 
-        explicit copy(State const& p, Sequence& m)
+        explicit generate(State const& p, Sequence& m)
         :
                 propagate_{p},
                 moves_{m}
