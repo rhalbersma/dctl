@@ -9,7 +9,7 @@
 #include <dctl/hash/extract.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/successor/count.hpp>
-#include <dctl/successor/copy.hpp>
+#include <dctl/successor/generate.hpp>
 #include <dctl/utility/int.hpp>         // NodeCount
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/stopwatch.hpp>
@@ -176,7 +176,7 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
                 using R = typename Position::rules_type;
                 using B = typename Position::board_type;
                 Arena<Move<R,B> > a;
-                auto const moves = successor::copy(p, Alloc<Move<R, B> >{a});
+                auto const moves = successor::generate(p, Alloc<Move<R, B> >{a});
                 for (auto const& m : moves)
                         nodes += walk(successor::make_copy(p, m), depth - 1, ply + 1, e);
         }
@@ -271,7 +271,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
         using R = typename Position::rules_type;
         using B = typename Position::board_type;
         Arena<Move<R,B> > a;
-        auto const moves = successor::copy(p, Alloc<Move<R, B> >{a});
+        auto const moves = successor::generate(p, Alloc<Move<R, B> >{a});
 
         announce(p, depth, moves.size());
         stopwatch.start();

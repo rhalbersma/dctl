@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE(SuccessorValueInternational)
 // rules variants with the international capture precedence
 using PrecedenceInternational = boost::mpl::vector
 <
-        rules::International /*, rules::Damme, rules::Hoogland, rules::Killer*/
+        rules::International, rules::AKWDamme, rules::HHoogland, rules::Killer
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructor, T, PrecedenceInternational)

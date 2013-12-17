@@ -6,7 +6,7 @@ namespace detail {
 namespace impl {
 
 template<bool /* Color */, class /* Pieces */, class /* Select */, class /* Position */, class /* Sequence */>
-struct copy;
+struct generate;
 
 }       // namespace impl
 }       // namespace detail

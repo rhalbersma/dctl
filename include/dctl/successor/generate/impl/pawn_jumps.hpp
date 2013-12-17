@@ -2,8 +2,8 @@
 #include <cassert>                                      // assert
 #include <iterator>
 #include <type_traits>                                  // false_type, true_type
-#include <dctl/successor/copy/impl/primary_fwd.hpp>     // copy (primary template)
-#include <dctl/successor/copy/impl/king_jumps.hpp>      // promote_en_passant
+#include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
+#include <dctl/successor/generate/impl/king_jumps.hpp>  // promote_en_passant
 #include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
 #include <dctl/successor/select/jumps.hpp>              // jumps
 #include <dctl/pieces/pawn.hpp>                         // pawn
@@ -26,14 +26,14 @@ namespace impl {
 
 // partial specialization for pawn jumps generation
 template<bool Color, class Position, class Sequence>
-struct copy<Color, pieces::pawn, select::jumps, Position, Sequence>
+struct generate<Color, pieces::pawn, select::jumps, Position, Sequence>
 {
         // enforce reference semantics
-        copy(copy const&) = delete;
-        copy& operator=(copy const&) = delete;
+        generate(generate const&) = delete;
+        generate& operator=(generate const&) = delete;
 
 private:
-        using KingJumps = copy<Color, pieces::king, select::jumps, Position, Sequence>;
+        using KingJumps = generate<Color, pieces::king, select::jumps, Position, Sequence>;
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Compass = board::Compass<Board, Color>;
@@ -47,7 +47,7 @@ private:
 public:
         // structors
 
-        explicit copy(State& c, Sequence& m)
+        explicit generate(State& c, Sequence& m)
         :
                 capture_{c},
                 moves_{m}
