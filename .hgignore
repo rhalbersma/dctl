@@ -13,3 +13,4 @@ build/*
 
 # QtCreator settings
 *.user
+.settings/*

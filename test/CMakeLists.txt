@@ -117,7 +117,7 @@ include_directories(${PROJECT_SOURCE_DIR} ${ParentProject_include_dirs} ${Boost_
 # calls enable_testing()
 include(CTest)
 
-foreach(t ${test_sources} )
+foreach(t ${test_sources})
   # get the relative path in the source tree
   get_filename_component(test_path ${t} PATH)
 
@@ -142,4 +142,3 @@ foreach(t ${test_sources} )
   # add a test with executable in the relative path of the build tree
   add_test(${test_id} ${test_path}/${test_id})
 endforeach()
-

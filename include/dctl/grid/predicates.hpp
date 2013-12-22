@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/grid/coordinates.hpp>
+#include <dctl/grid/ulo.hpp>
 
 namespace dctl {
 namespace grid {

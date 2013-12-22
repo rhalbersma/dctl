@@ -29,7 +29,7 @@ int main()
 
                 auto moves = successor::generate(p);
                 std::sort(begin(moves), end(moves), [](auto const& L, auto const& R) {
-                        return L.notation() < R.notation();
+                        return L.numeric() < R.numeric();
                 });
 
                 if (moves.empty()) {

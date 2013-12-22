@@ -31,7 +31,7 @@ struct Fixture
                         begin(moves), end(moves),
                         std::back_inserter(notations),
                         [](auto const& m) {
-                        return m.notation();
+                        return m.numeric();
                 });
 
                 using boost::algorithm::trim_copy;
