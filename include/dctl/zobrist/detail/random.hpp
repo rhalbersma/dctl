@@ -85,7 +85,7 @@ Index const Random<Index>::RESTRICTED_MOVES[][1 + BOOST_PP_LIMIT_REPEAT] =
         { 0x0000000000000000, BOOST_PP_ENUM(BOOST_PP_LIMIT_REPEAT, DCTL_PP_RANDOM64, ~) }
 };
 
-#undef PP_RANDOM64
+#undef DCTL_PP_RANDOM64
 
 // explicit instantiation
 template struct Random<uint64_t>;

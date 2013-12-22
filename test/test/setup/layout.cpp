@@ -5,7 +5,8 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/board/types.hpp>                 // International
 #include <dctl/setup/diagram.hpp>               // diagram, bits, squares
-
+#include <dctl/board/algebraic.hpp>
+#include <iterator>
 namespace dctl {
 namespace setup {
 

@@ -1,50 +1,38 @@
 #pragma once
-#include <stdexcept>                    // invalid_argument
-#include <tuple>                        // tie
+#include <stdexcept>                                    // invalid_argument
+#include <tuple>                                        // forward_as_tuple
+#include <dctl/grid/coordinates/detail/coordinates.hpp> // Coordinates
 
 namespace dctl {
 namespace grid {
 namespace sco {
 
 class Coordinates
+:
+        public detail::Coordinates
 {
 public:
-        constexpr Coordinates(int r, int c) noexcept
-        :
-                row_{r},
-                col_{c}
-        {}
+        // structors
 
-        constexpr auto row() const noexcept
-        {
-                return row_;
-        }
+        using detail::Coordinates::Coordinates;
 
-        constexpr auto col() const noexcept
-        {
-                return col_;
-        }
+        // predicates
 
-        friend /* constexpr */ auto
+        friend /* constexpr */ bool
         operator==(Coordinates const& lhs, Coordinates const& rhs) noexcept
         {
                 return
-                        std::tie(lhs.row_, rhs.col_) ==
-                        std::tie(rhs.row_, rhs.col_)
+                        std::forward_as_tuple(lhs.row(), lhs.col()) ==
+                        std::forward_as_tuple(rhs.row(), rhs.col())
                 ;
         }
 
-        friend /* constexpr */ auto
+        friend /* constexpr */ bool
         operator!=(Coordinates const& lhs, Coordinates const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
-
-private:
-        int row_;
-        int col_;
 };
-
 
 }       // namespace sco
 }       // namespace grid

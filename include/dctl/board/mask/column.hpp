@@ -22,7 +22,7 @@ private:
                 constexpr auto operator()(Square const& sq) const noexcept
                 {
                         using Grid = typename Square::grid_type;
-                        return coord_from_sq(sq).col() == (color_ ? Grid::width - 1 - column_ : column_);
+                        return llo_from_ulo(coord_from_sq(sq)).col() == (color_ == Side::white ? column_ : Grid::width - 1 - column_);
                 }
         };
 

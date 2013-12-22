@@ -5,6 +5,12 @@ namespace grid {
 namespace detail {
 
 template<class T>
+constexpr auto llo_from_ulo(T const& v, T const& c) noexcept
+{
+        return (c - 1) - v;
+}
+
+template<class T>
 constexpr auto sco_from_ulo(T const& v, T const& c) noexcept
 {
         return 2 * v - (c - 1);
