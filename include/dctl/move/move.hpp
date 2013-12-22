@@ -112,7 +112,7 @@ public:
 
         // string
 
-        auto notation() const
+        auto numeric() const
         {
                 std::stringstream sstr;
                 sstr << std::setfill('0') << std::setw(2) << Board::square_from_bit(from_) + 1;

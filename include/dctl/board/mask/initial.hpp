@@ -2,7 +2,7 @@
 #include <array>                        // array
 #include <cassert>                      // assert
 #include <cstddef>                      // size_t
-#include <dctl/grid/coordinates.hpp>    // decentralize, coord_from_sq
+#include <dctl/grid/coordinates.hpp>    // coord_from_sq
 #include <dctl/node/side.hpp>           // black, white
 #include <dctl/utility/make_array.hpp>  // make_array
 
@@ -24,7 +24,7 @@ private:
                 {
                         using Grid = typename Square::grid_type;
                         auto const separation = Board::height - 2 * rows_;
-                        auto const row = grid::detail::decentralize(grid::coord_from_sq(sq).row(), Grid::height);
+                        auto const row = coord_from_sq(sq).row();
                         auto const min_row = color_ ? Grid::height - (Grid::height - separation) / 2 : 0;
                         auto const max_row = color_ ? Grid::height : (Grid::height - separation) / 2;
                         return min_row <= row && row < max_row;

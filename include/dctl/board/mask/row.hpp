@@ -1,7 +1,7 @@
 #pragma once
 #include <array>                        // array
 #include <cstddef>                      // size_t
-#include <dctl/grid/coordinates.hpp>    // decentralize, coord_from_sq
+#include <dctl/grid/coordinates.hpp>    // coord_from_sq
 #include <dctl/node/side.hpp>           // black, white
 #include <dctl/utility/make_array.hpp>  // make_array
 
@@ -22,7 +22,7 @@ private:
                 constexpr auto operator()(Square const& sq) const noexcept
                 {
                         using Grid = typename Square::grid_type;
-                        return grid::detail::decentralize(grid::coord_from_sq(sq).row(), Grid::height) == (color_ ? Grid::height - 1 - row_ : row_);
+                        return coord_from_sq(sq).row() == (color_ ? Grid::height - 1 - row_ : row_);
                 }
         };
 
