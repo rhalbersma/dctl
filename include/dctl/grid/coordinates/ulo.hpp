@@ -1,5 +1,5 @@
 #pragma once
-#include <tuple>                        // tie
+#include <dctl/grid/coordinates/detail/coordinates.hpp> // Coordinates
 
 namespace dctl {
 namespace grid {
@@ -27,42 +27,13 @@ private:
 
 template<class Grid>
 class Coordinates
+:
+        public detail::Coordinates
 {
 public:
-        constexpr Coordinates(int r, int c) noexcept
-        :
-                row_{r},
-                col_{c}
-        {}
+        // structors
 
-        constexpr auto row() const noexcept
-        {
-                return row_;
-        }
-
-        constexpr auto col() const noexcept
-        {
-                return col_;
-        }
-
-        friend /* constexpr */ auto
-        operator==(Coordinates const& lhs, Coordinates const& rhs) noexcept
-        {
-                return
-                        std::tie(lhs.row_, rhs.col_) ==
-                        std::tie(rhs.row_, rhs.col_)
-                ;
-        }
-
-        friend /* constexpr */ auto
-        operator!=(Coordinates const& lhs, Coordinates const& rhs) noexcept
-        {
-                return !(lhs == rhs);
-        }
-
-private:
-        int row_;
-        int col_;
+        using detail::Coordinates::Coordinates;
 };
 
 }       // namespace ulo

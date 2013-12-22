@@ -1,8 +1,9 @@
 #pragma once
 #include <dctl/angle.hpp>                               // Angle
+#include <dctl/grid/coordinates/llo.hpp>                // Coordinates
 #include <dctl/grid/coordinates/sco.hpp>                // Square, Coordinates
 #include <dctl/grid/coordinates/ulo.hpp>                // Coordinates
-#include <dctl/grid/coordinates/detail/transform.hpp>   // sco_from_ulo, ulo_from_sco
+#include <dctl/grid/coordinates/detail/transform.hpp>   // llo_from_sco, sco_from_ulo, ulo_from_sco
 
 namespace dctl {
 namespace grid {
@@ -63,6 +64,15 @@ constexpr auto sq_from_coord(Coordinates<Grid> const& coord) noexcept
 }       // namespace ulo
 
 // conversions between Coordinates with Upper Left Origin and Screen Centered Origin
+
+template<class Grid>
+constexpr llo::Coordinates<Grid> llo_from_ulo(ulo::Coordinates<Grid> const& coord)
+{
+        return {
+                detail::llo_from_ulo(coord.row(), Grid::height),
+                                     coord.col()
+        };
+}
 
 template<class Grid>
 constexpr sco::Coordinates sco_from_ulo(ulo::Coordinates<Grid> const& coord)

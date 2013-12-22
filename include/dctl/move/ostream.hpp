@@ -7,7 +7,7 @@ namespace dctl {
 template<class Rules, class Board>
 decltype(auto) operator<<(std::ostream& ostr, Move<Rules, Board> const& m)
 {
-        ostr << m.numeric();
+        ostr << m.algebraic();
         return ostr;
 }
 

@@ -16,7 +16,7 @@ using namespace dctl;
 int main()
 {
         using Rules = rules::International;
-        using Board = board::International;
+        using Board = board::Mini;
         using Pos = Position<Rules, Board>;
 
         auto initial = Pos::initial();
@@ -29,7 +29,7 @@ int main()
 
                 auto moves = successor::generate(p);
                 std::sort(begin(moves), end(moves), [](auto const& L, auto const& R) {
-                        return L.numeric() < R.numeric();
+                        return L.algebraic() < R.algebraic();
                 });
 
                 if (moves.empty()) {

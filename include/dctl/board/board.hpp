@@ -58,7 +58,7 @@ private:
         template<class DestGrid, class FromSquare>
         static constexpr auto transform(FromSquare const& from_sq, Angle const& theta)
         {
-                return grid::ulo::sq_from_coord(
+                return sq_from_coord(
                         grid::ulo_from_sco<DestGrid>(
                                 rotate(
                                         sco_from_ulo(coord_from_sq(from_sq)),

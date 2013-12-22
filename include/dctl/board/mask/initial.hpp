@@ -24,9 +24,9 @@ private:
                 {
                         using Grid = typename Square::grid_type;
                         auto const separation = Board::height - 2 * rows_;
-                        auto const row = coord_from_sq(sq).row();
-                        auto const min_row = color_ ? Grid::height - (Grid::height - separation) / 2 : 0;
-                        auto const max_row = color_ ? Grid::height : (Grid::height - separation) / 2;
+                        auto const row = llo_from_ulo(coord_from_sq(sq)).row();
+                        auto const min_row = color_ == Side::white ? 0 : Grid::height - (Grid::height - separation) / 2;
+                        auto const max_row = color_ == Side::white ? (Grid::height - separation) / 2 : Grid::height;
                         return min_row <= row && row < max_row;
                 }
         };
