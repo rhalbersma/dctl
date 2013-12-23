@@ -5,7 +5,7 @@ namespace grid {
 namespace detail {
 
 template<class T>
-constexpr auto llo_from_ulo(T const& v, T const& c) noexcept
+constexpr auto swap_llo_ulo(T const& v, T const& c) noexcept
 {
         return (c - 1) - v;
 }

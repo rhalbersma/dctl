@@ -40,11 +40,11 @@ private:
                 return Board::copy_if(lambda{segment});
         }
 
-        using T = typename Board::set_type;
-        static constexpr auto N     = Board::is_orthogonal_captures ?      4 :      8;
         static constexpr auto theta = Board::is_orthogonal_captures ? 90_deg : 45_deg;
         static constexpr auto beta  = Board::is_orthogonal_captures ? 45_deg :  0_deg;
-        using table_type = std::array<T, N>;
+        static constexpr auto N     = Board::is_orthogonal_captures ?      4 :      8;
+        using Set = typename Board::set_type;
+        using table_type = std::array<Set, N>;
 
         static constexpr table_type table = make_array<N>(init);
 

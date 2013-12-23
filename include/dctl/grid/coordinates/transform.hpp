@@ -1,9 +1,10 @@
 #pragma once
 #include <dctl/angle.hpp>                               // Angle
-#include <dctl/grid/coordinates/llo.hpp>                // Coordinates
-#include <dctl/grid/coordinates/sco.hpp>                // Square, Coordinates
-#include <dctl/grid/coordinates/ulo.hpp>                // Coordinates
-#include <dctl/grid/coordinates/detail/transform.hpp>   // llo_from_sco, sco_from_ulo, ulo_from_sco
+#include <dctl/grid/coordinates/llo.hpp>                // Coordinates with Lower Left Origin
+#include <dctl/grid/coordinates/sco.hpp>                // Coordinates with Screen Centered Origin
+#include <dctl/grid/coordinates/ulo.hpp>                // Coordinates with Upper Left Origin
+#include <dctl/grid/coordinates/square.hpp>             // Square with Upper Left Origin
+#include <dctl/grid/coordinates/detail/transform.hpp>   // swap_llo_ulo, sco_from_ulo, ulo_from_sco
 
 namespace dctl {
 namespace grid {
@@ -63,21 +64,27 @@ constexpr auto sq_from_coord(Coordinates<Grid> const& coord) noexcept
 
 }       // namespace ulo
 
-// conversions between Coordinates with Upper Left Origin and Screen Centered Origin
+// conversions between Coordinates with Lower Left Origin and Upper Left Origin
 
 template<class Grid>
 constexpr llo::Coordinates<Grid> llo_from_ulo(ulo::Coordinates<Grid> const& coord)
 {
-        return {
-                detail::llo_from_ulo(coord.row(), Grid::height),
-                                     coord.col()
-        };
+        return { detail::swap_llo_ulo(coord.row(), Grid::height), coord.col() };
 }
+
+template<class Grid>
+constexpr ulo::Coordinates<Grid> ulo_from_llo(llo::Coordinates<Grid> const& coord)
+{
+        return { detail::swap_llo_ulo(coord.row(), Grid::height), coord.col() };
+}
+
+// conversions between Coordinates with Upper Left Origin and Screen Centered Origin
 
 template<class Grid>
 constexpr sco::Coordinates sco_from_ulo(ulo::Coordinates<Grid> const& coord)
 {
-        return {
+        return
+        {
                 detail::sco_from_ulo(coord.row(), Grid::height),
                 detail::sco_from_ulo(coord.col(), Grid::width )
         };
@@ -86,7 +93,8 @@ constexpr sco::Coordinates sco_from_ulo(ulo::Coordinates<Grid> const& coord)
 template<class Grid>
 constexpr ulo::Coordinates<Grid> ulo_from_sco(sco::Coordinates const& coord)
 {
-        return {
+        return
+        {
                 detail::ulo_from_sco(coord.row(), Grid::height),
                 detail::ulo_from_sco(coord.col(), Grid::width )
         };

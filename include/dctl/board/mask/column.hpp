@@ -32,9 +32,9 @@ private:
                 return Board::copy_if(lambda{Color, column});
         }
 
-        using T = typename Board::set_type;
         static constexpr auto N = Board::width;
-        using table_type = std::array<T, N>;
+        using Set = typename Board::set_type;
+        using table_type = std::array<Set, N>;
 
         static constexpr table_type table[] =
         {
