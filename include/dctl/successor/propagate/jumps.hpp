@@ -16,7 +16,7 @@
 #include <dctl/utility/total_order.hpp>
 #include <dctl/ray/iterator.hpp>
 
-#include <dctl/board/mask/jump_start.hpp>
+#include <dctl/board/mask.hpp>
 #include <dctl/bit/algorithm.hpp>
 
 namespace dctl {

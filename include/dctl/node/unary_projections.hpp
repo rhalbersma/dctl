@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/node/detail/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/board/mask/squares.hpp>
+#include <dctl/board/mask.hpp>
 
 namespace dctl {
 

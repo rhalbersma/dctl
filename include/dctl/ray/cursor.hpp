@@ -15,7 +15,7 @@ class StridedCursor
 {
         static constexpr auto theta = Angle{Direction};
         static constexpr auto S = Board::shift_size(theta);
-        static constexpr auto N = is_positive(theta)? -S : S;
+        static constexpr auto N = is_positive(theta) ? -S : S;
         static_assert(N != 0, "Cursors need a non-zero stride.");
 
 public:

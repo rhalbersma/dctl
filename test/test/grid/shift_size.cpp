@@ -31,7 +31,7 @@ using BoardSequence = boost::mpl::vector
 template<class Board>
 struct make_grid
 {
-        using type = typename Board::InternalGrid;
+        using type = typename Board::internal_grid;
 };
 
 using GridSequence = boost::mpl::transform<

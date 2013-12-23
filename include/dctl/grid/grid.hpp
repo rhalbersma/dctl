@@ -62,8 +62,11 @@ public:
 
         // grid size
 
-        static constexpr auto size = (Dimensions::width * Dimensions::height) / 2 + (Dimensions::width * Dimensions::height * Dimensions::parity) % 2;
+        static constexpr int size = (Dimensions::width * Dimensions::height) / 2 + (Dimensions::width * Dimensions::height * Dimensions::parity) % 2;
 };
+
+template<class Dimensions>
+constexpr int Grid<Dimensions, 0>::size;
 
 }       // namespace grid
 }       // namespace dctl

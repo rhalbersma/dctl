@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/angle/detail/abs_remainder.hpp>
+#include <dctl/board/mask/copy_if.hpp>  // copy_if
 #include <dctl/grid/coordinates.hpp>
 
 namespace dctl {
@@ -17,7 +18,7 @@ private:
                 template<class Square>
                 constexpr auto operator()(Square const& dest_sq) const noexcept
                 {
-                        auto const from_sq = grid::ulo::Square<typename Board::ExternalGrid>{Board::square_from_bit(from_bit_)};
+                        auto const from_sq = grid::ulo::Square<typename Board::external_grid>{Board::square_from_bit(from_bit_)};
                         auto const from_coord = coord_from_sq(from_sq);
                         auto const dest_coord = coord_from_sq(dest_sq);
                         auto const delta_row = dctl::detail::abs_remainder(from_coord.row() - dest_coord.row(), 4);
@@ -31,13 +32,13 @@ private:
 
         static constexpr auto init(int n) noexcept
         {
-                return Board::copy_if(lambda{n});
+                return copy_if(Board{}, lambda{n});
         }
 
         static constexpr auto N = 4;
         using Set = typename Board::set_type;
         using table_type = std::array<Set, N>;
-        using Grid = typename Board::InternalGrid;
+        using Grid = typename Board::internal_grid;
 
         static constexpr table_type table =
         {{

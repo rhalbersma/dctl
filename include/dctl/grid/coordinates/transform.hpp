@@ -8,6 +8,60 @@
 
 namespace dctl {
 namespace grid {
+namespace sco {
+
+// rotations among Coordinates with Screen Centered Origin
+
+inline
+constexpr auto rotate(Coordinates const& coord, Angle const& theta)
+{
+        switch (theta) {
+        case   0: return coord;
+        case  90: return Coordinates{  coord.col(), -coord.row() };
+        case 180: return Coordinates{ -coord.row(), -coord.col() };
+        case 270: return Coordinates{ -coord.col(),  coord.row() };
+        default: return throw std::invalid_argument("Coordinates rotation angles shall be a multiple of 90 degrees."), coord;
+        }
+}
+
+}       // namespace sco
+
+// conversions between Coordinates with Screen Centered Origin and Upper Left Origin
+
+template<class Grid>
+constexpr sco::Coordinates sco_from_ulo(ulo::Coordinates<Grid> const& coord)
+{
+        return
+        {
+                detail::sco_from_ulo(coord.row(), Grid::height),
+                detail::sco_from_ulo(coord.col(), Grid::width )
+        };
+}
+
+template<class Grid>
+constexpr ulo::Coordinates<Grid> ulo_from_sco(sco::Coordinates const& coord)
+{
+        return
+        {
+                detail::ulo_from_sco(coord.row(), Grid::height),
+                detail::ulo_from_sco(coord.col(), Grid::width )
+        };
+}
+
+// conversions between Coordinates with Lower Left Origin and Upper Left Origin
+
+template<class Grid>
+constexpr llo::Coordinates<Grid> llo_from_ulo(ulo::Coordinates<Grid> const& coord)
+{
+        return { detail::swap_llo_ulo(coord.row(), Grid::height), coord.col() };
+}
+
+template<class Grid>
+constexpr ulo::Coordinates<Grid> ulo_from_llo(llo::Coordinates<Grid> const& coord)
+{
+        return { detail::swap_llo_ulo(coord.row(), Grid::height), coord.col() };
+}
+
 namespace ulo {
 
 // conversions between Squares and Coordinates with Upper Left Origin
@@ -62,60 +116,25 @@ constexpr auto sq_from_coord(Coordinates<Grid> const& coord) noexcept
         return Square<Grid>{ NUM };
 }
 
+// conversion between Squares of relatively rotated Grids
+
+template<class DestGrid, class FromGrid>
+constexpr auto square_from_square(Square<FromGrid> const& from_sq, Angle const& theta)
+{
+        // perform a 5-step coordinate transformation
+        // ulo::Square -> ulo::Coordinates -> sco::Coordinates -> ulo::Coordinates -> ulo::Square
+        //                                    ^^^^^^^^^^^^^^^^
+        //                                    *rotations here*
+        return sq_from_coord(
+                grid::ulo_from_sco<DestGrid>(
+                        rotate(
+                                grid::sco_from_ulo(coord_from_sq(from_sq)),
+                                theta
+                        )
+                )
+        );
+}
+
 }       // namespace ulo
-
-// conversions between Coordinates with Lower Left Origin and Upper Left Origin
-
-template<class Grid>
-constexpr llo::Coordinates<Grid> llo_from_ulo(ulo::Coordinates<Grid> const& coord)
-{
-        return { detail::swap_llo_ulo(coord.row(), Grid::height), coord.col() };
-}
-
-template<class Grid>
-constexpr ulo::Coordinates<Grid> ulo_from_llo(llo::Coordinates<Grid> const& coord)
-{
-        return { detail::swap_llo_ulo(coord.row(), Grid::height), coord.col() };
-}
-
-// conversions between Coordinates with Upper Left Origin and Screen Centered Origin
-
-template<class Grid>
-constexpr sco::Coordinates sco_from_ulo(ulo::Coordinates<Grid> const& coord)
-{
-        return
-        {
-                detail::sco_from_ulo(coord.row(), Grid::height),
-                detail::sco_from_ulo(coord.col(), Grid::width )
-        };
-}
-
-template<class Grid>
-constexpr ulo::Coordinates<Grid> ulo_from_sco(sco::Coordinates const& coord)
-{
-        return
-        {
-                detail::ulo_from_sco(coord.row(), Grid::height),
-                detail::ulo_from_sco(coord.col(), Grid::width )
-        };
-}
-
-namespace sco {
-
-// rotations among Coordinates with Screen Centered Origin
-
-inline
-constexpr auto rotate(Coordinates const& coord, Angle const& theta)
-{
-        switch (theta) {
-        case   0: return coord;
-        case  90: return Coordinates{  coord.col(), -coord.row() };
-        case 180: return Coordinates{ -coord.row(), -coord.col() };
-        case 270: return Coordinates{ -coord.col(),  coord.row() };
-        default: return throw std::invalid_argument("Coordinates rotation angles shall be a multiple of 90 degrees."), coord;
-        }
-}
-
-}       // namespace sco
 }       // namespace grid
 }       // namespace dctl

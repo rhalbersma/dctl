@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/mask/promotion.hpp>
+#include <dctl/board/mask.hpp>
 
 namespace dctl {
 

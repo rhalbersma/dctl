@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/board/mask/copy_if.hpp>  // copy_if
 
 namespace dctl {
 namespace board {
@@ -20,7 +21,7 @@ private:
 
         using value_type = typename Board::set_type;
 
-        static constexpr value_type value = Board::copy_if(lambda{});
+        static constexpr value_type value = copy_if(Board{}, lambda{});
 
 public:
         static constexpr auto mask() noexcept

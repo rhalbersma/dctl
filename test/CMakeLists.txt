@@ -13,7 +13,7 @@ project(TestProject CXX)
 ###############################################################
 
 # use C++1y features
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -ftemplate-depth=16384")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -ftemplate-depth=1024")
 
 # fail hard
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
