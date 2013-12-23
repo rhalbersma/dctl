@@ -56,7 +56,8 @@ public:
 
 private:
         template<class DestGrid, class FromSquare>
-        static constexpr auto transform(FromSquare const& from_sq, Angle const& theta)
+        static constexpr auto
+        transform(FromSquare const& from_sq, Angle const& theta)
         {
                 return sq_from_coord(
                         grid::ulo_from_sco<DestGrid>(
@@ -68,18 +69,27 @@ private:
                 );
         }
 
-        static constexpr int init_bit_from_square(int n) noexcept
+        static constexpr int
+        init_bit_from_square(int n) noexcept
         {
-                return transform<InternalGrid>(grid::ulo::Square<ExternalGrid>{n}, orientation).value();
+                return transform<InternalGrid>(
+                        grid::ulo::Square<ExternalGrid>{n}, orientation
+                ).value();
         }
 
-        static constexpr int init_square_from_bit(int n) noexcept
+        static constexpr int
+        init_square_from_bit(int n) noexcept
         {
-                return transform<ExternalGrid>(grid::ulo::Square<InternalGrid>{n}, inverse(orientation)).value();
+                return transform<ExternalGrid>(
+                        grid::ulo::Square<InternalGrid>{n}, inverse(orientation)
+                ).value();
         }
 
-        static constexpr std::array<int, N> table_bit_from_square = make_array<N>(init_bit_from_square);
-        static constexpr std::array<int, N> table_square_from_bit = make_array<N>(init_square_from_bit);
+        static constexpr std::array<int, N>
+        table_bit_from_square = make_array<N>(init_bit_from_square);
+
+        static constexpr std::array<int, N>
+        table_square_from_bit = make_array<N>(init_square_from_bit);
 
 public:
         static constexpr auto bit_from_square(int n) noexcept

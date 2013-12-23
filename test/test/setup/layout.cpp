@@ -7,6 +7,12 @@
 #include <dctl/setup/diagram.hpp>               // diagram, bits, squares
 #include <dctl/board/algebraic.hpp>
 #include <iterator>
+#include <dctl/node/position.hpp>
+#include <dctl/setup/diagram.hpp>
+#include <dctl/rules/variants.hpp>
+#include <dctl/setup/string.hpp>
+#include <dctl/board/mask/jump_group.hpp>
+
 namespace dctl {
 namespace setup {
 
@@ -37,8 +43,7 @@ using DimSequence = boost::mpl::vector
         grid::Dimensions<10, 10, false>,
         grid::Dimensions<10, 10, true >,
         grid::Dimensions<12, 10, false>,
-        grid::Dimensions<12, 10, true >,
-        grid::Dimensions<10, 19>
+        grid::Dimensions<12, 10, true >
 >;
 
 

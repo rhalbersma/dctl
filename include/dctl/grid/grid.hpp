@@ -12,14 +12,15 @@ class Grid
 {
 private:
         using BaseGrid = Grid<Dimensions, 0>;
-        static constexpr auto left_down = (Dimensions::width + EdgeColumns) / 2;
 
 public:
         static constexpr auto edge_columns = EdgeColumns;
 
         // range of row pairs
 
-        static constexpr auto modulo = 2 * left_down + 1;
+        static constexpr auto left_down = (Dimensions::width + EdgeColumns) / 2;
+        static constexpr auto right_down = left_down + 1;
+        static constexpr auto modulo = left_down + right_down;
 
         // left (l) and right (r) edges of even (e) and odd (o) rows
 

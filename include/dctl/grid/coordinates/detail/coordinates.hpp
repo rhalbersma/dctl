@@ -1,4 +1,5 @@
 #pragma once
+#include <tuple>                        // forward_as_tuple
 
 namespace dctl {
 namespace grid {
@@ -25,6 +26,23 @@ public:
         constexpr int col() const noexcept
         {
                 return col_;
+        }
+
+        // predicates
+
+        friend /* constexpr */ bool
+        operator==(Coordinates const& lhs, Coordinates const& rhs) noexcept
+        {
+                return
+                        std::forward_as_tuple(lhs.row_, lhs.col_) ==
+                        std::forward_as_tuple(rhs.row_, rhs.col_)
+                ;
+        }
+
+        friend /* constexpr */ bool
+        operator!=(Coordinates const& lhs, Coordinates const& rhs) noexcept
+        {
+                return !(lhs == rhs);
         }
 
 private:

@@ -1,6 +1,6 @@
 #pragma once
 #include <stdexcept>                    // invalid_argument
-#include <tuple>                        // tie
+#include <tuple>                        // forward_as_tuple
 #include <dctl/angle.hpp>               // Angle
 
 namespace dctl {
@@ -26,15 +26,17 @@ public:
 
         // predicates
 
-        friend /* constexpr */ auto operator==(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
+        friend /* constexpr */ auto
+        operator==(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
         {
-                return (
-                       std::tie(lhs.height_, lhs.width_, lhs.parity_) ==
-                       std::tie(rhs.height_, rhs.width_, rhs.parity_)
-                );
+                return
+                       std::forward_as_tuple(lhs.height_, lhs.width_, lhs.parity_) ==
+                       std::forward_as_tuple(rhs.height_, rhs.width_, rhs.parity_)
+                ;
         }
 
-        friend /* constexpr */ auto operator!=(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
+        friend /* constexpr */ auto
+        operator!=(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
