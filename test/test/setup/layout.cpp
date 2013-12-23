@@ -11,7 +11,6 @@
 #include <dctl/setup/diagram.hpp>
 #include <dctl/rules/variants.hpp>
 #include <dctl/setup/string.hpp>
-#include <dctl/board/mask/jump_group.hpp>
 
 namespace dctl {
 namespace setup {
@@ -43,7 +42,8 @@ using DimSequence = boost::mpl::vector
         grid::Dimensions<10, 10, false>,
         grid::Dimensions<10, 10, true >,
         grid::Dimensions<12, 10, false>,
-        grid::Dimensions<12, 10, true >
+        grid::Dimensions<12, 10, true >,
+        grid::Dimensions<45, 45>
 >;
 
 
@@ -54,11 +54,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, DimSequence)
 
         using G = board::Board< T, false>;
         std::cout << diagram<G, bits>()() << '\n';
-        std::cout << "size = " << G::InternalGrid::size << ", angle = " << G::orientation << "\n\n";
+        std::cout << "size = " << G::internal_grid::size << ", angle = " << G::orientation << "\n\n";
 
         using H = board::Board< T, true >;
         std::cout << diagram<H, bits>()() << '\n';
-        std::cout << "size = " << H::InternalGrid::size << ", angle = " << H::orientation << "\n\n";
+        std::cout << "size = " << H::internal_grid::size << ", angle = " << H::orientation << "\n\n";
 }
 
 BOOST_AUTO_TEST_SUITE_END()

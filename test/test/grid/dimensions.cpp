@@ -8,8 +8,6 @@
 #include <dctl/angle.hpp>                       // _deg
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
 #include <dctl/grid/dimensions.hpp>             // Dimensions
-#include <dctl/grid/grid.hpp>                   // Grid
-#include <dctl/grid/shift_size.hpp>             // shift_size
 #include <test/group.hpp>                       // is_realized, make_cyclic
 
 namespace dctl {

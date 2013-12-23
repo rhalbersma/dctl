@@ -1,6 +1,7 @@
 #pragma once
 #include <array>                        // array
 #include <cstddef>                      // size_t
+#include <dctl/board/mask/copy_if.hpp>  // copy_if
 #include <dctl/grid/coordinates.hpp>    // coord_from_sq
 #include <dctl/node/side.hpp>           // black, white
 #include <dctl/utility/make_array.hpp>  // make_array
@@ -29,7 +30,7 @@ private:
         template<bool Color>
         static constexpr auto init(int column) noexcept
         {
-                return Board::copy_if(lambda{Color, column});
+                return copy_if(Board{}, lambda{Color, column});
         }
 
         static constexpr auto N = Board::width;

@@ -86,7 +86,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 if (isdigit(ch)) {
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
-                                        assert(Board::is_valid(sq - 1));
+                                        //assert(Board::is_valid(sq - 1));
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
                                         p_pieces[setup_color].set(b);
                                         if (setup_kings)
@@ -148,8 +148,8 @@ struct read<Rules, Board, dxp::protocol, Token>
                 sstr >> ch;
                 p_side = read_color<Token>(ch);
 
-                 for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
-                        auto b = Board::bit_from_square(sq);         // convert square to bit
+                 for (auto sq : Board::squares()) {
+                        auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
                         case Token::black:

@@ -6,6 +6,7 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
 #include <dctl/angle.hpp>                       // _deg
+#include <dctl/board/iterator.hpp>
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
 #include <dctl/grid/coordinates.hpp>            // Square, coord_from_sq, sco_from_ulo
 #include <test/group.hpp>                       // is_realized, make_cyclic
@@ -49,13 +50,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllSquare
                 C1, C2, C4
         };
 
-        auto const first = boost::counting_iterator<int>{T::begin()};
-        auto const last  = boost::counting_iterator<int>{T::end()  };
-
         BOOST_CHECK(
                 std::all_of(std::begin(C_N), std::end(C_N), [=](auto const& g) {
-                        return std::all_of(first, last, [&](auto i) {
-                                auto const coord = sco_from_ulo(coord_from_sq(grid::ulo::Square<typename T::ExternalGrid>{i}));
+                        return std::all_of(T::begin(), T::end(), [&](auto i) {
+                                auto const coord = sco_from_ulo(coord_from_sq(grid::ulo::Square<typename T::external_grid>{i}));
                                 return group::action::is_realized(coord, g);
                         });
                 })

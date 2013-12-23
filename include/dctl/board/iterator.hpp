@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/board/board.hpp>
 #include <dctl/angle.hpp>               // Angle, is_negative, is_positive
 #include <dctl/utility/shift.hpp>       // shift_assign
 

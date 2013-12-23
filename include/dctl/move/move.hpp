@@ -125,8 +125,8 @@ public:
 
         auto algebraic() const
         {
-                auto from_sq = grid::ulo::Square<typename Board::ExternalGrid>{Board::square_from_bit(from_)};
-                auto dest_sq = grid::ulo::Square<typename Board::ExternalGrid>{Board::square_from_bit(dest_)};
+                auto from_sq = grid::ulo::Square<typename Board::external_grid>{Board::square_from_bit(from_)};
+                auto dest_sq = grid::ulo::Square<typename Board::external_grid>{Board::square_from_bit(dest_)};
                 auto from_coord = llo_from_ulo(coord_from_sq(from_sq));
                 auto dest_coord = llo_from_ulo(coord_from_sq(dest_sq));
 

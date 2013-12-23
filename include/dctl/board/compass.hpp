@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/angle.hpp>               // _deg, inverse, rotate
+#include <dctl/node/side.hpp>           // white
 
 namespace dctl {
 namespace board {
@@ -39,7 +40,7 @@ struct Directions
 template<class Board, bool Color>
 using Compass = detail::Directions
 <
-        rotate(inverse(Board::orientation), Color ? 0_deg : 180_deg)
+        rotate(inverse(Board::orientation), Color == Side::white ? 0_deg : 180_deg)
 >;
 
 }       // namespace board

@@ -2,8 +2,7 @@
 #include <cstdlib>                      // abs
 #include <dctl/evaluate/weight.hpp>
 #include <dctl/successor/mobility.hpp>
-#include <dctl/board/mask/column.hpp>
-#include <dctl/board/mask/row.hpp>
+#include <dctl/board/mask.hpp>
 
 namespace dctl {
 namespace evaluate {

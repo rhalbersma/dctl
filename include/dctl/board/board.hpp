@@ -1,16 +1,18 @@
 #pragma once
-#include <array>                        // array
-#include <cstddef>                      // size_t
-#include <cstdint>                      // uint64_t
-#include <limits>                       // digits
-#include <dctl/angle.hpp>               // Angle, inverse
-#include <dctl/bit/bit_set.hpp>         // bit_set
-#include <dctl/grid/coordinates.hpp>    // Square, coord_from_sq, sq_from_coord, rotate
-#include <dctl/grid/grid.hpp>           // Grid
-#include <dctl/grid/shift_size.hpp>     // shift_size
-#include <dctl/grid/orientation.hpp>    // SizeMinimizingOrientation, Make
-#include <dctl/node/side.hpp>           // black, white
-#include <dctl/utility/make_array.hpp>  // make_array
+#include <array>                                // array
+#include <cstddef>                              // size_t
+#include <cstdint>                              // uint64_t
+#include <limits>                               // digits
+#include <boost/iterator/counting_iterator.hpp> // counting_iterator
+#include <boost/range/counting_range.hpp>       // counting_range
+#include <dctl/angle.hpp>                       // Angle, inverse
+#include <dctl/bit/bit_set.hpp>                 // bit_set
+#include <dctl/grid/coordinates.hpp>            // Square, coord_from_sq, sq_from_coord, rotate
+#include <dctl/grid/grid.hpp>                   // Grid
+#include <dctl/grid/shift_size.hpp>             // shift_size
+#include <dctl/grid/orientation.hpp>            // SizeMinimizingOrientation, Make
+#include <dctl/node/side.hpp>                   // black, white
+#include <dctl/utility/make_array.hpp>          // make_array
 
 namespace dctl {
 namespace board {
@@ -25,63 +27,56 @@ public:
         static constexpr auto edge_columns = IsOrthogonalCaptures ? 2 : 1;
         static constexpr auto orientation = Angle{grid::SizeMinimizingOrientation<Dimensions, edge_columns>::value};
 
-        using InternalGrid = grid::Make<Dimensions, edge_columns, orientation>;
-        using ExternalGrid = grid::Grid<Dimensions, 0>;
+        using internal_grid = grid::Make<Dimensions, edge_columns, orientation>;
+        using external_grid = grid::Grid<Dimensions, 0>;
 
+private:
         using Block = uint64_t;
-        static constexpr auto needed = InternalGrid::size / std::numeric_limits<Block>::digits + 1;
-        static constexpr auto Nb = needed;
+        static constexpr auto Nb = internal_grid::size / std::numeric_limits<Block>::digits + 1;
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
+
+public:
         using set_type = bit::bit_set<int, Block, Nb>;
+
+        static constexpr auto size() noexcept
+        {
+                return external_grid::size;
+        }
 
         static constexpr auto shift_size(Angle const& direction)
         {
-                return grid::shift_size<InternalGrid>(direction);
+                return grid::shift_size<internal_grid>(direction);
         }
 
-        static constexpr auto begin() noexcept
+        static auto begin() noexcept
         {
-                return 0;
+                return boost::counting_iterator<int>{0};
         }
 
-        static constexpr auto end() noexcept
+        static auto end() noexcept
         {
-                return ExternalGrid::size;
+                return boost::counting_iterator<int>{size()};
         }
 
-        static constexpr auto is_valid(int square) noexcept
+        static auto squares() noexcept
         {
-                return begin() <= square && square < end();
+                return boost::counting_range(*begin(), *end());
         }
 
 private:
-        template<class DestGrid, class FromSquare>
-        static constexpr auto
-        transform(FromSquare const& from_sq, Angle const& theta)
-        {
-                return sq_from_coord(
-                        grid::ulo_from_sco<DestGrid>(
-                                rotate(
-                                        sco_from_ulo(coord_from_sq(from_sq)),
-                                        theta
-                                )
-                        )
-                );
-        }
-
         static constexpr int
         init_bit_from_square(int n) noexcept
         {
-                return transform<InternalGrid>(
-                        grid::ulo::Square<ExternalGrid>{n}, orientation
+                return grid::ulo::square_from_square<internal_grid>(
+                        grid::ulo::Square<external_grid>{n}, orientation
                 ).value();
         }
 
         static constexpr int
         init_square_from_bit(int n) noexcept
         {
-                return transform<ExternalGrid>(
-                        grid::ulo::Square<InternalGrid>{n}, inverse(orientation)
+                return grid::ulo::square_from_square<external_grid>(
+                        grid::ulo::Square<internal_grid>{n}, inverse(orientation)
                 ).value();
         }
 
@@ -101,33 +96,24 @@ public:
         {
                 return table_square_from_bit[static_cast<std::size_t>(n)];
         }
-
-        /* NOTE: for C++11/14, constexpr predicate != lambda expression */
-        template<class Predicate>
-        static constexpr auto copy_if(Predicate pred) noexcept
-        {
-                set_type result{};
-                for (auto sq = 0; sq < ExternalGrid::size; ++sq)
-                        if (pred(grid::ulo::Square<ExternalGrid>{sq}))
-                                result.set(bit_from_square(sq));
-                return result;
-        }
 };
 
-template<class D, bool O>
-constexpr bool Board<D, O>::is_orthogonal_captures;
+template<class Dim, bool Orth>
+constexpr bool Board<Dim, Orth>::is_orthogonal_captures;
 
-template<class D, bool O>
-constexpr int Board<D, O>::edge_columns;
+template<class Dim, bool Orth>
+constexpr int Board<Dim, Orth>::edge_columns;
 
-template<class D, bool O>
-constexpr Angle Board<D, O>::orientation;
+template<class Dim, bool Orth>
+constexpr Angle Board<Dim, Orth>::orientation;
 
-template<class D, bool O>
-constexpr std::array<int, Board<D, O>::N> Board<D, O>::table_bit_from_square;
+template<class Dim, bool Orth>
+constexpr std::array<int, Board<Dim, Orth>::N>
+Board<Dim, Orth>::table_bit_from_square;
 
-template<class D, bool O>
-constexpr std::array<int, Board<D, O>::N> Board<D, O>::table_square_from_bit;
+template<class Dim, bool Orth>
+constexpr std::array<int, Board<Dim, Orth>::N>
+Board<Dim, Orth>::table_square_from_bit;
 
 }       // namespace board
 }       // namespace dctl

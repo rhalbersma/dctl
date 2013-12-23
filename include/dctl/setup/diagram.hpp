@@ -29,7 +29,7 @@ public:
         {
                 std::stringstream sstr;
 
-                for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
+                for (auto sq : Board::squares()) {
                         if (is_indent_row(sq))
                                 sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 
@@ -47,18 +47,18 @@ public:
 private:
         static bool is_end_row(int sq)
         {
-                auto const r = sq % Board::ExternalGrid::modulo;         // sq = modulo * q + r
-                auto const end_RE = r == Board::ExternalGrid::edge_re;   // right of even rows
-                auto const end_RO = r == Board::ExternalGrid::edge_ro;   // right of odd rows
+                auto const r = sq % Board::external_grid::modulo;         // sq = modulo * q + r
+                auto const end_RE = r == Board::external_grid::edge_re;   // right of even rows
+                auto const end_RO = r == Board::external_grid::edge_ro;   // right of odd rows
 
                 return end_RE || end_RO;
         }
 
         static bool is_indent_row(int sq)
         {
-                auto const r = sq % Board::ExternalGrid::modulo;                 // sq = modulo * q + r
-                auto const indent_LE = r == Board::ExternalGrid::edge_le;        // left of even rows
-                auto const indent_LO = r == Board::ExternalGrid::edge_lo;        // left of odd rows
+                auto const r = sq % Board::external_grid::modulo;                 // sq = modulo * q + r
+                auto const indent_LE = r == Board::external_grid::edge_le;        // left of even rows
+                auto const indent_LO = r == Board::external_grid::edge_lo;        // left of odd rows
 
                 return Board::parity ? indent_LO : indent_LE;
         }
