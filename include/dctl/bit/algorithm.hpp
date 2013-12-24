@@ -5,57 +5,75 @@ namespace dctl {
 namespace bit {
 
 template<class Set>
-constexpr auto set_none(Set const& lhs) noexcept
+constexpr auto set_none(Set const& s) noexcept
 {
-        return lhs.none();
+        return s.none();
 }
 
 template<class Set>
-constexpr auto set_any(Set const& lhs) noexcept
+constexpr auto set_any(Set const& s) noexcept
 {
-        return lhs.any();
+        return s.any();
 }
 
 template<class Set>
-constexpr auto set_all(Set const& lhs) noexcept
+constexpr auto set_all(Set const& s) noexcept
 {
-        return lhs.all();
+        return s.all();
 }
 
 template<class Set>
-constexpr auto set_is_count_equal_to(Set const& lhs, int n) noexcept
+constexpr auto set_is_count_equal_to(Set const& s, int n) noexcept
 {
-        return lhs.is_count_equal_to(n);
+        return s.is_count_equal_to(n);
 }
 
 template<class Set>
-constexpr auto set_is_count_less(Set const& lhs, int n) noexcept
+constexpr auto set_is_count_less(Set const& s, int n) noexcept
 {
-        return lhs.is_count_less(n);
+        return s.is_count_less(n);
 }
 
 template<class Set>
-constexpr auto set_count(Set const& lhs) noexcept
+constexpr auto is_single(Set const& s) noexcept
 {
-        return lhs.count();
+        return bit::set_is_count_equal_to(s, 1);
 }
 
 template<class Set>
-constexpr auto set_min_element(Set const& lhs) noexcept
+constexpr auto is_double(Set const& s) noexcept
 {
-        return lhs.begin();
+        return bit::set_is_count_equal_to(s, 2);
 }
 
 template<class Set>
-/* constexpr */ auto set_max_element(Set const& lhs) noexcept
+constexpr auto is_multiple(Set const& s) noexcept
 {
-        return lhs.rbegin().base();
+        return !bit::set_is_count_less(s, 2);
 }
 
 template<class Set>
-/* constexpr */ auto set_minmax_element(Set const& lhs) noexcept
+constexpr auto set_count(Set const& s) noexcept
 {
-        return std::make_pair(set_min_element(lhs), set_max_element(lhs));
+        return s.count();
+}
+
+template<class Set>
+constexpr auto set_min_element(Set const& s) noexcept
+{
+        return s.begin();
+}
+
+template<class Set>
+/* constexpr */ auto set_max_element(Set const& s) noexcept
+{
+        return s.rbegin().base();
+}
+
+template<class Set>
+/* constexpr */ auto set_minmax_element(Set const& s) noexcept
+{
+        return std::make_pair(set_min_element(s), set_max_element(s));
 }
 
 template<class Set>
@@ -113,15 +131,15 @@ constexpr auto set_difference(Set const& lhs, Set const& rhs) noexcept
 }
 
 template<class Set>
-constexpr auto set_transform_plus(Set const& lhs, int n) noexcept
+constexpr auto set_transform_plus(Set const& s, int n) noexcept
 {
-        return lhs << n;
+        return s << n;
 }
 
 template<class Set>
-constexpr auto set_transform_minus(Set const& lhs, int n) noexcept
+constexpr auto set_transform_minus(Set const& s, int n) noexcept
 {
-        return lhs >> n;
+        return s >> n;
 }
 
 }       // namespace bit
