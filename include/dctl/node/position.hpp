@@ -13,7 +13,6 @@
 #include <dctl/utility/int.hpp>         // HashIndex
 
 #include <dctl/bit/algorithm.hpp>
-#include <dctl/bit/predicates.hpp>
 #include <dctl/board/mask.hpp>
 
 namespace dctl {
