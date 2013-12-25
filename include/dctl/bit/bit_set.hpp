@@ -22,7 +22,7 @@ class bit_set
 {
 public:
         using Base = detail::base_set<T, Block, Nb>;
-        static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
+        enum { N = Nb * std::numeric_limits<Block>::digits };
 
         using key_type = T;
         using value_type = T;

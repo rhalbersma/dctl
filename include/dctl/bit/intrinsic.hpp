@@ -14,14 +14,16 @@ using lib::ctz;
 using lib::clz;
 using lib::popcount;
 
+// Bit Scan Forward for Non Zero input
 template<class T>
-constexpr auto bsf(T x)
+constexpr auto bsfnz(T x) noexcept
 {
         return ctznz(x);
 }
 
+// Bit Scan Reverse for Non Zero input
 template<class T>
-constexpr auto bsr(T x)
+constexpr auto bsrnz(T x) noexcept
 {
         return std::numeric_limits<T>::digits - 1 - clznz(x);
 }

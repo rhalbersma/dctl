@@ -9,10 +9,18 @@ namespace bit {
 namespace detail {
 
 template<class Block>
-struct base_iterator<Block, 1>
+class base_iterator<Block, 1>
 {
-        static constexpr auto N = std::numeric_limits<Block>::digits;
+private:
+        static_assert(
+                !std::numeric_limits<Block>::is_signed &&
+                 std::numeric_limits<Block>::is_integer,
+                 "Block has to be of unsigned integer type."
+        );
 
+        enum { N = std::numeric_limits<Block>::digits };
+
+public:
         constexpr int find_first() noexcept
         {
                 return bit::ctz(*block_);
@@ -21,9 +29,9 @@ struct base_iterator<Block, 1>
         constexpr void find_next()
         {
                 assert(0 <= index_ && index_ < N);
-                if (N <= ++index_) return;
-                auto const mask = *block_ >> index_;
-                if (mask)
+                if (N <= ++index_)
+                        return;
+                if (auto const mask = *block_ >> index_)
                         index_ += bit::ctznz(mask);
                 else
                         index_ = N;
@@ -33,9 +41,9 @@ struct base_iterator<Block, 1>
         constexpr void find_prev()
         {
                 assert(0 < index_ && index_ <= N);
-                if (--index_ <= 0) return;
-                auto const mask = *block_ << (N - 1 - index_);
-                if (mask)
+                if (--index_ <= 0)
+                        return;
+                if (auto const mask = *block_ << (N - 1 - index_))
                         index_ -= bit::clznz(mask);
                 else
                         index_ = 0;

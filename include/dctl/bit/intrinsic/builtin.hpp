@@ -8,7 +8,7 @@ namespace bit {
 namespace builtin {
 namespace detail {
 
-// gcc has built-in functions for trailing zero count
+// gcc has built-in functions for Count Trailing Zeros
 // for unsigned, unsigned long and unsigned long long
 // for zero input, the result is undefined
 
@@ -20,6 +20,7 @@ struct ctznz<unsigned>
 {
         constexpr auto operator()(unsigned x) const noexcept
         {
+                assert(x != 0);
                 return __builtin_ctz(x);
         }
 };
@@ -29,6 +30,7 @@ struct ctznz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const noexcept
         {
+                assert(x != 0);
                 return __builtin_ctzl(x);
         }
 };
@@ -38,11 +40,12 @@ struct ctznz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const noexcept
         {
+                assert(x != 0);
                 return __builtin_ctzll(x);
         }
 };
 
-// gcc has built-in functions for leading zero count
+// gcc has built-in functions for Count Leading Zeros
 // for unsigned, unsigned long and unsigned long long
 // for zero input, the result is undefined
 
@@ -54,6 +57,7 @@ struct clznz<unsigned>
 {
         constexpr auto operator()(unsigned x) const noexcept
         {
+                assert(x != 0);
                 return __builtin_clz(x);
         }
 };
@@ -63,6 +67,7 @@ struct clznz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const noexcept
         {
+                assert(x != 0);
                 return __builtin_clzl(x);
         }
 };
@@ -72,11 +77,12 @@ struct clznz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const noexcept
         {
+                assert(x != 0);
                 return __builtin_clzll(x);
         }
 };
 
-// gcc has built-in functions for population count
+// gcc has built-in functions for Population Count
 // for unsigned, unsigned long and unsigned long long,
 
 template<class T>
@@ -114,14 +120,12 @@ struct popcount<unsigned long long>
 template<class T>
 constexpr auto ctznz(T x) noexcept
 {
-        assert(x != 0);
         return detail::ctznz<T>()(x);
 }
 
 template<class T>
 constexpr auto clznz(T x) noexcept
 {
-        assert(x != 0);
         return detail::clznz<T>()(x);
 }
 

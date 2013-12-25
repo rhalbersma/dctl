@@ -16,7 +16,8 @@ public:
                 for (auto i = 0, n = 0; i < num_blocks<T>::value; ++i) {
                         auto const b = block_mask(x, i);
                         n += ctz_[b];
-                        if (b) return n;
+                        if (b)
+                                return n;
                 }
                 return std::numeric_limits<T>::digits;
         }
@@ -27,7 +28,8 @@ public:
                 for (auto i = num_blocks<T>::value - 1, n = 0; i >= 0; --i) {
                         auto const b = block_mask(x, i);
                         n += clz_[b];
-                        if (b) return n;
+                        if (b)
+                                return n;
                 }
                 return std::numeric_limits<T>::digits;
         }

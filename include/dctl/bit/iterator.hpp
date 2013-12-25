@@ -15,9 +15,12 @@ class bit_iterator
 :
         private detail::base_iterator<Block, Nb>
 {
-public:
+private:
+        // typedefs
+
         using Base = detail::base_iterator<Block, Nb>;
 
+public:
         using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = T;
         using difference_type   = std::ptrdiff_t;
@@ -34,9 +37,9 @@ public:
         {}
 
         template<class U>
-        constexpr bit_iterator(Block const* b, U value) noexcept
+        constexpr bit_iterator(Block const* b, U const& value) noexcept
         :
-                Base{b, static_cast<int>(value)}
+                Base{b, int{value}}
         {
                 static_assert(std::is_convertible<U, int>::value, "");
         }
@@ -71,19 +74,23 @@ public:
 
         // queries
 
-        constexpr reference operator*()
+        constexpr reference operator*() const
         {
-                return {*(this->block_), this->index_};
+                return { *(this->block_), this->index_ };
         }
 
         // predicates
 
-        friend constexpr bool operator==(bit_iterator const& lhs, bit_iterator const& rhs) noexcept
+        friend constexpr bool
+        operator==(bit_iterator const& lhs, bit_iterator const& rhs) noexcept
         {
+                // TODO: use std::forward_as_tuple or std::tie
+                //       when they become constexpr in C++14
                 return lhs.block_ == rhs.block_ && lhs.index_ == rhs.index_;
         }
 
-        friend constexpr bool operator!=(bit_iterator const& lhs, bit_iterator const& rhs) noexcept
+        friend constexpr bool
+        operator!=(bit_iterator const& lhs, bit_iterator const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
