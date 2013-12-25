@@ -9,16 +9,19 @@ namespace bit {
 template<class T, class Block, int Nb>
 class bit_reference
 {
-public:
+private:
+        // typedefs
+
         using iterator = bit_iterator<T, Block, Nb>;
 
+public:
         // structors
 
         template<class U>
-        constexpr bit_reference(Block const& b, U value) noexcept
+        constexpr bit_reference(Block const& b, U const& value) noexcept
         :
                 block_{b},
-                index_{static_cast<int>(value)}
+                index_{value}
         {
                 static_assert(std::is_convertible<U, int>::value, "");
         }
@@ -28,12 +31,12 @@ public:
         constexpr operator T() const noexcept
         {
                 static_assert(std::is_convertible<int, T>::value, "");
-                return static_cast<T>(index_);
+                return T{index_};
         }
 
         constexpr iterator operator&() const noexcept
         {
-                return {&block_, index_};
+                return { &block_, index_ };
         }
 
 private:

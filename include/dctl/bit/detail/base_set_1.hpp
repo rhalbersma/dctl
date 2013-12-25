@@ -1,4 +1,6 @@
 #pragma once
+#include <cassert>                              // assert
+#include <limits>                               // digits
 #include <dctl/bit/detail/base_set_fwd.hpp>     // base_set
 #include <dctl/bit/intrinsic.hpp>               // popcount
 
@@ -9,6 +11,12 @@ namespace detail {
 template<class T, class Block>
 struct base_set<T, Block, 1>
 {
+        static_assert(
+                !std::numeric_limits<Block>::is_signed &&
+                 std::numeric_limits<Block>::is_integer,
+                 "Block has to be of unsigned integer type."
+        );
+
         // structors
 
         constexpr base_set() noexcept = default;
@@ -18,24 +26,19 @@ struct base_set<T, Block, 1>
                 data_{block}
         {}
 
-        constexpr auto to_block() const noexcept
-        {
-                return data_;
-        }
-
         // element access
 
-        constexpr auto block_ptr(T /* n */) noexcept
+        constexpr auto block_ptr(T const& /* n */) noexcept
         {
                 return &data_;
         }
 
-        constexpr auto block_ptr(T /* n */) const noexcept
+        constexpr auto block_ptr(T const& /* n */) const noexcept
         {
                 return &data_;
         }
 
-        static constexpr auto index(T n) noexcept
+        static constexpr auto index(T const& n) noexcept
         {
                 return n;
         }
@@ -72,24 +75,28 @@ struct base_set<T, Block, 1>
                 data_ ^= other.data_;
         }
 
-        constexpr void do_left_shift(int n)
+        constexpr void do_left_shift(int n) noexcept
         {
+                assert(0 <= n < std::numeric_limits<Block>::digits);
                 data_ <<= n;
         }
 
-        constexpr void do_right_shift(int n)
+        constexpr void do_right_shift(int n) noexcept
         {
+                assert(0 <= n < std::numeric_limits<Block>::digits);
                 data_ >>= n;
         }
 
         // bitwise algorithms
 
-        static constexpr auto do_equal(base_set const& lhs, base_set const& rhs) noexcept
+        static constexpr auto
+        do_equal(base_set const& lhs, base_set const& rhs) noexcept
         {
                 return lhs.data_ == rhs.data_;
         }
 
-        static constexpr auto do_lexicographical_compare(base_set const& lhs, base_set const& rhs) noexcept
+        static constexpr auto
+        do_lexicographical_compare(base_set const& lhs, base_set const& rhs) noexcept
         {
                 return lhs.data_ < rhs.data_;
         }

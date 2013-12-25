@@ -3,23 +3,31 @@
 #include <limits>                                       // digits
 #include <dctl/bit/detail/base_iterator_fwd.hpp>        // base_iterator
 #include <dctl/bit/detail/storage.hpp>                  // storage
-#include <dctl/bit/intrinsic.hpp>                       // bsf, bsr, clznz, ctznz
+#include <dctl/bit/intrinsic.hpp>                       // bsfnz, bsrnz, clznz, ctznz
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
 template<class Block, int Nb>
-struct base_iterator
+class base_iterator
 {
-        static constexpr auto digits = std::numeric_limits<Block>::digits;
-        static constexpr auto N = Nb * digits;
+private:
+        static_assert(
+                !std::numeric_limits<Block>::is_signed &&
+                 std::numeric_limits<Block>::is_integer,
+                 "Block has to be of unsigned integer type."
+        );
 
+        enum { digits = std::numeric_limits<Block>::digits };
+        enum { N = Nb * digits };
+
+public:
         constexpr int find_first() noexcept
         {
                 for (auto i = 0; i < Nb; ++i) {
-                        auto const mask = *block_;
-                        if (mask) return i * digits + bit::bsf(mask);
+                        if (auto const mask = *block_)
+                                return i * digits + bit::bsfnz(mask);
                         ++block_;
                 }
                 return N;
@@ -28,10 +36,14 @@ struct base_iterator
         constexpr void find_next()
         {
                 assert(0 <= index_ && index_ < N);
-                if (N <= ++index_) { ++block_; return; }
+                if (N <= ++index_) {
+                        ++block_;
+                        return;
+                }
 
                 auto const idx = storage<Block>::shift_idx(index_);
-                if (idx == 0) ++block_;
+                if (idx == 0)
+                        ++block_;
                 if (auto const mask = *block_ >> idx) {
                         index_ += bit::ctznz(mask);
                         return;
@@ -39,7 +51,7 @@ struct base_iterator
 
                 for (auto i = storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
                         if (auto const mask = *++block_) {
-                                index_ = i * digits + bit::bsf(mask);
+                                index_ = i * digits + bit::bsfnz(mask);
                                 return;
                         }
                 }
@@ -51,10 +63,12 @@ struct base_iterator
         constexpr void find_prev()
         {
                 assert(0 < index_ && index_ <= N);
-                if (--index_ <= 0) return;
+                if (--index_ <= 0)
+                        return;
 
                 auto const idx = storage<Block>::shift_idx(index_);
-                if (idx == digits - 1) --block_;
+                if (idx == digits - 1)
+                        --block_;
                 if (auto const mask = *block_ << (digits - 1 - idx)) {
                         index_ -= bit::clznz(mask);
                         return;
@@ -62,7 +76,7 @@ struct base_iterator
 
                 for (auto i = storage<Block>::block_idx(index_) - 1; i >= 0; --i) {
                         if (auto const mask = *--block_) {
-                                index_ = i * digits + bit::bsr(mask);
+                                index_ = i * digits + bit::bsrnz(mask);
                                 return;
                         }
                 }
