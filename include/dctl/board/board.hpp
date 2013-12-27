@@ -2,7 +2,9 @@
 #include <array>                                // array
 #include <cstddef>                              // size_t
 #include <cstdint>                              // uint64_t
+#include <iomanip>
 #include <limits>                               // digits
+#include <sstream>
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/range/counting_range.hpp>       // counting_range
 #include <dctl/angle.hpp>                       // Angle, inverse
@@ -13,6 +15,7 @@
 #include <dctl/grid/orientation.hpp>            // SizeMinimizingOrientation, Make
 #include <dctl/node/side.hpp>                   // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
+#include <dctl/board/algebraic.hpp>
 
 namespace dctl {
 namespace board {
@@ -63,6 +66,21 @@ public:
                 return boost::counting_range(*begin(), *end());
         }
 
+        static auto numeric_from_bit(int n)
+        {
+                std::stringstream sstr;
+                sstr << std::setfill('0') << std::setw(2) << square_from_bit(n) + 1;
+                return sstr.str();
+        }
+
+        static auto algebraic_from_bit(int n)
+        {
+                std::stringstream sstr;
+                auto from_sq = grid::ulo::Square<external_grid>{square_from_bit(n)};
+                auto from_coord = llo_from_ulo(coord_from_sq(from_sq));
+                sstr << board::Labels<Board>::col[from_coord.col()] << board::Labels<Board>::row[from_coord.row()];
+                return sstr.str();
+        }
 private:
         static constexpr int
         init_bit_from_square(int n) noexcept

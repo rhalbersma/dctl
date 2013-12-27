@@ -10,6 +10,7 @@
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/move/move.hpp>
+#include <dctl/move/ostream.hpp>
 
 namespace dctl {
 namespace successor {
@@ -31,7 +32,7 @@ struct Fixture
                         begin(moves), end(moves),
                         std::back_inserter(notations),
                         [](auto const& m) {
-                        return m.numeric();
+                        return format::as_numeric(m);
                 });
 
                 using boost::algorithm::trim_copy;
