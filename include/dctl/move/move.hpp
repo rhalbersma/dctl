@@ -1,7 +1,5 @@
 #pragma once
 #include <cassert>                      // assert
-#include <iomanip>                      // setw, setfill
-#include <sstream>                      // stringstream
 #include <tuple>                        // tie
 #include <dctl/bit/algorithm.hpp>       // set_includes
 #include <dctl/board/algebraic.hpp>
@@ -112,34 +110,10 @@ public:
                 return is_with_king_ && !is_jump_;
         }
 
-        // string
-
-        auto numeric() const
-        {
-                std::stringstream sstr;
-                sstr << std::setfill('0') << std::setw(2) << Board::square_from_bit(from_) + 1;
-                sstr << (is_jump_ ? 'x' : '-');
-                sstr << std::setfill('0') << std::setw(2) << Board::square_from_bit(dest_) + 1;
-                return sstr.str();
-        }
-
-        auto algebraic() const
-        {
-                auto from_sq = grid::ulo::Square<typename Board::external_grid>{Board::square_from_bit(from_)};
-                auto dest_sq = grid::ulo::Square<typename Board::external_grid>{Board::square_from_bit(dest_)};
-                auto from_coord = llo_from_ulo(coord_from_sq(from_sq));
-                auto dest_coord = llo_from_ulo(coord_from_sq(dest_sq));
-
-                std::stringstream sstr;
-                sstr << board::Labels<Board>::col[from_coord.col()] << board::Labels<Board>::row[from_coord.row()];
-                sstr << (is_jump_ ? 'x' : '-');
-                sstr << board::Labels<Board>::col[dest_coord.col()] << board::Labels<Board>::row[dest_coord.row()];
-                return sstr.str();
-        }
-
         // predicates
 
-        friend /* constexpr */ bool operator==(Move const& lhs, Move const& rhs) noexcept
+        friend /* constexpr */ bool
+        operator==(Move const& lhs, Move const& rhs) noexcept
         {
                 return
                         std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) ==
@@ -147,7 +121,8 @@ public:
                 ;
         }
 
-        friend /* constexpr */ bool operator!=(Move const& lhs, Move const& rhs) noexcept
+        friend /* constexpr */ bool
+        operator!=(Move const& lhs, Move const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
