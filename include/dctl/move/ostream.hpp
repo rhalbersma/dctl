@@ -37,7 +37,7 @@ struct traits<Move<rules::International, board::Checkers>>
 inline
 auto index()
 {
-        static auto slot = std::ios_base::xalloc();
+        static auto const slot = std::ios_base::xalloc();
         return slot;
 }
 
@@ -82,12 +82,9 @@ auto as_algebraic(Move const& m)
 template<class Rules, class Board>
 auto& operator<<(std::ostream& ostr, Move<Rules, Board> const& m)
 {
-        auto reset = true;
         auto value = ostr.iword(format::index());
-        if (value == 0) {
-                reset = false;
+        if (!value)
                 value = format::traits<Move<Rules, Board>>::value;
-        }
         switch(value) {
         case 1:
                 ostr << format::as_numeric(m);
@@ -99,8 +96,6 @@ auto& operator<<(std::ostream& ostr, Move<Rules, Board> const& m)
                 assert(false && !"Supplied move format not supported.");
                 break;
         }
-        if (reset)
-                ostr.iword(format::index()) = 0;
         return ostr;
 }
 
