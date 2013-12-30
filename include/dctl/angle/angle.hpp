@@ -60,17 +60,17 @@ public:
                 return Angle{-a.value_};
         }
 
-        friend constexpr auto operator+(Angle const& L, Angle const& R) noexcept
+        friend constexpr auto operator+(Angle const& lhs, Angle const& rhs) noexcept
         {
-                Angle nrv{L};
-                nrv += R;
+                Angle nrv{lhs};
+                nrv += rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator-(Angle const& L, Angle const& R) noexcept
+        friend constexpr auto operator-(Angle const& lhs, Angle const& rhs) noexcept
         {
-                Angle nrv{L};
-                nrv -= R;
+                Angle nrv{lhs};
+                nrv -= rhs;
                 return nrv;
         }
 
@@ -95,12 +95,12 @@ public:
                 return nrv;
         }
 
-        friend constexpr auto operator/(Angle const& L, Angle const& R) noexcept
+        friend constexpr auto operator/(Angle const& lhs, Angle const& rhs) noexcept
         {
-                return L.value_ / R.value_;
+                return lhs.value_ / rhs.value_;
         }
 
-        // views
+        // queries
 
         constexpr operator int() const noexcept
         {
