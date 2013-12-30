@@ -46,26 +46,26 @@ public:
 
         // modifiers
 
-        constexpr auto& operator++()
+        constexpr auto& operator++() noexcept
         {
                 this->find_next();
                 return *this;
         }
 
-        constexpr auto operator++(int)
+        constexpr auto operator++(int) noexcept
         {
                 auto const old = *this;
                 ++(*this);
                 return old;
         }
 
-        constexpr auto& operator--()
+        constexpr auto& operator--() noexcept
         {
                 this->find_prev();
                 return *this;
         }
 
-        constexpr auto operator--(int)
+        constexpr auto operator--(int) noexcept
         {
                 auto const old = *this;
                 --(*this);
@@ -74,7 +74,7 @@ public:
 
         // queries
 
-        constexpr reference operator*() const
+        constexpr reference operator*() const noexcept
         {
                 return { *(this->block_), this->index_ };
         }

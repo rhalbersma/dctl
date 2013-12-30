@@ -15,10 +15,11 @@ private:
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
                  std::numeric_limits<Block>::is_integer,
-                 "Block has to be of unsigned integer type."
+                "Block has to be of unsigned integer type."
         );
 
-        enum { N = std::numeric_limits<Block>::digits };
+        enum { digits = std::numeric_limits<Block>::digits };
+        enum { N = 1 * digits };
 
 public:
         constexpr int find_first() noexcept
@@ -26,7 +27,7 @@ public:
                 return bit::ctz(*block_);
         }
 
-        constexpr void find_next()
+        constexpr void find_next() noexcept
         {
                 assert(0 <= index_ && index_ < N);
                 if (N <= ++index_)
@@ -38,12 +39,12 @@ public:
                 assert(0 < index_ && index_ <= N);
         }
 
-        constexpr void find_prev()
+        constexpr void find_prev() noexcept
         {
                 assert(0 < index_ && index_ <= N);
                 if (--index_ <= 0)
                         return;
-                if (auto const mask = *block_ << (N - 1 - index_))
+                if (auto const mask = *block_ << (digits - 1 - index_))
                         index_ -= bit::clznz(mask);
                 else
                         index_ = 0;

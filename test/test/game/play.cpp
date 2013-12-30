@@ -31,7 +31,7 @@ int main()
 
                 auto moves = successor::generate(p);
                 std::sort(begin(moves), end(moves), [](auto const& L, auto const& R) {
-                        return format::as_numeric(L) < format::as_numeric(R);
+                        return format::as_algebraic(L) < format::as_algebraic(R);
                 });
 
                 if (moves.empty()) {
@@ -39,7 +39,7 @@ int main()
                 } else {
                         auto index = 0;
                         for (auto const& m : moves)
-                                std::cout << std::setw(2) << index++ << "." << m << '\n';
+                                std::cout << std::setw(2) << index++ << "." << format::algebraic << m << '\n';
                         std::cout << "\nEnter move number, undo or stop [0/u/s]): ";
                 }
 
