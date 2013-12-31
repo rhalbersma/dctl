@@ -1,39 +1,61 @@
 #pragma once
-#include <boost/preprocessor/config/limits.hpp>
+#include <dctl/node/side.hpp>
 #include <dctl/rules/traits.hpp>
+#include <dctl/zobrist/restricted.hpp>
 
 namespace dctl {
 
-struct KingMoves
+template<class Rules, class Board>
+class KingMoves
 {
 public:
+        enum { M = rules::max_same_king_moves<Rules>::value };
+        enum { N = Board::set_type::N };
+
         // structors
 
-        constexpr KingMoves() = default;
+        constexpr KingMoves() noexcept = default;
 
         // modifiers
 
-        constexpr void init(int dest) noexcept
+        constexpr void init(int dest)
         {
-                king_ = dest;
+                assert(0 <= dest && dest < N);
+                king_ = dest + 1;
                 moves_ = 1;
+                assert(0 < moves_ && moves_ <= M);
         }
 
-        constexpr void increment(int dest) noexcept
+        constexpr void increment(int dest)
         {
-                king_ = dest;
+                assert(0 <= dest && dest < N);
+                assert(0 < moves_ && moves_ <= M);
+                king_ = dest + 1;
                 ++moves_;
+                assert(1 < moves_ && move_ <= M);
         }
 
         constexpr void reset() noexcept
         {
-                king_ = UNDEFINED;
+                king_ = 0;
                 moves_ = 0;
+        }
+
+        // predicates
+
+        constexpr auto is_max() const noexcept
+        {
+                return moves_ == M;
         }
 
         // queries
 
         constexpr auto king() const noexcept
+        {
+                return king_ - 1;
+        }
+
+        constexpr auto index() const
         {
                 return king_;
         }
@@ -44,23 +66,36 @@ public:
         }
 
 private:
-        // implementation
-
-        enum { UNDEFINED = BOOST_PP_LIMIT_REPEAT };
-
         // representation
 
-        int king_{UNDEFINED};
+        int king_{};
         int moves_{};
 };
 
-using Restricted = KingMoves[2];
+template<class Rules, class Board>
+using Restricted = KingMoves<Rules, Board>[2];
 
-// predicates
-template<class Rules>
-constexpr auto is_max(int moves) noexcept
+template<class Rules, class Board>
+auto zobrist_hash(KingMoves<Rules, Board> const& king_moves, bool to_move)
 {
-        return (moves == rules::max_same_king_moves<Rules>::value);
+        enum { M = KingMoves<Rules, Board>::M };
+        enum { N = KingMoves<Rules, Board>::N };
+        using Zobrist = zobrist::Restricted<M, N>;
+        using Index = typename Zobrist::index_type;
+
+        return
+                Zobrist::index[to_move][static_cast<std::size_t>(king_moves.index())] ^
+                Zobrist::moves[to_move][static_cast<std::size_t>(king_moves.moves())]
+        ;
+}
+
+template<class Rules, class Board>
+auto zobrist_hash(Restricted<Rules, Board> const& restricted)
+{
+        return
+                zobrist_hash(restricted[Side::black], bool(Side::black)) ^
+                zobrist_hash(restricted[Side::white], bool(Side::white))
+        ;
 }
 
 }       // namespace dctl

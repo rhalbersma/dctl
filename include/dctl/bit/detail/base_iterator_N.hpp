@@ -10,9 +10,8 @@ namespace bit {
 namespace detail {
 
 template<class Block, int Nb>
-class base_iterator
+struct base_iterator
 {
-private:
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
                  std::numeric_limits<Block>::is_integer,
@@ -22,9 +21,9 @@ private:
         enum { digits = std::numeric_limits<Block>::digits };
         enum { N = Nb * digits };
 
-public:
-        constexpr int find_first() noexcept
+        constexpr int find_first()
         {
+                assert(block_ != nullptr);
                 for (auto i = 0; i < Nb; ++i) {
                         if (auto const mask = *block_)
                                 return i * digits + bit::bsfnz(mask);
@@ -33,10 +32,10 @@ public:
                 return N;
         }
 
-        constexpr void find_next() noexcept
+        constexpr void find_next()
         {
-                assert(0 <= index_ && index_ < N);
-                if (N <= ++index_) {
+                assert(block_ != nullptr && 0 <= index_ && index_ < N);
+                if (N == ++index_) {
                         ++block_;
                         return;
                 }
@@ -58,13 +57,13 @@ public:
                         ++block_;
                 }
                 index_ = N;
-                assert(0 < index_ && index_ <= N);
+                assert(block_ != nullptr && 0 < index_ && index_ <= N);
         }
 
-        constexpr void find_prev() noexcept
+        constexpr void find_prev()
         {
-                assert(0 < index_ && index_ <= N);
-                if (--index_ <= 0)
+                assert(block_ != nullptr && 0 < index_ && index_ <= N);
+                if (--index_ == 0)
                         return;
 
                 auto const idx = storage<Block>::shift_idx(index_);
@@ -84,7 +83,7 @@ public:
                         --block_;
                 }
                 index_ = 0;
-                assert(0 <= index_ && index_ < N);
+                assert(block_ != nullptr && 0 <= index_ && index_ < N);
         }
 
         Block const* block_{};

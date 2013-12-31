@@ -18,7 +18,7 @@ using namespace dctl;
 int main()
 {
         using Rules = rules::International;
-        using Board = board::International;
+        using Board = board::Board<grid::Dimensions<26, 26>>; //board::International;
         using Pos = Position<Rules, Board>;
 
         auto initial = Pos::initial();

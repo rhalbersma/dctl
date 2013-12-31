@@ -18,7 +18,7 @@ struct ctznz;
 template<>
 struct ctznz<unsigned>
 {
-        constexpr auto operator()(unsigned x) const noexcept
+        constexpr auto operator()(unsigned x) const
         {
                 assert(x != 0);
                 return __builtin_ctz(x);
@@ -28,7 +28,7 @@ struct ctznz<unsigned>
 template<>
 struct ctznz<unsigned long>
 {
-        constexpr auto operator()(unsigned long x) const noexcept
+        constexpr auto operator()(unsigned long x) const
         {
                 assert(x != 0);
                 return __builtin_ctzl(x);
@@ -38,7 +38,7 @@ struct ctznz<unsigned long>
 template<>
 struct ctznz<unsigned long long>
 {
-        constexpr auto operator()(unsigned long long x) const noexcept
+        constexpr auto operator()(unsigned long long x) const
         {
                 assert(x != 0);
                 return __builtin_ctzll(x);
@@ -55,7 +55,7 @@ struct clznz;
 template<>
 struct clznz<unsigned>
 {
-        constexpr auto operator()(unsigned x) const noexcept
+        constexpr auto operator()(unsigned x) const
         {
                 assert(x != 0);
                 return __builtin_clz(x);
@@ -65,7 +65,7 @@ struct clznz<unsigned>
 template<>
 struct clznz<unsigned long>
 {
-        constexpr auto operator()(unsigned long x) const noexcept
+        constexpr auto operator()(unsigned long x) const
         {
                 assert(x != 0);
                 return __builtin_clzl(x);
@@ -75,7 +75,7 @@ struct clznz<unsigned long>
 template<>
 struct clznz<unsigned long long>
 {
-        constexpr auto operator()(unsigned long long x) const noexcept
+        constexpr auto operator()(unsigned long long x) const
         {
                 assert(x != 0);
                 return __builtin_clzll(x);
@@ -118,15 +118,15 @@ struct popcount<unsigned long long>
 }       // namespace detail
 
 template<class T>
-constexpr auto ctznz(T x) noexcept
+constexpr auto ctznz(T x)
 {
-        return detail::ctznz<T>()(x);
+        return detail::ctznz<T>{}(x);
 }
 
 template<class T>
-constexpr auto clznz(T x) noexcept
+constexpr auto clznz(T x)
 {
-        return detail::clznz<T>()(x);
+        return detail::clznz<T>{}(x);
 }
 
 template<class T>
@@ -144,7 +144,7 @@ constexpr auto clz(T x) noexcept
 template<class T>
 constexpr auto popcount(T x) noexcept
 {
-        return detail::popcount<T>()(x);
+        return detail::popcount<T>{}(x);
 }
 
 }       // namespace builtin

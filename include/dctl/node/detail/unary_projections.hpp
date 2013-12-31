@@ -17,7 +17,7 @@ template<class Position>
 auto moveable_kings(Position const& p, bool color, std::true_type)
 {
         auto kings = p.kings(color);
-        if (!p.kings(color).empty() && !p.pawns(color).empty() && is_max<typename Position::rules_type>(p.restricted(color).moves()))
+        if (!p.kings(color).empty() && !p.pawns(color).empty() && p.restricted(color).is_max())
                 kings.reset(p.restricted(color).king());
         return kings;
 }

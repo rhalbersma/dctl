@@ -15,8 +15,11 @@ struct base_set
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
                  std::numeric_limits<Block>::is_integer,
-                 "Block has to be of unsigned integer type."
+                "Block has to be of unsigned integer type."
         );
+
+        enum { digits = std::numeric_limits<Block>::digits };
+        enum { N = Nb * digits };
 
         // structors
 
@@ -24,13 +27,15 @@ struct base_set
 
         // element access
 
-        constexpr auto block_ptr(T const& n) noexcept
+        constexpr auto block_ptr(T const& n)
         {
+                assert(0 <= n <= N);
                 return &data_[0] + storage<Block>::block_idx(n);
         }
 
-        constexpr auto block_ptr(T const& n) const noexcept
+        constexpr auto block_ptr(T const& n) const
         {
+                assert(0 <= n <= N);
                 return &data_[0] + storage<Block>::block_idx(n);
         }
 
@@ -97,9 +102,9 @@ struct base_set
                         data_[i] ^= other.data_[i];
         }
 
-        constexpr void do_left_shift(int n) noexcept
+        constexpr void do_left_shift(int n)
         {
-                assert(0 <= n && n < Nb * std::numeric_limits<Block>::digits);
+                assert(0 <= n && n < N);
                 if (n == 0)
                         return;
 
@@ -111,7 +116,7 @@ struct base_set
                         for (auto i = Nb - 1; i >= n_block; --i)
                                 data_[i] = data_[i - n_block];
                 } else {
-                        auto const R_shift = std::numeric_limits<Block>::digits - L_shift;
+                        auto const R_shift = digits - L_shift;
 
                         // std::transform(
                         //         std::rbegin(data_) + n_block + 1, std::rend(data_) + ,
@@ -139,9 +144,9 @@ struct base_set
                         data_[i] = Block{0};
         }
 
-        constexpr void do_right_shift(int n) noexcept
+        constexpr void do_right_shift(int n)
         {
-                assert(0 <= n && n < Nb * std::numeric_limits<Block>::digits);
+                assert(0 <= n && n < N);
                 if (n == 0)
                         return;
 
@@ -153,7 +158,7 @@ struct base_set
                                 // std::copy(std::begin(data_) + n_block, std::end(data_), std::begin(data_));
                                 data_[i] = data_[i + n_block];
                 } else {
-                        auto const L_shift = std::numeric_limits<Block>::digits - R_shift;
+                        auto const L_shift = digits - R_shift;
 
                         // std::transform(
                         //         std::begin(data_) + n_block + 1, std::end(data_),

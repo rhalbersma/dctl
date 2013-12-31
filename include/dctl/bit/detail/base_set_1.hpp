@@ -14,33 +14,28 @@ struct base_set<T, Block, 1>
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
                  std::numeric_limits<Block>::is_integer,
-                 "Block has to be of unsigned integer type."
+                "Block has to be of unsigned integer type."
         );
+
+        enum { digits = std::numeric_limits<Block>::digits };
+        enum { N = 1 * digits };
 
         // structors
 
         constexpr base_set() noexcept = default;
 
-        explicit constexpr base_set(Block block) noexcept
-        :
-                data_{block}
-        {}
-
         // element access
 
-        constexpr auto block_ptr(T const& /* n */) noexcept
+        constexpr auto block_ptr(T const& /* n */)
         {
+                // assert(0 <= n && n <= N);
                 return &data_;
         }
 
-        constexpr auto block_ptr(T const& /* n */) const noexcept
+        constexpr auto block_ptr(T const& /* n */) const
         {
+                // assert(0 <= n && n <= N);
                 return &data_;
-        }
-
-        static constexpr auto index(T const& n) noexcept
-        {
-                return n;
         }
 
         // bitwise operations
@@ -75,15 +70,15 @@ struct base_set<T, Block, 1>
                 data_ ^= other.data_;
         }
 
-        constexpr void do_left_shift(int n) noexcept
+        constexpr void do_left_shift(int n)
         {
-                assert(0 <= n < std::numeric_limits<Block>::digits);
+                assert(0 <= n < N);
                 data_ <<= n;
         }
 
-        constexpr void do_right_shift(int n) noexcept
+        constexpr void do_right_shift(int n)
         {
-                assert(0 <= n < std::numeric_limits<Block>::digits);
+                assert(0 <= n < N);
                 data_ >>= n;
         }
 
@@ -103,7 +98,7 @@ struct base_set<T, Block, 1>
 
         constexpr auto do_includes(base_set const& other) const noexcept
         {
-                return (other.data_ & ~data_) == Block{0};
+                return (~data_ & other.data_) == Block{0};
         }
 
         constexpr auto do_intersects(base_set const& other) const noexcept
