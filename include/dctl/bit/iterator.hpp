@@ -31,41 +31,42 @@ public:
 
         constexpr bit_iterator() noexcept = default;
 
-        constexpr explicit bit_iterator(Block const* b) noexcept
+        constexpr explicit bit_iterator(Block const* b)
         :
                 Base{b, this->find_first()}
         {}
 
         template<class U>
-        constexpr bit_iterator(Block const* b, U const& value) noexcept
+        constexpr bit_iterator(Block const* b, U const& value)
         :
                 Base{b, int{value}}
         {
+                assert(b != nullptr && value == Base::N);
                 static_assert(std::is_convertible<U, int>::value, "");
         }
 
         // modifiers
 
-        constexpr auto& operator++() noexcept
+        constexpr auto& operator++()
         {
                 this->find_next();
                 return *this;
         }
 
-        constexpr auto operator++(int) noexcept
+        constexpr auto operator++(int)
         {
                 auto const old = *this;
                 ++(*this);
                 return old;
         }
 
-        constexpr auto& operator--() noexcept
+        constexpr auto& operator--()
         {
                 this->find_prev();
                 return *this;
         }
 
-        constexpr auto operator--(int) noexcept
+        constexpr auto operator--(int)
         {
                 auto const old = *this;
                 --(*this);
@@ -74,8 +75,9 @@ public:
 
         // queries
 
-        constexpr reference operator*() const noexcept
+        constexpr reference operator*() const
         {
+                assert(this->block_ != nullptr);
                 return { *(this->block_), this->index_ };
         }
 

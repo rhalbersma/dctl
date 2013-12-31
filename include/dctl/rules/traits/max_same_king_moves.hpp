@@ -17,7 +17,7 @@ struct max_same_king_moves
         boost::mpl::eval_if<
                 has_type_max_same_king_moves<Rules>,
                 get_type_max_same_king_moves<Rules>,
-                std::integral_constant<int, INT_MAX>
+                std::integral_constant<int, 0>
         >::type
 {};
 

@@ -9,9 +9,8 @@ namespace bit {
 namespace detail {
 
 template<class Block>
-class base_iterator<Block, 1>
+struct base_iterator<Block, 1>
 {
-private:
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
                  std::numeric_limits<Block>::is_integer,
@@ -21,34 +20,34 @@ private:
         enum { digits = std::numeric_limits<Block>::digits };
         enum { N = 1 * digits };
 
-public:
-        constexpr int find_first() noexcept
+        constexpr int find_first()
         {
+                assert(block_ != nullptr);
                 return bit::ctz(*block_);
         }
 
-        constexpr void find_next() noexcept
+        constexpr void find_next()
         {
-                assert(0 <= index_ && index_ < N);
-                if (N <= ++index_)
+                assert(block_ != nullptr && 0 <= index_ && index_ < N);
+                if (N == ++index_)
                         return;
                 if (auto const mask = *block_ >> index_)
                         index_ += bit::ctznz(mask);
                 else
                         index_ = N;
-                assert(0 < index_ && index_ <= N);
+                assert(block_ != nullptr && 0 < index_ && index_ <= N);
         }
 
-        constexpr void find_prev() noexcept
+        constexpr void find_prev()
         {
-                assert(0 < index_ && index_ <= N);
-                if (--index_ <= 0)
+                assert(block_ != nullptr && 0 < index_ && index_ <= N);
+                if (--index_ == 0)
                         return;
                 if (auto const mask = *block_ << (digits - 1 - index_))
                         index_ -= bit::clznz(mask);
                 else
                         index_ = 0;
-                assert(0 <= index_ && index_ < N);
+                assert(block_ != nullptr && 0 <= index_ && index_ < N);
         }
 
         Block const* block_{};
