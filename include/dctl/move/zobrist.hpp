@@ -8,10 +8,9 @@ namespace dctl {
 template<class Rules, class Board>
 uint64_t zobrist_hash(Move<Rules, Board> const& m, bool to_move)
 {
-        using Zobrist = zobrist::Material<Board::set_type::N>;
-        using Index = typename Zobrist::index_type;
+        using Zobrist = random::Material<Board::set_type::N>;
 
-        auto index = Index{0};
+        auto index = uint64_t{0};
         index ^= Zobrist::pieces[to_move][static_cast<std::size_t>(m.from())];
         index ^= Zobrist::pieces[to_move][static_cast<std::size_t>(m.dest())];
         if (m.is_with_king()) {

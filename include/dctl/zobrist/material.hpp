@@ -1,31 +1,29 @@
 #pragma once
+#include <array>                        // array
 #include <cstdint>                      // uint64_t
-#include <dctl/utility/make_array.hpp>  // array, make_array
-#include <dctl/zobrist/generate.hpp>    // generate
+#include <dctl/random/uniform.hpp>      // runif
 
 namespace dctl {
-namespace zobrist {
+namespace random {
 
 template<int N>
 struct Material
 {
-        using index_type = uint64_t;
-
-        static std::array<index_type, N> const pieces[];
-        static std::array<index_type, N> const kings;
+        static std::array<uint64_t, N> const pieces[];
+        static std::array<uint64_t, N> const kings;
 };
 
 template<int N>
-std::array<typename Material<N>::index_type, N> const
+std::array<uint64_t, N> const
 Material<N>::pieces[] =
 {
-        make_array<N>(generate),
-        make_array<N>(generate)
+        runif<N>(),
+        runif<N>()
 };
 
 template<int N>
-std::array<typename Material<N>::index_type, N> const
-Material<N>::kings = make_array<N>(generate);
+std::array<uint64_t, N> const
+Material<N>::kings = random::runif<N>();
 
-}       // namespace zobrist
+}       // namespace random
 }       // namespace dctl

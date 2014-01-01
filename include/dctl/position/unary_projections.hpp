@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/node/detail/unary_projections.hpp>
+#include <dctl/position/detail/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/board/mask.hpp>
 

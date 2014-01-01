@@ -6,7 +6,7 @@
 
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/patterns.hpp>
-#include <dctl/node/targets.hpp>
+#include <dctl/position/targets.hpp>
 #include <dctl/rules/traits.hpp>
 
 namespace dctl {

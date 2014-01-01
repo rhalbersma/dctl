@@ -6,7 +6,7 @@
 #include <boost/algorithm/string.hpp>           // trim_copy
 #include <boost/test/unit_test.hpp>
 #include <dctl/successor/generate.hpp>
-#include <dctl/node/position.hpp>
+#include <dctl/position/position.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/move/move.hpp>

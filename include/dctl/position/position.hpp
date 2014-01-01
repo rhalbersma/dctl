@@ -4,15 +4,14 @@
 #include <tuple>
 #include <dctl/zobrist/accumulate.hpp>
 #include <dctl/zobrist/material.hpp>
-#include <dctl/node/position_fwd.hpp>
+#include <dctl/position/position_fwd.hpp>
 #include <dctl/move/move.hpp>
-#include <dctl/move/hash.hpp>
-#include <dctl/node/restricted.hpp>
-#include <dctl/node/side.hpp>
-#include <dctl/node/predicates_fwd.hpp>
+#include <dctl/move/zobrist.hpp>
+#include <dctl/position/mru_king/mru_king.hpp>
+#include <dctl/position/mru_king/zobrist.hpp>
+#include <dctl/position/side.hpp>
+#include <dctl/position/predicates_fwd.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/utility/ply.hpp>         // PlyCount
-#include <dctl/utility/int.hpp>         // HashIndex
 
 #include <dctl/bit/algorithm.hpp>
 #include <dctl/board/mask.hpp>
@@ -59,19 +58,23 @@ public:
         }
 
         // queries
-        TreeIterator parent() const
+        auto parent() const
         {
                 return parent_;
         }
 
-        HashIndex hash() const
+        auto hash() const
         {
                 return hash_;
         }
 
         auto const& material() const
         {
-                return std::tie(pieces(Side::black), pieces(Side::white), kings());
+                return std::forward_as_tuple(
+                        pieces(Side::black),
+                        pieces(Side::white),
+                        kings()
+                );
         }
 
         // black or white pawns
@@ -110,14 +113,9 @@ public:
                 return pieces(Side::black) ^ pieces(Side::white);
         }
 
-        auto const& restricted() const
+        auto const& mru_king(bool color) const
         {
-                return restricted_;
-        }
-
-        auto const& restricted(bool color) const
-        {
-                return restricted_[color];
+                return mru_king_[color];
         }
 
         auto reversible_moves() const
@@ -168,7 +166,7 @@ private:
         void make_irreversible(Move const& m, std::true_type)
         {
                 make_irreversible(m, std::false_type());
-                make_restricted(m);
+                make_mru_kings(m);
         }
 
         // overload for unrestricted consecutive moves with the same king
@@ -194,54 +192,54 @@ private:
         }
 
         template<class Move>
-        void make_restricted(Move const& m)
+        void make_mru_kings(Move const& m)
         {
-                make_active_king_moves(m);
-                make_passive_king_moves(m);
+                make_active_mru_king(m);
+                make_passive_mru_king(m);
         }
 
         template<class Move>
-        void make_active_king_moves(Move const& m)
+        void make_active_mru_king(Move const& m)
         {
-                auto& restricted = restricted_[active_color(*this)];
-
                 if (!active_kings(*this).empty() && !active_pawns(*this).empty()) {
-                        if (restricted.moves())
-                                hash_ ^= zobrist_hash(restricted, active_color(*this));
+                        auto& mru_king = mru_king_[active_color(*this)];
+
+                        if (!mru_king.is_min())
+                                hash_ ^= zobrist_hash(mru_king, active_color(*this));
 
                         if (!m.is_reversible()) {
-                                if (restricted.moves())
-                                        restricted.reset();
+                                if (!mru_king.is_min())
+                                        mru_king.reset();
                                 return;
                         }
 
-                        if (restricted.moves() && (restricted.king() == m.from())) {
+                        if (!mru_king.is_min() && (mru_king.square() == m.from())) {
                                 // a consecutive irreversible move with the same king
-                                assert(!restricted.is_max());
-                                restricted.increment(m.dest());
+                                assert(!mru_king.is_max());
+                                mru_king.increment(m.dest());
                         } else {
                                 // a first irreversible move with a new king
-                                assert(!restricted.moves() || active_kings(*this).size() > 0);
-                                restricted.init(m.dest());
+                                assert(mru_king.is_min() || active_kings(*this).size() > 0);
+                                mru_king.init(m.dest());
                         }
-                        hash_ ^= zobrist_hash(restricted, active_color(*this));
+                        hash_ ^= zobrist_hash(mru_king, active_color(*this));
                 }
         }
 
         template<class Move>
-        void make_passive_king_moves(Move const& m)
+        void make_passive_mru_king(Move const& m)
         {
-                auto& restricted = restricted_[passive_color(*this)];
+                auto& mru_king = mru_king_[passive_color(*this)];
 
                 if (
-                        restricted.moves() && m.is_jump() &&
+                        !mru_king.is_min() && m.is_jump() &&
                         (
-                                m.captured_pieces().test(restricted.king()) ||
+                                m.captured_pieces().test(mru_king.square()) ||
                                 bit::set_includes(m.captured_pieces(), passive_pawns(*this))
                         )
                 ) {
-                        hash_ ^= zobrist_hash(restricted, passive_color(*this));
-                        restricted.reset();
+                        hash_ ^= zobrist_hash(mru_king, passive_color(*this));
+                        mru_king.reset();
                 }
         }
 
@@ -297,8 +295,8 @@ private:
         Set pieces_[2];   // black and white pieces
         Set kings_;       // kings
         TreeIterator parent_{};
-        HashIndex hash_{};
-        Restricted<Rules, Board> restricted_{};
+        uint64_t hash_{};
+        MostRecentlyUsedKing<Rules, Board> mru_king_[2]{};
         int reversible_moves_{};
         int distance_to_root_{};
         bool to_move_{};
@@ -337,14 +335,15 @@ decltype(auto) passive_restricted(Position const& p)
 template<class Rules, class Board>
 uint64_t zobrist_hash(Position<Rules, Board> const& p)
 {
-        using Zobrist = zobrist::Material<Board::set_type::N>;
+        using Zobrist = random::Material<Board::set_type::N>;
 
         return
                 zobrist::accumulate(p.pieces(Side::black), Zobrist::pieces[Side::black]) ^
                 zobrist::accumulate(p.pieces(Side::white), Zobrist::pieces[Side::white]) ^
                 zobrist::accumulate(p.kings(),             Zobrist::kings              ) ^
                 zobrist_hash(p.to_move()) ^
-                zobrist_hash(p.restricted())
+                zobrist_hash(p.mru_king(Side::black), Side::black) ^
+                zobrist_hash(p.mru_king(Side::white), Side::white)
         ;
 }
 

@@ -13,7 +13,7 @@
 #include <dctl/angle.hpp>                               // _deg, rotate, mirror
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/board/iterator.hpp>                      // Increment, Prev
-#include <dctl/node/promotion.hpp>
+#include <dctl/position/promotion.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/ray/iterator.hpp>

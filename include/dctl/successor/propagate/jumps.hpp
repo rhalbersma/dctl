@@ -5,8 +5,8 @@
 #include <dctl/angle.hpp>               // Angle, is_orthogonal
 #include <dctl/bit/bit.hpp>
 #include <dctl/board/iterator.hpp>      // Prev
-#include <dctl/node/promotion.hpp>
-#include <dctl/node/unary_projections.hpp>
+#include <dctl/position/promotion.hpp>
+#include <dctl/position/unary_projections.hpp>
 #include <dctl/pieces/pieces.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/rules/types.hpp>

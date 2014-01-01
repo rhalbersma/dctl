@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <iostream>
 #include <stack>
-#include <dctl/node/position.hpp>
+#include <dctl/position/position.hpp>
 #include <dctl/move/ostream.hpp>
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>

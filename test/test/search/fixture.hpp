@@ -4,7 +4,7 @@
 #include <boost/test/unit_test.hpp>
 #include <dctl/search/root.hpp>
 #include <dctl/search/objective.hpp>
-#include <dctl/node/position.hpp>
+#include <dctl/position/position.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/board/types.hpp>
 #include <dctl/rules/variants.hpp>

@@ -6,7 +6,7 @@
 #include <dctl/successor/invariant.hpp>                 // invariant
 #include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
 #include <dctl/move/move.hpp>                           // Move
-#include <dctl/node/side.hpp>                           // black, white
+#include <dctl/position/side.hpp>                           // black, white
 #include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
 
 namespace dctl {
