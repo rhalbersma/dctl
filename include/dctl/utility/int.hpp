@@ -4,6 +4,5 @@
 namespace dctl {
 
 using NodeCount = uint64_t;
-using HashIndex = uint64_t;
 
 }       // namespace dctl

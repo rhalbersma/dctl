@@ -58,6 +58,7 @@ public:
         }
 
         // queries
+
         auto parent() const
         {
                 return parent_;
@@ -213,13 +214,13 @@ private:
                                 return;
                         }
 
-                        if (!mru_king.is_min() && (mru_king.square() == m.from())) {
-                                // a consecutive irreversible move with the same king
+                        if (!mru_king.is_min() && m.from() == mru_king.square()) {
+                                // another irreversible move with the most recently used king
                                 assert(!mru_king.is_max());
                                 mru_king.increment(m.dest());
                         } else {
                                 // a first irreversible move with a new king
-                                assert(mru_king.is_min() || active_kings(*this).size() > 0);
+                                assert(mru_king.is_min() || active_kings(*this).size() > 1);
                                 mru_king.init(m.dest());
                         }
                         hash_ ^= zobrist_hash(mru_king, active_color(*this));
