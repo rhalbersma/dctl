@@ -95,7 +95,7 @@ auto& operator<<(std::ostream& ostr, Move<Rules, Board> const& m)
                 ostr << format::as_algebraic(m);
                 break;
         default:
-                assert(false && !"Supplied move format not supported.");
+                assert(false);
                 break;
         }
         return ostr;
