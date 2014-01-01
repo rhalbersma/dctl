@@ -30,7 +30,7 @@ public:
                 assert(0 < moves_ && moves_ < M);
                 index_ = dest_sq + 1;
                 ++moves_;
-                assert(1 < moves_ && move_ <= M);
+                assert(1 < moves_ && moves_ <= M);
         }
 
         constexpr void reset() noexcept

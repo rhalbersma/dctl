@@ -202,38 +202,42 @@ private:
         template<class Move>
         void make_active_mru_king(Move const& m)
         {
-                if (!active_kings(*this).empty() && !active_pawns(*this).empty()) {
-                        auto& mru_king = mru_king_[active_color(*this)];
+                if (active_kings(*this).empty() || active_pawns(*this).empty())
+                        return;
 
-                        if (!mru_king.is_min())
-                                hash_ ^= zobrist_hash(mru_king, active_color(*this));
+                auto& mru_king = mru_king_[active_color(*this)];
 
-                        if (!m.is_reversible()) {
-                                if (!mru_king.is_min())
-                                        mru_king.reset();
-                                return;
-                        }
-
-                        if (!mru_king.is_min() && m.from() == mru_king.square()) {
-                                // another irreversible move with the most recently used king
-                                assert(!mru_king.is_max());
-                                mru_king.increment(m.dest());
-                        } else {
-                                // a first irreversible move with a new king
-                                assert(mru_king.is_min() || active_kings(*this).size() > 1);
-                                mru_king.init(m.dest());
-                        }
+                if (!mru_king.is_min())
                         hash_ ^= zobrist_hash(mru_king, active_color(*this));
+
+                if (!m.is_reversible()) {
+                        if (!mru_king.is_min())
+                                mru_king.reset();
+                        return;
                 }
+
+                if (!mru_king.is_min() && mru_king.square() == m.from()) {
+                        // another irreversible move with the most recently used king
+                        assert(!mru_king.is_max());
+                        mru_king.increment(m.dest());
+                } else {
+                        // a first irreversible move with a new king
+                        assert(mru_king.is_min() || active_kings(*this).size() > 1);
+                        mru_king.init(m.dest());
+                }
+                hash_ ^= zobrist_hash(mru_king, active_color(*this));
         }
 
         template<class Move>
         void make_passive_mru_king(Move const& m)
         {
+                if (!m.is_jump())
+                        return;
+
                 auto& mru_king = mru_king_[passive_color(*this)];
 
                 if (
-                        !mru_king.is_min() && m.is_jump() &&
+                        !mru_king.is_min() &&
                         (
                                 m.captured_pieces().test(mru_king.square()) ||
                                 bit::set_includes(m.captured_pieces(), passive_pawns(*this))
