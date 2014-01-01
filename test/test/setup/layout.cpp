@@ -7,7 +7,7 @@
 #include <dctl/setup/diagram.hpp>               // diagram, bits, squares
 #include <dctl/board/algebraic.hpp>
 #include <iterator>
-#include <dctl/node/position.hpp>
+#include <dctl/position/position.hpp>
 #include <dctl/setup/diagram.hpp>
 #include <dctl/rules/variants.hpp>
 #include <dctl/setup/string.hpp>

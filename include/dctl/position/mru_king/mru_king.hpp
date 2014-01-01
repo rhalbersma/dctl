@@ -1,0 +1,78 @@
+#pragma once
+#include <dctl/rules/traits.hpp>
+
+namespace dctl {
+
+template<class Rules, class Board>
+class MostRecentlyUsedKing
+{
+public:
+        enum { M = rules::max_same_king_moves<Rules>::value };
+        enum { N = Board::set_type::N };
+
+        // structors
+
+        constexpr MostRecentlyUsedKing() noexcept = default;
+
+        // modifiers
+
+        constexpr void init(int dest_sq)
+        {
+                assert(0 <= dest_sq && dest_sq < N);
+                index_ = dest_sq + 1;
+                moves_ = 1;
+                assert(0 < moves_ && moves_ <= M);
+        }
+
+        constexpr void increment(int dest_sq)
+        {
+                assert(0 <= dest_sq && dest_sq < N);
+                assert(0 < moves_ && moves_ < M);
+                index_ = dest_sq + 1;
+                ++moves_;
+                assert(1 < moves_ && move_ <= M);
+        }
+
+        constexpr void reset() noexcept
+        {
+                index_ = 0;
+                moves_ = 0;
+        }
+
+        // queries
+
+        constexpr auto square() const noexcept
+        {
+                return index_ - 1;
+        }
+
+        constexpr auto index() const noexcept
+        {
+                return index_;
+        }
+
+        constexpr auto moves() const noexcept
+        {
+                return moves_;
+        }
+
+        // predicates
+
+        constexpr auto is_min() const noexcept
+        {
+                return moves_ == 0;
+        }
+
+        constexpr auto is_max() const noexcept
+        {
+                return moves_ == M;
+        }
+
+private:
+        // representation
+
+        int index_{};
+        int moves_{};
+};
+
+}       // namespace dctl

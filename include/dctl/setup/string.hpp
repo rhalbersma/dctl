@@ -7,7 +7,7 @@
 #include <dctl/setup/protocols.hpp>
 #include <dctl/setup/i_token.hpp>
 #include <dctl/bit/bit.hpp>
-#include <dctl/node/position.hpp>
+#include <dctl/position/position.hpp>
 
 namespace dctl {
 namespace setup {
@@ -178,10 +178,10 @@ struct write<dxp::protocol, Token>
         std::string operator()(Position<Rules, Board> const& p) const
         {
                 std::stringstream sstr;
-                sstr << write_color<Token>(active_color(p));                // side to move
-                for (auto sq = Board::begin(); sq != Board::end(); ++sq) {
-                        auto b = Board::bit_from_square(sq);                 // convert square to bit
-                        sstr << content<Token>(p, b);        // bit content
+                sstr << write_color<Token>(active_color(p));    // side to move
+                for (auto sq : Board::squares()) {
+                        auto b = Board::bit_from_square(sq);    // convert square to bit
+                        sstr << content<Token>(p, b);           // bit content
                 }
                 sstr << '\n';
                 return sstr.str();

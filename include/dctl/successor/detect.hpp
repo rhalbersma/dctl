@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/select/legal.hpp>              // DefaultSelection
 #include <dctl/successor/detect/specializations.hpp>    // detect
-#include <dctl/node/side.hpp>                           // black, white
+#include <dctl/position/side.hpp>                           // black, white
 #include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
 #include <dctl/rules/traits.hpp>
 

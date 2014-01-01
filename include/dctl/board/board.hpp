@@ -13,7 +13,7 @@
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
 #include <dctl/grid/orientation.hpp>            // SizeMinimizingOrientation, Make
-#include <dctl/node/side.hpp>                   // black, white
+#include <dctl/position/side.hpp>                   // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <dctl/board/algebraic.hpp>
 
