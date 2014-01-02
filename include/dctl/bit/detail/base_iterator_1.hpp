@@ -23,7 +23,7 @@ struct BaseIterator<Block, 1>
         constexpr int find_first()
         {
                 assert(block_ != nullptr);
-                return bit::ctz(*block_);
+                return bit::intrinsic::ctz(*block_);
         }
 
         constexpr void find_next()
@@ -32,7 +32,7 @@ struct BaseIterator<Block, 1>
                 if (N == ++index_)
                         return;
                 if (auto const mask = *block_ >> index_)
-                        index_ += bit::ctznz(mask);
+                        index_ += bit::intrinsic::ctznz(mask);
                 else
                         index_ = N;
                 assert(block_ != nullptr && 0 < index_ && index_ <= N);
@@ -44,7 +44,7 @@ struct BaseIterator<Block, 1>
                 if (--index_ == 0)
                         return;
                 if (auto const mask = *block_ << (digits - 1 - index_))
-                        index_ -= bit::clznz(mask);
+                        index_ -= bit::intrinsic::clznz(mask);
                 else
                         index_ = 0;
                 assert(block_ != nullptr && 0 <= index_ && index_ < N);

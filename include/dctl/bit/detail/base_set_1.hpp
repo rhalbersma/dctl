@@ -123,7 +123,7 @@ struct BaseSet<T, Block, 1>
 
         constexpr auto do_count() const noexcept
         {
-                return bit::popcount(data_);
+                return bit::intrinsic::popcount(data_);
         }
 
         template<class Pred>

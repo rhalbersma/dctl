@@ -26,7 +26,7 @@ struct BaseIterator
                 assert(block_ != nullptr);
                 for (auto i = 0; i < Nb; ++i) {
                         if (auto const mask = *block_)
-                                return i * digits + bit::bsfnz(mask);
+                                return i * digits + bit::intrinsic::bsfnz(mask);
                         ++block_;
                 }
                 return N;
@@ -44,14 +44,14 @@ struct BaseIterator
                 if (idx == 0)
                         ++block_;
                 if (auto const mask = *block_ >> idx) {
-                        index_ += bit::ctznz(mask);
+                        index_ += bit::intrinsic::ctznz(mask);
                         return;
                 }
                 ++block_;
 
                 for (auto i = Storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
                         if (auto const mask = *block_) {
-                                index_ = i * digits + bit::bsfnz(mask);
+                                index_ = i * digits + bit::intrinsic::bsfnz(mask);
                                 return;
                         }
                         ++block_;
@@ -70,14 +70,14 @@ struct BaseIterator
                 if (idx == digits - 1)
                         --block_;
                 if (auto const mask = *block_ << (digits - 1 - idx)) {
-                        index_ -= bit::clznz(mask);
+                        index_ -= bit::intrinsic::clznz(mask);
                         return;
                 }
                 --block_;
 
                 for (auto i = Storage<Block>::block_idx(index_) - 1; i >= 0; --i) {
                         if (auto const mask = *block_) {
-                                index_ = i * digits + bit::bsrnz(mask);
+                                index_ = i * digits + bit::intrinsic::bsrnz(mask);
                                 return;
                         }
                         --block_;

@@ -276,7 +276,7 @@ struct BaseSet
                 // });
                 auto sum = 0;
                 for (auto i = 0; i < Nb; ++i)
-                        sum += bit::popcount(data_[i]);
+                        sum += bit::intrinsic::popcount(data_[i]);
                 return sum;
         }
 
@@ -285,7 +285,7 @@ struct BaseSet
         {
                 auto sum = 0;
                 for (auto i = 0; i < Nb; ++i) {
-                        sum += bit::popcount(data_[i]);
+                        sum += bit::intrinsic::popcount(data_[i]);
                         if (pred(sum))
                                 break;
                 }

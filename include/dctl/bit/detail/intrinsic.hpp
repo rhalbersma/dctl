@@ -6,6 +6,7 @@
 
 namespace dctl {
 namespace bit {
+namespace intrinsic {
 
 namespace lib = builtin;
 using lib::ctznz;
@@ -28,5 +29,6 @@ constexpr auto bsrnz(T x) noexcept
         return std::numeric_limits<T>::digits - 1 - clznz(x);
 }
 
+}       // namespace intrinsic
 }       // namespace bit
 }       // namespace dctl
