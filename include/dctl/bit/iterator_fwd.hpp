@@ -4,7 +4,7 @@ namespace dctl {
 namespace bit {
 
 template<class T, class Block, int Nb>
-class bit_iterator;
+class Iterator;
 
 }       // namespace bit
 }       // namespace dctl

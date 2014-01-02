@@ -1,21 +1,27 @@
+#include <cstdint>                              // uint64_t
 #include <limits>                               // digits
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <dctl/bit/algorithm.hpp>
-#include <dctl/bit/bit_set.hpp>
+#include <dctl/bit/set.hpp>
 
 namespace dctl {
 namespace bit {
 
 BOOST_AUTO_TEST_SUITE(BitBit)
 
-using UnsignedIntegerTypes = boost::mpl::vector
+using U = int;
+
+using SetTypes = boost::mpl::vector
 <
-        BitSet
+        Set<U, uint64_t, 1>,
+        Set<U, uint64_t, 2>,
+        Set<U, uint64_t, 3>,
+        Set<U, uint64_t, 4>
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsEmpty, T, SetTypes)
 {
         auto const b = T{};
         BOOST_CHECK(b.empty());
@@ -24,7 +30,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, UnsignedIntegerTypes)
         BOOST_CHECK(!is_multiple(b));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, SetTypes)
 {
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
                 auto const b = T{i};
@@ -35,7 +41,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsSingle, T, UnsignedIntegerTypes)
         }
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, UnsignedIntegerTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsDouble, T, SetTypes)
 {
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
                 for (auto j = 0; j < std::numeric_limits<T>::digits; ++j) {

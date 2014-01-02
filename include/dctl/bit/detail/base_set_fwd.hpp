@@ -5,10 +5,10 @@ namespace bit {
 namespace detail {
 
 template<class T, class Block, int Nw>
-struct base_set;
+struct BaseSet;
 
 template<class T, class Block>
-struct base_set<T, Block, 1>;
+struct BaseSet<T, Block, 1>;
 
 }       // namespace detail
 }       // namespace bit

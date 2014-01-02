@@ -3,7 +3,7 @@
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/bit/algorithm.hpp>               // set_exclusive
+#include <dctl/bit.hpp>                         // set_exclusive
 #include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
 

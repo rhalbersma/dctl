@@ -1,8 +1,8 @@
 #pragma once
 #include <dctl/successor/select/legal.hpp>              // legal
 #include <dctl/successor/count/specializations.hpp>     // count
-#include <dctl/position/side.hpp>                           // black, white
-#include <dctl/pieces/pieces.hpp>                // piece, king, pawn
+#include <dctl/position/side.hpp>                       // black, white
+#include <dctl/pieces/pieces.hpp>                       // piece, king, pawn
 
 namespace dctl {
 namespace successor {

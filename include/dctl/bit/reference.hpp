@@ -1,24 +1,24 @@
 #pragma once
-#include <type_traits>                          // is_convertible
-#include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
-#include <dctl/bit/reference_fwd.hpp>           // bit_reference
+#include <type_traits>                  // is_convertible
+#include <dctl/bit/iterator_fwd.hpp>    // Iterator
+#include <dctl/bit/reference_fwd.hpp>   // Reference
 
 namespace dctl {
 namespace bit {
 
 template<class T, class Block, int Nb>
-class bit_reference
+class Reference
 {
 private:
         // typedefs
 
-        using iterator = bit_iterator<T, Block, Nb>;
+        using iterator = Iterator<T, Block, Nb>;
 
 public:
         // structors
 
         template<class U>
-        constexpr bit_reference(Block const& b, U const& value) noexcept
+        constexpr Reference(Block const& b, U const& value) noexcept
         :
                 block_{b},
                 index_{value}

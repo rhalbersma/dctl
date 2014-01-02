@@ -1,8 +1,8 @@
 #pragma once
-#include <limits>                               // digits
-#include <dctl/bit/intrinsic/builtin.hpp>       // ctznz, clznz, ctz, clz, popcount using gcc built-in functions
-#include <dctl/bit/intrinsic/lookup.hpp>        // ctznz, clznz, ctz, clz, popcount using table lookup
-#include <dctl/bit/intrinsic/loop.hpp>          // ctznz, clznz, ctz, clz, popcount using brute-force looping
+#include <limits>                                       // digits
+#include <dctl/bit/detail/intrinsic/builtin.hpp>        // ctznz, clznz, ctz, clz, popcount using gcc built-in functions
+#include <dctl/bit/detail/intrinsic/lookup.hpp>         // ctznz, clznz, ctz, clz, popcount using table lookup
+#include <dctl/bit/detail/intrinsic/loop.hpp>           // ctznz, clznz, ctz, clz, popcount using brute-force looping
 
 namespace dctl {
 namespace bit {

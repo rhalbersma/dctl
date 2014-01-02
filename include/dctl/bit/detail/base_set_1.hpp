@@ -1,15 +1,15 @@
 #pragma once
 #include <cassert>                              // assert
 #include <limits>                               // digits
-#include <dctl/bit/detail/base_set_fwd.hpp>     // base_set
-#include <dctl/bit/intrinsic.hpp>               // popcount
+#include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
+#include <dctl/bit/detail/intrinsic.hpp>        // popcount
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
 template<class T, class Block>
-struct base_set<T, Block, 1>
+struct BaseSet<T, Block, 1>
 {
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
@@ -22,7 +22,7 @@ struct base_set<T, Block, 1>
 
         // structors
 
-        constexpr base_set() noexcept = default;
+        constexpr BaseSet() noexcept = default;
 
         // element access
 
@@ -55,17 +55,17 @@ struct base_set<T, Block, 1>
                 data_ = ~data_;
         }
 
-        constexpr void do_and(base_set const& other) noexcept
+        constexpr void do_and(BaseSet const& other) noexcept
         {
                 data_ &= other.data_;
         }
 
-        constexpr void do_or(base_set const& other) noexcept
+        constexpr void do_or(BaseSet const& other) noexcept
         {
                 data_ |= other.data_;
         }
 
-        constexpr void do_xor(base_set const& other) noexcept
+        constexpr void do_xor(BaseSet const& other) noexcept
         {
                 data_ ^= other.data_;
         }
@@ -85,23 +85,23 @@ struct base_set<T, Block, 1>
         // bitwise algorithms
 
         static constexpr auto
-        do_equal(base_set const& lhs, base_set const& rhs) noexcept
+        do_equal(BaseSet const& lhs, BaseSet const& rhs) noexcept
         {
                 return lhs.data_ == rhs.data_;
         }
 
         static constexpr auto
-        do_lexicographical_compare(base_set const& lhs, base_set const& rhs) noexcept
+        do_lexicographical_compare(BaseSet const& lhs, BaseSet const& rhs) noexcept
         {
                 return lhs.data_ < rhs.data_;
         }
 
-        constexpr auto do_includes(base_set const& other) const noexcept
+        constexpr auto do_includes(BaseSet const& other) const noexcept
         {
                 return (~data_ & other.data_) == Block{0};
         }
 
-        constexpr auto do_intersects(base_set const& other) const noexcept
+        constexpr auto do_intersects(BaseSet const& other) const noexcept
         {
                 return (data_ & other.data_) != Block{0};
         }
@@ -121,19 +121,15 @@ struct base_set<T, Block, 1>
                 return data_ == ~Block{0};
         }
 
-        constexpr auto do_is_count_equal_to(int n) const noexcept
-        {
-                return bit::popcount(data_) == n;
-        }
-
-        constexpr auto do_is_count_less(int n) const noexcept
-        {
-                return bit::popcount(data_) < n;
-        }
-
         constexpr auto do_count() const noexcept
         {
                 return bit::popcount(data_);
+        }
+
+        template<class Pred>
+        constexpr auto do_count_until(Pred /* pred */) const noexcept
+        {
+                return do_count();
         }
 
         // representation

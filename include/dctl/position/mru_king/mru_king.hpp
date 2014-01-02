@@ -16,6 +16,18 @@ public:
 
         // modifiers
 
+        constexpr void activate()
+        {
+                assert(is_min());
+                is_active_ = true;
+        }
+
+        constexpr void deactivate()
+        {
+                assert(is_min());
+                is_active_ = false;
+        }
+
         constexpr void init(int dest_sq)
         {
                 assert(0 <= dest_sq && dest_sq < N);
@@ -58,6 +70,11 @@ public:
 
         // predicates
 
+        constexpr auto is_active() const noexcept
+        {
+                return is_active_;
+        }
+
         constexpr auto is_min() const noexcept
         {
                 return moves_ == 0;
@@ -73,6 +90,7 @@ private:
 
         int index_{};
         int moves_{};
+        bool is_active_{};
 };
 
 }       // namespace dctl

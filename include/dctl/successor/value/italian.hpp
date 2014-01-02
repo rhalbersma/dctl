@@ -135,7 +135,11 @@ private:
 
         bool empty() const
         {
-                return (0 == num_kings_) && (num_kings_ == num_pieces_) && king_order_.empty();
+                return
+                                 0 == num_kings_ &&
+                        num_kings_ == num_pieces_ &&
+                        king_order_.empty()
+                ;
         }
 
         bool full() const

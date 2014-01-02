@@ -1,53 +1,53 @@
 #pragma once
-#include <cassert>                              // assert
-#include <cstddef>                              // ptrdiff_t, size_t
-#include <cstdint>                              // uint64_t
-#include <initializer_list>                     // initializer_list
-#include <iterator>                             // distance, iterator_traits
-#include <limits>                               // digits
-#include <type_traits>                          // is_convertible
-#include <utility>                              // swap
-#include <dctl/bit/iterator.hpp>                // bit_iterator
-#include <dctl/bit/reference.hpp>               // bit_reference
-#include <dctl/bit/detail/base_set.hpp>         // base_set
-#include <dctl/bit/detail/storage.hpp>          // storage
+#include <cassert>                      // assert
+#include <cstddef>                      // ptrdiff_t, size_t
+#include <cstdint>                      // uint64_t
+#include <initializer_list>             // initializer_list
+#include <iterator>                     // iterator_traits
+#include <limits>                       // digits
+#include <type_traits>                  // is_convertible
+#include <utility>                      // swap
+#include <dctl/bit/detail/base_set.hpp> // BaseSet
+#include <dctl/bit/detail/storage.hpp>  // Storage
+#include <dctl/bit/iterator.hpp>        // Iterator
+#include <dctl/bit/reference.hpp>       // Reference
 
 namespace dctl {
 namespace bit {
 
 template<class T, class Block, int Nb>
-class bit_set
+class Set
 :
-        private detail::base_set<T, Block, Nb>
+        private detail::BaseSet<T, Block, Nb>
 {
 public:
-        using Base = detail::base_set<T, Block, Nb>;
+        using Base = detail::BaseSet<T, Block, Nb>;
         enum { N = Nb * std::numeric_limits<Block>::digits };
 
         using key_type = T;
         using value_type = T;
         using size_type = int;
         using difference_type = std::ptrdiff_t;
-        using reference = bit_reference<T, Block, Nb>;
+        using reference = Reference<T, Block, Nb>;
         using const_reference = reference;
-        using iterator = bit_iterator<T, Block, Nb>;
+        using iterator = Iterator<T, Block, Nb>;
         using const_iterator = iterator;
         using reverse_iterator = std::reverse_iterator<iterator>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
         // structors
 
-        constexpr bit_set() = default;
+        constexpr Set() = default;
 
         template<class InputIt>
-        constexpr bit_set(InputIt first, InputIt last)
+        constexpr Set(InputIt first, InputIt last)
         {
                 insert(first, last);
         }
 
-        constexpr bit_set(std::initializer_list<value_type> ilist)
+        constexpr Set(std::initializer_list<value_type> ilist)
         :
-                bit_set{ilist.begin(), ilist.end()}
+                Set{ilist.begin(), ilist.end()}
         {}
 
         constexpr auto& operator=(std::initializer_list<value_type> ilist)
@@ -198,7 +198,7 @@ public:
                 return it;
         }
 
-        constexpr void swap(bit_set& other) noexcept
+        constexpr void swap(Set& other) noexcept
         {
                 using std::swap;
                 swap(this->data_, other.data_);
@@ -228,32 +228,32 @@ public:
 
         // relational operators
 
-        friend constexpr bool operator==(bit_set const& lhs, bit_set const& rhs) noexcept
+        friend constexpr bool operator==(Set const& lhs, Set const& rhs) noexcept
         {
                 return Base::do_equal(lhs, rhs);
         }
 
-        friend constexpr bool operator!=(bit_set const& lhs, bit_set const& rhs) noexcept
+        friend constexpr bool operator!=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
 
-        friend constexpr bool operator< (bit_set const& lhs, bit_set const& rhs) noexcept
+        friend constexpr bool operator< (Set const& lhs, Set const& rhs) noexcept
         {
                 return Base::do_lexicograhical_compare(lhs, rhs);
         }
 
-        friend constexpr bool operator>=(bit_set const& lhs, bit_set const& rhs) noexcept
+        friend constexpr bool operator>=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(lhs < rhs);
         }
 
-        friend constexpr bool operator> (bit_set const& lhs, bit_set const& rhs) noexcept
+        friend constexpr bool operator> (Set const& lhs, Set const& rhs) noexcept
         {
                 return rhs < lhs;
         }
 
-        friend constexpr bool operator<=(bit_set const& lhs, bit_set const& rhs) noexcept
+        friend constexpr bool operator<=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(rhs < lhs);
         }
@@ -316,19 +316,19 @@ public:
                 return *this;
         }
 
-        constexpr auto& operator&=(bit_set const& other) noexcept
+        constexpr auto& operator&=(Set const& other) noexcept
         {
                 this->do_and(other);
                 return *this;
         }
 
-        constexpr auto& operator|=(bit_set const& other) noexcept
+        constexpr auto& operator|=(Set const& other) noexcept
         {
                 this->do_or(other);
                 return *this;
         }
 
-        constexpr auto& operator^=(bit_set const& other) noexcept
+        constexpr auto& operator^=(Set const& other) noexcept
         {
                 this->do_xor(other);
                 return *this;
@@ -346,56 +346,56 @@ public:
                 return *this;
         }
 
-        friend constexpr auto operator~(bit_set const& lhs) noexcept -> bit_set
+        friend constexpr auto operator~(Set const& lhs) noexcept -> Set
         {
-                bit_set nrv{lhs};
+                Set nrv{lhs};
                 nrv.flip();
                 return nrv;
         }
 
-        friend constexpr auto operator&(bit_set const& lhs, bit_set const& rhs) noexcept -> bit_set
+        friend constexpr auto operator&(Set const& lhs, Set const& rhs) noexcept -> Set
         {
-                bit_set nrv{lhs};
+                Set nrv{lhs};
                 nrv &= rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator|(bit_set const& lhs, bit_set const& rhs) noexcept -> bit_set
+        friend constexpr auto operator|(Set const& lhs, Set const& rhs) noexcept -> Set
         {
-                bit_set nrv{lhs};
+                Set nrv{lhs};
                 nrv |= rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator^(bit_set const& lhs, bit_set const& rhs) noexcept -> bit_set
+        friend constexpr auto operator^(Set const& lhs, Set const& rhs) noexcept -> Set
         {
-                bit_set nrv{lhs};
+                Set nrv{lhs};
                 nrv ^= rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator<<(bit_set const& lhs, int n) -> bit_set
+        friend constexpr auto operator<<(Set const& lhs, int n) -> Set
         {
-                bit_set nrv{lhs};
+                Set nrv{lhs};
                 nrv <<= n;
                 return nrv;
         }
 
-        friend constexpr auto operator>>(bit_set const& lhs, int n) -> bit_set
+        friend constexpr auto operator>>(Set const& lhs, int n) -> Set
         {
-                bit_set nrv{lhs};
+                Set nrv{lhs};
                 nrv >>= n;
                 return nrv;
         }
 
         // bitwise algorithms
 
-        constexpr auto includes(bit_set const& other) const noexcept
+        constexpr auto includes(Set const& other) const noexcept
         {
                 return this->do_includes(other);
         }
 
-        constexpr auto intersects(bit_set const& other) const noexcept
+        constexpr auto intersects(Set const& other) const noexcept
         {
                 return this->do_intersects(other);
         }
@@ -415,19 +415,15 @@ public:
                 return this->do_all();
         }
 
-        constexpr auto is_count_equal_to(int n) const noexcept
-        {
-                return this->do_is_count_equal_to(n);
-        }
-
-        constexpr auto is_count_less(int n) const noexcept
-        {
-                return this->do_is_count_less(n);
-        }
-
         constexpr auto count() const noexcept
         {
                 return this->do_count();
+        }
+
+        template<class Pred>
+        constexpr auto count_until(Pred pred) const noexcept
+        {
+                return this->do_count_until(pred);
         }
 
 private:
@@ -443,7 +439,7 @@ private:
 
         static constexpr auto mask(key_type n)
         {
-                return Block{1} << detail::storage<Block>::shift_idx(n);
+                return Block{1} << detail::Storage<Block>::shift_idx(n);
         }
 
         constexpr auto is_mask(key_type n) const
@@ -453,38 +449,35 @@ private:
 };
 
 template<class T, class Block, int Nb>
-constexpr auto swap(bit_set<T, Block, Nb>& lhs, bit_set<T, Block, Nb>& rhs) noexcept
+constexpr auto swap(Set<T, Block, Nb>& lhs, Set<T, Block, Nb>& rhs) noexcept
 {
         lhs.swap(rhs);
         return;
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) begin(bit_set<T, Block, Nb> const& s) noexcept
+constexpr decltype(auto) begin(Set<T, Block, Nb> const& s) noexcept
 {
         return s.begin();
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) end(bit_set<T, Block, Nb> const& s) noexcept
+constexpr decltype(auto) end(Set<T, Block, Nb> const& s) noexcept
 {
         return s.end();
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) cbegin(bit_set<T, Block, Nb> const& s) noexcept
+constexpr decltype(auto) cbegin(Set<T, Block, Nb> const& s) noexcept
 {
         return s.cbegin();
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) cend(bit_set<T, Block, Nb> const& s) noexcept
+constexpr decltype(auto) cend(Set<T, Block, Nb> const& s) noexcept
 {
         return s.cend();
 }
 
 }       // namespace bit
-
-using BitSet = bit::bit_set<int, uint64_t, 2>;
-
 }       // namespace dctl

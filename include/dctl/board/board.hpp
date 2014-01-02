@@ -8,12 +8,12 @@
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/range/counting_range.hpp>       // counting_range
 #include <dctl/angle.hpp>                       // Angle, inverse
-#include <dctl/bit/bit_set.hpp>                 // bit_set
+#include <dctl/bit.hpp>                         // Set
 #include <dctl/grid/coordinates.hpp>            // Square, coord_from_sq, sq_from_coord, rotate
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
 #include <dctl/grid/orientation.hpp>            // SizeMinimizingOrientation, Make
-#include <dctl/position/side.hpp>                   // black, white
+#include <dctl/position/side.hpp>               // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <dctl/board/algebraic.hpp>
 
@@ -39,7 +39,7 @@ private:
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
-        using set_type = bit::bit_set<int, Block, Nb>;
+        using set_type = bit::Set<int, Block, Nb>;
 
         static constexpr auto size() noexcept
         {
