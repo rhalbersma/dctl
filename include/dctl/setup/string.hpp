@@ -6,8 +6,8 @@
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/protocols.hpp>
 #include <dctl/setup/i_token.hpp>
-#include <dctl/bit/bit.hpp>
 #include <dctl/position/position.hpp>
+#include <dctl/position/side.hpp>
 
 namespace dctl {
 namespace setup {
@@ -110,7 +110,7 @@ struct write<pdn::protocol, Token>
 
                 std::stringstream sstr;
                 sstr << Token::quote;                                           // opening quotes
-                sstr << write_color<Token>(active_color(p));                   // side to move
+                sstr << write_color<Token>(active_color(p));                    // side to move
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i != 0;
@@ -123,7 +123,7 @@ struct write<pdn::protocol, Token>
                         for (auto sq : bs) {
                                 if (p.kings().test(sq))
                                         sstr << Token::king;                    // king tag
-                                sstr << Board::square_from_bit(sq) + 1;              // square number
+                                sstr << Board::square_from_bit(sq) + 1;         // square number
                                 if (++n != bs.size())                           // still pieces remaining
                                         sstr << Token::comma;                   // comma separator
                         }

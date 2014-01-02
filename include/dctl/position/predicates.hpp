@@ -1,10 +1,9 @@
 #pragma once
-#include <dctl/bit/bit.hpp>
-#include <dctl/position/predicates_fwd.hpp>
+#include <dctl/bit.hpp>
 #include <dctl/position/detail/predicates.hpp>
-#include <dctl/rules/traits.hpp>
+#include <dctl/position/predicates_fwd.hpp>
 #include <dctl/position/unary_projections.hpp>
-#include <dctl/bit/algorithm.hpp>
+#include <dctl/rules/traits.hpp>
 
 namespace dctl {
 

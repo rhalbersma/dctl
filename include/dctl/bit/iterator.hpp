@@ -3,41 +3,41 @@
 #include <cstddef>                              // ptrdiff_t
 #include <iterator>                             // bidirectional_iterator_tag
 #include <type_traits>                          // is_convertible
-#include <dctl/bit/iterator_fwd.hpp>            // bit_iterator
-#include <dctl/bit/reference_fwd.hpp>           // bit_reference
-#include <dctl/bit/detail/base_iterator.hpp>    // base_iterator
+#include <dctl/bit/detail/base_iterator.hpp>    // BaseIterator
+#include <dctl/bit/iterator_fwd.hpp>            // Iterator
+#include <dctl/bit/reference_fwd.hpp>           // Reference
 
 namespace dctl {
 namespace bit {
 
 template<class T, class Block, int Nb>
-class bit_iterator
+class Iterator
 :
-        private detail::base_iterator<Block, Nb>
+        private detail::BaseIterator<Block, Nb>
 {
 private:
         // typedefs
 
-        using Base = detail::base_iterator<Block, Nb>;
+        using Base = detail::BaseIterator<Block, Nb>;
 
 public:
         using iterator_category = std::bidirectional_iterator_tag;
         using value_type        = T;
         using difference_type   = std::ptrdiff_t;
-        using pointer           = bit_iterator<T, Block, Nb>;
-        using reference         = bit_reference<T, Block, Nb>;
+        using pointer           = Iterator<T, Block, Nb>;
+        using reference         = Reference<T, Block, Nb>;
 
         // structors
 
-        constexpr bit_iterator() noexcept = default;
+        constexpr Iterator() noexcept = default;
 
-        constexpr explicit bit_iterator(Block const* b)
+        constexpr explicit Iterator(Block const* b)
         :
                 Base{b, this->find_first()}
         {}
 
         template<class U>
-        constexpr bit_iterator(Block const* b, U const& value)
+        constexpr Iterator(Block const* b, U const& value)
         :
                 Base{b, int{value}}
         {
@@ -84,15 +84,18 @@ public:
         // predicates
 
         friend constexpr bool
-        operator==(bit_iterator const& lhs, bit_iterator const& rhs) noexcept
+        operator==(Iterator const& lhs, Iterator const& rhs) noexcept
         {
                 // TODO: use std::forward_as_tuple or std::tie
                 //       when they become constexpr in C++14
-                return lhs.block_ == rhs.block_ && lhs.index_ == rhs.index_;
+                return
+                        lhs.block_ == rhs.block_ &&
+                        lhs.index_ == rhs.index_
+                ;
         }
 
         friend constexpr bool
-        operator!=(bit_iterator const& lhs, bit_iterator const& rhs) noexcept
+        operator!=(Iterator const& lhs, Iterator const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }

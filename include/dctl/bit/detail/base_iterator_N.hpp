@@ -1,16 +1,16 @@
 #pragma once
 #include <cassert>                                      // assert
 #include <limits>                                       // digits
-#include <dctl/bit/detail/base_iterator_fwd.hpp>        // base_iterator
-#include <dctl/bit/detail/storage.hpp>                  // storage
-#include <dctl/bit/intrinsic.hpp>                       // bsfnz, bsrnz, clznz, ctznz
+#include <dctl/bit/detail/base_iterator_fwd.hpp>        // BaseIterator
+#include <dctl/bit/detail/intrinsic.hpp>                // bsfnz, bsrnz, clznz, ctznz
+#include <dctl/bit/detail/storage.hpp>                  // Storage
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
 template<class Block, int Nb>
-struct base_iterator
+struct BaseIterator
 {
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
@@ -40,7 +40,7 @@ struct base_iterator
                         return;
                 }
 
-                auto const idx = storage<Block>::shift_idx(index_);
+                auto const idx = Storage<Block>::shift_idx(index_);
                 if (idx == 0)
                         ++block_;
                 if (auto const mask = *block_ >> idx) {
@@ -49,7 +49,7 @@ struct base_iterator
                 }
                 ++block_;
 
-                for (auto i = storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
+                for (auto i = Storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
                         if (auto const mask = *block_) {
                                 index_ = i * digits + bit::bsfnz(mask);
                                 return;
@@ -66,7 +66,7 @@ struct base_iterator
                 if (--index_ == 0)
                         return;
 
-                auto const idx = storage<Block>::shift_idx(index_);
+                auto const idx = Storage<Block>::shift_idx(index_);
                 if (idx == digits - 1)
                         --block_;
                 if (auto const mask = *block_ << (digits - 1 - idx)) {
@@ -75,7 +75,7 @@ struct base_iterator
                 }
                 --block_;
 
-                for (auto i = storage<Block>::block_idx(index_) - 1; i >= 0; --i) {
+                for (auto i = Storage<Block>::block_idx(index_) - 1; i >= 0; --i) {
                         if (auto const mask = *block_) {
                                 index_ = i * digits + bit::bsrnz(mask);
                                 return;

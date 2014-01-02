@@ -7,24 +7,24 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <dctl/bit/bit_set.hpp>                 // bit_set
+#include <dctl/bit/set.hpp>                     // Set
 
 namespace dctl {
 namespace bit {
 
-using U = int;
-
-using BitSetTypes = boost::mpl::vector
-<
-        bit_set<U, uint64_t, 1>,
-        bit_set<U, uint64_t, 2>,
-        bit_set<U, uint64_t, 3>,
-        bit_set<U, uint64_t, 4>
->;
-
 BOOST_AUTO_TEST_SUITE(BitSet)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructorZeroInitializes, T, BitSetTypes)
+using U = int;
+
+using SetTypes = boost::mpl::vector
+<
+        Set<U, uint64_t, 1>,
+        Set<U, uint64_t, 2>,
+        Set<U, uint64_t, 3>,
+        Set<U, uint64_t, 4>
+>;
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructorZeroInitializes, T, SetTypes)
 {
         /* constexpr */ T b;
 
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructorZeroInitializes, T, BitSetTypes)
         BOOST_CHECK_EQUAL(std::distance(b.crbegin(), b.crend()), b.size());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorPairConstructorListInitializes, T, BitSetTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorPairConstructorListInitializes, T, SetTypes)
 {
         constexpr U a[] = { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
         /* constexpr */ auto b = T{std::begin(a), std::end(a)};
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorPairConstructorListInitializes, T, BitSetT
         BOOST_CHECK_EQUAL_COLLECTIONS(std::begin(a), std::end(a), begin(b), end(b));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(InitializerListConstructorListInitializes, T, BitSetTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(InitializerListConstructorListInitializes, T, SetTypes)
 {
         constexpr U a[]  =  { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(InitializerListConstructorListInitializes, T, BitS
         BOOST_CHECK_EQUAL_COLLECTIONS(std::begin(a), std::end(a), begin(b), end(b));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(InitializerListAssignmentOperatorListAssigns, T, BitSetTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(InitializerListAssignmentOperatorListAssigns, T, SetTypes)
 {
         constexpr U a[] = { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
         T b;          b = { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(InitializerListAssignmentOperatorListAssigns, T, B
         BOOST_CHECK_EQUAL_COLLECTIONS(std::begin(a), std::end(a), begin(b), end(b));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorsTraverseRange, T, BitSetTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorsTraverseRange, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorsTraverseRange, T, BitSetTypes)
         }
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, BitSetTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
         decltype(begin(b)) min, max;
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, BitSetTypes)
         BOOST_CHECK(*max == *b.rbegin() && *b.rbegin() < b.max_size());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsStrictlyIncreasing, T, BitSetTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsStrictlyIncreasing, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 

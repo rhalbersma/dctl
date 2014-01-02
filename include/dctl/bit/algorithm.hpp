@@ -23,39 +23,39 @@ constexpr auto set_all(Set const& s) noexcept
 }
 
 template<class Set>
-constexpr auto set_is_count_equal_to(Set const& s, int n) noexcept
+constexpr auto set_count(Set const& s) noexcept
 {
-        return s.is_count_equal_to(n);
+        return s.count();
 }
 
-template<class Set>
-constexpr auto set_is_count_less(Set const& s, int n) noexcept
+template<class Set, class Pred>
+constexpr auto set_count_until(Set const& s, Pred pred) noexcept
 {
-        return s.is_count_less(n);
+        return s.count_until(pred);
 }
 
 template<class Set>
 constexpr auto is_single(Set const& s) noexcept
 {
-        return bit::set_is_count_equal_to(s, 1);
+        return bit::set_count_until(s, [](auto sum) {
+                return sum > 1;
+        }) == 1;
 }
 
 template<class Set>
 constexpr auto is_double(Set const& s) noexcept
 {
-        return bit::set_is_count_equal_to(s, 2);
+        return bit::set_count_until(s, [](auto sum) {
+                return sum > 2;
+        }) == 2;
 }
 
 template<class Set>
 constexpr auto is_multiple(Set const& s) noexcept
 {
-        return !bit::set_is_count_less(s, 2);
-}
-
-template<class Set>
-constexpr auto set_count(Set const& s) noexcept
-{
-        return s.count();
+        return bit::set_count_until(s, [](auto sum) {
+                return sum > 2;
+        }) > 2;
 }
 
 template<class Set>

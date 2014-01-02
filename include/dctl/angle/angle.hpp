@@ -41,8 +41,9 @@ public:
                 return *this;
         }
 
-        constexpr auto& operator/=(int n) noexcept
+        constexpr auto& operator/=(int n)
         {
+                assert(n != 0);
                 value_ = make_angle(value_ / n);
                 assert(invariant());
                 return *this;
@@ -88,15 +89,17 @@ public:
                 return nrv;
         }
 
-        friend constexpr auto operator/(Angle const& a, int n) noexcept
+        friend constexpr auto operator/(Angle const& a, int n)
         {
+                assert(n != 0);
                 Angle nrv{a};
                 nrv /= n;
                 return nrv;
         }
 
-        friend constexpr auto operator/(Angle const& lhs, Angle const& rhs) noexcept
+        friend constexpr auto operator/(Angle const& lhs, Angle const& rhs)
         {
+                assert(rhs != 0);
                 return lhs.value_ / rhs.value_;
         }
 

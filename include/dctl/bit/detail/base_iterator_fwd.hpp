@@ -5,10 +5,10 @@ namespace bit {
 namespace detail {
 
 template<class Block, int Nb>
-struct base_iterator;
+struct BaseIterator;
 
 template<class Block>
-struct base_iterator<Block, 1>;
+struct BaseIterator<Block, 1>;
 
 }       // namespace detail
 }       // namespace bit

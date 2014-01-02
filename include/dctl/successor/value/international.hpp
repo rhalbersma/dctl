@@ -12,7 +12,7 @@ namespace successor {
 template<>
 class Value<rules::International>
 :
-        boost::totally_ordered< Value<rules::International> >   // < >= > <= == !=
+        boost::totally_ordered< Value<rules::International> >   // !=, >=, >, <=
 {
 public:
         // structors

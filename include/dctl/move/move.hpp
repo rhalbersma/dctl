@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>                      // assert
 #include <tuple>                        // tie
-#include <dctl/bit/algorithm.hpp>       // set_includes
+#include <dctl/bit.hpp>                 // set_includes
 #include <dctl/board/algebraic.hpp>
 #include <dctl/grid/coordinates.hpp>
 

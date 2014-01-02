@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/bit/algorithm.hpp>
+#include <dctl/bit.hpp>
 #include <dctl/position/detail/unary_projections.hpp>
 #include <dctl/rules/types.hpp>
 

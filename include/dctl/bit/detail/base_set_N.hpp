@@ -1,16 +1,16 @@
 #pragma once
 #include <cassert>                              // assert
 #include <limits>                               // digits
-#include <dctl/bit/detail/base_set_fwd.hpp>     // base_set
+#include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/storage.hpp>          // storage
-#include <dctl/bit/intrinsic.hpp>               // popcount
+#include <dctl/bit/detail/intrinsic.hpp>        // popcount
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
 template<class T, class Block, int Nb>
-struct base_set
+struct BaseSet
 {
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
@@ -23,20 +23,20 @@ struct base_set
 
         // structors
 
-        constexpr base_set() noexcept = default;
+        constexpr BaseSet() noexcept = default;
 
         // element access
 
         constexpr auto block_ptr(T const& n)
         {
                 assert(0 <= n <= N);
-                return &data_[0] + storage<Block>::block_idx(n);
+                return &data_[0] + Storage<Block>::block_idx(n);
         }
 
         constexpr auto block_ptr(T const& n) const
         {
                 assert(0 <= n <= N);
-                return &data_[0] + storage<Block>::block_idx(n);
+                return &data_[0] + Storage<Block>::block_idx(n);
         }
 
         // bitwise operations
@@ -66,7 +66,7 @@ struct base_set
                         data_[i] = ~data_[i];
         }
 
-        constexpr void do_and(base_set const& other) noexcept
+        constexpr void do_and(BaseSet const& other) noexcept
         {
                 // std::transform(
                 //         std::begin(data_), std::end(data_),
@@ -78,7 +78,7 @@ struct base_set
                         data_[i] &= other.data_[i];
         }
 
-        constexpr void do_or(base_set const& other) noexcept
+        constexpr void do_or(BaseSet const& other) noexcept
         {
                 // std::transform(
                 //         std::begin(data_), std::end(data_),
@@ -90,7 +90,7 @@ struct base_set
                         data_[i] |= other.data_[i];
         }
 
-        constexpr void do_xor(base_set const& other) noexcept
+        constexpr void do_xor(BaseSet const& other) noexcept
         {
                 // std::transform(
                 //         std::begin(data_), std::end(data_),
@@ -108,8 +108,8 @@ struct base_set
                 if (n == 0)
                         return;
 
-                auto const n_block = storage<Block>::block_idx(n);
-                auto const L_shift = storage<Block>::shift_idx(n);
+                auto const n_block = Storage<Block>::block_idx(n);
+                auto const L_shift = Storage<Block>::shift_idx(n);
 
                 if (L_shift == 0) {
                         // std::copy_backward(std::begin(data_), std::end(data_) - n_block, std::end(data_));
@@ -150,8 +150,8 @@ struct base_set
                 if (n == 0)
                         return;
 
-                auto const n_block = storage<Block>::block_idx(n);
-                auto const R_shift = storage<Block>::shift_idx(n);
+                auto const n_block = Storage<Block>::block_idx(n);
+                auto const R_shift = Storage<Block>::shift_idx(n);
 
                 if (R_shift == 0) {
                         for (auto i = 0; i < Nb - n_block; ++i)
@@ -188,7 +188,7 @@ struct base_set
 
         // bitwise algorithms
 
-        static constexpr auto do_equal(base_set const& lhs, base_set const& rhs) noexcept
+        static constexpr auto do_equal(BaseSet const& lhs, BaseSet const& rhs) noexcept
         {
                 // std::equal(std::begin(lhs.data_), std::end(lhs.data_), std::begin(rhs.data_));
                 for (auto i = 0; i < Nb; ++i)
@@ -197,7 +197,7 @@ struct base_set
                 return true;
         }
 
-        static constexpr auto do_lexicographical_compare(base_set const& lhs, base_set const& rhs) noexcept
+        static constexpr auto do_lexicographical_compare(BaseSet const& lhs, BaseSet const& rhs) noexcept
         {
                 // std::lexicographical_compare(std::begin(lhs.data_), std::end(lhs.data_), std::begin(rhs.data_), std::end(rhs.data_));
                 for (auto i = 0; i < Nb; ++i) {
@@ -207,7 +207,7 @@ struct base_set
                 return false;
         }
 
-        constexpr auto do_includes(base_set const& other) const noexcept
+        constexpr auto do_includes(BaseSet const& other) const noexcept
         {
                 // std::none_of(
                 //        boost::make_zip_iterator(boost::make_tuple(std::begin(data_), std::begin(other.data_))),
@@ -221,7 +221,7 @@ struct base_set
                 return true;
         }
 
-        constexpr auto do_intersects(base_set const& other) const noexcept
+        constexpr auto do_intersects(BaseSet const& other) const noexcept
         {
                 // std::any_of(
                 //        boost::make_zip_iterator(boost::make_tuple(std::begin(data_), std::begin(other.data_))),
@@ -268,28 +268,6 @@ struct base_set
                 return true;
         }
 
-        constexpr auto do_is_count_equal_to(int n) const noexcept
-        {
-                auto sum = 0;
-                for (auto i = 0; i < Nb; ++i) {
-                        sum += bit::popcount(data_[i]);
-                        if (sum > n)
-                                return false;
-                }
-                return sum == n;
-        }
-
-        constexpr auto do_is_count_less(int n) const noexcept
-        {
-                auto sum = 0;
-                for (auto i = 0; i < Nb; ++i) {
-                        sum += bit::popcount(data_[i]);
-                        if (sum >= n)
-                                return false;
-                }
-                return true;
-        }
-
         constexpr auto do_count() const noexcept
         {
                 // std::accumulate(std::begin(data_), std::end(data_), 0,
@@ -299,6 +277,18 @@ struct base_set
                 auto sum = 0;
                 for (auto i = 0; i < Nb; ++i)
                         sum += bit::popcount(data_[i]);
+                return sum;
+        }
+
+        template<class Pred>
+        constexpr auto do_count_until(Pred pred) const noexcept
+        {
+                auto sum = 0;
+                for (auto i = 0; i < Nb; ++i) {
+                        sum += bit::popcount(data_[i]);
+                        if (pred(sum))
+                                break;
+                }
                 return sum;
         }
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <sstream>                      // stringstream
-#include <dctl/bit/bit.hpp>
+#include <dctl/position/side.hpp>       // black, white
 
 namespace dctl {
 namespace setup {

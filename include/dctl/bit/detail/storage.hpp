@@ -6,7 +6,7 @@ namespace bit {
 namespace detail {
 
 template<class Block>
-struct storage
+struct Storage
 {
         template<class T>
         static constexpr auto block_idx(T n) noexcept

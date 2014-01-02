@@ -1,21 +1,22 @@
 #pragma once
 #include <array>                        // array
 #include <cstdint>                      // uint64_t
-#include <dctl/random/uniform.hpp>      // runif
+#include <dctl/random/uniform.hpp>      // runif, cat_zero_runif
 
 namespace dctl {
 namespace random {
 
 template<int N>
-struct Material
+struct Incremental
 {
         static std::array<uint64_t, N> const pieces[];
         static std::array<uint64_t, N> const kings;
+        static std::array<uint64_t, 2> const to_move;
 };
 
 template<int N>
 std::array<uint64_t, N> const
-Material<N>::pieces[] =
+Incremental<N>::pieces[] =
 {
         runif<N>(),
         runif<N>()
@@ -23,7 +24,11 @@ Material<N>::pieces[] =
 
 template<int N>
 std::array<uint64_t, N> const
-Material<N>::kings = random::runif<N>();
+Incremental<N>::kings = random::runif<N>();
+
+template<int N>
+std::array<uint64_t, 2> const
+Incremental<N>::to_move = cat_zero_runif<1>();
 
 }       // namespace random
 }       // namespace dctl

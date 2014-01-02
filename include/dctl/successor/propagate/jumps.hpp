@@ -3,7 +3,7 @@
 #include <iterator>                     // begin, end
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <dctl/angle.hpp>               // Angle, is_orthogonal
-#include <dctl/bit/bit.hpp>
+#include <dctl/bit.hpp>
 #include <dctl/board/iterator.hpp>      // Prev
 #include <dctl/position/promotion.hpp>
 #include <dctl/position/unary_projections.hpp>
@@ -17,7 +17,6 @@
 #include <dctl/ray/iterator.hpp>
 
 #include <dctl/board/mask.hpp>
-#include <dctl/bit/algorithm.hpp>
 
 namespace dctl {
 namespace successor {

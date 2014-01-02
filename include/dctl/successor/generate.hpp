@@ -2,11 +2,11 @@
 #include <memory>
 #include <vector>
 #include <dctl/successor/select/legal.hpp>              // DefaultSelection
-#include <dctl/successor/generate/specializations.hpp>      // generate
+#include <dctl/successor/generate/specializations.hpp>  // generate
 #include <dctl/successor/invariant.hpp>                 // invariant
 #include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
 #include <dctl/move/move.hpp>                           // Move
-#include <dctl/position/side.hpp>                           // black, white
+#include <dctl/position/side.hpp>                       // black, white
 #include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
 
 namespace dctl {

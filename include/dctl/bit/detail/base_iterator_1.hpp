@@ -1,15 +1,15 @@
 #pragma once
 #include <cassert>                                      // assert
 #include <limits>                                       // digits
-#include <dctl/bit/detail/base_iterator_fwd.hpp>        // base_iterator
-#include <dctl/bit/intrinsic.hpp>                       // clznz, ctznz
+#include <dctl/bit/detail/base_iterator_fwd.hpp>        // BaseIterator
+#include <dctl/bit/detail/intrinsic.hpp>                // clznz, ctznz
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
 template<class Block>
-struct base_iterator<Block, 1>
+struct BaseIterator<Block, 1>
 {
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
