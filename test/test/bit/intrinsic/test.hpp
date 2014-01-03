@@ -4,16 +4,16 @@
 #include <boost/test/unit_test.hpp>                     // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>            // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                         // vector
-#include <dctl/bit/detail/intrinsic/builtin.hpp>        // ctznz, clznz, popcount
 
 namespace dctl {
 namespace bit {
 
-BOOST_AUTO_TEST_SUITE(BitIntrinsicBuiltin)
+BOOST_AUTO_TEST_SUITE(BitIntrinsic)
 
 using UnsignedIntegerTypes = boost::mpl::vector
 <
-        uint32_t, uint64_t
+        uint32_t,
+        uint64_t
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(CountTrailingZeros, T, UnsignedIntegerTypes)
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Popcount, T, UnsignedIntegerTypes)
         }
 
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
-                auto const b = (T{1} << i) - 1;
+                auto const b = ~((~T{} >> i) << i);
                 BOOST_CHECK_EQUAL(lib::popcount(b), i);
         }
 
