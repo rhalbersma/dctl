@@ -1,8 +1,8 @@
 #pragma once
-#include <boost/mpl/eval_if.hpp>                // eval_if
-#include <dctl/preprocessor/sfinae/has_type.hpp>       // DCTL_PP_DEFINE_HAS_TYPE
-#include <dctl/preprocessor/sfinae/get_type.hpp>       // DCTL_PP_DEFINE_GET_TYPE
-#include <dctl/rules/types/orthogonality.hpp>   // none
+#include <boost/mpl/eval_if.hpp>                        // eval_if
+#include <dctl/preprocessor/sfinae/has_type.hpp>        // DCTL_PP_DEFINE_HAS_TYPE
+#include <dctl/preprocessor/sfinae/get_type.hpp>        // DCTL_PP_DEFINE_GET_TYPE
+#include <dctl/rules/types/orthogonality.hpp>           // none
 
 namespace dctl {
 namespace rules {

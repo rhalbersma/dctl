@@ -1,6 +1,6 @@
-#include <algorithm>                            // minmax_element, adjacent_find
+#include <algorithm>                            // adjacent_find, is_sorted, minmax_element
 #include <cstdint>                              // uint64_t
-#include <functional>                           // greater_equal, less_equal
+#include <functional>                           // greater, greater_equal, less, less_equal
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // begin, end, cbegin, cend, distance
 #include <tuple>                                // tie
@@ -29,17 +29,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructorZeroInitializes, T, SetTypes)
         /* constexpr */ T b;
 
         BOOST_CHECK(b.empty());
-        BOOST_CHECK_EQUAL(b.size(), 0);
-
         BOOST_CHECK(begin(b) == end(b));
         BOOST_CHECK(cbegin(b) == cend(b));
         BOOST_CHECK(b.rbegin() == b.rend());
         BOOST_CHECK(b.crbegin() == b.crend());
-
-        BOOST_CHECK_EQUAL(std::distance(begin(b), end(b)), b.size());
-        BOOST_CHECK_EQUAL(std::distance(cbegin(b), cend(b)), b.size());
-        BOOST_CHECK_EQUAL(std::distance(b.rbegin(), b.rend()), b.size());
-        BOOST_CHECK_EQUAL(std::distance(b.crbegin(), b.crend()), b.size());
+        BOOST_CHECK_EQUAL(b.size(), 0);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorPairConstructorListInitializes, T, SetTypes)
@@ -61,46 +55,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(InitializerListConstructorListInitializes, T, SetT
 BOOST_AUTO_TEST_CASE_TEMPLATE(InitializerListAssignmentOperatorListAssigns, T, SetTypes)
 {
         constexpr U a[] = { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
-        T b;          b = { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
+                    T b;
+                      b = { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 
         BOOST_CHECK_EQUAL_COLLECTIONS(std::begin(a), std::end(a), begin(b), end(b));
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorsTraverseRange, T, SetTypes)
+BOOST_AUTO_TEST_CASE_TEMPLATE(DistanceBeginEndEqualsSize, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
-
-        BOOST_CHECK(!b.empty());
-        BOOST_CHECK_NE(b.size(), 0);
 
         BOOST_CHECK_EQUAL(std::distance(begin(b), end(b)), b.size());
         BOOST_CHECK_EQUAL(std::distance(cbegin(b), cend(b)), b.size());
         BOOST_CHECK_EQUAL(std::distance(b.rbegin(), b.rend()), b.size());
         BOOST_CHECK_EQUAL(std::distance(b.crbegin(), b.crend()), b.size());
-
-        {
-                auto it = begin(b);
-                for (; it != end(b); ++it){}
-                BOOST_CHECK(it == b.rbegin().base());
-        }
-
-        {
-                auto it = end(b);
-                for (; it != begin(b); --it){}
-                BOOST_CHECK(it == b.rend().base());
-        }
-
-        {
-                auto it = b.rbegin();
-                for (; it != b.rend(); ++it){}
-                BOOST_CHECK(it.base() == begin(b));
-        }
-
-        {
-                auto it = b.rend();
-                for (; it != b.rbegin(); --it){}
-                BOOST_CHECK(it.base() == end(b));
-        }
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, SetTypes)
@@ -111,6 +79,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, SetTypes)
 
         BOOST_CHECK(0 <= *begin(b) && *begin(b) == *min);
         BOOST_CHECK(*max == *b.rbegin() && *b.rbegin() < b.max_size());
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsSorted, T, SetTypes)
+{
+        constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
+
+        BOOST_CHECK(std::is_sorted(begin(b), end(b), std::less<U>()));
+        BOOST_CHECK(std::is_sorted(b.rbegin(), b.rend(), std::greater<U>()));
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsStrictlyIncreasing, T, SetTypes)

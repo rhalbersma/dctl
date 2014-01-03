@@ -205,10 +205,10 @@ private:
 
                 if (m.is_promotion()) {
                         // the first of multiple pawns
-                        if (!mru.is_active() && bit::is_multiple(pawns(to_move_)))
+                        if (!mru.is_active() && bit::set_multiple(pawns(to_move_)))
                                 mru.activate();
                         // the single last pawn
-                        if (mru.is_active() && bit::is_single(pawns(to_move_)))
+                        if (mru.is_active() && bit::set_single(pawns(to_move_)))
                                 mru.deactivate();
                 }
         }
