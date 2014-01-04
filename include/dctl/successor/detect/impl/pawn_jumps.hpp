@@ -5,7 +5,7 @@
 #include <dctl/successor/select/jumps.hpp>
 
 #include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/board/patterns.hpp>
+#include <dctl/wave/patterns.hpp>
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
 

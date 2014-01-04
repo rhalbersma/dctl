@@ -117,13 +117,16 @@ public:
 };
 
 template<class Dim, bool Orth>
-constexpr bool Board<Dim, Orth>::is_orthogonal_captures;
+constexpr bool
+Board<Dim, Orth>::is_orthogonal_captures;
 
 template<class Dim, bool Orth>
-constexpr int Board<Dim, Orth>::edge_columns;
+constexpr int
+Board<Dim, Orth>::edge_columns;
 
 template<class Dim, bool Orth>
-constexpr Angle Board<Dim, Orth>::orientation;
+constexpr Angle
+Board<Dim, Orth>::orientation;
 
 template<class Dim, bool Orth>
 constexpr std::array<int, Board<Dim, Orth>::N>

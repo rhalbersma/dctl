@@ -31,10 +31,8 @@ public:
 };
 
 template<class Board>
-constexpr typename Squares<Board>::value_type Squares<Board>::value;
-
-template<class Board>
-constexpr auto squares = Squares<Board>::mask();
+constexpr typename Squares<Board>::value_type
+Squares<Board>::value;
 
 }       // namespace board
 }       // namespace dctl

@@ -7,9 +7,9 @@
 #include <dctl/successor/select/moves.hpp>              // select
 
 #include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/board/iterator.hpp>                      // Next, Prev
 #include <dctl/position/promotion.hpp>
 #include <dctl/ray/iterator.hpp>
+#include <dctl/wave/iterator.hpp>
 
 namespace dctl {
 namespace successor {
@@ -19,12 +19,14 @@ namespace impl {
 template<bool Color, class Position, class Sequence>
 struct generate<Color, pieces::pawn, select::moves, Position, Sequence>
 {
+public:
         // enforce reference semantics
         generate(generate const&) = delete;
         generate& operator=(generate const&) = delete;
 
 private:
         using Board = typename Position::board_type;
+        using Set = typename Board::set_type;
         using Move = typename Sequence::value_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::moves, Position>;
@@ -45,34 +47,30 @@ public:
 
         // function call operators
 
-        template<class Set>
         void operator()(Set const& active_pawns) const
         {
-                if (!active_pawns.empty())
-                        branch(active_pawns);
+                if (active_pawns.empty())
+                        return;
+
+                transform_movers<Compass::left_up >(active_pawns);
+                transform_movers<Compass::right_up>(active_pawns);
         }
 
 private:
-        template<class Set>
-        void branch(Set const& active_pawns) const
+        template<int Direction>
+        void transform_movers(Set const& active_pawns) const
         {
-                copy_if< Compass::left_up  >(active_pawns);
-                copy_if< Compass::right_up >(active_pawns);
-        }
-
-        template<int Direction, class Set>
-        void copy_if(Set const& active_pawns) const
-        {
-                transform<Direction>(active_pawns & Prev<Board, Direction>{}(propagate_.path()));
-        }
-
-        template<int Direction, class Set>
-        void transform(Set movers) const
-        {
+                auto const movers = active_pawns & *std::prev(along_wave<Direction>(propagate_.path()));
                 std::transform(begin(movers), end(movers), std::back_inserter(moves_), [](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
                         return Move{from_sq, dest_sq, is_promotion(dest_sq)};
                 });
+        }
+
+        template<int Direction>
+        static wave::Iterator<Board, Direction> along_wave(Set const& s)
+        {
+                return wave::make_iterator<Board, Direction>(s);
         }
 
         template<int Direction>

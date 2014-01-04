@@ -60,7 +60,8 @@ public:
 };
 
 template<class Board>
-constexpr typename Initial<Board>::table_type Initial<Board>::table[];
+constexpr typename Initial<Board>::table_type
+Initial<Board>::table[];
 
 }       // namespace board
 }       // namespace dctl

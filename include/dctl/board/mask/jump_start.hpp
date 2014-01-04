@@ -58,13 +58,16 @@ public:
 };
 
 template<class Board>
-constexpr Angle JumpStart<Board>::theta;
+constexpr Angle
+JumpStart<Board>::theta;
 
 template<class Board>
-constexpr Angle JumpStart<Board>::beta;
+constexpr Angle
+JumpStart<Board>::beta;
 
 template<class Board>
-constexpr typename JumpStart<Board>::table_type JumpStart<Board>::table;
+constexpr typename JumpStart<Board>::table_type
+JumpStart<Board>::table;
 
 }       // namespace board
 }       // namespace dctl

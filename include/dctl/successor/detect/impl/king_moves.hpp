@@ -5,7 +5,7 @@
 #include <dctl/successor/select/moves.hpp>
 
 #include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/board/patterns.hpp>
+#include <dctl/wave/patterns.hpp>
 #include <dctl/rules/traits.hpp>
 
 namespace dctl {

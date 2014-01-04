@@ -4,7 +4,6 @@
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <dctl/angle.hpp>               // Angle, is_orthogonal
 #include <dctl/bit.hpp>
-#include <dctl/board/iterator.hpp>      // Prev
 #include <dctl/position/promotion.hpp>
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/pieces/pieces.hpp>
@@ -15,7 +14,7 @@
 #include <dctl/successor/value.hpp>
 #include <dctl/utility/total_order.hpp>
 #include <dctl/ray/iterator.hpp>
-
+#include <dctl/wave/iterator.hpp>
 #include <dctl/board/mask.hpp>
 
 namespace dctl {
@@ -38,17 +37,14 @@ public:
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
                 remaining_targets_(initial_targets_),
-                not_occupied_(not_occupied(p)),
-                from_sq_(-1),
-                current_(),
-                best_()
+                not_occupied_(not_occupied(p))
         {
                 assert(invariant());
         }
 
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
-        using T = typename Board::set_type;
+        using Set = typename Board::set_type;
 
         // modifiers
 
@@ -137,7 +133,7 @@ public:
         template<int Direction>
         auto targets_with_king() const
         {
-                return remaining_targets<Direction>() & Prev<Board, Direction>{}(path());
+                return remaining_targets<Direction>() & *std::prev(along_wave<Direction>(path()));
         }
 
         template<int Direction>
@@ -149,7 +145,7 @@ public:
         template<int Direction>
         auto targets_with_pawn() const
         {
-                return remaining_targets_ & Prev<Board, Direction>{}(path());
+                return remaining_targets_ & *std::prev(along_wave<Direction>(path()));
         }
 
         template<int Direction>
@@ -310,9 +306,7 @@ private:
 
         auto invariant() const
         {
-                return (
-                        bit::set_includes(initial_targets_, remaining_targets_)
-                );
+                return bit::set_includes(initial_targets_, remaining_targets_);
         }
 
         template<int Direction>
@@ -390,7 +384,7 @@ private:
         // overload for pawns that cannot capture kings
         auto captured_kings_dispatch(std::false_type) const
         {
-                return T{};
+                return Set{};
         }
 
         auto captured_kings(with::king) const
@@ -403,15 +397,21 @@ private:
                 return initial_targets_ ^ remaining_targets_;
         }
 
+        template<int Direction>
+        static wave::Iterator<Board, Direction> along_wave(Set const& s)
+        {
+                return wave::make_iterator<Board, Direction>(s);
+        }
+
         // representation
 
-        T const king_targets_;
-        T initial_targets_;
-        T remaining_targets_;
-        T not_occupied_;
-        int from_sq_;
-        Value<Rules> current_;
-        Value<Rules> best_;
+        Set const king_targets_;
+        Set initial_targets_;
+        Set remaining_targets_;
+        Set not_occupied_;
+        int from_sq_{-1};
+        Value<Rules> current_{};
+        Value<Rules> best_{};
 };
 
 }       // namespace successor

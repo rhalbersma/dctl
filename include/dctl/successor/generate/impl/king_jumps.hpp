@@ -9,7 +9,6 @@
 
 #include <dctl/angle.hpp>                               // _deg, rotate
 #include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/board/iterator.hpp>                      // Increment, Next, Prev
 #include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/ray/iterator.hpp>
@@ -24,6 +23,7 @@ namespace impl {
 template<bool Color, class Position, class Sequence>
 struct generate<Color, pieces::king, select::jumps, Position, Sequence>
 {
+public:
         // enforce reference semantics
         generate(generate const&) = delete;
         generate& operator=(generate const&) = delete;
@@ -31,6 +31,7 @@ struct generate<Color, pieces::king, select::jumps, Position, Sequence>
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
+        using Set = typename Board::set_type;
         using Move = typename Sequence::value_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jumps, Position>;
@@ -51,7 +52,6 @@ public:
 
         // function call operators
 
-        template<class Set>
         void operator()(Set const& active_kings) const
         {
                 // tag dispatching on relative king jump precedence
@@ -66,14 +66,12 @@ public:
 
 private:
         // overload for no relative king jump precedence
-        template<class Set>
         void select_dispatch(Set const& active_kings, std::false_type) const
         {
                 serialize(active_kings);
         }
 
         // overload for relative king jump precedence
-        template<class Set>
         void select_dispatch(Set const& active_kings, std::true_type) const
         {
                 capture_.toggle_with_king();
@@ -81,18 +79,13 @@ private:
                 capture_.toggle_with_king();
         }
 
-        template<class Set>
         void serialize(Set const& active_kings) const
         {
-                for (auto from_sq : active_kings)
-                        find(from_sq);
-        }
-
-        void find(int from_sq) const
-        {
-                capture_.launch(from_sq);
-                branch(from_sq);
-                capture_.finish(from_sq);
+                for (auto const& from_sq : active_kings) {
+                        capture_.launch(from_sq);
+                        branch(from_sq);
+                        capture_.finish(from_sq);
+                }
         }
 
         void branch(int from_sq) const
@@ -282,7 +275,7 @@ private:
                 return jump(jumper);
         }
 
-        template<class Iterator, class Set>
+        template<class Iterator>
         void slide(Iterator& jumper, Set const& path) const
         {
                 // tag dispatching on king range
@@ -290,14 +283,14 @@ private:
         }
 
         // overload for short ranged kings
-        template<class Iterator, class Set>
+        template<class Iterator>
         void slide_dispatch(Iterator& jumper, Set const& /* path */, rules::range::distance_1) const
         {
                 ++jumper;
         }
 
         // overload for long ranged kings
-        template<class Iterator, class Set>
+        template<class Iterator>
         void slide_dispatch(Iterator& jumper, Set const& path, rules::range::distance_N) const
         {
                 do ++jumper; while (path.test(*jumper));

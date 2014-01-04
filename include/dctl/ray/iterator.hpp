@@ -1,7 +1,7 @@
 #pragma once
 #include <iterator>                             // random_access_iterator_tag
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
-#include <dctl/ray/cursor.hpp>                  // StridedCursor
+#include <dctl/ray/cursor.hpp>                  // Cursor
 
 namespace dctl {
 namespace ray {
@@ -9,7 +9,7 @@ namespace ray {
 template<class Board, int Direction>
 using Iterator = boost::counting_iterator
 <
-        StridedCursor<Board, Direction>,        // Incrementable
+        Cursor<Board, Direction>,               // Incrementable
         std::random_access_iterator_tag,        // CategoryOrTraversal
         int                                     // DifferenceType
 >;
@@ -17,7 +17,7 @@ using Iterator = boost::counting_iterator
 template<class Board, int Direction>
 Iterator<Board, Direction> make_iterator(int sq)
 {
-        return { StridedCursor<Board, Direction>{sq} };
+        return { Cursor<Board, Direction>{sq} };
 }
 
 }       // namespace ray
