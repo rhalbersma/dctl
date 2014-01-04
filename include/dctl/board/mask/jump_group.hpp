@@ -56,7 +56,8 @@ public:
 };
 
 template<class Board>
-constexpr typename JumpGroup<Board>::table_type JumpGroup<Board>::table;
+constexpr typename JumpGroup<Board>::table_type
+JumpGroup<Board>::table;
 
 }       // namespace board
 }       // namespace dctl

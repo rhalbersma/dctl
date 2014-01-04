@@ -12,12 +12,12 @@
 
 #include <dctl/angle.hpp>                               // _deg, rotate, mirror
 #include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/board/iterator.hpp>                      // Increment, Prev
 #include <dctl/position/promotion.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/ray/iterator.hpp>
 #include <dctl/ray/transform.hpp>
+#include <dctl/wave/iterator.hpp>
 
 namespace dctl {
 namespace successor {
@@ -28,6 +28,7 @@ namespace impl {
 template<bool Color, class Position, class Sequence>
 struct generate<Color, pieces::pawn, select::jumps, Position, Sequence>
 {
+public:
         // enforce reference semantics
         generate(generate const&) = delete;
         generate& operator=(generate const&) = delete;
@@ -36,6 +37,7 @@ private:
         using KingJumps = generate<Color, pieces::king, select::jumps, Position, Sequence>;
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
+        using Set = typename Board::set_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jumps, Position>;
 
@@ -55,24 +57,23 @@ public:
 
         // function call operators
 
-        template<class Set>
         void operator()(Set const& active_pawns) const
         {
                 // tag dispatching on whether pawns can capture kings
-                if (!active_pawns.empty())
-                        select_dispatch(active_pawns, rules::can_jump<Rules, pieces::pawn, pieces::king>());
+                if (active_pawns.empty())
+                        return;
+
+                select_dispatch(active_pawns, rules::can_jump<Rules, pieces::pawn, pieces::king>());
         }
 
 private:
         // overload for pawns that can capture kings
-        template<class Set>
         void select_dispatch(Set const& active_pawns, std::true_type) const
         {
                 branch(active_pawns);
         }
 
         // overload for pawns that cannot capture kings
-        template<class Set>
         void select_dispatch(Set const& active_pawns, std::false_type) const
         {
                 capture_.toggle_king_targets();
@@ -80,7 +81,6 @@ private:
                 capture_.toggle_king_targets();
         }
 
-        template<class Set>
         void branch(Set const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
@@ -88,7 +88,6 @@ private:
         }
 
         // overload for pawns that jump in the 8 diagonal and orthogonal directions
-        template<class Set>
         void branch_dispatch(Set const& active_pawns, rules::directions::all) const
         {
                 branch_dispatch(active_pawns, rules::directions::diag());
@@ -96,7 +95,6 @@ private:
         }
 
         // overload for pawns that jump in the 4 diagonal directions
-        template<class Set>
         void branch_dispatch(Set const& active_pawns, rules::directions::diag) const
         {
                 branch_dispatch(active_pawns, rules::directions::up  ());
@@ -104,7 +102,6 @@ private:
         }
 
         // overload for pawns that jump in the 2 forward diagonal directions
-        template<class Set>
         void branch_dispatch(Set const& active_pawns, rules::directions::up) const
         {
                 serialize< Compass::left_up  >(active_pawns);
@@ -112,7 +109,6 @@ private:
         }
 
         // overload for pawns that jump in the 2 backward diagonal directions
-        template<class Set>
         void branch_dispatch(Set const& active_pawns, rules::directions::down) const
         {
                 serialize< Compass::left_down  >(active_pawns);
@@ -120,7 +116,6 @@ private:
         }
 
         // overload for pawns that jump in the 4 orthogonal directions
-        template<class Set>
         void branch_dispatch(Set const& active_pawns, rules::directions::orth) const
         {
                 serialize< Compass::left  >(active_pawns);
@@ -129,10 +124,11 @@ private:
                 serialize< Compass::down  >(active_pawns);
         }
 
-        template<int Direction, class Set>
+        template<int Direction>
         void serialize(Set const& active_pawns) const
         {
-                for (auto from_sq : active_pawns & Prev<Board, Direction>{}(capture_.template targets_with_pawn<Direction>()))
+                auto const jumpers = active_pawns & *std::prev(along_wave<Direction>(capture_.template targets_with_pawn<Direction>()));
+                for (auto const& from_sq : jumpers)
                         find(along_ray<Direction>(from_sq));
         }
 
@@ -338,6 +334,12 @@ private:
                 capture_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
                 if (check_duplicate && util::is_duplicate_back(moves_))
                         moves_.pop_back();
+        }
+
+        template<int Direction>
+        static wave::Iterator<Board, Direction> along_wave(Set const& s)
+        {
+                return wave::make_iterator<Board, Direction>(s);
         }
 
         template<int Direction>

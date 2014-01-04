@@ -51,7 +51,8 @@ public:
 };
 
 template<class Board>
-constexpr typename Column<Board>::table_type Column<Board>::table[];
+constexpr typename Column<Board>::table_type
+Column<Board>::table[];
 
 }       // namespace board
 }       // namespace dctl

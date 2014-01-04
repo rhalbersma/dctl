@@ -1,30 +1,30 @@
 #pragma once
-#include <boost/operators.hpp>          // totally_ordered, unit_steppable, additive
+#include <boost/operators.hpp>          // totally_ordered, unit_steppable
 #include <dctl/angle.hpp>               // Angle
+#include <dctl/utility/shift.hpp>       // shift_assing
 
 namespace dctl {
-namespace ray {
+namespace wave {
 
 template<class Board, int Direction>
 class Cursor
 :       boost::totally_ordered< Cursor<Board, Direction>        // != >= > <=
 ,       boost::unit_steppable < Cursor<Board, Direction>        // ++, --
-,       boost::additive       < Cursor<Board, Direction>, int   // +, -
-> > >
+> >
 {
         static constexpr auto theta = Angle{Direction};
         static constexpr auto S = Board::shift_size(theta);
         static constexpr auto N = is_positive(theta) ? -S : S;
         static_assert(N != 0, "Cursors need a non-zero stride.");
 
-        using Square = int;
+        using Set = typename Board::set_type;
 
 public:
         // structors
 
         Cursor() noexcept = default;
 
-        explicit Cursor(Square c) noexcept
+        explicit Cursor(Set const& c) noexcept
         :
                 cursor_{c}
         {}
@@ -43,40 +43,20 @@ public:
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
         {
-                cursor_ += N;
+                util::shift_assign<is_positive(theta)>()(cursor_, S);
                 return *this;
         }
 
         // operator--(int) provided by boost::unit_steppable
         auto& operator--() noexcept
         {
-                cursor_ -= N;
+                util::shift_assign<is_negative(theta)>()(cursor_, S);
                 return *this;
-        }
-
-        // operator+(Cursor, int) provided by boost::additive
-        auto& operator+=(int n) noexcept
-        {
-                cursor_ += n * N;
-                return *this;
-        }
-
-        // operator-(Cursor, int) provided by boost::additive
-        auto& operator-=(int n) noexcept
-        {
-                cursor_ -= n * N;
-                return *this;
-        }
-
-        // number of increments / decrements between lhs and rhs
-        friend auto operator-(Cursor const& lhs, Cursor const& rhs) noexcept
-        {
-                return (lhs.cursor_ - rhs.cursor_) / N;
         }
 
         // queries
 
-        operator Square() const noexcept
+        operator Set() const noexcept
         {
                 return cursor_;
         }
@@ -84,8 +64,8 @@ public:
 private:
         // representation
 
-        Square cursor_{};
+        Set cursor_{};
 };
 
-}       // namespace ray
+}       // namespace wave
 }       // namespace dctl
