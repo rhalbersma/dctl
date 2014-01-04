@@ -300,7 +300,7 @@ private:
                 return jump(jumper);
         }
 
-        template<class Board, int Direction>
+        template<int Direction>
         bool jump(ray::Iterator<Board, Direction> jumper) const
         {
                 if (!capture_.template targets_with_pawn<Direction>(*jumper))

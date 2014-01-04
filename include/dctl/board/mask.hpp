@@ -6,3 +6,4 @@
 #include <dctl/board/mask/promotion.hpp>
 #include <dctl/board/mask/row.hpp>
 #include <dctl/board/mask/squares.hpp>
+#include <dctl/board/mask/king_targets.hpp>

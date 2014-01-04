@@ -9,8 +9,10 @@
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/ray/algorithm.hpp>
+#include <dctl/ray/classical.hpp>
+#include <dctl/ray/fill.hpp>
 #include <dctl/ray/iterator.hpp>
+#include <dctl/board/mask.hpp>
 
 namespace dctl {
 namespace successor {
@@ -89,8 +91,8 @@ private:
                 });
         }
 
-        template<class Iterator>
-        void transform_targets(Iterator from) const
+        template<int Direction>
+        void transform_targets(ray::Iterator<Board, Direction> from) const
         {
                 auto const targets = ray::fill(from, propagate_.path());
                 std::transform(begin(targets), end(targets), std::back_inserter(moves_), [=](auto const& dest_sq) {
