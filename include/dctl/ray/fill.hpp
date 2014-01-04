@@ -5,12 +5,12 @@ namespace dctl {
 namespace ray {
 
 template<class Iterator, class Set>
-auto fill(Iterator src, Set const& propagator)
+auto fill(Iterator from, Set const& propagator)
 {
-        Set dst {};
-        for (auto it = std::next(src); propagator.test(*it); ++it)
-                dst.set(*it);
-        return dst;
+        Set targets {};
+        for (++from; propagator.test(*from); ++from)
+                targets.set(*from);
+        return targets;
 }
 
 }       // namespace ray
