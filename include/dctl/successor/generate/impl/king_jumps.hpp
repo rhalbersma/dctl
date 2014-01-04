@@ -119,7 +119,7 @@ private:
                 find_first(along_ray< Compass::down  >(from_sq));
         }
 
-        template<class Board, int Direction>
+        template<int Direction>
         void find_first(ray::Iterator<Board, Direction> jumper) const
         {
                 slide(jumper, capture_.template path<Direction>());
@@ -268,7 +268,7 @@ private:
                 ;
         }
 
-        template<class Board, int Direction>
+        template<int Direction>
         bool scan(ray::Iterator<Board, Direction> jumper) const
         {
                 slide(jumper, capture_.template path<Direction>());
@@ -296,7 +296,7 @@ private:
                 do ++jumper; while (path.test(*jumper));
         }
 
-        template<class Board, int Direction>
+        template<int Direction>
         bool jump(ray::Iterator<Board, Direction> jumper) const
         {
                 if (!capture_.template targets_with_king<Direction>(*jumper))

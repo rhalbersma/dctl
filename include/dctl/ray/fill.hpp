@@ -1,5 +1,5 @@
 #pragma once
-#include <iterator>                     // next
+#include <iterator>                             // next
 
 namespace dctl {
 namespace ray {
@@ -13,5 +13,5 @@ auto fill(Iterator src, Set const& propagator)
         return dst;
 }
 
-}
-}
+}       // namespace ray
+}       // namespace dctl

@@ -21,7 +21,9 @@ int main()
         using Board = board::International;
         using Pos = Position<Rules, Board>;
 
-        auto initial = Pos::initial();
+        auto initial = setup::read<rules::International, board::International, pdn::protocol>()(
+                        "W:WK46, 28,14:B1"
+                );//Pos::initial();
         std::stack<Pos> game;
         game.push(initial);
 
