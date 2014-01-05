@@ -1,5 +1,4 @@
 #pragma once
-#include <iterator>                             // next
 
 namespace dctl {
 namespace ray {

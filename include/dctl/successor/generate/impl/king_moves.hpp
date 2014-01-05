@@ -4,7 +4,7 @@
 #include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
-#include <dctl/pieces/king.hpp>           // king
+#include <dctl/pieces/king.hpp>                         // king
 
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/position/unary_projections.hpp>
