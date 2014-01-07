@@ -108,7 +108,7 @@ public:
 
                 moves.emplace_back(
                         captured_pieces(),
-                        captured_kings(with::king()),
+                        captured_kings(with::king{}),
                         from_sq_,
                         dest_sq
                 );
@@ -121,10 +121,10 @@ public:
 
                 moves.emplace_back(
                         captured_pieces(),
-                        captured_kings(WithPiece()),
+                        captured_kings(WithPiece{}),
                         from_sq_,
                         dest_sq,
-                        is_promotion<Color>(dest_sq, WithPiece())
+                        is_promotion<Color>(dest_sq, WithPiece{})
                 );
         }
 

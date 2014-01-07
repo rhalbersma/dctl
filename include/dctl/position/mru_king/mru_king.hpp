@@ -30,6 +30,7 @@ public:
 
         constexpr void init(int dest_sq)
         {
+                assert(is_active());
                 assert(0 <= dest_sq && dest_sq < N);
                 index_ = dest_sq + 1;
                 moves_ = 1;
@@ -38,6 +39,7 @@ public:
 
         constexpr void increment(int dest_sq)
         {
+                assert(is_active());
                 assert(0 <= dest_sq && dest_sq < N);
                 assert(0 < moves_ && moves_ < M);
                 index_ = dest_sq + 1;
@@ -45,8 +47,9 @@ public:
                 assert(1 < moves_ && moves_ <= M);
         }
 
-        constexpr void reset() noexcept
+        constexpr void reset()
         {
+                assert(is_active());
                 index_ = 0;
                 moves_ = 0;
         }

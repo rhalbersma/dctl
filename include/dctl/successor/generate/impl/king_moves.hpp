@@ -91,10 +91,10 @@ private:
                 });
         }
 
-        template<int Direction>
-        void transform_targets(ray::Iterator<Board, Direction> from) const
+        template<class Iterator>
+        void transform_targets(Iterator from) const
         {
-                auto const targets = ray::fill(from, propagate_.path());
+                auto const targets = ray::classical(from, propagate_.path());
                 std::transform(begin(targets), end(targets), std::back_inserter(moves_), [=](auto const& dest_sq) {
                         return Move{*from, dest_sq};
                 });

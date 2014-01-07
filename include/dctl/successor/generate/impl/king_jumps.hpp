@@ -104,19 +104,19 @@ private:
         // overload for kings that jump in the 4 diagonal directions
         void branch_dispatch(int from_sq, rules::directions::diag) const
         {
-                find_first(along_ray< Compass::left_up    >(from_sq));
-                find_first(along_ray< Compass::right_up   >(from_sq));
-                find_first(along_ray< Compass::left_down  >(from_sq));
-                find_first(along_ray< Compass::right_down >(from_sq));
+                find_first(along_ray<Compass::left_up   >(from_sq));
+                find_first(along_ray<Compass::right_up  >(from_sq));
+                find_first(along_ray<Compass::left_down >(from_sq));
+                find_first(along_ray<Compass::right_down>(from_sq));
         }
 
         // overload for kings that jump in the 4 orthogonal directions
         void branch_dispatch(int from_sq, rules::directions::orth) const
         {
-                find_first(along_ray< Compass::left  >(from_sq));
-                find_first(along_ray< Compass::right >(from_sq));
-                find_first(along_ray< Compass::up    >(from_sq));
-                find_first(along_ray< Compass::down  >(from_sq));
+                find_first(along_ray<Compass::left >(from_sq));
+                find_first(along_ray<Compass::right>(from_sq));
+                find_first(along_ray<Compass::up   >(from_sq));
+                find_first(along_ray<Compass::down >(from_sq));
         }
 
         template<int Direction>
@@ -143,7 +143,7 @@ private:
         {
                 ++jumper;
                 if (!find_next(jumper))
-                        add_king_jump(jumper);
+                        add(jumper);
         }
 
         // overload for majority precedence
@@ -151,15 +151,12 @@ private:
         void precedence_dispatch(Iterator jumper, std::true_type) const
         {
                 ++jumper;
-                if (
-                        !find_next(jumper) &&
-                        capture_.greater_equal()
-                ) {
+                if (!find_next(jumper) && capture_.greater_equal()) {
                         if (capture_.not_equal_to()) {
                                 capture_.improve();
                                 moves_.clear();
                         }
-                        add_king_jump(jumper);
+                        add(jumper);
                 }
         }
 
@@ -309,63 +306,63 @@ private:
         }
 
         template<class Iterator>
-        void add_king_jump(Iterator dest_sq) const
+        void add(Iterator dest_sq) const
         {
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
 
                 // tag dispatching on king halt after final capture
-                add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::halt<Rules>{});
+                halt_dispatch(dest_sq, check_duplicate, rules::range::halt<Rules>{});
         }
 
         // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
         template<class Iterator>
-        void add_king_jump_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_1K) const
+        void halt_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_1K) const
         {
                 if (capture_.is_king(*std::prev(dest_sq)))
-                        add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::distance_1{});
+                        halt_dispatch(dest_sq, check_duplicate, rules::range::distance_1{});
                 else
-                        add_king_jump_dispatch(dest_sq, check_duplicate, rules::range::distance_N{});
+                        halt_dispatch(dest_sq, check_duplicate, rules::range::distance_N{});
         }
 
         // overload for kings that halt immediately after the final capture
         template<class Iterator>
-        void add_king_jump_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_1) const
+        void halt_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_1) const
         {
-                add_king_jump(dest_sq, check_duplicate);
+                add_jump(dest_sq, check_duplicate);
         }
 
         // overload for kings that slide through after the final capture
         template<class Iterator>
-        void add_king_jump_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_N) const
+        void halt_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_N) const
         {
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 assert(capture_.path(*dest_sq));
                 do {
-                        add_king_jump(dest_sq, check_duplicate);
+                        add_jump(dest_sq, check_duplicate);
                         ++dest_sq;
                 } while (capture_.path(*dest_sq));
         }
 
         template<class Iterator>
-        void add_king_jump(Iterator dest_sq, bool check_duplicate) const
+        void add_jump(Iterator dest_sq, bool check_duplicate) const
         {
                 // tag dispatching on promotion condition
-                add_king_jump_dispatch(dest_sq, rules::phase::promotion<Rules>{});
+                promotion_dispatch(dest_sq, rules::phase::promotion<Rules>{});
                 if (check_duplicate && util::is_duplicate_back(moves_))
                         moves_.pop_back();
         }
 
         // overload for pawns that promote apres-fini
         template<class Iterator>
-        void add_king_jump_dispatch(Iterator dest_sq, rules::phase::apres_fini) const
+        void promotion_dispatch(Iterator dest_sq, rules::phase::apres_fini) const
         {
                 capture_.template add_king_jump<Color>(*dest_sq, moves_);
         }
 
         // overload for pawns that promote en-passant
         template<class Iterator>
-        void add_king_jump_dispatch(Iterator dest_sq, rules::phase::en_passant) const
+        void promotion_dispatch(Iterator dest_sq, rules::phase::en_passant) const
         {
                 if (!capture_.is_promotion())
                         capture_.template add_king_jump<Color>(*dest_sq, moves_);
