@@ -4,7 +4,7 @@
 #include <dctl/successor/generate/impl/pawn_moves.hpp>  // generate (pawn moves specialization)
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
-#include <dctl/position/unary_projections.hpp>              // moveable_kings
+#include <dctl/position/unary_projections.hpp>          // moveable_kings
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 
 namespace dctl {
@@ -21,7 +21,7 @@ struct generate<Color, pieces::all, select::moves>
                 using KingMoves = impl::generate<Color, pieces::king, select::moves, Position, Sequence>;
                 using PawnMoves = impl::generate<Color, pieces::pawn, select::moves, Position, Sequence>;
 
-                Propagate<select::moves, Position> const propagate(p);
+                Propagate<select::moves, Position> const propagate{p};
                 KingMoves{propagate, moves}(moveable_kings(p, Color));
                 PawnMoves{propagate, moves}(p.pawns(Color));
         }

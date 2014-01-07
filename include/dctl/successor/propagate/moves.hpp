@@ -30,8 +30,8 @@ public:
 
 private:
         // representation
-        using T = typename Position::board_type::set_type;
-        T const not_occupied_;
+        using Set = typename Position::board_type::set_type;
+        Set const not_occupied_;
 };
 
 }       // namespace successor
