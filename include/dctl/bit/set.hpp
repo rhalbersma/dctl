@@ -298,90 +298,90 @@ public:
 
         // bitwise operations
 
-        constexpr auto& reset() noexcept
+        auto& reset() noexcept
         {
                 this->do_reset();
                 return *this;
         }
 
-        constexpr auto& set() noexcept
+        auto& set() noexcept
         {
                 this->do_set();
                 return *this;
         }
 
-        constexpr auto& flip() noexcept
+        auto& flip() noexcept
         {
                 this->do_flip();
                 return *this;
         }
 
-        constexpr auto& operator&=(Set const& other) noexcept
+        auto& operator&=(Set const& other) noexcept
         {
                 this->do_and(other);
                 return *this;
         }
 
-        constexpr auto& operator|=(Set const& other) noexcept
+        auto& operator|=(Set const& other) noexcept
         {
                 this->do_or(other);
                 return *this;
         }
 
-        constexpr auto& operator^=(Set const& other) noexcept
+        auto& operator^=(Set const& other) noexcept
         {
                 this->do_xor(other);
                 return *this;
         }
 
-        constexpr auto& operator<<=(int n)
+        auto& operator<<=(int n)
         {
                 this->do_left_shift(n);
                 return *this;
         }
 
-        constexpr auto& operator>>=(int n)
+        auto& operator>>=(int n)
         {
                 this->do_right_shift(n);
                 return *this;
         }
 
-        friend constexpr auto operator~(Set const& lhs) noexcept -> Set
+        friend auto operator~(Set const& lhs) noexcept -> Set
         {
                 Set nrv{lhs};
                 nrv.flip();
                 return nrv;
         }
 
-        friend constexpr auto operator&(Set const& lhs, Set const& rhs) noexcept -> Set
+        friend auto operator&(Set const& lhs, Set const& rhs) noexcept -> Set
         {
                 Set nrv{lhs};
                 nrv &= rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator|(Set const& lhs, Set const& rhs) noexcept -> Set
+        friend auto operator|(Set const& lhs, Set const& rhs) noexcept -> Set
         {
                 Set nrv{lhs};
                 nrv |= rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator^(Set const& lhs, Set const& rhs) noexcept -> Set
+        friend auto operator^(Set const& lhs, Set const& rhs) noexcept -> Set
         {
                 Set nrv{lhs};
                 nrv ^= rhs;
                 return nrv;
         }
 
-        friend constexpr auto operator<<(Set const& lhs, int n) -> Set
+        friend auto operator<<(Set const& lhs, int n) -> Set
         {
                 Set nrv{lhs};
                 nrv <<= n;
                 return nrv;
         }
 
-        friend constexpr auto operator>>(Set const& lhs, int n) -> Set
+        friend auto operator>>(Set const& lhs, int n) -> Set
         {
                 Set nrv{lhs};
                 nrv >>= n;
@@ -390,38 +390,38 @@ public:
 
         // bitwise algorithms
 
-        constexpr auto includes(Set const& other) const noexcept
+        auto includes(Set const& other) const noexcept
         {
                 return this->do_includes(other);
         }
 
-        constexpr auto intersects(Set const& other) const noexcept
+        auto intersects(Set const& other) const noexcept
         {
                 return this->do_intersects(other);
         }
 
-        constexpr auto none() const noexcept
+        auto none() const noexcept
         {
                 return this->do_none();
         }
 
-        constexpr auto any() const noexcept
+        auto any() const noexcept
         {
                 return this->do_any();
         }
 
-        constexpr auto all() const noexcept
+        auto all() const noexcept
         {
                 return this->do_all();
         }
 
-        constexpr auto count() const noexcept
+        auto count() const noexcept
         {
                 return this->do_count();
         }
 
-        template<class Pred>
-        constexpr auto count_until(Pred pred) const noexcept
+        template<class UnaryPredicate>
+        auto count_until(UnaryPredicate pred) const noexcept
         {
                 return this->do_count_until(pred);
         }
