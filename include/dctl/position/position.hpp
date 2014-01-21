@@ -278,7 +278,7 @@ private:
                 return
                         bit::set_includes(squares, pieces()) &&
                         bit::set_includes(pieces(), kings()) &&
-                        bit::set_exclusive(pieces(Side::black), pieces(Side::white))
+                        !bit::set_intersects(pieces(Side::black), pieces(Side::white))
                 ;
         }
 
