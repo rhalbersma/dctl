@@ -3,7 +3,7 @@
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/bit.hpp>                         // set_exclusive
+#include <dctl/bit.hpp>                         // set_intersects
 #include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
 
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
                         return std::all_of(alpha, omega, [=](auto j){
-                                return i == j ? true : bit::set_exclusive(Column<T>::mask(Side::white, i), Column<T>::mask(Side::white, j));
+                                return i == j ? true : !bit::set_intersects(Column<T>::mask(Side::white, i), Column<T>::mask(Side::white, j));
                         });
                 })
         );
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
                         return std::all_of(alpha, omega, [=](auto j){
-                                return i == j ? true : bit::set_exclusive(Row<T>::mask(Side::white, i), Row<T>::mask(Side::white, j));
+                                return i == j ? true : !bit::set_intersects(Row<T>::mask(Side::white, i), Row<T>::mask(Side::white, j));
                         });
                 })
         );
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSeq
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
                         return std::all_of(alpha, omega, [=](auto j){
-                                return i == j ? true : bit::set_exclusive(JumpGroup<T>::mask(i), JumpGroup<T>::mask(j));
+                                return i == j ? true : !bit::set_intersects(JumpGroup<T>::mask(i), JumpGroup<T>::mask(j));
                         });
                 })
         );
