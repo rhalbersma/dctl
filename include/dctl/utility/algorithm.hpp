@@ -1,6 +1,6 @@
 #pragma once
 #include <algorithm>                    // find, find_if, generate_n, min_element, rotate, upper_bound
-#include <iterator>                     // iterator_traits, iter_swap, next
+#include <iterator>                     // iterator_traits, iter_swap, next, prev
 
 namespace dctl {
 namespace util {
@@ -8,7 +8,6 @@ namespace util {
 // non-mutating sequence algorithms
 
 // runtime equivalent of Boost.MPL contains()
-// dctl::detect / std::count / std::find / std::copy
 // O(N) complexity
 template<class InputIterator>
 bool detect(InputIterator first, InputIterator last, typename std::iterator_traits<InputIterator>::value_type const& value)
@@ -17,7 +16,6 @@ bool detect(InputIterator first, InputIterator last, typename std::iterator_trai
 }
 
 // equivalent to std::any_of
-// dctl::detect_if / std::count_if / std::find_if / std::copy_if
 // O(N) complexity
 template<class InputIterator, class Predicate>
 bool detect_if(InputIterator first, InputIterator last, Predicate pred)
@@ -26,10 +24,42 @@ bool detect_if(InputIterator first, InputIterator last, Predicate pred)
 }
 
 // O(N) complexity
-template<class Container>
-bool is_duplicate_back(Container const& c)
+template<class BidirectionalSequenceContainer>
+bool is_duplicate_back(BidirectionalSequenceContainer const& c)
 {
-        return util::detect(c.begin(), c.end() - 1, c.back());
+        return util::detect(begin(c), std::prev(end(c)), c.back());
+}
+
+// O(N) complexity
+template
+<
+        class InputIterator, class T, class UnaryPredicate,
+        class DifferenceType = typename std::iterator_traits<InputIterator>::difference_type
+>
+std::pair<InputIterator, DifferenceType>
+count_until(InputIterator begin, InputIterator end, T const& value, UnaryPredicate pred)
+{
+        DifferenceType count = 0;
+        auto const it = std::find_if(
+                begin, end,
+                [=, &value, &count](auto const& e) {
+                return e == value && pred(++count);
+        });
+        return { it, count };
+}
+
+// O(N) complexity
+template<class InputIterator, class T, class BinaryOperation, class UnaryPredicate>
+std::pair<InputIterator, T>
+accumulate_until(InputIterator begin, InputIterator end, T init, BinaryOperation op, UnaryPredicate pred)
+{
+        auto const it = std::find_if(
+                begin, end,
+                [=, &init](auto const& e) {
+                init = op(init, e);
+                return pred(init);
+        });
+        return { it, init };
 }
 
 // mutating sequence algorithms
