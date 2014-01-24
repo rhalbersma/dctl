@@ -191,7 +191,7 @@ private:
                 Variation continuation(cal);
                 continuation.reserve(DCTL_PP_STACK_RESERVE);
 
-                for (auto const& i : move_order) {
+                for (auto&& i : move_order) {
                         auto q = successor::make_copy(p, moves[static_cast<std::size_t>(i)]);
 
                         // TODO: TT singular extension

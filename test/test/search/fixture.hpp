@@ -32,7 +32,7 @@ struct Fixture
         template<std::size_t N>
         void run(Test const (&tests)[N])
         {
-                for (auto const& t : tests) {
+                for (auto&& t : tests) {
                         root_.clear_hash();
                         auto const position = setup::read<Rules, Board, pdn::protocol>()(t.first);
                         auto const value = root_.analyze(position, t.second);

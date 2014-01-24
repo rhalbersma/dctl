@@ -91,7 +91,7 @@ private:
                 sstr << std::setw( 2) << std::setfill('0') << f;
                 sstr << std::setw( 2) << std::setfill('0') << d;
                 sstr << std::setw( 2) << std::setfill('0') << n;
-                for (auto const& x : c)
+                for (auto&& x : c)
                         sstr << std::setw(2) << std::setfill('0') << x;
                 return sstr.str();
         }

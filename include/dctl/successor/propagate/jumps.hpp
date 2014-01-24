@@ -13,7 +13,7 @@
 #include <dctl/successor/select/jumps.hpp>
 #include <dctl/successor/value.hpp>
 #include <dctl/utility/total_order.hpp>
-#include <dctl/ray/iterator.hpp>
+#include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
 #include <dctl/board/mask.hpp>
 
@@ -136,10 +136,10 @@ public:
                 return remaining_targets<Direction>() & *std::prev(along_wave<Direction>(path()));
         }
 
-        template<int Direction>
-        auto targets_with_king(int sq) const
+        template<class Iterator>
+        auto targets_with_king(Iterator it) const
         {
-                return targets_with_king<Direction>().test(sq);
+                return targets_with_king<ray::direction<Iterator>::value>().test(*it);
         }
 
         template<int Direction>
@@ -148,10 +148,10 @@ public:
                 return remaining_targets_ & *std::prev(along_wave<Direction>(path()));
         }
 
-        template<int Direction>
-        auto targets_with_pawn(int sq) const
+        template<class Iterator>
+        auto targets_with_pawn(Iterator it) const
         {
-                return targets_with_pawn<Direction>().test(sq);
+                return targets_with_pawn<ray::direction<Iterator>::value>().test(*it);
         }
 
         auto path() const
