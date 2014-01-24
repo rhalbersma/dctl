@@ -120,7 +120,7 @@ struct write<pdn::protocol, Token>
                         }
                         auto const bs = p.pieces(c);
                         auto n = 0;
-                        for (auto sq : bs) {
+                        for (auto&& sq : bs) {
                                 if (p.kings().test(sq))
                                         sstr << Token::king;                    // king tag
                                 sstr << Board::square_from_bit(sq) + 1;         // square number
@@ -148,7 +148,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                 sstr >> ch;
                 p_side = read_color<Token>(ch);
 
-                 for (auto sq : Board::squares()) {
+                 for (auto&& sq : Board::squares()) {
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
@@ -179,7 +179,7 @@ struct write<dxp::protocol, Token>
         {
                 std::stringstream sstr;
                 sstr << write_color<Token>(active_color(p));    // side to move
-                for (auto sq : Board::squares()) {
+                for (auto&& sq : Board::squares()) {
                         auto b = Board::bit_from_square(sq);    // convert square to bit
                         sstr << content<Token>(p, b);           // bit content
                 }

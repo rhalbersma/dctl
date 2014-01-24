@@ -9,10 +9,9 @@
 
 #include <dctl/angle.hpp>                               // _deg, rotate
 #include <dctl/board/compass.hpp>                       // Compass
+#include <dctl/ray.hpp>                                 // make_iterator, rotate
 #include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/utility/algorithm.hpp>
-#include <dctl/ray/iterator.hpp>
-#include <dctl/ray/transform.hpp>
 
 namespace dctl {
 namespace successor {
@@ -61,7 +60,7 @@ public:
         template<class Iterator>
         bool promote_en_passant(Iterator jumper) const
         {
-                return find_next(jumper);
+                return !is_finished(jumper);
         }
 
 private:
@@ -81,7 +80,7 @@ private:
 
         void serialize(Set const& active_kings) const
         {
-                for (auto const& from_sq : active_kings) {
+                for (auto&& from_sq : active_kings) {
                         capture_.launch(from_sq);
                         branch(from_sq);
                         capture_.finish(from_sq);
@@ -97,41 +96,46 @@ private:
         // overload for kings that jump in the 8 diagonal and orthogonal directions
         void branch_dispatch(int from_sq, rules::directions::all) const
         {
-                branch_dispatch(from_sq, rules::directions::diag());
-                branch_dispatch(from_sq, rules::directions::orth());
+                branch_dispatch(from_sq, rules::directions::diag{});
+                branch_dispatch(from_sq, rules::directions::orth{});
         }
 
         // overload for kings that jump in the 4 diagonal directions
         void branch_dispatch(int from_sq, rules::directions::diag) const
         {
-                find_first(along_ray<Compass::left_up   >(from_sq));
-                find_first(along_ray<Compass::right_up  >(from_sq));
-                find_first(along_ray<Compass::left_down >(from_sq));
-                find_first(along_ray<Compass::right_down>(from_sq));
+                find(along_ray<Compass::left_up   >(from_sq));
+                find(along_ray<Compass::right_up  >(from_sq));
+                find(along_ray<Compass::left_down >(from_sq));
+                find(along_ray<Compass::right_down>(from_sq));
         }
 
         // overload for kings that jump in the 4 orthogonal directions
         void branch_dispatch(int from_sq, rules::directions::orth) const
         {
-                find_first(along_ray<Compass::left >(from_sq));
-                find_first(along_ray<Compass::right>(from_sq));
-                find_first(along_ray<Compass::up   >(from_sq));
-                find_first(along_ray<Compass::down >(from_sq));
-        }
-
-        template<int Direction>
-        void find_first(ray::Iterator<Board, Direction> jumper) const
-        {
-                slide(jumper, capture_.template path<Direction>());
-                if (capture_.template targets_with_king<Direction>(*jumper)) {
-                        capture_.make(*jumper);
-                        precedence(jumper);     // recursively find more jumps
-                        capture_.undo(*jumper);
-                }
+                find(along_ray<Compass::left >(from_sq));
+                find(along_ray<Compass::right>(from_sq));
+                find(along_ray<Compass::up   >(from_sq));
+                find(along_ray<Compass::down >(from_sq));
         }
 
         template<class Iterator>
-        void precedence(Iterator jumper) const
+        void find(Iterator jumper) const
+        {
+                slide(jumper, capture_.template path<ray::direction<Iterator>::value>());
+                if (capture_.targets_with_king(jumper))
+                        explore(jumper);        // recursively find more jumps
+        }
+
+        template<class Iterator>
+        void explore(Iterator jumper) const
+        {
+                capture_.make(*jumper);
+                add_and_continue(std::next(jumper));
+                capture_.undo(*jumper);
+        }
+
+        template<class Iterator>
+        void add_and_continue(Iterator jumper) const
         {
                 // tag dispatching on majority precedence
                 precedence_dispatch(jumper, rules::is_precedence<Rules>{});
@@ -141,8 +145,7 @@ private:
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::false_type) const
         {
-                ++jumper;
-                if (!find_next(jumper))
+                if (is_finished(jumper))
                         add(jumper);
         }
 
@@ -150,8 +153,7 @@ private:
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::true_type) const
         {
-                ++jumper;
-                if (!find_next(jumper) && capture_.greater_equal()) {
+                if (is_finished(jumper) && capture_.greater_equal()) {
                         if (capture_.not_equal_to()) {
                                 capture_.improve();
                                 moves_.clear();
@@ -161,10 +163,10 @@ private:
         }
 
         template<class Iterator>
-        bool find_next(Iterator jumper) const
+        bool is_finished(Iterator jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return find_next_dispatch(jumper, rules::directions::is_reversal<Rules>{});
+                return !find_next_dispatch(jumper, rules::directions::is_reversal<Rules>{});
         }
 
         // overload for kings that cannot reverse their capture direction
@@ -196,12 +198,12 @@ private:
 
         // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
         template<class Iterator>
-        void land_dispatch(Iterator jumper, rules::range::distance_1K) const
+        bool land_dispatch(Iterator jumper, rules::range::distance_1K) const
         {
-                if (capture_.is_king(*std::prev(jumper)))
-                        land_dispatch(jumper, rules::range::distance_1{});
-                else
-                        land_dispatch(jumper, rules::range::distance_N{});
+                return capture_.is_king(*std::prev(jumper)) ?
+                        land_dispatch(jumper, rules::range::distance_1{}) :
+                        land_dispatch(jumper, rules::range::distance_N{})
+                ;
         }
 
         // overload for kings that can only land on the immediately adjacent square
@@ -223,7 +225,7 @@ private:
                         found_next |= turn(jumper);
                         ++jumper;
                 } while (capture_.path(*jumper));
-                return found_next |= jump(jumper);
+                return found_next |= is_en_prise(jumper);
         }
 
         template<class Iterator>
@@ -265,11 +267,11 @@ private:
                 ;
         }
 
-        template<int Direction>
-        bool scan(ray::Iterator<Board, Direction> jumper) const
+        template<class Iterator>
+        bool scan(Iterator jumper) const
         {
-                slide(jumper, capture_.template path<Direction>());
-                return jump(jumper);
+                slide(jumper, capture_.template path<ray::direction<Iterator>::value>());
+                return is_en_prise(jumper);
         }
 
         template<class Iterator>
@@ -293,15 +295,13 @@ private:
                 do ++jumper; while (path.test(*jumper));
         }
 
-        template<int Direction>
-        bool jump(ray::Iterator<Board, Direction> jumper) const
+        template<class Iterator>
+        bool is_en_prise(Iterator jumper) const
         {
-                if (!capture_.template targets_with_king<Direction>(*jumper))
+                if (!capture_.targets_with_king(jumper))
                         return false;
 
-                capture_.make(*jumper);
-                precedence(jumper);     // recursively find more jumps
-                capture_.undo(*jumper);
+                explore(jumper);
                 return true;
         }
 
@@ -338,10 +338,7 @@ private:
                 // NOTE: capture_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 assert(capture_.path(*dest_sq));
-                do {
-                        add_jump(dest_sq, check_duplicate);
-                        ++dest_sq;
-                } while (capture_.path(*dest_sq));
+                do add_jump(dest_sq++, check_duplicate); while (capture_.path(*dest_sq));
         }
 
         template<class Iterator>

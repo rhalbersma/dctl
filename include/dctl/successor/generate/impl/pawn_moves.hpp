@@ -8,7 +8,7 @@
 
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/position/promotion.hpp>
-#include <dctl/ray/iterator.hpp>
+#include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
 
 namespace dctl {

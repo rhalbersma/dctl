@@ -8,11 +8,8 @@
 
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/position/unary_projections.hpp>
+#include <dctl/ray.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/ray/classical.hpp>
-#include <dctl/ray/fill.hpp>
-#include <dctl/ray/iterator.hpp>
-#include <dctl/board/mask.hpp>
 
 namespace dctl {
 namespace successor {
@@ -74,7 +71,7 @@ private:
         // overload for long ranged kings
         void find_dispatch(Set const& active_kings, rules::range::distance_N) const
         {
-                for (auto const& from_sq : active_kings) {
+                for (auto&& from_sq : active_kings) {
                         transform_targets(along_ray<Compass::left_down >(from_sq));
                         transform_targets(along_ray<Compass::right_down>(from_sq));
                         transform_targets(along_ray<Compass::left_up   >(from_sq));
@@ -94,7 +91,7 @@ private:
         template<class Iterator>
         void transform_targets(Iterator from) const
         {
-                auto const targets = ray::classical(from, propagate_.path());
+                auto const targets = ray::fill(from, propagate_.path());
                 std::transform(begin(targets), end(targets), std::back_inserter(moves_), [=](auto const& dest_sq) {
                         return Move{*from, dest_sq};
                 });

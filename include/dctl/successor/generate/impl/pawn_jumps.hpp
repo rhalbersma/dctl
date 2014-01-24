@@ -15,8 +15,7 @@
 #include <dctl/position/promotion.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/algorithm.hpp>
-#include <dctl/ray/iterator.hpp>
-#include <dctl/ray/transform.hpp>
+#include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
 
 namespace dctl {
@@ -59,10 +58,10 @@ public:
 
         void operator()(Set const& active_pawns) const
         {
-                // tag dispatching on whether pawns can capture kings
                 if (active_pawns.empty())
                         return;
 
+                // tag dispatching on whether pawns can capture kings
                 select_dispatch(active_pawns, rules::can_jump<Rules, pieces::pawn, pieces::king>{});
         }
 
@@ -128,7 +127,7 @@ private:
         void serialize(Set const& active_pawns) const
         {
                 auto const jumpers = active_pawns & *std::prev(along_wave<Direction>(capture_.template targets_with_pawn<Direction>()));
-                for (auto const& from_sq : jumpers)
+                for (auto&& from_sq : jumpers)
                         find(along_ray<Direction>(from_sq));
         }
 
@@ -136,31 +135,30 @@ private:
         void find(Iterator jumper) const
         {
                 capture_.launch(*jumper);
-                find_first(std::next(jumper));
+                explore(std::next(jumper));
                 capture_.finish(*jumper);
         }
 
         template<class Iterator>
-        void find_first(Iterator jumper) const
+        void explore(Iterator jumper) const
         {
                 capture_.make(*jumper);
-                precedence(jumper);     // recursively find more jumps
+                add_and_continue(std::next(jumper));
                 capture_.undo(*jumper);
         }
 
         template<class Iterator>
-        void precedence(Iterator jumper) const
+        void add_and_continue(Iterator jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch(jumper, typename rules::is_precedence<Rules>{});
+                precedence_dispatch(jumper, rules::is_precedence<Rules>{});
         }
 
         // overload for no majority precedence
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::false_type) const
         {
-                ++jumper;
-                if (!find_next(jumper))
+                if (is_finished(jumper))
                         add(jumper);
         }
 
@@ -168,8 +166,7 @@ private:
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::true_type) const
         {
-                ++jumper;
-                if (!find_next(jumper) && capture_.greater_equal()) {
+                if (is_finished(jumper) && capture_.greater_equal()) {
                         if (capture_.not_equal_to()) {
                                 capture_.improve();
                                 moves_.clear();
@@ -179,17 +176,17 @@ private:
         }
 
         template<class Iterator>
-        bool find_next(Iterator jumper) const
+        bool is_finished(Iterator jumper) const
         {
                 // tag dispatching on promotion condition
-                return promotion_dispatch(jumper, rules::phase::promotion<Rules>{});
+                return !promotion_dispatch(jumper, rules::phase::promotion<Rules>{});
         }
 
         // overload for pawns that promote apres-fini
         template<class Iterator>
         bool promotion_dispatch(Iterator jumper, rules::phase::apres_fini) const
         {
-                return find_next_impl(jumper);
+                return find_next(jumper);
         }
 
         // overload for pawns that promote en-passant
@@ -198,12 +195,12 @@ private:
         {
                 return is_promotion(*jumper) ?
                         promote_en_passant(jumper) :
-                        find_next_impl(jumper)
+                        find_next(jumper)
                 ;
         }
 
         template<class Iterator>
-        bool find_next_impl(Iterator jumper) const
+        bool find_next(Iterator jumper) const
         {
                 return turn(jumper) | scan(jumper);
         }
@@ -293,19 +290,16 @@ private:
         template<class Iterator>
         bool scan(Iterator jumper) const
         {
-                ++jumper;
-                return jump(jumper);
+                return is_en_prise(std::next(jumper));
         }
 
-        template<int Direction>
-        bool jump(ray::Iterator<Board, Direction> jumper) const
+        template<class Iterator>
+        bool is_en_prise(Iterator jumper) const
         {
-                if (!capture_.template targets_with_pawn<Direction>(*jumper))
+                if (!capture_.targets_with_pawn(jumper))
                         return false;
 
-                capture_.make(*jumper);
-                precedence(jumper);  // recursively find more jumps
-                capture_.undo(*jumper);
+                explore(jumper);
                 return true;
         }
 
