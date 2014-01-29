@@ -9,15 +9,16 @@ namespace dctl {
 namespace zobrist {
 
 template<class Container, class T, std::size_t N>
-auto accumulate(Container const& cont, std::array<T, N> const& arr)
+auto accumulate(Container /*const&*/ cont, std::array<T, N> const& arr)
 {
         using std::begin; using std::end;
+        auto xcont = bit::InputRange<int, uint64_t, 1>{cont.data()};
         return std::accumulate(
-                begin(cont), end(cont), T{0},
-                [&](auto hash, std::size_t elem){
-                assert(0 <= elem && elem < N);
-                return hash ^ arr[elem];
+                begin(xcont), end(xcont), T{0},
+                [&](auto const& hash, auto const& elem) {
+                return hash ^ arr[static_cast<std::size_t>(elem)];
         });
+
 }
 
 }       // namespace zobrist

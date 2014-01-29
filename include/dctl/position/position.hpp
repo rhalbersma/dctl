@@ -265,7 +265,7 @@ private:
                         pieces_[!to_move_] ^= m.captured_pieces();
                         kings_ ^= m.captured_kings();
                         hash_ ^= zobrist::accumulate(m.captured_pieces(), Zobrist::pieces[!to_move_]);
-                        hash_ ^= zobrist::accumulate(m.captured_kings() , Zobrist::kings           );
+                        hash_ ^= zobrist::accumulate(m.captured_kings() , Zobrist::kings            );
                 }
                 to_move_.flip();
                 hash_ ^= Zobrist::to_move[Side::pass];

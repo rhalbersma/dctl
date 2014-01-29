@@ -34,7 +34,8 @@ struct BaseIterator
 
         constexpr void find_next()
         {
-                assert(block_ != nullptr && 0 <= index_ && index_ < N);
+                assert(block_ != nullptr);
+                assert(0 <= index_ && index_ < N);
                 if (N == ++index_) {
                         ++block_;
                         return;
@@ -57,12 +58,13 @@ struct BaseIterator
                         ++block_;
                 }
                 index_ = N;
-                assert(block_ != nullptr && 0 < index_ && index_ <= N);
+                assert(0 < index_ && index_ <= N);
         }
 
         constexpr void find_prev()
         {
-                assert(block_ != nullptr && 0 < index_ && index_ <= N);
+                assert(block_ != nullptr);
+                assert(0 < index_ && index_ <= N);
                 if (--index_ == 0)
                         return;
 
@@ -83,7 +85,7 @@ struct BaseIterator
                         --block_;
                 }
                 index_ = 0;
-                assert(block_ != nullptr && 0 <= index_ && index_ < N);
+                assert(0 <= index_ && index_ < N);
         }
 
         Block const* block_{};

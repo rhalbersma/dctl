@@ -57,6 +57,11 @@ public:
                 return *this;
         }
 
+        Block& data()
+        {
+                return Base::data();
+        }
+
         // iterators
 
         constexpr auto begin() noexcept
@@ -155,7 +160,7 @@ public:
         template<class InputIt>
         constexpr void insert(InputIt first, InputIt last)
         {
-                static_assert(std::is_convertible<typename std::iterator_traits<InputIt>::value_type, key_type>::value, "");
+                static_assert(std::is_convertible<decltype(*first), key_type>::value, "");
                 for (auto it = first; it != last; ++it)
                         set(static_cast<key_type>(*it));
         }

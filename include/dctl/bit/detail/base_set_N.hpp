@@ -25,6 +25,11 @@ struct BaseSet
         enum { digits = std::numeric_limits<Block>::digits };
         enum { N = Nb * digits };
 
+        Block& data()
+        {
+                return data_[0];
+        }
+
         // structors
 
         constexpr BaseSet() noexcept = default;

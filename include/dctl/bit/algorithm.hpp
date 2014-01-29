@@ -97,7 +97,7 @@ auto set_includes(Set const& lhs, Set const& rhs) noexcept
 template<class Set>
 auto set_intersects(Set const& lhs, Set const& rhs) noexcept
 {
-        return !lhs.intersects(rhs);
+        return lhs.intersects(rhs);
 }
 
 template<class Set>

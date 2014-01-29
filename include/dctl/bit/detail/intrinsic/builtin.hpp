@@ -20,7 +20,6 @@ struct ctznz<unsigned>
 {
         constexpr auto operator()(unsigned x) const
         {
-                assert(x != 0);
                 return __builtin_ctz(x);
         }
 };
@@ -30,7 +29,6 @@ struct ctznz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const
         {
-                assert(x != 0);
                 return __builtin_ctzl(x);
         }
 };
@@ -40,7 +38,6 @@ struct ctznz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const
         {
-                assert(x != 0);
                 return __builtin_ctzll(x);
         }
 };
@@ -57,7 +54,6 @@ struct clznz<unsigned>
 {
         constexpr auto operator()(unsigned x) const
         {
-                assert(x != 0);
                 return __builtin_clz(x);
         }
 };
@@ -67,7 +63,6 @@ struct clznz<unsigned long>
 {
         constexpr auto operator()(unsigned long x) const
         {
-                assert(x != 0);
                 return __builtin_clzl(x);
         }
 };
@@ -77,7 +72,6 @@ struct clznz<unsigned long long>
 {
         constexpr auto operator()(unsigned long long x) const
         {
-                assert(x != 0);
                 return __builtin_clzll(x);
         }
 };
@@ -120,12 +114,14 @@ struct popcount<unsigned long long>
 template<class T>
 constexpr auto ctznz(T x)
 {
+        assert(x != 0);
         return detail::ctznz<T>{}(x);
 }
 
 template<class T>
 constexpr auto clznz(T x)
 {
+        assert(x != 0);
         return detail::clznz<T>{}(x);
 }
 
