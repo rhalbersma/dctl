@@ -28,26 +28,28 @@ struct BaseIterator<Block, 1>
 
         constexpr void find_next()
         {
-                assert(block_ != nullptr && 0 <= index_ && index_ < N);
+                assert(block_ != nullptr);
+                assert(0 <= index_ && index_ < N);
                 if (N == ++index_)
                         return;
                 if (auto const mask = *block_ >> index_)
                         index_ += bit::intrinsic::ctznz(mask);
                 else
                         index_ = N;
-                assert(block_ != nullptr && 0 < index_ && index_ <= N);
+                assert(0 < index_ && index_ <= N);
         }
 
         constexpr void find_prev()
         {
-                assert(block_ != nullptr && 0 < index_ && index_ <= N);
+                assert(block_ != nullptr);
+                assert(0 < index_ && index_ <= N);
                 if (--index_ == 0)
                         return;
                 if (auto const mask = *block_ << (digits - 1 - index_))
                         index_ -= bit::intrinsic::clznz(mask);
                 else
                         index_ = 0;
-                assert(block_ != nullptr && 0 <= index_ && index_ < N);
+                assert(0 <= index_ && index_ < N);
         }
 
         Block const* block_{};
