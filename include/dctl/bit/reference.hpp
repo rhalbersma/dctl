@@ -10,7 +10,7 @@ template<class T, class Block, int Nb>
 class Reference
 {
 private:
-        // typedefs
+        // types
 
         using iterator = Iterator<T, Block, Nb>;
 
