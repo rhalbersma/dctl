@@ -1,5 +1,6 @@
 #pragma once
-#include <iterator>                             // input_iterator_tag, ptrdiff_t
+#include <cstddef>                              // ptrdiff_t
+#include <iterator>                             // input_iterator_tag
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 
 namespace dctl {
@@ -8,7 +9,7 @@ namespace util {
 class InputRangeCoreAccess
 {
 public:
-        InputRangeCoreAccess() = delete;
+        constexpr InputRangeCoreAccess() noexcept = delete;
 
         template<class Facade>
         static void pop_front(Facade* f)
@@ -39,9 +40,9 @@ template
 class InputRangeFacade
 {
 public:
-        struct iterator
+        class iterator
         :
-                boost::iterator_facade
+                public boost::iterator_facade
                 <
                         iterator,
                         Value,
@@ -50,12 +51,18 @@ public:
                         Difference
                 >
         {
+        public:
+                // structors
+
                 iterator() noexcept = default;
 
                 explicit iterator(Derived* b) noexcept
                 :
                         range_{b}
                 {}
+
+        private:
+                friend class boost::iterator_core_access;
 
                 // operator++() and operator++(int) provided by boost::iterator_facade
                 void increment()
@@ -73,11 +80,14 @@ public:
                 auto equal(iterator const& other) const noexcept
                 {
                         return
-                                range_ ?
-                                ( other.range_ || InputRangeCoreAccess::empty(range_      )) :
+                                        range_ ?
+                                ( other.range_ || InputRangeCoreAccess::empty(      range_)) :
                                 (!other.range_ || InputRangeCoreAccess::empty(other.range_))
                         ;
                 }
+
+        private:
+                // representation
 
                 Derived* range_{};
         };
@@ -94,13 +104,13 @@ public:
 };
 
 template<class Derived, class Value, class Reference, class Difference>
-decltype(auto) begin(InputRangeFacade<Derived, Value, Reference, Difference>& r) noexcept
+auto begin(InputRangeFacade<Derived, Value, Reference, Difference>& r) noexcept
 {
         return r.begin();
 }
 
 template<class Derived, class Value, class Reference, class Difference>
-decltype(auto) end(InputRangeFacade<Derived, Value, Reference, Difference>& r) noexcept
+auto end(InputRangeFacade<Derived, Value, Reference, Difference>& r) noexcept
 {
         return r.end();
 }
