@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>                              // assert
-#include <dctl/bit/detail/intrinsic.hpp>        // clznz
-#include <dctl/utility/input_range_facade.hpp>
+#include <dctl/bit/detail/intrinsic.hpp>        // ctznz
+#include <dctl/utility/input_range_facade.hpp>  // InputRangeCoreAcces, InputRangeFacade
 
 namespace dctl {
 namespace bit {
@@ -12,12 +12,13 @@ class InputRange;
 template<class T, class Block>
 class InputRange<T, Block, 1>
 :
+        // provides member and non-member begin() / end()
         public util::InputRangeFacade<InputRange<T, Block, 1>, T, T>
 {
 public:
         // structors
 
-        constexpr explicit InputRange(Block& range) noexcept
+        explicit InputRange(Block& range) noexcept
         :
                 range_{range}
         {}
@@ -27,7 +28,7 @@ private:
 
         // modifiers
 
-        constexpr void pop_front()
+        void pop_front()
         {
                 assert(!empty());
                 range_ &= range_ - 1;
@@ -35,7 +36,7 @@ private:
 
         // queries
 
-        constexpr T front() const
+        auto front() const
         {
                 assert(!empty());
                 return T{bit::intrinsic::ctznz(range_)};
@@ -43,12 +44,14 @@ private:
 
         // predicates
 
-        constexpr bool empty() const noexcept
+        auto empty() const noexcept
         {
                 return range_ == 0;
         }
 
 private:
+        // representation
+
         Block& range_;
 };
 
