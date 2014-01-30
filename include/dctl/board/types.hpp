@@ -19,12 +19,11 @@ using Roman         = Board< grid::Dimensions< 8,  8, true> >;
 // the Frisian board needs to explicitly accommodate orthogonal captures
 using Frisian       = Board< grid::Dimensions<10, 10>, true >;
 
-// rectangular boards always have opposite coloring,
-// can have at most 1 edge column when larger than 10x10,
-// and require internal rotations for 12x10 to fit within 64-bits
-using Spantsireti   = Board< grid::Dimensions<10,  8, true> >;
-using Ktar11        = Board< grid::Dimensions<11, 10, true> >;          // fits within 64-bits
-using Ktar12        = Board< grid::Dimensions<12, 10, true>, false >;   // fits within 64-bits
+// rectangular boards
+using Spantsireti   = Board< grid::Dimensions< 8, 10> >;
+using Ktar11x10     = Board< grid::Dimensions<11, 10> >;                // fits within 64-bits
+using Ktar12x10     = Board< grid::Dimensions<12, 10, true >, false >;  // fits within 64-bits
+using Ktar10x12     = Board< grid::Dimensions<10, 12>       , false >;  // fits within 64-bits
 
 }       // namespace board
 }       // namespace dctl

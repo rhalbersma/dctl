@@ -24,13 +24,13 @@ using BoardSequence = boost::mpl::vector
 >;
 */
 using DimSequence = boost::mpl::vector
-</*
+<
         grid::Dimensions< 2,  2>,
         grid::Dimensions< 4,  4>,
         grid::Dimensions< 6,  6>,
         grid::Dimensions< 8,  8>,
         grid::Dimensions<10, 10>,
-        grid::Dimensions<12, 12>,*/
+        grid::Dimensions<12, 12>,
         grid::Dimensions< 9,  9, false>,
         grid::Dimensions< 9,  9, true >,
         grid::Dimensions<11,  9, false>,
@@ -41,9 +41,10 @@ using DimSequence = boost::mpl::vector
         grid::Dimensions<11, 10, true >,
         grid::Dimensions<10, 10, false>,
         grid::Dimensions<10, 10, true >,
+        grid::Dimensions<10, 12, false>,
+        grid::Dimensions<10, 12, true >,
         grid::Dimensions<12, 10, false>,
-        grid::Dimensions<12, 10, true >,
-        grid::Dimensions<45, 45>
+        grid::Dimensions<12, 10, true >
 >;
 
 
