@@ -24,8 +24,8 @@ using BoardSequence = boost::mpl::vector
         Roman,
         Frisian,
         Spantsireti,
-        Ktar11x10,
-        Ktar12x10
+        Ktar10x11,
+        Ktar10x12
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllSquareCoordinates, T, BoardSequence)

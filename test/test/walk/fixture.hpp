@@ -9,12 +9,11 @@ namespace walk {
 template<class Position, int N>
 void test(Position const& p, NodeCount const (& leafs)[N])
 {
-        using impl_tag = hash_tag;//hash_tag;
+        using impl_tag = hash_tag;
         Data<impl_tag, Position> d;
         Enhancements<impl_tag, Position> e(&d);
         e.resize_TT(1024);
 
-        std::cout << sizeof(typename Position::Set) << "\n";
         auto depth = 0;
         for (auto&& node_count : leafs) {
                 e.clear_TT();

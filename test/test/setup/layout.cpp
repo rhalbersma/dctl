@@ -22,7 +22,7 @@ using BoardSequence = boost::mpl::vector
         board::Micro, board::Mini, board::Checkers, board::Roman, board::International, board::Canadian,
         board::Frisian, board::Spantsireti, board::Ktar11, board::Ktar12
 >;
-*/
+
 using DimSequence = boost::mpl::vector
 <
         grid::Dimensions< 2,  2>,
@@ -60,6 +60,32 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, DimSequence)
         using H = board::Board< T, true >;
         std::cout << diagram<H, bits>()() << '\n';
         std::cout << "size = " << H::internal_grid::size << ", angle = " << H::orientation << "\n\n";
+}
+*/
+using BSequence = boost::mpl::vector
+<
+        board::Checkers,
+        board::Spantsireti08x10,
+        board::Spantsireti10x08,
+        board::International,
+        board::Spantsireti10x12,
+        board::Spantsireti12x10,
+        board::Canadian,
+        board::Checkers,
+        board::Ktar08x10,
+        board::Ktar10x08,
+        board::International,
+        board::Ktar10x11,
+        board::Ktar10x12,
+        board::Ktar12x10,
+        board::Canadian
+>;
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(Initial, T, BSequence)
+{
+        auto const p = Position<rules::International, T>::initial();
+        std::cout << "W = " << T::width << ", H = " << T::height << ", bits = " << T::internal_grid::size << "\n\n";
+        std::cout << setup::diagram<pdn::protocol>()(p);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
