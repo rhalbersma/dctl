@@ -88,7 +88,7 @@ constexpr Coordinates<Grid> coord_from_sq(Square<Grid> const& square) noexcept
         auto const ROW = 2 * Q + P;
 
         // 2x the range from the left edge + the row parity XOR the opposite board coloring
-        auto const COL = 2 * R + (P ^ !Grid::parity);
+        auto const COL = 2 * R + (P ^ !Grid::ul_parity);
 
         return { ROW, COL };
 }

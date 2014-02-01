@@ -26,7 +26,7 @@ public:
 
         static constexpr auto edge_le = BaseGrid::edge_le;
         static constexpr auto edge_re = BaseGrid::edge_re;
-        static constexpr auto edge_lo = left_down + Dimensions::parity;
+        static constexpr auto edge_lo = left_down + Dimensions::ul_parity;
         static constexpr auto edge_ro = edge_lo + (BaseGrid::edge_ro - BaseGrid::edge_lo);
 
         // grid size
@@ -43,8 +43,8 @@ class Grid<Dimensions, 0>
 private:
         // range of even (e) and odd (o) rows
 
-        static constexpr auto row_e = (Dimensions::width +  Dimensions::parity) / 2;
-        static constexpr auto row_o = (Dimensions::width + !Dimensions::parity) / 2;
+        static constexpr auto row_e = (Dimensions::width +  Dimensions::ul_parity) / 2;
+        static constexpr auto row_o = (Dimensions::width + !Dimensions::ul_parity) / 2;
 
 public:
         static constexpr auto edge_columns = 0;
@@ -62,7 +62,7 @@ public:
 
         // grid size
 
-        static constexpr int size = (Dimensions::width * Dimensions::height) / 2 + (Dimensions::width * Dimensions::height * Dimensions::parity) % 2;
+        static constexpr int size = (Dimensions::width * Dimensions::height) / 2 + (Dimensions::width * Dimensions::height * Dimensions::ul_parity) % 2;
 };
 
 template<class Dimensions>

@@ -44,7 +44,7 @@ private:
         {{
                 init(0),
                 init(1),
-                init(Grid::left_down + (Grid::parity ? 2 : 0)),
+                init(Grid::left_down + (Grid::ul_parity ? 2 : 0)),
                 init(Grid::right_down)
         }};
 
