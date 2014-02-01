@@ -60,7 +60,7 @@ private:
                 auto const indent_LE = r == Board::external_grid::edge_le;        // left of even rows
                 auto const indent_LO = r == Board::external_grid::edge_lo;        // left of odd rows
 
-                return Board::parity ? indent_LO : indent_LE;
+                return Board::ul_parity ? indent_LO : indent_LE;
         }
 
         static const auto WHITE_SPACE = ' ';
