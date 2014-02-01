@@ -24,8 +24,8 @@ using BoardSequence = boost::mpl::vector
         Roman,
         Frisian,
         Spantsireti,
-        Ktar10x11,
-        Ktar10x12
+        Ktar<10, 11>,
+        Ktar<10, 12>
 >;
 
 template<class Board>

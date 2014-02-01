@@ -17,8 +17,8 @@ using BoardSequence = boost::mpl::vector
         Roman,
         Frisian,
         Spantsireti,
-        Ktar10x11,
-        Ktar10x12
+        Ktar<10, 11>,
+        Ktar<10, 12>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, BoardSequence)
