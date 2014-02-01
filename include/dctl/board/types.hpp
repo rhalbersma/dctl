@@ -28,11 +28,11 @@ using Spantsireti10x08  = Board< grid::Dimensions<10,  8> >;
 using Spantsireti10x12  = Board< grid::Dimensions<10, 12> >;
 using Spantsireti12x10  = Board< grid::Dimensions<12, 10> >;
 
-using Ktar08x10         = Board< grid::Dimensions< 8, 10, true> >;
-using Ktar10x08         = Board< grid::Dimensions<10,  8, true> >;
-using Ktar10x11         = Board< grid::Dimensions<10, 11> >;
-using Ktar10x12         = Board< grid::Dimensions<10, 12, true> >;
-using Ktar12x10         = Board< grid::Dimensions<12, 10, true> >;
+template<int W, int H>
+using Ktar = Board< grid::Dimensions<W, H, true> >;
+
+// regular Ktar<10, 12> supports orthogonal captures but does not fit into 64-bits
+using Ktar10x12Compact = Board< grid::Dimensions<10, 12, true>, false >;
 
 using Spantsireti       = Spantsireti10x08;
 

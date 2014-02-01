@@ -24,8 +24,8 @@ using BoardSequence = boost::mpl::vector
         Roman,
         Frisian,
         Spantsireti,
-        Ktar10x11,
-        Ktar10x12
+        Ktar<10, 11>,
+        Ktar<10, 12>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimensions, T, BoardSequence)
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimens
                 C1, C2, C4
         };
 
-        auto const dim = grid::DimensionsObject{ T::width, T::height, T::parity };
+        auto const dim = grid::DimensionsObject{ T::width, T::height, T::inverted };
 
         BOOST_CHECK(
                 std::all_of(std::begin(C_N), std::end(C_N), [&](auto const& g) {

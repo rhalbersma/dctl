@@ -51,7 +51,7 @@ using DimSequence = boost::mpl::vector
 BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, DimSequence)
 {
         std::cout << "------------\n";
-        std::cout << T::height << "x" << T::width << ", " << T::parity << "\n\n";
+        std::cout << T::height << "x" << T::width << ", " << T::inverted << "\n\n";
 
         using G = board::Board< T, false>;
         std::cout << diagram<G, bits>()() << '\n';
@@ -72,12 +72,12 @@ using BSequence = boost::mpl::vector
         board::Spantsireti12x10,
         board::Canadian,
         board::Checkers,
-        board::Ktar08x10,
-        board::Ktar10x08,
+        board::Ktar< 8, 10>,
+        board::Ktar<10,  8>,
         board::International,
-        board::Ktar10x11,
-        board::Ktar10x12,
-        board::Ktar12x10,
+        board::Ktar<10, 11>,
+        board::Ktar<10, 12>,
+        board::Ktar<12, 10>,
         board::Canadian
 >;
 
