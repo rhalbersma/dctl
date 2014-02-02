@@ -25,10 +25,10 @@ private:
                 {
                         using Grid = typename Square::grid_type;
                         auto const separation = Board::height - 2 * rows_;
-                        auto const row = get_y(llo_from_ulo(ulo_from_sq(sq)));
-                        auto const min_row = color_ == Side::white ? 0 : Grid::height - (Grid::height - separation) / 2;
-                        auto const max_row = color_ == Side::white ? (Grid::height - separation) / 2 : Grid::height;
-                        return min_row <= row && row < max_row;
+                        auto const y = get_y(llo_from_ulo(ulo_from_sq(sq)));
+                        auto const min_y = color_ == Side::white ? 0 : Grid::height - (Grid::height - separation) / 2;
+                        auto const max_y = color_ == Side::white ? (Grid::height - separation) / 2 : Grid::height;
+                        return min_y <= y && y < max_y;
                 }
         };
 

@@ -4,16 +4,6 @@ namespace dctl {
 namespace grid {
 namespace detail {
 
-constexpr auto get_x(std::pair<int, int> const& p) noexcept
-{
-        return p.first;
-}
-
-constexpr auto get_y(std::pair<int, int> const& p) noexcept
-{
-        return p.second;
-}
-
 template<class T>
 constexpr auto swap_llo_ulo(T const& value, T const& center) noexcept
 {

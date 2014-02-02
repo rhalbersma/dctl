@@ -85,13 +85,13 @@ constexpr Coordinates<Grid> ulo_from_sq(Square<Grid> const& square) noexcept
         // squares from the left edge
         auto const R = P ? R1 : R0;
 
-        // 2x the row pairs + the row parity
-        auto const ROW = 2 * Q + P;
-
         // 2x the range from the left edge + the row parity XOR the opposite board coloring
-        auto const COL = 2 * R + (P ^ !Grid::ul_parity);
+        auto const X = 2 * R + (P ^ !Grid::ul_parity);
 
-        return { COL, ROW };
+        // 2x the row pairs + the row parity
+        auto const Y = 2 * Q + P;
+
+        return { X, Y };
 }
 
 template<class Grid>
