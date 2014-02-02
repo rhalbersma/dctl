@@ -1,19 +1,16 @@
 #pragma once
-#include <dctl/grid/coordinates/detail/coordinates.hpp> // Coordinates
+#include <utility>                      // pair
 
 namespace dctl {
 namespace grid {
 namespace llo {
 
 template<class Grid>
-class Coordinates
+struct Coordinates
 :
-        public detail::Coordinates
+        std::pair<int, int>
 {
-public:
-        // structors
-
-        using detail::Coordinates::Coordinates;
+        using std::pair<int, int>::pair;
 };
 
 }       // namespace llo

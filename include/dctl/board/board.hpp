@@ -9,7 +9,7 @@
 #include <boost/range/counting_range.hpp>       // counting_range
 #include <dctl/angle.hpp>                       // Angle, inverse
 #include <dctl/bit.hpp>                         // Set
-#include <dctl/grid/coordinates.hpp>            // Square, coord_from_sq, sq_from_coord, rotate
+#include <dctl/grid/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
 #include <dctl/grid/orientation.hpp>            // SizeMinimizingOrientation, Make
@@ -77,8 +77,8 @@ public:
         {
                 std::stringstream sstr;
                 auto from_sq = grid::ulo::Square<external_grid>{square_from_bit(n)};
-                auto from_coord = llo_from_ulo(coord_from_sq(from_sq));
-                sstr << board::Labels<Board>::col[from_coord.col()] << board::Labels<Board>::row[from_coord.row()];
+                auto from_coord = llo_from_ulo(ulo_from_sq(from_sq));
+                sstr << board::Labels<Board>::col[get_x(from_coord)] << board::Labels<Board>::row[get_y(from_coord)];
                 return sstr.str();
         }
 private:
