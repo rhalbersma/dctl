@@ -19,13 +19,13 @@ private:
                 constexpr auto operator()(Square const& dest_sq) const noexcept
                 {
                         auto const from_sq = grid::ulo::Square<typename Board::external_grid>{Board::square_from_bit(from_bit_)};
-                        auto const from_coord = coord_from_sq(from_sq);
-                        auto const dest_coord = coord_from_sq(dest_sq);
-                        auto const delta_row = dctl::detail::abs_remainder(from_coord.row() - dest_coord.row(), 4);
-                        auto const delta_col = dctl::detail::abs_remainder(from_coord.col() - dest_coord.col(), 4);
+                        auto const from_coord = ulo_from_sq(from_sq);
+                        auto const dest_coord = ulo_from_sq(dest_sq);
+                        auto const delta_x = dctl::detail::abs_remainder(get_x(from_coord) - get_x(dest_coord), 4);
+                        auto const delta_y = dctl::detail::abs_remainder(get_y(from_coord) - get_y(dest_coord), 4);
                         return
-                                (delta_row == 0 && delta_col == 0) ||
-                                (delta_row == 2 && delta_col == 2)
+                                (delta_x == 0 && delta_y == 0) ||
+                                (delta_x == 2 && delta_y == 2)
                         ;
                 }
         };

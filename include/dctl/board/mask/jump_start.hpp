@@ -3,7 +3,7 @@
 #include <cstddef>                      // size_t
 #include <dctl/angle.hpp>               // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/board/mask/copy_if.hpp>  // copy_if
-#include <dctl/grid/coordinates.hpp>    // coord_from_sq
+#include <dctl/grid/coordinates.hpp>    // ulo_from_sq
 #include <dctl/utility/make_array.hpp>  // make_array
 
 namespace dctl {
@@ -24,14 +24,14 @@ private:
                         using Grid = typename Square::grid_type;
                         auto const alpha = rotate(segment_ * theta + beta, Board::orientation);
                         auto const offset = is_diagonal(alpha) ? 2 : 4;
-                        auto const coord = coord_from_sq(sq);
-                        auto const min_row = is_up(alpha) ? offset : 0;
-                        auto const max_row = Grid::height - (is_down(alpha)? offset : 0);
-                        auto const min_col = is_left(alpha) ? offset : 0;
-                        auto const max_col = Grid::width - (is_right(alpha) ? offset : 0);
+                        auto const coord = ulo_from_sq(sq);
+                        auto const min_x = is_left(alpha) ? offset : 0;
+                        auto const max_x = Grid::width - (is_right(alpha) ? offset : 0);
+                        auto const min_y = is_up(alpha) ? offset : 0;
+                        auto const max_y = Grid::height - (is_down(alpha)? offset : 0);
                         return
-                                (min_row <= coord.row() && coord.row() < max_row) &&
-                                (min_col <= coord.col() && coord.col() < max_col)
+                                (min_x <= get_x(coord) && get_x(coord) < max_x) &&
+                                (min_y <= get_y(coord) && get_y(coord) < max_y)
                         ;
                 }
         };

@@ -4,22 +4,32 @@ namespace dctl {
 namespace grid {
 namespace detail {
 
-template<class T>
-constexpr auto swap_llo_ulo(T const& v, T const& c) noexcept
+constexpr auto get_x(std::pair<int, int> const& p) noexcept
 {
-        return (c - 1) - v;
+        return p.first;
+}
+
+constexpr auto get_y(std::pair<int, int> const& p) noexcept
+{
+        return p.second;
 }
 
 template<class T>
-constexpr auto sco_from_ulo(T const& v, T const& c) noexcept
+constexpr auto swap_llo_ulo(T const& value, T const& center) noexcept
 {
-        return 2 * v - (c - 1);
+        return (center - 1) - value;
 }
 
 template<class T>
-constexpr auto ulo_from_sco(T const& v, T const& c) noexcept
+constexpr auto sco_from_ulo(T const& value, T const& center) noexcept
 {
-        return (v + (c - 1)) / 2;
+        return 2 * value - (center - 1);
+}
+
+template<class T>
+constexpr auto ulo_from_sco(T const& value, T const& center) noexcept
+{
+        return (value + (center - 1)) / 2;
 }
 
 }       // namespace detail

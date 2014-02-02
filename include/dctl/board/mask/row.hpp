@@ -2,7 +2,7 @@
 #include <array>                        // array
 #include <cstddef>                      // size_t
 #include <dctl/board/mask/copy_if.hpp>  // copy_if
-#include <dctl/grid/coordinates.hpp>    // coord_from_sq
+#include <dctl/grid/coordinates.hpp>    // ulo_from_sq
 #include <dctl/position/side.hpp>           // black, white
 #include <dctl/utility/make_array.hpp>  // make_array
 
@@ -23,7 +23,7 @@ private:
                 constexpr auto operator()(Square const& sq) const noexcept
                 {
                         using Grid = typename Square::grid_type;
-                        return llo_from_ulo(coord_from_sq(sq)).row() == (color_ == Side::white ? row_ : Grid::height - 1 - row_);
+                        return get_y(llo_from_ulo(ulo_from_sq(sq))) == (color_ == Side::white ? row_ : Grid::height - 1 - row_);
                 }
         };
 
