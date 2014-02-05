@@ -31,7 +31,7 @@ int main()
 
                 auto moves = successor::generate(p);
                 std::sort(begin(moves), end(moves), [](auto const& L, auto const& R) {
-                        return format::as_numeric(L) < format::as_numeric(R);
+                        return move::str_numeric(L) < move::str_numeric(R);
                 });
 
                 if (moves.empty()) {

@@ -2,103 +2,92 @@
 #include <cassert>                      // assert
 #include <iosfwd>                       // ostream
 #include <sstream>                      // stringstream
-#include <type_traits>                  // integral_constant
 #include <dctl/move/move.hpp>           // Move
-#include <dctl/board/types.hpp>
-#include <dctl/rules/variants.hpp>
+#include <dctl/move/manip.hpp>          // notation, pushsep, jumpsep
+#include <dctl/move/trait.hpp>          // notation, pushsep, jumpsep
 
 namespace dctl {
-namespace format {
-
-enum { flag_native = 0, flag_numeric = 1, flag_algebraic = 2 };
-
-template<class Move>
-struct traits
-:
-        std::integral_constant<int, flag_numeric>
-{};
-
-template<class Board>
-struct traits<Move<rules::Russian, Board>>
-:
-        std::integral_constant<int, flag_algebraic>
-{};
-
-template<class Board>
-struct traits<Move<rules::Czech, Board>>
-:
-        std::integral_constant<int, flag_algebraic>
-{};
-
-template<>
-struct traits<Move<rules::International, board::Checkers>>
-:
-        std::integral_constant<int, flag_algebraic>
-{};
-
-inline
-auto index()
-{
-        static auto const slot = std::ios_base::xalloc();
-        return slot;
-}
-
-template<class CharT, class Traits>
-auto& numeric(std::basic_ostream<CharT, Traits>& ostr)
-{
-        ostr.iword(index()) = flag_numeric;
-        return ostr;
-}
-
-template<class CharT, class Traits>
-auto& algebraic(std::basic_ostream<CharT, Traits>& ostr)
-{
-        ostr.iword(index()) = flag_algebraic;
-        return ostr;
-}
-
-template<class Move>
-auto as_numeric(Move const& m)
-{
-        using Board = typename Move::board_type;
-        std::stringstream sstr;
-        sstr << Board::numeric_from_bit(m.from());
-        sstr << (m.is_jump() ? 'x' : '-');
-        sstr << Board::numeric_from_bit(m.dest());
-        return sstr.str();
-}
-
-template<class Move>
-auto as_algebraic(Move const& m)
-{
-        using Board = typename Move::board_type;
-        std::stringstream sstr;
-        sstr << Board::algebraic_from_bit(m.from());
-        sstr << (m.is_jump() ? 'x' : '-');
-        sstr << Board::algebraic_from_bit(m.dest());
-        return sstr.str();
-}
-
-}       // namespace format
+namespace move {
 
 template<class Rules, class Board>
-auto& operator<<(std::ostream& ostr, Move<Rules, Board> const& m)
+auto getnotation(std::ostream& ostr)
 {
-        auto value = ostr.iword(format::index());
-        if (value == format::flag_native)
-                value = format::traits<Move<Rules, Board>>::value;
-        switch(value) {
-        case format::flag_numeric:
-                ostr << format::as_numeric(m);
-                break;
-        case format::flag_algebraic:
-                ostr << format::as_algebraic(m);
-                break;
+        auto index = ostr.iword(manip::notation());
+        if (!index)
+                index = trait::notation<Rules, Board>::value;
+        return index;
+}
+
+template<class Rules>
+auto getpushsep(std::ostream& ostr)
+{
+        auto index = static_cast<char>(ostr.iword(manip::pushsep()));
+        if (!index)
+                index = trait::pushsep<Rules>::value;
+        return index;
+}
+
+template<class Rules>
+auto getjumpsep(std::ostream& ostr)
+{
+        auto index = static_cast<char>(ostr.iword(manip::jumpsep()));
+        if (!index)
+                index = trait::jumpsep<Rules>::value;
+        return index;
+}
+
+template<class Move>
+auto& print_algebraic(std::ostream& ostr, Move const& m)
+{
+        using Rules = typename Move::rules_type;
+        using Board = typename Move::board_type;
+        ostr << Board::algebraic_from_bit(m.from());
+        ostr << (m.is_jump() ? getjumpsep<Rules>(ostr) : getpushsep<Rules>(ostr));
+        ostr << Board::algebraic_from_bit(m.dest());
+        return ostr;
+}
+
+template<class Move>
+auto& print_numeric(std::ostream& ostr, Move const& m)
+{
+        using Rules = typename Move::rules_type;
+        using Board = typename Move::board_type;
+        ostr << Board::numeric_from_bit(m.from());
+        ostr << (m.is_jump() ? getjumpsep<Rules>(ostr) : getpushsep<Rules>(ostr));
+        ostr << Board::numeric_from_bit(m.dest());
+        return ostr;
+}
+
+template<class Move>
+auto str_algebraic(Move const& m)
+{
+        std::stringstream sstr;
+        print_algebraic(sstr, m);
+        return sstr.str();
+}
+
+template<class Move>
+auto str_numeric(Move const& m)
+{
+        std::stringstream sstr;
+        print_numeric(sstr, m);
+        return sstr.str();
+}
+
+}       // namespace move
+
+template<class CharT, class Traits, class Rules, class Board>
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, Move<Rules, Board> const& m)
+{
+        switch(move::getnotation<Rules, Board>(ostr)) {
+        case algebraic:
+                return move::print_algebraic(ostr, m);
+        case numeric:
+                return move::print_numeric(ostr, m);
         default:
                 assert(false);
-                break;
+                return ostr;
         }
-        return ostr;
 }
 
 }       // namespace dctl
