@@ -2,8 +2,6 @@
 #include <cassert>                      // assert
 #include <tuple>                        // tie
 #include <dctl/bit.hpp>                 // set_includes
-#include <dctl/board/algebraic.hpp>
-#include <dctl/grid/coordinates.hpp>
 
 namespace dctl {
 
@@ -16,9 +14,6 @@ public:
         using Set = typename Board::set_type;
 
         // structors
-
-        // default constructor
-        constexpr Move() = default;
 
         // king move
         constexpr Move(int src, int dst)
@@ -129,6 +124,7 @@ public:
 
 private:
         // implementation
+
         bool invariant() const
         {
                 return
