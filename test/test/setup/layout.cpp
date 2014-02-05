@@ -65,11 +65,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, DimSequence)
 using BSequence = boost::mpl::vector
 <
         board::Checkers,
-        board::Spantsireti08x10,
-        board::Spantsireti10x08,
+        board::Board< 8, 10>,
+        board::Board<10,  8>,
         board::International,
-        board::Spantsireti10x12,
-        board::Spantsireti12x10,
+        board::Board<10, 12>,
+        board::Board<12, 10>,
+        board::Compact1210,
         board::Canadian,
         board::Checkers,
         board::Ktar< 8, 10>,
@@ -77,6 +78,7 @@ using BSequence = boost::mpl::vector
         board::International,
         board::Ktar<10, 11>,
         board::Ktar<10, 12>,
+        board::Compact1012,
         board::Ktar<12, 10>,
         board::Canadian
 >;

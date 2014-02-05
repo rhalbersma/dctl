@@ -9,13 +9,15 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestInternational)
 
-using F = Fixture< Position<rules::International, board::International>, DefaultObjective >;
+using Rules = rules::Russian;
+using Board = board::Checkers;
+using F = Fixture< Position<Rules, Board>, DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(Initial, F)
 {
-        auto const p = Position<rules::International, board::International>::initial();
+        auto const p = Position<Rules, Board>::initial();
         std::cout << sizeof(decltype(p)) << " " << sizeof(decltype(p)::Set) << '\n';
-        root_.analyze(p, 17);
+        root_.analyze(p, 37);
 }
 /*
 BOOST_FIXTURE_TEST_CASE(lineoD1, Fixture<DefaultObjective>)

@@ -20,9 +20,9 @@ public:
 
         // queries
 
-        constexpr auto width ()    const noexcept { return width_   ; }
-        constexpr auto height()    const noexcept { return height_  ; }
-        constexpr auto inverted()  const noexcept { return inverted_; }
+        constexpr auto width ()   const noexcept { return width_   ; }
+        constexpr auto height()   const noexcept { return height_  ; }
+        constexpr auto inverted() const noexcept { return inverted_; }
 
         constexpr auto ll_parity() const noexcept
         {
@@ -80,6 +80,7 @@ public:
         static constexpr auto width = Width;
         static constexpr auto height = Height;
         static constexpr auto inverted = Inverted;
+
         static constexpr auto ll_parity = !Inverted;
         static constexpr auto ul_parity = static_cast<bool>(Inverted ^ (Height % 2));
 

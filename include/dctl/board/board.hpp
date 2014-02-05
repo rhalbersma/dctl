@@ -20,14 +20,23 @@
 namespace dctl {
 namespace board {
 
-template<class Dimensions, bool IsOrthogonalCaptures = true>
-struct Board
+template
+<
+        int Width,
+        int Height,
+        bool Inverted = false,
+        bool OrthogonalCaptures = true
+>
+class Board
 :
-        public Dimensions
+        public grid::Dimensions<Width, Height, Inverted>
 {
+private:
+        using Dimensions = grid::Dimensions<Width, Height, Inverted>;
+
 public:
-        static constexpr auto is_orthogonal_captures = IsOrthogonalCaptures;
-        static constexpr auto edge_columns = IsOrthogonalCaptures ? 2 : 1;
+        static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
+        static constexpr auto edge_columns = OrthogonalCaptures ? 2 : 1;
         static constexpr auto orientation = Angle{grid::SizeMinimizingOrientation<Dimensions, edge_columns>::value};
 
         using internal_grid = grid::Make<Dimensions, edge_columns, orientation>;
@@ -116,25 +125,25 @@ public:
         }
 };
 
-template<class Dim, bool Orth>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr bool
-Board<Dim, Orth>::is_orthogonal_captures;
+Board<Width, Height, Inverted, OrthogonalCaptures>::is_orthogonal_captures;
 
-template<class Dim, bool Orth>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr int
-Board<Dim, Orth>::edge_columns;
+Board<Width, Height, Inverted, OrthogonalCaptures>::edge_columns;
 
-template<class Dim, bool Orth>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr Angle
-Board<Dim, Orth>::orientation;
+Board<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
-template<class Dim, bool Orth>
-constexpr std::array<int, Board<Dim, Orth>::N>
-Board<Dim, Orth>::table_bit_from_square;
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::N>
+Board<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 
-template<class Dim, bool Orth>
-constexpr std::array<int, Board<Dim, Orth>::N>
-Board<Dim, Orth>::table_square_from_bit;
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::N>
+Board<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
 
 }       // namespace board
 }       // namespace dctl
