@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(Ktar10x12)
         test(p, leafs);
 
         // board with International initial moves and orthogonal capture support: does not fit into 64 bits
-        auto const q = Position<rules::International, board::Spantsireti10x12>::initial();
+        auto const q = Position<rules::International, board::Board<10,12>>::initial();
         test(q, leafs);
 }
 
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(Ktar12x10)
         test(p, leafs);
 
         // board with Canadian initial moves and orthogonal capture support: does not fit into 64 bits
-        auto const q = Position<rules::International, board::Spantsireti12x10>::initial();
+        auto const q = Position<rules::International, board::Board<12,10>>::initial();
         test(q, leafs);
 }
 
