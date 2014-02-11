@@ -46,9 +46,9 @@ public:
         }
 
         constexpr Set(std::initializer_list<value_type> ilist)
-        :
-                Set{ilist.begin(), ilist.end()}
-        {}
+        {
+                insert(ilist.begin(), ilist.end());
+        }
 
         constexpr auto& operator=(std::initializer_list<value_type> ilist)
         {
@@ -482,6 +482,30 @@ template<class T, class Block, int Nb>
 constexpr decltype(auto) cend(Set<T, Block, Nb> const& s) noexcept
 {
         return s.cend();
+}
+
+template<class T, class Block, int Nb>
+constexpr decltype(auto) rbegin(Set<T, Block, Nb> const& s) noexcept
+{
+        return s.rbegin();
+}
+
+template<class T, class Block, int Nb>
+constexpr decltype(auto) rend(Set<T, Block, Nb> const& s) noexcept
+{
+        return s.rend();
+}
+
+template<class T, class Block, int Nb>
+constexpr decltype(auto) crbegin(Set<T, Block, Nb> const& s) noexcept
+{
+        return s.crbegin();
+}
+
+template<class T, class Block, int Nb>
+constexpr decltype(auto) crend(Set<T, Block, Nb> const& s) noexcept
+{
+        return s.crend();
 }
 
 }       // namespace bit
