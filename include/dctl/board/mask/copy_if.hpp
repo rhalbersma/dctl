@@ -5,8 +5,8 @@ namespace dctl {
 namespace board {
 
 /* NOTE: for C++11/14, constexpr predicate != lambda expression */
-template<class Board, class Predicate>
-constexpr auto copy_if(Board const& /* b */, Predicate pred) noexcept
+template<class Board, class UnaryPredicate>
+constexpr auto copy_if(Board const& /* b */, UnaryPredicate pred) noexcept
 {
         using Grid = typename Board::external_grid;
         using Set = typename Board::set_type;

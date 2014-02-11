@@ -17,8 +17,8 @@ bool detect(InputIterator first, InputIterator last, typename std::iterator_trai
 
 // equivalent to std::any_of
 // O(N) complexity
-template<class InputIterator, class Predicate>
-bool detect_if(InputIterator first, InputIterator last, Predicate pred)
+template<class InputIterator, class UnaryPredicate>
+bool detect_if(InputIterator first, InputIterator last, UnaryPredicate pred)
 {
         return std::find_if(first, last, pred) != last;
 }

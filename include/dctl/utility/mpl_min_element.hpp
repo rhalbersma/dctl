@@ -11,14 +11,14 @@ namespace mpl {
 template
 <
         class Sequence,
-        class Predicate = boost::mpl::less<boost::mpl::_1, boost::mpl::_2>
+        class BinaryPredicate = boost::mpl::less<boost::mpl::_1, boost::mpl::_2>
 >
 struct min_element
 :
         boost::mpl::max_element<
                   Sequence,
                   boost::mpl::bind< typename
-                          boost::mpl::lambda<Predicate>::type,
+                          boost::mpl::lambda<BinaryPredicate>::type,
                           boost::mpl::_2, boost::mpl::_1
                   >
         >
