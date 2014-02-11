@@ -29,11 +29,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructorZeroInitializes, T, SetTypes)
         /* constexpr */ T b;
 
         BOOST_CHECK(b.empty());
-        BOOST_CHECK(begin(b) == end(b));
-        BOOST_CHECK(cbegin(b) == cend(b));
-        BOOST_CHECK(b.rbegin() == b.rend());
-        BOOST_CHECK(b.crbegin() == b.crend());
         BOOST_CHECK_EQUAL(b.size(), 0);
+        BOOST_CHECK(  begin(b) ==   end(b));
+        BOOST_CHECK( cbegin(b) ==  cend(b));
+        BOOST_CHECK( rbegin(b) ==  rend(b));
+        BOOST_CHECK(crbegin(b) == crend(b));
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IteratorPairConstructorListInitializes, T, SetTypes)
@@ -65,10 +65,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DistanceBeginEndEqualsSize, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 
-        BOOST_CHECK_EQUAL(std::distance(begin(b), end(b)), b.size());
-        BOOST_CHECK_EQUAL(std::distance(cbegin(b), cend(b)), b.size());
-        BOOST_CHECK_EQUAL(std::distance(b.rbegin(), b.rend()), b.size());
-        BOOST_CHECK_EQUAL(std::distance(b.crbegin(), b.crend()), b.size());
+        BOOST_CHECK_EQUAL(std::distance(  begin(b),   end(b)), b.size());
+        BOOST_CHECK_EQUAL(std::distance( cbegin(b),  cend(b)), b.size());
+        BOOST_CHECK_EQUAL(std::distance( rbegin(b),  rend(b)), b.size());
+        BOOST_CHECK_EQUAL(std::distance(crbegin(b), crend(b)), b.size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, SetTypes)
@@ -77,24 +77,24 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, SetTypes)
         decltype(begin(b)) min, max;
         std::tie(min, max) = std::minmax_element(begin(b), end(b));
 
-        BOOST_CHECK(0 <= *begin(b) && *begin(b) == *min);
-        BOOST_CHECK(*max == *b.rbegin() && *b.rbegin() < b.max_size());
+        BOOST_CHECK(   0 <=  *begin(b) &&  *begin(b) == *min        );
+        BOOST_CHECK(*max == *rbegin(b) && *rbegin(b) <  b.max_size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsSorted, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 
-        BOOST_CHECK(std::is_sorted(begin(b), end(b), std::less<U>()));
-        BOOST_CHECK(std::is_sorted(b.rbegin(), b.rend(), std::greater<U>()));
+        BOOST_CHECK(std::is_sorted( begin(b),  end(b), std::less<U>{})   );
+        BOOST_CHECK(std::is_sorted(rbegin(b), rend(b), std::greater<U>{}));
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsStrictlyIncreasing, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 
-        BOOST_CHECK(std::adjacent_find(begin(b), end(b), std::greater_equal<U>()) == end(b));
-        BOOST_CHECK(std::adjacent_find(b.rbegin(), b.rend(), std::less_equal<U>()) == b.rend());
+        BOOST_CHECK(std::adjacent_find( begin(b),  end(b), std::greater_equal<U>{}) ==  end(b));
+        BOOST_CHECK(std::adjacent_find(rbegin(b), rend(b), std::less_equal<U>{})    == rend(b));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

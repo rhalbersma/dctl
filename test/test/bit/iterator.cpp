@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ForwardIterationTraversesRange, T, SetTypes)
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
         auto it = begin(b); for (; it != end(b); ++it){}
 
-        BOOST_CHECK(it == b.rbegin().base());
+        BOOST_CHECK(it == rbegin(b).base());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(BackwardIterationTraversesRange, T, SetTypes)
@@ -32,13 +32,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BackwardIterationTraversesRange, T, SetTypes)
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
         auto it = end(b); for (; it != begin(b); --it){}
 
-        BOOST_CHECK(it == b.rend().base());
+        BOOST_CHECK(it == rend(b).base());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseForwardIterationTraversesRange, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
-        auto it = b.rbegin(); for (; it != b.rend(); ++it){}
+        auto it = rbegin(b); for (; it != rend(b); ++it){}
 
         BOOST_CHECK(it.base() == begin(b));
 }
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseForwardIterationTraversesRange, T, SetTypes
 BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseBackwardIterationTraversesRange, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
-        auto it = b.rend(); for (; it != b.rbegin(); --it){}
+        auto it = rend(b); for (; it != rbegin(b); --it){}
 
         BOOST_CHECK(it.base() == end(b));
 }
