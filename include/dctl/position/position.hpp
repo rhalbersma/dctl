@@ -205,10 +205,10 @@ private:
 
                 if (m.is_promotion()) {
                         // the first of multiple pawns
-                        if (!mru.is_active() && bit::set_multiple(pawns(to_move_)))
+                        if (!mru.is_active() && set_multiple(pawns(to_move_)))
                                 mru.activate();
                         // the single last pawn
-                        if (mru.is_active() && bit::set_single(pawns(to_move_)))
+                        if (mru.is_active() && set_single(pawns(to_move_)))
                                 mru.deactivate();
                 }
         }
@@ -221,8 +221,8 @@ private:
 
                 // capture all kings or all pawns
                 auto const deactivate =
-                        bit::set_includes(m.captured_kings(),  kings(!to_move_)) ||
-                        bit::set_includes(m.captured_pieces(), pawns(!to_move_))
+                        set_includes(m.captured_kings(),  kings(!to_move_)) ||
+                        set_includes(m.captured_pieces(), pawns(!to_move_))
                 ;
 
                 // capture the most recently used king
@@ -276,9 +276,9 @@ private:
         {
                 auto constexpr squares = board::Squares<Board>::mask();
                 return
-                        bit::set_includes(squares, pieces()) &&
-                        bit::set_includes(pieces(), kings()) &&
-                        !bit::set_intersects(pieces(Side::black), pieces(Side::white))
+                         set_includes(squares, pieces()) &&
+                         set_includes(pieces(), kings()) &&
+                        !set_intersects(pieces(Side::black), pieces(Side::white))
                 ;
         }
 

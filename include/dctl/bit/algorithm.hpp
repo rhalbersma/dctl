@@ -37,7 +37,7 @@ auto set_count_until(Set const& s, Pred pred) noexcept
 template<class Set>
 auto set_single(Set const& s) noexcept
 {
-        return bit::set_count_until(s, [](auto sum) {
+        return set_count_until(s, [](auto sum) {
                 return sum > 1;
         }) == 1;
 }
@@ -45,7 +45,7 @@ auto set_single(Set const& s) noexcept
 template<class Set>
 auto set_double(Set const& s) noexcept
 {
-        return bit::set_count_until(s, [](auto sum) {
+        return set_count_until(s, [](auto sum) {
                 return sum > 2;
         }) == 2;
 }
@@ -53,7 +53,7 @@ auto set_double(Set const& s) noexcept
 template<class Set>
 auto set_multiple(Set const& s) noexcept
 {
-        return bit::set_count_until(s, [](auto sum) {
+        return set_count_until(s, [](auto sum) {
                 return sum > 2;
         }) > 2;
 }

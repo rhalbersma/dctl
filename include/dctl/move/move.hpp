@@ -128,7 +128,7 @@ private:
         bool invariant() const
         {
                 return
-                        bit::set_includes(captured_pieces_, captured_kings_) &&
+                        set_includes(captured_pieces_, captured_kings_) &&
                         is_jump_ == !captured_pieces_.empty() &&
                         !(is_with_king_ && is_promotion_)
                 ;
