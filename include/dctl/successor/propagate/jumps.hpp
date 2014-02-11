@@ -306,7 +306,7 @@ private:
 
         auto invariant() const
         {
-                return bit::set_includes(initial_targets_, remaining_targets_);
+                return set_includes(initial_targets_, remaining_targets_);
         }
 
         template<int Direction>

@@ -19,10 +19,10 @@ bool is_pseudo_legal(Position const& p, Move const& m)
 {
         return (
                 // only capture existing pieces
-                bit::set_includes(passive_pieces(p), m.captured_pieces()) &&
+                set_includes(passive_pieces(p), m.captured_pieces()) &&
                 (
                         // only capture existing kings
-                        bit::set_includes(passive_kings(p), m.captured_kings(m)) ||
+                        set_includes(passive_kings(p), m.captured_kings(m)) ||
 
                         // EXCEPTION: for intersecting captures, a man-capturing king can appear as a captured king
                         is_intersecting_capture(p, m)
