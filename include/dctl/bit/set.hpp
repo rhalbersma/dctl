@@ -426,7 +426,7 @@ public:
         }
 
         template<class UnaryPredicate>
-        auto count_until(UnaryPredicate pred) const noexcept
+        auto count_until(UnaryPredicate pred) const
         {
                 return this->do_count_until(pred);
         }

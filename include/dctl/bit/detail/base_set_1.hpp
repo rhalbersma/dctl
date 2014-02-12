@@ -130,7 +130,7 @@ struct BaseSet<T, Block, 1>
         }
 
         template<class UnaryPredicate>
-        auto do_count_until(UnaryPredicate /* pred */) const noexcept
+        auto do_count_until(UnaryPredicate /* pred */) const
         {
                 return do_count();
         }

@@ -242,7 +242,7 @@ struct BaseSet
         }
 
         template<class UnaryPredicate>
-        auto do_count_until(UnaryPredicate pred) const noexcept
+        auto do_count_until(UnaryPredicate pred) const
         {
                 return util::accumulate_until(
                         std::begin(data_), std::end(data_), 0,
