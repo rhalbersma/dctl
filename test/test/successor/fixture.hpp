@@ -1,9 +1,11 @@
 #pragma once
-#include <algorithm>                            // is_permutation, transform
-#include <iterator>                             // back_inserter, begin, end
-#include <string>                               // string
-#include <vector>                               // vector
-#include <boost/algorithm/string.hpp>           // trim_copy
+#include <algorithm>                                    // is_permutation, transform
+#include <iterator>                                     // back_inserter, begin, end
+#include <string>                                       // string
+#include <vector>                                       // vector
+#include <boost/algorithm/string.hpp>                   // trim_copy
+#include <boost/range/adaptor/transformed.hpp>          // transformed
+#include <boost/range/algorithm_ext/push_back.hpp>      // push_back
 #include <boost/test/unit_test.hpp>
 #include <dctl/successor/generate.hpp>
 #include <dctl/position/position.hpp>
@@ -27,13 +29,9 @@ struct Fixture
                 BOOST_CHECK_EQUAL(static_cast<int>(moves.size()), N);
 
                 std::vector<std::string> notations;
-                notations.reserve(moves.size());
-                std::transform(
-                        begin(moves), end(moves),
-                        std::back_inserter(notations),
-                        [](auto const& m) {
+                boost::push_back(notations, moves | boost::adaptors::transformed([](auto const& m) {
                         return move::str_numeric(m);
-                });
+                }));
 
                 using boost::algorithm::trim_copy;
                 BOOST_CHECK(
