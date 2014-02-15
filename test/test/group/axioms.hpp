@@ -80,12 +80,12 @@ auto is_inverse(Group const& g) noexcept
 template<class Group>
 auto is_realized(Group const& g) noexcept
 {
-        return (
+        return
                 group::axioms::is_closure(g) &&
                 group::axioms::is_associativity(g) &&
                 group::axioms::is_identity(g) &&
                 group::axioms::is_inverse(g)
-        );
+        ;
 }
 
 }       // namespace axioms

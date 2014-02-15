@@ -21,8 +21,11 @@ using BoardSequence = boost::mpl::vector
         Mini,
         Checkers,
         International,
+        Canadian,
+        Dumm,
         Roman,
         Frisian,
+        SriLankan,
         Spantsireti,
         Ktar<10, 11>,
         Ktar<10, 12>
