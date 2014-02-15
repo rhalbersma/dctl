@@ -1,7 +1,8 @@
-#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <stack>
+#include <boost/range/algorithm/sort.hpp>
+#include <boost/range/algorithm/transform.hpp>
 #include <dctl/position/position.hpp>
 #include <dctl/move/ostream.hpp>
 #include <dctl/setup/diagram.hpp>
@@ -30,7 +31,7 @@ int main()
                 std::cout << setup::diagram<pdn::protocol>()(p);
 
                 auto moves = successor::generate(p);
-                std::sort(begin(moves), end(moves), [](auto const& L, auto const& R) {
+                boost::sort(moves, [](auto const& L, auto const& R) {
                         return move::str_numeric(L) < move::str_numeric(R);
                 });
 
@@ -46,7 +47,7 @@ int main()
                 int choice = 0;
 
                 for (std::string input; std::getline(std::cin, input);) {
-                        std::transform(begin(input), end(input), begin(input), ::tolower);
+                        boost::transform(input, begin(input), ::tolower);
 
                         if (moves.empty()) {
                                 if (input.empty() || input == "u")

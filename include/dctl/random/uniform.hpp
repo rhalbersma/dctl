@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>                      // uint64_t
-#include <random>                       // mt19937, uniform_int_distribution
+#include <random>                       // mt19937_64, uniform_int_distribution
 #include <dctl/utility/make_array.hpp>  // make_array
 
 namespace dctl {
@@ -9,7 +9,7 @@ namespace random {
 inline
 auto uniform_uint64()
 {
-        static std::mt19937 engine;
+        static std::mt19937_64 engine;
         static std::uniform_int_distribution<uint64_t> dist;
         return dist(engine);
 }

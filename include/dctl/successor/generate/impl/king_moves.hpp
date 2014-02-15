@@ -1,6 +1,6 @@
 #pragma once
-#include <algorithm>
-#include <iterator>
+#include <boost/range/adaptor/transformed.hpp>          // transformed
+#include <boost/range/algorithm_ext/push_back.hpp>      // push_back
 #include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
 #include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
 #include <dctl/successor/select/moves.hpp>              // moves
@@ -83,18 +83,18 @@ private:
         void transform_movers(Set const& active_kings) const
         {
                 auto const movers = active_kings & *std::prev(along_wave<Direction>(propagate_.path()));
-                std::transform(begin(movers), end(movers), std::back_inserter(moves_), [](auto const& from_sq) {
+                boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
                         return Move{from_sq, *++along_ray<Direction>(from_sq)};
-                });
+                }));
         }
 
         template<class Iterator>
         void transform_targets(Iterator from) const
         {
                 auto const targets = ray::fill(from, propagate_.path());
-                std::transform(begin(targets), end(targets), std::back_inserter(moves_), [=](auto const& dest_sq) {
+                boost::push_back(moves_, targets | boost::adaptors::transformed([=](auto const& dest_sq) {
                         return Move{*from, dest_sq};
-                });
+                }));
         }
 
         template<int Direction>
