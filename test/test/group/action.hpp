@@ -33,10 +33,10 @@ auto is_identity(Object const& obj, Group const& g) noexcept
 template<class Object, class Group>
 auto is_realized(Object const& obj, Group const& g) noexcept
 {
-        return (
+        return
                 is_associativity(obj, g) &&
                 is_identity(obj, g)
-        );
+        ;
 }
 
 }       // namespace action
