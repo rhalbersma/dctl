@@ -1,7 +1,7 @@
 #pragma once
-#include <type_traits>                  // is_convertible
-#include <dctl/bit/iterator_fwd.hpp>    // Iterator
-#include <dctl/bit/reference_fwd.hpp>   // Reference
+#include <type_traits>                          // is_convertible
+#include <dctl/bit/iterator/iterator_fwd.hpp>   // Iterator
+#include <dctl/bit/iterator/reference_fwd.hpp>  // Reference
 
 namespace dctl {
 namespace bit {
