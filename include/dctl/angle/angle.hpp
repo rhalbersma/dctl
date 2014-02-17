@@ -9,7 +9,7 @@ class Angle
 public:
         // structors
 
-        constexpr Angle() noexcept = default;
+        constexpr Angle() = default;
 
         explicit constexpr Angle(int n) noexcept
         :

@@ -32,7 +32,7 @@ struct BaseSet
 
         // structors
 
-        constexpr BaseSet() noexcept = default;
+        constexpr BaseSet() = default;
 
         // element access
 

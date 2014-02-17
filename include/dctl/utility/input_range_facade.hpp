@@ -54,7 +54,7 @@ public:
         public:
                 // structors
 
-                iterator() noexcept = default;
+                iterator() = default;
 
                 explicit iterator(Derived* b) noexcept
                 :
