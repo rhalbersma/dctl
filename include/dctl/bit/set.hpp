@@ -1,7 +1,6 @@
 #pragma once
 #include <cassert>                      // assert
 #include <cstddef>                      // ptrdiff_t, size_t
-#include <cstdint>                      // uint64_t
 #include <initializer_list>             // initializer_list
 #include <iterator>                     // iterator_traits
 #include <limits>                       // digits
@@ -233,32 +232,32 @@ public:
 
         // relational operators
 
-        friend constexpr bool operator==(Set const& lhs, Set const& rhs) noexcept
+        friend bool operator==(Set const& lhs, Set const& rhs) noexcept
         {
                 return Base::do_equal(lhs, rhs);
         }
 
-        friend constexpr bool operator!=(Set const& lhs, Set const& rhs) noexcept
+        friend bool operator!=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
 
-        friend constexpr bool operator< (Set const& lhs, Set const& rhs) noexcept
+        friend bool operator< (Set const& lhs, Set const& rhs) noexcept
         {
                 return Base::do_lexicograhical_compare(lhs, rhs);
         }
 
-        friend constexpr bool operator>=(Set const& lhs, Set const& rhs) noexcept
+        friend bool operator>=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(lhs < rhs);
         }
 
-        friend constexpr bool operator> (Set const& lhs, Set const& rhs) noexcept
+        friend bool operator> (Set const& lhs, Set const& rhs) noexcept
         {
                 return rhs < lhs;
         }
 
-        friend constexpr bool operator<=(Set const& lhs, Set const& rhs) noexcept
+        friend bool operator<=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(rhs < lhs);
         }
@@ -473,6 +472,18 @@ constexpr decltype(auto) end(Set<T, Block, Nb> const& s) noexcept
 }
 
 template<class T, class Block, int Nb>
+/* constexpr */ decltype(auto) rbegin(Set<T, Block, Nb> const& s) noexcept
+{
+        return s.rbegin();
+}
+
+template<class T, class Block, int Nb>
+/* constexpr */ decltype(auto) rend(Set<T, Block, Nb> const& s) noexcept
+{
+        return s.rend();
+}
+
+template<class T, class Block, int Nb>
 constexpr decltype(auto) cbegin(Set<T, Block, Nb> const& s) noexcept
 {
         return s.cbegin();
@@ -485,25 +496,13 @@ constexpr decltype(auto) cend(Set<T, Block, Nb> const& s) noexcept
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) rbegin(Set<T, Block, Nb> const& s) noexcept
-{
-        return s.rbegin();
-}
-
-template<class T, class Block, int Nb>
-constexpr decltype(auto) rend(Set<T, Block, Nb> const& s) noexcept
-{
-        return s.rend();
-}
-
-template<class T, class Block, int Nb>
-constexpr decltype(auto) crbegin(Set<T, Block, Nb> const& s) noexcept
+/* constexpr */ decltype(auto) crbegin(Set<T, Block, Nb> const& s) noexcept
 {
         return s.crbegin();
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) crend(Set<T, Block, Nb> const& s) noexcept
+/* constexpr */ decltype(auto) crend(Set<T, Block, Nb> const& s) noexcept
 {
         return s.crend();
 }
