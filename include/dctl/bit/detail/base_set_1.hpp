@@ -27,7 +27,7 @@ struct BaseSet<T, Block, 1>
 
         // structors
 
-        constexpr BaseSet() noexcept = default;
+        constexpr BaseSet() = default;
 
         // element access
 

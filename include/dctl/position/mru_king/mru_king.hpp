@@ -12,7 +12,7 @@ public:
 
         // structors
 
-        constexpr MostRecentlyUsedKing() noexcept = default;
+        constexpr MostRecentlyUsedKing() = default;
 
         // modifiers
 

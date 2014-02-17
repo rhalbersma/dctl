@@ -22,7 +22,7 @@ class Cursor
 public:
         // structors
 
-        Cursor() noexcept = default;
+        Cursor() = default;
 
         explicit Cursor(Set const& c) noexcept
         :
