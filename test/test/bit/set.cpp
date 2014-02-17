@@ -9,6 +9,10 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <dctl/bit/set.hpp>                     // Set
 
+#include <boost/range/adaptors.hpp>
+#include <boost/range/algorithm.hpp>
+#include <boost/range/end.hpp>
+
 namespace dctl {
 namespace bit {
 
@@ -93,8 +97,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsStrictlyIncreasing, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 
-        BOOST_CHECK(std::adjacent_find( begin(b),  end(b), std::greater_equal<U>{}) ==  end(b));
-        BOOST_CHECK(std::adjacent_find(rbegin(b), rend(b), std::less_equal<U>{})    == rend(b));
+        BOOST_CHECK(boost::adjacent_find(b                            , std::greater_equal<U>{}) == boost::end(b) );
+        BOOST_CHECK(boost::adjacent_find(b | boost::adaptors::reversed, std::less_equal<U>{})    == boost::rend(b));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
