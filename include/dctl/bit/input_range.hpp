@@ -24,6 +24,7 @@ public:
         {}
 
 private:
+        // gateway for InputRangeFacade to access private implementation
         friend class util::InputRangeCoreAccess;
 
         // modifiers
