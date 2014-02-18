@@ -6,21 +6,21 @@
 #include <tuple>                                // tie
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <dctl/bit/detail/intrinsic.hpp>        // clznz, ctznz, ctz
-#include <dctl/bit/iterator/iterator_fwd.hpp>   // Iterator
-#include <dctl/bit/iterator/reference_fwd.hpp>  // Reference
+#include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
+#include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
 
 namespace dctl {
 namespace bit {
 
 template<class T, class Block>
-class Iterator<T, Block, 1>
+class ConstIterator<T, Block, 1>
 :
         public boost::iterator_facade
         <
-                Iterator<T, Block, 1>,
-                T,
+                ConstIterator<T, Block, 1>,
+                T const,
                 std::bidirectional_iterator_tag,
-                Reference<T, Block, 1>,
+                ConstReference<T, Block, 1>,
                 std::ptrdiff_t
         >
 {
@@ -30,16 +30,16 @@ class Iterator<T, Block, 1>
 public:
         // structors
 
-        constexpr Iterator() = default;
+        constexpr ConstIterator() = default;
 
-        explicit constexpr Iterator(Block const* b)
+        explicit constexpr ConstIterator(Block const* b)
         :
                 block_{b},
                 index_{find_first()}
         {}
 
         template<class U>
-        constexpr Iterator(Block const* b, U const& value)
+        constexpr ConstIterator(Block const* b, U const& value)
         :
                 block_{b},
                 index_{value}
@@ -50,6 +50,7 @@ public:
         }
 
 private:
+        // gateway for boost::iterator_facade to access private implementation
         friend class boost::iterator_core_access;
 
         constexpr int find_first()
@@ -87,14 +88,14 @@ private:
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr Reference<T, Block, 1> dereference() const
+        constexpr ConstReference<T, Block, 1> dereference() const
         {
                 assert(block_ != nullptr);
                 return { *block_, index_ };
         }
 
         // operator== and operator!= provided by boost::iterator_facade
-        constexpr auto equal(Iterator const& other) const noexcept
+        constexpr auto equal(ConstIterator const& other) const noexcept
         {
                 return
                         std::tie(      block_,       index_) ==

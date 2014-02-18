@@ -4,7 +4,7 @@ namespace dctl {
 namespace bit {
 
 template<class T, class Block, int Nb>
-class Reference;
+class ConstReference;
 
 }       // namespace bit
 }       // namespace dctl
