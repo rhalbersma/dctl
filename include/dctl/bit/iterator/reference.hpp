@@ -1,30 +1,40 @@
 #pragma once
 #include <type_traits>                          // is_convertible
-#include <dctl/bit/iterator/iterator_fwd.hpp>   // Iterator
-#include <dctl/bit/iterator/reference_fwd.hpp>  // Reference
+#include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
+#include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
 
 namespace dctl {
 namespace bit {
 
 template<class T, class Block, int Nb>
-class Reference
+class ConstReference
 {
-private:
-        // types
-
-        using iterator = Iterator<T, Block, Nb>;
-
 public:
         // structors
 
+        // references cannot be left uninitialized
+        ConstReference() = delete;
+
+        // references can be copied
+        ConstReference(ConstReference const&) = default;
+
         template<class U>
-        constexpr Reference(Block const& b, U const& value) noexcept
+        constexpr ConstReference(Block const& b, U const& value) noexcept
         :
                 block_{b},
                 index_{value}
         {
                 static_assert(std::is_convertible<U, int>::value, "");
         }
+
+        // modifiers
+
+        // references cannot be re-assigned
+        ConstReference& operator=(ConstReference const&) = delete;
+
+        // const references cannot be assigned to
+        template<class U>
+        ConstReference& operator=(U const&) = delete;
 
         // queries
 
@@ -34,7 +44,7 @@ public:
                 return T{index_};
         }
 
-        constexpr iterator operator&() const noexcept
+        constexpr ConstIterator<T, Block, Nb> operator&() const noexcept
         {
                 return { &block_, index_ };
         }

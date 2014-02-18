@@ -1,15 +1,15 @@
 #pragma once
-#include <cassert>                      // assert
-#include <cstddef>                      // ptrdiff_t, size_t
-#include <initializer_list>             // initializer_list
-#include <iterator>                     // iterator_traits
-#include <limits>                       // digits
-#include <type_traits>                  // is_convertible
-#include <utility>                      // swap
-#include <dctl/bit/detail/base_set.hpp> // BaseSet
-#include <dctl/bit/detail/storage.hpp>  // Storage
-#include <dctl/bit/iterator.hpp>        // Iterator
-#include <dctl/bit/reference.hpp>       // Reference
+#include <cassert>                              // assert
+#include <cstddef>                              // ptrdiff_t, size_t
+#include <initializer_list>                     // initializer_list
+#include <iterator>                             // iterator_traits
+#include <limits>                               // digits
+#include <type_traits>                          // is_convertible
+#include <utility>                              // swap
+#include <dctl/bit/detail/base_set.hpp>         // BaseSet
+#include <dctl/bit/detail/storage.hpp>          // Storage
+#include <dctl/bit/iterator/iterator.hpp>       // ConstIterator
+#include <dctl/bit/iterator/reference.hpp>      // ConstReference
 
 namespace dctl {
 namespace bit {
@@ -27,9 +27,9 @@ public:
         using value_type = T;
         using size_type = int;
         using difference_type = std::ptrdiff_t;
-        using reference = Reference<T, Block, Nb>;
+        using reference = ConstReference<T, Block, Nb>;
         using const_reference = reference;
-        using iterator = Iterator<T, Block, Nb>;
+        using iterator = ConstIterator<T, Block, Nb>;
         using const_iterator = iterator;
         using reverse_iterator = std::reverse_iterator<iterator>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
