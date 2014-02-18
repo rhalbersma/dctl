@@ -9,8 +9,8 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <dctl/bit/set.hpp>                     // Set
 
-#include <boost/range/adaptors.hpp>
-#include <boost/range/algorithm.hpp>
+#include <boost/range/adaptor/reversed.hpp>
+#include <boost/range/algorithm/adjacent_find.hpp>
 #include <boost/range/end.hpp>
 
 namespace dctl {
