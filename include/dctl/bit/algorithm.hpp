@@ -130,14 +130,14 @@ auto set_difference(Set const& lhs, Set const& rhs) noexcept
         return lhs & ~rhs;
 }
 
-template<class Set>
-auto set_transform_plus(Set const& s, int n) noexcept
+template<class Set, class Size>
+auto set_transform_plus(Set const& s, Size n) noexcept
 {
         return s << n;
 }
 
-template<class Set>
-auto set_transform_minus(Set const& s, int n) noexcept
+template<class Set, class Size>
+auto set_transform_minus(Set const& s, Size n) noexcept
 {
         return s >> n;
 }
