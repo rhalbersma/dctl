@@ -24,7 +24,7 @@ Incremental<N>::pieces[] =
 
 template<int N>
 std::array<uint64_t, N> const
-Incremental<N>::kings = random::runif<N>();
+Incremental<N>::kings = runif<N>();
 
 template<int N>
 std::array<uint64_t, 2> const

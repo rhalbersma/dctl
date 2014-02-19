@@ -8,7 +8,7 @@ template<class Board>
 class Squares
 {
 private:
-        // TODO: replace if constexpr lambdas become available in C++17
+        // simulate a constexpr lambda (not allowed in C++14)
         struct lambda
         {
                 template<class Square>
