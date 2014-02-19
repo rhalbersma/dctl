@@ -14,7 +14,7 @@ template<class Board>
 class Initial
 {
 private:
-        // TODO: replace if constexpr lambdas become available in C++17
+        // simulate a constexpr lambda (not allowed in C++14)
         struct lambda
         {
                 bool const color_;

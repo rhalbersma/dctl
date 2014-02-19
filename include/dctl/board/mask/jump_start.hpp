@@ -13,7 +13,7 @@ template<class Board>
 class JumpStart
 {
 private:
-        // TODO: replace if constexpr lambdas become available in C++17
+        // simulate a constexpr lambda (not allowed in C++14)
         struct lambda
         {
                 int const segment_;

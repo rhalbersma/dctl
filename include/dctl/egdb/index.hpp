@@ -1,27 +1,21 @@
 #pragma once
 #include <algorithm>                            // accumulate
 #include <cassert>                              // assert
-#include <boost/math/special_functions/binomial.hpp>
 #include <boost/range/adaptors.hpp>
 #include <boost/range/algorithm.hpp>
 #include <boost/range/numeric.hpp>
 #include <dctl/bit/detail/intrinsic.hpp>        // count
+#include <dctl/egdb/binomial.hpp>
 
 namespace dctl {
 namespace egdb {
-
-inline
-int binomial(int n, int k)
-{
-        return (n < k) ? 0 : static_cast<int>(boost::math::binomial_coefficient<double>(static_cast<unsigned>(n), static_cast<unsigned>(k)));
-}
 
 template<class SinglePassRange>
 auto colex_subset_rank(SinglePassRange const& rng)
 {
         return boost::accumulate(
                 rng, 0, [i = 1](auto index, auto sq) mutable {
-                return index + binomial(sq, i++);
+                return index + Binomial<384, 10>::coefficient(sq, i++);
         });
 }
 

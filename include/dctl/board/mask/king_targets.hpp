@@ -15,6 +15,7 @@ template<class Board>
 class KingTargets
 {
 private:
+        // simulate a constexpr lambda (not allowed in C++14)
         template<int Direction>
         struct lambda
         {

@@ -9,6 +9,7 @@
 #include <boost/range/end.hpp>
 #include <dctl/egdb/index.hpp>
 #include <iostream>
+#include <iomanip>
 
 namespace dctl {
 namespace egdb {
@@ -25,13 +26,14 @@ using SetTypes = boost::mpl::vector
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetRank, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2 };
-        constexpr auto e = T{ T{}.max_size() - 2, T{}.max_size() - 1 };
+        constexpr auto N = T{}.max_size();
+        constexpr auto e = T{ N - 2, N - 1 };
 
         BOOST_CHECK_EQUAL(colex_subset_rank(b), 0);
-        BOOST_CHECK_EQUAL(colex_subset_rank(e), binomial(T{}.max_size(), e.size()) - 1);
+        BOOST_CHECK_EQUAL(colex_subset_rank(e), (Binomial<N, 10>::coefficient(N, e.size())) - 1);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace bit
+}       // namespace egdb
 }       // namespace dctl
