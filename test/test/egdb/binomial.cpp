@@ -1,5 +1,7 @@
 #include <cstddef>                              // ptrdiff_t
 #include <limits>                               // max
+#include <boost/range/irange.hpp>               // irange
+#include <boost/range/numeric.hpp>              // accumulate
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_LE, BOOST_AUTO_TEST_SUITE_END
 #include <dctl/egdb/binomial.hpp>               // Binomial
 
@@ -37,10 +39,14 @@ BOOST_AUTO_TEST_CASE(CoefficientsSatisfyNewtonTheorem)
         using binomial = Binomial<N, K>;
 
         for (auto n = 1; n <= N; ++n) {
-                std::ptrdiff_t sum = 0;
-                for (auto k = 0; k <= n; ++k)
-                        sum += binomial::coefficient(n, k);
-                BOOST_CHECK_EQUAL(sum, std::ptrdiff_t{1} << n);
+                auto const lhs = boost::accumulate(
+                        boost::irange(0, n + 1),
+                        std::ptrdiff_t{0},
+                        [=](auto sum, auto k) {
+                        return sum + binomial::coefficient(n, k);
+                });
+                auto const rhs = std::ptrdiff_t{1} << n;
+                BOOST_CHECK_EQUAL(lhs, rhs);
         }
 }
 

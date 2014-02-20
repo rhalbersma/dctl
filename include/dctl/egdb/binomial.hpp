@@ -10,10 +10,14 @@ namespace egdb {
 template
 <
         int BoardSize,
-        int MaxPieces
+        int MaxPieces,
+        class T = std::ptrdiff_t
 >
 class Binomial
 {
+public:
+        using value_type = T;
+
 private:
         static constexpr auto MaxN = 384;
         static constexpr auto N = (BoardSize < MaxN) ? BoardSize : MaxN;
@@ -21,7 +25,6 @@ private:
         static constexpr auto MaxK = (N + 1) / 2;
         static constexpr auto K = (MaxPieces < MaxK) ? MaxPieces : MaxK;
 
-        using value_type = std::ptrdiff_t;
         using row_type = std::array<value_type, 1 + K>;
         using table_type = std::array<row_type, 1 + N>;
 
@@ -99,9 +102,9 @@ public:
         }
 };
 
-template<int N, int K>
-constexpr typename Binomial<N, K>::table_type
-Binomial<N, K>::table;
+template<int N, int K, class T>
+constexpr typename Binomial<N, K, T>::table_type
+Binomial<N, K, T>::table;
 
 }       // namespace egdb
 }       // namespace dctl

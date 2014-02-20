@@ -10,6 +10,7 @@
 #include <dctl/egdb/index.hpp>
 #include <iostream>
 #include <iomanip>
+#include <boost/range/irange.hpp>
 
 namespace dctl {
 namespace egdb {
@@ -29,8 +30,23 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetRank, T, SetTypes)
         constexpr auto N = T{}.max_size();
         constexpr auto e = T{ N - 2, N - 1 };
 
-        BOOST_CHECK_EQUAL(colex_subset_rank(b), 0);
-        BOOST_CHECK_EQUAL(colex_subset_rank(e), (Binomial<N, 10>::coefficient(N, e.size())) - 1);
+        BOOST_CHECK_EQUAL(colex_combination_rank(b), 0);
+        BOOST_CHECK_EQUAL(colex_combination_rank(e), (Binomial<N, 10>::coefficient(N, e.size())) - 1);
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetUnRank, T, SetTypes)
+{
+        using binomial = Binomial<384, 192>;
+        auto N = 50; auto K = 8;
+
+        auto b = std::ptrdiff_t{0};
+        auto e = binomial::coefficient(N, K);
+
+        for (auto i : boost::irange(b, e)) {
+                auto pos = colex_combination_unrank(i, {N,K});
+                auto idx = colex_combination_rank(pos);
+                BOOST_CHECK_EQUAL(idx, i);
+        }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
