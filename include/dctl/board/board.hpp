@@ -6,7 +6,7 @@
 #include <limits>                               // digits
 #include <sstream>
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
-#include <boost/range/counting_range.hpp>       // counting_range
+#include <boost/range/irange.hpp>               // irange
 #include <dctl/angle.hpp>                       // Angle, inverse
 #include <dctl/bit.hpp>                         // Set
 #include <dctl/grid/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
@@ -72,7 +72,7 @@ public:
 
         static auto squares() noexcept
         {
-                return boost::counting_range(*begin(), *end());
+                return boost::irange(*begin(), *end());
         }
 
         static auto numeric_from_bit(int n)
