@@ -1,16 +1,16 @@
 #pragma once
+#include <dctl/utility/make_array.hpp>  // make_array
 #include <array>                        // array
 #include <cassert>                      // assert
 #include <cstddef>                      // ptrdiff_t, size_t
-#include <dctl/utility/make_array.hpp>  // make_array
 
 namespace dctl {
 namespace egdb {
 
 template
 <
-        int BoardSize,
-        int MaxPieces,
+        int BoardSize = 384,
+        int MaxPieces = 192,
         class T = std::ptrdiff_t
 >
 class Binomial
