@@ -1,21 +1,21 @@
 #pragma once
-#include <array>                                // array
-#include <cstddef>                              // size_t
-#include <cstdint>                              // uint64_t
-#include <iomanip>
-#include <limits>                               // digits
-#include <sstream>
-#include <boost/iterator/counting_iterator.hpp> // counting_iterator
-#include <boost/range/irange.hpp>               // irange
 #include <dctl/angle.hpp>                       // Angle, inverse
 #include <dctl/bit.hpp>                         // Set
+#include <dctl/board/algebraic.hpp>
 #include <dctl/grid/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
 #include <dctl/grid/orientation.hpp>            // SizeMinimizingOrientation, Make
 #include <dctl/position/side.hpp>               // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
-#include <dctl/board/algebraic.hpp>
+#include <boost/iterator/counting_iterator.hpp> // counting_iterator
+#include <boost/range/irange.hpp>               // irange
+#include <array>                                // array
+#include <cstddef>                              // size_t
+#include <cstdint>                              // uint64_t
+#include <iomanip>
+#include <limits>                               // digits
+#include <sstream>
 
 namespace dctl {
 namespace board {

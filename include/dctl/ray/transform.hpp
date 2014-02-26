@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/ray/iterator.hpp>        // Iterator
 #include <dctl/angle.hpp>               // Angle, rotate, mirror
+#include <dctl/ray/iterator.hpp>        // Iterator
 
 namespace dctl {
 namespace ray {

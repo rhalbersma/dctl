@@ -1,13 +1,13 @@
 #pragma once
-#include <cassert>                              // assert
-#include <limits>                               // digits
-#include <boost/iterator/zip_iterator.hpp>      // zip_iterator
-#include <boost/tuple/tuple.hpp>                // make_tuple
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/storage.hpp>          // storage
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
 #include <dctl/cpp14/reverse_iterator.hpp>      // rbegin, rend
 #include <dctl/utility/algorithm.hpp>           // accumulate_until
+#include <boost/iterator/zip_iterator.hpp>      // zip_iterator
+#include <boost/tuple/tuple.hpp>                // make_tuple
+#include <cassert>                              // assert
+#include <limits>                               // digits
 
 namespace dctl {
 namespace bit {
@@ -26,6 +26,11 @@ struct BaseSet
         enum { N = Nb * digits };
 
         Block& data()
+        {
+                return data_[0];
+        }
+
+        Block const& data() const
         {
                 return data_[0];
         }
