@@ -11,6 +11,7 @@
 
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/algorithm/adjacent_find.hpp>
+#include <boost/range/algorithm_ext/is_sorted.hpp>
 #include <boost/range/end.hpp>
 
 namespace dctl {
@@ -89,8 +90,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsSorted, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
 
-        BOOST_CHECK(std::is_sorted( begin(b),  end(b), std::less<U>{})   );
-        BOOST_CHECK(std::is_sorted(rbegin(b), rend(b), std::greater<U>{}));
+        BOOST_CHECK(boost::is_sorted(b                            , std::less<U>{})   );
+        BOOST_CHECK(boost::is_sorted(b | boost::adaptors::reversed, std::greater<U>{}));
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsStrictlyIncreasing, T, SetTypes)
