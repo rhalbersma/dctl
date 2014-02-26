@@ -1,6 +1,6 @@
 #pragma once
-#include <cassert>                              // assert
 #include <dctl/angle/detail/abs_remainder.hpp>  // abs_remainder
+#include <cassert>                              // assert
 
 namespace dctl {
 
@@ -105,7 +105,7 @@ public:
 
         // queries
 
-        constexpr operator int() const noexcept
+        /* implicit */ constexpr operator int() const noexcept
         {
                 return value_;
         }

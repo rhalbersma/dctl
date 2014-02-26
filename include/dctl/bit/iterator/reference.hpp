@@ -1,7 +1,7 @@
 #pragma once
-#include <type_traits>                          // is_convertible
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
+#include <type_traits>                          // is_convertible
 
 namespace dctl {
 namespace bit {
@@ -38,15 +38,15 @@ public:
 
         // queries
 
-        constexpr operator T() const noexcept
-        {
-                static_assert(std::is_convertible<int, T>::value, "");
-                return T{index_};
-        }
-
         constexpr ConstIterator<T, Block, Nb> operator&() const noexcept
         {
                 return { &block_, index_ };
+        }
+
+        /* implicit */ constexpr operator T() const noexcept
+        {
+                static_assert(std::is_convertible<int, T>::value, "");
+                return T{index_};
         }
 
 private:

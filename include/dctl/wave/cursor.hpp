@@ -56,7 +56,7 @@ public:
 
         // queries
 
-        operator Set() const noexcept
+        /* implicit */ operator Set() const noexcept
         {
                 return cursor_;
         }
