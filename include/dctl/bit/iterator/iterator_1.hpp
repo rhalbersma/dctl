@@ -1,13 +1,13 @@
 #pragma once
+#include <dctl/bit/detail/intrinsic.hpp>        // clznz, ctznz, ctz
+#include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
+#include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
+#include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t
 #include <iterator>                             // bidirectional_iterator_tag
 #include <limits>                               // digits
 #include <tuple>                                // tie
-#include <boost/iterator/iterator_facade.hpp>   // iterator_facade
-#include <dctl/bit/detail/intrinsic.hpp>        // clznz, ctznz, ctz
-#include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
-#include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
 
 namespace dctl {
 namespace bit {

@@ -1,10 +1,10 @@
 #pragma once
-#include <iterator>                             // next
 #include <dctl/angle.hpp>                       // Angle, is_positive
 #include <dctl/board/mask/king_targets.hpp>     // KingTargets
 #include <dctl/board/mask/squares.hpp>          // Squares
 #include <dctl/ray/iterator.hpp>                // Iterator
 #include <dctl/utility/first.hpp>               // First
+#include <iterator>                             // next
 
 namespace dctl {
 namespace ray {

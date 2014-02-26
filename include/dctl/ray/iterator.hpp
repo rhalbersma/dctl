@@ -1,7 +1,7 @@
 #pragma once
-#include <iterator>                             // random_access_iterator_tag
-#include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <dctl/ray/cursor.hpp>                  // Cursor
+#include <boost/iterator/counting_iterator.hpp> // counting_iterator
+#include <iterator>                             // random_access_iterator_tag
 
 namespace dctl {
 namespace ray {

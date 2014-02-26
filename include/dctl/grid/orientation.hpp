@@ -1,13 +1,13 @@
 #pragma once
+#include <dctl/grid/dimensions.hpp>             // Rotate
+#include <dctl/grid/grid.hpp>                   // Grid
+#include <dctl/utility/mpl_min_element.hpp>     // instead of boost::mpl::min_element
 #include <boost/mpl/deref.hpp>                  // deref
 #include <boost/mpl/int.hpp>                    // int_
 #include <boost/mpl/less_equal.hpp>             // less
 #include <boost/mpl/placeholders.hpp>           // _1
 #include <boost/mpl/transform_view.hpp>         // transform_view
 #include <boost/mpl/vector_c.hpp>               // vector_c
-#include <dctl/grid/dimensions.hpp>             // Rotate
-#include <dctl/grid/grid.hpp>                   // Grid
-#include <dctl/utility/mpl_min_element.hpp>     // instead of boost::mpl::min_element
 
 namespace dctl {
 namespace grid {

@@ -1,4 +1,9 @@
 #pragma once
+#include <dctl/bit/detail/base_set.hpp>         // BaseSet
+#include <dctl/bit/detail/storage.hpp>          // Storage
+#include <dctl/bit/iterator/iterator.hpp>       // ConstIterator
+#include <dctl/bit/iterator/reference.hpp>      // ConstReference
+#include <boost/range/concepts.hpp>             // BOOST_CONCEPT_ASSERT, SinglePassRangeConcept
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t, size_t
 #include <initializer_list>                     // initializer_list
@@ -6,10 +11,6 @@
 #include <limits>                               // digits
 #include <type_traits>                          // is_convertible
 #include <utility>                              // swap
-#include <dctl/bit/detail/base_set.hpp>         // BaseSet
-#include <dctl/bit/detail/storage.hpp>          // Storage
-#include <dctl/bit/iterator/iterator.hpp>       // ConstIterator
-#include <dctl/bit/iterator/reference.hpp>      // ConstReference
 
 namespace dctl {
 namespace bit {
@@ -49,6 +50,13 @@ public:
                 insert(ilist.begin(), ilist.end());
         }
 
+        template<class Range>
+        Set(Range&& rng)
+        {
+                BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
+                insert(boost::begin(std::forward<Range>(rng)), boost::end(std::forward<Range>(rng)));
+        }
+
         constexpr auto& operator=(std::initializer_list<value_type> ilist)
         {
                 clear();
@@ -57,6 +65,11 @@ public:
         }
 
         Block& data()
+        {
+                return Base::data();
+        }
+
+        Block const& data() const
         {
                 return Base::data();
         }

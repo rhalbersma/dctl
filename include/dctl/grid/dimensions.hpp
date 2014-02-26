@@ -1,7 +1,7 @@
 #pragma once
+#include <dctl/angle.hpp>               // Angle
 #include <stdexcept>                    // invalid_argument
 #include <tuple>                        // forward_as_tuple
-#include <dctl/angle.hpp>               // Angle
 
 namespace dctl {
 namespace grid {

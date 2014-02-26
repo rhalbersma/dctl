@@ -1,7 +1,7 @@
 #pragma once
-#include <cassert>                              // assert
 #include <dctl/bit/detail/intrinsic.hpp>        // ctznz
 #include <dctl/utility/input_range_facade.hpp>  // InputRangeCoreAcces, InputRangeFacade
+#include <cassert>                              // assert
 
 namespace dctl {
 namespace bit {

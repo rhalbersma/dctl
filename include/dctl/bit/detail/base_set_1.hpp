@@ -1,8 +1,8 @@
 #pragma once
-#include <cassert>                              // assert
-#include <limits>                               // digits
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
+#include <cassert>                              // assert
+#include <limits>                               // digits
 
 namespace dctl {
 namespace bit {
@@ -21,6 +21,11 @@ struct BaseSet<T, Block, 1>
         enum { N = 1 * digits };
 
         Block& data()
+        {
+                return data_;
+        }
+
+        Block const& data() const
         {
                 return data_;
         }
