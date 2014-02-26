@@ -27,7 +27,7 @@ public:
 
         // queries
 
-        operator bool() const
+        /* implicit */ operator bool() const
         {
                 return to_move_;
         }
