@@ -6,11 +6,11 @@ namespace util {
 
 // the Standard mandates that mutable lambdas have a non-const operator()
 // the mutating algorithm boost::transform() requires a const operator()
-// force_const_call_t wraps a mutable lambda as a mutable data member
+// make_const_callable_t wraps a mutable lambda as a mutable data member
 // inside a function object with a const operator()
 
 template<class MutableLambda>
-struct force_const_call_t
+struct make_const_callable_t
 {
         mutable MutableLambda f;
 
@@ -22,10 +22,10 @@ struct force_const_call_t
 };
 
 template<class MutableLambda>
-force_const_call_t<MutableLambda> force_const_call(MutableLambda&& f)
+make_const_callable_t<MutableLambda> make_const_callable(MutableLambda&& f)
 {
         return { std::forward<MutableLambda>(f) };
 }
 
-}
-}
+}       // namespace util
+}       // namespace dctl
