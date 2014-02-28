@@ -1,10 +1,12 @@
 #pragma once
 #include <dctl/egdb/binomial.hpp>               // Binomial
-#include <dctl/egdb/detail/rank_insert.hpp>     // RankInsert
-#include <dctl/egdb/detail/rank_remove.hpp>     // RankRemove
-#include <dctl/egdb/detail/unrank.hpp>          // UnRank
+#include <dctl/utility/make_const_callable.hpp> // make_const_callable
 #include <boost/range/adaptor/reversed.hpp>     // reversed
 #include <boost/range/adaptor/transformed.hpp>  // transformed
+#include <boost/range/algorithm/find_if.hpp>    // find_if
+#include <boost/range/begin.hpp>                // begin
+#include <boost/range/concepts.hpp>             // BOOST_CONCEPT_ASSERT, SinglePassRangeConcept
+#include <boost/range/end.hpp>                  // end
 #include <boost/range/irange.hpp>               // irange
 #include <boost/range/numeric.hpp>              // accumulate
 #include <cassert>                              // assert
@@ -19,10 +21,18 @@ namespace egdb {
 template<class Index, class Generator = Binomial<>>
 auto colex_combination_unrank(std::pair<int /* N */, int /* K */> const& combination, Index index, Generator const& = Generator{})
 {
+        assert(0 <= combination.second && combination.second <= combination.first);
         assert(0 <= index && index < Generator::coefficient(combination.first, combination.second));
         return boost::irange(1, combination.second + 1)
                 | boost::adaptors::reversed
-                | boost::adaptors::transformed(detail::UnRank<Generator>{index, combination.first})
+                | boost::adaptors::transformed(util::make_const_callable(
+                        [index = index, sq = combination.first](auto i) mutable {
+                        sq = *boost::find_if(boost::irange(0, sq) | boost::adaptors::reversed, [&](auto n) {
+                                return Generator::coefficient(n, i) <= index;
+                        });
+                        index -= Generator::coefficient(sq, i);
+                        return sq;
+                }))
         ;
 }
 
@@ -34,7 +44,11 @@ template<class Range>
 auto rank_inserted(Range const& pat)
 {
         BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
-        return boost::adaptors::transformed(detail::RankInsert<Range>{pat});
+        return boost::adaptors::transformed(util::make_const_callable(
+                [delta = 0, first = begin(pat), last = end(pat)](auto value) mutable {
+                while (first != last && *first <= value + delta) { ++first; ++delta; }
+                return value + delta;
+        }));
 }
 
 // input: a strictly increasing pattern range { pat_1, ..., pat_P }
@@ -45,7 +59,11 @@ template<class Range>
 auto rank_removed(Range const& pat)
 {
         BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
-        return boost::adaptors::transformed(detail::RankRemove<Range>{pat});
+        return boost::adaptors::transformed(util::make_const_callable(
+                [delta = 0, first = begin(pat), last = end(pat)](auto value) mutable {
+                while (first != last && *first < value) { ++first; ++delta; }
+                return value - delta;
+        }));
 }
 
 // input: a strictly increasing range { sq_1, ..., sq_K }
