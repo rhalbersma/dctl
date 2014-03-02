@@ -7,7 +7,7 @@ template<class Rules, class Board>
 class MostRecentlyUsedKing
 {
 public:
-        enum { M = rules::max_same_king_moves<Rules>::value };
+        enum { M = rules::max_same_king_push<Rules>::value };
         enum { N = Board::set_type::N };
 
         // structors

@@ -2,8 +2,8 @@
 #include <boost/range/adaptor/transformed.hpp>          // transformed
 #include <boost/range/algorithm_ext/push_back.hpp>      // push_back
 #include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
-#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
-#include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/successor/propagate/push.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/push.hpp>              // moves
 #include <dctl/pieces/king.hpp>                         // king
 
 #include <dctl/board/compass.hpp>                       // Compass
@@ -18,7 +18,7 @@ namespace impl {
 
 // partial specialization for king moves generation
 template<bool Color, class Position, class Sequence>
-struct generate<Color, pieces::king, select::moves, Position, Sequence>
+struct generate<Color, pieces::king, select::push, Position, Sequence>
 {
 public:
         // enforce reference semantics
@@ -31,7 +31,7 @@ private:
         using Set = typename Board::set_type;
         using Move = typename Sequence::value_type;
         using Compass = board::Compass<Board, Color>;
-        using State = Propagate<select::moves, Position>;
+        using State = Propagate<select::push, Position>;
 
         // representation
 

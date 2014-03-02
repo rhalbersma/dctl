@@ -2,7 +2,7 @@
 #include <climits>                                      // INT_MAX
 #include <type_traits>                                  // integral_constant, is_same
 #include <boost/mpl/eval_if.hpp>                        // eval_if
-#include <dctl/rules/traits/max_same_king_moves.hpp>    // max_same_king_moves
+#include <dctl/rules/traits/max_same_king_moves.hpp>    // max_same_king_push
 
 namespace dctl {
 namespace rules {
@@ -12,7 +12,7 @@ struct is_restricted_same_king_moves
 :
         boost::mpl::eval_if<
                 std::is_same< typename
-                        max_same_king_moves<Rules>::type,
+                        max_same_king_push<Rules>::type,
                         std::integral_constant<int, 0>
                 >,
                 std::false_type,

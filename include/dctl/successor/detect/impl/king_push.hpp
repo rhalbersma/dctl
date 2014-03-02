@@ -1,8 +1,8 @@
 #pragma once
 #include <dctl/successor/detect/impl/primary_fwd.hpp>
 #include <dctl/pieces/king.hpp>             // king
-#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
-#include <dctl/successor/select/moves.hpp>
+#include <dctl/successor/propagate/push.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/push.hpp>
 
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/wave/patterns.hpp>
@@ -15,14 +15,14 @@ namespace impl {
 
 // partial specialization for king moves detection
 template<bool Color, class Position, class Range>
-struct detect<Color, pieces::king, select::moves, Position, Range>
+struct detect<Color, pieces::king, select::push, Position, Range>
 {
 
 
 private:
         using Board = typename Position::board_type;
         using Compass = board::Compass<Board, Color>;
-        using State = Propagate<select::moves, Position>;
+        using State = Propagate<select::push, Position>;
 
         // representation
 

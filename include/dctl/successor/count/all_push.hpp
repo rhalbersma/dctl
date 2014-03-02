@@ -1,9 +1,9 @@
 #pragma once
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
-#include <dctl/successor/count/impl/king_moves.hpp>     // count (king moves specialization)
-#include <dctl/successor/count/impl/pawn_moves.hpp>     // count (pawn moves specialization)
-#include <dctl/successor/propagate/moves.hpp>           // Propagate (moves specialization)
-#include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/successor/count/impl/king_push.hpp>     // count (king moves specialization)
+#include <dctl/successor/count/impl/pawn_push.hpp>     // count (pawn moves specialization)
+#include <dctl/successor/propagate/push.hpp>           // Propagate (moves specialization)
+#include <dctl/successor/select/push.hpp>              // moves
 #include <dctl/position/unary_projections.hpp>              // moveable_kings
 #include <dctl/pieces/pieces.hpp>                // all, king, pawn
 
@@ -13,15 +13,15 @@ namespace detail {
 
 // partial specialization for piece moves
 template<bool Color>
-struct count<Color, pieces::all, select::moves>
+struct count<Color, pieces::all, select::push>
 {
         template<class Position>
         int operator()(Position const& p) const
         {
-                using KingMoves = impl::count<Color, pieces::king, select::moves, Position>;
-                using PawnMoves = impl::count<Color, pieces::pawn, select::moves, Position>;
+                using KingMoves = impl::count<Color, pieces::king, select::push, Position>;
+                using PawnMoves = impl::count<Color, pieces::pawn, select::push, Position>;
 
-                Propagate<select::moves, Position> const propagate(p);
+                Propagate<select::push, Position> const propagate(p);
                 return
                         KingMoves{propagate}(moveable_kings(p, Color)) +
                         PawnMoves{propagate}(p.pawns(Color))

@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/count/impl/primary_fwd.hpp>
-#include <dctl/successor/propagate/moves.hpp>
-#include <dctl/successor/select/moves.hpp>
+#include <dctl/successor/propagate/push.hpp>
+#include <dctl/successor/select/push.hpp>
 #include <dctl/pieces/king.hpp>
 
 #include <dctl/board/compass.hpp>                       // Compass
@@ -15,7 +15,7 @@ namespace impl {
 
 // partial specialization for king moves enumeration
 template<bool Color, class Position>
-struct count<Color, pieces::king, select::moves, Position>
+struct count<Color, pieces::king, select::push, Position>
 {
         // enforce reference semantics
         count(count const&) = delete;
@@ -25,7 +25,7 @@ private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Compass = board::Compass<Board, Color>;
-        using State = Propagate<select::moves, Position>;
+        using State = Propagate<select::push, Position>;
 
         // representation
 

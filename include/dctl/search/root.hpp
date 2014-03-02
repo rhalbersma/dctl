@@ -314,8 +314,8 @@ private:
                 std::cout << ((ply % 10 == 9) ? '\n' : ' ');
 
                 auto q = successor::make_copy(p, best_move);
-                //if (q.same_king_moves(!q.to_move()))
-                        //std::cout << "^" << q.same_king_moves(!q.to_move());
+                //if (q.same_king_push(!q.to_move()))
+                        //std::cout << "^" << q.same_king_push(!q.to_move());
                 print_pv(q, pv, ply + 1);
         }
 

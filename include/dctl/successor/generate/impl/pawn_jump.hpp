@@ -3,9 +3,9 @@
 #include <iterator>
 #include <type_traits>                                  // false_type, true_type
 #include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
-#include <dctl/successor/generate/impl/king_jumps.hpp>  // promote_en_passant
-#include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
-#include <dctl/successor/select/jumps.hpp>              // jumps
+#include <dctl/successor/generate/impl/king_jump.hpp>  // promote_en_passant
+#include <dctl/successor/propagate/jump.hpp>           // Propagate (jumps specialization)
+#include <dctl/successor/select/jump.hpp>              // jumps
 #include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/pieces/king.hpp>
 
@@ -25,7 +25,7 @@ namespace impl {
 
 // partial specialization for pawn jumps generation
 template<bool Color, class Position, class Sequence>
-struct generate<Color, pieces::pawn, select::jumps, Position, Sequence>
+struct generate<Color, pieces::pawn, select::jump, Position, Sequence>
 {
 public:
         // enforce reference semantics
@@ -33,12 +33,12 @@ public:
         generate& operator=(generate const&) = delete;
 
 private:
-        using KingJumps = generate<Color, pieces::king, select::jumps, Position, Sequence>;
+        using KingJumps = generate<Color, pieces::king, select::jump, Position, Sequence>;
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
         using Compass = board::Compass<Board, Color>;
-        using State = Propagate<select::jumps, Position>;
+        using State = Propagate<select::jump, Position>;
 
         // representation
 
