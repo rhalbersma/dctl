@@ -18,10 +18,9 @@ public:
 
         PiecePlacement(Set black_pieces, Set white_pieces, Set kings)
         :
+                pieces_{black_pieces, white_pieces},
                 kings_{kings}
         {
-                pieces_[Color::black] = black_pieces;
-                pieces_[Color::white] = white_pieces;
                 assert(invariant());
         }
 
