@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/successor/count/impl/primary_fwd.hpp>
-#include <dctl/successor/propagate/push.hpp>
+#include <dctl/successor/detect/detail/primary_fwd.hpp>
+#include <dctl/pieces/pawn.hpp>                         // pawn
+#include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>
-#include <dctl/pieces/pawn.hpp>
 
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/wave/patterns.hpp>
@@ -11,15 +11,14 @@
 namespace dctl {
 namespace successor {
 namespace detail {
-namespace impl {
 
-// partial specialization for pawn moves enumeration
-template<bool Color, class Position>
-struct count<Color, pieces::pawn, select::push, Position>
+// partial specialization for pawn moves detection
+template<bool Color, class Position, class Range>
+struct Detect<Color, pieces::pawn, select::push, Position, Range>
 {
         // enforce reference semantics
-        count(count const&) = delete;
-        count& operator=(count const&) = delete;
+        Detect(Detect const&) = delete;
+        Detect& operator=(Detect const&) = delete;
 
 private:
         using Board = typename Position::board_type;
@@ -33,7 +32,7 @@ private:
 public:
         // structors
 
-        explicit count(State const& p)
+        explicit Detect(State const& p)
         :
                 propagate_{p}
         {}
@@ -41,31 +40,30 @@ public:
         // function call operators
 
         template<class Set>
-        int operator()(Set const& active_pawns) const
+        bool operator()(Set const& active_pawns) const
         {
-                return active_pawns.empty() ? 0 : branch(active_pawns);
+                return active_pawns.empty() ? false : branch(active_pawns);
         }
 
 private:
         template<class Set>
-        int branch(Set const& active_pawns) const
+        bool branch(Set const& active_pawns) const
         {
                 return
-                        parallelize<Compass::left_up >(active_pawns) +
+                        parallelize<Compass::left_up >(active_pawns) ||
                         parallelize<Compass::right_up>(active_pawns)
                 ;
         }
 
         template<int Direction, class Set>
-        int parallelize(Set const& active_pawns) const
+        bool parallelize(Set const& active_pawns) const
         {
-                return Sink<Board, Direction, rules::range::distance_1>()(
+                return !Sink<Board, Direction, rules::range::distance_1>()(
                         active_pawns, propagate_.path()
-                ).size();
+                ).empty();
         }
 };
 
-}       // namespace impl
 }       // namespace detail
 }       // namespace successor
 }       // namespace dctl

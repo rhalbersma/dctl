@@ -3,10 +3,9 @@
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 template<bool /* Color */, class /* Pieces */, class /* Select */, class /* Range */>
-struct detect
+struct Detect
 {
         template<class Position>
         bool operator()(Position const& /* p */) const
@@ -15,6 +14,5 @@ struct detect
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

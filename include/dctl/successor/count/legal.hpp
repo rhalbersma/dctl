@@ -1,32 +1,30 @@
 #pragma once
-#include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
-#include <dctl/successor/count/jump.hpp>               // count (jumps specialization)
-#include <dctl/successor/count/all_push.hpp>         // count (piece moves specialization)
+#include <dctl/successor/count/primary_fwd.hpp>         // Count (primary template)
+#include <dctl/successor/count/jump.hpp>                // Count (jump specialization)
+#include <dctl/successor/count/all_push.hpp>            // Count (piece push specialization)
 #include <dctl/successor/select/legal.hpp>              // legal
-#include <dctl/successor/select/jump.hpp>              // jumps
-#include <dctl/successor/select/push.hpp>              // moves
+#include <dctl/successor/select/jump.hpp>               // jump
+#include <dctl/successor/select/push.hpp>               // push
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 // partial specialization for legal successors
 template<bool Color, class Pieces>
-struct count<Color, Pieces, select::legal>
+struct Count<Color, Pieces, select::legal>
 {
         template<class Position>
         int operator()(Position const& p)
         {
-                using DoJumps = count<Color, Pieces, select::jump>;
-                using DoMoves = count<Color, Pieces, select::push>;
+                using AllJump = Count<Color, Pieces, select::jump>;
+                using AllPush = Count<Color, Pieces, select::push>;
 
-                auto num_moves = DoJumps{}(p);
+                auto num_moves = AllJump{}(p);
                 if (!num_moves)
-                        num_moves += DoMoves{}(p);
+                        num_moves += AllPush{}(p);
                 return num_moves;
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

@@ -2,11 +2,9 @@
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 template<bool /* Color */, class /* Pieces */, class /* Select */>
-struct generate;
+struct Generate;
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

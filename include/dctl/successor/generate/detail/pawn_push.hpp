@@ -1,28 +1,28 @@
 #pragma once
-#include <boost/range/adaptor/transformed.hpp>          // transformed
-#include <boost/range/algorithm_ext/push_back.hpp>      // push_back
-#include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
-#include <dctl/pieces/pawn.hpp>                         // pawn
-#include <dctl/successor/propagate/push.hpp>           // Propagate (moves specialization)
-#include <dctl/successor/select/push.hpp>              // select
+#include <dctl/successor/generate/detail/primary_fwd.hpp>       // generate (primary template)
+#include <dctl/pieces/pawn.hpp>                                 // pawn
+#include <dctl/successor/propagate/push.hpp>                    // Propagate (moves specialization)
+#include <dctl/successor/select/push.hpp>                       // select
 
-#include <dctl/board/compass.hpp>                       // Compass
+#include <dctl/board/compass.hpp>                               // Compass
 #include <dctl/position/promotion.hpp>
 #include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
+#include <boost/range/adaptor/transformed.hpp>                  // transformed
+#include <boost/range/algorithm_ext/push_back.hpp>              // push_back
+#include <iterator>                                             // prev
 
 namespace dctl {
 namespace successor {
 namespace detail {
-namespace impl {
 
 template<bool Color, class Position, class Sequence>
-struct generate<Color, pieces::pawn, select::push, Position, Sequence>
+struct Generate<Color, pieces::pawn, select::push, Position, Sequence>
 {
 public:
         // enforce reference semantics
-        generate(generate const&) = delete;
-        generate& operator=(generate const&) = delete;
+        Generate(Generate const&) = delete;
+        Generate& operator=(Generate const&) = delete;
 
 private:
         using Board = typename Position::board_type;
@@ -39,7 +39,7 @@ private:
 public:
         // structors
 
-        explicit generate(State const& p, Sequence& m)
+        Generate(State const& p, Sequence& m)
         :
                 propagate_{p},
                 moves_{m}
@@ -85,7 +85,6 @@ private:
         }
 };
 
-}       // namespace impl
 }       // namespace detail
 }       // namespace successor
 }       // namespace dctl

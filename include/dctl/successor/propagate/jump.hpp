@@ -1,7 +1,4 @@
 #pragma once
-#include <cassert>                      // assert
-#include <iterator>                     // begin, end
-#include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <dctl/angle.hpp>               // Angle, is_orthogonal
 #include <dctl/bit.hpp>
 #include <dctl/position/promotion.hpp>
@@ -16,6 +13,9 @@
 #include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
 #include <dctl/board/mask.hpp>
+#include <cassert>                      // assert
+#include <iterator>                     // begin, end, prev
+#include <type_traits>                  // integral_constant, is_same, false_type, true_type
 
 namespace dctl {
 namespace successor {

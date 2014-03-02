@@ -8,10 +8,10 @@ namespace successor {
 template<class Pieces, class Select, class Position>
 auto invariant(Position const& p, int n)
 {
-        return (
+        return
                 ( count<Pieces, Select>(p) ==  n     ) &&
                 (detect<Pieces, Select>(p) == (n > 0))
-        );
+        ;
 }
 
 }       // namespace successor

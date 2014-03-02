@@ -1,29 +1,28 @@
 #pragma once
-#include <boost/range/adaptor/transformed.hpp>          // transformed
-#include <boost/range/algorithm_ext/push_back.hpp>      // push_back
-#include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
-#include <dctl/successor/propagate/push.hpp>           // Propagate (moves specialization)
-#include <dctl/successor/select/push.hpp>              // moves
-#include <dctl/pieces/king.hpp>                         // king
-
-#include <dctl/board/compass.hpp>                       // Compass
+#include <dctl/successor/generate/detail/primary_fwd.hpp>       // Generate (primary template)
+#include <dctl/successor/propagate/push.hpp>                    // Propagate (push specialization)
+#include <dctl/successor/select/push.hpp>                       // push
+#include <dctl/pieces/king.hpp>                                 // king
+#include <dctl/board/compass.hpp>                               // Compass
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/ray.hpp>
 #include <dctl/rules/traits.hpp>
+#include <boost/range/adaptor/transformed.hpp>                  // transformed
+#include <boost/range/algorithm_ext/push_back.hpp>              // push_back
+#include <iterator>                                             // prev
 
 namespace dctl {
 namespace successor {
 namespace detail {
-namespace impl {
 
 // partial specialization for king moves generation
 template<bool Color, class Position, class Sequence>
-struct generate<Color, pieces::king, select::push, Position, Sequence>
+struct Generate<Color, pieces::king, select::push, Position, Sequence>
 {
 public:
         // enforce reference semantics
-        generate(generate const&) = delete;
-        generate& operator=(generate const&) = delete;
+        Generate(Generate const&) = delete;
+        Generate& operator=(Generate const&) = delete;
 
 private:
         using Rules = typename Position::rules_type;
@@ -41,7 +40,7 @@ private:
 public:
         // structors
 
-        explicit generate(State const& p, Sequence& m)
+        Generate(State const& p, Sequence& m)
         :
                 propagate_{p},
                 moves_{m}
@@ -110,7 +109,6 @@ private:
         }
 };
 
-}       // namespace impl
 }       // namespace detail
 }       // namespace successor
 }       // namespace dctl

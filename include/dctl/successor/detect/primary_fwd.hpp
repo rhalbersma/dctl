@@ -3,11 +3,9 @@
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 template<bool /* Color */, class /* Material */, class /* Select */, class Range = rules::range::distance_1>
-struct detect;
+struct Detect;
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

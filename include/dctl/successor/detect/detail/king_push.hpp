@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/successor/count/impl/primary_fwd.hpp>
-#include <dctl/successor/propagate/push.hpp>
+#include <dctl/successor/detect/detail/primary_fwd.hpp>
+#include <dctl/pieces/king.hpp>                         // king
+#include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>
-#include <dctl/pieces/king.hpp>
 
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/wave/patterns.hpp>
@@ -11,18 +11,16 @@
 namespace dctl {
 namespace successor {
 namespace detail {
-namespace impl {
 
-// partial specialization for king moves enumeration
-template<bool Color, class Position>
-struct count<Color, pieces::king, select::push, Position>
+// partial specialization for king moves detection
+template<bool Color, class Position, class Range>
+struct Detect<Color, pieces::king, select::push, Position, Range>
 {
         // enforce reference semantics
-        count(count const&) = delete;
-        count& operator=(count const&) = delete;
+        Detect(Detect const&) = delete;
+        Detect& operator=(Detect const&) = delete;
 
 private:
-        using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::push, Position>;
@@ -34,7 +32,7 @@ private:
 public:
         // structors
 
-        explicit count(State const& p)
+        explicit Detect(State const& p)
         :
                 propagate_{p}
         {}
@@ -42,33 +40,32 @@ public:
         // function call operators
 
         template<class Set>
-        int operator()(Set const& active_kings) const
+        bool operator()(Set const& active_kings) const
         {
-                return active_kings.empty() ? 0 : branch(active_kings);
+                return active_kings.empty() ? false : branch(active_kings);
         }
 
 private:
         template<class Set>
-        int branch(Set const& active_kings) const
+        bool branch(Set const& active_kings) const
         {
                 return
-                        parallelize<Compass::left_down >(active_kings) +
-                        parallelize<Compass::right_down>(active_kings) +
-                        parallelize<Compass::left_up   >(active_kings) +
+                        parallelize<Compass::left_down >(active_kings) ||
+                        parallelize<Compass::right_down>(active_kings) ||
+                        parallelize<Compass::left_up   >(active_kings) ||
                         parallelize<Compass::right_up  >(active_kings)
                 ;
         }
 
         template<int Direction, class Set>
-        int parallelize(Set const& active_kings) const
+        bool parallelize(Set const& active_kings) const
         {
-                return Sink<Board, Direction, typename rules::range::move<Rules>::type>()(
+                return !Sink<Board, Direction, rules::range::distance_1>()(
                         active_kings, propagate_.path()
-                ).size();
+                ).empty();
         }
 };
 
-}       // namespace impl
 }       // namespace detail
 }       // namespace successor
 }       // namespace dctl

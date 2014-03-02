@@ -1,31 +1,30 @@
 #pragma once
-#include <cassert>                                      // assert
-#include <iterator>
-#include <type_traits>                                  // false_type, true_type
-#include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
-#include <dctl/successor/propagate/jump.hpp>            // Propagate
-#include <dctl/successor/select/jump.hpp>               // jumps
-#include <dctl/pieces/king.hpp>                         // king
+#include <dctl/successor/generate/detail/primary_fwd.hpp>       // Generate (primary template)
+#include <dctl/successor/propagate/jump.hpp>                    // Propagate (jump specialization)
+#include <dctl/successor/select/jump.hpp>                       // jump
+#include <dctl/pieces/king.hpp>                                 // king
 
-#include <dctl/angle.hpp>                               // _deg, rotate
-#include <dctl/board/compass.hpp>                       // Compass
-#include <dctl/ray.hpp>                                 // make_iterator, rotate
-#include <dctl/rules/traits.hpp>                        // traits
+#include <dctl/angle.hpp>                                       // _deg, rotate
+#include <dctl/board/compass.hpp>                               // Compass
+#include <dctl/ray.hpp>                                         // make_iterator, rotate
+#include <dctl/rules/traits.hpp>                                // traits
 #include <dctl/utility/algorithm.hpp>
+#include <cassert>                                              // assert
+#include <iterator>                                             // prev
+#include <type_traits>                                          // false_type, true_type
 
 namespace dctl {
 namespace successor {
 namespace detail {
-namespace impl {
 
 // partial specialization for king jumps generation
 template<bool Color, class Position, class Sequence>
-struct generate<Color, pieces::king, select::jump, Position, Sequence>
+struct Generate<Color, pieces::king, select::jump, Position, Sequence>
 {
 public:
         // enforce reference semantics
-        generate(generate const&) = delete;
-        generate& operator=(generate const&) = delete;
+        Generate(Generate const&) = delete;
+        Generate& operator=(Generate const&) = delete;
 
 private:
         using Rules = typename Position::rules_type;
@@ -43,7 +42,7 @@ private:
 public:
         // structors
 
-        explicit generate(State& c, Sequence& m)
+        Generate(State& c, Sequence& m)
         :
                 capture_{c},
                 moves_{m}
@@ -375,7 +374,6 @@ private:
         }
 };
 
-}       // namespace impl
 }       // namespace detail
 }       // namespace successor
 }       // namespace dctl
