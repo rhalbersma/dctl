@@ -51,12 +51,12 @@ private:
         template<class Set>
         int branch(Set const& active_kings) const
         {
-                return (
-                        parallelize< Compass::left_down  >(active_kings) +
-                        parallelize< Compass::right_down >(active_kings) +
-                        parallelize< Compass::left_up    >(active_kings) +
-                        parallelize< Compass::right_up   >(active_kings)
-                );
+                return
+                        parallelize<Compass::left_down >(active_kings) +
+                        parallelize<Compass::right_down>(active_kings) +
+                        parallelize<Compass::left_up   >(active_kings) +
+                        parallelize<Compass::right_up  >(active_kings)
+                ;
         }
 
         template<int Direction, class Set>

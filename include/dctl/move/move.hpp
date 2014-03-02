@@ -16,10 +16,11 @@ public:
         // structors
 
         // king move
-        constexpr Move(int src, int dst)
+        constexpr Move(int src, int dst, bool color)
         :
                 from_{src},
                 dest_{dst},
+                active_color_{color},
                 is_with_king_{true}
         {
                 assert(from_ != dest_);
@@ -27,10 +28,11 @@ public:
         }
 
         // pawn move
-        constexpr Move(int src, int dst, bool prom)
+        constexpr Move(int src, int dst, bool color, bool prom)
         :
                 from_{src},
                 dest_{dst},
+                active_color_{color},
                 is_promotion_{prom}
         {
                 assert(from_ != dest_);
@@ -38,12 +40,13 @@ public:
         }
 
         // king jump
-        constexpr Move(Set pieces, Set kings, int src, int dst)
+        constexpr Move(Set pieces, Set kings, int src, int dst, bool color)
         :
                 captured_pieces_{pieces},
                 captured_kings_{kings},
                 from_{src},
                 dest_{dst},
+                active_color_{color},
                 is_with_king_{true},
                 is_jump_{true}
         {
@@ -51,12 +54,13 @@ public:
         }
 
         // pawn jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom)
+        constexpr Move(Set pieces, Set kings, int src, int dst, bool color, bool prom)
         :
                 captured_pieces_{pieces},
                 captured_kings_{kings},
                 from_{src},
                 dest_{dst},
+                active_color_{color},
                 is_jump_{true},
                 is_promotion_{prom}
         {
@@ -83,6 +87,11 @@ public:
         constexpr auto dest() const noexcept
         {
                 return dest_;
+        }
+
+        constexpr auto active_color() const
+        {
+                return active_color_;
         }
 
         constexpr auto is_with_king() const noexcept
@@ -123,7 +132,7 @@ public:
         }
 
 private:
-        // implementation
+        // contracts
 
         bool invariant() const
         {
@@ -140,6 +149,7 @@ private:
         Set captured_kings_{};
         int from_{};
         int dest_{};
+        bool active_color_{};
         bool is_with_king_{};
         bool is_jump_{};
         bool is_promotion_{};

@@ -7,7 +7,7 @@
 #include <dctl/setup/diagram_fwd.hpp>
 #include <dctl/setup/numbers.hpp>
 #include <dctl/setup/i_token.hpp>
-#include <dctl/position/side.hpp>
+#include <dctl/position/color.hpp>
 
 namespace dctl {
 namespace setup {

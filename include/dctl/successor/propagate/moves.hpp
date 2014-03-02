@@ -13,7 +13,7 @@ public:
 
         explicit Propagate(Position const& p)
         :
-                not_occupied_(not_occupied(p))
+                not_occupied_(p.not_occupied())
         {}
 
         // queries

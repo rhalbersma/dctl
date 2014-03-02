@@ -17,7 +17,7 @@ auto jumpsep()
 class setjumpsep
 {
 public:
-        setjumpsep(char flag) noexcept : flag_{flag} {}
+        explicit setjumpsep(char flag) noexcept : flag_{flag} {}
 
         template<class CharT, class Traits>
         friend auto&

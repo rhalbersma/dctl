@@ -18,7 +18,7 @@ class setnotation
 {
 public:
         setnotation() = default;
-        setnotation(int flag) noexcept : flag_{flag} {}
+        explicit setnotation(int flag) noexcept : flag_{flag} {}
 
         template<class CharT, class Traits>
         friend auto&

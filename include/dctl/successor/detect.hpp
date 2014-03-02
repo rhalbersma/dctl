@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/select/legal.hpp>              // DefaultSelection
 #include <dctl/successor/detect/specializations.hpp>    // detect
-#include <dctl/position/side.hpp>                       // black, white
+#include <dctl/position/color.hpp>                       // black, white
 #include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
 #include <dctl/rules/traits.hpp>
 
@@ -19,9 +19,9 @@ auto detect(Position const& p)
 template<class Pieces, class Select, class Position>
 auto detect(Position const& p)
 {
-        return (p.to_move() == Side::black)?
-                detect<Side::black, Pieces, Select>(p) :
-                detect<Side::white, Pieces, Select>(p)
+        return (p.active_color() == Color::black)?
+                detect<Color::black, Pieces, Select>(p) :
+                detect<Color::white, Pieces, Select>(p)
         ;
 }
 

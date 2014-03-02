@@ -43,21 +43,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
 
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
-                        return Column<T>::mask(Side::black, i) == Column<T>::mask(Side::white, T::width - 1 - i);
+                        return Column<T>::mask(Color::black, i) == Column<T>::mask(Color::white, T::width - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
                         return std::all_of(alpha, omega, [=](auto j){
-                                return i == j ? true : !set_intersects(Column<T>::mask(Side::white, i), Column<T>::mask(Side::white, j));
+                                return i == j ? true : !set_intersects(Column<T>::mask(Color::white, i), Column<T>::mask(Color::white, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 std::accumulate(alpha, omega, Set<T>{}, [](auto result, auto i){
-                        return result ^ Column<T>::mask(Side::white, i);
+                        return result ^ Column<T>::mask(Color::white, i);
                 }) == Squares<T>::mask()
         );
 }
@@ -69,21 +69,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
-                        return Row<T>::mask(Side::black, i) == Row<T>::mask(Side::white, T::height - 1 - i);
+                        return Row<T>::mask(Color::black, i) == Row<T>::mask(Color::white, T::height - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
                         return std::all_of(alpha, omega, [=](auto j){
-                                return i == j ? true : !set_intersects(Row<T>::mask(Side::white, i), Row<T>::mask(Side::white, j));
+                                return i == j ? true : !set_intersects(Row<T>::mask(Color::white, i), Row<T>::mask(Color::white, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 std::accumulate(alpha, omega, Set<T>{}, [](auto result, auto i){
-                        return result ^ Row<T>::mask(Side::white, i);
+                        return result ^ Row<T>::mask(Color::white, i);
                 }) == Squares<T>::mask()
         );
 }

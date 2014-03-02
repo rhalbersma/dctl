@@ -17,7 +17,7 @@ auto pushsep()
 class setpushsep
 {
 public:
-        setpushsep(char flag) noexcept : flag_{flag} {}
+        explicit setpushsep(char flag) noexcept : flag_{flag} {}
 
         template<class CharT, class Traits>
         friend auto&

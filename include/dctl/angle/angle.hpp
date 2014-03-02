@@ -118,6 +118,8 @@ private:
                 return detail::abs_remainder(n, 360);
         }
 
+        // contracts
+
         constexpr bool invariant() const noexcept
         {
                 return 0 <= value_ && value_ < 360;
