@@ -200,7 +200,8 @@ private:
         template<class Iterator>
         bool land_dispatch(Iterator jumper, rules::range::distance_1K) const
         {
-                return capture_.is_king(*std::prev(jumper)) ?
+                return
+                        capture_.is_king(*std::prev(jumper)) ?
                         land_dispatch(jumper, rules::range::distance_1{}) :
                         land_dispatch(jumper, rules::range::distance_N{})
                 ;

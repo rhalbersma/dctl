@@ -193,7 +193,8 @@ private:
         template<class Iterator>
         bool promotion_dispatch(Iterator jumper, rules::phase::en_passant) const
         {
-                return is_promotion(*jumper) ?
+                return
+                        is_promotion(*jumper) ?
                         promote_en_passant(jumper) :
                         find_next(jumper)
                 ;
