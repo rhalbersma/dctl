@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/successor/detect/impl/primary_fwd.hpp>
-#include <dctl/pieces/pawn.hpp>             // pawn
-#include <dctl/successor/propagate/jump.hpp>           // Propagate (jumps specialization)
+#include <dctl/successor/detect/detail/primary_fwd.hpp>
+#include <dctl/pieces/pawn.hpp>                         // pawn
+#include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>
 
 #include <dctl/board/compass.hpp>                       // Compass
@@ -12,12 +12,15 @@
 namespace dctl {
 namespace successor {
 namespace detail {
-namespace impl {
 
 // partial specialization for pawn jumps detection
 template<bool Color, class Position, class Range>
-struct detect<Color, pieces::pawn, select::jump, Position, Range>
+struct Detect<Color, pieces::pawn, select::jump, Position, Range>
 {
+        // enforce reference semantics
+        Detect(Detect const&) = delete;
+        Detect& operator=(Detect const&) = delete;
+
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
@@ -31,7 +34,7 @@ private:
 public:
         // structors
 
-        explicit detect(State& p)
+        explicit Detect(State& p)
         :
                 propagate_{p}
         {}
@@ -113,7 +116,6 @@ private:
         }
 };
 
-}       // namespace impl
 }       // namespace detail
 }       // namespace successor
 }       // namespace dctl

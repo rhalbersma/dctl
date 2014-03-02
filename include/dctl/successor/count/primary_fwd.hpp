@@ -2,11 +2,9 @@
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 template<bool /* Color */, class /* Pieces */, class /* Select */>
-struct count;
+struct Count;
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

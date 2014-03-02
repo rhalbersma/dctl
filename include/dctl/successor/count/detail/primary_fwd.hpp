@@ -3,12 +3,10 @@
 namespace dctl {
 namespace successor {
 namespace detail {
-namespace impl {
 
 template<bool, class, class, class>
-struct count;
+struct Count;
 
-}       // namespace impl
 }       // namespace detail
 }       // namespace successor
 }       // namespace dctl

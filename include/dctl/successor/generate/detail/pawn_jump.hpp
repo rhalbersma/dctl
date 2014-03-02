@@ -1,39 +1,37 @@
 #pragma once
-#include <cassert>                                      // assert
-#include <iterator>
-#include <type_traits>                                  // false_type, true_type
-#include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
-#include <dctl/successor/generate/impl/king_jump.hpp>  // promote_en_passant
-#include <dctl/successor/propagate/jump.hpp>           // Propagate (jumps specialization)
-#include <dctl/successor/select/jump.hpp>              // jumps
-#include <dctl/pieces/pawn.hpp>                         // pawn
+#include <dctl/successor/generate/detail/primary_fwd.hpp>       // Generate (primary template)
+#include <dctl/successor/generate/detail/king_jump.hpp>         // promote_en_passant
+#include <dctl/successor/propagate/jump.hpp>                    // Propagate (jumps specialization)
+#include <dctl/successor/select/jump.hpp>                       // jumps
+#include <dctl/pieces/pawn.hpp>                                 // pawn
 #include <dctl/pieces/king.hpp>
 
-
-#include <dctl/angle.hpp>                               // _deg, rotate, mirror
-#include <dctl/board/compass.hpp>                       // Compass
+#include <dctl/angle.hpp>                                       // _deg, rotate, mirror
+#include <dctl/board/compass.hpp>                               // Compass
 #include <dctl/position/promotion.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
+#include <cassert>                                              // assert
+#include <iterator>                                             // prev
+#include <type_traits>                                          // false_type, true_type
 
 namespace dctl {
 namespace successor {
 namespace detail {
-namespace impl {
 
 // partial specialization for pawn jumps generation
 template<bool Color, class Position, class Sequence>
-struct generate<Color, pieces::pawn, select::jump, Position, Sequence>
+struct Generate<Color, pieces::pawn, select::jump, Position, Sequence>
 {
 public:
         // enforce reference semantics
-        generate(generate const&) = delete;
-        generate& operator=(generate const&) = delete;
+        Generate(Generate const&) = delete;
+        Generate& operator=(Generate const&) = delete;
 
 private:
-        using KingJumps = generate<Color, pieces::king, select::jump, Position, Sequence>;
+        using KingJumps = Generate<Color, pieces::king, select::jump, Position, Sequence>;
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
@@ -48,7 +46,7 @@ private:
 public:
         // structors
 
-        explicit generate(State& c, Sequence& m)
+        explicit Generate(State& c, Sequence& m)
         :
                 capture_{c},
                 moves_{m}
@@ -346,7 +344,6 @@ private:
         }
 };
 
-}       // namespace impl
 }       // namespace detail
 }       // namespace successor
 }       // namespace dctl

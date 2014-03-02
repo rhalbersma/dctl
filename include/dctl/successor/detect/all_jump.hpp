@@ -1,19 +1,18 @@
 #pragma once
-#include <type_traits>                                  // integral_constant, is_same, false_type, true_type
-#include <dctl/successor/detect/primary_fwd.hpp>
-#include <dctl/successor/detect/impl/king_jump.hpp>
-#include <dctl/successor/detect/impl/pawn_jump.hpp>
-#include <dctl/successor/propagate/jump.hpp>           // Propagate (jumps specialization)
-#include <dctl/successor/select/jump.hpp>
-#include <dctl/rules/traits.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
+#include <dctl/successor/detect/detail/king_jump.hpp>   // Detect (king jump specialization)
+#include <dctl/successor/detect/detail/pawn_jump.hpp>   // Detect (pawn jump specialization)
+#include <dctl/successor/propagate/jump.hpp>            // Propagate (jumps specialization)
+#include <dctl/successor/select/jump.hpp>               // jump
+#include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
+#include <type_traits>                                  // integral_constant, is_same, false_type, true_type
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 template<bool Color, class Range>
-struct detect<Color, pieces::all, select::jump, Range>
+struct Detect<Color, pieces::all, select::jump, Range>
 {
 public:
         template<class Position>
@@ -45,17 +44,17 @@ private:
         // the existence of pawn jumps is independent of Range,
         // but we always use rules::range::distance_1 to avoid template bloat
         template<class Position>
-        using PawnJumps = impl::detect<Color, pieces::pawn, select::jump, Position, rules::range::distance_1>;
+        using PawnJump = detail::Detect<Color, pieces::pawn, select::jump, Position, rules::range::distance_1>;
 
         template<class Position>
-        using KingJumps = impl::detect<Color, pieces::king, select::jump, Position, Range>;
+        using KingJump = detail::Detect<Color, pieces::king, select::jump, Position, Range>;
 
         // overload for piece jump detection
         template<class Position>
         bool combined_dispatch(Position const& p, std::true_type) const
         {
                 Propagate<select::jump, Position> propagate(p);
-                return PawnJumps<Position>{propagate}(p.pieces(Color));
+                return PawnJump<Position>{propagate}(p.pieces(Color));
         }
 
         // overload for separate king and pawn jump detection
@@ -66,12 +65,11 @@ private:
 
                 // speculate #pawns > #kings so that the logical OR is more likely to short-circuit
                 return
-                        PawnJumps<Position>{propagate}(p.pawns(Color)) ||
-                        KingJumps<Position>{propagate}(p.kings(Color))
+                        PawnJump<Position>{propagate}(p.pawns(Color)) ||
+                        KingJump<Position>{propagate}(p.kings(Color))
                 ;
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

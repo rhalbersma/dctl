@@ -1,12 +1,11 @@
 #pragma once
-#include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
+#include <dctl/successor/count/primary_fwd.hpp>         // Count (primary template)
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 template<bool /* Color */, class /* Pieces */, class /* Select */>
-struct count
+struct Count
 {
         template<class Position>
         int operator()(Position const& /* p */) const
@@ -15,6 +14,5 @@ struct count
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl
