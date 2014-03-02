@@ -4,7 +4,7 @@ namespace dctl {
 namespace successor {
 namespace select {
 
-struct jumps {};
+struct push {};
 
 }       // namespace select
 }       // namespace successor

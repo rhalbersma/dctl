@@ -1,8 +1,8 @@
 #pragma once
 #include <dctl/successor/detect/impl/primary_fwd.hpp>
 #include <dctl/pieces/pawn.hpp>             // pawn
-#include <dctl/successor/propagate/jumps.hpp>           // Propagate (jumps specialization)
-#include <dctl/successor/select/jumps.hpp>
+#include <dctl/successor/propagate/jump.hpp>           // Propagate (jumps specialization)
+#include <dctl/successor/select/jump.hpp>
 
 #include <dctl/board/compass.hpp>                       // Compass
 #include <dctl/wave/patterns.hpp>
@@ -16,13 +16,13 @@ namespace impl {
 
 // partial specialization for pawn jumps detection
 template<bool Color, class Position, class Range>
-struct detect<Color, pieces::pawn, select::jumps, Position, Range>
+struct detect<Color, pieces::pawn, select::jump, Position, Range>
 {
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Compass = board::Compass<Board, Color>;
-        using State = Propagate<select::jumps, Position>;
+        using State = Propagate<select::jump, Position>;
 
         // representation
 

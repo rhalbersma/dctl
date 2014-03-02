@@ -1,10 +1,10 @@
 #pragma once
 #include <dctl/successor/count/primary_fwd.hpp>         // count (primary template)
-#include <dctl/successor/count/jumps.hpp>               // count (jumps specialization)
-#include <dctl/successor/count/all_moves.hpp>         // count (piece moves specialization)
+#include <dctl/successor/count/jump.hpp>               // count (jumps specialization)
+#include <dctl/successor/count/all_push.hpp>         // count (piece moves specialization)
 #include <dctl/successor/select/legal.hpp>              // legal
-#include <dctl/successor/select/jumps.hpp>              // jumps
-#include <dctl/successor/select/moves.hpp>              // moves
+#include <dctl/successor/select/jump.hpp>              // jumps
+#include <dctl/successor/select/push.hpp>              // moves
 
 namespace dctl {
 namespace successor {
@@ -17,8 +17,8 @@ struct count<Color, Pieces, select::legal>
         template<class Position>
         int operator()(Position const& p)
         {
-                using DoJumps = count<Color, Pieces, select::jumps>;
-                using DoMoves = count<Color, Pieces, select::moves>;
+                using DoJumps = count<Color, Pieces, select::jump>;
+                using DoMoves = count<Color, Pieces, select::push>;
 
                 auto num_moves = DoJumps{}(p);
                 if (!num_moves)

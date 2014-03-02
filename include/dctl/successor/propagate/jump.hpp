@@ -10,7 +10,7 @@
 #include <dctl/rules/traits.hpp>
 #include <dctl/rules/types.hpp>
 #include <dctl/successor/propagate_fwd.hpp>
-#include <dctl/successor/select/jumps.hpp>
+#include <dctl/successor/select/jump.hpp>
 #include <dctl/successor/value.hpp>
 #include <dctl/utility/total_order.hpp>
 #include <dctl/ray.hpp>
@@ -27,7 +27,7 @@ struct pawn {};
 }       // namespace with
 
 template<class Position>
-struct Propagate<select::jumps, Position>
+struct Propagate<select::jump, Position>
 {
 public:
         // structors

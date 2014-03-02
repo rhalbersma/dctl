@@ -8,15 +8,15 @@
 namespace dctl {
 namespace rules {
 
-DCTL_PP_DEFINE_HAS_TYPE(max_same_king_moves)
-DCTL_PP_DEFINE_GET_TYPE(max_same_king_moves)
+DCTL_PP_DEFINE_HAS_TYPE(max_same_king_push)
+DCTL_PP_DEFINE_GET_TYPE(max_same_king_push)
 
 template<class Rules>
-struct max_same_king_moves
+struct max_same_king_push
 :
         boost::mpl::eval_if<
-                has_type_max_same_king_moves<Rules>,
-                get_type_max_same_king_moves<Rules>,
+                has_type_max_same_king_push<Rules>,
+                get_type_max_same_king_push<Rules>,
                 std::integral_constant<int, 0>
         >::type
 {};

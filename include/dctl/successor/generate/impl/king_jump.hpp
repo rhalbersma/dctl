@@ -3,8 +3,8 @@
 #include <iterator>
 #include <type_traits>                                  // false_type, true_type
 #include <dctl/successor/generate/impl/primary_fwd.hpp> // generate (primary template)
-#include <dctl/successor/propagate/jumps.hpp>           // Propagate
-#include <dctl/successor/select/jumps.hpp>              // jumps
+#include <dctl/successor/propagate/jump.hpp>            // Propagate
+#include <dctl/successor/select/jump.hpp>               // jumps
 #include <dctl/pieces/king.hpp>                         // king
 
 #include <dctl/angle.hpp>                               // _deg, rotate
@@ -20,7 +20,7 @@ namespace impl {
 
 // partial specialization for king jumps generation
 template<bool Color, class Position, class Sequence>
-struct generate<Color, pieces::king, select::jumps, Position, Sequence>
+struct generate<Color, pieces::king, select::jump, Position, Sequence>
 {
 public:
         // enforce reference semantics
@@ -33,7 +33,7 @@ private:
         using Set = typename Board::set_type;
         using Move = typename Sequence::value_type;
         using Compass = board::Compass<Board, Color>;
-        using State = Propagate<select::jumps, Position>;
+        using State = Propagate<select::jump, Position>;
 
         // representation
 
