@@ -91,7 +91,7 @@ public:
         }
 
 private:
-        // predicates
+        // contracts
 
         bool invariant() const
         {

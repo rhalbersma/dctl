@@ -46,10 +46,10 @@ private:
         template<class Set>
         bool branch(Set const& active_pawns) const
         {
-                return (
-                        parallelize< Compass::left_up  >(active_pawns) ||
-                        parallelize< Compass::right_up >(active_pawns)
-                );
+                return
+                        parallelize<Compass::left_up >(active_pawns) ||
+                        parallelize<Compass::right_up>(active_pawns)
+                ;
         }
 
         template<int Direction, class Set>

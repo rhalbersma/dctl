@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/board/mask/copy_if.hpp>  // copy_if
 #include <dctl/grid/coordinates.hpp>    // ulo_from_sq
-#include <dctl/position/side.hpp>           // black, white
+#include <dctl/position/color.hpp>           // black, white
 #include <dctl/utility/make_array.hpp>  // make_array
 #include <array>                        // array
 #include <cassert>                      // assert
@@ -26,8 +26,8 @@ private:
                         using Grid = typename Square::grid_type;
                         auto const separation = Board::height - 2 * rows_;
                         auto const y = get_y(llo_from_ulo(ulo_from_sq(sq)));
-                        auto const min_y = color_ == Side::white ? 0 : Grid::height - (Grid::height - separation) / 2;
-                        auto const max_y = color_ == Side::white ? (Grid::height - separation) / 2 : Grid::height;
+                        auto const min_y = color_ == Color::white ? 0 : Grid::height - (Grid::height - separation) / 2;
+                        auto const max_y = color_ == Color::white ? (Grid::height - separation) / 2 : Grid::height;
                         return min_y <= y && y < max_y;
                 }
         };
@@ -44,8 +44,8 @@ private:
 
         static constexpr table_type table[] =
         {
-                make_array<N>(init<Side::black>),
-                make_array<N>(init<Side::white>)
+                make_array<N>(init<Color::black>),
+                make_array<N>(init<Color::white>)
         };
 
 public:

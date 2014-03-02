@@ -5,54 +5,46 @@
 
 namespace dctl {
 
-// unoccupied squares
+// pieces for the side to move
 template<class Position>
-auto not_occupied(Position const& p)
+auto active_pieces(Position const& p)
 {
-        auto constexpr squares = board::Squares<typename Position::board_type>::mask();
-        return squares ^ p.pieces();
-}
-
-// pawns for the side to move
-template<class Position>
-auto active_pawns(Position const& p)
-{
-        return p.pawns(active_color(p));
+        return p.pieces(p.active_color());
 }
 
 // kings for the side to move
 template<class Position>
 auto active_kings(Position const& p)
 {
-        return p.kings(active_color(p));
+        return p.kings(p.active_color());
 }
 
-// pieces for the side to move
+// pawns for the side to move
 template<class Position>
-auto active_pieces(Position const& p)
+auto active_pawns(Position const& p)
 {
-        return p.pieces(active_color(p));
-}
-
-// pawns for the opposite side
-template<class Position>
-auto passive_pawns(Position const& p)
-{
-        return p.pawns(passive_color(p));
-}
-
-// kings for the opposite side
-template<class Position>
-auto passive_kings(Position const& p)
-{
-        return p.kings(passive_color(p));
+        return p.pawns(p.active_color());
 }
 
 // pieces for the opposite side
 template<class Position>
 auto passive_pieces(Position const& p)
 {
-        return p.pieces(passive_color(p));
+        return p.pieces(!p.active_color());
+}
+
+// kings for the opposite side
+template<class Position>
+auto passive_kings(Position const& p)
+{
+        return p.kings(!p.active_color());
+}
+
+// pawns for the opposite side
+template<class Position>
+auto passive_pawns(Position const& p)
+{
+        return p.pawns(!p.active_color());
 }
 
 template<class Position>

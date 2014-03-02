@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/board/mask/copy_if.hpp>  // copy_if
 #include <dctl/grid/coordinates.hpp>    // ulo_from_sq
-#include <dctl/position/side.hpp>       // black, white
+#include <dctl/position/color.hpp>       // black, white
 #include <dctl/utility/make_array.hpp>  // make_array
 #include <array>                        // array
 #include <cstddef>                      // size_t
@@ -23,7 +23,7 @@ private:
                 constexpr auto operator()(Square const& sq) const noexcept
                 {
                         using Grid = typename Square::grid_type;
-                        return get_x(llo_from_ulo(ulo_from_sq(sq))) == (color_ == Side::white ? column_ : Grid::width - 1 - column_);
+                        return get_x(llo_from_ulo(ulo_from_sq(sq))) == (color_ == Color::white ? column_ : Grid::width - 1 - column_);
                 }
         };
 
@@ -39,8 +39,8 @@ private:
 
         static constexpr table_type table[] =
         {
-                make_array<N>(init<Side::black>),
-                make_array<N>(init<Side::white>)
+                make_array<N>(init<Color::black>),
+                make_array<N>(init<Color::white>)
         };
 
 public:

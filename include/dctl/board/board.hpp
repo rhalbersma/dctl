@@ -6,7 +6,7 @@
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
 #include <dctl/grid/orientation.hpp>            // SizeMinimizingOrientation, Make
-#include <dctl/position/side.hpp>               // black, white
+#include <dctl/position/color.hpp>               // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/range/irange.hpp>               // irange

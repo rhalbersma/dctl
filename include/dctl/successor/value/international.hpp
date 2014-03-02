@@ -64,6 +64,8 @@ public:
         }
 
 private:
+        // contracts
+
         bool invariant() const
         {
                 return 0 <= num_pieces_ && num_pieces_ <= std::numeric_limits<int>::max();

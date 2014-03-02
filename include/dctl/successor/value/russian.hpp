@@ -55,6 +55,8 @@ public:
         }
 
 private:
+        // contracts
+
         bool invariant() const
         {
                 return true;

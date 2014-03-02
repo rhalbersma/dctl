@@ -33,7 +33,7 @@ MostRecentlyUsedKing<M, N>::moves[] =
 }       // namespace random
 
 template<class Rules, class Board>
-auto zobrist_hash(MostRecentlyUsedKing<Rules, Board> const& mru_king, bool to_move)
+auto init_hash(MostRecentlyUsedKing<Rules, Board> const& mru_king, bool to_move)
 {
         enum { M = MostRecentlyUsedKing<Rules, Board>::M };
         enum { N = MostRecentlyUsedKing<Rules, Board>::N };

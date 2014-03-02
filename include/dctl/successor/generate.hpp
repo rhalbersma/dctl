@@ -6,7 +6,7 @@
 #include <dctl/successor/invariant.hpp>                 // invariant
 #include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
 #include <dctl/move/move.hpp>                           // Move
-#include <dctl/position/side.hpp>                       // black, white
+#include <dctl/position/color.hpp>                       // black, white
 #include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
 
 namespace dctl {
@@ -15,10 +15,10 @@ namespace successor {
 template<class Pieces, class Select, class Position, class Sequence>
 void generate(Position const& p, Sequence& moves)
 {
-        if (p.to_move() == Side::black)
-                detail::generate<Side::black, Pieces, Select>{}(p, moves);
+        if (p.active_color() == Color::black)
+                detail::generate<Color::black, Pieces, Select>{}(p, moves);
         else
-                detail::generate<Side::white, Pieces, Select>{}(p, moves);
+                detail::generate<Color::white, Pieces, Select>{}(p, moves);
         assert((invariant<Pieces, Select>(p, static_cast<int>(moves.size()))));
 }
 

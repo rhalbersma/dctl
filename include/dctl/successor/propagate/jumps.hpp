@@ -37,7 +37,7 @@ public:
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
                 remaining_targets_(initial_targets_),
-                not_occupied_(not_occupied(p))
+                not_occupied_(p.not_occupied())
         {
                 assert(invariant());
         }
@@ -104,26 +104,24 @@ public:
         template<bool Color, class Sequence>
         void add_king_jump(int dest_sq, Sequence& moves) const
         {
-                using Move = typename Sequence::value_type;
-
                 moves.emplace_back(
                         captured_pieces(),
                         captured_kings(with::king{}),
                         from_sq_,
-                        dest_sq
+                        dest_sq,
+                        Color
                 );
         }
 
         template<bool Color, class WithPiece, class Sequence>
         void add_pawn_jump(int dest_sq, Sequence& moves) const
         {
-                using Move = typename Sequence::value_type;
-
                 moves.emplace_back(
                         captured_pieces(),
                         captured_kings(WithPiece{}),
                         from_sq_,
                         dest_sq,
+                        Color,
                         is_promotion<Color>(dest_sq, WithPiece{})
                 );
         }
@@ -168,7 +166,7 @@ public:
         auto path() const
         {
                 auto constexpr jump_start = board::JumpStart<Board>::mask(Angle{Direction});
-                return path() & jump_start;
+                return set_intersection(path(), jump_start);
         }
 
         template<int Direction>
@@ -304,11 +302,6 @@ private:
 
         // queries
 
-        auto invariant() const
-        {
-                return set_includes(initial_targets_, remaining_targets_);
-        }
-
         template<int Direction>
         auto remaining_targets() const
         {
@@ -334,7 +327,7 @@ private:
         // overload for orthogonal direction and king jump
         auto remaining_targets_dispatch(std::true_type) const
         {
-                return remaining_targets_ & king_targets_;
+                return set_intersection(remaining_targets_, king_targets_);
         }
 
         auto size() const
@@ -389,18 +382,25 @@ private:
 
         auto captured_kings(with::king) const
         {
-                return captured_pieces() & king_targets_;
+                return set_intersection(captured_pieces(), king_targets_);
         }
 
         auto captured_pieces() const
         {
-                return initial_targets_ ^ remaining_targets_;
+                return set_symmetric_difference(initial_targets_, remaining_targets_);
         }
 
         template<int Direction>
         static wave::Iterator<Board, Direction> along_wave(Set const& s)
         {
                 return wave::make_iterator<Board, Direction>(s);
+        }
+
+        // contracts
+
+        auto invariant() const
+        {
+                return set_includes(initial_targets_, remaining_targets_);
         }
 
         // representation

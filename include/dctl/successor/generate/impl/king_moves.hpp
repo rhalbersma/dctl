@@ -84,7 +84,7 @@ private:
         {
                 auto const movers = active_kings & *std::prev(along_wave<Direction>(propagate_.path()));
                 boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
-                        return Move{from_sq, *++along_ray<Direction>(from_sq)};
+                        return Move{from_sq, *++along_ray<Direction>(from_sq), Color};
                 }));
         }
 
@@ -93,7 +93,7 @@ private:
         {
                 auto const targets = ray::fill(from, propagate_.path());
                 boost::push_back(moves_, targets | boost::adaptors::transformed([=](auto const& dest_sq) {
-                        return Move{*from, dest_sq};
+                        return Move{*from, dest_sq, Color};
                 }));
         }
 

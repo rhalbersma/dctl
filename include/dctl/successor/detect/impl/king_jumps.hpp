@@ -56,34 +56,34 @@ private:
         template<class Set>
         bool branch_dispatch(Set const& active_kings, rules::directions::all) const
         {
-                return (
+                return
                         branch_dispatch(active_kings, rules::directions::diag()) ||
                         branch_dispatch(active_kings, rules::directions::orth())
-                );
+                ;
         }
 
         // overload for kings that jump in the 4 diagonal directions
         template<class Set>
         bool branch_dispatch(Set const& active_kings, rules::directions::diag) const
         {
-                return (
-                        parallelize< Compass::left_up    >(active_kings) ||
-                        parallelize< Compass::right_up   >(active_kings) ||
-                        parallelize< Compass::left_down  >(active_kings) ||
-                        parallelize< Compass::right_down >(active_kings)
-                );
+                return
+                        parallelize<Compass::left_up   >(active_kings) ||
+                        parallelize<Compass::right_up  >(active_kings) ||
+                        parallelize<Compass::left_down >(active_kings) ||
+                        parallelize<Compass::right_down>(active_kings)
+                ;
         }
 
         // overload for kings that jump in the 4 orthogonal directions
         template<class Set>
         bool branch_dispatch(Set const& active_kings, rules::directions::orth) const
         {
-                return (
-                        parallelize< Compass::left  >(active_kings) ||
-                        parallelize< Compass::right >(active_kings) ||
-                        parallelize< Compass::up    >(active_kings) ||
-                        parallelize< Compass::down  >(active_kings)
-                );
+                return
+                        parallelize<Compass::left >(active_kings) ||
+                        parallelize<Compass::right>(active_kings) ||
+                        parallelize<Compass::up   >(active_kings) ||
+                        parallelize<Compass::down >(active_kings)
+                ;
         }
 
         template<int Direction, class Set>

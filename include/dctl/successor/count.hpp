@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/select/legal.hpp>              // legal
 #include <dctl/successor/count/specializations.hpp>     // count
-#include <dctl/position/side.hpp>                       // black, white
+#include <dctl/position/color.hpp>                       // black, white
 #include <dctl/pieces/pieces.hpp>                       // piece, king, pawn
 
 namespace dctl {
@@ -16,9 +16,9 @@ auto count(Position const& p)
 template<class Pieces, class Select, class Position>
 auto count(Position const& p)
 {
-        return (p.to_move() == Side::black) ?
-                count<Side::black, Pieces, Select>(p) :
-                count<Side::white, Pieces, Select>(p)
+        return (p.active_color() == Color::black) ?
+                count<Color::black, Pieces, Select>(p) :
+                count<Color::white, Pieces, Select>(p)
         ;
 }
 
