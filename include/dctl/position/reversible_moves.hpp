@@ -13,7 +13,7 @@ public:
 
         explicit ReversibleMoves(int n) noexcept
         :
-                num_ply_{n}
+                ply_{n}
         {
                 assert(invariant());
         }
@@ -25,10 +25,10 @@ public:
         {
                 if (m.is_reversible()) {
                         assert(!full());
-                        ++num_ply_;
+                        ++ply_;
                         assert(!empty());
                 } else {
-                        num_ply_ = 0;
+                        ply_ = 0;
                         assert(empty());
                 }
         }
@@ -37,7 +37,7 @@ public:
 
         /* implicit */ operator int() const noexcept
         {
-                return num_ply_;
+                return ply_;
         }
 
 private:
@@ -45,22 +45,22 @@ private:
 
         bool invariant() const
         {
-                return 0 <= num_ply_ && num_ply_ <= std::numeric_limits<int>::max();
+                return 0 <= ply_ && ply_ <= std::numeric_limits<int>::max();
         }
 
         bool empty() const
         {
-                return 0 == num_ply_;
+                return 0 == ply_;
         }
 
         bool full() const
         {
-                return num_ply_ == std::numeric_limits<int>::max();
+                return ply_ == std::numeric_limits<int>::max();
         }
 
         // representation
 
-        int num_ply_{};
+        int ply_{};
 };
 
 }       // namespace dctl

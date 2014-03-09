@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/board/mask.hpp>
 #include <dctl/egdb/binomial.hpp>               // Binomial
 #include <dctl/utility/make_const_callable.hpp> // make_const_callable
 #include <boost/range/adaptor/reversed.hpp>     // reversed
@@ -10,6 +11,7 @@
 #include <boost/range/irange.hpp>               // irange
 #include <boost/range/numeric.hpp>              // accumulate
 #include <cassert>                              // assert
+#include <tuple>
 #include <utility>                              // pair
 
 namespace dctl {
@@ -18,19 +20,19 @@ namespace egdb {
 // input: an index in the range [0, choose(N, K))
 // output: a strictly decreasing range { sq_K, ..., sq_1 }
 // with all elements in the range [0, N)
-template<class Index, class Generator = Binomial<>>
-auto colex_combination_unrank(std::pair<int /* N */, int /* K */> const& combination, Index index, Generator const& = Generator{})
+template<class Index, class Binomial = BinomialTable<>>
+auto colex_combination_unrank(std::pair<int /* N */, int /* K */> const& combination, Index index, Binomial const& = Binomial{})
 {
         assert(0 <= combination.second && combination.second <= combination.first);
-        assert(0 <= index && index < Generator::coefficient(combination.first, combination.second));
+        assert(0 <= index && index < Binomial::coefficient(combination.first, combination.second));
         return boost::irange(1, combination.second + 1)
                 | boost::adaptors::reversed
                 | boost::adaptors::transformed(util::make_const_callable(
                         [index = index, sq = combination.first](auto i) mutable {
                         sq = *boost::find_if(boost::irange(0, sq) | boost::adaptors::reversed, [&](auto n) {
-                                return Generator::coefficient(n, i) <= index;
+                                return Binomial::coefficient(n, i) <= index;
                         });
-                        index -= Generator::coefficient(sq, i);
+                        index -= Binomial::coefficient(sq, i);
                         return sq;
                 }))
         ;
@@ -69,25 +71,15 @@ auto rank_removed(Range const& pat)
 // input: a strictly increasing range { sq_1, ..., sq_K }
 // with all elements in the range [0, N)
 // output: an index in the range [0, choose(N, K))
-template<class Range, class Generator = Binomial<>>
-auto colex_combination_rank(Range const& src, Generator const& = Generator{})
+template<class Range, class Binomial = BinomialTable<>>
+auto colex_combination_rank(Range const& src, Binomial const& = Binomial{})
 {
         BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
-        using Index = typename Generator::value_type;
+        using Index = typename Binomial::value_type;
         return boost::accumulate(
                 src, Index{0}, [i = 1](auto index, auto sq) mutable {
-                return index + Generator::coefficient(sq, i++);
+                return index + Binomial::coefficient(sq, i++);
         });
-}
-
-template<class Position, class Generator = Binomial<>>
-auto index_from_position(Position const& p, Generator const& = Generator{})
-{
-        return p;
-/*
-        bk_index = colex_combination_rank(bk | mixed_out(gh), bin);
-        wk_index = colex_combination_rank(wk | mixed_out(gh | bk), bin);
-*/
 }
 
 }       // namespace egdb

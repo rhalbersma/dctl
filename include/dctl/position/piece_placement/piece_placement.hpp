@@ -24,6 +24,14 @@ public:
                 assert(invariant());
         }
 
+        PiecePlacement(Set black_pawns, Set black_kings, Set white_pawns, Set white_kings)
+        :
+                pieces_{set_union(black_pawns, black_kings), set_union(white_pawns, white_kings)},
+                kings_{set_union(black_kings, white_kings)}
+        {
+                assert(invariant());
+        }
+
         // modifiers
 
         template<class Move, class Index>

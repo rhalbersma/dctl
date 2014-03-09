@@ -2,6 +2,7 @@
 #include <type_traits>                          // is_base_of
 
 namespace dctl {
+namespace util {
 
 template<class Derived>
 class enable_down_cast
@@ -32,4 +33,5 @@ protected:
         ~enable_down_cast() = default;
 };
 
+}       // namespace util
 }       // namespace dctl

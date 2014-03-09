@@ -60,7 +60,7 @@ add_definitions(-D BOOST_TEST_MAIN)
 ###############################################################
 
 # locate the project under test
-set(ParentProject_include_dirs ${PROJECT_SOURCE_DIR}/../include)
+set(ParentProject_include_dirs /usr/lib/clang/3.5/include ${PROJECT_SOURCE_DIR}/../include)
 
 # find the parent project headers
 file(GLOB_RECURSE ParentProject_headers ${ParentProject_include_dirs}/*.hpp)
