@@ -10,9 +10,9 @@ public:
 
         ActiveColor() = default;
 
-        explicit ActiveColor(bool active_color) noexcept
+        explicit ActiveColor(bool color) noexcept
         :
-                active_color_{active_color}
+                color_{color}
         {}
 
         // modifiers
@@ -20,7 +20,7 @@ public:
         template<class Move, class  Index>
         void make(Move const&, Index& hash) noexcept
         {
-                active_color_ ^= pass;
+                color_ ^= pass;
                 hash ^= random::ActiveColor<>::table_[pass];
         }
 
@@ -28,14 +28,14 @@ public:
 
         /* implicit */ operator bool() const noexcept
         {
-                return active_color_;
+                return color_;
         }
 
 private:
         // representation
 
         enum { pass = true };
-        bool active_color_{};
+        bool color_{};
 };
 
 inline

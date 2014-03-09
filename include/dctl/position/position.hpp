@@ -31,9 +31,21 @@ public:
         static const auto gap = rules::initial_gap<Rules>::value + Board::height % 2;
 
         // initialize with a set of bitboards and a color
-        Position(Set black_pieces, Set white_pieces, Set kings, bool side_to_move)
+        Position(Set const& black_pieces, Set const& white_pieces, Set const& kings, bool side_to_move)
         :
                 piece_placement_{black_pieces, white_pieces, kings},
+                active_color_{side_to_move}
+        {
+                hash_ = init_hash(*this);
+        }
+
+        Position(
+                Set const& black_pawns, Set const& black_kings,
+                Set const& white_pawns, Set const& white_kings,
+                bool side_to_move
+        )
+        :
+                piece_placement_{black_pawns, black_kings, white_pawns, white_kings},
                 active_color_{side_to_move}
         {
                 hash_ = init_hash(*this);

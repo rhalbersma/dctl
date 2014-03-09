@@ -13,7 +13,7 @@ template
         int MaxPieces = 192,
         class T = std::ptrdiff_t
 >
-class Binomial
+class BinomialTable
 {
 public:
         using value_type = T;
@@ -103,8 +103,8 @@ public:
 };
 
 template<int N, int K, class T>
-constexpr typename Binomial<N, K, T>::table_type
-Binomial<N, K, T>::table;
+constexpr typename BinomialTable<N, K, T>::table_type
+BinomialTable<N, K, T>::table;
 
 }       // namespace egdb
 }       // namespace dctl
