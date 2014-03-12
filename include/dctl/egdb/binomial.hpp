@@ -1,22 +1,26 @@
 #pragma once
+#include <dctl/bit/set.hpp>             // Set
 #include <dctl/utility/make_array.hpp>  // make_array
 #include <array>                        // array
 #include <cassert>                      // assert
 #include <cstddef>                      // ptrdiff_t, size_t
+#include <cstdint>                      // uint64_t
 
 namespace dctl {
 namespace egdb {
 
 template
 <
-        int BoardSize = 384,
-        int MaxPieces = 192,
-        class T = std::ptrdiff_t
+        int BoardSize = 64,
+        int MaxPieces = 32,
+        class Range = bit::Set<int, uint64_t, BoardSize / 64>,
+        class Index = std::ptrdiff_t
 >
 class BinomialTable
 {
 public:
-        using value_type = T;
+        using range_type = Range;
+        using index_type = Index;
 
 private:
         static constexpr auto MaxN = 384;
@@ -25,10 +29,10 @@ private:
         static constexpr auto MaxK = (N + 1) / 2;
         static constexpr auto K = (MaxPieces < MaxK) ? MaxPieces : MaxK;
 
-        using row_type = std::array<value_type, 1 + K>;
+        using row_type = std::array<index_type, 1 + K>;
         using table_type = std::array<row_type, 1 + N>;
 
-        static constexpr value_type choose(int n, int k) noexcept
+        static constexpr index_type choose(int n, int k) noexcept
         {
                 if (n - k < k)  k = n - k;      // choose the smallest
                 if (k < 0)      return 0;       // by symmetry, covers n < k
@@ -90,7 +94,7 @@ private:
         static constexpr table_type table = make_array<1 + N>(init);
 
 public:
-        static value_type coefficient(int n, int k)
+        static index_type coefficient(int n, int k)
         {
                 assert(0 <= n && 0 <= k);
 
@@ -102,9 +106,9 @@ public:
         }
 };
 
-template<int N, int K, class T>
-constexpr typename BinomialTable<N, K, T>::table_type
-BinomialTable<N, K, T>::table;
+template<int N, int K, class R, class T>
+constexpr typename BinomialTable<N, K, R, T>::table_type
+BinomialTable<N, K, R, T>::table;
 
 }       // namespace egdb
 }       // namespace dctl
