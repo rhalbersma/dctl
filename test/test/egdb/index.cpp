@@ -34,25 +34,25 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetRank, T, SetTypes)
         constexpr auto N = T{}.max_size();
         constexpr auto e = T{ N - 2, N - 1 };
 
-        BOOST_CHECK_EQUAL(colex_combination_rank(b), 0);
-        BOOST_CHECK_EQUAL(colex_combination_rank(e), (BinomialTable<N, 10>::coefficient(N, e.size())) - 1);
+        BOOST_CHECK_EQUAL(colex::combination_rank(b), 0);
+        BOOST_CHECK_EQUAL(colex::combination_rank(e), (BinomialTable<N, 10>::coefficient(N, e.size())) - 1);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetUnRank, T, SetTypes)
 {
-        using Binomial = BinomialTable<384, 192>;
-        auto N = 50; auto K = 7;
-
-        auto b = std::ptrdiff_t{0};
-        auto e = Binomial::coefficient(N, K);
+        using Binomial = BinomialTable<>;
+        auto const N = 50;
+        auto const K = 2;
+        auto const b = std::ptrdiff_t{0};
+        auto const e = Binomial::coefficient(N, K);
 
         using Board = board::International;
-        auto const pattern = ~board::Squares<Board>::mask();
+        auto const ghosts = ~board::Squares<Board>::mask();
 
         for (auto i : boost::irange(b, e)) {
-                T pos = colex_combination_unrank({N, K}, i);
-                auto ipos = pos | rank_inserted(pattern);
-                auto const idx = colex_combination_rank(ipos | rank_removed(pattern));
+                auto const pos = colex::combination_unrank({N, K}, i) | obstr::inserted(ghosts);
+                std::cout << i << ": "; for (auto sq : pos) std::cout << sq << ","; std::cout << "\n";
+                auto const idx = colex::combination_rank(pos | obstr::removed(ghosts));
                 BOOST_CHECK_EQUAL(idx, i);
         }
 }
