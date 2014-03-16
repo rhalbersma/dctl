@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetUnRank, T, SetTypes)
 {
         using Binomial = BinomialTable<>;
         auto const N = 50;
-        auto const K = 2;
+        auto const K = 7;
         auto const b = std::ptrdiff_t{0};
         auto const e = Binomial::coefficient(N, K);
 
@@ -50,9 +50,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetUnRank, T, SetTypes)
         auto const ghosts = ~board::Squares<Board>::mask();
 
         for (auto i : boost::irange(b, e)) {
-                auto const pos = colex::combination_unrank({N, K}, i) | obstr::inserted(ghosts);
-                std::cout << i << ": "; for (auto sq : pos) std::cout << sq << ","; std::cout << "\n";
-                auto const idx = colex::combination_rank(pos | obstr::removed(ghosts));
+                auto const pos = colex::combination_unrank({N, K}, i);
+                auto const log = obstr::back_inserted(pos, ghosts);
+                //std::cout << i << ": "; for (auto sq : pos) std::cout << sq << ","; std::cout << "\n";
+                // generate successors etc.
+
+                auto const rev = obstr::back_erased(log, ghosts);
+                auto const idx = colex::combination_rank(rev);
                 BOOST_CHECK_EQUAL(idx, i);
         }
 }

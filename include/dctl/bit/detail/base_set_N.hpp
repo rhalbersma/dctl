@@ -260,7 +260,7 @@ struct BaseSet
 
         // representation
 
-        Block data_[Nb] {};
+        Block data_[Nb]{};
 };
 
 }       // namespace detail
