@@ -23,19 +23,21 @@ auto combination_unrank(std::pair<int /* N */, int /* K */> const& combination, 
         assert(0 <= combination.second && combination.second <= combination.first);
         assert(0 <= index && index < Binomial::coefficient(combination.first, combination.second));
         using Range = typename Binomial::range_type;
-        return Range
+        auto const dst = Range
         {
                   boost::irange(1, combination.second + 1)
                 | boost::adaptors::reversed
                 | boost::adaptors::transformed(util::make_const_callable(
-                        [index = index, sq = combination.first](auto i) mutable {
-                        sq = *boost::find_if(boost::irange(0, sq) | boost::adaptors::reversed, [&](auto n) {
-                                return Binomial::coefficient(n, i) <= index;
+                        [index = index, N = combination.first](auto i) mutable {
+                        auto const sq_i = N = *boost::find_if(boost::irange(0, N) | boost::adaptors::reversed, [&](auto sq) {
+                                return Binomial::coefficient(sq, i) <= index;
                         });
-                        index -= Binomial::coefficient(sq, i);
-                        return sq;
+                        index -= Binomial::coefficient(sq_i, i);
+                        return sq_i;
                 }))
         };
+        assert(0 <= *begin(dst) && *rbegin(dst) < combination.first);
+        return dst;
 }
 
 // input: a strictly increasing range { sq_1, ..., sq_K }
@@ -46,10 +48,12 @@ auto combination_rank(Range const& src, Binomial const& = Binomial{})
 {
         BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
         using Index = typename Binomial::index_type;
-        return boost::accumulate(
-                src, Index{0}, [i = 1](auto index, auto sq) mutable {
-                return index + Binomial::coefficient(sq, i++);
+        auto const index = boost::accumulate(
+                src, Index{0}, [i = 1](auto result, auto sq_i) mutable {
+                return result + Binomial::coefficient(sq_i, i++);
         });
+        assert(0 <= index && index < Binomial::coefficient(*rbegin(src) + 1, src.count()));
+        return index;
 }
 
 }       // namespace colex
