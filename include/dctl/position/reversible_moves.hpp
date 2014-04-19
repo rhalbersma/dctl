@@ -1,6 +1,6 @@
 #pragma once
 #include <cassert>                      // assert
-#include <climits>                      // max
+#include <limits>                       // max
 
 namespace dctl {
 
