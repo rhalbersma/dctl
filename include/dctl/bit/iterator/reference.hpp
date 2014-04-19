@@ -16,7 +16,7 @@ public:
         ConstReference() = delete;
 
         // references can be copied
-        ConstReference(ConstReference const&) = default;
+        constexpr ConstReference(ConstReference const&) = default;
 
         template<class U>
         constexpr ConstReference(Block const& b, U const& value) noexcept
