@@ -6,7 +6,8 @@ namespace dctl {
 
 enum { algebraic = 1, numeric = 2 };
 
-namespace trait {
+namespace move {
+namespace traits {
 
 template<class Rules, class Board>
 struct notation
@@ -56,5 +57,6 @@ struct notation<rules::Thai, board::Checkers>
         std::integral_constant<int, numeric>
 {};
 
-}       // namespace trait
+}       // namespace traits
+}       // namespace move
 }       // namespace dctl

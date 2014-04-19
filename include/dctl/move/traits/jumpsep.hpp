@@ -3,7 +3,8 @@
 #include <dctl/rules/variants.hpp>      // Czech, Russian, Thai
 
 namespace dctl {
-namespace trait {
+namespace move {
+namespace traits {
 
 template<class Rules>
 struct jumpsep
@@ -29,5 +30,6 @@ struct jumpsep<rules::Thai>
         std::integral_constant<char, '-'>
 {};
 
-}       // namespace trait
+}       // namespace traits
+}       // namespace move
 }       // namespace dctl

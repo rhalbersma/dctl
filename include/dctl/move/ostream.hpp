@@ -4,17 +4,17 @@
 #include <sstream>                      // stringstream
 #include <dctl/move/move.hpp>           // Move
 #include <dctl/move/manip.hpp>          // notation, pushsep, jumpsep
-#include <dctl/move/trait.hpp>          // notation, pushsep, jumpsep
+#include <dctl/move/traits.hpp>         // notation, pushsep, jumpsep
 
 namespace dctl {
 namespace move {
 
 template<class Rules, class Board>
-auto getnotation(std::ostream& ostr)
+auto getformat(std::ostream& ostr)
 {
         auto index = ostr.iword(manip::notation());
         if (!index)
-                index = trait::notation<Rules, Board>::value;
+                index = traits::notation<Rules, Board>::value;
         return index;
 }
 
@@ -23,7 +23,7 @@ auto getpushsep(std::ostream& ostr)
 {
         auto index = static_cast<char>(ostr.iword(manip::pushsep()));
         if (!index)
-                index = trait::pushsep<Rules>::value;
+                index = traits::pushsep<Rules>::value;
         return index;
 }
 
@@ -32,7 +32,7 @@ auto getjumpsep(std::ostream& ostr)
 {
         auto index = static_cast<char>(ostr.iword(manip::jumpsep()));
         if (!index)
-                index = trait::jumpsep<Rules>::value;
+                index = traits::jumpsep<Rules>::value;
         return index;
 }
 
@@ -79,7 +79,7 @@ auto str_numeric(Move const& m)
 template<class CharT, class Traits, class Rules, class Board>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, Move<Rules, Board> const& m)
 {
-        switch(move::getnotation<Rules, Board>(ostr)) {
+        switch(move::getformat<Rules, Board>(ostr)) {
         case algebraic:
                 return move::print_algebraic(ostr, m);
         case numeric:

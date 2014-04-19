@@ -22,9 +22,9 @@ public:
 
         template<class CharT, class Traits>
         friend auto&
-        operator<<(std::basic_ostream<CharT, Traits>& ostr, setnotation const& n)
+        operator<<(std::basic_ostream<CharT, Traits>& ostr, setnotation const& m)
         {
-                ostr.iword(manip::notation()) = n.flag_;
+                ostr.iword(manip::notation()) = m.flag_;
                 return ostr;
         }
 

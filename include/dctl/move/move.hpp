@@ -89,7 +89,7 @@ public:
                 return dest_;
         }
 
-        constexpr auto active_color() const
+        constexpr auto active_color() const noexcept
         {
                 return active_color_;
         }
