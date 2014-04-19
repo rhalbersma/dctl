@@ -6,6 +6,7 @@
 #include <dctl/grid/coordinates/square.hpp>             // Square with Upper Left Origin
 #include <dctl/grid/coordinates/xy.hpp>                 // get_x, get_y
 #include <dctl/grid/coordinates/detail/transform.hpp>   // swap_llo_ulo, sco_from_ulo, ulo_from_sco
+#include <stdexcept>                                    // invalid_argument
 
 namespace dctl {
 namespace grid {
