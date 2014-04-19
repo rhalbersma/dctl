@@ -84,8 +84,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetMultiple, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetIntersection, T, SetTypes)
 {
-        constexpr auto a = T { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
-        constexpr auto b = T { 0, 1, 3, T{}.max_size() - 4, T{}.max_size() - 3 };
+        constexpr auto a = T { 0, 1, 2, T::max_size() - 2, T::max_size() - 1 };
+        constexpr auto b = T { 0, 1, 3, T::max_size() - 4, T::max_size() - 3 };
 
         auto const i_ab = set_intersection(a, b);
         auto const i_ba = set_intersection(b, a);
@@ -97,8 +97,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetIntersection, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetUnion, T, SetTypes)
 {
-        constexpr auto a = T { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
-        constexpr auto b = T { 0, 1, 3, T{}.max_size() - 4, T{}.max_size() - 3 };
+        constexpr auto a = T { 0, 1, 2, T::max_size() - 2, T::max_size() - 1 };
+        constexpr auto b = T { 0, 1, 3, T::max_size() - 4, T::max_size() - 3 };
 
         auto const u_ab = set_union(a, b);
         auto const u_ba = set_union(b, a);
@@ -110,8 +110,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetUnion, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetSymmetricDifference, T, SetTypes)
 {
-        constexpr auto a = T { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
-        constexpr auto b = T { 0, 1, 3, T{}.max_size() - 4, T{}.max_size() - 3 };
+        constexpr auto a = T { 0, 1, 2, T::max_size() - 2, T::max_size() - 1 };
+        constexpr auto b = T { 0, 1, 3, T::max_size() - 4, T::max_size() - 3 };
 
         auto const s_ab = set_symmetric_difference(a, b);
         auto const s_ba = set_symmetric_difference(b, a);
@@ -126,8 +126,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetSymmetricDifference, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetDifference, T, SetTypes)
 {
-        constexpr auto a = T { 0, 1, 2, T{}.max_size() - 2, T{}.max_size() - 1 };
-        constexpr auto b = T { 0, 1, 3, T{}.max_size() - 4, T{}.max_size() - 3 };
+        constexpr auto a = T { 0, 1, 2, T::max_size() - 2, T::max_size() - 1 };
+        constexpr auto b = T { 0, 1, 3, T::max_size() - 4, T::max_size() - 3 };
 
         auto const d_ab = set_difference(a, b);
         auto const d_ba = set_difference(b, a);
