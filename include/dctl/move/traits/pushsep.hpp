@@ -2,7 +2,8 @@
 #include <type_traits>                  // integral_constant
 
 namespace dctl {
-namespace trait {
+namespace move {
+namespace traits {
 
 template<class Rules>
 struct pushsep
@@ -10,5 +11,6 @@ struct pushsep
         std::integral_constant<char, '-'>
 {};
 
-}       // namespace trait
+}       // namespace traits
+}       // namespace move
 }       // namespace dctl

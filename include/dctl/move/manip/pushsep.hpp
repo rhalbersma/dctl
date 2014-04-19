@@ -21,9 +21,9 @@ public:
 
         template<class CharT, class Traits>
         friend auto&
-        operator<<(std::basic_ostream<CharT, Traits>& ostr, setpushsep const& p)
+        operator<<(std::basic_ostream<CharT, Traits>& ostr, setpushsep const& m)
         {
-                ostr.iword(manip::pushsep()) = static_cast<int>(p.flag_);
+                ostr.iword(manip::pushsep()) = static_cast<int>(m.flag_);
                 return ostr;
         }
 
