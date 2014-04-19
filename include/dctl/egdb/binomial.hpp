@@ -96,7 +96,7 @@ private:
 public:
         static index_type coefficient(int n, int k)
         {
-                assert(0 <= n && 0 <= k);
+                assert(0 <= n);
 
                 if (n - k < k)          k = n - k;
                 if (k < 0)              return 0;
