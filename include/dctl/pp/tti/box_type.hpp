@@ -1,8 +1,8 @@
 #pragma once
 
-#define DCTL_PP_DEFINE_GET_TYPE(U)      \
+#define DCTL_PP_TTI_BOX_TYPE(U)         \
 template<class T>                       \
-struct get_type_ ## U                   \
+struct box_type_ ## U                   \
 {                                       \
         using type = typename T::U;     \
 };
