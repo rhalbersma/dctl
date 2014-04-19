@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/utility/make_const_callable.hpp> // make_const_callable
+#include <boost/range/adaptor/reversed.hpp>     // reversed
 #include <boost/range/adaptor/transformed.hpp>  // transformed
 #include <boost/range/begin.hpp>                // begin
 #include <boost/range/concepts.hpp>             // BOOST_CONCEPT_ASSERT, SinglePassRangeConcept
@@ -14,7 +15,7 @@ template<class Range>
 auto mirrored()
 {
         return boost::adaptors::transformed([](auto value) {
-                return Range{}.max_size() - 1 - value;
+                return Range::max_size() - 1 - value;
         });
 }
 
