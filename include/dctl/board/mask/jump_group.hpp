@@ -1,7 +1,8 @@
 #pragma once
 #include <dctl/angle/detail/abs_remainder.hpp>
-#include <dctl/board/mask/copy_if.hpp>  // copy_if
+#include <dctl/board/mask/copy_if.hpp>          // copy_if
 #include <dctl/grid/coordinates.hpp>
+#include <array>                                // array
 
 namespace dctl {
 namespace board {
