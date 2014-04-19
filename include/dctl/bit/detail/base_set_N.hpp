@@ -192,11 +192,11 @@ struct BaseSet
 
         auto do_includes(BaseSet const& other) const noexcept
         {
-                return std::none_of(
+                return std::all_of(
                        boost::make_zip_iterator(boost::make_tuple(std::begin(data_), std::begin(other.data_))),
                        boost::make_zip_iterator(boost::make_tuple(std::end(data_), std::end(other.data_))),
                        [](auto const& t) {
-                       return (~t.template get<0>() & t.template get<1>()) != Block{0};
+                       return (~t.template get<0>() & t.template get<1>()) == Block{0};
                 });
         }
 

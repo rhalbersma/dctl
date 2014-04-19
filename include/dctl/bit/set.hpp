@@ -148,7 +148,7 @@ public:
                 return this->do_count();
         }
 
-        constexpr auto max_size() const noexcept
+        static constexpr auto max_size() noexcept
         {
                 return N;
         }
