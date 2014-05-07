@@ -10,7 +10,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsThai)
 
-typedef Thai T;
+using T = Thai;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {

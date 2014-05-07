@@ -10,7 +10,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsHHoogland)
 
-typedef HHoogland T;
+using T = HHoogland;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {

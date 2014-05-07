@@ -10,7 +10,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsPool)
 
-typedef Pool T;
+using T = Pool;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {
