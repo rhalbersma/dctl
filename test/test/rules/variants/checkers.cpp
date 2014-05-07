@@ -10,7 +10,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsCheckers)
 
-typedef Checkers T;
+using T = Checkers;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {

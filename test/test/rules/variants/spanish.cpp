@@ -10,7 +10,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsSpanish)
 
-typedef Spanish T;
+using T = Spanish;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {

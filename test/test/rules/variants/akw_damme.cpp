@@ -10,7 +10,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsAKWDamme)
 
-typedef AKWDamme T;
+using T = AKWDamme;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {

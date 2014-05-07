@@ -16,9 +16,9 @@ namespace rules {
 BOOST_AUTO_TEST_SUITE(RulesVariantsInternational)
 
 // rules variants derived from international draughts
-typedef boost::mpl::vector<
+using VariantsDerivedFromInternational = boost::mpl::vector<
         AKWDamme, International, HHoogland, Killer
-> VariantsDerivedFromInternational;
+>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Traits, T, VariantsDerivedFromInternational)
 {

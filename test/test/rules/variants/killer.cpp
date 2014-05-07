@@ -10,7 +10,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsKiller)
 
-typedef Killer T;
+using T = Killer;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {

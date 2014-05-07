@@ -10,7 +10,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsRussian)
 
-typedef Russian T;
+using T = Russian;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {
