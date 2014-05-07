@@ -20,7 +20,7 @@ struct Russian
         typedef precedence::none precedence_jump;                       // 1.5.14
 
         // additional rules
-        typedef phase::en_passant phase_promotion;                      // 1.5.15
+        using promotion_phase = en_passant;                             // 1.5.15
 };
 
 }       // namespace rules

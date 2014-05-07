@@ -1,8 +1,8 @@
 #pragma once
-#include <type_traits>                  // false_type
+#include <dctl/pp/tti/box_type.hpp>     // DCTL_PP_TTI_BOX_TYPE
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/tti/has_type.hpp>       // BOOST_TTI_HAS_TYPE
-#include <dctl/pp/tti/box_type.hpp>     // DCTL_PP_TTI_BOX_TYPE
+#include <type_traits>                  // false_type
 
 namespace dctl {
 namespace rules {

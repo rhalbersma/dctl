@@ -177,19 +177,19 @@ private:
         bool is_finished(Iterator jumper) const
         {
                 // tag dispatching on promotion condition
-                return !promotion_dispatch(jumper, rules::phase::promotion<Rules>{});
+                return !promotion_dispatch(jumper, rules::promotion_phase_t<Rules>{});
         }
 
         // overload for pawns that promote apres-fini
         template<class Iterator>
-        bool promotion_dispatch(Iterator jumper, rules::phase::apres_fini) const
+        bool promotion_dispatch(Iterator jumper, rules::apres_fini) const
         {
                 return find_next(jumper);
         }
 
         // overload for pawns that promote en-passant
         template<class Iterator>
-        bool promotion_dispatch(Iterator jumper, rules::phase::en_passant) const
+        bool promotion_dispatch(Iterator jumper, rules::en_passant) const
         {
                 return
                         is_promotion(*jumper) ?

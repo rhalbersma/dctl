@@ -5,10 +5,10 @@
 namespace dctl {
 namespace rules {
 
-BOOST_TTI_TRAIT_MEMBER_TYPE(promotion_phase, promotion_phase)
+BOOST_TTI_TRAIT_MEMBER_TYPE(jump_removal_phase, jump_removal_phase)
 
 template<class Rules, class Default = apres_fini>
-using promotion_phase_t = typename promotion_phase<Rules, Default>::type;
+using jump_removal_phase_t = typename jump_removal_phase<Rules, Default>::type;
 
 }       // namespace rules
 }       // namespace dctl

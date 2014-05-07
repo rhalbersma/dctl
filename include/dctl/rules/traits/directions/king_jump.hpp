@@ -1,9 +1,9 @@
 #pragma once
-#include <type_traits>                                          // is_same
-#include <boost/mpl/eval_if.hpp>                                // eval_if
 #include <dctl/rules/traits/orthogonality/king_jump.hpp>        // king_jump
 #include <dctl/rules/types/directions.hpp>                      // diag, all
 #include <dctl/rules/types/orthogonality.hpp>                   // none
+#include <boost/mpl/eval_if.hpp>                                // eval_if
+#include <type_traits>                                          // is_same
 
 namespace dctl {
 namespace rules {

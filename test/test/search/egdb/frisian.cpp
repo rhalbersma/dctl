@@ -14,7 +14,7 @@ BOOST_FIXTURE_TEST_CASE(Walinga, F)
 {
         Test const tests[] =
         {
-                { "W:WK46,28:BK43", 39 },       // Walinga book
+                { "W:WK46,28:BK43", 41 },       // Walinga book
         };
         run(tests);
 }

@@ -26,7 +26,7 @@ struct Italian
         template<class _>
         struct can_jump<pieces::pawn, pieces::king, _>: std::false_type {};     // 5.3(b)
 
-        typedef std::true_type precedence_is_relative_king;                     // 6.7
+        using is_relative_king_jump_precedence = std::true_type;                // 6.7
 
         // drawing rules
         typedef std::integral_constant<int,  4> max_repetitions;                // 9.3(b1)
