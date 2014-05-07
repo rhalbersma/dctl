@@ -1,8 +1,8 @@
 #pragma once
-#include <type_traits>                                  // integral_constant, is_same
-#include <boost/mpl/logical.hpp>                        // not_
 #include <dctl/rules/traits/precedence/jump.hpp>        // precedence_jump
 #include <dctl/rules/types.hpp>
+#include <boost/mpl/logical.hpp>                        // not_
+#include <type_traits>                                  // integral_constant, is_same
 
 namespace dctl {
 namespace rules {

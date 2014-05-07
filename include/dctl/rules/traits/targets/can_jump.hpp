@@ -1,8 +1,8 @@
 #pragma once
-#include <type_traits>                  // true_type
-#include <boost/mpl/eval_if.hpp>        // eval_if
 #include <dctl/pp/tti/has_template.hpp> // DCTL_PP_TTI_HAS_TEMPLATE
 #include <dctl/pp/tti/box_template.hpp> // DCTL_PP_TTI_BOX_TEMPLATE
+#include <boost/mpl/eval_if.hpp>        // eval_if
+#include <type_traits>                  // true_type
 
 namespace dctl {
 namespace rules {

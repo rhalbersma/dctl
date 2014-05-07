@@ -1,26 +1,14 @@
 #pragma once
+#include <boost/tti/member_type.hpp>    // BOOST_TTI_TRAIT_MEMBER_TYPE
 #include <type_traits>                  // false_type
-#include <boost/mpl/eval_if.hpp>        // eval_if
-#include <boost/tti/has_type.hpp>       // BOOST_TTI_HAS_TYPE
-#include <dctl/pp/tti/box_type.hpp>     // DCTL_PP_TTI_BOX_TYPE
 
 namespace dctl {
 namespace rules {
-namespace precedence {
 
-BOOST_TTI_HAS_TYPE(precedence_is_absolute_king)
-DCTL_PP_TTI_BOX_TYPE(precedence_is_absolute_king)
+BOOST_TTI_TRAIT_MEMBER_TYPE(is_absolute_king_jump_precedence, is_absolute_king_jump_precedence)
 
-template<class Rules>
-struct is_absolute_king
-:
-        boost::mpl::eval_if<
-                has_type_precedence_is_absolute_king<Rules>,
-                box_type_precedence_is_absolute_king<Rules>,
-                std::false_type
-        >::type
-{};
+template<class Rules, class Default = std::false_type>
+using is_absolute_king_jump_precedence_t = typename is_absolute_king_jump_precedence<Rules, Default>::type;
 
-}       // namespace precedence
 }       // namespace rules
 }       // namespace dctl

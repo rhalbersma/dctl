@@ -1,11 +1,11 @@
 #pragma once
-#include <type_traits>                                  // is_same
-#include <boost/mpl/eval_if.hpp>                        // eval_if
-#include <boost/tti/has_type.hpp>                       // BOOST_TTI_HAS_TYPE
 #include <dctl/pp/tti/box_type.hpp>                     // DCTL_PP_TTI_BOX_TYPE
 #include <dctl/rules/traits/directions/pawn_jump.hpp>   // pawn_jump
 #include <dctl/rules/types/orthogonality.hpp>           // absolute, none
 #include <dctl/rules/types/directions.hpp>              // all
+#include <boost/mpl/eval_if.hpp>                        // eval_if
+#include <boost/tti/has_type.hpp>                       // BOOST_TTI_HAS_TYPE
+#include <type_traits>                                  // is_same
 
 namespace dctl {
 namespace rules {

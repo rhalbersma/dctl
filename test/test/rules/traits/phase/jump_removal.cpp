@@ -1,4 +1,4 @@
-#include <dctl/rules/traits/phase/promotion.hpp>        // promotion
+#include <dctl/rules/traits/phase/jump_removal.hpp>     // jump_removal
 #include <dctl/rules/types/phase.hpp>                   // apres_fini, en_passant
 #include <dctl/rules/variants.hpp>
 #include <boost/mpl/assert.hpp>                         // BOOST_MPL_ASSERT
@@ -10,24 +10,24 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(RulesTraitsPhasePromotion)
+BOOST_AUTO_TEST_SUITE(RulesTraitsPhaseJumpRemoval)
 
 using VariantsEnPassant = boost::mpl::vector<
-        Russian
+        Thai
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(PromotionPhaseIsEnPassant, Rules, VariantsEnPassant)
+BOOST_AUTO_TEST_CASE_TEMPLATE(JumpRemovalPhaseIsEnPassant, Rules, VariantsEnPassant)
 {
-        BOOST_MPL_ASSERT((std::is_same<promotion_phase_t<Rules>, en_passant>));
+        BOOST_MPL_ASSERT((std::is_same<jump_removal_phase_t<Rules>, en_passant>));
 }
 
 using VariantsApresFini = boost::mpl::vector<
-        AKWDamme, Checkers, Czech, Frisian, HHoogland, International, Italian, Killer, Pool, Spanish, Thai
+        AKWDamme, Checkers, Czech, Frisian, HHoogland, International, Italian, Killer, Pool, Russian, Spanish
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(PromotionPhaseIsApresFini, Rules, VariantsApresFini)
+BOOST_AUTO_TEST_CASE_TEMPLATE(JumpRemovalPhaseIsApresFini, Rules, VariantsApresFini)
 {
-        BOOST_MPL_ASSERT((std::is_same<promotion_phase_t<Rules>, apres_fini>));
+        BOOST_MPL_ASSERT((std::is_same<jump_removal_phase_t<Rules>, apres_fini>));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

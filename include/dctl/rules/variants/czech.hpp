@@ -19,7 +19,7 @@ struct Czech
         using precedence_jump = precedence::none;
 
         // additional rules
-        using precedence_is_absolute_king = std::true_type;
+        using is_absolute_king_jump_precedence = std::true_type;
 };
 
 }       // namespace rules

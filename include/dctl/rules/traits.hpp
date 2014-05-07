@@ -13,7 +13,7 @@
 #include <dctl/rules/traits/targets/can_jump.hpp>
 
 #include <dctl/rules/traits/directions/is_reversal.hpp>
-#include <dctl/rules/traits/phase/capture.hpp>
+#include <dctl/rules/traits/phase/jump_removal.hpp>
 #include <dctl/rules/traits/phase/promotion.hpp>
 #include <dctl/rules/traits/precedence/is_absolute_king.hpp>
 #include <dctl/rules/traits/precedence/is_relative_king.hpp>

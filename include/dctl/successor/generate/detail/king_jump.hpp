@@ -53,7 +53,7 @@ public:
         void operator()(Set const& active_kings) const
         {
                 // tag dispatching on relative king jump precedence
-                select_dispatch(active_kings, rules::precedence::is_relative_king<Rules>{});
+                select_dispatch(active_kings, rules::is_relative_king_jump_precedence_t<Rules>{});
         }
 
         template<class Iterator>
@@ -345,21 +345,21 @@ private:
         void add_jump(Iterator dest_sq, bool check_duplicate) const
         {
                 // tag dispatching on promotion condition
-                promotion_dispatch(dest_sq, rules::phase::promotion<Rules>{});
+                promotion_dispatch(dest_sq, rules::promotion_phase_t<Rules>{});
                 if (check_duplicate && util::is_duplicate_back(moves_))
                         moves_.pop_back();
         }
 
         // overload for pawns that promote apres-fini
         template<class Iterator>
-        void promotion_dispatch(Iterator dest_sq, rules::phase::apres_fini) const
+        void promotion_dispatch(Iterator dest_sq, rules::apres_fini) const
         {
                 capture_.template add_king_jump<Color>(*dest_sq, moves_);
         }
 
         // overload for pawns that promote en-passant
         template<class Iterator>
-        void promotion_dispatch(Iterator dest_sq, rules::phase::en_passant) const
+        void promotion_dispatch(Iterator dest_sq, rules::en_passant) const
         {
                 if (!capture_.is_promotion())
                         capture_.template add_king_jump<Color>(*dest_sq, moves_);

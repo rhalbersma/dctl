@@ -64,21 +64,21 @@ public:
 
         void make(int sq)
         {
-                // tag dispatching on capture removal
-                make_dispatch(sq, rules::phase::capture<Rules>{});
+                // tag dispatching on jump removal
+                make_dispatch(sq, rules::jump_removal_phase_t<Rules>{});
                 assert(invariant());
         }
 
         void undo(int sq)
         {
-                // tag dispatching on capture removal
-                undo_dispatch(sq, rules::phase::capture<Rules>{});
+                // tag dispatching on jump removal
+                undo_dispatch(sq, rules::jump_removal_phase_t<Rules>{});
                 assert(invariant());
         }
 
         void toggle_with_king()
         {
-                static_assert(rules::precedence::is_relative_king<Rules>::value, "");
+                static_assert(rules::is_relative_king_jump_precedence_t<Rules>::value, "");
                 current_.toggle_with_king();
         }
 
@@ -90,7 +90,7 @@ public:
 
         void toggle_promotion()
         {
-                static_assert(std::is_same<typename rules::phase::promotion<Rules>::type, rules::phase::en_passant>::value, "");
+                static_assert(std::is_same<rules::promotion_phase_t<Rules>, rules::en_passant>::value, "");
                 current_.toggle_promotion();
         }
 
@@ -207,21 +207,21 @@ public:
 
         auto is_promotion() const
         {
-                static_assert(std::is_same<typename rules::phase::promotion<Rules>::type, rules::phase::en_passant>::value, "");
+                static_assert(std::is_same<rules::promotion_phase_t<Rules>, rules::en_passant>::value, "");
                 return current_.is_promotion();
         }
 
 private:
         // modifiers
 
-        // overload for apres-fini capture removal
-        void make_dispatch(int sq, rules::phase::apres_fini)
+        // overload for apres-fini jump removal
+        void make_dispatch(int sq, rules::apres_fini)
         {
                 make_impl(sq);
         }
 
-        // overload for en-passant capture removal
-        void make_dispatch(int sq, rules::phase::en_passant)
+        // overload for en-passant jump removal
+        void make_dispatch(int sq, rules::en_passant)
         {
                 not_occupied_.set(sq);
                 make_impl(sq);
@@ -233,14 +233,14 @@ private:
                 increment(is_king(sq));
         }
 
-        // overload for apres-fini capture removal
-        void undo_dispatch(int sq, rules::phase::apres_fini)
+        // overload for apres-fini jump removal
+        void undo_dispatch(int sq, rules::apres_fini)
         {
                 undo_impl(sq);
         }
 
-        // overload for en-passant capture removal
-        void undo_dispatch(int sq, rules::phase::en_passant)
+        // overload for en-passant jump removal
+        void undo_dispatch(int sq, rules::en_passant)
         {
                 undo_impl(sq);
                 not_occupied_.reset(sq);

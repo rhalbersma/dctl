@@ -8,7 +8,7 @@ template<class Grid>
 class Square
 {
 public:
-        // typedefs
+        // nested types
 
         using grid_type = Grid;
 

@@ -1,12 +1,12 @@
 #pragma once
-#include <climits>                      // INT_MAX
-#include <type_traits>                  // integral_constant, is_same, false_type, true_type
+#include <dctl/pp/tti/box_type.hpp>     // DCTL_PP_TTI_BOX_TYPE
+#include <dctl/rules/types.hpp>
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/mpl/logical.hpp>        // and_, not_, or_
 #include <boost/tti/has_type.hpp>       // BOOST_TTI_HAS_TYPE
-#include <dctl/pp/tti/box_type.hpp>     // DCTL_PP_TTI_BOX_TYPE
-#include <dctl/rules/types.hpp>
+#include <climits>                      // INT_MAX
+#include <type_traits>                  // integral_constant, is_same, false_type, true_type
 
 namespace dctl {
 namespace rules {
