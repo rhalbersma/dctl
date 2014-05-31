@@ -15,7 +15,7 @@ struct HHoogland
         International
 {
         // additional rules
-        typedef orthogonality::relative orthogonality_king_jump;
+        using orthogonality_king_jump = orthogonality::relative;
 };
 
 }       // namespace rules

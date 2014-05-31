@@ -51,12 +51,12 @@ public:
         void operator()(Set const& active_kings) const
         {
                 // tag dispatching on king range
-                find_dispatch(active_kings, rules::range::move<Rules>{});
+                find_dispatch(active_kings, rules::is_long_ranged_king_t<Rules>{});
         }
 
 private:
         // overload for short ranged kings
-        void find_dispatch(Set const& active_kings, rules::range::distance_1) const
+        void find_dispatch(Set const& active_kings, std::false_type) const
         {
                 if (active_kings.empty())
                         return;
@@ -68,7 +68,7 @@ private:
         }
 
         // overload for long ranged kings
-        void find_dispatch(Set const& active_kings, rules::range::distance_N) const
+        void find_dispatch(Set const& active_kings, std::true_type) const
         {
                 for (auto&& from_sq : active_kings) {
                         transform_targets(along_ray<Compass::left_down >(from_sq));

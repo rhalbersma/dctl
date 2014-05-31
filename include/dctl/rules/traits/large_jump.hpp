@@ -1,8 +1,7 @@
 #pragma once
-#include <dctl/rules/traits/phase/jump_removal.hpp>     // jump_removal
-#include <dctl/rules/traits/directions/is_reversal.hpp> // is_reversal
+#include <dctl/rules/traits/is_en_passant_jump_removal.hpp>     // jump_removal
+#include <dctl/rules/traits/is_reversible_king_jump_direction.hpp> // is_reversible_king_jump_direction
 #include <dctl/rules/traits/directions/pawn_jump.hpp>   // pawn_jump
-#include <dctl/rules/types/phase.hpp>                   // apres_fini
 #include <dctl/rules/types/directions.hpp>              // all
 #include <boost/mpl/eval_if.hpp>                        // eval_if
 #include <boost/mpl/logical.hpp>                        // and_, or_
@@ -18,10 +17,10 @@ struct large_jump
                 boost::mpl::or_<
                         boost::mpl::and_<
                                 std::is_same<
-                                        jump_removal_phase_t<Rules>,
-                                        en_passant
+                                        is_en_passant_jump_removal_t<Rules>,
+                                        std::true_type
                                 >,
-                                directions::is_reversal<Rules>
+                                is_reversible_king_jump_direction_t<Rules>
                         >,
                         std::is_same< typename
                                 directions::pawn_jump<Rules>::type,

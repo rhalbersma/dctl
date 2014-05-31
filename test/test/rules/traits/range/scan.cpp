@@ -19,7 +19,7 @@ typedef boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Distance1, T, VariantsDistance1)
 {
-        BOOST_MPL_ASSERT((std::is_same< typename scan<T>::type, distance_1 >));
+        BOOST_MPL_ASSERT_NOT(( is_long_ranged_king_t<T> ));
 }
 
 typedef boost::mpl::vector<
@@ -28,7 +28,7 @@ typedef boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(DistanceN, T, VariantsDistanceN)
 {
-        BOOST_MPL_ASSERT((std::is_same< typename scan<T>::type, distance_N >));
+        BOOST_MPL_ASSERT(( is_long_ranged_king_t<T> ));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

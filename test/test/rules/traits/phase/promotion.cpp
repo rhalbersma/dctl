@@ -1,5 +1,4 @@
-#include <dctl/rules/traits/phase/promotion.hpp>        // promotion
-#include <dctl/rules/types/phase.hpp>                   // apres_fini, en_passant
+#include <dctl/rules/traits/is_en_passant_promotion.hpp>        // promotion
 #include <dctl/rules/variants.hpp>
 #include <boost/mpl/assert.hpp>                         // BOOST_MPL_ASSERT
 #include <boost/mpl/vector.hpp>                         // vector
@@ -18,7 +17,7 @@ using VariantsEnPassant = boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(PromotionPhaseIsEnPassant, Rules, VariantsEnPassant)
 {
-        BOOST_MPL_ASSERT((std::is_same<promotion_phase_t<Rules>, en_passant>));
+        BOOST_MPL_ASSERT((std::is_same<is_en_passant_promotion_t<Rules>, std::true_type>));
 }
 
 using VariantsApresFini = boost::mpl::vector<
@@ -27,7 +26,7 @@ using VariantsApresFini = boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(PromotionPhaseIsApresFini, Rules, VariantsApresFini)
 {
-        BOOST_MPL_ASSERT((std::is_same<promotion_phase_t<Rules>, apres_fini>));
+        BOOST_MPL_ASSERT((std::is_same<is_en_passant_promotion_t<Rules>, std::false_type>));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

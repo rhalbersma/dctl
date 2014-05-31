@@ -6,7 +6,7 @@ namespace rules {
 struct HHoogland;
 
 // aliases
-typedef HHoogland NieuweSpeelwijze;
+using NieuweSpeelwijze = HHoogland;
 
 }       // namespace rules
 }       // namespace dctl

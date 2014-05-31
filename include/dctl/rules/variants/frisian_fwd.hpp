@@ -6,7 +6,7 @@ namespace rules {
 struct Frisian;
 
 // aliases
-typedef Frisian OerAlles;
+using OerAlles = Frisian;
 
 }       // namespace rules
 }       // namespace dctl

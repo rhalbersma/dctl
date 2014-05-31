@@ -1,10 +1,10 @@
-#include <type_traits>                                  // is_same
+#include <dctl/rules/traits/is_reversible_king_jump_direction.hpp> // is_reversible_king_jump_direction
+#include <dctl/rules/variants.hpp>
 #include <boost/mpl/assert.hpp>                         // BOOST_MPL_ASSERT
 #include <boost/mpl/vector.hpp>                         // vector
 #include <boost/test/unit_test.hpp>                     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>            // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <dctl/rules/traits/directions/is_reversal.hpp> // is_reversal
-#include <dctl/rules/variants.hpp>
+#include <type_traits>                                  // is_same
 
 namespace dctl {
 namespace rules {
@@ -19,7 +19,7 @@ using VariantsTrueType = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(TrueType, T, VariantsTrueType)
 {
-        BOOST_MPL_ASSERT(( is_reversal<T> ));
+        BOOST_MPL_ASSERT(( is_reversible_king_jump_direction_t<T> ));
 }
 
 using VariantsFalseType = boost::mpl::vector
@@ -29,7 +29,7 @@ using VariantsFalseType = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(FalseType, T, VariantsFalseType)
 {
-        BOOST_MPL_ASSERT_NOT(( is_reversal<T> ));
+        BOOST_MPL_ASSERT_NOT(( is_reversible_king_jump_direction_t<T> ));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -22,7 +22,7 @@ using VariantsDerivedFromInternational = boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Traits, T, VariantsDerivedFromInternational)
 {
-        BOOST_MPL_ASSERT((std::is_same< typename           range::scan<T>::type, range::distance_N    >));
+        BOOST_MPL_ASSERT(( is_long_ranged_king_t<T> ));
         BOOST_MPL_ASSERT((std::is_same< typename directions::pawn_jump<T>::type, directions::diag     >));
         BOOST_MPL_ASSERT((std::is_same< typename      precedence::jump<T>::type, precedence::quantity >));
 }

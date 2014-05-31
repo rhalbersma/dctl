@@ -37,12 +37,18 @@ auto getjumpsep(std::ostream& ostr)
 }
 
 template<class Move>
-auto& print_algebraic(std::ostream& ostr, Move const& m)
+auto separator(std::ostream& ostr, Move const& m)
 {
         using Rules = typename Move::rules_type;
+        return (m.is_jump() ? getjumpsep<Rules>(ostr) : getpushsep<Rules>(ostr));
+}
+
+template<class Move>
+auto& print_algebraic(std::ostream& ostr, Move const& m)
+{
         using Board = typename Move::board_type;
         ostr << Board::algebraic_from_bit(m.from());
-        ostr << (m.is_jump() ? getjumpsep<Rules>(ostr) : getpushsep<Rules>(ostr));
+        ostr << separator(ostr, m);
         ostr << Board::algebraic_from_bit(m.dest());
         return ostr;
 }
@@ -50,10 +56,9 @@ auto& print_algebraic(std::ostream& ostr, Move const& m)
 template<class Move>
 auto& print_numeric(std::ostream& ostr, Move const& m)
 {
-        using Rules = typename Move::rules_type;
         using Board = typename Move::board_type;
         ostr << Board::numeric_from_bit(m.from());
-        ostr << (m.is_jump() ? getjumpsep<Rules>(ostr) : getpushsep<Rules>(ostr));
+        ostr << separator(ostr, m);
         ostr << Board::numeric_from_bit(m.dest());
         return ostr;
 }

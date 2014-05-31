@@ -6,7 +6,7 @@ namespace rules {
 struct Italian;
 
 // aliases
-typedef Italian Dama;
+using Dama = Italian;
 
 }       // namespace rules
 }       // namespace dctl

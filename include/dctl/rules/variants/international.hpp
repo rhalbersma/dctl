@@ -1,10 +1,9 @@
 #pragma once
-#include <type_traits>                                  // integral_constant
 #include <dctl/rules/variants/international_fwd.hpp>    // International
-#include <dctl/rules/types/range.hpp>                   // distance_N
 #include <dctl/rules/types/directions.hpp>              // diag
 #include <dctl/rules/types/precedence.hpp>              // quantity
 #include <dctl/successor/value/international.hpp>       // Value (International specialization)
+#include <type_traits>                                  // integral_constant
 
 namespace dctl {
 namespace rules {
@@ -14,15 +13,15 @@ namespace rules {
 struct International
 {
         // main rules
-        typedef range::distance_N range_king;                           // 3.9
-        typedef directions::diag directions_pawn_jump;                  // 4.1
-        typedef precedence::quantity precedence_jump;                   // 4.13
+        using is_long_ranged_king = std::true_type;                     // 3.9
+        using is_backward_pawn_jump = std::true_type;                   // 4.1
+        using precedence_jump = precedence::quantity;                   // 4.13
 
         // drawing rules
-        typedef std::integral_constant<int,  3> max_repetitions;        // 6.1
-        typedef std::integral_constant<int, 50> max_reversible_moves;   // 6.2
-        typedef std::integral_constant<int, 32> max_3v1_moves;          // 6.3
-        typedef std::integral_constant<int, 10> max_2v1_moves;          // 6.4
+        using max_repetitions = std::integral_constant<int,  3>;        // 6.1
+        using max_reversible_moves = std::integral_constant<int, 50>;   // 6.2
+        using max_3v1_moves = std::integral_constant<int, 32>;          // 6.3
+        using max_2v1_moves = std::integral_constant<int, 10>;          // 6.4
 };
 
 }       // namespace rules
