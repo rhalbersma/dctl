@@ -1,10 +1,9 @@
 #pragma once
-#include <type_traits>                          // true_type
 #include <dctl/rules/variants/czech_fwd.hpp>    // Czech
-#include <dctl/rules/types/range.hpp>           // distance_N
 #include <dctl/rules/types/directions.hpp>      // up
 #include <dctl/rules/types/precedence.hpp>      // none
 #include <dctl/successor/value.hpp>             // Value (primary template)
+#include <type_traits>                          // true_type
 
 namespace dctl {
 namespace rules {
@@ -14,8 +13,8 @@ namespace rules {
 struct Czech
 {
         // main rules
-        using range_king = range::distance_N;
-        using directions_pawn_jump = directions::up;
+        using is_long_ranged_king = std::true_type;
+        using is_backward_pawn_jump = std::false_type;
         using precedence_jump = precedence::none;
 
         // additional rules

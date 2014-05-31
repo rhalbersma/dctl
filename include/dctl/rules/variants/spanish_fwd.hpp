@@ -6,7 +6,7 @@ namespace rules {
 struct Spanish;
 
 // aliases
-typedef Spanish Damas;
+using Damas = Spanish;
 
 }       // namespace rules
 }       // namespace dctl

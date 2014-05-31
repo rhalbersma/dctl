@@ -1,10 +1,9 @@
 #pragma once
-#include <type_traits>                          // integral_constant
 #include <dctl/rules/variants/checkers_fwd.hpp> // Checkers
-#include <dctl/rules/types/range.hpp>           // distance_1
 #include <dctl/rules/types/directions.hpp>      // up
 #include <dctl/rules/types/precedence.hpp>      // none
 #include <dctl/successor/value.hpp>             // Value (primary template)
+#include <type_traits>                          // integral_constant, false_type
 
 namespace dctl {
 namespace rules {
@@ -15,8 +14,8 @@ struct Checkers
 {
         // main rules
 
-        using range_king = range::distance_1;                           // 1.17
-        using directions_pawn_jump = directions::up;                    // 1.18
+        using is_long_ranged_king = std::false_type;                    // 1.17
+        using is_backward_pawn_jump = std::false_type;                  // 1.18
         using precedence_jump = precedence::none;                       // 1.20
 
         // drawing rules

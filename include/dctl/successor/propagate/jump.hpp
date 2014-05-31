@@ -13,6 +13,7 @@
 #include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
 #include <dctl/board/mask.hpp>
+#include <boost/mpl/assert.hpp>
 #include <cassert>                      // assert
 #include <iterator>                     // begin, end, prev
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
@@ -65,14 +66,14 @@ public:
         void make(int sq)
         {
                 // tag dispatching on jump removal
-                make_dispatch(sq, rules::jump_removal_phase_t<Rules>{});
+                make_dispatch(sq, rules::is_en_passant_jump_removal_t<Rules>{});
                 assert(invariant());
         }
 
         void undo(int sq)
         {
                 // tag dispatching on jump removal
-                undo_dispatch(sq, rules::jump_removal_phase_t<Rules>{});
+                undo_dispatch(sq, rules::is_en_passant_jump_removal_t<Rules>{});
                 assert(invariant());
         }
 
@@ -90,7 +91,7 @@ public:
 
         void toggle_promotion()
         {
-                static_assert(std::is_same<rules::promotion_phase_t<Rules>, rules::en_passant>::value, "");
+                BOOST_MPL_ASSERT((rules::is_en_passant_promotion_t<Rules>));
                 current_.toggle_promotion();
         }
 
@@ -207,7 +208,7 @@ public:
 
         auto is_promotion() const
         {
-                static_assert(std::is_same<rules::promotion_phase_t<Rules>, rules::en_passant>::value, "");
+                BOOST_MPL_ASSERT((rules::is_en_passant_promotion_t<Rules>));
                 return current_.is_promotion();
         }
 
@@ -215,13 +216,13 @@ private:
         // modifiers
 
         // overload for apres-fini jump removal
-        void make_dispatch(int sq, rules::apres_fini)
+        void make_dispatch(int sq, std::false_type)
         {
                 make_impl(sq);
         }
 
         // overload for en-passant jump removal
-        void make_dispatch(int sq, rules::en_passant)
+        void make_dispatch(int sq, std::true_type)
         {
                 not_occupied_.set(sq);
                 make_impl(sq);
@@ -234,13 +235,13 @@ private:
         }
 
         // overload for apres-fini jump removal
-        void undo_dispatch(int sq, rules::apres_fini)
+        void undo_dispatch(int sq, std::false_type)
         {
                 undo_impl(sq);
         }
 
         // overload for en-passant jump removal
-        void undo_dispatch(int sq, rules::en_passant)
+        void undo_dispatch(int sq, std::true_type)
         {
                 undo_impl(sq);
                 not_occupied_.reset(sq);

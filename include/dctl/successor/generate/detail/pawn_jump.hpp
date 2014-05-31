@@ -80,53 +80,33 @@ private:
 
         void branch(Set const& active_pawns) const
         {
-                // tag dispatching on pawn jump directions
-                branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>{});
-        }
+                serialize<Compass::left_up   >(active_pawns, std::true_type{});
+                serialize<Compass::right_up  >(active_pawns, std::true_type{});
 
-        // overload for pawns that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(Set const& active_pawns, rules::directions::all) const
-        {
-                branch_dispatch(active_pawns, rules::directions::diag{});
-                branch_dispatch(active_pawns, rules::directions::orth{});
-        }
+                serialize<Compass::left_down >(active_pawns, rules::is_backward_pawn_jump_t<Rules>{});
+                serialize<Compass::right_down>(active_pawns, rules::is_backward_pawn_jump_t<Rules>{});
 
-        // overload for pawns that jump in the 4 diagonal directions
-        void branch_dispatch(Set const& active_pawns, rules::directions::diag) const
-        {
-                branch_dispatch(active_pawns, rules::directions::up  {});
-                branch_dispatch(active_pawns, rules::directions::down{});
-        }
+                serialize<Compass::left      >(active_pawns, rules::is_orthogonal_jump_t<Rules>{});
+                serialize<Compass::right     >(active_pawns, rules::is_orthogonal_jump_t<Rules>{});
+                serialize<Compass::up        >(active_pawns, rules::is_orthogonal_jump_t<Rules>{});
 
-        // overload for pawns that jump in the 2 forward diagonal directions
-        void branch_dispatch(Set const& active_pawns, rules::directions::up) const
-        {
-                serialize<Compass::left_up >(active_pawns);
-                serialize<Compass::right_up>(active_pawns);
-        }
-
-        // overload for pawns that jump in the 2 backward diagonal directions
-        void branch_dispatch(Set const& active_pawns, rules::directions::down) const
-        {
-                serialize<Compass::left_down >(active_pawns);
-                serialize<Compass::right_down>(active_pawns);
-        }
-
-        // overload for pawns that jump in the 4 orthogonal directions
-        void branch_dispatch(Set const& active_pawns, rules::directions::orth) const
-        {
-                serialize<Compass::left >(active_pawns);
-                serialize<Compass::right>(active_pawns);
-                serialize<Compass::up   >(active_pawns);
-                serialize<Compass::down >(active_pawns);
+                serialize<Compass::down      >(active_pawns, std::integral_constant<bool,
+                        rules::is_backward_pawn_jump_t<Rules>::value && rules::is_orthogonal_jump_t<Rules>::value
+                >{});
         }
 
         template<int Direction>
-        void serialize(Set const& active_pawns) const
+        void serialize(Set const& active_pawns, std::true_type) const
         {
                 auto const jumpers = active_pawns & *std::prev(along_wave<Direction>(capture_.template targets_with_pawn<Direction>()));
                 for (auto&& from_sq : jumpers)
                         find(along_ray<Direction>(from_sq));
+        }
+
+        template<int Direction>
+        void serialize(Set const& /* active_pawns */, std::false_type) const
+        {
+                /* no-op */
         }
 
         template<class Iterator>
@@ -177,19 +157,19 @@ private:
         bool is_finished(Iterator jumper) const
         {
                 // tag dispatching on promotion condition
-                return !promotion_dispatch(jumper, rules::promotion_phase_t<Rules>{});
+                return !promotion_dispatch(jumper, rules::is_en_passant_promotion_t<Rules>{});
         }
 
         // overload for pawns that promote apres-fini
         template<class Iterator>
-        bool promotion_dispatch(Iterator jumper, rules::apres_fini) const
+        bool promotion_dispatch(Iterator jumper, std::false_type) const
         {
                 return find_next(jumper);
         }
 
         // overload for pawns that promote en-passant
         template<class Iterator>
-        bool promotion_dispatch(Iterator jumper, rules::en_passant) const
+        bool promotion_dispatch(Iterator jumper, std::true_type) const
         {
                 return
                         is_promotion(*jumper) ?

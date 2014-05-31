@@ -165,7 +165,7 @@ private:
         bool is_finished(Iterator jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return !find_next_dispatch(jumper, rules::directions::is_reversal<Rules>{});
+                return !find_next_dispatch(jumper, rules::is_reversible_king_jump_direction_t<Rules>{});
         }
 
         // overload for kings that cannot reverse their capture direction
@@ -278,19 +278,19 @@ private:
         void slide(Iterator& jumper, Set const& path) const
         {
                 // tag dispatching on king range
-                slide_dispatch(jumper, path, rules::range::scan<Rules>{});
+                slide_dispatch(jumper, path, rules::is_long_ranged_king_t<Rules>{});
         }
 
         // overload for short ranged kings
         template<class Iterator>
-        void slide_dispatch(Iterator& jumper, Set const& /* path */, rules::range::distance_1) const
+        void slide_dispatch(Iterator& jumper, Set const& /* path */, std::false_type) const
         {
                 ++jumper;
         }
 
         // overload for long ranged kings
         template<class Iterator>
-        void slide_dispatch(Iterator& jumper, Set const& path, rules::range::distance_N) const
+        void slide_dispatch(Iterator& jumper, Set const& path, std::true_type) const
         {
                 do ++jumper; while (path.test(*jumper));
         }
@@ -345,21 +345,21 @@ private:
         void add_jump(Iterator dest_sq, bool check_duplicate) const
         {
                 // tag dispatching on promotion condition
-                promotion_dispatch(dest_sq, rules::promotion_phase_t<Rules>{});
+                promotion_dispatch(dest_sq, rules::is_en_passant_promotion_t<Rules>{});
                 if (check_duplicate && util::is_duplicate_back(moves_))
                         moves_.pop_back();
         }
 
         // overload for pawns that promote apres-fini
         template<class Iterator>
-        void promotion_dispatch(Iterator dest_sq, rules::apres_fini) const
+        void promotion_dispatch(Iterator dest_sq, std::false_type) const
         {
                 capture_.template add_king_jump<Color>(*dest_sq, moves_);
         }
 
         // overload for pawns that promote en-passant
         template<class Iterator>
-        void promotion_dispatch(Iterator dest_sq, rules::en_passant) const
+        void promotion_dispatch(Iterator dest_sq, std::true_type) const
         {
                 if (!capture_.is_promotion())
                         capture_.template add_king_jump<Color>(*dest_sq, moves_);

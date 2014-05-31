@@ -1,8 +1,7 @@
 #pragma once
 #include <dctl/rules/traits/directions/pawn_jump.hpp>   // pawn_jump
-#include <dctl/rules/traits/phase/promotion.hpp>        // promotion
+#include <dctl/rules/traits/is_en_passant_promotion.hpp>        // promotion
 #include <dctl/rules/types/directions.hpp>              // up, down
-#include <dctl/rules/types/phase.hpp>                   // apres_fini
 #include <boost/mpl/logical.hpp>                        // and_, or_
 #include <type_traits>                                  // is_same
 
@@ -25,8 +24,8 @@ struct is_unambiguous_pawn_jump
                                         directions::up
                                 >,
                                 std::is_same<
-                                        promotion_phase_t<Rules>,
-                                        apres_fini
+                                        is_en_passant_promotion_t<Rules>,
+                                        std::false_type
                                 >
                         >
                 >::value

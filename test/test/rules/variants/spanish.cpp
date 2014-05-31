@@ -14,7 +14,7 @@ using T = Spanish;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {
-        BOOST_MPL_ASSERT((std::is_same<           range::scan<T>::type, range::distance_N   >));
+        BOOST_MPL_ASSERT(( is_long_ranged_king_t<T> ));
         BOOST_MPL_ASSERT((std::is_same< directions::pawn_jump<T>::type, directions::up      >));
         BOOST_MPL_ASSERT((std::is_same<      precedence::jump<T>::type, precedence::quality >));
 }

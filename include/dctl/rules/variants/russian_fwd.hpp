@@ -6,7 +6,7 @@ namespace rules {
 struct Russian;
 
 // aliases
-typedef Russian Shashki;
+using Shashki = Russian;
 
 }       // namespace rules
 }       // namespace dctl

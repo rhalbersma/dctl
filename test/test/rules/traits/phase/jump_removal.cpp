@@ -1,5 +1,4 @@
-#include <dctl/rules/traits/phase/jump_removal.hpp>     // jump_removal
-#include <dctl/rules/types/phase.hpp>                   // apres_fini, en_passant
+#include <dctl/rules/traits/is_en_passant_jump_removal.hpp>     // jump_removal
 #include <dctl/rules/variants.hpp>
 #include <boost/mpl/assert.hpp>                         // BOOST_MPL_ASSERT
 #include <boost/mpl/vector.hpp>                         // vector
@@ -18,7 +17,7 @@ using VariantsEnPassant = boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(JumpRemovalPhaseIsEnPassant, Rules, VariantsEnPassant)
 {
-        BOOST_MPL_ASSERT((std::is_same<jump_removal_phase_t<Rules>, en_passant>));
+        BOOST_MPL_ASSERT((std::is_same<is_en_passant_jump_removal_t<Rules>, std::true_type>));
 }
 
 using VariantsApresFini = boost::mpl::vector<
@@ -27,7 +26,7 @@ using VariantsApresFini = boost::mpl::vector<
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(JumpRemovalPhaseIsApresFini, Rules, VariantsApresFini)
 {
-        BOOST_MPL_ASSERT((std::is_same<jump_removal_phase_t<Rules>, apres_fini>));
+        BOOST_MPL_ASSERT((std::is_same<is_en_passant_jump_removal_t<Rules>, std::false_type>));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
