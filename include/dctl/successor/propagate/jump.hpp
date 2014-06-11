@@ -66,14 +66,14 @@ public:
         void make(int sq)
         {
                 // tag dispatching on jump removal
-                make_dispatch(sq, rules::is_en_passant_jump_removal_t<Rules>{});
+                make_dispatch(sq, is_en_passant_jump_removal_t<Rules>{});
                 assert(invariant());
         }
 
         void undo(int sq)
         {
                 // tag dispatching on jump removal
-                undo_dispatch(sq, rules::is_en_passant_jump_removal_t<Rules>{});
+                undo_dispatch(sq, is_en_passant_jump_removal_t<Rules>{});
                 assert(invariant());
         }
 
@@ -91,7 +91,7 @@ public:
 
         void toggle_promotion()
         {
-                BOOST_MPL_ASSERT((rules::is_en_passant_promotion_t<Rules>));
+                BOOST_MPL_ASSERT((is_en_passant_promotion_t<Rules>));
                 current_.toggle_promotion();
         }
 
@@ -208,7 +208,7 @@ public:
 
         auto is_promotion() const
         {
-                BOOST_MPL_ASSERT((rules::is_en_passant_promotion_t<Rules>));
+                BOOST_MPL_ASSERT((is_en_passant_promotion_t<Rules>));
                 return current_.is_promotion();
         }
 

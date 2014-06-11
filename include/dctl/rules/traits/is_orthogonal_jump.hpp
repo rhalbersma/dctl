@@ -3,12 +3,19 @@
 #include <type_traits>                  // false_type
 
 namespace dctl {
-namespace rules {
+namespace detail {
 
 BOOST_TTI_TRAIT_MEMBER_TYPE(is_orthogonal_jump, is_orthogonal_jump)
 
-template<class Rules, class Default = std::false_type>
-using is_orthogonal_jump_t = typename is_orthogonal_jump<Rules, Default>::type;
+}       // namespace detail
 
-}       // namespace rules
+template<class Rules>
+using is_orthogonal_jump = detail::is_orthogonal_jump<Rules, std::false_type>;
+
+template<class Rules>
+using is_orthogonal_jump_t = typename is_orthogonal_jump<Rules>::type;
+
+template<class Rules>
+constexpr auto is_orthogonal_jump_v = is_orthogonal_jump_t<Rules>::value;
+
 }       // namespace dctl

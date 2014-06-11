@@ -16,6 +16,7 @@
 #include <cassert>                                              // assert
 #include <iterator>                                             // prev
 #include <type_traits>                                          // false_type, true_type
+#include <utility>                                              // pair
 
 namespace dctl {
 namespace successor {
@@ -80,40 +81,62 @@ private:
 
         void branch(Set const& active_pawns) const
         {
-                serialize<Compass::left_up   >(active_pawns, std::true_type{});
-                serialize<Compass::right_up  >(active_pawns, std::true_type{});
+                // tag dispatching on pawn jump directions
+                branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
+        }
 
-                serialize<Compass::left_down >(active_pawns, rules::is_backward_pawn_jump_t<Rules>{});
-                serialize<Compass::right_down>(active_pawns, rules::is_backward_pawn_jump_t<Rules>{});
+        // overload for pawns that only jump in the 2 forward diagonal directions
+        void branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::false_type>) const
+        {
+                serialize<Compass::left_up   >(active_pawns);
+                serialize<Compass::right_up  >(active_pawns);
+        }
 
-                serialize<Compass::left      >(active_pawns, rules::is_orthogonal_jump_t<Rules>{});
-                serialize<Compass::right     >(active_pawns, rules::is_orthogonal_jump_t<Rules>{});
-                serialize<Compass::up        >(active_pawns, rules::is_orthogonal_jump_t<Rules>{});
+        // overload for pawns that jump in the 4 forward and backward diagonal directions
+        void branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::false_type>) const
+        {
+                serialize<Compass::left_up   >(active_pawns);
+                serialize<Compass::right_up  >(active_pawns);
+                serialize<Compass::left_down >(active_pawns);
+                serialize<Compass::right_down>(active_pawns);
+        }
 
-                serialize<Compass::down      >(active_pawns, std::integral_constant<bool,
-                        rules::is_backward_pawn_jump_t<Rules>::value && rules::is_orthogonal_jump_t<Rules>::value
-                >{});
+        // overload for pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
+        void branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::true_type>) const
+        {
+                serialize<Compass::up        >(active_pawns);
+                serialize<Compass::left_up   >(active_pawns);
+                serialize<Compass::right_up  >(active_pawns);
+                serialize<Compass::left      >(active_pawns);
+                serialize<Compass::right     >(active_pawns);
+        }
+
+        // overload for pawns that jump in the 8 diagonal and orthogonal directions
+        void branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::true_type>) const
+        {
+                serialize<Compass::up        >(active_pawns);
+                serialize<Compass::left_up   >(active_pawns);
+                serialize<Compass::right_up  >(active_pawns);
+                serialize<Compass::left      >(active_pawns);
+                serialize<Compass::right     >(active_pawns);
+                serialize<Compass::left_down >(active_pawns);
+                serialize<Compass::right_down>(active_pawns);
+                serialize<Compass::down      >(active_pawns);
         }
 
         template<int Direction>
-        void serialize(Set const& active_pawns, std::true_type) const
+        void serialize(Set const& active_pawns) const
         {
                 auto const jumpers = active_pawns & *std::prev(along_wave<Direction>(capture_.template targets_with_pawn<Direction>()));
                 for (auto&& from_sq : jumpers)
                         find(along_ray<Direction>(from_sq));
         }
 
-        template<int Direction>
-        void serialize(Set const& /* active_pawns */, std::false_type) const
-        {
-                /* no-op */
-        }
-
         template<class Iterator>
         void find(Iterator jumper) const
         {
                 capture_.launch(*jumper);
-                explore(std::next(jumper));
+                explore(std::next(jumper));     // recursively find more jumps
                 capture_.finish(*jumper);
         }
 
@@ -157,7 +180,7 @@ private:
         bool is_finished(Iterator jumper) const
         {
                 // tag dispatching on promotion condition
-                return !promotion_dispatch(jumper, rules::is_en_passant_promotion_t<Rules>{});
+                return !promotion_dispatch(jumper, is_en_passant_promotion_t<Rules>{});
         }
 
         // overload for pawns that promote apres-fini
@@ -171,17 +194,7 @@ private:
         template<class Iterator>
         bool promotion_dispatch(Iterator jumper, std::true_type) const
         {
-                return
-                        is_promotion(*jumper) ?
-                        promote_en_passant(jumper) :
-                        find_next(jumper)
-                ;
-        }
-
-        template<class Iterator>
-        bool find_next(Iterator jumper) const
-        {
-                return turn(jumper) | scan(jumper);
+                return is_promotion(*jumper) ? promote_en_passant(jumper) : find_next(jumper);
         }
 
         template<class Iterator>
@@ -214,55 +227,53 @@ private:
         }
 
         template<class Iterator>
+        bool find_next(Iterator jumper) const
+        {
+                return scan(jumper) | turn(jumper);
+        }
+
+        template<class Iterator>
         bool turn(Iterator jumper) const
         {
                 // tag dispatching on pawn turn directions
-                return turn_dispatch(jumper, rules::directions::pawn_turn<Rules>{});
+                return turn_dispatch(jumper, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
         }
 
         // overload for pawns that turn in all the 6 non-parallel diagonal and orthogonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, rules::directions::all) const
+        bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::false_type>) const
         {
-                return
-                        turn_dispatch(jumper, rules::directions::diag{}) |
-                        turn_dispatch(jumper, rules::directions::orth{})
-                ;
+                return scan(ray::mirror<Compass::up>(jumper));
         }
 
         // overload for pawns that turn in the 2 sideways directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, rules::directions::diag) const
+        bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::false_type>) const
         {
                 return
-                        scan(ray::rotate<-90_deg>(jumper)) |
-                        scan(ray::rotate<+90_deg>(jumper))
+                        scan(ray::rotate<+90_deg>(jumper)) |
+                        scan(ray::rotate<-90_deg>(jumper))
                 ;
         }
 
         // overload for pawns that turn in the 1 mirrored forward direction
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, rules::directions::up) const
+        bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::true_type>) const
         {
-                return scan(ray::mirror<Compass::up>(jumper));
-        }
-
-        // overload for pawns that turn in the 1 mirrored backward direction
-        template<class Iterator>
-        bool turn_dispatch(Iterator jumper, rules::directions::down) const
-        {
-                return scan(ray::mirror<Compass::down>(jumper));
+                return scan(jumper);
         }
 
         // overload for pawns that turn in the remaining 4 diagonal or orthogonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, rules::directions::orth) const
+        bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::true_type>) const
         {
                 return
-                        scan(ray::rotate< -45_deg>(jumper)) |
                         scan(ray::rotate< +45_deg>(jumper)) |
-                        scan(ray::rotate<-135_deg>(jumper)) |
-                        scan(ray::rotate<+135_deg>(jumper))
+                        scan(ray::rotate< -45_deg>(jumper)) |
+                        scan(ray::rotate< +90_deg>(jumper)) |
+                        scan(ray::rotate< -90_deg>(jumper)) |
+                        scan(ray::rotate<+135_deg>(jumper)) |
+                        scan(ray::rotate<-135_deg>(jumper))
                 ;
         }
 
@@ -278,7 +289,7 @@ private:
                 if (!capture_.targets_with_pawn(jumper))
                         return false;
 
-                explore(jumper);
+                explore(jumper);        // recursively find more jumps
                 return true;
         }
 

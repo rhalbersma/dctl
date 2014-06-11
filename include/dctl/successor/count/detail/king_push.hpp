@@ -23,6 +23,7 @@ struct Count<Color, pieces::king, select::push, Position>
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
+        using Set = typename Board::set_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::push, Position>;
 
@@ -40,14 +41,12 @@ public:
 
         // function call operators
 
-        template<class Set>
         int operator()(Set const& active_kings) const
         {
                 return active_kings.empty() ? 0 : branch(active_kings);
         }
 
 private:
-        template<class Set>
         int branch(Set const& active_kings) const
         {
                 return
@@ -58,7 +57,7 @@ private:
                 ;
         }
 
-        template<int Direction, class Set>
+        template<int Direction>
         int parallelize(Set const& active_kings) const
         {
                 return Sink<Board, Direction, typename rules::range::move<Rules>::type>()(

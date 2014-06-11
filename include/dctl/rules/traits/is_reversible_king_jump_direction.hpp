@@ -4,19 +4,20 @@
 #include <type_traits>                                          // integral_constant
 
 namespace dctl {
-namespace rules {
 
 template<class Rules>
 struct is_reversible_king_jump_direction
 :
         std::integral_constant<bool,
-                is_long_ranged_king_t<Rules>::value &&
-                is_en_passant_jump_removal_t<Rules>::value
+                is_long_ranged_king_v<Rules> &&
+                is_en_passant_jump_removal_v<Rules>
         >
 {};
 
 template<class Rules>
 using is_reversible_king_jump_direction_t = typename is_reversible_king_jump_direction<Rules>::type;
 
-}       // namespace rules
+template<class Rules>
+constexpr auto is_reversible_king_jump_direction_v = is_reversible_king_jump_direction_t<Rules>::value;
+
 }       // namespace dctl

@@ -89,18 +89,11 @@ private:
         void branch(int from_sq) const
         {
                 // tag dispatching on king jump directions
-                branch_dispatch(from_sq, rules::directions::king_jump<Rules>{});
-        }
-
-        // overload for kings that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(int from_sq, rules::directions::all) const
-        {
-                branch_dispatch(from_sq, rules::directions::diag{});
-                branch_dispatch(from_sq, rules::directions::orth{});
+                branch_dispatch(from_sq, is_orthogonal_jump_t<Rules>{});
         }
 
         // overload for kings that jump in the 4 diagonal directions
-        void branch_dispatch(int from_sq, rules::directions::diag) const
+        void branch_dispatch(int from_sq, std::false_type) const
         {
                 find(along_ray<Compass::left_up   >(from_sq));
                 find(along_ray<Compass::right_up  >(from_sq));
@@ -108,13 +101,17 @@ private:
                 find(along_ray<Compass::right_down>(from_sq));
         }
 
-        // overload for kings that jump in the 4 orthogonal directions
-        void branch_dispatch(int from_sq, rules::directions::orth) const
+        // overload for kings that jump in the 8 diagonal and orthogonal directions
+        void branch_dispatch(int from_sq, std::true_type) const
         {
-                find(along_ray<Compass::left >(from_sq));
-                find(along_ray<Compass::right>(from_sq));
-                find(along_ray<Compass::up   >(from_sq));
-                find(along_ray<Compass::down >(from_sq));
+                find(along_ray<Compass::up        >(from_sq));
+                find(along_ray<Compass::left_up   >(from_sq));
+                find(along_ray<Compass::right_up  >(from_sq));
+                find(along_ray<Compass::left      >(from_sq));
+                find(along_ray<Compass::right     >(from_sq));
+                find(along_ray<Compass::left_down >(from_sq));
+                find(along_ray<Compass::right_down>(from_sq));
+                find(along_ray<Compass::down      >(from_sq));
         }
 
         template<class Iterator>
@@ -165,7 +162,7 @@ private:
         bool is_finished(Iterator jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return !find_next_dispatch(jumper, rules::is_reversible_king_jump_direction_t<Rules>{});
+                return !find_next_dispatch(jumper, is_reversible_king_jump_direction_t<Rules>{});
         }
 
         // overload for kings that cannot reverse their capture direction
@@ -210,7 +207,7 @@ private:
         template<class Iterator>
         bool land_dispatch(Iterator jumper, rules::range::distance_1) const
         {
-                return turn(jumper) | scan(jumper);
+                return scan(jumper) | turn(jumper);
         }
 
         // overload for kings that can land on any square along the current direction
@@ -232,12 +229,12 @@ private:
         bool turn(Iterator jumper) const
         {
                 // tag dispatching on king turn directions
-                return turn_dispatch(jumper, rules::directions::king_turn<Rules>{});
+                return turn_dispatch(jumper, std::pair<is_orthogonal_jump_t<Rules>, is_reversible_king_jump_direction_t<Rules>>{});
         }
 
         // overload for kings that turn in all the 6 non-parallel diagonal and orthogonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, rules::directions::all) const
+        bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::false_type>) const
         {
                 return
                         turn_dispatch(jumper, rules::directions::diag{}) |
@@ -278,7 +275,7 @@ private:
         void slide(Iterator& jumper, Set const& path) const
         {
                 // tag dispatching on king range
-                slide_dispatch(jumper, path, rules::is_long_ranged_king_t<Rules>{});
+                slide_dispatch(jumper, path, is_long_ranged_king_t<Rules>{});
         }
 
         // overload for short ranged kings
@@ -301,7 +298,7 @@ private:
                 if (!capture_.targets_with_king(jumper))
                         return false;
 
-                explore(jumper);
+                explore(jumper);        // recursively find more jumps
                 return true;
         }
 
@@ -345,7 +342,7 @@ private:
         void add_jump(Iterator dest_sq, bool check_duplicate) const
         {
                 // tag dispatching on promotion condition
-                promotion_dispatch(dest_sq, rules::is_en_passant_promotion_t<Rules>{});
+                promotion_dispatch(dest_sq, is_en_passant_promotion_t<Rules>{});
                 if (check_duplicate && util::is_duplicate_back(moves_))
                         moves_.pop_back();
         }

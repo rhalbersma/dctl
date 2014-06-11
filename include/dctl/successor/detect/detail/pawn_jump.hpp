@@ -24,6 +24,7 @@ struct Detect<Color, pieces::pawn, select::jump, Position, Range>
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
+        using Set = typename Board::set_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jump, Position>;
 
@@ -41,73 +42,66 @@ public:
 
         // function call operators
 
-        template<class Set>
         bool operator()(Set const& active_pawns) const
         {
                 return active_pawns.empty() ? false : branch(active_pawns);
         }
 
 private:
-        template<class Set>
         bool branch(Set const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                return branch_dispatch(active_pawns, rules::directions::pawn_jump<Rules>{});
+                return branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
         }
 
-        // overload for pawns that jump in the 8 diagonal and orthogonal directions
-        template<class Set>
-        bool branch_dispatch(Set const& active_pawns, rules::directions::all) const
+        // overload for pawns that only jump in the 2 forward diagonal directions
+        bool branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::false_type>) const
         {
                 return
-                        branch_dispatch(active_pawns, rules::directions::diag()) ||
-                        branch_dispatch(active_pawns, rules::directions::orth())
+                        parallelize<Compass::left_up   >(active_pawns) ||
+                        parallelize<Compass::right_up  >(active_pawns)
                 ;
         }
 
-        // overload for pawns that jump in the 4 diagonal directions
-        template<class Set>
-        bool branch_dispatch(Set const& active_pawns, rules::directions::diag) const
+        // overload for pawns that jump in the 4 forward and backward diagonal directions
+        bool branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::false_type>) const
         {
                 return
-                        branch_dispatch(active_pawns, rules::directions::up  ()) ||
-                        branch_dispatch(active_pawns, rules::directions::down())
-                ;
-        }
-
-        // overload for pawns that jump in the 2 forward diagonal directions
-        template<class Set>
-        bool branch_dispatch(Set const& active_pawns, rules::directions::up) const
-        {
-                return
-                        parallelize<Compass::left_up >(active_pawns) ||
-                        parallelize<Compass::right_up>(active_pawns)
-                ;
-        }
-
-        // overload for pawns that jump in the 2 backward diagonal directions
-        template<class Set>
-        bool branch_dispatch(Set const& active_pawns, rules::directions::down) const
-        {
-                return
+                        parallelize<Compass::left_up   >(active_pawns) ||
+                        parallelize<Compass::right_up  >(active_pawns) ||
                         parallelize<Compass::left_down >(active_pawns) ||
                         parallelize<Compass::right_down>(active_pawns)
                 ;
         }
 
-        // overload for pawns that jump in the 4 orthogonal directions
-        template<class Set>
-        bool branch_dispatch(Set const& active_pawns, rules::directions::orth) const
+        // overload for pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
+        bool branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::true_type>) const
         {
                 return
-                        parallelize<Compass::left >(active_pawns) ||
-                        parallelize<Compass::right>(active_pawns) ||
-                        parallelize<Compass::up   >(active_pawns) ||
-                        parallelize<Compass::down >(active_pawns)
+                        parallelize<Compass::up        >(active_pawns) ||
+                        parallelize<Compass::left_up   >(active_pawns) ||
+                        parallelize<Compass::right_up  >(active_pawns) ||
+                        parallelize<Compass::left      >(active_pawns) ||
+                        parallelize<Compass::right     >(active_pawns)
                 ;
         }
 
-        template<int Direction, class Set>
+        // overload for pawns that jump in the 8 diagonal and orthogonal directions
+        bool branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::true_type>) const
+        {
+                return
+                        parallelize<Compass::up        >(active_pawns) ||
+                        parallelize<Compass::left_up   >(active_pawns) ||
+                        parallelize<Compass::right_up  >(active_pawns) ||
+                        parallelize<Compass::left      >(active_pawns) ||
+                        parallelize<Compass::right     >(active_pawns) ||
+                        parallelize<Compass::left_down >(active_pawns) ||
+                        parallelize<Compass::right_down>(active_pawns) ||
+                        parallelize<Compass::down      >(active_pawns)
+                ;
+        }
+
+        template<int Direction>
         bool parallelize(Set const& active_pawns) const
         {
                 return !Sandwich<Board, Direction, rules::range::distance_1>()(

@@ -24,6 +24,7 @@ struct Detect<Color, pieces::king, select::jump, Position, Range>
 private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
+        using Set = typename Board::set_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jump, Position>;
 
@@ -41,33 +42,20 @@ public:
 
         // function call operators
 
-        template<class Set>
         bool operator()(Set const& active_kings) const
         {
                 return active_kings.empty() ? false : branch(active_kings);
         }
 
 private:
-        template<class Set>
         bool branch(Set const& active_kings) const
         {
                 // tag dispatching on king jump directions
-                return branch_dispatch(active_kings, rules::directions::king_jump<Rules>{});
-        }
-
-        // overload for kings that jump in the 8 diagonal and orthogonal directions
-        template<class Set>
-        bool branch_dispatch(Set const& active_kings, rules::directions::all) const
-        {
-                return
-                        branch_dispatch(active_kings, rules::directions::diag()) ||
-                        branch_dispatch(active_kings, rules::directions::orth())
-                ;
+                return branch_dispatch(active_kings, is_orthogonal_jump_t<Rules>{});
         }
 
         // overload for kings that jump in the 4 diagonal directions
-        template<class Set>
-        bool branch_dispatch(Set const& active_kings, rules::directions::diag) const
+        bool branch_dispatch(Set const& active_kings, std::false_type) const
         {
                 return
                         parallelize<Compass::left_up   >(active_kings) ||
@@ -77,15 +65,18 @@ private:
                 ;
         }
 
-        // overload for kings that jump in the 4 orthogonal directions
-        template<class Set>
-        bool branch_dispatch(Set const& active_kings, rules::directions::orth) const
+        // overload for kings that jump in the 8 diagonal and orthogonal directions
+        bool branch_dispatch(Set const& active_kings, std::true_type) const
         {
                 return
-                        parallelize<Compass::left >(active_kings) ||
-                        parallelize<Compass::right>(active_kings) ||
-                        parallelize<Compass::up   >(active_kings) ||
-                        parallelize<Compass::down >(active_kings)
+                        parallelize<Compass::up        >(active_kings) ||
+                        parallelize<Compass::left_up   >(active_kings) ||
+                        parallelize<Compass::right_up  >(active_kings) ||
+                        parallelize<Compass::left      >(active_kings) ||
+                        parallelize<Compass::right     >(active_kings) ||
+                        parallelize<Compass::left_down >(active_kings) ||
+                        parallelize<Compass::right_down>(active_kings) ||
+                        parallelize<Compass::down      >(active_kings)
                 ;
         }
 
