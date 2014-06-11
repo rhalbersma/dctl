@@ -7,7 +7,7 @@ namespace detail {
 inline
 constexpr auto abs(int n) noexcept
 {
-        return (n < 0)? -n : n;
+        return (n < 0) ? -n : n;
 }
 
 inline

@@ -51,7 +51,7 @@ public:
         void operator()(Set const& active_kings) const
         {
                 // tag dispatching on king range
-                find_dispatch(active_kings, rules::is_long_ranged_king_t<Rules>{});
+                find_dispatch(active_kings, is_long_ranged_king_t<Rules>{});
         }
 
 private:

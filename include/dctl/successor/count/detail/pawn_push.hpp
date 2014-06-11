@@ -22,6 +22,7 @@ struct Count<Color, pieces::pawn, select::push, Position>
 
 private:
         using Board = typename Position::board_type;
+        using Set = typename Board::set_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::push, Position>;
 
@@ -39,23 +40,22 @@ public:
 
         // function call operators
 
-        template<class Set>
         int operator()(Set const& active_pawns) const
         {
                 return active_pawns.empty() ? 0 : branch(active_pawns);
         }
 
 private:
-        template<class Set>
         int branch(Set const& active_pawns) const
         {
+                assert(false);
                 return
                         parallelize<Compass::left_up >(active_pawns) +
                         parallelize<Compass::right_up>(active_pawns)
                 ;
         }
 
-        template<int Direction, class Set>
+        template<int Direction>
         int parallelize(Set const& active_pawns) const
         {
                 return Sink<Board, Direction, rules::range::distance_1>()(

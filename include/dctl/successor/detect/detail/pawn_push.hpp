@@ -22,6 +22,7 @@ struct Detect<Color, pieces::pawn, select::push, Position, Range>
 
 private:
         using Board = typename Position::board_type;
+        using Set = typename Board::set_type;
         using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::push, Position>;
 
@@ -39,14 +40,12 @@ public:
 
         // function call operators
 
-        template<class Set>
         bool operator()(Set const& active_pawns) const
         {
                 return active_pawns.empty() ? false : branch(active_pawns);
         }
 
 private:
-        template<class Set>
         bool branch(Set const& active_pawns) const
         {
                 return
@@ -55,10 +54,10 @@ private:
                 ;
         }
 
-        template<int Direction, class Set>
+        template<int Direction>
         bool parallelize(Set const& active_pawns) const
         {
-                return !Sink<Board, Direction, rules::range::distance_1>()(
+                return !Sink<Board, Direction, rules::range::distance_1>{}(
                         active_pawns, propagate_.path()
                 ).empty();
         }
