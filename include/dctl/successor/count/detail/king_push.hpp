@@ -60,7 +60,7 @@ private:
         template<int Direction>
         int parallelize(Set const& active_kings) const
         {
-                return Sink<Board, Direction, typename rules::range::move<Rules>::type>()(
+                return Sink<Board, Direction, typename rules::range::move<Rules>::type>{}(
                         active_kings, propagate_.path()
                 ).size();
         }

@@ -48,7 +48,6 @@ public:
 private:
         int branch(Set const& active_pawns) const
         {
-                assert(false);
                 return
                         parallelize<Compass::left_up >(active_pawns) +
                         parallelize<Compass::right_up>(active_pawns)
@@ -58,7 +57,7 @@ private:
         template<int Direction>
         int parallelize(Set const& active_pawns) const
         {
-                return Sink<Board, Direction, rules::range::distance_1>()(
+                return Sink<Board, Direction, rules::range::distance_1>{}(
                         active_pawns, propagate_.path()
                 ).size();
         }

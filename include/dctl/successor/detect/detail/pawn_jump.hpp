@@ -54,7 +54,7 @@ private:
                 return branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
         }
 
-        // overload for pawns that only jump in the 2 forward diagonal directions
+        // overload for pawns that jump in the 2 forward diagonal directions
         bool branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::false_type>) const
         {
                 return
