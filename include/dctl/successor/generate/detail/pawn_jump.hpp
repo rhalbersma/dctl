@@ -85,7 +85,7 @@ private:
                 branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
         }
 
-        // overload for pawns that only jump in the 2 forward diagonal directions
+        // overload for pawns that jump in the 2 forward diagonal directions
         void branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::false_type>) const
         {
                 serialize<Compass::left_up   >(active_pawns);
@@ -239,14 +239,14 @@ private:
                 return turn_dispatch(jumper, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
         }
 
-        // overload for pawns that turn in all the 6 non-parallel diagonal and orthogonal directions
+        // overload for pawns that jump in the 2 forward diagonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::false_type>) const
         {
                 return scan(ray::mirror<Compass::up>(jumper));
         }
 
-        // overload for pawns that turn in the 2 sideways directions
+        // overload for pawns that jump in the 4 forward and backward diagonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::false_type>) const
         {
@@ -256,14 +256,16 @@ private:
                 ;
         }
 
-        // overload for pawns that turn in the 1 mirrored forward direction
+        // overload for pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::true_type>) const
         {
+                // TODO
+                assert(false);
                 return scan(jumper);
         }
 
-        // overload for pawns that turn in the remaining 4 diagonal or orthogonal directions
+        // overload for pawns that jump in the 8 diagonal and orthogonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::true_type>) const
         {

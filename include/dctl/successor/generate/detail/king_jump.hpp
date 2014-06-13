@@ -229,38 +229,30 @@ private:
         bool turn(Iterator jumper) const
         {
                 // tag dispatching on king turn directions
-                return turn_dispatch(jumper, std::pair<is_orthogonal_jump_t<Rules>, is_reversible_king_jump_direction_t<Rules>>{});
+                return turn_dispatch(jumper, is_orthogonal_jump_t<Rules>{});
         }
 
-        // overload for kings that turn in all the 6 non-parallel diagonal and orthogonal directions
+        // overload for kings that jump in the 4 diagonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::false_type>) const
+        bool turn_dispatch(Iterator jumper, std::false_type) const
         {
                 return
-                        turn_dispatch(jumper, rules::directions::diag{}) |
-                        turn_dispatch(jumper, rules::directions::orth{})
+                        scan(ray::rotate<+90_deg>(jumper)) |
+                        scan(ray::rotate<-90_deg>(jumper))
                 ;
         }
 
-        // overload for kings that turn in the 2 sideways directions
+        // overload for kings that jump in the 8 diagonal and orthogonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, rules::directions::diag) const
+        bool turn_dispatch(Iterator jumper, std::true_type) const
         {
                 return
-                        scan(ray::rotate<-90_deg>(jumper)) |
-                        scan(ray::rotate<+90_deg>(jumper))
-                ;
-        }
-
-        // overload for kings that turn in the remaining 4 diagonal or orthogonal directions
-        template<class Iterator>
-        bool turn_dispatch(Iterator jumper, rules::directions::orth) const
-        {
-                return
-                        scan(ray::rotate< -45_deg>(jumper)) |
                         scan(ray::rotate< +45_deg>(jumper)) |
-                        scan(ray::rotate<-135_deg>(jumper)) |
-                        scan(ray::rotate<+135_deg>(jumper))
+                        scan(ray::rotate< -45_deg>(jumper)) |
+                        scan(ray::rotate< +90_deg>(jumper)) |
+                        scan(ray::rotate< -90_deg>(jumper)) |
+                        scan(ray::rotate<+135_deg>(jumper)) |
+                        scan(ray::rotate<-135_deg>(jumper))
                 ;
         }
 
