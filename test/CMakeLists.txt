@@ -1,12 +1,12 @@
 ###############################################################
-# Test project settings
+# Project settings
 ###############################################################
 
 # require a recent CMake version
 cmake_minimum_required(VERSION 2.8)
 
 # this is a C++ only project
-project(TestProject CXX)
+project(MyAwesomeLibraryTestSuite CXX)
 
 ###############################################################
 # Compiler settings
@@ -56,17 +56,17 @@ add_definitions(-D BOOST_ALL_DYN_LINK)
 add_definitions(-D BOOST_TEST_MAIN)
 
 ###############################################################
-# Parent project headers
+# MyAwesomeLibrary headers
 ###############################################################
 
-# locate the project under test
-set(ParentProject_include_dirs ${PROJECT_SOURCE_DIR}/../include)
+# locate the library that is being tested
+set(MyAwesomeLibrary_include_dirs ${PROJECT_SOURCE_DIR}/../include)
 
 # find the parent project headers
-file(GLOB_RECURSE ParentProject_headers ${ParentProject_include_dirs}/*.hpp)
+file(GLOB_RECURSE MyAwesomeLibrary_headers ${MyAwesomeLibrary_include_dirs}/*.hpp)
 
 ###############################################################
-# Standalone parent project headers
+# Check whether MyAwesomeLibrary headers are standalone
 ###############################################################
 
 # to enable this part: cmake -D CheckStandalone=true
@@ -76,12 +76,12 @@ if(CheckStandalone)
   set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
   # compile against the parent project headers
-  set(CMAKE_REQUIRED_INCLUDES ${ParentProject_include_dirs})
+  set(CMAKE_REQUIRED_INCLUDES ${MyAwesomeLibrary_include_dirs})
 
   # enable standalone testing of the header files
   include(CheckIncludeFileCXX)
 
-  foreach(h ${ParentProject_headers})
+  foreach(h ${MyAwesomeLibrary_headers})
     # header name without extension
     get_filename_component(header_name ${h} NAME_WE)
 
@@ -100,45 +100,45 @@ endif()
 ###############################################################
 
 # get the test sources
-file(GLOB_RECURSE test_sources RELATIVE ${PROJECT_SOURCE_DIR} *.cpp)
+file(GLOB_RECURSE MyAwesomeLibraryTestSuite_sources RELATIVE ${PROJECT_SOURCE_DIR} *.cpp)
 
 # except any CMake generated sources under build/
-string(REGEX REPLACE "build/[^;]+;?" "" test_sources "${test_sources}")
+string(REGEX REPLACE "build/[^;]+;?" "" MyAwesomeLibraryTestSuite_sources "${MyAwesomeLibraryTestSuite_sources}")
 
 # get the test headers
-file(GLOB_RECURSE test_headers RELATIVE ${PROJECT_SOURCE_DIR} *.hpp)
+file(GLOB_RECURSE MyAwesomeLibraryTestSuite_headers RELATIVE ${PROJECT_SOURCE_DIR} *.hpp)
 
 # except any CMake generated headers under build/
-string(REGEX REPLACE "build/[^;]+;?" "" test_headers "${test_headers}")
+string(REGEX REPLACE "build/[^;]+;?" "" MyAwesomeLibraryTestSuite_headers "${MyAwesomeLibraryTestSuite_headers}")
 
 # compile against the test headers, the parent project, and the Boost libraries
-include_directories(${PROJECT_SOURCE_DIR} ${ParentProject_include_dirs} ${Boost_INCLUDE_DIRS})
+include_directories(${PROJECT_SOURCE_DIR}/src ${MyAwesomeLibrary_include_dirs} ${Boost_INCLUDE_DIRS})
 
 # calls enable_testing()
 include(CTest)
 
-foreach(t ${test_sources})
+foreach(t ${MyAwesomeLibraryTestSuite_sources})
   # get the relative path in the source tree
   get_filename_component(test_path ${t} PATH)
+
+  # strip the leading "src/" part from the test path
+  string(REGEX REPLACE "^src/" "" test_rel_path ${test_path})
 
   # get the source name without extension
   get_filename_component(test_name ${t} NAME_WE)
 
   # concatenate the relative path and name in an underscore separated identifier
-  string(REPLACE "/" "_" test_concat "${test_path}/${test_name}")
-
-  # strip the leading "test_" part from the test ID
-  string(REGEX REPLACE "^test_" "" test_id ${test_concat})
+  string(REPLACE "/" "_" test_id "${test_rel_path}/${test_name}")
 
   # depend on the current source file, all the test headers, and the parent project headers
-  add_executable(${test_id} ${t} ${test_headers} ${ParentProject_headers})
+  add_executable(${test_id} ${t} ${MyAwesomeLibraryTestSuite_headers} ${MyAwesomeLibrary_headers})
 
   # link against the Boost libraries
   target_link_libraries(${test_id} ${Boost_LIBRARIES})
 
   # match the relative path in the build tree with the corresponding one in the source tree 
-  set_target_properties(${test_id} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${test_path})
+  set_target_properties(${test_id} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${test_rel_path})
 
   # add a test with executable in the relative path of the build tree
-  add_test(${test_id} ${test_path}/${test_id})
+  add_test(${test_id} ${test_rel_path}/${test_id})
 endforeach()
