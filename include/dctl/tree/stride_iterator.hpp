@@ -2,7 +2,6 @@
 #include <cstddef>                      // size_t
 #include <iterator>                     // advance, forward_iterator_tag, iterator, iterator_traits
 #include <type_traits>                  // is_base_of, is_copy_constructible, is_default_constructible
-#include <boost/mpl/assert.hpp>         // BOOST_MPL_ASSERT
 #include <boost/operators.hpp>          // equality_comparable1
 
 namespace dctl {
@@ -20,10 +19,6 @@ struct stride_forward_iterator
 ,       std::iterator<std::forward_iterator_tag, typename std::iterator_traits<ForwardIterator>::value_type>
         >
 {
-        BOOST_MPL_ASSERT(( std::is_base_of<std::forward_iterator_tag, typename std::iterator_traits<ForwardIterator>::iterator_category> ));
-        BOOST_MPL_ASSERT(( std::is_default_constructible<ForwardIterator> ));
-        BOOST_MPL_ASSERT(( std::is_copy_constructible<ForwardIterator> ));
-
 private:
         // dependent names now in scope
 

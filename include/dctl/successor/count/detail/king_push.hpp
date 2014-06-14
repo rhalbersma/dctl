@@ -4,7 +4,8 @@
 #include <dctl/successor/select/push.hpp>
 #include <dctl/pieces/king.hpp>
 
-#include <dctl/board/compass.hpp>                       // Compass
+#include <dctl/angle/directions.hpp>                    // left_up, right_up, left_down, right_down
+#include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/wave/patterns.hpp>
 #include <dctl/rules/traits.hpp>
 
@@ -24,8 +25,9 @@ private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
-        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::push, Position>;
+
+        static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
@@ -50,10 +52,10 @@ private:
         int branch(Set const& active_kings) const
         {
                 return
-                        parallelize<Compass::left_down >(active_kings) +
-                        parallelize<Compass::right_down>(active_kings) +
-                        parallelize<Compass::left_up   >(active_kings) +
-                        parallelize<Compass::right_up  >(active_kings)
+                        parallelize<left_down (orientation)>(active_kings) +
+                        parallelize<right_down(orientation)>(active_kings) +
+                        parallelize<left_up   (orientation)>(active_kings) +
+                        parallelize<right_up  (orientation)>(active_kings)
                 ;
         }
 

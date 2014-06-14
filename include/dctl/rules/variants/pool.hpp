@@ -1,9 +1,9 @@
 #pragma once
-#include <type_traits>                          // integral_constant
 #include <dctl/rules/variants/pool_fwd.hpp>     // Pool
 #include <dctl/rules/types/directions.hpp>      // diag
 #include <dctl/rules/types/precedence.hpp>      // none
 #include <dctl/successor/value.hpp>             // Value (primary template)
+#include <type_traits>                          // integral_constant
 
 namespace dctl {
 namespace rules {

@@ -4,7 +4,8 @@
 #include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>
 
-#include <dctl/board/compass.hpp>                       // Compass
+#include <dctl/angle/directions.hpp>                    // up, left_up, right_up, left, right, left_down, right_down, down
+#include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/wave/patterns.hpp>
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
@@ -25,8 +26,9 @@ private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
-        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jump, Position>;
+
+        static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
@@ -57,26 +59,28 @@ private:
         // overload for kings that jump in the 4 diagonal directions
         bool branch_dispatch(Set const& active_kings, std::false_type) const
         {
+                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
-                        parallelize<Compass::left_up   >(active_kings) ||
-                        parallelize<Compass::right_up  >(active_kings) ||
-                        parallelize<Compass::left_down >(active_kings) ||
-                        parallelize<Compass::right_down>(active_kings)
+                        parallelize<left_up   (orientation)>(active_kings) ||
+                        parallelize<right_up  (orientation)>(active_kings) ||
+                        parallelize<left_down (orientation)>(active_kings) ||
+                        parallelize<right_down(orientation)>(active_kings)
                 ;
         }
 
         // overload for kings that jump in the 8 diagonal and orthogonal directions
         bool branch_dispatch(Set const& active_kings, std::true_type) const
         {
+                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
-                        parallelize<Compass::up        >(active_kings) ||
-                        parallelize<Compass::left_up   >(active_kings) ||
-                        parallelize<Compass::right_up  >(active_kings) ||
-                        parallelize<Compass::left      >(active_kings) ||
-                        parallelize<Compass::right     >(active_kings) ||
-                        parallelize<Compass::left_down >(active_kings) ||
-                        parallelize<Compass::right_down>(active_kings) ||
-                        parallelize<Compass::down      >(active_kings)
+                        parallelize<up        (orientation)>(active_kings) ||
+                        parallelize<left_up   (orientation)>(active_kings) ||
+                        parallelize<right_up  (orientation)>(active_kings) ||
+                        parallelize<left      (orientation)>(active_kings) ||
+                        parallelize<right     (orientation)>(active_kings) ||
+                        parallelize<left_down (orientation)>(active_kings) ||
+                        parallelize<right_down(orientation)>(active_kings) ||
+                        parallelize<down      (orientation)>(active_kings)
                 ;
         }
 

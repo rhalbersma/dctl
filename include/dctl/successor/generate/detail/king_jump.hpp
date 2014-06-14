@@ -4,9 +4,9 @@
 #include <dctl/successor/select/jump.hpp>                       // jump
 #include <dctl/pieces/king.hpp>                                 // king
 
-#include <dctl/angle.hpp>                                       // _deg, rotate
-#include <dctl/board/compass.hpp>                               // Compass
-#include <dctl/ray.hpp>                                         // make_iterator, rotate
+#include <dctl/angle.hpp>                                       // _deg, rotate, inverse
+#include <dctl/board/orientation.hpp>                           // orientation_v
+#include <dctl/ray.hpp>                                         // make_iterator, rotate, mirror
 #include <dctl/rules/traits.hpp>                                // traits
 #include <dctl/utility/algorithm.hpp>
 #include <cassert>                                              // assert
@@ -31,8 +31,12 @@ private:
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
         using Move = typename Sequence::value_type;
-        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jump, Position>;
+
+        static constexpr auto orientation = orientation_v<Board, Color>;
+
+        template<class Iterator>
+        static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
         // representation
 
@@ -95,29 +99,29 @@ private:
         // overload for kings that jump in the 4 diagonal directions
         void branch_dispatch(int from_sq, std::false_type) const
         {
-                find(along_ray<Compass::left_up   >(from_sq));
-                find(along_ray<Compass::right_up  >(from_sq));
-                find(along_ray<Compass::left_down >(from_sq));
-                find(along_ray<Compass::right_down>(from_sq));
+                find(along_ray<left_up   (orientation)>(from_sq));
+                find(along_ray<right_up  (orientation)>(from_sq));
+                find(along_ray<left_down (orientation)>(from_sq));
+                find(along_ray<right_down(orientation)>(from_sq));
         }
 
         // overload for kings that jump in the 8 diagonal and orthogonal directions
         void branch_dispatch(int from_sq, std::true_type) const
         {
-                find(along_ray<Compass::up        >(from_sq));
-                find(along_ray<Compass::left_up   >(from_sq));
-                find(along_ray<Compass::right_up  >(from_sq));
-                find(along_ray<Compass::left      >(from_sq));
-                find(along_ray<Compass::right     >(from_sq));
-                find(along_ray<Compass::left_down >(from_sq));
-                find(along_ray<Compass::right_down>(from_sq));
-                find(along_ray<Compass::down      >(from_sq));
+                find(along_ray<up        (orientation)>(from_sq));
+                find(along_ray<left_up   (orientation)>(from_sq));
+                find(along_ray<right_up  (orientation)>(from_sq));
+                find(along_ray<left      (orientation)>(from_sq));
+                find(along_ray<right     (orientation)>(from_sq));
+                find(along_ray<left_down (orientation)>(from_sq));
+                find(along_ray<right_down(orientation)>(from_sq));
+                find(along_ray<down      (orientation)>(from_sq));
         }
 
         template<class Iterator>
         void find(Iterator jumper) const
         {
-                slide(jumper, capture_.template path<ray::direction<Iterator>::value>());
+                slide(jumper, capture_.template path<ray::direction_v<Iterator>>());
                 if (capture_.targets_with_king(jumper))
                         explore(jumper);        // recursively find more jumps
         }
@@ -176,6 +180,7 @@ private:
         template<class Iterator>
         bool find_next_dispatch(Iterator jumper, std::true_type) const
         {
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return land(jumper) | reverse(jumper);
         }
 
@@ -214,7 +219,7 @@ private:
         template<class Iterator>
         bool land_dispatch(Iterator jumper, rules::range::distance_N) const
         {
-                // NOTE: capture_.template path<Direction>() would be an ERROR here
+                // CORRECTNESS: capture_.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
                 assert(capture_.path(*jumper));
                 auto found_next = false;
@@ -236,6 +241,9 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::false_type) const
         {
+                static_assert(is_diagonal(direction_v<Iterator>), "");
+
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::rotate<+90_deg>(jumper)) |
                         scan(ray::rotate<-90_deg>(jumper))
@@ -246,6 +254,9 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::true_type) const
         {
+                static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>), "");
+
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::rotate< +45_deg>(jumper)) |
                         scan(ray::rotate< -45_deg>(jumper)) |
@@ -259,7 +270,7 @@ private:
         template<class Iterator>
         bool scan(Iterator jumper) const
         {
-                slide(jumper, capture_.template path<ray::direction<Iterator>::value>());
+                slide(jumper, capture_.template path<ray::direction_v<Iterator>>());
                 return is_en_prise(jumper);
         }
 

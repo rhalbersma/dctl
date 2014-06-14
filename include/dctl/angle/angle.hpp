@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/angle/detail/abs_remainder.hpp>  // abs_remainder
 #include <cassert>                              // assert
+#include <type_traits>                          // integral_constant
 
 namespace dctl {
 
@@ -129,5 +130,8 @@ private:
 
         int value_{};
 };
+
+template<int N>
+using angle_t = std::integral_constant<int, Angle{N}>;
 
 }       // namespace dctl

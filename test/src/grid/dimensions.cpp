@@ -1,14 +1,14 @@
-#include <algorithm>                            // all_of
-#include <iterator>                             // begin, end
-#include <type_traits>                          // common_type
+#include <dctl/angle.hpp>                       // _deg, inverse, rotate
+#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
+#include <dctl/grid/dimensions.hpp>             // Dimensions
+#include <group.hpp>                            // action::is_realized, make
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
-#include <dctl/angle.hpp>                       // _deg
-#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
-#include <dctl/grid/dimensions.hpp>             // Dimensions
-#include <group.hpp>                       // is_realized, make_cyclic
+#include <algorithm>                            // all_of
+#include <iterator>                             // begin, end
+#include <type_traits>                          // common_type
 
 namespace dctl {
 namespace board {
@@ -33,19 +33,25 @@ using BoardSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimensions, T, BoardSequence)
 {
-        auto const C1 = group::make_cyclic({
-                0_deg
-        });
+        auto const op = [](auto i, auto j){ return rotate(i, j); };
+        auto const inv = [](auto i){ return inverse(i); };
 
-        auto const C2 = group::make_cyclic({
-                0_deg, 180_deg
-        });
+        auto const C1 = make_group(
+                { 0_deg },
+                op, inv
+        );
 
-        auto const C4 = group::make_cyclic({
-                0_deg,  90_deg, 180_deg, 270_deg
-        });
+        auto const C2 = make_group(
+                { 0_deg, 180_deg },
+                op, inv
+        );
 
-        using CyclicGroup = std::common_type<decltype(C1), decltype(C2), decltype(C4)>::type;
+        auto const C4 = make_group(
+                { 0_deg,  90_deg, 180_deg, 270_deg },
+                op, inv
+        );
+
+        using CyclicGroup = typename std::common_type<decltype(C1), decltype(C2), decltype(C4)>::type;
 
         CyclicGroup const C_N[] =
         {
@@ -55,7 +61,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimens
         auto const dim = grid::DimensionsObject{ T::width, T::height, T::inverted };
 
         BOOST_CHECK(
-                std::all_of(std::begin(C_N), std::end(C_N), [&](auto const& g) {
+                std::all_of(begin(C_N), end(C_N), [&](auto const& g) {
                         return group::action::is_realized(dim, g);
                 })
         );

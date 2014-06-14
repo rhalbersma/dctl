@@ -4,7 +4,8 @@
 #include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>
 
-#include <dctl/board/compass.hpp>                       // Compass
+#include <dctl/angle/directions.hpp>                    // left_up, right_up
+#include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/wave/patterns.hpp>
 #include <dctl/rules/traits.hpp>
 
@@ -23,8 +24,9 @@ struct Detect<Color, pieces::pawn, select::push, Position, Range>
 private:
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
-        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::push, Position>;
+
+        static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
@@ -48,9 +50,10 @@ public:
 private:
         bool branch(Set const& active_pawns) const
         {
+                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
-                        parallelize<Compass::left_up >(active_pawns) ||
-                        parallelize<Compass::right_up>(active_pawns)
+                        parallelize<left_up (orientation)>(active_pawns) ||
+                        parallelize<right_up(orientation)>(active_pawns)
                 ;
         }
 

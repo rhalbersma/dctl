@@ -6,12 +6,12 @@
 #include <dctl/pieces/pawn.hpp>                                 // pawn
 #include <dctl/pieces/king.hpp>
 
-#include <dctl/angle.hpp>                                       // _deg, rotate, mirror
-#include <dctl/board/compass.hpp>                               // Compass
+#include <dctl/angle.hpp>                                       // _deg, rotate, inverse
+#include <dctl/board/orientation.hpp>                           // orientation_v
 #include <dctl/position/promotion.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/algorithm.hpp>
-#include <dctl/ray.hpp>
+#include <dctl/ray.hpp>                                         // make_iterator, rotate, mirror, turn
 #include <dctl/wave/iterator.hpp>
 #include <cassert>                                              // assert
 #include <iterator>                                             // prev
@@ -36,8 +36,12 @@ private:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
-        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::jump, Position>;
+
+        static constexpr auto orientation = orientation_v<Board, Color>;
+
+        template<class Iterator>
+        static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
         // representation
 
@@ -88,40 +92,40 @@ private:
         // overload for pawns that jump in the 2 forward diagonal directions
         void branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::false_type>) const
         {
-                serialize<Compass::left_up   >(active_pawns);
-                serialize<Compass::right_up  >(active_pawns);
+                serialize<left_up   (orientation)>(active_pawns);
+                serialize<right_up  (orientation)>(active_pawns);
         }
 
         // overload for pawns that jump in the 4 forward and backward diagonal directions
         void branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::false_type>) const
         {
-                serialize<Compass::left_up   >(active_pawns);
-                serialize<Compass::right_up  >(active_pawns);
-                serialize<Compass::left_down >(active_pawns);
-                serialize<Compass::right_down>(active_pawns);
+                serialize<left_up   (orientation)>(active_pawns);
+                serialize<right_up  (orientation)>(active_pawns);
+                serialize<left_down (orientation)>(active_pawns);
+                serialize<right_down(orientation)>(active_pawns);
         }
 
         // overload for pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
         void branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::true_type>) const
         {
-                serialize<Compass::up        >(active_pawns);
-                serialize<Compass::left_up   >(active_pawns);
-                serialize<Compass::right_up  >(active_pawns);
-                serialize<Compass::left      >(active_pawns);
-                serialize<Compass::right     >(active_pawns);
+                serialize<up        (orientation)>(active_pawns);
+                serialize<left_up   (orientation)>(active_pawns);
+                serialize<right_up  (orientation)>(active_pawns);
+                serialize<left      (orientation)>(active_pawns);
+                serialize<right     (orientation)>(active_pawns);
         }
 
         // overload for pawns that jump in the 8 diagonal and orthogonal directions
         void branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::true_type>) const
         {
-                serialize<Compass::up        >(active_pawns);
-                serialize<Compass::left_up   >(active_pawns);
-                serialize<Compass::right_up  >(active_pawns);
-                serialize<Compass::left      >(active_pawns);
-                serialize<Compass::right     >(active_pawns);
-                serialize<Compass::left_down >(active_pawns);
-                serialize<Compass::right_down>(active_pawns);
-                serialize<Compass::down      >(active_pawns);
+                serialize<up        (orientation)>(active_pawns);
+                serialize<left_up   (orientation)>(active_pawns);
+                serialize<right_up  (orientation)>(active_pawns);
+                serialize<left      (orientation)>(active_pawns);
+                serialize<right     (orientation)>(active_pawns);
+                serialize<left_down (orientation)>(active_pawns);
+                serialize<right_down(orientation)>(active_pawns);
+                serialize<down      (orientation)>(active_pawns);
         }
 
         template<int Direction>
@@ -229,6 +233,7 @@ private:
         template<class Iterator>
         bool find_next(Iterator jumper) const
         {
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return scan(jumper) | turn(jumper);
         }
 
@@ -243,13 +248,17 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::false_type>) const
         {
-                return scan(ray::mirror<Compass::up>(jumper));
+                static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>), "");
+                return scan(ray::mirror<up(orientation)>(jumper));
         }
 
         // overload for pawns that jump in the 4 forward and backward diagonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::false_type>) const
         {
+                static_assert(is_diagonal(direction_v<Iterator>), "");
+
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::rotate<+90_deg>(jumper)) |
                         scan(ray::rotate<-90_deg>(jumper))
@@ -260,15 +269,82 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::true_type>) const
         {
-                // TODO
-                assert(false);
-                return scan(jumper);
+                static_assert(!is_down(direction_v<Iterator>) && (is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>)), "");
+
+                // tag dispatching on the current jump direction
+                return turn_dispatch(jumper, angle_t<direction_v<Iterator>>{});
+        }
+
+        // overload for the upward direction
+        template<class Iterator>
+        bool turn_dispatch(Iterator jumper, angle_t<up(orientation)>)
+        {
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
+                return
+                        scan(ray::turn<left_up (orientation)>(jumper)) |
+                        scan(ray::turn<right_up(orientation)>(jumper)) |
+                        scan(ray::turn<left    (orientation)>(jumper)) |
+                        scan(ray::turn<right   (orientation)>(jumper))
+                ;
+        }
+
+        // overload for the left upward direction
+        template<class Iterator>
+        bool turn_dispatch(Iterator jumper, angle_t<left_up(orientation)>)
+        {
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
+                return
+                        scan(ray::turn<up      (orientation)>(jumper)) |
+                        scan(ray::turn<right_up(orientation)>(jumper)) |
+                        scan(ray::turn<left    (orientation)>(jumper)) |
+                        scan(ray::turn<right   (orientation)>(jumper))
+                ;
+        }
+
+        // overload for the right upward direction
+        template<class Iterator>
+        bool turn_dispatch(Iterator jumper, angle_t<right_up(orientation)>)
+        {
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
+                return
+                        scan(ray::turn<up      (orientation)>(jumper)) |
+                        scan(ray::turn<left_up (orientation)>(jumper)) |
+                        scan(ray::turn<left    (orientation)>(jumper)) |
+                        scan(ray::turn<right   (orientation)>(jumper))
+                ;
+        }
+
+        // overload for the left direction
+        template<class Iterator>
+        bool turn_dispatch(Iterator jumper, angle_t<left(orientation)>)
+        {
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
+                return
+                        scan(ray::turn<up      (orientation)>(jumper)) |
+                        scan(ray::turn<left_up (orientation)>(jumper)) |
+                        scan(ray::turn<right_up(orientation)>(jumper))
+                ;
+        }
+
+        // overload for the right direction
+        template<class Iterator>
+        bool turn_dispatch(Iterator jumper, angle_t<right(orientation)>)
+        {
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
+                return
+                        scan(ray::turn<up      (orientation)>(jumper)) |
+                        scan(ray::turn<left_up (orientation)>(jumper)) |
+                        scan(ray::turn<right_up(orientation)>(jumper))
+                ;
         }
 
         // overload for pawns that jump in the 8 diagonal and orthogonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::true_type>) const
         {
+                static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>), "");
+
+                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::rotate< +45_deg>(jumper)) |
                         scan(ray::rotate< -45_deg>(jumper)) |

@@ -19,5 +19,13 @@ auto mirror(Iterator<Board, Direction> it)
         return { it.base() };
 }
 
+template<int Theta, class Board, int Direction>
+auto turn(Iterator<Board, Direction> it)
+-> Iterator<Board, Theta>
+{
+        static_assert(Theta != Direction, "");
+        return { it.base() };
+}
+
 }       // namespace ray
 }       // namespace dctl

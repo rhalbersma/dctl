@@ -4,7 +4,8 @@
 #include <dctl/successor/select/push.hpp>
 #include <dctl/pieces/pawn.hpp>
 
-#include <dctl/board/compass.hpp>                       // Compass
+#include <dctl/angle/directions.hpp>                    // left_up, right_up
+#include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/wave/patterns.hpp>
 #include <dctl/rules/traits.hpp>
 
@@ -23,8 +24,9 @@ struct Count<Color, pieces::pawn, select::push, Position>
 private:
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
-        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::push, Position>;
+
+        static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
@@ -49,8 +51,8 @@ private:
         int branch(Set const& active_pawns) const
         {
                 return
-                        parallelize<Compass::left_up >(active_pawns) +
-                        parallelize<Compass::right_up>(active_pawns)
+                        parallelize<left_up (orientation)>(active_pawns) +
+                        parallelize<right_up(orientation)>(active_pawns)
                 ;
         }
 

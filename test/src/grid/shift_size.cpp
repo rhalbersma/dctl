@@ -1,14 +1,14 @@
-#include <algorithm>                            // all_of
-#include <iterator>                             // begin, end
+#include <dctl/angle.hpp>                       // Angle, _deg, rotate
+#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
+#include <dctl/grid/shift_size.hpp>             // shift_size
 #include <boost/mpl/int.hpp>                    // int_
 #include <boost/mpl/placeholders.hpp>           // _1
 #include <boost/mpl/transform.hpp>              // transform
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK_EQUAL
-#include <dctl/angle.hpp>                       // Angle, _deg, rotate
-#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
-#include <dctl/grid/shift_size.hpp>             // shift_size
+#include <algorithm>                            // all_of
+#include <iterator>                             // begin, end
 
 namespace dctl {
 namespace board {
@@ -50,8 +50,9 @@ Angle const directions[] =
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RotateAngle180SymmetryForAllDirections, T, GridSequence)
 {
+        using std::begin; using std::end;
         BOOST_CHECK(
-                std::all_of(std::begin(directions), std::end(directions), [](auto direction) {
+                std::all_of(begin(directions), end(directions), [](auto direction) {
                         return grid::shift_size<T>(direction) == grid::shift_size<T>(rotate(direction, 180_deg));
                 })
         );
