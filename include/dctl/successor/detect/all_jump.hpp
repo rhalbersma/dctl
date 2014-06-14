@@ -63,7 +63,8 @@ private:
         {
                 Propagate<select::jump, Position> propagate(p);
 
-                // speculate #pawns > #kings so that the logical OR is more likely to short-circuit
+                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
+                // SPECULATIE: #pawns > #kings for earliest possible short-circuiting
                 return
                         PawnJump<Position>{propagate}(p.pawns(Color)) ||
                         KingJump<Position>{propagate}(p.kings(Color))

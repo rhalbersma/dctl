@@ -13,7 +13,6 @@
 #include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
 #include <dctl/board/mask.hpp>
-#include <boost/mpl/assert.hpp>
 #include <cassert>                      // assert
 #include <iterator>                     // begin, end, prev
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
@@ -91,7 +90,7 @@ public:
 
         void toggle_promotion()
         {
-                BOOST_MPL_ASSERT((is_en_passant_promotion_t<Rules>));
+                static_assert(is_en_passant_promotion_v<Rules>, "");
                 current_.toggle_promotion();
         }
 
@@ -138,7 +137,7 @@ public:
         template<class Iterator>
         auto targets_with_king(Iterator it) const
         {
-                return targets_with_king<ray::direction<Iterator>::value>().test(*it);
+                return targets_with_king<ray::direction_v<Iterator>>().test(*it);
         }
 
         template<int Direction>
@@ -150,7 +149,7 @@ public:
         template<class Iterator>
         auto targets_with_pawn(Iterator it) const
         {
-                return targets_with_pawn<ray::direction<Iterator>::value>().test(*it);
+                return targets_with_pawn<ray::direction_v<Iterator>>().test(*it);
         }
 
         auto path() const
@@ -208,7 +207,7 @@ public:
 
         auto is_promotion() const
         {
-                BOOST_MPL_ASSERT((is_en_passant_promotion_t<Rules>));
+                static_assert(is_en_passant_promotion_v<Rules>, "");
                 return current_.is_promotion();
         }
 

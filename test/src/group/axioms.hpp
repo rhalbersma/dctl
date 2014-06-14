@@ -1,7 +1,7 @@
 #pragma once
+#include <group/primitives.hpp>         // set, op, id, inv
 #include <algorithm>                    // all_of, find, find_if
 #include <iterator>                     // begin, end
-#include <group/primitives.hpp>    // set, op, id, inv
 
 namespace dctl {
 namespace group {
@@ -10,8 +10,8 @@ namespace axioms {
 template<class Group>
 auto is_closure(Group const& g) noexcept
 {
-        auto const first = std::begin(group::set(g));
-        auto const last = std::end(group::set(g));
+        auto const first = begin(group::set(g));
+        auto const last = end(group::set(g));
         auto const op = group::op(g);
 
         return std::all_of(first, last, [&](auto const& a) {
@@ -60,8 +60,8 @@ auto is_identity(Group const& g) noexcept
 template<class Group>
 auto is_inverse(Group const& g) noexcept
 {
-        auto const first = std::begin(group::set(g));
-        auto const last = std::end(group::set(g));
+        auto const first = begin(group::set(g));
+        auto const last = end(group::set(g));
         auto const op = group::op(g);
         auto const id = group::id(g);
         auto const inv = group::inv(g);

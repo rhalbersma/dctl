@@ -3,7 +3,7 @@
 #include <dctl/successor/propagate/push.hpp>                    // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>                       // push
 #include <dctl/pieces/king.hpp>                                 // king
-#include <dctl/board/compass.hpp>                               // Compass
+#include <dctl/board/orientation.hpp>                               // Compass
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/ray.hpp>
 #include <dctl/rules/traits.hpp>
@@ -29,8 +29,8 @@ private:
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
         using Move = typename Sequence::value_type;
-        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::push, Position>;
+        static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
@@ -61,20 +61,20 @@ private:
                 if (active_kings.empty())
                         return;
 
-                transform_movers<Compass::left_down >(active_kings);
-                transform_movers<Compass::right_down>(active_kings);
-                transform_movers<Compass::left_up   >(active_kings);
-                transform_movers<Compass::right_up  >(active_kings);
+                transform_movers<left_down (orientation)>(active_kings);
+                transform_movers<right_down(orientation)>(active_kings);
+                transform_movers<left_up   (orientation)>(active_kings);
+                transform_movers<right_up  (orientation)>(active_kings);
         }
 
         // overload for long ranged kings
         void find_dispatch(Set const& active_kings, std::true_type) const
         {
                 for (auto&& from_sq : active_kings) {
-                        transform_targets(along_ray<Compass::left_down >(from_sq));
-                        transform_targets(along_ray<Compass::right_down>(from_sq));
-                        transform_targets(along_ray<Compass::left_up   >(from_sq));
-                        transform_targets(along_ray<Compass::right_up  >(from_sq));
+                        transform_targets(along_ray<left_down (orientation)>(from_sq));
+                        transform_targets(along_ray<right_down(orientation)>(from_sq));
+                        transform_targets(along_ray<left_up   (orientation)>(from_sq));
+                        transform_targets(along_ray<right_up  (orientation)>(from_sq));
                 }
         }
 

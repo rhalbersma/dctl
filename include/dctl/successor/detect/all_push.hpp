@@ -21,6 +21,8 @@ struct Detect<Color, pieces::all, select::push, Range>
                 using PawnPush = detail::Detect<Color, pieces::pawn, select::push, Position, rules::range::distance_1>;
 
                 Propagate<select::push, Position> const propagate(p);
+
+                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
                         KingPush{propagate}(moveable_kings(p, Color)) ||
                         PawnPush{propagate}(p.pawns(Color))

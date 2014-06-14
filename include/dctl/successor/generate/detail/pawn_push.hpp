@@ -4,7 +4,8 @@
 #include <dctl/successor/propagate/push.hpp>                    // Propagate (moves specialization)
 #include <dctl/successor/select/push.hpp>                       // select
 
-#include <dctl/board/compass.hpp>                               // Compass
+#include <dctl/angle/directions.hpp>                            // left_up, right_up
+#include <dctl/board/orientation.hpp>                           // orientation
 #include <dctl/position/promotion.hpp>
 #include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
@@ -28,8 +29,8 @@ private:
         using Board = typename Position::board_type;
         using Set = typename Board::set_type;
         using Move = typename Sequence::value_type;
-        using Compass = board::Compass<Board, Color>;
         using State = Propagate<select::push, Position>;
+        static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
@@ -52,8 +53,8 @@ public:
                 if (active_pawns.empty())
                         return;
 
-                transform_movers<Compass::left_up >(active_pawns);
-                transform_movers<Compass::right_up>(active_pawns);
+                transform_movers<left_up (orientation)>(active_pawns);
+                transform_movers<right_up(orientation)>(active_pawns);
         }
 
 private:

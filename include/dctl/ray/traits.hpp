@@ -5,13 +5,10 @@ namespace dctl {
 namespace ray {
 
 template<class T>
-struct direction;
+constexpr auto direction_v = Angle{};
 
 template<class Board, int Direction>
-struct direction<Iterator<Board, Direction>>
-{
-        enum { value = Direction };
-};
+constexpr auto direction_v<Iterator<Board, Direction>> = Angle{Direction};
 
 }       // namespace ray
 }       // namespace dctl
