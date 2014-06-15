@@ -1,21 +1,20 @@
 #pragma once
-#include <dctl/successor/generate/detail/primary_fwd.hpp>       // Generate (primary template)
-#include <dctl/successor/propagate/jump.hpp>                    // Propagate (jump specialization)
-#include <dctl/successor/select/jump.hpp>                       // jump
-#include <dctl/pieces/king.hpp>                                 // king
+#include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
+#include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
+#include <dctl/successor/select/jump.hpp>               // jump
+#include <dctl/pieces/king.hpp>                         // king
 
-#include <dctl/angle.hpp>                                       // _deg, rotate, inverse
-#include <dctl/board/orientation.hpp>                           // orientation_v
-#include <dctl/ray.hpp>                                         // make_iterator, rotate, mirror
-#include <dctl/rules/traits.hpp>                                // traits
-#include <dctl/utility/algorithm.hpp>
-#include <cassert>                                              // assert
-#include <iterator>                                             // prev
-#include <type_traits>                                          // false_type, true_type
+#include <dctl/angle.hpp>                               // _deg, rotate, inverse
+#include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror
+#include <dctl/rules/traits.hpp>
+#include <dctl/utility/algorithm.hpp>                   // is_duplicate_back
+#include <cassert>                                      // assert
+#include <iterator>                                     // prev
+#include <type_traits>                                  // false_type, true_type
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 // partial specialization for king jumps generation
 template<bool Color, class Position, class Sequence>
@@ -374,6 +373,5 @@ private:
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

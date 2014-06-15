@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
-#include <dctl/successor/generate/detail/king_jump.hpp> // Generate (king jump specialization)
-#include <dctl/successor/generate/detail/pawn_jump.hpp> // Generate (pawn jump specialization)
+#include <dctl/successor/generate/king_jump.hpp>        // Generate (king jump specialization)
+#include <dctl/successor/generate/pawn_jump.hpp>        // Generate (pawn jump specialization)
 #include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/rules/traits.hpp>                        // traits
@@ -27,16 +27,16 @@ public:
 
 private:
         template<class Position, class Sequence>
-        using KingJump = detail::Generate<Color, pieces::king, select::jump, Position, Sequence>;
+        using KingJump = Generate<Color, pieces::king, select::jump, Position, Sequence>;
 
         template<class Position, class Sequence>
-        using PawnJump = detail::Generate<Color, pieces::pawn, select::jump, Position, Sequence>;
+        using PawnJump = Generate<Color, pieces::pawn, select::jump, Position, Sequence>;
 
         // overload for no absolute king jump precedence
         template<class Position, class Sequence>
         void precedence_dispatch(Position const& p, Sequence& moves, std::false_type) const
         {
-                Propagate<select::jump, Position> propagate{p};
+                auto propagate = Propagate<select::jump, Position>{p};
                 KingJump<Position, Sequence>{propagate, moves}(p.kings(Color));
                 PawnJump<Position, Sequence>{propagate, moves}(p.pawns(Color));
         }
@@ -45,7 +45,7 @@ private:
         template<class Position, class Sequence>
         void precedence_dispatch(Position const& p, Sequence& moves, std::true_type) const
         {
-                Propagate<select::jump, Position> propagate{p};
+                auto propagate = Propagate<select::jump, Position>{p};
                 KingJump<Position, Sequence>{propagate, moves}(p.kings(Color));
                 if (moves.empty())
                         PawnJump<Position, Sequence>{propagate, moves}(p.pawns(Color));

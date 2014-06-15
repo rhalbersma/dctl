@@ -15,12 +15,12 @@ struct Count<Color, Pieces, select::jump>
         template<class Position>
         int operator()(Position const& p) const
         {
-                using R = typename Position::rules_type;
-                using B = typename Position::board_type;
-                Arena<Move<R,B> > a;
-                stack_vector<Move<R,B> > moves_(Alloc<Move<R,B> >{a});
-                moves_.reserve(DCTL_PP_STACK_RESERVE);
+                using Rules = typename Position::rules_type;
+                using Board = typename Position::board_type;
 
+                Arena<Move<Rules, Board>> a;
+                auto moves_ = stack_vector<Move<Rules, Board>>(Alloc<Move<Rules, Board>>{a});
+                moves_.reserve(DCTL_PP_STACK_RESERVE);
                 Generate<Color, Pieces, select::jump>{}(p, moves_);
                 return static_cast<int>(moves_.size());
         }

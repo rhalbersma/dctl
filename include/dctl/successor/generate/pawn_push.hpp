@@ -1,21 +1,20 @@
 #pragma once
-#include <dctl/successor/generate/detail/primary_fwd.hpp>       // generate (primary template)
-#include <dctl/pieces/pawn.hpp>                                 // pawn
-#include <dctl/successor/propagate/push.hpp>                    // Propagate (moves specialization)
-#include <dctl/successor/select/push.hpp>                       // select
+#include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
+#include <dctl/pieces/pawn.hpp>                         // pawn
+#include <dctl/successor/propagate/push.hpp>            // Propagate (moves specialization)
+#include <dctl/successor/select/push.hpp>               // select
 
-#include <dctl/angle/directions.hpp>                            // left_up, right_up
-#include <dctl/board/orientation.hpp>                           // orientation
+#include <dctl/angle/directions.hpp>                    // left_up, right_up
+#include <dctl/board/orientation.hpp>                   // orientation
 #include <dctl/position/promotion.hpp>
-#include <dctl/ray.hpp>
+#include <dctl/ray.hpp>                                 // make_iterator
 #include <dctl/wave/iterator.hpp>
-#include <boost/range/adaptor/transformed.hpp>                  // transformed
-#include <boost/range/algorithm_ext/push_back.hpp>              // push_back
-#include <iterator>                                             // prev
+#include <boost/range/adaptor/transformed.hpp>          // transformed
+#include <boost/range/algorithm_ext/push_back.hpp>      // push_back
+#include <iterator>                                     // prev
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 template<bool Color, class Position, class Sequence>
 struct Generate<Color, pieces::pawn, select::push, Position, Sequence>
@@ -86,6 +85,5 @@ private:
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

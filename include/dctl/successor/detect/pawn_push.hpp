@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/successor/count/detail/primary_fwd.hpp>
-#include <dctl/successor/propagate/push.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
+#include <dctl/pieces/pawn.hpp>                         // pawn
+#include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>
-#include <dctl/pieces/pawn.hpp>
 
 #include <dctl/angle/directions.hpp>                    // left_up, right_up
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -11,15 +11,14 @@
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
-// partial specialization for pawn moves enumeration
-template<bool Color, class Position>
-struct Count<Color, pieces::pawn, select::push, Position>
+// partial specialization for pawn moves detection
+template<bool Color, class Position, class Range>
+struct Detect<Color, pieces::pawn, select::push, Position, Range>
 {
         // enforce reference semantics
-        Count(Count const&) = delete;
-        Count& operator=(Count const&) = delete;
+        Detect(Detect const&) = delete;
+        Detect& operator=(Detect const&) = delete;
 
 private:
         using Board = typename Position::board_type;
@@ -35,36 +34,36 @@ private:
 public:
         // structors
 
-        explicit Count(State const& p)
+        explicit Detect(State const& p)
         :
                 propagate_{p}
         {}
 
         // function call operators
 
-        int operator()(Set const& active_pawns) const
+        bool operator()(Set const& active_pawns) const
         {
-                return active_pawns.empty() ? 0 : branch(active_pawns);
+                return active_pawns.empty() ? false : branch(active_pawns);
         }
 
 private:
-        int branch(Set const& active_pawns) const
+        bool branch(Set const& active_pawns) const
         {
+                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
-                        parallelize<left_up (orientation)>(active_pawns) +
+                        parallelize<left_up (orientation)>(active_pawns) ||
                         parallelize<right_up(orientation)>(active_pawns)
                 ;
         }
 
         template<int Direction>
-        int parallelize(Set const& active_pawns) const
+        bool parallelize(Set const& active_pawns) const
         {
-                return Sink<Board, Direction, rules::range::distance_1>{}(
+                return !Sink<Board, Direction, rules::range::distance_1>{}(
                         active_pawns, propagate_.path()
-                ).size();
+                ).empty();
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

@@ -1,19 +1,20 @@
 #pragma once
-#include <dctl/successor/generate/detail/primary_fwd.hpp>       // Generate (primary template)
-#include <dctl/successor/propagate/push.hpp>                    // Propagate (push specialization)
-#include <dctl/successor/select/push.hpp>                       // push
-#include <dctl/pieces/king.hpp>                                 // king
-#include <dctl/board/orientation.hpp>                               // Compass
+#include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
+#include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
+#include <dctl/successor/select/push.hpp>               // push
+#include <dctl/pieces/king.hpp>                         // king
+
+#include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down
+#include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/position/unary_projections.hpp>
-#include <dctl/ray.hpp>
+#include <dctl/ray.hpp>                                 // make_iterator
 #include <dctl/rules/traits.hpp>
-#include <boost/range/adaptor/transformed.hpp>                  // transformed
-#include <boost/range/algorithm_ext/push_back.hpp>              // push_back
-#include <iterator>                                             // prev
+#include <boost/range/adaptor/transformed.hpp>          // transformed
+#include <boost/range/algorithm_ext/push_back.hpp>      // push_back
+#include <iterator>                                     // prev
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 // partial specialization for king moves generation
 template<bool Color, class Position, class Sequence>
@@ -61,20 +62,20 @@ private:
                 if (active_kings.empty())
                         return;
 
-                transform_movers<left_down (orientation)>(active_kings);
-                transform_movers<right_down(orientation)>(active_kings);
                 transform_movers<left_up   (orientation)>(active_kings);
                 transform_movers<right_up  (orientation)>(active_kings);
+                transform_movers<left_down (orientation)>(active_kings);
+                transform_movers<right_down(orientation)>(active_kings);
         }
 
         // overload for long ranged kings
         void find_dispatch(Set const& active_kings, std::true_type) const
         {
                 for (auto&& from_sq : active_kings) {
-                        transform_targets(along_ray<left_down (orientation)>(from_sq));
-                        transform_targets(along_ray<right_down(orientation)>(from_sq));
                         transform_targets(along_ray<left_up   (orientation)>(from_sq));
                         transform_targets(along_ray<right_up  (orientation)>(from_sq));
+                        transform_targets(along_ray<left_down (orientation)>(from_sq));
+                        transform_targets(along_ray<right_down(orientation)>(from_sq));
                 }
         }
 
@@ -109,6 +110,5 @@ private:
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl
