@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/detect/detail/primary_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>
@@ -12,7 +12,6 @@
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 // partial specialization for pawn jumps detection
 template<bool Color, class Position, class Range>
@@ -110,12 +109,11 @@ private:
         template<int Direction>
         bool parallelize(Set const& active_pawns) const
         {
-                return !Sandwich<Board, Direction, rules::range::distance_1>()(
+                return !Sandwich<Board, Direction, rules::range::distance_1>{}(
                         active_pawns, propagate_.template targets_with_pawn<Direction>(), propagate_.path()
                 ).empty();
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

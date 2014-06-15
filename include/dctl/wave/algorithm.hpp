@@ -14,7 +14,7 @@ auto fill(Set generator, Set const& propagator)
         Set flood {};
         while (!generator.empty()) {
                 flood |= generator;
-                generator = util::shift<Sign>()(generator, N) & propagator;
+                generator = util::shift<Sign>{}(generator, N) & propagator;
         }
         return flood;
 }

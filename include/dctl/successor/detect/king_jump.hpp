@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/successor/detect/detail/primary_fwd.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/pieces/king.hpp>                         // king
 #include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>
@@ -12,7 +12,6 @@
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 // partial specialization for king jumps detection
 template<bool Color, class Position, class Range>
@@ -93,6 +92,5 @@ private:
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

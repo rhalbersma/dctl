@@ -16,12 +16,12 @@ struct Count<Color, Pieces, select::legal>
         template<class Position>
         int operator()(Position const& p)
         {
-                using AllJump = Count<Color, Pieces, select::jump>;
-                using AllPush = Count<Color, Pieces, select::push>;
+                using Jump = Count<Color, Pieces, select::jump>;
+                using Push = Count<Color, Pieces, select::push>;
 
-                auto num_moves = AllJump{}(p);
+                auto num_moves = Jump{}(p);
                 if (!num_moves)
-                        num_moves += AllPush{}(p);
+                        num_moves += Push{}(p);
                 return num_moves;
         }
 };

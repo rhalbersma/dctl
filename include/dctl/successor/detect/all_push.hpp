@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
-#include <dctl/successor/detect/detail/king_push.hpp>   // Detect (king push specialization)
-#include <dctl/successor/detect/detail/pawn_push.hpp>   // Detect (pawn push specialization)
+#include <dctl/successor/detect/king_push.hpp>          // Detect (king push specialization)
+#include <dctl/successor/detect/pawn_push.hpp>          // Detect (pawn push specialization)
 #include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>               // push
 #include <dctl/position/unary_projections.hpp>          // moveable_kings
@@ -17,10 +17,10 @@ struct Detect<Color, pieces::all, select::push, Range>
         template<class Position>
         bool operator()(Position const& p) const
         {
-                using KingPush = detail::Detect<Color, pieces::king, select::push, Position, rules::range::distance_1>;
-                using PawnPush = detail::Detect<Color, pieces::pawn, select::push, Position, rules::range::distance_1>;
+                using KingPush = Detect<Color, pieces::king, select::push, Position, rules::range::distance_1>;
+                using PawnPush = Detect<Color, pieces::pawn, select::push, Position, rules::range::distance_1>;
 
-                Propagate<select::push, Position> const propagate(p);
+                auto const propagate = Propagate<select::push, Position>{p};
 
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return

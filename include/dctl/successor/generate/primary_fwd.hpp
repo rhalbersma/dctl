@@ -3,7 +3,7 @@
 namespace dctl {
 namespace successor {
 
-template<bool /* Color */, class /* Pieces */, class /* Select */>
+template<bool /* Color */, class...>
 struct Generate;
 
 }       // namespace successor

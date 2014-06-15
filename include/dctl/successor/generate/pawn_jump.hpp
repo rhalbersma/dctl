@@ -1,26 +1,25 @@
 #pragma once
-#include <dctl/successor/generate/detail/primary_fwd.hpp>       // Generate (primary template)
-#include <dctl/successor/generate/detail/king_jump.hpp>         // promote_en_passant
-#include <dctl/successor/propagate/jump.hpp>                    // Propagate (jumps specialization)
-#include <dctl/successor/select/jump.hpp>                       // jumps
-#include <dctl/pieces/pawn.hpp>                                 // pawn
-#include <dctl/pieces/king.hpp>
+#include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
+#include <dctl/successor/generate/king_jump.hpp>        // promote_en_passant
+#include <dctl/successor/propagate/jump.hpp>            // Propagate (jumps specialization)
+#include <dctl/successor/select/jump.hpp>               // jumps
+#include <dctl/pieces/king.hpp>                         // king
+#include <dctl/pieces/pawn.hpp>                         // pawn
 
-#include <dctl/angle.hpp>                                       // _deg, rotate, inverse
-#include <dctl/board/orientation.hpp>                           // orientation_v
+#include <dctl/angle.hpp>                               // _deg, rotate, inverse
+#include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/position/promotion.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/utility/algorithm.hpp>
-#include <dctl/ray.hpp>                                         // make_iterator, rotate, mirror, turn
+#include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror, turn
 #include <dctl/wave/iterator.hpp>
-#include <cassert>                                              // assert
-#include <iterator>                                             // prev
-#include <type_traits>                                          // false_type, true_type
-#include <utility>                                              // pair
+#include <cassert>                                      // assert
+#include <iterator>                                     // prev
+#include <type_traits>                                  // false_type, true_type
+#include <utility>                                      // pair
 
 namespace dctl {
 namespace successor {
-namespace detail {
 
 // partial specialization for pawn jumps generation
 template<bool Color, class Position, class Sequence>
@@ -413,6 +412,5 @@ private:
         }
 };
 
-}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

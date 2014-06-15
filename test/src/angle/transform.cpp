@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(AngleConstructorIsIdempotentOnIntegers)
 
         BOOST_CHECK(
                 std::all_of(first, last, [](auto i){
-                        return group::IsIdempotent()([](auto j) { return Angle{j}; }, i);
+                        return group::IsIdempotent{}([](auto j) { return Angle{j}; }, i);
                 })
         );
 }
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(AngleConstructorIsIdentityOnAllAngles)
 {
         BOOST_CHECK(
                 std::all_of(alpha, omega, [](auto i){
-                        return group::IsIdentity()([](auto j) { return Angle{j}; }, i);
+                        return group::IsIdentity{}([](auto j) { return Angle{j}; }, i);
                 })
         );
 }
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(Rotate0DegIsIdentityOnAllAngles)
 {
         BOOST_CHECK(
                 std::all_of(alpha, omega, [](auto i){
-                        return group::IsInvolution()([](auto j) { return rotate(Angle{j}, 0_deg); }, i);
+                        return group::IsInvolution{}([](auto j) { return rotate(Angle{j}, 0_deg); }, i);
                 })
         );
 }
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(InverseIsInvolutionOnAllAngles)
 {
         BOOST_CHECK(
                 std::all_of(alpha, omega, [](auto i){
-                        return group::IsInvolution()([](auto j) { return inverse(Angle{j}); }, i);
+                        return group::IsInvolution{}([](auto j) { return inverse(Angle{j}); }, i);
                 })
         );
 }
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(Rotate180DegIsInvolutionOnAllAngles)
 {
         BOOST_CHECK(
                 std::all_of(alpha, omega, [](auto i){
-                        return group::IsInvolution()([](auto j) { return rotate(Angle{j}, 180_deg); }, i);
+                        return group::IsInvolution{}([](auto j) { return rotate(Angle{j}, 180_deg); }, i);
                 })
         );
 }
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(MirrorIsInvolutionOnAllAnglePairs)
         BOOST_CHECK(
                 std::all_of(alpha, omega, [](auto i){
                         return std::all_of(alpha, omega, [=](auto j) {
-                                return group::IsInvolution()([=](auto k) { return mirror(Angle{k}, Angle{i}); }, j);
+                                return group::IsInvolution{}([=](auto k) { return mirror(Angle{k}, Angle{i}); }, j);
                         });
                 })
         );
