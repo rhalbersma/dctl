@@ -13,8 +13,8 @@ namespace rules {
 struct Czech
 {
         // main rules
-        using is_long_ranged_king = std::true_type;
-        using is_backward_pawn_jump = std::false_type;
+        static constexpr auto is_long_ranged_king = true;
+        static constexpr auto is_backward_pawn_jump = false;
         using precedence_jump = precedence::none;
 
         // additional rules

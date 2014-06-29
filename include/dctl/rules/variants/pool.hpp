@@ -13,8 +13,8 @@ namespace rules {
 struct Pool
 {
         // main rules
-        using is_long_ranged_king = std::true_type;                             // 15
-        using is_backward_pawn_jump = std::true_type;                           // 13
+        static constexpr auto is_long_ranged_king = true;                       // 15
+        static constexpr auto is_backward_pawn_jump = true;                     // 13
         using precedence_jump = precedence::none;                               // 20
 
         // drawing rules

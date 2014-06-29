@@ -13,12 +13,12 @@ namespace rules {
 struct Russian
 {
         // main rules
-        using is_long_ranged_king = std::true_type;                     // 1.4.5
-        using is_backward_pawn_jump = std::true_type;                   // 1.5.3
-        using precedence_jump = precedence::none;                       // 1.5.14
+        static constexpr auto is_long_ranged_king     = true;   // 1.4.5
+        static constexpr auto is_backward_pawn_jump   = true;   // 1.5.3
+        using precedence_jump = precedence::none;               // 1.5.14
 
-        // additional rules
-        using is_en_passant_promotion = std::true_type;                 // 1.5.15
+        // drawing rules
+        static constexpr auto is_en_passant_promotion = true;   // 1.5.15
 };
 
 }       // namespace rules

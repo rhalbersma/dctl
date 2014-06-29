@@ -13,8 +13,8 @@ namespace rules {
 struct Frisian
 {
         // main rules
-        using is_long_ranged_king = std::true_type;
-        using is_backward_pawn_jump = std::true_type;
+        static constexpr auto is_long_ranged_king = true;
+        static constexpr auto is_backward_pawn_jump = true;
         using is_orthogonal_jump = std::true_type;
         using precedence_jump = precedence::quality;
 

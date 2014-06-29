@@ -14,8 +14,8 @@ namespace rules {
 struct Italian
 {
         // main rules
-        using is_long_ranged_king = std::false_type;                            // 4.7
-        using is_backward_pawn_jump = std::false_type;                          // 5.3(a)
+        static constexpr auto is_long_ranged_king = false;                      // 4.7
+        static constexpr auto is_backward_pawn_jump = false;                    // 5.3(a)
         using precedence_jump = precedence::quality;                            // 6.1 - 6.10
 
         // additional rules
