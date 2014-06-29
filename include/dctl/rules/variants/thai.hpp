@@ -12,13 +12,13 @@ namespace rules {
 struct Thai
 {
         // main rules
-        using is_long_ranged_king = std::true_type;
-        using is_backward_pawn_jump = std::false_type;
+        static constexpr auto is_long_ranged_king = true;
+        static constexpr auto is_backward_pawn_jump = false;
         using precedence_jump = precedence::none;
 
         // additional rules
         using range_land = range::distance_1;
-        using is_en_passant_jump_removal = std::true_type;
+        static constexpr auto is_en_passant_jump_removal = true;
         using initial_gap = std::integral_constant<int, 4>;
 };
 
