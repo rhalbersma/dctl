@@ -78,13 +78,13 @@ public:
 
         void toggle_with_king()
         {
-                static_assert(rules::is_relative_king_jump_precedence_t<Rules>::value, "");
+                static_assert(is_relative_king_jump_precedence_v<Rules>, "");
                 current_.toggle_with_king();
         }
 
         void toggle_king_targets()
         {
-                static_assert(!rules::can_jump<Rules, pieces::pawn, pieces::king>::value, "");
+                static_assert(!is_pawn_jump_king_v<Rules>, "");
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
 
@@ -96,7 +96,7 @@ public:
 
         void improve()
         {
-                static_assert(rules::is_precedence<Rules>::value, "");
+                static_assert(is_jump_precedence_v<Rules>, "");
                 assert(best_ < current_);
                 best_ = current_;
         }
@@ -124,6 +124,34 @@ public:
                         Color,
                         is_promotion<Color>(dest_sq, WithPiece{})
                 );
+        }
+
+        template<class Sequence, class Move = typename Sequence::value_type>
+        void resolve_precedence(Sequence& moves, Move const& m)
+        {
+                resolve_precedence_dispatch(moves, m, is_jump_precedence_t<Rules>{});
+        }
+
+        template<class Sequence, class Move = typename Sequence::value_type>
+        void resolve_precedence_dispatch(Sequence& moves, Move const& m, std::false_type)
+        {
+                moves.push_back(m);
+        }
+
+        template<class Sequence, class Move = typename Sequence::value_type>
+        void resolve_precedence_dispatch(Sequence& moves, Move const& m, std::true_type)
+        {
+                if (moves.empty()) {
+                        moves.push_back(m);
+                        return;
+                }
+                auto const mx = Value<Rules>{moves.back};
+                auto const cr = Value<Rules>{m};
+                if (cr >= mx) {
+                        if (cr != mx)
+                                moves.clear();
+                        moves.push_back(m);
+                }
         }
 
         // queries
@@ -182,14 +210,14 @@ public:
 
         auto greater_equal() const
         {
-                static_assert(rules::is_precedence<Rules>::value, "");
+                static_assert(is_jump_precedence_v<Rules>, "");
                 assert(is_totally_ordered(best_, current_));
                 return current_ >= best_;
         }
 
         auto not_equal_to() const
         {
-                static_assert(rules::is_precedence<Rules>::value, "");
+                static_assert(is_jump_precedence_v<Rules>, "");
                 assert(greater_equal());
                 return current_ != best_;
         }
@@ -255,23 +283,17 @@ private:
         void increment(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                increment_dispatch(is_king, rules::precedence::jump<Rules>{});
+                increment_dispatch(is_king, is_jump_precedence_t<Rules>{});
         }
 
-        // overload for no capture precedence
-        void increment_dispatch(bool /* is_king */, rules::precedence::none)
+        // overload for no jump precedence
+        void increment_dispatch(bool /* is_king */, std::false_type)
         {
                 // no-op
         }
 
-        // overload for quantity precedence
-        void increment_dispatch(bool /* is_king */, rules::precedence::quantity)
-        {
-                current_.increment();
-        }
-
-        // overload for quality precedence
-        void increment_dispatch(bool is_king, rules::precedence::quality)
+        // overload for jump precedence
+        void increment_dispatch(bool is_king, std::true_type)
         {
                 current_.increment(is_king);
         }
@@ -279,23 +301,17 @@ private:
         void decrement(bool is_king)
         {
                 // tag dispatching on the type of capture precedence
-                decrement_dispatch(is_king, rules::precedence::jump<Rules>{});
+                decrement_dispatch(is_king, is_jump_precedence_t<Rules>{});
         }
 
         // overload for no capture precedence
-        void decrement_dispatch(bool /* is_king */, rules::precedence::none)
+        void decrement_dispatch(bool /* is_king */, std::false_type)
         {
                 // no-op
         }
 
-        // overload for quantity precedence
-        void decrement_dispatch(bool /* is_king */, rules::precedence::quantity)
-        {
-                current_.decrement();
-        }
-
         // overload for quality precedence
-        void decrement_dispatch(bool is_king, rules::precedence::quality)
+        void decrement_dispatch(bool is_king, std::true_type)
         {
                 current_.decrement(is_king);
         }
@@ -314,7 +330,7 @@ private:
                                         rules::orthogonality::king_jump<Rules>::type,
                                         rules::orthogonality::relative
                                 >::value
-                        >()
+                        >{}
                 );
         }
 
@@ -333,7 +349,7 @@ private:
         auto size() const
         {
                 // tag dispatching on majority capture precedence
-                return size_dispatch(rules::is_precedence<Rules>{});
+                return size_dispatch(is_jump_precedence_t<Rules>{});
         }
 
         // overload for no majority capture precedence
@@ -365,7 +381,7 @@ private:
         auto captured_kings(with::pawn) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return captured_kings_dispatch(rules::can_jump<Rules, pieces::pawn, pieces::king>());
+                return captured_kings_dispatch(is_pawn_jump_king_t<Rules>{});
         }
 
         // overload for pawns that can capture kings

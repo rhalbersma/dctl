@@ -22,7 +22,7 @@ public:
                 using Rules = typename Position::rules_type;
 
                 // tag dispatching on absolute king jump precedence
-                precedence_dispatch(p, moves, rules::is_absolute_king_jump_precedence_t<Rules>{});
+                precedence_dispatch(p, moves, is_absolute_king_jump_precedence_t<Rules>{});
         }
 
 private:

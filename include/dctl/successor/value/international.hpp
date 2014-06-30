@@ -26,21 +26,33 @@ public:
                 assert(invariant());
         }
 
+        template<class Move>
+        explicit Value(Move const& m)
+        :
+                num_pieces_{m.captured_pieces().size()}
+        {
+                assert(invariant());
+        }
+
         // modifiers
 
-        void increment()
+        void increment(bool /* is_king */)
         {
                 assert(!full());
                 ++num_pieces_;
                 assert(invariant());
         }
 
-        void decrement()
+        void increment() { increment(true); }
+
+        void decrement(bool /* is_king */)
         {
                 assert(!empty());
                 --num_pieces_;
                 assert(invariant());
         }
+
+        void decrement() { decrement(true); }
 
         // queries
 
