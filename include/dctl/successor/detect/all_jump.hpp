@@ -35,8 +35,8 @@ public:
                                         rules::directions::king_jump<Rules>, typename
                                         rules::directions::pawn_jump<Rules>
                                 >::value &&
-                                rules::can_jump<Rules, pieces::pawn, pieces::king>::value
-                        >()
+                                is_pawn_jump_king_v<Rules>
+                        >{}
                 );
         }
 

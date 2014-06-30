@@ -1,10 +1,8 @@
 #pragma once
 #include <dctl/rules/variants/italian_fwd.hpp>  // Italian
-#include <dctl/rules/types/directions.hpp>      // up
-#include <dctl/rules/types/precedence.hpp>      // quality
 #include <dctl/rules/types.hpp>
 #include <dctl/successor/value/italian.hpp>     // Value (Italian specialization)
-#include <type_traits>                          // false_type, true_type, integral_constant
+#include <type_traits>                          // true_type, false_type
 
 namespace dctl {
 namespace rules {
@@ -16,20 +14,15 @@ struct Italian
         // main rules
         static constexpr auto is_long_ranged_king = false;                      // 4.7
         static constexpr auto is_backward_pawn_jump = false;                    // 5.3(a)
-        using precedence_jump = precedence::quality;                            // 6.1 - 6.10
+        static constexpr auto is_jump_precedence = true;                        // 6.1 - 6.10
 
         // additional rules
-        template<class /* Attacker */, class /* Victim */, class = void>
-        struct can_jump: std::true_type {};
-
-        template<class _>
-        struct can_jump<pieces::pawn, pieces::king, _>: std::false_type {};     // 5.3(b)
-
-        using is_relative_king_jump_precedence = std::true_type;                // 6.7
+        static constexpr auto is_pawn_jump_king = false;                        // 5.3(b)
+        static constexpr auto is_relative_king_jump_precedence = true;          // 6.7
 
         // drawing rules
-        using max_repetitions = std::integral_constant<int,  4>;                // 9.3(b1)
-        using max_reversible_moves = std::integral_constant<int, 80>;           // 10.4
+        static constexpr auto max_repetitions = 4;                              // 9.3(b1)
+        static constexpr auto max_reversible_moves = 80;                        // 10.4
 };
 
 }       // namespace rules

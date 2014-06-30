@@ -28,7 +28,7 @@ public:
         using board_type = Board;
         using Set = typename Board::set_type;
         using TreeIterator = Position const*;
-        static const auto gap = rules::initial_gap<Rules>::value + Board::height % 2;
+        static constexpr auto gap = initial_gap_v<Rules> + Board::height % 2;
 
         // initialize with a set of bitboards and a color
         Position(Set const& black_pieces, Set const& white_pieces, Set const& kings, bool side_to_move)

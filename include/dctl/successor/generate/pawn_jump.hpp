@@ -64,7 +64,7 @@ public:
                         return;
 
                 // tag dispatching on whether pawns can capture kings
-                select_dispatch(active_pawns, rules::can_jump<Rules, pieces::pawn, pieces::king>{});
+                select_dispatch(active_pawns, is_pawn_jump_king_t<Rules>{});
         }
 
 private:
@@ -155,7 +155,7 @@ private:
         void add_and_continue(Iterator jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch(jumper, rules::is_precedence<Rules>{});
+                precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
         }
 
         // overload for no majority precedence
@@ -204,7 +204,7 @@ private:
         bool promote_en_passant(Iterator jumper) const
         {
                 // tag dispatching on whether pawns can capture kings
-                return can_jump_dispatch(jumper, rules::can_jump<Rules, pieces::pawn, pieces::king>{});
+                return can_jump_dispatch(jumper, is_pawn_jump_king_t<Rules>{});
         }
 
         // overload for pawns that can capture kings

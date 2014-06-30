@@ -29,12 +29,12 @@ public:
                 Value {std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t)}
         {}
 
-        Value(int pawns, int kings, bool with, std::vector<int> order)
+        Value(int p, int k, bool w, std::vector<int> o)
         :
-                num_pieces_(pawns + kings),
-                num_kings_(kings),
-                is_with_king_(with),
-                king_order_(order)
+                num_pieces_(p + k),
+                num_kings_(k),
+                is_with_king_(w),
+                king_order_(o)
         {}
 
         // modifiers

@@ -20,6 +20,16 @@ public:
 
         Value() = default;
 
+        template<class Move>
+        explicit Value(Move const& m)
+        :
+                num_pieces_{m.captured_pieces().size()},
+                num_kings_{m.captured_kings().size()},
+                is_with_king_{m.is_with_king()}
+        {
+                assert(invariant());
+        }
+
         // modifiers
 
         void increment(bool is_king)

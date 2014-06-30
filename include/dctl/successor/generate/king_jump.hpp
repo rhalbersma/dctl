@@ -56,7 +56,7 @@ public:
         void operator()(Set const& active_kings) const
         {
                 // tag dispatching on relative king jump precedence
-                select_dispatch(active_kings, rules::is_relative_king_jump_precedence_t<Rules>{});
+                select_dispatch(active_kings, is_relative_king_jump_precedence_t<Rules>{});
         }
 
         template<class Iterator>
@@ -137,7 +137,7 @@ private:
         void add_and_continue(Iterator jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch(jumper, rules::is_precedence<Rules>{});
+                precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
         }
 
         // overload for no majority precedence

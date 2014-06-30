@@ -3,6 +3,6 @@
 
 namespace dctl {
 
-DCTL_PP_TTI_STATIC_CONSTANT(initial_gap, 2)
+DCTL_PP_TTI_STATIC_CONSTANT(is_pawn_jump_king, true)
 
 }       // namespace dctl
