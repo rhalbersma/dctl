@@ -38,10 +38,10 @@ struct is_terminal<Kingscourt>
         template<class Position>
         bool operator()(Position const& p) const
         {
-                return (
+                return
                         (active_kings(p).size() - passive_kings(p).size() < 0) ||
                         is_terminal<NoMovesLeft>()(p)
-                );
+                ;
         }
 };
 

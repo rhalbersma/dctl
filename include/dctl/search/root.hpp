@@ -102,7 +102,7 @@ private:
                         report(i, score, stopwatch, p, pv);
                 }
 
-                return (score);
+                return score;
         }
 
         template<int NodeType>
@@ -159,8 +159,7 @@ private:
                 assert(!moves.empty());
 
                 Arena<int> oar;
-                Alloc<int> oal(oar);
-                Order move_order(oal);
+                auto move_order = Order(Alloc<int>{oar});
                 move_order.reserve(moves.size());                               // reserve enough room for all indices
                 util::iota_n(std::back_inserter(move_order), moves.size(), 0);  // generate indices [0, moves.size() - 1]
 
@@ -187,8 +186,7 @@ private:
                 int value;
 
                 Arena<int> car;
-                Alloc<int> cal(car);
-                Variation continuation(cal);
+                auto continuation = Variation(Alloc<int>{car});
                 continuation.reserve(DCTL_PP_STACK_RESERVE);
 
                 for (auto&& i : move_order) {

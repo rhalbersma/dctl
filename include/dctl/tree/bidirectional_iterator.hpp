@@ -102,10 +102,10 @@ public:
 
         friend bool is_successor(self_type const& lhs, self_type const& rhs)
         {
-                return (
+                return
                         std::next(lhs) == rhs &&
                         std::prev(rhs) == lhs
-                );
+                ;
         }
 
 private:
