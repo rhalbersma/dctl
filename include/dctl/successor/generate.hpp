@@ -6,7 +6,7 @@
 #include <dctl/move/move.hpp>                           // Move
 #include <dctl/position/color.hpp>                      // black, white
 #include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
-#include <memory>                                       // allocator
+#include <memory>                                       // allocator, allocator_traits
 #include <vector>                                       // vector
 
 namespace dctl {
@@ -31,7 +31,7 @@ template
 >
 auto generate(Position const& p, Allocator const& alloc = Allocator())
 {
-        std::vector<typename Allocator::value_type, Allocator> moves(alloc);
+        std::vector<typename std::allocator_traits<Allocator>::value_type, Allocator> moves(alloc);
         moves.reserve(DCTL_PP_STACK_RESERVE);
         generate<Pieces, Select>(p, moves);
         return moves;
