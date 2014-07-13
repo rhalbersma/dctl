@@ -88,7 +88,7 @@ class short_alloc
 {
 public:
         using value_type = T;
-        static auto const num_bytes = N * sizeof(T);
+        static auto constexpr num_bytes = N * sizeof(T);
 
         template <class U>
         struct rebind
