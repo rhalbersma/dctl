@@ -1,11 +1,5 @@
 #pragma once
-#include <type_traits>                  // conditional, enable_if, integral_constant, is_integral, remove_const
-
-template<bool B, class T = void>
-using enable_if_t = typename std::enable_if<B, T>::type;
-
-template<class T>
-using remove_const_t = typename std::remove_const<T>::type;
+#include <type_traits>	// conditional, enable_if_t, integral_constant, is_integral, remove_const_t
 
 template<class T>
 static constexpr auto is_integral_v = std::is_integral<T>::value;
@@ -42,7 +36,7 @@ template<class T>                                                       \
 struct box_static_constant                                              \
 {                                                                       \
         static constexpr auto value = T::NAME;                          \
-        using value_type = remove_const_t<decltype(value)>;             \
+        using value_type = std::remove_const_t<decltype(value)>;        \
         using type = std::integral_constant<value_type, value>;         \
 };                                                                      \
                                                                         \
@@ -56,7 +50,7 @@ struct default_constant                                                 \
 };                                                                      \
                                                                         \
 template<class T>                                                       \
-struct default_constant<T, enable_if_t<is_integral_v<T>>>               \
+struct default_constant<T, std::enable_if_t<is_integral_v<T>>>          \
 :                                                                       \
         std::integral_constant<T, VALUE>                                \
 {};                                                                     \

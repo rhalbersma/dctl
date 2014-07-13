@@ -8,7 +8,7 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
 #include <algorithm>                            // all_of
 #include <iterator>                             // begin, end
-#include <type_traits>                          // common_type
+#include <type_traits>                          // common_type_t
 
 namespace dctl {
 namespace board {
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimens
                 op, inv
         );
 
-        using CyclicGroup = typename std::common_type<decltype(C1), decltype(C2), decltype(C4)>::type;
+        using CyclicGroup = std::common_type_t<decltype(C1), decltype(C2), decltype(C4)>;
 
         CyclicGroup const C_N[] =
         {
