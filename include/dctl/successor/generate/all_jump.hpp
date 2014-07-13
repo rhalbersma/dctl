@@ -36,7 +36,7 @@ private:
         template<class Position, class Sequence>
         void precedence_dispatch(Position const& p, Sequence& moves, std::false_type) const
         {
-                auto propagate = Propagate<select::jump, Position>{p};
+                Propagate<select::jump, Position> propagate{p};
                 KingJump<Position, Sequence>{propagate, moves}(p.kings(Color));
                 PawnJump<Position, Sequence>{propagate, moves}(p.pawns(Color));
         }
@@ -45,7 +45,7 @@ private:
         template<class Position, class Sequence>
         void precedence_dispatch(Position const& p, Sequence& moves, std::true_type) const
         {
-                auto propagate = Propagate<select::jump, Position>{p};
+                Propagate<select::jump, Position> propagate{p};
                 KingJump<Position, Sequence>{propagate, moves}(p.kings(Color));
                 if (moves.empty())
                         PawnJump<Position, Sequence>{propagate, moves}(p.pawns(Color));

@@ -25,13 +25,12 @@ void generate(Position const& p, Sequence& moves)
 template
 <
         class Pieces, class Select, class Position,
-        class Allocator = std::allocator<
-                Move<typename Position::rules_type, typename Position::board_type>
-        >
+        class Allocator = std::allocator<Move_t<Position>>
 >
 auto generate(Position const& p, Allocator const& alloc = Allocator())
 {
-        std::vector<typename std::allocator_traits<Allocator>::value_type, Allocator> moves(alloc);
+        using Move = typename std::allocator_traits<Allocator>::value_type;
+        std::vector<Move, Allocator> moves(alloc);
         moves.reserve(DCTL_PP_STACK_RESERVE);
         generate<Pieces, Select>(p, moves);
         return moves;
@@ -40,9 +39,7 @@ auto generate(Position const& p, Allocator const& alloc = Allocator())
 template
 <
         class Position,
-        class Allocator = std::allocator<
-                Move<typename Position::rules_type, typename Position::board_type>
-        >
+        class Allocator = std::allocator<Move_t<Position>>
 >
 auto generate(Position const& p, Allocator const& alloc = Allocator())
 {

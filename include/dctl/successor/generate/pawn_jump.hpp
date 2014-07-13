@@ -140,15 +140,15 @@ private:
         {
                 capture_.launch(*jumper);
                 explore(std::next(jumper));     // recursively find more jumps
-                capture_.finish(*jumper);
+                capture_.finish();
         }
 
         template<class Iterator>
         void explore(Iterator jumper) const
         {
-                capture_.make(*jumper);
+                capture_.make_jump(*jumper);
                 add_and_continue(std::next(jumper));
-                capture_.undo(*jumper);
+                capture_.undo_jump();
         }
 
         template<class Iterator>
@@ -162,7 +162,7 @@ private:
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::false_type) const
         {
-                if (is_finished(jumper))
+                if (!is_find_next(jumper))
                         add(jumper);
         }
 
@@ -170,7 +170,7 @@ private:
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::true_type) const
         {
-                if (is_finished(jumper) && capture_.greater_equal()) {
+                if (!is_find_next(jumper) && capture_.greater_equal()) {
                         if (capture_.not_equal_to()) {
                                 capture_.improve();
                                 moves_.clear();
@@ -180,57 +180,28 @@ private:
         }
 
         template<class Iterator>
-        bool is_finished(Iterator jumper) const
+        bool is_find_next(Iterator jumper) const
         {
                 // tag dispatching on promotion condition
-                return !promotion_dispatch(jumper, is_en_passant_promotion_t<Rules>{});
+                return promotion_dispatch(jumper, is_en_passant_promotion_t<Rules>{});
         }
 
         // overload for pawns that promote apres-fini
         template<class Iterator>
         bool promotion_dispatch(Iterator jumper, std::false_type) const
         {
-                return find_next(jumper);
+                return land(jumper);
         }
 
         // overload for pawns that promote en-passant
         template<class Iterator>
         bool promotion_dispatch(Iterator jumper, std::true_type) const
         {
-                return is_promotion(*jumper) ? promote_en_passant(jumper) : find_next(jumper);
+                return is_promotion(*jumper) ? KingJumps{capture_, moves_}.promote_en_passant(jumper) : land(jumper);
         }
 
         template<class Iterator>
-        bool promote_en_passant(Iterator jumper) const
-        {
-                // tag dispatching on whether pawns can capture kings
-                return can_jump_dispatch(jumper, is_pawn_jump_king_t<Rules>{});
-        }
-
-        // overload for pawns that can capture kings
-        template<class Iterator>
-        bool can_jump_dispatch(Iterator jumper, std::true_type) const
-        {
-                capture_.toggle_promotion();
-                auto const found_next = KingJumps{capture_, moves_}.promote_en_passant(jumper);
-                capture_.toggle_promotion();
-                return found_next;
-        }
-
-        // overload for pawns that cannot capture kings
-        template<class Iterator>
-        bool can_jump_dispatch(Iterator jumper, std::false_type) const
-        {
-                capture_.toggle_promotion();    // no longer a pawn
-                capture_.set_king_targets();    // can now capture kings
-                auto const found_next = KingJumps{capture_, moves_}.promote_en_passant(jumper);
-                capture_.clear_king_targets();  // can no longer capture kings
-                capture_.toggle_promotion();    // now a pawn again
-                return found_next;
-        }
-
-        template<class Iterator>
-        bool find_next(Iterator jumper) const
+        bool land(Iterator jumper) const
         {
                 // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return scan(jumper) | turn(jumper);

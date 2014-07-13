@@ -16,6 +16,8 @@
 #include <cassert>                      // assert
 #include <iterator>                     // begin, end, prev
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
+#include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
+#include <vector>
 
 namespace dctl {
 namespace successor {
@@ -39,6 +41,8 @@ public:
                 remaining_targets_(initial_targets_),
                 not_occupied_(p.not_occupied())
         {
+                squares_.reserve(DCTL_PP_STACK_RESERVE);
+                pieces_.reserve(DCTL_PP_STACK_RESERVE);
                 assert(invariant());
         }
 
@@ -50,29 +54,32 @@ public:
 
         void launch(int sq)
         {
-                from_sq_ = sq;
+                assert(squares_.empty());
+                squares_.push_back(sq);
                 not_occupied_.set(sq);
                 assert(invariant());
         }
 
-        void finish(int sq)
+        void finish()
         {
-                not_occupied_.reset(sq);
-                from_sq_ = -1;
+                assert(squares_.size() == 1);
+                not_occupied_.reset(from_sq());
+                squares_.pop_back();
+                assert(squares_.empty());
                 assert(invariant());
         }
 
-        void make(int sq)
+        void make_jump(int sq)
         {
                 // tag dispatching on jump removal
                 make_dispatch(sq, is_en_passant_jump_removal_t<Rules>{});
                 assert(invariant());
         }
 
-        void undo(int sq)
+        void undo_jump()
         {
                 // tag dispatching on jump removal
-                undo_dispatch(sq, is_en_passant_jump_removal_t<Rules>{});
+                undo_dispatch(last_piece(), is_en_passant_jump_removal_t<Rules>{});
                 assert(invariant());
         }
 
@@ -102,28 +109,32 @@ public:
         }
 
         template<bool Color, class Sequence>
-        void add_king_jump(int dest_sq, Sequence& moves) const
+        void add_king_jump(int dest, Sequence& moves) const
         {
+                squares_.push_back(dest);
                 moves.emplace_back(
                         captured_pieces(),
                         captured_kings(with::king{}),
-                        from_sq_,
-                        dest_sq,
+                        from_sq(),
+                        dest_sq(),
                         Color
                 );
+                squares_.pop_back();
         }
 
         template<bool Color, class WithPiece, class Sequence>
-        void add_pawn_jump(int dest_sq, Sequence& moves) const
+        void add_pawn_jump(int dest, Sequence& moves) const
         {
+                squares_.push_back(dest);
                 moves.emplace_back(
                         captured_pieces(),
                         captured_kings(WithPiece{}),
-                        from_sq_,
-                        dest_sq,
-                        Color,
-                        is_promotion<Color>(dest_sq, WithPiece{})
+                        from_sq(),
+                        dest_sq(),
+                        is_promotion<Color>(dest_sq(), WithPiece{}),
+                        Color
                 );
+                squares_.pop_back();
         }
 
         template<class Sequence, class Move = typename Sequence::value_type>
@@ -257,6 +268,7 @@ private:
 
         void make_impl(int sq)
         {
+                pieces_.push_back(sq);
                 remaining_targets_.reset(sq);
                 increment(is_king(sq));
         }
@@ -278,6 +290,7 @@ private:
         {
                 decrement(is_king(sq));
                 remaining_targets_.set(sq);
+                pieces_.pop_back();
         }
 
         void increment(bool is_king)
@@ -412,6 +425,24 @@ private:
                 return wave::make_iterator<Board, Direction>(s);
         }
 
+        auto from_sq() const
+        {
+                assert(!squares_.empty());
+                return squares_.front();
+        }
+
+        auto dest_sq() const
+        {
+                assert(2 <= squares_.size());
+                return squares_.back();
+        }
+
+        auto last_piece() const
+        {
+                assert(!pieces_.empty());
+                return pieces_.back();
+        }
+
         // contracts
 
         auto invariant() const
@@ -425,7 +456,10 @@ private:
         Set initial_targets_;
         Set remaining_targets_;
         Set not_occupied_;
-        int from_sq_{-1};
+        Arena<int> sqa_;
+        Arena<int> pca_;
+        mutable stack_vector<int> squares_= stack_vector<int>(Alloc<int>{sqa_});
+        mutable stack_vector<int> pieces_ = stack_vector<int>(Alloc<int>{pca_});
         Value<Rules> current_{};
         Value<Rules> best_{};
 };

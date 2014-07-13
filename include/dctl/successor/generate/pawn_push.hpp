@@ -63,7 +63,7 @@ private:
                 auto const movers = active_pawns & *std::prev(along_wave<Direction>(propagate_.path()));
                 boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
-                        return Move{from_sq, dest_sq, Color, is_promotion(dest_sq)};
+                        return Move{from_sq, dest_sq, is_promotion(dest_sq), Color};
                 }));
         }
 

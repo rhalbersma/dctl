@@ -17,9 +17,10 @@ struct Count<Color, Pieces, select::jump>
         {
                 using Rules = typename Position::rules_type;
                 using Board = typename Position::board_type;
+                using M = Move<Rules, Board>;
 
-                Arena<Move<Rules, Board>> a;
-                auto moves_ = stack_vector<Move<Rules, Board>>(Alloc<Move<Rules, Board>>{a});
+                Arena<M> a;
+                auto moves_ = stack_vector<M>(Alloc<M>{a});
                 moves_.reserve(DCTL_PP_STACK_RESERVE);
                 Generate<Color, Pieces, select::jump>{}(p, moves_);
                 return static_cast<int>(moves_.size());
