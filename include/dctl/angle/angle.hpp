@@ -97,12 +97,6 @@ public:
                 return nrv;
         }
 
-        friend constexpr auto operator/(Angle const& lhs, Angle const& rhs)
-        {
-                assert(rhs != 0);
-                return lhs.value_ / rhs.value_;
-        }
-
         // queries
 
         /* implicit */ constexpr operator int() const noexcept
