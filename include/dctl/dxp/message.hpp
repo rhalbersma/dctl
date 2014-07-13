@@ -33,10 +33,10 @@ private:
 
         bool invariant() const
         {
-                return (
+                return
                         static_cast<int>(do_header().length()) == header_length_ &&
                         static_cast<int>(do_body().length()) <= max_body_length_
-                );
+                ;
         }
 
         // pure virtual implementation

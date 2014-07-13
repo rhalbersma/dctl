@@ -15,11 +15,11 @@ struct Bound
 
         static int type(int value, int alpha, int beta)
         {
-                return (
+                return
                         value >= beta  ? lower :
                         value <= alpha ? upper :
                                          exact
-                );
+                ;
         }
 
         static std::string print(int bound)

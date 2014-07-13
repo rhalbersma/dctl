@@ -40,11 +40,11 @@ struct Sandwich<Board, Direction, rules::range::distance_1>
         using Set = typename Board::set_type;
         auto operator()(Set const& from, Set const& through, Set const& dest) const
         {
-                return (
+                return
                         *std::next(wave::make_iterator<Board, Direction>(from)) &
                         through &
                         *std::prev(wave::make_iterator<Board, Direction>(dest))
-                );
+                ;
         }
 };
 
@@ -54,11 +54,11 @@ struct Sandwich<Board, Direction, rules::range::distance_N>
         using Set = typename Board::set_type;
         auto operator()(Set const& from, Set const& through, Set const& dest) const
         {
-                return (
+                return
                         *std::next(wave::make_iterator<Board, Direction>(Fill<Board, Direction>{}(from, dest))) &
                         through &
                         *std::prev(wave::make_iterator<Board, Direction>(dest))
-                );
+                ;
         }
 };
 

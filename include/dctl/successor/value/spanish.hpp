@@ -74,20 +74,20 @@ public:
         friend auto operator==(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator==
-                return (
+                return
                         std::tie(lhs.num_pieces_, lhs.num_kings_) ==
                         std::tie(rhs.num_pieces_, rhs.num_kings_)
-                );
+                ;
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
         friend auto operator<(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator<
-                return (
+                return
                         std::tie(lhs.num_pieces_, lhs.num_kings_) <
                         std::tie(rhs.num_pieces_, rhs.num_kings_)
-                );
+                ;
         }
 
 private:
@@ -95,11 +95,11 @@ private:
 
         bool invariant() const
         {
-                return (
+                return
                                   0 <= num_kings_ &&
                          num_kings_ <= num_pieces_ &&
                         num_pieces_ <= std::numeric_limits<int>::max()
-                );
+                ;
         }
 
         bool empty() const

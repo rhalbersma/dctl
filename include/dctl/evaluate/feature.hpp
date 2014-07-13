@@ -26,10 +26,10 @@ public:
         template<template<class, class> class Position, class Rules, class Board>
         static int material(Position<Rules, Board> const& p)
         {
-                return (
+                return
                         Weight<Rules, Board>::material[0] * p.pieces(Color).size() +
                         Weight<Rules, Board>::material[1] * p.kings(Color).size()
-                );
+                ;
         }
 
         template<template<class, class> class Position, class Rules, class Board>
