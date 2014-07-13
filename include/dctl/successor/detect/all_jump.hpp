@@ -53,7 +53,7 @@ private:
         template<class Position>
         bool combined_dispatch(Position const& p, std::true_type) const
         {
-                auto propagate = Propagate<select::jump, Position>{p};
+                Propagate<select::jump, Position> propagate{p};
                 return PawnJump<Position>{propagate}(p.pieces(Color));
         }
 
@@ -61,7 +61,7 @@ private:
         template<class Position>
         bool combined_dispatch(Position const& p, std::false_type) const
         {
-                auto propagate = Propagate<select::jump, Position>{p};
+                Propagate<select::jump, Position> propagate{p};
 
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 // SPECULATIE: #pawns > #kings for earliest possible short-circuiting

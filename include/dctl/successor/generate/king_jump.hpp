@@ -62,7 +62,8 @@ public:
         template<class Iterator>
         bool promote_en_passant(Iterator jumper) const
         {
-                return !is_finished(jumper);
+                // tag dispatching on whether pawns can capture kings
+                return can_jump_dispatch(jumper, is_pawn_jump_king_t<Rules>{});
         }
 
 private:
@@ -85,7 +86,7 @@ private:
                 for (auto&& from_sq : active_kings) {
                         capture_.launch(from_sq);
                         branch(from_sq);
-                        capture_.finish(from_sq);
+                        capture_.finish();
                 }
         }
 
@@ -128,9 +129,9 @@ private:
         template<class Iterator>
         void explore(Iterator jumper) const
         {
-                capture_.make(*jumper);
+                capture_.make_jump(*jumper);
                 add_and_continue(std::next(jumper));
-                capture_.undo(*jumper);
+                capture_.undo_jump();
         }
 
         template<class Iterator>
@@ -144,7 +145,7 @@ private:
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::false_type) const
         {
-                if (is_finished(jumper))
+                if (!is_find_next(jumper))
                         add(jumper);
         }
 
@@ -152,7 +153,7 @@ private:
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::true_type) const
         {
-                if (is_finished(jumper) && capture_.greater_equal()) {
+                if (!is_find_next(jumper) && capture_.greater_equal()) {
                         if (capture_.not_equal_to()) {
                                 capture_.improve();
                                 moves_.clear();
@@ -161,11 +162,33 @@ private:
                 }
         }
 
+        // overload for pawns that can capture kings
         template<class Iterator>
-        bool is_finished(Iterator jumper) const
+        bool can_jump_dispatch(Iterator jumper, std::true_type) const
+        {
+                capture_.toggle_promotion();
+                auto const found_next = is_find_next(jumper);
+                capture_.toggle_promotion();
+                return found_next;
+        }
+
+        // overload for pawns that cannot capture kings
+        template<class Iterator>
+        bool can_jump_dispatch(Iterator jumper, std::false_type) const
+        {
+                capture_.toggle_promotion();    // no longer a pawn
+                capture_.set_king_targets();    // can now capture kings
+                auto const found_next = is_find_next(jumper);
+                capture_.clear_king_targets();  // can no longer capture kings
+                capture_.toggle_promotion();    // now a pawn again
+                return found_next;
+        }
+
+        template<class Iterator>
+        bool is_find_next(Iterator jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return !find_next_dispatch(jumper, is_reversible_king_jump_direction_t<Rules>{});
+                return find_next_dispatch(jumper, is_reversible_king_jump_direction_t<Rules>{});
         }
 
         // overload for kings that cannot reverse their capture direction

@@ -20,20 +20,20 @@ public:
         :
                 from_{src},
                 dest_{dst},
-                active_color_{color},
-                is_with_king_{true}
+                is_with_king_{true},
+                active_color_{color}
         {
                 assert(from_ != dest_);
                 assert(invariant());
         }
 
         // pawn move
-        constexpr Move(int src, int dst, bool color, bool prom)
+        constexpr Move(int src, int dst, bool prom, bool color)
         :
                 from_{src},
                 dest_{dst},
-                active_color_{color},
-                is_promotion_{prom}
+                is_promotion_{prom},
+                active_color_{color}
         {
                 assert(from_ != dest_);
                 assert(invariant());
@@ -46,23 +46,21 @@ public:
                 captured_kings_{kings},
                 from_{src},
                 dest_{dst},
-                active_color_{color},
                 is_with_king_{true},
-                is_jump_{true}
+                active_color_{color}
         {
                 assert(invariant());
         }
 
         // pawn jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, bool color, bool prom)
+        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom, bool color)
         :
                 captured_pieces_{pieces},
                 captured_kings_{kings},
                 from_{src},
                 dest_{dst},
-                active_color_{color},
-                is_jump_{true},
-                is_promotion_{prom}
+                is_promotion_{prom},
+                active_color_{color}
         {
                 assert(invariant());
         }
@@ -89,19 +87,9 @@ public:
                 return dest_;
         }
 
-        constexpr auto active_color() const noexcept
-        {
-                return active_color_;
-        }
-
         constexpr auto is_with_king() const noexcept
         {
                 return is_with_king_;
-        }
-
-        constexpr auto is_jump() const noexcept
-        {
-                return is_jump_;
         }
 
         constexpr auto is_promotion() const noexcept
@@ -109,9 +97,19 @@ public:
                 return is_promotion_;
         }
 
+        constexpr auto active_color() const noexcept
+        {
+                return active_color_;
+        }
+
+        constexpr auto is_jump() const noexcept
+        {
+                return !captured_pieces().empty();
+        }
+
         constexpr auto is_reversible() const noexcept
         {
-                return is_with_king_ && !is_jump_;
+                return is_with_king() || is_promotion() || is_jump();
         }
 
         // predicates
@@ -138,7 +136,6 @@ private:
         {
                 return
                         set_includes(captured_pieces_, captured_kings_) &&
-                        is_jump_ == !captured_pieces_.empty() &&
                         !(is_with_king_ && is_promotion_)
                 ;
         }
@@ -149,10 +146,12 @@ private:
         Set captured_kings_{};
         int from_{};
         int dest_{};
-        bool active_color_{};
         bool is_with_king_{};
-        bool is_jump_{};
         bool is_promotion_{};
+        bool active_color_{};
 };
+
+template<class Position>
+using Move_t = Move<typename Position::rules_type, typename Position::board_type>;
 
 }       // namespace dctl
