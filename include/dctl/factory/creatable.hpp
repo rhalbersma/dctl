@@ -1,8 +1,7 @@
 #pragma once
-#include <memory>                       // unique_ptr
+#include <memory>                       // make_unique, unique_ptr
 #include <string>                       // string
 #include <type_traits>                  // is_base_of
-#include <dctl/cpp14/make_unique.hpp>   // make_unique
 
 namespace dctl {
 namespace factory {
@@ -27,7 +26,7 @@ struct make_creatable
 
         static Ret create(Arg const& arg)
         {
-                return cpp14::make_unique<Derived>(arg);
+                return std::make_unique<Derived>(arg);
         }
 
         static constexpr auto identifier_ = ID;
