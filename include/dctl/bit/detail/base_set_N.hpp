@@ -2,7 +2,7 @@
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/storage.hpp>          // storage
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
-#include <dctl/cpp14/reverse_iterator.hpp>      // rbegin, rend
+#include <dctl/cpp14/iterator.hpp>              // rbegin, rend
 #include <dctl/utility/algorithm.hpp>           // accumulate_until
 #include <boost/iterator/zip_iterator.hpp>      // zip_iterator
 #include <boost/tuple/tuple.hpp>                // make_tuple
@@ -57,28 +57,32 @@ struct BaseSet
 
         void do_reset() noexcept
         {
-                std::fill_n(std::begin(data_), Nb, Block{0});
+                using std::begin;
+                std::fill_n(begin(data_), Nb, Block{0});
         }
 
         void do_set() noexcept
         {
-                std::fill_n(std::begin(data_), Nb, ~Block{0});
+                using std::begin;
+                std::fill_n(begin(data_), Nb, ~Block{0});
         }
 
         void do_flip() noexcept
         {
+                using std::begin; using std::end;
                 std::transform(
-                        std::begin(data_), std::end(data_),
-                        std::begin(data_), [](auto const& e) {
+                        begin(data_), end(data_),
+                        begin(data_), [](auto const& e) {
                         return ~e;
                 });
         }
 
         void do_and(BaseSet const& other) noexcept
         {
+                using std::begin; using std::end;
                 std::transform(
-                        std::begin(data_), std::end(data_),
-                        std::begin(other.data_), std::begin(data_),
+                        begin(data_), end(data_),
+                        begin(other.data_), begin(data_),
                         [](auto const& L, auto const& R) {
                         return L & R;
                 });
@@ -86,9 +90,10 @@ struct BaseSet
 
         void do_or(BaseSet const& other) noexcept
         {
+                using std::begin; using std::end;
                 std::transform(
-                        std::begin(data_), std::end(data_),
-                        std::begin(other.data_), std::begin(data_),
+                        begin(data_), end(data_),
+                        begin(other.data_), begin(data_),
                         [](auto const& L, auto const& R) {
                         return L | R;
                 });
@@ -96,9 +101,10 @@ struct BaseSet
 
         void do_xor(BaseSet const& other) noexcept
         {
+                using std::begin; using std::end;
                 std::transform(
-                        std::begin(data_), std::end(data_),
-                        std::begin(other.data_), std::begin(data_),
+                        begin(data_), end(data_),
+                        begin(other.data_), begin(data_),
                         [](auto const& L, auto const& R) {
                         return L ^ R;
                 });
@@ -106,6 +112,9 @@ struct BaseSet
 
         void do_left_shift(int n)
         {
+                using std::begin; using std::end;
+                using namespace cpp14;
+
                 assert(0 <= n && n < N);
                 if (n == 0)
                         return;
@@ -115,31 +124,34 @@ struct BaseSet
 
                 if (L_shift == 0) {
                         std::copy_backward(
-                                std::begin(data_), std::end(data_) - n_block,
-                                std::end(data_)
+                                begin(data_), end(data_) - n_block,
+                                end(data_)
                         );
                 } else {
                         auto const R_shift = digits - L_shift;
 
                         std::transform(
-                                cpp14::rbegin(data_) + n_block + 1, cpp14::rend(data_),
-                                cpp14::rbegin(data_) + n_block    ,
-                                cpp14::rbegin(data_),
+                                rbegin(data_) + n_block + 1, rend(data_),
+                                rbegin(data_) + n_block    ,
+                                rbegin(data_),
                                 [=](auto const& e1, auto const& e2) {
                                 return e1 >> R_shift | e2 << L_shift;
                         });
                         std::transform(
-                                std::begin(data_), std::begin(data_) + 1,
-                                std::begin(data_) + n_block,
+                                begin(data_), begin(data_) + 1,
+                                begin(data_) + n_block,
                                 [=](auto const& e) {
                                 return e << L_shift;
                         });
                 }
-                std::fill_n(std::begin(data_), n_block, Block{0});
+                std::fill_n(begin(data_), n_block, Block{0});
         }
 
         void do_right_shift(int n)
         {
+                using std::begin; using std::end;
+                using namespace cpp14;
+
                 assert(0 <= n && n < N);
                 if (n == 0)
                         return;
@@ -149,52 +161,55 @@ struct BaseSet
 
                 if (R_shift == 0) {
                        std::copy(
-                                std::begin(data_) + n_block, std::end(data_),
-                                std::begin(data_)
+                                begin(data_) + n_block, end(data_),
+                                begin(data_)
                        );
                 } else {
                         auto const L_shift = digits - R_shift;
 
                         std::transform(
-                               std::begin(data_) + n_block + 1, std::end(data_),
-                               std::begin(data_) + n_block    ,
-                               std::begin(data_),
+                               begin(data_) + n_block + 1, end(data_),
+                               begin(data_) + n_block    ,
+                               begin(data_),
                                [=](auto const& e1, auto const& e2) {
                                return e1 << L_shift | e2 >> R_shift;
                         });
                         std::transform(
-                                cpp14::rbegin(data_), cpp14::rbegin(data_) + 1,
-                                cpp14::rbegin(data_) + n_block,
+                                rbegin(data_), rbegin(data_) + 1,
+                                rbegin(data_) + n_block,
                                 [=](auto const& e) {
                                 return e >> R_shift;
                         });
                 }
-                std::fill_n(cpp14::rbegin(data_), n_block, Block{0});
+                std::fill_n(rbegin(data_), n_block, Block{0});
         }
 
         // bitwise algorithms
 
         static auto do_equal(BaseSet const& lhs, BaseSet const& rhs) noexcept
         {
+                using namespace cpp14;
                 return std::equal(
-                        std::begin(lhs.data_), std::end(lhs.data_),
-                        std::begin(rhs.data_)
+                        cbegin(lhs.data_), cend(lhs.data_),
+                        cbegin(rhs.data_)
                 );
         }
 
         static auto do_lexicographical_compare(BaseSet const& lhs, BaseSet const& rhs) noexcept
         {
+                using namespace cpp14;
                 return std::lexicographical_compare(
-                        std::begin(lhs.data_), std::end(lhs.data_),
-                        std::begin(rhs.data_), std::end(rhs.data_)
+                        cbegin(lhs.data_), cend(lhs.data_),
+                        cbegin(rhs.data_), cend(rhs.data_)
                 );
         }
 
         auto do_includes(BaseSet const& other) const noexcept
         {
+                using namespace cpp14;
                 return std::all_of(
-                       boost::make_zip_iterator(boost::make_tuple(std::begin(data_), std::begin(other.data_))),
-                       boost::make_zip_iterator(boost::make_tuple(std::end(data_), std::end(other.data_))),
+                       boost::make_zip_iterator(boost::make_tuple(cbegin(data_), cbegin(other.data_))),
+                       boost::make_zip_iterator(boost::make_tuple(cend(data_), cend(other.data_))),
                        [](auto const& t) {
                        return (~t.template get<0>() & t.template get<1>()) == Block{0};
                 });
@@ -202,9 +217,10 @@ struct BaseSet
 
         auto do_intersects(BaseSet const& other) const noexcept
         {
+                using namespace cpp14;
                 return std::any_of(
-                       boost::make_zip_iterator(boost::make_tuple(std::begin(data_), std::begin(other.data_))),
-                       boost::make_zip_iterator(boost::make_tuple(std::end(data_), std::end(other.data_))),
+                       boost::make_zip_iterator(boost::make_tuple(cbegin(data_), cbegin(other.data_))),
+                       boost::make_zip_iterator(boost::make_tuple(cend(data_), cend(other.data_))),
                        [](auto const& t) {
                        return (t.template get<0>() & t.template get<1>()) != Block{0};
                 });
@@ -212,8 +228,9 @@ struct BaseSet
 
         auto do_none() const noexcept
         {
+                using namespace cpp14;
                 return std::none_of(
-                        std::begin(data_), std::end(data_),
+                        cbegin(data_), cend(data_),
                         [](auto const& e) {
                         return e != Block{0};
                 });
@@ -221,8 +238,9 @@ struct BaseSet
 
         auto do_any() const noexcept
         {
+                using namespace cpp14;
                 return std::any_of(
-                        std::begin(data_), std::end(data_),
+                        cbegin(data_), cend(data_),
                         [](auto const& e) {
                         return e != Block{0};
                 });
@@ -230,8 +248,9 @@ struct BaseSet
 
         auto do_all() const noexcept
         {
+                using namespace cpp14;
                 return std::all_of(
-                         std::begin(data_), std::end(data_),
+                         cbegin(data_), cend(data_),
                          [](auto const& e) {
                          return e == ~Block{0};
                 });
@@ -239,8 +258,9 @@ struct BaseSet
 
         auto do_count() const noexcept
         {
+                using namespace cpp14;
                 return std::accumulate(
-                        std::begin(data_), std::end(data_), 0,
+                        cbegin(data_), cend(data_), 0,
                         [](auto const& sum, auto const& e) {
                         return sum + bit::intrinsic::popcount(e);
                 });
@@ -249,8 +269,9 @@ struct BaseSet
         template<class UnaryPredicate>
         auto do_count_until(UnaryPredicate pred) const
         {
+                using namespace cpp14;
                 return util::accumulate_until(
-                        std::begin(data_), std::end(data_), 0,
+                        cbegin(data_), cend(data_), 0,
                         [](auto const& sum, auto const& e) {
                                 return sum + bit::intrinsic::popcount(e);
                         },

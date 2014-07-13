@@ -473,51 +473,51 @@ constexpr auto swap(Set<T, Block, Nb>& lhs, Set<T, Block, Nb>& rhs) noexcept
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) begin(Set<T, Block, Nb> const& s) noexcept
+constexpr auto begin(Set<T, Block, Nb> const& s) noexcept
 {
         return s.begin();
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) end(Set<T, Block, Nb> const& s) noexcept
+constexpr auto end(Set<T, Block, Nb> const& s) noexcept
 {
         return s.end();
 }
 
 template<class T, class Block, int Nb>
-/* constexpr */ decltype(auto) rbegin(Set<T, Block, Nb> const& s) noexcept
+constexpr auto cbegin(Set<T, Block, Nb> const& s) noexcept
+{
+        return begin(s);
+}
+
+template<class T, class Block, int Nb>
+constexpr auto cend(Set<T, Block, Nb> const& s) noexcept
+{
+        return end(s);
+}
+
+template<class T, class Block, int Nb>
+/* constexpr */ auto rbegin(Set<T, Block, Nb> const& s) noexcept
 {
         return s.rbegin();
 }
 
 template<class T, class Block, int Nb>
-/* constexpr */ decltype(auto) rend(Set<T, Block, Nb> const& s) noexcept
+/* constexpr */ auto rend(Set<T, Block, Nb> const& s) noexcept
 {
         return s.rend();
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) cbegin(Set<T, Block, Nb> const& s) noexcept
+/* constexpr */ auto crbegin(Set<T, Block, Nb> const& s) noexcept
 {
-        return s.cbegin();
+        return rbegin(s);
 }
 
 template<class T, class Block, int Nb>
-constexpr decltype(auto) cend(Set<T, Block, Nb> const& s) noexcept
+/* constexpr */ auto crend(Set<T, Block, Nb> const& s) noexcept
 {
-        return s.cend();
-}
-
-template<class T, class Block, int Nb>
-/* constexpr */ decltype(auto) crbegin(Set<T, Block, Nb> const& s) noexcept
-{
-        return s.crbegin();
-}
-
-template<class T, class Block, int Nb>
-/* constexpr */ decltype(auto) crend(Set<T, Block, Nb> const& s) noexcept
-{
-        return s.crend();
+        return rend(s);
 }
 
 }       // namespace bit

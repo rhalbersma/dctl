@@ -1,7 +1,7 @@
 #pragma once
 #include <group/primitives.hpp>         // set, op, id, inv
+#include <dctl/cpp14/iterator.hpp>
 #include <algorithm>                    // all_of, find, find_if
-#include <iterator>                     // begin, end
 
 namespace dctl {
 namespace group {
@@ -10,8 +10,9 @@ namespace axioms {
 template<class Group>
 auto is_closure(Group const& g) noexcept
 {
-        auto const first = begin(group::set(g));
-        auto const last = end(group::set(g));
+        using namespace cpp14;
+        auto const first = cbegin(group::set(g));
+        auto const last = cend(group::set(g));
         auto const op = group::op(g);
 
         return std::all_of(first, last, [&](auto const& a) {
@@ -24,17 +25,18 @@ auto is_closure(Group const& g) noexcept
 template<class Group>
 auto is_associativity(Group const& g) noexcept
 {
-        auto const first = std::begin(group::set(g));
-        auto const last = std::end(group::set(g));
+        using namespace cpp14;
+        auto const first = cbegin(group::set(g));
+        auto const last = cend(group::set(g));
         auto const op = group::op(g);
 
         return std::all_of(first, last, [&](auto const& a) {
                 return std::all_of(first, last, [&](auto const& b){
                         return std::all_of(first, last, [&](auto const& c) {
-                                return (
+                                return
                                         op(a, op(b, c)) ==
                                         op(op(a, b), c)
-                                );
+                                ;
                         });
                 });
         });
@@ -43,16 +45,17 @@ auto is_associativity(Group const& g) noexcept
 template<class Group>
 auto is_identity(Group const& g) noexcept
 {
-        auto const first = std::begin(group::set(g));
-        auto const last = std::end(group::set(g));
+        using namespace cpp14;
+        auto const first = cbegin(group::set(g));
+        auto const last = cend(group::set(g));
         auto const op = group::op(g);
 
         return last != std::find_if(first, last, [&](auto const& id) {
                 return std::all_of(first, last, [&](auto const& elem){
-                        return (
+                        return
                                 op(elem, id) == elem &&
                                 op(id, elem) == elem
-                        );
+                        ;
                 });
         });
 }
@@ -60,19 +63,20 @@ auto is_identity(Group const& g) noexcept
 template<class Group>
 auto is_inverse(Group const& g) noexcept
 {
-        auto const first = begin(group::set(g));
-        auto const last = end(group::set(g));
+        using namespace cpp14;
+        auto const first = cbegin(group::set(g));
+        auto const last = cend(group::set(g));
         auto const op = group::op(g);
         auto const id = group::id(g);
         auto const inv = group::inv(g);
 
         return std::all_of(first, last, [&](auto const& elem) {
                 return last != std::find_if(first, last, [&](auto const& elem_inv){
-                        return (
+                        return
                                 inv(elem) == elem_inv &&
                                 op(elem, elem_inv) == id &&
                                 op(elem_inv, elem) == id
-                        );
+                        ;
                 });
         });
 }
