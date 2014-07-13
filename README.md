@@ -38,15 +38,15 @@ Requirements
 
 ### Platforms
 
-The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian) with at least `libstdc++6` from `g++` >= 4.8.1 (i.e. Mint >= 16, Ubuntu >= 13.10, Debian >= jessie). Note that `libstdc++6` comes pre-installed on almost every Linux distribution. The following commands get all the other requirements:
+The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian) with at least `libstdc++6` from `g++` >= 4.9.0 (i.e. Mint >= 17, Ubuntu >= 14.04, Debian >= jessie). Note that `libstdc++6` comes pre-installed on almost every Linux distribution. The following commands get all the other requirements:
 
       # Get a fresh system and install build tools and pre-compiled Boost Libraries
       sudo apt-get update
-      sudo apt-get install tortoisehg python-iniparse cmake ninja-build make libboost1.54-all-dev
+      sudo apt-get install tortoisehg python-iniparse cmake ninja-build make libboost1.55-all-dev
 
-      # Patch the libstdc++ 4.8 <cstdio> header so that ::gets is removed when compilng with -std=c++1y
-      cd /usr/include/c++/4.8/
-      sudo sed -i '/using ::gets;/c\#if __cplusplus <= 201103L\n\using ::gets;\n\#endif' cstdio
+      # Get the PPA for libstdc++ 4.9
+      sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+      sudo apt-get install g++-4.9
       
       # Add LLVM repository and GPG key and install Clang 3.5
       echo "deb http://llvm.org/apt/saucy/ llvm-toolchain-saucy main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
@@ -74,17 +74,17 @@ The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming 
 
 ### Boost headers
 
-The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.54.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_54_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
+The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.55.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_55_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
 
 ### Boost libraries
 
-The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_54_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_54_0/more/getting_started/index.html) on how to do this on your system.
+The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_55_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_55_0/more/getting_started/index.html) on how to do this on your system.
 
 * **NOTE:** compilation of the Boost libraries is **ONLY** a requirement for running the test-suite, and **NOT** for using the DCTL headers with your application.  
 
 ### CMake
 
-The test-suite is built using the [CMake](http://www.cmake.org/) cross-platform build system. Most Linux development environments can directly access the CMake generated Makefiles. This has been tested with [Eclipse-CDT 4.3](http://www.vtk.org/Wiki/CMake:Eclipse_UNIX_Tutorial) and [QtCreator 3.0](http://qt-project.org/doc/qtcreator-3.0/creator-project-cmake.html). Instead of `make`, it is also possible to use the `ninja` build tool through `cmake -GNinja`. To generate native build solutions for your own development environment, consult the [CMake documentation](http://www.cmake.org/cmake/help/runningcmake.html).
+The test-suite is built using the [CMake](http://www.cmake.org/) cross-platform build system. Most Linux development environments can directly access the CMake generated Makefiles. This has been tested with [Eclipse-CDT 4.4](http://www.vtk.org/Wiki/CMake:Eclipse_UNIX_Tutorial) and [QtCreator 3.0](http://qt-project.org/doc/qtcreator-3.0/creator-project-cmake.html). Instead of `make`, it is also possible to use the `ninja` build tool through `cmake -GNinja`. To generate native build solutions for your own development environment, consult the [CMake documentation](http://www.cmake.org/cmake/help/runningcmake.html).
 
 * **NOTE:** CMake is **ONLY** a requirement for building the test-suite, and **NOT** for using the DCTL headers with your application. 
 
@@ -145,7 +145,7 @@ Special thanks to Aart Bik, Ed Gilbert, Walter Thoen and Wieger Wesselink for en
 License
 -------
 
-Copyright Rein Halbersma 2010 - 2013.   
+Copyright Rein Halbersma 2010 - 2014.   
 Distributed under the [Boost Software License, Version 1.0](http://www.boost.org/users/license.html).   
 (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 	
