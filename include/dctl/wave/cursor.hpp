@@ -1,7 +1,7 @@
 #pragma once
-#include <boost/operators.hpp>          // totally_ordered, unit_steppable
 #include <dctl/angle.hpp>               // Angle
 #include <dctl/utility/shift.hpp>       // shift_assing
+#include <boost/operators.hpp>          // totally_ordered, unit_steppable
 
 namespace dctl {
 namespace wave {
@@ -17,7 +17,7 @@ class Cursor
         static constexpr auto N = is_positive(theta) ? -S : S;
         static_assert(N != 0, "Cursors need a non-zero stride.");
 
-        using Set = typename Board::set_type;
+        using Set = set_type_t<Board>;
 
 public:
         // structors

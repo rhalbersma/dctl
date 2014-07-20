@@ -10,6 +10,7 @@
 #include <dctl/position/mru_king/zobrist.hpp>
 #include <dctl/position/color.hpp>
 #include <dctl/rules/traits.hpp>
+#include <dctl/type_traits.hpp>
 #include <dctl/zobrist/accumulate.hpp>
 #include <cassert>                      // assert
 #include <tuple>
@@ -20,13 +21,14 @@ namespace dctl {
 template<class Rules, class Board>
 auto init_hash(Position<Rules, Board> const& p);
 
-template<class Rules, class Board>
+template <class Rules, class Board>
 struct Position
 {
 public:
         using rules_type = Rules;
         using board_type = Board;
-        using Set = typename Board::set_type;
+        using set_type = set_type_t<Board>;
+        using Set = set_type;
         using TreeIterator = Position const*;
         static constexpr auto gap = initial_gap_v<Rules> + Board::height % 2;
 

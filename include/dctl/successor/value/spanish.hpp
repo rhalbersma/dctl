@@ -33,23 +33,12 @@ public:
                 assert(invariant());
         }
 
-        // modifiers
-
-        void increment(bool is_king)
-        {
-                assert(!full());
-                num_kings_ += is_king;
-                ++num_pieces_;
-                assert(invariant());
-        }
-
-        void decrement(bool is_king)
-        {
-                assert(!empty());
-                --num_pieces_;
-                num_kings_ -= is_king;
-                assert(invariant());
-        }
+        template<class U>
+        explicit Value(U const& u)
+        :
+                num_pieces_{u.num_pieces()},
+                num_kings_{u.num_kings()}
+        {}
 
         // queries
 

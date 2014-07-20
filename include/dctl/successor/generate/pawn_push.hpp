@@ -8,6 +8,7 @@
 #include <dctl/board/orientation.hpp>                   // orientation
 #include <dctl/position/promotion.hpp>
 #include <dctl/ray.hpp>                                 // make_iterator
+#include <dctl/type_traits.hpp>
 #include <dctl/wave/iterator.hpp>
 #include <boost/range/adaptor/transformed.hpp>          // transformed
 #include <boost/range/algorithm_ext/push_back.hpp>      // push_back
@@ -17,7 +18,7 @@ namespace dctl {
 namespace successor {
 
 template<bool Color, class Position, class Sequence>
-struct Generate<Color, pieces::pawn, select::push, Position, Sequence>
+class Generate<Color, pieces::pawn, select::push, Position, Sequence>
 {
 public:
         // enforce reference semantics
@@ -25,9 +26,9 @@ public:
         Generate& operator=(Generate const&) = delete;
 
 private:
-        using Board = typename Position::board_type;
-        using Set = typename Board::set_type;
-        using Move = typename Sequence::value_type;
+        using Board = board_type_t<Position>;
+        using Set = set_type_t<Position>;
+        using Move = value_type_t<Sequence>;
         using State = Propagate<select::push, Position>;
         static constexpr auto orientation = orientation_v<Board, Color>;
 
@@ -47,7 +48,7 @@ public:
 
         // function call operators
 
-        void operator()(Set const& active_pawns) const
+        auto operator()(Set const& active_pawns) const
         {
                 if (active_pawns.empty())
                         return;
@@ -58,7 +59,7 @@ public:
 
 private:
         template<int Direction>
-        void transform_movers(Set const& active_pawns) const
+        auto transform_movers(Set const& active_pawns) const
         {
                 auto const movers = active_pawns & *std::prev(along_wave<Direction>(propagate_.path()));
                 boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
@@ -68,18 +69,18 @@ private:
         }
 
         template<int Direction>
-        static wave::Iterator<Board, Direction> along_wave(Set const& s)
+        static auto along_wave(Set const& s)
         {
                 return wave::make_iterator<Board, Direction>(s);
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> along_ray(int sq)
+        static auto along_ray(int sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }
 
-        static bool is_promotion(int sq)
+        static auto is_promotion(int sq)
         {
                 return dctl::is_promotion<Color, Board>(sq);
         }

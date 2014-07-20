@@ -6,19 +6,20 @@
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/rules/traits.hpp>                        // traits
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
+#include <dctl/type_traits.hpp>                         // rules_type_t
 #include <type_traits>                                  // integral_constant, is_same, false_type, true_type
 
 namespace dctl {
 namespace successor {
 
 template<bool Color, class Range>
-struct Detect<Color, pieces::all, select::jump, Range>
+class Detect<Color, pieces::all, select::jump, Range>
 {
 public:
         template<class Position>
-        bool operator()(Position const& p) const
+        auto operator()(Position const& p) const
         {
-                using Rules = typename Position::rules_type;
+                using Rules = rules_type_t<Position>;
 
                 // tag dispatching on piece jump detection
                 // kings and pawns need to jump identically: i.e. have the same
@@ -51,7 +52,7 @@ private:
 
         // overload for piece jump detection
         template<class Position>
-        bool combined_dispatch(Position const& p, std::true_type) const
+        auto combined_dispatch(Position const& p, std::true_type) const
         {
                 Propagate<select::jump, Position> propagate{p};
                 return PawnJump<Position>{propagate}(p.pieces(Color));
@@ -59,12 +60,12 @@ private:
 
         // overload for separate king and pawn jump detection
         template<class Position>
-        bool combined_dispatch(Position const& p, std::false_type) const
+        auto combined_dispatch(Position const& p, std::false_type) const
         {
                 Propagate<select::jump, Position> propagate{p};
 
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
-                // SPECULATIE: #pawns > #kings for earliest possible short-circuiting
+                // SPECULATE: #pawns > #kings for earliest possible short-circuiting
                 return
                         PawnJump<Position>{propagate}(p.pawns(Color)) ||
                         KingJump<Position>{propagate}(p.kings(Color))

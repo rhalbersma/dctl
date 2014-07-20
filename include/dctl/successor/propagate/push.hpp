@@ -1,12 +1,13 @@
 #pragma once
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/push.hpp>
+#include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
 
 namespace dctl {
 namespace successor {
 
 template<class Position>
-struct Propagate<select::push, Position>
+class Propagate<select::push, Position>
 {
 public:
         // structors
@@ -30,7 +31,7 @@ public:
 
 private:
         // representation
-        using Set = typename Position::board_type::set_type;
+        using Set = set_type_t<Position>;
         Set const not_occupied_;
 };
 

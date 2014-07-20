@@ -12,10 +12,11 @@ namespace successor {
 
 // partial specialization for piece moves
 template<bool Color>
-struct Generate<Color, pieces::all, select::push>
+class Generate<Color, pieces::all, select::push>
 {
+public:
         template<class Position, class Sequence>
-        void operator()(Position const& p, Sequence& moves) const
+        auto operator()(Position const& p, Sequence& moves) const
         {
                 using KingPush = Generate<Color, pieces::king, select::push, Position, Sequence>;
                 using PawnPush = Generate<Color, pieces::pawn, select::push, Position, Sequence>;

@@ -11,10 +11,11 @@ namespace successor {
 
 // partial specialization for legal successors
 template<bool Color, class Pieces>
-struct Generate<Color, Pieces, select::legal>
+class Generate<Color, Pieces, select::legal>
 {
+public:
         template<class Position, class Sequence>
-        void operator()(Position const& p, Sequence& moves) const
+        auto operator()(Position const& p, Sequence& moves) const
         {
                 using AllJump = Generate<Color, Pieces, select::jump>;
                 using AllPush = Generate<Color, Pieces, select::push>;

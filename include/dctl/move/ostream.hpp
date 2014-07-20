@@ -1,10 +1,10 @@
 #pragma once
-#include <cassert>                      // assert
-#include <iosfwd>                       // ostream
-#include <sstream>                      // stringstream
 #include <dctl/move/move.hpp>           // Move
 #include <dctl/move/manip.hpp>          // notation, pushsep, jumpsep
 #include <dctl/move/traits.hpp>         // notation, pushsep, jumpsep
+#include <cassert>                      // assert
+#include <iosfwd>                       // ostream
+#include <sstream>                      // stringstream
 
 namespace dctl {
 namespace move {

@@ -4,7 +4,7 @@ namespace dctl {
 namespace successor {
 
 template<bool /* Color */, class...>
-struct Generate;
+class Generate;
 
 }       // namespace successor
 }       // namespace dctl

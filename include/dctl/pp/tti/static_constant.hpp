@@ -11,8 +11,9 @@ static constexpr auto is_integral_v = std::is_integral<T>::value;
 namespace detail_ ## NAME  {                                            \
                                                                         \
 template<class T>                                                       \
-struct has_static_constant                                              \
+class has_static_constant                                               \
 {                                                                       \
+private:                                                                \
         using yes = char;                                               \
         using no = yes (&)[2];                                          \
                                                                         \
@@ -22,6 +23,7 @@ struct has_static_constant                                              \
         template<class U>                                               \
         static no  test(...);                                           \
                                                                         \
+public:                                                                 \
         enum { value = sizeof(test<T>(0)) == sizeof(yes) };             \
         using type = std::integral_constant<bool, value>;               \
 };                                                                      \

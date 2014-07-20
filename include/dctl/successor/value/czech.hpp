@@ -1,5 +1,4 @@
 #pragma once
-#include <cassert>                              // assert
 #include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
 #include <dctl/rules/variants/czech_fwd.hpp>    // Czech
@@ -16,33 +15,22 @@ class Value<rules::Czech>
 public:
         // structors
 
-        Value() = default;
+        constexpr Value() = default;
 
-        explicit Value(bool w)
+        explicit constexpr Value(bool b) noexcept
         :
-                is_with_king_{w}
+                is_with_king_{b}
         {}
 
-        template<class Move>
-        explicit Value(Move const& m)
+        template<class U>
+        explicit constexpr Value(U const& u) noexcept
         :
-                Value{m.is_with_king()}
+                Value{u.is_with_king()}
         {}
-
-        // modifiers
-
-        void toggle_with_king()
-        {
-                is_with_king_ ^= true;
-        }
-
-        void increment(bool) { ++n_; }
-        void decrement(bool) { --n_; }
-        int size() const { return n_; }
 
         // queries
 
-        auto is_with_king() const
+        constexpr auto is_with_king() const noexcept
         {
                 return is_with_king_;
         }
@@ -50,20 +38,22 @@ public:
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend auto operator==(Value const& lhs, Value const& rhs)
+        friend constexpr auto
+        operator==(Value const& lhs, Value const& rhs) noexcept
         {
                 return lhs.is_with_king_ == rhs.is_with_king_;
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend auto operator<(Value const& lhs, Value const& rhs)
+        friend constexpr auto
+        operator<(Value const& lhs, Value const& rhs) noexcept
         {
                 return lhs.is_with_king_ < rhs.is_with_king_;
         }
 
 private:
         // representation
-        int n_{};
+
         bool is_with_king_{};
 };
 

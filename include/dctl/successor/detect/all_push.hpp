@@ -12,10 +12,11 @@ namespace dctl {
 namespace successor {
 
 template<bool Color, class Range>
-struct Detect<Color, pieces::all, select::push, Range>
+class Detect<Color, pieces::all, select::push, Range>
 {
+public:
         template<class Position>
-        bool operator()(Position const& p) const
+        auto operator()(Position const& p) const
         {
                 using KingPush = Detect<Color, pieces::king, select::push, Position, rules::range::distance_1>;
                 using PawnPush = Detect<Color, pieces::pawn, select::push, Position, rules::range::distance_1>;

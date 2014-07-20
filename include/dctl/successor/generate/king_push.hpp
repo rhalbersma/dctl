@@ -18,7 +18,7 @@ namespace successor {
 
 // partial specialization for king moves generation
 template<bool Color, class Position, class Sequence>
-struct Generate<Color, pieces::king, select::push, Position, Sequence>
+class Generate<Color, pieces::king, select::push, Position, Sequence>
 {
 public:
         // enforce reference semantics
@@ -26,10 +26,10 @@ public:
         Generate& operator=(Generate const&) = delete;
 
 private:
-        using Rules = typename Position::rules_type;
-        using Board = typename Position::board_type;
-        using Set = typename Board::set_type;
-        using Move = typename Sequence::value_type;
+        using Rules = rules_type_t<Position>;
+        using Board = board_type_t<Position>;
+        using Set = set_type_t<Position>;
+        using Move = value_type_t<Sequence>;
         using State = Propagate<select::push, Position>;
         static constexpr auto orientation = orientation_v<Board, Color>;
 
@@ -49,7 +49,7 @@ public:
 
         // function call operators
 
-        void operator()(Set const& active_kings) const
+        auto operator()(Set const& active_kings) const
         {
                 // tag dispatching on king range
                 find_dispatch(active_kings, is_long_ranged_king_t<Rules>{});
@@ -57,7 +57,7 @@ public:
 
 private:
         // overload for short ranged kings
-        void find_dispatch(Set const& active_kings, std::false_type) const
+        auto find_dispatch(Set const& active_kings, std::false_type) const
         {
                 if (active_kings.empty())
                         return;
@@ -69,7 +69,7 @@ private:
         }
 
         // overload for long ranged kings
-        void find_dispatch(Set const& active_kings, std::true_type) const
+        auto find_dispatch(Set const& active_kings, std::true_type) const
         {
                 for (auto&& from_sq : active_kings) {
                         transform_targets(along_ray<left_up   (orientation)>(from_sq));
@@ -80,7 +80,7 @@ private:
         }
 
         template<int Direction>
-        void transform_movers(Set const& active_kings) const
+        auto transform_movers(Set const& active_kings) const
         {
                 auto const movers = active_kings & *std::prev(along_wave<Direction>(propagate_.path()));
                 boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
@@ -89,7 +89,7 @@ private:
         }
 
         template<class Iterator>
-        void transform_targets(Iterator from) const
+        auto transform_targets(Iterator from) const
         {
                 auto const targets = ray::fill(from, propagate_.path());
                 boost::push_back(moves_, targets | boost::adaptors::transformed([=](auto const& dest_sq) {
@@ -98,13 +98,13 @@ private:
         }
 
         template<int Direction>
-        static wave::Iterator<Board, Direction> along_wave(Set const& s)
+        static auto along_wave(Set const& s)
         {
                 return wave::make_iterator<Board, Direction>(s);
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> along_ray(int sq)
+        static auto along_ray(int sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }

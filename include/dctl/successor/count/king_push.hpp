@@ -8,22 +8,24 @@
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/wave/patterns.hpp>
 #include <dctl/rules/traits.hpp>
+#include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
 
 namespace dctl {
 namespace successor {
 
 // partial specialization for king moves enumeration
 template<bool Color, class Position>
-struct Count<Color, pieces::king, select::push, Position>
+class Count<Color, pieces::king, select::push, Position>
 {
+public:
         // enforce reference semantics
         Count(Count const&) = delete;
         Count& operator=(Count const&) = delete;
 
 private:
-        using Rules = typename Position::rules_type;
-        using Board = typename Position::board_type;
-        using Set = typename Board::set_type;
+        using Rules = rules_type_t<Position>;
+        using Board = board_type_t<Position>;
+        using Set = set_type_t<Position>;
         using State = Propagate<select::push, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
@@ -42,13 +44,13 @@ public:
 
         // function call operators
 
-        int operator()(Set const& active_kings) const
+        auto operator()(Set const& active_kings) const
         {
                 return active_kings.empty() ? 0 : branch(active_kings);
         }
 
 private:
-        int branch(Set const& active_kings) const
+        auto branch(Set const& active_kings) const
         {
                 return
                         parallelize<left_up   (orientation)>(active_kings) +
@@ -59,7 +61,7 @@ private:
         }
 
         template<int Direction>
-        int parallelize(Set const& active_kings) const
+        auto parallelize(Set const& active_kings) const
         {
                 return Sink<Board, Direction, typename rules::range::move<Rules>::type>{}(
                         active_kings, propagate_.path()

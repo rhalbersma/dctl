@@ -5,7 +5,7 @@ namespace dctl {
 namespace successor {
 
 template<bool /* Color */, class...>
-struct Detect;
+class Detect;
 
 }       // namespace successor
 }       // namespace dctl
