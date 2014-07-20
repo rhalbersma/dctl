@@ -4,6 +4,7 @@
 #include <dctl/position/color.hpp>                      // black, white
 #include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
 #include <dctl/rules/traits.hpp>
+#include <dctl/type_traits.hpp>
 
 namespace dctl {
 namespace successor {
@@ -11,7 +12,7 @@ namespace successor {
 template<bool Color, class Pieces, class Select, class Position>
 auto detect(Position const& p)
 {
-        using Rules = typename Position::rules_type;
+        using Rules = rules_type_t<Position>;
         using Range = typename rules::range::king<Rules>::type;
         return Detect<Color, Pieces, Select, Range>{}(p);
 }

@@ -17,46 +17,22 @@ class Value<rules::International>
 public:
         // structors
 
-        Value() = default;
+        constexpr Value() = default;
 
-        explicit Value(int n)
+        explicit constexpr Value(int n) noexcept
         :
                 num_pieces_{n}
-        {
-                assert(invariant());
-        }
+        {}
 
-        template<class Move>
-        explicit Value(Move const& m)
+        template<class U>
+        explicit constexpr Value(U const& u) noexcept
         :
-                num_pieces_{m.captured_pieces().size()}
-        {
-                assert(invariant());
-        }
-
-        // modifiers
-
-        void increment(bool /* is_king */)
-        {
-                assert(!full());
-                ++num_pieces_;
-                assert(invariant());
-        }
-
-        void increment() { increment(true); }
-
-        void decrement(bool /* is_king */)
-        {
-                assert(!empty());
-                --num_pieces_;
-                assert(invariant());
-        }
-
-        void decrement() { decrement(true); }
+                num_pieces_{u.num_pieces()}
+        {}
 
         // queries
 
-        auto size() const
+        constexpr auto num_pieces() const
         {
                 return num_pieces_;
         }
@@ -64,35 +40,20 @@ public:
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend auto operator==(Value const& lhs, Value const& rhs)
+        friend constexpr auto
+        operator==(Value const& lhs, Value const& rhs) noexcept
         {
                 return lhs.num_pieces_ == rhs.num_pieces_;
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend auto operator<(Value const& lhs, Value const& rhs)
+        friend constexpr auto
+        operator<(Value const& lhs, Value const& rhs) noexcept
         {
                 return lhs.num_pieces_ < rhs.num_pieces_;
         }
 
 private:
-        // contracts
-
-        bool invariant() const
-        {
-                return 0 <= num_pieces_ && num_pieces_ <= std::numeric_limits<int>::max();
-        }
-
-        bool empty() const
-        {
-                return 0 == num_pieces_;
-        }
-
-        bool full() const
-        {
-                return num_pieces_ == std::numeric_limits<int>::max();
-        }
-
         // representation
 
         int num_pieces_{};

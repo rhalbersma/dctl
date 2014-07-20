@@ -11,10 +11,11 @@ namespace successor {
 
 // partial specialization for legal successors
 template<bool Color, class Pieces, class Range>
-struct Detect<Color, Pieces, select::legal, Range>
+class Detect<Color, Pieces, select::legal, Range>
 {
+public:
         template<class Position>
-        bool operator()(Position const& p) const
+        auto operator()(Position const& p) const
         {
                 using ShortPush = Detect<Color, Pieces, select::push, rules::range::distance_1>;
                 using ShortJump = Detect<Color, Pieces, select::jump, rules::range::distance_1>;

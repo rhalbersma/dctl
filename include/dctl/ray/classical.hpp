@@ -3,13 +3,14 @@
 #include <dctl/board/mask/king_targets.hpp>     // KingTargets
 #include <dctl/board/mask/squares.hpp>          // Squares
 #include <dctl/ray/iterator.hpp>                // Iterator
+#include <dctl/type_traits.hpp>
 #include <dctl/utility/first.hpp>               // First
 #include <iterator>                             // next
 
 namespace dctl {
 namespace ray {
 
-template<class Board, int Direction, class Set = typename Board::set_type>
+template<class Board, int Direction, class Set = set_type_t<Board>>
 auto classical(ray::Iterator<Board, Direction> from, Set const& propagator)
 {
         auto targets = board::KingTargets<Board>::mask(Angle{Direction}, *from);

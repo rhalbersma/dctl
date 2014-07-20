@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/angle.hpp>               // Angle, is_orthogonal
 #include <dctl/bit.hpp>
+#include <dctl/board/board.hpp>
 #include <dctl/position/promotion.hpp>
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/pieces/pieces.hpp>
@@ -13,6 +14,7 @@
 #include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
 #include <dctl/board/mask.hpp>
+#include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
 #include <cassert>                      // assert
 #include <iterator>                     // begin, end, prev
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
@@ -29,7 +31,7 @@ struct pawn {};
 }       // namespace with
 
 template<class Position>
-struct Propagate<select::jump, Position>
+class Propagate<select::jump, Position>
 {
 public:
         // structors
@@ -41,52 +43,40 @@ public:
                 remaining_targets_(initial_targets_),
                 not_occupied_(p.not_occupied())
         {
-                squares_.reserve(DCTL_PP_STACK_RESERVE);
-                pieces_.reserve(DCTL_PP_STACK_RESERVE);
+                visited_path_.reserve(DCTL_PP_STACK_RESERVE);
+                removed_pieces_.reserve(DCTL_PP_STACK_RESERVE);
+                ordered_kings_.reserve(DCTL_PP_STACK_RESERVE);
                 assert(invariant());
         }
 
-        using Rules = typename Position::rules_type;
-        using Board = typename Position::board_type;
-        using Set = typename Board::set_type;
+        using Rules = rules_type_t<Position>;
+        using Board = board_type_t<Position>;
+        using Set = set_type_t<Position>;
 
         // modifiers
 
         void launch(int sq)
         {
-                assert(squares_.empty());
-                squares_.push_back(sq);
+                visited_path_.push_back(sq);
                 not_occupied_.set(sq);
-                assert(invariant());
         }
 
         void finish()
         {
-                assert(squares_.size() == 1);
                 not_occupied_.reset(from_sq());
-                squares_.pop_back();
-                assert(squares_.empty());
-                assert(invariant());
+                visited_path_.pop_back();
         }
 
-        void make_jump(int sq)
+        void capture(int sq)
         {
                 // tag dispatching on jump removal
-                make_dispatch(sq, is_en_passant_jump_removal_t<Rules>{});
-                assert(invariant());
+                capture_dispatch(sq, is_en_passant_jump_removal_t<Rules>{});
         }
 
-        void undo_jump()
+        void release()
         {
                 // tag dispatching on jump removal
-                undo_dispatch(last_piece(), is_en_passant_jump_removal_t<Rules>{});
-                assert(invariant());
-        }
-
-        void toggle_with_king()
-        {
-                static_assert(is_relative_king_jump_precedence_v<Rules>, "");
-                current_.toggle_with_king();
+                release_dispatch(last_piece(), is_en_passant_jump_removal_t<Rules>{});
         }
 
         void toggle_king_targets()
@@ -95,10 +85,14 @@ public:
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
 
+        void toggle_with_king()
+        {
+                is_with_king_ ^= true;
+        }
+
         void toggle_promotion()
         {
-                static_assert(is_en_passant_promotion_v<Rules>, "");
-                current_.toggle_promotion();
+                is_promotion_ ^= true;
         }
 
         void improve()
@@ -111,7 +105,16 @@ public:
         template<bool Color, class Sequence>
         void add_king_jump(int dest, Sequence& moves) const
         {
-                squares_.push_back(dest);
+                visited_path_.push_back(dest);
+/*
+                std::cout << "TRACING JUMP: ";
+                std::cout << "squares={";
+                for (auto&& s : squares_) std::cout << Board::numeric_from_bit(s) << ",";
+                std::cout << "}, ";
+                std::cout << "pieces={";
+                for (auto&& p : pieces_) std::cout << Board::numeric_from_bit(p) << ", ";
+                std::cout << "}\n";
+*/
                 moves.emplace_back(
                         captured_pieces(),
                         captured_kings(with::king{}),
@@ -119,13 +122,24 @@ public:
                         dest_sq(),
                         Color
                 );
-                squares_.pop_back();
+
+                visited_path_.pop_back();
         }
 
         template<bool Color, class WithPiece, class Sequence>
         void add_pawn_jump(int dest, Sequence& moves) const
         {
-                squares_.push_back(dest);
+                visited_path_.push_back(dest);
+
+                /*
+                std::cout << "TRACING JUMP: ";
+                std::cout << "squares={";
+                for (auto&& s : squares_) std::cout << Board::numeric_from_bit(s) << ",";
+                std::cout << "}, ";
+                std::cout << "pieces={";
+                for (auto&& p : pieces_) std::cout << Board::numeric_from_bit(p) << ", ";
+                std::cout << "}\n";
+*/
                 moves.emplace_back(
                         captured_pieces(),
                         captured_kings(WithPiece{}),
@@ -134,35 +148,24 @@ public:
                         is_promotion<Color>(dest_sq(), WithPiece{}),
                         Color
                 );
-                squares_.pop_back();
+
+                visited_path_.pop_back();
         }
 
-        template<class Sequence, class Move = typename Sequence::value_type>
-        void resolve_precedence(Sequence& moves, Move const& m)
+        template<class Sequence>
+        auto handle_precedence(Sequence& moves)
         {
-                resolve_precedence_dispatch(moves, m, is_jump_precedence_t<Rules>{});
-        }
+                current_ = Value<Rules>{*this};
 
-        template<class Sequence, class Move = typename Sequence::value_type>
-        void resolve_precedence_dispatch(Sequence& moves, Move const& m, std::false_type)
-        {
-                moves.push_back(m);
-        }
+                if (moves.empty())      goto START1;
+                if (best_ <  current_)  goto START0;
+                if (best_ == current_)  goto START2;
 
-        template<class Sequence, class Move = typename Sequence::value_type>
-        void resolve_precedence_dispatch(Sequence& moves, Move const& m, std::true_type)
-        {
-                if (moves.empty()) {
-                        moves.push_back(m);
-                        return;
-                }
-                auto const mx = Value<Rules>{moves.back};
-                auto const cr = Value<Rules>{m};
-                if (cr >= mx) {
-                        if (cr != mx)
-                                moves.clear();
-                        moves.push_back(m);
-                }
+                return false;
+
+                START0 : moves.clear();
+                START1 : best_ = current_;
+                START2 : return true;
         }
 
         // queries
@@ -244,89 +247,84 @@ public:
                 return size() >= rules::large_jump<Rules>::value;
         }
 
-        auto is_promotion() const
+        auto num_pieces() const
         {
-                static_assert(is_en_passant_promotion_v<Rules>, "");
-                return current_.is_promotion();
+                return static_cast<int>(removed_pieces_.size());
         }
 
-private:
+        auto num_kings() const
+        {
+                return static_cast<int>(ordered_kings_.size());
+        }
+
+        auto ordered_kings() const
+        {
+                return ordered_kings_;
+        }
+
+        auto is_with_king() const
+        {
+                return is_with_king_;
+        }
+
+        auto is_promotion() const
+        {
+                return is_promotion_;
+        }
+
+//private:
         // modifiers
 
         // overload for apres-fini jump removal
-        void make_dispatch(int sq, std::false_type)
+        void capture_dispatch(int sq, std::false_type)
         {
-                make_impl(sq);
+                capture_impl(sq);
         }
 
         // overload for en-passant jump removal
-        void make_dispatch(int sq, std::true_type)
+        void capture_dispatch(int sq, std::true_type)
         {
                 not_occupied_.set(sq);
-                make_impl(sq);
+                capture_impl(sq);
         }
 
-        void make_impl(int sq)
+        void capture_impl(int sq)
         {
-                pieces_.push_back(sq);
+                if (is_king(sq))
+                        ordered_kings_.push_back(-num_pieces());
+                removed_pieces_.push_back(sq);
                 remaining_targets_.reset(sq);
-                increment(is_king(sq));
         }
 
         // overload for apres-fini jump removal
-        void undo_dispatch(int sq, std::false_type)
+        void release_dispatch(int sq, std::false_type)
         {
-                undo_impl(sq);
+                release_impl(sq);
         }
 
         // overload for en-passant jump removal
-        void undo_dispatch(int sq, std::true_type)
+        void release_dispatch(int sq, std::true_type)
         {
-                undo_impl(sq);
+                release_impl(sq);
                 not_occupied_.reset(sq);
         }
 
-        void undo_impl(int sq)
+        void release_impl(int sq)
         {
-                decrement(is_king(sq));
                 remaining_targets_.set(sq);
-                pieces_.pop_back();
+                removed_pieces_.pop_back();
+                if (is_king(sq))
+                        ordered_kings_.pop_back();
         }
 
-        void increment(bool is_king)
+        void visit(int sq)
         {
-                // tag dispatching on the type of capture precedence
-                increment_dispatch(is_king, is_jump_precedence_t<Rules>{});
+                visited_path_.push_back(sq);
         }
 
-        // overload for no jump precedence
-        void increment_dispatch(bool /* is_king */, std::false_type)
+        void leave()
         {
-                // no-op
-        }
-
-        // overload for jump precedence
-        void increment_dispatch(bool is_king, std::true_type)
-        {
-                current_.increment(is_king);
-        }
-
-        void decrement(bool is_king)
-        {
-                // tag dispatching on the type of capture precedence
-                decrement_dispatch(is_king, is_jump_precedence_t<Rules>{});
-        }
-
-        // overload for no capture precedence
-        void decrement_dispatch(bool /* is_king */, std::false_type)
-        {
-                // no-op
-        }
-
-        // overload for quality precedence
-        void decrement_dispatch(bool is_king, std::true_type)
-        {
-                current_.decrement(is_king);
+                visited_path_.pop_back();
         }
 
         // queries
@@ -361,20 +359,7 @@ private:
 
         auto size() const
         {
-                // tag dispatching on majority capture precedence
-                return size_dispatch(is_jump_precedence_t<Rules>{});
-        }
-
-        // overload for no majority capture precedence
-        auto size_dispatch(std::false_type) const
-        {
-                return captured_pieces().size();
-        }
-
-        // overload for majority capture precedence
-        auto size_dispatch(std::true_type) const
-        {
-                return current_.size();
+                return num_pieces();
         }
 
         // overload for pawn jumps without promotion
@@ -427,20 +412,20 @@ private:
 
         auto from_sq() const
         {
-                assert(!squares_.empty());
-                return squares_.front();
+                assert(!visited_path_.empty());
+                return visited_path_.front();
         }
 
         auto dest_sq() const
         {
-                assert(2 <= squares_.size());
-                return squares_.back();
+                assert(2 <= visited_path_.size());
+                return visited_path_.back();
         }
 
         auto last_piece() const
         {
-                assert(!pieces_.empty());
-                return pieces_.back();
+                assert(!removed_pieces_.empty());
+                return removed_pieces_.back();
         }
 
         // contracts
@@ -458,8 +443,14 @@ private:
         Set not_occupied_;
         Arena<int> sqa_;
         Arena<int> pca_;
-        mutable stack_vector<int> squares_= stack_vector<int>(Alloc<int>{sqa_});
-        mutable stack_vector<int> pieces_ = stack_vector<int>(Alloc<int>{pca_});
+        Arena<int> kca_;
+
+        mutable stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
+        mutable stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
+        mutable stack_vector<int> ordered_kings_ = stack_vector<int>(Alloc<int>{kca_});
+        mutable bool is_with_king_{};
+        mutable bool is_promotion_{};
+
         Value<Rules> current_{};
         Value<Rules> best_{};
 };

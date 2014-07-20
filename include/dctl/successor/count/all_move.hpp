@@ -11,10 +11,11 @@ namespace successor {
 
 // partial specialization for legal successors
 template<bool Color, class Pieces>
-struct Count<Color, Pieces, select::legal>
+class Count<Color, Pieces, select::legal>
 {
+public:
         template<class Position>
-        int operator()(Position const& p)
+        auto operator()(Position const& p) const
         {
                 using Jump = Count<Color, Pieces, select::jump>;
                 using Push = Count<Color, Pieces, select::push>;

@@ -20,37 +20,13 @@ public:
 
         Value() = default;
 
-        template<class Move>
-        explicit Value(Move const& m)
+        template<class U>
+        explicit Value(U const& u)
         :
-                num_pieces_{m.captured_pieces().size()},
-                num_kings_{m.captured_kings().size()},
-                is_with_king_{m.is_with_king()}
+                num_pieces_{u.num_pieces()},
+                num_kings_{u.num_kings()},
+                is_with_king_{u.is_with_king()}
         {
-                assert(invariant());
-        }
-
-        // modifiers
-
-        void increment(bool is_king)
-        {
-                assert(!full());
-                num_kings_ += is_king;
-                ++num_pieces_;
-                assert(invariant());
-        }
-
-        void decrement(bool is_king)
-        {
-                assert(!empty());
-                --num_pieces_;
-                num_kings_ -= is_king;
-                assert(invariant());
-        }
-
-        void toggle_with_king()
-        {
-                is_with_king_ ^= true;
                 assert(invariant());
         }
 

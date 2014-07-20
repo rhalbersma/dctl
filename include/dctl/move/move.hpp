@@ -1,7 +1,8 @@
 #pragma once
-#include <cassert>                      // assert
-#include <tuple>                        // tie
 #include <dctl/bit.hpp>                 // set_includes
+#include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
+#include <cassert>                      // assert
+#include <tuple>                        // forward_as_tuple
 
 namespace dctl {
 
@@ -65,6 +66,20 @@ public:
                 assert(invariant());
         }
 
+        template<class U>
+        explicit Move(U const& u)
+        :
+                captured_pieces_{u.captured_pieces()},
+                captured_kings_{u.captured_kings()},
+                from_{u.from()},
+                dest_{u.dest()},
+                is_with_king_{u.is_with_king()},
+                is_promotion_{u.is_promotion()},
+                active_color_{u.active_color()}
+        {
+                assert(invariant());
+        }
+
         // queries
 
         constexpr auto captured_pieces() const noexcept
@@ -114,16 +129,16 @@ public:
 
         // predicates
 
-        friend /* constexpr */ bool
+        friend constexpr auto
         operator==(Move const& lhs, Move const& rhs) noexcept
         {
                 return
-                        std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) ==
-                        std::tie(rhs.from_, rhs.dest_, rhs.captured_pieces_)
+                        std::forward_as_tuple(lhs.from_, lhs.dest_, lhs.captured_pieces_) ==
+                        std::forward_as_tuple(rhs.from_, rhs.dest_, rhs.captured_pieces_)
                 ;
         }
 
-        friend /* constexpr */ bool
+        friend constexpr auto
         operator!=(Move const& lhs, Move const& rhs) noexcept
         {
                 return !(lhs == rhs);
@@ -151,7 +166,7 @@ private:
         bool active_color_{};
 };
 
-template<class Position>
-using Move_t = Move<typename Position::rules_type, typename Position::board_type>;
+template<class T>
+using Move_t = Move<rules_type_t<T>, board_type_t<T>>;
 
 }       // namespace dctl

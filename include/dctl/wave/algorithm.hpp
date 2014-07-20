@@ -35,7 +35,7 @@ struct Fill
 {
         static constexpr auto theta = Angle{Direction};
 
-        using Set = typename Board::set_type;
+        using Set = set_type_t<Board>;
         auto operator()(Set const& generator, Set const& propagator) const
         {
                 return detail::fill<

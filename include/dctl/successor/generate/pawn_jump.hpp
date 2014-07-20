@@ -23,7 +23,7 @@ namespace successor {
 
 // partial specialization for pawn jumps generation
 template<bool Color, class Position, class Sequence>
-struct Generate<Color, pieces::pawn, select::jump, Position, Sequence>
+class Generate<Color, pieces::pawn, select::jump, Position, Sequence>
 {
 public:
         // enforce reference semantics
@@ -32,9 +32,9 @@ public:
 
 private:
         using KingJumps = Generate<Color, pieces::king, select::jump, Position, Sequence>;
-        using Rules = typename Position::rules_type;
-        using Board = typename Position::board_type;
-        using Set = typename Board::set_type;
+        using Rules = rules_type_t<Position>;
+        using Board = board_type_t<Position>;
+        using Set = set_type_t<Position>;
         using State = Propagate<select::jump, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
@@ -44,7 +44,7 @@ private:
 
         // representation
 
-        State& capture_;
+        State& tracker_;
         Sequence& moves_;
 
 public:
@@ -52,7 +52,7 @@ public:
 
         explicit Generate(State& c, Sequence& m)
         :
-                capture_{c},
+                tracker_{c},
                 moves_{m}
         {}
 
@@ -77,9 +77,9 @@ private:
         // overload for pawns that cannot capture kings
         void select_dispatch(Set const& active_pawns, std::false_type) const
         {
-                capture_.toggle_king_targets();
+                tracker_.toggle_king_targets();
                 branch(active_pawns);
-                capture_.toggle_king_targets();
+                tracker_.toggle_king_targets();
         }
 
         void branch(Set const& active_pawns) const
@@ -130,7 +130,7 @@ private:
         template<int Direction>
         void serialize(Set const& active_pawns) const
         {
-                auto const jumpers = active_pawns & *std::prev(along_wave<Direction>(capture_.template targets_with_pawn<Direction>()));
+                auto const jumpers = active_pawns & *std::prev(along_wave<Direction>(tracker_.template targets_with_pawn<Direction>()));
                 for (auto&& from_sq : jumpers)
                         find(along_ray<Direction>(from_sq));
         }
@@ -138,45 +138,42 @@ private:
         template<class Iterator>
         void find(Iterator jumper) const
         {
-                capture_.launch(*jumper);
+                tracker_.launch(*jumper);
                 explore(std::next(jumper));     // recursively find more jumps
-                capture_.finish();
+                tracker_.finish();
         }
 
         template<class Iterator>
         void explore(Iterator jumper) const
         {
-                capture_.make_jump(*jumper);
+                tracker_.capture(*jumper);
                 add_and_continue(std::next(jumper));
-                capture_.undo_jump();
+                tracker_.release();
         }
 
         template<class Iterator>
         void add_and_continue(Iterator jumper) const
         {
                 // tag dispatching on majority precedence
-                precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
+                tracker_.visit(*jumper);
+                if (!is_find_next(jumper))
+                        precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
+                tracker_.leave();
         }
 
         // overload for no majority precedence
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::false_type) const
         {
-                if (!is_find_next(jumper))
-                        add(jumper);
+                add(jumper);
         }
 
         // overload for majority precedence
         template<class Iterator>
         void precedence_dispatch(Iterator jumper, std::true_type) const
         {
-                if (!is_find_next(jumper) && capture_.greater_equal()) {
-                        if (capture_.not_equal_to()) {
-                                capture_.improve();
-                                moves_.clear();
-                        }
+                if (tracker_.handle_precedence(moves_))
                         add(jumper);
-                }
         }
 
         template<class Iterator>
@@ -197,7 +194,7 @@ private:
         template<class Iterator>
         bool promotion_dispatch(Iterator jumper, std::true_type) const
         {
-                return is_promotion(*jumper) ? KingJumps{capture_, moves_}.promote_en_passant(jumper) : land(jumper);
+                return is_promotion(*jumper) ? KingJumps{tracker_, moves_}.promote_en_passant(jumper) : land(jumper);
         }
 
         template<class Iterator>
@@ -334,7 +331,7 @@ private:
         template<class Iterator>
         bool is_en_prise(Iterator jumper) const
         {
-                if (!capture_.targets_with_pawn(jumper))
+                if (!tracker_.targets_with_pawn(jumper))
                         return false;
 
                 explore(jumper);        // recursively find more jumps
@@ -352,15 +349,15 @@ private:
         template<class Iterator>
         void ambiguity_dispatch(Iterator dest, std::true_type) const
         {
-                capture_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
+                tracker_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
         }
 
         // overload for pawn jumps that are potentially ambiguous
         template<class Iterator>
         void ambiguity_dispatch(Iterator dest, std::false_type) const
         {
-                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && capture_.is_potential_duplicate(moves_);
-                capture_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
+                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && tracker_.is_potential_duplicate(moves_);
+                tracker_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
                 if (check_duplicate && util::is_duplicate_back(moves_))
                         moves_.pop_back();
         }

@@ -2,7 +2,7 @@
 #include <dctl/successor/count/primary_fwd.hpp>         // Count (primary template)
 #include <dctl/successor/generate/all_jump.hpp>         // Generate (piece jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
-#include <dctl/move/move.hpp>                           // Move
+#include <dctl/move/move.hpp>                           // Move_t
 #include <dctl/utility/stack_vector.hpp>                // Vector, Alloc, Arena
 
 namespace dctl {
@@ -10,15 +10,13 @@ namespace successor {
 
 // partial specialization for jumps
 template<bool Color, class Pieces>
-struct Count<Color, Pieces, select::jump>
+class Count<Color, Pieces, select::jump>
 {
+public:
         template<class Position>
-        int operator()(Position const& p) const
+        auto operator()(Position const& p) const
         {
-                using Rules = typename Position::rules_type;
-                using Board = typename Position::board_type;
-                using M = Move<Rules, Board>;
-
+                using M = Move_t<Position>;
                 Arena<M> a;
                 auto moves_ = stack_vector<M>(Alloc<M>{a});
                 moves_.reserve(DCTL_PP_STACK_RESERVE);

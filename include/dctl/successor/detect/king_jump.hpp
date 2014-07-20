@@ -9,22 +9,24 @@
 #include <dctl/wave/patterns.hpp>
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/rules/traits.hpp>
+#include <dctl/type_traits.hpp>
 
 namespace dctl {
 namespace successor {
 
 // partial specialization for king jumps detection
 template<bool Color, class Position, class Range>
-struct Detect<Color, pieces::king, select::jump, Position, Range>
+class Detect<Color, pieces::king, select::jump, Position, Range>
 {
+public:
         // enforce reference semantics
         Detect(Detect const&) = delete;
         Detect& operator=(Detect const&) = delete;
 
 private:
-        using Rules = typename Position::rules_type;
-        using Board = typename Position::board_type;
-        using Set = typename Board::set_type;
+        using Rules = rules_type_t<Position>;
+        using Board = board_type_t<Position>;
+        using Set = set_type_t<Position>;
         using State = Propagate<select::jump, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
@@ -43,20 +45,20 @@ public:
 
         // function call operators
 
-        bool operator()(Set const& active_kings) const
+        auto operator()(Set const& active_kings) const
         {
                 return active_kings.empty() ? false : branch(active_kings);
         }
 
 private:
-        bool branch(Set const& active_kings) const
+        auto branch(Set const& active_kings) const
         {
                 // tag dispatching on king jump directions
                 return branch_dispatch(active_kings, is_orthogonal_jump_t<Rules>{});
         }
 
         // overload for kings that jump in the 4 diagonal directions
-        bool branch_dispatch(Set const& active_kings, std::false_type) const
+        auto branch_dispatch(Set const& active_kings, std::false_type) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
@@ -68,7 +70,7 @@ private:
         }
 
         // overload for kings that jump in the 8 diagonal and orthogonal directions
-        bool branch_dispatch(Set const& active_kings, std::true_type) const
+        auto branch_dispatch(Set const& active_kings, std::true_type) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
@@ -84,7 +86,7 @@ private:
         }
 
         template<int Direction, class Set>
-        bool parallelize(Set const& active_kings) const
+        auto parallelize(Set const& active_kings) const
         {
                 return !Sandwich<Board, Direction, Range>{}(
                         active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path()

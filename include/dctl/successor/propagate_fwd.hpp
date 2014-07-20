@@ -4,7 +4,7 @@ namespace dctl {
 namespace successor {
 
 template<class, class>
-struct Propagate;
+class Propagate;
 
 }       // namespace successor
 }       // namespace dctl

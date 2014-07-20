@@ -1,7 +1,7 @@
 #pragma once
-#include <iterator>                             // bidirectional_iterator_tag
-#include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <dctl/wave/cursor.hpp>                 // Cursor
+#include <boost/iterator/counting_iterator.hpp> // counting_iterator
+#include <iterator>                             // bidirectional_iterator_tag
 
 namespace dctl {
 namespace wave {

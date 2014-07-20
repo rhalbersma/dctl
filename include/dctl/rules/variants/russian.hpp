@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/rules/variants/russian_fwd.hpp>  // Russian
-#include <dctl/successor/value/russian.hpp>     // Value (Russian specialization)
 
 namespace dctl {
 namespace rules {

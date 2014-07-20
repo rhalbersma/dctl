@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllAngles)
                 op, inv
         );
 
-        using CyclicGroup = std::common_type<decltype(C1), decltype(C2), decltype(C4), decltype(C8)>::type;
+        using CyclicGroup = std::common_type_t<decltype(C1), decltype(C2), decltype(C4), decltype(C8)>;
 
         CyclicGroup const C_N[] =
         {

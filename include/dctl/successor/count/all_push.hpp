@@ -12,10 +12,11 @@ namespace successor {
 
 // partial specialization for piece moves
 template<bool Color>
-struct Count<Color, pieces::all, select::push>
+class Count<Color, pieces::all, select::push>
 {
+public:
         template<class Position>
-        int operator()(Position const& p) const
+        auto operator()(Position const& p) const
         {
                 using KingPush = Count<Color, pieces::king, select::push, Position>;
                 using PawnPush = Count<Color, pieces::pawn, select::push, Position>;

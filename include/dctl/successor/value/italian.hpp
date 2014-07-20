@@ -37,34 +37,14 @@ public:
                 king_order_(o)
         {}
 
-        // modifiers
-
-        void increment(bool is_king)
+        template<class U>
+        explicit Value(U const& u)
+        :
+                num_pieces_{u.num_pieces()},
+                num_kings_{u.num_kings()},
+                is_with_king_{u.is_with_king()},
+                king_order_{begin(u.ordered_kings()), end(u.ordered_kings())}
         {
-                assert(!full());
-                if (is_king) {
-                        king_order_.push_back(-num_pieces_);
-                        ++num_kings_;
-                }
-                ++num_pieces_;
-                assert(invariant());
-        }
-
-        void decrement(bool is_king)
-        {
-                assert(!empty());
-                --num_pieces_;
-                if (is_king) {
-                        --num_kings_;
-                        assert(king_order_.back() == -num_pieces_);
-                        king_order_.pop_back();
-                }
-                assert(invariant());
-        }
-
-        void toggle_with_king()
-        {
-                is_with_king_ ^= true;
                 assert(invariant());
         }
 
@@ -98,7 +78,8 @@ public:
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend auto operator==(Value const& lhs, Value const& rhs)
+        friend auto
+        operator==(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator==
                 // NOTE: this will -in turn- delegate to std::vector::operator== for the last tuple element
@@ -109,7 +90,8 @@ public:
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend auto operator<(Value const& lhs, Value const& rhs)
+        friend auto
+        operator<(Value const& lhs, Value const& rhs)
         {
                 // delegate to std::tuple::operator<
                 // NOTE: this will -in turn- delegate to std::vector::operator< for the last tuple element
