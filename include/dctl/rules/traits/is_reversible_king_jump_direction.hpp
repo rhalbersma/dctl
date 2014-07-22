@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/rules/traits/is_long_ranged_king.hpp>            // is_long_ranged_king
 #include <dctl/rules/traits/is_en_passant_jump_removal.hpp>     // is_en_passant_jump_removal
+#include <dctl/rules/traits/is_long_ranged_king.hpp>            // is_long_ranged_king
 #include <type_traits>                                          // integral_constant
 
 namespace dctl {

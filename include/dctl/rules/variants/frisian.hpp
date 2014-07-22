@@ -16,7 +16,6 @@ struct Frisian
 
         // additional rules
         static constexpr auto is_orthogonal_jump = true;
-        static constexpr auto is_relative_king_jump_precedence = true;
 
         // drawing rules
         static constexpr auto max_same_king_push = 6;

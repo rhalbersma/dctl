@@ -79,6 +79,16 @@ public:
                 release_dispatch(last_piece(), is_en_passant_jump_removal_t<Rules>{});
         }
 
+        void visit(int sq)
+        {
+                visited_path_.push_back(sq);
+        }
+
+        void leave()
+        {
+                visited_path_.pop_back();
+        }
+
         void toggle_king_targets()
         {
                 static_assert(!is_pawn_jump_king_v<Rules>, "");
@@ -272,7 +282,7 @@ public:
                 return is_promotion_;
         }
 
-//private:
+private:
         // modifiers
 
         // overload for apres-fini jump removal
@@ -315,16 +325,6 @@ public:
                 removed_pieces_.pop_back();
                 if (is_king(sq))
                         ordered_kings_.pop_back();
-        }
-
-        void visit(int sq)
-        {
-                visited_path_.push_back(sq);
-        }
-
-        void leave()
-        {
-                visited_path_.pop_back();
         }
 
         // queries
@@ -448,8 +448,8 @@ public:
         mutable stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
         mutable stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
         mutable stack_vector<int> ordered_kings_ = stack_vector<int>(Alloc<int>{kca_});
-        mutable bool is_with_king_{};
-        mutable bool is_promotion_{};
+        bool is_with_king_{};
+        bool is_promotion_{};
 
         Value<Rules> current_{};
         Value<Rules> best_{};

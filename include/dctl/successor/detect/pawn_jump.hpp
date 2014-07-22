@@ -111,7 +111,7 @@ private:
         template<int Direction>
         auto parallelize(Set const& active_pawns) const
         {
-                return !Sandwich<Board, Direction, rules::range::distance_1>{}(
+                return !Sandwich<Board, Direction, std::false_type>{}(
                         active_pawns, propagate_.template targets_with_pawn<Direction>(), propagate_.path()
                 ).empty();
         }

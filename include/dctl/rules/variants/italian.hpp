@@ -18,7 +18,6 @@ struct Italian
 
         // additional rules
         static constexpr auto is_pawn_jump_king = false;                        // 5.3(b)
-        static constexpr auto is_relative_king_jump_precedence = true;          // 6.7
 
         // drawing rules
         static constexpr auto max_repetitions = 4;                              // 9.3(b1)

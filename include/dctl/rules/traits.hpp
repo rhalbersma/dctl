@@ -16,7 +16,6 @@
 #include <dctl/rules/traits/is_en_passant_jump_removal.hpp>
 #include <dctl/rules/traits/is_en_passant_promotion.hpp>
 #include <dctl/rules/traits/is_absolute_king_jump_precedence.hpp>
-#include <dctl/rules/traits/is_relative_king_jump_precedence.hpp>
 #include <dctl/rules/traits/initial_gap.hpp>
 #include <dctl/rules/traits/max_reversible_moves.hpp>
 #include <dctl/rules/traits/max_same_king_moves.hpp>

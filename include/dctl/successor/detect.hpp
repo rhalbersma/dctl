@@ -13,7 +13,7 @@ template<bool Color, class Pieces, class Select, class Position>
 auto detect(Position const& p)
 {
         using Rules = rules_type_t<Position>;
-        using Range = typename rules::range::king<Rules>::type;
+        using Range = is_long_ranged_king_t<Rules>;
         return Detect<Color, Pieces, Select, Range>{}(p);
 }
 

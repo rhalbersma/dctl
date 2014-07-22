@@ -61,7 +61,7 @@ private:
         template<int Direction>
         auto parallelize(Set const& active_pawns) const
         {
-                return !Sink<Board, Direction, rules::range::distance_1>{}(
+                return !Sink<Board, Direction, std::false_type>{}(
                         active_pawns, propagate_.path()
                 ).empty();
         }
