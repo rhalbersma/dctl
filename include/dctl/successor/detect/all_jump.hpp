@@ -30,7 +30,7 @@ public:
                                 bool,
                                 std::is_same<
                                         Range,
-                                        rules::range::distance_1
+                                        std::false_type
                                 >::value &&
                                 std::is_same< typename
                                         rules::directions::king_jump<Rules>, typename
@@ -43,9 +43,9 @@ public:
 
 private:
         // the existence of pawn jumps is independent of Range,
-        // but we always use rules::range::distance_1 to avoid template bloat
+        // but we always use short ranged movement to avoid template bloat
         template<class Position>
-        using PawnJump = Detect<Color, pieces::pawn, select::jump, Position, rules::range::distance_1>;
+        using PawnJump = Detect<Color, pieces::pawn, select::jump, Position, std::false_type>;
 
         template<class Position>
         using KingJump = Detect<Color, pieces::king, select::jump, Position, Range>;

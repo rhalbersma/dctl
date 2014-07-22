@@ -1,8 +1,8 @@
 #pragma once
-#include <iterator>                     // next, prev
-#include <dctl/rules/types.hpp>         // range::distance_1, range::distance_N
 #include <dctl/wave/algorithm.hpp>      // Fill
 #include <dctl/wave/iterator.hpp>
+#include <iterator>                     // next, prev
+#include <type_traits>                  // false_type, true_type
 
 namespace dctl {
 
@@ -10,8 +10,9 @@ namespace dctl {
 template<class Board, int Direction, class Range>
 struct Sink;
 
+// specialization for short ranged kings
 template<class Board, int Direction>
-struct Sink<Board, Direction, rules::range::distance_1>
+struct Sink<Board, Direction, std::false_type>
 {
         using Set = typename Board::set_type;
         auto operator()(Set const& from, Set const& dest) const
@@ -20,8 +21,9 @@ struct Sink<Board, Direction, rules::range::distance_1>
         }
 };
 
+// specialization for long ranged kings
 template<class Board, int Direction>
-struct Sink<Board, Direction, rules::range::distance_N>
+struct Sink<Board, Direction, std::true_type>
 {
         using Set = typename Board::set_type;
         auto operator()(Set const& from, Set const& dest) const
@@ -34,8 +36,9 @@ struct Sink<Board, Direction, rules::range::distance_N>
 template<class Board, int Direction, class Range>
 struct Sandwich;
 
+// specialization for short ranged kings
 template<class Board, int Direction>
-struct Sandwich<Board, Direction, rules::range::distance_1>
+struct Sandwich<Board, Direction, std::false_type>
 {
         using Set = typename Board::set_type;
         auto operator()(Set const& from, Set const& through, Set const& dest) const
@@ -48,8 +51,9 @@ struct Sandwich<Board, Direction, rules::range::distance_1>
         }
 };
 
+// specialization for long ranged kings
 template<class Board, int Direction>
-struct Sandwich<Board, Direction, rules::range::distance_N>
+struct Sandwich<Board, Direction, std::true_type>
 {
         using Set = typename Board::set_type;
         auto operator()(Set const& from, Set const& through, Set const& dest) const

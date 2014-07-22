@@ -17,8 +17,8 @@ public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using ShortPush = Detect<Color, Pieces, select::push, rules::range::distance_1>;
-                using ShortJump = Detect<Color, Pieces, select::jump, rules::range::distance_1>;
+                using ShortPush = Detect<Color, Pieces, select::push, std::false_type>;
+                using ShortJump = Detect<Color, Pieces, select::jump, std::false_type>;
 
                 // speculate #moves > #jumps, so that the logical OR is more likely to short-circuit
                 return ShortPush{}(p) || ShortJump{}(p);

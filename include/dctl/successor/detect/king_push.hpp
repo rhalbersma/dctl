@@ -9,6 +9,7 @@
 #include <dctl/wave/patterns.hpp>
 #include <dctl/rules/traits.hpp>
 #include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
+#include <type_traits>
 
 namespace dctl {
 namespace successor {
@@ -63,7 +64,7 @@ private:
         template<int Direction>
         auto parallelize(Set const& active_kings) const
         {
-                return !Sink<Board, Direction, rules::range::distance_1>{}(
+                return !Sink<Board, Direction, std::false_type>{}(
                         active_kings, propagate_.path()
                 ).empty();
         }

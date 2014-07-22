@@ -5,8 +5,8 @@
 #include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>               // push
 #include <dctl/position/unary_projections.hpp>          // moveable_kings
-#include <dctl/rules/traits.hpp>                        // distance_1
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
+#include <type_traits>                                  // false_type
 
 namespace dctl {
 namespace successor {
@@ -18,8 +18,8 @@ public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using KingPush = Detect<Color, pieces::king, select::push, Position, rules::range::distance_1>;
-                using PawnPush = Detect<Color, pieces::pawn, select::push, Position, rules::range::distance_1>;
+                using KingPush = Detect<Color, pieces::king, select::push, Position, std::false_type>;
+                using PawnPush = Detect<Color, pieces::pawn, select::push, Position, std::false_type>;
 
                 auto const propagate = Propagate<select::push, Position>{p};
 

@@ -16,7 +16,6 @@ BOOST_AUTO_TEST_CASE(Traits)
         static_assert(is_jump_precedence_v<T>, "");
 
         static_assert(is_orthogonal_jump_v<T>, "");
-        static_assert(is_relative_king_jump_precedence_v<T>, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
