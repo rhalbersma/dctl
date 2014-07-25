@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>                            // count
 #include <cassert>                              // assert
+#include <iostream>
 #include <iterator>                             // begin, end
 #include <limits>                               // numeric_limits
 #include <tuple>                                // tie
@@ -48,33 +49,6 @@ public:
                 assert(invariant());
         }
 
-        // queries
-
-        auto size() const
-        {
-                return num_pieces_;
-        }
-
-        auto num_pawns() const
-        {
-                return num_pieces_ - num_kings_;
-        }
-
-        auto num_kings() const
-        {
-                return num_kings_;
-        }
-
-        auto is_with_king() const
-        {
-                return is_with_king_;
-        }
-
-        auto king_order() const
-        {
-                return std::make_pair(king_order_.cbegin(), king_order_.cend());
-        }
-
         // predicates
 
         // operator!= provided by boost::totally_ordered
@@ -113,20 +87,6 @@ private:
                          num_kings_ == static_cast<int>(king_order_.size()) &&
                         !(num_kings_ && !is_with_king_)
                 ;
-        }
-
-        bool empty() const
-        {
-                return
-                                 0 == num_kings_ &&
-                        num_kings_ == num_pieces_ &&
-                        king_order_.empty()
-                ;
-        }
-
-        bool full() const
-        {
-                return num_pieces_ == std::numeric_limits<int>::max();
         }
 
         // representation

@@ -32,10 +32,7 @@ public:
                                         Range,
                                         std::false_type
                                 >::value &&
-                                std::is_same< typename
-                                        rules::directions::king_jump<Rules>, typename
-                                        rules::directions::pawn_jump<Rules>
-                                >::value &&
+                                is_backward_pawn_jump_v<Rules> &&
                                 is_pawn_jump_king_v<Rules>
                         >{}
                 );

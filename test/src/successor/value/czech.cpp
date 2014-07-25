@@ -11,19 +11,12 @@ static constexpr auto d = T{};
 static constexpr auto n = T{false};
 static constexpr auto y = T{true };
 
-BOOST_AUTO_TEST_CASE(IsConstructible)
-{
-        static_assert(!d.is_with_king(), "");
-        static_assert(!n.is_with_king(), "");
-        static_assert( y.is_with_king(), "");
-}
-
 BOOST_AUTO_TEST_CASE(IsEqualityComparable)
 {
-        static_assert(n == n, "");
-        static_assert(y == y, "");
         static_assert(d == n, "");
         static_assert(n == d, "");
+        static_assert(n == n, "");
+        static_assert(y == y, "");
 
         static_assert(!(n == y), "");
         static_assert(!(y == n), "");

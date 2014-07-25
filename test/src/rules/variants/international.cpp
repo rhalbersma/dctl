@@ -1,5 +1,3 @@
-#include <dctl/rules/variants/akw_damme.hpp>            // AKWDamme
-#include <dctl/rules/variants/h_hoogland.hpp>           // HHoogland
 #include <dctl/rules/variants/international.hpp>        // International
 #include <dctl/rules/variants/killer.hpp>               // Killer
 #include <dctl/rules/traits.hpp>
@@ -14,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(RulesVariantsInternational)
 
 // rules variants derived from international draughts
 using VariantsDerivedFromInternational = boost::mpl::vector<
-        AKWDamme, International, HHoogland, Killer
+        International, Killer
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Traits, T, VariantsDerivedFromInternational)

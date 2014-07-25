@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/pp/tti/box_type.hpp>     // DCTL_PP_TTI_BOX_TYPE
-#include <dctl/rules/types.hpp>
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/identity.hpp>       // identity
 #include <boost/mpl/logical.hpp>        // and_, not_, or_

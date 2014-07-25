@@ -6,7 +6,7 @@ static constexpr auto is_integral_v = std::is_integral<T>::value;
 
 #define DCTL_PP_TTI_HAS_NO_DEFAULT nullptr
 
-#define DCTL_PP_TTI_STATIC_CONSTANT(NAME, VALUE)                        \
+#define DCTL_PP_TTI_HAS_STATIC_CONSTANT(NAME)                           \
                                                                         \
 namespace detail_ ## NAME  {                                            \
                                                                         \
@@ -33,6 +33,14 @@ using has_static_constant_t = typename has_static_constant<T>::type;    \
                                                                         \
 template<class T>                                                       \
 constexpr auto has_static_constant_v = has_static_constant_t<T>::value; \
+                                                                        \
+}       /* namespace detail_ ## NAME */
+
+#define DCTL_PP_TTI_STATIC_CONSTANT(NAME, VALUE)                        \
+                                                                        \
+DCTL_PP_TTI_HAS_STATIC_CONSTANT(NAME)                                   \
+                                                                        \
+namespace detail_ ## NAME  {                                            \
                                                                         \
 template<class T>                                                       \
 struct box_static_constant                                              \
