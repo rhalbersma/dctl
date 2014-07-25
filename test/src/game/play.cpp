@@ -25,8 +25,8 @@ int main()
         //auto initial = Pos::initial();
 
         auto const initial = setup::read<rules::International, board::International, pdn::protocol>()(
-                        "B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"
-                );
+                "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
+        );
 
         std::stack<Pos> game;
         game.push(initial);

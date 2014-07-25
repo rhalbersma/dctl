@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/rules/variants/killer_fwd.hpp>           // Killer
 #include <dctl/rules/variants/international.hpp>        // International
-#include <dctl/rules/types/range.hpp>                   // distance_1K
 #include <dctl/successor/value/killer.hpp>              // Value (Killer specialization)
 
 namespace dctl {
@@ -15,7 +14,7 @@ struct Killer
         International
 {
         // additional rules
-        using range_halt = range::distance_1K;
+        static constexpr auto is_directly_halt_after_final_king = true;
 };
 
 }       // namespace rules

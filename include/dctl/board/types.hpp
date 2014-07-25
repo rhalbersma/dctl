@@ -26,7 +26,7 @@ using Spantsireti   = Board<10,  8>;
 template<int Width, int Height>
 using Ktar          = Board<Width, Height, true>;
 
-// Board<12, 10> and Ktar<10, 12> without orthogonal capture fit into 64-bits
+// without orthogonal capture, Board<12, 10> and Ktar<10, 12> fit into 64-bits
 using Compact1210   = Board<12, 10, false, false>;
 using Compact1012   = Board<10, 12, true , false>;
 

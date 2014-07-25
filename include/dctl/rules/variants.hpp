@@ -9,6 +9,4 @@
 #include <dctl/rules/variants/spanish.hpp>
 #include <dctl/rules/variants/thai.hpp>
 
-#include <dctl/rules/variants/akw_damme.hpp>
-#include <dctl/rules/variants/h_hoogland.hpp>
 #include <dctl/rules/variants/killer.hpp>

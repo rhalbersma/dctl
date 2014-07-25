@@ -15,7 +15,7 @@ struct Czech
         static constexpr auto is_jump_precedence = true;
 
         // additional rules
-        //static constexpr auto is_absolute_king_jump_precedence = true;
+        static constexpr auto is_absolute_king_jump_precedence = true;
 };
 
 }       // namespace rules

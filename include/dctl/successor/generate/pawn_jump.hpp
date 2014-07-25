@@ -342,7 +342,7 @@ private:
         void add(Iterator dest) const
         {
                 // tag dispatching on ambiguity of pawn jumps
-                ambiguity_dispatch(dest, rules::is_unambiguous_pawn_jump<Rules>{});
+                ambiguity_dispatch(dest, is_unambiguous_pawn_jump_t<Rules>{});
         }
 
         // overload for pawn jumps that are always unambiguous

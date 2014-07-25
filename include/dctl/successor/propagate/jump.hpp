@@ -6,7 +6,6 @@
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/pieces/pieces.hpp>
 #include <dctl/rules/traits.hpp>
-#include <dctl/rules/types.hpp>
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/jump.hpp>
 #include <dctl/successor/value.hpp>
@@ -183,7 +182,7 @@ public:
         template<int Direction>
         auto targets_with_king() const
         {
-                return remaining_targets<Direction>() & *std::prev(along_wave<Direction>(path()));
+                return remaining_targets_ & *std::prev(along_wave<Direction>(path()));
         }
 
         template<class Iterator>
@@ -254,7 +253,7 @@ public:
 
         auto is_large() const
         {
-                return size() >= rules::large_jump<Rules>::value;
+                return size() >= large_jump<Rules>::value;
         }
 
         auto num_pieces() const
@@ -267,7 +266,7 @@ public:
                 return static_cast<int>(ordered_kings_.size());
         }
 
-        auto ordered_kings() const
+        auto const& ordered_kings() const
         {
                 return ordered_kings_;
         }
@@ -325,36 +324,6 @@ private:
                 removed_pieces_.pop_back();
                 if (is_king(sq))
                         ordered_kings_.pop_back();
-        }
-
-        // queries
-
-        template<int Direction>
-        auto remaining_targets() const
-        {
-        	// tag dispatching based on direction and king jump orthogonality
-                return remaining_targets_dispatch(
-                        std::integral_constant<
-                                bool,
-                                is_orthogonal(Angle{Direction}) &&
-                                std::is_same< typename
-                                        rules::orthogonality::king_jump<Rules>::type,
-                                        rules::orthogonality::relative
-                                >::value
-                        >{}
-                );
-        }
-
-        // overload for diagonal direction or king jump
-        auto remaining_targets_dispatch(std::false_type) const
-        {
-                return remaining_targets_;
-        }
-
-        // overload for orthogonal direction and king jump
-        auto remaining_targets_dispatch(std::true_type) const
-        {
-                return set_intersection(remaining_targets_, king_targets_);
         }
 
         auto size() const

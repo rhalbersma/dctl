@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/rules/types.hpp>
 
 namespace dctl {
 namespace successor {

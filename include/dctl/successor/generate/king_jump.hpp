@@ -201,30 +201,12 @@ private:
         bool land(Iterator jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
-                return land_dispatch(jumper, rules::range::land<Rules>{});
-        }
-
-        // overload for kings that land immediately if the intermediate capture is a king, and slide through otherwise
-        template<class Iterator>
-        bool land_dispatch(Iterator jumper, rules::range::distance_1K) const
-        {
-                return
-                        tracker_.is_king(*std::prev(jumper)) ?
-                        land_dispatch(jumper, rules::range::distance_1{}) :
-                        land_dispatch(jumper, rules::range::distance_N{})
-                ;
-        }
-
-        // overload for kings that can only land on the immediately adjacent square
-        template<class Iterator>
-        bool land_dispatch(Iterator jumper, rules::range::distance_1) const
-        {
-                return scan(jumper) | turn(jumper);
+                return land_dispatch(jumper, is_long_ranged_land_after_piece_t<Rules>{});
         }
 
         // overload for kings that can land on any square along the current direction
         template<class Iterator>
-        bool land_dispatch(Iterator jumper, rules::range::distance_N) const
+        bool land_dispatch(Iterator jumper, std::true_type) const
         {
                 // CORRECTNESS: tracker_.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
@@ -235,6 +217,13 @@ private:
                         ++jumper;
                 } while (tracker_.path(*jumper));
                 return found_next |= is_en_prise(jumper);
+        }
+
+        // overload for kings that can only land on the immediately adjacent square
+        template<class Iterator>
+        bool land_dispatch(Iterator jumper, std::false_type) const
+        {
+                return scan(jumper) | turn(jumper);
         }
 
         template<class Iterator>
@@ -318,29 +307,29 @@ private:
                 auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && tracker_.is_potential_duplicate(moves_);
 
                 // tag dispatching on king halt after final capture
-                halt_dispatch(dest_sq, check_duplicate, rules::range::halt<Rules>{});
+                halt_dispatch(dest_sq, check_duplicate, std::pair<is_long_ranged_land_after_piece_t<Rules>, is_directly_halt_after_final_king_t<Rules>>{});
         }
 
         // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
         template<class Iterator>
-        void halt_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_1K) const
+        void halt_dispatch(Iterator dest_sq, bool check_duplicate, std::pair<std::true_type, std::true_type>) const
         {
                 if (tracker_.is_king(*std::prev(dest_sq)))
-                        halt_dispatch(dest_sq, check_duplicate, rules::range::distance_1{});
+                        halt_dispatch(dest_sq, check_duplicate, std::pair<std::false_type, std::true_type>{});
                 else
-                        halt_dispatch(dest_sq, check_duplicate, rules::range::distance_N{});
+                        halt_dispatch(dest_sq, check_duplicate, std::pair<std::true_type, std::false_type>{});
         }
 
         // overload for kings that halt immediately after the final capture
-        template<class Iterator>
-        void halt_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_1) const
+        template<class Iterator, class B>
+        void halt_dispatch(Iterator dest_sq, bool check_duplicate, std::pair<std::false_type, B>) const
         {
                 add_jump(dest_sq, check_duplicate);
         }
 
         // overload for kings that slide through after the final capture
         template<class Iterator>
-        void halt_dispatch(Iterator dest_sq, bool check_duplicate, rules::range::distance_N) const
+        void halt_dispatch(Iterator dest_sq, bool check_duplicate, std::pair<std::true_type, std::false_type>) const
         {
                 // NOTE: tracker_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
