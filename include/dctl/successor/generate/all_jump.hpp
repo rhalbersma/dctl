@@ -5,7 +5,7 @@
 #include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
-#include <dctl/rules/traits.hpp>                        // is_absolute_king_jump_precedence_t
+#include <dctl/rule_traits.hpp>                         // is_absolute_king_jump_precedence_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
 #include <type_traits>                                  // false_type, true_type
 

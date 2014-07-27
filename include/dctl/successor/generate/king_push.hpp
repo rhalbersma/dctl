@@ -8,7 +8,7 @@
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/ray.hpp>                                 // make_iterator
-#include <dctl/rules/traits.hpp>
+#include <dctl/rule_traits.hpp>
 #include <boost/range/adaptor/transformed.hpp>          // transformed
 #include <boost/range/algorithm_ext/push_back.hpp>      // push_back
 #include <iterator>                                     // prev

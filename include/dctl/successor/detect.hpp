@@ -3,7 +3,7 @@
 #include <dctl/successor/detect/specializations.hpp>    // detect
 #include <dctl/position/color.hpp>                      // black, white
 #include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
-#include <dctl/rules/traits.hpp>
+#include <dctl/rule_traits.hpp>
 #include <dctl/type_traits.hpp>
 
 namespace dctl {

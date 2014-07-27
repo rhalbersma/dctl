@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/traits/max_same_king_moves.hpp>    // max_same_king_push
+#include <dctl/rules/max_same_king_push.hpp>    // max_same_king_push
 #include <boost/mpl/eval_if.hpp>                        // eval_if
 #include <climits>                                      // INT_MAX
 #include <type_traits>                                  // integral_constant, is_same

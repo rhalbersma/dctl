@@ -4,7 +4,7 @@
 #include <dctl/successor/detect/pawn_jump.hpp>          // Detect (pawn jump specialization)
 #include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
-#include <dctl/rules/traits.hpp>                        // traits
+#include <dctl/rule_traits.hpp>                         // traits
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 #include <dctl/type_traits.hpp>                         // rules_type_t
 #include <type_traits>                                  // integral_constant, is_same, false_type, true_type

@@ -1,11 +1,11 @@
-#include <algorithm>                            // accumulate, all_of
+#include <dctl/bit.hpp>                         // set_intersects
+#include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
+#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/bit.hpp>                         // set_intersects
-#include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
-#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
+#include <algorithm>                            // accumulate, all_of
 
 namespace dctl {
 namespace board {
@@ -17,15 +17,18 @@ using BoardSequence = boost::mpl::vector
         Micro,
         Mini,
         Checkers,
-        International,
-        Canadian,
-        Dumm,
         Roman,
-        Frisian,
-        SriLankan,
         Spantsireti,
+        International,
+        Frisian,
         Ktar<10, 11>,
-        Ktar<10, 12>
+        Ktar<10, 12>,
+        Compact1012,
+        Compact1210,
+        Board<12, 10>,
+        Canadian,
+        SriLankan,
+        Dumm
 >;
 
 template<class T>

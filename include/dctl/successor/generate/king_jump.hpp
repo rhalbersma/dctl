@@ -7,8 +7,8 @@
 #include <dctl/angle.hpp>                               // _deg, rotate, inverse
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror
-#include <dctl/rules/traits.hpp>
-#include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
+#include <dctl/rule_traits.hpp>
+#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
 #include <dctl/utility/algorithm.hpp>                   // is_duplicate_back
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
@@ -304,7 +304,7 @@ private:
         template<class Iterator>
         void add(Iterator dest_sq) const
         {
-                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && tracker_.is_potential_duplicate(moves_);
+                auto const check_duplicate = is_remove_duplicates_v<Rules> && tracker_.is_potential_duplicate(moves_);
 
                 // tag dispatching on king halt after final capture
                 halt_dispatch(dest_sq, check_duplicate, std::pair<is_long_ranged_land_after_piece_t<Rules>, is_directly_halt_after_final_king_t<Rules>>{});

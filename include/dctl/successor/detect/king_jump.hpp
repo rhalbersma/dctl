@@ -8,7 +8,7 @@
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/wave/patterns.hpp>
 #include <dctl/position/unary_projections.hpp>
-#include <dctl/rules/traits.hpp>
+#include <dctl/rule_traits.hpp>
 #include <dctl/type_traits.hpp>
 
 namespace dctl {

@@ -5,7 +5,7 @@
 #include <dctl/position/promotion.hpp>
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/pieces/pieces.hpp>
-#include <dctl/rules/traits.hpp>
+#include <dctl/rule_traits.hpp>
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/jump.hpp>
 #include <dctl/successor/value.hpp>
@@ -253,7 +253,7 @@ public:
 
         auto is_large() const
         {
-                return size() >= large_jump<Rules>::value;
+                return size() >= large_jump_v<Rules>;
         }
 
         auto num_pieces() const

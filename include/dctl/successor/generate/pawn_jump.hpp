@@ -9,7 +9,7 @@
 #include <dctl/angle.hpp>                               // _deg, rotate, inverse
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/position/promotion.hpp>
-#include <dctl/rules/traits.hpp>
+#include <dctl/rule_traits.hpp>
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror, turn
 #include <dctl/wave/iterator.hpp>
@@ -356,7 +356,7 @@ private:
         template<class Iterator>
         void ambiguity_dispatch(Iterator dest, std::false_type) const
         {
-                auto const check_duplicate = rules::is_remove_duplicates<Rules>::value && tracker_.is_potential_duplicate(moves_);
+                auto const check_duplicate = is_remove_duplicates_v<Rules> && tracker_.is_potential_duplicate(moves_);
                 tracker_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
                 if (check_duplicate && util::is_duplicate_back(moves_))
                         moves_.pop_back();
