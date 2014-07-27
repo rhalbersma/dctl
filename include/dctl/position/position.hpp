@@ -9,7 +9,7 @@
 #include <dctl/position/mru_king/mru_king.hpp>
 #include <dctl/position/mru_king/zobrist.hpp>
 #include <dctl/position/color.hpp>
-#include <dctl/rules/traits.hpp>
+#include <dctl/rule_traits.hpp>
 #include <dctl/type_traits.hpp>
 #include <dctl/zobrist/accumulate.hpp>
 #include <cassert>                      // assert

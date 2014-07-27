@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/traits.hpp>
+#include <dctl/rules/max_same_king_push.hpp>
 
 namespace dctl {
 

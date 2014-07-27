@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/position/detail/unary_projections.hpp>
-#include <dctl/rules/traits.hpp>
+#include <dctl/rule_traits.hpp>
 #include <dctl/board/mask.hpp>
 
 namespace dctl {
