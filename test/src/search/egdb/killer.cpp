@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include <search/fixture.hpp>
 #include <dctl/board/types.hpp>
-#include <dctl/rules/variants.hpp>
+#include <dctl/rules.hpp>
 
 namespace dctl {
 namespace search {

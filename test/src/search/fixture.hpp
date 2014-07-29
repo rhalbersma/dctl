@@ -7,7 +7,7 @@
 #include <dctl/position/position.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/board/types.hpp>
-#include <dctl/rules/variants.hpp>
+#include <dctl/rules.hpp>
 
 namespace dctl {
 namespace search {

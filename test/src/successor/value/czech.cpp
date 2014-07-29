@@ -1,4 +1,4 @@
-#include <dctl/rules/variants.hpp>      // Czech
+#include <dctl/rules.hpp>      // Czech
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
 
 namespace dctl {

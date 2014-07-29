@@ -9,7 +9,7 @@
 #include <iterator>
 #include <dctl/position/position.hpp>
 #include <dctl/setup/diagram.hpp>
-#include <dctl/rules/variants.hpp>
+#include <dctl/rules.hpp>
 #include <dctl/setup/string.hpp>
 
 namespace dctl {

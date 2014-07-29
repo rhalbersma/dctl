@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/position/detail/unary_projections.hpp>
 #include <dctl/rule_traits.hpp>
+#include <dctl/type_traits.hpp>
 #include <dctl/board/mask.hpp>
 
 namespace dctl {
@@ -51,14 +52,14 @@ template<class Position>
 auto moveable_kings(Position const& p, bool color)
 {
         // tag dispatching on restrictions on consecutive moves with the same king
-        return detail::moveable_kings(p, color, rules::is_restricted_same_king_moves<typename Position::rules_type>{});
+        return detail::moveable_kings(p, color, rules::is_restricted_same_king_push<rules_type_t<Position>>{});
 }
 
 template<bool Color, class Position>
 auto targets(Position const& p)
 {
         // tag dispatching on whether pawns can capture kings
-        return detail::targets<Color>(p, is_pawn_jump_king_t<typename Position::rules_type>{});
+        return detail::targets<Color>(p, is_pawn_jump_king_t<rules_type_t<Position>>{});
 }
 
 }       // namespace dctl

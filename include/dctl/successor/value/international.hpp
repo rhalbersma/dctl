@@ -3,7 +3,7 @@
 #include <limits>                               // numeric_limits
 #include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/variants/international_fwd.hpp>     // International
+#include <dctl/rules/international_fwd.hpp>     // International
 
 namespace dctl {
 namespace successor {
@@ -29,13 +29,6 @@ public:
         :
                 num_pieces_{u.num_pieces()}
         {}
-
-        // queries
-
-        constexpr auto num_pieces() const
-        {
-                return num_pieces_;
-        }
 
         // predicates
 

@@ -1,6 +1,6 @@
 #include <type_traits>                  // integral_constant
 #include <dctl/board/types.hpp>         // International
-#include <dctl/rules/variants.hpp>      // International, Checkers, Pool, Italian
+#include <dctl/rules.hpp>      // International, Checkers, Pool, Italian
 
 namespace dctl {
 
