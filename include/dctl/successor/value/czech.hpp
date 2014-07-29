@@ -1,7 +1,7 @@
 #pragma once
-#include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/variants/czech_fwd.hpp>    // Czech
+#include <dctl/rules/czech_fwd.hpp>    // Czech
+#include <boost/operators.hpp>                  // totally_ordered
 
 namespace dctl {
 namespace successor {

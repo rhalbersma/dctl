@@ -1,6 +1,6 @@
 #pragma once
 #include <type_traits>                  // integral_constant
-#include <dctl/rules/variants.hpp>      // Czech, Russian, Thai
+#include <dctl/rules.hpp>      // Czech, Russian, Thai
 
 namespace dctl {
 namespace move {

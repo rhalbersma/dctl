@@ -4,7 +4,7 @@
 #include <tuple>                                // get, tie
 #include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/variants/spanish_fwd.hpp>  // Spanish
+#include <dctl/rules/spanish_fwd.hpp>  // Spanish
 
 namespace dctl {
 namespace successor {

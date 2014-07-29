@@ -3,7 +3,7 @@
 #include <dctl/walk/root.hpp>
 #include <dctl/position/position.hpp>
 #include <dctl/board/types.hpp>
-#include <dctl/rules/variants.hpp>
+#include <dctl/rules.hpp>
 #include <dctl/utility/int.hpp>         // NodeCount
 
 namespace dctl {

@@ -4,7 +4,7 @@
 #include <tuple>                                // tie
 #include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/variants/frisian_fwd.hpp>  // Frisian
+#include <dctl/rules/frisian_fwd.hpp>  // Frisian
 
 namespace dctl {
 namespace successor {

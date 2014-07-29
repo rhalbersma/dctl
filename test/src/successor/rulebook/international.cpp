@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <successor/fixture.hpp>   // run
 #include <dctl/board/types.hpp>         // International
-#include <dctl/rules/variants.hpp>      // International
+#include <dctl/rules.hpp>      // International
 
 namespace dctl {
 namespace successor {

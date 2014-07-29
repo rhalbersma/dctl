@@ -11,7 +11,7 @@
 #include <dctl/utility/stack_vector.hpp>
 
 // customize rules and board form these headers
-#include <dctl/rules/variants.hpp>
+#include <dctl/rules.hpp>
 #include <dctl/board/types.hpp>
 
 using namespace dctl;
