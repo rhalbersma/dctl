@@ -10,7 +10,7 @@ namespace rules {
 BOOST_AUTO_TEST_SUITE(RulesTraitsIsEnPassantPromotion)
 
 using VariantsFalse = boost::mpl::vector<
-        Checkers, Czech, Frisian, International, Italian, Killer, Pool, Spanish, Thai
+        Checkers, Czech, Frisian, International, Italian, Pool, Spanish, Thai
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsEnPassantPromotionV, T, VariantsFalse)

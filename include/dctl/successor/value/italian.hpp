@@ -21,7 +21,7 @@ class Value<rules::Italian>
         boost::totally_ordered< Value<rules::Italian> > // < >= > <= == !=
 {
 public:
-        // structors
+        // constructors
 
         Value() = default;
 

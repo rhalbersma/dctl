@@ -1,6 +1,6 @@
-#include <dctl/rules/italian.hpp>      // Italian
+#include <dctl/rules/italian.hpp>       // Italian
 #include <dctl/rule_traits.hpp>
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 
 namespace dctl {
 namespace rules {

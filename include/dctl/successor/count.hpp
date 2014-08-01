@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/successor/select/legal.hpp>              // legal
-#include <dctl/successor/count/specializations.hpp>     // count
+#include <dctl/successor/count/specializations.hpp>     // Count
 #include <dctl/position/color.hpp>                      // black, white
 #include <dctl/pieces/pieces.hpp>                       // piece, king, pawn
 

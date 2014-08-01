@@ -16,7 +16,7 @@ class Value<rules::Frisian>
         boost::totally_ordered< Value<rules::Frisian> > // < >= > <= == !=
 {
 public:
-        // structors
+        // constructors
 
         Value() = default;
 

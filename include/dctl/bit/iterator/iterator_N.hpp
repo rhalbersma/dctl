@@ -30,7 +30,7 @@ private:
         enum { N = Nb * digits };
 
 public:
-        // structors
+        // constructors
 
         constexpr ConstIterator() = default;
 

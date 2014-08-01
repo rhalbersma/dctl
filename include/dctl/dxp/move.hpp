@@ -22,7 +22,7 @@ class Move final
         public factory::make_creatable<Message, Move, 'M'>
 {
 public:
-        // structors
+        // constructors
 
         explicit Move(std::string const& message)
         :

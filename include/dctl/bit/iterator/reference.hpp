@@ -10,7 +10,7 @@ template<class T, class Block, int Nb>
 class ConstReference
 {
 public:
-        // structors
+        // constructors
 
         // references cannot be left uninitialized
         ConstReference() = delete;

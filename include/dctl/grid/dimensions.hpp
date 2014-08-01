@@ -9,7 +9,7 @@ namespace grid {
 class DimensionsObject
 {
 public:
-        // structors
+        // constructors
 
         constexpr DimensionsObject(int w, int h, bool i) noexcept
         :

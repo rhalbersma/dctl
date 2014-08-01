@@ -20,7 +20,7 @@ class Cursor
         using Set = set_type_t<Board>;
 
 public:
-        // structors
+        // constructors
 
         Cursor() = default;
 

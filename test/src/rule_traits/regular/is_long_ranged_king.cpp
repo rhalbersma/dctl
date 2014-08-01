@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsLongRangedKingV, T, VariantsFalse)
 }
 
 using VariantsTrue = boost::mpl::vector<
-        Czech, Frisian, International, Killer, Pool, Russian, Spanish, Thai
+        Czech, Frisian, International, Pool, Russian, Spanish, Thai
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsLongRangedKingV, T, VariantsTrue)

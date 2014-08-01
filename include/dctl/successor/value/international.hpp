@@ -15,7 +15,7 @@ class Value<rules::International>
         boost::totally_ordered< Value<rules::International> >   // !=, >=, >, <=
 {
 public:
-        // structors
+        // constructors
 
         constexpr Value() = default;
 

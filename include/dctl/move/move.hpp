@@ -14,7 +14,7 @@ public:
         using rules_type = Rules;
         using Set = typename Board::set_type;
 
-        // structors
+        // constructors
 
         // king move
         constexpr Move(int src, int dst, bool color)

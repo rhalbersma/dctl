@@ -39,7 +39,7 @@ private:
         Sequence& moves_;
 
 public:
-        // structors
+        // constructors
 
         Generate(State const& p, Sequence& m)
         :

@@ -19,7 +19,7 @@ class Chat final
         public factory::make_creatable<Message, Chat, 'C'>
 {
 public:
-        // structors
+        // constructors
 
         explicit Chat(std::string const& message)
         :

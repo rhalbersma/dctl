@@ -20,7 +20,7 @@ class Cursor
         using Square = int;
 
 public:
-        // structors
+        // constructors
 
         Cursor() = default;
 

@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/rule_traits/max_reversible_moves.hpp>   // max_reversible_moves
-#include <boost/mpl/eval_if.hpp>                        // eval_if
-#include <climits>                                      // INT_MAX
-#include <type_traits>                                  // integral_constant, is_same
+#include <dctl/rule_traits/draw/max_reversible_moves.hpp>       // max_reversible_moves
+#include <boost/mpl/eval_if.hpp>                                // eval_if
+#include <climits>                                              // INT_MAX
+#include <type_traits>                                          // integral_constant, is_same
 
 namespace dctl {
 namespace rules {

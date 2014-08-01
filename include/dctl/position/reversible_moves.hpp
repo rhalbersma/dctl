@@ -7,7 +7,7 @@ namespace dctl {
 class ReversibleMoves
 {
 public:
-        // structors
+        // constructors
 
         ReversibleMoves() = default;
 

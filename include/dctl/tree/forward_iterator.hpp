@@ -36,7 +36,7 @@ private:
         using node_ptr = node_type*;
 
 public:
-        // structors
+        // constructors
 
         forward_iterator()
         :

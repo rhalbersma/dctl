@@ -29,7 +29,7 @@ private:
         using self_type = stride_forward_iterator;
 
 public:
-        // structors
+        // constructors
 
         stride_forward_iterator()
         :

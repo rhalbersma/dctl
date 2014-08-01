@@ -12,7 +12,7 @@ public:
 
         using grid_type = Grid;
 
-        // structors
+        // constructors
 
         explicit constexpr Square(int v) noexcept
         :

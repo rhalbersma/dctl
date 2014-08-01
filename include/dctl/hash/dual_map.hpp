@@ -26,7 +26,7 @@ private:
         using const_mapped_pointer = typename map_type::const_mapped_pointer;
 
 public:
-        // structors
+        // constructors
 
         DualMap()
         {

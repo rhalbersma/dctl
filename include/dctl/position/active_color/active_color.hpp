@@ -6,7 +6,7 @@ namespace dctl {
 class ActiveColor
 {
 public:
-        // structors
+        // constructors
 
         ActiveColor() = default;
 

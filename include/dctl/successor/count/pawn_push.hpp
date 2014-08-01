@@ -34,7 +34,7 @@ private:
         State const& propagate_;
 
 public:
-        // structors
+        // constructors
 
         explicit Count(State const& p)
         :

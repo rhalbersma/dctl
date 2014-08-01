@@ -7,7 +7,7 @@ namespace walk {
 struct Transposition
 {
 public:
-        // structors
+        // constructors
         Transposition() = default;
 
         Transposition(NodeCount n, int d)

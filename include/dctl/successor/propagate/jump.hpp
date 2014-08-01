@@ -33,7 +33,7 @@ template<class Position>
 class Propagate<select::jump, Position>
 {
 public:
-        // structors
+        // constructors
 
         explicit Propagate(Position const& p)
         :

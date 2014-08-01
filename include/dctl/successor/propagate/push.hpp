@@ -10,7 +10,7 @@ template<class Position>
 class Propagate<select::push, Position>
 {
 public:
-        // structors
+        // constructors
 
         explicit Propagate(Position const& p)
         :

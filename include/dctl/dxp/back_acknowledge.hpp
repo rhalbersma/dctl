@@ -23,7 +23,7 @@ class BackAcknowledge final
 public:
         enum AcceptanceCode: int { accept = 0, not_supported = 1, decline = 2 };
 
-        // structors
+        // constructors
 
         explicit BackAcknowledge(std::string const& message)
         :
