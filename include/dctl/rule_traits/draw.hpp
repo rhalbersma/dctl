@@ -1,4 +1,7 @@
 #pragma once
+#include <dctl/rule_traits/draw/max_reversible_moves.hpp>
+#include <dctl/rule_traits/draw/is_restricted_reversible_moves.hpp>
+
 #include <dctl/pp/tti/box_type.hpp>     // DCTL_PP_TTI_BOX_TYPE
 #include <boost/mpl/eval_if.hpp>        // eval_if
 #include <boost/mpl/identity.hpp>       // identity

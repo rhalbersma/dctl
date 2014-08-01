@@ -9,7 +9,8 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesTraitsIsBackwardPawnJump)
 
-using VariantsFalse = boost::mpl::vector<
+using VariantsFalse = boost::mpl::vector
+<
         Checkers, Czech, Italian, Spanish, Thai
 >;
 
@@ -18,8 +19,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsBackwardPawnJumpV, T, VariantsFalse)
         static_assert(!is_backward_pawn_jump_v<T>, "");
 }
 
-using VariantsTrue = boost::mpl::vector<
-        Frisian, International, Killer, Pool, Russian
+using VariantsTrue = boost::mpl::vector
+<
+        Frisian, International, Pool, Russian
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsBackwardPawnJumpV, T, VariantsTrue)

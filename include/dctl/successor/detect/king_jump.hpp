@@ -36,7 +36,7 @@ private:
         State const& propagate_;
 
 public:
-        // structors
+        // constructors
 
         explicit Detect(State const& p)
         :

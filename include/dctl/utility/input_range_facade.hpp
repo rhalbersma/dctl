@@ -52,7 +52,7 @@ public:
                 >
         {
         public:
-                // structors
+                // constructors
 
                 iterator() = default;
 

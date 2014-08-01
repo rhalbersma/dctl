@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsJumpPrecedenceV, T, VariantsFalse)
 }
 
 using VariantsTrue = boost::mpl::vector<
-        Czech, Frisian, International, Italian, Killer, Spanish
+        Czech, Frisian, International, Italian, Spanish
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsJumpPrecedenceV, T, VariantsTrue)

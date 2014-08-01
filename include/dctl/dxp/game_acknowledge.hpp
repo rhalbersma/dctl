@@ -23,7 +23,7 @@ class GameAcknowledge final
 public:
         enum AcceptanceCode: int { accept = 0, decline_version = 1, decline_game = 2, decline_always = 3 };
 
-        // structors
+        // constructors
 
         explicit GameAcknowledge(std::string const& message)
         :

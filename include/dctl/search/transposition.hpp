@@ -9,7 +9,7 @@ namespace search {
 struct Transposition
 {
 public:
-        // structors
+        // constructors
         Transposition()
         :
                 value_(0),

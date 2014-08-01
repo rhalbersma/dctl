@@ -16,7 +16,7 @@ class InputRange<T, Block, 1>
         public util::InputRangeFacade<InputRange<T, Block, 1>, T, T>
 {
 public:
-        // structors
+        // constructors
 
         explicit InputRange(Block& range) noexcept
         :

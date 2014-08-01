@@ -9,7 +9,7 @@ private:
         using self_type = forward_link;
 
 public:
-        // structors
+        // constructors
 
         forward_link()
         :

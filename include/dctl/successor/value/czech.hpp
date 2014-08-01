@@ -13,7 +13,7 @@ class Value<rules::Czech>
         boost::totally_ordered< Value<rules::Czech> > // < >= > <= == !=
 {
 public:
-        // structors
+        // constructors
 
         constexpr Value() = default;
 

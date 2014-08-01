@@ -7,7 +7,7 @@ namespace dctl {
 class Angle
 {
 public:
-        // structors
+        // constructors
 
         constexpr Angle() = default;
 

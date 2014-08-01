@@ -50,7 +50,7 @@ private:
         using map_type = std::vector<bucket_type>;
 
 public:
-        // structors
+        // constructors
 
         Map()
         {

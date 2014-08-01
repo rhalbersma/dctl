@@ -10,7 +10,7 @@ namespace rules {
 BOOST_AUTO_TEST_SUITE(RulesTraitsIsOrthogonalJump)
 
 using VariantsFalse = boost::mpl::vector<
-        Checkers, Czech, International, Italian, Killer, Pool, Russian, Spanish, Thai
+        Checkers, Czech, International, Italian, Pool, Russian, Spanish, Thai
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsIsOrthogonalJumpV, T, VariantsFalse)

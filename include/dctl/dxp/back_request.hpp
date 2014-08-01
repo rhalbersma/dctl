@@ -21,7 +21,7 @@ class BackRequest final
         public factory::make_creatable<Message, BackRequest, 'B'>
 {
 public:
-        // structors
+        // constructors
 
         explicit BackRequest(std::string const& message)
         :

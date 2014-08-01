@@ -10,7 +10,7 @@ namespace rules {
 BOOST_AUTO_TEST_SUITE(RulesTraitsIsPawnJumpKing)
 
 using VariantsTrue = boost::mpl::vector<
-        Checkers, Czech, Frisian, International, Killer, Pool, Russian, Spanish, Thai
+        Checkers, Czech, Frisian, International, Pool, Russian, Spanish, Thai
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsPawnJumpKingV, T, VariantsTrue)

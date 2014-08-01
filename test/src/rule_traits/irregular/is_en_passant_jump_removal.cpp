@@ -10,7 +10,7 @@ namespace rules {
 BOOST_AUTO_TEST_SUITE(RulesTraitsIsEnPassantJumpRemoval)
 
 using VariantsFalse = boost::mpl::vector<
-        Checkers, Czech, Frisian, International, Italian, Killer, Pool, Russian, Spanish
+        Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsEnPassantJumpRemovalV, T, VariantsFalse)

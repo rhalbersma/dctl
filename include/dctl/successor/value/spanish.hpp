@@ -16,7 +16,7 @@ class Value<rules::Spanish>
         boost::totally_ordered< Value<rules::Spanish> > // < >= > <= == !=
 {
 public:
-        // structors
+        // constructors
 
         Value() = default;
 

@@ -1,0 +1,11 @@
+#pragma once
+#include <dctl/rule_traits/irregular/initial_gap.hpp>
+#include <dctl/rule_traits/irregular/is_absolute_king_jump_precedence.hpp>
+#include <dctl/rule_traits/irregular/is_directly_halt_after_final_king.hpp>
+#include <dctl/rule_traits/irregular/is_directly_land_after_piece.hpp>
+#include <dctl/rule_traits/irregular/is_en_passant_jump_removal.hpp>
+#include <dctl/rule_traits/irregular/is_en_passant_promotion.hpp>
+#include <dctl/rule_traits/irregular/is_orthogonal_jump.hpp>
+#include <dctl/rule_traits/irregular/is_pawn_jump_king.hpp>
+#include <dctl/rule_traits/irregular/is_remove_duplicates.hpp>
+#include <dctl/rule_traits/irregular/max_same_king_push.hpp>

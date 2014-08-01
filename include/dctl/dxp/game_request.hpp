@@ -25,7 +25,7 @@ public:
         static const auto protocol_version = 1;
         enum SetupCode { initial = 'A', special = 'B' };
 
-        // structors
+        // constructors
 
         explicit GameRequest(std::string const& message)
         :

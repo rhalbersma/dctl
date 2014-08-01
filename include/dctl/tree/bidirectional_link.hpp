@@ -9,7 +9,7 @@ private:
         using self_type = bidirectional_link;
 
 public:
-        // structors
+        // constructors
 
         bidirectional_link()
         :

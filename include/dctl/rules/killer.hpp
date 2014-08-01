@@ -8,10 +8,11 @@ namespace rules {
 
 // http://www.mindsports.nl/index.php/arena/draughts/382-killer-draughts-rules
 
+template<class Rules = International>
 struct Killer
 :
         // main rules
-        International
+        Rules
 {
         // additional rules
         static constexpr auto is_directly_halt_after_final_king = true;

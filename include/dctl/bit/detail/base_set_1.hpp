@@ -30,7 +30,7 @@ struct BaseSet<T, Block, 1>
                 return data_;
         }
 
-        // structors
+        // constructors
 
         constexpr BaseSet() = default;
 

@@ -35,7 +35,7 @@ struct BaseSet
                 return data_[0];
         }
 
-        // structors
+        // constructors
 
         constexpr BaseSet() = default;
 

@@ -28,7 +28,7 @@ class ConstIterator<T, Block, 1>
         enum { N = 1 * digits };
 
 public:
-        // structors
+        // constructors
 
         constexpr ConstIterator() = default;
 

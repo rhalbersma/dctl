@@ -10,7 +10,7 @@ public:
         enum { M = rules::max_same_king_push<Rules>::value };
         enum { N = Board::set_type::N };
 
-        // structors
+        // constructors
 
         constexpr MostRecentlyUsedKing() = default;
 
