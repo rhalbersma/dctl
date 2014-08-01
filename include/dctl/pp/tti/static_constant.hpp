@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/pp/tti/box_static_constant.hpp>
 #include <dctl/pp/tti/has_static_constant.hpp>
-#include <type_traits>	                        // conditional, enable_if_t, integral_constant, is_integral, remove_const_t
+#include <type_traits>	                        // conditional, enable_if_t, integral_constant, is_integral
 
 template<class T>
 static constexpr auto is_integral_v = std::is_integral<T>::value;
