@@ -1,24 +1,15 @@
 #pragma once
 #include <dctl/rule_traits/irregular/max_same_king_push.hpp>    // max_same_king_push
-#include <boost/mpl/eval_if.hpp>                                // eval_if
-#include <climits>                                              // INT_MAX
-#include <type_traits>                                          // integral_constant, is_same
+#include <type_traits>                                          // integral_constant
 
 namespace dctl {
-namespace rules {
 
 template<class Rules>
-struct is_restricted_same_king_push
-:
-        boost::mpl::eval_if<
-                std::is_same< typename
-                        max_same_king_push<Rules>::type,
-                        std::integral_constant<int, 0>
-                >,
-                std::false_type,
-                std::true_type
-        >::type
-{};
+constexpr auto is_restricted_same_king_push_v = max_same_king_push_v<Rules> != 0;
 
-}       // namespace rules
+template<class Rules>
+using is_restricted_same_king_push_t = std::integral_constant<bool,
+        is_restricted_same_king_push_v<Rules>
+>;
+
 }       // namespace dctl

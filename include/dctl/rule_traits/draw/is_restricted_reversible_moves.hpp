@@ -1,24 +1,15 @@
 #pragma once
 #include <dctl/rule_traits/draw/max_reversible_moves.hpp>       // max_reversible_moves
-#include <boost/mpl/eval_if.hpp>                                // eval_if
-#include <climits>                                              // INT_MAX
-#include <type_traits>                                          // integral_constant, is_same
+#include <type_traits>                                          // integral_constant
 
 namespace dctl {
-namespace rules {
 
 template<class Rules>
-struct is_restricted_reversible_moves
-:
-        boost::mpl::eval_if<
-                std::is_same< typename
-                        max_reversible_moves<Rules>::type,
-                        std::integral_constant<int, INT_MAX>
-                >,
-                std::false_type,
-                std::true_type
-        >::type
-{};
+constexpr auto is_restricted_reversible_moves_v = max_reversible_moves_v<Rules> != 0;
 
-}       // namespace rules
+template<class Rules>
+using is_restricted_reversible_moves_t = std::integral_constant<bool,
+        is_restricted_reversible_moves_v<Rules>
+>;
+
 }       // namespace dctl

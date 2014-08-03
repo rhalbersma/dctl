@@ -19,7 +19,6 @@ struct Frisian
 
         // drawing rules
         static constexpr auto max_same_king_push = 6;
-        static constexpr auto max_2Kv1K_majority_moves = 7;
 };
 
 }       // namespace rules

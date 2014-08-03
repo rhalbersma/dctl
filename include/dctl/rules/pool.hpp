@@ -17,8 +17,6 @@ struct Pool
         // drawing rules
         static constexpr auto max_repetitions = 3;                              // 26
         static constexpr auto max_reversible_moves = 30;                        // 26
-        static constexpr auto max_3Kv1K_minority_moves = 13;                    // 27
-        static constexpr auto max_LLv1K_majority_moves = 5;                     // 28
 };
 
 }       // namespace rules

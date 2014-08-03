@@ -52,7 +52,7 @@ template<class Position>
 auto moveable_kings(Position const& p, bool color)
 {
         // tag dispatching on restrictions on consecutive moves with the same king
-        return detail::moveable_kings(p, color, rules::is_restricted_same_king_push<rules_type_t<Position>>{});
+        return detail::moveable_kings(p, color, is_restricted_same_king_push_t<rules_type_t<Position>>{});
 }
 
 template<bool Color, class Position>
