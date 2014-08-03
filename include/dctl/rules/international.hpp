@@ -17,8 +17,6 @@ struct International
         // drawing rules
         static constexpr auto max_repetitions = 3;              // 6.1
         static constexpr auto max_reversible_moves = 50;        // 6.2
-        static constexpr auto max_3v1_moves = 32;               // 6.3
-        static constexpr auto max_2v1_moves = 10;               // 6.4
 };
 
 }       // namespace rules

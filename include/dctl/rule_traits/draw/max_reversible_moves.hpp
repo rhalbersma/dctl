@@ -1,25 +1,8 @@
 #pragma once
-#include <dctl/pp/tti/box_type.hpp>     // DCTL_PP_TTI_BOX_TYPE
-#include <boost/mpl/eval_if.hpp>        // eval_if
-#include <boost/tti/has_type.hpp>       // BOOST_TTI_HAS_TYPE
-#include <climits>                      // INT_MAX
-#include <type_traits>                  // integral_constant
+#include <dctl/pp/tti/static_constant.hpp>      // DCTL_PP_TTI_STATIC_CONSTANT
 
 namespace dctl {
-namespace rules {
 
-BOOST_TTI_HAS_TYPE(max_reversible_moves)
-DCTL_PP_TTI_BOX_TYPE(max_reversible_moves)
+DCTL_PP_TTI_STATIC_CONSTANT(max_reversible_moves, 0)
 
-template<class Rules>
-struct max_reversible_moves
-:
-        boost::mpl::eval_if<
-                has_type_max_reversible_moves<Rules>,
-                box_type_max_reversible_moves<Rules>,
-                std::integral_constant<int, INT_MAX>
-        >::type
-{};
-
-}       // namespace rules
 }       // namespace dctl
