@@ -1,10 +1,10 @@
 #pragma once
-#include <cassert>                              // assert
-#include <limits>                               // numeric_limits
-#include <tuple>                                // tie
-#include <boost/operators.hpp>                  // totally_ordered
-#include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/frisian_fwd.hpp>  // Frisian
+#include <dctl/successor/value_fwd.hpp> // Value (primary template)
+#include <dctl/rules/frisian_fwd.hpp>   // Frisian
+#include <boost/operators.hpp>          // totally_ordered
+#include <cassert>                      // assert
+#include <limits>                       // numeric_limits
+#include <tuple>                        // tie
 
 namespace dctl {
 namespace successor {
@@ -30,17 +30,11 @@ public:
                 assert(invariant());
         }
 
-        // queries
-
-        auto size() const
-        {
-                return num_pieces_;
-        }
-
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend auto operator==(Value const& lhs, Value const& rhs)
+        friend auto
+        operator==(Value const& lhs, Value const& rhs) noexcept
         {
                 // delegate to std::tuple::operator==
                 return
@@ -50,7 +44,8 @@ public:
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend auto operator<(Value const& lhs, Value const& rhs)
+        friend auto
+        operator<(Value const& lhs, Value const& rhs) noexcept
         {
                 auto const delta_kings  = lhs.num_kings_  - rhs.num_kings_ ;
                 auto const delta_pieces = lhs.num_pieces_ - rhs.num_pieces_;
@@ -75,24 +70,7 @@ private:
 
         bool invariant() const
         {
-                return
-                                  0 <= num_kings_ &&
-                         num_kings_ <= num_pieces_ &&
-                        num_pieces_ <= std::numeric_limits<int>::max()
-                ;
-        }
-
-        bool empty() const
-        {
-                return
-                                 0 == num_kings_ &&
-                        num_kings_ == num_pieces_
-                ;
-        }
-
-        bool full() const
-        {
-                return num_pieces_ == std::numeric_limits<int>::max();
+                return 0 <= num_kings_ && num_kings_ <= num_pieces_;
         }
 
         // representation

@@ -1,7 +1,7 @@
 #pragma once
+#include <dctl/factory/header_body_terminator.hpp>      // make_header_body_terminator
 #include <cassert>                                      // assert
 #include <string>                                       // string
-#include <dctl/factory/header_body_terminator.hpp>      // make_header_body_terminator
 
 namespace dctl {
 namespace dxp {

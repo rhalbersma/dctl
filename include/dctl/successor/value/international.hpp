@@ -1,9 +1,9 @@
 #pragma once
-#include <cassert>                              // assert
-#include <limits>                               // numeric_limits
-#include <boost/operators.hpp>                  // totally_ordered
 #include <dctl/successor/value_fwd.hpp>         // Value (primary template)
 #include <dctl/rules/international_fwd.hpp>     // International
+#include <boost/operators.hpp>                  // totally_ordered
+#include <cassert>                              // assert
+#include <limits>                               // numeric_limits
 
 namespace dctl {
 namespace successor {

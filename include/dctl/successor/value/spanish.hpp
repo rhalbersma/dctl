@@ -1,10 +1,10 @@
 #pragma once
-#include <cassert>                              // assert
-#include <limits>                               // numeric_limits
-#include <tuple>                                // get, tie
-#include <boost/operators.hpp>                  // totally_ordered
-#include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/spanish_fwd.hpp>  // Spanish
+#include <dctl/successor/value_fwd.hpp> // Value (primary template)
+#include <dctl/rules/spanish_fwd.hpp>   // Spanish
+#include <boost/operators.hpp>          // totally_ordered
+#include <cassert>                      // assert
+#include <limits>                       // numeric_limits
+#include <tuple>                        // get, tie
 
 namespace dctl {
 namespace successor {
@@ -40,27 +40,11 @@ public:
                 num_kings_{u.num_kings()}
         {}
 
-        // queries
-
-        auto size() const
-        {
-                return num_pieces_;
-        }
-
-        auto num_pawns() const
-        {
-                return num_pieces_ - num_kings_;
-        }
-
-        auto num_kings() const
-        {
-                return num_kings_;
-        }
-
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend auto operator==(Value const& lhs, Value const& rhs)
+        friend /* constexpr */ auto
+        operator==(Value const& lhs, Value const& rhs) noexcept
         {
                 // delegate to std::tuple::operator==
                 return
@@ -70,7 +54,8 @@ public:
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend auto operator<(Value const& lhs, Value const& rhs)
+        friend /* constexpr */ auto
+        operator<(Value const& lhs, Value const& rhs) noexcept
         {
                 // delegate to std::tuple::operator<
                 return
@@ -82,23 +67,9 @@ public:
 private:
         // contracts
 
-        bool invariant() const
+        constexpr bool invariant() const noexcept
         {
-                return
-                                  0 <= num_kings_ &&
-                         num_kings_ <= num_pieces_ &&
-                        num_pieces_ <= std::numeric_limits<int>::max()
-                ;
-        }
-
-        bool empty() const
-        {
-                return 0 == num_kings_ && num_kings_ == num_pieces_;
-        }
-
-        bool full() const
-        {
-                return num_pieces_ == std::numeric_limits<int>::max();
+                return 0 <= num_kings_ && num_kings_ <= num_pieces_;
         }
 
         // representation
