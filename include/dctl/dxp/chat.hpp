@@ -1,7 +1,7 @@
 #pragma once
-#include <string>                       // string
 #include <dctl/dxp/message.hpp>         // Message
 #include <dctl/factory/creatable.hpp>   // make_creatable
+#include <string>                       // string
 
 namespace dctl {
 namespace dxp {

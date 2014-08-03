@@ -1,10 +1,10 @@
 #pragma once
+#include <dctl/dxp/message.hpp>         // Message
+#include <dctl/factory/creatable.hpp>   // make_creatable
 #include <iomanip>                      // setfill, setw
 #include <sstream>                      // stringstream
 #include <string>                       // string
 #include <vector>                       // vector
-#include <dctl/dxp/message.hpp>         // Message
-#include <dctl/factory/creatable.hpp>   // make_creatable
 
 namespace dctl {
 namespace dxp {

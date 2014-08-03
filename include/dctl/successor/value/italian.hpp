@@ -1,15 +1,13 @@
 #pragma once
-#include <algorithm>                            // count
-#include <cassert>                              // assert
-#include <iostream>
-#include <iterator>                             // begin, end
-#include <limits>                               // numeric_limits
-#include <tuple>                                // tie
-#include <utility>                              // make_pair
-#include <vector>                               // vector
-#include <boost/operators.hpp>                  // totally_ordered
-#include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/italian_fwd.hpp>  // Italian
+#include <dctl/successor/value_fwd.hpp> // Value (primary template)
+#include <dctl/rules/italian_fwd.hpp>   // Italian
+#include <boost/operators.hpp>          // totally_ordered
+#include <cassert>                      // assert
+#include <iterator>                     // begin, end
+#include <limits>                       // numeric_limits
+#include <tuple>                        // tie
+#include <utility>                      // make_pair
+#include <vector>                       // vector
 
 namespace dctl {
 namespace successor {
@@ -25,9 +23,9 @@ public:
 
         Value() = default;
 
-        explicit Value(std::tuple< int, int, bool, std::vector<int> > const& t)
+        explicit Value(std::tuple<int, int, bool, std::vector<int>> const& t)
         :
-                Value {std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t)}
+                Value{std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t)}
         {}
 
         Value(int p, int k, bool w, std::vector<int> o)
@@ -53,7 +51,7 @@ public:
 
         // operator!= provided by boost::totally_ordered
         friend auto
-        operator==(Value const& lhs, Value const& rhs)
+        operator==(Value const& lhs, Value const& rhs) noexcept
         {
                 // delegate to std::tuple::operator==
                 // NOTE: this will -in turn- delegate to std::vector::operator== for the last tuple element
@@ -65,7 +63,7 @@ public:
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
         friend auto
-        operator<(Value const& lhs, Value const& rhs)
+        operator<(Value const& lhs, Value const& rhs) noexcept
         {
                 // delegate to std::tuple::operator<
                 // NOTE: this will -in turn- delegate to std::vector::operator< for the last tuple element
@@ -81,10 +79,8 @@ private:
         bool invariant() const
         {
                 return
-                                  0 <= num_kings_ &&
-                         num_kings_ <= num_pieces_ &&
-                        num_pieces_ <= std::numeric_limits<int>::max() &&
-                         num_kings_ == static_cast<int>(king_order_.size()) &&
+                        0 <= num_kings_ && num_kings_ <= num_pieces_ &&
+                        num_kings_ == static_cast<int>(king_order_.size()) &&
                         !(num_kings_ && !is_with_king_)
                 ;
         }

@@ -1,9 +1,9 @@
 #pragma once
+#include <dctl/dxp/message.hpp>         // Message
+#include <dctl/factory/creatable.hpp>   // make_creatable
 #include <iomanip>                      // setw
 #include <sstream>                      // stringstream
 #include <string>                       // string, stoi
-#include <dctl/dxp/message.hpp>         // Message
-#include <dctl/factory/creatable.hpp>   // make_creatable
 
 namespace dctl {
 namespace dxp {

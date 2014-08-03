@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/czech_fwd.hpp>    // Czech
-#include <boost/operators.hpp>                  // totally_ordered
+#include <dctl/successor/value_fwd.hpp> // Value (primary template)
+#include <dctl/rules/czech_fwd.hpp>     // Czech
+#include <boost/operators.hpp>          // totally_ordered
 
 namespace dctl {
 namespace successor {
@@ -27,13 +27,6 @@ public:
         :
                 Value{u.is_with_king()}
         {}
-
-        // queries
-
-        constexpr auto is_with_king() const noexcept
-        {
-                return is_with_king_;
-        }
 
         // predicates
 
