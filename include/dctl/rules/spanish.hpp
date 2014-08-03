@@ -9,10 +9,10 @@ namespace rules {
 
 struct Spanish
 {
-        // main rules
-        static constexpr auto is_long_ranged_king = true;
+        // required
         static constexpr auto is_backward_pawn_jump = false;
         static constexpr auto is_jump_precedence = true;
+        static constexpr auto is_long_ranged_king = true;
 };
 
 }       // namespace rules

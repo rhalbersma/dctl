@@ -9,15 +9,13 @@ namespace rules {
 
 struct Frisian
 {
-        // main rules
-        static constexpr auto is_long_ranged_king = true;
+        // required
         static constexpr auto is_backward_pawn_jump = true;
         static constexpr auto is_jump_precedence = true;
+        static constexpr auto is_long_ranged_king = true;
 
-        // additional rules
+        // optional
         static constexpr auto is_orthogonal_jump = true;
-
-        // drawing rules
         static constexpr auto max_same_king_push = 6;
 };
 
