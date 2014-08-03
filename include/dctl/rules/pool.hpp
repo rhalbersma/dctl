@@ -9,12 +9,12 @@ namespace rules {
 
 struct Pool
 {
-        // main rules
-        static constexpr auto is_long_ranged_king = true;                       // 15
+        // required
         static constexpr auto is_backward_pawn_jump = true;                     // 13
         static constexpr auto is_jump_precedence = false;                       // 20
+        static constexpr auto is_long_ranged_king = true;                       // 15
 
-        // drawing rules
+        // draw
         static constexpr auto max_repetitions = 3;                              // 26
         static constexpr auto max_reversible_moves = 30;                        // 26
 };

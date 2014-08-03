@@ -1,5 +1,5 @@
-#include <dctl/angle.hpp>                       // _deg, inverse, rotate
 #include <group.hpp>                            // axioms::is_realized, make
+#include <dctl/angle.hpp>                       // _deg, inverse, rotate
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
 #include <algorithm>                            // all_of

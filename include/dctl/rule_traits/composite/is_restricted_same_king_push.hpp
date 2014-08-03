@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rule_traits/irregular/max_same_king_push.hpp>    // max_same_king_push
+#include <dctl/rule_traits/optional/max_same_king_push.hpp>     // max_same_king_push
 #include <type_traits>                                          // integral_constant
 
 namespace dctl {

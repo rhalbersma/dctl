@@ -11,10 +11,10 @@ namespace rules {
 template<class Rules = International>
 struct Killer
 :
-        // main rules
+        // required
         Rules
 {
-        // additional rules
+        // optional
         static constexpr auto is_directly_halt_after_final_king = true;
 };
 

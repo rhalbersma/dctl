@@ -1,14 +1,15 @@
-#include <dctl/angle.hpp>                       // _deg, inverse, rotate
-#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
-#include <dctl/grid/dimensions.hpp>             // Dimensions
 #include <group.hpp>                            // action::is_realized, make
-#include <boost/mpl/vector.hpp>                 // vector
+#include <dctl/angle.hpp>                       // _deg, inverse, rotate
+#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
+                                                // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
+#include <dctl/grid/dimensions.hpp>             // Dimensions
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
+#include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
 #include <algorithm>                            // all_of
 #include <iterator>                             // begin, end
-#include <type_traits>                          // common_type_t
+#include <type_traits>                          // common_type
 
 namespace dctl {
 namespace board {
@@ -20,15 +21,18 @@ using BoardSequence = boost::mpl::vector
         Micro,
         Mini,
         Checkers,
-        International,
-        Canadian,
-        Dumm,
         Roman,
-        Frisian,
-        SriLankan,
         Spantsireti,
+        International,
+        Frisian,
         Ktar<10, 11>,
-        Ktar<10, 12>
+        Ktar<10, 12>,
+        Compact1012,
+        Compact1210,
+        Board<12, 10>,
+        Canadian,
+        SriLankan,
+        Dumm
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimensions, T, BoardSequence)
