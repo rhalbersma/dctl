@@ -3,9 +3,11 @@
 #include <dctl/bit/detail/storage.hpp>          // Storage
 #include <dctl/bit/iterator/iterator.hpp>       // ConstIterator
 #include <dctl/bit/iterator/reference.hpp>      // ConstReference
-#include <boost/range/concepts.hpp>             // BOOST_CONCEPT_ASSERT, SinglePassRangeConcept
+#include <boost/range/concepts.hpp>             // BOOST_CONCEPT_ASSERKey, SinglePassRangeConcept
 #include <cassert>                              // assert
+#include <cstdint>                              // uint64_t
 #include <cstddef>                              // ptrdiff_t, size_t
+#include <functional>                           // less
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // iterator_traits
 #include <limits>                               // digits
@@ -15,22 +17,30 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, int Nb>
+template
+<
+        class Key,
+        class Compare = std::less<>,
+        class Block = uint64_t,
+        std::size_t Nb = 1
+>
 class Set
 :
-        private detail::BaseSet<T, Block, Nb>
+        private detail::BaseSet<Key, Compare, Block, Nb>
 {
 public:
-        using Base = detail::BaseSet<T, Block, Nb>;
+        using Base = detail::BaseSet<Key, Compare, Block, Nb>;
         enum { N = Nb * std::numeric_limits<Block>::digits };
 
-        using key_type = T;
-        using value_type = T;
-        using size_type = int;
+        using key_type = Key;
+        using value_type = Key;
+        using key_compare = Compare;
+        using value_compare = Compare;
+        using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
-        using reference = ConstReference<T, Block, Nb>;
+        using reference = ConstReference<Key, Block, Nb>;
         using const_reference = reference;
-        using iterator = ConstIterator<T, Block, Nb>;
+        using iterator = ConstIterator<Key, Block, Nb>;
         using const_iterator = iterator;
         using reverse_iterator = std::reverse_iterator<iterator>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
@@ -51,7 +61,7 @@ public:
         }
 
         template<class Range>
-        Set(Range&& rng)
+        explicit Set(Range&& rng)
         {
                 BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
                 insert(boost::begin(std::forward<Range>(rng)), boost::end(std::forward<Range>(rng)));
@@ -351,54 +361,54 @@ public:
                 return *this;
         }
 
-        auto& operator<<=(int n)
+        auto& operator<<=(std::size_t n)
         {
                 this->do_left_shift(n);
                 return *this;
         }
 
-        auto& operator>>=(int n)
+        auto& operator>>=(std::size_t n)
         {
                 this->do_right_shift(n);
                 return *this;
         }
 
-        friend auto operator~(Set const& lhs) noexcept -> Set
+        friend auto operator~(Set const& lhs) noexcept
         {
                 Set nrv{lhs};
                 nrv.flip();
                 return nrv;
         }
 
-        friend auto operator&(Set const& lhs, Set const& rhs) noexcept -> Set
+        friend auto operator&(Set const& lhs, Set const& rhs) noexcept
         {
                 Set nrv{lhs};
                 nrv &= rhs;
                 return nrv;
         }
 
-        friend auto operator|(Set const& lhs, Set const& rhs) noexcept -> Set
+        friend auto operator|(Set const& lhs, Set const& rhs) noexcept
         {
                 Set nrv{lhs};
                 nrv |= rhs;
                 return nrv;
         }
 
-        friend auto operator^(Set const& lhs, Set const& rhs) noexcept -> Set
+        friend auto operator^(Set const& lhs, Set const& rhs) noexcept
         {
                 Set nrv{lhs};
                 nrv ^= rhs;
                 return nrv;
         }
 
-        friend auto operator<<(Set const& lhs, int n) -> Set
+        friend auto operator<<(Set const& lhs, std::size_t n)
         {
                 Set nrv{lhs};
                 nrv <<= n;
                 return nrv;
         }
 
-        friend auto operator>>(Set const& lhs, int n) -> Set
+        friend auto operator>>(Set const& lhs, std::size_t n)
         {
                 Set nrv{lhs};
                 nrv >>= n;
@@ -444,12 +454,12 @@ public:
         }
 
 private:
-        constexpr decltype(auto) block_ref(key_type n)
+        constexpr auto& block_ref(key_type n)
         {
                 return *(this->block_ptr(n));
         }
 
-        constexpr decltype(auto) block_ref(key_type n) const
+        constexpr auto const& block_ref(key_type n) const
         {
                 return *(this->block_ptr(n));
         }
@@ -465,57 +475,57 @@ private:
         }
 };
 
-template<class T, class Block, int Nb>
-constexpr auto swap(Set<T, Block, Nb>& lhs, Set<T, Block, Nb>& rhs) noexcept
+template<class Key, class Compare, class Block, std::size_t Nb>
+constexpr auto swap(Set<Key, Compare, Block, Nb>& lhs, Set<Key, Compare, Block, Nb>& rhs) noexcept
 {
         lhs.swap(rhs);
         return;
 }
 
-template<class T, class Block, int Nb>
-constexpr auto begin(Set<T, Block, Nb> const& s) noexcept
+template<class Key, class Compare, class Block, std::size_t Nb>
+constexpr auto begin(Set<Key, Compare, Block, Nb> const& s) noexcept
 {
         return s.begin();
 }
 
-template<class T, class Block, int Nb>
-constexpr auto end(Set<T, Block, Nb> const& s) noexcept
+template<class Key, class Compare, class Block, std::size_t Nb>
+constexpr auto end(Set<Key, Compare, Block, Nb> const& s) noexcept
 {
         return s.end();
 }
 
-template<class T, class Block, int Nb>
-constexpr auto cbegin(Set<T, Block, Nb> const& s) noexcept
+template<class Key, class Compare, class Block, std::size_t Nb>
+constexpr auto cbegin(Set<Key, Compare, Block, Nb> const& s) noexcept
 {
         return begin(s);
 }
 
-template<class T, class Block, int Nb>
-constexpr auto cend(Set<T, Block, Nb> const& s) noexcept
+template<class Key, class Compare, class Block, std::size_t Nb>
+constexpr auto cend(Set<Key, Compare, Block, Nb> const& s) noexcept
 {
         return end(s);
 }
 
-template<class T, class Block, int Nb>
-/* constexpr */ auto rbegin(Set<T, Block, Nb> const& s) noexcept
+template<class Key, class Compare, class Block, std::size_t Nb>
+/* constexpr */ auto rbegin(Set<Key, Compare, Block, Nb> const& s) noexcept
 {
         return s.rbegin();
 }
 
-template<class T, class Block, int Nb>
-/* constexpr */ auto rend(Set<T, Block, Nb> const& s) noexcept
+template<class Key, class Compare, class Block, std::size_t Nb>
+/* constexpr */ auto rend(Set<Key, Compare, Block, Nb> const& s) noexcept
 {
         return s.rend();
 }
 
-template<class T, class Block, int Nb>
-/* constexpr */ auto crbegin(Set<T, Block, Nb> const& s) noexcept
+template<class Key, class Compare, class Block, std::size_t Nb>
+/* constexpr */ auto crbegin(Set<Key, Compare, Block, Nb> const& s) noexcept
 {
         return rbegin(s);
 }
 
-template<class T, class Block, int Nb>
-/* constexpr */ auto crend(Set<T, Block, Nb> const& s) noexcept
+template<class Key, class Compare, class Block, std::size_t Nb>
+/* constexpr */ auto crend(Set<Key, Compare, Block, Nb> const& s) noexcept
 {
         return rend(s);
 }

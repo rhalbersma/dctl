@@ -1,6 +1,6 @@
 #pragma once
-#include <cassert>                      // assert
-#include <limits>                       // digits
+#include <cassert>      // assert
+#include <limits>       // digits
 
 namespace dctl {
 namespace bit {

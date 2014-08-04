@@ -7,13 +7,14 @@
 #include <boost/iterator/zip_iterator.hpp>      // zip_iterator
 #include <boost/tuple/tuple.hpp>                // make_tuple
 #include <cassert>                              // assert
+#include <cstddef>                              // size_t
 #include <limits>                               // digits
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class T, class Block, int Nb>
+template<class Key, class Compare, class Block, std::size_t Nb>
 struct BaseSet
 {
         static_assert(
@@ -25,12 +26,12 @@ struct BaseSet
         enum { digits = std::numeric_limits<Block>::digits };
         enum { N = Nb * digits };
 
-        Block& data()
+        auto& data()
         {
                 return data_[0];
         }
 
-        Block const& data() const
+        auto const& data() const
         {
                 return data_[0];
         }
@@ -41,13 +42,13 @@ struct BaseSet
 
         // element access
 
-        constexpr auto block_ptr(T const& n)
+        constexpr auto block_ptr(Key const& n)
         {
                 assert(0 <= n && n <= N);
                 return &data_[0] + Storage<Block>::block_idx(n);
         }
 
-        constexpr auto block_ptr(T const& n) const
+        constexpr auto block_ptr(Key const& n) const
         {
                 assert(0 <= n && n <= N);
                 return &data_[0] + Storage<Block>::block_idx(n);
@@ -110,12 +111,12 @@ struct BaseSet
                 });
         }
 
-        void do_left_shift(int n)
+        void do_left_shift(std::size_t n)
         {
                 using std::begin; using std::end;
                 using namespace cpp14;
 
-                assert(0 <= n && n < N);
+                assert(n < N);
                 if (n == 0)
                         return;
 
@@ -147,12 +148,12 @@ struct BaseSet
                 std::fill_n(begin(data_), n_block, Block{0});
         }
 
-        void do_right_shift(int n)
+        void do_right_shift(std::size_t n)
         {
                 using std::begin; using std::end;
                 using namespace cpp14;
 
-                assert(0 <= n && n < N);
+                assert(n < N);
                 if (n == 0)
                         return;
 
@@ -200,7 +201,8 @@ struct BaseSet
                 using namespace cpp14;
                 return std::lexicographical_compare(
                         cbegin(lhs.data_), cend(lhs.data_),
-                        cbegin(rhs.data_), cend(rhs.data_)
+                        cbegin(rhs.data_), cend(rhs.data_),
+                        Compare{}
                 );
         }
 
