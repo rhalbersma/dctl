@@ -8,8 +8,8 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class T, class Block>
-struct BaseSet<T, Block, 1>
+template<class Key, class Compare, class Block>
+struct BaseSet<Key, Compare, Block, 1>
 {
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
@@ -36,13 +36,13 @@ struct BaseSet<T, Block, 1>
 
         // element access
 
-        constexpr auto block_ptr(T const& /* n */)
+        constexpr auto block_ptr(Key const& /* n */)
         {
                 // assert(0 <= n && n <= N);
                 return &data_;
         }
 
-        constexpr auto block_ptr(T const& /* n */) const
+        constexpr auto block_ptr(Key const& /* n */) const
         {
                 // assert(0 <= n && n <= N);
                 return &data_;
@@ -80,15 +80,15 @@ struct BaseSet<T, Block, 1>
                 data_ ^= other.data_;
         }
 
-        void do_left_shift(int n)
+        void do_left_shift(std::size_t n)
         {
-                assert(0 <= n && n < N);
+                assert(n < N);
                 data_ <<= n;
         }
 
-        void do_right_shift(int n)
+        void do_right_shift(std::size_t n)
         {
-                assert(0 <= n && n < N);
+                assert(n < N);
                 data_ >>= n;
         }
 
@@ -101,7 +101,7 @@ struct BaseSet<T, Block, 1>
 
         static auto do_lexicographical_compare(BaseSet const& lhs, BaseSet const& rhs) noexcept
         {
-                return lhs.data_ < rhs.data_;
+                return Compare{}(lhs.data_, rhs.data_);
         }
 
         auto do_includes(BaseSet const& other) const noexcept

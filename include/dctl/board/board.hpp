@@ -13,6 +13,7 @@
 #include <array>                                // array
 #include <cstddef>                              // size_t
 #include <cstdint>                              // uint64_t
+#include <functional>                           // less
 #include <iomanip>
 #include <limits>                               // digits
 #include <sstream>
@@ -48,7 +49,7 @@ private:
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
-        using set_type = bit::Set<int, Block, Nb>;
+        using set_type = bit::Set<int, std::less<>, Block, Nb>;
 
         static constexpr auto size() noexcept
         {

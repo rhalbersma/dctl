@@ -17,7 +17,6 @@ constexpr auto make_array_helper(Function f, std::index_sequence<Indices...>)
 
 template<std::size_t N, class Function>
 constexpr auto make_array(Function f)
--> std::array<decltype(f(std::size_t{})), N>
 {
         return detail::make_array_helper(f, std::make_index_sequence<N>{});
 }

@@ -1,14 +1,15 @@
 #pragma once
+#include <cstddef>      // size_t
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class T, class Block, int Nw>
+template<class Key, class Compare, class Block, std::size_t Nb>
 struct BaseSet;
 
-template<class T, class Block>
-struct BaseSet<T, Block, 1>;
+template<class Key, class Compare, class Block>
+struct BaseSet<Key, Compare, Block, 1>;
 
 }       // namespace detail
 }       // namespace bit

@@ -1,4 +1,5 @@
 #include <cstdint>                              // uint64_t
+#include <functional>
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -13,10 +14,10 @@ using U = int;
 
 using SetTypes = boost::mpl::vector
 <
-        Set<U, uint64_t, 1>,
-        Set<U, uint64_t, 2>,
-        Set<U, uint64_t, 3>,
-        Set<U, uint64_t, 4>
+        Set<U, std::less<>, uint64_t, 1>,
+        Set<U, std::less<>, uint64_t, 2>,
+        Set<U, std::less<>, uint64_t, 3>,
+        Set<U, std::less<>, uint64_t, 4>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetEmpty, T, SetTypes)
@@ -58,7 +59,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetDouble, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetMultiple, T, SetTypes)
 {
-        for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
+        for (std::size_t i = 0; i < static_cast<std::size_t>(std::numeric_limits<T>::digits); ++i) {
                 auto const b = ~((~T{} >> i) << i);
                 switch (i) {
                 case 0:

@@ -1,12 +1,13 @@
 #pragma once
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
+#include <cstddef>                              // size_t
 #include <type_traits>                          // is_convertible
 
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, int Nb>
+template<class T, class Block, std::size_t Nb>
 class ConstReference
 {
 public:

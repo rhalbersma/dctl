@@ -5,7 +5,7 @@
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert
-#include <cstddef>                              // ptrdiff_t
+#include <cstddef>                              // ptrdiff_t, size_t
 #include <iterator>                             // bidirectional_iterator_tag
 #include <limits>                               // digits
 #include <tuple>                                // tie
@@ -13,7 +13,7 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, int Nb>
+template<class T, class Block, std::size_t Nb>
 class ConstIterator
 :
         public boost::iterator_facade
@@ -58,7 +58,7 @@ private:
         constexpr int find_first()
         {
                 assert(block_ != nullptr);
-                for (auto i = 0; i < Nb; ++i) {
+                for (auto i = 0; i < static_cast<int>(Nb); ++i) {
                         if (auto const mask = *block_)
                                 return i * digits + bit::intrinsic::bsfnz(mask);
                         ++block_;
@@ -85,7 +85,7 @@ private:
                 }
                 ++block_;
 
-                for (auto i = detail::Storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
+                for (auto i = detail::Storage<Block>::block_idx(index_) + 1; i < static_cast<int>(Nb); ++i) {
                         if (auto const mask = *block_) {
                                 index_ = i * digits + bit::intrinsic::bsfnz(mask);
                                 return;

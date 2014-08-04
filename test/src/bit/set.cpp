@@ -23,10 +23,10 @@ using U = int;
 
 using SetTypes = boost::mpl::vector
 <
-        Set<U, uint64_t, 1>,
-        Set<U, uint64_t, 2>,
-        Set<U, uint64_t, 3>,
-        Set<U, uint64_t, 4>
+        Set<U, std::less<>, uint64_t, 1>,
+        Set<U, std::less<>, uint64_t, 2>,
+        Set<U, std::less<>, uint64_t, 3>,
+        Set<U, std::less<>, uint64_t, 4>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructorZeroInitializes, T, SetTypes)
