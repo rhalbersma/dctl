@@ -5,13 +5,12 @@
 #include <boost/test/unit_test.hpp>                             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 
 namespace dctl {
-namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RuleTraitsIsBackwardPawnJump)
 
 using VariantsFalse = boost::mpl::vector
 <
-        Checkers, Czech, Italian, Spanish, Thai
+        checkers::Rules, czech::Rules, italian::Rules, spanish::Rules, thai::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsBackwardPawnJumpV, T, VariantsFalse)
@@ -21,7 +20,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsBackwardPawnJumpV, T, VariantsFalse)
 
 using VariantsTrue = boost::mpl::vector
 <
-        Frisian, International, Pool, Russian
+        frisian::Rules, international::Rules, pool::Rules, russian::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsBackwardPawnJumpV, T, VariantsTrue)
@@ -31,5 +30,4 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsBackwardPawnJumpV, T, VariantsTrue)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace rules
 }       // namespace dctl

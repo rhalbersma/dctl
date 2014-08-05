@@ -1,18 +1,14 @@
 #pragma once
-#include <dctl/successor/value_fwd.hpp>         // Value (primary template)
-#include <dctl/rules/international_fwd.hpp>     // International
 #include <boost/operators.hpp>                  // totally_ordered
 #include <cassert>                              // assert
 #include <limits>                               // numeric_limits
 
 namespace dctl {
-namespace successor {
+namespace international {
 
-// partial specialization for International draughts
-template<>
-class Value<rules::International>
+class Value
 :
-        boost::totally_ordered< Value<rules::International> >   // !=, >=, >, <=
+        boost::totally_ordered< Value >   // !=, >=, >, <=
 {
 public:
         // constructors
@@ -27,7 +23,7 @@ public:
         template<class U>
         explicit constexpr Value(U const& u) noexcept
         :
-                num_pieces_{u.num_pieces()}
+                Value{u.num_pieces()}
         {}
 
         // predicates
@@ -52,5 +48,5 @@ private:
         int num_pieces_{};
 };
 
-}       // namespace successor
+}       // namespace international
 }       // namespace dctl

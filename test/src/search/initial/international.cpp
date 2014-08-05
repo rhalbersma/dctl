@@ -9,7 +9,7 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(TestInternational)
 
-using Rules = rules::Russian;
+using Rules = russian::Rules;
 using Board = board::Checkers;
 using F = Fixture< Position<Rules, Board>, DefaultObjective >;
 

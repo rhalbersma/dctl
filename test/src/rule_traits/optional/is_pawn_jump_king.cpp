@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_SUITE(RuleTraitsIsPawnJumpKing)
 
 using VariantsTrue = boost::mpl::vector
 <
-        Checkers, Czech, Frisian, International, Pool, Russian, Spanish, Thai
+        checkers::Rules, czech::Rules, frisian::Rules, international::Rules, pool::Rules, russian::Rules, spanish::Rules, thai::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsPawnJumpKingV, T, VariantsTrue)
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsPawnJumpKingV, T, VariantsTrue)
 
 using VariantsFalse = boost::mpl::vector
 <
-        Italian
+        italian::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsPawnJumpKingV, T, VariantsFalse)

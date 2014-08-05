@@ -1,19 +1,15 @@
 #pragma once
-#include <dctl/successor/value_fwd.hpp> // Value (primary template)
-#include <dctl/rules/spanish_fwd.hpp>   // Spanish
 #include <boost/operators.hpp>          // totally_ordered
 #include <cassert>                      // assert
 #include <limits>                       // numeric_limits
 #include <tuple>                        // get, tie
 
 namespace dctl {
-namespace successor {
+namespace spanish {
 
-// specialization for Spanish draughts
-template<>
-class Value<rules::Spanish>
+class Value
 :
-        boost::totally_ordered< Value<rules::Spanish> > // < >= > <= == !=
+        boost::totally_ordered< Value > // < >= > <= == !=
 {
 public:
         // constructors
@@ -25,20 +21,19 @@ public:
                 Value{std::get<0>(t), std::get<1>(t)}
         {}
 
-        Value(int pawns, int kings)
-        :
-                num_pieces_{pawns + kings},
-                num_kings_{kings}
-        {
-                assert(invariant());
-        }
-
         template<class U>
         explicit Value(U const& u)
         :
-                num_pieces_{u.num_pieces()},
-                num_kings_{u.num_kings()}
+                Value{u.num_pieces(), u.num_kings()}
         {}
+
+        Value(int np, int nk)
+        :
+                num_pieces_{np},
+                num_kings_{nk}
+        {
+                assert(invariant());
+        }
 
         // predicates
 
@@ -78,5 +73,5 @@ private:
         int num_kings_{};
 };
 
-}       // namespace successor
+}       // namespace spanish
 }       // namespace dctl

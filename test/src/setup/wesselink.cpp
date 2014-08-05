@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(WiegerWesselink)
         // parse the above diagram into a position with the DamExchange protocol
         // with a modified character set (default is <'Z', 'W', 'E'>)
         auto const pos_w = read<
-                rules::International, board::International,
+                international::Rules, board::International,
                 dxp::protocol, TokenInterface<'X', 'O', '.'>
         >()(w);
 
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(WiegerWesselink)
         auto const FEN_w = write<pdn::protocol>()(pos_w);
 
         // convert the new FEN string to a new position and back into a new FEN string
-        auto const pos_r = read<rules::International, board::International, pdn::protocol>()(FEN_w);
+        auto const pos_r = read<international::Rules, board::International, pdn::protocol>()(FEN_w);
         auto const FEN_r = write<pdn::protocol>()(pos_r);
 
         // the two positions have been parsed through different protocols,

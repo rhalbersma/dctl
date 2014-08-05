@@ -5,13 +5,12 @@
 #include <boost/test/unit_test.hpp>                             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 
 namespace dctl {
-namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RuleTraitsIsJumpPrecedence)
 
 using VariantsFalse = boost::mpl::vector
 <
-        Checkers, Pool, Russian, Thai
+        checkers::Rules, pool::Rules, russian::Rules, thai::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsJumpPrecedenceV, T, VariantsFalse)
@@ -21,7 +20,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsJumpPrecedenceV, T, VariantsFalse)
 
 using VariantsTrue = boost::mpl::vector
 <
-        Czech, Frisian, International, Italian, Spanish
+        czech::Rules, frisian::Rules, international::Rules, italian::Rules, spanish::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsJumpPrecedenceV, T, VariantsTrue)
@@ -31,5 +30,4 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsJumpPrecedenceV, T, VariantsTrue)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace rules
 }       // namespace dctl

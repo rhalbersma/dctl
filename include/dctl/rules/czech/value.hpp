@@ -1,16 +1,12 @@
 #pragma once
-#include <dctl/successor/value_fwd.hpp> // Value (primary template)
-#include <dctl/rules/czech_fwd.hpp>     // Czech
 #include <boost/operators.hpp>          // totally_ordered
 
 namespace dctl {
-namespace successor {
+namespace czech {
 
-// specialization for Czech draughts
-template<>
-class Value<rules::Czech>
+class Value
 :
-        boost::totally_ordered< Value<rules::Czech> > // < >= > <= == !=
+        boost::totally_ordered<Value> // < >= > <= == !=
 {
 public:
         // constructors
@@ -50,5 +46,5 @@ private:
         bool is_with_king_{};
 };
 
-}       // namespace successor
+}       // namespace czech
 }       // namespace dctl

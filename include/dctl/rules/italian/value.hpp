@@ -1,48 +1,38 @@
 #pragma once
-#include <dctl/successor/value_fwd.hpp> // Value (primary template)
-#include <dctl/rules/italian_fwd.hpp>   // Italian
 #include <boost/operators.hpp>          // totally_ordered
 #include <cassert>                      // assert
-#include <iterator>                     // begin, end
-#include <limits>                       // numeric_limits
 #include <tuple>                        // tie
-#include <utility>                      // make_pair
 #include <vector>                       // vector
 
 namespace dctl {
-namespace successor {
+namespace italian {
 
-// specialization for Italian draughts
-template<>
-class Value<rules::Italian>
+class Value
 :
-        boost::totally_ordered< Value<rules::Italian> > // < >= > <= == !=
+        boost::totally_ordered< Value > // < >= > <= == !=
 {
 public:
         // constructors
 
         Value() = default;
 
-        explicit Value(std::tuple<int, int, bool, std::vector<int>> const& t)
+        explicit Value(std::tuple<int, int, bool, std::vector<int>>const & t)
         :
                 Value{std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t)}
-        {}
-
-        Value(int p, int k, bool w, std::vector<int> o)
-        :
-                num_pieces_(p + k),
-                num_kings_(k),
-                is_with_king_(w),
-                king_order_(o)
         {}
 
         template<class U>
         explicit Value(U const& u)
         :
-                num_pieces_{u.num_pieces()},
-                num_kings_{u.num_kings()},
-                is_with_king_{u.is_with_king()},
-                king_order_{begin(u.ordered_kings()), end(u.ordered_kings())}
+                Value{u.num_pieces(), u.num_kings(), u.is_with_king(), std::vector<int>(begin(u.ordered_kings()), end(u.ordered_kings()))}
+        {}
+
+        Value(int np, int nk, bool wk, std::vector<int> ko)
+        :
+                num_pieces_{np},
+                num_kings_{nk},
+                is_with_king_{wk},
+                king_order_{ko}
         {
                 assert(invariant());
         }
@@ -93,5 +83,5 @@ private:
         std::vector<int> king_order_{};
 };
 
-}       // namespace successor
+}       // namespace italian
 }       // namespace dctl

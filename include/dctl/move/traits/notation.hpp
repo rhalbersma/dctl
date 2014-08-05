@@ -28,31 +28,31 @@ struct notation<Rules, board::Canadian>
 {};
 
 template<>
-struct notation<rules::Checkers, board::Checkers>
+struct notation<checkers::Rules, board::Checkers>
 :
         std::integral_constant<int, numeric>
 {};
 
 template<>
-struct notation<rules::Pool, board::Checkers>
+struct notation<pool::Rules, board::Checkers>
 :
         std::integral_constant<int, numeric>
 {};
 
 template<>
-struct notation<rules::Italian, board::Roman>
+struct notation<italian::Rules, board::Roman>
 :
         std::integral_constant<int, numeric>
 {};
 
 template<>
-struct notation<rules::Spanish, board::Roman>
+struct notation<spanish::Rules, board::Roman>
 :
         std::integral_constant<int, numeric>
 {};
 
 template<>
-struct notation<rules::Thai, board::Checkers>
+struct notation<thai::Rules, board::Checkers>
 :
         std::integral_constant<int, numeric>
 {};

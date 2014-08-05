@@ -86,9 +86,9 @@ public:
         static auto algebraic_from_bit(int n)
         {
                 std::stringstream sstr;
-                auto from_sq = grid::ulo::Square<external_grid>{square_from_bit(n)};
-                auto from_coord = llo_from_ulo(ulo_from_sq(from_sq));
-                sstr << board::Labels<Board>::col[get_x(from_coord)] << board::Labels<Board>::row[get_y(from_coord)];
+                auto src = grid::ulo::Square<external_grid>{square_from_bit(n)};
+                auto coord = llo_from_ulo(ulo_from_sq(src));
+                sstr << board::Labels<Board>::col[get_x(coord)] << board::Labels<Board>::row[get_y(coord)];
                 return sstr.str();
         }
 private:

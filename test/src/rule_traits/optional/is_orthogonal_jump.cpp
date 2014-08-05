@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_SUITE(RuleTraitsIsOrthogonalJump)
 
 using VariantsFalse = boost::mpl::vector
 <
-        Checkers, Czech, International, Italian, Pool, Russian, Spanish, Thai
+        checkers::Rules, czech::Rules, international::Rules, italian::Rules, pool::Rules, russian::Rules, spanish::Rules, thai::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsIsOrthogonalJumpV, T, VariantsFalse)
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsIsOrthogonalJumpV, T, VariantsFalse)
 
 using VariantsTrue = boost::mpl::vector
 <
-        Frisian
+        frisian::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsOrthogonalJumpV, T, VariantsTrue)

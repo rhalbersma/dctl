@@ -1,11 +1,11 @@
 #pragma once
-#include <dctl/board/mask/copy_if.hpp>  // copy_if
-#include <dctl/grid/coordinates.hpp>    // ulo_from_sq
-#include <dctl/position/color.hpp>           // black, white
-#include <dctl/utility/make_array.hpp>  // make_array
-#include <array>                        // array
-#include <cassert>                      // assert
-#include <cstddef>                      // size_t
+#include <dctl/board/mask/make_set_if.hpp>      // copy_if
+#include <dctl/grid/coordinates.hpp>            // ulo_from_sq
+#include <dctl/position/color.hpp>              // black, white
+#include <dctl/utility/make_array.hpp>          // make_array
+#include <array>                                // array
+#include <cassert>                              // assert
+#include <cstddef>                              // size_t
 
 namespace dctl {
 namespace board {
@@ -35,7 +35,7 @@ private:
         template<bool Color>
         static constexpr auto init(int rows) noexcept
         {
-                return copy_if(Board{}, lambda{Color, rows});
+                return make_set_if<Board>(lambda{Color, rows});
         }
 
         static constexpr auto N = Board::height / 2 + 1;

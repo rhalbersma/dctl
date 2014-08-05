@@ -18,13 +18,13 @@ using namespace dctl;
 
 int main()
 {
-        using Rules = rules::International;
+        using Rules = international::Rules;
         using Board = board::International;
         using Pos = Position<Rules, Board>;
 
         //auto initial = Pos::initial();
 
-        auto const initial = setup::read<rules::International, board::International, pdn::protocol>()(
+        auto const initial = setup::read<international::Rules, board::International, pdn::protocol>()(
                 "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
         );
 
