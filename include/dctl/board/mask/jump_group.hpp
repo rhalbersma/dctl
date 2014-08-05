@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle/detail/abs_remainder.hpp>
-#include <dctl/board/mask/copy_if.hpp>          // copy_if
+#include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/grid/coordinates.hpp>
 #include <array>                                // array
 
@@ -33,7 +33,7 @@ private:
 
         static constexpr auto init(int n) noexcept
         {
-                return copy_if(Board{}, lambda{n});
+                return make_set_if<Board>(lambda{n});
         }
 
         static constexpr auto N = 4;

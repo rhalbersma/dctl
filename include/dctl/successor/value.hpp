@@ -1,15 +1,12 @@
 #pragma once
-#include <dctl/successor/value_fwd.hpp> // Value (primary template)
 #include <boost/operators.hpp>          // totally_ordered
 
 namespace dctl {
 namespace successor {
 
-// primary template
-template<class Rules>
 class Value
 :
-        boost::totally_ordered< Value<Rules> >  // < >= > <= == !=
+        boost::totally_ordered< Value >  // < >= > <= == !=
 {
 public:
         // predicates

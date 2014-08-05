@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/wave/algorithm.hpp>      // Fill
 #include <dctl/wave/iterator.hpp>
+#include <dctl/type_traits.hpp>
 #include <iterator>                     // next, prev
 #include <type_traits>                  // false_type, true_type
 
@@ -14,7 +15,7 @@ struct Sink;
 template<class Board, int Direction>
 struct Sink<Board, Direction, std::false_type>
 {
-        using Set = typename Board::set_type;
+        using Set = set_type_t<Board>;
         auto operator()(Set const& from, Set const& dest) const
         {
                 return *std::next(wave::make_iterator<Board, Direction>(from)) & dest;
@@ -25,7 +26,7 @@ struct Sink<Board, Direction, std::false_type>
 template<class Board, int Direction>
 struct Sink<Board, Direction, std::true_type>
 {
-        using Set = typename Board::set_type;
+        using Set = set_type_t<Board>;
         auto operator()(Set const& from, Set const& dest) const
         {
                 return from ^ Fill<Board, Direction>{}(from, dest);
@@ -40,7 +41,7 @@ struct Sandwich;
 template<class Board, int Direction>
 struct Sandwich<Board, Direction, std::false_type>
 {
-        using Set = typename Board::set_type;
+        using Set = set_type_t<Board>;
         auto operator()(Set const& from, Set const& through, Set const& dest) const
         {
                 return
@@ -55,7 +56,7 @@ struct Sandwich<Board, Direction, std::false_type>
 template<class Board, int Direction>
 struct Sandwich<Board, Direction, std::true_type>
 {
-        using Set = typename Board::set_type;
+        using Set = set_type_t<Board>;
         auto operator()(Set const& from, Set const& through, Set const& dest) const
         {
                 return

@@ -121,7 +121,7 @@ constexpr auto sq_from_ulo(Coordinates<Grid> const& coord) noexcept
 // conversion between Squares of relatively rotated Grids
 
 template<class DestGrid, class FromGrid>
-constexpr auto square_from_square(Square<FromGrid> const& from_sq, Angle const& theta)
+constexpr auto square_from_square(Square<FromGrid> const& src, Angle const& theta)
 {
         // perform a 5-step coordinate transformation
         // ulo::Square -> ulo::Coordinates -> sco::Coordinates -> ulo::Coordinates -> ulo::Square
@@ -130,7 +130,7 @@ constexpr auto square_from_square(Square<FromGrid> const& from_sq, Angle const& 
         return sq_from_ulo(
                 grid::ulo_from_sco<DestGrid>(
                         rotate(
-                                grid::sco_from_ulo(ulo_from_sq(from_sq)),
+                                grid::sco_from_ulo(ulo_from_sq(src)),
                                 theta
                         )
                 )

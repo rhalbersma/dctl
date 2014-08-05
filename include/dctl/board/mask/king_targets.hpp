@@ -1,12 +1,12 @@
 #pragma once
-#include <dctl/angle.hpp>               // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
-#include <dctl/board/mask/copy_if.hpp>  // copy_if
-#include <dctl/board/mask/squares.hpp>  // Squares
-#include <dctl/utility/make_array.hpp>  // make_array
-#include <dctl/ray/fill.hpp>            // fill
-#include <dctl/ray/iterator.hpp>        // Iterator
-#include <array>                        // array
-#include <cstddef>                      // size_t
+#include <dctl/angle.hpp>                       // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
+#include <dctl/board/mask/make_set_if.hpp>      // make_set_if
+#include <dctl/board/mask/squares.hpp>          // Squares
+#include <dctl/utility/make_array.hpp>          // make_array
+#include <dctl/ray/fill.hpp>                    // fill
+#include <dctl/ray/iterator.hpp>                // Iterator
+#include <array>                                // array
+#include <cstddef>                              // size_t
 
 namespace dctl {
 namespace board {

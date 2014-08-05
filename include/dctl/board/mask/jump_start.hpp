@@ -1,10 +1,10 @@
 #pragma once
-#include <dctl/angle.hpp>               // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
-#include <dctl/board/mask/copy_if.hpp>  // copy_if
-#include <dctl/grid/coordinates.hpp>    // ulo_from_sq
-#include <dctl/utility/make_array.hpp>  // make_array
-#include <array>                        // array
-#include <cstddef>                      // size_t
+#include <dctl/angle.hpp>                       // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
+#include <dctl/board/mask/make_set_if.hpp>      // make_set_if
+#include <dctl/grid/coordinates.hpp>            // ulo_from_sq
+#include <dctl/utility/make_array.hpp>          // make_array
+#include <array>                                // array
+#include <cstddef>                              // size_t
 
 namespace dctl {
 namespace board {
@@ -38,7 +38,7 @@ private:
 
         static constexpr auto init(int segment) noexcept
         {
-                return copy_if(Board{}, lambda{segment});
+                return make_set_if<Board>(lambda{segment});
         }
 
         static constexpr auto theta = Board::is_orthogonal_captures ? 45_deg : 90_deg;

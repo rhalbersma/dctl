@@ -4,11 +4,11 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 
 namespace dctl {
-namespace rules {
+namespace thai {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsThai)
 
-using T = Thai;
+using T = Rules;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {
@@ -25,5 +25,5 @@ BOOST_AUTO_TEST_CASE(Traits)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace rules
+}       // namespace thai
 }       // namespace dctl

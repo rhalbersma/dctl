@@ -1,19 +1,15 @@
 #pragma once
-#include <dctl/successor/value_fwd.hpp> // Value (primary template)
-#include <dctl/rules/frisian_fwd.hpp>   // Frisian
 #include <boost/operators.hpp>          // totally_ordered
 #include <cassert>                      // assert
 #include <limits>                       // numeric_limits
 #include <tuple>                        // tie
 
 namespace dctl {
-namespace successor {
+namespace frisian {
 
-// specialization for Frisian draughts
-template<>
-class Value<rules::Frisian>
+class Value
 :
-        boost::totally_ordered< Value<rules::Frisian> > // < >= > <= == !=
+        boost::totally_ordered< Value > // < >= > <= == !=
 {
 public:
         // constructors
@@ -80,5 +76,5 @@ private:
         bool is_with_king_{};
 };
 
-}       // namespace successor
+}       // namespace frisian
 }       // namespace dctl

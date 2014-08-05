@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_SUITE(RuleTraitsIsPawnJumpKing)
 
 using Variants2 = boost::mpl::vector
 <
-        Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish
+        checkers::Rules, czech::Rules, frisian::Rules, international::Rules, italian::Rules, pool::Rules, russian::Rules, spanish::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(InitialGapVIs2, T, Variants2)
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(InitialGapVIs2, T, Variants2)
 
 using Variants4 = boost::mpl::vector
 <
-        Thai
+        thai::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(InitialGapVIs4, T, Variants4)

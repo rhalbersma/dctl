@@ -164,7 +164,7 @@ public:
         template<class Sequence>
         auto handle_precedence(Sequence& moves)
         {
-                current_ = Value<Rules>{*this};
+                current_ = Value{*this};
 
                 if (moves.empty())      goto START1;
                 if (best_ <  current_)  goto START0;
@@ -266,7 +266,7 @@ public:
                 return static_cast<int>(ordered_kings_.size());
         }
 
-        auto const& ordered_kings() const
+        auto ordered_kings() const
         {
                 return ordered_kings_;
         }
@@ -420,8 +420,10 @@ private:
         bool is_with_king_{};
         bool is_promotion_{};
 
-        Value<Rules> current_{};
-        Value<Rules> best_{};
+        using Value = typename Rules::value_type;
+
+        Value current_{};
+        Value best_{};
 };
 
 }       // namespace successor

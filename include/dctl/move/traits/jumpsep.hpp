@@ -13,19 +13,19 @@ struct jumpsep
 {};
 
 template<>
-struct jumpsep<rules::Czech>
+struct jumpsep<czech::Rules>
 :
         std::integral_constant<char, ':'>
 {};
 
 template<>
-struct jumpsep<rules::Russian>
+struct jumpsep<russian::Rules>
 :
         std::integral_constant<char, ':'>
 {};
 
 template<>
-struct jumpsep<rules::Thai>
+struct jumpsep<thai::Rules>
 :
         std::integral_constant<char, '-'>
 {};

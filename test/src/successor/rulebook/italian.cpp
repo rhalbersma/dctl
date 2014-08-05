@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(SuccessorRulebookItalian)
 // Positions from the official Italian rules:
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 
-using F = Fixture<rules::Italian, board::Roman>;
+using F = Fixture<italian::Rules, board::Roman>;
 
 BOOST_FIXTURE_TEST_CASE(PawnJumpDirections, F)
 {

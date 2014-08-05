@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/angle.hpp>               // Angle, is_positive
 #include <dctl/utility/shift.hpp>       // shift
+#include <dctl/type_traits.hpp>
 
 namespace dctl {
 namespace detail {

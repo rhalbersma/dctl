@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_SUITE(SuccessorRegressionsItalian)
 
 // suggested by Alioto Domenico in email to Ed Gilbert
 
-using F = Fixture<rules::Italian, board::Roman>;
+using F = Fixture<italian::Rules, board::Roman>;
 
 BOOST_FIXTURE_TEST_CASE(AliotoDomenico, F)
 {

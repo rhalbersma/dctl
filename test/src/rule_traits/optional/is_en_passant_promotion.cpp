@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_SUITE(RuleTraitsIsEnPassantPromotion)
 
 using VariantsFalse = boost::mpl::vector
 <
-        Checkers, Czech, Frisian, International, Italian, Pool, Spanish, Thai
+        checkers::Rules, czech::Rules, frisian::Rules, international::Rules, italian::Rules, pool::Rules, spanish::Rules, thai::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsEnPassantPromotionV, T, VariantsFalse)
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(NotIsEnPassantPromotionV, T, VariantsFalse)
 
 using VariantsTrue = boost::mpl::vector
 <
-        Russian
+        russian::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsEnPassantPromotionV, T, VariantsTrue)

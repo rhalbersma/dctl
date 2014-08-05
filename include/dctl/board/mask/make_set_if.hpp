@@ -1,15 +1,15 @@
 #pragma once
 #include <dctl/grid/coordinates.hpp>    // Square
+#include <dctl/type_traits.hpp>
 
 namespace dctl {
 namespace board {
 
 /* NOTE: for C++11/14, constexpr predicate != lambda expression */
-template<class Board, class UnaryPredicate>
-constexpr auto copy_if(Board const& /* b */, UnaryPredicate pred) noexcept
+template<class Board, class Set = set_type_t<Board>, class UnaryPredicate>
+constexpr auto make_set_if(UnaryPredicate pred) noexcept
 {
         using Grid = typename Board::external_grid;
-        using Set = typename Board::set_type;
 
         Set result{};
         for (auto sq = 0; sq != Grid::size; ++sq)

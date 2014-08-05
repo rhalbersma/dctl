@@ -3,11 +3,11 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 
 namespace dctl {
-namespace rules {
+namespace italian {
 
 BOOST_AUTO_TEST_SUITE(RulesVariantsItalian)
 
-using T = Italian;
+using T = Rules;
 
 BOOST_AUTO_TEST_CASE(Traits)
 {
@@ -22,5 +22,5 @@ BOOST_AUTO_TEST_CASE(Traits)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace rules
+}       // namespace italian
 }       // namespace dctl

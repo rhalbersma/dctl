@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/angle.hpp>               // Angle
 #include <dctl/utility/shift.hpp>       // shift_assing
+#include <dctl/type_traits.hpp>
 #include <boost/operators.hpp>          // totally_ordered, unit_steppable
 
 namespace dctl {
