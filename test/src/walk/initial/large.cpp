@@ -18,10 +18,10 @@ BOOST_AUTO_TEST_CASE(Board12x12)
 {
         NodeCount const leafs[] = { 11, 121, 1'222, 10'053, 79'049, 584'100, 4'369'366, 31'839'056, 237'209'258, 1'761'652'936 };
 
-        auto const p = Position<international::Rules, board::Canadian>::initial();
+        auto const p = Position<canadian::Rules, board::Canadian>::initial();
         test(p, leafs);
 
-        auto const q = Position<international::Rules, board::SriLankan>::initial();
+        auto const q = Position<srilankan::Rules, board::SriLankan>::initial();
         test(q, leafs);
 }
 

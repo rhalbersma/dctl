@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE(WalkInitialBoard8x8)
 
 BOOST_AUTO_TEST_CASE(BrazilianInitial)
 {
-        auto const p = Position<international::Rules, board::Checkers>::initial();
+        auto const p = Position<brazilian::Rules, board::Checkers>::initial();
         NodeCount const leafs[] = { 7, 49, 302, 1'469, 7'473, 37'628, 187'302, 907'830 , 4'431'766, 21'560'022, 105'491'257, 511'882'477, 2'481'546'396 };
         test(p, leafs);
 }
