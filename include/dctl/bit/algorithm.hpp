@@ -23,6 +23,30 @@ auto set_all_of(Set const& s) noexcept
 }
 
 template<class Set>
+auto set_equal(Set const& lhs, Set const& rhs) noexcept
+{
+        return lhs == rhs;
+}
+
+template<class Set>
+auto set_lexicographical_compare(Set const& lhs, Set const& rhs) noexcept
+{
+        return lhs < rhs;
+}
+
+template<class Set>
+auto set_includes(Set const& lhs, Set const& rhs) noexcept
+{
+        return lhs.includes(rhs);
+}
+
+template<class Set>
+auto set_intersects(Set const& lhs, Set const& rhs) noexcept
+{
+        return lhs.intersects(rhs);
+}
+
+template<class Set>
 auto set_count(Set const& s) noexcept
 {
         return s.count();
@@ -77,55 +101,31 @@ auto set_minmax_element(Set const& s) noexcept
 }
 
 template<class Set>
-auto set_equal(Set const& lhs, Set const& rhs) noexcept
-{
-        return lhs == rhs;
-}
-
-template<class Set>
-auto set_lexicographical_compare(Set const& lhs, Set const& rhs) noexcept
-{
-        return lhs < rhs;
-}
-
-template<class Set>
-auto set_includes(Set const& lhs, Set const& rhs) noexcept
-{
-        return lhs.includes(rhs);
-}
-
-template<class Set>
-auto set_intersects(Set const& lhs, Set const& rhs) noexcept
-{
-        return lhs.intersects(rhs);
-}
-
-template<class Set>
-auto set_complement(Set const& lhs) noexcept
+constexpr auto set_complement(Set const& lhs) noexcept
 {
         return ~lhs;
 }
 
 template<class Set>
-auto set_intersection(Set const& lhs, Set const& rhs) noexcept
+constexpr auto set_intersection(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs & rhs;
 }
 
 template<class Set>
-auto set_union(Set const& lhs, Set const& rhs) noexcept
+constexpr auto set_union(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs | rhs;
 }
 
 template<class Set>
-auto set_symmetric_difference(Set const& lhs, Set const& rhs) noexcept
+constexpr auto set_symmetric_difference(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs ^ rhs;
 }
 
 template<class Set>
-auto set_difference(Set const& lhs, Set const& rhs) noexcept
+constexpr auto set_difference(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs & ~rhs;
 }

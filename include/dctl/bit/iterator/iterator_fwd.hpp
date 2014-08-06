@@ -1,10 +1,9 @@
 #pragma once
-#include <cstddef>      // size_t
 
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, std::size_t Nb>
+template<class T, class Block, int Nb>
 class ConstIterator;
 
 template<class T, class Block>

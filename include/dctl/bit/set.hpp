@@ -225,13 +225,13 @@ public:
                 return it;
         }
 
-        constexpr void swap(Set& other) noexcept
+        constexpr auto swap(Set& other) noexcept
         {
                 using std::swap;
                 swap(this->data_, other.data_);
         }
 
-        constexpr void clear() noexcept
+        constexpr auto clear() noexcept
         {
                 this->do_reset();
         }
@@ -255,32 +255,32 @@ public:
 
         // relational operators
 
-        friend bool operator==(Set const& lhs, Set const& rhs) noexcept
+        friend auto operator==(Set const& lhs, Set const& rhs) noexcept
         {
-                return Base::do_equal(lhs, rhs);
+                return lhs.do_equal(rhs);
         }
 
-        friend bool operator!=(Set const& lhs, Set const& rhs) noexcept
+        friend auto operator!=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
 
-        friend bool operator< (Set const& lhs, Set const& rhs) noexcept
+        friend auto operator< (Set const& lhs, Set const& rhs) noexcept
         {
-                return Base::do_lexicograhical_compare(lhs, rhs);
+                return lhs.do_lexicograhical_compare(rhs);
         }
 
-        friend bool operator>=(Set const& lhs, Set const& rhs) noexcept
+        friend auto operator>=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(lhs < rhs);
         }
 
-        friend bool operator> (Set const& lhs, Set const& rhs) noexcept
+        friend auto operator> (Set const& lhs, Set const& rhs) noexcept
         {
                 return rhs < lhs;
         }
 
-        friend bool operator<=(Set const& lhs, Set const& rhs) noexcept
+        friend auto operator<=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(rhs < lhs);
         }
@@ -325,37 +325,37 @@ public:
 
         // bitwise operations
 
-        auto& reset() noexcept
+        constexpr auto& reset() noexcept
         {
                 this->do_reset();
                 return *this;
         }
 
-        auto& set() noexcept
+        constexpr auto& set() noexcept
         {
                 this->do_set();
                 return *this;
         }
 
-        auto& flip() noexcept
+        constexpr auto& flip() noexcept
         {
                 this->do_flip();
                 return *this;
         }
 
-        auto& operator&=(Set const& other) noexcept
+        constexpr auto& operator&=(Set const& other) noexcept
         {
                 this->do_and(other);
                 return *this;
         }
 
-        auto& operator|=(Set const& other) noexcept
+        constexpr auto& operator|=(Set const& other) noexcept
         {
                 this->do_or(other);
                 return *this;
         }
 
-        auto& operator^=(Set const& other) noexcept
+        constexpr auto& operator^=(Set const& other) noexcept
         {
                 this->do_xor(other);
                 return *this;
@@ -373,44 +373,44 @@ public:
                 return *this;
         }
 
-        friend auto operator~(Set const& lhs) noexcept
+        friend constexpr auto operator~(Set const& lhs) noexcept
         {
-                Set nrv{lhs};
+                auto nrv = lhs;
                 nrv.flip();
                 return nrv;
         }
 
-        friend auto operator&(Set const& lhs, Set const& rhs) noexcept
+        friend constexpr auto operator&(Set const& lhs, Set const& rhs) noexcept
         {
-                Set nrv{lhs};
+                auto nrv = lhs;
                 nrv &= rhs;
                 return nrv;
         }
 
-        friend auto operator|(Set const& lhs, Set const& rhs) noexcept
+        friend constexpr auto operator|(Set const& lhs, Set const& rhs) noexcept
         {
-                Set nrv{lhs};
+                auto nrv = lhs;
                 nrv |= rhs;
                 return nrv;
         }
 
-        friend auto operator^(Set const& lhs, Set const& rhs) noexcept
+        friend constexpr auto operator^(Set const& lhs, Set const& rhs) noexcept
         {
-                Set nrv{lhs};
+                auto nrv = lhs;
                 nrv ^= rhs;
                 return nrv;
         }
 
         friend auto operator<<(Set const& lhs, std::size_t n)
         {
-                Set nrv{lhs};
+                auto nrv = lhs;
                 nrv <<= n;
                 return nrv;
         }
 
         friend auto operator>>(Set const& lhs, std::size_t n)
         {
-                Set nrv{lhs};
+                auto nrv = lhs;
                 nrv >>= n;
                 return nrv;
         }
@@ -442,7 +442,7 @@ public:
                 return this->do_all();
         }
 
-        auto count() const noexcept
+        constexpr auto count() const noexcept
         {
                 return this->do_count();
         }

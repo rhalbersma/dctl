@@ -5,7 +5,7 @@
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert
-#include <cstddef>                              // ptrdiff_t, size_t
+#include <cstddef>                              // ptrdiff_t
 #include <iterator>                             // bidirectional_iterator_tag
 #include <limits>                               // digits
 #include <tuple>                                // tie
@@ -13,7 +13,7 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, std::size_t Nb>
+template<class T, class Block, int Nb>
 class ConstIterator
 :
         public boost::iterator_facade
@@ -26,8 +26,8 @@ class ConstIterator
         >
 {
 private:
-        enum { digits = std::numeric_limits<Block>::digits };
-        enum { N = Nb * digits };
+        static constexpr auto digits = std::numeric_limits<Block>::digits;
+        static constexpr auto N = Nb * digits;
 
 public:
         // constructors
@@ -55,10 +55,10 @@ private:
         // gateway for boost::iterator_facade to access private implementation
         friend class boost::iterator_core_access;
 
-        constexpr int find_first()
+        constexpr auto find_first()
         {
                 assert(block_ != nullptr);
-                for (auto i = 0; i < static_cast<int>(Nb); ++i) {
+                for (auto i = 0; i < Nb; ++i) {
                         if (auto const mask = *block_)
                                 return i * digits + bit::intrinsic::bsfnz(mask);
                         ++block_;
@@ -67,7 +67,7 @@ private:
         }
 
         // operator++() and operator++(int) provided by boost::iterator_facade
-        constexpr void increment()
+        constexpr auto increment()
         {
                 assert(block_ != nullptr);
                 assert(0 <= index_ && index_ < N);
@@ -97,7 +97,7 @@ private:
         }
 
         // operator--() and operator--(int) provided by boost::iterator_facade
-        constexpr void decrement()
+        constexpr auto decrement()
         {
                 assert(block_ != nullptr);
                 assert(0 < index_ && index_ <= N);

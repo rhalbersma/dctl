@@ -2,6 +2,7 @@
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
 #include <cassert>                              // assert
+#include <cstddef>                              // size_t
 #include <limits>                               // digits
 
 namespace dctl {
@@ -20,12 +21,12 @@ struct BaseSet<Key, Compare, Block, 1>
         enum { digits = std::numeric_limits<Block>::digits };
         enum { N = 1 * digits };
 
-        Block& data()
+        constexpr auto& data()
         {
                 return data_;
         }
 
-        Block const& data() const
+        constexpr auto const& data() const
         {
                 return data_;
         }
@@ -48,96 +49,98 @@ struct BaseSet<Key, Compare, Block, 1>
                 return &data_;
         }
 
-        // bitwise operations
+        // modifiers
 
-        void do_reset() noexcept
+        constexpr auto do_reset() noexcept
         {
                 data_ = Block{0};
         }
 
-        void do_set() noexcept
+        constexpr auto do_set() noexcept
         {
                 data_ = ~Block{0};
         }
 
-        void do_flip() noexcept
+        constexpr auto do_flip() noexcept
         {
                 data_ = ~data_;
         }
 
-        void do_and(BaseSet const& other) noexcept
+        constexpr auto do_and(BaseSet const& other) noexcept
         {
                 data_ &= other.data_;
         }
 
-        void do_or(BaseSet const& other) noexcept
+        constexpr auto do_or(BaseSet const& other) noexcept
         {
                 data_ |= other.data_;
         }
 
-        void do_xor(BaseSet const& other) noexcept
+        constexpr auto do_xor(BaseSet const& other) noexcept
         {
                 data_ ^= other.data_;
         }
 
-        void do_left_shift(std::size_t n)
+        constexpr auto do_left_shift(std::size_t n)
         {
                 assert(n < N);
                 data_ <<= n;
         }
 
-        void do_right_shift(std::size_t n)
+        constexpr auto do_right_shift(std::size_t n)
         {
                 assert(n < N);
                 data_ >>= n;
         }
 
-        // bitwise algorithms
+        // queries
 
-        static auto do_equal(BaseSet const& lhs, BaseSet const& rhs) noexcept
-        {
-                return lhs.data_ == rhs.data_;
-        }
-
-        static auto do_lexicographical_compare(BaseSet const& lhs, BaseSet const& rhs) noexcept
-        {
-                return Compare{}(lhs.data_, rhs.data_);
-        }
-
-        auto do_includes(BaseSet const& other) const noexcept
-        {
-                return (~data_ & other.data_) == Block{0};
-        }
-
-        auto do_intersects(BaseSet const& other) const noexcept
-        {
-                return (data_ & other.data_) != Block{0};
-        }
-
-        auto do_none() const noexcept
-        {
-                return data_ == Block{0};
-        }
-
-        auto do_any() const noexcept
-        {
-                return data_ != Block{0};
-        }
-
-        auto do_all() const noexcept
-        {
-                return data_ == ~Block{0};
-        }
-
-        auto do_count() const noexcept
+        constexpr auto do_count() const noexcept
         {
                 return bit::intrinsic::popcount(data_);
         }
 
         template<class UnaryPredicate>
-        auto do_count_until(UnaryPredicate /* pred */) const
+        constexpr auto do_count_until(UnaryPredicate /* pred */) const
         {
                 return do_count();
+        }
+
+        // predicates
+
+        constexpr auto do_none() const noexcept
+        {
+                return data_ == Block{0};
+        }
+
+        constexpr auto do_any() const noexcept
+        {
+                return data_ != Block{0};
+        }
+
+        constexpr auto do_all() const noexcept
+        {
+                return data_ == ~Block{0};
+        }
+
+        constexpr auto do_equal(BaseSet const& other) const noexcept
+        {
+                return data_ == other.data_;
+        }
+
+        constexpr auto do_lexicographical_compare(BaseSet const& other) const noexcept
+        {
+                return Compare{}(data_, other.data_);
+        }
+
+        constexpr auto do_includes(BaseSet const& other) const noexcept
+        {
+                return (~data_ & other.data_) == Block{0};
+        }
+
+        constexpr auto do_intersects(BaseSet const& other) const noexcept
+        {
+                return (data_ & other.data_) != Block{0};
         }
 
         // representation
