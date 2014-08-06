@@ -24,8 +24,8 @@ class ConstIterator<T, Block, 1>
                 std::ptrdiff_t
         >
 {
-        enum { digits = std::numeric_limits<Block>::digits };
-        enum { N = 1 * digits };
+        static constexpr auto digits = std::numeric_limits<Block>::digits;
+        static constexpr auto N = 1 * digits;
 
 public:
         // constructors
@@ -53,14 +53,14 @@ private:
         // gateway for boost::iterator_facade to access private implementation
         friend class boost::iterator_core_access;
 
-        constexpr int find_first()
+        constexpr auto find_first()
         {
                 assert(block_ != nullptr);
                 return bit::intrinsic::ctz(*block_);
         }
 
         // operator++() and operator++(int) provided by boost::iterator_facade
-        constexpr void increment()
+        constexpr auto increment()
         {
                 assert(block_ != nullptr);
                 assert(0 <= index_ && index_ < N);
@@ -74,7 +74,7 @@ private:
         }
 
         // operator--() and operator--(int) provided by boost::iterator_facade
-        constexpr void decrement()
+        constexpr auto decrement()
         {
                 assert(block_ != nullptr);
                 assert(0 < index_ && index_ <= N);
