@@ -68,13 +68,13 @@ public:
         }
 
 private:
-        // overload for pawns that can capture kings
+        // pawns that can capture kings
         void select_dispatch(Set const& active_pawns, std::true_type) const
         {
                 branch(active_pawns);
         }
 
-        // overload for pawns that cannot capture kings
+        // pawns that cannot capture kings
         void select_dispatch(Set const& active_pawns, std::false_type) const
         {
                 tracker_.toggle_king_targets();
@@ -88,14 +88,14 @@ private:
                 branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
         }
 
-        // overload for pawns that jump in the 2 forward diagonal directions
+        // pawns that jump in the 2 forward diagonal directions
         void branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::false_type>) const
         {
                 serialize<left_up   (orientation)>(active_pawns);
                 serialize<right_up  (orientation)>(active_pawns);
         }
 
-        // overload for pawns that jump in the 4 forward and backward diagonal directions
+        // pawns that jump in the 4 forward and backward diagonal directions
         void branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::false_type>) const
         {
                 serialize<left_up   (orientation)>(active_pawns);
@@ -104,7 +104,7 @@ private:
                 serialize<right_down(orientation)>(active_pawns);
         }
 
-        // overload for pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
+        // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
         void branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::true_type>) const
         {
                 serialize<up        (orientation)>(active_pawns);
@@ -114,7 +114,7 @@ private:
                 serialize<right     (orientation)>(active_pawns);
         }
 
-        // overload for pawns that jump in the 8 diagonal and orthogonal directions
+        // pawns that jump in the 8 diagonal and orthogonal directions
         void branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::true_type>) const
         {
                 serialize<up        (orientation)>(active_pawns);
@@ -132,73 +132,58 @@ private:
         {
                 auto const jumpers = active_pawns & *std::prev(along_wave<Direction>(tracker_.template targets_with_pawn<Direction>()));
                 for (auto&& from_sq : jumpers)
-                        find(along_ray<Direction>(from_sq));
+                        find_first(along_ray<Direction>(from_sq));
         }
 
         template<class Iterator>
-        void find(Iterator jumper) const
+        void find_first(Iterator jumper) const
         {
                 tracker_.launch(*jumper);
-                explore(std::next(jumper));     // recursively find more jumps
+                capture(std::next(jumper));
                 tracker_.finish();
         }
 
         template<class Iterator>
-        void explore(Iterator jumper) const
+        void capture(Iterator jumper) const
         {
                 tracker_.capture(*jumper);
-                add_and_continue(std::next(jumper));
+                land(std::next(jumper));
                 tracker_.release();
         }
 
         template<class Iterator>
-        void add_and_continue(Iterator jumper) const
+        void land(Iterator jumper) const
         {
-                // tag dispatching on majority precedence
                 tracker_.visit(*jumper);
-                if (!is_find_next(jumper))
+                if (!find_next(jumper))
+                        //add(jumper);
                         precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
                 tracker_.leave();
         }
 
-        // overload for no majority precedence
         template<class Iterator>
-        void precedence_dispatch(Iterator jumper, std::false_type) const
-        {
-                add(jumper);
-        }
-
-        // overload for majority precedence
-        template<class Iterator>
-        void precedence_dispatch(Iterator jumper, std::true_type) const
-        {
-                if (tracker_.handle_precedence(moves_))
-                        add(jumper);
-        }
-
-        template<class Iterator>
-        bool is_find_next(Iterator jumper) const
+        bool find_next(Iterator jumper) const
         {
                 // tag dispatching on promotion condition
                 return promotion_dispatch(jumper, is_en_passant_promotion_t<Rules>{});
         }
 
-        // overload for pawns that promote apres-fini
+        // pawns that promote apres-fini
         template<class Iterator>
         bool promotion_dispatch(Iterator jumper, std::false_type) const
         {
-                return land(jumper);
+                return explore(jumper);
         }
 
-        // overload for pawns that promote en-passant
+        // pawns that promote en-passant
         template<class Iterator>
         bool promotion_dispatch(Iterator jumper, std::true_type) const
         {
-                return is_promotion(*jumper) ? KingJumps{tracker_, moves_}.promote_en_passant(jumper) : land(jumper);
+                return is_promotion(*jumper) ? KingJumps{tracker_, moves_}.promote_en_passant(jumper) : explore(jumper);
         }
 
         template<class Iterator>
-        bool land(Iterator jumper) const
+        bool explore(Iterator jumper) const
         {
                 // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return scan(jumper) | turn(jumper);
@@ -211,7 +196,7 @@ private:
                 return turn_dispatch(jumper, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
         }
 
-        // overload for pawns that jump in the 2 forward diagonal directions
+        // pawns that jump in the 2 forward diagonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::false_type>) const
         {
@@ -219,7 +204,7 @@ private:
                 return scan(ray::mirror<up(orientation)>(jumper));
         }
 
-        // overload for pawns that jump in the 4 forward and backward diagonal directions
+        // pawns that jump in the 4 forward and backward diagonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::false_type>) const
         {
@@ -232,7 +217,7 @@ private:
                 ;
         }
 
-        // overload for pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
+        // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::true_type>) const
         {
@@ -242,7 +227,7 @@ private:
                 return turn_dispatch(jumper, angle_t<direction_v<Iterator>>{});
         }
 
-        // overload for the upward direction
+        // the upward direction
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<up(orientation)>)
         {
@@ -255,7 +240,7 @@ private:
                 ;
         }
 
-        // overload for the left upward direction
+        // the left upward direction
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<left_up(orientation)>)
         {
@@ -268,7 +253,7 @@ private:
                 ;
         }
 
-        // overload for the right upward direction
+        // the right upward direction
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<right_up(orientation)>)
         {
@@ -281,7 +266,7 @@ private:
                 ;
         }
 
-        // overload for the left direction
+        // the left direction
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<left(orientation)>)
         {
@@ -293,7 +278,7 @@ private:
                 ;
         }
 
-        // overload for the right direction
+        // the right direction
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<right(orientation)>)
         {
@@ -305,7 +290,7 @@ private:
                 ;
         }
 
-        // overload for pawns that jump in the 8 diagonal and orthogonal directions
+        // pawns that jump in the 8 diagonal and orthogonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::true_type>) const
         {
@@ -334,25 +319,47 @@ private:
                 if (!tracker_.targets_with_pawn(jumper))
                         return false;
 
-                explore(jumper);        // recursively find more jumps
+                capture(jumper);
                 return true;
         }
 
         template<class Iterator>
-        void add(Iterator dest) const
+        void add(Iterator jumper) const
+        {
+                // tag dispatching on majority precedence
+                precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
+        }
+
+        // no majority precedence
+        template<class Iterator>
+        void precedence_dispatch(Iterator jumper, std::false_type) const
+        {
+                do_add(jumper);
+        }
+
+        // majority precedence
+        template<class Iterator>
+        void precedence_dispatch(Iterator jumper, std::true_type) const
+        {
+                if (tracker_.handle_precedence(moves_))
+                        do_add(jumper);
+        }
+
+        template<class Iterator>
+        void do_add(Iterator dest) const
         {
                 // tag dispatching on ambiguity of pawn jumps
                 ambiguity_dispatch(dest, is_unambiguous_pawn_jump_t<Rules>{});
         }
 
-        // overload for pawn jumps that are always unambiguous
+        // pawn jumps that are always unambiguous
         template<class Iterator>
         void ambiguity_dispatch(Iterator dest, std::true_type) const
         {
                 tracker_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
         }
 
-        // overload for pawn jumps that are potentially ambiguous
+        // pawn jumps that are potentially ambiguous
         template<class Iterator>
         void ambiguity_dispatch(Iterator dest, std::false_type) const
         {

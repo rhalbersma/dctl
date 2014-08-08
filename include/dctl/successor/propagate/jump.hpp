@@ -104,13 +104,6 @@ public:
                 is_promotion_ ^= true;
         }
 
-        void improve()
-        {
-                static_assert(is_jump_precedence_v<Rules>, "");
-                assert(best_ < current_);
-                best_ = current_;
-        }
-
         template<bool Color, class Sequence>
         void add_king_jump(int dest, Sequence& moves) const
         {
@@ -231,20 +224,6 @@ public:
                 return king_targets_.test(sq);
         }
 
-        auto greater_equal() const
-        {
-                static_assert(is_jump_precedence_v<Rules>, "");
-                assert(is_totally_ordered(best_, current_));
-                return current_ >= best_;
-        }
-
-        auto not_equal_to() const
-        {
-                static_assert(is_jump_precedence_v<Rules>, "");
-                assert(greater_equal());
-                return current_ != best_;
-        }
-
         template<class Sequence>
         auto is_potential_duplicate(Sequence const& moves) const
         {
@@ -284,13 +263,13 @@ public:
 private:
         // modifiers
 
-        // overload for apres-fini jump removal
+        // apres-fini jump removal
         void capture_dispatch(int sq, std::false_type)
         {
                 capture_impl(sq);
         }
 
-        // overload for en-passant jump removal
+        // en-passant jump removal
         void capture_dispatch(int sq, std::true_type)
         {
                 not_occupied_.set(sq);
@@ -305,13 +284,13 @@ private:
                 remaining_targets_.reset(sq);
         }
 
-        // overload for apres-fini jump removal
+        // apres-fini jump removal
         void release_dispatch(int sq, std::false_type)
         {
                 release_impl(sq);
         }
 
-        // overload for en-passant jump removal
+        // en-passant jump removal
         void release_dispatch(int sq, std::true_type)
         {
                 release_impl(sq);
@@ -331,14 +310,14 @@ private:
                 return num_pieces();
         }
 
-        // overload for pawn jumps without promotion
+        // pawn jumps without promotion
         template<bool Color>
         static auto is_promotion(int dest_sq, with::pawn)
         {
                 return dctl::is_promotion<Color, Board>(dest_sq);
         }
 
-        // overload for pawn jumps with an en-passant promotion
+        // pawn jumps with an en-passant promotion
         template<bool Color>
         static auto is_promotion(int /* dest_sq */, with::king)
         {
@@ -351,13 +330,13 @@ private:
                 return captured_kings_dispatch(is_pawn_jump_king_t<Rules>{});
         }
 
-        // overload for pawns that can capture kings
+        // pawns that can capture kings
         auto captured_kings_dispatch(std::true_type) const
         {
                 return captured_kings(with::king());
         }
 
-        // overload for pawns that cannot capture kings
+        // pawns that cannot capture kings
         auto captured_kings_dispatch(std::false_type) const
         {
                 return Set{};

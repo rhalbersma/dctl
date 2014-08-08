@@ -33,7 +33,7 @@ private:
         template<class Position, class Sequence>
         using PawnJump = Generate<Color, pieces::pawn, select::jump, Position, Sequence>;
 
-        // overload for no absolute king jump precedence
+        // no absolute king jump precedence
         template<class Position, class Sequence>
         auto precedence_dispatch(Position const& p, Sequence& moves, std::false_type) const
         {
@@ -42,7 +42,7 @@ private:
                 PawnJump<Position, Sequence>{back_tracker, moves}(p.pawns(Color));
         }
 
-        // overload for absolute king jump precedence
+        // absolute king jump precedence
         template<class Position, class Sequence>
         auto precedence_dispatch(Position const& p, Sequence& moves, std::true_type) const
         {

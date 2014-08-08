@@ -57,7 +57,7 @@ private:
                 return branch_dispatch(active_kings, is_orthogonal_jump_t<Rules>{});
         }
 
-        // overload for kings that jump in the 4 diagonal directions
+        // kings that jump in the 4 diagonal directions
         auto branch_dispatch(Set const& active_kings, std::false_type) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
@@ -69,7 +69,7 @@ private:
                 ;
         }
 
-        // overload for kings that jump in the 8 diagonal and orthogonal directions
+        // kings that jump in the 8 diagonal and orthogonal directions
         auto branch_dispatch(Set const& active_kings, std::true_type) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting

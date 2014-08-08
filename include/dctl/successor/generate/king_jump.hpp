@@ -84,111 +84,96 @@ private:
                 branch_dispatch(from_sq, is_orthogonal_jump_t<Rules>{});
         }
 
-        // overload for kings that jump in the 4 diagonal directions
+        // kings that jump in the 4 diagonal directions
         void branch_dispatch(int from_sq, std::false_type) const
         {
-                find(along_ray<left_up   (orientation)>(from_sq));
-                find(along_ray<right_up  (orientation)>(from_sq));
-                find(along_ray<left_down (orientation)>(from_sq));
-                find(along_ray<right_down(orientation)>(from_sq));
+                find_first(along_ray<left_up   (orientation)>(from_sq));
+                find_first(along_ray<right_up  (orientation)>(from_sq));
+                find_first(along_ray<left_down (orientation)>(from_sq));
+                find_first(along_ray<right_down(orientation)>(from_sq));
         }
 
-        // overload for kings that jump in the 8 diagonal and orthogonal directions
+        // kings that jump in the 8 diagonal and orthogonal directions
         void branch_dispatch(int from_sq, std::true_type) const
         {
-                find(along_ray<up        (orientation)>(from_sq));
-                find(along_ray<left_up   (orientation)>(from_sq));
-                find(along_ray<right_up  (orientation)>(from_sq));
-                find(along_ray<left      (orientation)>(from_sq));
-                find(along_ray<right     (orientation)>(from_sq));
-                find(along_ray<left_down (orientation)>(from_sq));
-                find(along_ray<right_down(orientation)>(from_sq));
-                find(along_ray<down      (orientation)>(from_sq));
+                find_first(along_ray<up        (orientation)>(from_sq));
+                find_first(along_ray<left_up   (orientation)>(from_sq));
+                find_first(along_ray<right_up  (orientation)>(from_sq));
+                find_first(along_ray<left      (orientation)>(from_sq));
+                find_first(along_ray<right     (orientation)>(from_sq));
+                find_first(along_ray<left_down (orientation)>(from_sq));
+                find_first(along_ray<right_down(orientation)>(from_sq));
+                find_first(along_ray<down      (orientation)>(from_sq));
         }
 
         template<class Iterator>
-        void find(Iterator jumper) const
+        void find_first(Iterator jumper) const
         {
                 slide(jumper, tracker_.template path<ray::direction_v<Iterator>>());
                 if (tracker_.targets_with_king(jumper))
-                        explore(jumper);        // recursively find more jumps
+                        capture(jumper);
         }
 
         template<class Iterator>
-        void explore(Iterator jumper) const
+        void capture(Iterator jumper) const
         {
                 tracker_.capture(*jumper);
-                add_and_continue(std::next(jumper));
+                land(std::next(jumper));
                 tracker_.release();
         }
 
         template<class Iterator>
-        void add_and_continue(Iterator jumper) const
+        void land(Iterator jumper) const
         {
-                // tag dispatching on majority precedence
                 tracker_.visit(*jumper);
-                if (!is_find_next(jumper))
+                if (!find_next(jumper))
+                        //add(jumper);
                         precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
                 tracker_.leave();
         }
 
-        // overload for no majority precedence
-        template<class Iterator>
-        void precedence_dispatch(Iterator jumper, std::false_type) const
-        {
-                add(jumper);
-        }
-
-        // overload for majority precedence
-        template<class Iterator>
-        void precedence_dispatch(Iterator jumper, std::true_type) const
-        {
-                if (tracker_.handle_precedence(moves_))
-                        add(jumper);
-        }
-
-        // overload for pawns that can capture kings
+        // pawns that can capture kings
         template<class Iterator>
         bool can_jump_dispatch(Iterator jumper, std::true_type) const
         {
                 tracker_.toggle_promotion();
-                auto const found_next = is_find_next(jumper);
+                auto const found_next = find_next(jumper);
                 tracker_.toggle_promotion();
                 return found_next;
         }
 
-        // overload for pawns that cannot capture kings
+        // pawns that cannot capture kings
         template<class Iterator>
         bool can_jump_dispatch(Iterator jumper, std::false_type) const
         {
                 tracker_.toggle_promotion();    // no longer a pawn
                 tracker_.set_king_targets();    // can now capture kings
-                auto const found_next = is_find_next(jumper);
+                auto const found_next = find_next(jumper);
                 tracker_.clear_king_targets();  // can no longer capture kings
                 tracker_.toggle_promotion();    // now a pawn again
                 return found_next;
         }
 
         template<class Iterator>
-        bool is_find_next(Iterator jumper) const
+        bool find_next(Iterator jumper) const
         {
                 // tag dispatching on king jump direction reversal
                 return find_next_dispatch(jumper, is_reversible_king_jump_direction_t<Rules>{});
         }
 
-        // overload for kings that cannot reverse their capture direction
+        // kings that cannot reverse their capture direction
         template<class Iterator>
         bool find_next_dispatch(Iterator jumper, std::false_type) const
         {
-                return land(jumper);
+                return explore(jumper);
         }
 
-        // overload for kings that can reverse their capture direction
+        // kings that can reverse their capture direction
         template<class Iterator>
         bool find_next_dispatch(Iterator jumper, std::true_type) const
         {
                 // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
-                return land(jumper) | reverse(jumper);
+                return explore(jumper) | reverse(jumper);
         }
 
         template<class Iterator>
@@ -198,15 +183,15 @@ private:
         }
 
         template<class Iterator>
-        bool land(Iterator jumper) const
+        bool explore(Iterator jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
-                return land_dispatch(jumper, is_long_ranged_land_after_piece_t<Rules>{});
+                return explore_dispatch(jumper, is_long_ranged_land_after_piece_t<Rules>{});
         }
 
-        // overload for kings that can land on any square along the current direction
+        // kings that can land on any square along the current direction
         template<class Iterator>
-        bool land_dispatch(Iterator jumper, std::true_type) const
+        bool explore_dispatch(Iterator jumper, std::true_type) const
         {
                 // CORRECTNESS: tracker_.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
@@ -219,9 +204,9 @@ private:
                 return found_next |= is_en_prise(jumper);
         }
 
-        // overload for kings that can only land on the immediately adjacent square
+        // kings that can only land on the immediately adjacent square
         template<class Iterator>
-        bool land_dispatch(Iterator jumper, std::false_type) const
+        bool explore_dispatch(Iterator jumper, std::false_type) const
         {
                 return scan(jumper) | turn(jumper);
         }
@@ -233,7 +218,7 @@ private:
                 return turn_dispatch(jumper, is_orthogonal_jump_t<Rules>{});
         }
 
-        // overload for kings that jump in the 4 diagonal directions
+        // kings that jump in the 4 diagonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::false_type) const
         {
@@ -246,7 +231,7 @@ private:
                 ;
         }
 
-        // overload for kings that jump in the 8 diagonal and orthogonal directions
+        // kings that jump in the 8 diagonal and orthogonal directions
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, std::true_type) const
         {
@@ -277,14 +262,14 @@ private:
                 slide_dispatch(jumper, path, is_long_ranged_king_t<Rules>{});
         }
 
-        // overload for short ranged kings
+        // short ranged kings
         template<class Iterator>
         void slide_dispatch(Iterator& jumper, Set const& /* path */, std::false_type) const
         {
                 ++jumper;
         }
 
-        // overload for long ranged kings
+        // long ranged kings
         template<class Iterator>
         void slide_dispatch(Iterator& jumper, Set const& path, std::true_type) const
         {
@@ -297,12 +282,34 @@ private:
                 if (!tracker_.targets_with_king(jumper))
                         return false;
 
-                explore(jumper);        // recursively find more jumps
+                capture(jumper);
                 return true;
         }
 
         template<class Iterator>
-        void add(Iterator dest_sq) const
+        void add(Iterator jumper) const
+        {
+                // tag dispatching on majority precedence
+                precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
+        }
+
+        // no majority precedence
+        template<class Iterator>
+        void precedence_dispatch(Iterator jumper, std::false_type) const
+        {
+                do_add(jumper);
+        }
+
+        // majority precedence
+        template<class Iterator>
+        void precedence_dispatch(Iterator jumper, std::true_type) const
+        {
+                if (tracker_.handle_precedence(moves_))
+                        do_add(jumper);
+        }
+
+        template<class Iterator>
+        void do_add(Iterator dest_sq) const
         {
                 auto const check_duplicate = is_remove_duplicates_v<Rules> && tracker_.is_potential_duplicate(moves_);
 
@@ -310,7 +317,7 @@ private:
                 halt_dispatch(dest_sq, check_duplicate, std::pair<is_long_ranged_land_after_piece_t<Rules>, is_directly_halt_after_final_king_t<Rules>>{});
         }
 
-        // overload for kings that halt immediately if the final capture is a king, and slide through otherwise
+        // kings that halt immediately if the final capture is a king, and slide through otherwise
         template<class Iterator>
         void halt_dispatch(Iterator dest_sq, bool check_duplicate, std::pair<std::true_type, std::true_type>) const
         {
@@ -320,14 +327,14 @@ private:
                         halt_dispatch(dest_sq, check_duplicate, std::pair<std::true_type, std::false_type>{});
         }
 
-        // overload for kings that halt immediately after the final capture
+        // kings that halt immediately after the final capture
         template<class Iterator, class B>
         void halt_dispatch(Iterator dest_sq, bool check_duplicate, std::pair<std::false_type, B>) const
         {
                 add_jump(dest_sq, check_duplicate);
         }
 
-        // overload for kings that slide through after the final capture
+        // kings that slide through after the final capture
         template<class Iterator>
         void halt_dispatch(Iterator dest_sq, bool check_duplicate, std::pair<std::true_type, std::false_type>) const
         {
@@ -346,14 +353,14 @@ private:
                         moves_.pop_back();
         }
 
-        // overload for pawns that promote apres-fini
+        // pawns that promote apres-fini
         template<class Iterator>
         void promotion_dispatch(Iterator dest_sq, std::false_type) const
         {
                 tracker_.template add_king_jump<Color>(*dest_sq, moves_);
         }
 
-        // overload for pawns that promote en-passant
+        // pawns that promote en-passant
         template<class Iterator>
         void promotion_dispatch(Iterator dest_sq, std::true_type) const
         {
