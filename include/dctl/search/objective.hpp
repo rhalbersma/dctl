@@ -119,14 +119,14 @@ struct cycle<SecondPlayerWin>
 
 namespace detail {
 
-// overload for no restrictions on consecutive reversible moves
+// no restrictions on consecutive reversible moves
 template<class Position>
 bool is_no_progress(Position const& /* p */, std::false_type)
 {
         return false;
 }
 
-// overload for a maximum of consecutive reversible moves
+// a maximum of consecutive reversible moves
 template<class Position>
 bool is_no_progress(Position const& p, std::true_type)
 {

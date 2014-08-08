@@ -57,7 +57,7 @@ private:
                 return branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
         }
 
-        // overload for pawns that jump in the 2 forward diagonal directions
+        // pawns that jump in the 2 forward diagonal directions
         auto branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::false_type>) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
@@ -67,7 +67,7 @@ private:
                 ;
         }
 
-        // overload for pawns that jump in the 4 forward and backward diagonal directions
+        // pawns that jump in the 4 forward and backward diagonal directions
         auto branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::false_type>) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
@@ -79,7 +79,7 @@ private:
                 ;
         }
 
-        // overload for pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
+        // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
         auto branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::true_type>) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
@@ -92,7 +92,7 @@ private:
                 ;
         }
 
-        // overload for pawns that jump in the 8 diagonal and orthogonal directions
+        // pawns that jump in the 8 diagonal and orthogonal directions
         auto branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::true_type>) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting

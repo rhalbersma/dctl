@@ -163,7 +163,7 @@ private:
                 make_irreversible(m, is_restricted_same_king_push_t<Rules>{});
         }
 
-        // overload for restricted consecutive moves with the same king
+        // restricted consecutive moves with the same king
         template<class Move>
         void make_irreversible(Move const& m, std::true_type)
         {
@@ -171,7 +171,7 @@ private:
                 make_mru_kings(m);
         }
 
-        // overload for unrestricted consecutive moves with the same king
+        // unrestricted consecutive moves with the same king
         template<class Move>
         void make_irreversible(Move const& m, std::false_type)
         {

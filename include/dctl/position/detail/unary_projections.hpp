@@ -5,14 +5,14 @@
 namespace dctl {
 namespace detail {
 
-// overload for unrestricted consecutive moves with the same king
+// unrestricted consecutive moves with the same king
 template<class Position>
 auto moveable_kings(Position const& p, bool color, std::false_type)
 {
         return p.kings(color);
 }
 
-// overload for restricted consecutive moves with the same king
+// restricted consecutive moves with the same king
 template<class Position>
 auto moveable_kings(Position const& p, bool color, std::true_type)
 {
@@ -22,14 +22,14 @@ auto moveable_kings(Position const& p, bool color, std::true_type)
         return kings;
 }
 
-// overload for pawns that cannot capture kings
+// pawns that cannot capture kings
 template<bool Color, class Position>
 auto targets(Position const& p, std::false_type)
 {
         return p.pawns(!Color);
 }
 
-// overload for pawns that can capture kings
+// pawns that can capture kings
 template<bool Color, class Position>
 auto targets(Position const& p, std::true_type)
 {

@@ -47,7 +47,7 @@ private:
         template<class Position>
         using KingJump = Detect<Color, pieces::king, select::jump, Position, Range>;
 
-        // overload for piece jump detection
+        // piece jump detection
         template<class Position>
         auto combined_dispatch(Position const& p, std::true_type) const
         {
@@ -55,7 +55,7 @@ private:
                 return PawnJump<Position>{propagate}(p.pieces(Color));
         }
 
-        // overload for separate king and pawn jump detection
+        // separate king and pawn jump detection
         template<class Position>
         auto combined_dispatch(Position const& p, std::false_type) const
         {

@@ -56,7 +56,7 @@ public:
         }
 
 private:
-        // overload for short ranged kings
+        // short ranged kings
         auto find_dispatch(Set const& active_kings, std::false_type) const
         {
                 if (active_kings.empty())
@@ -68,7 +68,7 @@ private:
                 transform_movers<right_down(orientation)>(active_kings);
         }
 
-        // overload for long ranged kings
+        // long ranged kings
         auto find_dispatch(Set const& active_kings, std::true_type) const
         {
                 for (auto&& from_sq : active_kings) {
