@@ -13,7 +13,8 @@ struct Rules
         static constexpr auto is_jump_precedence = true;        // 6.1 - 6.10
         static constexpr auto is_long_ranged_king = false;      // 4.7
 
-        using value_type = Value;
+        template<class Move>
+        using value_type = Value<Move>;
 
         // optional
         static constexpr auto is_pawn_jump_king = false;        // 5.3(b)

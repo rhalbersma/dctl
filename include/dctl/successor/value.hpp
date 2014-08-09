@@ -1,12 +1,13 @@
 #pragma once
-#include <boost/operators.hpp>          // totally_ordered
+#include <boost/operators.hpp>  // totally_ordered
 
 namespace dctl {
 namespace successor {
 
+template<class Move>
 class Value
 :
-        boost::totally_ordered< Value >  // < >= > <= == !=
+        boost::totally_ordered<Value<Move>>     // < >= > <= == !=
 {
 public:
         // predicates

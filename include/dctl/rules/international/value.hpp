@@ -1,14 +1,14 @@
 #pragma once
-#include <boost/operators.hpp>                  // totally_ordered
-#include <cassert>                              // assert
-#include <limits>                               // numeric_limits
+#include <boost/operators.hpp>  // totally_ordered
+#include <cassert>              // assert
 
 namespace dctl {
 namespace international {
 
+template<class Move>
 class Value
 :
-        boost::totally_ordered< Value >   // !=, >=, >, <=
+        boost::totally_ordered<Value<Move>>     // !=, >=, >, <=
 {
 public:
         // constructors
@@ -18,12 +18,13 @@ public:
         explicit constexpr Value(int n) noexcept
         :
                 num_pieces_{n}
-        {}
+        {
+                assert(invariant());
+        }
 
-        template<class U>
-        explicit constexpr Value(U const& u) noexcept
+        explicit constexpr Value(Move const& m) noexcept
         :
-                Value{u.num_pieces()}
+                Value{m.num_pieces()}
         {}
 
         // predicates
@@ -43,6 +44,13 @@ public:
         }
 
 private:
+        // contracts
+
+        constexpr bool invariant() const noexcept
+        {
+                return 0 <= num_pieces_;
+        }
+
         // representation
 
         int num_pieces_{};

@@ -1,39 +1,33 @@
 #pragma once
-#include <boost/operators.hpp>          // totally_ordered
-#include <cassert>                      // assert
-#include <limits>                       // numeric_limits
-#include <tuple>                        // get, tie
+#include <boost/operators.hpp>  // totally_ordered
+#include <cassert>              // assert
+#include <tuple>                // tie
 
 namespace dctl {
 namespace spanish {
 
+template<class Move>
 class Value
 :
-        boost::totally_ordered< Value > // < >= > <= == !=
+        boost::totally_ordered<Value<Move>>     // < >= > <= == !=
 {
 public:
         // constructors
 
-        Value() = default;
+        constexpr Value() = default;
 
-        explicit Value(std::tuple<int, int> const& t)
-        :
-                Value{std::get<0>(t), std::get<1>(t)}
-        {}
-
-        template<class U>
-        explicit Value(U const& u)
-        :
-                Value{u.num_pieces(), u.num_kings()}
-        {}
-
-        Value(int np, int nk)
+        constexpr Value(int np, int nk) noexcept
         :
                 num_pieces_{np},
                 num_kings_{nk}
         {
                 assert(invariant());
         }
+
+        explicit constexpr Value(Move const& m) noexcept
+        :
+                Value{m.num_pieces(), m.num_kings()}
+        {}
 
         // predicates
 

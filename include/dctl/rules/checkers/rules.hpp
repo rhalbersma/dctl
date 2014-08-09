@@ -13,7 +13,8 @@ struct Rules
         static constexpr auto is_jump_precedence = false;       // 1.20
         static constexpr auto is_long_ranged_king = false;      // 1.17
 
-        using value_type = successor::Value;
+        template<class Move>
+        using value_type = successor::Value<Move>;
 
         // draw
         static constexpr auto max_repetitions = 3;              // 1.32.1

@@ -11,7 +11,8 @@ struct Rules
         static constexpr auto is_jump_precedence = false;
         static constexpr auto is_long_ranged_king = true;
 
-        using value_type = successor::Value;
+        template<class Move>
+        using value_type = successor::Value<Move>;
 
         // optional
         static constexpr auto initial_gap = 4;

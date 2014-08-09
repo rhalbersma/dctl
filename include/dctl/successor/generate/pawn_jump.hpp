@@ -156,8 +156,7 @@ private:
         {
                 tracker_.visit(*jumper);
                 if (!find_next(jumper))
-                        //add(jumper);
-                        precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
+                        add(jumper);
                 tracker_.leave();
         }
 
@@ -348,25 +347,7 @@ private:
         template<class Iterator>
         void do_add(Iterator dest) const
         {
-                // tag dispatching on ambiguity of pawn jumps
-                ambiguity_dispatch(dest, is_unambiguous_pawn_jump_t<Rules>{});
-        }
-
-        // pawn jumps that are always unambiguous
-        template<class Iterator>
-        void ambiguity_dispatch(Iterator dest, std::true_type) const
-        {
                 tracker_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
-        }
-
-        // pawn jumps that are potentially ambiguous
-        template<class Iterator>
-        void ambiguity_dispatch(Iterator dest, std::false_type) const
-        {
-                auto const check_duplicate = is_remove_duplicates_v<Rules> && tracker_.is_potential_duplicate(moves_);
-                tracker_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
-                if (check_duplicate && util::is_duplicate_back(moves_))
-                        moves_.pop_back();
         }
 
         template<int Direction>
