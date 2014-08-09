@@ -24,13 +24,6 @@ bool detect_if(InputIterator first, InputIterator last, UnaryPredicate pred)
 }
 
 // O(N) complexity
-template<class BidirectionalSequenceContainer>
-bool is_duplicate_back(BidirectionalSequenceContainer const& c)
-{
-        return util::detect(begin(c), std::prev(end(c)), c.back());
-}
-
-// O(N) complexity
 template
 <
         class InputIterator, class T, class UnaryPredicate,
