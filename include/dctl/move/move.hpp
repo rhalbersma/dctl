@@ -12,7 +12,7 @@ struct Move
 public:
         using board_type = Board;
         using rules_type = Rules;
-        using Set = typename Board::set_type;
+        using Set = set_type_t<Board>;
 
         // constructors
 
@@ -124,7 +124,17 @@ public:
 
         constexpr auto is_reversible() const noexcept
         {
-                return is_with_king() || is_promotion() || is_jump();
+                return is_with_king() && !is_jump();
+        }
+
+        constexpr auto num_pieces() const
+        {
+                return captured_pieces_.size();
+        }
+
+        constexpr auto num_kings() const
+        {
+                return captured_kings_.size();
         }
 
         // predicates
@@ -133,8 +143,8 @@ public:
         operator==(Move const& lhs, Move const& rhs) noexcept
         {
                 return
-                        std::forward_as_tuple(lhs.from_, lhs.dest_, lhs.captured_pieces_) ==
-                        std::forward_as_tuple(rhs.from_, rhs.dest_, rhs.captured_pieces_)
+                        std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) ==
+                        std::tie(rhs.from_, rhs.dest_, rhs.captured_pieces_)
                 ;
         }
 
@@ -142,6 +152,15 @@ public:
         operator!=(Move const& lhs, Move const& rhs) noexcept
         {
                 return !(lhs == rhs);
+        }
+
+        friend constexpr auto
+        operator<(Move const& lhs, Move const& rhs) noexcept
+        {
+                return
+                        std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) <
+                        std::tie(rhs.from_, rhs.dest_, rhs.captured_pieces_)
+                ;
         }
 
 private:

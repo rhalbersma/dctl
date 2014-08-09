@@ -267,7 +267,7 @@ public:
 
         friend auto operator< (Set const& lhs, Set const& rhs) noexcept
         {
-                return lhs.do_lexicograhical_compare(rhs);
+                return lhs.do_lexicographical_compare(rhs);
         }
 
         friend auto operator>=(Set const& lhs, Set const& rhs) noexcept

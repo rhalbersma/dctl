@@ -1,12 +1,13 @@
 #pragma once
-#include <boost/operators.hpp>          // totally_ordered
+#include <boost/operators.hpp>  // totally_ordered
 
 namespace dctl {
 namespace czech {
 
+template<class Move>
 class Value
 :
-        boost::totally_ordered<Value> // < >= > <= == !=
+        boost::totally_ordered<Value<Move>>     // < >= > <= == !=
 {
 public:
         // constructors
@@ -18,10 +19,9 @@ public:
                 is_with_king_{b}
         {}
 
-        template<class U>
-        explicit constexpr Value(U const& u) noexcept
+        explicit constexpr Value(Move const& m) noexcept
         :
-                Value{u.is_with_king()}
+                Value{m.is_with_king()}
         {}
 
         // predicates

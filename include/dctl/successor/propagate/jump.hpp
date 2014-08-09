@@ -19,6 +19,7 @@
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
 #include <vector>
+#include <dctl/successor/propagate/filter.hpp>
 
 namespace dctl {
 namespace successor {
@@ -157,17 +158,7 @@ public:
         template<class Sequence>
         auto handle_precedence(Sequence& moves)
         {
-                current_ = Value{*this};
-
-                if (moves.empty())      goto START1;
-                if (best_ <  current_)  goto START0;
-                if (best_ == current_)  goto START2;
-
-                return false;
-
-                START0 : moves.clear();
-                START1 : best_ = current_;
-                START2 : return true;
+                return precedence_(moves, *this);
         }
 
         // queries
@@ -399,10 +390,7 @@ private:
         bool is_with_king_{};
         bool is_promotion_{};
 
-        using Value = typename Rules::value_type;
-
-        Value current_{};
-        Value best_{};
+        Precedence<Propagate<select::jump, Position>> precedence_{};
 };
 
 }       // namespace successor

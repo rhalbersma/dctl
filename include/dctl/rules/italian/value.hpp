@@ -7,25 +7,15 @@
 namespace dctl {
 namespace italian {
 
+template<class Move>
 class Value
 :
-        boost::totally_ordered< Value > // < >= > <= == !=
+        boost::totally_ordered<Value<Move>> // < >= > <= == !=
 {
 public:
         // constructors
 
         Value() = default;
-
-        explicit Value(std::tuple<int, int, bool, std::vector<int>>const & t)
-        :
-                Value{std::get<0>(t), std::get<1>(t), std::get<2>(t), std::get<3>(t)}
-        {}
-
-        template<class U>
-        explicit Value(U const& u)
-        :
-                Value{u.num_pieces(), u.num_kings(), u.is_with_king(), std::vector<int>(begin(u.ordered_kings()), end(u.ordered_kings()))}
-        {}
 
         Value(int np, int nk, bool wk, std::vector<int> ko)
         :
@@ -36,6 +26,11 @@ public:
         {
                 assert(invariant());
         }
+
+        explicit Value(Move const& m)
+        :
+                Value{m.num_pieces(), m.num_kings(), m.is_with_king(), std::vector<int>(begin(m.ordered_kings()), end(m.ordered_kings()))}
+        {}
 
         // predicates
 

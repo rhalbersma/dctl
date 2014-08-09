@@ -127,8 +127,7 @@ private:
         {
                 tracker_.visit(*jumper);
                 if (!find_next(jumper))
-                        //add(jumper);
-                        precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
+                        add(jumper);
                 tracker_.leave();
         }
 
@@ -311,46 +310,42 @@ private:
         template<class Iterator>
         void do_add(Iterator dest_sq) const
         {
-                auto const check_duplicate = is_remove_duplicates_v<Rules> && tracker_.is_potential_duplicate(moves_);
-
                 // tag dispatching on king halt after final capture
-                halt_dispatch(dest_sq, check_duplicate, std::pair<is_long_ranged_land_after_piece_t<Rules>, is_directly_halt_after_final_king_t<Rules>>{});
+                halt_dispatch(dest_sq, std::pair<is_long_ranged_land_after_piece_t<Rules>, is_directly_halt_after_final_king_t<Rules>>{});
         }
 
         // kings that halt immediately if the final capture is a king, and slide through otherwise
         template<class Iterator>
-        void halt_dispatch(Iterator dest_sq, bool check_duplicate, std::pair<std::true_type, std::true_type>) const
+        void halt_dispatch(Iterator dest_sq, std::pair<std::true_type, std::true_type>) const
         {
                 if (tracker_.is_king(*std::prev(dest_sq)))
-                        halt_dispatch(dest_sq, check_duplicate, std::pair<std::false_type, std::true_type>{});
+                        halt_dispatch(dest_sq, std::pair<std::false_type, std::true_type>{});
                 else
-                        halt_dispatch(dest_sq, check_duplicate, std::pair<std::true_type, std::false_type>{});
+                        halt_dispatch(dest_sq, std::pair<std::true_type, std::false_type>{});
         }
 
         // kings that halt immediately after the final capture
         template<class Iterator, class B>
-        void halt_dispatch(Iterator dest_sq, bool check_duplicate, std::pair<std::false_type, B>) const
+        void halt_dispatch(Iterator dest_sq, std::pair<std::false_type, B>) const
         {
-                add_jump(dest_sq, check_duplicate);
+                add_jump(dest_sq);
         }
 
         // kings that slide through after the final capture
         template<class Iterator>
-        void halt_dispatch(Iterator dest_sq, bool check_duplicate, std::pair<std::true_type, std::false_type>) const
+        void halt_dispatch(Iterator dest_sq, std::pair<std::true_type, std::false_type>) const
         {
                 // NOTE: tracker_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 assert(tracker_.path(*dest_sq));
-                do add_jump(dest_sq++, check_duplicate); while (tracker_.path(*dest_sq));
+                do add_jump(dest_sq++); while (tracker_.path(*dest_sq));
         }
 
         template<class Iterator>
-        void add_jump(Iterator dest_sq, bool check_duplicate) const
+        void add_jump(Iterator dest_sq) const
         {
                 // tag dispatching on promotion condition
                 promotion_dispatch(dest_sq, is_en_passant_promotion_t<Rules>{});
-                if (check_duplicate && util::is_duplicate_back(moves_))
-                        moves_.pop_back();
         }
 
         // pawns that promote apres-fini

@@ -1,35 +1,39 @@
 #pragma once
-#include <boost/operators.hpp>          // totally_ordered
-#include <cassert>                      // assert
-#include <limits>                       // numeric_limits
-#include <tuple>                        // tie
+#include <boost/operators.hpp>  // totally_ordered
+#include <cassert>              // assert
+#include <tuple>                // tie
 
 namespace dctl {
 namespace frisian {
 
+template<class Move>
 class Value
 :
-        boost::totally_ordered< Value > // < >= > <= == !=
+        boost::totally_ordered<Value<Move>>     // < >= > <= == !=
 {
 public:
         // constructors
 
-        Value() = default;
+        constexpr Value() = default;
 
-        template<class U>
-        explicit Value(U const& u)
+        constexpr Value(int np, int nk, bool wk) noexcept
         :
-                num_pieces_{u.num_pieces()},
-                num_kings_{u.num_kings()},
-                is_with_king_{u.is_with_king()}
+                num_pieces_{np},
+                num_kings_{nk},
+                is_with_king_{wk}
         {
                 assert(invariant());
         }
 
+        explicit constexpr Value(Move const& m) noexcept
+        :
+                Value{m.num_pieces(), m.num_kings(), m.is_with_king()}
+        {}
+
         // predicates
 
         // operator!= provided by boost::totally_ordered
-        friend auto
+        friend /* constexpr */ auto
         operator==(Value const& lhs, Value const& rhs) noexcept
         {
                 // delegate to std::tuple::operator==
@@ -40,7 +44,7 @@ public:
         }
 
         // operator>=, operator>, operator<= provided by boost::totally_ordered
-        friend auto
+        friend /* constexpr */ auto
         operator<(Value const& lhs, Value const& rhs) noexcept
         {
                 auto const delta_kings  = lhs.num_kings_  - rhs.num_kings_ ;
@@ -64,7 +68,7 @@ public:
 private:
         // contracts
 
-        bool invariant() const
+        constexpr bool invariant() const
         {
                 return 0 <= num_kings_ && num_kings_ <= num_pieces_;
         }
