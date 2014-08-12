@@ -371,7 +371,7 @@ private:
 
         auto invariant() const
         {
-                return set_includes(initial_targets_, remaining_targets_);
+                return includes(initial_targets_, remaining_targets_);
         }
 
         // representation
