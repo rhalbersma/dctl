@@ -37,7 +37,7 @@ public:
         template<class Move, class Index>
         void make(Move const& m, Index& hash)
         {
-                using Zobrist = random::PiecePlacement<Board::set_type::N>;
+                using Zobrist = random::PiecePlacement<Board::set_type::max_size()>;
                 pieces_[m.active_color()].reset(m.from());
                 pieces_[m.active_color()].set(m.dest());
                 hash ^= Zobrist::pieces[m.active_color()][static_cast<std::size_t>(m.from())];
@@ -105,9 +105,9 @@ private:
         {
                 auto constexpr squares = board::Squares<Board>::mask();
                 return
-                         set_includes(squares, pieces()) &&
-                         set_includes(pieces(), kings()) &&
-                        !set_intersects(pieces(Color::black), pieces(Color::white))
+                         includes(squares, pieces()) &&
+                         includes(pieces(), kings()) &&
+                        !intersects(pieces(Color::black), pieces(Color::white))
                 ;
         }
 
@@ -120,7 +120,7 @@ private:
 template<class Rules, class Board>
 auto init_hash(PiecePlacement<Rules, Board> const& m)
 {
-        using Zobrist = random::PiecePlacement<Board::set_type::N>;
+        using Zobrist = random::PiecePlacement<Board::set_type::max_size()>;
         return
                 zobrist::accumulate(m.pieces(Color::black), Zobrist::pieces[Color::black]) ^
                 zobrist::accumulate(m.pieces(Color::white), Zobrist::pieces[Color::white]) ^

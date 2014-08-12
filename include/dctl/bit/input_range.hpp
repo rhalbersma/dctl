@@ -23,7 +23,7 @@ public:
                 range_{range}
         {}
 
-//private:
+private:
         // gateway for InputRangeFacade to access private implementation
         friend class util::InputRangeCoreAccess;
 

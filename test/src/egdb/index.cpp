@@ -25,7 +25,7 @@ using U = int;
 
 using SetTypes = boost::mpl::vector
 <
-        bit::Set<U, std::less<>, uint64_t, 1>
+        bit::Set<64>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetRank, T, SetTypes)

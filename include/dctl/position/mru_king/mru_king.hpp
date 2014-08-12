@@ -8,7 +8,7 @@ class MostRecentlyUsedKing
 {
 public:
         enum { M = max_same_king_push_v<Rules> };
-        enum { N = Board::set_type::N };
+        enum { N = Board::set_type::max_size() };
 
         // constructors
 

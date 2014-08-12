@@ -24,10 +24,10 @@ using U = int;
 
 using SetTypes = boost::mpl::vector
 <
-        Set<U, std::less<>, uint64_t, 1>,
-        Set<U, std::less<>, uint64_t, 2>,
-        Set<U, std::less<>, uint64_t, 3>,
-        Set<U, std::less<>, uint64_t, 4>
+        Set< 64>,
+        Set<128>,
+        Set<192>,
+        Set<256>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructorZeroInitializes, T, SetTypes)
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, SetTypes)
         std::tie(min, max) = std::minmax_element(begin(b), end(b));
 
         BOOST_CHECK(   0 <=  *begin(b) &&  *begin(b) == *min        );
-        BOOST_CHECK(*max == *rbegin(b) && *rbegin(b) <  b.max_size());
+        BOOST_CHECK(*max == *rbegin(b) && *rbegin(b) <  static_cast<int>(b.max_size()));
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsSorted, T, SetTypes)

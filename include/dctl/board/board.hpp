@@ -44,12 +44,12 @@ public:
         using external_grid = grid::Grid<Dimensions, 0>;
 
 private:
-        using Block = uint64_t;
+        using Block = uintptr_t;
         static constexpr auto Nb = (internal_grid::size - 1) / std::numeric_limits<Block>::digits + 1;
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
-        using set_type = bit::Set<int, std::less<>, Block, Nb>;
+        using set_type = bit::Set<N>;
 
         static constexpr auto size() noexcept
         {

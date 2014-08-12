@@ -44,7 +44,7 @@ public:
         constexpr ConstIterator(Block const* b, U const& value)
         :
                 block_{b},
-                index_{value}
+                index_{static_cast<int>(value)}
         {
                 assert(b != nullptr);
                 assert(value == N);
