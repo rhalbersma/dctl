@@ -4,56 +4,20 @@
 namespace dctl {
 namespace bit {
 
-template<class Set>
-auto set_none_of(Set const& s) noexcept
+template<class Set, class Size>
+Set transform_plus_n(Set const& s, Size n) noexcept
 {
-        return s.none();
+        return s << n;
 }
 
-template<class Set>
-auto set_any_of(Set const& s) noexcept
+template<class Set, class Size>
+Set transform_minus_n(Set const& s, Size n) noexcept
 {
-        return s.any();
-}
-
-template<class Set>
-auto set_all_of(Set const& s) noexcept
-{
-        return s.all();
-}
-
-template<class Set>
-auto set_equal(Set const& lhs, Set const& rhs) noexcept
-{
-        return lhs == rhs;
-}
-
-template<class Set>
-auto set_lexicographical_compare(Set const& lhs, Set const& rhs) noexcept
-{
-        return lhs < rhs;
-}
-
-template<class Set>
-auto set_includes(Set const& lhs, Set const& rhs) noexcept
-{
-        return lhs.includes(rhs);
-}
-
-template<class Set>
-auto set_intersects(Set const& lhs, Set const& rhs) noexcept
-{
-        return lhs.intersects(rhs);
-}
-
-template<class Set>
-auto set_count(Set const& s) noexcept
-{
-        return s.count();
+        return s >> n;
 }
 
 template<class Set, class Pred>
-auto set_count_until(Set const& s, Pred pred) noexcept
+auto count_until(Set const& s, Pred pred) noexcept
 {
         return s.count_until(pred);
 }
@@ -61,7 +25,7 @@ auto set_count_until(Set const& s, Pred pred) noexcept
 template<class Set>
 auto set_single(Set const& s) noexcept
 {
-        return set_count_until(s, [](auto sum) {
+        return count_until(s, [](auto sum) {
                 return sum > 1;
         }) == 1;
 }
@@ -69,7 +33,7 @@ auto set_single(Set const& s) noexcept
 template<class Set>
 auto set_double(Set const& s) noexcept
 {
-        return set_count_until(s, [](auto sum) {
+        return count_until(s, [](auto sum) {
                 return sum > 2;
         }) == 2;
 }
@@ -77,69 +41,75 @@ auto set_double(Set const& s) noexcept
 template<class Set>
 auto set_multiple(Set const& s) noexcept
 {
-        return set_count_until(s, [](auto sum) {
+        return count_until(s, [](auto sum) {
                 return sum > 2;
         }) > 2;
 }
 
 template<class Set>
-auto set_min_element(Set const& s) noexcept
-{
-        return s.begin();
-}
-
-template<class Set>
-auto set_max_element(Set const& s) noexcept
-{
-        return s.rbegin().base();
-}
-
-template<class Set>
-auto set_minmax_element(Set const& s) noexcept
-{
-        return std::make_pair(set_min_element(s), set_max_element(s));
-}
-
-template<class Set>
-constexpr auto set_complement(Set const& lhs) noexcept
+constexpr Set set_complement(Set const& lhs) noexcept
 {
         return ~lhs;
 }
 
 template<class Set>
-constexpr auto set_intersection(Set const& lhs, Set const& rhs) noexcept
+bool intersects(Set const& lhs, Set const& rhs) noexcept
 {
-        return lhs & rhs;
+        return lhs.intersects(rhs);
 }
 
 template<class Set>
-constexpr auto set_union(Set const& lhs, Set const& rhs) noexcept
+bool includes(Set const& lhs, Set const& rhs) noexcept
+{
+        return rhs.is_subset_of(lhs);
+}
+
+template<class Set>
+constexpr Set set_union(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs | rhs;
 }
 
 template<class Set>
-constexpr auto set_symmetric_difference(Set const& lhs, Set const& rhs) noexcept
+constexpr Set set_intersection(Set const& lhs, Set const& rhs) noexcept
+{
+        return lhs & rhs;
+}
+
+template<class Set>
+constexpr Set set_difference(Set const& lhs, Set const& rhs) noexcept
+{
+        return lhs - rhs;
+}
+
+template<class Set>
+constexpr Set set_symmetric_difference(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs ^ rhs;
 }
 
 template<class Set>
-constexpr auto set_difference(Set const& lhs, Set const& rhs) noexcept
+auto min_element(Set const& s) noexcept
 {
-        return lhs & ~rhs;
+        return s.begin();
 }
 
-template<class Set, class Size>
-auto set_transform_plus(Set const& s, Size n) noexcept
+template<class Set>
+auto max_element(Set const& s) noexcept
 {
-        return s << n;
+        return s.rbegin().base();
 }
 
-template<class Set, class Size>
-auto set_transform_minus(Set const& s, Size n) noexcept
+template<class Set>
+auto minmax_element(Set const& s) noexcept
 {
-        return s >> n;
+        return std::make_pair(set_min_element(s), set_max_element(s));
+}
+
+template<class Set>
+bool colexicographical_compare(Set const& lhs, Set const& rhs) noexcept
+{
+        return lhs < rhs;
 }
 
 }       // namespace bit

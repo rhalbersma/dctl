@@ -1,23 +1,19 @@
-#include <cstdint>                              // uint64_t
-#include <functional>
+#include <dctl/bit.hpp>                         // Set, set_intersection, set_union, set_symmetric_difference, set_difference
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <dctl/bit.hpp>                         // Set, set_intersection, set_union, set_symmetric_difference, set_difference
 
 namespace dctl {
 namespace bit {
 
 BOOST_AUTO_TEST_SUITE(BitAlgorithm)
 
-using U = int;
-
 using SetTypes = boost::mpl::vector
 <
-        Set<U, std::less<>, uint64_t, 1>,
-        Set<U, std::less<>, uint64_t, 2>,
-        Set<U, std::less<>, uint64_t, 3>,
-        Set<U, std::less<>, uint64_t, 4>
+        Set< 64>,
+        Set<128>,
+        Set<192>,
+        Set<256>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetEmpty, T, SetTypes)
@@ -92,8 +88,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetIntersection, T, SetTypes)
         constexpr auto i_ba = set_intersection(b, a);
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(i_ab), end(i_ab), begin(i_ba), end(i_ba));
 
-        BOOST_CHECK(set_includes(a, i_ab));
-        BOOST_CHECK(set_includes(b, i_ab));
+        BOOST_CHECK(includes(a, i_ab));
+        BOOST_CHECK(includes(b, i_ab));
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetUnion, T, SetTypes)
@@ -105,8 +101,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetUnion, T, SetTypes)
         constexpr auto u_ba = set_union(b, a);
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(u_ab), end(u_ab), begin(u_ba), end(u_ba));
 
-        BOOST_CHECK(set_includes(u_ab, a));
-        BOOST_CHECK(set_includes(u_ab, b));
+        BOOST_CHECK(includes(u_ab, a));
+        BOOST_CHECK(includes(u_ab, b));
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetSymmetricDifference, T, SetTypes)
@@ -133,10 +129,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetDifference, T, SetTypes)
         constexpr auto d_ab = set_difference(a, b);
         constexpr auto d_ba = set_difference(b, a);
 
-        BOOST_CHECK( set_includes(a, d_ab));
-        BOOST_CHECK(!set_includes(a, d_ba));
-        BOOST_CHECK( set_includes(b, d_ba));
-        BOOST_CHECK(!set_includes(b, d_ab));
+        BOOST_CHECK( includes(a, d_ab));
+        BOOST_CHECK(!includes(a, d_ba));
+        BOOST_CHECK( includes(b, d_ba));
+        BOOST_CHECK(!includes(b, d_ab));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

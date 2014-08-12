@@ -23,16 +23,14 @@ public:
         :
                 block_{b},
                 index_{value}
-        {
-                static_assert(std::is_convertible<U, int>::value, "");
-        }
+        {}
 
         // modifiers
 
         // references cannot be re-assigned
         ConstReference& operator=(ConstReference const&) = delete;
 
-        // const references cannot be assigned to
+        // const references cannot be assigned through
         template<class U>
         ConstReference& operator=(U const&) = delete;
 
@@ -45,7 +43,6 @@ public:
 
         /* implicit */ constexpr operator T() const noexcept
         {
-                static_assert(std::is_convertible<int, T>::value, "");
                 return T{index_};
         }
 

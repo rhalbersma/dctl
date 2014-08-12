@@ -81,6 +81,11 @@ struct BaseSet<Key, Compare, Block, 1>
                 data_ ^= other.data_;
         }
 
+        constexpr auto do_minus(BaseSet const& other) noexcept
+        {
+                data_ &= ~other.data_;
+        }
+
         constexpr auto do_left_shift(std::size_t n)
         {
                 assert(n < N);
@@ -128,14 +133,14 @@ struct BaseSet<Key, Compare, Block, 1>
                 return data_ == other.data_;
         }
 
-        constexpr auto do_lexicographical_compare(BaseSet const& other) const noexcept
+        constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
         {
                 return Compare{}(data_, other.data_);
         }
 
-        constexpr auto do_includes(BaseSet const& other) const noexcept
+        constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
         {
-                return (~data_ & other.data_) == Block{0};
+                return (data_ & ~other.data_) == Block{0};
         }
 
         constexpr auto do_intersects(BaseSet const& other) const noexcept

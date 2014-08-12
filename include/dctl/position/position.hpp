@@ -218,8 +218,8 @@ private:
 
                 // capture all kings or all pawns
                 auto const deactivate =
-                        set_includes(m.captured_kings(),  kings(m.active_color())) ||
-                        set_includes(m.captured_pieces(), pawns(m.active_color()))
+                        includes(m.captured_kings(),  kings(m.active_color())) ||
+                        includes(m.captured_pieces(), pawns(m.active_color()))
                 ;
 
                 // capture the most recently used king

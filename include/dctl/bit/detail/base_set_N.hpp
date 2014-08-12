@@ -91,6 +91,12 @@ struct BaseSet
                         data_[i] ^= other.data_[i];
         }
 
+        constexpr auto do_minus(BaseSet const& other) noexcept
+        {
+                for (auto i = 0; i < Nb; ++i)
+                        data_[i] &= ~other.data_[i];
+        }
+
         void do_left_shift(std::size_t n)
         {
                 using std::begin; using std::end;
@@ -220,24 +226,24 @@ struct BaseSet
                 return std::equal(cbegin(data_), cend(data_), cbegin(other.data_));
         }
 
-        auto do_lexicographical_compare(BaseSet const& other) const noexcept
+        auto do_colexicographical_compare(BaseSet const& other) const noexcept
         {
                 using namespace cpp14;
                 return std::lexicographical_compare(
-                        cbegin(data_), cend(data_),
-                        cbegin(other.data_), cend(other.data_),
+                        crbegin(      data_), crend(      data_),
+                        crbegin(other.data_), crend(other.data_),
                         Compare{}
                 );
         }
 
-        auto do_includes(BaseSet const& other) const noexcept
+        auto do_is_subset_of(BaseSet const& other) const noexcept
         {
                 using namespace cpp14;
                 return std::none_of(
                        boost::make_zip_iterator(boost::make_tuple(cbegin(data_), cbegin(other.data_))),
                        boost::make_zip_iterator(boost::make_tuple(cend(data_), cend(other.data_))),
                        [](auto const& t) {
-                       return (~t.template get<0>() & t.template get<1>()) != Block{0};
+                       return (t.template get<0>() & ~t.template get<1>()) != Block{0};
                 });
         }
 

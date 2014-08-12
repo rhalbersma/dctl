@@ -13,7 +13,7 @@ template
 <
         int BoardSize = 64,
         int MaxPieces = 32,
-        class Range = bit::Set<int, std::less<>, uint64_t, (BoardSize - 1) / 64 + 1>,
+        class Range = bit::Set<BoardSize>,
         class Index = std::ptrdiff_t
 >
 class BinomialTable
