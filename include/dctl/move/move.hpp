@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/bit.hpp>                 // includes
 #include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
 #include <cassert>                      // assert
 #include <tuple>                        // forward_as_tuple
@@ -169,7 +168,7 @@ private:
         bool invariant() const
         {
                 return
-                        includes(captured_pieces_, captured_kings_) &&
+                        captured_kings_.is_subset_of(captured_pieces_) &&
                         !(is_with_king_ && is_promotion_)
                 ;
         }

@@ -63,28 +63,28 @@ public:
 
         friend constexpr auto operator+(Angle const& lhs, Angle const& rhs) noexcept
         {
-                auto nrv = lhs;
+                auto nrv(lhs);
                 nrv += rhs;
                 return nrv;
         }
 
         friend constexpr auto operator-(Angle const& lhs, Angle const& rhs) noexcept
         {
-                auto nrv = lhs;
+                auto nrv(lhs);
                 nrv -= rhs;
                 return nrv;
         }
 
         friend constexpr auto operator*(Angle const& a, int n) noexcept
         {
-                auto nrv = a;
+                auto nrv(a);
                 nrv *= n;
                 return nrv;
         }
 
         friend constexpr auto operator*(int n, Angle const& a) noexcept
         {
-                auto nrv = a;
+                auto nrv(a);
                 nrv *= n;
                 return nrv;
         }
@@ -92,7 +92,7 @@ public:
         friend constexpr auto operator/(Angle const& a, int n)
         {
                 assert(n != 0);
-                auto nrv = a;
+                auto nrv(a);
                 nrv /= n;
                 return nrv;
         }

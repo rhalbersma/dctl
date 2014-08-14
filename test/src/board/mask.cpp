@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
                         return std::all_of(alpha, omega, [=](auto j){
-                                return i == j ? true : !intersects(Column<T>::mask(Color::white, i), Column<T>::mask(Color::white, j));
+                                return i == j ? true : disjoint(Column<T>::mask(Color::white, i), Column<T>::mask(Color::white, j));
                         });
                 })
         );
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
                         return std::all_of(alpha, omega, [=](auto j){
-                                return i == j ? true : !intersects(Row<T>::mask(Color::white, i), Row<T>::mask(Color::white, j));
+                                return i == j ? true : disjoint(Row<T>::mask(Color::white, i), Row<T>::mask(Color::white, j));
                         });
                 })
         );
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSeq
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
                         return std::all_of(alpha, omega, [=](auto j){
-                                return i == j ? true : !intersects(JumpGroup<T>::mask(i), JumpGroup<T>::mask(j));
+                                return i == j ? true : disjoint(JumpGroup<T>::mask(i), JumpGroup<T>::mask(j));
                         });
                 })
         );

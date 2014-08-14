@@ -105,9 +105,9 @@ private:
         {
                 auto constexpr squares = board::Squares<Board>::mask();
                 return
-                         includes(squares, pieces()) &&
-                         includes(pieces(), kings()) &&
-                        !intersects(pieces(Color::black), pieces(Color::white))
+                         kings().is_subset_of(pieces()) &&
+                         pieces().is_subset_of(squares) &&
+                         disjoint(pieces(Color::black), pieces(Color::white))
                 ;
         }
 

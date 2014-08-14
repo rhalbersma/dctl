@@ -53,18 +53,6 @@ constexpr Set set_complement(Set const& lhs) noexcept
 }
 
 template<class Set>
-bool intersects(Set const& lhs, Set const& rhs) noexcept
-{
-        return lhs.intersects(rhs);
-}
-
-template<class Set>
-bool includes(Set const& lhs, Set const& rhs) noexcept
-{
-        return rhs.is_subset_of(lhs);
-}
-
-template<class Set>
 constexpr Set set_union(Set const& lhs, Set const& rhs) noexcept
 {
         return lhs | rhs;
