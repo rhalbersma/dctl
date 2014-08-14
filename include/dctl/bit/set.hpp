@@ -80,12 +80,12 @@ public:
                 return *this;
         }
 
-        auto& data()
+        constexpr auto& data()
         {
                 return Base::data();
         }
 
-        auto const& data() const
+        constexpr auto const& data() const
         {
                 return Base::data();
         }
@@ -261,32 +261,32 @@ public:
 
         // relational operators
 
-        friend auto operator==(Set const& lhs, Set const& rhs) noexcept
+        friend constexpr auto operator==(Set const& lhs, Set const& rhs) noexcept
         {
                 return lhs.do_equal(rhs);
         }
 
-        friend auto operator!=(Set const& lhs, Set const& rhs) noexcept
+        friend constexpr auto operator!=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
 
-        friend auto operator< (Set const& lhs, Set const& rhs) noexcept
+        friend constexpr auto operator< (Set const& lhs, Set const& rhs) noexcept
         {
                 return lhs.do_colexicographical_compare(rhs);
         }
 
-        friend auto operator>=(Set const& lhs, Set const& rhs) noexcept
+        friend constexpr auto operator>=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(lhs < rhs);
         }
 
-        friend auto operator> (Set const& lhs, Set const& rhs) noexcept
+        friend constexpr auto operator> (Set const& lhs, Set const& rhs) noexcept
         {
                 return rhs < lhs;
         }
 
-        friend auto operator<=(Set const& lhs, Set const& rhs) noexcept
+        friend constexpr auto operator<=(Set const& lhs, Set const& rhs) noexcept
         {
                 return !(rhs < lhs);
         }
@@ -308,12 +308,6 @@ public:
                 return 0 <= n && n < static_cast<int>(N) && is_mask(n);
         }
 
-        constexpr auto& reset(key_type n)
-        {
-                block_ref(n) &= ~mask(n);
-                return *this;
-        }
-
         constexpr auto& set(key_type n, bool value = true)
         {
                 if (value)
@@ -323,17 +317,15 @@ public:
                 return *this;
         }
 
-        constexpr auto& flip(key_type n)
+        constexpr auto& reset(key_type n)
         {
-                block_ref(n) ^= mask(n);
+                block_ref(n) &= ~mask(n);
                 return *this;
         }
 
-        // bitwise operations
-
-        constexpr auto& reset() noexcept
+        constexpr auto& flip(key_type n)
         {
-                this->do_reset();
+                block_ref(n) ^= mask(n);
                 return *this;
         }
 
@@ -343,122 +335,152 @@ public:
                 return *this;
         }
 
+        constexpr auto& reset() noexcept
+        {
+                this->do_reset();
+                return *this;
+        }
+
         constexpr auto& flip() noexcept
         {
                 this->do_flip();
                 return *this;
         }
 
-        constexpr auto& operator&=(Set const& other) noexcept
+        constexpr auto& operator&=(Set const& rhs) noexcept
         {
-                this->do_and(other);
+                this->do_and(rhs);
                 return *this;
         }
 
-        constexpr auto& operator|=(Set const& other) noexcept
+        constexpr auto& operator|=(Set const& rhs) noexcept
         {
-                this->do_or(other);
+                this->do_or(rhs);
                 return *this;
         }
 
-        constexpr auto& operator^=(Set const& other) noexcept
+        constexpr auto& operator^=(Set const& rhs) noexcept
         {
-                this->do_xor(other);
+                this->do_xor(rhs);
                 return *this;
         }
 
-        constexpr auto& operator-=(Set const& other) noexcept
+        constexpr auto& operator-=(Set const& rhs) noexcept
         {
-                this->do_minus(other);
+                this->do_minus(rhs);
                 return *this;
         }
 
-        auto& operator<<=(std::size_t n)
+        auto& operator<<=(std::size_t pos)
         {
-                this->do_left_shift(n);
+                assert(pos < N);
+                this->do_left_shift(pos);
                 return *this;
         }
 
-        auto& operator>>=(std::size_t n)
+        auto& operator>>=(std::size_t pos)
         {
-                this->do_right_shift(n);
+                assert(pos < N);
+                this->do_right_shift(pos);
                 return *this;
         }
 
         friend constexpr auto operator~(Set const& lhs) noexcept
         {
-                auto nrv = lhs;
+                auto nrv(lhs);
                 nrv.flip();
                 return nrv;
         }
 
         friend constexpr auto operator&(Set const& lhs, Set const& rhs) noexcept
         {
-                auto nrv = lhs;
+                auto nrv(lhs);
                 nrv &= rhs;
                 return nrv;
         }
 
         friend constexpr auto operator|(Set const& lhs, Set const& rhs) noexcept
         {
-                auto nrv = lhs;
+                auto nrv(lhs);
                 nrv |= rhs;
                 return nrv;
         }
 
         friend constexpr auto operator^(Set const& lhs, Set const& rhs) noexcept
         {
-                auto nrv = lhs;
+                auto nrv(lhs);
                 nrv ^= rhs;
                 return nrv;
         }
 
         friend constexpr auto operator-(Set const& lhs, Set const& rhs) noexcept
         {
-                auto nrv = lhs;
+                auto nrv(lhs);
                 nrv -= rhs;
                 return nrv;
         }
 
-        friend auto operator<<(Set const& lhs, std::size_t n)
+        friend auto operator<<(Set const& lhs, std::size_t pos)
         {
-                auto nrv = lhs;
-                nrv <<= n;
+                assert(pos < N);
+                auto nrv(lhs);
+                nrv <<= pos;
                 return nrv;
         }
 
-        friend auto operator>>(Set const& lhs, std::size_t n)
+        friend auto operator>>(Set const& lhs, std::size_t pos)
         {
-                auto nrv = lhs;
-                nrv >>= n;
+                assert(pos < N);
+                auto nrv(lhs);
+                nrv >>= pos;
                 return nrv;
         }
 
         // bitwise algorithms
 
-        auto is_subset_of(Set const& other) const noexcept
+        constexpr auto all() const noexcept
         {
-                return this->do_is_subset_of(other);
+                return this->do_all();
         }
 
-        auto intersects(Set const& other) const noexcept
-        {
-                return this->do_intersects(other);
-        }
-
-        auto none() const noexcept
-        {
-                return this->do_none();
-        }
-
-        auto any() const noexcept
+        constexpr auto any() const noexcept
         {
                 return this->do_any();
         }
 
-        auto all() const noexcept
+        constexpr auto none() const noexcept
         {
-                return this->do_all();
+                return this->do_none();
+        }
+
+        constexpr auto is_proper_subset_of(Set const& other) const noexcept
+        {
+                return this->do_is_proper_subset_of(other);
+        }
+
+        constexpr auto is_proper_superset_of(Set const& other) const noexcept
+        {
+                return other.is_proper_subset_of(*this);
+        }
+
+        constexpr auto is_subset_of(Set const& other) const noexcept
+        {
+                return this->do_is_subset_of(other);
+        }
+
+        constexpr auto is_superset_of(Set const& other) const noexcept
+        {
+                return other.is_subset_of(*this);
+        }
+
+        friend constexpr auto intersect(Set const& lhs, Set const& rhs) noexcept
+        {
+                return lhs.do_intersects(rhs);
+        }
+
+        friend constexpr auto disjoint(Set const& lhs, Set const& rhs) noexcept
+        {
+                return !intersect(lhs, rhs);
         }
 
         constexpr auto count() const noexcept

@@ -51,14 +51,14 @@ struct BaseSet<Key, Compare, Block, 1>
 
         // modifiers
 
-        constexpr auto do_reset() noexcept
-        {
-                data_ = Block{0};
-        }
-
         constexpr auto do_set() noexcept
         {
                 data_ = ~Block{0};
+        }
+
+        constexpr auto do_reset() noexcept
+        {
+                data_ = Block{0};
         }
 
         constexpr auto do_flip() noexcept
@@ -113,9 +113,9 @@ struct BaseSet<Key, Compare, Block, 1>
 
         // predicates
 
-        constexpr auto do_none() const noexcept
+        constexpr auto do_all() const noexcept
         {
-                return data_ == Block{0};
+                return data_ == ~Block{0};
         }
 
         constexpr auto do_any() const noexcept
@@ -123,9 +123,9 @@ struct BaseSet<Key, Compare, Block, 1>
                 return data_ != Block{0};
         }
 
-        constexpr auto do_all() const noexcept
+        constexpr auto do_none() const noexcept
         {
-                return data_ == ~Block{0};
+                return data_ == Block{0};
         }
 
         constexpr auto do_equal(BaseSet const& other) const noexcept
@@ -136,6 +136,13 @@ struct BaseSet<Key, Compare, Block, 1>
         constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
         {
                 return Compare{}(data_, other.data_);
+        }
+
+        constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
+        {
+                if (data_ & ~other.data_)
+                        return false;
+                return (~data_ & other.data_) != Block{0};
         }
 
         constexpr auto do_is_subset_of(BaseSet const& other) const noexcept

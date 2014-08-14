@@ -201,7 +201,7 @@ public:
         auto path() const
         {
                 auto constexpr jump_start = board::JumpStart<Board>::mask(Angle{Direction});
-                return set_intersection(path(), jump_start);
+                return path() & jump_start;
         }
 
         template<int Direction>
@@ -335,12 +335,12 @@ private:
 
         auto captured_kings(with::king) const
         {
-                return set_intersection(captured_pieces(), king_targets_);
+                return captured_pieces() & king_targets_;
         }
 
         auto captured_pieces() const
         {
-                return set_symmetric_difference(initial_targets_, remaining_targets_);
+                return initial_targets_ ^ remaining_targets_;
         }
 
         template<int Direction>
@@ -371,7 +371,7 @@ private:
 
         auto invariant() const
         {
-                return includes(initial_targets_, remaining_targets_);
+                return remaining_targets_.is_subset_of(initial_targets_);
         }
 
         // representation
