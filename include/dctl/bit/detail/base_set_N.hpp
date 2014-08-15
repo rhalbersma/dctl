@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
-#include <dctl/bit/detail/storage.hpp>          // storage
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
+#include <dctl/bit/detail/storage.hpp>          // storage
 #include <dctl/cpp14/iterator.hpp>              // rbegin, rend
 #include <dctl/utility/algorithm.hpp>           // accumulate_until
 #include <cassert>                              // assert
