@@ -26,8 +26,8 @@ public:
 
         PiecePlacement(Set black_pawns, Set black_kings, Set white_pawns, Set white_kings)
         :
-                pieces_{set_union(black_pawns, black_kings), set_union(white_pawns, white_kings)},
-                kings_{set_union(black_kings, white_kings)}
+                pieces_{black_pawns | black_kings, white_pawns | white_kings},
+                kings_{black_kings | white_kings}
         {
                 assert(invariant());
         }
@@ -64,12 +64,12 @@ public:
 
         auto kings(bool color) const
         {
-                return set_intersection(pieces_[color], kings_);
+                return pieces_[color] & kings_;
         }
 
         auto pawns(bool color) const
         {
-                return set_difference(pieces_[color], kings_);
+                return pieces_[color] - kings_;
         }
 
         auto pieces(bool color) const
@@ -84,18 +84,18 @@ public:
 
         auto pawns() const
         {
-                return set_complement(pieces(), kings_);
+                return pieces() - kings_;
         }
 
         auto pieces() const
         {
-                return set_union(pieces_[Color::black], pieces_[Color::white]);
+                return pieces_[Color::black] | pieces_[Color::white];
         }
 
         auto not_occupied() const
         {
                 auto constexpr squares = board::Squares<Board>::mask();
-                return set_symmetric_difference(squares, pieces());
+                return squares ^ pieces();
         }
 
 private:
