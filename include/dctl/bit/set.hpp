@@ -350,14 +350,14 @@ public:
                 return *this;
         }
 
-        auto& operator<<=(std::size_t n)
+        constexpr auto& operator<<=(std::size_t n)
         {
                 assert(n < N);
                 this->do_left_shift(n);
                 return *this;
         }
 
-        auto& operator>>=(std::size_t n)
+        constexpr auto& operator>>=(std::size_t n)
         {
                 assert(n < N);
                 this->do_right_shift(n);
@@ -399,19 +399,19 @@ public:
                 return nrv;
         }
 
-        friend auto operator<<(Set const& lhs, std::size_t pos)
+        friend constexpr auto operator<<(Set const& lhs, std::size_t n)
         {
-                assert(pos < N);
+                assert(n < N);
                 auto nrv(lhs);
-                nrv <<= pos;
+                nrv <<= n;
                 return nrv;
         }
 
-        friend auto operator>>(Set const& lhs, std::size_t pos)
+        friend constexpr auto operator>>(Set const& lhs, std::size_t n)
         {
-                assert(pos < N);
+                assert(n < N);
                 auto nrv(lhs);
-                nrv >>= pos;
+                nrv >>= n;
                 return nrv;
         }
 
