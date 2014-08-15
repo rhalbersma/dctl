@@ -128,16 +128,6 @@ struct BaseSet<Key, Compare, Block, 1>
                 return data_ == Block{0};
         }
 
-        constexpr auto do_equal(BaseSet const& other) const noexcept
-        {
-                return data_ == other.data_;
-        }
-
-        constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
-        {
-                return Compare{}(data_, other.data_);
-        }
-
         constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
         {
                 if (data_ & ~other.data_)
@@ -153,6 +143,16 @@ struct BaseSet<Key, Compare, Block, 1>
         constexpr auto do_intersects(BaseSet const& other) const noexcept
         {
                 return (data_ & other.data_) != Block{0};
+        }
+
+        constexpr auto do_equal(BaseSet const& other) const noexcept
+        {
+                return data_ == other.data_;
+        }
+
+        constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
+        {
+                return Compare{}(data_, other.data_);
         }
 
         // representation

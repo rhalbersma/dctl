@@ -95,78 +95,54 @@ struct BaseSet
                         data_[i] &= ~other.data_[i];
         }
 
-        void do_left_shift(std::size_t n)
+        constexpr auto do_left_shift(std::size_t n)
         {
-                using std::begin; using std::end;
-                using namespace cpp14;
-
                 assert(n < N);
-                if (n == 0)
-                        return;
+                if (n == 0) return;
 
                 auto const n_block = Storage<Block>::block_idx(n);
                 auto const L_shift = Storage<Block>::shift_idx(n);
 
                 if (L_shift == 0) {
-                        std::copy_backward(
-                                begin(data_), end(data_) - n_block,
-                                end(data_)
-                        );
+                        for (auto i = Nb - 1; i >= n_block; --i)
+                                data_[i] = data_[i - n_block];
                 } else {
                         auto const R_shift = digits - L_shift;
 
-                        std::transform(
-                                rbegin(data_) + n_block + 1, rend(data_),
-                                rbegin(data_) + n_block    ,
-                                rbegin(data_),
-                                [=](auto const& e1, auto const& e2) {
-                                return e1 >> R_shift | e2 << L_shift;
-                        });
-                        std::transform(
-                                begin(data_), begin(data_) + 1,
-                                begin(data_) + n_block,
-                                [=](auto const& e) {
-                                return e << L_shift;
-                        });
+                        for (auto i = Nb - 1; i > n_block; --i)
+                                data_[i] =
+                                        (data_[i - n_block    ] << L_shift) |
+                                        (data_[i - n_block - 1] >> R_shift)
+                                ;
+                        data_[n_block] = data_[0] << L_shift;
                 }
-                std::fill_n(begin(data_), n_block, Block{0});
+                for (auto i = n_block - 1; i >= 0; --i)
+                        data_[i] = Block{0};
         }
 
-        void do_right_shift(std::size_t n)
+        constexpr auto do_right_shift(std::size_t n)
         {
-                using std::begin; using std::end;
-                using namespace cpp14;
-
                 assert(n < N);
-                if (n == 0)
-                        return;
+                if (n == 0) return;
 
                 auto const n_block = Storage<Block>::block_idx(n);
                 auto const R_shift = Storage<Block>::shift_idx(n);
 
                 if (R_shift == 0) {
-                       std::copy(
-                                begin(data_) + n_block, end(data_),
-                                begin(data_)
-                       );
+                       for (auto i  = 0; i <= Nb - 1 - n_block; ++i)
+                               data_[i] = data_[i + n_block];
                 } else {
                         auto const L_shift = digits - R_shift;
 
-                        std::transform(
-                               begin(data_) + n_block + 1, end(data_),
-                               begin(data_) + n_block    ,
-                               begin(data_),
-                               [=](auto const& e1, auto const& e2) {
-                               return e1 << L_shift | e2 >> R_shift;
-                        });
-                        std::transform(
-                                rbegin(data_), rbegin(data_) + 1,
-                                rbegin(data_) + n_block,
-                                [=](auto const& e) {
-                                return e >> R_shift;
-                        });
+                        for (auto i = 0; i < Nb - 1 - n_block; ++i)
+                                data_[i] =
+                                        (data_[i + n_block    ] >> R_shift) |
+                                        (data_[i + n_block + 1] << L_shift)
+                                ;
+                        data_[Nb - 1 - n_block] = data_[Nb - 1] >> R_shift;
                 }
-                std::fill_n(rbegin(data_), n_block, Block{0});
+                for (auto i = Nb - n_block; i < Nb; ++i)
+                        data_[i] = Block{0};
         }
 
         // queries
@@ -218,25 +194,6 @@ struct BaseSet
                 return true;
         }
 
-        constexpr auto do_equal(BaseSet const& other) const noexcept
-        {
-                for (auto i = 0; i < Nb; ++i)
-                        if (data_[i] != other.data_[i])
-                                return false;
-                return true;
-        }
-
-        constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
-        {
-                for (auto i = Nb; i >= 0; --i) {
-                        if (data_[i] < other.data_[i])
-                                return true;
-                        if (data_[i] > other.data_[i])
-                                return false;
-                }
-                return false;
-        }
-
         constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
         {
                 auto proper = false;
@@ -262,6 +219,25 @@ struct BaseSet
                 for (auto i = 0; i < Nb; ++i)
                         if (data_[i] & other.data_[i])
                                 return true;
+                return false;
+        }
+
+        constexpr auto do_equal(BaseSet const& other) const noexcept
+        {
+                for (auto i = 0; i < Nb; ++i)
+                        if (data_[i] != other.data_[i])
+                                return false;
+                return true;
+        }
+
+        constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
+        {
+                for (auto i = Nb; i >= 0; --i) {
+                        if (data_[i] < other.data_[i])
+                                return true;
+                        if (data_[i] > other.data_[i])
+                                return false;
+                }
                 return false;
         }
 

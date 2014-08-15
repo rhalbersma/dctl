@@ -169,6 +169,17 @@ public:
                 return N;
         }
 
+        constexpr auto count() const noexcept
+        {
+                return this->do_count();
+        }
+
+        template<class UnaryPredicate>
+        auto count_until(UnaryPredicate pred) const
+        {
+                return this->do_count_until(pred);
+        }
+
         // modifiers
 
         constexpr std::pair<iterator, bool> insert(value_type const& value)
@@ -259,38 +270,6 @@ public:
                 return found ? const_iterator{this->block_ptr(key), key} : cend();
         }
 
-        // relational operators
-
-        friend constexpr auto operator==(Set const& lhs, Set const& rhs) noexcept
-        {
-                return lhs.do_equal(rhs);
-        }
-
-        friend constexpr auto operator!=(Set const& lhs, Set const& rhs) noexcept
-        {
-                return !(lhs == rhs);
-        }
-
-        friend constexpr auto operator< (Set const& lhs, Set const& rhs) noexcept
-        {
-                return lhs.do_colexicographical_compare(rhs);
-        }
-
-        friend constexpr auto operator>=(Set const& lhs, Set const& rhs) noexcept
-        {
-                return !(lhs < rhs);
-        }
-
-        friend constexpr auto operator> (Set const& lhs, Set const& rhs) noexcept
-        {
-                return rhs < lhs;
-        }
-
-        friend constexpr auto operator<=(Set const& lhs, Set const& rhs) noexcept
-        {
-                return !(rhs < lhs);
-        }
-
         // bit access
 
         constexpr reference operator[](key_type n)
@@ -371,17 +350,17 @@ public:
                 return *this;
         }
 
-        auto& operator<<=(std::size_t pos)
+        auto& operator<<=(std::size_t n)
         {
-                assert(pos < N);
-                this->do_left_shift(pos);
+                assert(n < N);
+                this->do_left_shift(n);
                 return *this;
         }
 
-        auto& operator>>=(std::size_t pos)
+        auto& operator>>=(std::size_t n)
         {
-                assert(pos < N);
-                this->do_right_shift(pos);
+                assert(n < N);
+                this->do_right_shift(n);
                 return *this;
         }
 
@@ -483,15 +462,36 @@ public:
                 return !intersect(lhs, rhs);
         }
 
-        constexpr auto count() const noexcept
+        // relational operators
+
+        friend constexpr auto operator==(Set const& lhs, Set const& rhs) noexcept
         {
-                return this->do_count();
+                return lhs.do_equal(rhs);
         }
 
-        template<class UnaryPredicate>
-        auto count_until(UnaryPredicate pred) const
+        friend constexpr auto operator!=(Set const& lhs, Set const& rhs) noexcept
         {
-                return this->do_count_until(pred);
+                return !(lhs == rhs);
+        }
+
+        friend constexpr auto operator< (Set const& lhs, Set const& rhs) noexcept
+        {
+                return lhs.do_colexicographical_compare(rhs);
+        }
+
+        friend constexpr auto operator>=(Set const& lhs, Set const& rhs) noexcept
+        {
+                return !(lhs < rhs);
+        }
+
+        friend constexpr auto operator> (Set const& lhs, Set const& rhs) noexcept
+        {
+                return rhs < lhs;
+        }
+
+        friend constexpr auto operator<=(Set const& lhs, Set const& rhs) noexcept
+        {
+                return !(rhs < lhs);
         }
 
 private:
