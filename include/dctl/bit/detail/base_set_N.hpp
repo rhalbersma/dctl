@@ -2,8 +2,6 @@
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
 #include <dctl/bit/detail/storage.hpp>          // storage
-#include <dctl/cpp14/iterator.hpp>              // rbegin, rend
-#include <dctl/utility/algorithm.hpp>           // accumulate_until
 #include <cassert>                              // assert
 #include <limits>                               // digits
 
@@ -20,8 +18,8 @@ struct BaseSet
                 "Block has to be of unsigned integer type."
         );
 
-        enum { digits = std::numeric_limits<Block>::digits };
-        enum { N = Nb * digits };
+        static constexpr auto digits = std::numeric_limits<Block>::digits;
+        static constexpr auto N = Nb * digits;
 
         constexpr auto& data()
         {
@@ -153,19 +151,6 @@ struct BaseSet
                 for (auto&& block : data_)
                         sum += bit::intrinsic::popcount(block);
                 return sum;
-        }
-
-        template<class UnaryPredicate>
-        auto do_count_until(UnaryPredicate pred) const
-        {
-                using namespace cpp14;
-                return util::accumulate_until(
-                        cbegin(data_), cend(data_), 0,
-                        [](auto const& sum, auto const& e) {
-                                return sum + bit::intrinsic::popcount(e);
-                        },
-                        pred
-                ).second;
         }
 
         // predicates

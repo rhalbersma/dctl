@@ -18,8 +18,8 @@ struct BaseSet<Key, Compare, Block, 1>
                 "Block has to be of unsigned integer type."
         );
 
-        enum { digits = std::numeric_limits<Block>::digits };
-        enum { N = 1 * digits };
+        static constexpr auto digits = std::numeric_limits<Block>::digits;
+        static constexpr auto N = 1 * digits;
 
         constexpr auto& data()
         {
@@ -103,12 +103,6 @@ struct BaseSet<Key, Compare, Block, 1>
         constexpr auto do_count() const noexcept
         {
                 return bit::intrinsic::popcount(data_);
-        }
-
-        template<class UnaryPredicate>
-        constexpr auto do_count_until(UnaryPredicate /* pred */) const
-        {
-                return do_count();
         }
 
         // predicates

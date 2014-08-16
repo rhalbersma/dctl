@@ -85,7 +85,7 @@ private:
                 }
                 ++block_;
 
-                for (auto i = detail::Storage<Block>::block_idx(index_) + 1; i < static_cast<int>(Nb); ++i) {
+                for (auto i = detail::Storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
                         if (auto const mask = *block_) {
                                 index_ = i * digits + bit::intrinsic::bsfnz(mask);
                                 return;
