@@ -11,6 +11,7 @@
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // iterator_traits
 #include <limits>                               // digits
+#include <stdexcept>
 #include <type_traits>                          // is_convertible
 #include <utility>                              // swap
 
@@ -174,12 +175,6 @@ public:
                 return this->do_count();
         }
 
-        template<class UnaryPredicate>
-        auto count_until(UnaryPredicate pred) const
-        {
-                return this->do_count_until(pred);
-        }
-
         // modifiers
 
         constexpr std::pair<iterator, bool> insert(value_type const& value)
@@ -272,19 +267,31 @@ public:
 
         // bit access
 
-        constexpr reference operator[](key_type n)
+        constexpr reference at(std::size_t n)
+        {
+                if (!(n < N)) throw std::out_of_range{"at"};
+                return (*this)[n];
+        }
+
+        constexpr auto at(std::size_t n) const
+        {
+                if (!(n < N)) throw std::out_of_range{"at"};
+                return (*this)[n];
+        }
+
+        constexpr reference operator[](std::size_t n)
         {
                 return { block_ref(n), n };
         }
 
-        constexpr auto operator[](key_type n) const
+        constexpr auto operator[](std::size_t n) const
         {
                 return is_mask(n);
         }
 
-        constexpr auto test(key_type n) const noexcept
+        constexpr auto test(key_type n) const
         {
-                return 0 <= n && n < static_cast<int>(N) && is_mask(n);
+                return (n < static_cast<int>(N)) && is_mask(n);
         }
 
         constexpr auto& set(key_type n, bool value = true)

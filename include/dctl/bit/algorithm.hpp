@@ -7,25 +7,19 @@ namespace bit {
 template<class Set>
 auto set_single(Set const& s) noexcept
 {
-        return s.count_until([](auto sum) {
-                return sum > 1;
-        }) == 1;
+        return s.count() == 1;
 }
 
 template<class Set>
 auto set_double(Set const& s) noexcept
 {
-        return s.count_until([](auto sum) {
-                return sum > 2;
-        }) == 2;
+        return s.count() == 2;
 }
 
 template<class Set>
 auto set_multiple(Set const& s) noexcept
 {
-        return s.count_until([](auto sum) {
-                return sum > 2;
-        }) > 2;
+        return s.count() >= 2;
 }
 
 template<class Set>
