@@ -11,15 +11,15 @@ struct Storage
         static constexpr auto N = std::numeric_limits<Block>::digits;
 
         template<class T>
-        static constexpr auto block_idx(T n) noexcept
+        static constexpr auto block_index(T n) noexcept
         {
-                return static_cast<int>(n / N);
+                return n / N;
         }
 
         template<class T>
-        static constexpr auto shift_idx(T n) noexcept
+        static constexpr auto bit_index(T n) noexcept
         {
-                return static_cast<int>(n % N);
+                return n % N;
         }
 };
 

@@ -9,8 +9,8 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class Key, class Compare, class Block>
-struct BaseSet<Key, Compare, Block, 1>
+template<class Block>
+struct BaseSet<Block, 1>
 {
         static_assert(
                 !std::numeric_limits<Block>::is_signed &&
@@ -21,14 +21,14 @@ struct BaseSet<Key, Compare, Block, 1>
         static constexpr auto digits = std::numeric_limits<Block>::digits;
         static constexpr auto N = 1 * digits;
 
-        constexpr auto& data()
+        constexpr auto* data()
         {
-                return data_;
+                return &data_;
         }
 
-        constexpr auto const& data() const
+        constexpr auto const* data() const
         {
-                return data_;
+                return &data_;
         }
 
         // constructors
@@ -37,15 +37,13 @@ struct BaseSet<Key, Compare, Block, 1>
 
         // element access
 
-        constexpr auto block_ptr(Key const& /* n */)
+        constexpr auto* block_ptr(std::size_t /* n */)
         {
-                // assert(0 <= n && n <= N);
                 return &data_;
         }
 
-        constexpr auto block_ptr(Key const& /* n */) const
+        constexpr auto const* block_ptr(std::size_t /* n */) const
         {
-                // assert(0 <= n && n <= N);
                 return &data_;
         }
 
@@ -146,7 +144,7 @@ struct BaseSet<Key, Compare, Block, 1>
 
         constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
         {
-                return Compare{}(data_, other.data_);
+                return data_ < other.data_;
         }
 
         // representation

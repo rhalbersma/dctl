@@ -4,7 +4,7 @@
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert
-#include <cstddef>                              // ptrdiff_t
+#include <cstddef>                              // ptrdiff_t, size_t
 #include <iterator>                             // bidirectional_iterator_tag
 #include <limits>                               // digits
 #include <tuple>                                // tie
@@ -42,11 +42,11 @@ public:
         constexpr ConstIterator(Block const* b, U const& value)
         :
                 block_{b},
-                index_{static_cast<int>(value)}
+                index_{static_cast<std::size_t>(value)}
         {
                 assert(b != nullptr);
                 assert(value == N);
-                static_assert(std::is_convertible<U, int>::value, "");
+                static_assert(std::is_convertible<U, std::size_t>::value, "");
         }
 
 private:
@@ -56,18 +56,18 @@ private:
         constexpr auto find_first()
         {
                 assert(block_ != nullptr);
-                return bit::intrinsic::ctz(*block_);
+                return static_cast<std::size_t>(bit::intrinsic::ctz(*block_));
         }
 
         // operator++() and operator++(int) provided by boost::iterator_facade
         constexpr auto increment()
         {
                 assert(block_ != nullptr);
-                assert(0 <= index_ && index_ < N);
-                if (N == ++index_)
+                assert(index_ < N);
+                if (++index_ == N)
                         return;
                 if (auto const mask = *block_ >> index_)
-                        index_ += bit::intrinsic::ctznz(mask);
+                        index_ += static_cast<std::size_t>(bit::intrinsic::ctznz(mask));
                 else
                         index_ = N;
                 assert(0 < index_ && index_ <= N);
@@ -81,10 +81,10 @@ private:
                 if (--index_ == 0)
                         return;
                 if (auto const mask = *block_ << (digits - 1 - index_))
-                        index_ -= bit::intrinsic::clznz(mask);
+                        index_ -= static_cast<std::size_t>(bit::intrinsic::clznz(mask));
                 else
                         index_ = 0;
-                assert(0 <= index_ && index_ < N);
+                assert(index_ < N);
         }
 
         // operator* provided by boost::iterator_facade
@@ -107,7 +107,7 @@ private:
         // representation
 
         Block const* block_{};
-        int index_{};
+        std::size_t index_{};
 };
 
 }       // namespace bit

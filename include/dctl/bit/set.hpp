@@ -11,7 +11,6 @@
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // iterator_traits
 #include <limits>                               // digits
-#include <stdexcept>
 #include <type_traits>                          // is_convertible
 #include <utility>                              // swap
 
@@ -32,12 +31,12 @@ template
 >
 class Set
 :
-        private detail::BaseSet<Key, Compare, uintptr_t, num_blocks<uintptr_t>(N)>
+        private detail::BaseSet<uintptr_t, num_blocks<uintptr_t>(N)>
 {
 public:
         using block_type = uintptr_t;
         static constexpr auto Nb = num_blocks<block_type>(N);
-        using Base = detail::BaseSet<Key, Compare, block_type, Nb>;
+        using Base = detail::BaseSet<block_type, Nb>;
 
         using key_type = Key;
         using value_type = Key;
@@ -81,12 +80,12 @@ public:
                 return *this;
         }
 
-        constexpr auto& data()
+        constexpr auto* data()
         {
                 return Base::data();
         }
 
-        constexpr auto const& data() const
+        constexpr auto const* data() const
         {
                 return Base::data();
         }
@@ -267,35 +266,25 @@ public:
 
         // bit access
 
-        constexpr reference at(std::size_t n)
-        {
-                if (!(n < N)) throw std::out_of_range{"at"};
-                return (*this)[n];
-        }
-
-        constexpr auto at(std::size_t n) const
-        {
-                if (!(n < N)) throw std::out_of_range{"at"};
-                return (*this)[n];
-        }
-
-        constexpr reference operator[](std::size_t n)
+        constexpr reference operator[](key_type n)
         {
                 return { block_ref(n), n };
         }
 
-        constexpr auto operator[](std::size_t n) const
+        constexpr auto operator[](key_type n) const
         {
                 return is_mask(n);
         }
 
-        constexpr auto test(key_type n) const
+        constexpr auto test(key_type i) const noexcept
         {
-                return (n < static_cast<int>(N)) && is_mask(n);
+                auto const n = static_cast<std::size_t>(i);
+                return 0 <= n && n < N && is_mask(n);
         }
 
-        constexpr auto& set(key_type n, bool value = true)
+        constexpr auto& set(key_type i, bool value = true)
         {
+                auto const n = static_cast<std::size_t>(i);
                 if (value)
                         block_ref(n) |= mask(n);
                 else
@@ -303,14 +292,16 @@ public:
                 return *this;
         }
 
-        constexpr auto& reset(key_type n)
+        constexpr auto& reset(key_type i)
         {
+                auto const n = static_cast<std::size_t>(i);
                 block_ref(n) &= ~mask(n);
                 return *this;
         }
 
-        constexpr auto& flip(key_type n)
+        constexpr auto& flip(key_type i)
         {
+                auto const n = static_cast<std::size_t>(i);
                 block_ref(n) ^= mask(n);
                 return *this;
         }
@@ -357,14 +348,14 @@ public:
                 return *this;
         }
 
-        constexpr auto& operator<<=(std::size_t n)
+        constexpr auto& operator<<=(size_type n)
         {
                 assert(n < N);
                 this->do_left_shift(n);
                 return *this;
         }
 
-        constexpr auto& operator>>=(std::size_t n)
+        constexpr auto& operator>>=(size_type n)
         {
                 assert(n < N);
                 this->do_right_shift(n);
@@ -406,7 +397,7 @@ public:
                 return nrv;
         }
 
-        friend constexpr auto operator<<(Set const& lhs, std::size_t n)
+        friend constexpr auto operator<<(Set const& lhs, size_type n)
         {
                 assert(n < N);
                 auto nrv(lhs);
@@ -414,7 +405,7 @@ public:
                 return nrv;
         }
 
-        friend constexpr auto operator>>(Set const& lhs, std::size_t n)
+        friend constexpr auto operator>>(Set const& lhs, size_type n)
         {
                 assert(n < N);
                 auto nrv(lhs);
@@ -502,22 +493,22 @@ public:
         }
 
 private:
-        constexpr auto& block_ref(key_type n)
+        constexpr auto& block_ref(std::size_t n)
         {
                 return *(this->block_ptr(n));
         }
 
-        constexpr auto const& block_ref(key_type n) const
+        constexpr auto const& block_ref(std::size_t n) const
         {
                 return *(this->block_ptr(n));
         }
 
-        static constexpr auto mask(key_type n)
+        static constexpr auto mask(std::size_t n)
         {
-                return block_type{1} << detail::Storage<block_type>::shift_idx(n);
+                return block_type{1} << detail::Storage<block_type>::bit_index(n);
         }
 
-        constexpr auto is_mask(key_type n) const
+        constexpr auto is_mask(std::size_t n) const
         {
                 return (block_ref(n) & mask(n)) != block_type{0};
         }
