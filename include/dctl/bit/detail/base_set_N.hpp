@@ -3,13 +3,14 @@
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
 #include <dctl/bit/detail/storage.hpp>          // storage
 #include <cassert>                              // assert
+#include <cstddef>                              // size_t
 #include <limits>                               // digits
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class Key, class Compare, class Block, int Nb>
+template<class Block, std::size_t Nb>
 struct BaseSet
 {
         static_assert(
@@ -21,14 +22,14 @@ struct BaseSet
         static constexpr auto digits = std::numeric_limits<Block>::digits;
         static constexpr auto N = Nb * digits;
 
-        constexpr auto& data()
+        constexpr auto* data()
         {
-                return data_[0];
+                return &data_;
         }
 
-        constexpr auto const& data() const
+        constexpr auto const* data() const
         {
-                return data_[0];
+                return &data_;
         }
 
         // constructors
@@ -37,16 +38,16 @@ struct BaseSet
 
         // element access
 
-        constexpr auto block_ptr(Key const& n)
+        constexpr auto* block_ptr(std::size_t n)
         {
-                assert(0 <= n && n <= N);
-                return &data_[0] + Storage<Block>::block_idx(n);
+                assert(n <= N);
+                return &data_[Storage<Block>::block_index(n)];
         }
 
-        constexpr auto block_ptr(Key const& n) const
+        constexpr auto const* block_ptr(std::size_t n) const
         {
-                assert(0 <= n && n <= N);
-                return &data_[0] + Storage<Block>::block_idx(n);
+                assert(n <= N);
+                return &data_[Storage<Block>::block_index(n)];
         }
 
         // modifiers
@@ -71,25 +72,25 @@ struct BaseSet
 
         constexpr auto do_and(BaseSet const& other) noexcept
         {
-                for (auto i = 0; i < Nb; ++i)
+                for (std::size_t i = 0; i < Nb; ++i)
                         data_[i] &= other.data_[i];
         }
 
         constexpr auto do_or(BaseSet const& other) noexcept
         {
-                for (auto i = 0; i < Nb; ++i)
+                for (std::size_t i = 0; i < Nb; ++i)
                         data_[i] |= other.data_[i];
         }
 
         constexpr auto do_xor(BaseSet const& other) noexcept
         {
-                for (auto i = 0; i < Nb; ++i)
+                for (std::size_t i = 0; i < Nb; ++i)
                         data_[i] ^= other.data_[i];
         }
 
         constexpr auto do_minus(BaseSet const& other) noexcept
         {
-                for (auto i = 0; i < Nb; ++i)
+                for (std::size_t i = 0; i < Nb; ++i)
                         data_[i] &= ~other.data_[i];
         }
 
@@ -98,8 +99,8 @@ struct BaseSet
                 assert(n < N);
                 if (n == 0) return;
 
-                auto const n_block = Storage<Block>::block_idx(n);
-                auto const L_shift = Storage<Block>::shift_idx(n);
+                auto const n_block = Storage<Block>::block_index(n);
+                auto const L_shift = Storage<Block>::bit_index(n);
 
                 if (L_shift == 0) {
                         for (auto i = Nb - 1; i >= n_block; --i)
@@ -114,7 +115,7 @@ struct BaseSet
                                 ;
                         data_[n_block] = data_[0] << L_shift;
                 }
-                for (auto i = n_block - 1; i >= 0; --i)
+                for (std::size_t i = 0; i < n_block; ++i)
                         data_[i] = Block{0};
         }
 
@@ -123,16 +124,16 @@ struct BaseSet
                 assert(n < N);
                 if (n == 0) return;
 
-                auto const n_block = Storage<Block>::block_idx(n);
-                auto const R_shift = Storage<Block>::shift_idx(n);
+                auto const n_block = Storage<Block>::block_index(n);
+                auto const R_shift = Storage<Block>::bit_index(n);
 
                 if (R_shift == 0) {
-                       for (auto i  = 0; i <= Nb - 1 - n_block; ++i)
+                       for (std::size_t i  = 0; i <= Nb - 1 - n_block; ++i)
                                data_[i] = data_[i + n_block];
                 } else {
                         auto const L_shift = digits - R_shift;
 
-                        for (auto i = 0; i < Nb - 1 - n_block; ++i)
+                        for (std::size_t i = 0; i < Nb - 1 - n_block; ++i)
                                 data_[i] =
                                         (data_[i + n_block    ] >> R_shift) |
                                         (data_[i + n_block + 1] << L_shift)
@@ -182,7 +183,7 @@ struct BaseSet
         constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
         {
                 auto proper = false;
-                for (auto i = 0; i < Nb; ++i) {
+                for (std::size_t i = 0; i < Nb; ++i) {
                         if ( data_[i] & ~other.data_[i])
                                 return false;
                         if (~data_[i] &  other.data_[i])
@@ -193,7 +194,7 @@ struct BaseSet
 
         constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
         {
-                for (auto i = 0; i < Nb; ++i)
+                for (std::size_t i = 0; i < Nb; ++i)
                         if (data_[i] & ~other.data_[i])
                                 return false;
                 return true;
@@ -201,7 +202,7 @@ struct BaseSet
 
         constexpr auto do_intersects(BaseSet const& other) const noexcept
         {
-                for (auto i = 0; i < Nb; ++i)
+                for (std::size_t i = 0; i < Nb; ++i)
                         if (data_[i] & other.data_[i])
                                 return true;
                 return false;
@@ -209,7 +210,7 @@ struct BaseSet
 
         constexpr auto do_equal(BaseSet const& other) const noexcept
         {
-                for (auto i = 0; i < Nb; ++i)
+                for (std::size_t i = 0; i < Nb; ++i)
                         if (data_[i] != other.data_[i])
                                 return false;
                 return true;
@@ -217,7 +218,7 @@ struct BaseSet
 
         constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
         {
-                for (auto i = Nb; i >= 0; --i) {
+                for (auto i = Nb; i < Nb; --i) {
                         if (data_[i] < other.data_[i])
                                 return true;
                         if (data_[i] > other.data_[i])

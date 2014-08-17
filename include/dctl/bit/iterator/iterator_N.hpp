@@ -13,7 +13,7 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, int Nb>
+template<class T, class Block, std::size_t Nb>
 class ConstIterator
 :
         public boost::iterator_facade
@@ -26,7 +26,7 @@ class ConstIterator
         >
 {
 private:
-        static constexpr auto digits = std::numeric_limits<Block>::digits;
+        static constexpr auto digits = static_cast<std::size_t>(std::numeric_limits<Block>::digits);
         static constexpr auto N = Nb * digits;
 
 public:
@@ -44,7 +44,7 @@ public:
         constexpr ConstIterator(Block const* b, U const& value)
         :
                 block_{b},
-                index_{static_cast<int>(value)}
+                index_{static_cast<std::size_t>(value)}
         {
                 assert(b != nullptr);
                 assert(value == N);
@@ -58,9 +58,9 @@ private:
         constexpr auto find_first()
         {
                 assert(block_ != nullptr);
-                for (auto i = 0; i < Nb; ++i) {
+                for (std::size_t i = 0; i < Nb; ++i) {
                         if (auto const mask = *block_)
-                                return i * digits + bit::intrinsic::bsfnz(mask);
+                                return i * digits + static_cast<std::size_t>(bit::intrinsic::bsfnz(mask));
                         ++block_;
                 }
                 return N;
@@ -76,18 +76,18 @@ private:
                         return;
                 }
 
-                auto const idx = detail::Storage<Block>::shift_idx(index_);
+                auto const idx = detail::Storage<Block>::bit_index(index_);
                 if (idx == 0)
                         ++block_;
                 if (auto const mask = *block_ >> idx) {
-                        index_ += bit::intrinsic::ctznz(mask);
+                        index_ += static_cast<std::size_t>(bit::intrinsic::ctznz(mask));
                         return;
                 }
                 ++block_;
 
-                for (auto i = detail::Storage<Block>::block_idx(index_) + 1; i < Nb; ++i) {
+                for (auto i = detail::Storage<Block>::block_index(index_) + 1; i < Nb; ++i) {
                         if (auto const mask = *block_) {
-                                index_ = i * digits + bit::intrinsic::bsfnz(mask);
+                                index_ = i * digits + static_cast<std::size_t>(bit::intrinsic::bsfnz(mask));
                                 return;
                         }
                         ++block_;
@@ -104,24 +104,24 @@ private:
                 if (--index_ == 0)
                         return;
 
-                auto const idx = detail::Storage<Block>::shift_idx(index_);
+                auto const idx = detail::Storage<Block>::bit_index(index_);
                 if (idx == digits - 1)
                         --block_;
                 if (auto const mask = *block_ << (digits - 1 - idx)) {
-                        index_ -= bit::intrinsic::clznz(mask);
+                        index_ -= static_cast<std::size_t>(bit::intrinsic::clznz(mask));
                         return;
                 }
                 --block_;
 
-                for (auto i = detail::Storage<Block>::block_idx(index_) - 1; i >= 0; --i) {
+                for (auto i = detail::Storage<Block>::block_index(index_) - 1; i >= 0; --i) {
                         if (auto const mask = *block_) {
-                                index_ = i * digits + bit::intrinsic::bsrnz(mask);
+                                index_ = i * digits + static_cast<std::size_t>(bit::intrinsic::bsrnz(mask));
                                 return;
                         }
                         --block_;
                 }
                 index_ = 0;
-                assert(0 <= index_ && index_ < N);
+                assert(index_ < N);
         }
 
         // operator* provided by boost::iterator_facade
@@ -144,7 +144,7 @@ private:
         // representation
 
         Block const* block_{};
-        int index_{};
+        std::size_t index_{};
 };
 
 }       // namespace bit
