@@ -2,12 +2,11 @@
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
 #include <cstddef>                              // size_t
-#include <type_traits>                          // is_convertible
 
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, std::size_t Nb>
+template<class Block, std::size_t Nb>
 class ConstReference
 {
 public:
@@ -16,35 +15,33 @@ public:
         // references cannot be left uninitialized
         ConstReference() = delete;
 
+        constexpr ConstReference(Block const& b, std::size_t n) noexcept
+        :
+                block_{b},
+                index_{n}
+        {}
+
+        // copying and assignment
+
         // references can be copied
         constexpr ConstReference(ConstReference const&) = default;
 
-        template<class U>
-        constexpr ConstReference(Block const& b, U const& value) noexcept
-        :
-                block_{b},
-                index_{value}
-        {}
-
-        // modifiers
-
-        // references cannot be re-assigned
+        // references cannot be assigned to
         ConstReference& operator=(ConstReference const&) = delete;
 
         // const references cannot be assigned through
-        template<class U>
-        ConstReference& operator=(U const&) = delete;
+        ConstReference& operator=(std::size_t) = delete;
 
-        // queries
+        // observers
 
-        constexpr ConstIterator<T, Block, Nb> operator&() const noexcept
+        constexpr ConstIterator<Block, Nb> operator&() const noexcept
         {
                 return { &block_, index_ };
         }
 
-        /* implicit */ constexpr operator T() const noexcept
+        /* implicit */ constexpr operator int() const noexcept
         {
-                return static_cast<T>(index_);
+                return static_cast<int>(index_);
         }
 
 private:

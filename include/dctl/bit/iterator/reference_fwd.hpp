@@ -4,7 +4,7 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, std::size_t Nb>
+template<class Block, std::size_t Nb>
 class ConstReference;
 
 }       // namespace bit

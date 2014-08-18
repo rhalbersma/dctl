@@ -5,7 +5,7 @@
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert
-#include <cstddef>                              // ptrdiff_t
+#include <cstddef>                              // ptrdiff_t, size_t
 #include <iterator>                             // bidirectional_iterator_tag
 #include <limits>                               // digits
 #include <tuple>                                // tie
@@ -13,15 +13,15 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, std::size_t Nb>
+template<class Block, std::size_t Nb>
 class ConstIterator
 :
         public boost::iterator_facade
         <
-                ConstIterator<T, Block, Nb>,
-                T const,
+                ConstIterator<Block, Nb>,
+                std::size_t const,
                 std::bidirectional_iterator_tag,
-                ConstReference<T, Block, Nb>,
+                ConstReference<Block, Nb>,
                 std::ptrdiff_t
         >
 {
@@ -40,15 +40,13 @@ public:
                 index_{find_first()}
         {}
 
-        template<class U>
-        constexpr ConstIterator(Block const* b, U const& value)
+        constexpr ConstIterator(Block const* b, std::size_t n)
         :
                 block_{b},
-                index_{static_cast<std::size_t>(value)}
+                index_{n}
         {
                 assert(b != nullptr);
-                assert(value == N);
-                static_assert(std::is_convertible<U, int>::value, "");
+                assert(n == N);
         }
 
 private:
@@ -125,7 +123,7 @@ private:
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr ConstReference<T, Block, Nb> dereference() const
+        constexpr ConstReference<Block, Nb> dereference() const
         {
                 assert(block_ != nullptr);
                 return { *block_, index_ };
