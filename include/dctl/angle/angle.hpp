@@ -49,6 +49,13 @@ public:
                 return *this;
         }
 
+        // observers
+
+        /* implicit */ constexpr operator int() const noexcept
+        {
+                return value_;
+        }
+
         // operators
 
         friend constexpr auto operator+(Angle const& a) noexcept
@@ -59,49 +66,6 @@ public:
         friend constexpr auto operator-(Angle const& a) noexcept
         {
                 return Angle{-a.value_};
-        }
-
-        friend constexpr auto operator+(Angle const& lhs, Angle const& rhs) noexcept
-        {
-                auto nrv(lhs);
-                nrv += rhs;
-                return nrv;
-        }
-
-        friend constexpr auto operator-(Angle const& lhs, Angle const& rhs) noexcept
-        {
-                auto nrv(lhs);
-                nrv -= rhs;
-                return nrv;
-        }
-
-        friend constexpr auto operator*(Angle const& a, int n) noexcept
-        {
-                auto nrv(a);
-                nrv *= n;
-                return nrv;
-        }
-
-        friend constexpr auto operator*(int n, Angle const& a) noexcept
-        {
-                auto nrv(a);
-                nrv *= n;
-                return nrv;
-        }
-
-        friend constexpr auto operator/(Angle const& a, int n)
-        {
-                assert(n != 0);
-                auto nrv(a);
-                nrv /= n;
-                return nrv;
-        }
-
-        // queries
-
-        /* implicit */ constexpr operator int() const noexcept
-        {
-                return value_;
         }
 
 private:
@@ -123,5 +87,46 @@ private:
 
         int value_{};
 };
+
+inline
+constexpr auto operator+(Angle const& lhs, Angle const& rhs) noexcept
+{
+        auto nrv(lhs);
+        nrv += rhs;
+        return nrv;
+}
+
+inline
+constexpr auto operator-(Angle const& lhs, Angle const& rhs) noexcept
+{
+        auto nrv(lhs);
+        nrv -= rhs;
+        return nrv;
+}
+
+inline
+constexpr auto operator*(Angle const& a, int n) noexcept
+{
+        auto nrv(a);
+        nrv *= n;
+        return nrv;
+}
+
+inline
+constexpr auto operator*(int n, Angle const& a) noexcept
+{
+        auto nrv(a);
+        nrv *= n;
+        return nrv;
+}
+
+inline
+constexpr auto operator/(Angle const& a, int n)
+{
+        assert(n != 0);
+        auto nrv(a);
+        nrv /= n;
+        return nrv;
+}
 
 }       // namespace dctl

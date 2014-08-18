@@ -44,9 +44,9 @@ public:
         using value_compare = Compare;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
-        using reference = ConstReference<Key, block_type, Nb>;
+        using reference = ConstReference<block_type, Nb>;
         using const_reference = reference;
-        using iterator = ConstIterator<Key, block_type, Nb>;
+        using iterator = ConstIterator<block_type, Nb>;
         using const_iterator = iterator;
         using reverse_iterator = std::reverse_iterator<iterator>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;

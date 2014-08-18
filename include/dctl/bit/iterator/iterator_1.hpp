@@ -12,15 +12,15 @@
 namespace dctl {
 namespace bit {
 
-template<class T, class Block>
-class ConstIterator<T, Block, 1>
+template<class Block>
+class ConstIterator<Block, 1>
 :
         public boost::iterator_facade
         <
-                ConstIterator<T, Block, 1>,
-                T const,
+                ConstIterator<Block, 1>,
+                std::size_t const,
                 std::bidirectional_iterator_tag,
-                ConstReference<T, Block, 1>,
+                ConstReference<Block, 1>,
                 std::ptrdiff_t
         >
 {
@@ -38,15 +38,14 @@ public:
                 index_{find_first()}
         {}
 
-        template<class U>
-        constexpr ConstIterator(Block const* b, U const& value)
+
+        constexpr ConstIterator(Block const* b, std::size_t n)
         :
                 block_{b},
-                index_{static_cast<std::size_t>(value)}
+                index_{n}
         {
                 assert(b != nullptr);
-                assert(value == N);
-                static_assert(std::is_convertible<U, std::size_t>::value, "");
+                assert(n == N);
         }
 
 private:
@@ -88,7 +87,7 @@ private:
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr ConstReference<T, Block, 1> dereference() const
+        constexpr ConstReference<Block, 1> dereference() const
         {
                 assert(block_ != nullptr);
                 return { *block_, index_ };
