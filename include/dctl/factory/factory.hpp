@@ -32,7 +32,7 @@ public:
                 return registry_.erase(id) == 1;
         }
 
-        // queries
+        // observers
 
         Ret create(Arg const& input) const
         {

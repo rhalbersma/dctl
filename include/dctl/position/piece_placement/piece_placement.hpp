@@ -60,7 +60,7 @@ public:
                 assert(invariant());
         }
 
-        // queries
+        // observers
 
         auto kings(bool color) const
         {

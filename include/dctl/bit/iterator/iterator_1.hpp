@@ -12,19 +12,19 @@
 namespace dctl {
 namespace bit {
 
-template<class Block>
-class ConstIterator<Block, 1>
+template<class UnsignedInteger>
+class ConstIterator<UnsignedInteger, 1>
 :
         public boost::iterator_facade
         <
-                ConstIterator<Block, 1>,
+                ConstIterator<UnsignedInteger, 1>,
                 std::size_t const,
                 std::bidirectional_iterator_tag,
-                ConstReference<Block, 1>,
+                ConstReference<UnsignedInteger, 1>,
                 std::ptrdiff_t
         >
 {
-        static constexpr auto digits = std::numeric_limits<Block>::digits;
+        static constexpr auto digits = std::numeric_limits<UnsignedInteger>::digits;
         static constexpr auto N = 1 * digits;
 
 public:
@@ -32,14 +32,14 @@ public:
 
         constexpr ConstIterator() = default;
 
-        explicit constexpr ConstIterator(Block const* b)
+        explicit constexpr ConstIterator(UnsignedInteger const* b)
         :
                 block_{b},
                 index_{find_first()}
         {}
 
 
-        constexpr ConstIterator(Block const* b, std::size_t n)
+        constexpr ConstIterator(UnsignedInteger const* b, std::size_t n)
         :
                 block_{b},
                 index_{n}
@@ -87,7 +87,7 @@ private:
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr ConstReference<Block, 1> dereference() const
+        constexpr ConstReference<UnsignedInteger, 1> dereference() const
         {
                 assert(block_ != nullptr);
                 return { *block_, index_ };
@@ -105,7 +105,7 @@ private:
 private:
         // representation
 
-        Block const* block_{};
+        UnsignedInteger const* block_{};
         std::size_t index_{};
 };
 

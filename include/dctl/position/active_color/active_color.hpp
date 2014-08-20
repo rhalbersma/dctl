@@ -24,7 +24,7 @@ public:
                 hash ^= random::ActiveColor<>::table_[pass];
         }
 
-        // queries
+        // observers
 
         /* implicit */ operator bool() const noexcept
         {

@@ -35,7 +35,7 @@ private:
                 range_ &= range_ - 1;
         }
 
-        // queries
+        // observers
 
         auto front() const
         {

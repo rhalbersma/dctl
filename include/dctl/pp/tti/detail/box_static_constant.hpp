@@ -1,5 +1,5 @@
 #pragma once
-#include <type_traits>                  // integral_constant, remove_const
+#include <type_traits>  // integral_constant, remove_const
 
 #define DCTL_PP_TTI_BOX_STATIC_CONSTANT(NAME)                           \
                                                                         \

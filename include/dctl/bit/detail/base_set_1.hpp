@@ -9,31 +9,34 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class Block>
-struct BaseSet<Block, 1>
+template<class UnsignedInteger>
+class BaseSet<UnsignedInteger, 1>
 {
+private:
         static_assert(
-                !std::numeric_limits<Block>::is_signed &&
-                 std::numeric_limits<Block>::is_integer,
-                "Block has to be of unsigned integer type."
+                !std::numeric_limits<UnsignedInteger>::is_signed &&
+                 std::numeric_limits<UnsignedInteger>::is_integer,
+                "Template parameter 'T' in 'BaseSet<T, 1>' shall be of unsigned integer type."
         );
 
-        static constexpr auto digits = std::numeric_limits<Block>::digits;
+        static constexpr auto digits = std::numeric_limits<UnsignedInteger>::digits;
         static constexpr auto N = 1 * digits;
 
-        constexpr auto* data()
-        {
-                return &data_;
-        }
-
-        constexpr auto const* data() const
-        {
-                return &data_;
-        }
-
+public:
         // constructors
 
         constexpr BaseSet() = default;
+
+protected:
+        // destructor
+
+        ~BaseSet() = default;
+
+public:
+        // copying and assignment
+
+        BaseSet(BaseSet const&) = default;
+        BaseSet& operator=(BaseSet const&) = default;
 
         // element access
 
@@ -47,16 +50,57 @@ struct BaseSet<Block, 1>
                 return &data_;
         }
 
+        // data access
+
+        constexpr auto* data()
+        {
+                return &data_;
+        }
+
+        constexpr auto const* data() const
+        {
+                return &data_;
+        }
+
+        // comparators
+
+        constexpr auto do_equal(BaseSet const& other) const noexcept
+        {
+                return data_ == other.data_;
+        }
+
+        constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
+        {
+                return data_ < other.data_;
+        }
+
+        constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
+        {
+                if (data_ & ~other.data_)
+                        return false;
+                return (~data_ & other.data_) != static_cast<UnsignedInteger>(0);
+        }
+
+        constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
+        {
+                return (data_ & ~other.data_) == static_cast<UnsignedInteger>(0);
+        }
+
+        constexpr auto do_intersects(BaseSet const& other) const noexcept
+        {
+                return (data_ & other.data_) != static_cast<UnsignedInteger>(0);
+        }
+
         // modifiers
 
         constexpr auto do_set() noexcept
         {
-                data_ = ~Block{0};
+                data_ = ~static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_reset() noexcept
         {
-                data_ = Block{0};
+                data_ = static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_flip() noexcept
@@ -96,60 +140,32 @@ struct BaseSet<Block, 1>
                 data_ >>= n;
         }
 
-        // queries
+        // observers
 
         constexpr auto do_count() const noexcept
         {
                 return bit::intrinsic::popcount(data_);
         }
 
-        // predicates
-
         constexpr auto do_all() const noexcept
         {
-                return data_ == ~Block{0};
+                return data_ == ~static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_any() const noexcept
         {
-                return data_ != Block{0};
+                return data_ != static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_none() const noexcept
         {
-                return data_ == Block{0};
+                return data_ == static_cast<UnsignedInteger>(0);
         }
 
-        constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
-        {
-                if (data_ & ~other.data_)
-                        return false;
-                return (~data_ & other.data_) != Block{0};
-        }
-
-        constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
-        {
-                return (data_ & ~other.data_) == Block{0};
-        }
-
-        constexpr auto do_intersects(BaseSet const& other) const noexcept
-        {
-                return (data_ & other.data_) != Block{0};
-        }
-
-        constexpr auto do_equal(BaseSet const& other) const noexcept
-        {
-                return data_ == other.data_;
-        }
-
-        constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
-        {
-                return data_ < other.data_;
-        }
-
+private:
         // representation
 
-        Block data_{};
+        UnsignedInteger data_{};
 };
 
 }       // namespace detail

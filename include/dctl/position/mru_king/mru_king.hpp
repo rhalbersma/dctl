@@ -54,7 +54,7 @@ public:
                 moves_ = 0;
         }
 
-        // queries
+        // observers
 
         constexpr auto square() const noexcept
         {

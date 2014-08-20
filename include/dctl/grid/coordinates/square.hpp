@@ -19,7 +19,7 @@ public:
                 value_{v}
         {}
 
-        // queries
+        // observers
 
         constexpr auto value () const noexcept
         {

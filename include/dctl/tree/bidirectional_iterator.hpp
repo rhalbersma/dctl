@@ -79,7 +79,7 @@ public:
                 assert(is_successor(lhs, rhs));
         }
 
-        // queries
+        // observers
 
         reference operator*() const
         {

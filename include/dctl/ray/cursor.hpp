@@ -74,7 +74,7 @@ public:
                 return (lhs.cursor_ - rhs.cursor_) / N;
         }
 
-        // queries
+        // observers
 
         /* implicit */ operator Square() const noexcept
         {

@@ -28,7 +28,7 @@ public:
                 ply_(ply);
         }
 
-        // queries
+        // observers
 
         NodeStats nodes() const
         {

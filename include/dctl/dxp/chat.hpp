@@ -26,7 +26,7 @@ public:
                 text_ { message }
         {}
 
-        // queries
+        // observers
 
         std::string text() const
         {

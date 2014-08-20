@@ -6,10 +6,10 @@ namespace bit {
 namespace detail {
 
 template<class Block, std::size_t Nb>
-struct BaseSet;
+class BaseSet;
 
 template<class Block>
-struct BaseSet<Block, 1>;
+class BaseSet<Block, 1>;
 
 }       // namespace detail
 }       // namespace bit

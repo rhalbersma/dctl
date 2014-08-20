@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/pp/tti/detail/box_static_constant.hpp>           // DCTL_PP_TTI_HAS_STATIC_CONSTANT
-#include <dctl/pp/tti/detail/has_static_constant.hpp>           // DCTL_PP_TTI_BOX_STATIC_CONSTANT
+#include <dctl/pp/tti/detail/box_static_constant.hpp>           // DCTL_PP_TTI_BOX_STATIC_CONSTANT
+#include <dctl/pp/tti/detail/has_static_constant.hpp>           // DCTL_PP_TTI_HAS_STATIC_CONSTANT
 #include <dctl/pp/tti/detail/missing_static_constant.hpp>       // DCTL_PP_TTI_MISSING_STATIC_CONSTANT
 #include <type_traits>                                          // conditional
 

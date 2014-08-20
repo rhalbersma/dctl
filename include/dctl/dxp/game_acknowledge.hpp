@@ -31,7 +31,7 @@ public:
                 acceptance_code_ { static_cast<AcceptanceCode>(std::stoi(message.substr(32, 1).c_str())) }
         {}
 
-        // queries
+        // observers
 
         std::string const& name_follower() const
         {

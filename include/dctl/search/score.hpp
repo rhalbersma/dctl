@@ -7,7 +7,7 @@
 namespace dctl {
 namespace search {
 
-// queries
+// observers
 inline
 int infinity()
 {

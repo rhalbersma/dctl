@@ -5,7 +5,6 @@
 #include <dctl/bit/iterator/reference.hpp>      // ConstReference
 #include <boost/range/concepts.hpp>             // BOOST_CONCEPT_ASSERKey, SinglePassRangeConcept
 #include <cassert>                              // assert
-#include <cstdint>                              // uintptr_t
 #include <cstddef>                              // ptrdiff_t, size_t
 #include <functional>                           // less
 #include <initializer_list>                     // initializer_list
@@ -31,10 +30,10 @@ template
 >
 class Set
 :
-        private detail::BaseSet<uintptr_t, num_blocks<uintptr_t>(N)>
+        private detail::BaseSet<std::size_t, num_blocks<std::size_t>(N)>
 {
 public:
-        using block_type = uintptr_t;
+        using block_type = std::size_t;
         static constexpr auto Nb = num_blocks<block_type>(N);
         using Base = detail::BaseSet<block_type, Nb>;
 
@@ -264,7 +263,7 @@ public:
                 return found ? const_iterator{this->block_ptr(key), key} : cend();
         }
 
-        // bit access
+        // element access
 
         constexpr reference operator[](key_type n)
         {
@@ -305,6 +304,70 @@ public:
                 block_ref(n) ^= mask(n);
                 return *this;
         }
+
+        // comparators
+
+        friend constexpr auto operator==(Set const& lhs, Set const& rhs) noexcept
+        {
+                return lhs.do_equal(rhs);
+        }
+
+        friend constexpr auto operator!=(Set const& lhs, Set const& rhs) noexcept
+        {
+                return !(lhs == rhs);
+        }
+
+        friend constexpr auto operator< (Set const& lhs, Set const& rhs) noexcept
+        {
+                return lhs.do_colexicographical_compare(rhs);
+        }
+
+        friend constexpr auto operator>=(Set const& lhs, Set const& rhs) noexcept
+        {
+                return !(lhs < rhs);
+        }
+
+        friend constexpr auto operator> (Set const& lhs, Set const& rhs) noexcept
+        {
+                return rhs < lhs;
+        }
+
+        friend constexpr auto operator<=(Set const& lhs, Set const& rhs) noexcept
+        {
+                return !(rhs < lhs);
+        }
+
+        constexpr auto is_proper_subset_of(Set const& other) const noexcept
+        {
+                return this->do_is_proper_subset_of(other);
+        }
+
+        constexpr auto is_proper_superset_of(Set const& other) const noexcept
+        {
+                return other.is_proper_subset_of(*this);
+        }
+
+        constexpr auto is_subset_of(Set const& other) const noexcept
+        {
+                return this->do_is_subset_of(other);
+        }
+
+        constexpr auto is_superset_of(Set const& other) const noexcept
+        {
+                return other.is_subset_of(*this);
+        }
+
+        friend constexpr auto intersect(Set const& lhs, Set const& rhs) noexcept
+        {
+                return lhs.do_intersects(rhs);
+        }
+
+        friend constexpr auto disjoint(Set const& lhs, Set const& rhs) noexcept
+        {
+                return !intersect(lhs, rhs);
+        }
+
+        // modifiers
 
         constexpr auto& set() noexcept
         {
@@ -413,7 +476,7 @@ public:
                 return nrv;
         }
 
-        // bitwise algorithms
+        // observers
 
         constexpr auto all() const noexcept
         {
@@ -428,68 +491,6 @@ public:
         constexpr auto none() const noexcept
         {
                 return this->do_none();
-        }
-
-        constexpr auto is_proper_subset_of(Set const& other) const noexcept
-        {
-                return this->do_is_proper_subset_of(other);
-        }
-
-        constexpr auto is_proper_superset_of(Set const& other) const noexcept
-        {
-                return other.is_proper_subset_of(*this);
-        }
-
-        constexpr auto is_subset_of(Set const& other) const noexcept
-        {
-                return this->do_is_subset_of(other);
-        }
-
-        constexpr auto is_superset_of(Set const& other) const noexcept
-        {
-                return other.is_subset_of(*this);
-        }
-
-        friend constexpr auto intersect(Set const& lhs, Set const& rhs) noexcept
-        {
-                return lhs.do_intersects(rhs);
-        }
-
-        friend constexpr auto disjoint(Set const& lhs, Set const& rhs) noexcept
-        {
-                return !intersect(lhs, rhs);
-        }
-
-        // relational operators
-
-        friend constexpr auto operator==(Set const& lhs, Set const& rhs) noexcept
-        {
-                return lhs.do_equal(rhs);
-        }
-
-        friend constexpr auto operator!=(Set const& lhs, Set const& rhs) noexcept
-        {
-                return !(lhs == rhs);
-        }
-
-        friend constexpr auto operator< (Set const& lhs, Set const& rhs) noexcept
-        {
-                return lhs.do_colexicographical_compare(rhs);
-        }
-
-        friend constexpr auto operator>=(Set const& lhs, Set const& rhs) noexcept
-        {
-                return !(lhs < rhs);
-        }
-
-        friend constexpr auto operator> (Set const& lhs, Set const& rhs) noexcept
-        {
-                return rhs < lhs;
-        }
-
-        friend constexpr auto operator<=(Set const& lhs, Set const& rhs) noexcept
-        {
-                return !(rhs < lhs);
         }
 
 private:

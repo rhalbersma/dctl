@@ -32,7 +32,7 @@ public:
                 stop_code_{static_cast<StopCode>(std::stoi(message.substr(1, 1).c_str()))}
         {}
 
-        // queries
+        // observers
 
         Reason reason() const
         {

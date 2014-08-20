@@ -55,7 +55,7 @@ public:
                 return *this;
         }
 
-        // queries
+        // observers
 
         /* implicit */ operator Set() const noexcept
         {

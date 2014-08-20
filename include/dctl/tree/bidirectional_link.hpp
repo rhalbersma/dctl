@@ -25,7 +25,7 @@ public:
                 rhs->prev_ = lhs;
         }
 
-        // queries
+        // observers
 
         self_type* prev() const
         {

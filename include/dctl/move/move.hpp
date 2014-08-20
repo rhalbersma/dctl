@@ -79,7 +79,7 @@ public:
                 assert(invariant());
         }
 
-        // queries
+        // observers
 
         constexpr auto captured_pieces() const noexcept
         {
