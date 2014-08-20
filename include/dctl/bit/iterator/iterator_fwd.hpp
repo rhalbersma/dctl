@@ -4,11 +4,11 @@
 namespace dctl {
 namespace bit {
 
-template<class Block, std::size_t Nb>
+template<class UnsignedInteger, std::size_t Nb>
 class ConstIterator;
 
-template<class Block>
-class ConstIterator<Block, 1>;
+template<class UnsignedInteger>
+class ConstIterator<UnsignedInteger, 1>;
 
 }       // namespace bit
 }       // namespace dctl

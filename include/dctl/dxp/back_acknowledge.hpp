@@ -30,7 +30,7 @@ public:
                 acceptance_code_ { static_cast<AcceptanceCode>(std::stoi(message.substr(0, 1).c_str())) }
         {}
 
-        // queries
+        // observers
 
         AcceptanceCode acceptance_code() const
         {

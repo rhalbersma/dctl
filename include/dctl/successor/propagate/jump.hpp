@@ -161,7 +161,7 @@ public:
                 return precedence_(moves, *this);
         }
 
-        // queries
+        // observers
 
         template<int Direction>
         auto targets_with_king() const

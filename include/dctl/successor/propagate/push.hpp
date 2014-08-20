@@ -17,7 +17,7 @@ public:
                 not_occupied_(p.not_occupied())
         {}
 
-        // queries
+        // observers
 
         auto path() const
         {

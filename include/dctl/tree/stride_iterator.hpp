@@ -56,7 +56,7 @@ public:
                 return old;
         }
 
-        // queries
+        // observers
 
         reference operator*() const
         {

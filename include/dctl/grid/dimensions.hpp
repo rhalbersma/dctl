@@ -18,7 +18,7 @@ public:
                 inverted_{i}
         {}
 
-        // queries
+        // observers
 
         constexpr auto width ()   const noexcept { return width_   ; }
         constexpr auto height()   const noexcept { return height_  ; }

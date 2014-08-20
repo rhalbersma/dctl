@@ -29,7 +29,7 @@ public:
                 side_to_move_ { *(std::begin(message.substr(3, 1))) }
         {}
 
-        // queries
+        // observers
 
         int move_number() const
         {

@@ -33,7 +33,7 @@ public:
                 }
         }
 
-        // queries
+        // observers
 
         /* implicit */ operator int() const noexcept
         {

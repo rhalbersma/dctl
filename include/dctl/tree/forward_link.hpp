@@ -23,7 +23,7 @@ public:
                 lhs->next_ = rhs;
         }
 
-        // queries
+        // observers
 
         self_type* next() const
         {

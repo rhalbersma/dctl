@@ -10,17 +10,50 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class Block, std::size_t Nb>
-struct BaseSet
+template<class UnsignedInteger, std::size_t Nb>
+class BaseSet
 {
+private:
         static_assert(
-                !std::numeric_limits<Block>::is_signed &&
-                 std::numeric_limits<Block>::is_integer,
-                "Block has to be of unsigned integer type."
+                !std::numeric_limits<UnsignedInteger>::is_signed &&
+                 std::numeric_limits<UnsignedInteger>::is_integer,
+                "Template parameter 'T' in 'BaseSet<T, N>' shall be of unsigned integer type."
         );
 
-        static constexpr auto digits = std::numeric_limits<Block>::digits;
+        static constexpr auto digits = std::numeric_limits<UnsignedInteger>::digits;
         static constexpr auto N = Nb * digits;
+
+public:
+        // constructors
+
+        constexpr BaseSet() = default;
+
+protected:
+        // destructor
+
+        ~BaseSet() = default;
+
+public:
+        // copying and assignment
+
+        BaseSet(BaseSet const&) = default;
+        BaseSet& operator=(BaseSet const&) = default;
+
+        // element access
+
+        constexpr auto* block_ptr(std::size_t n)
+        {
+                assert(n <= N);
+                return &data_[Storage<UnsignedInteger>::block_index(n)];
+        }
+
+        constexpr auto const* block_ptr(std::size_t n) const
+        {
+                assert(n <= N);
+                return &data_[Storage<UnsignedInteger>::block_index(n)];
+        }
+
+        // data access
 
         constexpr auto* data()
         {
@@ -32,22 +65,53 @@ struct BaseSet
                 return &data_;
         }
 
-        // constructors
+        // comparators
 
-        constexpr BaseSet() = default;
-
-        // element access
-
-        constexpr auto* block_ptr(std::size_t n)
+        constexpr auto do_equal(BaseSet const& other) const noexcept
         {
-                assert(n <= N);
-                return &data_[Storage<Block>::block_index(n)];
+                for (std::size_t i = 0; i < Nb; ++i)
+                        if (data_[i] != other.data_[i])
+                                return false;
+                return true;
         }
 
-        constexpr auto const* block_ptr(std::size_t n) const
+        constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
         {
-                assert(n <= N);
-                return &data_[Storage<Block>::block_index(n)];
+                for (auto i = Nb; i < Nb; --i) {
+                        if (data_[i] < other.data_[i])
+                                return true;
+                        if (data_[i] > other.data_[i])
+                                return false;
+                }
+                return false;
+        }
+
+        constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
+        {
+                auto proper = false;
+                for (std::size_t i = 0; i < Nb; ++i) {
+                        if ( data_[i] & ~other.data_[i])
+                                return false;
+                        if (~data_[i] &  other.data_[i])
+                                proper = true;
+                }
+                return proper;
+        }
+
+        constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
+        {
+                for (std::size_t i = 0; i < Nb; ++i)
+                        if (data_[i] & ~other.data_[i])
+                                return false;
+                return true;
+        }
+
+        constexpr auto do_intersects(BaseSet const& other) const noexcept
+        {
+                for (std::size_t i = 0; i < Nb; ++i)
+                        if (data_[i] & other.data_[i])
+                                return true;
+                return false;
         }
 
         // modifiers
@@ -55,13 +119,13 @@ struct BaseSet
         constexpr auto do_set() noexcept
         {
                 for (auto&& block : data_)
-                        block = ~Block{0};
+                        block = ~static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_reset() noexcept
         {
                 for (auto&& block : data_)
-                        block = Block{0};
+                        block = static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_flip() noexcept
@@ -99,8 +163,8 @@ struct BaseSet
                 assert(n < N);
                 if (n == 0) return;
 
-                auto const n_block = Storage<Block>::block_index(n);
-                auto const L_shift = Storage<Block>::bit_index(n);
+                auto const n_block = Storage<UnsignedInteger>::block_index(n);
+                auto const L_shift = Storage<UnsignedInteger>::bit_index(n);
 
                 if (L_shift == 0) {
                         for (auto i = Nb - 1; i >= n_block; --i)
@@ -116,7 +180,7 @@ struct BaseSet
                         data_[n_block] = data_[0] << L_shift;
                 }
                 for (std::size_t i = 0; i < n_block; ++i)
-                        data_[i] = Block{0};
+                        data_[i] = static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_right_shift(std::size_t n)
@@ -124,8 +188,8 @@ struct BaseSet
                 assert(n < N);
                 if (n == 0) return;
 
-                auto const n_block = Storage<Block>::block_index(n);
-                auto const R_shift = Storage<Block>::bit_index(n);
+                auto const n_block = Storage<UnsignedInteger>::block_index(n);
+                auto const R_shift = Storage<UnsignedInteger>::bit_index(n);
 
                 if (R_shift == 0) {
                        for (std::size_t i  = 0; i <= Nb - 1 - n_block; ++i)
@@ -141,10 +205,10 @@ struct BaseSet
                         data_[Nb - 1 - n_block] = data_[Nb - 1] >> R_shift;
                 }
                 for (auto i = Nb - n_block; i < Nb; ++i)
-                        data_[i] = Block{0};
+                        data_[i] = static_cast<UnsignedInteger>(0);
         }
 
-        // queries
+        // observers
 
         constexpr auto do_count() const noexcept
         {
@@ -154,12 +218,10 @@ struct BaseSet
                 return sum;
         }
 
-        // predicates
-
         constexpr auto do_all() const noexcept
         {
                 for (auto&& block : data_)
-                        if (block != ~Block{0})
+                        if (block != ~static_cast<UnsignedInteger>(0))
                                 return false;
                 return true;
         }
@@ -180,56 +242,10 @@ struct BaseSet
                 return true;
         }
 
-        constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
-        {
-                auto proper = false;
-                for (std::size_t i = 0; i < Nb; ++i) {
-                        if ( data_[i] & ~other.data_[i])
-                                return false;
-                        if (~data_[i] &  other.data_[i])
-                                proper = true;
-                }
-                return proper;
-        }
-
-        constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
-        {
-                for (std::size_t i = 0; i < Nb; ++i)
-                        if (data_[i] & ~other.data_[i])
-                                return false;
-                return true;
-        }
-
-        constexpr auto do_intersects(BaseSet const& other) const noexcept
-        {
-                for (std::size_t i = 0; i < Nb; ++i)
-                        if (data_[i] & other.data_[i])
-                                return true;
-                return false;
-        }
-
-        constexpr auto do_equal(BaseSet const& other) const noexcept
-        {
-                for (std::size_t i = 0; i < Nb; ++i)
-                        if (data_[i] != other.data_[i])
-                                return false;
-                return true;
-        }
-
-        constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
-        {
-                for (auto i = Nb; i < Nb; --i) {
-                        if (data_[i] < other.data_[i])
-                                return true;
-                        if (data_[i] > other.data_[i])
-                                return false;
-                }
-                return false;
-        }
-
+private:
         // representation
 
-        Block data_[Nb]{};
+        UnsignedInteger data_[Nb]{};
 };
 
 }       // namespace detail

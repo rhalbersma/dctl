@@ -39,7 +39,7 @@ public:
                         position_ = message.substr(42);
         }
 
-        // queries
+        // observers
 
         std::string const& name_initiator() const
         {

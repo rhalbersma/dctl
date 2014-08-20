@@ -1,5 +1,5 @@
 #pragma once
-#include <type_traits>                  // is_integral
+#include <type_traits>  // is_integral
 
 #define DCTL_PP_TTI_MISSING_STATIC_CONSTANT(NAME)                       \
                                                                         \

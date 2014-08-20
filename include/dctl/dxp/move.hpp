@@ -37,7 +37,7 @@ public:
                 }
         }
 
-        // queries
+        // observers
 
         int seconds() const
         {
