@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/bit/detail/intrinsic.hpp>        // bsfnz, bsrnz, clznz, ctznz
-#include <dctl/bit/detail/storage.hpp>          // Storage
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
@@ -74,7 +73,7 @@ private:
                         return;
                 }
 
-                auto const idx = detail::Storage<UnsignedInteger>::bit_index(index_);
+                auto const idx = index_ % digits;
                 if (idx == 0)
                         ++block_;
                 if (auto const mask = *block_ >> idx) {
@@ -83,7 +82,7 @@ private:
                 }
                 ++block_;
 
-                for (auto i = detail::Storage<UnsignedInteger>::block_index(index_) + 1; i < Nb; ++i) {
+                for (auto i = index_ / digits + 1; i < Nb; ++i) {
                         if (auto const mask = *block_) {
                                 index_ = i * digits + static_cast<std::size_t>(bit::intrinsic::bsfnz(mask));
                                 return;
@@ -102,7 +101,7 @@ private:
                 if (--index_ == 0)
                         return;
 
-                auto const idx = detail::Storage<UnsignedInteger>::bit_index(index_);
+                auto const idx = index_ % digits;
                 if (idx == digits - 1)
                         --block_;
                 if (auto const mask = *block_ << (digits - 1 - idx)) {
@@ -111,7 +110,7 @@ private:
                 }
                 --block_;
 
-                for (auto i = detail::Storage<UnsignedInteger>::block_index(index_) - 1; i >= 0; --i) {
+                for (auto i = index_ / digits - 1; i >= 0; --i) {
                         if (auto const mask = *block_) {
                                 index_ = i * digits + static_cast<std::size_t>(bit::intrinsic::bsrnz(mask));
                                 return;

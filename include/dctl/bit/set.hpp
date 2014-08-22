@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/bit/detail/base_set.hpp>         // BaseSet
-#include <dctl/bit/detail/storage.hpp>          // Storage
 #include <dctl/bit/iterator/iterator.hpp>       // ConstIterator
 #include <dctl/bit/iterator/reference.hpp>      // ConstReference
 #include <boost/range/concepts.hpp>             // BOOST_CONCEPT_ASSERKey, SinglePassRangeConcept
@@ -11,7 +10,6 @@
 #include <iterator>                             // iterator_traits
 #include <limits>                               // digits
 #include <type_traits>                          // is_convertible
-#include <utility>                              // swap
 
 namespace dctl {
 namespace bit {
@@ -22,12 +20,7 @@ constexpr auto num_blocks(std::size_t N)
         return (N - 1) / std::numeric_limits<Block>::digits + 1;
 }
 
-template
-<
-        std::size_t N,
-        class Key = int,
-        class Compare = std::less<>
->
+template<std::size_t N>
 class Set
 :
         private detail::BaseSet<std::size_t, num_blocks<std::size_t>(N)>
@@ -37,10 +30,8 @@ public:
         static constexpr auto Nb = num_blocks<block_type>(N);
         using Base = detail::BaseSet<block_type, Nb>;
 
-        using key_type = Key;
-        using value_type = Key;
-        using key_compare = Compare;
-        using value_compare = Compare;
+        using key_type = int;
+        using value_type = int;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
         using reference = ConstReference<block_type, Nb>;
@@ -235,10 +226,9 @@ public:
                 return it;
         }
 
-        constexpr auto swap(Set& other) noexcept
+        auto swap(Set& other) noexcept
         {
-                using std::swap;
-                swap(this->data_, other.data_);
+                this->do_swap(other);
         }
 
         constexpr auto clear() noexcept
@@ -506,7 +496,7 @@ private:
 
         static constexpr auto mask(std::size_t n)
         {
-                return block_type{1} << detail::Storage<block_type>::bit_index(n);
+                return static_cast<block_type>(1) << (n % std::numeric_limits<block_type>::digits);
         }
 
         constexpr auto is_mask(std::size_t n) const
@@ -515,57 +505,56 @@ private:
         }
 };
 
-template<std::size_t N, class Key, class Compare>
-constexpr auto swap(Set<N, Key, Compare>& lhs, Set<N, Key, Compare>& rhs) noexcept
+template<std::size_t N>
+auto swap(Set<N>& lhs, Set<N>& rhs) noexcept
 {
         lhs.swap(rhs);
-        return;
 }
 
-template<std::size_t N, class Key, class Compare>
-constexpr auto begin(Set<N, Key, Compare> const& s) noexcept
+template<std::size_t N>
+constexpr auto begin(Set<N> const& s) noexcept
 {
         return s.begin();
 }
 
-template<std::size_t N, class Key, class Compare>
-constexpr auto end(Set<N, Key, Compare> const& s) noexcept
+template<std::size_t N>
+constexpr auto end(Set<N> const& s) noexcept
 {
         return s.end();
 }
 
-template<std::size_t N, class Key, class Compare>
-constexpr auto cbegin(Set<N, Key, Compare> const& s) noexcept
+template<std::size_t N>
+constexpr auto cbegin(Set<N> const& s) noexcept
 {
         return begin(s);
 }
 
-template<std::size_t N, class Key, class Compare>
-constexpr auto cend(Set<N, Key, Compare> const& s) noexcept
+template<std::size_t N>
+constexpr auto cend(Set<N> const& s) noexcept
 {
         return end(s);
 }
 
-template<std::size_t N, class Key, class Compare>
-/* constexpr */ auto rbegin(Set<N, Key, Compare> const& s) noexcept
+template<std::size_t N>
+/* constexpr */ auto rbegin(Set<N> const& s) noexcept
 {
         return s.rbegin();
 }
 
-template<std::size_t N, class Key, class Compare>
-/* constexpr */ auto rend(Set<N, Key, Compare> const& s) noexcept
+template<std::size_t N>
+/* constexpr */ auto rend(Set<N> const& s) noexcept
 {
         return s.rend();
 }
 
-template<std::size_t N, class Key, class Compare>
-/* constexpr */ auto crbegin(Set<N, Key, Compare> const& s) noexcept
+template<std::size_t N>
+/* constexpr */ auto crbegin(Set<N> const& s) noexcept
 {
         return rbegin(s);
 }
 
-template<std::size_t N, class Key, class Compare>
-/* constexpr */ auto crend(Set<N, Key, Compare> const& s) noexcept
+template<std::size_t N>
+/* constexpr */ auto crend(Set<N> const& s) noexcept
 {
         return rend(s);
 }
