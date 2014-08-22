@@ -4,6 +4,7 @@
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <limits>                               // digits
+#include <utility>                              // swap
 
 namespace dctl {
 namespace bit {
@@ -92,6 +93,12 @@ public:
         }
 
         // modifiers
+
+        auto do_swap(BaseSet& other) noexcept
+        {
+                using std::swap;
+                swap(data_, other.data_);
+        }
 
         constexpr auto do_set() noexcept
         {

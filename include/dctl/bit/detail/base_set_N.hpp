@@ -1,10 +1,10 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
-#include <dctl/bit/detail/storage.hpp>          // storage
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <limits>                               // digits
+#include <utility>                              // swap
 
 namespace dctl {
 namespace bit {
@@ -44,25 +44,25 @@ public:
         constexpr auto* block_ptr(std::size_t n)
         {
                 assert(n <= N);
-                return &data_[Storage<UnsignedInteger>::block_index(n)];
+                return &data_[0] + n / digits;
         }
 
         constexpr auto const* block_ptr(std::size_t n) const
         {
                 assert(n <= N);
-                return &data_[Storage<UnsignedInteger>::block_index(n)];
+                return &data_[0] + n / digits;
         }
 
         // data access
 
         constexpr auto* data()
         {
-                return &data_;
+                return &data_[0];
         }
 
         constexpr auto const* data() const
         {
-                return &data_;
+                return &data_[0];
         }
 
         // comparators
@@ -116,6 +116,12 @@ public:
 
         // modifiers
 
+        auto do_swap(BaseSet& other) noexcept
+        {
+                using std::swap;
+                swap(data_, other.data_);
+        }
+
         constexpr auto do_set() noexcept
         {
                 for (auto&& block : data_)
@@ -163,8 +169,8 @@ public:
                 assert(n < N);
                 if (n == 0) return;
 
-                auto const n_block = Storage<UnsignedInteger>::block_index(n);
-                auto const L_shift = Storage<UnsignedInteger>::bit_index(n);
+                auto const n_block = n / digits;
+                auto const L_shift = n % digits;
 
                 if (L_shift == 0) {
                         for (auto i = Nb - 1; i >= n_block; --i)
@@ -188,8 +194,8 @@ public:
                 assert(n < N);
                 if (n == 0) return;
 
-                auto const n_block = Storage<UnsignedInteger>::block_index(n);
-                auto const R_shift = Storage<UnsignedInteger>::bit_index(n);
+                auto const n_block = n / N;
+                auto const R_shift = n % N;
 
                 if (R_shift == 0) {
                        for (std::size_t i  = 0; i <= Nb - 1 - n_block; ++i)
