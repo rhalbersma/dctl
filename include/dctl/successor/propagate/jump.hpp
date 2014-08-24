@@ -166,7 +166,7 @@ public:
         template<int Direction>
         auto targets_with_king() const
         {
-                return remaining_targets_ & *std::prev(along_wave<Direction>(path()));
+                return remaining_targets_ & Set(*std::prev(along_wave<Direction>(path())));
         }
 
         template<class Iterator>
@@ -178,7 +178,7 @@ public:
         template<int Direction>
         auto targets_with_pawn() const
         {
-                return remaining_targets_ & *std::prev(along_wave<Direction>(path()));
+                return remaining_targets_ & Set(*std::prev(along_wave<Direction>(path())));
         }
 
         template<class Iterator>

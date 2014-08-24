@@ -9,7 +9,7 @@ template<class T>
 constexpr auto ctz(T x) noexcept
 {
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i)
-                if (x & (T{1} << i))
+                if (x & (static_cast<T>(1) << i))
                         return i;
         return std::numeric_limits<T>::digits;
 }
@@ -18,7 +18,7 @@ template<class T>
 constexpr auto clz(T x) noexcept
 {
         for (auto i = std::numeric_limits<T>::digits - 1; i >= 0; --i)
-                if (x & (T{1} << i))
+                if (x & (static_cast<T>(1) << i))
                         return std::numeric_limits<T>::digits - 1 - i;
         return std::numeric_limits<T>::digits;
 }
@@ -36,10 +36,22 @@ constexpr auto clznz(T x) noexcept
 }
 
 template<class T>
+constexpr auto bsfnz(T x) noexcept
+{
+        return ctznz(x);
+}
+
+template<class T>
+constexpr auto bsrnz(T x) noexcept
+{
+        return std::numeric_limits<T>::digits - 1 - clznz(x);
+}
+
+template<class T>
 constexpr auto popcount(T x) noexcept
 {
         auto n = 0;
-        for (; x; x &= x - T{1})
+        for (; x; x &= x - static_cast<T>(1))
                 ++n;
         return n;
 }

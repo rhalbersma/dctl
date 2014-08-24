@@ -19,7 +19,7 @@ using SetTypes = boost::mpl::vector
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetEmpty, T, SetTypes)
 {
         constexpr auto b = T{};
-        BOOST_CHECK(b.empty());
+        BOOST_CHECK(b.none());
         BOOST_CHECK(!set_single(b));
         BOOST_CHECK(!set_double(b));
         BOOST_CHECK(!set_multiple(b));
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetSingle, T, SetTypes)
 {
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
                 auto const b = T{i};
-                BOOST_CHECK(!b.empty());
+                BOOST_CHECK(!b.none());
                 BOOST_CHECK( set_single(b));
                 BOOST_CHECK(!set_double(b));
                 BOOST_CHECK(!set_multiple(b));
@@ -42,9 +42,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetDouble, T, SetTypes)
                 for (auto j = 0; j < std::numeric_limits<T>::digits; ++j) {
                         auto const b = T{i, j};
                         if (i == j) {
-                                BOOST_CHECK(b.empty());
+                                BOOST_CHECK(b.none());
                         } else {
-                                BOOST_CHECK(!b.empty());
+                                BOOST_CHECK(!b.none());
                                 BOOST_CHECK(!set_single(b));
                                 BOOST_CHECK( set_double(b));
                                 BOOST_CHECK( set_multiple(b));
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetMultiple, T, SetTypes)
                 auto const b = ~((~T{} >> i) << i);
                 switch (i) {
                 case 0:
-                        BOOST_CHECK(b.empty());
+                        BOOST_CHECK(b.none());
                         break;
                 case 1:
                         BOOST_CHECK(set_single(b));
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetMultiple, T, SetTypes)
                         BOOST_CHECK(set_multiple(b));
                         break;
                 default:
-                        BOOST_CHECK(!b.empty());
+                        BOOST_CHECK(!b.none());
                         BOOST_CHECK(!set_single(b));
                         BOOST_CHECK(!set_double(b));
                         BOOST_CHECK( set_multiple(b));

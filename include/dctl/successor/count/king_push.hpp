@@ -46,7 +46,7 @@ public:
 
         auto operator()(Set const& active_kings) const
         {
-                return active_kings.empty() ? 0 : branch(active_kings);
+                return active_kings.none() ? 0 : branch(active_kings);
         }
 
 private:
@@ -65,7 +65,7 @@ private:
         {
                 return Sink<Board, Direction, is_long_ranged_king_t<Rules>>{}(
                         active_kings, propagate_.path()
-                ).size();
+                ).count();
         }
 };
 

@@ -118,7 +118,7 @@ public:
 
         constexpr auto is_jump() const noexcept
         {
-                return !captured_pieces().empty();
+                return !captured_pieces().none();
         }
 
         constexpr auto is_reversible() const noexcept
@@ -128,12 +128,12 @@ public:
 
         constexpr auto num_pieces() const
         {
-                return captured_pieces_.size();
+                return captured_pieces_.count();
         }
 
         constexpr auto num_kings() const
         {
-                return captured_kings_.size();
+                return captured_kings_.count();
         }
 
         // predicates

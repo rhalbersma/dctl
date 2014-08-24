@@ -15,7 +15,7 @@ auto classical(ray::Iterator<Board, Direction> from, Set const& propagator)
 {
         auto targets = board::KingTargets<Board>::mask(Angle{Direction}, *from);
         auto const blocker = targets & (board::Squares<Board>::mask() ^ propagator);
-        if (!blocker.empty()) {
+        if (!blocker.none()) {
                 auto const first = util::First<is_positive(Angle{Direction})>{}(blocker);
                 targets ^= board::KingTargets<Board>::mask(Angle{Direction}, first);
                 targets.reset(first);

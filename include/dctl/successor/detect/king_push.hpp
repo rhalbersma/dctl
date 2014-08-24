@@ -45,7 +45,7 @@ public:
 
         auto operator()(Set const& active_kings) const
         {
-                return active_kings.empty() ? false : branch(active_kings);
+                return active_kings.none() ? false : branch(active_kings);
         }
 
 private:
@@ -65,7 +65,7 @@ private:
         {
                 return !Sink<Board, Direction, std::false_type>{}(
                         active_kings, propagate_.path()
-                ).empty();
+                ).none();
         }
 };
 

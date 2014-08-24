@@ -13,7 +13,7 @@ template<bool Sign, int N, class Set>
 auto fill(Set generator, Set const& propagator)
 {
         Set flood {};
-        while (!generator.empty()) {
+        while (!generator.none()) {
                 flood |= generator;
                 generator = util::shift<Sign>{}(generator, N) & propagator;
         }

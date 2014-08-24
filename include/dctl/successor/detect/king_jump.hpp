@@ -47,7 +47,7 @@ public:
 
         auto operator()(Set const& active_kings) const
         {
-                return active_kings.empty() ? false : branch(active_kings);
+                return active_kings.none() ? false : branch(active_kings);
         }
 
 private:
@@ -90,7 +90,7 @@ private:
         {
                 return !Sandwich<Board, Direction, Range>{}(
                         active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path()
-                ).empty();
+                ).none();
         }
 };
 

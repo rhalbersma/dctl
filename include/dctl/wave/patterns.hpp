@@ -18,7 +18,7 @@ struct Sink<Board, Direction, std::false_type>
         using Set = set_type_t<Board>;
         auto operator()(Set const& from, Set const& dest) const
         {
-                return *std::next(wave::make_iterator<Board, Direction>(from)) & dest;
+                return Set(*std::next(wave::make_iterator<Board, Direction>(from))) & dest;
         }
 };
 
@@ -45,9 +45,9 @@ struct Sandwich<Board, Direction, std::false_type>
         auto operator()(Set const& from, Set const& through, Set const& dest) const
         {
                 return
-                        *std::next(wave::make_iterator<Board, Direction>(from)) &
+                        Set(*std::next(wave::make_iterator<Board, Direction>(from))) &
                         through &
-                        *std::prev(wave::make_iterator<Board, Direction>(dest))
+                        Set(*std::prev(wave::make_iterator<Board, Direction>(dest)))
                 ;
         }
 };
@@ -60,9 +60,9 @@ struct Sandwich<Board, Direction, std::true_type>
         auto operator()(Set const& from, Set const& through, Set const& dest) const
         {
                 return
-                        *std::next(wave::make_iterator<Board, Direction>(Fill<Board, Direction>{}(from, dest))) &
+                        Set(*std::next(wave::make_iterator<Board, Direction>(Fill<Board, Direction>{}(from, dest)))) &
                         through &
-                        *std::prev(wave::make_iterator<Board, Direction>(dest))
+                        Set(*std::prev(wave::make_iterator<Board, Direction>(dest)))
                 ;
         }
 };

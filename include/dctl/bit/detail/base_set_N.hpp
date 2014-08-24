@@ -44,25 +44,25 @@ public:
         constexpr auto* block_ptr(std::size_t n)
         {
                 assert(n <= N);
-                return &data_[0] + n / digits;
+                return elems + n / digits;
         }
 
         constexpr auto const* block_ptr(std::size_t n) const
         {
                 assert(n <= N);
-                return &data_[0] + n / digits;
+                return elems + n / digits;
         }
 
         // data access
 
         constexpr auto* data()
         {
-                return &data_[0];
+                return elems;
         }
 
         constexpr auto const* data() const
         {
-                return &data_[0];
+                return elems;
         }
 
         // comparators
@@ -70,98 +70,98 @@ public:
         constexpr auto do_equal(BaseSet const& other) const noexcept
         {
                 for (std::size_t i = 0; i < Nb; ++i)
-                        if (data_[i] != other.data_[i])
+                        if (elems[i] != other.elems[i])
                                 return false;
                 return true;
         }
 
         constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
         {
-                for (auto i = Nb; i < Nb; --i) {
-                        if (data_[i] < other.data_[i])
+                for (auto i = Nb - 1; i < Nb; --i) {
+                        if (elems[i] < other.elems[i])
                                 return true;
-                        if (data_[i] > other.data_[i])
+                        if (elems[i] > other.elems[i])
                                 return false;
                 }
                 return false;
+        }
+
+        constexpr auto do_intersects(BaseSet const& other) const noexcept
+        {
+                for (std::size_t i = 0; i < Nb; ++i)
+                        if (elems[i] & other.elems[i])
+                                return true;
+                return false;
+        }
+
+        constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
+        {
+                for (std::size_t i = 0; i < Nb; ++i)
+                        if (elems[i] & ~other.elems[i])
+                                return false;
+                return true;
         }
 
         constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
         {
                 auto proper = false;
                 for (std::size_t i = 0; i < Nb; ++i) {
-                        if ( data_[i] & ~other.data_[i])
+                        if ( elems[i] & ~other.elems[i])
                                 return false;
-                        if (~data_[i] &  other.data_[i])
+                        if (~elems[i] &  other.elems[i])
                                 proper = true;
                 }
                 return proper;
         }
 
-        constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
-        {
-                for (std::size_t i = 0; i < Nb; ++i)
-                        if (data_[i] & ~other.data_[i])
-                                return false;
-                return true;
-        }
-
-        constexpr auto do_intersects(BaseSet const& other) const noexcept
-        {
-                for (std::size_t i = 0; i < Nb; ++i)
-                        if (data_[i] & other.data_[i])
-                                return true;
-                return false;
-        }
-
         // modifiers
 
-        auto do_swap(BaseSet& other) noexcept
+        /* constexpr */ auto do_swap(BaseSet& other) noexcept
         {
                 using std::swap;
-                swap(data_, other.data_);
+                swap(elems, other.elems);
         }
 
         constexpr auto do_set() noexcept
         {
-                for (auto&& block : data_)
+                for (auto&& block : elems)
                         block = ~static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_reset() noexcept
         {
-                for (auto&& block : data_)
+                for (auto&& block : elems)
                         block = static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_flip() noexcept
         {
-                for (auto&& block : data_)
+                for (auto&& block : elems)
                         block = ~block;
         }
 
         constexpr auto do_and(BaseSet const& other) noexcept
         {
                 for (std::size_t i = 0; i < Nb; ++i)
-                        data_[i] &= other.data_[i];
+                        elems[i] &= other.elems[i];
         }
 
         constexpr auto do_or(BaseSet const& other) noexcept
         {
                 for (std::size_t i = 0; i < Nb; ++i)
-                        data_[i] |= other.data_[i];
+                        elems[i] |= other.elems[i];
         }
 
         constexpr auto do_xor(BaseSet const& other) noexcept
         {
                 for (std::size_t i = 0; i < Nb; ++i)
-                        data_[i] ^= other.data_[i];
+                        elems[i] ^= other.elems[i];
         }
 
         constexpr auto do_minus(BaseSet const& other) noexcept
         {
                 for (std::size_t i = 0; i < Nb; ++i)
-                        data_[i] &= ~other.data_[i];
+                        elems[i] &= ~other.elems[i];
         }
 
         constexpr auto do_left_shift(std::size_t n)
@@ -174,19 +174,19 @@ public:
 
                 if (L_shift == 0) {
                         for (auto i = Nb - 1; i >= n_block; --i)
-                                data_[i] = data_[i - n_block];
+                                elems[i] = elems[i - n_block];
                 } else {
                         auto const R_shift = digits - L_shift;
 
                         for (auto i = Nb - 1; i > n_block; --i)
-                                data_[i] =
-                                        (data_[i - n_block    ] << L_shift) |
-                                        (data_[i - n_block - 1] >> R_shift)
+                                elems[i] =
+                                        (elems[i - n_block    ] << L_shift) |
+                                        (elems[i - n_block - 1] >> R_shift)
                                 ;
-                        data_[n_block] = data_[0] << L_shift;
+                        elems[n_block] = elems[0] << L_shift;
                 }
-                for (std::size_t i = 0; i < n_block; ++i)
-                        data_[i] = static_cast<UnsignedInteger>(0);
+                for (auto i = n_block - 1; i < Nb; --i)
+                        elems[i] = static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_right_shift(std::size_t n)
@@ -199,34 +199,26 @@ public:
 
                 if (R_shift == 0) {
                        for (std::size_t i  = 0; i <= Nb - 1 - n_block; ++i)
-                               data_[i] = data_[i + n_block];
+                               elems[i] = elems[i + n_block];
                 } else {
                         auto const L_shift = digits - R_shift;
 
                         for (std::size_t i = 0; i < Nb - 1 - n_block; ++i)
-                                data_[i] =
-                                        (data_[i + n_block    ] >> R_shift) |
-                                        (data_[i + n_block + 1] << L_shift)
+                                elems[i] =
+                                        (elems[i + n_block    ] >> R_shift) |
+                                        (elems[i + n_block + 1] << L_shift)
                                 ;
-                        data_[Nb - 1 - n_block] = data_[Nb - 1] >> R_shift;
+                        elems[Nb - 1 - n_block] = elems[Nb - 1] >> R_shift;
                 }
                 for (auto i = Nb - n_block; i < Nb; ++i)
-                        data_[i] = static_cast<UnsignedInteger>(0);
+                        elems[i] = static_cast<UnsignedInteger>(0);
         }
 
         // observers
 
-        constexpr auto do_count() const noexcept
+       constexpr auto do_all() const noexcept
         {
-                auto sum = 0;
-                for (auto&& block : data_)
-                        sum += bit::intrinsic::popcount(block);
-                return sum;
-        }
-
-        constexpr auto do_all() const noexcept
-        {
-                for (auto&& block : data_)
+                for (auto&& block : elems)
                         if (block != ~static_cast<UnsignedInteger>(0))
                                 return false;
                 return true;
@@ -234,7 +226,7 @@ public:
 
         constexpr auto do_any() const noexcept
         {
-                for (auto&& block : data_)
+                for (auto&& block : elems)
                         if (block)
                                 return true;
                 return false;
@@ -242,16 +234,24 @@ public:
 
         constexpr auto do_none() const noexcept
         {
-                for (auto&& block : data_)
+                for (auto&& block : elems)
                         if (block)
                                 return false;
                 return true;
         }
 
-private:
+        constexpr auto do_count() const noexcept
+        {
+                auto sum = 0;
+                for (auto&& block : elems)
+                        sum += bit::intrinsic::popcount(block);
+                return sum;
+        }
+
+ private:
         // representation
 
-        UnsignedInteger data_[Nb]{};
+        UnsignedInteger elems[Nb]{};
 };
 
 }       // namespace detail

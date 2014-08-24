@@ -50,7 +50,7 @@ public:
 
         auto operator()(Set const& active_pawns) const
         {
-                if (active_pawns.empty())
+                if (active_pawns.none())
                         return;
 
                 transform_movers<left_up (orientation)>(active_pawns);
@@ -61,7 +61,7 @@ private:
         template<int Direction>
         auto transform_movers(Set const& active_pawns) const
         {
-                auto const movers = active_pawns & *std::prev(along_wave<Direction>(propagate_.path()));
+                auto const movers = active_pawns & Set(*std::prev(along_wave<Direction>(propagate_.path())));
                 boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
                         return Move{from_sq, dest_sq, is_promotion(dest_sq), Color};

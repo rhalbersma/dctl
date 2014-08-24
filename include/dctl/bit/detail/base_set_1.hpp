@@ -43,136 +43,136 @@ public:
 
         constexpr auto* block_ptr(std::size_t /* n */)
         {
-                return &data_;
+                return &elems;
         }
 
         constexpr auto const* block_ptr(std::size_t /* n */) const
         {
-                return &data_;
+                return &elems;
         }
 
         // data access
 
         constexpr auto* data()
         {
-                return &data_;
+                return &elems;
         }
 
         constexpr auto const* data() const
         {
-                return &data_;
+                return &elems;
         }
 
         // comparators
 
         constexpr auto do_equal(BaseSet const& other) const noexcept
         {
-                return data_ == other.data_;
+                return elems == other.elems;
         }
 
         constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
         {
-                return data_ < other.data_;
-        }
-
-        constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
-        {
-                if (data_ & ~other.data_)
-                        return false;
-                return (~data_ & other.data_) != static_cast<UnsignedInteger>(0);
-        }
-
-        constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
-        {
-                return (data_ & ~other.data_) == static_cast<UnsignedInteger>(0);
+                return elems < other.elems;
         }
 
         constexpr auto do_intersects(BaseSet const& other) const noexcept
         {
-                return (data_ & other.data_) != static_cast<UnsignedInteger>(0);
+                return (elems & other.elems) != static_cast<UnsignedInteger>(0);
+        }
+
+        constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
+        {
+                return (elems & ~other.elems) == static_cast<UnsignedInteger>(0);
+        }
+
+        constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
+        {
+                if (elems & ~other.elems)
+                        return false;
+                return (~elems & other.elems) != static_cast<UnsignedInteger>(0);
         }
 
         // modifiers
 
-        auto do_swap(BaseSet& other) noexcept
+        /* constexpr */ auto do_swap(BaseSet& other) noexcept
         {
                 using std::swap;
-                swap(data_, other.data_);
+                swap(elems, other.elems);
         }
 
         constexpr auto do_set() noexcept
         {
-                data_ = ~static_cast<UnsignedInteger>(0);
+                elems = ~static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_reset() noexcept
         {
-                data_ = static_cast<UnsignedInteger>(0);
+                elems = static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_flip() noexcept
         {
-                data_ = ~data_;
+                elems = ~elems;
         }
 
         constexpr auto do_and(BaseSet const& other) noexcept
         {
-                data_ &= other.data_;
+                elems &= other.elems;
         }
 
         constexpr auto do_or(BaseSet const& other) noexcept
         {
-                data_ |= other.data_;
+                elems |= other.elems;
         }
 
         constexpr auto do_xor(BaseSet const& other) noexcept
         {
-                data_ ^= other.data_;
+                elems ^= other.elems;
         }
 
         constexpr auto do_minus(BaseSet const& other) noexcept
         {
-                data_ &= ~other.data_;
+                elems &= ~other.elems;
         }
 
         constexpr auto do_left_shift(std::size_t n)
         {
                 assert(n < N);
-                data_ <<= n;
+                elems <<= n;
         }
 
         constexpr auto do_right_shift(std::size_t n)
         {
                 assert(n < N);
-                data_ >>= n;
+                elems >>= n;
         }
 
         // observers
 
-        constexpr auto do_count() const noexcept
-        {
-                return bit::intrinsic::popcount(data_);
-        }
-
         constexpr auto do_all() const noexcept
         {
-                return data_ == ~static_cast<UnsignedInteger>(0);
+                return elems == ~static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_any() const noexcept
         {
-                return data_ != static_cast<UnsignedInteger>(0);
+                return elems != static_cast<UnsignedInteger>(0);
         }
 
         constexpr auto do_none() const noexcept
         {
-                return data_ == static_cast<UnsignedInteger>(0);
+                return elems == static_cast<UnsignedInteger>(0);
+        }
+
+        constexpr auto do_count() const noexcept
+        {
+                return bit::intrinsic::popcount(elems);
         }
 
 private:
         // representation
 
-        UnsignedInteger data_{};
+        UnsignedInteger elems{};
 };
 
 }       // namespace detail
