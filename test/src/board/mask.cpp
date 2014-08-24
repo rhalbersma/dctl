@@ -37,7 +37,7 @@ using Set = typename T::set_type;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, BoardSequence)
 {
-        BOOST_CHECK_EQUAL(Squares<T>::mask().size(), T::size());
+        BOOST_CHECK_EQUAL(Squares<T>::mask().count(), T::size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)

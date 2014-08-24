@@ -114,7 +114,7 @@ struct write<pdn::protocol, Token>
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i != 0;
-                        if (!p.pieces(c).empty()) {
+                        if (!p.pieces(c).none()) {
                                 sstr << Token::colon;                           // colon
                                 sstr << Token::color[c];                        // color tag
                         }
@@ -124,7 +124,7 @@ struct write<pdn::protocol, Token>
                                 if (p.kings().test(sq))
                                         sstr << Token::king;                    // king tag
                                 sstr << Board::square_from_bit(sq) + 1;         // square number
-                                if (++n != bs.size())                           // still pieces remaining
+                                if (++n != bs.count())                          // still pieces remaining
                                         sstr << Token::comma;                   // comma separator
                         }
                 }

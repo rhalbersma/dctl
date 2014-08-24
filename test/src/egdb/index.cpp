@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetRank, T, SetTypes)
         constexpr auto e = T{ N - 2, N - 1 };
 
         BOOST_CHECK_EQUAL(colex::combination_rank(b), 0);
-        BOOST_CHECK_EQUAL(colex::combination_rank(e), (BinomialTable<N, 10>::coefficient(N, e.size())) - 1);
+        BOOST_CHECK_EQUAL(colex::combination_rank(e), (BinomialTable<N, 10>::coefficient(N, e.count())) - 1);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetUnRank, T, SetTypes)

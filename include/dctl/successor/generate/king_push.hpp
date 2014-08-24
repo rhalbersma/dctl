@@ -59,7 +59,7 @@ private:
         // short ranged kings
         auto find_dispatch(Set const& active_kings, std::false_type) const
         {
-                if (active_kings.empty())
+                if (active_kings.none())
                         return;
 
                 transform_movers<left_up   (orientation)>(active_kings);
@@ -82,7 +82,7 @@ private:
         template<int Direction>
         auto transform_movers(Set const& active_kings) const
         {
-                auto const movers = active_kings & *std::prev(along_wave<Direction>(propagate_.path()));
+                auto const movers = active_kings & Set(*std::prev(along_wave<Direction>(propagate_.path())));
                 boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
                         return Move{from_sq, *++along_ray<Direction>(from_sq), Color};
                 }));

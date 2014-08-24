@@ -60,7 +60,7 @@ public:
 
         void operator()(Set const& active_pawns) const
         {
-                if (active_pawns.empty())
+                if (active_pawns.none())
                         return;
 
                 // tag dispatching on whether pawns can capture kings
@@ -130,7 +130,7 @@ private:
         template<int Direction>
         void serialize(Set const& active_pawns) const
         {
-                auto const jumpers = active_pawns & *std::prev(along_wave<Direction>(tracker_.template targets_with_pawn<Direction>()));
+                auto const jumpers = active_pawns & Set(*std::prev(along_wave<Direction>(tracker_.template targets_with_pawn<Direction>())));
                 for (auto&& from_sq : jumpers)
                         find_first(along_ray<Direction>(from_sq));
         }

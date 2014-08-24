@@ -45,7 +45,7 @@ public:
 
         auto operator()(Set const& active_pawns) const
         {
-                return active_pawns.empty() ? 0 : branch(active_pawns);
+                return active_pawns.none() ? 0 : branch(active_pawns);
         }
 
 private:
@@ -62,7 +62,7 @@ private:
         {
                 return Sink<Board, Direction, std::false_type>{}(
                         active_pawns, propagate_.path()
-                ).size();
+                ).count();
         }
 };
 

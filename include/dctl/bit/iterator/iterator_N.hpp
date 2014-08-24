@@ -110,7 +110,7 @@ private:
                 }
                 --block_;
 
-                for (auto i = index_ / digits - 1; i >= 0; --i) {
+                for (auto i = index_ / digits - 1; i < Nb; --i) {
                         if (auto const mask = *block_) {
                                 index_ = i * digits + static_cast<std::size_t>(bit::intrinsic::bsrnz(mask));
                                 return;

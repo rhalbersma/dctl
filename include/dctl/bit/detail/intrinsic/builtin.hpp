@@ -137,6 +137,18 @@ constexpr auto clz(T x) noexcept
 }
 
 template<class T>
+constexpr auto bsfnz(T x) noexcept
+{
+        return ctznz(x);
+}
+
+template<class T>
+constexpr auto bsrnz(T x) noexcept
+{
+        return std::numeric_limits<T>::digits - 1 - clznz(x);
+}
+
+template<class T>
 constexpr auto popcount(T x) noexcept
 {
         return detail::popcount<T>{}(x);

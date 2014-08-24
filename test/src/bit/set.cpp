@@ -34,8 +34,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructorZeroInitializes, T, SetTypes)
 {
         /* constexpr */ T b;
 
-        BOOST_CHECK(b.empty());
-        BOOST_CHECK_EQUAL(b.size(), 0);
+        BOOST_CHECK(b.none());
+        BOOST_CHECK_EQUAL(b.count(), 0);
         BOOST_CHECK(  begin(b) ==   end(b));
         BOOST_CHECK( cbegin(b) ==  cend(b));
         BOOST_CHECK( rbegin(b) ==  rend(b));
@@ -71,10 +71,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DistanceBeginEndEqualsSize, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2, T::max_size() - 2, T::max_size() - 1 };
 
-        BOOST_CHECK_EQUAL(std::distance(  begin(b),   end(b)), b.size());
-        BOOST_CHECK_EQUAL(std::distance( cbegin(b),  cend(b)), b.size());
-        BOOST_CHECK_EQUAL(std::distance( rbegin(b),  rend(b)), b.size());
-        BOOST_CHECK_EQUAL(std::distance(crbegin(b), crend(b)), b.size());
+        BOOST_CHECK_EQUAL(std::distance(  begin(b),   end(b)), b.count());
+        BOOST_CHECK_EQUAL(std::distance( cbegin(b),  cend(b)), b.count());
+        BOOST_CHECK_EQUAL(std::distance( rbegin(b),  rend(b)), b.count());
+        BOOST_CHECK_EQUAL(std::distance(crbegin(b), crend(b)), b.count());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, SetTypes)

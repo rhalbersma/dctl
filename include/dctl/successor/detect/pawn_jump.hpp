@@ -47,7 +47,7 @@ public:
 
         auto operator()(Set const& active_pawns) const
         {
-                return active_pawns.empty() ? false : branch(active_pawns);
+                return active_pawns.none() ? false : branch(active_pawns);
         }
 
 private:
@@ -113,7 +113,7 @@ private:
         {
                 return !Sandwich<Board, Direction, std::false_type>{}(
                         active_pawns, propagate_.template targets_with_pawn<Direction>(), propagate_.path()
-                ).empty();
+                ).none();
         }
 };
 
