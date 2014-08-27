@@ -216,7 +216,7 @@ public:
 
         // observers
 
-       constexpr auto do_all() const noexcept
+        constexpr auto do_all() const noexcept
         {
                 for (auto&& block : elems)
                         if (block != ~static_cast<UnsignedInteger>(0))
