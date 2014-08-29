@@ -53,12 +53,12 @@ public:
 
         // data access
 
-        constexpr auto* data()
+        constexpr auto* do_data()
         {
                 return &elems;
         }
 
-        constexpr auto const* data() const
+        constexpr auto const* do_data() const
         {
                 return &elems;
         }
