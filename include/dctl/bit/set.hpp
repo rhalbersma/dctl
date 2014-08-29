@@ -22,13 +22,13 @@ template<std::size_t>
 class Set;
 
 template<std::size_t N>
-constexpr bool operator==(const Set<N>& lhs, const Set<N>& rhs) noexcept;
+constexpr bool operator==(Set<N> const& lhs, Set<N> const& rhs) noexcept;
 
 template<std::size_t N>
-constexpr bool operator<(const Set<N>& lhs, const Set<N>& rhs) noexcept;
+constexpr bool operator<(Set<N> const& lhs, Set<N> const& rhs) noexcept;
 
 template<std::size_t N>
-constexpr bool intersect(const Set<N>& lhs, const Set<N>& rhs) noexcept;
+constexpr bool intersect(Set<N> const& lhs, Set<N> const& rhs) noexcept;
 
 template<std::size_t N>
 class Set
@@ -152,7 +152,7 @@ public:
                         set(static_cast<key_type>(*it));
         }
 
-        auto swap(Set& other) noexcept
+        /* constexpr */ void swap(Set& other) noexcept
         {
                 this->do_swap(other);
         }
@@ -169,13 +169,13 @@ public:
                 return is_mask(n);
         }
 
-        constexpr auto test(key_type i) const noexcept
+        constexpr bool test(key_type i) const noexcept
         {
                 auto const n = static_cast<std::size_t>(i);
                 return 0 <= n && n < N && is_mask(n);
         }
 
-        constexpr auto& set(key_type i, bool value = true)
+        constexpr Set& set(key_type i, bool value = true)
         {
                 auto const n = static_cast<std::size_t>(i);
                 if (value)
@@ -185,14 +185,14 @@ public:
                 return *this;
         }
 
-        constexpr auto& reset(key_type i)
+        constexpr Set& reset(key_type i)
         {
                 auto const n = static_cast<std::size_t>(i);
                 block_ref(n) &= ~mask(n);
                 return *this;
         }
 
-        constexpr auto& flip(key_type i)
+        constexpr Set& flip(key_type i)
         {
                 auto const n = static_cast<std::size_t>(i);
                 block_ref(n) ^= mask(n);
@@ -201,36 +201,36 @@ public:
 
         constexpr auto* data()
         {
-                return Base::data();
+                return this->do_data();
         }
 
         constexpr auto const* data() const
         {
-                return Base::data();
+                return this->do_data();
         }
 
         // comparators
 
-        friend constexpr bool operator== <>(const Set&, const Set&) noexcept;
-        friend constexpr bool operator<  <>(const Set&, const Set&) noexcept;
-        friend constexpr bool intersect  <>(const Set&, const Set&) noexcept;
+        friend constexpr bool operator== <>(Set const&, Set const&) noexcept;
+        friend constexpr bool operator<  <>(Set const&, Set const&) noexcept;
+        friend constexpr bool intersect  <>(Set const&, Set const&) noexcept;
 
-        constexpr auto is_subset_of(const Set& other) const noexcept
+        constexpr bool is_subset_of(Set const& other) const noexcept
         {
                 return this->do_is_subset_of(other);
         }
 
-        constexpr auto is_superset_of(const Set& other) const noexcept
+        constexpr bool is_superset_of(Set const& other) const noexcept
         {
                 return other.is_subset_of(*this);
         }
 
-        constexpr auto is_proper_subset_of(const Set& other) const noexcept
+        constexpr bool is_proper_subset_of(Set const& other) const noexcept
         {
                 return this->do_is_proper_subset_of(other);
         }
 
-        constexpr auto is_proper_superset_of(const Set& other) const noexcept
+        constexpr bool is_proper_superset_of(Set const& other) const noexcept
         {
                 return other.is_proper_subset_of(*this);
         }
@@ -255,25 +255,25 @@ public:
                 return *this;
         }
 
-        constexpr Set& operator&=(const Set& rhs) noexcept
+        constexpr Set& operator&=(Set const& rhs) noexcept
         {
                 this->do_and(rhs);
                 return *this;
         }
 
-        constexpr Set& operator|=(const Set& rhs) noexcept
+        constexpr Set& operator|=(Set const& rhs) noexcept
         {
                 this->do_or(rhs);
                 return *this;
         }
 
-        constexpr Set& operator^=(const Set& rhs) noexcept
+        constexpr Set& operator^=(Set const& rhs) noexcept
         {
                 this->do_xor(rhs);
                 return *this;
         }
 
-        constexpr Set& operator-=(const Set& rhs) noexcept
+        constexpr Set& operator-=(Set const& rhs) noexcept
         {
                 this->do_minus(rhs);
                 return *this;
@@ -338,61 +338,61 @@ private:
 };
 
 template<std::size_t N>
-constexpr bool operator==(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr bool operator==(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return lhs.do_equal(rhs);
 }
 
 template<std::size_t N>
-constexpr bool operator<(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr bool operator<(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return lhs.do_colexicographical_compare(rhs);
 }
 
 template<std::size_t N>
-constexpr auto operator!=(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr bool operator!=(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return !(lhs == rhs);
 }
 
 template<std::size_t N>
-constexpr auto operator>(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr bool operator>(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return rhs < lhs;
 }
 
 template<std::size_t N>
-constexpr auto operator>=(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr bool operator>=(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return !(lhs < rhs);
 }
 
 template<std::size_t N>
-constexpr auto operator<=(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr bool operator<=(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return !(rhs < lhs);
 }
 
 template<std::size_t N>
-/* constexpr */ auto swap(Set<N>& lhs, Set<N>& rhs) noexcept
+/* constexpr */ void swap(Set<N>& lhs, Set<N>& rhs) noexcept
 {
         lhs.swap(rhs);
 }
 
 template<std::size_t N>
-constexpr bool intersect(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr bool intersect(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return lhs.do_intersects(rhs);
 }
 
 template<std::size_t N>
-constexpr auto disjoint(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr bool disjoint(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return !intersect(lhs, rhs);
 }
 
 template<std::size_t N>
-constexpr auto operator~(const Set<N>& lhs) noexcept
+constexpr Set<N> operator~(Set<N> const& lhs) noexcept
 {
         auto nrv(lhs);
         nrv.flip();
@@ -400,7 +400,7 @@ constexpr auto operator~(const Set<N>& lhs) noexcept
 }
 
 template<std::size_t N>
-constexpr auto operator&(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr Set<N> operator&(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         auto nrv(lhs);
         nrv &= rhs;
@@ -408,7 +408,7 @@ constexpr auto operator&(const Set<N>& lhs, const Set<N>& rhs) noexcept
 }
 
 template<std::size_t N>
-constexpr auto operator|(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr Set<N> operator|(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         auto nrv(lhs);
         nrv |= rhs;
@@ -416,7 +416,7 @@ constexpr auto operator|(const Set<N>& lhs, const Set<N>& rhs) noexcept
 }
 
 template<std::size_t N>
-constexpr auto operator^(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr Set<N> operator^(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         auto nrv(lhs);
         nrv ^= rhs;
@@ -424,7 +424,7 @@ constexpr auto operator^(const Set<N>& lhs, const Set<N>& rhs) noexcept
 }
 
 template<std::size_t N>
-constexpr auto operator-(const Set<N>& lhs, const Set<N>& rhs) noexcept
+constexpr Set<N> operator-(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         auto nrv(lhs);
         nrv -= rhs;
@@ -432,7 +432,7 @@ constexpr auto operator-(const Set<N>& lhs, const Set<N>& rhs) noexcept
 }
 
 template<std::size_t N>
-constexpr auto operator<<(const Set<N>& lhs, std::size_t n)
+constexpr Set<N> operator<<(Set<N> const& lhs, std::size_t n)
 {
         assert(n < N);
         auto nrv(lhs);
@@ -441,7 +441,7 @@ constexpr auto operator<<(const Set<N>& lhs, std::size_t n)
 }
 
 template<std::size_t N>
-constexpr auto operator>>(const Set<N>& lhs, std::size_t n)
+constexpr Set<N> operator>>(Set<N> const& lhs, std::size_t n)
 {
         assert(n < N);
         auto nrv(lhs);
@@ -450,49 +450,49 @@ constexpr auto operator>>(const Set<N>& lhs, std::size_t n)
 }
 
 template<std::size_t N>
-constexpr auto begin(const Set<N>& s) noexcept
+constexpr auto begin(Set<N> const& s) noexcept
 {
         return s.begin();
 }
 
 template<std::size_t N>
-constexpr auto end(const Set<N>& s) noexcept
+constexpr auto end(Set<N> const& s) noexcept
 {
         return s.end();
 }
 
 template<std::size_t N>
-constexpr auto cbegin(const Set<N>& s) noexcept
+constexpr auto cbegin(Set<N> const& s) noexcept
 {
         return begin(s);
 }
 
 template<std::size_t N>
-constexpr auto cend(const Set<N>& s) noexcept
+constexpr auto cend(Set<N> const& s) noexcept
 {
         return end(s);
 }
 
 template<std::size_t N>
-/* constexpr */ auto rbegin(const Set<N>& s) noexcept
+/* constexpr */ auto rbegin(Set<N> const& s) noexcept
 {
         return s.rbegin();
 }
 
 template<std::size_t N>
-/* constexpr */ auto rend(const Set<N>& s) noexcept
+/* constexpr */ auto rend(Set<N> const& s) noexcept
 {
         return s.rend();
 }
 
 template<std::size_t N>
-/* constexpr */ auto crbegin(const Set<N>& s) noexcept
+/* constexpr */ auto crbegin(Set<N> const& s) noexcept
 {
         return rbegin(s);
 }
 
 template<std::size_t N>
-/* constexpr */ auto crend(const Set<N>& s) noexcept
+/* constexpr */ auto crend(Set<N> const& s) noexcept
 {
         return rend(s);
 }

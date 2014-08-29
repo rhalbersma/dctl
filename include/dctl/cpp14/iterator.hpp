@@ -59,25 +59,25 @@ namespace cpp17 {
 // capacity:
 
 template <class C>
-constexpr auto size(const C& c) noexcept
+constexpr auto size(C const& c) noexcept
 {
         return c.size();
 }
 
 template <class T, std::size_t N>
-constexpr std::size_t size(const T (&)[N]) noexcept
+constexpr std::size_t size(T const (&)[N]) noexcept
 {
         return N;
 }
 
 template <class C>
-constexpr bool empty(const C& c) noexcept
+constexpr bool empty(C const& c) noexcept
 {
         return c.empty();
 }
 
 template <class T, std::size_t N>
-constexpr bool empty(const T (&)[N]) noexcept
+constexpr bool empty(T const (&)[N]) noexcept
 {
         return false;
 }
@@ -91,7 +91,7 @@ constexpr decltype(auto) front(C& c)
 }
 
 template <class C>
-constexpr decltype(auto) front(const C& c)
+constexpr decltype(auto) front(C const& c)
 {
         return c.front();
 }
@@ -103,7 +103,7 @@ constexpr decltype(auto) back(C& c)
 }
 
 template <class C>
-constexpr decltype(auto) back(const C& c)
+constexpr decltype(auto) back(C const& c)
 {
         return c.back();
 }
@@ -129,7 +129,7 @@ constexpr auto data(C& c) noexcept
 }
 
 template <class C>
-constexpr auto data(const C& c) noexcept
+constexpr auto data(C const& c) noexcept
 {
         return c.data();
 }
