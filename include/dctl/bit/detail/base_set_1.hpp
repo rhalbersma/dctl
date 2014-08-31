@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
+#include <dctl/bit/traits.hpp>                  // all, any, none
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <limits>                               // digits
@@ -77,19 +78,19 @@ public:
 
         constexpr auto do_intersects(BaseSet const& other) const noexcept
         {
-                return (elems & other.elems) != static_cast<UnsignedInteger>(0);
+                return (elems & other.elems) != none<UnsignedInteger>;
         }
 
         constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
         {
-                return (elems & ~other.elems) == static_cast<UnsignedInteger>(0);
+                return (elems & ~other.elems) == none<UnsignedInteger>;
         }
 
         constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
         {
                 if (elems & ~other.elems)
                         return false;
-                return (~elems & other.elems) != static_cast<UnsignedInteger>(0);
+                return (~elems & other.elems) != none<UnsignedInteger>;
         }
 
         // modifiers
@@ -102,12 +103,12 @@ public:
 
         constexpr auto do_set() noexcept
         {
-                elems = ~static_cast<UnsignedInteger>(0);
+                elems = all<UnsignedInteger>;
         }
 
         constexpr auto do_reset() noexcept
         {
-                elems = static_cast<UnsignedInteger>(0);
+                elems = none<UnsignedInteger>;
         }
 
         constexpr auto do_flip() noexcept
@@ -151,17 +152,17 @@ public:
 
         constexpr auto do_all() const noexcept
         {
-                return elems == ~static_cast<UnsignedInteger>(0);
+                return elems == all<UnsignedInteger>;
         }
 
         constexpr auto do_any() const noexcept
         {
-                return elems != static_cast<UnsignedInteger>(0);
+                return elems != none<UnsignedInteger>;
         }
 
         constexpr auto do_none() const noexcept
         {
-                return elems == static_cast<UnsignedInteger>(0);
+                return elems == none<UnsignedInteger>;
         }
 
         constexpr auto do_count() const noexcept
