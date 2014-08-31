@@ -2,44 +2,48 @@
 #include <dctl/bit/detail/intrinsic.hpp>        // bsfnz, bsrnz, clznz, ctznz
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
+#include <dctl/bit/traits.hpp>                  // digits, is_unsigned_integer
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert
-#include <cstddef>                              // ptrdiff_t, size_t
+#include <cstddef>                              // ptrdiff_t
 #include <iterator>                             // bidirectional_iterator_tag
-#include <limits>                               // digits
 #include <tuple>                                // tie
 
 namespace dctl {
 namespace bit {
 
-template<class UnsignedInteger, std::size_t Nb>
+template<class Block, int Nb>
 class ConstIterator
 :
         public boost::iterator_facade
         <
-                ConstIterator<UnsignedInteger, Nb>,
-                std::size_t const,
+                ConstIterator<Block, Nb>,
+                int const,
                 std::bidirectional_iterator_tag,
-                ConstReference<UnsignedInteger, Nb>,
+                ConstReference<Block, Nb>,
                 std::ptrdiff_t
         >
 {
 private:
-        static constexpr auto digits = static_cast<std::size_t>(std::numeric_limits<UnsignedInteger>::digits);
-        static constexpr auto N = Nb * digits;
+        static_assert(
+                is_unsigned_integer<Block>,
+                "Template parameter 'T' in 'ConstIterator<T, N>' shall be of unsigned integer type."
+        );
+
+        static constexpr auto N = Nb * digits<Block>;
 
 public:
         // constructors
 
         constexpr ConstIterator() = default;
 
-        explicit constexpr ConstIterator(UnsignedInteger const* b)
+        explicit constexpr ConstIterator(Block const* b)
         :
                 block_{b},
                 index_{find_first()}
         {}
 
-        constexpr ConstIterator(UnsignedInteger const* b, std::size_t n)
+        constexpr ConstIterator(Block const* b, int n)
         :
                 block_{b},
                 index_{n}
@@ -55,9 +59,9 @@ private:
         constexpr auto find_first()
         {
                 assert(block_ != nullptr);
-                for (std::size_t i = 0; i < Nb; ++i) {
+                for (auto i = 0; i < Nb; ++i) {
                         if (auto const mask = *block_)
-                                return i * digits + static_cast<std::size_t>(bit::intrinsic::bsfnz(mask));
+                                return i * digits<Block> + bit::intrinsic::bsfnz(mask);
                         ++block_;
                 }
                 return N;
@@ -68,23 +72,23 @@ private:
         {
                 assert(block_ != nullptr);
                 assert(0 <= index_ && index_ < N);
-                if (N == ++index_) {
+                if (++index_ == N) {
                         ++block_;
                         return;
                 }
 
-                auto const idx = index_ % digits;
+                auto const idx = index_ % digits<Block>;
                 if (idx == 0)
                         ++block_;
                 if (auto const mask = *block_ >> idx) {
-                        index_ += static_cast<std::size_t>(bit::intrinsic::ctznz(mask));
+                        index_ += bit::intrinsic::ctznz(mask);
                         return;
                 }
                 ++block_;
 
-                for (auto i = index_ / digits + 1; i < Nb; ++i) {
+                for (auto i = index_ / digits<Block> + 1; i < Nb; ++i) {
                         if (auto const mask = *block_) {
-                                index_ = i * digits + static_cast<std::size_t>(bit::intrinsic::bsfnz(mask));
+                                index_ = i * digits<Block> + bit::intrinsic::bsfnz(mask);
                                 return;
                         }
                         ++block_;
@@ -101,28 +105,28 @@ private:
                 if (--index_ == 0)
                         return;
 
-                auto const idx = index_ % digits;
-                if (idx == digits - 1)
+                auto const idx = index_ % digits<Block>;
+                if (idx == digits<Block> - 1)
                         --block_;
-                if (auto const mask = *block_ << (digits - 1 - idx)) {
-                        index_ -= static_cast<std::size_t>(bit::intrinsic::clznz(mask));
+                if (auto const mask = *block_ << (digits<Block> - 1 - idx)) {
+                        index_ -= bit::intrinsic::clznz(mask);
                         return;
                 }
                 --block_;
 
-                for (auto i = index_ / digits - 1; i < Nb; --i) {
+                for (auto i = index_ / digits<Block> - 1; i >= 0; --i) {
                         if (auto const mask = *block_) {
-                                index_ = i * digits + static_cast<std::size_t>(bit::intrinsic::bsrnz(mask));
+                                index_ = i * digits<Block> + bit::intrinsic::bsrnz(mask);
                                 return;
                         }
                         --block_;
                 }
                 index_ = 0;
-                assert(index_ < N);
+                assert(0 <= index_ && index_ < N);
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr ConstReference<UnsignedInteger, Nb> dereference() const
+        constexpr ConstReference<Block, Nb> dereference() const
         {
                 assert(block_ != nullptr);
                 return { *block_, index_ };
@@ -140,8 +144,8 @@ private:
 private:
         // representation
 
-        UnsignedInteger const* block_{};
-        std::size_t index_{};
+        Block const* block_{};
+        int index_{};
 };
 
 }       // namespace bit

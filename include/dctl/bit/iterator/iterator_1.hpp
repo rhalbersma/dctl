@@ -2,44 +2,47 @@
 #include <dctl/bit/detail/intrinsic.hpp>        // clznz, ctznz, ctz
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
+#include <dctl/bit/traits.hpp>                  // digits, is_unsigned_integer
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert
-#include <cstddef>                              // ptrdiff_t, size_t
+#include <cstddef>                              // ptrdiff_t
 #include <iterator>                             // bidirectional_iterator_tag
-#include <limits>                               // digits
 #include <tuple>                                // tie
 
 namespace dctl {
 namespace bit {
 
-template<class UnsignedInteger>
-class ConstIterator<UnsignedInteger, 1>
+template<class Block>
+class ConstIterator<Block, 1>
 :
         public boost::iterator_facade
         <
-                ConstIterator<UnsignedInteger, 1>,
-                std::size_t const,
+                ConstIterator<Block, 1>,
+                int const,
                 std::bidirectional_iterator_tag,
-                ConstReference<UnsignedInteger, 1>,
+                ConstReference<Block, 1>,
                 std::ptrdiff_t
         >
 {
-        static constexpr auto digits = std::numeric_limits<UnsignedInteger>::digits;
-        static constexpr auto N = 1 * digits;
+        static_assert(
+                is_unsigned_integer<Block>,
+                "Template parameter 'T' in 'ConstIterator<T, 1>' shall be of unsigned integer type."
+        );
+
+        static constexpr auto N = 1 * digits<Block>;
 
 public:
         // constructors
 
         constexpr ConstIterator() = default;
 
-        explicit constexpr ConstIterator(UnsignedInteger const* b)
+        explicit constexpr ConstIterator(Block const* b)
         :
                 block_{b},
                 index_{find_first()}
         {}
 
-
-        constexpr ConstIterator(UnsignedInteger const* b, std::size_t n)
+        constexpr ConstIterator(Block const* b, int n)
         :
                 block_{b},
                 index_{n}
@@ -55,18 +58,18 @@ private:
         constexpr auto find_first()
         {
                 assert(block_ != nullptr);
-                return static_cast<std::size_t>(bit::intrinsic::ctz(*block_));
+                return bit::intrinsic::ctz(*block_);
         }
 
         // operator++() and operator++(int) provided by boost::iterator_facade
         constexpr auto increment()
         {
                 assert(block_ != nullptr);
-                assert(index_ < N);
+                assert(0 <= index_ && index_ < N);
                 if (++index_ == N)
                         return;
                 if (auto const mask = *block_ >> index_)
-                        index_ += static_cast<std::size_t>(bit::intrinsic::ctznz(mask));
+                        index_ += bit::intrinsic::ctznz(mask);
                 else
                         index_ = N;
                 assert(0 < index_ && index_ <= N);
@@ -79,15 +82,15 @@ private:
                 assert(0 < index_ && index_ <= N);
                 if (--index_ == 0)
                         return;
-                if (auto const mask = *block_ << (digits - 1 - index_))
-                        index_ -= static_cast<std::size_t>(bit::intrinsic::clznz(mask));
+                if (auto const mask = *block_ << (digits<Block> - 1 - index_))
+                        index_ -= bit::intrinsic::clznz(mask);
                 else
                         index_ = 0;
-                assert(index_ < N);
+                assert(0 <= index_ && index_ < N);
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr ConstReference<UnsignedInteger, 1> dereference() const
+        constexpr ConstReference<Block, 1> dereference() const
         {
                 assert(block_ != nullptr);
                 return { *block_, index_ };
@@ -105,8 +108,8 @@ private:
 private:
         // representation
 
-        UnsignedInteger const* block_{};
-        std::size_t index_{};
+        Block const* block_{};
+        int index_{};
 };
 
 }       // namespace bit

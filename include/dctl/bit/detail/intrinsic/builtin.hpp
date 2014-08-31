@@ -1,6 +1,6 @@
 #pragma once
-#include <cassert>      // assert
-#include <limits>       // digits
+#include <dctl/bit/traits.hpp>  // digits
+#include <cassert>              // assert
 
 namespace dctl {
 namespace bit {
@@ -127,13 +127,13 @@ constexpr auto clznz(T x)
 template<class T>
 constexpr auto ctz(T x) noexcept
 {
-        return x ? ctznz(x) : std::numeric_limits<T>::digits;
+        return x ? ctznz(x) : digits<T>;
 }
 
 template<class T>
 constexpr auto clz(T x) noexcept
 {
-        return x ? clznz(x) : std::numeric_limits<T>::digits;
+        return x ? clznz(x) : digits<T>;
 }
 
 template<class T>
@@ -145,7 +145,7 @@ constexpr auto bsfnz(T x) noexcept
 template<class T>
 constexpr auto bsrnz(T x) noexcept
 {
-        return std::numeric_limits<T>::digits - 1 - clznz(x);
+        return digits<T> - 1 - clznz(x);
 }
 
 template<class T>

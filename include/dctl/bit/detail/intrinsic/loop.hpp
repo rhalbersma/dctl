@@ -1,6 +1,5 @@
 #pragma once
-#include <dctl/bit/traits.hpp>  // one
-#include <limits>               // digits
+#include <dctl/bit/traits.hpp>  // one, digits
 
 namespace dctl {
 namespace bit {
@@ -9,19 +8,19 @@ namespace loop {
 template<class T>
 constexpr auto ctz(T x) noexcept
 {
-        for (auto i = 0; i < std::numeric_limits<T>::digits; ++i)
+        for (auto i = 0; i < digits<T>; ++i)
                 if (x & (one<T> << i))
                         return i;
-        return std::numeric_limits<T>::digits;
+        return digits<T>;
 }
 
 template<class T>
 constexpr auto clz(T x) noexcept
 {
-        for (auto i = std::numeric_limits<T>::digits - 1; i >= 0; --i)
+        for (auto i = digits<T> - 1; i >= 0; --i)
                 if (x & (one<T> << i))
-                        return std::numeric_limits<T>::digits - 1 - i;
-        return std::numeric_limits<T>::digits;
+                        return digits<T> - 1 - i;
+        return digits<T>;
 }
 
 template<class T>
@@ -45,7 +44,7 @@ constexpr auto bsfnz(T x) noexcept
 template<class T>
 constexpr auto bsrnz(T x) noexcept
 {
-        return std::numeric_limits<T>::digits - 1 - clznz(x);
+        return digits<T> - 1 - clznz(x);
 }
 
 template<class T>

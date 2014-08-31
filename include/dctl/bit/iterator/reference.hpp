@@ -1,21 +1,26 @@
 #pragma once
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
-#include <cstddef>                              // size_t
+#include <dctl/bit/traits.hpp>                  // is_unsigned_integer
 
 namespace dctl {
 namespace bit {
 
-template<class Block, std::size_t Nb>
+template<class Block, int Nb>
 class ConstReference
 {
+        static_assert(
+                is_unsigned_integer<Block>,
+                "Template parameter 'T' in 'ConstReference<T, N>' shall be of unsigned integer type."
+        );
+
 public:
         // constructors
 
         // references cannot be left uninitialized
         ConstReference() = delete;
 
-        constexpr ConstReference(Block const& b, std::size_t n) noexcept
+        constexpr ConstReference(Block const& b, int n) noexcept
         :
                 block_{b},
                 index_{n}
@@ -30,7 +35,7 @@ public:
         ConstReference& operator=(ConstReference const&) = delete;
 
         // const references cannot be assigned through
-        ConstReference& operator=(std::size_t) = delete;
+        ConstReference& operator=(int) = delete;
 
         // observers
 
@@ -41,14 +46,14 @@ public:
 
         /* implicit */ constexpr operator int() const noexcept
         {
-                return static_cast<int>(index_);
+                return index_;
         }
 
 private:
         // representation
 
         Block const& block_;
-        std::size_t index_;
+        int index_;
 };
 
 }       // namespace bit

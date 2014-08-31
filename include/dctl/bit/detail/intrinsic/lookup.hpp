@@ -1,7 +1,6 @@
 #pragma once
-#include <cassert>      // assert
-#include <limits>       // digits
-#include <type_traits>  // integral_constant
+#include <dctl/bit/traits.hpp>  // digits
+#include <cassert>              // assert
 
 namespace dctl {
 namespace bit {
@@ -53,9 +52,6 @@ private:
 
         template<class T>
         static constexpr int num_blocks = sizeof(T) / sizeof(U);
-
-        template<class T>
-        static constexpr auto digits = std::numeric_limits<T>::digits;
 
         template<class T>
         static constexpr auto block_mask(T x, int i)
@@ -166,7 +162,7 @@ constexpr auto bsfnz(T x) noexcept
 template<class T>
 constexpr auto bsrnz(T x) noexcept
 {
-        return std::numeric_limits<T>::digits - 1 - clznz(x);
+        return digits<T> - 1 - clznz(x);
 }
 
 template<class T>

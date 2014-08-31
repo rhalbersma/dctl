@@ -44,7 +44,7 @@ public:
         using external_grid = grid::Grid<Dimensions, 0>;
 
 private:
-        using Block = uintptr_t;
+        using Block = std::size_t;
         static constexpr auto Nb = (internal_grid::size - 1) / std::numeric_limits<Block>::digits + 1;
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 

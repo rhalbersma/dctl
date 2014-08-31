@@ -2,6 +2,7 @@
 #include <dctl/bit/detail/base_set.hpp>         // BaseSet
 #include <dctl/bit/iterator/iterator.hpp>       // ConstIterator
 #include <dctl/bit/iterator/reference.hpp>      // ConstReference
+#include <dctl/bit/traits.hpp>                  // one, digits
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t, size_t
 #include <initializer_list>                     // initializer_list
@@ -12,32 +13,31 @@
 namespace dctl {
 namespace bit {
 
-template<class Block>
-constexpr auto num_blocks(std::size_t N)
+template<class UnsignedInteger>
+constexpr auto num_blocks(int N)
 {
-        return (N - 1) / std::numeric_limits<Block>::digits + 1;
+        return (N - 1) / digits<UnsignedInteger> + 1;
 }
 
-template<std::size_t>
+template<int>
 class Set;
 
-template<std::size_t N>
+template<int N>
 constexpr bool operator==(Set<N> const& lhs, Set<N> const& rhs) noexcept;
 
-template<std::size_t N>
+template<int N>
 constexpr bool operator<(Set<N> const& lhs, Set<N> const& rhs) noexcept;
 
-template<std::size_t N>
+template<int N>
 constexpr bool intersect(Set<N> const& lhs, Set<N> const& rhs) noexcept;
 
-template<std::size_t N>
+template<int N>
 class Set
 :
         private detail::BaseSet<std::size_t, num_blocks<std::size_t>(N)>
 {
 public:
         using block_type = std::size_t;
-        static constexpr auto digits = std::numeric_limits<block_type>::digits;
         static constexpr auto Nb = num_blocks<block_type>(N);
         using Base = detail::BaseSet<block_type, Nb>;
 
@@ -153,25 +153,23 @@ public:
 
         // element access
 
-        constexpr reference operator[](key_type n)
+        constexpr reference operator[](int n)
         {
                 return { block_ref(n), n };
         }
 
-        constexpr auto operator[](key_type n) const
+        constexpr auto operator[](int n) const
         {
                 return is_mask(n);
         }
 
-        constexpr bool test(key_type i) const noexcept
+        constexpr bool test(int n) const noexcept
         {
-                auto const n = static_cast<std::size_t>(i);
                 return 0 <= n && n < N && is_mask(n);
         }
 
-        constexpr Set& set(key_type i, bool value = true)
+        constexpr Set& set(int n, bool value = true)
         {
-                auto const n = static_cast<std::size_t>(i);
                 if (value)
                         block_ref(n) |= mask(n);
                 else
@@ -179,16 +177,14 @@ public:
                 return *this;
         }
 
-        constexpr Set& reset(key_type i)
+        constexpr Set& reset(int n)
         {
-                auto const n = static_cast<std::size_t>(i);
                 block_ref(n) &= ~mask(n);
                 return *this;
         }
 
-        constexpr Set& flip(key_type i)
+        constexpr Set& flip(int n)
         {
-                auto const n = static_cast<std::size_t>(i);
                 block_ref(n) ^= mask(n);
                 return *this;
         }
@@ -273,16 +269,16 @@ public:
                 return *this;
         }
 
-        constexpr Set& operator<<=(std::size_t n)
+        constexpr Set& operator<<=(int n)
         {
-                assert(n < N);
+                assert(0 <= n && n < N);
                 this->do_left_shift(n);
                 return *this;
         }
 
-        constexpr Set& operator>>=(std::size_t n)
+        constexpr Set& operator>>=(int n)
         {
-                assert(n < N);
+                assert(0 <= n && n < N);
                 this->do_right_shift(n);
                 return *this;
         }
@@ -310,82 +306,82 @@ public:
         }
 
 private:
-        constexpr auto& block_ref(std::size_t n)
+        constexpr auto& block_ref(int n)
         {
                 return *(this->block_ptr(n));
         }
 
-        constexpr auto const& block_ref(std::size_t n) const
+        constexpr auto const& block_ref(int n) const
         {
                 return *(this->block_ptr(n));
         }
 
-        static constexpr auto mask(std::size_t n)
+        static constexpr auto mask(int n)
         {
-                return one<block_type> << (n % digits);
+                return one<block_type> << (n % digits<block_type>);
         }
 
-        constexpr bool is_mask(std::size_t n) const
+        constexpr bool is_mask(int n) const
         {
                 return block_ref(n) & mask(n);
         }
 };
 
-template<std::size_t N>
+template<int N>
 constexpr bool operator==(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return lhs.do_equal(rhs);
 }
 
-template<std::size_t N>
+template<int N>
 constexpr bool operator<(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return lhs.do_colexicographical_compare(rhs);
 }
 
-template<std::size_t N>
+template<int N>
 constexpr bool operator!=(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return !(lhs == rhs);
 }
 
-template<std::size_t N>
+template<int N>
 constexpr bool operator>(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return rhs < lhs;
 }
 
-template<std::size_t N>
+template<int N>
 constexpr bool operator>=(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return !(lhs < rhs);
 }
 
-template<std::size_t N>
+template<int N>
 constexpr bool operator<=(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return !(rhs < lhs);
 }
 
-template<std::size_t N>
+template<int N>
 /* constexpr */ void swap(Set<N>& lhs, Set<N>& rhs) noexcept
 {
         lhs.swap(rhs);
 }
 
-template<std::size_t N>
+template<int N>
 constexpr bool intersect(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return lhs.do_intersects(rhs);
 }
 
-template<std::size_t N>
+template<int N>
 constexpr bool disjoint(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         return !intersect(lhs, rhs);
 }
 
-template<std::size_t N>
+template<int N>
 constexpr Set<N> operator~(Set<N> const& lhs) noexcept
 {
         auto nrv(lhs);
@@ -393,7 +389,7 @@ constexpr Set<N> operator~(Set<N> const& lhs) noexcept
         return nrv;
 }
 
-template<std::size_t N>
+template<int N>
 constexpr Set<N> operator&(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         auto nrv(lhs);
@@ -401,7 +397,7 @@ constexpr Set<N> operator&(Set<N> const& lhs, Set<N> const& rhs) noexcept
         return nrv;
 }
 
-template<std::size_t N>
+template<int N>
 constexpr Set<N> operator|(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         auto nrv(lhs);
@@ -409,7 +405,7 @@ constexpr Set<N> operator|(Set<N> const& lhs, Set<N> const& rhs) noexcept
         return nrv;
 }
 
-template<std::size_t N>
+template<int N>
 constexpr Set<N> operator^(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         auto nrv(lhs);
@@ -417,7 +413,7 @@ constexpr Set<N> operator^(Set<N> const& lhs, Set<N> const& rhs) noexcept
         return nrv;
 }
 
-template<std::size_t N>
+template<int N>
 constexpr Set<N> operator-(Set<N> const& lhs, Set<N> const& rhs) noexcept
 {
         auto nrv(lhs);
@@ -425,67 +421,67 @@ constexpr Set<N> operator-(Set<N> const& lhs, Set<N> const& rhs) noexcept
         return nrv;
 }
 
-template<std::size_t N>
-constexpr Set<N> operator<<(Set<N> const& lhs, std::size_t n)
+template<int N>
+constexpr Set<N> operator<<(Set<N> const& lhs, int n)
 {
-        assert(n < N);
+        assert(0 <= n && n < N);
         auto nrv(lhs);
         nrv <<= n;
         return nrv;
 }
 
-template<std::size_t N>
-constexpr Set<N> operator>>(Set<N> const& lhs, std::size_t n)
+template<int N>
+constexpr Set<N> operator>>(Set<N> const& lhs, int n)
 {
-        assert(n < N);
+        assert(0 <= n && n < N);
         auto nrv(lhs);
         nrv >>= n;
         return nrv;
 }
 
-template<std::size_t N>
+template<int N>
 constexpr auto begin(Set<N> const& s) noexcept
 {
         return s.begin();
 }
 
-template<std::size_t N>
+template<int N>
 constexpr auto end(Set<N> const& s) noexcept
 {
         return s.end();
 }
 
-template<std::size_t N>
+template<int N>
 constexpr auto cbegin(Set<N> const& s) noexcept
 {
         return begin(s);
 }
 
-template<std::size_t N>
+template<int N>
 constexpr auto cend(Set<N> const& s) noexcept
 {
         return end(s);
 }
 
-template<std::size_t N>
+template<int N>
 /* constexpr */ auto rbegin(Set<N> const& s) noexcept
 {
         return s.rbegin();
 }
 
-template<std::size_t N>
+template<int N>
 /* constexpr */ auto rend(Set<N> const& s) noexcept
 {
         return s.rend();
 }
 
-template<std::size_t N>
+template<int N>
 /* constexpr */ auto crbegin(Set<N> const& s) noexcept
 {
         return rbegin(s);
 }
 
-template<std::size_t N>
+template<int N>
 /* constexpr */ auto crend(Set<N> const& s) noexcept
 {
         return rend(s);

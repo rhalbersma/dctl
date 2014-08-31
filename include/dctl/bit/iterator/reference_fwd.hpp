@@ -1,10 +1,9 @@
 #pragma once
-#include <cstddef>      // size_t
 
 namespace dctl {
 namespace bit {
 
-template<class Block, std::size_t Nb>
+template<class Block, int Nb>
 class ConstReference;
 
 }       // namespace bit
