@@ -1,7 +1,8 @@
 #pragma once
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
-#include <dctl/bit/traits.hpp>                  // is_unsigned_integer
+#include <dctl/bit/traits.hpp>                  // digits, is_unsigned_integer
+#include <cassert>                              // assert
 
 namespace dctl {
 namespace bit {
@@ -10,6 +11,7 @@ template<class Block, int Nb>
 class ConstReference
 {
         static_assert(is_unsigned_integer<Block>, "");
+        static constexpr auto N = Nb * digits<Block>;
 
 public:
         // constructors
@@ -21,7 +23,9 @@ public:
         :
                 block_{b},
                 index_{n}
-        {}
+        {
+                assert(0 <= n & n < N);
+        }
 
         // copying and assignment
 
