@@ -1,28 +1,24 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
-#include <dctl/bit/traits.hpp>                  // all, any, none
+#include <dctl/bit/traits.hpp>                  // none, one, all, digits, is_unsigned_integer
 #include <cassert>                              // assert
-#include <cstddef>                              // size_t
-#include <limits>                               // digits
 #include <utility>                              // swap
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class UnsignedInteger>
-class BaseSet<UnsignedInteger, 1>
+template<class Block>
+class BaseSet<Block, 1>
 {
 private:
         static_assert(
-                !std::numeric_limits<UnsignedInteger>::is_signed &&
-                 std::numeric_limits<UnsignedInteger>::is_integer,
+                is_unsigned_integer<Block>,
                 "Template parameter 'T' in 'BaseSet<T, 1>' shall be of unsigned integer type."
         );
 
-        static constexpr auto digits = std::numeric_limits<UnsignedInteger>::digits;
-        static constexpr auto N = 1 * digits;
+        static constexpr auto N = 1 * digits<Block>;
 
 public:
         // constructors
@@ -42,12 +38,12 @@ public:
 
         // element access
 
-        constexpr auto* block_ptr(std::size_t /* n */)
+        constexpr auto* block_ptr(int /* n */)
         {
                 return &elems;
         }
 
-        constexpr auto const* block_ptr(std::size_t /* n */) const
+        constexpr auto const* block_ptr(int /* n */) const
         {
                 return &elems;
         }
@@ -78,19 +74,19 @@ public:
 
         constexpr auto do_intersects(BaseSet const& other) const noexcept
         {
-                return (elems & other.elems) != none<UnsignedInteger>;
+                return (elems & other.elems) != none<Block>;
         }
 
         constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
         {
-                return (elems & ~other.elems) == none<UnsignedInteger>;
+                return (elems & ~other.elems) == none<Block>;
         }
 
         constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
         {
                 if (elems & ~other.elems)
                         return false;
-                return (~elems & other.elems) != none<UnsignedInteger>;
+                return (~elems & other.elems) != none<Block>;
         }
 
         // modifiers
@@ -103,12 +99,12 @@ public:
 
         constexpr auto do_set() noexcept
         {
-                elems = all<UnsignedInteger>;
+                elems = all<Block>;
         }
 
         constexpr auto do_reset() noexcept
         {
-                elems = none<UnsignedInteger>;
+                elems = none<Block>;
         }
 
         constexpr auto do_flip() noexcept
@@ -136,15 +132,15 @@ public:
                 elems &= ~other.elems;
         }
 
-        constexpr auto do_left_shift(std::size_t n)
+        constexpr auto do_left_shift(int n)
         {
-                assert(n < N);
+                assert(0 <= n && n < N);
                 elems <<= n;
         }
 
-        constexpr auto do_right_shift(std::size_t n)
+        constexpr auto do_right_shift(int n)
         {
-                assert(n < N);
+                assert(0 <= n && n < N);
                 elems >>= n;
         }
 
@@ -152,17 +148,17 @@ public:
 
         constexpr auto do_all() const noexcept
         {
-                return elems == all<UnsignedInteger>;
+                return elems == all<Block>;
         }
 
         constexpr auto do_any() const noexcept
         {
-                return elems != none<UnsignedInteger>;
+                return elems != none<Block>;
         }
 
         constexpr auto do_none() const noexcept
         {
-                return elems == none<UnsignedInteger>;
+                return elems == none<Block>;
         }
 
         constexpr auto do_count() const noexcept
@@ -173,7 +169,7 @@ public:
 private:
         // representation
 
-        UnsignedInteger elems{};
+        Block elems{};
 };
 
 }       // namespace detail

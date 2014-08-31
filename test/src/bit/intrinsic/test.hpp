@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/bit/traits.hpp>                  // all, any, none
+#include <dctl/bit/traits.hpp>                  // all, any, none, digits
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/contains.hpp>               // contains
 #include <boost/mpl/vector.hpp>                 // vector
@@ -7,7 +7,6 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <cstddef>                              // size_t
 #include <cstdint>                              // uint32_t, uint64_t, uintptr_t
-#include <limits>                               // digits
 
 namespace dctl {
 namespace bit {
@@ -27,8 +26,6 @@ BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, uint32_t>));
 BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, uint64_t>));
 BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, uintptr_t>));
 BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, std::size_t>));
-
-template<class T> constexpr auto digits = std::numeric_limits<T>::digits;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(CountTrailingZeros, T, UnsignedIntegerTypes)
 {
