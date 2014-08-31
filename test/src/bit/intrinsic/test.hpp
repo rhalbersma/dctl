@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/bit/traits.hpp>                  // all, any, none
 #include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/contains.hpp>               // contains
 #include <boost/mpl/vector.hpp>                 // vector
@@ -28,9 +29,6 @@ BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, uintptr_t>));
 BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, std::size_t>));
 
 template<class T> constexpr auto digits = std::numeric_limits<T>::digits;
-template<class T> constexpr auto none = static_cast<T>(0);
-template<class T> constexpr auto one = static_cast<T>(1);
-template<class T> constexpr auto all = ~none<T>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(CountTrailingZeros, T, UnsignedIntegerTypes)
 {

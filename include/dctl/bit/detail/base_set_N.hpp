@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/detail/intrinsic.hpp>        // popcount
+#include <dctl/bit/traits.hpp>                  // all, any, none
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <limits>                               // digits
@@ -125,13 +126,13 @@ public:
         constexpr auto do_set() noexcept
         {
                 for (auto&& block : elems)
-                        block = ~static_cast<UnsignedInteger>(0);
+                        block = all<UnsignedInteger>;
         }
 
         constexpr auto do_reset() noexcept
         {
                 for (auto&& block : elems)
-                        block = static_cast<UnsignedInteger>(0);
+                        block = none<UnsignedInteger>;
         }
 
         constexpr auto do_flip() noexcept
@@ -186,7 +187,7 @@ public:
                         elems[n_block] = elems[0] << L_shift;
                 }
                 for (auto i = n_block - 1; i < Nb; --i)
-                        elems[i] = static_cast<UnsignedInteger>(0);
+                        elems[i] = none<UnsignedInteger>;
         }
 
         constexpr auto do_right_shift(std::size_t n)
@@ -211,7 +212,7 @@ public:
                         elems[Nb - 1 - n_block] = elems[Nb - 1] >> R_shift;
                 }
                 for (auto i = Nb - n_block; i < Nb; ++i)
-                        elems[i] = static_cast<UnsignedInteger>(0);
+                        elems[i] = none<UnsignedInteger>;
         }
 
         // observers
@@ -219,7 +220,7 @@ public:
         constexpr auto do_all() const noexcept
         {
                 for (auto&& block : elems)
-                        if (block != ~static_cast<UnsignedInteger>(0))
+                        if (block != all<UnsignedInteger>)
                                 return false;
                 return true;
         }

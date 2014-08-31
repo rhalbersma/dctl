@@ -1,6 +1,7 @@
 #pragma once
-#include <limits>                       // digits
-#include <type_traits>                  // integral_constant
+#include <cassert>      // assert
+#include <limits>       // digits
+#include <type_traits>  // integral_constant
 
 namespace dctl {
 namespace bit {
@@ -13,32 +14,36 @@ public:
         template<class T>
         static constexpr auto ctz(T x) noexcept
         {
-                for (auto i = 0, n = 0; i < num_blocks<T>::value; ++i) {
+                auto n = 0;
+                for (auto i = 0; i < num_blocks<T>; ++i) {
                         auto const b = block_mask(x, i);
                         n += ctz_[b];
                         if (b)
                                 return n;
                 }
-                return std::numeric_limits<T>::digits;
+                assert(n == digits<T>);
+                return n;
         }
 
         template<class T>
         static constexpr auto clz(T x) noexcept
         {
-                for (auto i = num_blocks<T>::value - 1, n = 0; i >= 0; --i) {
+                auto n = 0;
+                for (auto i = num_blocks<T> - 1; i >= 0; --i) {
                         auto const b = block_mask(x, i);
                         n += clz_[b];
                         if (b)
                                 return n;
                 }
-                return std::numeric_limits<T>::digits;
+                assert(n == digits<T>);
+                return n;
         }
 
         template<class T>
         static constexpr auto popcount(T x) noexcept
         {
                 auto n = 0;
-                for (auto i = 0; i < num_blocks<T>::value; ++i)
+                for (auto i = 0; i < num_blocks<T>; ++i)
                         n += popcount_[block_mask(x, i)];
                 return n;
         }
@@ -47,12 +52,15 @@ private:
         // implementation
 
         template<class T>
-        using num_blocks = std::integral_constant<int, sizeof(T) / sizeof(U)>;
+        static constexpr int num_blocks = sizeof(T) / sizeof(U);
+
+        template<class T>
+        static constexpr auto digits = std::numeric_limits<T>::digits;
 
         template<class T>
         static constexpr auto block_mask(T x, int i)
         {
-                return static_cast<U>(x >> (i * std::numeric_limits<U>::digits));
+                return static_cast<U>(x >> (i * digits<U>));
         }
 
         // representation

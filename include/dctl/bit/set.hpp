@@ -37,6 +37,7 @@ class Set
 {
 public:
         using block_type = std::size_t;
+        static constexpr auto digits = std::numeric_limits<block_type>::digits;
         static constexpr auto Nb = num_blocks<block_type>(N);
         using Base = detail::BaseSet<block_type, Nb>;
 
@@ -64,13 +65,6 @@ public:
         constexpr Set(std::initializer_list<value_type> ilist)
         {
                 insert(ilist.begin(), ilist.end());
-        }
-
-        constexpr auto& operator=(std::initializer_list<value_type> ilist)
-        {
-                reset();
-                insert(ilist.begin(), ilist.end());
-                return *this;
         }
 
         // iterators
@@ -328,12 +322,12 @@ private:
 
         static constexpr auto mask(std::size_t n)
         {
-                return static_cast<block_type>(1) << (n % std::numeric_limits<block_type>::digits);
+                return one<block_type> << (n % digits);
         }
 
-        constexpr auto is_mask(std::size_t n) const
+        constexpr bool is_mask(std::size_t n) const
         {
-                return (block_ref(n) & mask(n)) != block_type{0};
+                return block_ref(n) & mask(n);
         }
 };
 

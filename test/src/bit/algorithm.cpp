@@ -19,10 +19,12 @@ using SetTypes = boost::mpl::vector
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetEmpty, T, SetTypes)
 {
         constexpr auto b = T{};
-        BOOST_CHECK(b.none());
+        BOOST_CHECK( b.none());
+        BOOST_CHECK(!b.any());
         BOOST_CHECK(!set_single(b));
         BOOST_CHECK(!set_double(b));
         BOOST_CHECK(!set_multiple(b));
+        BOOST_CHECK(!b.all());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetSingle, T, SetTypes)
@@ -30,9 +32,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetSingle, T, SetTypes)
         for (auto i = 0; i < std::numeric_limits<T>::digits; ++i) {
                 auto const b = T{i};
                 BOOST_CHECK(!b.none());
+                BOOST_CHECK( b.any());
                 BOOST_CHECK( set_single(b));
                 BOOST_CHECK(!set_double(b));
                 BOOST_CHECK(!set_multiple(b));
+                BOOST_CHECK(!b.all());
         }
 }
 
