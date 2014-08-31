@@ -13,11 +13,7 @@ template<class Block>
 class BaseSet<Block, 1>
 {
 private:
-        static_assert(
-                is_unsigned_integer<Block>,
-                "Template parameter 'T' in 'BaseSet<T, 1>' shall be of unsigned integer type."
-        );
-
+        static_assert(is_unsigned_integer<Block>, "");
         static constexpr auto N = 1 * digits<Block>;
 
 public:

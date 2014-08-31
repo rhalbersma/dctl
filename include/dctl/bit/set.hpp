@@ -7,16 +7,14 @@
 #include <cstddef>                              // ptrdiff_t, size_t
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // iterator_traits
-#include <limits>                               // digits
-#include <type_traits>                          // is_convertible
 
 namespace dctl {
 namespace bit {
 
-template<class UnsignedInteger>
+template<class Block>
 constexpr auto num_blocks(int N)
 {
-        return (N - 1) / digits<UnsignedInteger> + 1;
+        return (N - 1) / digits<Block> + 1;
 }
 
 template<int>
@@ -36,15 +34,11 @@ class Set
 :
         private detail::BaseSet<std::size_t, num_blocks<std::size_t>(N)>
 {
-public:
+private:
         using block_type = std::size_t;
         static constexpr auto Nb = num_blocks<block_type>(N);
-        using Base = detail::BaseSet<block_type, Nb>;
 
-        using key_type = int;
-        using value_type = int;
-        using size_type = std::size_t;
-        using difference_type = std::ptrdiff_t;
+public:
         using reference = ConstReference<block_type, Nb>;
         using const_reference = reference;
         using iterator = ConstIterator<block_type, Nb>;
@@ -62,7 +56,7 @@ public:
                 insert(first, last);
         }
 
-        constexpr Set(std::initializer_list<value_type> ilist)
+        constexpr Set(std::initializer_list<int> ilist)
         {
                 insert(ilist.begin(), ilist.end());
         }
@@ -141,9 +135,8 @@ public:
         template<class InputIt>
         constexpr void insert(InputIt first, InputIt last)
         {
-                static_assert(std::is_convertible<decltype(*first), key_type>::value, "");
                 for (auto it = first; it != last; ++it)
-                        set(static_cast<key_type>(*it));
+                        set(*it);
         }
 
         /* constexpr */ void swap(Set& other) noexcept
@@ -155,11 +148,13 @@ public:
 
         constexpr reference operator[](int n)
         {
+                assert(0 <= n && n < N);
                 return { block_ref(n), n };
         }
 
         constexpr auto operator[](int n) const
         {
+                assert(0 <= n && n < N);
                 return is_mask(n);
         }
 
@@ -170,6 +165,7 @@ public:
 
         constexpr Set& set(int n, bool value = true)
         {
+                assert(0 <= n && n < N);
                 if (value)
                         block_ref(n) |= mask(n);
                 else
@@ -179,12 +175,14 @@ public:
 
         constexpr Set& reset(int n)
         {
+                assert(0 <= n && n < N);
                 block_ref(n) &= ~mask(n);
                 return *this;
         }
 
         constexpr Set& flip(int n)
         {
+                assert(0 <= n && n < N);
                 block_ref(n) ^= mask(n);
                 return *this;
         }
@@ -308,11 +306,13 @@ public:
 private:
         constexpr auto& block_ref(int n)
         {
+                assert(0 <= n && n < N);
                 return *(this->block_ptr(n));
         }
 
         constexpr auto const& block_ref(int n) const
         {
+                assert(0 <= n && n < N);
                 return *(this->block_ptr(n));
         }
 
@@ -323,6 +323,7 @@ private:
 
         constexpr bool is_mask(int n) const
         {
+                assert(0 <= n && n < N);
                 return block_ref(n) & mask(n);
         }
 };
