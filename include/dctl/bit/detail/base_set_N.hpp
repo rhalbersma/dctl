@@ -191,7 +191,7 @@ public:
                 auto const R_shift = n % digits<Block>;
 
                 if (R_shift == 0) {
-                       for (auto i  = 0; i <= Nb - 1 - n_block; ++i)
+                        for (auto i  = 0; i <= Nb - 1 - n_block; ++i)
                                elems[i] = elems[i + n_block];
                 } else {
                         auto const L_shift = digits<Block> - R_shift;
