@@ -13,11 +13,7 @@ template<class Block, int Nb>
 class BaseSet
 {
 private:
-        static_assert(
-                is_unsigned_integer<Block>,
-                "Template parameter 'T' in 'BaseSet<T, N>' shall be of unsigned integer type."
-        );
-
+        static_assert(is_unsigned_integer<Block>, "");
         static constexpr auto N = Nb * digits<Block>;
 
 public:
@@ -74,7 +70,7 @@ public:
 
         constexpr auto do_colexicographical_compare(BaseSet const& other) const noexcept
         {
-                for (auto i = Nb - 1; i < Nb; --i) {
+                for (auto i = Nb - 1; i >= 0; --i) {
                         if (elems[i] < other.elems[i])
                                 return true;
                         if (elems[i] > other.elems[i])

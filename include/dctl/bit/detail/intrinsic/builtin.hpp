@@ -137,14 +137,16 @@ constexpr auto clz(T x) noexcept
 }
 
 template<class T>
-constexpr auto bsfnz(T x) noexcept
+constexpr auto bsfnz(T x)
 {
+        assert(x != 0);
         return ctznz(x);
 }
 
 template<class T>
-constexpr auto bsrnz(T x) noexcept
+constexpr auto bsrnz(T x)
 {
+        assert(x != 0);
         return digits<T> - 1 - clznz(x);
 }
 

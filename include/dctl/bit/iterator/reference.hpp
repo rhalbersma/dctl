@@ -9,10 +9,7 @@ namespace bit {
 template<class Block, int Nb>
 class ConstReference
 {
-        static_assert(
-                is_unsigned_integer<Block>,
-                "Template parameter 'T' in 'ConstReference<T, N>' shall be of unsigned integer type."
-        );
+        static_assert(is_unsigned_integer<Block>, "");
 
 public:
         // constructors

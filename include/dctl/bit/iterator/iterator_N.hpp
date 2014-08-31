@@ -7,7 +7,6 @@
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t
 #include <iterator>                             // bidirectional_iterator_tag
-#include <tuple>                                // tie
 
 namespace dctl {
 namespace bit {
@@ -25,11 +24,7 @@ class ConstIterator
         >
 {
 private:
-        static_assert(
-                is_unsigned_integer<Block>,
-                "Template parameter 'T' in 'ConstIterator<T, N>' shall be of unsigned integer type."
-        );
-
+        static_assert(is_unsigned_integer<Block>, "");
         static constexpr auto N = Nb * digits<Block>;
 
 public:
@@ -135,10 +130,7 @@ private:
         // operator== and operator!= provided by boost::iterator_facade
         constexpr auto equal(ConstIterator const& other) const noexcept
         {
-                return
-                        std::tie(      block_,       index_) ==
-                        std::tie(other.block_, other.index_)
-                ;
+                return block_ == other.block_ && index_ == other.index_;
         }
 
 private:
