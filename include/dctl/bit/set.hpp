@@ -4,9 +4,8 @@
 #include <dctl/bit/iterator/reference.hpp>      // ConstReference
 #include <dctl/bit/traits.hpp>                  // one, digits
 #include <cassert>                              // assert
-#include <cstddef>                              // ptrdiff_t, size_t
 #include <initializer_list>                     // initializer_list
-#include <iterator>                             // iterator_traits
+#include <iterator>                             // reverse_iterator
 
 namespace dctl {
 namespace bit {
@@ -32,10 +31,10 @@ constexpr bool intersect(Set<N> const& lhs, Set<N> const& rhs) noexcept;
 template<int N>
 class Set
 :
-        private detail::BaseSet<std::size_t, num_blocks<std::size_t>(N)>
+        private detail::BaseSet<unsigned long long, num_blocks<unsigned long long>(N)>
 {
 private:
-        using block_type = std::size_t;
+        using block_type = unsigned long long;
         static constexpr auto Nb = num_blocks<block_type>(N);
 
 public:
@@ -125,7 +124,7 @@ public:
 
         // capacity
 
-        static constexpr auto max_size() noexcept
+        static constexpr int size() noexcept
         {
                 return N;
         }
@@ -163,13 +162,11 @@ public:
                 return 0 <= n && n < N && is_mask(n);
         }
 
-        constexpr Set& set(int n, bool value = true)
+        constexpr Set& set(int n)
         {
                 assert(0 <= n && n < N);
-                if (value)
-                        block_ref(n) |= mask(n);
-                else
-                        block_ref(n) &= ~mask(n);
+                block_ref(n) |= mask(n);
+                assert(is_mask(n));
                 return *this;
         }
 
@@ -177,6 +174,7 @@ public:
         {
                 assert(0 <= n && n < N);
                 block_ref(n) &= ~mask(n);
+                assert(!is_mask(n));
                 return *this;
         }
 
@@ -228,12 +226,14 @@ public:
         constexpr Set& set() noexcept
         {
                 this->do_set();
+                assert(all());
                 return *this;
         }
 
         constexpr Set& reset() noexcept
         {
                 this->do_reset();
+                assert(none());
                 return *this;
         }
 

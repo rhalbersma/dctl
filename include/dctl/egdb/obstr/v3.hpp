@@ -15,7 +15,7 @@ template<class Range>
 auto mirrored()
 {
         return boost::adaptors::transformed([](auto value) {
-                return Range::max_size() - 1 - value;
+                return Range::size() - 1 - value;
         });
 }
 

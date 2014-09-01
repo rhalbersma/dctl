@@ -31,7 +31,7 @@ using SetTypes = boost::mpl::vector
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetRank, T, SetTypes)
 {
         constexpr auto b = T{ 0, 1, 2 };
-        constexpr auto N = T::max_size();
+        constexpr auto N = T::size();
         constexpr auto e = T{ N - 2, N - 1 };
 
         BOOST_CHECK_EQUAL(colex::combination_rank(b), 0);

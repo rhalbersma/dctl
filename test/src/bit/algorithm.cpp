@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetEmpty, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetSingle, T, SetTypes)
 {
-        for (auto i = 0; i < T::max_size(); ++i) {
+        for (auto i = 0; i < T::size(); ++i) {
                 auto const b = T{i};
                 BOOST_CHECK(b.any());
                 BOOST_CHECK(set_single(b));
@@ -33,8 +33,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetSingle, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetDouble, T, SetTypes)
 {
-        for (auto i = 0; i < T::max_size(); ++i) {
-                for (auto j = 0; j < T::max_size(); ++j) {
+        for (auto i = 0; i < T::size(); ++i) {
+                for (auto j = 0; j < T::size(); ++j) {
                         auto const b = T{i, j};
                         if (i == j) {
                                 BOOST_CHECK(set_single(b));
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetDouble, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetMultiple, T, SetTypes)
 {
-        for (auto i = 0; i < T::max_size(); ++i) {
+        for (auto i = 0; i < T::size(); ++i) {
                 auto const b = ~((~T{} >> i) << i);
                 switch (i) {
                 case 0:
@@ -71,8 +71,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetMultiple, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetIntersection, T, SetTypes)
 {
-        constexpr auto a = T { 0, 1, 2, T::max_size() - 2, T::max_size() - 1 };
-        constexpr auto b = T { 0, 1, 3, T::max_size() - 4, T::max_size() - 3 };
+        constexpr auto a = T { 0, 1, 2, T::size() - 2, T::size() - 1 };
+        constexpr auto b = T { 0, 1, 3, T::size() - 4, T::size() - 3 };
 
         constexpr auto i_ab = a & b;
         constexpr auto i_ba = b & a;
@@ -85,8 +85,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetIntersection, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetUnion, T, SetTypes)
 {
-        constexpr auto a = T { 0, 1, 2, T::max_size() - 2, T::max_size() - 1 };
-        constexpr auto b = T { 0, 1, 3, T::max_size() - 4, T::max_size() - 3 };
+        constexpr auto a = T { 0, 1, 2, T::size() - 2, T::size() - 1 };
+        constexpr auto b = T { 0, 1, 3, T::size() - 4, T::size() - 3 };
 
         constexpr auto u_ab = a | b;
         constexpr auto u_ba = b | a;
@@ -99,8 +99,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetUnion, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetSymmetricDifference, T, SetTypes)
 {
-        constexpr auto a = T { 0, 1, 2, T::max_size() - 2, T::max_size() - 1 };
-        constexpr auto b = T { 0, 1, 3, T::max_size() - 4, T::max_size() - 3 };
+        constexpr auto a = T { 0, 1, 2, T::size() - 2, T::size() - 1 };
+        constexpr auto b = T { 0, 1, 3, T::size() - 4, T::size() - 3 };
 
         constexpr auto s_ab = a ^ b;
         constexpr auto s_ba = b ^ a;
@@ -118,8 +118,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetSymmetricDifference, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetDifference, T, SetTypes)
 {
-        constexpr auto a = T { 0, 1, 2, T::max_size() - 2, T::max_size() - 1 };
-        constexpr auto b = T { 0, 1, 3, T::max_size() - 4, T::max_size() - 3 };
+        constexpr auto a = T { 0, 1, 2, T::size() - 2, T::size() - 1 };
+        constexpr auto b = T { 0, 1, 3, T::size() - 4, T::size() - 3 };
 
         constexpr auto d_ab = a - b;
         constexpr auto d_ba = b - a;
