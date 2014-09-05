@@ -24,11 +24,6 @@ public:
                 return not_occupied_;
         }
 
-        auto path(int sq) const
-        {
-                return path().test(sq);
-        }
-
 private:
         // representation
         using Set = set_type_t<Position>;

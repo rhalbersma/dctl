@@ -37,7 +37,7 @@ private:
 
         static constexpr auto theta = 45_deg; //Board::is_orthogonal_captures ? 45_deg : 90_deg;
         static constexpr auto beta  =  0_deg; //Board::is_orthogonal_captures ?  0_deg : 45_deg;
-        static constexpr auto N     = Board::set_type::N;
+        static constexpr auto N     = Board::set_type::size();
         using Set = typename Board::set_type;
 
         using table_type = std::array<Set, N>;

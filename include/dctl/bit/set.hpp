@@ -166,7 +166,7 @@ public:
         {
                 assert(0 <= n && n < N);
                 block_ref(n) |= mask(n);
-                assert(is_mask(n));
+                assert(test(n));
                 return *this;
         }
 
@@ -174,7 +174,7 @@ public:
         {
                 assert(0 <= n && n < N);
                 block_ref(n) &= ~mask(n);
-                assert(!is_mask(n));
+                assert(!test(n));
                 return *this;
         }
 

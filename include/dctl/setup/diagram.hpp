@@ -1,13 +1,13 @@
 #pragma once
-#include <functional>                   // bind, placeholders
-#include <iomanip>                      // setw
-#include <sstream>                      // stringstream
-#include <string>                       // string
 #include <dctl/setup/content.hpp>
 #include <dctl/setup/diagram_fwd.hpp>
 #include <dctl/setup/numbers.hpp>
 #include <dctl/setup/i_token.hpp>
 #include <dctl/position/color.hpp>
+#include <dctl/type_traits.hpp>
+#include <iomanip>                      // setw
+#include <sstream>                      // stringstream
+#include <string>                       // string
 
 namespace dctl {
 namespace setup {
@@ -20,7 +20,7 @@ public:
         // the board square numbers (starting at 1)
         std::string operator()() const
         {
-                return diagram<Board, squares>{}(std::bind(std::plus<int>(), std::placeholders::_1, 1));
+                return diagram<Board, squares>{}([](auto n){ return n + 1; });
         }
 
         // parameterized board square content
@@ -74,14 +74,14 @@ public:
         // the board bit numbers (starting at 0)
         std::string operator()() const
         {
-                return diagram<Board, bits>{}(std::bind(std::plus<int>(), std::placeholders::_1, 0));
+                return diagram<Board, bits>{}([](auto n){ return n; });
         }
 
         // parameterized board bit content
         template<class Functor>
         std::string operator()(Functor f) const
         {
-                return diagram<Board, squares>{}(std::bind(f, std::bind(Board::bit_from_square, std::placeholders::_1)));
+                return diagram<Board, squares>{}([=](auto n){ return f(Board::bit_from_square(n)); });
         }
 };
 
@@ -98,9 +98,7 @@ public:
         template<class Position>
         std::string operator()(Position const& p) const
         {
-                using Board = typename Position::board_type;
-
-                return diagram<Board, bits>{}(std::bind(content<Content, Position>, p, std::placeholders::_1));
+                return diagram<board_type_t<Position>, bits>{}([&](auto n){ return content<Content, Position>(p, n); });
         }
 };
 
