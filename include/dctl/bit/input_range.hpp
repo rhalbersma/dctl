@@ -1,20 +1,23 @@
 #pragma once
 #include <dctl/bit/detail/intrinsic.hpp>        // ctznz
+#include <dctl/bit/traits.hpp>                  // none
 #include <dctl/utility/input_range_facade.hpp>  // InputRangeCoreAcces, InputRangeFacade
 #include <cassert>                              // assert
 
 namespace dctl {
 namespace bit {
 
-template<class T, class Block, int Nb>
+template<class Block, int Nb>
 class InputRange;
 
-template<class T, class Block>
-class InputRange<T, Block, 1>
+template<class Block>
+class InputRange<Block, 1>
 :
         // provides member and non-member begin() / end()
-        public util::InputRangeFacade<InputRange<T, Block, 1>, T, T>
+        public util::InputRangeFacade<InputRange<Block, 1>, int, int>
 {
+        static_assert(is_unsigned_integer<Block>, "");
+
 public:
         // constructors
 
@@ -37,17 +40,17 @@ private:
 
         // observers
 
-        auto front() const
+        int front() const
         {
                 assert(!empty());
-                return T{bit::intrinsic::ctznz(range_)};
+                return bit::intrinsic::ctznz(range_);
         }
 
         // predicates
 
-        auto empty() const noexcept
+        bool empty() const noexcept
         {
-                return range_ == 0;
+                return range_ == none<Block>;
         }
 
 private:
