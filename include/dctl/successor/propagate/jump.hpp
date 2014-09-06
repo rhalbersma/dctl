@@ -134,7 +134,7 @@ public:
         {
                 visited_path_.push_back(dest);
 
-                /*
+/*
                 std::cout << "TRACING JUMP: ";
                 std::cout << "squares={";
                 for (auto&& s : squares_) std::cout << Board::numeric_from_bit(s) << ",";
@@ -163,12 +163,6 @@ public:
 
         // observers
 
-        template<int Direction>
-        auto targets_with_king() const
-        {
-                return remaining_targets_ & Set(*std::prev(along_wave<Direction>(path())));
-        }
-
         template<class Iterator>
         auto targets_with_king(Iterator it) const
         {
@@ -176,7 +170,7 @@ public:
         }
 
         template<int Direction>
-        auto targets_with_pawn() const
+        auto targets_with_king() const
         {
                 return remaining_targets_ & Set(*std::prev(along_wave<Direction>(path())));
         }
@@ -185,6 +179,12 @@ public:
         auto targets_with_pawn(Iterator it) const
         {
                 return targets_with_pawn<ray::direction_v<Iterator>>().test(*it);
+        }
+
+        template<int Direction>
+        auto targets_with_pawn() const
+        {
+                return remaining_targets_ & Set(*std::prev(along_wave<Direction>(path())));
         }
 
         auto path() const

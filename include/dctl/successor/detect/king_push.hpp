@@ -63,9 +63,9 @@ private:
         template<int Direction>
         auto parallelize(Set const& active_kings) const
         {
-                return !Sink<Board, Direction, std::false_type>{}(
+                return Sink<Board, Direction, std::false_type>{}(
                         active_kings, propagate_.path()
-                ).none();
+                ).any();
         }
 };
 

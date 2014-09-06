@@ -45,7 +45,7 @@ public:
 
         auto operator()(Set const& active_pawns) const
         {
-                return active_pawns.none() ? false : branch(active_pawns);
+                return active_pawns.any() ? branch(active_pawns) : false;
         }
 
 private:
@@ -61,9 +61,9 @@ private:
         template<int Direction>
         auto parallelize(Set const& active_pawns) const
         {
-                return !Sink<Board, Direction, std::false_type>{}(
+                return Sink<Board, Direction, std::false_type>{}(
                         active_pawns, propagate_.path()
-                ).none();
+                ).any();
         }
 };
 

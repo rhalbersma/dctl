@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/ray/traits.hpp>
 
 namespace dctl {
 namespace ray {
@@ -7,7 +8,7 @@ template<class Iterator, class Set>
 auto fill(Iterator from, Set const& propagator)
 {
         Set targets {};
-        for (++from; propagator.test(*from); ++from)
+        for (++from; is_onboard(from) && propagator.test(*from); ++from)
                 targets.set(*from);
         return targets;
 }
