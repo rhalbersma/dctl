@@ -145,21 +145,27 @@ public:
 
         // element access
 
-        constexpr reference operator[](int n)
+        [[deprecated]] constexpr reference operator[](int n)
         {
                 assert(0 <= n && n < N);
                 return { block_ref(n), n };
         }
 
-        constexpr auto operator[](int n) const
+        [[deprecated]] constexpr bool operator[](int n) const
         {
                 assert(0 <= n && n < N);
-                return is_mask(n);
+                return test(n);
         }
 
-        constexpr bool test(int n) const noexcept
+        constexpr bool test(int n) const
         {
-                return 0 <= n && n < N && is_mask(n);
+                assert(0 <= n && n < N);
+                return block_ref(n) & mask(n);
+        }
+
+        [[deprecated]] constexpr Set& set(int n, bool value)
+        {
+                return value ? set(n) : reset(n);
         }
 
         constexpr Set& set(int n)
@@ -319,12 +325,6 @@ private:
         static constexpr auto mask(int n)
         {
                 return one<block_type> << (n % digits<block_type>);
-        }
-
-        constexpr bool is_mask(int n) const
-        {
-                assert(0 <= n && n < N);
-                return block_ref(n) & mask(n);
         }
 };
 

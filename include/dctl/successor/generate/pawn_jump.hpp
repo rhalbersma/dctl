@@ -138,6 +138,7 @@ private:
         template<class Iterator>
         void find_first(Iterator jumper) const
         {
+                assert(is_onboard(jumper));
                 tracker_.launch(*jumper);
                 capture(std::next(jumper));
                 tracker_.finish();
@@ -146,6 +147,7 @@ private:
         template<class Iterator>
         void capture(Iterator jumper) const
         {
+                assert(is_onboard(jumper));
                 tracker_.capture(*jumper);
                 land(std::next(jumper));
                 tracker_.release();
@@ -154,6 +156,7 @@ private:
         template<class Iterator>
         void land(Iterator jumper) const
         {
+                assert(is_onboard(jumper));
                 tracker_.visit(*jumper);
                 if (!find_next(jumper))
                         add(jumper);
@@ -178,6 +181,7 @@ private:
         template<class Iterator>
         bool promotion_dispatch(Iterator jumper, std::true_type) const
         {
+                assert(is_onboard(jumper));
                 return is_promotion(*jumper) ? KingJumps{tracker_, moves_}.promote_en_passant(jumper) : explore(jumper);
         }
 
@@ -315,7 +319,7 @@ private:
         template<class Iterator>
         bool is_en_prise(Iterator jumper) const
         {
-                if (!tracker_.targets_with_pawn(jumper))
+                if (!(is_onboard(std::next(jumper)) && tracker_.targets_with_pawn(jumper)))
                         return false;
 
                 capture(jumper);

@@ -110,13 +110,14 @@ private:
         void find_first(Iterator jumper) const
         {
                 slide(jumper, tracker_.template path<ray::direction_v<Iterator>>());
-                if (tracker_.targets_with_king(jumper))
+                if (is_onboard(std::next(jumper)) && tracker_.targets_with_king(jumper))
                         capture(jumper);
         }
 
         template<class Iterator>
         void capture(Iterator jumper) const
         {
+                assert(is_onboard(jumper));
                 tracker_.capture(*jumper);
                 land(std::next(jumper));
                 tracker_.release();
@@ -125,6 +126,7 @@ private:
         template<class Iterator>
         void land(Iterator jumper) const
         {
+                assert(is_onboard(jumper));
                 tracker_.visit(*jumper);
                 if (!find_next(jumper))
                         add(jumper);
@@ -194,12 +196,12 @@ private:
         {
                 // CORRECTNESS: tracker_.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
-                assert(tracker_.path(*jumper));
+                assert(is_onboard(jumper) && tracker_.path(*jumper));
                 auto found_next = false;
                 do {
                         found_next |= turn(jumper);
                         ++jumper;
-                } while (tracker_.path(*jumper));
+                } while (is_onboard(jumper) && tracker_.path(*jumper));
                 return found_next |= is_en_prise(jumper);
         }
 
@@ -257,6 +259,8 @@ private:
         template<class Iterator>
         void slide(Iterator& jumper, Set const& path) const
         {
+                assert(is_onboard(jumper));
+
                 // tag dispatching on king range
                 slide_dispatch(jumper, path, is_long_ranged_king_t<Rules>{});
         }
@@ -272,13 +276,13 @@ private:
         template<class Iterator>
         void slide_dispatch(Iterator& jumper, Set const& path, std::true_type) const
         {
-                do ++jumper; while (path.test(*jumper));
+                do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
         }
 
         template<class Iterator>
         bool is_en_prise(Iterator jumper) const
         {
-                if (!tracker_.targets_with_king(jumper))
+                if (!(is_onboard(jumper) && tracker_.targets_with_king(jumper)))
                         return false;
 
                 capture(jumper);
@@ -318,6 +322,7 @@ private:
         template<class Iterator>
         void halt_dispatch(Iterator dest_sq, std::pair<std::true_type, std::true_type>) const
         {
+                assert(is_onboard(std::prev(dest_sq)));
                 if (tracker_.is_king(*std::prev(dest_sq)))
                         halt_dispatch(dest_sq, std::pair<std::false_type, std::true_type>{});
                 else
@@ -337,13 +342,15 @@ private:
         {
                 // NOTE: tracker_.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
-                assert(tracker_.path(*dest_sq));
-                do add_jump(dest_sq++); while (tracker_.path(*dest_sq));
+                assert(is_onboard(dest_sq) && tracker_.path(*dest_sq));
+                do add_jump(dest_sq++); while (is_onboard(dest_sq) && tracker_.path(*dest_sq));
         }
 
         template<class Iterator>
         void add_jump(Iterator dest_sq) const
         {
+                assert(is_onboard(dest_sq));
+
                 // tag dispatching on promotion condition
                 promotion_dispatch(dest_sq, is_en_passant_promotion_t<Rules>{});
         }

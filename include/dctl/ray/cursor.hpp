@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/angle.hpp>               // Angle
-#include <boost/operators.hpp>          // totally_ordered, unit_steppable, additive
+#include <dctl/angle.hpp>       // Angle
+#include <boost/operators.hpp>  // totally_ordered, unit_steppable, additive
 
 namespace dctl {
 namespace ray {
