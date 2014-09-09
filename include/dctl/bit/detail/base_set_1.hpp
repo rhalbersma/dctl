@@ -9,17 +9,27 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class Block>
-class BaseSet<Block, 1>
+template<>
+class BaseSet<1>
 {
 private:
-        static_assert(is_unsigned_integer<Block>, "");
-        static constexpr auto N = 1 * digits<Block>;
+        using block_type = unsigned long long;
+        static constexpr auto N = 1 * digits<block_type>;
 
 public:
         // constructors
 
         constexpr BaseSet() = default;
+
+        constexpr BaseSet(unsigned long value) noexcept
+        :
+                elems{value}
+        {}
+
+        constexpr BaseSet(unsigned long long value) noexcept
+        :
+                elems{value}
+        {}
 
 protected:
         // destructor
@@ -70,19 +80,19 @@ public:
 
         constexpr auto do_intersects(BaseSet const& other) const noexcept
         {
-                return (elems & other.elems) != none<Block>;
+                return (elems & other.elems) != none<block_type>;
         }
 
         constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
         {
-                return (elems & ~other.elems) == none<Block>;
+                return (elems & ~other.elems) == none<block_type>;
         }
 
         constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
         {
                 if (elems & ~other.elems)
                         return false;
-                return (~elems & other.elems) != none<Block>;
+                return (~elems & other.elems) != none<block_type>;
         }
 
         // modifiers
@@ -95,12 +105,12 @@ public:
 
         constexpr auto do_set() noexcept
         {
-                elems = all<Block>;
+                elems = all<block_type>;
         }
 
         constexpr auto do_reset() noexcept
         {
-                elems = none<Block>;
+                elems = none<block_type>;
         }
 
         constexpr auto do_flip() noexcept
@@ -144,17 +154,17 @@ public:
 
         constexpr auto do_all() const noexcept
         {
-                return elems == all<Block>;
+                return elems == all<block_type>;
         }
 
         constexpr auto do_any() const noexcept
         {
-                return elems != none<Block>;
+                return elems != none<block_type>;
         }
 
         constexpr auto do_none() const noexcept
         {
-                return elems == none<Block>;
+                return elems == none<block_type>;
         }
 
         constexpr auto do_count() const noexcept
@@ -165,7 +175,7 @@ public:
 private:
         // representation
 
-        Block elems{};
+        block_type elems{};
 };
 
 }       // namespace detail

@@ -31,11 +31,12 @@ constexpr bool intersect(Set<N> const& lhs, Set<N> const& rhs) noexcept;
 template<int N>
 class Set
 :
-        private detail::BaseSet<unsigned long long, num_blocks<unsigned long long>(N)>
+        private detail::BaseSet<num_blocks<unsigned long long>(N)>
 {
 private:
         using block_type = unsigned long long;
         static constexpr auto Nb = num_blocks<block_type>(N);
+        using Base = detail::BaseSet<num_blocks<unsigned long long>(N)>;
 
 public:
         using reference = ConstReference<block_type, Nb>;
@@ -48,6 +49,8 @@ public:
         // constructors
 
         constexpr Set() = default;
+
+        using Base::Base;
 
         template<class InputIt>
         constexpr Set(InputIt first, InputIt last)
