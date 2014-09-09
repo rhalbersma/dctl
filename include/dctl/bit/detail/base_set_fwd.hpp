@@ -4,11 +4,11 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<class Block, int Nb>
+template<int Nb>
 class BaseSet;
 
-template<class Block>
-class BaseSet<Block, 1>;
+template<>
+class BaseSet<1>;
 
 }       // namespace detail
 }       // namespace bit
