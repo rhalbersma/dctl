@@ -7,7 +7,7 @@
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 #include <dctl/rule_traits.hpp>                         // is_absolute_king_jump_precedence_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
-#include <algorithm>                                    // lower_bound, stable_sort, unique
+#include <algorithm>                                    // upper_bound, stable_sort, unique
 #include <type_traits>                                  // false_type, true_type
 
 namespace dctl {
@@ -26,8 +26,11 @@ public:
                 // EFFICIENCY: tag dispatching on absolute king jump precedence
                 precedence_dispatch(p, moves, is_absolute_king_jump_precedence_t<Rules>{});
 
-                //handle_precedence(moves, value_compare<Rules>{});
-                auto const check_duplicate = is_remove_duplicates_v<Rules> && moves.size() > 1;
+                //auto const check_precedence = is_jump_precedence_v<Rules>;
+                //if (check_precedence)
+                //handle_precedence(moves, greater_value{});
+
+                auto const check_duplicate = is_remove_duplicates_v<Rules>;// && moves.size() > 1;
                 if (check_duplicate) {
                         auto maxx = std::max_element(begin(moves), end(moves), [](auto const& L, auto const& R){
                                 return L.num_pieces() < R.num_pieces();
@@ -67,29 +70,26 @@ private:
         template<class Sequence, class Compare>
         void handle_precedence(Sequence& moves, Compare cmp) const
         {
-                if (moves.size() <= 1) return;
                 std::stable_sort(begin(moves), end(moves), cmp);
-                auto const keep = std::lower_bound(begin(moves), end(moves), moves.back(), cmp);
-                moves.erase(begin(moves), keep);
+                auto const drop = std::upper_bound(begin(moves), end(moves), moves.front(), cmp);
+                moves.erase(drop, end(moves));
         }
 
         template<class Sequence>
         void handle_uniqueness(Sequence& moves) const
         {
-                if (moves.size() <= 1) return;
                 std::stable_sort(begin(moves), end(moves));
                 auto const drop = std::unique(begin(moves), end(moves));
                 moves.erase(drop, end(moves));
         }
 
-        template<class Rules>
-        struct value_compare
+        struct greater_value
         {
                 template<class Move>
                 auto operator()(Move const& L, Move const& R) const
                 {
-                        using Value = typename Rules::template value_type<Move>;
-                        return Value{L} < Value{R};
+                        using Value = jump_precedence_t<rules_type_t<Move>>;
+                        return Value{L} > Value{R};
                 }
         };
 };

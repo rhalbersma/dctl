@@ -50,6 +50,7 @@ public:
         }
 
         using Rules = rules_type_t<Position>;
+        using rules_type = Rules;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
 
