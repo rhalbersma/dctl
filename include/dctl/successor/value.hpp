@@ -4,10 +4,9 @@
 namespace dctl {
 namespace successor {
 
-template<class Move>
 class Value
 :
-        boost::totally_ordered<Value<Move>>     // < >= > <= == !=
+        boost::totally_ordered<Value>   // < >= > <= == !=
 {
 public:
         // predicates

@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/successor/value.hpp>     // Value
 
 namespace dctl {
 namespace pool {
@@ -10,11 +9,7 @@ struct Rules
 {
         // required
         static constexpr auto is_backward_pawn_jump = true;                     // 13
-        static constexpr auto is_jump_precedence = false;                       // 20
         static constexpr auto is_long_ranged_king = true;                       // 15
-
-        template<class Move>
-        using value_type = successor::Value<Move>;
 
         // draw
         static constexpr auto max_repetitions = 3;                              // 26

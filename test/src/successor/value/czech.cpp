@@ -7,7 +7,7 @@ namespace dctl {
 
 BOOST_AUTO_TEST_SUITE(SuccessorValueCzech)
 
-using T = czech::Value<Move<czech::Rules, board::Roman>>;
+using T = czech::Value;
 static constexpr auto d = T{};
 static constexpr auto n = T{false};
 static constexpr auto y = T{true };

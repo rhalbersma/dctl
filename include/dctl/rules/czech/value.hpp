@@ -4,10 +4,9 @@
 namespace dctl {
 namespace czech {
 
-template<class Move>
 class Value
 :
-        boost::totally_ordered<Value<Move>>     // < >= > <= == !=
+        boost::totally_ordered<Value>   // < >= > <= == !=
 {
 public:
         // constructors
@@ -19,6 +18,7 @@ public:
                 is_with_king_{b}
         {}
 
+        template<class Move>
         explicit constexpr Value(Move const& m) noexcept
         :
                 Value{m.is_with_king()}

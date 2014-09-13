@@ -1,16 +1,15 @@
 #pragma once
-#include <boost/operators.hpp>          // totally_ordered
-#include <cassert>                      // assert
-#include <tuple>                        // tie
-#include <vector>                       // vector
+#include <boost/operators.hpp>  // totally_ordered
+#include <cassert>              // assert
+#include <tuple>                // tie
+#include <vector>               // vector
 
 namespace dctl {
 namespace italian {
 
-template<class Move>
 class Value
 :
-        boost::totally_ordered<Value<Move>> // < >= > <= == !=
+        boost::totally_ordered<Value>   // < >= > <= == !=
 {
 public:
         // constructors
@@ -27,6 +26,7 @@ public:
                 assert(invariant());
         }
 
+        template<class Move>
         explicit Value(Move const& m)
         :
                 Value{m.num_pieces(), m.num_kings(), m.is_with_king(), std::vector<int>(begin(m.ordered_kings()), end(m.ordered_kings()))}
