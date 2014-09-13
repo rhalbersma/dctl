@@ -1,7 +1,6 @@
 #pragma once
-#include <group/primitives.hpp>         // set, op, id
-#include <dctl/cpp14/iterator.hpp>
-#include <algorithm>                    // all_of
+#include <group/primitives.hpp> // set, op, id
+#include <algorithm>            // all_of
 
 namespace dctl {
 namespace group {
@@ -10,7 +9,6 @@ namespace action {
 template<class Object, class Group>
 auto is_associativity(Object const& obj, Group const& g) noexcept
 {
-        using cpp14::cbegin; using cpp14::cend;
         auto const first = cbegin(group::set(g));
         auto const last = cend(group::set(g));
         auto const op = group::op(g);
