@@ -1,4 +1,4 @@
-#include <dctl/rule_traits/required/is_jump_precedence.hpp>     // is_jump_precedence_v
+#include <dctl/rule_traits/composite/is_jump_precedence.hpp>    // is_jump_precedence_v
 #include <dctl/rules.hpp>                                       // Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish, Thai
 #include <boost/mpl/vector.hpp>                                 // vector
 #include <boost/test/test_case_template.hpp>                    // BOOST_AUTO_TEST_CASE_TEMPLATE

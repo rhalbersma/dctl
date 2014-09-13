@@ -10,11 +10,9 @@ struct Rules
 {
         // required
         static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
-        static constexpr auto is_jump_precedence = true;        // 6.1 - 6.10
         static constexpr auto is_long_ranged_king = false;      // 4.7
 
-        template<class Move>
-        using value_type = Value<Move>;
+        using jump_precedence = Value;                          // 6.1 - 6.10
 
         // optional
         static constexpr auto is_pawn_jump_king = false;        // 5.3(b)

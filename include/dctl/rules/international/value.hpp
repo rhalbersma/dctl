@@ -5,10 +5,9 @@
 namespace dctl {
 namespace international {
 
-template<class Move>
 class Value
 :
-        boost::totally_ordered<Value<Move>>     // !=, >=, >, <=
+        boost::totally_ordered<Value>   // !=, >=, >, <=
 {
 public:
         // constructors
@@ -22,6 +21,7 @@ public:
                 assert(invariant());
         }
 
+        template<class Move>
         explicit constexpr Value(Move const& m) noexcept
         :
                 Value{m.num_pieces()}

@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/rules/international/rules.hpp>   // Rules
-#include <dctl/rules/killer/value.hpp>          // Value
 
 namespace dctl {
 namespace killer {

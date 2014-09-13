@@ -8,4 +8,5 @@
 #include <dctl/rule_traits/optional/is_orthogonal_jump.hpp>
 #include <dctl/rule_traits/optional/is_pawn_jump_king.hpp>
 #include <dctl/rule_traits/optional/is_remove_duplicates.hpp>
+#include <dctl/rule_traits/optional/jump_precedence.hpp>
 #include <dctl/rule_traits/optional/max_same_king_push.hpp>

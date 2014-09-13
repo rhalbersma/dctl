@@ -6,10 +6,9 @@
 namespace dctl {
 namespace frisian {
 
-template<class Move>
 class Value
 :
-        boost::totally_ordered<Value<Move>>     // < >= > <= == !=
+        boost::totally_ordered<Value>   // < >= > <= == !=
 {
 public:
         // constructors
@@ -25,6 +24,7 @@ public:
                 assert(invariant());
         }
 
+        template<class Move>
         explicit constexpr Value(Move const& m) noexcept
         :
                 Value{m.num_pieces(), m.num_kings(), m.is_with_king()}

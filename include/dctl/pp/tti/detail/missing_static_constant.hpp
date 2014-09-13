@@ -3,7 +3,7 @@
 
 #define DCTL_PP_TTI_MISSING_STATIC_CONSTANT(NAME)                       \
                                                                         \
-namespace detail_ ## NAME  {                                            \
+namespace detail_ ## NAME {                                             \
                                                                         \
 template<class T = decltype(nullptr)>                                   \
 struct missing_static_constant                                          \
