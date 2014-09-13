@@ -13,7 +13,7 @@ project(MyAwesomeLibraryTestSuite CXX)
 ###############################################################
 
 # use C++1y features
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -ftemplate-depth=1024")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -stdlib=libc++ -ftemplate-depth=1024")
 
 # fail hard
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
@@ -24,16 +24,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
 # NOT A DEFECT: no C++98 compatibility
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat -Wno-c++98-compat-pedantic")
 
-# NOT A DEFECT: constexpr switch-statements confuse Clang, and padding is diagnostic only
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unreachable-code -Wno-padded")
+# NOT A DEFECT: padding is a diagnostic only (useful to turn on during future optimizations)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-padded")
 
 # KNOWN ISSUE: Boost.Test does some macro magic that requires static initialization
 # http://hadesmem.googlecode.com/svn-history/r1861/trunk/tests/injector.cpp
+# http://stackoverflow.com/a/15708829/819272 for a rationale for this warning by Howard Hinnant
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-global-constructors")
-
-# KNOWN ISSUE: BOOST_MPL_ASSERT contains C-style cast to void*
-# https://svn.boost.org/trac/boost/attachment/ticket/5995/old-style-cast.patch
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-old-style-cast")
 
 # TODO: DXP message classes with virtual functions should not be header-only
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
