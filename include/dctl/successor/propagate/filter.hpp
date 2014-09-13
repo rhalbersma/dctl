@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/rule_traits.hpp>
+#include <dctl/type_traits.hpp>
 
 namespace dctl {
 namespace successor {
@@ -25,7 +26,7 @@ public:
         }
 
 private:
-        using Value = jump_precedence_t<typename Move::Rules>;
+        using Value = jump_precedence_t<rules_type_t<Move>>;
         Value max_{};
 };
 

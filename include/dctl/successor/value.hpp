@@ -9,6 +9,14 @@ class Value
         boost::totally_ordered<Value>   // < >= > <= == !=
 {
 public:
+        Value() = default;
+
+        template<class Move>
+        explicit Value(Move const& /* m */) noexcept
+        {
+                // no-op
+        }
+
         // predicates
 
         // operator!= provided by boost::totally_ordered
