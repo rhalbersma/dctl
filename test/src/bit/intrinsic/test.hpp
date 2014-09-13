@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/bit/traits.hpp>                  // all, any, none, digits
-#include <boost/mpl/assert.hpp>                 // BOOST_MPL_ASSERT
 #include <boost/mpl/contains.hpp>               // contains
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -22,10 +21,10 @@ using UnsignedIntegerTypes = boost::mpl::vector
 >;
 
 // all other unsigned integer types shall map to the above three types
-BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, uint32_t>));
-BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, uint64_t>));
-BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, uintptr_t>));
-BOOST_MPL_ASSERT((boost::mpl::contains<UnsignedIntegerTypes, std::size_t>));
+static_assert(boost::mpl::contains<UnsignedIntegerTypes, uint32_t>::value, "");
+static_assert(boost::mpl::contains<UnsignedIntegerTypes, uint64_t>::value, "");
+static_assert(boost::mpl::contains<UnsignedIntegerTypes, uintptr_t>::value, "");
+static_assert(boost::mpl::contains<UnsignedIntegerTypes, std::size_t>::value, "");
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(CountTrailingZeros, T, UnsignedIntegerTypes)
 {
