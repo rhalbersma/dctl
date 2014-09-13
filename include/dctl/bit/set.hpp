@@ -52,17 +52,6 @@ public:
 
         using Base::Base;
 
-        template<class InputIt>
-        constexpr Set(InputIt first, InputIt last)
-        {
-                insert(first, last);
-        }
-
-        constexpr Set(std::initializer_list<int> ilist)
-        {
-                insert(ilist.begin(), ilist.end());
-        }
-
         // iterators
 
         constexpr auto begin() noexcept
@@ -133,13 +122,6 @@ public:
         }
 
         // modifiers
-
-        template<class InputIt>
-        constexpr void insert(InputIt first, InputIt last)
-        {
-                for (auto it = first; it != last; ++it)
-                        set(*it);
-        }
 
         /* constexpr */ void swap(Set& other) noexcept
         {
@@ -330,6 +312,21 @@ private:
                 return one<block_type> << (n % digits<block_type>);
         }
 };
+
+template<int N, class ForwardIterator>
+constexpr Set<N> make_set(ForwardIterator first, ForwardIterator last)
+{
+        Set<N> nrv;
+        for (auto it = first; it != last; ++it)
+                nrv.set(*it);
+        return nrv;
+}
+
+template<int N>
+constexpr Set<N> make_set(std::initializer_list<int> ilist)
+{
+        return make_set<N>(begin(ilist), end(ilist));
+}
 
 template<int N>
 constexpr bool operator==(Set<N> const& lhs, Set<N> const& rhs) noexcept
