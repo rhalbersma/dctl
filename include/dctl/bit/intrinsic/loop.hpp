@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/bit/traits.hpp>  // one, digits
+#include <cassert>              // assert
 
 namespace dctl {
 namespace bit {
@@ -53,6 +54,7 @@ constexpr auto popcount(T x) noexcept
         auto n = 0;
         for (; x; x &= x - one<T>)
                 ++n;
+        assert(0 <= n && n < digits<T>);
         return n;
 }
 

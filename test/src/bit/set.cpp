@@ -68,16 +68,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DistanceBeginEndEqualsSize, T, SetTypes)
         BOOST_CHECK_EQUAL(std::distance(crbegin(b), crend(b)), b.count());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsBounded, T, SetTypes)
-{
-        constexpr auto b = make_set<T::size()>({ 0, 1, 2, T::size() - 2, T::size() - 1 });
-        decltype(begin(b)) min, max;
-        std::tie(min, max) = std::minmax_element(begin(b), end(b));
-
-        BOOST_CHECK(   0 <=  *begin(b) &&  *begin(b) == *min    );
-        BOOST_CHECK(*max == *rbegin(b) && *rbegin(b) <  b.size());
-}
-
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsSorted, T, SetTypes)
 {
         constexpr auto b = make_set<T::size()>({ 0, 1, 2, T::size() - 2, T::size() - 1 });

@@ -114,7 +114,7 @@ struct write<pdn::protocol, Token>
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i != 0;
-                        if (!p.pieces(c).none()) {
+                        if (p.pieces(c).any()) {
                                 sstr << Token::colon;                           // colon
                                 sstr << Token::color[c];                        // color tag
                         }

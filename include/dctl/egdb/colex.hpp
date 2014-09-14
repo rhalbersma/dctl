@@ -9,7 +9,7 @@
 #include <boost/range/numeric.hpp>              // accumulate
 #include <cassert>                              // assert
 #include <utility>                              // pair
-#include <dctl/bit/detail/intrinsic.hpp>
+#include <dctl/bit/intrinsic.hpp>
 
 namespace dctl {
 namespace egdb {

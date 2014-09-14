@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
-#include <dctl/bit/detail/intrinsic.hpp>        // popcount
+#include <dctl/bit/intrinsic.hpp>               // popcount
 #include <dctl/bit/traits.hpp>                  // none, one, all, digits, is_unsigned_integer
 #include <cassert>                              // assert
 #include <utility>                              // swap
@@ -21,12 +21,7 @@ public:
 
         constexpr BaseSet() = default;
 
-        constexpr BaseSet(unsigned long value) noexcept
-        :
-                elems{value}
-        {}
-
-        constexpr BaseSet(unsigned long long value) noexcept
+        /* implicit */ constexpr BaseSet(unsigned long long value) noexcept
         :
                 elems{value}
         {}
@@ -102,6 +97,8 @@ public:
                 using std::swap;
                 swap(elems, other.elems);
         }
+
+        constexpr auto do_sanitize() noexcept {}
 
         constexpr auto do_set() noexcept
         {

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/bit/detail/intrinsic.hpp>        // ctznz
+#include <dctl/bit/intrinsic.hpp>               // ctznz
 #include <dctl/bit/traits.hpp>                  // none
 #include <dctl/utility/input_range_facade.hpp>  // InputRangeCoreAcces, InputRangeFacade
 #include <cassert>                              // assert
