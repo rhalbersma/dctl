@@ -7,9 +7,9 @@ namespace bit {
 namespace builtin {
 namespace detail {
 
-// gcc has built-in functions for Count Trailing Zeros
-// for unsigned, unsigned long and unsigned long long
-// for zero input, the result is undefined
+// GCC has built-in functions for Count Trailing Zeros
+// for unsigned, unsigned long and unsigned long long.
+// For zero input, the result is undefined.
 
 template<class T>
 struct ctznz;
@@ -41,9 +41,9 @@ struct ctznz<unsigned long long>
         }
 };
 
-// gcc has built-in functions for Count Leading Zeros
-// for unsigned, unsigned long and unsigned long long
-// for zero input, the result is undefined
+// GCC has built-in functions for Count Leading Zeros
+// for unsigned, unsigned long and unsigned long long.
+// For zero input, the result is undefined
 
 template<class T>
 struct clznz;
@@ -75,8 +75,8 @@ struct clznz<unsigned long long>
         }
 };
 
-// gcc has built-in functions for Population Count
-// for unsigned, unsigned long and unsigned long long,
+// GCC has built-in functions for Population Count
+// for unsigned, unsigned long and unsigned long long.
 
 template<class T>
 struct popcount;

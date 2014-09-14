@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/bit/detail/intrinsic.hpp>        // clznz, ctznz, ctz
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
+#include <dctl/bit/intrinsic.hpp>               // clznz, ctznz, ctz
 #include <dctl/bit/traits.hpp>                  // digits, is_unsigned_integer
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert

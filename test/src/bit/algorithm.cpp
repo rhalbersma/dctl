@@ -19,7 +19,7 @@ using SetTypes = boost::mpl::vector
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetEmpty, T, SetTypes)
 {
         constexpr auto b = T{};
-        BOOST_CHECK( b.none());
+        BOOST_CHECK(b.none());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetSingle, T, SetTypes)

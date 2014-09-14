@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <iterator>
-#include <dctl/bit/detail/intrinsic.hpp>
+#include <dctl/bit/intrinsic.hpp>
 
 namespace dctl {
 namespace egdb {

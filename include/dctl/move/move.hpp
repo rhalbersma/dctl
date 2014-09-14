@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
-#include <cassert>                      // assert
-#include <tuple>                        // forward_as_tuple
+#include <dctl/type_traits.hpp> // board_type_t, rules_type_t
+#include <cassert>              // assert
+#include <tuple>                // forward_as_tuple
 
 namespace dctl {
 
@@ -118,7 +118,7 @@ public:
 
         constexpr auto is_jump() const noexcept
         {
-                return !captured_pieces().none();
+                return captured_pieces().any();
         }
 
         constexpr auto is_reversible() const noexcept
@@ -168,6 +168,7 @@ private:
         bool invariant() const
         {
                 return
+                        !(from() == dest() && !is_jump()) &&
                         captured_kings_.is_subset_of(captured_pieces_) &&
                         !(is_with_king_ && is_promotion_)
                 ;

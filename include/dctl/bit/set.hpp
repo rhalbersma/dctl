@@ -231,6 +231,7 @@ public:
         constexpr Set& flip() noexcept
         {
                 this->do_flip();
+                this->do_sanitize();
                 return *this;
         }
 
@@ -262,6 +263,7 @@ public:
         {
                 assert(0 <= n && n < N);
                 this->do_left_shift(n);
+                this->do_sanitize();
                 return *this;
         }
 
@@ -269,6 +271,7 @@ public:
         {
                 assert(0 <= n && n < N);
                 this->do_right_shift(n);
+                this->do_sanitize();
                 return *this;
         }
 
