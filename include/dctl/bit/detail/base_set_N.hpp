@@ -51,6 +51,11 @@ public:
                 return elems + n / digits<block_type>;
         }
 
+        constexpr auto& block_back() noexcept
+        {
+                return elems[Nb - 1];
+        }
+
         // data access
 
         constexpr auto* do_data()

@@ -32,8 +32,10 @@ public:
 
         // element access
 
-        constexpr auto*       block_ptr(int)       { return this; }
-        constexpr auto const* block_ptr(int) const { return this; }
+        constexpr auto*       block_ptr(int)       { return  this; }
+        constexpr auto const* block_ptr(int) const { return  this; }
+
+        constexpr auto& block_back() noexcept { return *this; }
 
         // data access
 
@@ -51,8 +53,6 @@ public:
         // modifiers
 
         constexpr auto do_swap(BaseSet&) noexcept {}
-
-        constexpr auto do_sanitize() noexcept {}
 
         constexpr auto do_set  () noexcept {}
         constexpr auto do_reset() noexcept {}

@@ -1,17 +1,39 @@
 #pragma once
-#include <dctl/bit/traits.hpp>  // all
+#include <dctl/bit/traits.hpp>  // all, digits
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
-// Helper class to zero out the unused high-order bits in the highest word.
+// Helper classes to zero out the unused high-order bits in the highest word.
+
+template<int N, bool = N < digits<unsigned long long>>
+struct Sanitize;
 
 template<int N>
-struct Sanitize
+struct Sanitize<N, true>
 {
         using block_type = unsigned long long;
+        constexpr auto operator()(block_type b) const noexcept
+        {
+                return b & ~(all<block_type> << N);
+        }
+};
 
+template<int N>
+struct Sanitize<N, false>
+{
+        using block_type = unsigned long long;
+        constexpr auto operator()(block_type b) const noexcept
+        {
+                return b;
+        }
+};
+
+template<int N>
+struct SanitizeAssign
+{
+        using block_type = unsigned long long;
         constexpr auto operator()(block_type& b) const noexcept
         {
                 b &= ~(all<block_type> << N);
@@ -19,11 +41,10 @@ struct Sanitize
 };
 
 template<>
-struct Sanitize<0>
+struct SanitizeAssign<0>
 {
         using block_type = unsigned long long;
-
-        constexpr auto operator()(block_type&) const noexcept
+        constexpr auto operator()(block_type& /* b */) const noexcept
         {
                 // no-op
         }
