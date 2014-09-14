@@ -49,6 +49,11 @@ public:
                 return &elems;
         }
 
+        constexpr auto& block_back() noexcept
+        {
+                return elems;
+        }
+
         // data access
 
         constexpr auto* do_data()
@@ -97,8 +102,6 @@ public:
                 using std::swap;
                 swap(elems, other.elems);
         }
-
-        constexpr auto do_sanitize() noexcept {}
 
         constexpr auto do_set() noexcept
         {

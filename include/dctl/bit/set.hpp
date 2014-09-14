@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/bit/detail/base_set.hpp>         // BaseSet
+#include <dctl/bit/detail/sanitize.hpp>
 #include <dctl/bit/iterator/iterator.hpp>       // ConstIterator
 #include <dctl/bit/iterator/reference.hpp>      // ConstReference
 #include <dctl/bit/traits.hpp>                  // one, digits
@@ -50,7 +51,10 @@ public:
 
         constexpr Set() = default;
 
-        using Base::Base;
+        /* implicit */ constexpr Set(unsigned long long value) noexcept
+        :
+                Base{detail::Sanitize<N>{}(value)}
+        {}
 
         // iterators
 
@@ -217,6 +221,7 @@ public:
         constexpr Set& set() noexcept
         {
                 this->do_set();
+                sanitize();
                 assert(all());
                 return *this;
         }
@@ -231,7 +236,7 @@ public:
         constexpr Set& flip() noexcept
         {
                 this->do_flip();
-                this->do_sanitize();
+                sanitize();
                 return *this;
         }
 
@@ -263,7 +268,7 @@ public:
         {
                 assert(0 <= n && n < N);
                 this->do_left_shift(n);
-                this->do_sanitize();
+                sanitize();
                 return *this;
         }
 
@@ -271,7 +276,7 @@ public:
         {
                 assert(0 <= n && n < N);
                 this->do_right_shift(n);
-                this->do_sanitize();
+                sanitize();
                 return *this;
         }
 
@@ -298,6 +303,11 @@ public:
         }
 
 private:
+        constexpr auto sanitize() noexcept
+        {
+                detail::SanitizeAssign<N % digits<block_type>>{}(this->block_back());
+        }
+
         constexpr auto& block_ref(int n)
         {
                 assert(0 <= n && n < N);
