@@ -3,11 +3,11 @@
 namespace dctl {
 namespace bit {
 
-template<class Block, int Nb>
+template<int N, int Nb>
 class ConstIterator;
 
-template<class Block>
-class ConstIterator<Block, 1>;
+template<int N>
+class ConstIterator<N, 1>;
 
 }       // namespace bit
 }       // namespace dctl

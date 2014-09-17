@@ -29,7 +29,7 @@ public:
         template<class Move>
         explicit Value(Move const& m)
         :
-                Value{m.num_pieces(), m.num_kings(), m.is_with_king(), std::vector<int>(begin(m.ordered_kings()), end(m.ordered_kings()))}
+                Value{m.num_pieces(), m.num_kings(), m.is_with_king(), m.ordered_kings()}
         {}
 
         // predicates

@@ -9,19 +9,19 @@ namespace dctl {
 namespace bit {
 namespace detail {
 
-template<int Nb>
+template<class Block, int Nb>
 class BaseSet
 {
 private:
-        using block_type = unsigned long long;
-        static constexpr auto N = Nb * digits<block_type>;
+        static_assert(is_unsigned_integer<Block>, "");
+        static constexpr auto N = Nb * digits<Block>;
 
 public:
         // constructors
 
         constexpr BaseSet() = default;
 
-        /* implicit */ constexpr BaseSet(unsigned long long value) noexcept
+        /* implicit */ constexpr BaseSet(Block value) noexcept
         :
                 elems{value}
         {}
@@ -42,13 +42,13 @@ public:
         constexpr auto* block_ptr(int n)
         {
                 assert(0 <= n && n <= N);
-                return elems + n / digits<block_type>;
+                return elems + n / digits<Block>;
         }
 
         constexpr auto const* block_ptr(int n) const
         {
                 assert(0 <= n && n <= N);
-                return elems + n / digits<block_type>;
+                return elems + n / digits<Block>;
         }
 
         constexpr auto& block_back() noexcept
@@ -130,13 +130,13 @@ public:
         constexpr auto do_set() noexcept
         {
                 for (auto&& block : elems)
-                        block = all<block_type>;
+                        block = all<Block>;
         }
 
         constexpr auto do_reset() noexcept
         {
                 for (auto&& block : elems)
-                        block = none<block_type>;
+                        block = none<Block>;
         }
 
         constexpr auto do_flip() noexcept
@@ -174,14 +174,14 @@ public:
                 assert(0 <= n && n < N);
                 if (n == 0) return;
 
-                auto const n_block = n / digits<block_type>;
-                auto const L_shift = n % digits<block_type>;
+                auto const n_block = n / digits<Block>;
+                auto const L_shift = n % digits<Block>;
 
                 if (L_shift == 0) {
                         for (auto i = Nb - 1; i >= n_block; --i)
                                 elems[i] = elems[i - n_block];
                 } else {
-                        auto const R_shift = digits<block_type> - L_shift;
+                        auto const R_shift = digits<Block> - L_shift;
 
                         for (auto i = Nb - 1; i > n_block; --i)
                                 elems[i] =
@@ -191,7 +191,7 @@ public:
                         elems[n_block] = elems[0] << L_shift;
                 }
                 for (auto i = n_block - 1; i >= 0; --i)
-                        elems[i] = none<block_type>;
+                        elems[i] = none<Block>;
         }
 
         constexpr auto do_right_shift(int n)
@@ -199,14 +199,14 @@ public:
                 assert(0 <= n && n < N);
                 if (n == 0) return;
 
-                auto const n_block = n / digits<block_type>;
-                auto const R_shift = n % digits<block_type>;
+                auto const n_block = n / digits<Block>;
+                auto const R_shift = n % digits<Block>;
 
                 if (R_shift == 0) {
                         for (auto i  = 0; i <= Nb - 1 - n_block; ++i)
                                elems[i] = elems[i + n_block];
                 } else {
-                        auto const L_shift = digits<block_type> - R_shift;
+                        auto const L_shift = digits<Block> - R_shift;
 
                         for (auto i = 0; i < Nb - 1 - n_block; ++i)
                                 elems[i] =
@@ -216,7 +216,7 @@ public:
                         elems[Nb - 1 - n_block] = elems[Nb - 1] >> R_shift;
                 }
                 for (auto i = Nb - n_block; i < Nb; ++i)
-                        elems[i] = none<block_type>;
+                        elems[i] = none<Block>;
         }
 
         // observers
@@ -224,7 +224,7 @@ public:
         constexpr auto do_all() const noexcept
         {
                 for (auto&& block : elems)
-                        if (block != all<block_type>)
+                        if (block != all<Block>)
                                 return false;
                 return true;
         }
@@ -232,7 +232,7 @@ public:
         constexpr auto do_any() const noexcept
         {
                 for (auto&& block : elems)
-                        if (block != none<block_type>)
+                        if (block != none<Block>)
                                 return true;
                 return false;
         }
@@ -240,7 +240,7 @@ public:
         constexpr auto do_none() const noexcept
         {
                 for (auto&& block : elems)
-                        if (block != none<block_type>)
+                        if (block != none<Block>)
                                 return false;
                 return true;
         }
@@ -256,7 +256,7 @@ public:
  private:
         // representation
 
-        block_type elems[Nb]{};
+        Block elems[Nb]{};
 };
 
 }       // namespace detail

@@ -17,12 +17,6 @@ namespace setup {
 
 BOOST_AUTO_TEST_SUITE(SetupLayout)
 /*
-using BoardSequence = boost::mpl::vector
-<
-        board::Micro, board::Mini, board::Checkers, board::Roman, board::International, board::Canadian,
-        board::Frisian, board::Spantsireti, board::Ktar11, board::Ktar12
->;
-
 using DimSequence = boost::mpl::vector
 <
         grid::Dimensions< 2,  2>,
@@ -53,15 +47,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, DimSequence)
         std::cout << "------------\n";
         std::cout << T::height << "x" << T::width << ", " << T::inverted << "\n\n";
 
-        using G = board::Board< T, false>;
+        using G = board::Board< T::width, T::height, false>;
         std::cout << diagram<G, bits>()() << '\n';
         std::cout << "size = " << G::internal_grid::size << ", angle = " << G::orientation << "\n\n";
 
-        using H = board::Board< T, true >;
+        using H = board::Board< T::width, T::height, true >;
         std::cout << diagram<H, bits>()() << '\n';
         std::cout << "size = " << H::internal_grid::size << ", angle = " << H::orientation << "\n\n";
 }
 */
+
 using BSequence = boost::mpl::vector
 <
         board::Checkers,

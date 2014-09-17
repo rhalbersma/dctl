@@ -44,16 +44,18 @@ public:
         using external_grid = grid::Grid<Dimensions, 0>;
 
 private:
-        using Block = std::size_t;
-        static constexpr auto Nb = (internal_grid::size - 1) / std::numeric_limits<Block>::digits + 1;
+        using Block = unsigned long long;
+        static constexpr auto NumBits = internal_grid::size;
+        static constexpr auto NumSquares = external_grid::size;
+        static constexpr auto Nb = bit::num_blocks<Block>(NumBits);
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
-        using set_type = bit::Set<N>;
+        using set_type = bit::Set<NumBits>;
 
         static constexpr auto size() noexcept
         {
-                return external_grid::size;
+                return NumSquares;
         }
 
         static constexpr auto shift_size(Angle const& direction)
@@ -108,11 +110,11 @@ private:
                 ).value();
         }
 
-        static constexpr std::array<int, N>
-        table_bit_from_square = make_array<N>(init_bit_from_square);
+        static constexpr std::array<int, NumSquares>
+        table_bit_from_square = make_array<NumSquares>(init_bit_from_square);
 
-        static constexpr std::array<int, N>
-        table_square_from_bit = make_array<N>(init_square_from_bit);
+        static constexpr std::array<int, NumBits>
+        table_square_from_bit = make_array<NumBits>(init_square_from_bit);
 
 public:
         static constexpr auto bit_from_square(int n) noexcept
@@ -139,11 +141,11 @@ constexpr Angle
 Board<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::N>
+constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::N>
+constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
 
 }       // namespace board

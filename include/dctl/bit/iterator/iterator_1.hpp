@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/bit/iterator/iterator_fwd.hpp>   // ConstIterator
 #include <dctl/bit/iterator/reference_fwd.hpp>  // ConstReference
-#include <dctl/bit/intrinsic.hpp>               // clznz, ctznz, ctz
+#include <dctl/bit/intrinsic.hpp>               // clznz, ctznz
 #include <dctl/bit/traits.hpp>                  // digits, is_unsigned_integer
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert
@@ -11,39 +11,42 @@
 namespace dctl {
 namespace bit {
 
-template<class Block>
-class ConstIterator<Block, 1>
+template<int N>
+class ConstIterator<N, 1>
 :
         public boost::iterator_facade
         <
-                ConstIterator<Block, 1>,
+                ConstIterator<N, 1>,
                 int const,
                 std::bidirectional_iterator_tag,
-                ConstReference<Block, 1>,
+                ConstReference<N, 1>,
                 std::ptrdiff_t
         >
 {
-        static_assert(is_unsigned_integer<Block>, "");
-        static constexpr auto N = 1 * digits<Block>;
+        using block_type = unsigned long long;
+        static_assert(N <= 1 * digits<block_type>, "");
 
 public:
         // constructors
 
         constexpr ConstIterator() = default;
 
-        explicit constexpr ConstIterator(Block const* b)
+        explicit constexpr ConstIterator(block_type const* b)
         :
                 block_{b},
                 index_{find_first()}
-        {}
+        {
+                assert(block_ != nullptr);
+                assert(0 <= index_ && index_ <= N);
+        }
 
-        constexpr ConstIterator(Block const* b, int n)
+        constexpr ConstIterator(block_type const* b, int n)
         :
                 block_{b},
                 index_{n}
         {
-                assert(b != nullptr);
-                assert(n == N);
+                assert(block_ != nullptr);
+                assert(index_ == N);
         }
 
 private:
@@ -53,7 +56,7 @@ private:
         constexpr auto find_first()
         {
                 assert(block_ != nullptr);
-                return bit::intrinsic::ctz(*block_);
+                return *block_ ? bit::intrinsic::ctznz(*block_) : N;
         }
 
         // operator++() and operator++(int) provided by boost::iterator_facade
@@ -77,7 +80,7 @@ private:
                 assert(0 < index_ && index_ <= N);
                 if (--index_ == 0)
                         return;
-                if (auto const mask = *block_ << (digits<Block> - 1 - index_))
+                if (auto const mask = *block_ << (digits<block_type> - 1 - index_))
                         index_ -= bit::intrinsic::clznz(mask);
                 else
                         index_ = 0;
@@ -85,9 +88,10 @@ private:
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr ConstReference<Block, 1> dereference() const
+        constexpr ConstReference<N, 1> dereference() const
         {
                 assert(block_ != nullptr);
+                assert(0 <= index_ && index_ < N);
                 return { *block_, index_ };
         }
 
@@ -100,7 +104,7 @@ private:
 private:
         // representation
 
-        Block const* block_{};
+        block_type const* block_{};
         int index_{};
 };
 
