@@ -7,11 +7,11 @@
 namespace dctl {
 namespace bit {
 
-template<class Block, int Nb>
+template<int N, int Nb>
 class ConstReference
 {
-        static_assert(is_unsigned_integer<Block>, "");
-        static constexpr auto N = Nb * digits<Block>;
+        using block_type = unsigned long long;
+        static_assert(N <= Nb * digits<block_type>, "");
 
 public:
         // constructors
@@ -19,7 +19,7 @@ public:
         // references cannot be left uninitialized
         ConstReference() = delete;
 
-        constexpr ConstReference(Block const& b, int n) noexcept
+        constexpr ConstReference(block_type const& b, int n) noexcept
         :
                 block_{b},
                 index_{n}
@@ -40,7 +40,7 @@ public:
 
         // observers
 
-        constexpr ConstIterator<Block, Nb> operator&() const noexcept
+        constexpr ConstIterator<N, Nb> operator&() const noexcept
         {
                 return { &block_, index_ };
         }
@@ -53,7 +53,7 @@ public:
 private:
         // representation
 
-        Block const& block_;
+        block_type const& block_;
         int index_;
 };
 

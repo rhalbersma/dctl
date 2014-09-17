@@ -11,40 +11,43 @@
 namespace dctl {
 namespace bit {
 
-template<class Block, int Nb>
+template<int N, int Nb>
 class ConstIterator
 :
         public boost::iterator_facade
         <
-                ConstIterator<Block, Nb>,
+                ConstIterator<N, Nb>,
                 int const,
                 std::bidirectional_iterator_tag,
-                ConstReference<Block, Nb>,
+                ConstReference<N, Nb>,
                 std::ptrdiff_t
         >
 {
 private:
-        static_assert(is_unsigned_integer<Block>, "");
-        static constexpr auto N = Nb * digits<Block>;
+        using block_type = unsigned long long;
+        static_assert(N <= Nb * digits<block_type>, "");
 
 public:
         // constructors
 
         constexpr ConstIterator() = default;
 
-        explicit constexpr ConstIterator(Block const* b)
+        explicit constexpr ConstIterator(block_type const* b)
         :
                 block_{b},
                 index_{find_first()}
-        {}
+        {
+                assert(block_ != nullptr);
+                assert(0 <= index_ && index_ <= N);
+        }
 
-        constexpr ConstIterator(Block const* b, int n)
+        constexpr ConstIterator(block_type const* b, int n)
         :
                 block_{b},
                 index_{n}
         {
-                assert(b != nullptr);
-                assert(n == N);
+                assert(block_ != nullptr);
+                assert(index_ == N);
         }
 
 private:
@@ -55,8 +58,10 @@ private:
         {
                 assert(block_ != nullptr);
                 for (auto i = 0; i < Nb; ++i) {
-                        if (auto const mask = *block_)
-                                return i * digits<Block> + bit::intrinsic::bsfnz(mask);
+                        if (auto const mask = *block_) {
+                                assert(i * digits<block_type> + bit::intrinsic::bsfnz(mask) < N);
+                                return i * digits<block_type> + bit::intrinsic::bsfnz(mask);
+                        }
                         ++block_;
                 }
                 return N;
@@ -72,18 +77,20 @@ private:
                         return;
                 }
 
-                auto const idx = index_ % digits<Block>;
+                auto const idx = index_ % digits<block_type>;
                 if (idx == 0)
                         ++block_;
                 if (auto const mask = *block_ >> idx) {
                         index_ += bit::intrinsic::ctznz(mask);
+                        assert(0 <= index_ && index_ < N);
                         return;
                 }
                 ++block_;
 
-                for (auto i = index_ / digits<Block> + 1; i < Nb; ++i) {
+                for (auto i = index_ / digits<block_type> + 1; i < Nb; ++i) {
                         if (auto const mask = *block_) {
-                                index_ = i * digits<Block> + bit::intrinsic::bsfnz(mask);
+                                index_ = i * digits<block_type> + bit::intrinsic::bsfnz(mask);
+                                assert(0 <= index_ && index_ < N);
                                 return;
                         }
                         ++block_;
@@ -100,18 +107,20 @@ private:
                 if (--index_ == 0)
                         return;
 
-                auto const idx = index_ % digits<Block>;
-                if (idx == digits<Block> - 1)
+                auto const idx = index_ % digits<block_type>;
+                if (idx == digits<block_type> - 1)
                         --block_;
-                if (auto const mask = *block_ << (digits<Block> - 1 - idx)) {
+                if (auto const mask = *block_ << (digits<block_type> - 1 - idx)) {
                         index_ -= bit::intrinsic::clznz(mask);
+                        assert(0 <= index_ && index_ < N);
                         return;
                 }
                 --block_;
 
-                for (auto i = index_ / digits<Block> - 1; i >= 0; --i) {
+                for (auto i = index_ / digits<block_type> - 1; i >= 0; --i) {
                         if (auto const mask = *block_) {
-                                index_ = i * digits<Block> + bit::intrinsic::bsrnz(mask);
+                                index_ = i * digits<block_type> + bit::intrinsic::bsrnz(mask);
+                                assert(0 <= index_ && index_ < N);
                                 return;
                         }
                         --block_;
@@ -121,9 +130,10 @@ private:
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr ConstReference<Block, Nb> dereference() const
+        constexpr ConstReference<N, Nb> dereference() const
         {
                 assert(block_ != nullptr);
+                assert(0 <= index_ && index_ < N);
                 return { *block_, index_ };
         }
 
@@ -136,7 +146,7 @@ private:
 private:
         // representation
 
-        Block const* block_{};
+        block_type const* block_{};
         int index_{};
 };
 

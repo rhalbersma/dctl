@@ -1,23 +1,20 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
-#include <dctl/bit/traits.hpp>                  // digits
+#include <dctl/bit/traits.hpp>                  // is_unsigned_integer
 
 namespace dctl {
 namespace bit {
 namespace detail {
 
-template<>
-class BaseSet<0>
+template<class Block>
+class BaseSet<Block, 0>
 {
-private:
-        using block_type = unsigned long long;
-        static constexpr auto N = 0 * digits<block_type>;
-
+        static_assert(is_unsigned_integer<Block>, "");
 public:
         // constructors
 
         constexpr BaseSet() = default;
-        /* implicit */ constexpr BaseSet(unsigned long long) noexcept {}
+        /* implicit */ constexpr BaseSet(Block) noexcept {}
 
 protected:
         // destructor
