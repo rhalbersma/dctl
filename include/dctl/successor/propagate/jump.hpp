@@ -387,7 +387,7 @@ private:
 
         mutable stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
         mutable stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
-        std::vector<int> ordered_kings_ {};
+        mutable stack_vector<int> ordered_kings_ = stack_vector<int>(Alloc<int>{kca_});
         bool is_with_king_{};
         bool is_promotion_{};
 
