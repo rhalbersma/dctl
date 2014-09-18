@@ -17,12 +17,12 @@ class BaseSet<Block, 1>
 public:
         // constructors
 
-        constexpr BaseSet() = default;
-
         /* implicit */ constexpr BaseSet(Block value) noexcept
         :
                 elems{value}
         {}
+
+        constexpr BaseSet() = default;
 
 protected:
         // destructor
@@ -33,16 +33,28 @@ public:
         // copying and assignment
 
         BaseSet(BaseSet const&) = default;
+        BaseSet(BaseSet&&) = default;
         BaseSet& operator=(BaseSet const&) = default;
+        BaseSet& operator=(BaseSet&&) = default;
 
-        // element access
+        // data access
 
-        constexpr auto* block_ptr(int /* n */)
+        constexpr auto* block_begin() noexcept
         {
                 return &elems;
         }
 
-        constexpr auto const* block_ptr(int /* n */) const
+        constexpr auto const* block_begin() const noexcept
+        {
+                return &elems;
+        }
+
+        constexpr auto* block_end() noexcept
+        {
+                return &elems;
+        }
+
+        constexpr auto const* block_end() const noexcept
         {
                 return &elems;
         }
@@ -52,16 +64,21 @@ public:
                 return elems;
         }
 
-        // data access
-
-        constexpr auto* do_data()
+        constexpr auto const& block_back() const noexcept
         {
-                return &elems;
+                return elems;
         }
 
-        constexpr auto const* do_data() const
+        constexpr auto& block_ref(int /* n */)
         {
-                return &elems;
+                //assert(0 <= n && n < N);
+                return elems;
+        }
+
+        constexpr auto const& block_ref(int /* n */) const
+        {
+                //assert(0 <= n && n < N);
+                return elems;
         }
 
         // comparators

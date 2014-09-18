@@ -11,27 +11,27 @@
 namespace dctl {
 namespace bit {
 
-template<int N>
-class ConstIterator<N, 1>
+template<class Block, int N>
+class ConstIterator<Block, 1, N>
 :
         public boost::iterator_facade
         <
-                ConstIterator<N, 1>,
+                ConstIterator<Block, 1, N>,
                 int const,
                 std::bidirectional_iterator_tag,
-                ConstReference<N, 1>,
+                ConstReference<Block, 1, N>,
                 std::ptrdiff_t
         >
 {
-        using block_type = unsigned long long;
-        static_assert(N <= 1 * digits<block_type>, "");
+        static_assert(is_unsigned_integer<Block>, "");
+        static_assert(N <= 1 * digits<Block>, "");
 
 public:
         // constructors
 
         constexpr ConstIterator() = default;
 
-        explicit constexpr ConstIterator(block_type const* b)
+        explicit constexpr ConstIterator(Block const* b)
         :
                 block_{b},
                 index_{find_first()}
@@ -40,7 +40,7 @@ public:
                 assert(0 <= index_ && index_ <= N);
         }
 
-        constexpr ConstIterator(block_type const* b, int n)
+        constexpr ConstIterator(Block const* b, int n)
         :
                 block_{b},
                 index_{n}
@@ -80,7 +80,7 @@ private:
                 assert(0 < index_ && index_ <= N);
                 if (--index_ == 0)
                         return;
-                if (auto const mask = *block_ << (digits<block_type> - 1 - index_))
+                if (auto const mask = *block_ << (digits<Block> - 1 - index_))
                         index_ -= bit::intrinsic::clznz(mask);
                 else
                         index_ = 0;
@@ -88,7 +88,7 @@ private:
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr ConstReference<N, 1> dereference() const
+        constexpr ConstReference<Block, 1, N> dereference() const
         {
                 assert(block_ != nullptr);
                 assert(0 <= index_ && index_ < N);
@@ -104,7 +104,7 @@ private:
 private:
         // representation
 
-        block_type const* block_{};
+        Block const* block_{};
         int index_{};
 };
 

@@ -19,12 +19,12 @@ private:
 public:
         // constructors
 
-        constexpr BaseSet() = default;
-
         /* implicit */ constexpr BaseSet(Block value) noexcept
         :
                 elems{value}
         {}
+
+        constexpr BaseSet() = default;
 
 protected:
         // destructor
@@ -35,20 +35,30 @@ public:
         // copying and assignment
 
         BaseSet(BaseSet const&) = default;
+        BaseSet(BaseSet&&) = default;
         BaseSet& operator=(BaseSet const&) = default;
+        BaseSet& operator=(BaseSet&&) = default;
 
-        // element access
+        // data access
 
-        constexpr auto* block_ptr(int n)
+        constexpr auto* block_begin() noexcept
         {
-                assert(0 <= n && n <= N);
-                return elems + n / digits<Block>;
+                return elems;
         }
 
-        constexpr auto const* block_ptr(int n) const
+        constexpr auto const* block_begin() const noexcept
         {
-                assert(0 <= n && n <= N);
-                return elems + n / digits<Block>;
+                return elems;
+        }
+
+        constexpr auto* block_end() noexcept
+        {
+                return elems + Nb;
+        }
+
+        constexpr auto const* block_end() const noexcept
+        {
+                return elems + Nb;
         }
 
         constexpr auto& block_back() noexcept
@@ -56,16 +66,21 @@ public:
                 return elems[Nb - 1];
         }
 
-        // data access
-
-        constexpr auto* do_data()
+        constexpr auto const& block_back() const noexcept
         {
-                return elems;
+                return elems[Nb - 1];
         }
 
-        constexpr auto const* do_data() const
+        constexpr auto& block_ref(int n)
         {
-                return elems;
+                assert(0 <= n && n < N);
+                return elems[n / digits<Block>];
+        }
+
+        constexpr auto const& block_ref(int n) const
+        {
+                assert(0 <= n && n < N);
+                return elems[n / digits<Block>];
         }
 
         // comparators

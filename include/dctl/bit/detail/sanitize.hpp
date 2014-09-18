@@ -13,18 +13,18 @@ struct Sanitize;
 template<int N>
 struct Sanitize<N, true>
 {
-        using block_type = unsigned long long;
-        constexpr auto operator()(block_type b) const noexcept
+        template<class Block>
+        constexpr auto operator()(Block b) const noexcept
         {
-                return b & ~(all<block_type> << N);
+                return b & ~(all<Block> << N);
         }
 };
 
 template<int N>
 struct Sanitize<N, false>
 {
-        using block_type = unsigned long long;
-        constexpr auto operator()(block_type b) const noexcept
+        template<class Block>
+        constexpr auto operator()(Block b) const noexcept
         {
                 return b;
         }
@@ -33,18 +33,18 @@ struct Sanitize<N, false>
 template<int N>
 struct SanitizeAssign
 {
-        using block_type = unsigned long long;
-        constexpr auto operator()(block_type& b) const noexcept
+        template<class Block>
+        constexpr auto operator()(Block& b) const noexcept
         {
-                b &= ~(all<block_type> << N);
+                b &= ~(all<Block> << N);
         }
 };
 
 template<>
 struct SanitizeAssign<0>
 {
-        using block_type = unsigned long long;
-        constexpr auto operator()(block_type& /* b */) const noexcept
+        template<class Block>
+        constexpr auto operator()(Block& /* b */) const noexcept
         {
                 // no-op
         }

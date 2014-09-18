@@ -40,42 +40,42 @@ private:
         using Base = detail::BaseSet<unsigned long long, num_blocks<unsigned long long>(N)>;
 
 public:
-        using reference = ConstReference<N, Nb>;
+        using reference = ConstReference<block_type, Nb, N>;
         using const_reference = reference;
-        using iterator = ConstIterator<N, Nb>;
+        using iterator = ConstIterator<block_type, Nb, N>;
         using const_iterator = iterator;
         using reverse_iterator = std::reverse_iterator<iterator>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
         // constructors
 
-        constexpr Set() = default;
-
         /* implicit */ constexpr Set(unsigned long long value) noexcept
         :
                 Base{detail::Sanitize<N>{}(value)}
         {}
 
+        constexpr Set() = default;
+
         // iterators
 
         constexpr auto begin() noexcept
         {
-                return iterator{this->block_ptr(0)};
+                return iterator{this->block_begin()};
         }
 
         constexpr auto begin() const noexcept
         {
-                return const_iterator{this->block_ptr(0)};
+                return const_iterator{this->block_begin()};
         }
 
         constexpr iterator end() noexcept
         {
-                return { this->block_ptr(N), N };
+                return { this->block_end(), N };
         }
 
         constexpr const_iterator end() const noexcept
         {
-                return { this->block_ptr(N), N };
+                return { this->block_end(), N };
         }
 
         /* constexpr */ auto rbegin() noexcept
@@ -137,7 +137,7 @@ public:
         [[deprecated]] constexpr reference operator[](int n)
         {
                 assert(0 <= n && n < N);
-                return { block_ref(n), n };
+                return { this->block_ref(n), n };
         }
 
         [[deprecated]] constexpr bool operator[](int n) const
@@ -149,7 +149,7 @@ public:
         constexpr bool test(int n) const
         {
                 assert(0 <= n && n < N);
-                return block_ref(n) & mask(n);
+                return this->block_ref(n) & mask(n);
         }
 
         [[deprecated]] constexpr Set& set(int n, bool value)
@@ -160,7 +160,7 @@ public:
         constexpr Set& set(int n)
         {
                 assert(0 <= n && n < N);
-                block_ref(n) |= mask(n);
+                this->block_ref(n) |= mask(n);
                 assert(test(n));
                 return *this;
         }
@@ -168,7 +168,7 @@ public:
         constexpr Set& reset(int n)
         {
                 assert(0 <= n && n < N);
-                block_ref(n) &= ~mask(n);
+                this->block_ref(n) &= ~mask(n);
                 assert(!test(n));
                 return *this;
         }
@@ -176,18 +176,18 @@ public:
         constexpr Set& flip(int n)
         {
                 assert(0 <= n && n < N);
-                block_ref(n) ^= mask(n);
+                this->block_ref(n) ^= mask(n);
                 return *this;
         }
 
-        constexpr auto* data()
+        constexpr auto* data() noexcept
         {
-                return this->do_data();
+                return this->block_begin();
         }
 
-        constexpr auto const* data() const
+        constexpr auto const* data() const noexcept
         {
-                return this->do_data();
+                return this->block_begin();
         }
 
         // comparators
@@ -276,7 +276,6 @@ public:
         {
                 assert(0 <= n && n < N);
                 this->do_right_shift(n);
-                sanitize();
                 return *this;
         }
 
@@ -308,19 +307,7 @@ private:
                 detail::SanitizeAssign<N % digits<block_type>>{}(this->block_back());
         }
 
-        constexpr auto& block_ref(int n)
-        {
-                assert(0 <= n && n < N);
-                return *(this->block_ptr(n));
-        }
-
-        constexpr auto const& block_ref(int n) const
-        {
-                assert(0 <= n && n < N);
-                return *(this->block_ptr(n));
-        }
-
-        static constexpr auto mask(int n)
+        constexpr auto mask(int n) const noexcept
         {
                 return one<block_type> << (n % digits<block_type>);
         }
