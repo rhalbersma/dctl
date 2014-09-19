@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_jump.hpp>        // promote_en_passant
-#include <dctl/successor/propagate/jump.hpp>            // Propagate (jumps specialization)
+#include <dctl/successor/tracker.hpp>            // Propagate (jumps specialization)
 #include <dctl/successor/select/jump.hpp>               // jumps
 #include <dctl/pieces/king.hpp>                         // king
 #include <dctl/pieces/pawn.hpp>                         // pawn
@@ -35,7 +35,7 @@ private:
         using Rules = rules_type_t<Position>;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Propagate<select::jump, Position>;
+        using State = Propagate<Color, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
 
@@ -329,7 +329,7 @@ private:
         template<class Iterator>
         void add(Iterator dest) const
         {
-                tracker_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
+                tracker_.template add_pawn_jump<with::pawn>(*dest, moves_);
         }
 
         template<int Direction>

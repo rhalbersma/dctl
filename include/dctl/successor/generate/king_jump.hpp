@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
-#include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
+#include <dctl/successor/tracker.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/pieces/king.hpp>                         // king
 
@@ -31,7 +31,7 @@ private:
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
         using Move = value_type_t<Sequence>;
-        using State = Propagate<select::jump, Position>;
+        using State = Propagate<Color, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
 
@@ -337,7 +337,7 @@ private:
         template<class Iterator>
         void promotion_dispatch(Iterator dest_sq, std::false_type) const
         {
-                tracker_.template add_king_jump<Color>(*dest_sq, moves_);
+                tracker_.add_king_jump(*dest_sq, moves_);
         }
 
         // pawns that promote en-passant
@@ -345,9 +345,9 @@ private:
         void promotion_dispatch(Iterator dest_sq, std::true_type) const
         {
                 if (!tracker_.is_promotion())
-                        tracker_.template add_king_jump<Color>(*dest_sq, moves_);
+                        tracker_.add_king_jump(*dest_sq, moves_);
                 else
-                        tracker_.template add_pawn_jump<Color, with::king>(*dest_sq, moves_);
+                        tracker_.template add_pawn_jump<with::king>(*dest_sq, moves_);
         }
 
         template<int Direction>

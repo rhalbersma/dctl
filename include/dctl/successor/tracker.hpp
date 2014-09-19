@@ -6,7 +6,6 @@
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/pieces/pieces.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/jump.hpp>
 #include <dctl/utility/total_order.hpp>
 #include <dctl/ray.hpp>
@@ -28,8 +27,8 @@ struct pawn {};
 
 }       // namespace with
 
-template<class Position>
-class Propagate<select::jump, Position>
+template<bool Color, class Position>
+class Propagate
 {
 public:
         // constructors
@@ -43,7 +42,6 @@ public:
         {
                 visited_path_.reserve(DCTL_PP_STACK_RESERVE);
                 removed_pieces_.reserve(DCTL_PP_STACK_RESERVE);
-                king_order_.reserve(DCTL_PP_STACK_RESERVE);
                 assert(invariant());
         }
 
@@ -78,12 +76,12 @@ public:
                 release_dispatch(last_piece(), is_en_passant_jump_removal_t<Rules>{});
         }
 
-        void visit(int sq)
+        void visit(int sq) const
         {
                 visited_path_.push_back(sq);
         }
 
-        void leave()
+        void leave() const
         {
                 visited_path_.pop_back();
         }
@@ -104,10 +102,10 @@ public:
                 is_promotion_ ^= true;
         }
 
-        template<bool Color, class Sequence>
+        template<class Sequence>
         void add_king_jump(int dest, Sequence& moves) const
         {
-                visited_path_.push_back(dest);
+                visit(dest);
 /*
                 std::cout << "TRACING JUMP: ";
                 std::cout << "squares={";
@@ -126,13 +124,13 @@ public:
                         king_order()
                 );
 
-                visited_path_.pop_back();
+                leave();
         }
 
-        template<bool Color, class WithPiece, class Sequence>
+        template<class WithPiece, class Sequence>
         void add_pawn_jump(int dest, Sequence& moves) const
         {
-                visited_path_.push_back(dest);
+                visit(dest);
 
 /*
                 std::cout << "TRACING JUMP: ";
@@ -148,12 +146,31 @@ public:
                         captured_kings(WithPiece{}),
                         from_sq(),
                         dest_sq(),
-                        is_promotion<Color>(dest_sq(), WithPiece{}),
+                        is_promotion_sq(dest_sq(), WithPiece{}),
                         Color,
                         king_order()
                 );
 
-                visited_path_.pop_back();
+                leave();
+        }
+
+        template<class WithPiece, class Sequence>
+        void add_any_jump(int dest, Sequence& moves) const
+        {
+                visit(dest);
+
+/*
+                std::cout << "TRACING JUMP: ";
+                std::cout << "squares={";
+                for (auto&& s : squares_) std::cout << Board::numeric_from_bit(s) << ",";
+                std::cout << "}, ";
+                std::cout << "pieces={";
+                for (auto&& p : pieces_) std::cout << Board::numeric_from_bit(p) << ", ";
+                std::cout << "}\n";
+*/
+                moves.emplace_back(*this);
+
+                leave();
         }
 
         // observers
@@ -231,7 +248,7 @@ public:
                 return static_cast<int>(king_order_.size());
         }
 
-        auto const& king_order() const
+        auto king_order() const
         {
                 return king_order_;
         }
@@ -244,6 +261,11 @@ public:
         auto is_promotion() const
         {
                 return is_promotion_;
+        }
+
+        auto active_color() const
+        {
+                return Color;
         }
 
 private:
@@ -265,7 +287,7 @@ private:
         void capture_impl(int sq)
         {
                 if (is_king(sq))
-                        king_order_.push_back(-num_pieces());
+                        king_order_.set(Set::size() - 1 - num_pieces());
                 removed_pieces_.push_back(sq);
                 remaining_targets_.reset(sq);
         }
@@ -288,7 +310,7 @@ private:
                 remaining_targets_.set(sq);
                 removed_pieces_.pop_back();
                 if (is_king(sq))
-                        king_order_.pop_back();
+                        king_order_.reset(Set::size() - 1 - num_pieces());
         }
 
         auto size() const
@@ -297,17 +319,21 @@ private:
         }
 
         // pawn jumps without promotion
-        template<bool Color>
-        static auto is_promotion(int dest_sq, with::pawn)
+        static auto is_promotion_sq(int dest_sq, with::pawn)
         {
                 return dctl::is_promotion<Color, Board>(dest_sq);
         }
 
         // pawn jumps with an en-passant promotion
-        template<bool Color>
-        static auto is_promotion(int /* dest_sq */, with::king)
+        static auto is_promotion_sq(int /* dest_sq */, with::king)
         {
                 return true;
+        }
+
+public:
+        auto captured_kings() const
+        {
+                return captured_pieces() & king_targets_;
         }
 
         auto captured_kings(with::pawn) const
@@ -333,17 +359,20 @@ private:
                 return captured_pieces() & king_targets_;
         }
 
+public:
         auto captured_pieces() const
         {
                 return initial_targets_ ^ remaining_targets_;
         }
 
+private:
         template<int Direction>
         static wave::Iterator<Board, Direction> along_wave(Set const& s)
         {
                 return wave::make_iterator<Board, Direction>(s);
         }
 
+public:
         auto from_sq() const
         {
                 assert(!visited_path_.empty());
@@ -356,6 +385,7 @@ private:
                 return visited_path_.back();
         }
 
+private:
         auto last_piece() const
         {
                 assert(!removed_pieces_.empty());
@@ -375,13 +405,11 @@ private:
         Set initial_targets_;
         Set remaining_targets_;
         Set not_occupied_;
+        Set king_order_{};
         Arena<int> sqa_;
         Arena<int> pca_;
-        Arena<int> kca_;
-
         mutable stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
         mutable stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
-        mutable stack_vector<int> king_order_ = stack_vector<int>(Alloc<int>{kca_});
         bool is_with_king_{};
         bool is_promotion_{};
 };

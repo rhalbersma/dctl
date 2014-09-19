@@ -2,7 +2,7 @@
 #include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
 #include <dctl/successor/detect/king_jump.hpp>          // Detect (king jump specialization)
 #include <dctl/successor/detect/pawn_jump.hpp>          // Detect (pawn jump specialization)
-#include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
+#include <dctl/successor/tracker.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/rule_traits.hpp>                         // traits
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
@@ -51,7 +51,7 @@ private:
         template<class Position>
         auto combined_dispatch(Position const& p, std::true_type) const
         {
-                Propagate<select::jump, Position> propagate{p};
+                Propagate<Color, Position> propagate{p};
                 return PawnJump<Position>{propagate}(p.pieces(Color));
         }
 
@@ -59,7 +59,7 @@ private:
         template<class Position>
         auto combined_dispatch(Position const& p, std::false_type) const
         {
-                Propagate<select::jump, Position> propagate{p};
+                Propagate<Color, Position> propagate{p};
 
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 // SPECULATE: #pawns > #kings for earliest possible short-circuiting
