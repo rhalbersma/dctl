@@ -3,6 +3,7 @@
 #include <dctl/bit/intrinsic.hpp>               // popcount
 #include <dctl/bit/traits.hpp>                  // none, one, all, digits, is_unsigned_integer
 #include <cassert>                              // assert
+#include <memory>                               // addressof
 #include <utility>                              // swap
 
 namespace dctl {
@@ -41,22 +42,22 @@ public:
 
         constexpr auto* block_begin() noexcept
         {
-                return &elems;
+                return std::addressof(elems);
         }
 
         constexpr auto const* block_begin() const noexcept
         {
-                return &elems;
+                return std::addressof(elems);
         }
 
         constexpr auto* block_end() noexcept
         {
-                return &elems;
+                return std::addressof(elems);
         }
 
         constexpr auto const* block_end() const noexcept
         {
-                return &elems;
+                return std::addressof(elems);
         }
 
         constexpr auto& block_back() noexcept
