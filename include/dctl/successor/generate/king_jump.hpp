@@ -290,29 +290,7 @@ private:
         }
 
         template<class Iterator>
-        void add(Iterator jumper) const
-        {
-                // tag dispatching on majority precedence
-                precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
-        }
-
-        // no majority precedence
-        template<class Iterator>
-        void precedence_dispatch(Iterator jumper, std::false_type) const
-        {
-                do_add(jumper);
-        }
-
-        // majority precedence
-        template<class Iterator>
-        void precedence_dispatch(Iterator jumper, std::true_type) const
-        {
-                if (tracker_.handle_precedence(moves_))
-                        do_add(jumper);
-        }
-
-        template<class Iterator>
-        void do_add(Iterator dest_sq) const
+        void add(Iterator dest_sq) const
         {
                 // tag dispatching on king halt after final capture
                 halt_dispatch(dest_sq, std::pair<is_long_ranged_land_after_piece_t<Rules>, is_directly_halt_after_final_king_t<Rules>>{});

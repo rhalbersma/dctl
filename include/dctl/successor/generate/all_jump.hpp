@@ -26,9 +26,9 @@ public:
                 // EFFICIENCY: tag dispatching on absolute king jump precedence
                 precedence_dispatch(p, moves, is_absolute_king_jump_precedence_t<Rules>{});
 
-                //auto const check_precedence = is_jump_precedence_v<Rules>;
-                //if (check_precedence)
-                //handle_precedence(moves, greater_value{});
+                auto const check_precedence = is_jump_precedence_v<Rules>;
+                if (check_precedence)
+                        handle_precedence(moves, precedence_greater{});
 
                 auto const check_duplicate = is_remove_duplicates_v<Rules>;// && moves.size() > 1;
                 if (check_duplicate) {
@@ -83,13 +83,13 @@ private:
                 moves.erase(drop, end(moves));
         }
 
-        struct greater_value
+        struct precedence_greater
         {
                 template<class Move>
-                auto operator()(Move const& L, Move const& R) const
+                auto operator()(Move const& lhs, Move const& rhs) const
                 {
-                        using Value = jump_precedence_t<rules_type_t<Move>>;
-                        return Value{L} > Value{R};
+                        using less = jump_precedence_t<rules_type_t<Move>>;
+                        return less{}(rhs, lhs);
                 }
         };
 };
