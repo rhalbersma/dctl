@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/successor/count/primary_fwd.hpp>
-#include <dctl/successor/propagate/push.hpp>
 #include <dctl/successor/select/push.hpp>
 #include <dctl/pieces/pawn.hpp>
 
@@ -25,18 +24,17 @@ public:
 private:
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Propagate<select::push, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
-        State const& propagate_;
+        Set const& propagate_;
 
 public:
         // constructors
 
-        explicit Count(State const& p)
+        explicit Count(Set const& p)
         :
                 propagate_{p}
         {}
@@ -61,7 +59,7 @@ private:
         auto parallelize(Set const& active_pawns) const
         {
                 return Sink<Board, Direction, std::false_type>{}(
-                        active_pawns, propagate_.path()
+                        active_pawns, propagate_
                 ).count();
         }
 };

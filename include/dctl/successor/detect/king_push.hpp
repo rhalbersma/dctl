@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/pieces/king.hpp>                         // king
-#include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>
 
 #include <dctl/angle/directions.hpp>                    // left_up, right_up, left_down, right_down
@@ -25,18 +24,17 @@ public:
 private:
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Propagate<select::push, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
-        State const& propagate_;
+        Set const& propagate_;
 
 public:
         // constructors
 
-        explicit Detect(State const& p)
+        explicit Detect(Set const& p)
         :
                 propagate_{p}
         {}
@@ -64,7 +62,7 @@ private:
         auto parallelize(Set const& active_kings) const
         {
                 return Sink<Board, Direction, std::false_type>{}(
-                        active_kings, propagate_.path()
+                        active_kings, propagate_
                 ).any();
         }
 };

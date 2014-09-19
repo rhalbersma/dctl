@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/successor/count/primary_fwd.hpp>
-#include <dctl/successor/propagate/push.hpp>
 #include <dctl/successor/select/push.hpp>
 #include <dctl/pieces/king.hpp>
 
@@ -26,18 +25,17 @@ private:
         using Rules = rules_type_t<Position>;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Propagate<select::push, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
-        State const& propagate_;
+        Set const& propagate_;
 
 public:
         // constructors
 
-        explicit Count(State const& p)
+        explicit Count(Set const& p)
         :
                 propagate_{p}
         {}
@@ -64,7 +62,7 @@ private:
         auto parallelize(Set const& active_kings) const
         {
                 return Sink<Board, Direction, is_long_ranged_king_t<Rules>>{}(
-                        active_kings, propagate_.path()
+                        active_kings, propagate_
                 ).count();
         }
 };
