@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
-#include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>               // push
 #include <dctl/pieces/king.hpp>                         // king
 
@@ -30,18 +29,17 @@ private:
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
         using Move = value_type_t<Sequence>;
-        using State = Propagate<select::push, Position>;
         static constexpr auto orientation = orientation_v<Board, Color>;
 
         // representation
 
-        State const& propagate_;
+        Set const& propagate_;
         Sequence& moves_;
 
 public:
         // constructors
 
-        Generate(State const& p, Sequence& m)
+        Generate(Set const& p, Sequence& m)
         :
                 propagate_{p},
                 moves_{m}
@@ -82,7 +80,7 @@ private:
         template<int Direction>
         auto transform_movers(Set const& active_kings) const
         {
-                auto const movers = active_kings & Set(*std::prev(along_wave<Direction>(propagate_.path())));
+                auto const movers = active_kings & Set(*std::prev(along_wave<Direction>(propagate_)));
                 boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
                         return Move{from_sq, *++along_ray<Direction>(from_sq), Color};
                 }));
@@ -91,7 +89,7 @@ private:
         template<class Iterator>
         auto transform_targets(Iterator from) const
         {
-                auto const targets = ray::fill(from, propagate_.path());
+                auto const targets = ray::fill(from, propagate_);
                 boost::push_back(moves_, targets | boost::adaptors::transformed([=](auto const& dest_sq) {
                         return Move{*from, dest_sq, Color};
                 }));

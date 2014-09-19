@@ -2,7 +2,6 @@
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_push.hpp>        // Generate (king push specialization)
 #include <dctl/successor/generate/pawn_push.hpp>        // Generate (pawn push specialization)
-#include <dctl/successor/propagate/push.hpp>            // Propagate (push specialization)
 #include <dctl/successor/select/push.hpp>               // push
 #include <dctl/position/unary_projections.hpp>          // moveable_kings
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
@@ -21,7 +20,7 @@ public:
                 using KingPush = Generate<Color, pieces::king, select::push, Position, Sequence>;
                 using PawnPush = Generate<Color, pieces::pawn, select::push, Position, Sequence>;
 
-                auto const propagate = Propagate<select::push, Position>{p};
+                auto const propagate = p.not_occupied();
                 KingPush{propagate, moves}(moveable_kings(p, Color));
                 PawnPush{propagate, moves}(p.pawns(Color));
         }
