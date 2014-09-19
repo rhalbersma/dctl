@@ -8,7 +8,6 @@
 #include <dctl/rule_traits.hpp>
 #include <dctl/successor/propagate_fwd.hpp>
 #include <dctl/successor/select/jump.hpp>
-#include <dctl/successor/value.hpp>
 #include <dctl/utility/total_order.hpp>
 #include <dctl/ray.hpp>
 #include <dctl/wave/iterator.hpp>
@@ -19,7 +18,6 @@
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
 #include <vector>
-#include <dctl/successor/propagate/filter.hpp>
 
 namespace dctl {
 namespace successor {
@@ -45,7 +43,7 @@ public:
         {
                 visited_path_.reserve(DCTL_PP_STACK_RESERVE);
                 removed_pieces_.reserve(DCTL_PP_STACK_RESERVE);
-                ordered_kings_.reserve(DCTL_PP_STACK_RESERVE);
+                king_order_.reserve(DCTL_PP_STACK_RESERVE);
                 assert(invariant());
         }
 
@@ -124,7 +122,8 @@ public:
                         captured_kings(with::king{}),
                         from_sq(),
                         dest_sq(),
-                        Color
+                        Color,
+                        king_order()
                 );
 
                 visited_path_.pop_back();
@@ -150,16 +149,11 @@ public:
                         from_sq(),
                         dest_sq(),
                         is_promotion<Color>(dest_sq(), WithPiece{}),
-                        Color
+                        Color,
+                        king_order()
                 );
 
                 visited_path_.pop_back();
-        }
-
-        template<class Sequence>
-        auto handle_precedence(Sequence& moves)
-        {
-                return precedence_(moves, *this);
         }
 
         // observers
@@ -234,12 +228,12 @@ public:
 
         auto num_kings() const
         {
-                return static_cast<int>(ordered_kings_.size());
+                return static_cast<int>(king_order_.size());
         }
 
-        auto ordered_kings() const
+        auto const& king_order() const
         {
-                return ordered_kings_;
+                return king_order_;
         }
 
         auto is_with_king() const
@@ -271,7 +265,7 @@ private:
         void capture_impl(int sq)
         {
                 if (is_king(sq))
-                        ordered_kings_.push_back(-num_pieces());
+                        king_order_.push_back(-num_pieces());
                 removed_pieces_.push_back(sq);
                 remaining_targets_.reset(sq);
         }
@@ -294,7 +288,7 @@ private:
                 remaining_targets_.set(sq);
                 removed_pieces_.pop_back();
                 if (is_king(sq))
-                        ordered_kings_.pop_back();
+                        king_order_.pop_back();
         }
 
         auto size() const
@@ -387,11 +381,9 @@ private:
 
         mutable stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
         mutable stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
-        mutable stack_vector<int> ordered_kings_ = stack_vector<int>(Alloc<int>{kca_});
+        mutable stack_vector<int> king_order_ = stack_vector<int>(Alloc<int>{kca_});
         bool is_with_king_{};
         bool is_promotion_{};
-
-        Precedence<Propagate<select::jump, Position>> precedence_{};
 };
 
 }       // namespace successor

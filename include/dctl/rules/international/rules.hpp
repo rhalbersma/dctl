@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/international/value.hpp>   // Value
+#include <dctl/rules/international/precedence.hpp>      // less
 
 namespace dctl {
 namespace international {
@@ -12,7 +12,7 @@ struct Rules
         static constexpr auto is_backward_pawn_jump = true;     // 4.1
         static constexpr auto is_long_ranged_king = true;       // 3.9
 
-        using jump_precedence = Value;                          // 4.13
+        using jump_precedence = precedence::less;               // 4.13
 
         // draw
         static constexpr auto max_repetitions = 3;              // 6.1

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/czech/value.hpp>   // Value
+#include <dctl/rules/czech/precedence.hpp>      // less
 
 namespace dctl {
 namespace czech {
@@ -12,7 +12,7 @@ struct Rules
         static constexpr auto is_backward_pawn_jump = false;
         static constexpr auto is_long_ranged_king = true;
 
-        using jump_precedence = Value;
+        using jump_precedence = precedence::less;
 
         // optional
         static constexpr auto is_absolute_king_jump_precedence = true;

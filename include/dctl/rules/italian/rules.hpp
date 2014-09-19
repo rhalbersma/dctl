@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rules/italian/value.hpp> // Value
+#include <dctl/rules/italian/precedence.hpp>    // less
 
 namespace dctl {
 namespace italian {
@@ -12,7 +12,7 @@ struct Rules
         static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
         static constexpr auto is_long_ranged_king = false;      // 4.7
 
-        using jump_precedence = Value;                          // 6.1 - 6.10
+        using jump_precedence = precedence::less;               // 6.1 - 6.10
 
         // optional
         static constexpr auto is_pawn_jump_king = false;        // 5.3(b)

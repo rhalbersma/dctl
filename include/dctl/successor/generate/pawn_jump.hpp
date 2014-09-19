@@ -327,29 +327,7 @@ private:
         }
 
         template<class Iterator>
-        void add(Iterator jumper) const
-        {
-                // tag dispatching on majority precedence
-                precedence_dispatch(jumper, is_jump_precedence_t<Rules>{});
-        }
-
-        // no majority precedence
-        template<class Iterator>
-        void precedence_dispatch(Iterator jumper, std::false_type) const
-        {
-                do_add(jumper);
-        }
-
-        // majority precedence
-        template<class Iterator>
-        void precedence_dispatch(Iterator jumper, std::true_type) const
-        {
-                if (tracker_.handle_precedence(moves_))
-                        do_add(jumper);
-        }
-
-        template<class Iterator>
-        void do_add(Iterator dest) const
+        void add(Iterator dest) const
         {
                 tracker_.template add_pawn_jump<Color, with::pawn>(*dest, moves_);
         }

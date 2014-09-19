@@ -2,6 +2,8 @@
 #include <dctl/type_traits.hpp> // board_type_t, rules_type_t
 #include <cassert>              // assert
 #include <tuple>                // forward_as_tuple
+#include <vector>
+#include <dctl/utility/stack_vector.hpp>
 
 namespace dctl {
 
@@ -40,27 +42,29 @@ public:
         }
 
         // king jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, bool color)
+        constexpr Move(Set pieces, Set kings, int src, int dst, bool color, stack_vector<int> const& v)
         :
                 captured_pieces_{pieces},
                 captured_kings_{kings},
                 from_{src},
                 dest_{dst},
                 is_with_king_{true},
-                active_color_{color}
+                active_color_{color},
+                king_order_(begin(v), end(v))
         {
                 assert(invariant());
         }
 
         // pawn jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom, bool color)
+        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom, bool color, stack_vector<int> const& v)
         :
                 captured_pieces_{pieces},
                 captured_kings_{kings},
                 from_{src},
                 dest_{dst},
                 is_promotion_{prom},
-                active_color_{color}
+                active_color_{color},
+                king_order_(begin(v), end(v))
         {
                 assert(invariant());
         }
@@ -74,7 +78,8 @@ public:
                 dest_{u.dest()},
                 is_with_king_{u.is_with_king()},
                 is_promotion_{u.is_promotion()},
-                active_color_{u.active_color()}
+                active_color_{u.active_color()},
+                king_order_(begin(u.king_order()), end(u.king_order()))
         {
                 assert(invariant());
         }
@@ -136,6 +141,11 @@ public:
                 return captured_kings_.count();
         }
 
+        auto const& king_order() const
+        {
+                return king_order_;
+        }
+
         // predicates
 
         friend constexpr auto
@@ -183,6 +193,7 @@ private:
         bool is_with_king_{};
         bool is_promotion_{};
         bool active_color_{};
+        std::vector<int> king_order_{};
 };
 
 template<class T>
