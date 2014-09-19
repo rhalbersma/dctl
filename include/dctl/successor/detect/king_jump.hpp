@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/pieces/king.hpp>                         // king
-#include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
+#include <dctl/successor/tracker.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>
 
 #include <dctl/angle/directions.hpp>                    // up, left_up, right_up, left, right, left_down, right_down, down
@@ -27,7 +27,7 @@ private:
         using Rules = rules_type_t<Position>;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Propagate<select::jump, Position>;
+        using State = Propagate<Color, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
 

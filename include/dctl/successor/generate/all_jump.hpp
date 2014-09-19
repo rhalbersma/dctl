@@ -2,7 +2,7 @@
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_jump.hpp>        // Generate (king jump specialization)
 #include <dctl/successor/generate/pawn_jump.hpp>        // Generate (pawn jump specialization)
-#include <dctl/successor/propagate/jump.hpp>            // Propagate (jump specialization)
+#include <dctl/successor/tracker.hpp>            // Propagate (jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 #include <dctl/rule_traits.hpp>                         // is_absolute_king_jump_precedence_t
@@ -52,7 +52,7 @@ private:
         template<class Position, class Sequence>
         auto precedence_dispatch(Position const& p, Sequence& moves, std::false_type) const
         {
-                Propagate<select::jump, Position> back_tracker{p};
+                Propagate<Color, Position> back_tracker{p};
                 KingJump<Position, Sequence>{back_tracker, moves}(p.kings(Color));
                 PawnJump<Position, Sequence>{back_tracker, moves}(p.pawns(Color));
         }
@@ -61,7 +61,7 @@ private:
         template<class Position, class Sequence>
         auto precedence_dispatch(Position const& p, Sequence& moves, std::true_type) const
         {
-                Propagate<select::jump, Position> back_tracker{p};
+                Propagate<Color, Position> back_tracker{p};
                 KingJump<Position, Sequence>{back_tracker, moves}(p.kings(Color));
                 if (moves.empty())
                         PawnJump<Position, Sequence>{back_tracker, moves}(p.pawns(Color));
