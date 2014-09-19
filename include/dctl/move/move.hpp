@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/rules.hpp>
 #include <dctl/type_traits.hpp> // board_type_t, rules_type_t
 #include <cassert>              // assert
 #include <tuple>                // forward_as_tuple
@@ -8,7 +9,7 @@
 namespace dctl {
 
 template<class Rules, class Board>
-struct Move
+struct BaseMove
 {
 public:
         using board_type = Board;
@@ -18,7 +19,7 @@ public:
         // constructors
 
         // king move
-        constexpr Move(int src, int dst, bool color)
+        constexpr BaseMove(int src, int dst, bool color)
         :
                 from_{src},
                 dest_{dst},
@@ -30,7 +31,7 @@ public:
         }
 
         // pawn move
-        constexpr Move(int src, int dst, bool prom, bool color)
+        constexpr BaseMove(int src, int dst, bool prom, bool color)
         :
                 from_{src},
                 dest_{dst},
@@ -42,44 +43,42 @@ public:
         }
 
         // king jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, bool color, stack_vector<int> const& v)
+        constexpr BaseMove(Set pieces, Set kings, int src, int dst, bool color, Set)
         :
                 captured_pieces_{pieces},
                 captured_kings_{kings},
                 from_{src},
                 dest_{dst},
                 is_with_king_{true},
-                active_color_{color},
-                king_order_(begin(v), end(v))
+                active_color_{color}
         {
                 assert(invariant());
         }
 
         // pawn jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom, bool color, stack_vector<int> const& v)
+        constexpr BaseMove(Set pieces, Set kings, int src, int dst, bool prom, bool color, Set)
         :
                 captured_pieces_{pieces},
                 captured_kings_{kings},
                 from_{src},
                 dest_{dst},
                 is_promotion_{prom},
-                active_color_{color},
-                king_order_(begin(v), end(v))
+                active_color_{color}
         {
                 assert(invariant());
         }
 
-        template<class U>
-        explicit Move(U const& u)
+        // any jump
+        template<class Tracker>
+        explicit constexpr BaseMove(Tracker const& t)
         :
-                captured_pieces_{u.captured_pieces()},
-                captured_kings_{u.captured_kings()},
-                from_{u.from()},
-                dest_{u.dest()},
-                is_with_king_{u.is_with_king()},
-                is_promotion_{u.is_promotion()},
-                active_color_{u.active_color()},
-                king_order_(begin(u.king_order()), end(u.king_order()))
+                captured_pieces_{t.captured_pieces()},
+                captured_kings_{t.captured_kings()},
+                from_{t.from_sq()},
+                dest_{t.dest_sq()},
+                is_with_king_{t.is_with_king()},
+                is_promotion_{t.is_promotion()},
+                active_color_{t.active_color()}
         {
                 assert(invariant());
         }
@@ -141,15 +140,10 @@ public:
                 return captured_kings_.count();
         }
 
-        auto const& king_order() const
-        {
-                return king_order_;
-        }
-
         // predicates
 
         friend constexpr auto
-        operator==(Move const& lhs, Move const& rhs) noexcept
+        operator==(BaseMove const& lhs, BaseMove const& rhs) noexcept
         {
                 return
                         std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) ==
@@ -158,13 +152,13 @@ public:
         }
 
         friend constexpr auto
-        operator!=(Move const& lhs, Move const& rhs) noexcept
+        operator!=(BaseMove const& lhs, BaseMove const& rhs) noexcept
         {
                 return !(lhs == rhs);
         }
 
         friend constexpr auto
-        operator<(Move const& lhs, Move const& rhs) noexcept
+        operator<(BaseMove const& lhs, BaseMove const& rhs) noexcept
         {
                 return
                         std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) <
@@ -193,7 +187,73 @@ private:
         bool is_with_king_{};
         bool is_promotion_{};
         bool active_color_{};
-        std::vector<int> king_order_{};
+};
+
+template<class Rules, class Board>
+class EmptyBase {};
+
+template<class Rules, class Board>
+class Move
+:
+        public BaseMove<Rules, Board>,
+        public EmptyBase<Rules, Board>
+{
+public:
+        using base = BaseMove<Rules, Board>;
+        using base::base;
+};
+
+template<class Board>
+class EmptyBase<italian::Rules, Board>
+{
+public:
+        EmptyBase() = default;
+        explicit EmptyBase(set_type_t<Board> ko): king_order_(ko) {}
+
+        template<class Tracker>
+        explicit EmptyBase(Tracker const& t)
+        :
+                king_order_(t.king_order())
+        {}
+
+        set_type_t<Board> king_order() const { return king_order_; }
+
+private:
+        set_type_t<Board> king_order_{};
+};
+
+template<class Board>
+class Move<italian::Rules, Board>
+:
+        public EmptyBase<italian::Rules, Board>,
+        public BaseMove<italian::Rules, Board>
+{
+public:
+        using empty = EmptyBase<italian::Rules, Board>;
+        using base = BaseMove<italian::Rules, Board>;
+        using base::base;
+        using Set = typename base::Set;
+
+        // king jump
+        constexpr Move(Set pieces, Set kings, int src, int dst, bool color, Set ko)
+        :
+                empty(ko),
+                base(pieces, kings, src, dst, color, ko)
+        {}
+
+        // pawn jump
+        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom, bool color, Set ko)
+        :
+                empty(ko),
+                base(pieces, kings, src, dst, prom, color, ko)
+        {}
+
+        template<class Tracker>
+        explicit constexpr Move(Tracker const& t)
+        :
+                empty(t),
+                base(t)
+        {}
 };
 
 template<class T>
