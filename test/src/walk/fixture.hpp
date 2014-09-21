@@ -1,8 +1,8 @@
 #pragma once
-#include <boost/test/unit_test.hpp>	// BOOST_CHECK_EQUAL
 #include <dctl/walk/root.hpp>           // Root
 #include <dctl/utility/int.hpp>        	// NodeCount
-#include <iostream>
+#include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
+
 namespace dctl {
 namespace walk {
 

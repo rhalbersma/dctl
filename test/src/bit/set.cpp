@@ -26,10 +26,10 @@ using U = int;
 
 using SetTypes = boost::mpl::vector
 <
-        Set< 64>,
-        Set<128>,
-        Set<192>,
-        Set<256>
+        Set< 64>,       // Chess
+        Set< 81>,       // Shogi
+        Set< 90>,       // Xiangqi
+        Set<361>        // Go
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(DefaultConstructorZeroInitializes, T, SetTypes)
@@ -88,9 +88,23 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsStrictlyIncreasing, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Exhaustive, T, SetTypes)
 {
+        // modifiers
+
+        BOOST_CHECK(and_assign<T>());
+        BOOST_CHECK(or_assign<T>());
+        BOOST_CHECK(xor_assign<T>());
+        BOOST_CHECK(minus_assign<T>());
         BOOST_CHECK(shift_left_assign<T>());
         BOOST_CHECK(shift_right_assign<T>());
 
+        // observers
+        BOOST_CHECK(count<T>());
+
+        // non-members
+        BOOST_CHECK(op_and<T>());
+        BOOST_CHECK(op_or<T>());
+        BOOST_CHECK(op_xor<T>());
+        BOOST_CHECK(op_minus<T>());
         BOOST_CHECK(shift_left<T>());
         BOOST_CHECK(shift_right<T>());
 }

@@ -5,14 +5,52 @@ namespace dctl {
 namespace bit {
 
 template<class T, int N = T::size()>
+constexpr auto and_assign() noexcept
+{
+        auto check = true;
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= and_assign(T{i}, T{j});
+        return check;
+}
+
+template<class T, int N = T::size()>
+constexpr auto or_assign() noexcept
+{
+        auto check = true;
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= or_assign(T{i}, T{j});
+        return check;
+}
+
+template<class T, int N = T::size()>
+constexpr auto xor_assign() noexcept
+{
+        auto check = true;
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= xor_assign(T{i}, T{j});
+        return check;
+}
+
+template<class T, int N = T::size()>
+constexpr auto minus_assign() noexcept
+{
+        auto check = true;
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= minus_assign(T{i}, T{j});
+        return check;
+}
+
+template<class T, int N = T::size()>
 constexpr auto shift_left_assign() noexcept
 {
         auto check = true;
-        for (auto i = 0; i < N; ++i) {
-                auto const b = T{i};
-                for (auto n = 0; n < N; ++n)
-                        check &= shift_left_assign(b, n);
-        }
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= shift_left_assign(T{i}, j);
         return check;
 }
 
@@ -20,11 +58,76 @@ template<class T, int N = T::size()>
 constexpr auto shift_right_assign() noexcept
 {
         auto check = true;
-        for (auto i = 0; i < N; ++i) {
-                auto const b = T{i};
-                for (auto n = 0; n < N; ++n)
-                        check &= shift_right_assign(b, n);
-        }
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= shift_right_assign(T{i}, j);
+        return check;
+}
+
+template<class T, int N = T::size()>
+constexpr auto count() noexcept
+{
+        auto check = false;
+
+        // empty set
+        check &= T{}.count() == 0;
+
+        // singlets
+        for (auto i = 0; i < N; ++i)
+                check &= T{i}.count() == 1;
+
+        // doublets
+        for (auto i = 0; i < N; ++i)
+                for (auto j = i + 1; j < N; ++j)
+                        check &= T{i, j}.count() == 2;
+
+        // universe with [i] bits masked off, then inverted
+        for (auto i = 0; i < N; ++i)
+                check &= (~((~T{} >> i) << i)).count() == i;
+
+        // universe
+        check &= (~T{}).count() == N;
+
+        return check;
+}
+
+template<class T, int N = T::size()>
+constexpr auto op_and() noexcept
+{
+        auto check = true;
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= op_and(T{i}, T{j});
+        return check;
+}
+
+template<class T, int N = T::size()>
+constexpr auto op_or() noexcept
+{
+        auto check = true;
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= op_or(T{i}, T{j});
+        return check;
+}
+
+template<class T, int N = T::size()>
+constexpr auto op_xor() noexcept
+{
+        auto check = true;
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= op_xor(T{i}, T{j});
+        return check;
+}
+
+template<class T, int N = T::size()>
+constexpr auto op_minus() noexcept
+{
+        auto check = true;
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= op_minus(T{i}, T{j});
         return check;
 }
 
@@ -32,11 +135,9 @@ template<class T, int N = T::size()>
 constexpr auto shift_left() noexcept
 {
         auto check = true;
-        for (auto i = 0; i < N; ++i) {
-                auto const b = T{i};
-                for (auto n = 0; n < N; ++n)
-                        check &= shift_left(b, n);
-        }
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= shift_left(T{i}, j);
         return check;
 }
 
@@ -44,11 +145,9 @@ template<class T, int N = T::size()>
 constexpr auto shift_right() noexcept
 {
         auto check = true;
-        for (auto i = 0; i < N; ++i) {
-                auto const b = T{i};
-                for (auto n = 0; n < N; ++n)
-                        check &= shift_right(b, n);
-        }
+        for (auto i = 0; i < N; ++i)
+                for (auto j = 0; j < N; ++j)
+                        check &= shift_right(T{i}, j);
         return check;
 }
 
