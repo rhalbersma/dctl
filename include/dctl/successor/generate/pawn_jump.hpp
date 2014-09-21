@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_jump.hpp>        // promote_en_passant
-#include <dctl/successor/tracker.hpp>            // Propagate (jumps specialization)
+#include <dctl/successor/tracker.hpp>                   // Tracker
 #include <dctl/successor/select/jump.hpp>               // jumps
 #include <dctl/pieces/king.hpp>                         // king
 #include <dctl/pieces/pawn.hpp>                         // pawn
@@ -35,7 +35,7 @@ private:
         using Rules = rules_type_t<Position>;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Propagate<Color, Position>;
+        using State = Tracker<Color, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
 
@@ -50,9 +50,9 @@ private:
 public:
         // constructors
 
-        explicit Generate(State& c, Sequence& m)
+        explicit Generate(State& t, Sequence& m)
         :
-                tracker_{c},
+                tracker_{t},
                 moves_{m}
         {}
 
@@ -64,18 +64,18 @@ public:
                         return;
 
                 // tag dispatching on whether pawns can capture kings
-                select_dispatch(active_pawns, is_pawn_jump_king_t<Rules>{});
+                king_targets_dispatch(active_pawns, is_pawn_jump_king_t<Rules>{});
         }
 
 private:
         // pawns that can capture kings
-        void select_dispatch(Set const& active_pawns, std::true_type) const
+        void king_targets_dispatch(Set const& active_pawns, std::true_type) const
         {
                 branch(active_pawns);
         }
 
         // pawns that cannot capture kings
-        void select_dispatch(Set const& active_pawns, std::false_type) const
+        void king_targets_dispatch(Set const& active_pawns, std::false_type) const
         {
                 tracker_.toggle_king_targets();
                 branch(active_pawns);
@@ -130,7 +130,7 @@ private:
         template<int Direction>
         void serialize(Set const& active_pawns) const
         {
-                auto const jumpers = active_pawns & Set(*std::prev(along_wave<Direction>(tracker_.template targets_with_pawn<Direction>())));
+                auto const jumpers = active_pawns & Set(*std::prev(along_wave<Direction>(tracker_.template targets<Direction>())));
                 for (auto&& from_sq : jumpers)
                         find_first(along_ray<Direction>(from_sq));
         }
@@ -158,31 +158,46 @@ private:
         {
                 assert(is_onboard(jumper));
                 tracker_.visit(*jumper);
-                if (!find_next(jumper))
-                        add(jumper);
+                find_next(jumper);
                 tracker_.leave();
         }
 
         template<class Iterator>
-        bool find_next(Iterator jumper) const
+        void find_next(Iterator jumper) const
         {
                 // tag dispatching on promotion condition
-                return promotion_dispatch(jumper, is_en_passant_promotion_t<Rules>{});
+                promotion_dispatch(jumper, is_en_passant_promotion_t<Rules>{});
         }
 
         // pawns that promote apres-fini
         template<class Iterator>
-        bool promotion_dispatch(Iterator jumper, std::false_type) const
+        void promotion_dispatch(Iterator jumper, std::false_type) const
         {
-                return explore(jumper);
+                if (explore(jumper))
+                        return;
+
+                if (is_promotion(*jumper)) {
+                        tracker_.toggle_is_promotion();
+                        add_jump();
+                        tracker_.toggle_is_promotion();
+                } else {
+                        add_jump();
+                }
         }
 
         // pawns that promote en-passant
         template<class Iterator>
-        bool promotion_dispatch(Iterator jumper, std::true_type) const
+        void promotion_dispatch(Iterator jumper, std::true_type) const
         {
-                assert(is_onboard(jumper));
-                return is_promotion(*jumper) ? KingJumps{tracker_, moves_}.promote_en_passant(jumper) : explore(jumper);
+                if (is_promotion(*jumper)) {
+                        tracker_.toggle_is_promotion();
+                        if (!KingJumps{tracker_, moves_}.promote_en_passant(jumper))
+                                add_jump();
+                        tracker_.toggle_is_promotion();
+                } else {
+                        if (!explore(jumper))
+                                add_jump();
+                }
         }
 
         template<class Iterator>
@@ -319,17 +334,16 @@ private:
         template<class Iterator>
         bool is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(std::next(jumper)) && tracker_.targets_with_pawn(jumper)))
+                if (!(is_onboard(std::next(jumper)) && tracker_.targets(jumper)))
                         return false;
 
                 capture(jumper);
                 return true;
         }
 
-        template<class Iterator>
-        void add(Iterator dest) const
+        void add_jump() const
         {
-                tracker_.template add_pawn_jump<with::pawn>(*dest, moves_);
+                moves_.emplace_back(tracker_);
         }
 
         template<int Direction>

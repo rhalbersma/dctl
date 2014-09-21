@@ -22,8 +22,8 @@ struct less
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                auto const delta_kings  = lhs.num_kings()  - rhs.num_kings();
                 auto const delta_pieces = lhs.num_pieces() - rhs.num_pieces();
+                auto const delta_kings = lhs.num_kings() - rhs.num_kings();
                 auto const delta_pawns = delta_pieces - delta_kings;
 
                 // Art. 11
