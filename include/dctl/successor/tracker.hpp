@@ -17,6 +17,7 @@
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
 #include <vector>
+#include <iostream>
 
 namespace dctl {
 namespace successor {
@@ -28,12 +29,12 @@ struct pawn {};
 }       // namespace with
 
 template<bool Color, class Position>
-class Propagate
+class Tracker
 {
 public:
         // constructors
 
-        explicit Propagate(Position const& p)
+        explicit Tracker(Position const& p)
         :
                 king_targets_(passive_kings(p)),
                 initial_targets_(passive_pieces(p)),
@@ -52,149 +53,71 @@ public:
 
         // modifiers
 
-        void launch(int sq)
+        auto launch(int sq)
         {
                 visited_path_.push_back(sq);
                 not_occupied_.set(sq);
         }
 
-        void finish()
+        auto finish()
         {
                 not_occupied_.reset(from_sq());
                 visited_path_.pop_back();
         }
 
-        void capture(int sq)
+        auto capture(int sq)
         {
                 // tag dispatching on jump removal
                 capture_dispatch(sq, is_en_passant_jump_removal_t<Rules>{});
         }
 
-        void release()
+        auto release()
         {
                 // tag dispatching on jump removal
                 release_dispatch(last_piece(), is_en_passant_jump_removal_t<Rules>{});
         }
 
-        void visit(int sq) const
+        auto last_visit(int sq)
+        {
+                visited_path_.back() = sq;
+        }
+
+        auto visit(int sq)
         {
                 visited_path_.push_back(sq);
         }
 
-        void leave() const
+        auto leave()
         {
                 visited_path_.pop_back();
         }
 
-        void toggle_king_targets()
+        auto toggle_king_targets() noexcept
         {
                 static_assert(!is_pawn_jump_king_v<Rules>, "");
                 initial_targets_ = remaining_targets_ ^= king_targets_;
         }
 
-        void toggle_with_king()
+        auto toggle_is_with_king() noexcept
         {
                 is_with_king_ ^= true;
         }
 
-        void toggle_promotion()
+        auto toggle_is_promotion() noexcept
         {
                 is_promotion_ ^= true;
-        }
-
-        template<class Sequence>
-        void add_king_jump(int dest, Sequence& moves) const
-        {
-                visit(dest);
-/*
-                std::cout << "TRACING JUMP: ";
-                std::cout << "squares={";
-                for (auto&& s : squares_) std::cout << Board::numeric_from_bit(s) << ",";
-                std::cout << "}, ";
-                std::cout << "pieces={";
-                for (auto&& p : pieces_) std::cout << Board::numeric_from_bit(p) << ", ";
-                std::cout << "}\n";
-*/
-                moves.emplace_back(
-                        captured_pieces(),
-                        captured_kings(with::king{}),
-                        from_sq(),
-                        dest_sq(),
-                        Color,
-                        king_order()
-                );
-
-                leave();
-        }
-
-        template<class WithPiece, class Sequence>
-        void add_pawn_jump(int dest, Sequence& moves) const
-        {
-                visit(dest);
-
-/*
-                std::cout << "TRACING JUMP: ";
-                std::cout << "squares={";
-                for (auto&& s : squares_) std::cout << Board::numeric_from_bit(s) << ",";
-                std::cout << "}, ";
-                std::cout << "pieces={";
-                for (auto&& p : pieces_) std::cout << Board::numeric_from_bit(p) << ", ";
-                std::cout << "}\n";
-*/
-                moves.emplace_back(
-                        captured_pieces(),
-                        captured_kings(WithPiece{}),
-                        from_sq(),
-                        dest_sq(),
-                        is_promotion_sq(dest_sq(), WithPiece{}),
-                        Color,
-                        king_order()
-                );
-
-                leave();
-        }
-
-        template<class WithPiece, class Sequence>
-        void add_any_jump(int dest, Sequence& moves) const
-        {
-                visit(dest);
-
-/*
-                std::cout << "TRACING JUMP: ";
-                std::cout << "squares={";
-                for (auto&& s : squares_) std::cout << Board::numeric_from_bit(s) << ",";
-                std::cout << "}, ";
-                std::cout << "pieces={";
-                for (auto&& p : pieces_) std::cout << Board::numeric_from_bit(p) << ", ";
-                std::cout << "}\n";
-*/
-                moves.emplace_back(*this);
-
-                leave();
         }
 
         // observers
 
         template<class Iterator>
-        auto targets_with_king(Iterator it) const
+        auto targets(Iterator it) const
         {
-                return targets_with_king<ray::direction_v<Iterator>>().test(*it);
+                return targets<ray::direction_v<Iterator>>().test(*it);
         }
 
         template<int Direction>
-        auto targets_with_king() const
-        {
-                return remaining_targets_ & Set(*std::prev(along_wave<Direction>(path())));
-        }
-
-        template<class Iterator>
-        auto targets_with_pawn(Iterator it) const
-        {
-                return targets_with_pawn<ray::direction_v<Iterator>>().test(*it);
-        }
-
-        template<int Direction>
-        auto targets_with_pawn() const
+        auto targets() const
         {
                 return remaining_targets_ & Set(*std::prev(along_wave<Direction>(path())));
         }
@@ -227,43 +150,44 @@ public:
                 return king_targets_.test(sq);
         }
 
-        template<class Sequence>
-        auto is_potential_duplicate(Sequence const& moves) const
-        {
-                return !moves.empty() && is_large();
-        }
-
-        auto is_large() const
-        {
-                return size() >= large_jump_v<Rules>;
-        }
-
-        auto num_pieces() const
-        {
-                return static_cast<int>(removed_pieces_.size());
-        }
-
-        auto num_kings() const
-        {
-                return static_cast<int>(king_order_.size());
-        }
-
         auto king_order() const
         {
                 return king_order_;
         }
 
-        auto is_with_king() const
+        auto captured_pieces() const noexcept
+        {
+                return initial_targets_ ^ remaining_targets_;
+        }
+
+        auto captured_kings() const noexcept
+        {
+                return captured_pieces() & king_targets_;
+        }
+
+        auto from_sq() const
+        {
+                assert(!visited_path_.empty());
+                return visited_path_.front();
+        }
+
+        auto dest_sq() const
+        {
+                assert(2 <= visited_path_.size());
+                return visited_path_.back();
+        }
+
+        auto is_with_king() const noexcept
         {
                 return is_with_king_;
         }
 
-        auto is_promotion() const
+        auto is_promotion() const noexcept
         {
                 return is_promotion_;
         }
 
-        auto active_color() const
+        auto active_color() const noexcept
         {
                 return Color;
         }
@@ -272,13 +196,13 @@ private:
         // modifiers
 
         // apres-fini jump removal
-        void capture_dispatch(int sq, std::false_type)
+        auto capture_dispatch(int sq, std::false_type)
         {
                 capture_impl(sq);
         }
 
         // en-passant jump removal
-        void capture_dispatch(int sq, std::true_type)
+        auto capture_dispatch(int sq, std::true_type)
         {
                 not_occupied_.set(sq);
                 capture_impl(sq);
@@ -313,79 +237,17 @@ private:
                         king_order_.reset(Set::size() - 1 - num_pieces());
         }
 
-        auto size() const
-        {
-                return num_pieces();
-        }
-
-        // pawn jumps without promotion
-        static auto is_promotion_sq(int dest_sq, with::pawn)
-        {
-                return dctl::is_promotion<Color, Board>(dest_sq);
-        }
-
-        // pawn jumps with an en-passant promotion
-        static auto is_promotion_sq(int /* dest_sq */, with::king)
-        {
-                return true;
-        }
-
-public:
-        auto captured_kings() const
-        {
-                return captured_pieces() & king_targets_;
-        }
-
-        auto captured_kings(with::pawn) const
-        {
-                // tag dispatching on whether pawns can capture kings
-                return captured_kings_dispatch(is_pawn_jump_king_t<Rules>{});
-        }
-
-        // pawns that can capture kings
-        auto captured_kings_dispatch(std::true_type) const
-        {
-                return captured_kings(with::king());
-        }
-
-        // pawns that cannot capture kings
-        auto captured_kings_dispatch(std::false_type) const
-        {
-                return Set{};
-        }
-
-        auto captured_kings(with::king) const
-        {
-                return captured_pieces() & king_targets_;
-        }
-
-public:
-        auto captured_pieces() const
-        {
-                return initial_targets_ ^ remaining_targets_;
-        }
-
-private:
         template<int Direction>
         static wave::Iterator<Board, Direction> along_wave(Set const& s)
         {
                 return wave::make_iterator<Board, Direction>(s);
         }
 
-public:
-        auto from_sq() const
+        auto num_pieces() const
         {
-                assert(!visited_path_.empty());
-                return visited_path_.front();
+                return static_cast<int>(removed_pieces_.size());
         }
 
-        auto dest_sq() const
-        {
-                assert(2 <= visited_path_.size());
-                return visited_path_.back();
-        }
-
-private:
         auto last_piece() const
         {
                 assert(!removed_pieces_.empty());
@@ -408,8 +270,8 @@ private:
         Set king_order_{};
         Arena<int> sqa_;
         Arena<int> pca_;
-        mutable stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
-        mutable stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
+        stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
+        stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
         bool is_with_king_{};
         bool is_promotion_{};
 };

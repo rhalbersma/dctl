@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/pieces/king.hpp>                         // king
-#include <dctl/successor/tracker.hpp>            // Propagate (jump specialization)
+#include <dctl/successor/tracker.hpp>                   // Tracker
 #include <dctl/successor/select/jump.hpp>
 
 #include <dctl/angle/directions.hpp>                    // up, left_up, right_up, left, right, left_down, right_down, down
@@ -27,7 +27,7 @@ private:
         using Rules = rules_type_t<Position>;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Propagate<Color, Position>;
+        using State = Tracker<Color, Position>;
 
         static constexpr auto orientation = orientation_v<Board, Color>;
 
@@ -89,7 +89,7 @@ private:
         auto parallelize(Set const& active_kings) const
         {
                 return Sandwich<Board, Direction, Range>{}(
-                        active_kings, propagate_.template targets_with_king<Direction>(), propagate_.path()
+                        active_kings, propagate_.template targets<Direction>(), propagate_.path()
                 ).any();
         }
 };

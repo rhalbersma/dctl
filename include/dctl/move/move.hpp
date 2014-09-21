@@ -3,8 +3,6 @@
 #include <dctl/type_traits.hpp> // board_type_t, rules_type_t
 #include <cassert>              // assert
 #include <tuple>                // forward_as_tuple
-#include <vector>
-#include <dctl/utility/stack_vector.hpp>
 
 namespace dctl {
 
@@ -130,12 +128,12 @@ public:
                 return is_with_king() && !is_jump();
         }
 
-        constexpr auto num_pieces() const
+        constexpr auto num_pieces() const noexcept
         {
                 return captured_pieces_.count();
         }
 
-        constexpr auto num_kings() const
+        constexpr auto num_kings() const noexcept
         {
                 return captured_kings_.count();
         }
