@@ -3,7 +3,8 @@
 #include <dctl/bit/detail/sanitize.hpp>
 #include <dctl/bit/iterator/iterator.hpp>       // ConstIterator
 #include <dctl/bit/iterator/reference.hpp>      // ConstReference
-#include <dctl/bit/traits.hpp>                  // one, digits
+#include <dctl/bit/limits.hpp>                  // digits
+#include <dctl/bit/masks.hpp>                   // one
 #include <cassert>                              // assert
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // reverse_iterator
@@ -49,12 +50,24 @@ public:
 
         // constructors
 
+        constexpr Set() = default;
+
         /* implicit */ constexpr Set(unsigned long long value) noexcept
         :
                 Base{detail::Sanitize<N>{}(value)}
         {}
 
-        constexpr Set() = default;
+        template<class ForwardIterator>
+        constexpr Set(ForwardIterator first, ForwardIterator last)
+        {
+                for (auto it = first; it != last; ++it)
+                        set(*it);
+        }
+
+        constexpr Set(std::initializer_list<int> ilist)
+        :
+                Set(ilist.begin(), ilist.end())
+        {}
 
         // iterators
 
@@ -309,24 +322,9 @@ private:
 
         constexpr auto mask(int n) const noexcept
         {
-                return one<block_type> << (n % digits<block_type>);
+                return masks::one<block_type> << (n % digits<block_type>);
         }
 };
-
-template<int N, class ForwardIterator>
-constexpr Set<N> make_set(ForwardIterator first, ForwardIterator last)
-{
-        Set<N> nrv;
-        for (auto it = first; it != last; ++it)
-                nrv.set(*it);
-        return nrv;
-}
-
-template<int N>
-constexpr Set<N> make_set(std::initializer_list<int> ilist)
-{
-        return make_set<N>(begin(ilist), end(ilist));
-}
 
 template<int N>
 constexpr bool operator==(Set<N> const& lhs, Set<N> const& rhs) noexcept

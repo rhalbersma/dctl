@@ -18,7 +18,7 @@ using SetTypes = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ForwardIterationTraversesRange, T, SetTypes)
 {
-        constexpr auto b = make_set<T::size()>({ 0, 1, 2, T::size() - 2, T::size() - 1 });
+        constexpr auto b = T{ 0, 1, 2, T::size() - 2, T::size() - 1 };
         auto it = begin(b); for (; it != end(b); ++it){}
 
         BOOST_CHECK(it == rbegin(b).base());
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ForwardIterationTraversesRange, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(BackwardIterationTraversesRange, T, SetTypes)
 {
-        constexpr auto b = make_set<T::size()>({ 0, 1, 2, T::size() - 2, T::size() - 1 });
+        constexpr auto b = T{ 0, 1, 2, T::size() - 2, T::size() - 1 };
         auto it = end(b); for (; it != begin(b); --it){}
 
         BOOST_CHECK(it == rend(b).base());
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BackwardIterationTraversesRange, T, SetTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseForwardIterationTraversesRange, T, SetTypes)
 {
-        constexpr auto b = make_set<T::size()>({ 0, 1, 2, T::size() - 2, T::size() - 1 });
+        constexpr auto b = T{ 0, 1, 2, T::size() - 2, T::size() - 1 };
         auto it = rbegin(b); for (; it != rend(b); ++it){}
 
         BOOST_CHECK(it.base() == begin(b));
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseForwardIterationTraversesRange, T, SetTypes
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseBackwardIterationTraversesRange, T, SetTypes)
 {
-        constexpr auto b = make_set<T::size()>({ 0, 1, 2, T::size() - 2, T::size() - 1 });
+        constexpr auto b = T{ 0, 1, 2, T::size() - 2, T::size() - 1 };
         auto it = rend(b); for (; it != rbegin(b); --it){}
 
         BOOST_CHECK(it.base() == end(b));
