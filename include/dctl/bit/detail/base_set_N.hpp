@@ -1,7 +1,8 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/intrinsic.hpp>               // popcount
-#include <dctl/bit/traits.hpp>                  // none, one, all, digits, is_unsigned_integer
+#include <dctl/bit/limits.hpp>                  // digits, is_unsigned_integer
+#include <dctl/bit/masks.hpp>                   // none, one, all
 #include <cassert>                              // assert
 #include <utility>                              // swap
 
@@ -145,13 +146,13 @@ public:
         constexpr auto do_set() noexcept
         {
                 for (auto&& block : elems)
-                        block = all<Block>;
+                        block = masks::all<Block>;
         }
 
         constexpr auto do_reset() noexcept
         {
                 for (auto&& block : elems)
-                        block = none<Block>;
+                        block = masks::none<Block>;
         }
 
         constexpr auto do_flip() noexcept
@@ -206,7 +207,7 @@ public:
                         elems[n_block] = elems[0] << L_shift;
                 }
                 for (auto i = n_block - 1; i >= 0; --i)
-                        elems[i] = none<Block>;
+                        elems[i] = masks::none<Block>;
         }
 
         constexpr auto do_right_shift(int n)
@@ -231,7 +232,7 @@ public:
                         elems[Nb - 1 - n_block] = elems[Nb - 1] >> R_shift;
                 }
                 for (auto i = Nb - n_block; i < Nb; ++i)
-                        elems[i] = none<Block>;
+                        elems[i] = masks::none<Block>;
         }
 
         // observers
@@ -239,7 +240,7 @@ public:
         constexpr auto do_all() const noexcept
         {
                 for (auto&& block : elems)
-                        if (block != all<Block>)
+                        if (block != masks::all<Block>)
                                 return false;
                 return true;
         }
@@ -247,7 +248,7 @@ public:
         constexpr auto do_any() const noexcept
         {
                 for (auto&& block : elems)
-                        if (block != none<Block>)
+                        if (block != masks::none<Block>)
                                 return true;
                 return false;
         }
@@ -255,7 +256,7 @@ public:
         constexpr auto do_none() const noexcept
         {
                 for (auto&& block : elems)
-                        if (block != none<Block>)
+                        if (block != masks::none<Block>)
                                 return false;
                 return true;
         }

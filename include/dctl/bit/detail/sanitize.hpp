@@ -1,5 +1,6 @@
 #pragma once
-#include <dctl/bit/traits.hpp>  // all, digits
+#include <dctl/bit/limits.hpp>  // digits
+#include <dctl/bit/masks.hpp>   // all
 
 namespace dctl {
 namespace bit {
@@ -16,7 +17,7 @@ struct Sanitize<N, true>
         template<class Block>
         constexpr auto operator()(Block b) const noexcept
         {
-                return b & ~(all<Block> << N);
+                return b & ~(masks::all<Block> << N);
         }
 };
 
@@ -36,7 +37,7 @@ struct SanitizeAssign
         template<class Block>
         constexpr auto operator()(Block& b) const noexcept
         {
-                b &= ~(all<Block> << N);
+                b &= ~(masks::all<Block> << N);
         }
 };
 

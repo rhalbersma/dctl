@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/bit/traits.hpp>  // digits
+#include <dctl/bit/limits.hpp>  // digits
 #include <cassert>              // assert
 
 namespace dctl {

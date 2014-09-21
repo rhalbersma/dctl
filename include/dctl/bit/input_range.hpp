@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/bit/intrinsic.hpp>               // ctznz
-#include <dctl/bit/traits.hpp>                  // none
+#include <dctl/bit/masks.hpp>                   // none
 #include <dctl/utility/input_range_facade.hpp>  // InputRangeCoreAcces, InputRangeFacade
 #include <cassert>                              // assert
 
@@ -50,7 +50,7 @@ private:
 
         bool empty() const noexcept
         {
-                return range_ == none<Block>;
+                return range_ == masks::none<Block>;
         }
 
 private:

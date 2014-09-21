@@ -1,7 +1,8 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
 #include <dctl/bit/intrinsic.hpp>               // popcount
-#include <dctl/bit/traits.hpp>                  // none, one, all, digits, is_unsigned_integer
+#include <dctl/bit/limits.hpp>                  // digits, is_unsigned_integer
+#include <dctl/bit/masks.hpp>                   // none, one, all
 #include <cassert>                              // assert
 #include <memory>                               // addressof
 #include <utility>                              // swap
@@ -96,19 +97,19 @@ public:
 
         constexpr auto do_intersects(BaseSet const& other) const noexcept
         {
-                return (elems & other.elems) != none<Block>;
+                return (elems & other.elems) != masks::none<Block>;
         }
 
         constexpr auto do_is_subset_of(BaseSet const& other) const noexcept
         {
-                return (elems & ~other.elems) == none<Block>;
+                return (elems & ~other.elems) == masks::none<Block>;
         }
 
         constexpr auto do_is_proper_subset_of(BaseSet const& other) const noexcept
         {
                 if (elems & ~other.elems)
                         return false;
-                return (~elems & other.elems) != none<Block>;
+                return (~elems & other.elems) != masks::none<Block>;
         }
 
         // modifiers
@@ -121,12 +122,12 @@ public:
 
         constexpr auto do_set() noexcept
         {
-                elems = all<Block>;
+                elems = masks::all<Block>;
         }
 
         constexpr auto do_reset() noexcept
         {
-                elems = none<Block>;
+                elems = masks::none<Block>;
         }
 
         constexpr auto do_flip() noexcept
@@ -170,17 +171,17 @@ public:
 
         constexpr auto do_all() const noexcept
         {
-                return elems == all<Block>;
+                return elems == masks::all<Block>;
         }
 
         constexpr auto do_any() const noexcept
         {
-                return elems != none<Block>;
+                return elems != masks::none<Block>;
         }
 
         constexpr auto do_none() const noexcept
         {
-                return elems == none<Block>;
+                return elems == masks::none<Block>;
         }
 
         constexpr auto do_count() const noexcept

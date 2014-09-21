@@ -1,11 +1,9 @@
 #pragma once
-#include <dctl/bit/traits.hpp>                  // all, any, none, digits
-#include <boost/mpl/contains.hpp>               // contains
+#include <dctl/bit/limits.hpp>                  // digits
+#include <dctl/bit/masks.hpp>                   // all, any, none
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
-#include <cstddef>                              // size_t
-#include <cstdint>                              // uint32_t, uint64_t, uintptr_t
 
 namespace dctl {
 namespace bit {
@@ -20,96 +18,90 @@ using UnsignedIntegerTypes = boost::mpl::vector
         unsigned long long
 >;
 
-// all other unsigned integer types shall map to the above three types
-static_assert(boost::mpl::contains<UnsignedIntegerTypes, uint32_t>::value, "");
-static_assert(boost::mpl::contains<UnsignedIntegerTypes, uint64_t>::value, "");
-static_assert(boost::mpl::contains<UnsignedIntegerTypes, uintptr_t>::value, "");
-static_assert(boost::mpl::contains<UnsignedIntegerTypes, std::size_t>::value, "");
-
 BOOST_AUTO_TEST_CASE_TEMPLATE(CountTrailingZeros, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(lib::ctz(none<T>), digits<T>);
-        BOOST_CHECK_EQUAL(lib::ctz(all<T>), 0);
+        BOOST_CHECK_EQUAL(lib::ctz(masks::none<T>), digits<T>);
+        BOOST_CHECK_EQUAL(lib::ctz(masks::all<T>), 0);
 
         for (auto i = 0; i < digits<T>; ++i) {
-                auto const mask = one<T> << i;
-                BOOST_CHECK_EQUAL(lib::ctz(mask), i);
+                auto const b = masks::one<T> << i;
+                BOOST_CHECK_EQUAL(lib::ctz(b), i);
         }
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(CountTrailingZerosNonZero, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(lib::ctznz(all<T>), 0);
+        BOOST_CHECK_EQUAL(lib::ctznz(masks::all<T>), 0);
 
         for (auto i = 0; i < digits<T>; ++i) {
-                auto const mask = one<T> << i;
-                BOOST_CHECK_EQUAL(lib::ctznz(mask), i);
+                auto const b = masks::one<T> << i;
+                BOOST_CHECK_EQUAL(lib::ctznz(b), i);
         }
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(BitScanForwardNonZero, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(lib::bsfnz(all<T>), 0);
+        BOOST_CHECK_EQUAL(lib::bsfnz(masks::all<T>), 0);
 
         for (auto i = 0; i < digits<T>; ++i) {
-                auto const mask = one<T> << i;
-                BOOST_CHECK_EQUAL(lib::bsfnz(mask), i);
+                auto const b = masks::one<T> << i;
+                BOOST_CHECK_EQUAL(lib::bsfnz(b), i);
         }
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(CountLeadingZeros, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(lib::clz(none<T>), digits<T>);
-        BOOST_CHECK_EQUAL(lib::clz(all<T>), 0);
+        BOOST_CHECK_EQUAL(lib::clz(masks::none<T>), digits<T>);
+        BOOST_CHECK_EQUAL(lib::clz(masks::all<T>), 0);
 
         for (auto i = 0; i < digits<T>; ++i) {
-                auto const mask = one<T> << i;
-                BOOST_CHECK_EQUAL(lib::clz(mask), digits<T> - 1 - i);
+                auto const b = masks::one<T> << i;
+                BOOST_CHECK_EQUAL(lib::clz(b), digits<T> - 1 - i);
         }
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(CountLeadingZerosNonZero, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(lib::clznz(all<T>), 0);
+        BOOST_CHECK_EQUAL(lib::clznz(masks::all<T>), 0);
 
         for (auto i = 0; i < digits<T>; ++i) {
-                auto const mask = one<T> << i;
-                BOOST_CHECK_EQUAL(lib::clznz(mask), digits<T> - 1 - i);
+                auto const b = masks::one<T> << i;
+                BOOST_CHECK_EQUAL(lib::clznz(b), digits<T> - 1 - i);
         }
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(BitScanReverseNonZero, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(lib::bsrnz(all<T>), digits<T> - 1);
+        BOOST_CHECK_EQUAL(lib::bsrnz(masks::all<T>), digits<T> - 1);
 
         for (auto i = 0; i < digits<T>; ++i) {
-                auto const mask = one<T> << i;
-                BOOST_CHECK_EQUAL(lib::bsrnz(mask), i);
+                auto const b = masks::one<T> << i;
+                BOOST_CHECK_EQUAL(lib::bsrnz(b), i);
         }
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Popcount, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(lib::popcount(none<T>), 0);
+        BOOST_CHECK_EQUAL(lib::popcount(masks::none<T>), 0);
 
         for (auto i = 0; i < digits<T>; ++i) {
-                auto const mask = one<T> << i;
-                BOOST_CHECK_EQUAL(lib::popcount(mask), 1);
+                auto const b = masks::one<T> << i;
+                BOOST_CHECK_EQUAL(lib::popcount(b), 1);
         }
 
         for (auto i = 0; i < digits<T>; ++i) {
                 for (auto j = i + 1; j < digits<T>; ++j) {
-                        auto const mask = (one<T> << i) ^ (one<T> << j);
-                        BOOST_CHECK_EQUAL(lib::popcount(mask), 2);
+                        auto const b = (masks::one<T> << i) ^ (masks::one<T> << j);
+                        BOOST_CHECK_EQUAL(lib::popcount(b), 2);
                 }
         }
 
         for (auto i = 0; i < digits<T>; ++i) {
-                auto const mask = ~((all<T> >> i) << i);
-                BOOST_CHECK_EQUAL(lib::popcount(mask), i);
+                auto const b = ~((masks::all<T> >> i) << i);
+                BOOST_CHECK_EQUAL(lib::popcount(b), i);
         }
 
-        BOOST_CHECK_EQUAL(lib::popcount(all<T>), digits<T>);
+        BOOST_CHECK_EQUAL(lib::popcount(masks::all<T>), digits<T>);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
