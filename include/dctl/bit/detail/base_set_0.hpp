@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/bit/detail/base_set_fwd.hpp>     // BaseSet
-#include <dctl/bit/traits.hpp>                  // is_unsigned_integer
+#include <dctl/bit/limits.hpp>                  // is_unsigned_integer
 
 namespace dctl {
 namespace bit {

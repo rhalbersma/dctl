@@ -1,5 +1,6 @@
 #pragma once
-#include <dctl/bit/traits.hpp>  // one, digits
+#include <dctl/bit/limits.hpp>  // digits
+#include <dctl/bit/masks.hpp>   // one
 #include <cassert>              // assert
 
 namespace dctl {
@@ -10,7 +11,7 @@ template<class T>
 constexpr auto ctz(T x) noexcept
 {
         for (auto i = 0; i < digits<T>; ++i)
-                if (x & (one<T> << i))
+                if (x & (masks::one<T> << i))
                         return i;
         return digits<T>;
 }
@@ -19,7 +20,7 @@ template<class T>
 constexpr auto clz(T x) noexcept
 {
         for (auto i = digits<T> - 1; i >= 0; --i)
-                if (x & (one<T> << i))
+                if (x & (masks::one<T> << i))
                         return digits<T> - 1 - i;
         return digits<T>;
 }
@@ -52,7 +53,7 @@ template<class T>
 constexpr auto popcount(T x) noexcept
 {
         auto n = 0;
-        for (; x; x &= x - one<T>)
+        for (; x; x &= x - masks::one<T>)
                 ++n;
         assert(0 <= n && n <= digits<T>);
         return n;
