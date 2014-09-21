@@ -24,40 +24,12 @@ public:
                 is_with_king_{true},
                 active_color_{color}
         {
-                assert(from_ != dest_);
                 assert(invariant());
         }
 
         // pawn move
         constexpr BaseMove(int src, int dst, bool prom, bool color)
         :
-                from_{src},
-                dest_{dst},
-                is_promotion_{prom},
-                active_color_{color}
-        {
-                assert(from_ != dest_);
-                assert(invariant());
-        }
-
-        // king jump
-        constexpr BaseMove(Set pieces, Set kings, int src, int dst, bool color, Set)
-        :
-                captured_pieces_{pieces},
-                captured_kings_{kings},
-                from_{src},
-                dest_{dst},
-                is_with_king_{true},
-                active_color_{color}
-        {
-                assert(invariant());
-        }
-
-        // pawn jump
-        constexpr BaseMove(Set pieces, Set kings, int src, int dst, bool prom, bool color, Set)
-        :
-                captured_pieces_{pieces},
-                captured_kings_{kings},
                 from_{src},
                 dest_{dst},
                 is_promotion_{prom},

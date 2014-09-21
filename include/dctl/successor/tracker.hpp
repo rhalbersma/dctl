@@ -16,8 +16,6 @@
 #include <iterator>                     // begin, end, prev
 #include <type_traits>                  // integral_constant, is_same, false_type, true_type
 #include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
-#include <vector>
-#include <iostream>
 
 namespace dctl {
 namespace successor {
@@ -263,17 +261,17 @@ private:
 
         // representation
 
+        Set king_order_{};
         Set const king_targets_;
         Set initial_targets_;
         Set remaining_targets_;
         Set not_occupied_;
-        Set king_order_{};
-        Arena<int> sqa_;
-        Arena<int> pca_;
-        stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
-        stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
         bool is_with_king_{};
         bool is_promotion_{};
+        Arena<int> sqa_;
+        stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
+        Arena<int> pca_;
+        stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
 };
 
 }       // namespace successor
