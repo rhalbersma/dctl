@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/position/position_fwd.hpp>
-#include <dctl/bit.hpp>
+#include <dctl/bitset.hpp>
 #include <dctl/board/mask.hpp>
 #include <dctl/move/move.hpp>
 #include <dctl/position/piece_placement/piece_placement.hpp>

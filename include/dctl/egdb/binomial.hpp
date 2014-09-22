@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/bit/set.hpp>             // Set
+#include <dctl/bitset.hpp>             // Set
 #include <dctl/utility/make_array.hpp>  // make_array
 #include <array>                        // array
 #include <cassert>                      // assert
@@ -13,7 +13,7 @@ template
 <
         int BoardSize = 64,
         int MaxPieces = 32,
-        class Range = bit::Set<BoardSize>,
+        class Range = xstd::bitset<BoardSize>,
         class Index = std::ptrdiff_t
 >
 class BinomialTable
