@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle.hpp>                       // Angle, inverse
-#include <dctl/bit.hpp>                         // Set
+#include <dctl/bitset.hpp>                         // Set
 #include <dctl/board/algebraic.hpp>
 #include <dctl/grid/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/grid/grid.hpp>                   // Grid
@@ -47,11 +47,11 @@ private:
         using Block = unsigned long long;
         static constexpr auto NumBits = internal_grid::size;
         static constexpr auto NumSquares = external_grid::size;
-        static constexpr auto Nb = bit::num_blocks<Block>(NumBits);
+        static constexpr auto Nb = xstd::num_blocks<Block>(NumBits);
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
-        using set_type = bit::Set<NumBits>;
+        using set_type = xstd::bitset<NumBits>;
 
         static constexpr auto size() noexcept
         {

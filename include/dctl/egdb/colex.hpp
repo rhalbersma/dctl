@@ -9,7 +9,7 @@
 #include <boost/range/numeric.hpp>              // accumulate
 #include <cassert>                              // assert
 #include <utility>                              // pair
-#include <dctl/bit/intrinsic.hpp>
+#include <dctl/xstd/intrinsic.hpp>
 
 namespace dctl {
 namespace egdb {
@@ -79,7 +79,7 @@ auto combination_rank0(Range src, Binomial const& = Binomial{})
         Index index{0};
         auto k = 1;
         while (src) {
-                auto sq_k = bit::intrinsic::bsfnz(src);
+                auto sq_k = xstd::intrinsic::bsfnz(src);
                 index += Binomial::coefficient(sq_k, k++);
                 src ^= 1ULL << sq_k;
         }
@@ -90,11 +90,11 @@ template<class BB>
 BB free_square_bitmap(int logical_square, BB const& occupied)
 {
         BB const behind = (1ULL << logical_square) - 1;
-        int skipped = bit::intrinsic::popcount(occupied & behind);
+        int skipped = xstd::intrinsic::popcount(occupied & behind);
         BB empty_ahead = ~(occupied | behind);
         while (skipped--)
                 empty_ahead &= empty_ahead - 1;
-        return 1ULL << bit::intrinsic::bsfnz(empty_ahead);
+        return 1ULL << xstd::intrinsic::bsfnz(empty_ahead);
 }
 
 template<class Index, class Range, class Binomial = BinomialTable<>>
@@ -119,9 +119,9 @@ auto combination_rank1(Range src, Range const& pat, Binomial const& = Binomial{}
         Index index{0};
         auto k = 1;
         while (src) {
-                auto const sq_k = bit::intrinsic::bsfnz(src);
+                auto const sq_k = xstd::intrinsic::bsfnz(src);
                 src ^= 1ULL << sq_k;
-                auto const skipped = bit::intrinsic::popcount(pat & ((1ULL << sq_k) - 1));
+                auto const skipped = xstd::intrinsic::popcount(pat & ((1ULL << sq_k) - 1));
                 index += Binomial::coefficient(sq_k - skipped, k++);
         }
         return index;

@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <iterator>
-#include <dctl/bit/intrinsic.hpp>
+#include <dctl/xstd/intrinsic.hpp>
 
 namespace dctl {
 namespace egdb {
@@ -19,13 +19,13 @@ int mirror(int sq)
 inline
 int LSB(BB x)
 {
-        return bit::intrinsic::bsfnz(x);
+        return xstd::intrinsic::bsfnz(x);
 }
 
 inline
 int MSB(BB x)
 {
-        return bit::intrinsic::bsrnz(x);
+        return xstd::intrinsic::bsrnz(x);
 }
 
 inline

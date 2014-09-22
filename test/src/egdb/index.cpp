@@ -2,7 +2,7 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <dctl/bit/set.hpp>                     // Set
+#include <dctl/xstd/bitset.hpp>                     // Set
 
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/algorithm/adjacent_find.hpp>
@@ -25,7 +25,7 @@ using U = int;
 
 using SetTypes = boost::mpl::vector
 <
-        bit::Set<64>
+        xstd::bitset<64>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetRank, T, SetTypes)

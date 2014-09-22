@@ -1,9 +1,9 @@
-#include <cstddef>                              // ptrdiff_t
-#include <limits>                               // max
+#include <dctl/egdb/binomial.hpp>               // Binomial
 #include <boost/range/irange.hpp>               // irange
 #include <boost/range/numeric.hpp>              // accumulate
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_LE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/egdb/binomial.hpp>               // Binomial
+#include <cstddef>                              // ptrdiff_t
+#include <limits>                               // max
 
 namespace dctl {
 namespace egdb {

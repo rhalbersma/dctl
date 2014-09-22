@@ -1,6 +1,6 @@
 #pragma once
 #include <cassert>                      // assert
-#include <dctl/bit.hpp>
+#include <dctl/bitset.hpp>
 #include <dctl/board/mask.hpp>
 #include <dctl/zobrist/accumulate.hpp>
 #include <dctl/position/color.hpp>
