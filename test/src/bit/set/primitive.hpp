@@ -133,92 +133,99 @@ template<class T, int N = T::size()>
 constexpr auto count(T const& b) noexcept
 {
         // arrange
-        auto result = 0;
+        auto prev = 0;
+        for (auto i = 0; i < N; ++i)
+                prev += b.test(i);
 
         // act
-        for (auto i = 0; i < N; ++i)
-                result += b.test(i);
-
+        auto const next = b.count();
+        
         // assert
-        return b.count() == result;
+        return next == prev;
 }
 
 template<class T>
 constexpr auto op_and(T const& lhs, T const& rhs)
 {
         // arrange
-        auto next = lhs;
+        auto prev = lhs;
+        prev &= rhs;
 
         // act
-        next &= rhs;
+        auto const next = lhs & rhs;
 
         // assert
-        return (lhs & rhs) == next;
+        return next == prev;
 }
 
 template<class T>
 constexpr auto op_or(T const& lhs, T const& rhs)
 {
         // arrange
-        auto next = lhs;
+        auto prev = lhs;
+        prev |= rhs;
 
         // act
-        next |= rhs;
+        auto const next = lhs | rhs;
 
         // assert
-        return (lhs | rhs) == next;
+        return next == prev;
 }
 
 template<class T>
 constexpr auto op_xor(T const& lhs, T const& rhs)
 {
         // arrange
-        auto next = lhs;
+        auto prev = lhs;
+        prev ^= rhs;
 
         // act
-        next ^= rhs;
+        auto const next = lhs ^ rhs;
 
         // assert
-        return (lhs ^ rhs) == next;
+        return next == prev;
 }
 
 template<class T>
 constexpr auto op_minus(T const& lhs, T const& rhs)
 {
         // arrange
-        auto next = lhs;
+        auto prev = lhs;
+        prev -= rhs;
 
         // act
-        next -= rhs;
+        auto const next = lhs - rhs;
 
         // assert
-        return (lhs - rhs) == next;
+        return next == prev;
 }
 
 template<class T>
 constexpr auto shift_left(T const& b, int n)
 {
         // arrange
-        auto next = b;
+        auto prev = b;
+        prev <<= n;
 
         // act
-        next <<= n;
+        auto const next = b << n;
 
         // assert
-        return (b << n) == next;
+        return next == prev;
 }
 
 template<class T>
 constexpr auto shift_right(T const& b, int n)
 {
         // arrange
-        auto next = b;
+        auto prev = b;
+        prev >>= n;
 
         // act
-        next >>= n;
+        auto const next = b >> n;
 
         // assert
-        return (b >> n) == next;
+        return next == prev;
 }
 
 }       // namespace bit
