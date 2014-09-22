@@ -67,27 +67,10 @@ constexpr auto shift_right_assign() noexcept
 template<class T, int N = T::size()>
 constexpr auto count() noexcept
 {
-        auto check = false;
-
-        // empty set
-        check &= T{}.count() == 0;
-
-        // singlets
+        auto check = true;
         for (auto i = 0; i < N; ++i)
-                check &= T{i}.count() == 1;
-
-        // doublets
-        for (auto i = 0; i < N; ++i)
-                for (auto j = i + 1; j < N; ++j)
-                        check &= T{i, j}.count() == 2;
-
-        // universe with [i] bits masked off, then inverted
-        for (auto i = 0; i < N; ++i)
-                check &= (~((~T{} >> i) << i)).count() == i;
-
-        // universe
+                check &= (~(~T{} << i)).count() == i;
         check &= (~T{}).count() == N;
-
         return check;
 }
 
