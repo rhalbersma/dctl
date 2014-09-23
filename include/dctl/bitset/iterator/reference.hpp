@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/xstd/iterator/iterator_fwd.hpp>  // ConstIterator
-#include <dctl/xstd/iterator/reference_fwd.hpp> // ConstReference
-#include <dctl/xstd/limits.hpp>                 // digits, is_unsigned_integer
+#include <dctl/bitset/iterator/iterator_fwd.hpp>  // ConstIterator
+#include <dctl/bitset/iterator/reference_fwd.hpp> // ConstReference
+#include <dctl/bitset/limits.hpp>                 // digits, is_unsigned_integer
 #include <cassert>                              // assert
 
 namespace xstd {

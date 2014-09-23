@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle.hpp>                       // Angle, inverse
-#include <dctl/bitset.hpp>                         // Set
+#include <dctl/bitset.hpp>                      // bitset
 #include <dctl/board/algebraic.hpp>
 #include <dctl/grid/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/grid/grid.hpp>                   // Grid

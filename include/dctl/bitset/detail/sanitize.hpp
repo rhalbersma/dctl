@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/xstd/limits.hpp> // digits
-#include <dctl/xstd/masks.hpp>  // all
+#include <dctl/bitset/limits.hpp>       // digits
+#include <dctl/bitset/masks.hpp>        // all
 
 namespace xstd {
 namespace detail {
