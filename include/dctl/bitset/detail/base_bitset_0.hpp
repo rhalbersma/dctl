@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/xstd/detail/base_bitset_fwd.hpp> // base_bitset
-#include <dctl/xstd/limits.hpp>                 // is_unsigned_integer
+#include <dctl/bitset/detail/base_bitset_fwd.hpp>       // base_bitset
+#include <dctl/bitset/limits.hpp>                       // is_unsigned_integer
 
 namespace xstd {
 namespace detail {
@@ -30,15 +30,15 @@ public:
 
         // data access
 
-        constexpr auto*       block_begin()       noexcept { return  this; }
-        constexpr auto const* block_begin() const noexcept { return  this; }
-        constexpr auto*       block_end  ()       noexcept { return  this; }
-        constexpr auto const* block_end  () const noexcept { return  this; }
+        constexpr auto*       block_begin()       noexcept { return this; }
+        constexpr auto const* block_begin() const noexcept { return this; }
+        constexpr auto*       block_end  ()       noexcept { return this; }
+        constexpr auto const* block_end  () const noexcept { return this; }
 
-        constexpr auto&       block_back()          noexcept { return *this; }
-        constexpr auto const& block_back()    const noexcept { return *this; }
-        constexpr auto&       block_ref (int)       noexcept { return *this; }
-        constexpr auto const& block_ref (int) const noexcept { return *this; }
+        constexpr auto&       block_back()          noexcept { return *new Block; }
+        constexpr auto const& block_back()    const noexcept { return *new Block; }
+        constexpr auto&       block_ref (int)       noexcept { return *new Block; }
+        constexpr auto const& block_ref (int) const noexcept { return *new Block; }
 
         // comparators
 

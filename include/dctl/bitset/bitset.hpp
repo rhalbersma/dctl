@@ -1,10 +1,10 @@
 #pragma once
-#include <dctl/xstd/detail/base_bitset.hpp>     // base_bitset
-#include <dctl/xstd/detail/sanitize.hpp>
-#include <dctl/xstd/iterator/iterator.hpp>      // ConstIterator
-#include <dctl/xstd/iterator/reference.hpp>     // ConstReference
-#include <dctl/xstd/limits.hpp>                 // digits
-#include <dctl/xstd/masks.hpp>                  // one
+#include <dctl/bitset/detail/base_bitset.hpp>     // base_bitset
+#include <dctl/bitset/detail/sanitize.hpp>
+#include <dctl/bitset/iterator/iterator.hpp>      // ConstIterator
+#include <dctl/bitset/iterator/reference.hpp>     // ConstReference
+#include <dctl/bitset/limits.hpp>                 // digits
+#include <dctl/bitset/masks.hpp>                  // one
 #include <cassert>                              // assert
 #include <initializer_list>                     // initializer_list
 #include <iterator>                             // reverse_iterator
@@ -14,7 +14,7 @@ namespace xstd {
 template<class Block>
 constexpr auto num_blocks(int N)
 {
-        return (N - 1) / digits<Block> + 1;
+        return (N - 1 + digits<Block>) / digits<Block>;
 }
 
 template<int>
@@ -34,7 +34,6 @@ class bitset
 :
         private detail::base_bitset<unsigned long long, num_blocks<unsigned long long>(N)>
 {
-private:
         using block_type = unsigned long long;
         static constexpr auto Nb = num_blocks<block_type>(N);
         using Base = detail::base_bitset<unsigned long long, num_blocks<unsigned long long>(N)>;

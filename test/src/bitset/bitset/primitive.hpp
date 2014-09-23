@@ -1,9 +1,42 @@
 #pragma once
+#include <dctl/bitset.hpp>      // bitset
 
 namespace xstd {
 
-template<class T, int N = T::size()>
-constexpr auto and_assign(T const& lhs, T const& rhs) noexcept
+// comparators
+
+template<int N>
+constexpr auto equal(bitset<N> const& lhs, bitset<N> const& rhs) noexcept
+{
+        // arrange
+        auto prev = true;
+        for (auto i = 0; i < N; ++i)
+                prev &= lhs.test(i) == rhs.test(i);
+
+        // act
+        auto const next = lhs == rhs;
+
+        // assert
+        return next == prev;
+}
+
+template<int N>
+constexpr auto not_equal(bitset<N> const& lhs, bitset<N> const& rhs) noexcept
+{
+        // arrange
+        auto const prev = !(lhs == rhs);
+
+        // act
+        auto const next = lhs != rhs;
+
+        // assert
+        return next == prev;
+}
+
+// modifiers
+
+template<int N>
+constexpr auto and_assign(bitset<N> const& lhs, bitset<N> const& rhs) noexcept
 {
         // arrange
         auto next = lhs;
@@ -22,8 +55,8 @@ constexpr auto and_assign(T const& lhs, T const& rhs) noexcept
         return check;
 }
 
-template<class T, int N = T::size()>
-constexpr auto or_assign(T const& lhs, T const& rhs) noexcept
+template<int N>
+constexpr auto or_assign(bitset<N> const& lhs, bitset<N> const& rhs) noexcept
 {
         // arrange
         auto next = lhs;
@@ -42,8 +75,8 @@ constexpr auto or_assign(T const& lhs, T const& rhs) noexcept
         return check;
 }
 
-template<class T, int N = T::size()>
-constexpr auto xor_assign(T const& lhs, T const& rhs) noexcept
+template<int N>
+constexpr auto xor_assign(bitset<N> const& lhs, bitset<N> const& rhs) noexcept
 {
         // arrange
         auto next = lhs;
@@ -62,8 +95,8 @@ constexpr auto xor_assign(T const& lhs, T const& rhs) noexcept
         return check;
 }
 
-template<class T, int N = T::size()>
-constexpr auto minus_assign(T const& lhs, T const& rhs) noexcept
+template<int N>
+constexpr auto minus_assign(bitset<N> const& lhs, bitset<N> const& rhs) noexcept
 {
         // arrange
         auto next = lhs;
@@ -82,8 +115,8 @@ constexpr auto minus_assign(T const& lhs, T const& rhs) noexcept
         return check;
 }
 
-template<class T, int N = T::size()>
-constexpr auto shift_left_assign(T const& b, int n)
+template<int N>
+constexpr auto shift_left_assign(bitset<N> const& b, int n)
 {
         // arrange
         auto next = b;
@@ -102,8 +135,8 @@ constexpr auto shift_left_assign(T const& b, int n)
         return check;
 }
 
-template<class T, int N = T::size()>
-constexpr auto shift_right_assign(T const& b, int n)
+template<int N>
+constexpr auto shift_right_assign(bitset<N> const& b, int n)
 {
         // arrange
         auto next = b;
@@ -122,8 +155,10 @@ constexpr auto shift_right_assign(T const& b, int n)
         return check;
 }
 
-template<class T, int N = T::size()>
-constexpr auto count(T const& b) noexcept
+// observers
+
+template<int N>
+constexpr auto count(bitset<N> const& b) noexcept
 {
         // arrange
         auto prev = 0;
@@ -137,8 +172,10 @@ constexpr auto count(T const& b) noexcept
         return next == prev;
 }
 
-template<class T>
-constexpr auto op_and(T const& lhs, T const& rhs)
+// operators
+
+template<int N>
+constexpr auto op_and(bitset<N> const& lhs, bitset<N> const& rhs)
 {
         // arrange
         auto prev = lhs;
@@ -151,8 +188,8 @@ constexpr auto op_and(T const& lhs, T const& rhs)
         return next == prev;
 }
 
-template<class T>
-constexpr auto op_or(T const& lhs, T const& rhs)
+template<int N>
+constexpr auto op_or(bitset<N> const& lhs, bitset<N> const& rhs)
 {
         // arrange
         auto prev = lhs;
@@ -165,8 +202,8 @@ constexpr auto op_or(T const& lhs, T const& rhs)
         return next == prev;
 }
 
-template<class T>
-constexpr auto op_xor(T const& lhs, T const& rhs)
+template<int N>
+constexpr auto op_xor(bitset<N> const& lhs, bitset<N> const& rhs)
 {
         // arrange
         auto prev = lhs;
@@ -179,8 +216,8 @@ constexpr auto op_xor(T const& lhs, T const& rhs)
         return next == prev;
 }
 
-template<class T>
-constexpr auto op_minus(T const& lhs, T const& rhs)
+template<int N>
+constexpr auto op_minus(bitset<N> const& lhs, bitset<N> const& rhs)
 {
         // arrange
         auto prev = lhs;
@@ -193,8 +230,8 @@ constexpr auto op_minus(T const& lhs, T const& rhs)
         return next == prev;
 }
 
-template<class T>
-constexpr auto shift_left(T const& b, int n)
+template<int N>
+constexpr auto op_shift_left(bitset<N> const& b, int n)
 {
         // arrange
         auto prev = b;
@@ -207,8 +244,8 @@ constexpr auto shift_left(T const& b, int n)
         return next == prev;
 }
 
-template<class T>
-constexpr auto shift_right(T const& b, int n)
+template<int N>
+constexpr auto op_shift_right(bitset<N> const& b, int n)
 {
         // arrange
         auto prev = b;

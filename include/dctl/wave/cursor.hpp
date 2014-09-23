@@ -57,7 +57,7 @@ public:
 
         // observers
 
-        operator Set() const noexcept
+        /* implicit */ operator Set() const noexcept
         {
                 return cursor_;
         }
