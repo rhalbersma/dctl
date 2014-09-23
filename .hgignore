@@ -1,0 +1,16 @@
+syntax: glob
+
+# emacs saves
+*.~
+*.#
+
+# cmake output
+build/*
+
+# Eclipse settings
+*.*project
+*.xml
+
+# QtCreator settings
+*.user
+.settings/*

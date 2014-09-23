@@ -1,0 +1,9 @@
+#pragma once
+#include <dctl/successor/generate/primary_fwd.hpp>
+#include <dctl/successor/generate/all_move.hpp>
+#include <dctl/successor/generate/all_jump.hpp>
+#include <dctl/successor/generate/all_push.hpp>
+#include <dctl/successor/generate/king_jump.hpp>
+#include <dctl/successor/generate/king_push.hpp>
+#include <dctl/successor/generate/pawn_jump.hpp>
+#include <dctl/successor/generate/pawn_push.hpp>
