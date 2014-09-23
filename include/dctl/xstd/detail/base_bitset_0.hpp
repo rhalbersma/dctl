@@ -21,7 +21,7 @@ protected:
         ~base_bitset() = default;
 
 public:
-        // copying and assignment
+        // copying, moving and assignment
 
         base_bitset(base_bitset const&) = default;
         base_bitset(base_bitset&&) = default;
