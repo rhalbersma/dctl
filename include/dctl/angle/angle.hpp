@@ -9,14 +9,14 @@ class Angle
 public:
         // constructors
 
+        constexpr Angle() = default;
+
         explicit constexpr Angle(int n) noexcept
         :
                 value_{make_angle(n)}
         {
                 assert(invariant());
         }
-
-        constexpr Angle() = default;
 
         // modifiers
 
