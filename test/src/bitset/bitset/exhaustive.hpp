@@ -95,7 +95,10 @@ constexpr auto count() noexcept
         auto check = true;
         for (auto i = 0; i < N; ++i)
                 check &= (~(~bitset<N>{} << i)).count() == i;
-        check &= ~bitset<N>{}.count() == N;
+        if (N)
+                check &= bitset<N>{}.flip().count() == N;
+        else
+                check &= bitset<N>{}.flip().count() == 0;
         return check;
 }
 

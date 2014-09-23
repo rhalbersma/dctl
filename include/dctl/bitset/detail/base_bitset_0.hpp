@@ -1,6 +1,8 @@
 #pragma once
 #include <dctl/bitset/detail/base_bitset_fwd.hpp>       // base_bitset
 #include <dctl/bitset/limits.hpp>                       // is_unsigned_integer
+#include <iostream>
+#include <memory>
 
 namespace xstd {
 namespace detail {
@@ -8,6 +10,7 @@ namespace detail {
 template<class Block>
 class base_bitset<Block, 0>
 {
+        static constexpr Block stfu{};
         static_assert(is_unsigned_integer<Block>, "");
 public:
         // constructors
@@ -21,7 +24,7 @@ protected:
         ~base_bitset() = default;
 
 public:
-        // copying and assignment
+        // copying, moving and assignment
 
         base_bitset(base_bitset const&) = default;
         base_bitset(base_bitset&&) = default;
@@ -35,10 +38,10 @@ public:
         constexpr auto*       block_end  ()       noexcept { return this; }
         constexpr auto const* block_end  () const noexcept { return this; }
 
-        constexpr auto&       block_back()          noexcept { return *new Block; }
-        constexpr auto const& block_back()    const noexcept { return *new Block; }
-        constexpr auto&       block_ref (int)       noexcept { return *new Block; }
-        constexpr auto const& block_ref (int) const noexcept { return *new Block; }
+        constexpr auto&       block_back()          noexcept { return const_cast<Block&>(stfu); }
+        constexpr auto const& block_back()    const noexcept { return stfu; }
+        constexpr auto&       block_ref (int)       noexcept { return const_cast<Block&>(stfu); }
+        constexpr auto const& block_ref (int) const noexcept { return stfu; }
 
         // comparators
 
@@ -69,7 +72,7 @@ public:
         constexpr auto do_all  () const noexcept { return false; }
         constexpr auto do_any  () const noexcept { return false; }
         constexpr auto do_none () const noexcept { return true;  }
-        constexpr auto do_count() const noexcept { return 0;     }
+        constexpr auto do_count() const noexcept { std::cout << "COUNT 0 \n"; return 0;     }
 };
 
 }       // namespace detail

@@ -25,7 +25,7 @@ using U = int;
 
 using SetTypes = boost::mpl::vector
 <
-        bitset<0>,
+        bitset<  0>,
         bitset< 64>,    // Chess
         bitset< 81>,    // Shogi
         bitset< 90>,    // Xiangqi
