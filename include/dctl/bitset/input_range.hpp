@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/xstd/input_range_facade.hpp>     // InputRangeCoreAcces, InputRangeFacade
-#include <dctl/xstd/intrinsic.hpp>              // ctznz
-#include <dctl/xstd/masks.hpp>                  // none
+#include <dctl/bitset/input_range_facade.hpp>     // InputRangeCoreAcces, InputRangeFacade
+#include <dctl/bitset/intrinsic.hpp>              // ctznz
+#include <dctl/bitset/masks.hpp>                  // none
 #include <cassert>                              // assert
 
 namespace xstd {

@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/xstd/limits.hpp>                  // digits
-#include <dctl/xstd/masks.hpp>                   // all, any, none
+#include <dctl/bitset/limits.hpp>                  // digits
+#include <dctl/bitset/masks.hpp>                   // all, any, none
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
@@ -81,22 +81,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BitScanReverseNonZero, T, UnsignedIntegerTypes)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Popcount, T, UnsignedIntegerTypes)
 {
-        BOOST_CHECK_EQUAL(lib::popcount(masks::none<T>), 0);
-
         for (auto i = 0; i < digits<T>; ++i) {
-                auto const b = masks::one<T> << i;
-                BOOST_CHECK_EQUAL(lib::popcount(b), 1);
-        }
-
-        for (auto i = 0; i < digits<T>; ++i) {
-                for (auto j = i + 1; j < digits<T>; ++j) {
-                        auto const b = (masks::one<T> << i) ^ (masks::one<T> << j);
-                        BOOST_CHECK_EQUAL(lib::popcount(b), 2);
-                }
-        }
-
-        for (auto i = 0; i < digits<T>; ++i) {
-                auto const b = ~((masks::all<T> >> i) << i);
+                auto const b = ~(masks::all<T> << i);
                 BOOST_CHECK_EQUAL(lib::popcount(b), i);
         }
 

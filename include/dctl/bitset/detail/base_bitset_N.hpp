@@ -1,10 +1,10 @@
 #pragma once
-#include <dctl/xstd/detail/base_bitset_fwd.hpp> // base_bitset
-#include <dctl/xstd/intrinsic.hpp>              // popcount
-#include <dctl/xstd/limits.hpp>                 // digits, is_unsigned_integer
-#include <dctl/xstd/masks.hpp>                  // none, one, all
-#include <cassert>                              // assert
-#include <utility>                              // swap
+#include <dctl/bitset/detail/base_bitset_fwd.hpp>       // base_bitset
+#include <dctl/bitset/intrinsic.hpp>                    // popcount
+#include <dctl/bitset/limits.hpp>                       // digits, is_unsigned_integer
+#include <dctl/bitset/masks.hpp>                        // none, one, all
+#include <cassert>                                      // assert
+#include <utility>                                      // swap
 
 namespace xstd {
 namespace detail {
@@ -19,12 +19,12 @@ private:
 public:
         // constructors
 
+        constexpr base_bitset() = default;
+
         /* implicit */ constexpr base_bitset(Block value) noexcept
         :
                 elems{value}
         {}
-
-        constexpr base_bitset() = default;
 
 protected:
         // destructor

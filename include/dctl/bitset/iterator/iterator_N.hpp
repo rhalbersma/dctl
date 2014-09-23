@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/xstd/iterator/iterator_fwd.hpp>  // ConstIterator
-#include <dctl/xstd/iterator/reference_fwd.hpp> // ConstReference
-#include <dctl/xstd/intrinsic.hpp>              // clznz, ctznz
-#include <dctl/xstd/limits.hpp>                 // digits, is_unsigned_integer
+#include <dctl/bitset/iterator/iterator_fwd.hpp>  // ConstIterator
+#include <dctl/bitset/iterator/reference_fwd.hpp> // ConstReference
+#include <dctl/bitset/intrinsic.hpp>              // bsfnz, bsrnz, clznz, ctznz
+#include <dctl/bitset/limits.hpp>                 // digits, is_unsigned_integer
 #include <boost/iterator/iterator_facade.hpp>   // iterator_facade
 #include <cassert>                              // assert
 #include <cstddef>                              // ptrdiff_t
@@ -10,20 +10,21 @@
 
 namespace xstd {
 
-template<class Block, int N>
-class ConstIterator<Block, 1, N>
+template<class Block, int Nb, int N>
+class ConstIterator
 :
         public boost::iterator_facade
         <
-                ConstIterator<Block, 1, N>,
+                ConstIterator<Block, Nb, N>,
                 int const,
                 std::bidirectional_iterator_tag,
-                ConstReference<Block, 1, N>,
+                ConstReference<Block, Nb, N>,
                 std::ptrdiff_t
         >
 {
+private:
         static_assert(is_unsigned_integer<Block>, "");
-        static_assert(N <= 1 * digits<Block>, "");
+        static_assert(N <= Nb * digits<Block>, "");
 
 public:
         // constructors
@@ -55,7 +56,14 @@ private:
         constexpr auto find_first()
         {
                 assert(block_ != nullptr);
-                return *block_ ? intrinsic::ctznz(*block_) : N;
+                for (auto i = 0; i < Nb; ++i) {
+                        if (auto const mask = *block_) {
+                                assert(i * digits<Block> + intrinsic::bsfnz(mask) < N);
+                                return i * digits<Block> + intrinsic::bsfnz(mask);
+                        }
+                        ++block_;
+                }
+                return N;
         }
 
         // operator++() and operator++(int) provided by boost::iterator_facade
@@ -63,12 +71,30 @@ private:
         {
                 assert(block_ != nullptr);
                 assert(0 <= index_ && index_ < N);
-                if (++index_ == N)
+                if (++index_ == N) {
+                        ++block_;
                         return;
-                if (auto const mask = *block_ >> index_)
+                }
+
+                auto const idx = index_ % digits<Block>;
+                if (idx == 0)
+                        ++block_;
+                if (auto const mask = *block_ >> idx) {
                         index_ += intrinsic::ctznz(mask);
-                else
-                        index_ = N;
+                        assert(0 <= index_ && index_ < N);
+                        return;
+                }
+                ++block_;
+
+                for (auto i = index_ / digits<Block> + 1; i < Nb; ++i) {
+                        if (auto const mask = *block_) {
+                                index_ = i * digits<Block> + intrinsic::bsfnz(mask);
+                                assert(0 <= index_ && index_ < N);
+                                return;
+                        }
+                        ++block_;
+                }
+                index_ = N;
                 assert(0 < index_ && index_ <= N);
         }
 
@@ -79,15 +105,31 @@ private:
                 assert(0 < index_ && index_ <= N);
                 if (--index_ == 0)
                         return;
-                if (auto const mask = *block_ << (digits<Block> - 1 - index_))
+
+                auto const idx = index_ % digits<Block>;
+                if (idx == digits<Block> - 1 || index_ == N - 1)
+                        --block_;
+                if (auto const mask = *block_ << (digits<Block> - 1 - idx)) {
                         index_ -= intrinsic::clznz(mask);
-                else
-                        index_ = 0;
+                        assert(0 <= index_ && index_ < N);
+                        return;
+                }
+                --block_;
+
+                for (auto i = index_ / digits<Block> - 1; i >= 0; --i) {
+                        if (auto const mask = *block_) {
+                                index_ = i * digits<Block> + intrinsic::bsrnz(mask);
+                                assert(0 <= index_ && index_ < N);
+                                return;
+                        }
+                        --block_;
+                }
+                index_ = 0;
                 assert(0 <= index_ && index_ < N);
         }
 
         // operator* provided by boost::iterator_facade
-        constexpr ConstReference<Block, 1, N> dereference() const
+        constexpr ConstReference<Block, Nb, N> dereference() const
         {
                 assert(block_ != nullptr);
                 assert(0 <= index_ && index_ < N);

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/xstd/limits.hpp> // digits
+#include <dctl/bitset/limits.hpp> // digits
 #include <cassert>              // assert
 
 namespace xstd {

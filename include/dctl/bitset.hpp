@@ -1,4 +1,4 @@
 #pragma once
-#include <dctl/xstd/algorithm.hpp>
-#include <dctl/xstd/input_range.hpp>
-#include <dctl/xstd/bitset.hpp>
+#include <dctl/bitset/algorithm.hpp>
+#include <dctl/bitset/input_range.hpp>
+#include <dctl/bitset/bitset.hpp>
