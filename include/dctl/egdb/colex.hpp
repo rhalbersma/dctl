@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/egdb/binomial.hpp>               // Binomial
 #include <dctl/utility/make_const_callable.hpp> // make_const_callable
+#include <xstd/bitset/intrinsic.hpp>
 #include <boost/range/adaptor/reversed.hpp>     // reversed
 #include <boost/range/adaptor/transformed.hpp>  // transformed
 #include <boost/range/algorithm/find_if.hpp>    // find_if
@@ -9,7 +10,6 @@
 #include <boost/range/numeric.hpp>              // accumulate
 #include <cassert>                              // assert
 #include <utility>                              // pair
-#include <dctl/bitset/intrinsic.hpp>
 
 namespace dctl {
 namespace egdb {

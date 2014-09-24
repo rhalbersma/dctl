@@ -1,10 +1,9 @@
 #pragma once
-#include <cassert>                      // assert
-#include <dctl/bitset.hpp>
 #include <dctl/board/mask.hpp>
 #include <dctl/zobrist/accumulate.hpp>
 #include <dctl/position/color.hpp>
 #include <dctl/position/piece_placement/zobrist.hpp>
+#include <cassert>                      // assert
 
 namespace dctl {
 

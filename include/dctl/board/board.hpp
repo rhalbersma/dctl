@@ -1,13 +1,13 @@
 #pragma once
 #include <dctl/angle.hpp>                       // Angle, inverse
-#include <dctl/bitset.hpp>                      // bitset
 #include <dctl/board/algebraic.hpp>
 #include <dctl/grid/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
 #include <dctl/grid/orientation.hpp>            // SizeMinimizingOrientation, Make
-#include <dctl/position/color.hpp>               // black, white
+#include <dctl/position/color.hpp>              // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
+#include <xstd/bitset.hpp>                      // bitset
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/range/irange.hpp>               // irange
 #include <array>                                // array
