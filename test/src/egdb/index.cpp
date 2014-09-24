@@ -1,20 +1,19 @@
-#include <cstdint>
+#include <dctl/egdb/index.hpp>
+#include <dctl/board/types.hpp>
+#include <dctl/board/mask.hpp>
+#include <xstd/bitset.hpp>                      // bitset
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <dctl/bitset/bitset.hpp>                     // Set
-
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/algorithm/adjacent_find.hpp>
 #include <boost/range/algorithm_ext/is_sorted.hpp>
 #include <boost/range/concepts.hpp>
 #include <boost/range/end.hpp>
-#include <dctl/egdb/index.hpp>
+#include <cstdint>
 #include <iostream>
 #include <iomanip>
 #include <boost/range/irange.hpp>
-#include <dctl/board/types.hpp>
-#include <dctl/board/mask.hpp>
 
 namespace dctl {
 namespace egdb {

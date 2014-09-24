@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/bitset.hpp>             // Set
 #include <dctl/utility/make_array.hpp>  // make_array
+#include <xstd/bitset.hpp>              // bitset
 #include <array>                        // array
 #include <cassert>                      // assert
 #include <cstddef>                      // ptrdiff_t, size_t

@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/angle.hpp>               // Angle, is_orthogonal
-#include <dctl/bitset.hpp>
 #include <dctl/board/board.hpp>
 #include <dctl/position/promotion.hpp>
 #include <dctl/position/unary_projections.hpp>

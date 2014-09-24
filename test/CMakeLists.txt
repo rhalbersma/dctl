@@ -53,6 +53,12 @@ add_definitions(-D BOOST_ALL_DYN_LINK)
 add_definitions(-D BOOST_TEST_MAIN)
 
 ###############################################################
+# ConstexprBitset headers
+###############################################################
+
+set(ConstexprBitset_include_dirs ${PROJECT_SOURCE_DIR}/../../bitset/include)
+
+###############################################################
 # MyAwesomeLibrary headers
 ###############################################################
 
@@ -73,7 +79,7 @@ if(CheckStandalone)
   set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
   # compile against the parent project headers
-  set(CMAKE_REQUIRED_INCLUDES ${MyAwesomeLibrary_include_dirs})
+  set(CMAKE_REQUIRED_INCLUDES ${MyAwesomeLibrary_include_dirs} ${ConstexprBitset_include_dirs})
 
   # enable standalone testing of the header files
   include(CheckIncludeFileCXX)
@@ -108,8 +114,8 @@ file(GLOB_RECURSE MyAwesomeLibraryTestSuite_headers RELATIVE ${PROJECT_SOURCE_DI
 # except any CMake generated headers under build/
 string(REGEX REPLACE "build/[^;]+;?" "" MyAwesomeLibraryTestSuite_headers "${MyAwesomeLibraryTestSuite_headers}")
 
-# compile against the test headers, the parent project, and the Boost libraries
-include_directories(${PROJECT_SOURCE_DIR}/src ${MyAwesomeLibrary_include_dirs} ${Boost_INCLUDE_DIRS})
+# compile against the test headers, the parent project, the bitset library, and the Boost libraries
+include_directories(${PROJECT_SOURCE_DIR}/src ${MyAwesomeLibrary_include_dirs} ${ConstexprBitset_include_dirs} ${Boost_INCLUDE_DIRS})
 
 # calls enable_testing()
 include(CTest)
