@@ -19,21 +19,9 @@ template<class Board, int Direction>
 constexpr auto direction_v<Iterator<Board, Direction>> = Angle{Direction};
 
 template<class Board, int Direction>
-constexpr auto is_onboard_dispatch(Iterator<Board, Direction> it, std::true_type)
-{
-        return 0 <= *it;
-}
-
-template<class Board, int Direction>
-constexpr auto is_onboard_dispatch(Iterator<Board, Direction> it, std::false_type)
-{
-        return *it < Board::set_type::size();
-}
-
-template<class Board, int Direction>
 constexpr auto is_onboard(Iterator<Board, Direction> it)
 {
-        return is_onboard_dispatch(it, is_positive_t<Direction>{});
+        return *it < Board::set_type::size();
 }
 
 }       // namespace ray

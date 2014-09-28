@@ -17,7 +17,7 @@ public:
         // constructors
 
         // king move
-        constexpr BaseMove(int src, int dst, bool color)
+        constexpr BaseMove(std::size_t src, std::size_t dst, bool color)
         :
                 from_{src},
                 dest_{dst},
@@ -28,7 +28,7 @@ public:
         }
 
         // pawn move
-        constexpr BaseMove(int src, int dst, bool prom, bool color)
+        constexpr BaseMove(std::size_t src, std::size_t dst, bool prom, bool color)
         :
                 from_{src},
                 dest_{dst},
@@ -152,8 +152,8 @@ private:
 
         Set captured_pieces_{};
         Set captured_kings_{};
-        int from_{};
-        int dest_{};
+        std::size_t from_{};
+        std::size_t dest_{};
         bool is_with_king_{};
         bool is_promotion_{};
         bool active_color_{};

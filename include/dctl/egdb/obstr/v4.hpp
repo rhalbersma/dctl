@@ -19,13 +19,13 @@ int mirror(int sq)
 inline
 int LSB(BB x)
 {
-        return xstd::intrinsic::bsfnz(x);
+        return static_cast<int>(xstd::intrinsic::bsfnz(x));
 }
 
 inline
 int MSB(BB x)
 {
-        return xstd::intrinsic::bsrnz(x);
+        return static_cast<int>(xstd::intrinsic::bsrnz(x));
 }
 
 inline

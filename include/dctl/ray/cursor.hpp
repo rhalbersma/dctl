@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/angle.hpp>       // Angle
 #include <boost/operators.hpp>  // totally_ordered, unit_steppable, additive
+#include <cstddef>              // size_t
 
 namespace dctl {
 namespace ray {
@@ -17,7 +18,7 @@ class Cursor
         static constexpr auto N = is_positive(theta) ? -S : S;
         static_assert(N != 0, "Cursors need a non-zero stride.");
 
-        using Square = int;
+        using Square = std::size_t;
 
 public:
         // constructors
@@ -26,7 +27,7 @@ public:
 
         explicit Cursor(Square c) noexcept
         :
-                cursor_{c}
+                cursor_{static_cast<int>(c)}
         {}
 
         template<class, int>
@@ -55,16 +56,16 @@ public:
         }
 
         // operator+(Cursor, int) provided by boost::additive
-        auto& operator+=(int n) noexcept
+        auto& operator+=(std::size_t n) noexcept
         {
-                cursor_ += n * N;
+                cursor_ += static_cast<int>(n) * N;
                 return *this;
         }
 
         // operator-(Cursor, int) provided by boost::additive
-        auto& operator-=(int n) noexcept
+        auto& operator-=(std::size_t n) noexcept
         {
-                cursor_ -= n * N;
+                cursor_ -= static_cast<int>(n) * N;
                 return *this;
         }
 
@@ -78,13 +79,13 @@ public:
 
         /* implicit */ operator Square() const noexcept
         {
-                return cursor_;
+                return static_cast<Square>(cursor_);
         }
 
 private:
         // representation
 
-        Square cursor_{};
+        int cursor_{};
 };
 
 }       // namespace ray

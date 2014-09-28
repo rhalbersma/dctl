@@ -67,7 +67,7 @@ struct read<Rules, Board, pdn::protocol, Token>
 
                 std::stringstream sstr(s);
                 char ch;
-                int sq;
+                std::size_t sq;
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch (ch) {
@@ -87,7 +87,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
-                                        auto b = Board::bit_from_square(sq - 1);     // convert square to bit
+                                        auto b = static_cast<std::size_t>(Board::bit_from_square(static_cast<int>(sq) - 1));     // convert square to bit
                                         p_pieces[setup_color].set(b);
                                         if (setup_kings)
                                                 p_kings.set(b);
@@ -119,11 +119,11 @@ struct write<pdn::protocol, Token>
                                 sstr << Token::color[c];                        // color tag
                         }
                         auto const bs = p.pieces(c);
-                        auto n = 0;
+                        std::size_t n = 0;
                         for (auto&& sq : bs) {
                                 if (p.kings().test(sq))
                                         sstr << Token::king;                    // king tag
-                                sstr << Board::square_from_bit(sq) + 1;         // square number
+                                sstr << Board::square_from_bit(static_cast<int>(sq)) + 1;         // square number
                                 if (++n != bs.count())                          // still pieces remaining
                                         sstr << Token::comma;                   // comma separator
                         }
@@ -149,7 +149,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                 p_side = read_color<Token>(ch);
 
                  for (auto&& sq : Board::squares()) {
-                        auto b = Board::bit_from_square(sq);
+                        auto b = static_cast<std::size_t>(Board::bit_from_square(static_cast<int>(sq)));
                         sstr >> ch;
                         switch (toupper(ch)) {
                         case Token::black:

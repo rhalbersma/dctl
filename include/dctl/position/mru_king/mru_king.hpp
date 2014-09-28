@@ -28,7 +28,7 @@ public:
                 is_active_ = false;
         }
 
-        constexpr void init(int dest_sq)
+        constexpr void init(std::size_t dest_sq)
         {
                 assert(is_active());
                 assert(0 <= dest_sq && dest_sq < N);
@@ -37,7 +37,7 @@ public:
                 assert(0 < moves_ && moves_ <= M);
         }
 
-        constexpr void increment(int dest_sq)
+        constexpr void increment(std::size_t dest_sq)
         {
                 assert(is_active());
                 assert(0 <= dest_sq && dest_sq < N);
@@ -91,8 +91,8 @@ public:
 private:
         // representation
 
-        int index_{};
-        int moves_{};
+        std::size_t index_{};
+        std::size_t moves_{};
         bool is_active_{};
 };
 

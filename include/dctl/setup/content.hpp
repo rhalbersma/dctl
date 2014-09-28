@@ -7,7 +7,7 @@ namespace dctl {
 namespace setup {
 
 template<class Token, class Position>
-std::string content(Position const& p, int n)
+std::string content(Position const& p, std::size_t n)
 {
         assert(0 <= n && n < set_type_t<Position>::size());
 

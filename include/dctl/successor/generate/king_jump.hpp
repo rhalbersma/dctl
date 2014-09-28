@@ -79,14 +79,14 @@ private:
                 }
         }
 
-        void branch(int from_sq) const
+        void branch(std::size_t from_sq) const
         {
                 // tag dispatching on king jump directions
                 branch_dispatch(from_sq, is_orthogonal_jump_t<Rules>{});
         }
 
         // kings that jump in the 4 diagonal directions
-        void branch_dispatch(int from_sq, std::false_type) const
+        void branch_dispatch(std::size_t from_sq, std::false_type) const
         {
                 find_first(along_ray<left_up   (orientation)>(from_sq));
                 find_first(along_ray<right_up  (orientation)>(from_sq));
@@ -95,7 +95,7 @@ private:
         }
 
         // kings that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(int from_sq, std::true_type) const
+        void branch_dispatch(std::size_t from_sq, std::true_type) const
         {
                 find_first(along_ray<up        (orientation)>(from_sq));
                 find_first(along_ray<left_up   (orientation)>(from_sq));
@@ -325,7 +325,7 @@ private:
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> along_ray(int sq)
+        static ray::Iterator<Board, Direction> along_ray(std::size_t sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }

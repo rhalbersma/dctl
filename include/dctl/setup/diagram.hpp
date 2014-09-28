@@ -81,7 +81,7 @@ public:
         template<class Functor>
         std::string operator()(Functor f) const
         {
-                return diagram<Board, squares>{}([=](auto n){ return f(Board::bit_from_square(n)); });
+                return diagram<Board, squares>{}([=](auto n){ return f(Board::bit_from_square(static_cast<int>(n))); });
         }
 };
 
@@ -98,7 +98,7 @@ public:
         template<class Position>
         std::string operator()(Position const& p) const
         {
-                return diagram<board_type_t<Position>, bits>{}([&](auto n){ return content<Content, Position>(p, n); });
+                return diagram<board_type_t<Position>, bits>{}([&](auto n){ return content<Content, Position>(p, static_cast<std::size_t>(n)); });
         }
 };
 

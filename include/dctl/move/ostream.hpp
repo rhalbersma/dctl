@@ -47,9 +47,9 @@ template<class Move>
 auto& print_algebraic(std::ostream& ostr, Move const& m)
 {
         using Board = typename Move::board_type;
-        ostr << Board::algebraic_from_bit(m.from());
+        ostr << Board::algebraic_from_bit(static_cast<int>(m.from()));
         ostr << separator(ostr, m);
-        ostr << Board::algebraic_from_bit(m.dest());
+        ostr << Board::algebraic_from_bit(static_cast<int>(m.dest()));
         return ostr;
 }
 
@@ -57,9 +57,9 @@ template<class Move>
 auto& print_numeric(std::ostream& ostr, Move const& m)
 {
         using Board = typename Move::board_type;
-        ostr << Board::numeric_from_bit(m.from());
+        ostr << Board::numeric_from_bit(static_cast<int>(m.from()));
         ostr << separator(ostr, m);
-        ostr << Board::numeric_from_bit(m.dest());
+        ostr << Board::numeric_from_bit(static_cast<int>(m.dest()));
         return ostr;
 }
 

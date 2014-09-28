@@ -10,6 +10,7 @@
 #include <dctl/rule_traits.hpp>
 #include <boost/range/adaptor/transformed.hpp>          // transformed
 #include <boost/range/algorithm_ext/push_back.hpp>      // push_back
+#include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
 
 namespace dctl {
@@ -102,7 +103,7 @@ private:
         }
 
         template<int Direction>
-        static auto along_ray(int sq)
+        static auto along_ray(std::size_t sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }

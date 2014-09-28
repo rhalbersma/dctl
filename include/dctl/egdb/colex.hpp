@@ -51,9 +51,9 @@ auto combination_rank(Range const& src, Binomial const& = Binomial{})
         using Index = typename Binomial::index_type;
         auto const index = boost::accumulate(
                 src, Index{0}, [k = 1](auto result, auto sq_k) mutable {
-                return result + Binomial::coefficient(sq_k, k++);
+                return result + Binomial::coefficient(static_cast<int>(sq_k), k++);
         });
-        assert(0 <= index && index < Binomial::coefficient(*rbegin(src) + 1, src.count()));
+        assert(0 <= index && index < Binomial::coefficient(static_cast<int>(*rbegin(src)) + 1, static_cast<int>(src.count())));
         return index;
 }
 
@@ -79,7 +79,7 @@ auto combination_rank0(Range src, Binomial const& = Binomial{})
         Index index{0};
         auto k = 1;
         while (src) {
-                auto sq_k = xstd::intrinsic::bsfnz(src);
+                auto sq_k = static_cast<int>(xstd::intrinsic::bsfnz(src));
                 index += Binomial::coefficient(sq_k, k++);
                 src ^= 1ULL << sq_k;
         }
