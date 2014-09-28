@@ -19,13 +19,13 @@ int mirror(int sq)
 inline
 int LSB(BB x)
 {
-        return xstd::intrinsic::bsfnz(x);
+        return static_cast<int>(xstd::intrinsic::bsfnz(x));
 }
 
 inline
 int MSB(BB x)
 {
-        return xstd::intrinsic::bsrnz(x);
+        return static_cast<int>(xstd::intrinsic::bsrnz(x));
 }
 
 inline
@@ -36,7 +36,7 @@ BB front_inserted(BB src, BB pat)
                 auto sq_i = 1ULL << MSB(src);
                 src ^= sq_i;
                 auto const behind = sq_i - 1;
-                auto skipcount = xstd::intrinsic::popcount(pat & behind);
+                auto skipcount = static_cast<int>(xstd::intrinsic::popcount(pat & behind));
                 auto infront = ~(pat | behind);
                 while (skipcount--)
                         infront &= infront - 1;
@@ -52,7 +52,7 @@ BB front_erased(BB src, BB pat)
         while (src) {
                 int sq_i = LSB(src);
                 src ^= 1ULL << sq_i;
-                auto const skipped = xstd::intrinsic::popcount(pat & ((1ULL << sq_i) - 1ULL));
+                auto const skipped = static_cast<int>(xstd::intrinsic::popcount(pat & ((1ULL << sq_i) - 1ULL)));
                 dst |= 1ULL << (sq_i - skipped);
         }
         return dst;

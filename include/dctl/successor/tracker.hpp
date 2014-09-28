@@ -50,7 +50,7 @@ public:
 
         // modifiers
 
-        auto launch(int sq)
+        auto launch(std::size_t sq)
         {
                 visited_path_.push_back(sq);
                 not_occupied_.set(sq);
@@ -62,7 +62,7 @@ public:
                 visited_path_.pop_back();
         }
 
-        auto capture(int sq)
+        auto capture(std::size_t sq)
         {
                 // tag dispatching on jump removal
                 capture_dispatch(sq, is_en_passant_jump_removal_t<Rules>{});
@@ -74,12 +74,12 @@ public:
                 release_dispatch(last_piece(), is_en_passant_jump_removal_t<Rules>{});
         }
 
-        auto last_visit(int sq)
+        auto last_visit(std::size_t sq)
         {
                 visited_path_.back() = sq;
         }
 
-        auto visit(int sq)
+        auto visit(std::size_t sq)
         {
                 visited_path_.push_back(sq);
         }
@@ -124,7 +124,7 @@ public:
                 return not_occupied_;
         }
 
-        auto path(int sq) const
+        auto path(std::size_t sq) const
         {
                 return not_occupied_.test(sq);
         }
@@ -142,7 +142,7 @@ public:
                 return path<Direction>().test(sq);
         }
 
-        auto is_king(int sq) const
+        auto is_king(std::size_t sq) const
         {
                 return king_targets_.test(sq);
         }
@@ -193,19 +193,19 @@ private:
         // modifiers
 
         // apres-fini jump removal
-        auto capture_dispatch(int sq, std::false_type)
+        auto capture_dispatch(std::size_t sq, std::false_type)
         {
                 capture_impl(sq);
         }
 
         // en-passant jump removal
-        auto capture_dispatch(int sq, std::true_type)
+        auto capture_dispatch(std::size_t sq, std::true_type)
         {
                 not_occupied_.set(sq);
                 capture_impl(sq);
         }
 
-        void capture_impl(int sq)
+        void capture_impl(std::size_t sq)
         {
                 if (is_king(sq))
                         king_order_.set(Set::size() - 1 - num_pieces());
@@ -214,19 +214,19 @@ private:
         }
 
         // apres-fini jump removal
-        void release_dispatch(int sq, std::false_type)
+        void release_dispatch(std::size_t sq, std::false_type)
         {
                 release_impl(sq);
         }
 
         // en-passant jump removal
-        void release_dispatch(int sq, std::true_type)
+        void release_dispatch(std::size_t sq, std::true_type)
         {
                 release_impl(sq);
                 not_occupied_.reset(sq);
         }
 
-        void release_impl(int sq)
+        void release_impl(std::size_t sq)
         {
                 remaining_targets_.set(sq);
                 removed_pieces_.pop_back();
@@ -242,7 +242,7 @@ private:
 
         auto num_pieces() const
         {
-                return static_cast<int>(removed_pieces_.size());
+                return removed_pieces_.size();
         }
 
         auto last_piece() const
@@ -267,10 +267,10 @@ private:
         Set not_occupied_;
         bool is_with_king_{};
         bool is_promotion_{};
-        Arena<int> sqa_;
-        stack_vector<int> visited_path_ = stack_vector<int>(Alloc<int>{sqa_});
-        Arena<int> pca_;
-        stack_vector<int> removed_pieces_ = stack_vector<int>(Alloc<int>{pca_});
+        Arena<std::size_t> sqa_;
+        stack_vector<std::size_t> visited_path_ = stack_vector<std::size_t>(Alloc<std::size_t>{sqa_});
+        Arena<std::size_t> pca_;
+        stack_vector<std::size_t> removed_pieces_ = stack_vector<std::size_t>(Alloc<std::size_t>{pca_});
 };
 
 }       // namespace successor

@@ -14,7 +14,7 @@ constexpr auto make_set_if(UnaryPredicate pred) noexcept
         Set result{};
         for (auto sq = 0; sq != Grid::size; ++sq)
                 if (pred(grid::ulo::Square<Grid>{sq}))
-                        result.set(Board::bit_from_square(sq));
+                        result.set(static_cast<std::size_t>(Board::bit_from_square(sq)));
         return result;
 }
 

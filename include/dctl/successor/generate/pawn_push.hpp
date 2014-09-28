@@ -73,12 +73,12 @@ private:
         }
 
         template<int Direction>
-        static auto along_ray(int sq)
+        static auto along_ray(std::size_t sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }
 
-        static auto is_promotion(int sq)
+        static auto is_promotion(std::size_t sq)
         {
                 return dctl::is_promotion<Color, Board>(sq);
         }

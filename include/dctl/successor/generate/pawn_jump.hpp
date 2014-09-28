@@ -353,12 +353,12 @@ private:
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> along_ray(int sq)
+        static ray::Iterator<Board, Direction> along_ray(std::size_t sq)
         {
                 return ray::make_iterator<Board, Direction>(sq);
         }
 
-        static bool is_promotion(int sq)
+        static bool is_promotion(std::size_t sq)
         {
                 return dctl::is_promotion<Color, Board>(sq);
         }
