@@ -53,10 +53,10 @@ add_definitions(-D BOOST_ALL_DYN_LINK)
 add_definitions(-D BOOST_TEST_MAIN)
 
 ###############################################################
-# ConstexprBitset headers
+# modified and extended Standard Library headers
 ###############################################################
 
-set(ConstexprBitset_include_dirs ${PROJECT_SOURCE_DIR}/../../bitset/include)
+set(XSTD_include_dirs ${PROJECT_SOURCE_DIR}/../../xstd/include)
 
 ###############################################################
 # MyAwesomeLibrary headers
@@ -79,7 +79,7 @@ if(CheckStandalone)
   set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
   # compile against the parent project headers
-  set(CMAKE_REQUIRED_INCLUDES ${MyAwesomeLibrary_include_dirs} ${ConstexprBitset_include_dirs})
+  set(CMAKE_REQUIRED_INCLUDES ${MyAwesomeLibrary_include_dirs} ${XSTD_include_dirs})
 
   # enable standalone testing of the header files
   include(CheckIncludeFileCXX)
@@ -102,36 +102,34 @@ endif()
 # Test suite
 ###############################################################
 
-# get the test sources
-file(GLOB_RECURSE MyAwesomeLibraryTestSuite_sources RELATIVE ${PROJECT_SOURCE_DIR} *.cpp)
-
-# except any CMake generated sources under build/
-string(REGEX REPLACE "build/[^;]+;?" "" MyAwesomeLibraryTestSuite_sources "${MyAwesomeLibraryTestSuite_sources}")
-
-# get the test headers
-file(GLOB_RECURSE MyAwesomeLibraryTestSuite_headers RELATIVE ${PROJECT_SOURCE_DIR} *.hpp)
-
-# except any CMake generated headers under build/
-string(REGEX REPLACE "build/[^;]+;?" "" MyAwesomeLibraryTestSuite_headers "${MyAwesomeLibraryTestSuite_headers}")
-
-# compile against the test headers, the parent project, the bitset library, and the Boost libraries
-include_directories(${PROJECT_SOURCE_DIR}/src ${MyAwesomeLibrary_include_dirs} ${ConstexprBitset_include_dirs} ${Boost_INCLUDE_DIRS})
-
 # calls enable_testing()
 include(CTest)
+
+# get the test headers
+file(GLOB_RECURSE MyAwesomeLibraryTestSuite_headers RELATIVE ${PROJECT_SOURCE_DIR} src/*.hpp)
+
+# compile against the test headers, the parent project, the XSTD headers, and the Boost libraries
+include_directories(${PROJECT_SOURCE_DIR}/src ${MyAwesomeLibrary_include_dirs} ${XSTD_include_dirs} ${Boost_INCLUDE_DIRS})
+
+# get the test sources
+file(GLOB_RECURSE MyAwesomeLibraryTestSuite_sources RELATIVE ${PROJECT_SOURCE_DIR} src/*.cpp)
 
 foreach(t ${MyAwesomeLibraryTestSuite_sources})
   # get the relative path in the source tree
   get_filename_component(test_path ${t} PATH)
-
+ 
   # strip the leading "src/" part from the test path
-  string(REGEX REPLACE "^src/" "" test_rel_path ${test_path})
-
+  string(REGEX REPLACE "^src[/]?" "" test_rel_path ${test_path})
+  
   # get the source name without extension
   get_filename_component(test_name ${t} NAME_WE)
-
+  
   # concatenate the relative path and name in an underscore separated identifier
-  string(REPLACE "/" "_" test_id "${test_rel_path}/${test_name}")
+  if ("${test_rel_path}" STREQUAL "")
+    string(REPLACE "/" "_" test_id "${test_name}")
+  else() 
+    string(REPLACE "/" "_" test_id "${test_rel_path}/${test_name}")
+  endif()
 
   # depend on the current source file, all the test headers, and the parent project headers
   add_executable(${test_id} ${t} ${MyAwesomeLibraryTestSuite_headers} ${MyAwesomeLibrary_headers})
@@ -139,9 +137,9 @@ foreach(t ${MyAwesomeLibraryTestSuite_sources})
   # link against the Boost libraries
   target_link_libraries(${test_id} ${Boost_LIBRARIES})
 
-  # match the relative path in the build tree with the corresponding one in the source tree 
-  set_target_properties(${test_id} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${test_rel_path})
-
+  # match the relative path in the build tree with the corresponding one in the source tree
+  set_target_properties(${test_id} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${test_path})
+  
   # add a test with executable in the relative path of the build tree
-  add_test(${test_id} ${test_rel_path}/${test_id})
+  add_test(${test_id} ${test_path}/${test_id})  
 endforeach()
