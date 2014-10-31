@@ -10,10 +10,10 @@ DCTL_PP_TTI_BOX_STATIC_CONSTANT(NAME)                           \
                                                                 \
 template<class T>                                               \
 using NAME ## _t = typename std::conditional_t<                 \
-        detail_ ## NAME ::has_static_constant_v<T>,             \
-        detail_ ## NAME ::box_static_constant<T>,               \
+        has_static_constant_ ## NAME ## _v<T>,                  \
+        box_static_constant_ ## NAME <T>,                       \
         std::integral_constant<decltype(DEFAULT), DEFAULT>      \
 >::type;                                                        \
                                                                 \
 template<class T>                                               \
-constexpr auto NAME ## _v = NAME ## _t<T>::value;
+constexpr auto NAME ## _v = NAME ## _t<T>::value;               \
