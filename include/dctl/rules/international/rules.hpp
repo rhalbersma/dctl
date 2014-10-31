@@ -12,6 +12,7 @@ struct Rules
         static constexpr auto is_backward_pawn_jump = true;     // 4.1
         static constexpr auto is_long_ranged_king = true;       // 3.9
 
+        // optional
         using jump_precedence = precedence::less;               // 4.13
 
         // draw

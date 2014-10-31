@@ -12,9 +12,8 @@ struct Rules
         static constexpr auto is_backward_pawn_jump = true;
         static constexpr auto is_long_ranged_king = true;
 
-        using jump_precedence = precedence::less;
-
         // optional
+        using jump_precedence = precedence::less;
         static constexpr auto is_orthogonal_jump = true;
         static constexpr auto max_same_king_push = 6;
 };
