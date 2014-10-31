@@ -12,10 +12,10 @@ DCTL_PP_TTI_MISSING_STATIC_CONSTANT(NAME)               \
                                                         \
 template<class T>                                       \
 using NAME ## _t = typename std::conditional_t<         \
-        detail_ ## NAME ::has_static_constant_v<T>,     \
-        detail_ ## NAME ::box_static_constant<T>,       \
-        detail_ ## NAME ::missing_static_constant<>     \
+        has_static_constant_ ## NAME ## _v<T>,          \
+        box_static_constant_ ## NAME <T>,               \
+        missing_static_constant_ ## NAME <>             \
 >::type;                                                \
                                                         \
 template<class T>                                       \
-constexpr auto NAME ## _v = NAME ## _t<T>::value;
+constexpr auto NAME ## _v = NAME ## _t<T>::value;       \

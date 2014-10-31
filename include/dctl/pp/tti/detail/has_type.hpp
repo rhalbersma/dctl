@@ -1,32 +1,17 @@
 #pragma once
-#include <type_traits>  // integral_constant
+#include <xstd/type_traits.hpp> // void_t
+#include <type_traits>          // false_type, true_type
 
 #define DCTL_PP_TTI_HAS_TYPE(NAME)                                              \
                                                                                 \
-namespace detail_ ## NAME {                                                     \
+template<class, class = void>                                                   \
+struct has_type_ ## NAME: std::false_type {};                                   \
                                                                                 \
 template<class T>                                                               \
-class has_type                                                                  \
-{                                                                               \
-private:                                                                        \
-        using yes = char;                                                       \
-        using no = yes (&)[2];                                                  \
-                                                                                \
-        template<class U>                                                       \
-        static yes test(typename U::NAME*);                                     \
-                                                                                \
-        template<class U>                                                       \
-        static no  test(...);                                                   \
-                                                                                \
-public:                                                                         \
-        static constexpr auto value = sizeof(test<T>(nullptr)) == sizeof(yes);  \
-        using type = std::integral_constant<bool, value>;                       \
-};                                                                              \
+struct has_type_ ## NAME<T, xstd::void_t<typename T::NAME>>: std::true_type {}; \
                                                                                 \
 template<class T>                                                               \
-using has_type_t = typename has_type<T>::type;                                  \
+using has_type_ ## NAME ## _t = typename has_type_ ## NAME <T>::type;           \
                                                                                 \
 template<class T>                                                               \
-constexpr auto has_type_v = has_type_t<T>::value;                               \
-                                                                                \
-}       /* namespace detail_ ## NAME */
+constexpr auto has_type_ ## NAME ## _v = has_type_ ## NAME ## _t<T>::value;     \

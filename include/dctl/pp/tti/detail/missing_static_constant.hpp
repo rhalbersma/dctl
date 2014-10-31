@@ -1,17 +1,13 @@
 #pragma once
-#include <type_traits>  // is_integral
+#include <type_traits>  // is_same
 
 #define DCTL_PP_TTI_MISSING_STATIC_CONSTANT(NAME)                       \
                                                                         \
-namespace detail_ ## NAME {                                             \
-                                                                        \
 template<class T = decltype(nullptr)>                                   \
-struct missing_static_constant                                          \
+struct missing_static_constant_ ## NAME                                 \
 {                                                                       \
         static_assert(                                                  \
-                std::is_integral<T>::value,                             \
+                !std::is_same<T, decltype(nullptr)>::value,             \
                 "DCTL error: missing static constant '" #NAME "'."      \
         );                                                              \
 };                                                                      \
-                                                                        \
-}       /* namespace detail_ ## NAME */
