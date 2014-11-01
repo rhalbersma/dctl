@@ -18,12 +18,6 @@
 
 namespace dctl {
 namespace successor {
-namespace with {
-
-struct king {};
-struct pawn {};
-
-}       // namespace with
 
 template<bool Color, class Position>
 class Tracker
@@ -260,13 +254,13 @@ private:
 
         // representation
 
-        Set king_order_{};
         Set const king_targets_;
         Set initial_targets_;
         Set remaining_targets_;
         Set not_occupied_;
         bool is_with_king_{};
         bool is_promotion_{};
+        Set king_order_{};
         Arena<std::size_t> sqa_;
         stack_vector<std::size_t> visited_path_ = stack_vector<std::size_t>(Alloc<std::size_t>{sqa_});
         Arena<std::size_t> pca_;
