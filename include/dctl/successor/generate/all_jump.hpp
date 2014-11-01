@@ -5,9 +5,10 @@
 #include <dctl/successor/tracker.hpp>                   // Tracker
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/pieces/pieces.hpp>                       // all, king, pawn
-#include <dctl/rule_traits.hpp>                         // is_absolute_king_jump_precedence_t
+#include <dctl/rule_traits.hpp>                         // is_absolute_king_jump_precedence_t, is_jump_precedence_t, is_remove_duplicates_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
-#include <algorithm>                                    // upper_bound, stable_sort, unique
+#include <algorithm>                                    // max_element, stable_sort, unique, upper_bound
+#include <cassert>                                      // assert
 #include <type_traits>                                  // false_type, true_type
 
 namespace dctl {
@@ -24,21 +25,13 @@ public:
                 using Rules = rules_type_t<Position>;
 
                 // EFFICIENCY: tag dispatching on absolute king jump precedence
-                precedence_dispatch(p, moves, is_absolute_king_jump_precedence_t<Rules>{});
+                absolute_king_jump_precedence_dispatch(p, moves, is_absolute_king_jump_precedence_t<Rules>{});
 
-                auto const check_precedence = is_jump_precedence_v<Rules>;
-                if (check_precedence)
-                        handle_precedence(moves, precedence_greater{});
+                if (moves.size() <= 1)
+                        return;
 
-                auto const check_duplicate = is_remove_duplicates_v<Rules>;// && moves.size() > 1;
-                if (check_duplicate) {
-                        auto maxx = std::max_element(begin(moves), end(moves), [](auto const& L, auto const& R){
-                                return L.num_pieces() < R.num_pieces();
-                        });
-
-                        if (maxx != end(moves) && maxx->num_pieces() >= large_jump_v<Rules>)
-                                handle_uniqueness(moves);
-                }
+                filter_precedence_dispatch(moves, is_jump_precedence_t<Rules>{});
+                filter_uniqueness_dispatch(moves, is_remove_duplicates_t<Rules>{});
         }
 
 private:
@@ -50,7 +43,7 @@ private:
 
         // no absolute king jump precedence
         template<class Position, class Sequence>
-        auto precedence_dispatch(Position const& p, Sequence& moves, std::false_type) const
+        auto absolute_king_jump_precedence_dispatch(Position const& p, Sequence& moves, std::false_type) const
         {
                 Tracker<Color, Position> tracker{p};
                 KingJump<Position, Sequence>{tracker, moves}(p.kings(Color));
@@ -59,7 +52,7 @@ private:
 
         // absolute king jump precedence
         template<class Position, class Sequence>
-        auto precedence_dispatch(Position const& p, Sequence& moves, std::true_type) const
+        auto absolute_king_jump_precedence_dispatch(Position const& p, Sequence& moves, std::true_type) const
         {
                 Tracker<Color, Position> tracker{p};
                 KingJump<Position, Sequence>{tracker, moves}(p.kings(Color));
@@ -67,31 +60,50 @@ private:
                         PawnJump<Position, Sequence>{tracker, moves}(p.pawns(Color));
         }
 
-        template<class Sequence, class Compare>
-        void handle_precedence(Sequence& moves, Compare cmp) const
+        template<class Sequence>
+        auto filter_precedence_dispatch(Sequence& /* moves */, std::false_type) const noexcept
         {
-                std::stable_sort(begin(moves), end(moves), cmp);
-                auto const drop = std::upper_bound(begin(moves), end(moves), moves.front(), cmp);
+                // no-op
+        }
+
+        template<class Sequence>
+        auto filter_precedence_dispatch(Sequence& moves, std::true_type) const
+        {
+                assert(!moves.empty()); // guarantees moves.front() exists
+
+                using Move = typename Sequence::value_type;
+                auto const greater = [](auto const& L, auto const& R){
+                        return jump_precedence_t<rules_type_t<Move>>{}(R, L);
+                };
+
+                std::stable_sort(begin(moves), end(moves), greater);
+                auto const drop = std::upper_bound(begin(moves), end(moves), moves.front(), greater);
                 moves.erase(drop, end(moves));
         }
 
         template<class Sequence>
-        void handle_uniqueness(Sequence& moves) const
+        void filter_uniqueness_dispatch(Sequence& /* moves */, std::false_type) const noexcept
         {
+                // no-op
+        }
+
+        template<class Sequence>
+        void filter_uniqueness_dispatch(Sequence& moves, std::true_type) const
+        {
+                assert(!moves.empty()); // guarantees me is dereferenceable
+
+                auto const me = std::max_element(begin(moves), end(moves), [](auto const& L, auto const& R){
+                        return L.num_pieces() < R.num_pieces();
+                });
+
+                using Move = typename Sequence::value_type;
+                if (me->num_pieces() < large_jump_v<rules_type_t<Move>>)
+                        return;
+
                 std::stable_sort(begin(moves), end(moves));
                 auto const drop = std::unique(begin(moves), end(moves));
                 moves.erase(drop, end(moves));
         }
-
-        struct precedence_greater
-        {
-                template<class Move>
-                auto operator()(Move const& lhs, Move const& rhs) const
-                {
-                        using less = jump_precedence_t<rules_type_t<Move>>;
-                        return less{}(rhs, lhs);
-                }
-        };
 };
 
 }       // namespace successor
