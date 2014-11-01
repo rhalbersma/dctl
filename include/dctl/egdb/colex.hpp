@@ -47,7 +47,7 @@ auto combination_unrank(std::pair<int /* N */, int /* K */> const& combination, 
 template<class Range, class Binomial = BinomialTable<>>
 auto combination_rank(Range const& src, Binomial const& = Binomial{})
 {
-        BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
+        //BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
         using Index = typename Binomial::index_type;
         auto const index = boost::accumulate(
                 src, Index{0}, [k = 1](auto result, auto sq_k) mutable {
