@@ -42,25 +42,16 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
 
       # Get a fresh system and install build tools and pre-compiled Boost Libraries
       sudo apt-get update
-      sudo apt-get install tortoisehg python-iniparse cmake ninja-build make libboost1.55-all-dev
+      sudo apt-get install tortoisehg python-iniparse cmake make libboost1.55-all-dev
 
-      # Get the PPA for libstdc++ 4.9
+      # Get a PPA for libc++
       sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-      sudo apt-get install g++-4.9
+      sudo apt-get install libc++-dev
       
-      # Add LLVM repository and GPG key and install Clang 3.5
+      # Add LLVM repository and GPG key and install Clang 3.6
       echo "deb http://llvm.org/apt/saucy/ llvm-toolchain-saucy main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
       wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
-      sudo apt-get install clang-3.5 lldb-3.5
-
-      # Patch clang include directory
-      cd /usr/lib/clang/3.5
-      sudo ln -sf ../../llvm-3.5/lib/clang/3.5/include/ include
-
-      # Patch clang gold plugin
-      cd /usr/lib/
-      sudo ln -sf llvm-3.5/lib/LLVMgold.so LLVMgold.so
-      sudo ln -sf llvm-3.5/lib/libLTO.so libLTO.so
+      apt-get install clang-3.6 lldb-3.6     
 
       # Patch clang -fuse-ld=gold flag
       cd /usr/bin/
@@ -68,7 +59,7 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
 
 ### Compilers
 
-The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++14 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3797.pdf). This currently restricts usage of the DCTL to the 3.5 stable version of [Clang](http://clang.llvm.org/cxx_status.html). 
+The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++14 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3797.pdf). This currently restricts usage of the DCTL to the 3.6 SVN development version of [Clang](http://clang.llvm.org/cxx_status.html). 
 
 ### Boost headers
 
