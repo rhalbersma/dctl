@@ -90,7 +90,7 @@ private:
         template<class Iterator>
         auto transform_targets(Iterator from) const
         {
-                auto const targets = ray::fill(from, propagate_);
+                auto const targets = ray::classical(from, propagate_);
                 boost::push_back(moves_, targets | boost::adaptors::transformed([=](auto const& dest_sq) {
                         return Move{*from, dest_sq, Color};
                 }));

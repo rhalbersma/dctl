@@ -15,24 +15,10 @@ template<class Board>
 class KingTargets
 {
 private:
-        // simulate a constexpr lambda (not allowed in C++14)
         template<int Direction>
-        struct lambda
+        static constexpr auto init(std::size_t sq) noexcept
         {
-                int const sq_;
-
-                constexpr auto operator()() noexcept
-                {
-                        auto const it = ray::make_iterator<Board, Direction>(sq_);
-                        constexpr auto squares = board::Squares<Board>::mask();
-                        return ray::fill(it, squares);
-                }
-        };
-
-        template<int Direction>
-        static constexpr auto init(int sq) noexcept
-        {
-                return lambda<Direction>{sq}();
+                return ray::fill(ray::make_iterator<Board, Direction>(sq), Squares<Board>::mask());
         }
 
         static constexpr auto theta = 45_deg; //Board::is_orthogonal_captures ? 45_deg : 90_deg;
@@ -45,10 +31,10 @@ private:
         static table_type const table[];
 
 public:
-        static constexpr auto mask(Angle const& alpha, int n) noexcept
+        static constexpr auto mask(Angle const& alpha, std::size_t sq) noexcept
         {
                 auto const segment = (alpha - beta) / theta;
-                return table[segment][static_cast<std::size_t>(n)];
+                return table[segment][sq];
         }
 };
 
@@ -64,14 +50,14 @@ template<class Board>
 typename KingTargets<Board>::table_type const
 KingTargets<Board>::table[] =
 {
-        make_array<N>(init<  0>),
-        make_array<N>(init< 45>),
-        make_array<N>(init< 90>),
-        make_array<N>(init<135>),
-        make_array<N>(init<180>),
-        make_array<N>(init<225>),
-        make_array<N>(init<270>),
-        make_array<N>(init<315>)
+        make_array<N>(init<  0_deg>),
+        make_array<N>(init< 45_deg>),
+        make_array<N>(init< 90_deg>),
+        make_array<N>(init<135_deg>),
+        make_array<N>(init<180_deg>),
+        make_array<N>(init<225_deg>),
+        make_array<N>(init<270_deg>),
+        make_array<N>(init<315_deg>)
 };
 
 }       // namespace board
