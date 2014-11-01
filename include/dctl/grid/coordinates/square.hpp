@@ -7,6 +7,7 @@ namespace ulo {
 template<class Grid>
 class Square
 {
+        int value_;
 public:
         // nested types
 
@@ -25,11 +26,6 @@ public:
         {
                 return value_;
         }
-
-private:
-        // representation
-
-        int value_;
 };
 
 }       // namespace ulo

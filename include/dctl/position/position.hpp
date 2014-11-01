@@ -21,7 +21,7 @@ template<class Rules, class Board>
 auto init_hash(Position<Rules, Board> const& p);
 
 template <class Rules, class Board>
-struct Position
+class Position
 {
 public:
         using rules_type = Rules;
@@ -29,8 +29,16 @@ public:
         using set_type = set_type_t<Board>;
         using Set = set_type;
         using TreeIterator = Position const*;
-        static constexpr auto gap = initial_gap_v<Rules> + Board::height % 2;
 
+private:
+        PiecePlacement<Rules, Board> piece_placement_{};
+        ActiveColor active_color_{};
+        ReversibleMoves reversible_moves_{};
+        MostRecentlyUsedKing<Rules, Board> mru_king_[2]{};
+        TreeIterator parent_{};
+        uint64_t hash_{};
+        int distance_to_root_{};
+public:
         // initialize with a set of bitboards and a color
         Position(Set const& black_pieces, Set const& white_pieces, Set const& kings, bool side_to_move)
         :
@@ -52,7 +60,7 @@ public:
                 hash_ = init_hash(*this);
         }
 
-        static Position initial(int separation = gap)
+        static Position initial(int separation = initial_gap_v<Rules> + Board::height % 2)
         {
                 return {
                         board::Initial<Board>::mask(Color::black, separation),
@@ -243,16 +251,6 @@ private:
         {
                 return hash_ == init_hash(*this);
         }
-
-        // representation
-
-        PiecePlacement<Rules, Board> piece_placement_{};
-        ActiveColor active_color_{};
-        ReversibleMoves reversible_moves_{};
-        MostRecentlyUsedKing<Rules, Board> mru_king_[2]{};
-        TreeIterator parent_{};
-        uint64_t hash_{};
-        int distance_to_root_{};
 };
 
 template<class Position>

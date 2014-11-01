@@ -2,7 +2,7 @@
 #include <dctl/angle.hpp>                       // _deg, inverse, rotate
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
-#include <dctl/grid/dimensions.hpp>             // Dimensions
+#include <dctl/grid/dimensions.hpp>             // DimensionsObject
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE

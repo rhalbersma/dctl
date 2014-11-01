@@ -6,6 +6,7 @@ namespace dctl {
 
 class Angle
 {
+        int value_{};
 public:
         // constructors
 
@@ -82,10 +83,6 @@ private:
         {
                 return 0 <= value_ && value_ < 360;
         }
-
-        // representation
-
-        int value_{};
 };
 
 inline
