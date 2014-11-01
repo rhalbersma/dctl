@@ -26,7 +26,7 @@ auto mirrored()
 template<class Range>
 auto front_inserted(Range const& src, Range const& pat)
 {
-        BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
+        //BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
         return Range {
                 src | boost::adaptors::transformed(util::make_const_callable(
                         [first = boost::begin(pat), last = boost::end(pat), skipped = 0](auto sq_i) mutable {
@@ -39,7 +39,7 @@ auto front_inserted(Range const& src, Range const& pat)
 template<class Range>
 auto back_inserted(Range const& src, Range const& pat)
 {
-        BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
+        //BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
         return Range {
                 src | mirrored<Range>() | boost::adaptors::transformed(util::make_const_callable(
                         [first = boost::rbegin(pat), last = boost::rend(pat), skipped = 0](auto sq_i) mutable {
@@ -56,7 +56,7 @@ auto back_inserted(Range const& src, Range const& pat)
 template<class Range>
 auto front_erased(Range const& src, Range const& pat)
 {
-        BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
+        //BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
         return Range {
                 src | boost::adaptors::transformed(util::make_const_callable(
                         [first = boost::begin(pat), last = boost::end(pat), skipped = 0](auto sq_i) mutable {
@@ -69,7 +69,7 @@ auto front_erased(Range const& src, Range const& pat)
 template<class Range>
 auto back_erased(Range const& src, Range const& pat)
 {
-        BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
+        //BOOST_CONCEPT_ASSERT(( boost::SinglePassRangeConcept<Range> ));
         return Range {
                 src | boost::adaptors::reversed | boost::adaptors::transformed(util::make_const_callable(
                         [first = boost::rbegin(pat), last = boost::rend(pat), skipped = 0](auto sq_i) mutable {
