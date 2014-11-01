@@ -3,6 +3,6 @@
 namespace dctl {
 
 template<class, class>
-struct Position;
+class Position;
 
 }       // namespace dctl

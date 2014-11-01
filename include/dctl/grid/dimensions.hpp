@@ -8,6 +8,9 @@ namespace grid {
 
 class DimensionsObject
 {
+        int width_;
+        int height_;
+        bool inverted_;
 public:
         // constructors
 
@@ -24,39 +27,28 @@ public:
         constexpr auto height()   const noexcept { return height_  ; }
         constexpr auto inverted() const noexcept { return inverted_; }
 
-        constexpr auto ll_parity() const noexcept
-        {
-                return !inverted_;
-        }
         constexpr auto ul_parity() const noexcept
         {
                 return static_cast<bool>(inverted_ ^ (height_ % 2));
         }
-
-        // predicates
-
-        friend /* constexpr */ auto
-        operator==(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
-        {
-                return
-                       std::forward_as_tuple(lhs.width_, lhs.height_, lhs.inverted_) ==
-                       std::forward_as_tuple(rhs.width_, rhs.height_, rhs.inverted_)
-                ;
-        }
-
-        friend /* constexpr */ auto
-        operator!=(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
-        {
-                return !(lhs == rhs);
-        }
-
-private:
-        // representation
-
-        int width_;
-        int height_;
-        bool inverted_;
 };
+
+inline
+constexpr auto
+operator==(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
+{
+        return
+               std::forward_as_tuple(lhs.width(), lhs.height(), lhs.inverted()) ==
+               std::forward_as_tuple(rhs.width(), rhs.height(), rhs.inverted())
+        ;
+}
+
+inline
+constexpr auto
+operator!=(DimensionsObject const& lhs, DimensionsObject const& rhs) noexcept
+{
+        return !(lhs == rhs);
+}
 
 inline
 constexpr auto rotate(DimensionsObject const& dim, Angle const& theta)
@@ -81,7 +73,6 @@ public:
         static constexpr auto height = Height;
         static constexpr auto inverted = Inverted;
 
-        static constexpr auto ll_parity = !Inverted;
         static constexpr auto ul_parity = static_cast<bool>(Inverted ^ (Height % 2));
 
         template<class Direction>
@@ -101,9 +92,6 @@ constexpr int Dimensions<Width, Height, Inverted>::height;
 
 template<int Width, int Height, bool Inverted>
 constexpr bool Dimensions<Width, Height, Inverted>::inverted;
-
-template<int Width, int Height, bool Inverted>
-constexpr bool Dimensions<Width, Height, Inverted>::ll_parity;
 
 template<int Width, int Height, bool Inverted>
 constexpr bool Dimensions<Width, Height, Inverted>::ul_parity;

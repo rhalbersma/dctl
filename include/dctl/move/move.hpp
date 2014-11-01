@@ -7,13 +7,22 @@
 namespace dctl {
 
 template<class Rules, class Board>
-struct BaseMove
+class BaseMove
 {
 public:
         using board_type = Board;
         using rules_type = Rules;
         using Set = set_type_t<Board>;
 
+private:
+        Set captured_pieces_{};
+        Set captured_kings_{};
+        std::size_t from_{};
+        std::size_t dest_{};
+        bool is_with_king_{};
+        bool is_promotion_{};
+        bool active_color_{};
+public:
         // constructors
 
         // king move
@@ -147,16 +156,6 @@ private:
                         !(is_with_king_ && is_promotion_)
                 ;
         }
-
-        // representation
-
-        Set captured_pieces_{};
-        Set captured_kings_{};
-        std::size_t from_{};
-        std::size_t dest_{};
-        bool is_with_king_{};
-        bool is_promotion_{};
-        bool active_color_{};
 };
 
 template<class Rules, class Board>
@@ -176,6 +175,7 @@ public:
 template<class Board>
 class EmptyBase<italian::Rules, Board>
 {
+        set_type_t<Board> king_order_{};
 public:
         EmptyBase() = default;
         explicit EmptyBase(set_type_t<Board> ko): king_order_(ko) {}
@@ -187,9 +187,6 @@ public:
         {}
 
         set_type_t<Board> king_order() const { return king_order_; }
-
-private:
-        set_type_t<Board> king_order_{};
 };
 
 template<class Board>
