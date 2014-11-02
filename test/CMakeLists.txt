@@ -13,6 +13,7 @@ project(MyAwesomeLibraryTestSuite CXX)
 ###############################################################
 
 # use C++1y features
+set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -stdlib=libc++ -ftemplate-depth=1024")
 
 # fail hard
@@ -37,7 +38,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
 
 # optimizations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto -march=native")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -fuse-ld=gold")
+
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lc++abi -flto -fuse-ld=gold")
 
 ###############################################################
 # Boost libraries
