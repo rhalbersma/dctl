@@ -44,9 +44,9 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
       sudo apt-get update
       sudo apt-get install tortoisehg python-iniparse cmake make libboost1.55-all-dev
 
-      # Get a PPA for libc++
+      # Get a PPA for libc++ and libc++abi
       sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-      sudo apt-get install libc++-dev
+      sudo apt-get install libc++-dev libc++abi-dev
       
       # Add LLVM repository and GPG key and install Clang 3.6
       echo "deb http://llvm.org/apt/saucy/ llvm-toolchain-saucy main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
