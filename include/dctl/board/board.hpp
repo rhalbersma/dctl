@@ -13,10 +13,9 @@
 #include <array>                                // array
 #include <cstddef>                              // size_t
 #include <cstdint>                              // uint64_t
-#include <functional>                           // less
-#include <iomanip>
+#include <iomanip>                              // setfill
 #include <limits>                               // digits
-#include <sstream>
+#include <sstream>                              // stringstream
 
 namespace dctl {
 namespace board {
