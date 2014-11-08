@@ -12,9 +12,8 @@ project(MyAwesomeLibraryTestSuite CXX)
 # Compiler settings
 ###############################################################
 
-# use C++1y features
-set(CMAKE_CXX_COMPILER clang++)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -stdlib=libc++ -ftemplate-depth=1024")
+# use C++14 features
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libc++")
 
 # fail hard
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
