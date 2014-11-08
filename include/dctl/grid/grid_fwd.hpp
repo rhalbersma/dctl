@@ -5,11 +5,11 @@ namespace grid {
 
 // primary template declaration
 template<class Dimensions, int EdgeColumns>
-class Grid;
+class GridClass;
 
 // partial template specialization declaration
 template<class Dimensions>
-class Grid<Dimensions, 0>;
+class GridClass<Dimensions, 0>;
 
 }       // namespace grid
 }       // namespace dctl

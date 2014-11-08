@@ -16,46 +16,6 @@ namespace dctl {
 namespace setup {
 
 BOOST_AUTO_TEST_SUITE(SetupLayout)
-/*
-using DimSequence = boost::mpl::vector
-<
-        grid::Dimensions< 2,  2>,
-        grid::Dimensions< 4,  4>,
-        grid::Dimensions< 6,  6>,
-        grid::Dimensions< 8,  8>,
-        grid::Dimensions<10, 10>,
-        grid::Dimensions<12, 12>,
-        grid::Dimensions< 9,  9, false>,
-        grid::Dimensions< 9,  9, true >,
-        grid::Dimensions<11,  9, false>,
-        grid::Dimensions<11,  9, true >,
-        grid::Dimensions<10,  9, false>,
-        grid::Dimensions<10,  9, true >,
-        grid::Dimensions<11, 10, false>,
-        grid::Dimensions<11, 10, true >,
-        grid::Dimensions<10, 10, false>,
-        grid::Dimensions<10, 10, true >,
-        grid::Dimensions<10, 12, false>,
-        grid::Dimensions<10, 12, true >,
-        grid::Dimensions<12, 10, false>,
-        grid::Dimensions<12, 10, true >
->;
-
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(Layout, T, DimSequence)
-{
-        std::cout << "------------\n";
-        std::cout << T::height << "x" << T::width << ", " << T::inverted << "\n\n";
-
-        using G = board::Board< T::width, T::height, false>;
-        std::cout << diagram<G, bits>()() << '\n';
-        std::cout << "size = " << G::internal_grid::size << ", angle = " << G::orientation << "\n\n";
-
-        using H = board::Board< T::width, T::height, true >;
-        std::cout << diagram<H, bits>()() << '\n';
-        std::cout << "size = " << H::internal_grid::size << ", angle = " << H::orientation << "\n\n";
-}
-*/
 
 using BSequence = boost::mpl::vector
 <

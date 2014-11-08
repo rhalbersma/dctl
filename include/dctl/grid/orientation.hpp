@@ -16,7 +16,7 @@ namespace detail {
 template<class Dimensions, class EdgeColumns, class Orientation>
 struct make
 :
-        Grid<Rotate<Dimensions, Orientation>, EdgeColumns::value>
+        GridClass<Rotate<Dimensions, Orientation>, EdgeColumns::value>
 {};
 
 template<class Grid>
