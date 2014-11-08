@@ -6,12 +6,12 @@ namespace grid {
 
 // primary template definition
 template<class Dimensions, int EdgeColumns>
-class Grid
+class GridClass
 :
         public Dimensions
 {
 private:
-        using BaseGrid = Grid<Dimensions, 0>;
+        using BaseGrid = GridClass<Dimensions, 0>;
 
 public:
         static constexpr auto edge_columns = EdgeColumns;
@@ -36,7 +36,7 @@ public:
 
 // partial specialization definition
 template<class Dimensions>
-class Grid<Dimensions, 0>
+class GridClass<Dimensions, 0>
 :
         public Dimensions
 {
@@ -66,7 +66,7 @@ public:
 };
 
 template<class Dimensions>
-constexpr int Grid<Dimensions, 0>::size;
+constexpr int GridClass<Dimensions, 0>::size;
 
 }       // namespace grid
 }       // namespace dctl

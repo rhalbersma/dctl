@@ -28,11 +28,9 @@ template
         bool OrthogonalCaptures = true
 >
 class Board
-:
-        public grid::Dimensions<Width, Height, Inverted>
 {
 private:
-        using Dimensions = grid::Dimensions<Width, Height, Inverted>;
+        using Dimensions = grid::DimensionsClass<Width, Height, Inverted>;
 
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
@@ -40,7 +38,7 @@ public:
         static constexpr auto orientation = Angle{grid::SizeMinimizingOrientation<Dimensions, edge_columns>::value};
 
         using internal_grid = grid::Make<Dimensions, edge_columns, orientation>;
-        using external_grid = grid::Grid<Dimensions, 0>;
+        using external_grid = grid::GridClass<Dimensions, 0>;
 
 private:
         using Block = unsigned long long;
@@ -50,6 +48,11 @@ private:
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
+        static constexpr auto width = Width;
+        static constexpr auto height = Height;
+        static constexpr auto inverted = Inverted;
+        static constexpr auto ul_parity = Inverted ^ (Height % 2);
+
         using set_type = xstd::bitset<NumBits>;
 
         static constexpr auto size() noexcept
