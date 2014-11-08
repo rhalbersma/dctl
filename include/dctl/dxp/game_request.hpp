@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/dxp/message.hpp>         // Message
 #include <dctl/factory/creatable.hpp>   // make_creatable
-#include <boost/lexical_cast.hpp>       // lexical_cast
 #include <iomanip>                      // setfill, setw
 #include <sstream>                      // stringstream
 #include <string>                       // string
@@ -33,7 +32,7 @@ public:
                 color_follower_ {*(std::begin(message.substr(34, 1)))},
                 minutes_ {std::stoi(message.substr(35, 3).c_str())},
                 moves_{std::stoi(message.substr(38, 3).c_str())},
-                setup_code_{static_cast<SetupCode>(boost::lexical_cast<char>(*(std::begin(message.substr(41, 1)))))}
+                setup_code_{static_cast<SetupCode>(*(std::begin(message.substr(41, 1))))}
         {
                 if (setup_code() == special)
                         position_ = message.substr(42);
