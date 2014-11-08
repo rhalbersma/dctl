@@ -1,56 +1,35 @@
 #pragma once
-#include <dctl/grid/dimensions.hpp>             // Rotate
-#include <dctl/grid/grid.hpp>                   // Grid
-#include <dctl/utility/mpl_min_element.hpp>     // instead of boost::mpl::min_element
-#include <boost/mpl/deref.hpp>                  // deref
-#include <boost/mpl/int.hpp>                    // int_
-#include <boost/mpl/less_equal.hpp>             // less
-#include <boost/mpl/placeholders.hpp>           // _1
-#include <boost/mpl/transform_view.hpp>         // transform_view
-#include <boost/mpl/vector_c.hpp>               // vector_c
+#include <dctl/angle.hpp>               // Angle, _deg
+#include <dctl/grid/dimensions.hpp>     // dimensions, rotate
+#include <dctl/grid/grid.hpp>           // grid
+#include <xstd/algorithm.hpp>           // min_element
+#include <xstd/iterator.hpp>            // cbegin, cend
 
 namespace dctl {
 namespace grid {
-namespace detail {
 
-template<class Dimensions, class EdgeColumns, class Orientation>
-struct make
-:
-        GridClass<Rotate<Dimensions, Orientation>, EdgeColumns::value>
-{};
+template<int EdgeColumns>
+struct grid_less
+{
+        Dimensions dim;
 
-template<class Grid>
-struct size
-:
-        boost::mpl::int_<Grid::size>
-{};
+        constexpr auto rotated_grid_size(Angle const& theta) const
+        {
+                return Grid<EdgeColumns>{rotate(dim, theta)}.size();
+        }
 
-}       // namespace detail
+        constexpr auto operator()(Angle const& lhs, Angle const& rhs) const
+        {
+                return rotated_grid_size(lhs) < rotated_grid_size(rhs);
+        }
+};
 
-template
-<
-        class Dimensions,
-        int EdgeColumns,
-        class Orientations = boost::mpl::vector_c<int, 0, 90, 180, 270>
->
-struct SizeMinimizingOrientation
-:
-        boost::mpl::deref< typename
-                dctl::mpl::min_element< typename
-                        boost::mpl::transform_view<
-                                Orientations, detail::size<detail::make<Dimensions, boost::mpl::int_<EdgeColumns>, boost::mpl::_1>>
-                        >::type
-                >::type::base
-        >::type
-{};
-
-template<class Dimensions, int EdgeColumns, int Orientation>
-struct Make
-:
-        // delegate to wrapper that takes type template parameters
-        // in order to hide the Boost.MPL implementation from clients
-        detail::make<Dimensions, boost::mpl::int_<EdgeColumns>, boost::mpl::int_<Orientation>>
-{};
+template<int EdgeColumns>
+constexpr auto size_minimizing_orientation(Dimensions const& dim)
+{
+        constexpr Angle orientations[] = { 0_deg, 90_deg, 180_deg, 270_deg };
+        return Angle{*xstd::min_element(xstd::cbegin(orientations), xstd::cend(orientations), grid_less<EdgeColumns>{dim})};
+}
 
 }       // namespace grid
 }       // namespace dctl

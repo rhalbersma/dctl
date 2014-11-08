@@ -80,10 +80,10 @@ public:
 
         static constexpr auto ul_parity = static_cast<bool>(Inverted ^ (Height % 2));
 
-        template<class Direction>
+        template<int Direction>
         struct DoRotate
         {
-                static constexpr auto theta = Angle{Direction::value};
+                static constexpr auto theta = Angle{Direction};
                 static constexpr auto rotated = rotate(Dimensions{width, height, inverted}, theta);
                 using type = DimensionsClass<rotated.width(), rotated.height(), rotated.inverted()>;
         };
@@ -102,7 +102,7 @@ template<int Width, int Height, bool Inverted>
 constexpr bool DimensionsClass<Width, Height, Inverted>::ul_parity;
 
 // NOTE: a template alias does not work if Theta is a Boost.MPL placeholder expression
-template<class T, class Theta>
+template<class T, int Theta>
 struct Rotate
 :
         T::template DoRotate<Theta>::type

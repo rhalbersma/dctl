@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/angle.hpp>                       // Angle, inverse
 #include <dctl/board/algebraic.hpp>
+#include <dctl/grid/dimensions.hpp>
 #include <dctl/grid/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/grid/grid.hpp>                   // Grid
 #include <dctl/grid/shift_size.hpp>             // shift_size
@@ -30,28 +31,33 @@ template
 class Board
 {
 private:
-        using Dimensions = grid::DimensionsClass<Width, Height, Inverted>;
+        static constexpr auto dimensions = grid::Dimensions{Width, Height, Inverted};
+        using DimClass = grid::DimensionsClass<dimensions.width(), dimensions.height(), dimensions.inverted()>;
 
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
         static constexpr auto edge_columns = OrthogonalCaptures ? 2 : 1;
-        static constexpr auto orientation = Angle{grid::SizeMinimizingOrientation<Dimensions, edge_columns>::value};
 
-        using internal_grid = grid::Make<Dimensions, edge_columns, orientation>;
-        using external_grid = grid::GridClass<Dimensions, 0>;
+        static constexpr Angle orientation = grid::size_minimizing_orientation<edge_columns>(dimensions);
+
+        static constexpr auto inner_grid = grid::Grid<edge_columns>{rotate(dimensions, orientation)};
+        using internal_grid = grid::GridClass<grid::Rotate<DimClass, orientation>, edge_columns>;
+
+        static constexpr auto outer_grid = grid::Grid<0>{dimensions};
+        using external_grid = grid::GridClass<DimClass, 0>;
 
 private:
         using Block = unsigned long long;
         static constexpr auto NumBits = internal_grid::size;
-        static constexpr auto NumSquares = external_grid::size;
+        static constexpr auto NumSquares = outer_grid.size();
         static constexpr auto Nb = xstd::num_blocks<Block>(NumBits);
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
-        static constexpr auto width = Width;
-        static constexpr auto height = Height;
-        static constexpr auto inverted = Inverted;
-        static constexpr auto ul_parity = Inverted ^ (Height % 2);
+        static constexpr auto width = dimensions.width();
+        static constexpr auto height = dimensions.height();
+        static constexpr auto inverted = dimensions.inverted();
+        static constexpr auto ul_parity = dimensions.ul_parity();
 
         using set_type = xstd::bitset<NumBits>;
 
