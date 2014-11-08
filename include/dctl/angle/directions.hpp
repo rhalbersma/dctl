@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle/angle.hpp>         // Angle rotate
-#include <dctl/angle/degrees.hpp>       // _deg
+#include <dctl/angle/literals.hpp>      // _deg
 #include <dctl/angle/transform.hpp>     // rotate
 
 namespace dctl {
