@@ -1,30 +1,47 @@
-#include <dctl/angle.hpp>               // _deg, inverse
-#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL
+#include <dctl/angle.hpp>               // Angle, _deg
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE
 
-namespace dctl {
-namespace angle {
+using namespace dctl;
 
-BOOST_AUTO_TEST_SUITE(AngleDegrees)
+BOOST_AUTO_TEST_SUITE(AngleLiterals)
 
-BOOST_AUTO_TEST_CASE(LeftIsInverseOfRight)
+BOOST_AUTO_TEST_CASE(DegreesLiteralIsAngleObject)
 {
-        BOOST_CHECK_EQUAL(  +0_deg, inverse(  -0_deg));
-        BOOST_CHECK_EQUAL( +45_deg, inverse( -45_deg));
-        BOOST_CHECK_EQUAL( +90_deg, inverse( -90_deg));
-        BOOST_CHECK_EQUAL(+135_deg, inverse(-135_deg));
-        BOOST_CHECK_EQUAL(+180_deg, inverse(-180_deg));
+        static_assert(  0_deg == Angle{  0}, "");
+        static_assert( 45_deg == Angle{ 45}, "");
+        static_assert( 90_deg == Angle{ 90}, "");
+        static_assert(135_deg == Angle{135}, "");
+        static_assert(180_deg == Angle{180}, "");
+        static_assert(225_deg == Angle{225}, "");
+        static_assert(270_deg == Angle{270}, "");
+        static_assert(315_deg == Angle{315}, "");
+        static_assert(360_deg == Angle{360}, "");
 }
 
-BOOST_AUTO_TEST_CASE(RightIsInverseOfLeft)
+BOOST_AUTO_TEST_CASE(UnaryPlusAppliesToAngleObject)
 {
-        BOOST_CHECK_EQUAL(  -0_deg, inverse(  +0_deg));
-        BOOST_CHECK_EQUAL( -45_deg, inverse( +45_deg));
-        BOOST_CHECK_EQUAL( -90_deg, inverse( +90_deg));
-        BOOST_CHECK_EQUAL(-135_deg, inverse(+135_deg));
-        BOOST_CHECK_EQUAL(-180_deg, inverse(+180_deg));
+        static_assert(  +0_deg == +Angle{  0}, "");
+        static_assert( +45_deg == +Angle{ 45}, "");
+        static_assert( +90_deg == +Angle{ 90}, "");
+        static_assert(+135_deg == +Angle{135}, "");
+        static_assert(+180_deg == +Angle{180}, "");
+        static_assert(+225_deg == +Angle{225}, "");
+        static_assert(+270_deg == +Angle{270}, "");
+        static_assert(+315_deg == +Angle{315}, "");
+        static_assert(+360_deg == +Angle{360}, "");
+}
+
+BOOST_AUTO_TEST_CASE(UnaryMinusAppliesToAngleObject)
+{
+        static_assert(  -0_deg == -Angle{  0}, "");
+        static_assert( -45_deg == -Angle{ 45}, "");
+        static_assert( -90_deg == -Angle{ 90}, "");
+        static_assert(-135_deg == -Angle{135}, "");
+        static_assert(-180_deg == -Angle{180}, "");
+        static_assert(-225_deg == -Angle{225}, "");
+        static_assert(-270_deg == -Angle{270}, "");
+        static_assert(-315_deg == -Angle{315}, "");
+        static_assert(-360_deg == -Angle{360}, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace angle
-}       // namespace dctl
