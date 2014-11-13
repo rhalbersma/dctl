@@ -1,6 +1,6 @@
 #pragma once
-#include <ios>                          // xalloc
-#include <ostream>                      // iword
+#include <ios>          // xalloc
+#include <ostream>      // iword
 
 namespace dctl {
 namespace manip {
@@ -16,6 +16,7 @@ auto pushsep()
 
 class setpushsep
 {
+        char flag_;
 public:
         explicit setpushsep(char flag) noexcept : flag_{flag} {}
 
@@ -26,9 +27,6 @@ public:
                 ostr.iword(manip::pushsep()) = static_cast<int>(m.flag_);
                 return ostr;
         }
-
-private:
-        char flag_;
 };
 
 }       // namespace dctl

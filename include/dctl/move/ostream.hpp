@@ -1,16 +1,16 @@
 #pragma once
-#include <dctl/move/move.hpp>           // Move
-#include <dctl/move/manip.hpp>          // notation, pushsep, jumpsep
-#include <dctl/move/traits.hpp>         // notation, pushsep, jumpsep
-#include <cassert>                      // assert
-#include <iosfwd>                       // ostream
-#include <sstream>                      // stringstream
+#include <dctl/move/move.hpp>   // Move
+#include <dctl/move/manip.hpp>  // notation, pushsep, jumpsep
+#include <dctl/move/traits.hpp> // notation, pushsep, jumpsep
+#include <cassert>              // assert
+#include <iosfwd>               // ostream
+#include <sstream>              // stringstream
 
 namespace dctl {
 namespace move {
 
 template<class Rules, class Board>
-auto getformat(std::ostream& ostr)
+auto getnotation(std::ostream& ostr)
 {
         auto index = ostr.iword(manip::notation());
         if (!index)
@@ -84,7 +84,7 @@ auto str_numeric(Move const& m)
 template<class CharT, class Traits, class Rules, class Board>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, Move<Rules, Board> const& m)
 {
-        switch(move::getformat<Rules, Board>(ostr)) {
+        switch(move::getnotation<Rules, Board>(ostr)) {
         case algebraic:
                 return move::print_algebraic(ostr, m);
         case numeric:
