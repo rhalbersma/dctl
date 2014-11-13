@@ -22,6 +22,16 @@ private:
         bool is_with_king_{};
         bool is_promotion_{};
         bool active_color_{};
+
+        auto invariant() const
+        {
+                return
+                        !(from() == dest() && !is_jump()) &&
+                        captured_kings_.is_subset_of(captured_pieces_) &&
+                        !(is_with_king_ && is_promotion_)
+                ;
+        }
+
 public:
         // constructors
 
@@ -142,18 +152,6 @@ public:
                 return
                         std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) <
                         std::tie(rhs.from_, rhs.dest_, rhs.captured_pieces_)
-                ;
-        }
-
-private:
-        // contracts
-
-        bool invariant() const
-        {
-                return
-                        !(from() == dest() && !is_jump()) &&
-                        captured_kings_.is_subset_of(captured_pieces_) &&
-                        !(is_with_king_ && is_promotion_)
                 ;
         }
 };

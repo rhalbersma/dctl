@@ -1,6 +1,6 @@
 #pragma once
-#include <ios>                          // xalloc
-#include <ostream>                      // iword
+#include <ios>          // xalloc
+#include <ostream>      // iword
 
 namespace dctl {
 namespace manip {
@@ -16,6 +16,7 @@ auto notation()
 
 class setnotation
 {
+        int flag_{};
 public:
         setnotation() = default;
         explicit setnotation(int flag) noexcept : flag_{flag} {}
@@ -27,9 +28,6 @@ public:
                 ostr.iword(manip::notation()) = m.flag_;
                 return ostr;
         }
-
-private:
-        int flag_{};
 };
 
 }       // namespace dctl
