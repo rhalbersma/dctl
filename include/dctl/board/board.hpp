@@ -32,7 +32,7 @@ class Board
 {
 private:
         static constexpr auto dimensions = grid::Dimensions{Width, Height, Inverted};
-        using DimClass = grid::DimensionsClass<dimensions.width(), dimensions.height(), dimensions.inverted()>;
+        using DimClass = grid::DimensionsClass<dimensions.width, dimensions.height, dimensions.inverted>;
 
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
@@ -48,16 +48,16 @@ public:
 
 private:
         using Block = unsigned long long;
-        static constexpr auto NumBits = internal_grid::size;
+        static constexpr auto NumBits = inner_grid.size();
         static constexpr auto NumSquares = outer_grid.size();
         static constexpr auto Nb = xstd::num_blocks<Block>(NumBits);
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
-        static constexpr auto width = dimensions.width();
-        static constexpr auto height = dimensions.height();
-        static constexpr auto inverted = dimensions.inverted();
-        static constexpr auto ul_parity = dimensions.ul_parity();
+        static constexpr auto width = dimensions.width;
+        static constexpr auto height = dimensions.height;
+        static constexpr auto inverted = dimensions.inverted;
+        static constexpr auto ul_parity = grid::ul_parity(dimensions);
 
         using set_type = xstd::bitset<NumBits>;
 
@@ -97,7 +97,7 @@ public:
         {
                 std::stringstream sstr;
                 auto src = grid::ulo::Square<external_grid>{square_from_bit(n)};
-                auto coord = llo_from_ulo(ulo_from_sq(src));
+                auto coord = swap_llo_ulo(ulo_from_sq(src));
                 sstr << board::Labels<Board>::col[get_x(coord)] << board::Labels<Board>::row[get_y(coord)];
                 return sstr.str();
         }

@@ -53,13 +53,7 @@ constexpr ulo::Coordinates<Grid> ulo_from_sco(sco::Coordinates const& coord)
 // conversions between Coordinates with Lower Left Origin and Upper Left Origin
 
 template<class Grid>
-constexpr llo::Coordinates<Grid> llo_from_ulo(ulo::Coordinates<Grid> const& coord)
-{
-        return { get_x(coord), detail::swap_llo_ulo(get_y(coord), Grid::height) };
-}
-
-template<class Grid>
-constexpr ulo::Coordinates<Grid> ulo_from_llo(llo::Coordinates<Grid> const& coord)
+constexpr llo::Coordinates<Grid> swap_llo_ulo(ulo::Coordinates<Grid> const& coord)
 {
         return { get_x(coord), detail::swap_llo_ulo(get_y(coord), Grid::height) };
 }
@@ -98,22 +92,12 @@ constexpr Coordinates<Grid> ulo_from_sq(Square<Grid> const& square) noexcept
 template<class Grid>
 constexpr auto sq_from_ulo(Coordinates<Grid> const& coord) noexcept
 {
-        // row parity
-        auto const P = get_y(coord) % 2;
-
-        // number of row pairs
-        auto const Q = get_y(coord) / 2;
-
-        // the left edge
-        auto const L = P ? Grid::edge_lo : Grid::edge_le;
-
-        // number of column pairs
-        auto const S = get_x(coord) / 2;
-
-        // squares from the left edge
-        auto const R = (L + S) % Grid::modulo;
-
-        auto const NUM = Grid::modulo * Q + R;
+        auto const row_parity = get_y(coord) % 2;
+        auto const row_pairs = get_y(coord) / 2;
+        auto const left_edge = row_parity ? Grid::edge_lo : Grid::edge_le;
+        auto const column_pairs = get_x(coord) / 2;
+        auto const squares = (left_edge + column_pairs) % Grid::modulo;
+        auto const NUM = Grid::modulo * row_pairs + squares;
 
         return Square<Grid>{ NUM };
 }

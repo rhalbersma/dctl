@@ -23,7 +23,7 @@ private:
                 constexpr auto operator()(Square const& sq) const noexcept
                 {
                         using Grid = typename Square::grid_type;
-                        return get_x(llo_from_ulo(ulo_from_sq(sq))) == (color_ == Color::white ? column_ : Grid::width - 1 - column_);
+                        return get_x(swap_llo_ulo(ulo_from_sq(sq))) == (color_ == Color::white ? column_ : Grid::width - 1 - column_);
                 }
         };
 
