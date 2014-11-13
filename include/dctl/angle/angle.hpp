@@ -28,6 +28,11 @@ public:
                 assert(invariant());
         }
 
+        /* implicit */ constexpr operator int() const noexcept
+        {
+                return degrees;
+        }
+
         constexpr auto& operator+=(Angle const& other) noexcept
         {
                 degrees = make_angle(degrees + other.degrees);
@@ -49,17 +54,12 @@ public:
                 return *this;
         }
 
-        constexpr auto& operator/=(int n)
+        constexpr auto& operator/=(int n) // Throws: nothing.
         {
                 assert(n != 0);
                 degrees = make_angle(degrees / n);
                 assert(invariant());
                 return *this;
-        }
-
-        /* implicit */ constexpr operator int() const noexcept
-        {
-                return degrees;
         }
 
         friend constexpr auto operator+(Angle const& a) noexcept
@@ -98,7 +98,7 @@ constexpr auto operator*(int n, Angle const& a) noexcept
 }
 
 inline
-constexpr auto operator/(Angle const& a, int n)
+constexpr auto operator/(Angle const& a, int n) // Throws: nothing.
 {
         assert(n != 0);
         return Angle(a) /= n;
