@@ -35,5 +35,5 @@ char const Labels<Board>::col[] =
 
 #undef DCTL_PP_COLUMN_LABEL
 
-}       // namespace
-}
+}       // namespace board
+}       // namespace dctl

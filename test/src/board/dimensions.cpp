@@ -2,7 +2,7 @@
 #include <dctl/angle.hpp>                       // _deg, inverse, rotate
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
-#include <dctl/grid/dimensions.hpp>             // Dimensions
+#include <dctl/board/dimensions.hpp>             // Dimensions
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimens
                 C1, C2, C4
         };
 
-        auto const dim = grid::Dimensions{ T::width, T::height, T::inverted };
+        auto const dim = Dimensions{ T::width, T::height, T::inverted };
 
         BOOST_CHECK(
                 std::all_of(begin(C_N), end(C_N), [&](auto const& g) {

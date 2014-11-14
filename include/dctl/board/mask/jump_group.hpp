@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/angle/detail/abs_remainder.hpp>
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/grid/coordinates.hpp>
+#include <dctl/board/coordinates.hpp>
 #include <array>                                // array
 
 namespace dctl {
@@ -16,14 +16,14 @@ private:
         {
                 int from_bit_;
 
-                constexpr auto operator()(int dest_bit) const noexcept
+                constexpr auto operator()(int dest_sq) const noexcept
                 {
-                        auto const from_sq = grid::ulo::Square<typename Board::external_grid>{Board::square_from_bit(from_bit_)};
-                        auto const dest_sq = grid::ulo::Square<typename Board::external_grid>{                       dest_bit  };
-                        auto const from_coord = ulo_from_sq(from_sq);
-                        auto const dest_coord = ulo_from_sq(dest_sq);
-                        auto const delta_x = dctl::detail::abs_remainder(get_x(from_coord) - get_x(dest_coord), 4);
-                        auto const delta_y = dctl::detail::abs_remainder(get_y(from_coord) - get_y(dest_coord), 4);
+                        constexpr auto g = Board::outer_grid;
+                        auto const from_sq = Board::square_from_bit(from_bit_);
+                        auto const from_coord = to_ulo(from_sq, g);
+                        auto const dest_coord = to_ulo(dest_sq, g);
+                        auto const delta_x = dctl::detail::abs_remainder(from_coord.x - dest_coord.x, 4);
+                        auto const delta_y = dctl::detail::abs_remainder(from_coord.y - dest_coord.y, 4);
                         return
                                 (delta_x == 0 && delta_y == 0) ||
                                 (delta_x == 2 && delta_y == 2)

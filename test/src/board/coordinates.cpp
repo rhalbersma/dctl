@@ -2,7 +2,7 @@
 #include <dctl/angle.hpp>                       // _deg, inverse, rotate
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
-#include <dctl/grid/coordinates.hpp>            // Square, ulo_from_sq, sco_from_ulo
+#include <dctl/board/coordinates.hpp>            // Square, ulo_from_sq, sco_from_ulo
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/mpl/vector.hpp>                 // vector
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllSquare
         BOOST_CHECK(
                 std::all_of(begin(C_N), end(C_N), [=](auto const& g) {
                         return std::all_of(T::begin(), T::end(), [&](auto i) {
-                                auto const coord = sco_from_ulo(ulo_from_sq(grid::ulo::Square<typename T::external_grid>{i}));
+                                auto const coord = to_sco(i, T::outer_grid);
                                 return group::action::is_realized(coord, g);
                         });
                 })

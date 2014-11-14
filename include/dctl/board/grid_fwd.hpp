@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace grid {
+namespace board {
 
 template<int EdgeColumns>
 class Grid;
@@ -17,5 +17,5 @@ class GridClass;
 template<class Dimensions>
 class GridClass<Dimensions, 0>;
 
-}       // namespace grid
+}       // namespace board
 }       // namespace dctl

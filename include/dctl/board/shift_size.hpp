@@ -3,7 +3,7 @@
 #include <stdexcept>                    // invalid_argument
 
 namespace dctl {
-namespace grid {
+namespace board {
 namespace detail {
 
 template<class Grid> constexpr auto left_down(Grid const& g) { return g.left_down(); }
@@ -39,5 +39,5 @@ constexpr auto shift_size(Grid const& g, Angle const& alpha)
         }
 }
 
-}       // namespace grid
+}       // namespace board
 }       // namespace dctl

@@ -1,12 +1,12 @@
 #pragma once
 #include <dctl/angle.hpp>               // Angle, _deg
-#include <dctl/grid/dimensions.hpp>     // dimensions, rotate
-#include <dctl/grid/grid.hpp>           // grid
+#include <dctl/board/dimensions.hpp>    // Dimensions, rotate
+#include <dctl/board/grid.hpp>          // Grid
 #include <xstd/algorithm.hpp>           // min_element
 #include <xstd/iterator.hpp>            // cbegin, cend
 
 namespace dctl {
-namespace grid {
+namespace board {
 
 template<int EdgeColumns>
 struct grid_less
@@ -31,5 +31,5 @@ constexpr auto size_minimizing_orientation(Dimensions const& dim)
         return Angle{*xstd::min_element(xstd::cbegin(orientations), xstd::cend(orientations), grid_less<EdgeColumns>{dim})};
 }
 
-}       // namespace grid
+}       // namespace board
 }       // namespace dctl
