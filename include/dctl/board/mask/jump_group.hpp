@@ -39,14 +39,14 @@ private:
         static constexpr auto N = 4;
         using Set = typename Board::set_type;
         using table_type = std::array<Set, N>;
-        using Grid = typename Board::internal_grid;
+        static constexpr auto GG = Board::inner_grid;
 
         static constexpr table_type table =
         {{
                 init(0),
                 init(1),
-                init(Grid::left_down + (Grid::ul_parity ? 2 : 0)),
-                init(Grid::right_down)
+                init(GG.left_down() + (ul_parity(GG) ? 2 : 0)),
+                init(GG.right_down())
         }};
 
 public:
