@@ -18,16 +18,16 @@ private:
         {
                 int const segment_;
 
-                template<class Square>
-                constexpr auto operator()(Square const& sq) const noexcept
+                constexpr auto operator()(int dsq) const noexcept
                 {
                         auto const alpha = rotate(segment_ * theta + beta, Board::orientation);
                         auto const offset = is_diagonal(alpha) ? 2 : 4;
+                        auto const sq = grid::ulo::Square<typename Board::external_grid>{dsq};
                         auto const coord = ulo_from_sq(sq);
                         auto const min_x = is_left(alpha) ? offset : 0;
                         auto const max_x = Board::width - (is_right(alpha) ? offset : 0);
                         auto const min_y = is_up(alpha) ? offset : 0;
-                        auto const max_y = Board::height - (is_down(alpha)? offset : 0);
+                        auto const max_y = Board::height - (is_down(alpha) ? offset : 0);
                         return
                                 (min_x <= get_x(coord) && get_x(coord) < max_x) &&
                                 (min_y <= get_y(coord) && get_y(coord) < max_y)

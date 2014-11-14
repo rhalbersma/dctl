@@ -20,10 +20,10 @@ private:
                 bool const color_;
                 int const rows_;
 
-                template<class Square>
-                constexpr auto operator()(Square const& sq) const noexcept
+                constexpr auto operator()(int dsq) const noexcept
                 {
                         auto const separation = Board::height - 2 * rows_;
+                        auto const sq = grid::ulo::Square<typename Board::external_grid>{dsq};
                         auto const y = get_y(swap_llo_ulo(ulo_from_sq(sq)));
                         auto const min_y = color_ == Color::white ? 0 : Board::height - (Board::height - separation) / 2;
                         auto const max_y = color_ == Color::white ? (Board::height - separation) / 2 : Board::height;

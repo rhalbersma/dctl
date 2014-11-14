@@ -11,10 +11,9 @@ private:
         // simulate a constexpr lambda (not allowed in C++14)
         struct init
         {
-                template<class Square>
-                constexpr auto operator()(Square const& sq) const noexcept
+                constexpr auto operator()(int sq) const noexcept
                 {
-                        return 0 <= sq.value() && sq.value() < Board::size();
+                        return 0 <= sq && sq < Board::size();
                 }
         };
 

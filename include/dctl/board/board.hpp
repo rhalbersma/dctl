@@ -32,7 +32,6 @@ class Board
 {
 private:
         static constexpr auto dimensions = grid::Dimensions{Width, Height, Inverted};
-        using DimClass = grid::DimensionsClass<dimensions.width, dimensions.height, dimensions.inverted>;
 
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
@@ -42,9 +41,10 @@ public:
 
         using inner_grid_t = grid::Grid<edge_columns>;
         static constexpr inner_grid_t inner_grid{rotate(dimensions, orientation)};
-        using internal_grid = grid::GridClass<grid::Rotate<DimClass, orientation>, edge_columns>;
-
         static constexpr auto outer_grid = grid::Grid<0>{dimensions};
+
+        using DimClass = grid::DimensionsClass<dimensions.width, dimensions.height, dimensions.inverted>;
+        using internal_grid = grid::GridClass<grid::Rotate<DimClass, orientation>, edge_columns>;
         using external_grid = grid::GridClass<DimClass, 0>;
 
 private:
