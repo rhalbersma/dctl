@@ -9,10 +9,6 @@ class Square
 {
         int value_;
 public:
-        // nested types
-
-        using grid_type = Grid;
-
         // constructors
 
         explicit constexpr Square(int v) noexcept

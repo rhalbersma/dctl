@@ -14,8 +14,7 @@ private:
                 template<class Square>
                 constexpr auto operator()(Square const& sq) const noexcept
                 {
-                        using Grid = typename Square::grid_type;
-                        return 0 <= sq.value() && sq.value() < Grid::size;
+                        return 0 <= sq.value() && sq.value() < Board::size();
                 }
         };
 

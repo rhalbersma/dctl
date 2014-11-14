@@ -12,7 +12,7 @@ constexpr auto make_set_if(UnaryPredicate pred) noexcept
         using Grid = typename Board::external_grid;
 
         Set result{};
-        for (auto sq = 0; sq != Grid::size; ++sq)
+        for (auto sq = 0; sq != Board::size(); ++sq)
                 if (pred(grid::ulo::Square<Grid>{sq}))
                         result.set(static_cast<std::size_t>(Board::bit_from_square(sq)));
         return result;

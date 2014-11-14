@@ -22,8 +22,7 @@ private:
                 template<class Square>
                 constexpr auto operator()(Square const& sq) const noexcept
                 {
-                        using Grid = typename Square::grid_type;
-                        return get_y(swap_llo_ulo(ulo_from_sq(sq))) == (color_ == Color::white ? row_ : Grid::height - 1 - row_);
+                        return get_y(swap_llo_ulo(ulo_from_sq(sq))) == (color_ == Color::white ? row_ : Board::height - 1 - row_);
                 }
         };
 
