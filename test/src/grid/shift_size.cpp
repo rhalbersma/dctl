@@ -31,29 +31,18 @@ using BoardSequence = boost::mpl::vector
         Ktar<10, 12>
 >;
 
-template<class Board>
-struct make_grid
-{
-        using type = typename Board::internal_grid;
-};
-
-using GridSequence = boost::mpl::transform<
-        BoardSequence,
-        make_grid< boost::mpl::_1 >
->::type;
-
 Angle const directions[] =
 {
            0_deg,  45_deg,  90_deg, 135_deg,
          180_deg, 225_deg, 270_deg, 315_deg
 };
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(RotateAngle180SymmetryForAllDirections, T, GridSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(RotateAngle180SymmetryForAllDirections, T, BoardSequence)
 {
         using std::begin; using std::end;
         BOOST_CHECK(
                 std::all_of(begin(directions), end(directions), [](auto direction) {
-                        return grid::shift_size<T>(direction) == grid::shift_size<T>(rotate(direction, 180_deg));
+                        return T::shift_size(direction) == T::shift_size(rotate(direction, 180_deg));
                 })
         );
 }

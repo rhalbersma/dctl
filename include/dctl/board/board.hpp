@@ -40,7 +40,8 @@ public:
 
         static constexpr Angle orientation = grid::size_minimizing_orientation<edge_columns>(dimensions);
 
-        static constexpr auto inner_grid = grid::Grid<edge_columns>{rotate(dimensions, orientation)};
+        using inner_grid_t = grid::Grid<edge_columns>;
+        static constexpr inner_grid_t inner_grid{rotate(dimensions, orientation)};
         using internal_grid = grid::GridClass<grid::Rotate<DimClass, orientation>, edge_columns>;
 
         static constexpr auto outer_grid = grid::Grid<0>{dimensions};
@@ -59,6 +60,12 @@ public:
         static constexpr auto inverted = dimensions.inverted;
         static constexpr auto ul_parity = grid::ul_parity(dimensions);
 
+        static constexpr auto modulo()  { return outer_grid.modulo();  }
+        static constexpr auto edge_re() { return outer_grid.edge_re(); }
+        static constexpr auto edge_ro() { return outer_grid.edge_ro(); }
+        static constexpr auto edge_le() { return outer_grid.edge_le(); }
+        static constexpr auto edge_lo() { return outer_grid.edge_lo(); }
+
         using set_type = xstd::bitset<NumBits>;
 
         static constexpr auto size() noexcept
@@ -68,7 +75,7 @@ public:
 
         static constexpr auto shift_size(Angle const& direction)
         {
-                return grid::shift_size<internal_grid>(direction);
+                return grid::shift_size(inner_grid, direction);
         }
 
         static auto begin() noexcept
@@ -147,6 +154,14 @@ Board<Width, Height, Inverted, OrthogonalCaptures>::edge_columns;
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr Angle
 Board<Width, Height, Inverted, OrthogonalCaptures>::orientation;
+
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+constexpr typename Board<Width, Height, Inverted, OrthogonalCaptures>::inner_grid_t
+Board<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
+
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+constexpr grid::Grid<0>
+Board<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
