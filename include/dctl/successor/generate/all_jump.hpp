@@ -9,6 +9,7 @@
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
 #include <algorithm>                                    // max_element, stable_sort, unique, upper_bound
 #include <cassert>                                      // assert
+#include <iterator>
 #include <type_traits>                                  // false_type, true_type
 
 namespace dctl {
@@ -27,11 +28,12 @@ public:
                 // EFFICIENCY: tag dispatching on absolute king jump precedence
                 absolute_king_jump_precedence_dispatch(p, moves, is_absolute_king_jump_precedence_t<Rules>{});
 
-                if (moves.size() <= 1)
+                if (moves.size() < 2)
                         return;
 
-                filter_precedence_dispatch(moves, is_jump_precedence_t<Rules>{});
-                filter_uniqueness_dispatch(moves, is_remove_duplicates_t<Rules>{});
+                auto drop1 = filter_precedence_dispatch(begin(moves), end(moves), is_jump_precedence_t<Rules>{});
+                auto drop2 = filter_uniqueness_dispatch(begin(moves), drop1, is_remove_duplicates_t<Rules>{});
+                moves.erase(drop2, end(moves));
         }
 
 private:
@@ -60,49 +62,49 @@ private:
                         PawnJump<Position, Sequence>{tracker, moves}(p.pawns(Color));
         }
 
-        template<class Sequence>
-        auto filter_precedence_dispatch(Sequence& /* moves */, std::false_type) const noexcept
+        template<class It>
+        auto filter_precedence_dispatch(It /* first */, It last, std::false_type) const noexcept
         {
-                // no-op
+                return last;
         }
 
-        template<class Sequence>
-        auto filter_precedence_dispatch(Sequence& moves, std::true_type) const
+        template<class It>
+        auto filter_precedence_dispatch(It first, It last, std::true_type) const
         {
-                assert(!moves.empty()); // guarantees moves.front() exists
+                assert(1 <= std::distance(first, last)); // guarantees first is dereferenceable
 
-                using Move = typename Sequence::value_type;
+                using Move = typename It::value_type;
                 auto const greater = [](auto const& L, auto const& R){
                         return jump_precedence_t<rules_type_t<Move>>{}(R, L);
                 };
 
-                std::stable_sort(begin(moves), end(moves), greater);
-                auto const drop = std::upper_bound(begin(moves), end(moves), moves.front(), greater);
-                moves.erase(drop, end(moves));
+                std::stable_sort(first, last, greater);
+                return std::upper_bound(first, last, *first, greater);
         }
 
-        template<class Sequence>
-        void filter_uniqueness_dispatch(Sequence& /* moves */, std::false_type) const noexcept
+        template<class It>
+        auto filter_uniqueness_dispatch(It /* first */, It last, std::false_type) const noexcept
         {
-                // no-op
+                return last;
         }
 
-        template<class Sequence>
-        void filter_uniqueness_dispatch(Sequence& moves, std::true_type) const
+        template<class It>
+        auto filter_uniqueness_dispatch(It first, It last, std::true_type) const
         {
-                assert(!moves.empty()); // guarantees me is dereferenceable
+                assert(1 <= std::distance(first, last)); // guarantees me is dereferenceable
+                if (std::distance(first, last) == 1)
+                        return last;
 
-                auto const me = std::max_element(begin(moves), end(moves), [](auto const& L, auto const& R){
+                auto const me = std::max_element(first, last, [](auto const& L, auto const& R){
                         return L.num_pieces() < R.num_pieces();
                 });
 
-                using Move = typename Sequence::value_type;
+                using Move = typename It::value_type;
                 if (me->num_pieces() < large_jump_v<rules_type_t<Move>>)
-                        return;
+                        return last;
 
-                std::stable_sort(begin(moves), end(moves));
-                auto const drop = std::unique(begin(moves), end(moves));
-                moves.erase(drop, end(moves));
+                std::stable_sort(first, last);
+                return std::unique(first, last);
         }
 };
 
