@@ -4,7 +4,7 @@
 #include <tuple>                // forward_as_tuple
 
 namespace dctl {
-namespace grid {
+namespace board {
 
 struct Dimensions
 {
@@ -51,46 +51,5 @@ constexpr auto rotate(Dimensions const& dim, Angle const& theta)
         }
 }
 
-template<int Width, int Height, bool Inverted = false>
-class DimensionsClass
-{
-public:
-        static_assert(0 < Width, "Dimensions width shall be positive.");
-        static_assert(0 < Height, "Dimensions height shall be positive.");
-
-        static constexpr auto width = Width;
-        static constexpr auto height = Height;
-        static constexpr auto inverted = Inverted;
-
-        static constexpr auto ul_parity = static_cast<bool>(Inverted ^ (Height % 2));
-
-        template<int Direction>
-        struct DoRotate
-        {
-                static constexpr auto theta = Angle{Direction};
-                static constexpr auto rotated = rotate(Dimensions{width, height, inverted}, theta);
-                using type = DimensionsClass<rotated.width, rotated.height, rotated.inverted>;
-        };
-};
-
-template<int Width, int Height, bool Inverted>
-constexpr int DimensionsClass<Width, Height, Inverted>::width;
-
-template<int Width, int Height, bool Inverted>
-constexpr int DimensionsClass<Width, Height, Inverted>::height;
-
-template<int Width, int Height, bool Inverted>
-constexpr bool DimensionsClass<Width, Height, Inverted>::inverted;
-
-template<int Width, int Height, bool Inverted>
-constexpr bool DimensionsClass<Width, Height, Inverted>::ul_parity;
-
-// NOTE: a template alias does not work if Theta is a Boost.MPL placeholder expression
-template<class T, int Theta>
-struct Rotate
-:
-        T::template DoRotate<Theta>::type
-{};
-
-}       // namespace grid
+}       // namespace board
 }       // namespace dctl

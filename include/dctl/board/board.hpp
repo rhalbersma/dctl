@@ -1,11 +1,11 @@
 #pragma once
 #include <dctl/angle.hpp>                       // Angle, inverse
 #include <dctl/board/algebraic.hpp>
-#include <dctl/grid/dimensions.hpp>
-#include <dctl/grid/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
-#include <dctl/grid/grid.hpp>                   // Grid
-#include <dctl/grid/shift_size.hpp>             // shift_size
-#include <dctl/grid/orientation.hpp>            // SizeMinimizingOrientation, Make
+#include <dctl/board/dimensions.hpp>
+#include <dctl/board/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
+#include <dctl/board/grid.hpp>                   // Grid
+#include <dctl/board/shift_size.hpp>             // shift_size
+#include <dctl/board/detail/orientation.hpp>            // SizeMinimizingOrientation, Make
 #include <dctl/position/color.hpp>              // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <xstd/bitset.hpp>                      // bitset
@@ -31,21 +31,17 @@ template
 class Board
 {
 private:
-        static constexpr auto dimensions = grid::Dimensions{Width, Height, Inverted};
+        static constexpr auto dimensions = Dimensions{Width, Height, Inverted};
 
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
         static constexpr auto edge_columns = OrthogonalCaptures ? 2 : 1;
 
-        static constexpr Angle orientation = grid::size_minimizing_orientation<edge_columns>(dimensions);
+        static constexpr Angle orientation = size_minimizing_orientation<edge_columns>(dimensions);
 
-        using inner_grid_t = grid::Grid<edge_columns>;
+        using inner_grid_t = Grid<edge_columns>;
         static constexpr inner_grid_t inner_grid{rotate(dimensions, orientation)};
-        static constexpr auto outer_grid = grid::Grid<0>{dimensions};
-
-        using DimClass = grid::DimensionsClass<dimensions.width, dimensions.height, dimensions.inverted>;
-        using internal_grid = grid::GridClass<grid::Rotate<DimClass, orientation>, edge_columns>;
-        using external_grid = grid::GridClass<DimClass, 0>;
+        static constexpr auto outer_grid = Grid<0>{dimensions};
 
 private:
         using Block = unsigned long long;
@@ -58,7 +54,8 @@ public:
         static constexpr auto width = dimensions.width;
         static constexpr auto height = dimensions.height;
         static constexpr auto inverted = dimensions.inverted;
-        static constexpr auto ul_parity = grid::ul_parity(dimensions);
+
+        static constexpr auto ul_parity() { return board::ul_parity(dimensions); }
 
         static constexpr auto modulo()  { return outer_grid.modulo();  }
         static constexpr auto edge_re() { return outer_grid.edge_re(); }
@@ -75,7 +72,7 @@ public:
 
         static constexpr auto shift_size(Angle const& direction)
         {
-                return grid::shift_size(inner_grid, direction);
+                return board::shift_size(inner_grid, direction);
         }
 
         static auto begin() noexcept
@@ -103,26 +100,21 @@ public:
         static auto algebraic_from_bit(int n)
         {
                 std::stringstream sstr;
-                auto src = grid::ulo::Square<external_grid>{square_from_bit(n)};
-                auto coord = swap_llo_ulo(ulo_from_sq(src));
-                sstr << board::Labels<Board>::col[get_x(coord)] << board::Labels<Board>::row[get_y(coord)];
+                auto coord = to_llo(square_from_bit(n), outer_grid);
+                sstr << board::Labels<Board>::col[coord.x] << board::Labels<Board>::row[coord.y];
                 return sstr.str();
         }
 private:
         static constexpr int
         init_bit_from_square(int n) noexcept
         {
-                return grid::ulo::square_from_square<internal_grid>(
-                        grid::ulo::Square<external_grid>{n}, orientation
-                ).value();
+                return transform(n, outer_grid, inner_grid, orientation);
         }
 
         static constexpr int
         init_square_from_bit(int n) noexcept
         {
-                return grid::ulo::square_from_square<external_grid>(
-                        grid::ulo::Square<internal_grid>{n}, inverse(orientation)
-                ).value();
+                return transform(n, inner_grid, outer_grid, inverse(orientation));
         }
 
         static constexpr std::array<int, NumSquares>
@@ -160,7 +152,7 @@ constexpr typename Board<Width, Height, Inverted, OrthogonalCaptures>::inner_gri
 Board<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr grid::Grid<0>
+constexpr Grid<0>
 Board<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>

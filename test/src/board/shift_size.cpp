@@ -1,6 +1,6 @@
 #include <dctl/angle.hpp>                       // Angle, _deg, rotate
 #include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, International, Roman, Frisian, Spantsireti, Ktar11, Ktar12
-#include <dctl/grid/shift_size.hpp>             // shift_size
+#include <dctl/board/shift_size.hpp>             // shift_size
 #include <boost/mpl/int.hpp>                    // int_
 #include <boost/mpl/placeholders.hpp>           // _1
 #include <boost/mpl/transform.hpp>              // transform

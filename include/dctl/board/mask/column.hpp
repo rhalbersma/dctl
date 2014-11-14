@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/grid/coordinates.hpp>            // ulo_from_sq
+#include <dctl/board/coordinates.hpp>            // ulo_from_sq
 #include <dctl/position/color.hpp>              // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <array>                                // array
@@ -19,10 +19,9 @@ private:
                 bool const color_;
                 int const column_;
 
-                constexpr auto operator()(int dsq) const noexcept
+                constexpr auto operator()(int sq) const noexcept
                 {
-                        auto const sq = grid::ulo::Square<typename Board::external_grid>{dsq};
-                        return get_x(swap_llo_ulo(ulo_from_sq(sq))) == (color_ == Color::white ? column_ : Board::width - 1 - column_);
+                        return to_llo(sq, Board::outer_grid).x == (color_ == Color::white ? column_ : Board::width - 1 - column_);
                 }
         };
 

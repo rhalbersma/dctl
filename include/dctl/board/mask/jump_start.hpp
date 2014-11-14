@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/angle.hpp>                       // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/grid/coordinates.hpp>            // ulo_from_sq
+#include <dctl/board/coordinates.hpp>            // ulo_from_sq
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <array>                                // array
 #include <cstddef>                              // size_t
@@ -18,19 +18,18 @@ private:
         {
                 int const segment_;
 
-                constexpr auto operator()(int dsq) const noexcept
+                constexpr auto operator()(int sq) const noexcept
                 {
                         auto const alpha = rotate(segment_ * theta + beta, Board::orientation);
                         auto const offset = is_diagonal(alpha) ? 2 : 4;
-                        auto const sq = grid::ulo::Square<typename Board::external_grid>{dsq};
-                        auto const coord = ulo_from_sq(sq);
                         auto const min_x = is_left(alpha) ? offset : 0;
                         auto const max_x = Board::width - (is_right(alpha) ? offset : 0);
                         auto const min_y = is_up(alpha) ? offset : 0;
                         auto const max_y = Board::height - (is_down(alpha) ? offset : 0);
+                        auto const coord = to_ulo(sq, Board::outer_grid);
                         return
-                                (min_x <= get_x(coord) && get_x(coord) < max_x) &&
-                                (min_y <= get_y(coord) && get_y(coord) < max_y)
+                                (min_x <= coord.x && coord.x < max_x) &&
+                                (min_y <= coord.y && coord.y < max_y)
                         ;
                 }
         };
