@@ -19,9 +19,9 @@ private:
                 bool const color_;
                 int const column_;
 
-                template<class Square>
-                constexpr auto operator()(Square const& sq) const noexcept
+                constexpr auto operator()(int dsq) const noexcept
                 {
+                        auto const sq = grid::ulo::Square<typename Board::external_grid>{dsq};
                         return get_x(swap_llo_ulo(ulo_from_sq(sq))) == (color_ == Color::white ? column_ : Board::width - 1 - column_);
                 }
         };

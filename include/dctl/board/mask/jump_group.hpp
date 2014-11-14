@@ -16,10 +16,10 @@ private:
         {
                 int from_bit_;
 
-                template<class Square>
-                constexpr auto operator()(Square const& dest_sq) const noexcept
+                constexpr auto operator()(int dest_bit) const noexcept
                 {
                         auto const from_sq = grid::ulo::Square<typename Board::external_grid>{Board::square_from_bit(from_bit_)};
+                        auto const dest_sq = grid::ulo::Square<typename Board::external_grid>{                       dest_bit  };
                         auto const from_coord = ulo_from_sq(from_sq);
                         auto const dest_coord = ulo_from_sq(dest_sq);
                         auto const delta_x = dctl::detail::abs_remainder(get_x(from_coord) - get_x(dest_coord), 4);
