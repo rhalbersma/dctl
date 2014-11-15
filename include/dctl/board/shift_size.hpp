@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/angle.hpp>               // Angle
-#include <stdexcept>                    // invalid_argument
+#include <dctl/angle.hpp>       // Angle
+#include <stdexcept>            // invalid_argument
 
 namespace dctl {
 namespace board {

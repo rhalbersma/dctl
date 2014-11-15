@@ -60,9 +60,9 @@ public:
                 return proof_verify(p, depth);
         }
 
-        void resize_hash(int s)
+        void resize_hash(std::size_t n)
         {
-                TT.resize(static_cast<std::size_t>(s));
+                TT.resize(n);
         }
 
         void clear_hash()

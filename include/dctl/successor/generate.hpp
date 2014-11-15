@@ -20,7 +20,7 @@ void generate(Position const& p, Sequence& moves)
                 Generate<Color::black, Pieces, Select>{}(p, moves);
         else
                 Generate<Color::white, Pieces, Select>{}(p, moves);
-        assert((invariant<Pieces, Select>(p, static_cast<int>(moves.size()))));
+        assert((invariant<Pieces, Select>(p, moves.size())));
 }
 
 template

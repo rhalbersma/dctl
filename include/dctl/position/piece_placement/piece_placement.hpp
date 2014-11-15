@@ -39,16 +39,16 @@ public:
                 using Zobrist = random::PiecePlacement<Board::set_type::size()>;
                 pieces_[m.active_color()].reset(m.from());
                 pieces_[m.active_color()].set(m.dest());
-                hash ^= Zobrist::pieces[m.active_color()][static_cast<std::size_t>(m.from())];
-                hash ^= Zobrist::pieces[m.active_color()][static_cast<std::size_t>(m.dest())];
+                hash ^= Zobrist::pieces[m.active_color()][m.from()];
+                hash ^= Zobrist::pieces[m.active_color()][m.dest()];
                 if (m.is_with_king()) {
                         kings_.reset(m.from());
                         kings_.set(m.dest());
-                        hash ^= Zobrist::kings[static_cast<std::size_t>(m.from())];
-                        hash ^= Zobrist::kings[static_cast<std::size_t>(m.dest())];
+                        hash ^= Zobrist::kings[m.from()];
+                        hash ^= Zobrist::kings[m.dest()];
                 } else if (m.is_promotion()) {
                         kings_.set(m.dest());
-                        hash ^= Zobrist::kings[static_cast<std::size_t>(m.dest())];
+                        hash ^= Zobrist::kings[m.dest()];
                 }
                 if (m.is_jump()) {
                         pieces_[!m.active_color()] ^= m.captured_pieces();

@@ -1,7 +1,7 @@
 #pragma once
-#include <sstream>                      // stringstream
 #include <dctl/position/color.hpp>       // black, white
 #include <dctl/type_traits.hpp>
+#include <sstream>                      // stringstream
 
 namespace dctl {
 namespace setup {

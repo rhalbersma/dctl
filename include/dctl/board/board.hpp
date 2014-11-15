@@ -1,11 +1,11 @@
 #pragma once
 #include <dctl/angle.hpp>                       // Angle, inverse
-#include <dctl/board/algebraic.hpp>
-#include <dctl/board/dimensions.hpp>
-#include <dctl/board/coordinates.hpp>            // Square, ulo_from_sq, sq_from_ulo, rotate
-#include <dctl/board/grid.hpp>                   // Grid
-#include <dctl/board/shift_size.hpp>             // shift_size
-#include <dctl/board/detail/orientation.hpp>            // SizeMinimizingOrientation, Make
+#include <dctl/board/algebraic.hpp>             // Labels
+#include <dctl/board/dimensions.hpp>            // Dimensions
+#include <dctl/board/coordinates.hpp>           // Square, ulo_from_sq, sq_from_ulo, rotate
+#include <dctl/board/grid.hpp>                  // Grid
+#include <dctl/board/shift_size.hpp>            // shift_size
+#include <dctl/board/detail/orientation.hpp>    // SizeMinimizingOrientation, Make
 #include <dctl/position/color.hpp>              // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <xstd/bitset.hpp>                      // bitset
@@ -13,7 +13,6 @@
 #include <boost/range/irange.hpp>               // irange
 #include <array>                                // array
 #include <cstddef>                              // size_t
-#include <cstdint>                              // uint64_t
 #include <iomanip>                              // setfill
 #include <limits>                               // digits
 #include <sstream>                              // stringstream
@@ -39,8 +38,11 @@ public:
 
         static constexpr Angle orientation = size_minimizing_orientation<edge_columns>(dimensions);
 
+private:
         using inner_grid_t = Grid<edge_columns>;
         static constexpr inner_grid_t inner_grid{rotate(dimensions, orientation)};
+
+public:
         static constexpr auto outer_grid = Grid<0>{dimensions};
 
 private:
@@ -70,6 +72,11 @@ public:
                 return NumSquares;
         }
 
+        static constexpr auto bits() noexcept
+        {
+                return NumBits;
+        }
+
         static constexpr auto shift_size(Angle const& direction)
         {
                 return board::shift_size(inner_grid, direction);
@@ -77,12 +84,12 @@ public:
 
         static auto begin() noexcept
         {
-                return boost::counting_iterator<int>{0};
+                return boost::counting_iterator<std::size_t>{0};
         }
 
         static auto end() noexcept
         {
-                return boost::counting_iterator<int>{size()};
+                return boost::counting_iterator<std::size_t>{size()};
         }
 
         static auto squares() noexcept
@@ -90,48 +97,48 @@ public:
                 return boost::irange(*begin(), *end());
         }
 
-        static auto numeric_from_bit(int n)
+        static auto numeric_from_bit(std::size_t n)
         {
                 std::stringstream sstr;
                 sstr << std::setfill('0') << std::setw(2) << square_from_bit(n) + 1;
                 return sstr.str();
         }
 
-        static auto algebraic_from_bit(int n)
+        static auto algebraic_from_bit(std::size_t n)
         {
                 std::stringstream sstr;
-                auto coord = to_llo(square_from_bit(n), outer_grid);
-                sstr << board::Labels<Board>::col[coord.x] << board::Labels<Board>::row[coord.y];
+                auto coord = to_llo(static_cast<int>(square_from_bit(n)), outer_grid);
+                sstr << Labels<Board>::col[coord.x] << Labels<Board>::row[coord.y];
                 return sstr.str();
         }
 private:
-        static constexpr int
+        static constexpr auto
         init_bit_from_square(int n) noexcept
         {
-                return transform(n, outer_grid, inner_grid, orientation);
+                return static_cast<std::size_t>(transform(n, outer_grid, inner_grid, orientation));
         }
 
-        static constexpr int
+        static constexpr auto
         init_square_from_bit(int n) noexcept
         {
-                return transform(n, inner_grid, outer_grid, inverse(orientation));
+                return static_cast<std::size_t>(transform(n, inner_grid, outer_grid, inverse(orientation)));
         }
 
-        static constexpr std::array<int, NumSquares>
+        static constexpr std::array<std::size_t, NumSquares>
         table_bit_from_square = make_array<NumSquares>(init_bit_from_square);
 
-        static constexpr std::array<int, NumBits>
+        static constexpr std::array<std::size_t, NumBits>
         table_square_from_bit = make_array<NumBits>(init_square_from_bit);
 
 public:
-        static constexpr auto bit_from_square(int n) noexcept
+        static constexpr auto bit_from_square(std::size_t n) noexcept
         {
-                return table_bit_from_square[static_cast<std::size_t>(n)];
+                return table_bit_from_square[n];
         }
 
-        static constexpr auto square_from_bit(int n) noexcept
+        static constexpr auto square_from_bit(std::size_t n) noexcept
         {
-                return table_square_from_bit[static_cast<std::size_t>(n)];
+                return table_square_from_bit[n];
         }
 };
 
@@ -156,11 +163,11 @@ constexpr Grid<0>
 Board<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
+constexpr std::array<std::size_t, Board<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
+constexpr std::array<std::size_t, Board<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
 
 }       // namespace board

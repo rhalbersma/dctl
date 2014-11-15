@@ -40,8 +40,8 @@ auto init_hash(MostRecentlyUsedKing<Rules, Board> const& mru_king, bool to_move)
         using Zobrist = random::MostRecentlyUsedKing<M, N>;
 
         return
-                Zobrist::index[to_move][static_cast<std::size_t>(mru_king.index())] ^
-                Zobrist::moves[to_move][static_cast<std::size_t>(mru_king.moves())]
+                Zobrist::index[to_move][mru_king.index()] ^
+                Zobrist::moves[to_move][mru_king.moves()]
         ;
 }
 

@@ -45,18 +45,18 @@ public:
         }
 
 private:
-        static bool is_end_row(int sq)
+        static bool is_end_row(std::size_t sq)
         {
-                auto const r = sq % Board::modulo();         // sq = modulo * q + r
+                auto const r = static_cast<int>(sq) % Board::modulo();         // sq = modulo * q + r
                 auto const end_RE = r == Board::edge_re();   // right of even rows
                 auto const end_RO = r == Board::edge_ro();   // right of odd rows
 
                 return end_RE || end_RO;
         }
 
-        static bool is_indent_row(int sq)
+        static bool is_indent_row(std::size_t sq)
         {
-                auto const r = sq % Board::modulo();                 // sq = modulo * q + r
+                auto const r = static_cast<int>(sq) % Board::modulo();                 // sq = modulo * q + r
                 auto const indent_LE = r == Board::edge_le();        // left of even rows
                 auto const indent_LO = r == Board::edge_lo();        // left of odd rows
 
@@ -81,7 +81,7 @@ public:
         template<class Functor>
         std::string operator()(Functor f) const
         {
-                return diagram<Board, squares>{}([=](auto n){ return f(Board::bit_from_square(static_cast<int>(n))); });
+                return diagram<Board, squares>{}([=](auto n){ return f(Board::bit_from_square(n)); });
         }
 };
 
@@ -98,7 +98,7 @@ public:
         template<class Position>
         std::string operator()(Position const& p) const
         {
-                return diagram<board_type_t<Position>, bits>{}([&](auto n){ return content<Content, Position>(p, static_cast<std::size_t>(n)); });
+                return diagram<board_type_t<Position>, bits>{}([&](auto n){ return content<Content, Position>(p, n); });
         }
 };
 

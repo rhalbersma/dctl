@@ -20,13 +20,13 @@ namespace successor {
 template<class Rules, class Board>
 struct Fixture
 {
-        template<int N>
+        template<std::size_t N>
         void run(std::string const& FEN, std::string const (&legal)[N])
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>{}(FEN);
                 auto const moves = successor::generate(p);
 
-                BOOST_CHECK_EQUAL(static_cast<int>(moves.size()), N);
+                BOOST_CHECK_EQUAL(moves.size(), N);
 
                 std::vector<std::string> notations;
                 boost::push_back(notations, moves | boost::adaptors::transformed([](auto const& m) {

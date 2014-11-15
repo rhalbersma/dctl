@@ -21,7 +21,7 @@ public:
                 auto moves_ = stack_vector<M>(Alloc<M>{a});
                 moves_.reserve(DCTL_PP_STACK_RESERVE);
                 Generate<Color, Pieces, select::jump>{}(p, moves_);
-                return static_cast<int>(moves_.size());
+                return moves_.size();
         }
 };
 

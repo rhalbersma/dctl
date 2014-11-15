@@ -74,8 +74,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSequence)
 {
-        auto const alpha = boost::counting_iterator<int>{0};
-        auto const omega = boost::counting_iterator<int>{4};
+        auto const alpha = boost::counting_iterator<std::size_t>{0};
+        auto const omega = boost::counting_iterator<std::size_t>{4};
 
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){

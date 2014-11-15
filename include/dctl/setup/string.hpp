@@ -87,7 +87,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
-                                        auto b = static_cast<std::size_t>(Board::bit_from_square(static_cast<int>(sq) - 1));     // convert square to bit
+                                        auto b = Board::bit_from_square(sq - 1);     // convert square to bit
                                         p_pieces[setup_color].set(b);
                                         if (setup_kings)
                                                 p_kings.set(b);
@@ -109,26 +109,26 @@ struct write<pdn::protocol, Token>
                 using Board = typename Position::board_type;
 
                 std::stringstream sstr;
-                sstr << Token::quote;                                           // opening quotes
-                sstr << write_color<Token>(p.active_color());                    // side to move
+                sstr << Token::quote;                                   // opening quotes
+                sstr << write_color<Token>(p.active_color());           // side to move
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i != 0;
                         if (p.pieces(c).any()) {
-                                sstr << Token::colon;                           // colon
-                                sstr << Token::color[c];                        // color tag
+                                sstr << Token::colon;                   // colon
+                                sstr << Token::color[c];                // color tag
                         }
                         auto const bs = p.pieces(c);
                         std::size_t n = 0;
                         for (auto&& sq : bs) {
                                 if (p.kings().test(sq))
-                                        sstr << Token::king;                    // king tag
-                                sstr << Board::square_from_bit(static_cast<int>(sq)) + 1;         // square number
-                                if (++n != bs.count())                          // still pieces remaining
-                                        sstr << Token::comma;                   // comma separator
+                                        sstr << Token::king;            // king tag
+                                sstr << Board::square_from_bit(sq) + 1; // square number
+                                if (++n != bs.count())                  // still pieces remaining
+                                        sstr << Token::comma;           // comma separator
                         }
                 }
-                sstr << Token::quote << '\n';                                   // closing quotes
+                sstr << Token::quote << '\n';                           // closing quotes
                 return sstr.str();
         }
 };
@@ -149,7 +149,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                 p_side = read_color<Token>(ch);
 
                  for (auto&& sq : Board::squares()) {
-                        auto b = static_cast<std::size_t>(Board::bit_from_square(static_cast<int>(sq)));
+                        auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
                         case Token::black:

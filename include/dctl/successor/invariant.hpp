@@ -6,7 +6,7 @@ namespace dctl {
 namespace successor {
 
 template<class Pieces, class Select, class Position>
-auto invariant(Position const& p, int n)
+auto invariant(Position const& p, std::size_t n)
 {
         return
                 ( count<Pieces, Select>(p) ==  n     ) &&
