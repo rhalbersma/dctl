@@ -1,6 +1,5 @@
-#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
+#include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
-#include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 
@@ -8,25 +7,6 @@ namespace dctl {
 namespace board {
 
 BOOST_AUTO_TEST_SUITE(TestBoard)
-
-using BoardSequence = boost::mpl::vector
-<
-        Micro,
-        Mini,
-        Checkers,
-        Roman,
-        Spantsireti,
-        International,
-        Frisian,
-        Ktar<10, 11>,
-        Ktar<10, 12>,
-        Compact1012,
-        Compact1210,
-        Board<12, 10>,
-        Canadian,
-        SriLankan,
-        Dumm
->;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, BoardSequence)
 {
