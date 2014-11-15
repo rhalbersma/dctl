@@ -1,5 +1,5 @@
 #pragma once
-#include <cctype>                       // tolower, toupper
+#include <cctype>       // tolower, toupper
 
 namespace dctl {
 namespace setup {

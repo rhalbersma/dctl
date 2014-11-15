@@ -46,7 +46,7 @@ private:
         template<class Position>
         static int mobility(Position const& p)
         {
-                return static_cast<int>(Active::mobility(p) - Passive::mobility(p));
+                return Active::mobility(p) - Passive::mobility(p);
         }
 };
 

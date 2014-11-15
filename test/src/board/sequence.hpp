@@ -18,7 +18,6 @@ using BoardSequence = boost::mpl::vector
         Ktar<10, 12>,
         Compact1012,
         Compact1210,
-        Board<12, 10>,
         Canadian,
         SriLankan,
         Dumm

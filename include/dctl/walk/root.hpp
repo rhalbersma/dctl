@@ -128,7 +128,7 @@ struct Enhancements<hash_tag, Position>
         void collect_statistics(int ply) { handle_->statistics_.collect(ply); }
 
         void clear_TT() { handle_->TT_.clear(); }
-        void resize_TT(int n) { handle_->TT_.resize(static_cast<std::size_t>(n)); }
+        void resize_TT(std::size_t n) { handle_->TT_.resize(n); }
 
         std::pair<bool, NodeCount> find(Position const& p, int depth) const
         {

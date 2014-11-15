@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>      // size_t
 
 namespace dctl {
 namespace util {

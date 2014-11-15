@@ -1,9 +1,11 @@
 #pragma once
-#include <dctl/board/grid_fwd.hpp>       // primary template and partial specialization declarations
-#include <dctl/board/dimensions.hpp>
+#include <dctl/board/dimensions.hpp>    // Dimensions
 
 namespace dctl {
 namespace board {
+
+template<int>
+class Grid;
 
 // partial specialization definition
 template<>
