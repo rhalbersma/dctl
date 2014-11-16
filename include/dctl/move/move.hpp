@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/rules.hpp>
+#include <dctl/set_type.hpp>    // set_type
 #include <dctl/type_traits.hpp> // board_type_t, rules_type_t
 #include <cassert>              // assert
 #include <tuple>                // forward_as_tuple
@@ -12,7 +13,7 @@ class BaseMove
 public:
         using board_type = Board;
         using rules_type = Rules;
-        using Set = set_type_t<Board>;
+        using Set = set_type<Board>;
 
 private:
         Set captured_pieces_{};
@@ -173,10 +174,10 @@ public:
 template<class Board>
 class EmptyBase<italian::Rules, Board>
 {
-        set_type_t<Board> king_order_{};
+        set_type<Board> king_order_{};
 public:
         EmptyBase() = default;
-        explicit EmptyBase(set_type_t<Board> ko): king_order_(ko) {}
+        explicit EmptyBase(set_type<Board> ko): king_order_(ko) {}
 
         template<class Tracker>
         explicit EmptyBase(Tracker const& t)
@@ -184,7 +185,7 @@ public:
                 king_order_(t.king_order())
         {}
 
-        set_type_t<Board> king_order() const { return king_order_; }
+        set_type<Board> king_order() const { return king_order_; }
 };
 
 template<class Board>

@@ -9,7 +9,7 @@
 #include <dctl/position/mru_king/zobrist.hpp>
 #include <dctl/position/color.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/type_traits.hpp>
+#include <dctl/set_type.hpp>
 #include <dctl/zobrist/accumulate.hpp>
 #include <cassert>                      // assert
 #include <tuple>
@@ -26,7 +26,7 @@ class Position
 public:
         using rules_type = Rules;
         using board_type = Board;
-        using set_type = set_type_t<Board>;
+        using set_type = dctl::set_type<Board>;
         using Set = set_type;
         using TreeIterator = Position const*;
 

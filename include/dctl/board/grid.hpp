@@ -13,9 +13,7 @@ class Grid;
 template<>
 class Grid<0>
 {
-private:
         Dimensions dim;
-
 public:
         explicit constexpr Grid(Dimensions const& d) noexcept : dim(d) {}
 
@@ -51,9 +49,7 @@ public:
 template<int EdgeColumns>
 class Grid
 {
-private:
         Grid<0> grid;
-
 public:
         explicit constexpr Grid(Dimensions const& dim) noexcept : grid{dim} {}
 

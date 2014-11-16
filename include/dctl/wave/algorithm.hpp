@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/angle.hpp>               // Angle, is_positive
+#include <dctl/set_type.hpp>            // set_type
 #include <dctl/utility/shift.hpp>       // shift
-#include <dctl/type_traits.hpp>
 
 namespace dctl {
 namespace detail {
@@ -36,7 +36,7 @@ struct Fill
 {
         static constexpr auto theta = Angle{Direction};
 
-        using Set = set_type_t<Board>;
+        using Set = set_type<Board>;
         auto operator()(Set const& generator, Set const& propagator) const
         {
                 return detail::fill<

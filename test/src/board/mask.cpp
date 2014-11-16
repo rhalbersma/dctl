@@ -1,4 +1,5 @@
 #include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
+#include <dctl/set_type.hpp>                    // set_type
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
@@ -11,9 +12,6 @@ namespace dctl {
 namespace board {
 
 BOOST_AUTO_TEST_SUITE(TestBoard)
-
-template<class T>
-using Set = typename T::set_type;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, BoardSequence)
 {
@@ -40,7 +38,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
         );
 
         BOOST_CHECK(
-                std::accumulate(alpha, omega, Set<T>{}, [](auto result, auto i){
+                std::accumulate(alpha, omega, set_type<T>{}, [](auto result, auto i){
                         return result ^ Column<T>::mask(Color::white, i);
                 }) == Squares<T>::mask()
         );
@@ -66,7 +64,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
         );
 
         BOOST_CHECK(
-                std::accumulate(alpha, omega, Set<T>{}, [](auto result, auto i){
+                std::accumulate(alpha, omega, set_type<T>{}, [](auto result, auto i){
                         return result ^ Row<T>::mask(Color::white, i);
                 }) == Squares<T>::mask()
         );
@@ -86,7 +84,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSeq
         );
 
         BOOST_CHECK(
-                std::accumulate(alpha, omega, Set<T>{}, [](auto result, auto i){
+                std::accumulate(alpha, omega, set_type<T>{}, [](auto result, auto i){
                         return result ^ JumpGroup<T>::mask(i);
                 }) == Squares<T>::mask()
         );

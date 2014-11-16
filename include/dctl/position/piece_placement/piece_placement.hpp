@@ -1,8 +1,9 @@
 #pragma once
 #include <dctl/board/mask.hpp>
-#include <dctl/zobrist/accumulate.hpp>
 #include <dctl/position/color.hpp>
 #include <dctl/position/piece_placement/zobrist.hpp>
+#include <dctl/set_type.hpp>
+#include <dctl/zobrist/accumulate.hpp>
 #include <cassert>                      // assert
 
 namespace dctl {
@@ -11,7 +12,7 @@ template<class Rules, class Board>
 class PiecePlacement
 {
 public:
-        using Set = typename Board::set_type;
+        using Set = set_type<Board>;
 
         PiecePlacement() = default;
 
@@ -36,7 +37,7 @@ public:
         template<class Move, class Index>
         void make(Move const& m, Index& hash)
         {
-                using Zobrist = random::PiecePlacement<Board::set_type::size()>;
+                using Zobrist = random::PiecePlacement<set_type<Board>::size()>;
                 pieces_[m.active_color()].reset(m.from());
                 pieces_[m.active_color()].set(m.dest());
                 hash ^= Zobrist::pieces[m.active_color()][m.from()];
@@ -119,7 +120,7 @@ private:
 template<class Rules, class Board>
 auto init_hash(PiecePlacement<Rules, Board> const& m)
 {
-        using Zobrist = random::PiecePlacement<Board::set_type::size()>;
+        using Zobrist = random::PiecePlacement<set_type<Board>::size()>;
         return
                 zobrist::accumulate(m.pieces(Color::black), Zobrist::pieces[Color::black]) ^
                 zobrist::accumulate(m.pieces(Color::white), Zobrist::pieces[Color::white]) ^

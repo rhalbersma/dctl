@@ -2,7 +2,9 @@
 #include <dctl/angle/detail/abs_remainder.hpp>  // abs_remainder
 #include <dctl/board/coordinates.hpp>           // to_ulo
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
+#include <dctl/set_type.hpp>                    // set_type
 #include <array>                                // array
+#include <cassert>                              // assert
 #include <cstddef>                              // size_t
 
 namespace dctl {
@@ -11,7 +13,6 @@ namespace board {
 template<class Board>
 class JumpGroup
 {
-private:
         // simulate a constexpr lambda (not allowed in C++14)
         struct lambda
         {
@@ -36,7 +37,7 @@ private:
         }
 
         static constexpr auto N = 4;
-        using Set = typename Board::set_type;
+        using Set = set_type<Board>;
         using table_type = std::array<Set, N>;
 
         static constexpr table_type table =
@@ -50,6 +51,7 @@ private:
 public:
         static constexpr auto mask(std::size_t n) noexcept
         {
+                assert(n < N);
                 return table[n];
         }
 };
