@@ -1,8 +1,8 @@
 #pragma once
+#include <dctl/move/move.hpp>                           // Move_t
 #include <dctl/successor/count/primary_fwd.hpp>         // Count (primary template)
 #include <dctl/successor/generate/all_jump.hpp>         // Generate (piece jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
-#include <dctl/move/move.hpp>                           // Move_t
 #include <dctl/utility/stack_vector.hpp>                // Vector, Alloc, Arena
 
 namespace dctl {

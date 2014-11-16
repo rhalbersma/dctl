@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/rule_traits.hpp>
+#include <dctl/set_type.hpp>
 
 namespace dctl {
 
@@ -8,7 +9,7 @@ class MostRecentlyUsedKing
 {
 public:
         enum { M = max_same_king_push_v<Rules> };
-        enum { N = Board::set_type::size() };
+        enum { N = set_type<Board>::size() };
 
         // constructors
 

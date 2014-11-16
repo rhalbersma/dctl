@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
+#include <dctl/set_type.hpp>                    // set_type
 
 namespace dctl {
 namespace board {
@@ -17,7 +18,7 @@ private:
                 }
         };
 
-        using value_type = typename Board::set_type;
+        using value_type = set_type<Board>;
 
         static constexpr value_type value = make_set_if<Board>(init{});
 

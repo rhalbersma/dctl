@@ -1,13 +1,15 @@
 #pragma once
+#include <dctl/position/position.hpp>
+#include <dctl/position/color.hpp>
+#include <dctl/setup/diagram.hpp>
+#include <dctl/setup/protocols.hpp>
+#include <dctl/setup/i_token.hpp>
+#include <dctl/set_type.hpp>
+#include <dctl/type_traits.hpp>
 #include <cassert>                      // assert
 #include <cctype>                       // isdigit
 #include <sstream>                      // stringstream
 #include <string>                       // string
-#include <dctl/setup/diagram.hpp>
-#include <dctl/setup/protocols.hpp>
-#include <dctl/setup/i_token.hpp>
-#include <dctl/position/position.hpp>
-#include <dctl/position/color.hpp>
 
 namespace dctl {
 namespace setup {
@@ -53,9 +55,9 @@ struct read<Rules, Board, pdn::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
         {
-                using T = typename Board::set_type;
-                T p_pieces[2] {};
-                T p_kings {};
+                using Set = set_type<Board>;
+                Set p_pieces[2] {};
+                Set p_kings {};
                 bool p_side = Color::black;
 
                 // do not attempt to parse empty strings
@@ -106,7 +108,7 @@ struct write<pdn::protocol, Token>
         template<class Position>
         std::string operator()(Position const& p) const
         {
-                using Board = typename Position::board_type;
+                using Board = board_type_t<Position>;
 
                 std::stringstream sstr;
                 sstr << Token::quote;                                   // opening quotes
@@ -138,9 +140,9 @@ struct read<Rules, Board, dxp::protocol, Token>
 {
         Position<Rules, Board> operator()(std::string const& s) const
         {
-                using T = typename Board::set_type;
-                T p_pieces[2] {};
-                T p_kings {};
+                using Set = set_type<Board>;
+                Set p_pieces[2] {};
+                Set p_kings {};
                 bool p_side = Color::black;
 
                 std::stringstream sstr(s);

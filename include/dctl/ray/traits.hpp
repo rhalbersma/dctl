@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/angle.hpp>               // Angle, is_positive
 #include <dctl/ray/iterator.hpp>        // Iterator
+#include <dctl/set_type.hpp>            // set_type
 #include <type_traits>                  // integral_constant
 
 namespace dctl {
@@ -21,7 +22,7 @@ constexpr auto direction_v<Iterator<Board, Direction>> = Angle{Direction};
 template<class Board, int Direction>
 constexpr auto is_onboard(Iterator<Board, Direction> it)
 {
-        return *it < Board::set_type::size();
+        return *it < set_type<Board>::size();
 }
 
 }       // namespace ray

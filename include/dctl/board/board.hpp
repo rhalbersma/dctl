@@ -7,7 +7,6 @@
 #include <dctl/board/detail/orientation.hpp>    // SizeMinimizingOrientation, Make
 #include <dctl/position/color.hpp>              // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
-#include <xstd/bitset.hpp>                      // bitset
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/range/irange.hpp>               // irange
 #include <array>                                // array
@@ -45,11 +44,8 @@ public:
         static constexpr auto outer_grid = Grid<0>{dimensions};
 
 private:
-        using Block = unsigned long long;
         static constexpr auto NumBits = inner_grid.size();
         static constexpr auto NumSquares = outer_grid.size();
-        static constexpr auto Nb = xstd::num_blocks<Block>(NumBits);
-        static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
         static constexpr auto width()     noexcept { return outer_grid.width(); }
@@ -63,8 +59,6 @@ public:
         static constexpr auto edge_ro() noexcept { return outer_grid.edge_ro(); }
         static constexpr auto edge_le() noexcept { return outer_grid.edge_le(); }
         static constexpr auto edge_lo() noexcept { return outer_grid.edge_lo(); }
-
-        using set_type = xstd::bitset<NumBits>;
 
         static constexpr auto size() noexcept
         {

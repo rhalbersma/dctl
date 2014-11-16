@@ -1,7 +1,8 @@
 #pragma once
+#include <dctl/board/coordinates.hpp>           // ulo_from_sq
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/board/coordinates.hpp>            // ulo_from_sq
 #include <dctl/position/color.hpp>              // black, white
+#include <dctl/set_type.hpp>                    // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <array>                                // array
 #include <cstddef>                              // size_t
@@ -12,7 +13,6 @@ namespace board {
 template<class Board>
 class Column
 {
-private:
         // simulate a constexpr lambda (not allowed in C++14)
         struct lambda
         {
@@ -32,7 +32,7 @@ private:
         }
 
         static constexpr auto N = Board::width();
-        using Set = typename Board::set_type;
+        using Set = set_type<Board>;
         using table_type = std::array<Set, N>;
 
         static constexpr table_type table[] =
@@ -44,6 +44,7 @@ private:
 public:
         static constexpr auto mask(bool color, int column) noexcept
         {
+                assert(column < N);
                 return table[color][static_cast<std::size_t>(column)];
         }
 };

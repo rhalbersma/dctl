@@ -2,12 +2,13 @@
 #include <dctl/angle.hpp>                       // Angle, is_positive
 #include <dctl/board/mask/king_targets.hpp>     // KingTargets
 #include <dctl/ray/iterator.hpp>                // Iterator
+#include <dctl/set_type.hpp>                    // set_type
 #include <dctl/utility/first.hpp>               // First
 
 namespace dctl {
 namespace ray {
 
-template<class Board, int Direction, class Set = set_type_t<Board>>
+template<class Board, int Direction, class Set = set_type<Board>>
 auto classical(ray::Iterator<Board, Direction> from, Set const& propagator)
 {
         constexpr auto theta = Angle{Direction};
