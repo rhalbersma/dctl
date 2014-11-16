@@ -22,10 +22,10 @@ private:
 
                 constexpr auto operator()(int sq) const noexcept
                 {
-                        auto const separation = Board::height - 2 * rows_;
+                        auto const separation = Board::height() - 2 * rows_;
                         auto const y = to_llo(sq, Board::outer_grid).y;
-                        auto const min_y = color_ == Color::white ? 0 : Board::height - (Board::height - separation) / 2;
-                        auto const max_y = color_ == Color::white ? (Board::height - separation) / 2 : Board::height;
+                        auto const min_y = color_ == Color::white ? 0 : Board::height() - (Board::height() - separation) / 2;
+                        auto const max_y = color_ == Color::white ? (Board::height() - separation) / 2 : Board::height();
                         return min_y <= y && y < max_y;
                 }
         };
@@ -36,7 +36,7 @@ private:
                 return make_set_if<Board>(lambda{Color, rows});
         }
 
-        static constexpr auto N = Board::height / 2 + 1;
+        static constexpr auto N = Board::height() / 2 + 1;
         using Set = typename Board::set_type;
         using table_type = std::array<Set, N>;
 
@@ -49,10 +49,10 @@ private:
 public:
         static constexpr auto mask(bool color, int separation) noexcept
         {
-                assert((Board::height - separation) % 2 == 0);
-                assert(Board::height % 2 <= separation && separation <= Board::height);
-                auto const rows = (Board::height - separation) / 2;
-                assert(0 <= rows && rows <= Board::height / 2);
+                assert((Board::height() - separation) % 2 == 0);
+                assert(Board::height() % 2 <= separation && separation <= Board::height());
+                auto const rows = (Board::height() - separation) / 2;
+                assert(0 <= rows && rows <= Board::height() / 2);
                 return table[color][static_cast<std::size_t>(rows)];
         }
 };

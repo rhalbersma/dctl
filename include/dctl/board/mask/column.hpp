@@ -21,7 +21,7 @@ private:
 
                 constexpr auto operator()(int sq) const noexcept
                 {
-                        return to_llo(sq, Board::outer_grid).x == (color_ == Color::white ? column_ : Board::width - 1 - column_);
+                        return to_llo(sq, Board::outer_grid).x == (color_ == Color::white ? column_ : Board::width() - 1 - column_);
                 }
         };
 
@@ -31,7 +31,7 @@ private:
                 return make_set_if<Board>(lambda{Color, column});
         }
 
-        static constexpr auto N = Board::width;
+        static constexpr auto N = Board::width();
         using Set = typename Board::set_type;
         using table_type = std::array<Set, N>;
 

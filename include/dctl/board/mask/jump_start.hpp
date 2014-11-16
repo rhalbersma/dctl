@@ -23,9 +23,9 @@ private:
                         auto const alpha = rotate(segment_ * theta + beta, Board::orientation);
                         auto const offset = is_diagonal(alpha) ? 2 : 4;
                         auto const min_x = is_left(alpha) ? offset : 0;
-                        auto const max_x = Board::width - (is_right(alpha) ? offset : 0);
+                        auto const max_x = Board::width() - (is_right(alpha) ? offset : 0);
                         auto const min_y = is_up(alpha) ? offset : 0;
-                        auto const max_y = Board::height - (is_down(alpha) ? offset : 0);
+                        auto const max_y = Board::height() - (is_down(alpha) ? offset : 0);
                         auto const coord = to_ulo(sq, Board::outer_grid);
                         return
                                 (min_x <= coord.x && coord.x < max_x) &&

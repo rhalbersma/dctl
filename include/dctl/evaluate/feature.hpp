@@ -36,7 +36,7 @@ public:
         static int tempo(Position<Rules, Board> const& p)
         {
                 int score = 0;
-                for (auto i = 1; i < Board::height; ++i)
+                for (auto i = 1; i < Board::height(); ++i)
                         score += Weight<Rules, Board>::tempo[i] * static_cast<int>((p.pieces(Color) & board::Row<Board>::mask(Color, i)).count());
                 return score;
         }
@@ -45,7 +45,7 @@ public:
         static int center(Position<Rules, Board> const& p)
         {
                 int score = 0;
-                for (auto i = 1; i < Board::width / 2; ++i) {
+                for (auto i = 1; i < Board::width() / 2; ++i) {
                         score += Weight<Rules, Board>::center[i] *
                         (
                                 static_cast<int>((p.pieces(Color) & board::Column<Board>::mask( Color, i)).count()) +
@@ -59,7 +59,7 @@ public:
         static int balance(Position<Rules, Board> const& p)
         {
                 int score = 0;
-                for (auto i = 0; i < Board::width / 2; ++i) {
+                for (auto i = 0; i < Board::width() / 2; ++i) {
                         score += Weight<Rules, Board>::balance[i] *
                         (
                                 static_cast<int>((p.pieces(Color) & board::Column<Board>::mask( Color, i)).count()) -

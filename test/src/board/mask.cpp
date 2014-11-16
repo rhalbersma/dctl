@@ -23,11 +23,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, BoardSequence)
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)
 {
         auto const alpha = boost::counting_iterator<int>{0};
-        auto const omega = boost::counting_iterator<int>{T::width};
+        auto const omega = boost::counting_iterator<int>{T::width()};
 
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
-                        return Column<T>::mask(Color::black, i) == Column<T>::mask(Color::white, T::width - 1 - i);
+                        return Column<T>::mask(Color::black, i) == Column<T>::mask(Color::white, T::width() - 1 - i);
                 })
         );
 
@@ -49,11 +49,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
 BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 {
         auto const alpha = boost::counting_iterator<int>{0};
-        auto const omega = boost::counting_iterator<int>{T::height};
+        auto const omega = boost::counting_iterator<int>{T::height()};
 
         BOOST_CHECK(
                 std::all_of(alpha, omega, [=](auto i){
-                        return Row<T>::mask(Color::black, i) == Row<T>::mask(Color::white, T::height - 1 - i);
+                        return Row<T>::mask(Color::black, i) == Row<T>::mask(Color::white, T::height() - 1 - i);
                 })
         );
 
