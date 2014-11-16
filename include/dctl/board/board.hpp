@@ -48,9 +48,9 @@ private:
         static constexpr auto NumSquares = outer_grid.size();
 
 public:
-        static constexpr auto width()     noexcept { return outer_grid.width(); }
-        static constexpr auto height()    noexcept { return outer_grid.height(); }
-        static constexpr auto inverted()  noexcept { return outer_grid.inverted(); }
+        static constexpr auto width()     noexcept { return outer_grid.width();     }
+        static constexpr auto height()    noexcept { return outer_grid.height();    }
+        static constexpr auto inverted()  noexcept { return outer_grid.inverted();  }
         static constexpr auto ll_parity() noexcept { return outer_grid.ll_parity(); }
         static constexpr auto ul_parity() noexcept { return outer_grid.ul_parity(); }
 
