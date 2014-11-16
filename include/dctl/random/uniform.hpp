@@ -1,7 +1,7 @@
 #pragma once
+#include <dctl/utility/make_array.hpp>  // make_array
 #include <cstdint>                      // uint64_t
 #include <random>                       // mt19937_64, uniform_int_distribution
-#include <dctl/utility/make_array.hpp>  // make_array
 
 namespace dctl {
 namespace random {
