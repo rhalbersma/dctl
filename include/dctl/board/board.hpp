@@ -4,7 +4,6 @@
 #include <dctl/board/dimensions.hpp>            // Dimensions
 #include <dctl/board/coordinates.hpp>           // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/board/grid.hpp>                  // Grid
-#include <dctl/board/shift_size.hpp>            // shift_size
 #include <dctl/board/detail/orientation.hpp>    // SizeMinimizingOrientation, Make
 #include <dctl/position/color.hpp>              // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
@@ -53,17 +52,17 @@ private:
         static constexpr auto N = Nb * std::numeric_limits<Block>::digits;
 
 public:
-        static constexpr auto width = dimensions.width;
-        static constexpr auto height = dimensions.height;
-        static constexpr auto inverted = dimensions.inverted;
+        static constexpr auto width()     noexcept { return outer_grid.width(); }
+        static constexpr auto height()    noexcept { return outer_grid.height(); }
+        static constexpr auto inverted()  noexcept { return outer_grid.inverted(); }
+        static constexpr auto ll_parity() noexcept { return outer_grid.ll_parity(); }
+        static constexpr auto ul_parity() noexcept { return outer_grid.ul_parity(); }
 
-        static constexpr auto ul_parity() { return board::ul_parity(dimensions); }
-
-        static constexpr auto modulo()  { return outer_grid.modulo();  }
-        static constexpr auto edge_re() { return outer_grid.edge_re(); }
-        static constexpr auto edge_ro() { return outer_grid.edge_ro(); }
-        static constexpr auto edge_le() { return outer_grid.edge_le(); }
-        static constexpr auto edge_lo() { return outer_grid.edge_lo(); }
+        static constexpr auto modulo()  noexcept { return outer_grid.modulo();  }
+        static constexpr auto edge_re() noexcept { return outer_grid.edge_re(); }
+        static constexpr auto edge_ro() noexcept { return outer_grid.edge_ro(); }
+        static constexpr auto edge_le() noexcept { return outer_grid.edge_le(); }
+        static constexpr auto edge_lo() noexcept { return outer_grid.edge_lo(); }
 
         using set_type = xstd::bitset<NumBits>;
 
@@ -79,7 +78,7 @@ public:
 
         static constexpr auto shift_size(Angle const& direction)
         {
-                return board::shift_size(inner_grid, direction);
+                return inner_grid.shift_size(direction);
         }
 
         static auto begin() noexcept

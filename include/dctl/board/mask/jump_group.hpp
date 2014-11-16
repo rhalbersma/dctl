@@ -41,10 +41,10 @@ private:
 
         static constexpr table_type table =
         {{
-                init(Board::outer_grid.edge_le() + 0),
-                init(Board::outer_grid.edge_le() + 1),
-                init(Board::outer_grid.edge_lo() + 0),
-                init(Board::outer_grid.edge_lo() + 1)
+                init(Board::edge_le() + 0),
+                init(Board::edge_le() + 1),
+                init(Board::edge_lo() + 0),
+                init(Board::edge_lo() + 1)
         }};
 
 public:

@@ -65,61 +65,61 @@ constexpr auto ulo_from_sco(T const& value, T const& bound) noexcept
 
 template<class Grid>
 constexpr auto
-to_ulo(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid)
+to_ulo(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid) noexcept
 {
         return Coordinates<origin::UpperLeft>{
-                ulo_from_sco(coord.x, grid.width ),
-                ulo_from_sco(coord.y, grid.height)
+                ulo_from_sco(coord.x, grid.width() ),
+                ulo_from_sco(coord.y, grid.height())
         };
 }
 
 template<class Grid>
 constexpr auto
-to_sco(Coordinates<origin::UpperLeft> const& coord, Grid const& grid)
+to_sco(Coordinates<origin::UpperLeft> const& coord, Grid const& grid) noexcept
 {
         return Coordinates<origin::ScreenCentered>{
-                sco_from_ulo(coord.x, grid.width ),
-                sco_from_ulo(coord.y, grid.height)
+                sco_from_ulo(coord.x, grid.width() ),
+                sco_from_ulo(coord.y, grid.height())
         };
 }
 
 template<class Grid>
 constexpr auto
-to_llo(Coordinates<origin::UpperLeft> const& coord, Grid const& grid)
+to_llo(Coordinates<origin::UpperLeft> const& coord, Grid const& grid) noexcept
 {
         return Coordinates<origin::LowerLeft>{
                 coord.x,
-                swap_llo_ulo(coord.y, grid.height)
+                swap_llo_ulo(coord.y, grid.height())
         };
 }
 
 template<class Grid>
 constexpr auto
-to_ulo(Coordinates<origin::LowerLeft> const& coord, Grid const& grid)
+to_ulo(Coordinates<origin::LowerLeft> const& coord, Grid const& grid) noexcept
 {
         return Coordinates<origin::UpperLeft>{
                 coord.x,
-                swap_llo_ulo(coord.y, grid.height)
+                swap_llo_ulo(coord.y, grid.height())
         };
 }
 
 template<class Grid>
 constexpr auto
-to_llo(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid)
+to_llo(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid) noexcept
 {
         return to_llo(to_ulo(coord, grid), grid);
 }
 
 template<class Grid>
 constexpr auto
-to_sco(Coordinates<origin::LowerLeft> const& coord, Grid const& grid)
+to_sco(Coordinates<origin::LowerLeft> const& coord, Grid const& grid) noexcept
 {
         return to_sco(to_ulo(coord, grid), grid);
 }
 
 template<class Grid>
 constexpr auto
-to_square(Coordinates<origin::UpperLeft> const& coord, Grid const& grid) noexcept
+to_square(Coordinates<origin::UpperLeft> const& coord, Grid const& grid)
 {
         auto const row_parity = coord.y % 2;
         auto const row_pairs = coord.y / 2;
@@ -133,28 +133,28 @@ to_square(Coordinates<origin::UpperLeft> const& coord, Grid const& grid) noexcep
 
 template<class Grid>
 constexpr auto
-to_square(Coordinates<origin::LowerLeft> const& coord, Grid const& grid) noexcept
+to_square(Coordinates<origin::LowerLeft> const& coord, Grid const& grid)
 {
         return to_square(to_ulo(coord, grid), grid);
 }
 
 template<class Grid>
 constexpr auto
-to_square(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid) noexcept
+to_square(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid)
 {
         return to_square(to_ulo(coord, grid), grid);
 }
 
 template<class Grid>
 constexpr auto
-to_ulo(int square, Grid const& grid) noexcept
+to_ulo(int square, Grid const& grid)
 {
         auto const row_pairs = square / grid.modulo();
         auto const R0 = square % grid.modulo();
         auto const R1 = R0 - grid.edge_lo();
         auto const row_parity = R1 >= 0;
         auto const R = row_parity ? R1 : R0;
-        auto const X = 2 * R + (row_parity ^ !ul_parity(grid));
+        auto const X = 2 * R + (row_parity ^ !grid.ul_parity());
         auto const Y = 2 * row_pairs + row_parity;
 
         return Coordinates<origin::UpperLeft>{ X, Y };
@@ -162,14 +162,14 @@ to_ulo(int square, Grid const& grid) noexcept
 
 template<class Grid>
 constexpr auto
-to_llo(int square, Grid const& grid) noexcept
+to_llo(int square, Grid const& grid)
 {
         return to_llo(to_ulo(square, grid), grid);
 }
 
 template<class Grid>
 constexpr auto
-to_sco(int square, Grid const& grid) noexcept
+to_sco(int square, Grid const& grid)
 {
         return to_sco(to_ulo(square, grid), grid);
 }

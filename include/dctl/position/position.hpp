@@ -60,7 +60,7 @@ public:
                 hash_ = init_hash(*this);
         }
 
-        static Position initial(int separation = initial_gap_v<Rules> + Board::height % 2)
+        static Position initial(int separation = initial_gap_v<Rules> + Board::height() % 2)
         {
                 return {
                         board::Initial<Board>::mask(Color::black, separation),

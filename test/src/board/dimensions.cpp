@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimens
                 C1, C2, C4
         };
 
-        auto const dim = Dimensions{ T::width, T::height, T::inverted };
+        auto const dim = Dimensions{ T::width(), T::height(), T::inverted() };
 
         BOOST_CHECK(
                 std::all_of(begin(C_N), end(C_N), [&](auto const& g) {
