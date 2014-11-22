@@ -5,6 +5,9 @@ namespace dctl {
 
 class ActiveColor
 {
+        bool color_{};
+        enum { pass = true };
+
 public:
         // constructors
 
@@ -21,7 +24,7 @@ public:
         void make(Move const&, Index& hash) noexcept
         {
                 color_ ^= pass;
-                hash ^= random::ActiveColor<>::table_[pass];
+                hash ^= random::ActiveColor<>::color[pass];
         }
 
         // observers
@@ -30,18 +33,12 @@ public:
         {
                 return color_;
         }
-
-private:
-        // representation
-
-        enum { pass = true };
-        bool color_{};
 };
 
-inline
-auto init_hash(ActiveColor const& to_move)
+template<class TabulationHash>
+auto hash_xor_accumulate(TabulationHash const& h, ActiveColor const& to_move)
 {
-        return random::ActiveColor<>::table_[to_move];
+        return h.color[to_move];
 }
 
 }       // namespace dctl

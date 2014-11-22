@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/position/mru_king/zobrist.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/set_type.hpp>
 
@@ -96,5 +97,14 @@ private:
         std::size_t moves_{};
         bool is_active_{};
 };
+
+template<class TabulationHash, class Rules, class Board>
+auto hash_xor_accumulate(TabulationHash const& h, MostRecentlyUsedKing<Rules, Board> const& mru_king, bool to_move)
+{
+        return
+                h.index[to_move][mru_king.index()] ^
+                h.moves[to_move][mru_king.moves()]
+        ;
+}
 
 }       // namespace dctl

@@ -31,18 +31,4 @@ MostRecentlyUsedKing<M, N>::moves[] =
 };
 
 }       // namespace random
-
-template<class Rules, class Board>
-auto init_hash(MostRecentlyUsedKing<Rules, Board> const& mru_king, bool to_move)
-{
-        enum { M = MostRecentlyUsedKing<Rules, Board>::M };
-        enum { N = MostRecentlyUsedKing<Rules, Board>::N };
-        using Zobrist = random::MostRecentlyUsedKing<M, N>;
-
-        return
-                Zobrist::index[to_move][mru_king.index()] ^
-                Zobrist::moves[to_move][mru_king.moves()]
-        ;
-}
-
 }       // namespace dctl

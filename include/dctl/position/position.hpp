@@ -2,11 +2,13 @@
 #include <dctl/position/position_fwd.hpp>
 #include <dctl/board/mask.hpp>
 #include <dctl/move/move.hpp>
-#include <dctl/position/piece_placement/piece_placement.hpp>
 #include <dctl/position/active_color/active_color.hpp>
-#include <dctl/position/reversible_moves.hpp>
+#include <dctl/position/active_color/zobrist.hpp>
 #include <dctl/position/mru_king/mru_king.hpp>
 #include <dctl/position/mru_king/zobrist.hpp>
+#include <dctl/position/piece_placement/piece_placement.hpp>
+#include <dctl/position/piece_placement/zobrist.hpp>
+#include <dctl/position/reversible_moves.hpp>
 #include <dctl/position/color.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/set_type.hpp>
@@ -18,7 +20,7 @@
 namespace dctl {
 
 template<class Rules, class Board>
-auto init_hash(Position<Rules, Board> const& p);
+auto hash_xor_accumulate(Position<Rules, Board> const& p);
 
 template <class Rules, class Board>
 class Position
@@ -38,6 +40,10 @@ private:
         TreeIterator parent_{};
         uint64_t hash_{};
         int distance_to_root_{};
+
+        enum { M = MostRecentlyUsedKing<Rules, Board>::M };
+        enum { N = MostRecentlyUsedKing<Rules, Board>::N };
+
 public:
         // initialize with a set of bitboards and a color
         Position(Set const& black_pieces, Set const& white_pieces, Set const& kings, bool side_to_move)
@@ -45,7 +51,7 @@ public:
                 piece_placement_{black_pieces, white_pieces, kings},
                 active_color_{side_to_move}
         {
-                hash_ = init_hash(*this);
+                hash_ = hash_xor_accumulate(*this);
         }
 
         Position(
@@ -57,7 +63,7 @@ public:
                 piece_placement_{black_pawns, black_kings, white_pawns, white_kings},
                 active_color_{side_to_move}
         {
-                hash_ = init_hash(*this);
+                hash_ = hash_xor_accumulate(*this);
         }
 
         static Position initial(int separation = initial_gap_v<Rules> + Board::height() % 2)
@@ -195,7 +201,7 @@ private:
         void make_active_mru_king(MostRecentlyUsedKing<Rules, Board>& mru, Move const& m)
         {
                 if (mru.is_active()) {
-                        hash_ ^= init_hash(mru, m.active_color());
+                        hash_ ^= hash_xor_accumulate(random::MostRecentlyUsedKing<M, N>{}, mru, m.active_color());
                         if (m.is_reversible()) {
                                 if (m.from() != mru.square())
                                         mru.init(m.dest());
@@ -204,7 +210,7 @@ private:
                         } else {
                                 mru.reset();
                         }
-                        hash_ ^= init_hash(mru, m.active_color());
+                        hash_ ^= hash_xor_accumulate(random::MostRecentlyUsedKing<M, N>{}, mru, m.active_color());
                 }
 
                 if (m.is_promotion()) {
@@ -231,9 +237,9 @@ private:
 
                 // capture the most recently used king
                 if (deactivate || m.captured_kings().test(mru.square())) {
-                        hash_ ^= init_hash(mru, !m.active_color());
+                        hash_ ^= hash_xor_accumulate(random::MostRecentlyUsedKing<M, N>{}, mru, !m.active_color());
                         mru.reset();
-                        hash_ ^= init_hash(mru, !m.active_color());
+                        hash_ ^= hash_xor_accumulate(random::MostRecentlyUsedKing<M, N>{}, mru, !m.active_color());
                 }
 
                 if (deactivate)
@@ -249,7 +255,7 @@ private:
 
         bool hash_invariant() const
         {
-                return hash_ == init_hash(*this);
+                return hash_ == hash_xor_accumulate(*this);
         }
 };
 
@@ -272,13 +278,17 @@ decltype(auto) passive_restricted(Position const& p)
 }
 
 template<class Rules, class Board>
-auto init_hash(Position<Rules, Board> const& p)
+auto hash_xor_accumulate(Position<Rules, Board> const& p)
 {
+        enum { NumSquares = set_type<Board>::size() };
+        enum { M = MostRecentlyUsedKing<Rules, Board>::M };
+        enum { N = MostRecentlyUsedKing<Rules, Board>::N };
+
         return
-                init_hash(p.piece_placement())                  ^
-                init_hash(p.active_color())                     ^
-                init_hash(p.mru_king(Color::black), Color::black) ^
-                init_hash(p.mru_king(Color::white), Color::white)
+                hash_xor_accumulate(random::PiecePlacement<NumSquares>{}, p.piece_placement())                    ^
+                hash_xor_accumulate(random::ActiveColor<>{}             , p.active_color())                       ^
+                hash_xor_accumulate(random::MostRecentlyUsedKing<M, N>{}, p.mru_king(Color::black), Color::black) ^
+                hash_xor_accumulate(random::MostRecentlyUsedKing<M, N>{}, p.mru_king(Color::white), Color::white)
         ;
 }
 
