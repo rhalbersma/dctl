@@ -11,9 +11,22 @@ namespace dctl {
 template<class Rules, class Board>
 class PiecePlacement
 {
-public:
         using Set = set_type<Board>;
 
+        Set pieces_[2];
+        Set kings_;
+
+        bool invariant() const
+        {
+                auto constexpr squares = board::Squares<Board>::mask();
+                return
+                         kings().is_subset_of(pieces()) &&
+                         pieces().is_subset_of(squares) &&
+                         disjoint(pieces(Color::black), pieces(Color::white))
+                ;
+        }
+
+public:
         PiecePlacement() = default;
 
         PiecePlacement(Set black_pieces, Set white_pieces, Set kings)
@@ -54,8 +67,8 @@ public:
                 if (m.is_jump()) {
                         pieces_[!m.active_color()] ^= m.captured_pieces();
                         kings_ ^= m.captured_kings();
-                        hash ^= zobrist::accumulate(m.captured_pieces(), Zobrist::pieces[!m.active_color()]);
-                        hash ^= zobrist::accumulate(m.captured_kings() , Zobrist::kings                    );
+                        hash ^= zobrist::hash_xor_accumulate(Zobrist::pieces[!m.active_color()], m.captured_pieces());
+                        hash ^= zobrist::hash_xor_accumulate(Zobrist::kings                    , m.captured_kings() );
                 }
                 assert(invariant());
         }
@@ -97,34 +110,15 @@ public:
                 auto constexpr squares = board::Squares<Board>::mask();
                 return squares ^ pieces();
         }
-
-private:
-        // contracts
-
-        bool invariant() const
-        {
-                auto constexpr squares = board::Squares<Board>::mask();
-                return
-                         kings().is_subset_of(pieces()) &&
-                         pieces().is_subset_of(squares) &&
-                         disjoint(pieces(Color::black), pieces(Color::white))
-                ;
-        }
-
-        // representation
-
-        Set pieces_[2];
-        Set kings_;
 };
 
-template<class Rules, class Board>
-auto init_hash(PiecePlacement<Rules, Board> const& m)
+template<class TabulationHash, class Rules, class Board>
+auto hash_xor_accumulate(TabulationHash const& h, PiecePlacement<Rules, Board> const& p)
 {
-        using Zobrist = random::PiecePlacement<set_type<Board>::size()>;
         return
-                zobrist::accumulate(m.pieces(Color::black), Zobrist::pieces[Color::black]) ^
-                zobrist::accumulate(m.pieces(Color::white), Zobrist::pieces[Color::white]) ^
-                zobrist::accumulate(m.kings()             , Zobrist::kings               )
+                zobrist::hash_xor_accumulate(h.pieces[Color::black], p.pieces(Color::black)) ^
+                zobrist::hash_xor_accumulate(h.pieces[Color::white], p.pieces(Color::white)) ^
+                zobrist::hash_xor_accumulate(h.kings               , p.kings()             )
         ;
 }
 

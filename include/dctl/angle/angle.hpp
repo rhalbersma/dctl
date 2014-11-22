@@ -76,32 +76,32 @@ public:
 inline
 constexpr auto operator+(Angle const& lhs, Angle const& rhs) noexcept
 {
-        return Angle(lhs) += rhs;
+        Angle nrv{lhs}; nrv += rhs; return nrv;
 }
 
 inline
 constexpr auto operator-(Angle const& lhs, Angle const& rhs) noexcept
 {
-        return Angle(lhs) -= rhs;
+        Angle nrv{lhs}; nrv -= rhs; return nrv;
 }
 
 inline
 constexpr auto operator*(Angle const& a, int n) noexcept
 {
-        return Angle(a) *= n;
+        Angle nrv{a}; nrv *= n; return nrv;
 }
 
 inline
 constexpr auto operator*(int n, Angle const& a) noexcept
 {
-        return Angle(a) *= n;
+        Angle nrv{a}; nrv *= n; return nrv;
 }
 
 inline
 constexpr auto operator/(Angle const& a, int n) // Throws: nothing.
 {
         assert(n != 0);
-        return Angle(a) /= n;
+        Angle nrv{a}; nrv /= n; return nrv;
 }
 
 }       // namespace dctl

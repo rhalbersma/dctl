@@ -1,14 +1,13 @@
-#include <iomanip>
-#include <iostream>
-#include <stack>
-#include <boost/range/algorithm/sort.hpp>
-#include <boost/range/algorithm/transform.hpp>
-#include <dctl/position/position.hpp>
-#include <dctl/move/ostream.hpp>
-#include <dctl/setup/diagram.hpp>
+#include <dctl/move.hpp>
+#include <dctl/position.hpp>
 #include <dctl/setup/string.hpp>
 #include <dctl/successor/generate.hpp>
 #include <dctl/utility/stack_vector.hpp>
+#include <boost/range/algorithm/sort.hpp>
+#include <boost/range/algorithm/transform.hpp>
+#include <iomanip>
+#include <iostream>
+#include <stack>
 
 // customize rules and board form these headers
 #include <dctl/rules.hpp>
@@ -33,7 +32,7 @@ int main()
 
         while (true) {
                 auto const p = game.top();
-                std::cout << setup::diagram<pdn::protocol>()(p);
+                std::cout << p;
 
                 auto moves = successor::generate(p);
                 boost::sort(moves, [](auto const& L, auto const& R) {

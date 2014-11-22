@@ -9,12 +9,12 @@ namespace random {
 template<class = void>
 struct ActiveColor
 {
-        static std::array<uint64_t, 2> const table_;
+        static std::array<uint64_t, 2> const color;
 };
 
 template<class _>
 std::array<uint64_t, 2> const
-ActiveColor<_>::table_ = cat_zero_runif<1>();
+ActiveColor<_>::color = cat_zero_runif<1>();
 
 }       // namespace random
 }       // namespace dctl
