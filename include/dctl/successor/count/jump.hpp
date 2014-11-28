@@ -18,10 +18,10 @@ public:
         {
                 using M = Move_t<Position>;
                 Arena<M> a;
-                auto moves_ = stack_vector<M>(Alloc<M>{a});
-                moves_.reserve(DCTL_PP_STACK_RESERVE);
-                Generate<Color, Pieces, select::jump>{}(p, moves_);
-                return moves_.size();
+                auto moves = stack_vector<M>(Alloc<M>{a});
+                moves.reserve(DCTL_PP_STACK_RESERVE);
+                Generate<Color, Pieces, select::jump>{}(p, moves);
+                return moves.size();
         }
 };
 

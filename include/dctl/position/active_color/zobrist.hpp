@@ -1,10 +1,10 @@
 #pragma once
+#include <dctl/random/uniform.hpp>      // cat_zero_runif
 #include <array>                        // array
 #include <cstdint>                      // uint64_t
-#include <dctl/random/uniform.hpp>      // cat_zero_runif
 
 namespace dctl {
-namespace random {
+namespace zobrist {
 
 template<class = void>
 struct ActiveColor
@@ -14,7 +14,7 @@ struct ActiveColor
 
 template<class _>
 std::array<uint64_t, 2> const
-ActiveColor<_>::color = cat_zero_runif<1>();
+ActiveColor<_>::color = random::cat_zero_runif<1>();
 
-}       // namespace random
+}       // namespace zobrist
 }       // namespace dctl

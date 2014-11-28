@@ -4,7 +4,7 @@
 #include <cstddef>                      // ptrdiff_t, size_t
 #include <functional>                   // equal_to, hash
 #include <memory>                       // allocator
-#include <type_traits>                  // integral_constant, is_integral, false_type, true_type
+#include <type_traits>                  // is_integral, false_type, true_type
 #include <utility>                      // make_pair, pair
 #include <vector>                       // vector
 #include <dctl/hash/extract.hpp>

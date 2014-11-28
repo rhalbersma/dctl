@@ -1,20 +1,24 @@
 #pragma once
-#include <dctl/position/mru_king/zobrist.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/set_type.hpp>
+#include <cstddef>
 
 namespace dctl {
 
 template<class Rules, class Board>
-class MostRecentlyUsedKing
+class MostRecentlyPushedKing
 {
+        std::size_t index_{};
+        std::size_t moves_{};
+        bool is_active_{};
+
 public:
         enum { M = max_same_king_push_v<Rules> };
         enum { N = set_type<Board>::size() };
 
         // constructors
 
-        constexpr MostRecentlyUsedKing() = default;
+        constexpr MostRecentlyPushedKing() = default;
 
         // modifiers
 
@@ -89,21 +93,14 @@ public:
         {
                 return moves_ == M;
         }
-
-private:
-        // representation
-
-        std::size_t index_{};
-        std::size_t moves_{};
-        bool is_active_{};
 };
 
 template<class TabulationHash, class Rules, class Board>
-auto hash_xor_accumulate(TabulationHash const& h, MostRecentlyUsedKing<Rules, Board> const& mru_king, bool to_move)
+auto hash_xor_accumulate(TabulationHash const& h, MostRecentlyPushedKing<Rules, Board> const& mrp_king, bool to_move)
 {
         return
-                h.index[to_move][mru_king.index()] ^
-                h.moves[to_move][mru_king.moves()]
+                h.index[to_move][mrp_king.index()] ^
+                h.moves[to_move][mrp_king.moves()]
         ;
 }
 

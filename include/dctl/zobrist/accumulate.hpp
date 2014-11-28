@@ -1,7 +1,6 @@
 #pragma once
 #include <boost/range/numeric.hpp>      // accumulate
 #include <array>                        // array
-#include <cassert>                      // assert
 
 namespace dctl {
 namespace zobrist {

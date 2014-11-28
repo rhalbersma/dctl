@@ -1,6 +1,6 @@
 #pragma once
 #include <type_traits>                          // false_type, true_type
-#include <dctl/position/mru_king/mru_king.hpp>  // is_max
+#include <dctl/position/mrp_king/mrp_king.hpp>  // is_max
 
 namespace dctl {
 namespace detail {
@@ -17,8 +17,8 @@ template<class Position>
 auto moveable_kings(Position const& p, bool color, std::true_type)
 {
         auto kings = p.kings(color);
-        if (p.kings(color).any() && p.pawns(color).any() && p.mru_king(color).is_max())
-                kings.reset(p.mru_king(color).square());
+        if (p.kings(color).any() && p.pawns(color).any() && p.mrp_king(color).is_max())
+                kings.reset(p.mrp_king(color).square());
         return kings;
 }
 

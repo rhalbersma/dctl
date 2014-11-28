@@ -35,7 +35,7 @@ private:
         // representation
 
         Set const& propagate_;
-        Sequence& moves_;
+        Sequence& moves;
 
 public:
         // constructors
@@ -43,7 +43,7 @@ public:
         Generate(Set const& p, Sequence& m)
         :
                 propagate_{p},
-                moves_{m}
+                moves{m}
         {}
 
         // function call operators
@@ -82,7 +82,7 @@ private:
         auto transform_movers(Set const& active_kings) const
         {
                 auto const movers = active_kings & Set(*std::prev(along_wave<Direction>(propagate_)));
-                boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
+                boost::push_back(moves, movers | boost::adaptors::transformed([](auto const& from_sq) {
                         return Move{from_sq, *++along_ray<Direction>(from_sq), Color};
                 }));
         }
@@ -91,7 +91,7 @@ private:
         auto transform_targets(Iterator from) const
         {
                 auto const targets = ray::classical(from, propagate_);
-                boost::push_back(moves_, targets | boost::adaptors::transformed([=](auto const& dest_sq) {
+                boost::push_back(moves, targets | boost::adaptors::transformed([=](auto const& dest_sq) {
                         return Move{*from, dest_sq, Color};
                 }));
         }

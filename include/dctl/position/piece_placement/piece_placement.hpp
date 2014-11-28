@@ -50,7 +50,7 @@ public:
         template<class Move, class Index>
         void make(Move const& m, Index& hash)
         {
-                using Zobrist = random::PiecePlacement<set_type<Board>::size()>;
+                using Zobrist = zobrist::PiecePlacement<set_type<Board>::size()>;
                 pieces_[m.active_color()].reset(m.from());
                 pieces_[m.active_color()].set(m.dest());
                 hash ^= Zobrist::pieces[m.active_color()][m.from()];
