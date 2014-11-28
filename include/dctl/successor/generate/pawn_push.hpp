@@ -33,7 +33,7 @@ private:
         // representation
 
         Set const& propagate_;
-        Sequence& moves_;
+        Sequence& moves;
 
 public:
         // constructors
@@ -41,7 +41,7 @@ public:
         Generate(Set const& p, Sequence& m)
         :
                 propagate_{p},
-                moves_{m}
+                moves{m}
         {}
 
         // function call operators
@@ -60,7 +60,7 @@ private:
         auto transform_movers(Set const& active_pawns) const
         {
                 auto const movers = active_pawns & Set(*std::prev(along_wave<Direction>(propagate_)));
-                boost::push_back(moves_, movers | boost::adaptors::transformed([](auto const& from_sq) {
+                boost::push_back(moves, movers | boost::adaptors::transformed([](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
                         return Move{from_sq, dest_sq, is_promotion(dest_sq), Color};
                 }));

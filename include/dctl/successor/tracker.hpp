@@ -1,20 +1,17 @@
 #pragma once
-#include <dctl/angle.hpp>               // Angle, is_orthogonal
-#include <dctl/board/board.hpp>
+#include <dctl/angle.hpp>                       // Angle, is_orthogonal
+#include <dctl/board/mask.hpp>
 #include <dctl/position/promotion.hpp>
 #include <dctl/position/unary_projections.hpp>
-#include <dctl/pieces/pieces.hpp>
-#include <dctl/rule_traits.hpp>
-#include <dctl/successor/select/jump.hpp>
-#include <dctl/utility/total_order.hpp>
 #include <dctl/ray.hpp>
+#include <dctl/rule_traits.hpp>
+#include <dctl/type_traits.hpp>                 // board_type_t, rules_type_t
+#include <dctl/utility/stack_vector.hpp>        // DCTL_PP_STACK_RESERVE
 #include <dctl/wave/iterator.hpp>
-#include <dctl/board/mask.hpp>
-#include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
-#include <cassert>                      // assert
-#include <iterator>                     // begin, end, prev
-#include <type_traits>                  // integral_constant, is_same, false_type, true_type
-#include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
+#include <cassert>                              // assert
+#include <cstddef>
+#include <iterator>                             // begin, end, prev
+#include <type_traits>                          // false_type, true_type
 
 namespace dctl {
 namespace successor {
@@ -22,6 +19,29 @@ namespace successor {
 template<bool Color, class Position>
 class Tracker
 {
+public:
+        using Rules = rules_type_t<Position>;
+        using rules_type = Rules;
+        using Board = board_type_t<Position>;
+        using Set = set_type_t<Position>;
+
+private:
+        Set const king_targets_;
+        Set initial_targets_;
+        Set remaining_targets_;
+        Set not_occupied_;
+        bool is_with_king_{};
+        bool is_promotion_{};
+        Set king_order_{};
+        Arena<std::size_t> sqa_;
+        stack_vector<std::size_t> visited_path_ = stack_vector<std::size_t>(Alloc<std::size_t>{sqa_});
+        Arena<std::size_t> pca_;
+        stack_vector<std::size_t> removed_pieces_ = stack_vector<std::size_t>(Alloc<std::size_t>{pca_});
+
+        auto invariant() const
+        {
+                return remaining_targets_.is_subset_of(initial_targets_);
+        }
 public:
         // constructors
 
@@ -36,11 +56,6 @@ public:
                 removed_pieces_.reserve(DCTL_PP_STACK_RESERVE);
                 assert(invariant());
         }
-
-        using Rules = rules_type_t<Position>;
-        using rules_type = Rules;
-        using Board = board_type_t<Position>;
-        using Set = set_type_t<Position>;
 
         // modifiers
 
@@ -244,27 +259,6 @@ private:
                 assert(!removed_pieces_.empty());
                 return removed_pieces_.back();
         }
-
-        // contracts
-
-        auto invariant() const
-        {
-                return remaining_targets_.is_subset_of(initial_targets_);
-        }
-
-        // representation
-
-        Set const king_targets_;
-        Set initial_targets_;
-        Set remaining_targets_;
-        Set not_occupied_;
-        bool is_with_king_{};
-        bool is_promotion_{};
-        Set king_order_{};
-        Arena<std::size_t> sqa_;
-        stack_vector<std::size_t> visited_path_ = stack_vector<std::size_t>(Alloc<std::size_t>{sqa_});
-        Arena<std::size_t> pca_;
-        stack_vector<std::size_t> removed_pieces_ = stack_vector<std::size_t>(Alloc<std::size_t>{pca_});
 };
 
 }       // namespace successor

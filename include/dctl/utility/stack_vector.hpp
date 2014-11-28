@@ -1,7 +1,6 @@
 #pragma once
-#include <vector>                               // vector
-#include <dctl/utility/algorithm.hpp>           // contains
 #include <dctl/utility/arena_allocator.hpp>     // arena, short_alloc
+#include <vector>                               // vector
 
 namespace dctl {
 

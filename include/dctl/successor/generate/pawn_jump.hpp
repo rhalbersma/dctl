@@ -44,16 +44,16 @@ private:
 
         // representation
 
-        State& tracker_;
-        Sequence& moves_;
+        State& tracker;
+        Sequence& moves;
 
 public:
         // constructors
 
         explicit Generate(State& t, Sequence& m)
         :
-                tracker_{t},
-                moves_{m}
+                tracker{t},
+                moves{m}
         {}
 
         // function call operators
@@ -77,9 +77,9 @@ private:
         // pawns that cannot capture kings
         void king_targets_dispatch(Set const& active_pawns, std::false_type) const
         {
-                tracker_.toggle_king_targets();
+                tracker.toggle_king_targets();
                 branch(active_pawns);
-                tracker_.toggle_king_targets();
+                tracker.toggle_king_targets();
         }
 
         void branch(Set const& active_pawns) const
@@ -130,7 +130,7 @@ private:
         template<int Direction>
         void serialize(Set const& active_pawns) const
         {
-                auto const jumpers = active_pawns & Set(*std::prev(along_wave<Direction>(tracker_.template targets<Direction>())));
+                auto const jumpers = active_pawns & Set(*std::prev(along_wave<Direction>(tracker.template targets<Direction>())));
                 for (auto&& from_sq : jumpers)
                         find_first(along_ray<Direction>(from_sq));
         }
@@ -139,27 +139,27 @@ private:
         void find_first(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker_.launch(*jumper);
+                tracker.launch(*jumper);
                 capture(std::next(jumper));
-                tracker_.finish();
+                tracker.finish();
         }
 
         template<class Iterator>
         void capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker_.capture(*jumper);
+                tracker.capture(*jumper);
                 land(std::next(jumper));
-                tracker_.release();
+                tracker.release();
         }
 
         template<class Iterator>
         void land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker_.visit(*jumper);
+                tracker.visit(*jumper);
                 find_next(jumper);
-                tracker_.leave();
+                tracker.leave();
         }
 
         template<class Iterator>
@@ -177,9 +177,9 @@ private:
                         return;
 
                 if (is_promotion(*jumper)) {
-                        tracker_.toggle_is_promotion();
+                        tracker.toggle_is_promotion();
                         add_jump();
-                        tracker_.toggle_is_promotion();
+                        tracker.toggle_is_promotion();
                 } else {
                         add_jump();
                 }
@@ -190,10 +190,10 @@ private:
         void promotion_dispatch(Iterator jumper, std::true_type) const
         {
                 if (is_promotion(*jumper)) {
-                        tracker_.toggle_is_promotion();
-                        if (!KingJumps{tracker_, moves_}.promote_en_passant(jumper))
+                        tracker.toggle_is_promotion();
+                        if (!KingJumps{tracker, moves}.promote_en_passant(jumper))
                                 add_jump();
-                        tracker_.toggle_is_promotion();
+                        tracker.toggle_is_promotion();
                 } else {
                         if (!explore(jumper))
                                 add_jump();
@@ -334,7 +334,7 @@ private:
         template<class Iterator>
         bool is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(std::next(jumper)) && tracker_.targets(jumper)))
+                if (!(is_onboard(std::next(jumper)) && tracker.targets(jumper)))
                         return false;
 
                 capture(jumper);
@@ -343,7 +343,7 @@ private:
 
         void add_jump() const
         {
-                moves_.emplace_back(tracker_);
+                moves.emplace_back(tracker);
         }
 
         template<int Direction>

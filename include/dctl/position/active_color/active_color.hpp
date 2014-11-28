@@ -24,7 +24,7 @@ public:
         void make(Move const&, Index& hash) noexcept
         {
                 color_ ^= pass;
-                hash ^= random::ActiveColor<>::color[pass];
+                hash ^= zobrist::ActiveColor<>::color[pass];
         }
 
         // observers

@@ -40,32 +40,32 @@ private:
 
         // representation
 
-        State& tracker_;
-        Sequence& moves_;
+        State& tracker;
+        Sequence& moves;
 
 public:
         // constructors
 
         Generate(State& c, Sequence& m)
         :
-                tracker_{c},
-                moves_{m}
+                tracker{c},
+                moves{m}
         {}
 
         // function call operators
 
         auto operator()(Set const& active_kings) const
         {
-                assert(!tracker_.is_with_king());
-                tracker_.toggle_is_with_king();
+                assert(!tracker.is_with_king());
+                tracker.toggle_is_with_king();
                 serialize(active_kings);
-                tracker_.toggle_is_with_king();
+                tracker.toggle_is_with_king();
         }
 
         template<class Iterator>
         auto promote_en_passant(Iterator jumper) const
         {
-                assert(!tracker_.is_with_king());
+                assert(!tracker.is_with_king());
                 return explore(jumper);
         }
 
@@ -73,9 +73,9 @@ private:
         void serialize(Set const& active_kings) const
         {
                 for (auto&& from_sq : active_kings) {
-                        tracker_.launch(from_sq);
+                        tracker.launch(from_sq);
                         branch(from_sq);
-                        tracker_.finish();
+                        tracker.finish();
                 }
         }
 
@@ -110,8 +110,8 @@ private:
         template<class Iterator>
         void find_first(Iterator jumper) const
         {
-                slide(jumper, tracker_.template path<ray::direction_v<Iterator>>());
-                if (is_onboard(std::next(jumper)) && tracker_.targets(jumper))
+                slide(jumper, tracker.template path<ray::direction_v<Iterator>>());
+                if (is_onboard(std::next(jumper)) && tracker.targets(jumper))
                         capture(jumper);
         }
 
@@ -119,18 +119,18 @@ private:
         void capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker_.capture(*jumper);
+                tracker.capture(*jumper);
                 land(std::next(jumper));
-                tracker_.release();
+                tracker.release();
         }
 
         template<class Iterator>
         void land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker_.visit(*jumper);
+                tracker.visit(*jumper);
                 find_next(jumper);
-                tracker_.leave();
+                tracker.leave();
         }
 
         template<class Iterator>
@@ -180,17 +180,17 @@ private:
         template<class Iterator>
         bool scan_turn_dispatch(Iterator jumper, std::true_type) const
         {
-                // CORRECTNESS: tracker_.template path<Direction>() would be an ERROR here
+                // CORRECTNESS: tracker.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
-                assert(is_onboard(jumper) && tracker_.path(*jumper));
+                assert(is_onboard(jumper) && tracker.path(*jumper));
                 auto found_next = turn(jumper);
                 auto slider = std::next(jumper);
-                while (is_onboard(slider) && tracker_.path(*slider)) {
-                        tracker_.last_visit(*slider);
+                while (is_onboard(slider) && tracker.path(*slider)) {
+                        tracker.last_visit(*slider);
                         found_next |= turn(slider);
                         ++slider;
                 }
-                tracker_.last_visit(*jumper);
+                tracker.last_visit(*jumper);
                 return found_next |= is_en_prise(slider);
         }
 
@@ -241,7 +241,7 @@ private:
         template<class Iterator>
         bool scan(Iterator jumper) const
         {
-                slide(jumper, tracker_.template path<ray::direction_v<Iterator>>());
+                slide(jumper, tracker.template path<ray::direction_v<Iterator>>());
                 return is_en_prise(jumper);
         }
 
@@ -271,7 +271,7 @@ private:
         template<class Iterator>
         bool is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(jumper) && tracker_.targets(jumper)))
+                if (!(is_onboard(jumper) && tracker.targets(jumper)))
                         return false;
 
                 capture(jumper);
@@ -290,7 +290,7 @@ private:
         void halt_dispatch(Iterator dest_sq, std::pair<std::true_type, std::true_type>) const
         {
                 assert(is_onboard(std::prev(dest_sq)));
-                if (tracker_.is_king(*std::prev(dest_sq)))
+                if (tracker.is_king(*std::prev(dest_sq)))
                         halt_dispatch(dest_sq, std::pair<std::false_type, std::true_type>{});
                 else
                         halt_dispatch(dest_sq, std::pair<std::true_type, std::false_type>{});
@@ -307,13 +307,13 @@ private:
         template<class Iterator>
         void halt_dispatch(Iterator dest_sq, std::pair<std::true_type, std::false_type>) const
         {
-                // NOTE: tracker_.template path<Direction>() would be an ERROR here
+                // NOTE: tracker.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
-                assert(is_onboard(dest_sq) && tracker_.path(*dest_sq));
+                assert(is_onboard(dest_sq) && tracker.path(*dest_sq));
                 add_jump();
                 ++dest_sq;
-                while (is_onboard(dest_sq) && tracker_.path(*dest_sq)) {
-                        tracker_.last_visit(*dest_sq);
+                while (is_onboard(dest_sq) && tracker.path(*dest_sq)) {
+                        tracker.last_visit(*dest_sq);
                         add_jump();
                         ++dest_sq;
                 }
@@ -321,7 +321,7 @@ private:
 
         void add_jump() const
         {
-                moves_.emplace_back(tracker_);
+                moves.emplace_back(tracker);
         }
 
         template<int Direction>
