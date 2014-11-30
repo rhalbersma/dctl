@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/color.hpp>
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/pieces/king.hpp>                         // king
 #include <dctl/successor/tracker.hpp>                   // Tracker
@@ -15,33 +16,28 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for king jumps detection
-template<bool Color, class Position, class Range>
-class Detect<Color, pieces::king, select::jump, Position, Range>
+template<Color ToMove, class Position, class Range>
+class Detect<ToMove, pieces::king, select::jump, Position, Range>
 {
-public:
-        // enforce reference semantics
-        Detect(Detect const&) = delete;
-        Detect& operator=(Detect const&) = delete;
-
-private:
         using Rules = rules_type_t<Position>;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Tracker<Color, Position>;
+        using State = Tracker<ToMove, Position>;
 
-        static constexpr auto orientation = orientation_v<Board, Color>;
-
-        // representation
-
-        State const& propagate_;
+        static constexpr auto orientation = orientation_v<Board, ToMove>;
+        State const& propagate;
 
 public:
         // constructors
 
         explicit Detect(State const& p)
         :
-                propagate_{p}
+                propagate{p}
         {}
+
+        // enforce reference semantics
+        Detect(Detect const&) = delete;
+        Detect& operator=(Detect const&) = delete;
 
         // function call operators
 
@@ -89,7 +85,7 @@ private:
         auto parallelize(Set const& active_kings) const
         {
                 return Sandwich<Board, Direction, Range>{}(
-                        active_kings, propagate_.template targets<Direction>(), propagate_.path()
+                        active_kings, propagate.template targets<Direction>(), propagate.path()
                 ).any();
         }
 };

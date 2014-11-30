@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/color.hpp>
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/pieces/king.hpp>                         // king
 #include <dctl/successor/select/push.hpp>
@@ -13,8 +14,8 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for king moves detection
-template<bool Color, class Position, class Range>
-class Detect<Color, pieces::king, select::push, Position, Range>
+template<Color ToMove, class Position, class Range>
+class Detect<ToMove, pieces::king, select::push, Position, Range>
 {
 public:
         // enforce reference semantics
@@ -25,18 +26,18 @@ private:
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
 
-        static constexpr auto orientation = orientation_v<Board, Color>;
+        static constexpr auto orientation = orientation_v<Board, ToMove>;
 
         // representation
 
-        Set const& propagate_;
+        Set const& propagate;
 
 public:
         // constructors
 
         explicit Detect(Set const& p)
         :
-                propagate_{p}
+                propagate{p}
         {}
 
         // function call operators
@@ -62,7 +63,7 @@ private:
         auto parallelize(Set const& active_kings) const
         {
                 return Sink<Board, Direction, std::false_type>{}(
-                        active_kings, propagate_
+                        active_kings, propagate
                 ).any();
         }
 };

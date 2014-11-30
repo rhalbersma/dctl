@@ -1,10 +1,10 @@
 #pragma once
+#include <dctl/color.hpp>                               // black, white
 #include <dctl/successor/select/legal.hpp>              // DefaultSelection
 #include <dctl/successor/generate/specializations.hpp>  // Generate
 #include <dctl/successor/invariant.hpp>                 // invariant
 #include <dctl/pieces/pieces.hpp>                       // pawn, king, piece
 #include <dctl/move/move.hpp>                           // Move
-#include <dctl/position/color.hpp>                      // black, white
 #include <dctl/type_traits.hpp>                         // value_type_t
 #include <dctl/utility/stack_vector.hpp>                // DCTL_PP_STACK_RESERVE
 #include <memory>                                       // allocator, allocator_traits
@@ -16,7 +16,7 @@ namespace successor {
 template<class Pieces, class Select, class Position, class Sequence>
 void generate(Position const& p, Sequence& moves)
 {
-        if (p.active_color() == Color::black)
+        if (p.to_move() == Color::black)
                 Generate<Color::black, Pieces, Select>{}(p, moves);
         else
                 Generate<Color::white, Pieces, Select>{}(p, moves);

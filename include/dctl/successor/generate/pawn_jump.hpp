@@ -7,6 +7,7 @@
 #include <dctl/pieces/pawn.hpp>                         // pawn
 
 #include <dctl/angle.hpp>                               // _deg, rotate, inverse
+#include <dctl/color.hpp>
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/position/promotion.hpp>
 #include <dctl/rule_traits.hpp>
@@ -22,27 +23,19 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for pawn jumps generation
-template<bool Color, class Position, class Sequence>
-class Generate<Color, pieces::pawn, select::jump, Position, Sequence>
+template<Color ToMove, class Position, class Sequence>
+class Generate<ToMove, pieces::pawn, select::jump, Position, Sequence>
 {
-public:
-        // enforce reference semantics
-        Generate(Generate const&) = delete;
-        Generate& operator=(Generate const&) = delete;
-
-private:
-        using KingJumps = Generate<Color, pieces::king, select::jump, Position, Sequence>;
+        using KingJumps = Generate<ToMove, pieces::king, select::jump, Position, Sequence>;
         using Rules = rules_type_t<Position>;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Tracker<Color, Position>;
+        using State = Tracker<ToMove, Position>;
 
-        static constexpr auto orientation = orientation_v<Board, Color>;
+        static constexpr auto orientation = orientation_v<Board, ToMove>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
-
-        // representation
 
         State& tracker;
         Sequence& moves;
@@ -55,6 +48,10 @@ public:
                 tracker{t},
                 moves{m}
         {}
+
+        // enforce reference semantics
+        Generate(Generate const&) = delete;
+        Generate& operator=(Generate const&) = delete;
 
         // function call operators
 
@@ -360,7 +357,7 @@ private:
 
         static bool is_promotion(std::size_t sq)
         {
-                return dctl::is_promotion<Color, Board>(sq);
+                return dctl::is_promotion<ToMove, Board>(sq);
         }
 };
 

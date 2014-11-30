@@ -17,34 +17,28 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for king moves generation
-template<bool Color, class Position, class Sequence>
-class Generate<Color, pieces::king, select::push, Position, Sequence>
+template<Color ToMove, class Position, class Sequence>
+class Generate<ToMove, pieces::king, select::push, Position, Sequence>
 {
-public:
-        // enforce reference semantics
-        Generate(Generate const&) = delete;
-        Generate& operator=(Generate const&) = delete;
-
-private:
         using Rules = rules_type_t<Position>;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
         using Move = value_type_t<Sequence>;
-        static constexpr auto orientation = orientation_v<Board, Color>;
 
-        // representation
-
-        Set const& propagate_;
+        static constexpr auto orientation = orientation_v<Board, ToMove>;
+        Set const& propagate;
         Sequence& moves;
 
 public:
-        // constructors
-
         Generate(Set const& p, Sequence& m)
         :
-                propagate_{p},
+                propagate{p},
                 moves{m}
         {}
+
+        // enforce reference semantics
+        Generate(Generate const&) = delete;
+        Generate& operator=(Generate const&) = delete;
 
         // function call operators
 
@@ -81,18 +75,18 @@ private:
         template<int Direction>
         auto transform_movers(Set const& active_kings) const
         {
-                auto const movers = active_kings & Set(*std::prev(along_wave<Direction>(propagate_)));
+                auto const movers = active_kings & Set(*std::prev(along_wave<Direction>(propagate)));
                 boost::push_back(moves, movers | boost::adaptors::transformed([](auto const& from_sq) {
-                        return Move{from_sq, *++along_ray<Direction>(from_sq), Color};
+                        return Move{from_sq, *++along_ray<Direction>(from_sq), ToMove};
                 }));
         }
 
         template<class Iterator>
         auto transform_targets(Iterator from) const
         {
-                auto const targets = ray::classical(from, propagate_);
+                auto const targets = ray::classical(from, propagate);
                 boost::push_back(moves, targets | boost::adaptors::transformed([=](auto const& dest_sq) {
-                        return Move{*from, dest_sq, Color};
+                        return Move{*from, dest_sq, ToMove};
                 }));
         }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/color.hpp>
 #include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
 #include <dctl/successor/detect/king_jump.hpp>          // Detect (king jump specialization)
 #include <dctl/successor/detect/pawn_jump.hpp>          // Detect (pawn jump specialization)
@@ -12,8 +13,8 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, class Range>
-class Detect<Color, pieces::all, select::jump, Range>
+template<Color ToMove, class Range>
+class Detect<ToMove, pieces::all, select::jump, Range>
 {
 public:
         template<class Position>
@@ -42,30 +43,30 @@ private:
         // the existence of pawn jumps is independent of Range,
         // but we always use short ranged movement to avoid template bloat
         template<class Position>
-        using PawnJump = Detect<Color, pieces::pawn, select::jump, Position, std::false_type>;
+        using PawnJump = Detect<ToMove, pieces::pawn, select::jump, Position, std::false_type>;
 
         template<class Position>
-        using KingJump = Detect<Color, pieces::king, select::jump, Position, Range>;
+        using KingJump = Detect<ToMove, pieces::king, select::jump, Position, Range>;
 
         // piece jump detection
         template<class Position>
         auto combined_dispatch(Position const& p, std::true_type) const
         {
-                Tracker<Color, Position> tracker{p};
-                return PawnJump<Position>{tracker}(p.pieces(Color));
+                Tracker<ToMove, Position> tracker{p};
+                return PawnJump<Position>{tracker}(p.pieces(ToMove));
         }
 
         // separate king and pawn jump detection
         template<class Position>
         auto combined_dispatch(Position const& p, std::false_type) const
         {
-                Tracker<Color, Position> tracker{p};
+                Tracker<ToMove, Position> tracker{p};
 
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 // SPECULATE: #pawns > #kings for earliest possible short-circuiting
                 return
-                        PawnJump<Position>{tracker}(p.pawns(Color)) ||
-                        KingJump<Position>{tracker}(p.kings(Color))
+                        PawnJump<Position>{tracker}(p.pawns(ToMove)) ||
+                        KingJump<Position>{tracker}(p.kings(ToMove))
                 ;
         }
 };

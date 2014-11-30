@@ -4,6 +4,7 @@
 #include <dctl/successor/select/push.hpp>               // select
 
 #include <dctl/angle/directions.hpp>                    // left_up, right_up
+#include <dctl/color.hpp>
 #include <dctl/board/orientation.hpp>                   // orientation
 #include <dctl/position/promotion.hpp>
 #include <dctl/ray.hpp>                                 // make_iterator
@@ -16,8 +17,8 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, class Position, class Sequence>
-class Generate<Color, pieces::pawn, select::push, Position, Sequence>
+template<Color ToMove, class Position, class Sequence>
+class Generate<ToMove, pieces::pawn, select::push, Position, Sequence>
 {
 public:
         // enforce reference semantics
@@ -28,11 +29,11 @@ private:
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
         using Move = value_type_t<Sequence>;
-        static constexpr auto orientation = orientation_v<Board, Color>;
+        static constexpr auto orientation = orientation_v<Board, ToMove>;
 
         // representation
 
-        Set const& propagate_;
+        Set const& propagate;
         Sequence& moves;
 
 public:
@@ -40,7 +41,7 @@ public:
 
         Generate(Set const& p, Sequence& m)
         :
-                propagate_{p},
+                propagate{p},
                 moves{m}
         {}
 
@@ -59,10 +60,10 @@ private:
         template<int Direction>
         auto transform_movers(Set const& active_pawns) const
         {
-                auto const movers = active_pawns & Set(*std::prev(along_wave<Direction>(propagate_)));
+                auto const movers = active_pawns & Set(*std::prev(along_wave<Direction>(propagate)));
                 boost::push_back(moves, movers | boost::adaptors::transformed([](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
-                        return Move{from_sq, dest_sq, is_promotion(dest_sq), Color};
+                        return Move{from_sq, dest_sq, is_promotion(dest_sq), ToMove};
                 }));
         }
 
@@ -80,7 +81,7 @@ private:
 
         static auto is_promotion(std::size_t sq)
         {
-                return dctl::is_promotion<Color, Board>(sq);
+                return dctl::is_promotion<ToMove, Board>(sq);
         }
 };
 

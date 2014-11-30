@@ -4,12 +4,12 @@
 namespace dctl {
 namespace evaluate {
 
-template<bool Color>
+template<Color ToMove>
 class Delta
 {
 private:
-        using Active = Feature<Color>;
-        using Passive = Feature<!Color>;
+        using Active  = Feature< ToMove>;
+        using Passive = Feature<!ToMove>;
 
 public:
         template<class Position>

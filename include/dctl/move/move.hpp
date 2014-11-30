@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/color.hpp>
 #include <dctl/rules.hpp>
 #include <dctl/set_type.hpp>    // set_type
 #include <dctl/type_traits.hpp> // board_type_t, rules_type_t
@@ -22,7 +23,7 @@ private:
         std::size_t dest_{};
         bool is_with_king_{};
         bool is_promotion_{};
-        bool active_color_{};
+        Color to_move_{};
 
         auto invariant() const
         {
@@ -37,23 +38,23 @@ public:
         // constructors
 
         // king move
-        constexpr BaseMove(std::size_t src, std::size_t dst, bool color)
+        constexpr BaseMove(std::size_t src, std::size_t dst, Color c)
         :
                 from_{src},
                 dest_{dst},
                 is_with_king_{true},
-                active_color_{color}
+                to_move_{c}
         {
                 assert(invariant());
         }
 
         // pawn move
-        constexpr BaseMove(std::size_t src, std::size_t dst, bool prom, bool color)
+        constexpr BaseMove(std::size_t src, std::size_t dst, bool prom, Color c)
         :
                 from_{src},
                 dest_{dst},
                 is_promotion_{prom},
-                active_color_{color}
+                to_move_{c}
         {
                 assert(invariant());
         }
@@ -68,7 +69,7 @@ public:
                 dest_{t.dest_sq()},
                 is_with_king_{t.is_with_king()},
                 is_promotion_{t.is_promotion()},
-                active_color_{t.active_color()}
+                to_move_{t.to_move()}
         {
                 assert(invariant());
         }
@@ -105,9 +106,9 @@ public:
                 return is_promotion_;
         }
 
-        constexpr auto active_color() const noexcept
+        constexpr auto to_move() const noexcept
         {
-                return active_color_;
+                return to_move_;
         }
 
         constexpr auto is_jump() const noexcept
@@ -201,17 +202,17 @@ public:
         using Set = typename base::Set;
 
         // king jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, bool color, Set ko)
+        constexpr Move(Set pieces, Set kings, int src, int dst, Color c, Set ko)
         :
                 empty(ko),
-                base(pieces, kings, src, dst, color, ko)
+                base(pieces, kings, src, dst, c, ko)
         {}
 
         // pawn jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom, bool color, Set ko)
+        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom, Color c, Set ko)
         :
                 empty(ko),
-                base(pieces, kings, src, dst, prom, color, ko)
+                base(pieces, kings, src, dst, prom, c, ko)
         {}
 
         template<class Tracker>

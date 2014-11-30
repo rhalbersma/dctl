@@ -1,9 +1,10 @@
 #pragma once
+#include <dctl/color.hpp>
 
 namespace dctl {
 namespace successor {
 
-template<bool /* Color */, class...>
+template<Color /* ToMove */, class...>
 class Count;
 
 }       // namespace successor

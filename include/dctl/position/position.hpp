@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/position/position_fwd.hpp>
+#include <dctl/color.hpp>
 #include <dctl/board/mask.hpp>
 #include <dctl/move/move.hpp>
 #include <dctl/position/active_color/active_color.hpp>
@@ -9,7 +10,6 @@
 #include <dctl/position/piece_placement/piece_placement.hpp>
 #include <dctl/position/piece_placement/zobrist.hpp>
 #include <dctl/position/reversible_moves.hpp>
-#include <dctl/position/color.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/set_type.hpp>
 #include <dctl/zobrist/accumulate.hpp>
@@ -34,7 +34,7 @@ public:
 
 private:
         PiecePlacement<Rules, Board> piece_placement_{};
-        ActiveColor active_color_{};
+        Color to_move_{};
         ReversibleMoves reversible_moves_{};
         MostRecentlyPushedKing<Rules, Board> mrp_king_[2]{};
         TreeIterator parent_{};
@@ -46,10 +46,10 @@ private:
 
 public:
         // initialize with a set of bitboards and a color
-        Position(Set const& black_pieces, Set const& white_pieces, Set const& kings, bool side_to_move)
+        Position(Set const& black_pieces, Set const& white_pieces, Set const& kings, Color c)
         :
                 piece_placement_{black_pieces, white_pieces, kings},
-                active_color_{side_to_move}
+                to_move_{c}
         {
                 hash_ = hash_xor_accumulate(*this);
         }
@@ -57,11 +57,11 @@ public:
         Position(
                 Set const& black_pawns, Set const& black_kings,
                 Set const& white_pawns, Set const& white_kings,
-                bool side_to_move
+                Color c
         )
         :
                 piece_placement_{black_pawns, black_kings, white_pawns, white_kings},
-                active_color_{side_to_move}
+                to_move_{c}
         {
                 hash_ = hash_xor_accumulate(*this);
         }
@@ -78,19 +78,19 @@ public:
 
         // observers
 
-        auto kings(bool color) const
+        auto kings(Color c) const
         {
-                return piece_placement_.kings(color);
+                return piece_placement_.kings(c);
         }
 
-        auto pawns(bool color) const
+        auto pawns(Color c) const
         {
-                return piece_placement_.pawns(color);
+                return piece_placement_.pawns(c);
         }
 
-        auto pieces(bool color) const
+        auto pieces(Color c) const
         {
-                return piece_placement_.pieces(color);
+                return piece_placement_.pieces(c);
         }
 
         auto kings() const
@@ -118,9 +118,9 @@ public:
                 return piece_placement_;
         }
 
-        auto active_color() const
+        auto to_move() const
         {
-                return active_color_;
+                return to_move_;
         }
 
         auto reversible_moves() const
@@ -138,9 +138,9 @@ public:
                 return hash_;
         }
 
-        auto const& mrp_king(bool color) const
+        auto const& mrp_king(Color c) const
         {
-                return mrp_king_[color];
+                return mrp_king_[static_cast<bool>(c)];
         }
 
         auto distance_to_root() const
@@ -156,7 +156,9 @@ public:
                 make_irreversible(m);
 
                 piece_placement_.make(m, hash_);
-                active_color_.make(m, hash_);
+
+                flip(to_move_);
+                hash_ ^= zobrist::ActiveColor<>::color[true];
 
                 assert(hash_invariant());
         }
@@ -201,7 +203,7 @@ private:
         void make_active_mrp_king(MostRecentlyPushedKing<Rules, Board>& mru, Move const& m)
         {
                 if (mru.is_active()) {
-                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, m.active_color());
+                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, m.to_move());
                         if (m.is_reversible()) {
                                 if (m.from() != mru.square())
                                         mru.init(m.dest());
@@ -210,15 +212,15 @@ private:
                         } else {
                                 mru.reset();
                         }
-                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, m.active_color());
+                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, m.to_move());
                 }
 
                 if (m.is_promotion()) {
                         // the first of multiple pawns
-                        if (!mru.is_active() && set_multiple(pawns(m.active_color())))
+                        if (!mru.is_active() && set_multiple(pawns(m.to_move())))
                                 mru.activate();
                         // the single last pawn
-                        if (mru.is_active() && set_single(pawns(m.active_color())))
+                        if (mru.is_active() && set_single(pawns(m.to_move())))
                                 mru.deactivate();
                 }
         }
@@ -231,15 +233,15 @@ private:
 
                 // capture all kings or all pawns
                 auto const deactivate =
-                        kings(m.active_color()).is_subset_of(m.captured_kings()) ||
-                        pawns(m.active_color()).is_subset_of(m.captured_pieces())
+                        kings(m.to_move()).is_subset_of(m.captured_kings()) ||
+                        pawns(m.to_move()).is_subset_of(m.captured_pieces())
                 ;
 
                 // capture the most recently used king
                 if (deactivate || m.captured_kings().test(mru.square())) {
-                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, !m.active_color());
+                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, !m.to_move());
                         mru.reset();
-                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, !m.active_color());
+                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, !m.to_move());
                 }
 
                 if (deactivate)
@@ -249,8 +251,8 @@ private:
         template<class Move>
         void make_mrp_kings(Move const& m)
         {
-                make_active_mrp_king(mrp_king_[m.active_color()], m);
-                make_passive_mrp_king(mrp_king_[!m.active_color()], m);
+                make_active_mrp_king(mrp_king_[static_cast<bool>(m.to_move())], m);
+                make_passive_mrp_king(mrp_king_[static_cast<bool>(!m.to_move())], m);
         }
 
         bool hash_invariant() const
@@ -268,13 +270,13 @@ auto grand_parent(Position const& p)
 template<class Position>
 decltype(auto) active_restricted(Position const& p)
 {
-        return p.restricted()[p.active_color()];
+        return p.restricted()[static_cast<bool>(p.to_move())];
 }
 
 template<class Position>
 decltype(auto) passive_restricted(Position const& p)
 {
-        return p.restricted()[!p.active_color()];
+        return p.restricted()[static_cast<bool>(!p.to_move())];
 }
 
 template<class Rules, class Board>
@@ -286,7 +288,7 @@ auto hash_xor_accumulate(Position<Rules, Board> const& p)
 
         return
                 hash_xor_accumulate(zobrist::PiecePlacement<NumSquares>{}, p.piece_placement())                    ^
-                hash_xor_accumulate(zobrist::ActiveColor<>{}             , p.active_color())                       ^
+                hash_xor_accumulate(zobrist::ActiveColor<>{}             , p.to_move())                       ^
                 hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, p.mrp_king(Color::black), Color::black) ^
                 hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, p.mrp_king(Color::white), Color::white)
         ;

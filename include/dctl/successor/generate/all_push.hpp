@@ -10,19 +10,19 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for piece moves
-template<bool Color>
-class Generate<Color, pieces::all, select::push>
+template<Color ToMove>
+class Generate<ToMove, pieces::all, select::push>
 {
 public:
         template<class Position, class Sequence>
         auto operator()(Position const& p, Sequence& moves) const
         {
-                using KingPush = Generate<Color, pieces::king, select::push, Position, Sequence>;
-                using PawnPush = Generate<Color, pieces::pawn, select::push, Position, Sequence>;
+                using KingPush = Generate<ToMove, pieces::king, select::push, Position, Sequence>;
+                using PawnPush = Generate<ToMove, pieces::pawn, select::push, Position, Sequence>;
 
                 auto const propagate = p.not_occupied();
-                KingPush{propagate, moves}(moveable_kings(p, Color));
-                PawnPush{propagate, moves}(p.pawns(Color));
+                KingPush{propagate, moves}(moveable_kings(p, ToMove));
+                PawnPush{propagate, moves}(p.pawns(ToMove));
         }
 };
 

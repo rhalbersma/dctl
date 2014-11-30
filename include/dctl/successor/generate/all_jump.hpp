@@ -16,8 +16,8 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for piece jumps
-template<bool Color>
-class Generate<Color, pieces::all, select::jump>
+template<Color ToMove>
+class Generate<ToMove, pieces::all, select::jump>
 {
 public:
         template<class Position, class Sequence>
@@ -38,28 +38,28 @@ public:
 
 private:
         template<class Position, class Sequence>
-        using KingJump = Generate<Color, pieces::king, select::jump, Position, Sequence>;
+        using KingJump = Generate<ToMove, pieces::king, select::jump, Position, Sequence>;
 
         template<class Position, class Sequence>
-        using PawnJump = Generate<Color, pieces::pawn, select::jump, Position, Sequence>;
+        using PawnJump = Generate<ToMove, pieces::pawn, select::jump, Position, Sequence>;
 
         // no absolute king jump precedence
         template<class Position, class Sequence>
         auto absolute_king_jump_precedence_dispatch(Position const& p, Sequence& moves, std::false_type) const
         {
-                Tracker<Color, Position> tracker{p};
-                KingJump<Position, Sequence>{tracker, moves}(p.kings(Color));
-                PawnJump<Position, Sequence>{tracker, moves}(p.pawns(Color));
+                Tracker<ToMove, Position> tracker{p};
+                KingJump<Position, Sequence>{tracker, moves}(p.kings(ToMove));
+                PawnJump<Position, Sequence>{tracker, moves}(p.pawns(ToMove));
         }
 
         // absolute king jump precedence
         template<class Position, class Sequence>
         auto absolute_king_jump_precedence_dispatch(Position const& p, Sequence& moves, std::true_type) const
         {
-                Tracker<Color, Position> tracker{p};
-                KingJump<Position, Sequence>{tracker, moves}(p.kings(Color));
+                Tracker<ToMove, Position> tracker{p};
+                KingJump<Position, Sequence>{tracker, moves}(p.kings(ToMove));
                 if (moves.empty())
-                        PawnJump<Position, Sequence>{tracker, moves}(p.pawns(Color));
+                        PawnJump<Position, Sequence>{tracker, moves}(p.pawns(ToMove));
         }
 
         template<class It>
