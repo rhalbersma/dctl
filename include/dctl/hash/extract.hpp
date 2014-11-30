@@ -32,7 +32,7 @@ struct ActiveColor
         template<class Key>
         auto operator()(Key const& key) const
         {
-                return key.active_color();
+                return key.to_move();
         }
 };
 

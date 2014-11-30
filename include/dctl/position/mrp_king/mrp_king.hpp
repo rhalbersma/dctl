@@ -96,11 +96,11 @@ public:
 };
 
 template<class TabulationHash, class Rules, class Board>
-auto hash_xor_accumulate(TabulationHash const& h, MostRecentlyPushedKing<Rules, Board> const& mrp_king, bool to_move)
+auto hash_xor_accumulate(TabulationHash const& h, MostRecentlyPushedKing<Rules, Board> const& mrp_king, Color c)
 {
         return
-                h.index[to_move][mrp_king.index()] ^
-                h.moves[to_move][mrp_king.moves()]
+                h.index[static_cast<bool>(c)][mrp_king.index()] ^
+                h.moves[static_cast<bool>(c)][mrp_king.moves()]
         ;
 }
 

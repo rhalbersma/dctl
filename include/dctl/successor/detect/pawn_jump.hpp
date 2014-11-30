@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/color.hpp>
 #include <dctl/successor/detect/primary_fwd.hpp>
 #include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/successor/tracker.hpp>                   // Tracker
@@ -15,8 +16,8 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for pawn jumps detection
-template<bool Color, class Position, class Range>
-class Detect<Color, pieces::pawn, select::jump, Position, Range>
+template<Color ToMove, class Position, class Range>
+class Detect<ToMove, pieces::pawn, select::jump, Position, Range>
 {
 public:
         // enforce reference semantics
@@ -27,20 +28,20 @@ private:
         using Rules = rules_type_t<Position>;
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
-        using State = Tracker<Color, Position>;
+        using State = Tracker<ToMove, Position>;
 
-        static constexpr auto orientation = orientation_v<Board, Color>;
+        static constexpr auto orientation = orientation_v<Board, ToMove>;
 
         // representation
 
-        State& propagate_;
+        State& propagate;
 
 public:
         // constructors
 
         explicit Detect(State& p)
         :
-                propagate_{p}
+                propagate{p}
         {}
 
         // function call operators
@@ -112,7 +113,7 @@ private:
         auto parallelize(Set const& active_pawns) const
         {
                 return Sandwich<Board, Direction, std::false_type>{}(
-                        active_pawns, propagate_.template targets<Direction>(), propagate_.path()
+                        active_pawns, propagate.template targets<Direction>(), propagate.path()
                 ).any();
         }
 };

@@ -18,8 +18,8 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for king jumps generation
-template<bool Color, class Position, class Sequence>
-class Generate<Color, pieces::king, select::jump, Position, Sequence>
+template<Color ToMove, class Position, class Sequence>
+class Generate<ToMove, pieces::king, select::jump, Position, Sequence>
 {
 public:
         // enforce reference semantics
@@ -31,9 +31,9 @@ private:
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
         using Move = value_type_t<Sequence>;
-        using State = Tracker<Color, Position>;
+        using State = Tracker<ToMove, Position>;
 
-        static constexpr auto orientation = orientation_v<Board, Color>;
+        static constexpr auto orientation = orientation_v<Board, ToMove>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));

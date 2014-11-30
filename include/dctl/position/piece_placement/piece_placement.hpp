@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask.hpp>
-#include <dctl/position/color.hpp>
+#include <dctl/color.hpp>
 #include <dctl/position/piece_placement/zobrist.hpp>
 #include <dctl/set_type.hpp>
 #include <dctl/zobrist/accumulate.hpp>
@@ -51,10 +51,10 @@ public:
         void make(Move const& m, Index& hash)
         {
                 using Zobrist = zobrist::PiecePlacement<set_type<Board>::size()>;
-                pieces_[m.active_color()].reset(m.from());
-                pieces_[m.active_color()].set(m.dest());
-                hash ^= Zobrist::pieces[m.active_color()][m.from()];
-                hash ^= Zobrist::pieces[m.active_color()][m.dest()];
+                pieces_[static_cast<bool>(m.to_move())].reset(m.from());
+                pieces_[static_cast<bool>(m.to_move())].set(m.dest());
+                hash ^= Zobrist::pieces[static_cast<bool>(m.to_move())][m.from()];
+                hash ^= Zobrist::pieces[static_cast<bool>(m.to_move())][m.dest()];
                 if (m.is_with_king()) {
                         kings_.reset(m.from());
                         kings_.set(m.dest());
@@ -65,9 +65,9 @@ public:
                         hash ^= Zobrist::kings[m.dest()];
                 }
                 if (m.is_jump()) {
-                        pieces_[!m.active_color()] ^= m.captured_pieces();
+                        pieces_[static_cast<bool>(!m.to_move())] ^= m.captured_pieces();
                         kings_ ^= m.captured_kings();
-                        hash ^= zobrist::hash_xor_accumulate(Zobrist::pieces[!m.active_color()], m.captured_pieces());
+                        hash ^= zobrist::hash_xor_accumulate(Zobrist::pieces[static_cast<bool>(!m.to_move())], m.captured_pieces());
                         hash ^= zobrist::hash_xor_accumulate(Zobrist::kings                    , m.captured_kings() );
                 }
                 assert(invariant());
@@ -75,19 +75,19 @@ public:
 
         // observers
 
-        auto kings(bool color) const
+        auto kings(Color c) const
         {
-                return pieces_[color] & kings_;
+                return pieces_[static_cast<bool>(c)] & kings_;
         }
 
-        auto pawns(bool color) const
+        auto pawns(Color c) const
         {
-                return pieces_[color] - kings_;
+                return pieces_[static_cast<bool>(c)] - kings_;
         }
 
-        auto pieces(bool color) const
+        auto pieces(Color c) const
         {
-                return pieces_[color];
+                return pieces_[static_cast<bool>(c)];
         }
 
         auto kings() const
@@ -102,7 +102,7 @@ public:
 
         auto pieces() const
         {
-                return pieces_[Color::black] | pieces_[Color::white];
+                return pieces_[static_cast<bool>(Color::black)] | pieces_[static_cast<bool>(Color::white)];
         }
 
         auto not_occupied() const
@@ -116,8 +116,8 @@ template<class TabulationHash, class Rules, class Board>
 auto hash_xor_accumulate(TabulationHash const& h, PiecePlacement<Rules, Board> const& p)
 {
         return
-                zobrist::hash_xor_accumulate(h.pieces[Color::black], p.pieces(Color::black)) ^
-                zobrist::hash_xor_accumulate(h.pieces[Color::white], p.pieces(Color::white)) ^
+                zobrist::hash_xor_accumulate(h.pieces[static_cast<bool>(Color::black)], p.pieces(Color::black)) ^
+                zobrist::hash_xor_accumulate(h.pieces[static_cast<bool>(Color::white)], p.pieces(Color::white)) ^
                 zobrist::hash_xor_accumulate(h.kings               , p.kings()             )
         ;
 }

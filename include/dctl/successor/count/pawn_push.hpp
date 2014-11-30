@@ -13,8 +13,8 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for pawn moves enumeration
-template<bool Color, class Position>
-class Count<Color, pieces::pawn, select::push, Position>
+template<Color ToMove, class Position>
+class Count<ToMove, pieces::pawn, select::push, Position>
 {
 public:
         // enforce reference semantics
@@ -25,18 +25,18 @@ private:
         using Board = board_type_t<Position>;
         using Set = set_type_t<Position>;
 
-        static constexpr auto orientation = orientation_v<Board, Color>;
+        static constexpr auto orientation = orientation_v<Board, ToMove>;
 
         // representation
 
-        Set const& propagate_;
+        Set const& propagate;
 
 public:
         // constructors
 
         explicit Count(Set const& p)
         :
-                propagate_{p}
+                propagate{p}
         {}
 
         // function call operators
@@ -59,7 +59,7 @@ private:
         auto parallelize(Set const& active_pawns) const
         {
                 return Sink<Board, Direction, std::false_type>{}(
-                        active_pawns, propagate_
+                        active_pawns, propagate
                 ).count();
         }
 };

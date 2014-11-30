@@ -16,7 +16,7 @@
 namespace dctl {
 namespace successor {
 
-template<bool Color, class Position>
+template<Color ToMove, class Position>
 class Tracker
 {
 public:
@@ -193,9 +193,9 @@ public:
                 return is_promotion_;
         }
 
-        auto active_color() const noexcept
+        auto to_move() const noexcept
         {
-                return Color;
+                return ToMove;
         }
 
 private:

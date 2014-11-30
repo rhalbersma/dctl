@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/position/position.hpp>
-#include <dctl/position/color.hpp>
+#include <dctl/color.hpp>
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/protocols.hpp>
 #include <dctl/setup/i_token.hpp>
@@ -15,7 +15,7 @@ namespace dctl {
 namespace setup {
 
 template<class Token>
-bool read_color(char c)
+auto read_color(char c)
 {
         switch (c) {
         case Token::black:
@@ -24,14 +24,14 @@ bool read_color(char c)
                 return Color::white;
         default:
                 assert(false);
-                return false;
+                return Color::black;
         }
 }
 
 template<class Token>
-char write_color(bool color)
+char write_color(Color c)
 {
-        return Token::color[color];
+        return Token::color[static_cast<bool>(c)];
 }
 
 template
@@ -58,14 +58,14 @@ struct read<Rules, Board, pdn::protocol, Token>
                 using Set = set_type<Board>;
                 Set p_pieces[2] {};
                 Set p_kings {};
-                bool p_side = Color::black;
+                auto p_side = Color::black;
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_pieces[Color::black], p_pieces[Color::white], p_kings, p_side };
+                        return { p_pieces[static_cast<bool>(Color::black)], p_pieces[static_cast<bool>(Color::white)], p_kings, p_side };
 
                 bool setup_kings = false;
-                bool setup_color = p_side;
+                auto setup_color = p_side;
 
                 std::stringstream sstr(s);
                 char ch;
@@ -90,7 +90,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
-                                        p_pieces[setup_color].set(b);
+                                        p_pieces[static_cast<bool>(setup_color)].set(b);
                                         if (setup_kings)
                                                 p_kings.set(b);
                                 }
@@ -98,7 +98,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 break;
                         }
                 }
-                return { p_pieces[Color::black], p_pieces[Color::white], p_kings, p_side };
+                return { p_pieces[static_cast<bool>(Color::black)], p_pieces[static_cast<bool>(Color::white)], p_kings, p_side };
         }
 };
 
@@ -112,13 +112,13 @@ struct write<pdn::protocol, Token>
 
                 std::stringstream sstr;
                 sstr << Token::quote;                                   // opening quotes
-                sstr << write_color<Token>(p.active_color());           // side to move
+                sstr << write_color<Token>(p.to_move());           // side to move
 
                 for (auto i = 0; i < 2; ++i) {
-                        auto c = i != 0;
+                        auto c = i ? Color::white : Color::black;
                         if (p.pieces(c).any()) {
                                 sstr << Token::colon;                   // colon
-                                sstr << Token::color[c];                // color tag
+                                sstr << Token::color[static_cast<bool>(c)];                // color tag
                         }
                         auto const bs = p.pieces(c);
                         std::size_t n = 0;
@@ -143,7 +143,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                 using Set = set_type<Board>;
                 Set p_pieces[2] {};
                 Set p_kings {};
-                bool p_side = Color::black;
+                auto p_side = Color::black;
 
                 std::stringstream sstr(s);
                 char ch;
@@ -155,10 +155,10 @@ struct read<Rules, Board, dxp::protocol, Token>
                         sstr >> ch;
                         switch (toupper(ch)) {
                         case Token::black:
-                                p_pieces[Color::black].set(b);    // black piece
+                                p_pieces[static_cast<bool>(Color::black)].set(b);    // black piece
                                 break;
                         case Token::white:
-                                p_pieces[Color::white].set(b);    // white piece
+                                p_pieces[static_cast<bool>(Color::white)].set(b);    // white piece
                                 break;
                         case Token::empty:
                                 break;
@@ -169,7 +169,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                         if (isupper(ch))
                                 p_kings.set(b);                  // king
                 }
-                return { p_pieces[Color::black], p_pieces[Color::white], p_kings, p_side };
+                return { p_pieces[static_cast<bool>(Color::black)], p_pieces[static_cast<bool>(Color::white)], p_kings, p_side };
         }
 };
 
@@ -180,7 +180,7 @@ struct write<dxp::protocol, Token>
         std::string operator()(Position<Rules, Board> const& p) const
         {
                 std::stringstream sstr;
-                sstr << write_color<Token>(active_color(p));    // side to move
+                sstr << write_color<Token>(p.to_move());    // side to move
                 for (auto&& sq : Board::squares()) {
                         auto b = Board::bit_from_square(sq);    // convert square to bit
                         sstr << content<Token>(p, b);           // bit content

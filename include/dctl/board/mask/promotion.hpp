@@ -7,9 +7,9 @@ namespace board {
 template<class Board>
 struct Promotion
 {
-        static constexpr auto mask(bool color) noexcept
+        static constexpr auto mask(Color c) noexcept
         {
-                return Row<Board>::mask(!color, 0);
+                return Row<Board>::mask(!c, 0);
         }
 };
 

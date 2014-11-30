@@ -10,15 +10,15 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for legal successors
-template<bool Color, class Pieces>
-class Count<Color, Pieces, select::legal>
+template<Color ToMove, class Pieces>
+class Count<ToMove, Pieces, select::legal>
 {
 public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using Jump = Count<Color, Pieces, select::jump>;
-                using Push = Count<Color, Pieces, select::push>;
+                using Jump = Count<ToMove, Pieces, select::jump>;
+                using Push = Count<ToMove, Pieces, select::push>;
 
                 auto num_moves = Jump{}(p);
                 if (!num_moves)

@@ -5,7 +5,7 @@
 #include <dctl/board/coordinates.hpp>           // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/board/grid.hpp>                  // Grid
 #include <dctl/board/detail/orientation.hpp>    // SizeMinimizingOrientation, Make
-#include <dctl/position/color.hpp>              // black, white
+#include <dctl/color.hpp>                       // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/range/irange.hpp>               // irange

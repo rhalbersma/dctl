@@ -3,7 +3,7 @@
 #include <dctl/setup/diagram_fwd.hpp>
 #include <dctl/setup/numbers.hpp>
 #include <dctl/setup/i_token.hpp>
-#include <dctl/position/color.hpp>
+#include <dctl/color.hpp>
 #include <dctl/type_traits.hpp>
 #include <iomanip>                      // setw
 #include <sstream>                      // stringstream

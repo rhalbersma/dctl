@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/board/coordinates.hpp>           // ulo_from_sq
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/position/color.hpp>              // black, white
+#include <dctl/color.hpp>                       // black, white
 #include <dctl/set_type.hpp>                    // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <array>                                // array
@@ -17,19 +17,19 @@ class Row
         // simulate a constexpr lambda (not allowed in C++14)
         struct lambda
         {
-                bool const color_;
-                int const row_;
+                Color const to_move;
+                int const row;
 
                 constexpr auto operator()(int sq) const noexcept
                 {
-                        return to_llo(sq, Board::outer_grid).y == (color_ == Color::white ? row_ : Board::height() - 1 - row_);
+                        return to_llo(sq, Board::outer_grid).y == (to_move == Color::white ? row : Board::height() - 1 - row);
                 }
         };
 
-        template<bool Color>
+        template<Color ToMove>
         static constexpr auto init(int row) noexcept
         {
-                return make_set_if<Board>(lambda{Color, row});
+                return make_set_if<Board>(lambda{ToMove, row});
         }
 
         static constexpr auto N = Board::height();
@@ -43,10 +43,10 @@ class Row
         };
 
 public:
-        static constexpr auto mask(bool color, int row) noexcept
+        static constexpr auto mask(Color c, int row) noexcept
         {
                 assert(row < N);
-                return table[color][static_cast<std::size_t>(row)];
+                return table[static_cast<bool>(c)][static_cast<std::size_t>(row)];
         }
 };
 

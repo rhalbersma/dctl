@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/color.hpp>
 #include <dctl/move/move.hpp>                           // Move_t
 #include <dctl/successor/count/primary_fwd.hpp>         // Count (primary template)
 #include <dctl/successor/generate/all_jump.hpp>         // Generate (piece jump specialization)
@@ -9,8 +10,8 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for jumps
-template<bool Color, class Pieces>
-class Count<Color, Pieces, select::jump>
+template<Color ToMove, class Pieces>
+class Count<ToMove, Pieces, select::jump>
 {
 public:
         template<class Position>
@@ -20,7 +21,7 @@ public:
                 Arena<M> a;
                 auto moves = stack_vector<M>(Alloc<M>{a});
                 moves.reserve(DCTL_PP_STACK_RESERVE);
-                Generate<Color, Pieces, select::jump>{}(p, moves);
+                Generate<ToMove, Pieces, select::jump>{}(p, moves);
                 return moves.size();
         }
 };

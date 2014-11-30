@@ -10,20 +10,20 @@ namespace dctl {
 namespace successor {
 
 // partial specialization for piece moves
-template<bool Color>
-class Count<Color, pieces::all, select::push>
+template<Color ToMove>
+class Count<ToMove, pieces::all, select::push>
 {
 public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using KingPush = Count<Color, pieces::king, select::push, Position>;
-                using PawnPush = Count<Color, pieces::pawn, select::push, Position>;
+                using KingPush = Count<ToMove, pieces::king, select::push, Position>;
+                using PawnPush = Count<ToMove, pieces::pawn, select::push, Position>;
 
                 auto const propagate = p.not_occupied();
                 return
-                        KingPush{propagate}(moveable_kings(p, Color)) +
-                        PawnPush{propagate}(p.pawns(Color))
+                        KingPush{propagate}(moveable_kings(p, ToMove)) +
+                        PawnPush{propagate}(p.pawns(ToMove))
                 ;
         }
 };
