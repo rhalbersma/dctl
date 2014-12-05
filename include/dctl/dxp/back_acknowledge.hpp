@@ -21,8 +21,11 @@ class BackAcknowledge final
         public factory::make_creatable<Message, BackAcknowledge, 'K'>
 {
 public:
-        enum AcceptanceCode: int { accept = 0, not_supported = 1, decline = 2 };
+        enum AcceptanceCode : int { accept = 0, not_supported = 1, decline = 2 };
 
+private:
+        AcceptanceCode acceptance_code_;
+public:
         // constructors
 
         explicit BackAcknowledge(std::string const& message)
@@ -62,10 +65,6 @@ private:
                 sstr << std::setw(1) << static_cast<int>(a);
                 return sstr.str();
         }
-
-        // representation
-
-        AcceptanceCode acceptance_code_;
 };
 
 }       // namespace dxp
