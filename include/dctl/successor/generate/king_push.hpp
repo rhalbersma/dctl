@@ -8,10 +8,9 @@
 #include <dctl/position/unary_projections.hpp>
 #include <dctl/ray.hpp>                                 // make_iterator
 #include <dctl/rule_traits.hpp>
-#include <boost/range/adaptor/transformed.hpp>          // transformed
-#include <boost/range/algorithm_ext/push_back.hpp>      // push_back
+#include <algorithm>                                    // transform
 #include <cstddef>                                      // size_t
-#include <iterator>                                     // prev
+#include <iterator>                                     // prev, back_inserter
 
 namespace dctl {
 namespace successor {
@@ -76,18 +75,18 @@ private:
         auto transform_movers(Set const& active_kings) const
         {
                 auto const movers = active_kings & Set(*std::prev(along_wave<Direction>(propagate)));
-                boost::push_back(moves, movers | boost::adaptors::transformed([](auto const& from_sq) {
+                std::transform(begin(movers), end(movers), std::back_inserter(moves), [](auto const& from_sq) {
                         return Move{from_sq, *++along_ray<Direction>(from_sq), ToMove};
-                }));
+                });
         }
 
         template<class Iterator>
         auto transform_targets(Iterator from) const
         {
                 auto const targets = ray::classical(from, propagate);
-                boost::push_back(moves, targets | boost::adaptors::transformed([=](auto const& dest_sq) {
+                std::transform(begin(targets), end(targets), std::back_inserter(moves), [=](auto const& dest_sq) {
                         return Move{*from, dest_sq, ToMove};
-                }));
+                });
         }
 
         template<int Direction>
