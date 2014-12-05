@@ -3,16 +3,15 @@
 #include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/successor/select/push.hpp>               // select
 
-#include <dctl/angle/directions.hpp>                    // left_up, right_up
+#include <dctl/angle/directions.hpp>    // left_up, right_up
 #include <dctl/color.hpp>
-#include <dctl/board/orientation.hpp>                   // orientation
+#include <dctl/board/orientation.hpp>   // orientation
 #include <dctl/position/promotion.hpp>
-#include <dctl/ray.hpp>                                 // make_iterator
+#include <dctl/ray.hpp>                 // make_iterator
 #include <dctl/type_traits.hpp>
 #include <dctl/wave/iterator.hpp>
-#include <boost/range/adaptor/transformed.hpp>          // transformed
-#include <boost/range/algorithm_ext/push_back.hpp>      // push_back
-#include <iterator>                                     // prev
+#include <algorithm>                    // transform
+#include <iterator>                     // prev, back_inserter
 
 namespace dctl {
 namespace successor {
@@ -61,10 +60,10 @@ private:
         auto transform_movers(Set const& active_pawns) const
         {
                 auto const movers = active_pawns & Set(*std::prev(along_wave<Direction>(propagate)));
-                boost::push_back(moves, movers | boost::adaptors::transformed([](auto const& from_sq) {
+                std::transform(begin(movers), end(movers), std::back_inserter(moves), [](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
                         return Move{from_sq, dest_sq, is_promotion(dest_sq), ToMove};
-                }));
+                });
         }
 
         template<int Direction>
