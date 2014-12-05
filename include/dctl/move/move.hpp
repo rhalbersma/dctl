@@ -65,8 +65,8 @@ public:
         :
                 captured_pieces_{t.captured_pieces()},
                 captured_kings_{t.captured_kings()},
-                from_{t.from_sq()},
-                dest_{t.dest_sq()},
+                from_{t.from()},
+                dest_{t.dest()},
                 is_with_king_{t.is_with_king()},
                 is_promotion_{t.is_promotion()},
                 to_move_{t.to_move()}
