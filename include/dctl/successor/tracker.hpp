@@ -67,7 +67,7 @@ public:
 
         auto finish()
         {
-                not_occupied_.reset(from_sq());
+                not_occupied_.reset(from());
                 visited_path_.pop_back();
         }
 
@@ -171,13 +171,13 @@ public:
                 return captured_pieces() & king_targets_;
         }
 
-        auto from_sq() const
+        auto from() const
         {
                 assert(!visited_path_.empty());
                 return visited_path_.front();
         }
 
-        auto dest_sq() const
+        auto dest() const
         {
                 assert(2 <= visited_path_.size());
                 return visited_path_.back();
