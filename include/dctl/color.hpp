@@ -7,7 +7,6 @@ enum class Color
         bool
 {
         black = false,
-        red = black,
         white = true
 };
 
