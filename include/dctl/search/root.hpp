@@ -17,6 +17,7 @@
 #include <dctl/hash/extract.hpp>
 #include <dctl/hash/map.hpp>
 #include <dctl/hash/replace.hpp>
+#include <dctl/position/make_copy.hpp>
 #include <dctl/successor/generate.hpp>
 #include <dctl/successor/count.hpp>
 
@@ -190,7 +191,7 @@ private:
                 continuation.reserve(DCTL_PP_STACK_RESERVE);
 
                 for (auto&& i : move_order) {
-                        auto q = successor::make_copy(p, moves[static_cast<std::size_t>(i)]);
+                        auto q = make_copy(p, moves[static_cast<std::size_t>(i)]);
 
                         // TODO: TT singular extension
 
@@ -289,7 +290,7 @@ private:
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, static_cast<int>(index)));
 
-                insert_pv(successor::make_copy(p, best_move), pv, -stretch(value), ply + 1);
+                insert_pv(make_copy(p, best_move), pv, -stretch(value), ply + 1);
         }
 
         void print_pv(Position const& p, Variation const& pv, int ply = 0)
@@ -311,7 +312,7 @@ private:
                 std::cout << best_move;
                 std::cout << ((ply % 10 == 9) ? '\n' : ' ');
 
-                auto q = successor::make_copy(p, best_move);
+                auto q = make_copy(p, best_move);
                 //if (q.same_king_push(!q.to_move()))
                         //std::cout << "^" << q.same_king_push(!q.to_move());
                 print_pv(q, pv, ply + 1);

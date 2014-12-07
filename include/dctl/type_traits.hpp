@@ -12,6 +12,9 @@ template<class T>
 using set_type_t = typename T::set_type;
 
 template<class T>
+using move_type_t = typename T::move_type;
+
+template<class T>
 using type_t = typename T::type;
 
 template<class T>

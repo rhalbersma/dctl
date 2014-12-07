@@ -1,47 +1,47 @@
 #pragma once
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_jump.hpp>        // Generate (king jump specialization)
 #include <dctl/successor/generate/pawn_jump.hpp>        // Generate (pawn jump specialization)
-#include <dctl/successor/tracker.hpp>                   // Tracker
 #include <dctl/successor/select/jump.hpp>               // jump
-#include <dctl/pieces/pieces.hpp>                       // all, king, pawn
+#include <dctl/successor/tracker.hpp>                   // Tracker
 #include <dctl/rule_traits.hpp>                         // is_absolute_king_jump_precedence_t, is_jump_precedence_t, is_remove_duplicates_t
-#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
+#include <dctl/type_traits.hpp>                         // rules_type_t, value_type_t
 #include <algorithm>                                    // max_element, stable_sort, unique, upper_bound
 #include <cassert>                                      // assert
-#include <iterator>
+#include <iterator>                                     // distance
 #include <type_traits>                                  // false_type, true_type
 
 namespace dctl {
 namespace successor {
 
-// partial specialization for piece jumps
-template<Color ToMove>
-class Generate<ToMove, pieces::all, select::jump>
+template<Color ToMove, bool IsReverse>
+class Generate<ToMove, IsReverse, select::jump>
 {
 public:
         template<class Position, class Sequence>
         auto operator()(Position const& p, Sequence& moves) const
         {
-                using Rules = rules_type_t<Position>;
+                using rules_type = rules_type_t<Position>;
 
                 // EFFICIENCY: tag dispatching on absolute king jump precedence
-                absolute_king_jump_precedence_dispatch(p, moves, is_absolute_king_jump_precedence_t<Rules>{});
+                absolute_king_jump_precedence_dispatch(p, moves, is_absolute_king_jump_precedence_t<rules_type>{});
 
                 if (moves.size() < 2)
                         return;
 
-                auto drop1 = filter_precedence_dispatch(begin(moves), end(moves), is_jump_precedence_t<Rules>{});
-                auto drop2 = filter_uniqueness_dispatch(begin(moves), drop1, is_remove_duplicates_t<Rules>{});
+                auto drop1 = filter_precedence_dispatch(begin(moves), end(moves), is_jump_precedence_t<rules_type>{});
+                auto drop2 = filter_uniqueness_dispatch(begin(moves), drop1, is_remove_duplicates_t<rules_type>{});
                 moves.erase(drop2, end(moves));
         }
 
 private:
         template<class Position, class Sequence>
-        using KingJump = Generate<ToMove, pieces::king, select::jump, Position, Sequence>;
+        using KingJump = Generate<ToMove, IsReverse, PieceKingType, select::jump, Position, Sequence>;
 
         template<class Position, class Sequence>
-        using PawnJump = Generate<ToMove, pieces::pawn, select::jump, Position, Sequence>;
+        using PawnJump = Generate<ToMove, IsReverse, PiecePawnType, select::jump, Position, Sequence>;
 
         // no absolute king jump precedence
         template<class Position, class Sequence>
@@ -73,9 +73,9 @@ private:
         {
                 assert(1 <= std::distance(first, last)); // guarantees first is dereferenceable
 
-                using Move = typename It::value_type;
+                using move_type = value_type_t<It>;
                 auto const greater = [](auto const& L, auto const& R){
-                        return jump_precedence_t<rules_type_t<Move>>{}(R, L);
+                        return jump_precedence_t<rules_type_t<move_type>>{}(R, L);
                 };
 
                 std::stable_sort(first, last, greater);

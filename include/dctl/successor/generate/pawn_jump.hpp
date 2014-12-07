@@ -1,18 +1,17 @@
 #pragma once
+#include <dctl/angle.hpp>                               // _deg, rotate, inverse
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
+#include <dctl/position/promotion.hpp>                  // is_promotion
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_jump.hpp>        // promote_en_passant
 #include <dctl/successor/tracker.hpp>                   // Tracker
 #include <dctl/successor/select/jump.hpp>               // jumps
-#include <dctl/pieces/king.hpp>                         // king
-#include <dctl/pieces/pawn.hpp>                         // pawn
 
-#include <dctl/angle.hpp>                               // _deg, rotate, inverse
-#include <dctl/color.hpp>
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/position/promotion.hpp>
-#include <dctl/rule_traits.hpp>
-#include <dctl/utility/algorithm.hpp>
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror, turn
+#include <dctl/rule_traits.hpp>
+#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
 #include <dctl/wave/iterator.hpp>
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
@@ -22,17 +21,16 @@
 namespace dctl {
 namespace successor {
 
-// partial specialization for pawn jumps generation
-template<Color ToMove, class Position, class Sequence>
-class Generate<ToMove, pieces::pawn, select::jump, Position, Sequence>
+template<Color ToMove, bool IsReverse, class Position, class Sequence>
+class Generate<ToMove, IsReverse, PiecePawnType, select::jump, Position, Sequence>
 {
-        using KingJumps = Generate<ToMove, pieces::king, select::jump, Position, Sequence>;
-        using Rules = rules_type_t<Position>;
-        using Board = board_type_t<Position>;
-        using Set = set_type_t<Position>;
+        using KingJumps = Generate<ToMove, IsReverse, PieceKingType, select::jump, Position, Sequence>;
+        using board_type = board_type_t<Position>;
+        using rules_type = rules_type_t<Position>;
+        using   set_type =   set_type_t<Position>;
         using State = Tracker<ToMove, Position>;
 
-        static constexpr auto orientation = orientation_v<Board, ToMove>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
@@ -41,59 +39,51 @@ class Generate<ToMove, pieces::pawn, select::jump, Position, Sequence>
         Sequence& moves;
 
 public:
-        // constructors
-
         explicit Generate(State& t, Sequence& m)
         :
                 tracker{t},
                 moves{m}
         {}
 
-        // enforce reference semantics
-        Generate(Generate const&) = delete;
-        Generate& operator=(Generate const&) = delete;
-
-        // function call operators
-
-        void operator()(Set const& active_pawns) const
+        void operator()(set_type const& active_pawns) const
         {
                 if (active_pawns.none())
                         return;
 
                 // tag dispatching on whether pawns can capture kings
-                king_targets_dispatch(active_pawns, is_pawn_jump_king_t<Rules>{});
+                king_targets_dispatch(active_pawns, is_pawn_jump_king_t<rules_type>{});
         }
 
 private:
         // pawns that can capture kings
-        void king_targets_dispatch(Set const& active_pawns, std::true_type) const
+        void king_targets_dispatch(set_type const& active_pawns, std::true_type) const
         {
                 branch(active_pawns);
         }
 
         // pawns that cannot capture kings
-        void king_targets_dispatch(Set const& active_pawns, std::false_type) const
+        void king_targets_dispatch(set_type const& active_pawns, std::false_type) const
         {
                 tracker.toggle_king_targets();
                 branch(active_pawns);
                 tracker.toggle_king_targets();
         }
 
-        void branch(Set const& active_pawns) const
+        void branch(set_type const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
+                branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<rules_type>, is_orthogonal_jump_t<rules_type>>{});
         }
 
         // pawns that jump in the 2 forward diagonal directions
-        void branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::false_type>) const
+        void branch_dispatch(set_type const& active_pawns, std::pair<std::false_type, std::false_type>) const
         {
                 serialize<left_up   (orientation)>(active_pawns);
                 serialize<right_up  (orientation)>(active_pawns);
         }
 
         // pawns that jump in the 4 forward and backward diagonal directions
-        void branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::false_type>) const
+        void branch_dispatch(set_type const& active_pawns, std::pair<std::true_type, std::false_type>) const
         {
                 serialize<left_up   (orientation)>(active_pawns);
                 serialize<right_up  (orientation)>(active_pawns);
@@ -102,7 +92,7 @@ private:
         }
 
         // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
-        void branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::true_type>) const
+        void branch_dispatch(set_type const& active_pawns, std::pair<std::false_type, std::true_type>) const
         {
                 serialize<up        (orientation)>(active_pawns);
                 serialize<left_up   (orientation)>(active_pawns);
@@ -112,7 +102,7 @@ private:
         }
 
         // pawns that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::true_type>) const
+        void branch_dispatch(set_type const& active_pawns, std::pair<std::true_type, std::true_type>) const
         {
                 serialize<up        (orientation)>(active_pawns);
                 serialize<left_up   (orientation)>(active_pawns);
@@ -125,9 +115,9 @@ private:
         }
 
         template<int Direction>
-        void serialize(Set const& active_pawns) const
+        void serialize(set_type const& active_pawns) const
         {
-                auto const jumpers = active_pawns & Set(*std::prev(along_wave<Direction>(tracker.template targets<Direction>())));
+                auto const jumpers = active_pawns & set_type(*std::prev(along_wave<Direction>(tracker.template targets<Direction>())));
                 for (auto&& from_sq : jumpers)
                         find_first(along_ray<Direction>(from_sq));
         }
@@ -163,7 +153,7 @@ private:
         void find_next(Iterator jumper) const
         {
                 // tag dispatching on promotion condition
-                promotion_dispatch(jumper, is_en_passant_promotion_t<Rules>{});
+                promotion_dispatch(jumper, is_en_passant_promotion_t<rules_type>{});
         }
 
         // pawns that promote apres-fini
@@ -208,7 +198,7 @@ private:
         bool turn(Iterator jumper) const
         {
                 // tag dispatching on pawn turn directions
-                return turn_dispatch(jumper, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
+                return turn_dispatch(jumper, std::pair<is_backward_pawn_jump_t<rules_type>, is_orthogonal_jump_t<rules_type>>{});
         }
 
         // pawns that jump in the 2 forward diagonal directions
@@ -344,20 +334,20 @@ private:
         }
 
         template<int Direction>
-        static wave::Iterator<Board, Direction> along_wave(Set const& s)
+        static wave::Iterator<board_type, Direction> along_wave(set_type const& s)
         {
-                return wave::make_iterator<Board, Direction>(s);
+                return wave::make_iterator<board_type, Direction>(s);
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> along_ray(std::size_t sq)
+        static ray::Iterator<board_type, Direction> along_ray(std::size_t sq)
         {
-                return ray::make_iterator<Board, Direction>(sq);
+                return ray::make_iterator<board_type, Direction>(sq);
         }
 
         static bool is_promotion(std::size_t sq)
         {
-                return dctl::is_promotion<ToMove, Board>(sq);
+                return dctl::is_promotion<board_type, ToMove>(sq);
         }
 };
 

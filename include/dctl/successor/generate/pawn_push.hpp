@@ -1,52 +1,40 @@
 #pragma once
+#include <dctl/angle.hpp>                               // left_up, right_up
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // PiecePawnType
+#include <dctl/position/promotion.hpp>                  // is_promotion
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
-#include <dctl/pieces/pawn.hpp>                         // pawn
 #include <dctl/successor/select/push.hpp>               // select
 
-#include <dctl/angle/directions.hpp>    // left_up, right_up
-#include <dctl/color.hpp>
-#include <dctl/board/orientation.hpp>   // orientation
-#include <dctl/position/promotion.hpp>
-#include <dctl/ray.hpp>                 // make_iterator
-#include <dctl/type_traits.hpp>
-#include <dctl/wave/iterator.hpp>
-#include <algorithm>                    // transform
-#include <iterator>                     // prev, back_inserter
+#include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/ray.hpp>                                 // make_iterator
+#include <dctl/type_traits.hpp>                         // board_type_t, set_type_t, value_type_t
+#include <dctl/wave/iterator.hpp>                       // make_iterator
+#include <algorithm>                                    // transform
+#include <iterator>                                     // prev, back_inserter
 
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, class Position, class Sequence>
-class Generate<ToMove, pieces::pawn, select::push, Position, Sequence>
+template<Color ToMove, bool IsReverse, class Position, class Sequence>
+class Generate<ToMove, IsReverse, PiecePawnType, select::push, Position, Sequence>
 {
-public:
-        // enforce reference semantics
-        Generate(Generate const&) = delete;
-        Generate& operator=(Generate const&) = delete;
+        using board_type = board_type_t<Position>;
+        using   set_type =   set_type_t<Position>;
+        using  move_type = value_type_t<Sequence>;
 
-private:
-        using Board = board_type_t<Position>;
-        using Set = set_type_t<Position>;
-        using Move = value_type_t<Sequence>;
-        static constexpr auto orientation = orientation_v<Board, ToMove>;
-
-        // representation
-
-        Set const& propagate;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
+        set_type const& not_occupied;
         Sequence& moves;
 
 public:
-        // constructors
-
-        Generate(Set const& p, Sequence& m)
+        Generate(set_type const& s, Sequence& m)
         :
-                propagate{p},
+                not_occupied{s},
                 moves{m}
         {}
 
-        // function call operators
-
-        auto operator()(Set const& active_pawns) const
+        auto operator()(set_type const& active_pawns) const
         {
                 if (active_pawns.none())
                         return;
@@ -57,30 +45,30 @@ public:
 
 private:
         template<int Direction>
-        auto transform_movers(Set const& active_pawns) const
+        auto transform_movers(set_type const& active_pawns) const
         {
-                auto const movers = active_pawns & Set(*std::prev(along_wave<Direction>(propagate)));
+                auto const movers = active_pawns & set_type(*std::prev(along_wave<Direction>(not_occupied)));
                 std::transform(begin(movers), end(movers), std::back_inserter(moves), [](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
-                        return Move{from_sq, dest_sq, is_promotion(dest_sq), ToMove};
+                        return move_type{from_sq, dest_sq, is_promotion(dest_sq), ToMove};
                 });
         }
 
         template<int Direction>
-        static auto along_wave(Set const& s)
+        static auto along_wave(set_type const& s)
         {
-                return wave::make_iterator<Board, Direction>(s);
+                return wave::make_iterator<board_type, Direction>(s);
         }
 
         template<int Direction>
         static auto along_ray(std::size_t sq)
         {
-                return ray::make_iterator<Board, Direction>(sq);
+                return ray::make_iterator<board_type, Direction>(sq);
         }
 
         static auto is_promotion(std::size_t sq)
         {
-                return dctl::is_promotion<ToMove, Board>(sq);
+                return dctl::is_promotion<board_type, ToMove>(sq);
         }
 };
 

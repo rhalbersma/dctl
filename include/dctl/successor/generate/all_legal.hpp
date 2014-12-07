@@ -10,16 +10,15 @@
 namespace dctl {
 namespace successor {
 
-// partial specialization for legal successors
-template<Color ToMove, class Pieces>
-class Generate<ToMove, Pieces, select::legal>
+template<Color ToMove, bool IsReverse>
+class Generate<ToMove, IsReverse, select::legal>
 {
 public:
         template<class Position, class Sequence>
         auto operator()(Position const& p, Sequence& moves) const
         {
-                using AllJump = Generate<ToMove, Pieces, select::jump>;
-                using AllPush = Generate<ToMove, Pieces, select::push>;
+                using AllJump = Generate<ToMove, IsReverse, select::jump>;
+                using AllPush = Generate<ToMove, IsReverse, select::push>;
 
                 AllJump{}(p, moves);
                 if (moves.empty())

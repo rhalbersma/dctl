@@ -1,28 +1,28 @@
 #pragma once
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_push.hpp>        // Generate (king push specialization)
 #include <dctl/successor/generate/pawn_push.hpp>        // Generate (pawn push specialization)
 #include <dctl/successor/select/push.hpp>               // push
 #include <dctl/position/unary_projections.hpp>          // moveable_kings
-#include <dctl/pieces/pieces.hpp>                       // all, king, pawn
 
 namespace dctl {
 namespace successor {
 
-// partial specialization for piece moves
-template<Color ToMove>
-class Generate<ToMove, pieces::all, select::push>
+template<Color ToMove, bool IsReverse>
+class Generate<ToMove, IsReverse, select::push>
 {
 public:
         template<class Position, class Sequence>
         auto operator()(Position const& p, Sequence& moves) const
         {
-                using KingPush = Generate<ToMove, pieces::king, select::push, Position, Sequence>;
-                using PawnPush = Generate<ToMove, pieces::pawn, select::push, Position, Sequence>;
+                using KingPush = Generate<ToMove, IsReverse, PieceKingType, select::push, Position, Sequence>;
+                using PawnPush = Generate<ToMove, IsReverse, PiecePawnType, select::push, Position, Sequence>;
 
-                auto const propagate = p.not_occupied();
-                KingPush{propagate, moves}(moveable_kings(p, ToMove));
-                PawnPush{propagate, moves}(p.pawns(ToMove));
+                auto const not_occupied = p.not_occupied();
+                KingPush{not_occupied, moves}(moveable_kings(p, ToMove));
+                PawnPush{not_occupied, moves}(p.pawns(ToMove));
         }
 };
 

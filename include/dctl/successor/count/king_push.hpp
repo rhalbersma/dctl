@@ -1,54 +1,41 @@
 #pragma once
+#include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // PieceKingType
 #include <dctl/successor/count/primary_fwd.hpp>
 #include <dctl/successor/select/push.hpp>
-#include <dctl/pieces/king.hpp>
 
-#include <dctl/angle/directions.hpp>                    // left_up, right_up, left_down, right_down
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/wave/patterns.hpp>
-#include <dctl/rule_traits.hpp>
-#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
+#include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
+#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
+#include <dctl/wave/patterns.hpp>                       // Sink
 
 namespace dctl {
 namespace successor {
 
-// partial specialization for king moves enumeration
-template<Color ToMove, class Position>
-class Count<ToMove, pieces::king, select::push, Position>
+template<Color ToMove, bool IsReverse, class Position>
+class Count<ToMove, IsReverse, PieceKingType, select::push, Position>
 {
-public:
-        // enforce reference semantics
-        Count(Count const&) = delete;
-        Count& operator=(Count const&) = delete;
+        using board_type = board_type_t<Position>;
+        using rules_type = rules_type_t<Position>;
+        using   set_type =   set_type_t<Position>;
 
-private:
-        using Rules = rules_type_t<Position>;
-        using Board = board_type_t<Position>;
-        using Set = set_type_t<Position>;
-
-        static constexpr auto orientation = orientation_v<Board, ToMove>;
-
-        // representation
-
-        Set const& propagate;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
+        set_type const& not_occupied;
 
 public:
-        // constructors
-
-        explicit Count(Set const& p)
+        explicit Count(set_type const& s)
         :
-                propagate{p}
+                not_occupied{s}
         {}
 
-        // function call operators
-
-        auto operator()(Set const& active_kings) const
+        auto operator()(set_type const& active_kings) const
         {
                 return active_kings.none() ? 0 : branch(active_kings);
         }
 
 private:
-        auto branch(Set const& active_kings) const
+        auto branch(set_type const& active_kings) const
         {
                 return
                         parallelize<left_up   (orientation)>(active_kings) +
@@ -59,10 +46,10 @@ private:
         }
 
         template<int Direction>
-        auto parallelize(Set const& active_kings) const
+        auto parallelize(set_type const& active_kings) const
         {
-                return Sink<Board, Direction, is_long_ranged_king_t<Rules>>{}(
-                        active_kings, propagate
+                return Sink<board_type, Direction, is_long_ranged_king_t<rules_type>>{}(
+                        active_kings, not_occupied
                 ).count();
         }
 };

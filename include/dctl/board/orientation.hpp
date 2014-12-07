@@ -1,10 +1,10 @@
 #pragma once
-#include <dctl/angle.hpp>               // _deg, inverse, rotate
-#include <dctl/color.hpp>      // white
+#include <dctl/angle.hpp>       // _deg, inverse, rotate
+#include <dctl/color.hpp>       // Color, white
 
 namespace dctl {
 
-template<class Board, Color ToMove>
-constexpr auto orientation_v = rotate(inverse(Board::orientation), ToMove == Color::white ? 0_deg : 180_deg);
+template<class Board, Color ToMove, bool IsReverse = false>
+constexpr auto orientation_v = rotate(inverse(Board::orientation), ((ToMove == Color::white) ^ IsReverse) ? 0_deg : 180_deg);
 
 }       // namespace dctl

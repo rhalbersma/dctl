@@ -1,15 +1,15 @@
 #pragma once
+#include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down, _deg, rotate, inverse
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // PieceKingType
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
-#include <dctl/successor/tracker.hpp>                   // Tracker
 #include <dctl/successor/select/jump.hpp>               // jump
-#include <dctl/pieces/king.hpp>                         // king
+#include <dctl/successor/tracker.hpp>                   // Tracker
 
-#include <dctl/angle.hpp>                               // _deg, rotate, inverse
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror
 #include <dctl/rule_traits.hpp>
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
-#include <dctl/utility/algorithm.hpp>                   // is_duplicate_back
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 #include <type_traits>                                  // false_type, true_type
@@ -17,44 +17,30 @@
 namespace dctl {
 namespace successor {
 
-// partial specialization for king jumps generation
-template<Color ToMove, class Position, class Sequence>
-class Generate<ToMove, pieces::king, select::jump, Position, Sequence>
+template<Color ToMove, bool IsReverse, class Position, class Sequence>
+class Generate<ToMove, IsReverse, PieceKingType, select::jump, Position, Sequence>
 {
-public:
-        // enforce reference semantics
-        Generate(Generate const&) = delete;
-        Generate& operator=(Generate const&) = delete;
-
-private:
-        using Rules = rules_type_t<Position>;
-        using Board = board_type_t<Position>;
-        using Set = set_type_t<Position>;
-        using Move = value_type_t<Sequence>;
+        using board_type = board_type_t<Position>;
+        using rules_type = rules_type_t<Position>;
+        using   set_type =   set_type_t<Position>;
         using State = Tracker<ToMove, Position>;
 
-        static constexpr auto orientation = orientation_v<Board, ToMove>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
-
-        // representation
 
         State& tracker;
         Sequence& moves;
 
 public:
-        // constructors
-
         Generate(State& c, Sequence& m)
         :
                 tracker{c},
                 moves{m}
         {}
 
-        // function call operators
-
-        auto operator()(Set const& active_kings) const
+        auto operator()(set_type const& active_kings) const
         {
                 assert(!tracker.is_with_king());
                 tracker.toggle_is_with_king();
@@ -70,7 +56,7 @@ public:
         }
 
 private:
-        void serialize(Set const& active_kings) const
+        void serialize(set_type const& active_kings) const
         {
                 for (auto&& from_sq : active_kings) {
                         tracker.launch(from_sq);
@@ -82,7 +68,7 @@ private:
         void branch(std::size_t from_sq) const
         {
                 // tag dispatching on king jump directions
-                branch_dispatch(from_sq, is_orthogonal_jump_t<Rules>{});
+                branch_dispatch(from_sq, is_orthogonal_jump_t<rules_type>{});
         }
 
         // kings that jump in the 4 diagonal directions
@@ -144,7 +130,7 @@ private:
         bool explore(Iterator jumper) const
         {
                 // tag dispatching on king jump direction reversal
-                return reverse_dispatch(jumper, is_reversible_king_jump_direction_t<Rules>{});
+                return reverse_dispatch(jumper, is_reversible_king_jump_direction_t<rules_type>{});
         }
 
         // kings that cannot reverse their capture direction
@@ -165,7 +151,7 @@ private:
         template<class Iterator>
         bool reverse(Iterator jumper) const
         {
-                static_assert(is_reversible_king_jump_direction_v<Rules>, "");
+                static_assert(is_reversible_king_jump_direction_v<rules_type>, "");
                 return scan(ray::rotate<180_deg>(jumper));
         }
 
@@ -173,7 +159,7 @@ private:
         bool scan_turn(Iterator jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
-                return scan_turn_dispatch(jumper, is_long_ranged_land_after_piece_t<Rules>{});
+                return scan_turn_dispatch(jumper, is_long_ranged_land_after_piece_t<rules_type>{});
         }
 
         // kings that can land on any square along the current direction
@@ -205,7 +191,7 @@ private:
         bool turn(Iterator jumper) const
         {
                 // tag dispatching on king turn directions
-                return turn_dispatch(jumper, is_orthogonal_jump_t<Rules>{});
+                return turn_dispatch(jumper, is_orthogonal_jump_t<rules_type>{});
         }
 
         // kings that jump in the 4 diagonal directions
@@ -246,24 +232,24 @@ private:
         }
 
         template<class Iterator>
-        void slide(Iterator& jumper, Set const& path) const
+        void slide(Iterator& jumper, set_type const& path) const
         {
                 assert(is_onboard(jumper));
 
                 // tag dispatching on king range
-                slide_dispatch(jumper, path, is_long_ranged_king_t<Rules>{});
+                slide_dispatch(jumper, path, is_long_ranged_king_t<rules_type>{});
         }
 
         // short ranged kings
         template<class Iterator>
-        void slide_dispatch(Iterator& jumper, Set const& /* path */, std::false_type) const
+        void slide_dispatch(Iterator& jumper, set_type const& /* path */, std::false_type) const
         {
                 ++jumper;
         }
 
         // long ranged kings
         template<class Iterator>
-        void slide_dispatch(Iterator& jumper, Set const& path, std::true_type) const
+        void slide_dispatch(Iterator& jumper, set_type const& path, std::true_type) const
         {
                 do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
         }
@@ -282,7 +268,7 @@ private:
         void add(Iterator dest_sq) const
         {
                 // tag dispatching on king halt after final capture
-                halt_dispatch(dest_sq, std::pair<is_long_ranged_land_after_piece_t<Rules>, is_directly_halt_after_final_king_t<Rules>>{});
+                halt_dispatch(dest_sq, std::pair<is_long_ranged_land_after_piece_t<rules_type>, is_directly_halt_after_final_king_t<rules_type>>{});
         }
 
         // kings that halt immediately if the final capture is a king, and slide through otherwise
@@ -325,9 +311,9 @@ private:
         }
 
         template<int Direction>
-        static ray::Iterator<Board, Direction> along_ray(std::size_t sq)
+        static ray::Iterator<board_type, Direction> along_ray(std::size_t sq)
         {
-                return ray::make_iterator<Board, Direction>(sq);
+                return ray::make_iterator<board_type, Direction>(sq);
         }
 };
 

@@ -8,6 +8,7 @@
 #include <dctl/hash/dual_map.hpp>
 #include <dctl/hash/extract.hpp>
 #include <dctl/utility/stack_vector.hpp>
+#include <dctl/position/make_copy.hpp>
 #include <dctl/successor/count.hpp>
 #include <dctl/successor/generate.hpp>
 #include <dctl/utility/int.hpp>         // NodeCount
@@ -178,7 +179,7 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
                 Arena<Move<R,B> > a;
                 auto const moves = successor::generate(p, Alloc<Move<R, B> >{a});
                 for (auto&& m : moves)
-                        nodes += walk(successor::make_copy(p, m), depth - 1, ply + 1, e);
+                        nodes += walk(make_copy(p, m), depth - 1, ply + 1, e);
         }
 
         // (3)
@@ -279,7 +280,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
                 print_move(moves[i], i);
-                sub_count = walk(successor::make_copy(p, moves[i]), depth - 1, 1, e);
+                sub_count = walk(make_copy(p, moves[i]), depth - 1, 1, e);
                 leaf_nodes += sub_count;
 
                 stopwatch.lap();

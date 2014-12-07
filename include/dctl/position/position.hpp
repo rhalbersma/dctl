@@ -26,10 +26,9 @@ template <class Rules, class Board>
 class Position
 {
 public:
-        using rules_type = Rules;
         using board_type = Board;
-        using set_type = dctl::set_type<Board>;
-        using Set = set_type;
+        using rules_type = Rules;
+        using   set_type = dctl::set_type<Board>;
         using TreeIterator = Position const*;
 
 private:
@@ -46,7 +45,7 @@ private:
 
 public:
         // initialize with a set of bitboards and a color
-        Position(Set const& black_pieces, Set const& white_pieces, Set const& kings, Color c)
+        Position(set_type const& black_pieces, set_type const& white_pieces, set_type const& kings, Color c)
         :
                 piece_placement_{black_pieces, white_pieces, kings},
                 to_move_{c}
@@ -55,8 +54,8 @@ public:
         }
 
         Position(
-                Set const& black_pawns, Set const& black_kings,
-                Set const& white_pawns, Set const& white_kings,
+                set_type const& black_pawns, set_type const& black_kings,
+                set_type const& white_pawns, set_type const& white_kings,
                 Color c
         )
         :
@@ -71,7 +70,7 @@ public:
                 return {
                         board::Initial<Board>::mask(Color::black, separation),
                         board::Initial<Board>::mask(Color::white, separation),
-                        Set{},
+                        set_type{},
                         Color::white
                 };
         }
