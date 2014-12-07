@@ -4,7 +4,7 @@
 
 namespace dctl {
 
-template<Color ToMove, class Board>
+template<class Board, Color ToMove>
 bool is_promotion(std::size_t sq)
 {
         auto constexpr promotion = board::Promotion<Board>::mask(ToMove);

@@ -1,22 +1,15 @@
 #pragma once
-#include <dctl/color.hpp>
+#include <dctl/color.hpp>                       // Color
 #include <dctl/successor/count.hpp>             // count
-#include <dctl/successor/select/push.hpp>      // moves
-#include <dctl/pieces/all.hpp>                  // all
+#include <dctl/successor/select/push.hpp>       // push
 
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, class Pieces, class Select, class Position>
+template<Color ToMove, bool IsReverse = false, class Select = select::push, class... Args, class Position>
 auto mobility(Position const& p)
 {
-        return count<ToMove, Pieces, Select>(p);
-}
-
-template<Color ToMove, class Position>
-auto mobility(Position const& p)
-{
-        return count<ToMove, pieces::all, select::push>(p);
+        return count<ToMove, IsReverse, Select, Args...>(p);
 }
 
 }       // namespace successor

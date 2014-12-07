@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/color.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/set_type.hpp>
 #include <cstddef>

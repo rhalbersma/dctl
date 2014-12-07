@@ -3,6 +3,7 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/successor/generate.hpp>
 #include <dctl/utility/stack_vector.hpp>
+#include <dctl/position/make_copy.hpp>
 #include <boost/range/algorithm/sort.hpp>
 #include <boost/range/algorithm/transform.hpp>
 #include <iomanip>
@@ -21,11 +22,11 @@ int main()
         using Board = board::International;
         using Pos = Position<Rules, Board>;
 
-        //auto initial = Pos::initial();
+        auto initial = Pos::initial();
 
-        auto const initial = setup::read<international::Rules, board::International, pdn::protocol>()(
-                "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
-        );
+        //auto const initial = setup::read<international::Rules, board::International, pdn::protocol>()(
+        //        "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
+        //);
 
         std::stack<Pos> game;
         game.push(initial);
@@ -91,6 +92,6 @@ int main()
                 }
 
                 auto const m = moves[static_cast<std::size_t>(choice)];
-                game.push(successor::make_copy(p, m));
+                game.push(make_copy(p, m));
         }
 }

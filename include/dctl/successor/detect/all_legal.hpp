@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/color.hpp>
+#include <dctl/color.hpp>                               // Color
 #include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
 #include <dctl/successor/detect/all_jump.hpp>           // Detect (piece jump specialization)
 #include <dctl/successor/detect/all_push.hpp>           // Detect (piece push specialization)
@@ -10,18 +10,17 @@
 namespace dctl {
 namespace successor {
 
-// partial specialization for legal successors
-template<Color ToMove, class Pieces, class Range>
-class Detect<ToMove, Pieces, select::legal, Range>
+template<Color ToMove, bool IsReverse>
+class Detect<ToMove, IsReverse, select::legal>
 {
 public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using ShortPush = Detect<ToMove, Pieces, select::push, std::false_type>;
-                using ShortJump = Detect<ToMove, Pieces, select::jump, std::false_type>;
+                using ShortPush = Detect<ToMove, IsReverse, select::push>;
+                using ShortJump = Detect<ToMove, IsReverse, select::jump, std::false_type>;
 
-                // speculate #moves > #jumps, so that the logical OR is more likely to short-circuit
+                // SPECULATE: #push > #jump, so that the logical OR is more likely to short-circuit
                 return ShortPush{}(p) || ShortJump{}(p);
         }
 };

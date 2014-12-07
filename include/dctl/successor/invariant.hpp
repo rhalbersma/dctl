@@ -1,16 +1,17 @@
 #pragma once
-#include <dctl/successor/count.hpp>
-#include <dctl/successor/detect.hpp>
+#include <dctl/color.hpp>               // Color
+#include <dctl/successor/count.hpp>     // count
+#include <dctl/successor/detect.hpp>    // detect
 
 namespace dctl {
 namespace successor {
 
-template<class Pieces, class Select, class Position>
+template<Color ToMove, bool IsReverse, class Select, class... Args, class Position>
 auto invariant(Position const& p, std::size_t n)
 {
         return
-                ( count<Pieces, Select>(p) ==  n     ) &&
-                (detect<Pieces, Select>(p) == (n > 0))
+                ( count<ToMove, IsReverse, Select, Args...>(p) ==  n     ) &&
+                (detect<ToMove, IsReverse, Select, Args...>(p) == (n > 0))
         ;
 }
 

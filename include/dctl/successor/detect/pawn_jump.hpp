@@ -1,65 +1,50 @@
 #pragma once
-#include <dctl/color.hpp>
+#include <dctl/angle.hpp>                               // up, left_up, right_up, left, right, left_down, right_down, down
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // PiecePawnType
 #include <dctl/successor/detect/primary_fwd.hpp>
-#include <dctl/pieces/pawn.hpp>                         // pawn
-#include <dctl/successor/tracker.hpp>                   // Tracker
 #include <dctl/successor/select/jump.hpp>
+#include <dctl/successor/tracker.hpp>                   // Tracker
 
-#include <dctl/angle/directions.hpp>                    // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/wave/patterns.hpp>
-#include <dctl/position/unary_projections.hpp>
-#include <dctl/rule_traits.hpp>
-#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
+#include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump_t, is_orthogonal_jump_t
+#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
+#include <dctl/wave/patterns.hpp>                       // Sandwich
 
 namespace dctl {
 namespace successor {
 
-// partial specialization for pawn jumps detection
-template<Color ToMove, class Position, class Range>
-class Detect<ToMove, pieces::pawn, select::jump, Position, Range>
+template<Color ToMove, bool IsReverse, class Position, class Range>
+class Detect<ToMove, IsReverse, PiecePawnType, select::jump, Position, Range>
 {
-public:
-        // enforce reference semantics
-        Detect(Detect const&) = delete;
-        Detect& operator=(Detect const&) = delete;
-
-private:
-        using Rules = rules_type_t<Position>;
-        using Board = board_type_t<Position>;
-        using Set = set_type_t<Position>;
+        using board_type = board_type_t<Position>;
+        using rules_type = rules_type_t<Position>;
+        using   set_type =   set_type_t<Position>;
         using State = Tracker<ToMove, Position>;
 
-        static constexpr auto orientation = orientation_v<Board, ToMove>;
-
-        // representation
-
-        State& propagate;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
+        State& tracker;
 
 public:
-        // constructors
-
         explicit Detect(State& p)
         :
-                propagate{p}
+                tracker{p}
         {}
 
-        // function call operators
-
-        auto operator()(Set const& active_pawns) const
+        auto operator()(set_type const& active_pawns) const
         {
                 return active_pawns.any() ? branch(active_pawns) : false;
         }
 
 private:
-        auto branch(Set const& active_pawns) const
+        auto branch(set_type const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                return branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<Rules>, is_orthogonal_jump_t<Rules>>{});
+                return branch_dispatch(active_pawns, is_backward_pawn_jump_t<rules_type>{}, is_orthogonal_jump_t<rules_type>{});
         }
 
         // pawns that jump in the 2 forward diagonal directions
-        auto branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::false_type>) const
+        auto branch_dispatch(set_type const& active_pawns, std::false_type, std::false_type) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
@@ -69,7 +54,7 @@ private:
         }
 
         // pawns that jump in the 4 forward and backward diagonal directions
-        auto branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::false_type>) const
+        auto branch_dispatch(set_type const& active_pawns, std::true_type, std::false_type) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
@@ -81,7 +66,7 @@ private:
         }
 
         // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
-        auto branch_dispatch(Set const& active_pawns, std::pair<std::false_type, std::true_type>) const
+        auto branch_dispatch(set_type const& active_pawns, std::false_type, std::true_type) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
@@ -94,7 +79,7 @@ private:
         }
 
         // pawns that jump in the 8 diagonal and orthogonal directions
-        auto branch_dispatch(Set const& active_pawns, std::pair<std::true_type, std::true_type>) const
+        auto branch_dispatch(set_type const& active_pawns, std::true_type, std::true_type) const
         {
                 // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
@@ -110,10 +95,10 @@ private:
         }
 
         template<int Direction>
-        auto parallelize(Set const& active_pawns) const
+        auto parallelize(set_type const& active_pawns) const
         {
-                return Sandwich<Board, Direction, std::false_type>{}(
-                        active_pawns, propagate.template targets<Direction>(), propagate.path()
+                return Sandwich<board_type, Direction, std::false_type>{}(
+                        active_pawns, tracker.template targets<Direction>(), tracker.path()
                 ).any();
         }
 };

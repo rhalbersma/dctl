@@ -7,48 +7,6 @@
 
 namespace dctl {
 
-// pieces for the side to move
-template<class Position>
-auto active_pieces(Position const& p)
-{
-        return p.pieces(p.to_move());
-}
-
-// kings for the side to move
-template<class Position>
-auto active_kings(Position const& p)
-{
-        return p.kings(p.to_move());
-}
-
-// pawns for the side to move
-template<class Position>
-auto active_pawns(Position const& p)
-{
-        return p.pawns(p.to_move());
-}
-
-// pieces for the opposite side
-template<class Position>
-auto passive_pieces(Position const& p)
-{
-        return p.pieces(!p.to_move());
-}
-
-// kings for the opposite side
-template<class Position>
-auto passive_kings(Position const& p)
-{
-        return p.kings(!p.to_move());
-}
-
-// pawns for the opposite side
-template<class Position>
-auto passive_pawns(Position const& p)
-{
-        return p.pawns(!p.to_move());
-}
-
 template<class Position>
 auto moveable_kings(Position const& p, Color c)
 {
