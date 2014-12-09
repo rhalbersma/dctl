@@ -16,7 +16,6 @@
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 #include <type_traits>                                  // false_type, true_type
-#include <utility>                                      // pair
 
 namespace dctl {
 namespace successor {
@@ -72,18 +71,18 @@ private:
         void branch(set_type const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
-                branch_dispatch(active_pawns, std::pair<is_backward_pawn_jump_t<rules_type>, is_orthogonal_jump_t<rules_type>>{});
+                branch_dispatch(active_pawns, is_backward_pawn_jump_t<rules_type>{}, is_orthogonal_jump_t<rules_type>{});
         }
 
         // pawns that jump in the 2 forward diagonal directions
-        void branch_dispatch(set_type const& active_pawns, std::pair<std::false_type, std::false_type>) const
+        void branch_dispatch(set_type const& active_pawns, std::false_type, std::false_type) const
         {
                 serialize<left_up   (orientation)>(active_pawns);
                 serialize<right_up  (orientation)>(active_pawns);
         }
 
         // pawns that jump in the 4 forward and backward diagonal directions
-        void branch_dispatch(set_type const& active_pawns, std::pair<std::true_type, std::false_type>) const
+        void branch_dispatch(set_type const& active_pawns, std::true_type, std::false_type) const
         {
                 serialize<left_up   (orientation)>(active_pawns);
                 serialize<right_up  (orientation)>(active_pawns);
@@ -92,7 +91,7 @@ private:
         }
 
         // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
-        void branch_dispatch(set_type const& active_pawns, std::pair<std::false_type, std::true_type>) const
+        void branch_dispatch(set_type const& active_pawns, std::false_type, std::true_type) const
         {
                 serialize<up        (orientation)>(active_pawns);
                 serialize<left_up   (orientation)>(active_pawns);
@@ -102,7 +101,7 @@ private:
         }
 
         // pawns that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(set_type const& active_pawns, std::pair<std::true_type, std::true_type>) const
+        void branch_dispatch(set_type const& active_pawns, std::true_type, std::true_type) const
         {
                 serialize<up        (orientation)>(active_pawns);
                 serialize<left_up   (orientation)>(active_pawns);
@@ -198,12 +197,12 @@ private:
         bool turn(Iterator jumper) const
         {
                 // tag dispatching on pawn turn directions
-                return turn_dispatch(jumper, std::pair<is_backward_pawn_jump_t<rules_type>, is_orthogonal_jump_t<rules_type>>{});
+                return turn_dispatch(jumper, is_backward_pawn_jump_t<rules_type>{}, is_orthogonal_jump_t<rules_type>{});
         }
 
         // pawns that jump in the 2 forward diagonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::false_type>) const
+        bool turn_dispatch(Iterator jumper, std::false_type, std::false_type) const
         {
                 static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>), "");
                 return scan(ray::mirror<up(orientation)>(jumper));
@@ -211,7 +210,7 @@ private:
 
         // pawns that jump in the 4 forward and backward diagonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::false_type>) const
+        bool turn_dispatch(Iterator jumper, std::true_type, std::false_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>), "");
 
@@ -224,7 +223,7 @@ private:
 
         // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::pair<std::false_type, std::true_type>) const
+        bool turn_dispatch(Iterator jumper, std::false_type, std::true_type) const
         {
                 static_assert(!is_down(direction_v<Iterator>) && (is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>)), "");
 
@@ -297,7 +296,7 @@ private:
 
         // pawns that jump in the 8 diagonal and orthogonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::pair<std::true_type, std::true_type>) const
+        bool turn_dispatch(Iterator jumper, std::true_type, std::true_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>), "");
 

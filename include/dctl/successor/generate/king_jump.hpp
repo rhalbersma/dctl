@@ -268,30 +268,30 @@ private:
         void add(Iterator dest_sq) const
         {
                 // tag dispatching on king halt after final capture
-                halt_dispatch(dest_sq, std::pair<is_long_ranged_land_after_piece_t<rules_type>, is_directly_halt_after_final_king_t<rules_type>>{});
+                halt_dispatch(dest_sq, is_long_ranged_land_after_piece_t<rules_type>{}, is_directly_halt_after_final_king_t<rules_type>{});
         }
 
         // kings that halt immediately if the final capture is a king, and slide through otherwise
         template<class Iterator>
-        void halt_dispatch(Iterator dest_sq, std::pair<std::true_type, std::true_type>) const
+        void halt_dispatch(Iterator dest_sq, std::true_type, std::true_type) const
         {
                 assert(is_onboard(std::prev(dest_sq)));
                 if (tracker.is_king(*std::prev(dest_sq)))
-                        halt_dispatch(dest_sq, std::pair<std::false_type, std::true_type>{});
+                        halt_dispatch(dest_sq, std::false_type{}, std::true_type{});
                 else
-                        halt_dispatch(dest_sq, std::pair<std::true_type, std::false_type>{});
+                        halt_dispatch(dest_sq, std::true_type{}, std::false_type{});
         }
 
         // kings that halt immediately after the final capture
         template<class Iterator, class B>
-        void halt_dispatch(Iterator /* dest_sq */, std::pair<std::false_type, B>) const
+        void halt_dispatch(Iterator /* dest_sq */, std::false_type, B) const
         {
                 add_jump();
         }
 
         // kings that slide through after the final capture
         template<class Iterator>
-        void halt_dispatch(Iterator dest_sq, std::pair<std::true_type, std::false_type>) const
+        void halt_dispatch(Iterator dest_sq, std::true_type, std::false_type) const
         {
                 // NOTE: tracker.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
