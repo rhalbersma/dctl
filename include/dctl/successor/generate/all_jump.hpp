@@ -73,9 +73,9 @@ private:
         {
                 assert(1 <= std::distance(first, last)); // guarantees first is dereferenceable
 
-                using move_type = value_type_t<It>;
+                using rules_type = rules_type_t<value_type_t<It>>;
                 auto const greater = [](auto const& L, auto const& R){
-                        return jump_precedence_t<rules_type_t<move_type>>{}(R, L);
+                        return jump_precedence_t<rules_type>{}(R, L);
                 };
 
                 std::stable_sort(first, last, greater);
@@ -99,8 +99,8 @@ private:
                         return L.num_pieces() < R.num_pieces();
                 });
 
-                using Move = typename It::value_type;
-                if (me->num_pieces() < large_jump_v<rules_type_t<Move>>)
+                using rules_type = rules_type_t<value_type_t<It>>;
+                if (me->num_pieces() < large_jump_v<rules_type>)
                         return last;
 
                 std::stable_sort(first, last);
