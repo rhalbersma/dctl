@@ -10,7 +10,7 @@
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror, turn
-#include <dctl/rule_traits.hpp>
+#include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump_t, is_orthogonal_jump_t, is_en_passant_promotion_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
 #include <dctl/wave/iterator.hpp>
 #include <cassert>                                      // assert

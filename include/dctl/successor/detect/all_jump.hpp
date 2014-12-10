@@ -6,7 +6,7 @@
 #include <dctl/successor/detect/pawn_jump.hpp>          // Detect (pawn jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/successor/tracker.hpp>                   // Tracker
-#include <dctl/rule_traits.hpp>                         // traits
+#include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump_v, is_pawn_jump_king_v
 #include <dctl/type_traits.hpp>                         // rules_type_t
 #include <type_traits>                                  // integral_constant, is_same, false_type, true_type
 

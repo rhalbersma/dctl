@@ -8,7 +8,8 @@
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror
-#include <dctl/rule_traits.hpp>
+#include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
+                                                        // is_long_ranged_land_after_piece_t, is_directly_halt_after_final_king_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
