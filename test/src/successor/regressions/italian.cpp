@@ -11,7 +11,7 @@ using F = Fixture<italian::Rules, board::Roman>;
 
 BOOST_AUTO_TEST_SUITE(SuccessorRegressionsItalian)
 
-        BOOST_AUTO_TEST_SUITE(LexicographicJumpPrecedence)
+        BOOST_AUTO_TEST_SUITE(JumpPrecedenceOrderOfKings)
 
                 // suggested by Alioto Domenico in email to Ed Gilbert
 

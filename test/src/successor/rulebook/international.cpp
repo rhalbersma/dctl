@@ -17,7 +17,7 @@ using F = Fixture<international::Rules, board::International>;
 
 BOOST_FIXTURE_TEST_CASE(KingMoveRange, F)
 {
-        // Art. 3.9 (king move range)
+        // Art. 3.9
         auto const FEN = "W:WK23";
         auto const legal = std::vector<std::string>{
                 "23-18", "23-12", "23-07", "23-01",
@@ -30,7 +30,7 @@ BOOST_FIXTURE_TEST_CASE(KingMoveRange, F)
 
 BOOST_FIXTURE_TEST_CASE(PawnJumpDirections, F)
 {
-        // Art. 4.2 (pawn jump directions)
+        // Art. 4.2
         auto const FEN = "W:W35:B30,K40";
         auto const legal = std::vector<std::string>{ "35x24", "35x44" };
         run(FEN, begin(legal), end(legal));
@@ -38,7 +38,7 @@ BOOST_FIXTURE_TEST_CASE(PawnJumpDirections, F)
 
 BOOST_FIXTURE_TEST_CASE(KingJumpRange, F)
 {
-        // Art. 4.3 (king jump range)
+        // Art. 4.3
         auto const FEN = "W:WK41:B23";
         auto const legal = std::vector<std::string>{ "41x19", "41x14", "41x10", "41x05" };
         run(FEN, begin(legal), end(legal));
@@ -46,7 +46,7 @@ BOOST_FIXTURE_TEST_CASE(KingJumpRange, F)
 
 BOOST_FIXTURE_TEST_CASE(PawnJumpContinuation, F)
 {
-        // Art. 4.5 (pawn jump continuation)
+        // Art. 4.5
         auto const FEN = "W:W47:B13,14,22,24,31,34,K41,44";
         auto const legal = std::vector<std::string>{ "47x49" };
         run(FEN, begin(legal), end(legal));
@@ -54,21 +54,21 @@ BOOST_FIXTURE_TEST_CASE(PawnJumpContinuation, F)
 
 BOOST_FIXTURE_TEST_CASE(KingJumpContinuation, F)
 {
-        // Art. 4.6 (king jump continuation)
+        // Art. 4.6
         auto const FEN = "W:WK1:B7,9,17,19,20,30,31,33,43,44";
         auto const legal = std::vector<std::string>{ "01x15" };
         run(FEN, begin(legal), end(legal));
 }
 
-BOOST_FIXTURE_TEST_CASE(PhaseCapture, F)
+BOOST_FIXTURE_TEST_CASE(ApresFiniJumpRemoval, F)
 {
-        // Art. 4.8 (capture phase NOT en-passant)
+        // Art. 4.8
         auto const FEN = "B:W27,28,38,39,42:BK25";
         auto const legal = std::vector<std::string>{ "25x33" };
         run(FEN, begin(legal), end(legal));
 }
 
-BOOST_FIXTURE_TEST_CASE(JumpMostPieces, F)
+BOOST_FIXTURE_TEST_CASE(NumberOfPieces, F)
 {
         // Art. 4.13 (jump most pieces)
         auto const FEN = "W:WK48:B7,8,31,34,K42,44";
@@ -76,17 +76,17 @@ BOOST_FIXTURE_TEST_CASE(JumpMostPieces, F)
         run(FEN, begin(legal), end(legal));
 }
 
-BOOST_FIXTURE_TEST_CASE(JumpMostKings, F)
+BOOST_FIXTURE_TEST_CASE(NotNumberOfKings, F)
 {
-        // Art. 4.14 (jump most kings NOT applicable)
+        // Art. 4.14
         auto const FEN = "W:W26:B12,K21,31,32";
         auto const legal = std::vector<std::string>{ "26x08", "26x28" };
         run(FEN, begin(legal), end(legal));
 }
 
-BOOST_FIXTURE_TEST_CASE(PhasePromotion, F)
+BOOST_FIXTURE_TEST_CASE(ApresFiniPromotion, F)
 {
-        // Art. 4.15 (promotion phase NOT en-passant)
+        // Art. 4.15
         auto const FEN = "W:W15:B9,10";
         auto const legal = std::vector<std::string>{ "15x13" };
         run(FEN, begin(legal), end(legal));
