@@ -7,7 +7,7 @@
 #include <dctl/successor/tracker.hpp>                   // Tracker
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump_t, is_orthogonal_jump_t
+#include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump_t, is_orthogonal_jump_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
 #include <dctl/wave/patterns.hpp>                       // Sandwich
 
@@ -33,10 +33,27 @@ public:
 
         auto operator()(set_type const& active_pawns) const
         {
-                return active_pawns.any() ? branch(active_pawns) : false;
+                // tag dispatching on whether pawns can capture kings
+                // SPECULATE: pawns are present
+                return active_pawns.any() ? king_targets_dispatch(active_pawns, is_pawn_jump_king_t<rules_type>{}) : false;
         }
 
 private:
+        // pawns that can capture kings
+        auto king_targets_dispatch(set_type const& active_pawns, std::true_type) const
+        {
+                return branch(active_pawns);
+        }
+
+        // pawns that cannot capture kings
+        auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const
+        {
+                tracker.toggle_king_targets();
+                auto const found = branch(active_pawns);
+                tracker.toggle_king_targets();
+                return found;
+        }
+
         auto branch(set_type const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
