@@ -3,6 +3,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PiecePawnType
 #include <dctl/successor/detect/primary_fwd.hpp>
+#include <dctl/successor/raii.hpp>
 #include <dctl/successor/select/jump.hpp>
 #include <dctl/successor/tracker.hpp>                   // Tracker
 
@@ -48,10 +49,8 @@ private:
         // pawns that cannot capture kings
         auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const
         {
-                tracker.toggle_king_targets();
-                auto const found = branch(active_pawns);
-                tracker.toggle_king_targets();
-                return found;
+                raii::ToggleKingTargets<State> guard{tracker};
+                return branch(active_pawns);
         }
 
         auto branch(set_type const& active_pawns) const

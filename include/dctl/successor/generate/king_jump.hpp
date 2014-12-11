@@ -3,6 +3,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PieceKingType
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
+#include <dctl/successor/raii.hpp>
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/successor/tracker.hpp>                   // Tracker
 
@@ -43,10 +44,8 @@ public:
 
         auto operator()(set_type const& active_kings) const
         {
-                assert(!tracker.is_with_king());
-                tracker.toggle_is_with_king();
+                raii::ToggleIsWithKing<State> guard{tracker};
                 serialize(active_kings);
-                tracker.toggle_is_with_king();
         }
 
         template<class Iterator>
@@ -60,9 +59,8 @@ private:
         void serialize(set_type const& active_kings) const
         {
                 for (auto&& from_sq : active_kings) {
-                        tracker.launch(from_sq);
+                        raii::Launch<State> guard{tracker, from_sq};
                         branch(from_sq);
-                        tracker.finish();
                 }
         }
 
@@ -106,18 +104,16 @@ private:
         void capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker.capture(*jumper);
+                raii::Capture<State> guard{tracker, *jumper};
                 land(std::next(jumper));
-                tracker.release();
         }
 
         template<class Iterator>
         void land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker.visit(*jumper);
+                raii::Visit<State> guard{tracker, *jumper};
                 find_next(jumper);
-                tracker.leave();
         }
 
         template<class Iterator>
