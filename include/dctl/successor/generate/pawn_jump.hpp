@@ -5,8 +5,9 @@
 #include <dctl/position/promotion.hpp>                  // is_promotion
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_jump.hpp>        // promote_en_passant
-#include <dctl/successor/tracker.hpp>                   // Tracker
+#include <dctl/successor/raii.hpp>
 #include <dctl/successor/select/jump.hpp>               // jumps
+#include <dctl/successor/tracker.hpp>                   // Tracker
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror, turn
@@ -63,9 +64,8 @@ private:
         // pawns that cannot capture kings
         void king_targets_dispatch(set_type const& active_pawns, std::false_type) const
         {
-                tracker.toggle_king_targets();
+                raii::ToggleKingTargets<State> guard{tracker};
                 branch(active_pawns);
-                tracker.toggle_king_targets();
         }
 
         void branch(set_type const& active_pawns) const
@@ -125,33 +125,30 @@ private:
         void find_first(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker.launch(*jumper);
+                raii::Launch<State> guard{tracker, *jumper};
                 capture(std::next(jumper));
-                tracker.finish();
         }
 
         template<class Iterator>
         void capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker.capture(*jumper);
+                raii::Capture<State> guard{tracker, *jumper};
                 land(std::next(jumper));
-                tracker.release();
         }
 
         template<class Iterator>
         void land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                tracker.visit(*jumper);
+                raii::Visit<State> guard{tracker, *jumper};
                 find_next(jumper);
-                tracker.leave();
         }
 
         template<class Iterator>
         void find_next(Iterator jumper) const
         {
-                // tag dispatching on promotion condition
+                // tag dispatching on promotion conditiongs
                 promotion_dispatch(jumper, is_en_passant_promotion_t<rules_type>{});
         }
 
@@ -162,28 +159,49 @@ private:
                 if (explore(jumper))
                         return;
 
-                if (is_promotion(*jumper)) {
-                        tracker.toggle_is_promotion();
-                        add_jump();
-                        tracker.toggle_is_promotion();
-                } else {
-                        add_jump();
-                }
+                if (!is_promotion(*jumper))
+                        return add_jump();
+
+                raii::ToggleIsPromotion<State> guard{tracker};
+                add_jump();
         }
 
         // pawns that promote en-passant
         template<class Iterator>
         void promotion_dispatch(Iterator jumper, std::true_type) const
         {
-                if (is_promotion(*jumper)) {
-                        tracker.toggle_is_promotion();
-                        if (!KingJumps{tracker, moves}.promote_en_passant(jumper))
-                                add_jump();
-                        tracker.toggle_is_promotion();
-                } else {
+                if (!is_promotion(*jumper)) {
                         if (!explore(jumper))
                                 add_jump();
+                        return;
                 }
+
+                raii::ToggleIsPromotion<State> guard{tracker};
+
+                // tag dispatching on whether pawns can capture kings
+                promotion_king_targets_dispatch(jumper, is_pawn_jump_king_t<rules_type>{});
+        }
+
+        // pawns that can capture kings
+        template<class Iterator>
+        void promotion_king_targets_dispatch(Iterator jumper, std::true_type) const
+        {
+                promote_en_passant(jumper);
+        }
+
+        // pawns that cannot capture kings
+        template<class Iterator>
+        void promotion_king_targets_dispatch(Iterator jumper, std::false_type) const
+        {
+                raii::ToggleKingTargets<State> guard{tracker};
+                promote_en_passant(jumper);
+        }
+
+        template<class Iterator>
+        void promote_en_passant(Iterator jumper) const
+        {
+                if (!KingJumps{tracker, moves}.promote_en_passant(jumper))
+                        add_jump();
         }
 
         template<class Iterator>
