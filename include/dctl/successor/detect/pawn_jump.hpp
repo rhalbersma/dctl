@@ -15,8 +15,8 @@
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, bool IsReverse, class Position, class Range>
-class Detect<ToMove, IsReverse, PiecePawnType, select::jump, Position, Range>
+template<Color ToMove, bool IsReverse, class Position>
+class Detect<ToMove, IsReverse, PiecePawnType, select::jump, Position>
 {
         using board_type = board_type_t<Position>;
         using rules_type = rules_type_t<Position>;

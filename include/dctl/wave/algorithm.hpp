@@ -11,7 +11,7 @@ namespace loop {
 template<bool Sign, int N, class Set>
 auto fill(Set generator, Set const& propagator)
 {
-        Set flood {};
+        Set flood;
         while (generator.any()) {
                 flood |= generator;
                 generator = util::shift<Sign>{}(generator, N) & propagator;

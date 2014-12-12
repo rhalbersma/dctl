@@ -1,36 +1,38 @@
 #pragma once
-#include <cassert>                      // assert
-#include <chrono>                       // clock_t
-#include <vector>                       // vector
+#include <cassert>      // assert
+#include <chrono>       // clock_t
+#include <vector>       // vector
 
 namespace dctl {
 
 class Stopwatch
 {
-public:
-        Stopwatch() = default;
+        using clock = std::chrono::high_resolution_clock;
+        std::vector<clock::time_point> splits_;
+        bool running_;
 
-        void start()
+public:
+        auto start()
         {
                 assert(!running_);
                 record();
                 running_ = true;
         }
 
-        void stop()
+        auto stop()
         {
                 assert(running_);
                 record();
                 running_ = false;
         }
 
-        void lap()
+        auto lap()
         {
                 assert(running_);
                 record();
         }
 
-        void reset()
+        auto reset()
         {
                 assert(!running_);
                 splits_.clear();
@@ -53,18 +55,10 @@ public:
         }
 
 private:
-        // implementation
-
         void record()
         {
                 splits_.push_back(clock::now());
         }
-
-        // representation
-
-        using clock = std::chrono::high_resolution_clock;
-        std::vector<clock::time_point> splits_{};
-        bool running_{};
 };
 
 }       // namespace dctl

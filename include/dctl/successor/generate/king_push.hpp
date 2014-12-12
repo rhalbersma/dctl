@@ -30,9 +30,9 @@ class Generate<ToMove, IsReverse, PieceKingType, select::push, Position, Sequenc
         Sequence& moves;
 
 public:
-        Generate(set_type const& p, Sequence& m)
+        Generate(set_type const& s, Sequence& m)
         :
-                not_occupied{p},
+                not_occupied{s},
                 moves{m}
         {}
 

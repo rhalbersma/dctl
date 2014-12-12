@@ -6,11 +6,10 @@
 
 namespace dctl {
 
-// primary template
-template<class Board, int Direction, class Range>
+template<class Board, int Direction, class IsLongRangedKing>
 struct Sink;
 
-// specialization for short ranged kings
+// short ranged kings
 template<class Board, int Direction>
 struct Sink<Board, Direction, std::false_type>
 {
@@ -21,7 +20,7 @@ struct Sink<Board, Direction, std::false_type>
         }
 };
 
-// specialization for long ranged kings
+// long ranged kings
 template<class Board, int Direction>
 struct Sink<Board, Direction, std::true_type>
 {
@@ -32,11 +31,10 @@ struct Sink<Board, Direction, std::true_type>
         }
 };
 
-// primary template
-template<class Board, int Direction, class Range>
+template<class Board, int Direction, class IsLongRangedKing>
 struct Sandwich;
 
-// specialization for short ranged kings
+// short ranged kings
 template<class Board, int Direction>
 struct Sandwich<Board, Direction, std::false_type>
 {
@@ -51,7 +49,7 @@ struct Sandwich<Board, Direction, std::false_type>
         }
 };
 
-// specialization for long ranged kings
+// long ranged kings
 template<class Board, int Direction>
 struct Sandwich<Board, Direction, std::true_type>
 {
