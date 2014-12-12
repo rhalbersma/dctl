@@ -36,7 +36,6 @@ public:
 private:
         auto branch(set_type const& active_pawns) const
         {
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
                         parallelize<left_up (orientation)>(active_pawns) ||
                         parallelize<right_up(orientation)>(active_pawns)

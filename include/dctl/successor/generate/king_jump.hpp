@@ -141,7 +141,6 @@ private:
         template<class Iterator>
         bool reverse_dispatch(Iterator jumper, std::true_type) const
         {
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return scan_turn(jumper) | reverse(jumper);
         }
 
@@ -163,7 +162,7 @@ private:
         template<class Iterator>
         bool scan_turn_dispatch(Iterator jumper, std::true_type) const
         {
-                // CORRECTNESS: tracker.template path<Direction>() would be an ERROR here
+                // tracker.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
                 assert(is_onboard(jumper) && tracker.path(*jumper));
                 auto found_next = turn(jumper);
@@ -196,8 +195,6 @@ private:
         bool turn_dispatch(Iterator jumper, std::false_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>), "");
-
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::rotate<+90_deg>(jumper)) |
                         scan(ray::rotate<-90_deg>(jumper))
@@ -209,8 +206,6 @@ private:
         bool turn_dispatch(Iterator jumper, std::true_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>), "");
-
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::rotate< +45_deg>(jumper)) |
                         scan(ray::rotate< -45_deg>(jumper)) |
@@ -290,7 +285,7 @@ private:
         template<class Iterator>
         void halt_dispatch(Iterator dest_sq, std::true_type, std::false_type) const
         {
-                // NOTE: tracker.template path<Direction>() would be an ERROR here
+                // tracker.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 assert(is_onboard(dest_sq) && tracker.path(*dest_sq));
                 add_jump();

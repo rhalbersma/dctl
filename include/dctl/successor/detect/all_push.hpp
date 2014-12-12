@@ -22,9 +22,6 @@ public:
                 using KingPush = Detect<ToMove, IsReverse, PieceKingType, select::push, Position>;
 
                 auto const not_occupied = p.not_occupied();
-
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
-                // SPECULATE: #pawn pushes > #king pushes for earliest possible short-circuiting
                 return
                         PawnPush{not_occupied}(p.pawns(ToMove))           ||
                         KingPush{not_occupied}(moveable_kings(p, ToMove))

@@ -20,8 +20,6 @@ public:
                 using Push = Detect<ToMove, IsReverse, select::push>;
                 using Jump = Detect<ToMove, IsReverse, select::jump>;
 
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
-                // SPECULATE: #pushes > #jumps, so that the logical OR is more likely to short-circuit
                 return Push{}(p) || Jump{}(p);
         }
 };

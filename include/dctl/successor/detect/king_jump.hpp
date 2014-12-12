@@ -33,7 +33,6 @@ public:
 
         auto operator()(set_type const& active_kings) const
         {
-                // SPECULATE: no kings are present
                 return active_kings.none() ? false : branch(active_kings);
         }
 
@@ -47,7 +46,6 @@ private:
         // kings that jump in the 4 diagonal directions
         auto branch_dispatch(set_type const& active_kings, std::false_type) const
         {
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
                         parallelize<left_up   (orientation)>(active_kings) ||
                         parallelize<right_up  (orientation)>(active_kings) ||
@@ -59,7 +57,6 @@ private:
         // kings that jump in the 8 diagonal and orthogonal directions
         auto branch_dispatch(set_type const& active_kings, std::true_type) const
         {
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
                         parallelize<up        (orientation)>(active_kings) ||
                         parallelize<left_up   (orientation)>(active_kings) ||
