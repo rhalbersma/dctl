@@ -6,7 +6,7 @@
 #include <dctl/successor/generate/pawn_jump.hpp>        // Generate (pawn jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/successor/tracker.hpp>                   // Tracker
-#include <dctl/successor/filter.hpp>
+#include <dctl/successor/filter.hpp>                    // Precedence, Unique
 
 namespace dctl {
 namespace successor {
