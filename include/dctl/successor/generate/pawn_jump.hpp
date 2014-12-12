@@ -207,7 +207,6 @@ private:
         template<class Iterator>
         bool explore(Iterator jumper) const
         {
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return scan(jumper) | turn(jumper);
         }
 
@@ -231,8 +230,6 @@ private:
         bool turn_dispatch(Iterator jumper, std::true_type, std::false_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>), "");
-
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::rotate<+90_deg>(jumper)) |
                         scan(ray::rotate<-90_deg>(jumper))
@@ -253,7 +250,6 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<up(orientation)>)
         {
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::turn<left_up (orientation)>(jumper)) |
                         scan(ray::turn<right_up(orientation)>(jumper)) |
@@ -266,7 +262,6 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<left_up(orientation)>)
         {
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
                         scan(ray::turn<right_up(orientation)>(jumper)) |
@@ -279,7 +274,6 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<right_up(orientation)>)
         {
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
                         scan(ray::turn<left_up (orientation)>(jumper)) |
@@ -292,7 +286,6 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<left(orientation)>)
         {
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
                         scan(ray::turn<left_up (orientation)>(jumper)) |
@@ -304,7 +297,6 @@ private:
         template<class Iterator>
         bool turn_dispatch(Iterator jumper, angle_t<right(orientation)>)
         {
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
                         scan(ray::turn<left_up (orientation)>(jumper)) |
@@ -317,8 +309,6 @@ private:
         bool turn_dispatch(Iterator jumper, std::true_type, std::true_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>), "");
-
-                // CORRECTNESS: bitwise instead of logical OR to disable short-circuiting
                 return
                         scan(ray::rotate< +45_deg>(jumper)) |
                         scan(ray::rotate< -45_deg>(jumper)) |

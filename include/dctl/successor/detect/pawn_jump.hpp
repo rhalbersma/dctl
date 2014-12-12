@@ -35,7 +35,6 @@ public:
         auto operator()(set_type const& active_pawns) const
         {
                 // tag dispatching on whether pawns can capture kings
-                // SPECULATE: pawns are present
                 return active_pawns.any() ? king_targets_dispatch(active_pawns, is_pawn_jump_king_t<rules_type>{}) : false;
         }
 
@@ -62,7 +61,6 @@ private:
         // pawns that jump in the 2 forward diagonal directions
         auto branch_dispatch(set_type const& active_pawns, std::false_type, std::false_type) const
         {
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
                         parallelize<left_up   (orientation)>(active_pawns) ||
                         parallelize<right_up  (orientation)>(active_pawns)
@@ -72,7 +70,6 @@ private:
         // pawns that jump in the 4 forward and backward diagonal directions
         auto branch_dispatch(set_type const& active_pawns, std::true_type, std::false_type) const
         {
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
                         parallelize<left_up   (orientation)>(active_pawns) ||
                         parallelize<right_up  (orientation)>(active_pawns) ||
@@ -84,7 +81,6 @@ private:
         // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
         auto branch_dispatch(set_type const& active_pawns, std::false_type, std::true_type) const
         {
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
                         parallelize<up        (orientation)>(active_pawns) ||
                         parallelize<left_up   (orientation)>(active_pawns) ||
@@ -97,7 +93,6 @@ private:
         // pawns that jump in the 8 diagonal and orthogonal directions
         auto branch_dispatch(set_type const& active_pawns, std::true_type, std::true_type) const
         {
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
                         parallelize<up        (orientation)>(active_pawns) ||
                         parallelize<left_up   (orientation)>(active_pawns) ||

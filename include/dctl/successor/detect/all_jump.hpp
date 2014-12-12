@@ -6,7 +6,6 @@
 #include <dctl/successor/detect/pawn_jump.hpp>          // Detect (pawn jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/successor/tracker.hpp>                   // Tracker
-#include <type_traits>                                  // false_type
 
 namespace dctl {
 namespace successor {
@@ -22,9 +21,6 @@ public:
                 using KingJump = Detect<ToMove, IsReverse, PieceKingType, select::jump, Position>;
 
                 Tracker<ToMove, Position> tracker{p};
-
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
-                // SPECULATE: #pawn jumps > #king jumps for earliest possible short-circuiting
                 return
                         PawnJump{tracker}(p.pawns(ToMove)) ||
                         KingJump{tracker}(p.kings(ToMove))

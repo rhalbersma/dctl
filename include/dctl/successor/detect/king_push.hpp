@@ -30,14 +30,12 @@ public:
 
         auto operator()(set_type const& active_kings) const
         {
-                // SPECULATE: no kings are present
                 return active_kings.none() ? false : branch(active_kings);
         }
 
 private:
         auto branch(set_type const& active_kings) const
         {
-                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
                 return
                         parallelize<left_up   (orientation)>(active_kings) ||
                         parallelize<right_up  (orientation)>(active_kings) ||
