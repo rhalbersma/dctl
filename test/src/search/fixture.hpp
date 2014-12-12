@@ -13,16 +13,18 @@ namespace dctl {
 namespace search {
 
 template<class Position, class Objective>
-struct Fixture
+class Fixture
 {
-        Fixture()
-        {
-                root_.resize_hash(4096);
-        }
-
+        Root<Position, Objective> root_;
+public:
         ~Fixture()
         {
                 root_.resize_hash(1);
+        }
+
+        Fixture()
+        {
+                root_.resize_hash(4096);
         }
 
         using Test = std::pair<std::string, int>;
@@ -39,8 +41,6 @@ struct Fixture
                         BOOST_CHECK_EQUAL(win_value(t.second), value);
                 }
         }
-
-        Root<Position, Objective> root_;
 };
 
 using DefaultObjective = GameObjective<NoMovesLeft>;

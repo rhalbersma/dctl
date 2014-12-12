@@ -17,11 +17,12 @@ public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using ShortPush = Detect<ToMove, IsReverse, select::push>;
-                using ShortJump = Detect<ToMove, IsReverse, select::jump, std::false_type>;
+                using Push = Detect<ToMove, IsReverse, select::push>;
+                using Jump = Detect<ToMove, IsReverse, select::jump>;
 
-                // SPECULATE: #push > #jump, so that the logical OR is more likely to short-circuit
-                return ShortPush{}(p) || ShortJump{}(p);
+                // EFFICIENCY: logical instead of bitwise OR to enable short-circuiting
+                // SPECULATE: #pushes > #jumps, so that the logical OR is more likely to short-circuit
+                return Push{}(p) || Jump{}(p);
         }
 };
 

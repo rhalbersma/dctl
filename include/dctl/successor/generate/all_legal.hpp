@@ -17,12 +17,12 @@ public:
         template<class Position, class Sequence>
         auto operator()(Position const& p, Sequence& moves) const
         {
-                using AllJump = Generate<ToMove, IsReverse, select::jump>;
-                using AllPush = Generate<ToMove, IsReverse, select::push>;
+                using Jump = Generate<ToMove, IsReverse, select::jump>;
+                using Push = Generate<ToMove, IsReverse, select::push>;
 
-                AllJump{}(p, moves);
+                Jump{}(p, moves);
                 if (moves.empty())
-                        AllPush{}(p, moves);
+                        Push{}(p, moves);
         }
 };
 

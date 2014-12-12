@@ -17,6 +17,18 @@ class Message
 :
         public factory::make_header_body_terminator< 1, 126, '\0' >
 {
+        // pure virtual implementation
+        virtual std::string do_header() const = 0;
+        virtual std::string do_body() const = 0;
+
+        bool invariant() const
+        {
+                return
+                        static_cast<int>(do_header().length()) == header_length_ &&
+                        static_cast<int>(do_body().length()) <= max_body_length_
+                ;
+        }
+
 public:
         // enable deletion of a Derived* through a Base*
         virtual ~Message() = default;
@@ -27,21 +39,6 @@ public:
                 assert(invariant());
                 return do_header() + do_body();
         }
-
-private:
-        // contracts
-
-        bool invariant() const
-        {
-                return
-                        static_cast<int>(do_header().length()) == header_length_ &&
-                        static_cast<int>(do_body().length()) <= max_body_length_
-                ;
-        }
-
-        // pure virtual implementation
-        virtual std::string do_header() const = 0;
-        virtual std::string do_body() const = 0;
 };
 
 }       // namespace dxp
