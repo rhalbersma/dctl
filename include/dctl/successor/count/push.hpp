@@ -11,14 +11,14 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse>
-class Count<ToMove, IsReverse, select::push>
+class Count<ToMove, select::push, IsReverse>
 {
 public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using KingPush = Count<ToMove, IsReverse, PieceKingType, select::push, Position>;
-                using PawnPush = Count<ToMove, IsReverse, PiecePawnType, select::push, Position>;
+                using KingPush = Count<ToMove, select::push, IsReverse, PieceKingType, Position>;
+                using PawnPush = Count<ToMove, select::push, IsReverse, PiecePawnType, Position>;
 
                 auto const not_occupied = p.not_occupied();
                 return

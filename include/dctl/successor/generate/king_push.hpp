@@ -19,7 +19,7 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse, class Position, class Sequence>
-class Generate<ToMove, IsReverse, PieceKingType, select::push, Position, Sequence>
+class Generate<ToMove, select::push, IsReverse, PieceKingType, Position, Sequence>
 {
         using board_type = board_type_t<Position>;
         using rules_type = rules_type_t<Position>;

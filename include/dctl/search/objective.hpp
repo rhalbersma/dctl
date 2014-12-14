@@ -1,7 +1,7 @@
 #pragma once
-#include <type_traits>                  // false_type, true_type
 #include <dctl/search/score.hpp>
-#include <dctl/successor/detect.hpp>
+#include <dctl/successor.hpp>
+#include <type_traits>                  // false_type, true_type
 
 namespace dctl {
 namespace search {

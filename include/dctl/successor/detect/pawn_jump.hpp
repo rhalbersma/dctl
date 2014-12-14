@@ -2,10 +2,11 @@
 #include <dctl/angle.hpp>                               // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PiecePawnType
-#include <dctl/successor/detect/primary_fwd.hpp>
-#include <dctl/successor/raii.hpp>
-#include <dctl/successor/select/jump.hpp>
-#include <dctl/successor/tracker.hpp>                   // Tracker
+#include <dctl/successor/detail/filter.hpp>             // Precedence, Unique
+#include <dctl/successor/detail/raii.hpp>               // ToggleKingTargets
+#include <dctl/successor/detail/tracker.hpp>            // Tracker
+#include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
+#include <dctl/successor/select/jump.hpp>               // jump
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump_t, is_orthogonal_jump_t
@@ -16,20 +17,20 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse, class Position>
-class Detect<ToMove, IsReverse, PiecePawnType, select::jump, Position>
+class Detect<ToMove, select::jump, IsReverse, PiecePawnType, Position>
 {
-        using board_type = board_type_t<Position>;
-        using rules_type = rules_type_t<Position>;
-        using   set_type =   set_type_t<Position>;
-        using State = Tracker<ToMove, Position>;
+        using   board_type = board_type_t<Position>;
+        using   rules_type = rules_type_t<Position>;
+        using     set_type =   set_type_t<Position>;
+        using tracker_type = detail::Tracker<ToMove, Position>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
-        State& tracker;
+        tracker_type& tracker;
 
 public:
-        explicit Detect(State& p)
+        explicit Detect(tracker_type& t)
         :
-                tracker{p}
+                tracker{t}
         {}
 
         auto operator()(set_type const& active_pawns) const
@@ -48,7 +49,7 @@ private:
         // pawns that cannot capture kings
         auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const
         {
-                raii::ToggleKingTargets<State> guard{tracker};
+                raii::ToggleKingTargets<tracker_type> guard{tracker};
                 return branch(active_pawns);
         }
 

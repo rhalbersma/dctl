@@ -11,14 +11,14 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse>
-class Generate<ToMove, IsReverse, select::push>
+class Generate<ToMove, select::push, IsReverse>
 {
 public:
         template<class Position, class Sequence>
         auto operator()(Position const& p, Sequence& moves) const
         {
-                using KingPush = Generate<ToMove, IsReverse, PieceKingType, select::push, Position, Sequence>;
-                using PawnPush = Generate<ToMove, IsReverse, PiecePawnType, select::push, Position, Sequence>;
+                using KingPush = Generate<ToMove, select::push, IsReverse, PieceKingType, Position, Sequence>;
+                using PawnPush = Generate<ToMove, select::push, IsReverse, PiecePawnType, Position, Sequence>;
 
                 auto const not_occupied = p.not_occupied();
                 KingPush{not_occupied, moves}(moveable_kings(p, ToMove));

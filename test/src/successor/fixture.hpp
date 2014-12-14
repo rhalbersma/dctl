@@ -2,7 +2,7 @@
 #include <dctl/move/ostream.hpp>
 #include <dctl/position/position.hpp>
 #include <dctl/setup/setup.hpp>
-#include <dctl/successor/generate.hpp>
+#include <dctl/successor.hpp>
 #include <boost/algorithm/string.hpp>   // trim_copy
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK, BOOST_CHECK_EQUAL
 #include <algorithm>                    // is_permutation, transform

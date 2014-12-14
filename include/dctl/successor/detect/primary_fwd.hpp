@@ -4,7 +4,7 @@
 namespace dctl {
 namespace successor {
 
-template<Color /* ToMove */, bool /* IsReverse */, class /* Select */, class...>
+template<Color /* ToMove */, class /* Select */, bool /* IsReverse */, class...>
 class Detect;
 
 }       // namespace successor

@@ -6,19 +6,19 @@
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, bool IsReverse = false, class Select = select::legal, class... Args, class Position>
+template<Color ToMove, class Select = select::legal, bool IsReverse = false, class... Args, class Position>
 auto detect(Position const& p)
 {
-        return Detect<ToMove, IsReverse, Select, Args...>{}(p);
+        return Detect<ToMove, Select, IsReverse, Args...>{}(p);
 }
 
-template<bool IsReverse = false, class Select = select::legal, class... Args, class Position>
+template<class Select = select::legal, bool IsReverse = false, class... Args, class Position>
 auto detect(Position const& p)
 {
         return
                 (p.to_move() == Color::black) ?
-                detect<Color::black, IsReverse, Select, Args...>(p) :
-                detect<Color::white, IsReverse, Select, Args...>(p)
+                detect<Color::black, Select, IsReverse, Args...>(p) :
+                detect<Color::white, Select, IsReverse, Args...>(p)
         ;
 }
 

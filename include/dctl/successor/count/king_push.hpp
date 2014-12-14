@@ -2,8 +2,8 @@
 #include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PieceKingType
-#include <dctl/successor/count/primary_fwd.hpp>
-#include <dctl/successor/select/push.hpp>
+#include <dctl/successor/count/primary_fwd.hpp>         // Count (primary template)
+#include <dctl/successor/select/push.hpp>               // push
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
@@ -14,7 +14,7 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse, class Position>
-class Count<ToMove, IsReverse, PieceKingType, select::push, Position>
+class Count<ToMove, select::push, IsReverse, PieceKingType, Position>
 {
         using board_type = board_type_t<Position>;
         using rules_type = rules_type_t<Position>;
