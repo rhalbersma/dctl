@@ -9,8 +9,7 @@
 #include <dctl/hash/extract.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/position/make_copy.hpp>
-#include <dctl/successor/count.hpp>
-#include <dctl/successor/generate.hpp>
+#include <dctl/successor.hpp>
 #include <dctl/utility/int.hpp>         // NodeCount
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/stopwatch.hpp>

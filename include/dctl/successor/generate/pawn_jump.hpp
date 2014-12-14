@@ -3,17 +3,17 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
 #include <dctl/position/promotion.hpp>                  // is_promotion
+#include <dctl/successor/detail/raii.hpp>               // Launch, Capture, Visit, ToggleKingTargets, ToggleIsPromotion
+#include <dctl/successor/detail/tracker.hpp>            // Tracker
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_jump.hpp>        // promote_en_passant
-#include <dctl/successor/raii.hpp>
 #include <dctl/successor/select/jump.hpp>               // jumps
-#include <dctl/successor/tracker.hpp>                   // Tracker
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror, turn
 #include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump_t, is_orthogonal_jump_t, is_en_passant_promotion_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
-#include <dctl/wave/iterator.hpp>
+#include <dctl/wave/iterator.hpp>                       // make_iterator
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 #include <type_traits>                                  // false_type, true_type
@@ -22,30 +22,30 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse, class Position, class Sequence>
-class Generate<ToMove, IsReverse, PiecePawnType, select::jump, Position, Sequence>
+class Generate<ToMove, select::jump, IsReverse, PiecePawnType, Position, Sequence>
 {
-        using KingJumps = Generate<ToMove, IsReverse, PieceKingType, select::jump, Position, Sequence>;
-        using board_type = board_type_t<Position>;
-        using rules_type = rules_type_t<Position>;
-        using   set_type =   set_type_t<Position>;
-        using State = Tracker<ToMove, Position>;
+        using    KingJumps = Generate<ToMove, select::jump, IsReverse, PieceKingType, Position, Sequence>;
+        using   board_type = board_type_t<Position>;
+        using   rules_type = rules_type_t<Position>;
+        using     set_type =   set_type_t<Position>;
+        using tracker_type = detail::Tracker<ToMove, Position>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
-        State& tracker;
+        tracker_type& tracker;
         Sequence& moves;
 
 public:
-        explicit Generate(State& t, Sequence& m)
+        explicit Generate(tracker_type& t, Sequence& m)
         :
                 tracker{t},
                 moves{m}
         {}
 
-        void operator()(set_type const& active_pawns) const
+        auto operator()(set_type const& active_pawns) const
         {
                 if (active_pawns.none())
                         return;
@@ -56,33 +56,33 @@ public:
 
 private:
         // pawns that can capture kings
-        void king_targets_dispatch(set_type const& active_pawns, std::true_type) const
+        auto king_targets_dispatch(set_type const& active_pawns, std::true_type) const
         {
                 branch(active_pawns);
         }
 
         // pawns that cannot capture kings
-        void king_targets_dispatch(set_type const& active_pawns, std::false_type) const
+        auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const
         {
-                raii::ToggleKingTargets<State> guard{tracker};
+                raii::ToggleKingTargets<tracker_type> guard{tracker};
                 branch(active_pawns);
         }
 
-        void branch(set_type const& active_pawns) const
+        auto branch(set_type const& active_pawns) const
         {
                 // tag dispatching on pawn jump directions
                 branch_dispatch(active_pawns, is_backward_pawn_jump_t<rules_type>{}, is_orthogonal_jump_t<rules_type>{});
         }
 
         // pawns that jump in the 2 forward diagonal directions
-        void branch_dispatch(set_type const& active_pawns, std::false_type, std::false_type) const
+        auto branch_dispatch(set_type const& active_pawns, std::false_type, std::false_type) const
         {
                 serialize<left_up   (orientation)>(active_pawns);
                 serialize<right_up  (orientation)>(active_pawns);
         }
 
         // pawns that jump in the 4 forward and backward diagonal directions
-        void branch_dispatch(set_type const& active_pawns, std::true_type, std::false_type) const
+        auto branch_dispatch(set_type const& active_pawns, std::true_type, std::false_type) const
         {
                 serialize<left_up   (orientation)>(active_pawns);
                 serialize<right_up  (orientation)>(active_pawns);
@@ -91,7 +91,7 @@ private:
         }
 
         // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
-        void branch_dispatch(set_type const& active_pawns, std::false_type, std::true_type) const
+        auto branch_dispatch(set_type const& active_pawns, std::false_type, std::true_type) const
         {
                 serialize<up        (orientation)>(active_pawns);
                 serialize<left_up   (orientation)>(active_pawns);
@@ -101,7 +101,7 @@ private:
         }
 
         // pawns that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(set_type const& active_pawns, std::true_type, std::true_type) const
+        auto branch_dispatch(set_type const& active_pawns, std::true_type, std::true_type) const
         {
                 serialize<up        (orientation)>(active_pawns);
                 serialize<left_up   (orientation)>(active_pawns);
@@ -114,7 +114,7 @@ private:
         }
 
         template<int Direction>
-        void serialize(set_type const& active_pawns) const
+        auto serialize(set_type const& active_pawns) const
         {
                 auto const jumpers = active_pawns & set_type(*std::prev(along_wave<Direction>(tracker.template targets<Direction>())));
                 for (auto&& from_sq : jumpers)
@@ -122,31 +122,31 @@ private:
         }
 
         template<class Iterator>
-        void find_first(Iterator jumper) const
+        auto find_first(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Launch<State> guard{tracker, *jumper};
+                raii::Launch<tracker_type> guard{tracker, *jumper};
                 capture(std::next(jumper));
         }
 
         template<class Iterator>
-        void capture(Iterator jumper) const
+        auto capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Capture<State> guard{tracker, *jumper};
+                raii::Capture<tracker_type> guard{tracker, *jumper};
                 land(std::next(jumper));
         }
 
         template<class Iterator>
-        void land(Iterator jumper) const
+        auto land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Visit<State> guard{tracker, *jumper};
+                raii::Visit<tracker_type> guard{tracker, *jumper};
                 find_next(jumper);
         }
 
         template<class Iterator>
-        void find_next(Iterator jumper) const
+        auto find_next(Iterator jumper) const
         {
                 // tag dispatching on promotion conditiongs
                 promotion_dispatch(jumper, is_en_passant_promotion_t<rules_type>{});
@@ -154,7 +154,7 @@ private:
 
         // pawns that promote apres-fini
         template<class Iterator>
-        void promotion_dispatch(Iterator jumper, std::false_type) const
+        auto promotion_dispatch(Iterator jumper, std::false_type) const
         {
                 if (explore(jumper))
                         return;
@@ -162,13 +162,13 @@ private:
                 if (!is_promotion(*jumper))
                         return add_jump();
 
-                raii::ToggleIsPromotion<State> guard{tracker};
+                raii::ToggleIsPromotion<tracker_type> guard{tracker};
                 add_jump();
         }
 
         // pawns that promote en-passant
         template<class Iterator>
-        void promotion_dispatch(Iterator jumper, std::true_type) const
+        auto promotion_dispatch(Iterator jumper, std::true_type) const
         {
                 if (!is_promotion(*jumper)) {
                         if (!explore(jumper))
@@ -176,7 +176,7 @@ private:
                         return;
                 }
 
-                raii::ToggleIsPromotion<State> guard{tracker};
+                raii::ToggleIsPromotion<tracker_type> guard{tracker};
 
                 // tag dispatching on whether pawns can capture kings
                 promotion_king_targets_dispatch(jumper, is_pawn_jump_king_t<rules_type>{});
@@ -184,34 +184,34 @@ private:
 
         // pawns that can capture kings
         template<class Iterator>
-        void promotion_king_targets_dispatch(Iterator jumper, std::true_type) const
+        auto promotion_king_targets_dispatch(Iterator jumper, std::true_type) const
         {
                 promote_en_passant(jumper);
         }
 
         // pawns that cannot capture kings
         template<class Iterator>
-        void promotion_king_targets_dispatch(Iterator jumper, std::false_type) const
+        auto promotion_king_targets_dispatch(Iterator jumper, std::false_type) const
         {
-                raii::ToggleKingTargets<State> guard{tracker};
+                raii::ToggleKingTargets<tracker_type> guard{tracker};
                 promote_en_passant(jumper);
         }
 
         template<class Iterator>
-        void promote_en_passant(Iterator jumper) const
+        auto promote_en_passant(Iterator jumper) const
         {
                 if (!KingJumps{tracker, moves}.promote_en_passant(jumper))
                         add_jump();
         }
 
         template<class Iterator>
-        bool explore(Iterator jumper) const
+        auto explore(Iterator jumper) const
         {
                 return scan(jumper) | turn(jumper);
         }
 
         template<class Iterator>
-        bool turn(Iterator jumper) const
+        auto turn(Iterator jumper) const
         {
                 // tag dispatching on pawn turn directions
                 return turn_dispatch(jumper, is_backward_pawn_jump_t<rules_type>{}, is_orthogonal_jump_t<rules_type>{});
@@ -219,7 +219,7 @@ private:
 
         // pawns that jump in the 2 forward diagonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::false_type, std::false_type) const
+        auto turn_dispatch(Iterator jumper, std::false_type, std::false_type) const
         {
                 static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>), "");
                 return scan(ray::mirror<up(orientation)>(jumper));
@@ -227,7 +227,7 @@ private:
 
         // pawns that jump in the 4 forward and backward diagonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::true_type, std::false_type) const
+        auto turn_dispatch(Iterator jumper, std::true_type, std::false_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>), "");
                 return
@@ -238,7 +238,7 @@ private:
 
         // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::false_type, std::true_type) const
+        auto turn_dispatch(Iterator jumper, std::false_type, std::true_type) const
         {
                 static_assert(!is_down(direction_v<Iterator>) && (is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>)), "");
 
@@ -248,7 +248,7 @@ private:
 
         // the upward direction
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, angle_t<up(orientation)>)
+        auto turn_dispatch(Iterator jumper, angle_t<up(orientation)>) const
         {
                 return
                         scan(ray::turn<left_up (orientation)>(jumper)) |
@@ -260,7 +260,7 @@ private:
 
         // the left upward direction
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, angle_t<left_up(orientation)>)
+        auto turn_dispatch(Iterator jumper, angle_t<left_up(orientation)>) const
         {
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
@@ -272,7 +272,7 @@ private:
 
         // the right upward direction
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, angle_t<right_up(orientation)>)
+        auto turn_dispatch(Iterator jumper, angle_t<right_up(orientation)>) const
         {
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
@@ -284,7 +284,7 @@ private:
 
         // the left direction
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, angle_t<left(orientation)>)
+        auto turn_dispatch(Iterator jumper, angle_t<left(orientation)>) const
         {
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
@@ -295,7 +295,7 @@ private:
 
         // the right direction
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, angle_t<right(orientation)>)
+        auto turn_dispatch(Iterator jumper, angle_t<right(orientation)>) const
         {
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
@@ -306,7 +306,7 @@ private:
 
         // pawns that jump in the 8 diagonal and orthogonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::true_type, std::true_type) const
+        auto turn_dispatch(Iterator jumper, std::true_type, std::true_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>), "");
                 return
@@ -320,13 +320,13 @@ private:
         }
 
         template<class Iterator>
-        bool scan(Iterator jumper) const
+        auto scan(Iterator jumper) const
         {
                 return is_en_prise(std::next(jumper));
         }
 
         template<class Iterator>
-        bool is_en_prise(Iterator jumper) const
+        auto is_en_prise(Iterator jumper) const
         {
                 if (!(is_onboard(std::next(jumper)) && tracker.targets(jumper)))
                         return false;
@@ -335,24 +335,24 @@ private:
                 return true;
         }
 
-        void add_jump() const
+        auto add_jump() const
         {
                 moves.emplace_back(tracker);
         }
 
         template<int Direction>
-        static wave::Iterator<board_type, Direction> along_wave(set_type const& s)
+        static auto along_wave(set_type const& s)
         {
                 return wave::make_iterator<board_type, Direction>(s);
         }
 
         template<int Direction>
-        static ray::Iterator<board_type, Direction> along_ray(std::size_t sq)
+        static auto along_ray(std::size_t sq)
         {
                 return ray::make_iterator<board_type, Direction>(sq);
         }
 
-        static bool is_promotion(std::size_t sq)
+        static auto is_promotion(std::size_t sq)
         {
                 return dctl::is_promotion<board_type, ToMove>(sq);
         }

@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/color.hpp>                               // Color, black, white
+#include <dctl/successor/detail/invariant.hpp>          // invariant
 #include <dctl/successor/generate/specializations.hpp>  // Generate
-#include <dctl/successor/invariant.hpp>                 // invariant
 #include <dctl/successor/select/legal.hpp>              // legal
 #include <dctl/move/move.hpp>                           // Move
 #include <dctl/type_traits.hpp>                         // value_type_t
@@ -14,7 +14,7 @@ namespace successor {
 
 template
 <
-        Color ToMove, bool IsReverse = false, class Select = select::legal, class... Args,
+        Color ToMove, class Select = select::legal, bool IsReverse = false, class... Args,
         class Position, class Allocator = std::allocator<Move_t<Position>>
 >
 auto generate(Position const& p, Allocator const& alloc = Allocator())
@@ -22,22 +22,22 @@ auto generate(Position const& p, Allocator const& alloc = Allocator())
         using Move = value_type_t<std::allocator_traits<Allocator>>;
         std::vector<Move, Allocator> moves(alloc);
         moves.reserve(DCTL_PP_STACK_RESERVE);
-        Generate<ToMove, IsReverse, Select, Args...>{}(p, moves);
-        assert((invariant<ToMove, IsReverse, Select, Args...>(p, moves.size())));
+        Generate<ToMove, Select, IsReverse, Args...>{}(p, moves);
+        assert((detail::invariant<ToMove, Select, IsReverse, Args...>(p, moves.size())));
         return moves;
 }
 
 template
 <
-        bool IsReverse = false, class Select = select::legal, class... Args,
+        class Select = select::legal, bool IsReverse = false, class... Args,
         class Position, class Allocator = std::allocator<Move_t<Position>>
 >
 auto generate(Position const& p, Allocator const& alloc = Allocator())
 {
         return
                 (p.to_move() == Color::black) ?
-                generate<Color::black, IsReverse, Select, Args...>(p, alloc) :
-                generate<Color::white, IsReverse, Select, Args...>(p, alloc)
+                generate<Color::black, Select, IsReverse, Args...>(p, alloc) :
+                generate<Color::white, Select, IsReverse, Args...>(p, alloc)
         ;
 }
 

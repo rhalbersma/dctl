@@ -13,6 +13,7 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 template<Color ToMove, class Position>
 class Tracker
@@ -249,5 +250,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

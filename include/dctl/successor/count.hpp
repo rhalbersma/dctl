@@ -6,19 +6,19 @@
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, bool IsReverse = false, class Select = select::legal, class... Args, class Position>
+template<Color ToMove, class Select = select::legal, bool IsReverse = false, class... Args, class Position>
 auto count(Position const& p)
 {
-        return Count<ToMove, IsReverse, Select, Args...>{}(p);
+        return Count<ToMove, Select, IsReverse, Args...>{}(p);
 }
 
-template<bool IsReverse = false, class Select = select::legal, class... Args, class Position>
+template<class Select = select::legal, bool IsReverse = false, class... Args, class Position>
 auto count(Position const& p)
 {
         return
                 (p.to_move() == Color::black) ?
-                count<Color::black, IsReverse, Select, Args...>(p) :
-                count<Color::white, IsReverse, Select, Args...>(p)
+                count<Color::black, Select, IsReverse, Args...>(p) :
+                count<Color::white, Select, IsReverse, Args...>(p)
         ;
 }
 

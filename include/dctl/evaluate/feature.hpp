@@ -1,7 +1,8 @@
 #pragma once
-#include <dctl/evaluate/weight.hpp>
-#include <dctl/successor/mobility.hpp>
-#include <dctl/board/mask.hpp>
+#include <dctl/color.hpp>               // Color
+#include <dctl/board/mask.hpp>          // Column, Row
+#include <dctl/evaluate/weight.hpp>     // Weight
+#include <dctl/successor.hpp>           // count, select::push
 #include <cstdlib>                      // abs
 
 namespace dctl {
@@ -72,7 +73,7 @@ public:
         template<template<class, class> class Position, class Rules, class Board>
         static int mobility(Position<Rules, Board> const& p)
         {
-                return Weight<Rules, Board>::mobility * static_cast<int>(successor::mobility<ToMove>(p));
+                return Weight<Rules, Board>::mobility * static_cast<int>(successor::count<ToMove, successor::select::push>(p));
         }
 };
 

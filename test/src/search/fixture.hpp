@@ -15,6 +15,7 @@ namespace search {
 template<class Position, class Objective>
 class Fixture
 {
+public:
         Root<Position, Objective> root_;
 public:
         ~Fixture()

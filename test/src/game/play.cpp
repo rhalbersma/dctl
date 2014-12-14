@@ -1,7 +1,7 @@
 #include <dctl/move.hpp>
 #include <dctl/position.hpp>
 #include <dctl/setup/string.hpp>
-#include <dctl/successor/generate.hpp>
+#include <dctl/successor.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/position/make_copy.hpp>
 #include <boost/range/algorithm/sort.hpp>

@@ -2,10 +2,10 @@
 #include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down, _deg, rotate, inverse
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PieceKingType
+#include <dctl/successor/detail/raii.hpp>               // Launch, Capture, Visit, ToggleIsWithKing
+#include <dctl/successor/detail/tracker.hpp>            // Tracker
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
-#include <dctl/successor/raii.hpp>
 #include <dctl/successor/select/jump.hpp>               // jump
-#include <dctl/successor/tracker.hpp>                   // Tracker
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror
@@ -20,31 +20,31 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse, class Position, class Sequence>
-class Generate<ToMove, IsReverse, PieceKingType, select::jump, Position, Sequence>
+class Generate<ToMove, select::jump, IsReverse, PieceKingType, Position, Sequence>
 {
-        using board_type = board_type_t<Position>;
-        using rules_type = rules_type_t<Position>;
-        using   set_type =   set_type_t<Position>;
-        using State = Tracker<ToMove, Position>;
+        using   board_type = board_type_t<Position>;
+        using   rules_type = rules_type_t<Position>;
+        using     set_type =   set_type_t<Position>;
+        using tracker_type = detail::Tracker<ToMove, Position>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
-        State& tracker;
+        tracker_type& tracker;
         Sequence& moves;
 
 public:
-        Generate(State& c, Sequence& m)
+        Generate(tracker_type& t, Sequence& m)
         :
-                tracker{c},
+                tracker{t},
                 moves{m}
         {}
 
         auto operator()(set_type const& active_kings) const
         {
-                raii::ToggleIsWithKing<State> guard{tracker};
+                raii::ToggleIsWithKing<tracker_type> guard{tracker};
                 serialize(active_kings);
         }
 
@@ -56,22 +56,22 @@ public:
         }
 
 private:
-        void serialize(set_type const& active_kings) const
+        auto serialize(set_type const& active_kings) const
         {
                 for (auto&& from_sq : active_kings) {
-                        raii::Launch<State> guard{tracker, from_sq};
+                        raii::Launch<tracker_type> guard{tracker, from_sq};
                         branch(from_sq);
                 }
         }
 
-        void branch(std::size_t from_sq) const
+        auto branch(std::size_t from_sq) const
         {
                 // tag dispatching on king jump directions
                 branch_dispatch(from_sq, is_orthogonal_jump_t<rules_type>{});
         }
 
         // kings that jump in the 4 diagonal directions
-        void branch_dispatch(std::size_t from_sq, std::false_type) const
+        auto branch_dispatch(std::size_t from_sq, std::false_type) const
         {
                 find_first(along_ray<left_up   (orientation)>(from_sq));
                 find_first(along_ray<right_up  (orientation)>(from_sq));
@@ -80,7 +80,7 @@ private:
         }
 
         // kings that jump in the 8 diagonal and orthogonal directions
-        void branch_dispatch(std::size_t from_sq, std::true_type) const
+        auto branch_dispatch(std::size_t from_sq, std::true_type) const
         {
                 find_first(along_ray<up        (orientation)>(from_sq));
                 find_first(along_ray<left_up   (orientation)>(from_sq));
@@ -93,7 +93,7 @@ private:
         }
 
         template<class Iterator>
-        void find_first(Iterator jumper) const
+        auto find_first(Iterator jumper) const
         {
                 slide(jumper, tracker.template path<ray::direction_v<Iterator>>());
                 if (is_onboard(std::next(jumper)) && tracker.targets(jumper))
@@ -101,30 +101,30 @@ private:
         }
 
         template<class Iterator>
-        void capture(Iterator jumper) const
+        auto capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Capture<State> guard{tracker, *jumper};
+                raii::Capture<tracker_type> guard{tracker, *jumper};
                 land(std::next(jumper));
         }
 
         template<class Iterator>
-        void land(Iterator jumper) const
+        auto land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Visit<State> guard{tracker, *jumper};
+                raii::Visit<tracker_type> guard{tracker, *jumper};
                 find_next(jumper);
         }
 
         template<class Iterator>
-        void find_next(Iterator jumper) const
+        auto find_next(Iterator jumper) const
         {
                 if (!explore(jumper))
                         add(jumper);
         }
 
         template<class Iterator>
-        bool explore(Iterator jumper) const
+        auto explore(Iterator jumper) const
         {
                 // tag dispatching on king jump direction reversal
                 return reverse_dispatch(jumper, is_reversible_king_jump_direction_t<rules_type>{});
@@ -132,27 +132,27 @@ private:
 
         // kings that cannot reverse their capture direction
         template<class Iterator>
-        bool reverse_dispatch(Iterator jumper, std::false_type) const
+        auto reverse_dispatch(Iterator jumper, std::false_type) const
         {
                 return scan_turn(jumper);
         }
 
         // kings that can reverse their capture direction
         template<class Iterator>
-        bool reverse_dispatch(Iterator jumper, std::true_type) const
+        auto reverse_dispatch(Iterator jumper, std::true_type) const
         {
                 return scan_turn(jumper) | reverse(jumper);
         }
 
         template<class Iterator>
-        bool reverse(Iterator jumper) const
+        auto reverse(Iterator jumper) const
         {
                 static_assert(is_reversible_king_jump_direction_v<rules_type>, "");
                 return scan(ray::rotate<180_deg>(jumper));
         }
 
         template<class Iterator>
-        bool scan_turn(Iterator jumper) const
+        auto scan_turn(Iterator jumper) const
         {
                 // tag dispatching on king jump landing range after intermediate captures
                 return scan_turn_dispatch(jumper, is_long_ranged_land_after_piece_t<rules_type>{});
@@ -160,7 +160,7 @@ private:
 
         // kings that can land on any square along the current direction
         template<class Iterator>
-        bool scan_turn_dispatch(Iterator jumper, std::true_type) const
+        auto scan_turn_dispatch(Iterator jumper, std::true_type) const
         {
                 // tracker.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
@@ -178,13 +178,13 @@ private:
 
         // kings that can only land on the immediately adjacent square
         template<class Iterator>
-        bool scan_turn_dispatch(Iterator jumper, std::false_type) const
+        auto scan_turn_dispatch(Iterator jumper, std::false_type) const
         {
                 return scan(jumper) | turn(jumper);
         }
 
         template<class Iterator>
-        bool turn(Iterator jumper) const
+        auto turn(Iterator jumper) const
         {
                 // tag dispatching on king turn directions
                 return turn_dispatch(jumper, is_orthogonal_jump_t<rules_type>{});
@@ -192,7 +192,7 @@ private:
 
         // kings that jump in the 4 diagonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::false_type) const
+        auto turn_dispatch(Iterator jumper, std::false_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>), "");
                 return
@@ -203,7 +203,7 @@ private:
 
         // kings that jump in the 8 diagonal and orthogonal directions
         template<class Iterator>
-        bool turn_dispatch(Iterator jumper, std::true_type) const
+        auto turn_dispatch(Iterator jumper, std::true_type) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>), "");
                 return
@@ -217,14 +217,14 @@ private:
         }
 
         template<class Iterator>
-        bool scan(Iterator jumper) const
+        auto scan(Iterator jumper) const
         {
                 slide(jumper, tracker.template path<ray::direction_v<Iterator>>());
                 return is_en_prise(jumper);
         }
 
         template<class Iterator>
-        void slide(Iterator& jumper, set_type const& path) const
+        auto slide(Iterator& jumper, set_type const& path) const
         {
                 assert(is_onboard(jumper));
 
@@ -234,20 +234,20 @@ private:
 
         // short ranged kings
         template<class Iterator>
-        void slide_dispatch(Iterator& jumper, set_type const& /* path */, std::false_type) const
+        auto slide_dispatch(Iterator& jumper, set_type const& /* path */, std::false_type) const
         {
                 ++jumper;
         }
 
         // long ranged kings
         template<class Iterator>
-        void slide_dispatch(Iterator& jumper, set_type const& path, std::true_type) const
+        auto slide_dispatch(Iterator& jumper, set_type const& path, std::true_type) const
         {
                 do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
         }
 
         template<class Iterator>
-        bool is_en_prise(Iterator jumper) const
+        auto is_en_prise(Iterator jumper) const
         {
                 if (!(is_onboard(jumper) && tracker.targets(jumper)))
                         return false;
@@ -257,7 +257,7 @@ private:
         }
 
         template<class Iterator>
-        void add(Iterator dest_sq) const
+        auto add(Iterator dest_sq) const
         {
                 // tag dispatching on king halt after final capture
                 halt_dispatch(dest_sq, is_long_ranged_land_after_piece_t<rules_type>{}, is_directly_halt_after_final_king_t<rules_type>{});
@@ -265,7 +265,7 @@ private:
 
         // kings that halt immediately if the final capture is a king, and slide through otherwise
         template<class Iterator>
-        void halt_dispatch(Iterator dest_sq, std::true_type, std::true_type) const
+        auto halt_dispatch(Iterator dest_sq, std::true_type, std::true_type) const
         {
                 assert(is_onboard(std::prev(dest_sq)));
                 if (tracker.is_king(*std::prev(dest_sq)))
@@ -276,14 +276,14 @@ private:
 
         // kings that halt immediately after the final capture
         template<class Iterator, class B>
-        void halt_dispatch(Iterator /* dest_sq */, std::false_type, B) const
+        auto halt_dispatch(Iterator /* dest_sq */, std::false_type, B) const
         {
                 add_jump();
         }
 
         // kings that slide through after the final capture
         template<class Iterator>
-        void halt_dispatch(Iterator dest_sq, std::true_type, std::false_type) const
+        auto halt_dispatch(Iterator dest_sq, std::true_type, std::false_type) const
         {
                 // tracker.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
@@ -297,13 +297,13 @@ private:
                 }
         }
 
-        void add_jump() const
+        auto add_jump() const
         {
                 moves.emplace_back(tracker);
         }
 
         template<int Direction>
-        static ray::Iterator<board_type, Direction> along_ray(std::size_t sq)
+        static auto along_ray(std::size_t sq)
         {
                 return ray::make_iterator<board_type, Direction>(sq);
         }

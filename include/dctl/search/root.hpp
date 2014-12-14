@@ -1,12 +1,4 @@
 #pragma once
-#include <algorithm>                    // generate
-#include <cassert>                      // assert
-#include <cstddef>
-#include <iostream>
-#include <iomanip>
-#include <iterator>                     // back_inserter
-#include <vector>                       // vector
-
 #include <dctl/search/bound.hpp>
 #include <dctl/search/objective.hpp>
 #include <dctl/search/score.hpp>
@@ -18,8 +10,7 @@
 #include <dctl/hash/map.hpp>
 #include <dctl/hash/replace.hpp>
 #include <dctl/position/make_copy.hpp>
-#include <dctl/successor/generate.hpp>
-#include <dctl/successor/count.hpp>
+#include <dctl/successor.hpp>
 
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/utility/ply.hpp>         // PlyCount
@@ -30,6 +21,14 @@
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>
 #include <dctl/move/ostream.hpp>
+
+#include <algorithm>                    // generate
+#include <cassert>                      // assert
+#include <cstddef>
+#include <iostream>
+#include <iomanip>
+#include <iterator>                     // back_inserter
+#include <vector>                       // vector
 
 namespace dctl {
 namespace search {
@@ -144,7 +143,7 @@ private:
                 }
 
                 // return evaluation in leaf nodes with valid moves
-                if (depth <= 0 || ply >= MAX_PLY)
+                if ((depth <= 0 /*&& !successor::detect<Color::black, successor::select::jump>(p) && !successor::detect<Color::white, successor::select::jump>(p)*/) || ply >= MAX_PLY)
                         return evaluate::score(p);
 
                 // TT cut-off for exact win/loss scores or for deep enough heuristic scores

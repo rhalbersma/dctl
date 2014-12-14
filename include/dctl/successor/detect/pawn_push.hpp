@@ -2,8 +2,8 @@
 #include <dctl/angle.hpp>                               // left_up, right_up
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PiecePawnType
-#include <dctl/successor/detect/primary_fwd.hpp>
-#include <dctl/successor/select/push.hpp>
+#include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
+#include <dctl/successor/select/push.hpp>               // push
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/type_traits.hpp>                         // board_type_t, set_type_t
@@ -14,7 +14,7 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse, class Position>
-class Detect<ToMove, IsReverse, PiecePawnType, select::push, Position>
+class Detect<ToMove, select::push, IsReverse, PiecePawnType, Position>
 {
         using board_type = board_type_t<Position>;
         using   set_type =   set_type_t<Position>;

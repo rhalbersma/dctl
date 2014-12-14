@@ -1,5 +1,6 @@
 #pragma once
-#include <dctl/evaluate/feature.hpp>
+#include <dctl/color.hpp>               // Color
+#include <dctl/evaluate/feature.hpp>    // Feature
 
 namespace dctl {
 namespace evaluate {

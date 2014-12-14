@@ -2,9 +2,9 @@
 #include <dctl/angle.hpp>                               // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PieceKingType
-#include <dctl/successor/detect/primary_fwd.hpp>
-#include <dctl/successor/select/jump.hpp>
-#include <dctl/successor/tracker.hpp>                   // Tracker
+#include <dctl/successor/detail/tracker.hpp>            // Tracker
+#include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
+#include <dctl/successor/select/jump.hpp>               // jump
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_long_ranged_king_t
@@ -15,18 +15,18 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse, class Position>
-class Detect<ToMove, IsReverse, PieceKingType, select::jump, Position>
+class Detect<ToMove, select::jump, IsReverse, PieceKingType, Position>
 {
-        using board_type = board_type_t<Position>;
-        using rules_type = rules_type_t<Position>;
-        using   set_type =   set_type_t<Position>;
-        using State = Tracker<ToMove, Position>;
+        using   board_type = board_type_t<Position>;
+        using   rules_type = rules_type_t<Position>;
+        using     set_type =   set_type_t<Position>;
+        using tracker_type = detail::Tracker<ToMove, Position>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
-        State const& tracker;
+        tracker_type const& tracker;
 
 public:
-        explicit Detect(State const& t)
+        explicit Detect(tracker_type const& t)
         :
                 tracker{t}
         {}

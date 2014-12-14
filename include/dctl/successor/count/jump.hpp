@@ -2,7 +2,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/move/move.hpp>                           // Move_t
 #include <dctl/successor/count/primary_fwd.hpp>         // Count (primary template)
-#include <dctl/successor/generate/all_jump.hpp>         // Generate (piece jump specialization)
+#include <dctl/successor/generate/jump.hpp>             // Generate (jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 #include <dctl/utility/stack_vector.hpp>                // Vector, Alloc, Arena
 
@@ -10,7 +10,7 @@ namespace dctl {
 namespace successor {
 
 template<Color ToMove, bool IsReverse>
-class Count<ToMove, IsReverse, select::jump>
+class Count<ToMove, select::jump, IsReverse>
 {
 public:
         template<class Position>
@@ -20,7 +20,7 @@ public:
                 Arena<M> a;
                 auto moves = stack_vector<M>(Alloc<M>{a});
                 moves.reserve(DCTL_PP_STACK_RESERVE);
-                Generate<ToMove, IsReverse, select::jump>{}(p, moves);
+                Generate<ToMove, select::jump, IsReverse>{}(p, moves);
                 return moves.size();
         }
 };
