@@ -45,21 +45,9 @@ private:
 
 public:
         // initialize with a set of bitboards and a color
-        Position(set_type const& black_pieces, set_type const& white_pieces, set_type const& kings, Color c)
+        Position(set_type const& black, set_type const& white, set_type const& pawns, set_type const& kings, Color c)
         :
-                piece_placement_{black_pieces, white_pieces, kings},
-                to_move_{c}
-        {
-                hash_ = hash_xor_accumulate(*this);
-        }
-
-        Position(
-                set_type const& black_pawns, set_type const& black_kings,
-                set_type const& white_pawns, set_type const& white_kings,
-                Color c
-        )
-        :
-                piece_placement_{black_pawns, black_kings, white_pawns, white_kings},
+                piece_placement_{black, white, pawns, kings},
                 to_move_{c}
         {
                 hash_ = hash_xor_accumulate(*this);
@@ -67,39 +55,26 @@ public:
 
         static Position initial(int separation = initial_gap_v<Rules> + Board::height() % 2)
         {
-                return {
-                        board::Initial<Board>::mask(Color::black, separation),
-                        board::Initial<Board>::mask(Color::white, separation),
-                        set_type{},
-                        Color::white
-                };
+                auto const b = board::Initial<Board>::mask(Color::black, separation);
+                auto const w = board::Initial<Board>::mask(Color::white, separation);
+                return { b, w, b | w, set_type{}, Color::white };
         }
 
         // observers
-
-        auto kings(Color c) const
-        {
-                return piece_placement_.kings(c);
-        }
-
-        auto pawns(Color c) const
-        {
-                return piece_placement_.pawns(c);
-        }
 
         auto pieces(Color c) const
         {
                 return piece_placement_.pieces(c);
         }
 
-        auto kings() const
+        auto pieces(Piece p) const
         {
-                return piece_placement_.kings();
+                return piece_placement_.pieces(p);
         }
 
-        auto pawns() const
+        auto pieces(Color c, Piece p) const
         {
-                return piece_placement_.pawns();
+                return piece_placement_.pieces(c, p);
         }
 
         auto pieces() const
@@ -216,10 +191,10 @@ private:
 
                 if (m.is_promotion()) {
                         // the first of multiple pawns
-                        if (!mru.is_active() && set_multiple(pawns(m.to_move())))
+                        if (!mru.is_active() && set_multiple(pieces(m.to_move(), Piece::pawn)))
                                 mru.activate();
                         // the single last pawn
-                        if (mru.is_active() && set_single(pawns(m.to_move())))
+                        if (mru.is_active() && set_single(pieces(m.to_move(), Piece::pawn)))
                                 mru.deactivate();
                 }
         }
@@ -232,12 +207,12 @@ private:
 
                 // capture all kings or all pawns
                 auto const deactivate =
-                        kings(m.to_move()).is_subset_of(m.captured_kings()) ||
-                        pawns(m.to_move()).is_subset_of(m.captured_pieces())
+                        pieces(m.to_move(), Piece::king).is_subset_of(m.captured(Piece::king)) ||
+                        pieces(m.to_move(), Piece::pawn).is_subset_of(m.captured(Piece::pawn))
                 ;
 
                 // capture the most recently used king
-                if (deactivate || m.captured_kings().test(mru.square())) {
+                if (deactivate || m.captured(Piece::king).test(mru.square())) {
                         hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, !m.to_move());
                         mru.reset();
                         hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, !m.to_move());

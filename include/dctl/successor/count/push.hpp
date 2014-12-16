@@ -23,7 +23,7 @@ public:
                 auto const not_occupied = p.not_occupied();
                 return
                         KingPush{not_occupied}(moveable_kings(p, ToMove)) +
-                        PawnPush{not_occupied}(p.pawns(ToMove))
+                        PawnPush{not_occupied}(p.pieces(ToMove, Piece::pawn))
                 ;
         }
 };

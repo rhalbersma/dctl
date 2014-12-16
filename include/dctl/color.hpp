@@ -1,19 +1,20 @@
 #pragma once
+#include <cstddef>      // size_t
 
 namespace dctl {
 
 enum class Color
 :
-        bool
+        std::size_t
 {
-        black = false,
-        white = true
+        black = 0,
+        white = 1
 };
 
 inline
 constexpr auto operator!(Color c) noexcept
 {
-        return static_cast<Color>(!static_cast<bool>(c));
+        return static_cast<Color>(!static_cast<std::size_t>(c));
 }
 
 inline

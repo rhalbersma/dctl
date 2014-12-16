@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/color.hpp>               // Color
+#include <dctl/piece.hpp>
 #include <dctl/board/mask.hpp>          // Column, Row
 #include <dctl/evaluate/weight.hpp>     // Weight
 #include <dctl/successor.hpp>           // count, select::push
@@ -28,8 +29,8 @@ public:
         static int material(Position<Rules, Board> const& p)
         {
                 return
-                        Weight<Rules, Board>::material[0] * static_cast<int>(p.pieces(ToMove).count()) +
-                        Weight<Rules, Board>::material[1] * static_cast<int>(p.kings(ToMove).count())
+                        Weight<Rules, Board>::material[0] * static_cast<int>(p.pieces(ToMove, Piece::pawn).count()) +
+                        Weight<Rules, Board>::material[1] * static_cast<int>(p.pieces(ToMove, Piece::king).count())
                 ;
         }
 

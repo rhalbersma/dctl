@@ -9,7 +9,7 @@ struct equal_to
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return lhs.num_pieces() == rhs.num_pieces();
+                return lhs.num_captured() == rhs.num_captured();
         }
 };
 
@@ -18,7 +18,7 @@ struct less
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return lhs.num_pieces() < rhs.num_pieces();
+                return lhs.num_captured() < rhs.num_captured();
         }
 };
 

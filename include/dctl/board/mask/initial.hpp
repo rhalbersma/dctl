@@ -54,7 +54,7 @@ public:
                 assert(Board::height() % 2 <= separation && separation <= Board::height());
                 auto const rows = (Board::height() - separation) / 2;
                 assert(0 <= rows && rows <= Board::height() / 2);
-                return table[static_cast<bool>(c)][static_cast<std::size_t>(rows)];
+                return table[static_cast<std::size_t>(c)][static_cast<std::size_t>(rows)];
         }
 };
 

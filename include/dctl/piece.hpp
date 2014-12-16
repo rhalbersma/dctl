@@ -1,14 +1,15 @@
 #pragma once
+#include <cstddef>
 #include <type_traits>
 
 namespace dctl {
 
 enum class Piece
 :
-        unsigned
+        std::size_t
 {
-        pawn,
-        king
+        pawn = 0,
+        king = 1
 };
 
 template<Piece Type>

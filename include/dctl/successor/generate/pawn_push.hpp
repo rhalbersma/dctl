@@ -51,7 +51,7 @@ private:
                 auto const movers = active_pawns & set_type(*std::prev(along_wave<Direction>(not_occupied)));
                 boost::push_back(moves, movers | boost::adaptors::transformed([](auto const& from_sq) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
-                        return move_type{from_sq, dest_sq, is_promotion(dest_sq), ToMove};
+                        return move_type{from_sq, dest_sq, ToMove, is_promotion(dest_sq)};
                 }));
         }
 

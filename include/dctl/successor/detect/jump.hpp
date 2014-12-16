@@ -22,8 +22,8 @@ public:
 
                 detail::Tracker<ToMove, Position> tracker{p};
                 return
-                        PawnJump{tracker}(p.pawns(ToMove)) ||
-                        KingJump{tracker}(p.kings(ToMove))
+                        PawnJump{tracker}(p.pieces(ToMove, Piece::pawn)) ||
+                        KingJump{tracker}(p.pieces(ToMove, Piece::king))
                 ;
         }
 };

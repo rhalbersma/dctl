@@ -46,7 +46,7 @@ public:
         static constexpr auto mask(Color c, int row) noexcept
         {
                 assert(row < N);
-                return table[static_cast<bool>(c)][static_cast<std::size_t>(row)];
+                return table[static_cast<std::size_t>(c)][static_cast<std::size_t>(row)];
         }
 };
 
