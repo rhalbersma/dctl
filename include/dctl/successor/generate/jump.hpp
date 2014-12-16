@@ -22,8 +22,8 @@ public:
                 using PawnJump = Generate<ToMove, select::jump, IsReverse, PiecePawnType, Position, Sequence>;
 
                 detail::Tracker<ToMove, Position> tracker{p};
-                KingJump{tracker, moves}(p.kings(ToMove));
-                PawnJump{tracker, moves}(p.pawns(ToMove));
+                KingJump{tracker, moves}(p.pieces(ToMove, Piece::king));
+                PawnJump{tracker, moves}(p.pieces(ToMove, Piece::pawn));
 
                 using rules_type = rules_type_t<Position>;
                 auto const it1 = filter::Precedence<rules_type>{}(begin(moves), end(moves));

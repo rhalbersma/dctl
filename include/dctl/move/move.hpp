@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/color.hpp>
+#include <dctl/piece.hpp>
 #include <dctl/rules.hpp>
 #include <dctl/set_type.hpp>    // set_type
 #include <dctl/type_traits.hpp> // board_type_t, rules_type_t
@@ -17,20 +18,19 @@ public:
         using Set = set_type<Board>;
 
 private:
-        Set captured_pieces_{};
-        Set captured_kings_{};
+        Set captured_[2]{};
         std::size_t from_{};
         std::size_t dest_{};
-        bool is_with_king_{};
-        bool is_promotion_{};
         Color to_move_{};
+        Piece with_{Piece::pawn};
+        bool is_promotion_{};
 
         auto invariant() const
         {
                 return
                         !(from() == dest() && !is_jump()) &&
-                        captured_kings_.is_subset_of(captured_pieces_) &&
-                        !(is_with_king_ && is_promotion_)
+                        disjoint(captured(Piece::pawn), captured(Piece::king)) &&
+                        !(with_ == Piece::king && is_promotion_)
                 ;
         }
 
@@ -42,19 +42,19 @@ public:
         :
                 from_{src},
                 dest_{dst},
-                is_with_king_{true},
-                to_move_{c}
+                to_move_{c},
+                with_{Piece::king}
         {
                 assert(invariant());
         }
 
         // pawn move
-        constexpr BaseMove(std::size_t src, std::size_t dst, bool prom, Color c)
+        constexpr BaseMove(std::size_t src, std::size_t dst, Color c, bool prom)
         :
                 from_{src},
                 dest_{dst},
-                is_promotion_{prom},
-                to_move_{c}
+                to_move_{c},
+                is_promotion_{prom}
         {
                 assert(invariant());
         }
@@ -63,27 +63,26 @@ public:
         template<class Tracker>
         explicit constexpr BaseMove(Tracker const& t)
         :
-                captured_pieces_{t.captured_pieces()},
-                captured_kings_{t.captured_kings()},
+                captured_{t.captured(Piece::pawn), t.captured(Piece::king)},
                 from_{t.from()},
                 dest_{t.dest()},
-                is_with_king_{t.is_with_king()},
-                is_promotion_{t.is_promotion()},
-                to_move_{t.to_move()}
+                to_move_{t.to_move()},
+                with_{t.with()},
+                is_promotion_{t.is_promotion()}
         {
                 assert(invariant());
         }
 
         // observers
 
-        constexpr auto captured_pieces() const noexcept
+        constexpr auto captured(Piece p) const noexcept
         {
-                return captured_pieces_;
+                return captured_[static_cast<std::size_t>(p)];
         }
 
-        constexpr auto captured_kings() const noexcept
+        constexpr auto captured() const noexcept
         {
-                return captured_kings_;
+                return captured(Piece::pawn) | captured(Piece::king);
         }
 
         constexpr auto from() const noexcept
@@ -96,9 +95,14 @@ public:
                 return dest_;
         }
 
-        constexpr auto is_with_king() const noexcept
+        constexpr auto to_move() const noexcept
         {
-                return is_with_king_;
+                return to_move_;
+        }
+
+        constexpr auto with() const noexcept
+        {
+                return with_;
         }
 
         constexpr auto is_promotion() const noexcept
@@ -106,14 +110,14 @@ public:
                 return is_promotion_;
         }
 
-        constexpr auto to_move() const noexcept
+        constexpr auto is_with_king() const noexcept
         {
-                return to_move_;
+                return with() == Piece::king;
         }
 
         constexpr auto is_jump() const noexcept
         {
-                return captured_pieces().any();
+                return captured().any();
         }
 
         constexpr auto is_reversible() const noexcept
@@ -121,14 +125,14 @@ public:
                 return is_with_king() && !is_jump();
         }
 
-        constexpr auto num_pieces() const noexcept
+        constexpr auto num_captured(Piece p) const noexcept
         {
-                return captured_pieces_.count();
+                return captured(p).count();
         }
 
-        constexpr auto num_kings() const noexcept
+        constexpr auto num_captured() const noexcept
         {
-                return captured_kings_.count();
+                return captured().count();
         }
 
         // predicates
@@ -137,8 +141,8 @@ public:
         operator==(BaseMove const& lhs, BaseMove const& rhs) noexcept
         {
                 return
-                        std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) ==
-                        std::tie(rhs.from_, rhs.dest_, rhs.captured_pieces_)
+                        std::forward_as_tuple(lhs.from_, lhs.dest_, lhs.captured()) ==
+                        std::forward_as_tuple(rhs.from_, rhs.dest_, rhs.captured())
                 ;
         }
 
@@ -152,8 +156,8 @@ public:
         operator<(BaseMove const& lhs, BaseMove const& rhs) noexcept
         {
                 return
-                        std::tie(lhs.from_, lhs.dest_, lhs.captured_pieces_) <
-                        std::tie(rhs.from_, rhs.dest_, rhs.captured_pieces_)
+                        std::forward_as_tuple(lhs.from_, lhs.dest_, lhs.captured()) <
+                        std::forward_as_tuple(rhs.from_, rhs.dest_, rhs.captured())
                 ;
         }
 };
@@ -178,7 +182,10 @@ class EmptyBase<italian::Rules, Board>
         set_type<Board> king_order_{};
 public:
         EmptyBase() = default;
-        explicit EmptyBase(set_type<Board> ko): king_order_(ko) {}
+        explicit EmptyBase(set_type<Board> const& ko)
+        :
+                king_order_(ko)
+        {}
 
         template<class Tracker>
         explicit EmptyBase(Tracker const& t)
@@ -209,10 +216,10 @@ public:
         {}
 
         // pawn jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, bool prom, Color c, Set ko)
+        constexpr Move(Set pieces, Set kings, int src, int dst, Color c, bool prom, Set ko)
         :
                 empty(ko),
-                base(pieces, kings, src, dst, prom, c, ko)
+                base(pieces, kings, src, dst, c, prom, ko)
         {}
 
         template<class Tracker>

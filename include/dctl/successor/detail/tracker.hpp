@@ -1,6 +1,8 @@
 #pragma once
 #include <dctl/angle.hpp>                       // Angle, is_orthogonal
 #include <dctl/board/mask.hpp>                  // JumpStart
+#include <dctl/color.hpp>
+#include <dctl/piece.hpp>
 #include <dctl/ray.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/type_traits.hpp>                 // board_type_t, rules_type_t, set_type_t
@@ -42,7 +44,7 @@ class Tracker
 public:
         explicit Tracker(Position const& p)
         :
-                king_targets_(p.kings(!ToMove)),
+                king_targets_(p.pieces(!ToMove, Piece::king)),
                 initial_targets_(p.pieces(!ToMove)),
                 remaining_targets_(initial_targets_),
                 not_occupied_(p.not_occupied())
@@ -152,14 +154,17 @@ public:
                 return king_order_;
         }
 
-        auto captured_pieces() const noexcept
+        auto captured() const noexcept
         {
                 return initial_targets_ ^ remaining_targets_;
         }
 
-        auto captured_kings() const noexcept
+        auto captured(Piece p) const noexcept
         {
-                return captured_pieces() & king_targets_;
+                if (p == Piece::pawn)
+                        return captured() & ~king_targets_;
+                else
+                        return captured() &  king_targets_;
         }
 
         auto from() const
@@ -174,6 +179,16 @@ public:
                 return visited_path_.back();
         }
 
+        auto to_move() const noexcept
+        {
+                return ToMove;
+        }
+
+        auto with() const
+        {
+                return is_with_king_ ? Piece::king : Piece::pawn;
+        }
+
         auto is_with_king() const noexcept
         {
                 return is_with_king_;
@@ -182,11 +197,6 @@ public:
         auto is_promotion() const noexcept
         {
                 return is_promotion_;
-        }
-
-        auto to_move() const noexcept
-        {
-                return ToMove;
         }
 
 private:

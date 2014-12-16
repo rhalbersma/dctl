@@ -1,5 +1,6 @@
 #pragma once
-#include <tuple>        // forward_as_tuple
+#include <dctl/piece.hpp>       // kingrhs.num_captured(), rhs.num_captured(Piece::king)
+#include <tuple>                // forward_as_tuple
 
 namespace dctl {
 namespace frisian {
@@ -11,8 +12,8 @@ struct equal_to
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
                 return
-                        std::forward_as_tuple(lhs.num_pieces(), lhs.num_kings(), lhs.is_with_king()) ==
-                        std::forward_as_tuple(rhs.num_pieces(), rhs.num_kings(), rhs.is_with_king())
+                        std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with_king()) ==
+                        std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with_king())
                 ;
         }
 };
@@ -22,8 +23,8 @@ struct less
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                auto const delta_pieces = lhs.num_pieces() - rhs.num_pieces();
-                auto const delta_kings = lhs.num_kings() - rhs.num_kings();
+                auto const delta_pieces = lhs.num_captured() - rhs.num_captured();
+                auto const delta_kings = lhs.num_captured(Piece::king) - rhs.num_captured(Piece::king);
                 auto const delta_pawns = delta_pieces - delta_kings;
 
                 // Art. 11
@@ -34,8 +35,8 @@ struct less
                 else
                         // delta_kings or delta_pawns is zero or they have equal sign
                         return
-                                std::forward_as_tuple(lhs.num_pieces(), lhs.is_with_king()) <
-                                std::forward_as_tuple(rhs.num_pieces(), rhs.is_with_king())
+                                std::forward_as_tuple(lhs.num_captured(), lhs.is_with_king()) <
+                                std::forward_as_tuple(rhs.num_captured(), rhs.is_with_king())
                         ;
         }
 };

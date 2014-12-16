@@ -10,13 +10,13 @@ namespace zobrist {
 template<std::size_t N>
 struct PiecePlacement
 {
-        static std::array<uint64_t, N> const pieces[2];
-        static std::array<uint64_t, N> const kings;
+        static std::array<uint64_t, N> const by_color[2];
+        static std::array<uint64_t, N> const by_piece[2];
 };
 
 template<std::size_t N>
 std::array<uint64_t, N> const
-PiecePlacement<N>::pieces[2] =
+PiecePlacement<N>::by_color[2] =
 {
         random::runif<N>(),
         random::runif<N>()
@@ -24,7 +24,11 @@ PiecePlacement<N>::pieces[2] =
 
 template<std::size_t N>
 std::array<uint64_t, N> const
-PiecePlacement<N>::kings = random::runif<N>();
+PiecePlacement<N>::by_piece[2] =
+{
+        random::runif<N>(),
+        random::runif<N>()
+};
 
 }       // namespace zobrist
 }       // namespace dctl

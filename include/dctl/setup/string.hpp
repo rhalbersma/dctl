@@ -52,16 +52,16 @@ struct read<Rules, Board, pdn::protocol, Token>
         Position<Rules, Board> operator()(std::string const& s) const
         {
                 using Set = set_type<Board>;
-                Set p_pieces[2] {};
-                Set p_kings {};
+                Set by_color[2]{};
+                Set by_piece[2]{};
                 auto p_side = Color::black;
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_pieces[static_cast<bool>(Color::black)], p_pieces[static_cast<bool>(Color::white)], p_kings, p_side };
+                        return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
 
-                bool setup_kings = false;
                 auto setup_color = p_side;
+                auto setup_piece = Piece::pawn;
 
                 std::stringstream sstr(s);
                 char ch;
@@ -78,7 +78,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 setup_color = read_color<Token>(ch);
                                 break;
                         case Token::king :                                      // setup kings
-                                setup_kings = true;
+                                setup_piece = Piece::king;
                                 break;
                         default:
                                 if (isdigit(ch)) {
@@ -86,15 +86,14 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
-                                        p_pieces[static_cast<bool>(setup_color)].set(b);
-                                        if (setup_kings)
-                                                p_kings.set(b);
+                                        by_color[static_cast<std::size_t>(setup_color)].set(b);
+                                        by_piece[static_cast<std::size_t>(setup_piece)].set(b);
                                 }
-                                setup_kings = false;
+                                setup_piece = Piece::pawn;
                                 break;
                         }
                 }
-                return { p_pieces[static_cast<bool>(Color::black)], p_pieces[static_cast<bool>(Color::white)], p_kings, p_side };
+                return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
         }
 };
 
@@ -119,7 +118,7 @@ struct write<pdn::protocol, Token>
                         auto const bs = p.pieces(c);
                         std::size_t n = 0;
                         for (auto&& sq : bs) {
-                                if (p.kings().test(sq))
+                                if (p.pieces(Piece::king).test(sq))
                                         sstr << Token::king;            // king tag
                                 sstr << Board::square_from_bit(sq) + 1; // square number
                                 if (++n != bs.count())                  // still pieces remaining
@@ -137,8 +136,8 @@ struct read<Rules, Board, dxp::protocol, Token>
         Position<Rules, Board> operator()(std::string const& s) const
         {
                 using Set = set_type<Board>;
-                Set p_pieces[2] {};
-                Set p_kings {};
+                Set by_color[2]{};
+                Set by_piece[2]{};
                 auto p_side = Color::black;
 
                 std::stringstream sstr(s);
@@ -150,15 +149,14 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black : p_pieces[static_cast<bool>(Color::black)].set(b); break;
-                        case Token::white : p_pieces[static_cast<bool>(Color::white)].set(b); break;
+                        case Token::black : by_color[static_cast<bool>(Color::black)].set(b); break;
+                        case Token::white : by_color[static_cast<bool>(Color::white)].set(b); break;
                         case Token::empty : break;
                         default           : assert(false);
                         }
-                        if (isupper(ch))
-                                p_kings.set(b);                  // king
+                        by_piece[isupper(ch)].set(b);                  // king
                 }
-                return { p_pieces[static_cast<bool>(Color::black)], p_pieces[static_cast<bool>(Color::white)], p_kings, p_side };
+                return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
         }
 };
 

@@ -1,5 +1,6 @@
 #pragma once
-#include <tuple>        // forward_as_tuple
+#include <dctl/piece.hpp>       // king
+#include <tuple>                // forward_as_tuple
 
 namespace dctl {
 namespace italian {
@@ -11,8 +12,8 @@ struct equal_to
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
                 return
-                        std::forward_as_tuple(lhs.num_pieces(), lhs.num_kings(), lhs.is_with_king(), lhs.king_order()) ==
-                        std::forward_as_tuple(rhs.num_pieces(), rhs.num_kings(), rhs.is_with_king(), rhs.king_order())
+                        std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with_king(), lhs.king_order()) ==
+                        std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with_king(), rhs.king_order())
                 ;
         }
 };
@@ -23,8 +24,8 @@ struct less
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
                 return
-                        std::forward_as_tuple(lhs.num_pieces(), lhs.num_kings(), lhs.is_with_king(), lhs.king_order()) <
-                        std::forward_as_tuple(rhs.num_pieces(), rhs.num_kings(), rhs.is_with_king(), rhs.king_order())
+                        std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with_king(), lhs.king_order()) <
+                        std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with_king(), rhs.king_order())
                 ;
         }
 };

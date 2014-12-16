@@ -37,11 +37,11 @@ public:
                         return last;
 
                 auto const smaller = [](auto const& L, auto const& R){
-                        return L.num_pieces() < R.num_pieces();
+                        return L.num_captured() < R.num_captured();
                 };
 
                 auto const m = std::max_element(first, last, smaller);
-                if (m->num_pieces() < large_jump_v<Rules>)
+                if (m->num_captured() < large_jump_v<Rules>)
                         return last;
 
                 std::stable_sort(first, last);
