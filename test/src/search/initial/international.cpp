@@ -20,7 +20,7 @@ BOOST_FIXTURE_TEST_CASE(Initial, F)
                 "W:B3,K32:WK18,K19"
         );
         //std::cout << setnotation(numeric) << '\n';
-        root_.analyze(p, 121);
+        root_.analyze(p, 71);
 }
 /*
 BOOST_FIXTURE_TEST_CASE(lineoD1, Fixture<DefaultObjective>)

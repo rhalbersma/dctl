@@ -43,11 +43,11 @@ inline
 constexpr auto rotate(Dimensions const& dim, Angle const& theta)
 {
         switch (theta) {
-        case   0: return dim;
-        case  90: return Dimensions{ dim.height, dim.width , static_cast<bool>((dim.width % 2) ^                    !dim.inverted) };
-        case 180: return Dimensions{ dim.width , dim.height, static_cast<bool>((dim.width % 2) ^ (dim.height % 2) ^  dim.inverted) };
-        case 270: return Dimensions{ dim.height, dim.width , static_cast<bool>(                  (dim.height % 2) ^ !dim.inverted) };
-        default: return throw std::invalid_argument("Dimensions rotation angles shall be a multiple of 90 degrees."), dim;
+        case   0 : return dim;
+        case  90 : return Dimensions{ dim.height, dim.width , static_cast<bool>((dim.width % 2) ^                    !dim.inverted) };
+        case 180 : return Dimensions{ dim.width , dim.height, static_cast<bool>((dim.width % 2) ^ (dim.height % 2) ^  dim.inverted) };
+        case 270 : return Dimensions{ dim.height, dim.width , static_cast<bool>(                  (dim.height % 2) ^ !dim.inverted) };
+        default  : return throw std::invalid_argument("Dimensions rotation angles shall be a multiple of 90 degrees."), dim;
         }
 }
 

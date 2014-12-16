@@ -225,9 +225,10 @@ void report(int depth, NodeCount leafs, Stopwatch const& stopwatch, Enhancements
         std::cout << std::setw(12) << std::right << node_count;
 
         std::cout << " time ";
-        std::cout << std::setw( 6) << stopwatch.split().count();
+        auto const lap = stopwatch.lap_time();
+        std::cout << std::setw( 6) << lap.count();
 
-        double const nps = static_cast<double>(1000 * node_count) / static_cast<double>(stopwatch.split().count());
+        double const nps = static_cast<double>(node_count) / std::chrono::duration_cast<std::chrono::seconds>(lap).count();
         std::cout << " nps ";
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
         std::cout << std::setw( 7) << nps;
@@ -249,13 +250,13 @@ template<class Position, class Enhancements>
 NodeCount perft(Position const& p, int depth, Enhancements e)
 {
         NodeCount nodes = 0;
-        Stopwatch stopwatch;
         announce(p, depth);
-        stopwatch.start();
+        Stopwatch stopwatch;
+        stopwatch.start_stop();
         for (auto d = 1; d <= depth; ++d) {
                 e.reset_statistics();
                 nodes = walk(p, d, 0, e);
-                stopwatch.lap();
+                stopwatch.split_reset();
                 report(d, nodes, stopwatch, e);
         }
         return nodes;
@@ -267,22 +268,21 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
         NodeCount leaf_nodes = 0;
         NodeCount sub_count;
 
-        Stopwatch stopwatch;
         using R = typename Position::rules_type;
         using B = typename Position::board_type;
         Arena<Move<R,B> > a;
         auto const moves = successor::generate(p, Alloc<Move<R, B> >{a});
 
         announce(p, depth, moves.size());
-        stopwatch.start();
+        Stopwatch stopwatch;
+        stopwatch.start_stop();
         for (auto&& m : moves) {
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
                 print_move(moves[i], i);
                 sub_count = walk(make_copy(p, moves[i]), depth - 1, 1, e);
                 leaf_nodes += sub_count;
-
-                stopwatch.lap();
+                stopwatch.split_reset();
                 report(depth - 1, sub_count, stopwatch, e);
         }
         summary(leaf_nodes);

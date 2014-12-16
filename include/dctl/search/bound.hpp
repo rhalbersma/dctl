@@ -26,18 +26,10 @@ struct Bound
         {
                 std::stringstream sstr;
                 switch (bound) {
-                case lower:
-                        sstr << ">=";
-                        break;
-                case upper:
-                        sstr << "<=";
-                        break;
-                case exact:
-                        sstr << "==";
-                        break;
-                default:
-                        throw std::invalid_argument("Search bound must be >=, <= or ==");
-                        break;
+                case lower : sstr << ">="; break;
+                case upper : sstr << "<="; break;
+                case exact : sstr << "=="; break;
+                default    : throw std::invalid_argument("Search bound must be >=, <= or ==");
                 }
                 return sstr.str();
         }

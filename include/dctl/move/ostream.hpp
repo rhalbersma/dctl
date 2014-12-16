@@ -85,13 +85,9 @@ template<class CharT, class Traits, class Rules, class Board>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, Move<Rules, Board> const& m)
 {
         switch(move::getnotation<Rules, Board>(ostr)) {
-        case algebraic:
-                return move::print_algebraic(ostr, m);
-        case numeric:
-                return move::print_numeric(ostr, m);
-        default:
-                assert(false);
-                return ostr;
+        case algebraic : return move::print_algebraic(ostr, m);
+        case numeric   : return move::print_numeric(ostr, m);
+        default        : assert(false); return ostr;
         }
 }
 
