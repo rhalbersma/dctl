@@ -1,9 +1,4 @@
 #pragma once
-#include <algorithm>                    // accumulate
-#include <cstddef>
-#include <iomanip>
-#include <iostream>
-#include <iterator>                     // distance
 #include <dctl/walk/transposition.hpp>
 #include <dctl/hash/dual_map.hpp>
 #include <dctl/hash/extract.hpp>
@@ -18,6 +13,11 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/move/ostream.hpp>
 
+#include <algorithm>                    // accumulate
+#include <cstddef>
+#include <iomanip>
+#include <iostream>
+#include <iterator>                     // distance
 #include <memory>
 #include <utility>
 
@@ -209,7 +209,7 @@ void print_move(Move const& move, int i)
         std::cout << std::setw(2) << (i + 1) << "." << move << " ";
 }
 
-template<class Enhancements>
+template<class Stopwatch, class Enhancements>
 void report(int depth, NodeCount leafs, Stopwatch const& stopwatch, Enhancements e)
 {
         std::cout << "info";
@@ -224,11 +224,11 @@ void report(int depth, NodeCount leafs, Stopwatch const& stopwatch, Enhancements
         std::cout << " nodes ";
         std::cout << std::setw(12) << std::right << node_count;
 
-        std::cout << " time ";
         auto const lap = stopwatch.lap_time();
+        std::cout << " time ";
         std::cout << std::setw( 6) << lap.count();
 
-        double const nps = static_cast<double>(node_count) / std::chrono::duration_cast<std::chrono::seconds>(lap).count();
+        auto const nps = static_cast<double>(node_count) / std::chrono::duration_cast<std::chrono::seconds>(lap).count();
         std::cout << " nps ";
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
         std::cout << std::setw( 7) << nps;
@@ -251,7 +251,7 @@ NodeCount perft(Position const& p, int depth, Enhancements e)
 {
         NodeCount nodes = 0;
         announce(p, depth);
-        Stopwatch stopwatch;
+        util::Stopwatch stopwatch;
         stopwatch.start_stop();
         for (auto d = 1; d <= depth; ++d) {
                 e.reset_statistics();
@@ -274,7 +274,7 @@ NodeCount divide(Position const& p, int depth, Enhancements e)
         auto const moves = successor::generate(p, Alloc<Move<R, B> >{a});
 
         announce(p, depth, moves.size());
-        Stopwatch stopwatch;
+        util::Stopwatch stopwatch;
         stopwatch.start_stop();
         for (auto&& m : moves) {
                 e.reset_statistics();
