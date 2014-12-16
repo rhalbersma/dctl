@@ -36,11 +36,11 @@ constexpr auto
 rotate(Coordinates<origin::ScreenCentered> const& coord, Angle const& theta)
 {
         switch (theta) {
-        case   0: return coord;
-        case  90: return Coordinates<origin::ScreenCentered>{ -coord.y,  coord.x };
-        case 180: return Coordinates<origin::ScreenCentered>{ -coord.x, -coord.y };
-        case 270: return Coordinates<origin::ScreenCentered>{  coord.y, -coord.x };
-        default: return throw std::invalid_argument("Rotation angles shall be a multiple of 90 degrees."), coord;
+        case   0 : return coord;
+        case  90 : return Coordinates<origin::ScreenCentered>{ -coord.y,  coord.x };
+        case 180 : return Coordinates<origin::ScreenCentered>{ -coord.x, -coord.y };
+        case 270 : return Coordinates<origin::ScreenCentered>{  coord.y, -coord.x };
+        default  : return throw std::invalid_argument("Rotation angles shall be a multiple of 90 degrees."), coord;
         }
 }
 

@@ -89,16 +89,16 @@ private:
                 Arena<int> iar;
                 Alloc<int> ial(iar);
                 Variation pv(ial);
-                Stopwatch stopwatch;
                 announce(p, depth);
                 statistics_.reset();
-                stopwatch.start();
+                Stopwatch stopwatch;
+                stopwatch.start_stop();
                 for (auto i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
                         alpha = -infinity();
                         beta = infinity();
                         score = pvs<PV>(p, alpha, beta, i, 0, pv);
                         insert_pv(p, pv, score);
-                        stopwatch.lap();
+                        stopwatch.split_reset();
                         report(i, score, stopwatch, p, pv);
                 }
 
@@ -143,7 +143,7 @@ private:
                 }
 
                 // return evaluation in leaf nodes with valid moves
-                if ((depth <= 0 /*&& !successor::detect<Color::black, successor::select::jump>(p) && !successor::detect<Color::white, successor::select::jump>(p)*/) || ply >= MAX_PLY)
+                if (depth <= 0 || ply >= MAX_PLY)
                         return evaluate::score(p);
 
                 // TT cut-off for exact win/loss scores or for deep enough heuristic scores
@@ -245,21 +245,23 @@ private:
                 std::cout << std::setw( 2) << depth;
                 std::cout << std::setiosflags(std::ios::fixed) << std::setprecision(1);
                 std::cout << "/" << boost::accumulators::mean(statistics_.ply());
-                std::cout << "/" << std::setw( 2) << boost::accumulators::max(statistics_.ply());
+                std::cout << std::setprecision(0);
+                std::cout << "/" << boost::accumulators::max(statistics_.ply());
 
                 auto const node_count = boost::accumulators::count(statistics_.nodes());
                 std::cout << " nodes ";
                 std::cout << std::setw(11) << std::right << node_count;
 
                 std::cout << " time ";
-                std::cout << std::setw( 6) << stopwatch.time().count();
+                auto const split = stopwatch.split_time();
+                std::cout << std::setw( 6) << split.count();
 
-                double const nps = static_cast<double>(1000 * node_count) / static_cast<double>(stopwatch.time().count());
+                auto const nps = static_cast<double>(node_count) / std::chrono::duration_cast<std::chrono::seconds>(split).count();
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
 
-                double const hashfull = 1000 * (static_cast<double>(TT.size()) / static_cast<double>(TT.capacity()));
+                double const hashfull = 1000 * (static_cast<double>(TT.size()) / TT.capacity());
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
 

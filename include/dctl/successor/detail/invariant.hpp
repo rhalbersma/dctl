@@ -2,12 +2,13 @@
 #include <dctl/color.hpp>               // Color
 #include <dctl/successor/count.hpp>     // count
 #include <dctl/successor/detect.hpp>    // detect
+#include <cstddef>                      // size_t
 
 namespace dctl {
 namespace successor {
 namespace detail {
 
-template<Color ToMove, bool IsReverse, class Select, class... Args, class Position>
+template<Color ToMove, class Select, bool IsReverse, class... Args, class Position>
 auto invariant(Position const& p, std::size_t n)
 {
         return

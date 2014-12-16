@@ -22,10 +22,8 @@ template<class CharT, class Traits, class Rules, class Board>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, Position<Rules, Board> const& p)
 {
         switch (getpositionformat(ostr)) {
-        case manip::PositionFormat::diag:
-                return ostr << setup::diagram<pdn::protocol>()(p);
-        case manip::PositionFormat::fen:
-                return ostr << setup::write<pdn::protocol>()(p);
+        case manip::PositionFormat::diag : return ostr << setup::diagram<pdn::protocol>()(p);
+        case manip::PositionFormat::fen  : return ostr << setup::write<pdn::protocol>()(p);
         }
 }
 

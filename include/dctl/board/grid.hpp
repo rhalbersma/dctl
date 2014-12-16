@@ -73,15 +73,15 @@ public:
         constexpr auto shift_size(Angle const& alpha) const
         {
                 switch (alpha) {
-                case   0: return right()     ;
-                case  45: return right_up()  ;
-                case  90: return up()        ;
-                case 135: return left_up()   ;
-                case 180: return left()      ;
-                case 225: return left_down() ;
-                case 270: return down()      ;
-                case 315: return right_down();
-                default: return throw std::invalid_argument("Shift direction angles shall be a multiple of 45 degrees"), 0;
+                case   0 : return right()     ;
+                case  45 : return right_up()  ;
+                case  90 : return up()        ;
+                case 135 : return left_up()   ;
+                case 180 : return left()      ;
+                case 225 : return left_down() ;
+                case 270 : return down()      ;
+                case 315 : return right_down();
+                default  : return throw std::invalid_argument("Shift direction angles shall be a multiple of 45 degrees"), 0;
                 }
         }
 

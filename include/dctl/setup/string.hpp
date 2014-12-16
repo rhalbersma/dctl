@@ -18,13 +18,9 @@ template<class Token>
 auto read_color(char c)
 {
         switch (c) {
-        case Token::black:
-                return Color::black;
-        case Token::white:
-                return Color::white;
-        default:
-                assert(false);
-                return Color::black;
+        case Token::black : return Color::black;
+        case Token::white : return Color::white;
+        default           : assert(false); return Color::black;
         }
 }
 
@@ -73,15 +69,15 @@ struct read<Rules, Board, pdn::protocol, Token>
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch (ch) {
-                        case Token::black:
-                        case Token::white:
+                        case Token::black :
+                        case Token::white :
                                 p_side = read_color<Token>(ch);
                                 break;
-                        case Token::colon:
+                        case Token::colon :
                                 sstr >> ch;
                                 setup_color = read_color<Token>(ch);
                                 break;
-                        case Token::king:                                       // setup kings
+                        case Token::king :                                      // setup kings
                                 setup_kings = true;
                                 break;
                         default:
@@ -154,17 +150,10 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black:
-                                p_pieces[static_cast<bool>(Color::black)].set(b);    // black piece
-                                break;
-                        case Token::white:
-                                p_pieces[static_cast<bool>(Color::white)].set(b);    // white piece
-                                break;
-                        case Token::empty:
-                                break;
-                        default:
-                                assert(false);
-                                break;
+                        case Token::black : p_pieces[static_cast<bool>(Color::black)].set(b); break;
+                        case Token::white : p_pieces[static_cast<bool>(Color::white)].set(b); break;
+                        case Token::empty : break;
+                        default           : assert(false);
                         }
                         if (isupper(ch))
                                 p_kings.set(b);                  // king
