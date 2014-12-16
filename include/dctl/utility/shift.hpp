@@ -4,13 +4,11 @@
 namespace dctl {
 namespace util {
 
-// primary template
 template<bool>
-struct shift;
+struct Shift;
 
-// explicit specialization for bitwise shift-left
 template<>
-struct shift<false>
+struct Shift<false>
 {
         template<class T>
         constexpr auto operator()(T const& t, std::size_t n) const
@@ -19,9 +17,8 @@ struct shift<false>
         }
 };
 
-// explicit specialization for bitwise shift-right
 template<>
-struct shift<true>
+struct Shift<true>
 {
         template<class T>
         constexpr auto operator()(T const& t, std::size_t n) const
@@ -30,13 +27,11 @@ struct shift<true>
         }
 };
 
-// primary template
 template<bool>
-struct shift_assign;
+struct ShiftAssign;
 
-// explicit specialization for bitwise shift-left assignment
 template<>
-struct shift_assign<false>
+struct ShiftAssign<false>
 {
         template<class T>
         constexpr void operator()(T& t, std::size_t n) const
@@ -45,9 +40,8 @@ struct shift_assign<false>
         }
 };
 
-// explicit specialization for bitwise shift-right assignment
 template<>
-struct shift_assign<true>
+struct ShiftAssign<true>
 {
         template<class T>
         constexpr void operator()(T& t, std::size_t n) const

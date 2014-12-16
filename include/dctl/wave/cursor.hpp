@@ -45,14 +45,14 @@ public:
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
         {
-                util::shift_assign<is_positive(theta)>{}(cursor_, S);
+                util::ShiftAssign<is_positive(theta)>{}(cursor_, S);
                 return *this;
         }
 
         // operator--(int) provided by boost::unit_steppable
         auto& operator--() noexcept
         {
-                util::shift_assign<is_negative(theta)>{}(cursor_, S);
+                util::ShiftAssign<is_negative(theta)>{}(cursor_, S);
                 return *this;
         }
 

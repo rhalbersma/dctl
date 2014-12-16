@@ -91,7 +91,7 @@ private:
                 Variation pv(ial);
                 announce(p, depth);
                 statistics_.reset();
-                Stopwatch stopwatch;
+                util::Stopwatch stopwatch;
                 stopwatch.start_stop();
                 for (auto i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
                         alpha = -infinity();
@@ -234,6 +234,7 @@ private:
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
+        template<class Stopwatch>
         void report(int depth, int value, Stopwatch const& stopwatch, Position const& p, Variation const& pv)
         {
                 std::cout << "info";
@@ -252,8 +253,8 @@ private:
                 std::cout << " nodes ";
                 std::cout << std::setw(11) << std::right << node_count;
 
-                std::cout << " time ";
                 auto const split = stopwatch.split_time();
+                std::cout << " time ";
                 std::cout << std::setw( 6) << split.count();
 
                 auto const nps = static_cast<double>(node_count) / std::chrono::duration_cast<std::chrono::seconds>(split).count();
@@ -261,7 +262,7 @@ private:
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
 
-                double const hashfull = 1000 * (static_cast<double>(TT.size()) / TT.capacity());
+                auto const hashfull = 1000 * (static_cast<double>(TT.size()) / TT.capacity());
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
 

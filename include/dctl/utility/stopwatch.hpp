@@ -5,6 +5,7 @@
 #include <vector>                       // vector
 
 namespace dctl {
+namespace util {
 
 class Stopwatch
 {
@@ -14,7 +15,7 @@ class Stopwatch
         std::vector<clock::time_point> splits;
         bool is_running = false;
 
-        auto invariant() const
+        bool invariant() const noexcept
         {
                 return
                         implies(splits.empty()    , !is_running) &&
@@ -34,6 +35,7 @@ public:
                         start();
                 else
                         stop();
+                assert(invariant());
         }
 
         void split_reset()
@@ -42,6 +44,7 @@ public:
                         split();
                 else
                         reset();
+                assert(invariant());
         }
 
         units elapsed_time() const noexcept
@@ -82,7 +85,6 @@ private:
                 assert(!is_running);
                 is_running = true;
                 split();
-                assert(invariant());
         }
 
         void stop()
@@ -90,22 +92,20 @@ private:
                 assert(is_running);
                 split();
                 is_running = false;
-                assert(invariant());
         }
 
         void split()
         {
                 assert(is_running);
                 splits.push_back(clock::now());
-                assert(invariant());
         }
 
         void reset()
         {
                 assert(!is_running);
                 splits.clear();
-                assert(invariant());
         }
 };
 
+}       // namespace util
 }       // namespace dctl
