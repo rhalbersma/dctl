@@ -10,8 +10,6 @@
 #include <dctl/ray.hpp>                                 // make_iterator
 #include <dctl/type_traits.hpp>                         // board_type_t, set_type_t, value_type_t
 #include <dctl/wave/iterator.hpp>                       // make_iterator
-#include <boost/range/adaptor/transformed.hpp>          // transformed
-#include <boost/range/algorithm_ext/push_back.hpp>      // push_back
 #include <iterator>                                     // prev
 
 namespace dctl {
@@ -49,10 +47,10 @@ private:
         auto transform_movers(set_type const& active_pawns) const
         {
                 auto const movers = active_pawns & set_type(*std::prev(along_wave<Direction>(not_occupied)));
-                boost::push_back(moves, movers | boost::adaptors::transformed([](auto const& from_sq) {
+                for (auto&& from_sq : movers) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
-                        return move_type{from_sq, dest_sq, ToMove, is_promotion(dest_sq)};
-                }));
+                        moves.emplace_back(from_sq, dest_sq, ToMove, is_promotion(dest_sq));
+                }
         }
 
         template<int Direction>
