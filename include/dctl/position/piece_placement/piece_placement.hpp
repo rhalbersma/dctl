@@ -48,36 +48,35 @@ public:
                 assert(invariant());
         }
 
-        // modifiers
-
         template<class Move, class Index>
         void make(Move const& m, Index& hash)
         {
                 using Zobrist = zobrist::PiecePlacement<set_type<Board>::size()>;
 
-                by_color[static_cast<std::size_t>(m.to_move())].reset(m.from());
-                by_color[static_cast<std::size_t>(m.to_move())].set  (m.dest());
-                hash ^= Zobrist::by_color[static_cast<std::size_t>(m.to_move())][m.from()];
-                hash ^= Zobrist::by_color[static_cast<std::size_t>(m.to_move())][m.dest()];
+                pieces(m.to_move()).reset(m.from());
+                pieces(m.to_move()).set  (m.dest());
+                hash ^= Zobrist::pieces(m.to_move())[m.from()];
+                hash ^= Zobrist::pieces(m.to_move())[m.dest()];
+
+                if (m.is_jump()) {
+                        pieces(!m.to_move()) ^= m.captured();
+                        pieces(Piece::pawn ) ^= m.captured(Piece::pawn);
+                        pieces(Piece::king ) ^= m.captured(Piece::king);
+                        hash ^= zobrist::hash_xor_accumulate(m.captured()           , Zobrist::pieces(!m.to_move()));
+                        hash ^= zobrist::hash_xor_accumulate(m.captured(Piece::pawn), Zobrist::pieces(Piece::pawn));
+                        hash ^= zobrist::hash_xor_accumulate(m.captured(Piece::king), Zobrist::pieces(Piece::king));
+                }
 
                 if (m.is_promotion()) {
-                        by_piece[static_cast<std::size_t>(Piece::pawn)].reset(m.from());
-                        by_piece[static_cast<std::size_t>(Piece::king)].set  (m.dest());
-                        hash ^= Zobrist::by_piece[static_cast<std::size_t>(Piece::pawn)][m.from()];
-                        hash ^= Zobrist::by_piece[static_cast<std::size_t>(Piece::king)][m.dest()];
+                        pieces(Piece::pawn).reset(m.from());
+                        pieces(Piece::king).set  (m.dest());
+                        hash ^= Zobrist::pieces(Piece::pawn)[m.from()];
+                        hash ^= Zobrist::pieces(Piece::king)[m.dest()];
                 } else {
-                        by_piece[static_cast<std::size_t>(m.with())].reset(m.from());
-                        by_piece[static_cast<std::size_t>(m.with())].set  (m.dest());
-                        hash ^= Zobrist::by_piece[static_cast<std::size_t>(m.with())][m.from()];
-                        hash ^= Zobrist::by_piece[static_cast<std::size_t>(m.with())][m.dest()];
-                }
-                if (m.is_jump()) {
-                        by_color[static_cast<std::size_t>(!m.to_move())] ^= m.captured();
-                        by_piece[static_cast<std::size_t>(Piece::pawn) ] ^= m.captured(Piece::pawn);
-                        by_piece[static_cast<std::size_t>(Piece::king) ] ^= m.captured(Piece::king);
-                        hash ^= zobrist::hash_xor_accumulate(Zobrist::by_color[static_cast<std::size_t>(!m.to_move())], m.captured());
-                        hash ^= zobrist::hash_xor_accumulate(Zobrist::by_piece[static_cast<std::size_t>(Piece::pawn )], m.captured(Piece::pawn));
-                        hash ^= zobrist::hash_xor_accumulate(Zobrist::by_piece[static_cast<std::size_t>(Piece::king )], m.captured(Piece::king));
+                        pieces(m.with()).reset(m.from());
+                        pieces(m.with()).set  (m.dest());
+                        hash ^= Zobrist::pieces(m.with())[m.from()];
+                        hash ^= Zobrist::pieces(m.with())[m.dest()];
                 }
                 assert(invariant());
         }
@@ -107,16 +106,27 @@ public:
                 auto constexpr squares = board::Squares<Board>::mask();
                 return squares ^ pieces();
         }
+
+private:
+        auto& pieces(Color c) noexcept
+        {
+                return by_color[static_cast<std::size_t>(c)];
+        }
+
+        auto& pieces(Piece p) noexcept
+        {
+                return by_piece[static_cast<std::size_t>(p)];
+        }
 };
 
 template<class TabulationHash, class Rules, class Board>
 auto hash_xor_accumulate(TabulationHash const& h, PiecePlacement<Rules, Board> const& p)
 {
         return
-                zobrist::hash_xor_accumulate(h.by_color[static_cast<std::size_t>(Color::black)], p.pieces(Color::black)) ^
-                zobrist::hash_xor_accumulate(h.by_color[static_cast<std::size_t>(Color::white)], p.pieces(Color::white)) ^
-                zobrist::hash_xor_accumulate(h.by_piece[static_cast<std::size_t>(Piece::pawn )], p.pieces(Piece::pawn )) ^
-                zobrist::hash_xor_accumulate(h.by_piece[static_cast<std::size_t>(Piece::king )], p.pieces(Piece::king ))
+                zobrist::hash_xor_accumulate(p.pieces(Color::black), h.pieces(Color::black)) ^
+                zobrist::hash_xor_accumulate(p.pieces(Color::white), h.pieces(Color::white)) ^
+                zobrist::hash_xor_accumulate(p.pieces(Piece::pawn ), h.pieces(Piece::pawn )) ^
+                zobrist::hash_xor_accumulate(p.pieces(Piece::king ), h.pieces(Piece::king ))
         ;
 }
 
