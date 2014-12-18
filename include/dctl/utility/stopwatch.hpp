@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/utility/logical.hpp>     // implies
+#include <dctl/utility/logic.hpp>       // implies
 #include <cassert>                      // assert
 #include <chrono>                       // duration_cast, high_resolution_clock, milliseconds
 #include <vector>                       // vector
