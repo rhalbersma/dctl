@@ -12,8 +12,8 @@ struct equal_to
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
                 return
-                        std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with_king()) ==
-                        std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with_king())
+                        std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with(Piece::king)) ==
+                        std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with(Piece::king))
                 ;
         }
 };
@@ -35,8 +35,8 @@ struct less
                 else
                         // delta_kings or delta_pawns is zero or they have equal sign
                         return
-                                std::forward_as_tuple(lhs.num_captured(), lhs.is_with_king()) <
-                                std::forward_as_tuple(rhs.num_captured(), rhs.is_with_king())
+                                std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king)) <
+                                std::forward_as_tuple(rhs.num_captured(), rhs.is_with(Piece::king))
                         ;
         }
 };

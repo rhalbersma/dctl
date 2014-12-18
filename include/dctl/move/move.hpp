@@ -2,10 +2,11 @@
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/rules.hpp>
-#include <dctl/set_type.hpp>    // set_type
-#include <dctl/type_traits.hpp> // board_type_t, rules_type_t
-#include <cassert>              // assert
-#include <tuple>                // forward_as_tuple
+#include <dctl/set_type.hpp>            // set_type
+#include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
+#include <dctl/utility/logic.hpp>
+#include <cassert>                      // assert
+#include <tuple>                        // forward_as_tuple
 
 namespace dctl {
 
@@ -18,26 +19,24 @@ public:
         using Set = set_type<Board>;
 
 private:
-        Set captured_[2]{};
-        std::size_t from_{};
-        std::size_t dest_{};
-        Color to_move_{};
-        Piece with_{Piece::pawn};
-        bool is_promotion_{};
+        Set captured_[2];
+        std::size_t from_;
+        std::size_t dest_;
+        Color to_move_;
+        Piece with_;
+        bool is_promotion_ = false;
 
         auto invariant() const
         {
                 return
-                        !(from() == dest() && !is_jump()) &&
-                        disjoint(captured(Piece::pawn), captured(Piece::king)) &&
-                        !(with_ == Piece::king && is_promotion_)
+                        util::implies(from() == dest(), is_jump()) &&
+                        util::nand(is_with(Piece::king), is_promotion()) &&
+                        disjoint(captured(Piece::pawn), captured(Piece::king))
                 ;
         }
 
 public:
-        // constructors
-
-        // king move
+        // king push
         constexpr BaseMove(std::size_t src, std::size_t dst, Color c)
         :
                 from_{src},
@@ -48,12 +47,13 @@ public:
                 assert(invariant());
         }
 
-        // pawn move
+        // pawn push
         constexpr BaseMove(std::size_t src, std::size_t dst, Color c, bool prom)
         :
                 from_{src},
                 dest_{dst},
                 to_move_{c},
+                with_{Piece::pawn},
                 is_promotion_{prom}
         {
                 assert(invariant());
@@ -72,8 +72,6 @@ public:
         {
                 assert(invariant());
         }
-
-        // observers
 
         constexpr auto captured(Piece p) const noexcept
         {
@@ -105,14 +103,14 @@ public:
                 return with_;
         }
 
+        constexpr auto is_with(Piece p) const noexcept
+        {
+                return with() == p;
+        }
+
         constexpr auto is_promotion() const noexcept
         {
                 return is_promotion_;
-        }
-
-        constexpr auto is_with_king() const noexcept
-        {
-                return with() == Piece::king;
         }
 
         constexpr auto is_jump() const noexcept
@@ -122,7 +120,7 @@ public:
 
         constexpr auto is_reversible() const noexcept
         {
-                return is_with_king() && !is_jump();
+                return is_with(Piece::king) && !is_jump();
         }
 
         constexpr auto num_captured(Piece p) const noexcept
@@ -134,8 +132,6 @@ public:
         {
                 return captured().count();
         }
-
-        // predicates
 
         friend constexpr auto
         operator==(BaseMove const& lhs, BaseMove const& rhs) noexcept

@@ -12,8 +12,8 @@ struct equal_to
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
                 return
-                        std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with_king(), lhs.king_order()) ==
-                        std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with_king(), rhs.king_order())
+                        std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with(Piece::king), lhs.king_order()) ==
+                        std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with(Piece::king), rhs.king_order())
                 ;
         }
 };
@@ -24,8 +24,8 @@ struct less
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
                 return
-                        std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with_king(), lhs.king_order()) <
-                        std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with_king(), rhs.king_order())
+                        std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with(Piece::king), lhs.king_order()) <
+                        std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with(Piece::king), rhs.king_order())
                 ;
         }
 };
