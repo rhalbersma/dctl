@@ -22,7 +22,6 @@ class Generate<ToMove, select::push, IsReverse, PieceKingType, Position, Sequenc
         using board_type = board_type_t<Position>;
         using rules_type = rules_type_t<Position>;
         using   set_type =   set_type_t<Position>;
-        using  move_type = value_type_t<Sequence>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
         set_type const& not_occupied;
