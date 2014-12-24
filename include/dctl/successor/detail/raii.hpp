@@ -98,8 +98,9 @@ class SetWithKing
 public:
         ~SetWithKing()
         {
-                assert(tracker.is_with(Piece::king));
+                assert(tracker.is_with(Piece::king && tracker.is_into(Piece::pawn)));
                 tracker.set_with(Piece::pawn);
+                tracker.set_into(Piece::pawn);
         }
 
         SetWithKing(SetWithKing const&) = delete;
@@ -109,8 +110,9 @@ public:
         :
                 tracker{t}
         {
-                assert(tracker.is_with(Piece::pawn));
+                assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::pawn));
                 tracker.set_with(Piece::king);
+                tracker.set_into(Piece::king);
         }
 };
 
@@ -121,8 +123,8 @@ class SetPromotion
 public:
         ~SetPromotion()
         {
-                assert(tracker.is_promotion());
-                tracker.set_promotion(false);
+                assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::king));
+                tracker.set_into(Piece::pawn);
         }
 
         SetPromotion(SetPromotion const&) = delete;
@@ -132,8 +134,8 @@ public:
         :
                 tracker{t}
         {
-                assert(!tracker.is_promotion());
-                tracker.set_promotion(true);
+                assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::pawn));
+                tracker.set_into(Piece::king);
         }
 };
 

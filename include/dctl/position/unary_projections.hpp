@@ -21,7 +21,7 @@ template<class Position>
 auto moveable_kings(Position const& p, Color c, std::true_type)
 {
         auto kings = p.pieces(c, Piece::king);
-        if (p.pieces(c, Piece::king).any() && p.pieces(c, Piece::pawn).any() && p.mrp_king(c).is_max())
+        if (p.mrp_king(c).is_active() && p.mrp_king(c).is_max())
                 kings.reset(p.mrp_king(c).square());
         return kings;
 }

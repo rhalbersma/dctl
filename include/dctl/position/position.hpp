@@ -131,8 +131,8 @@ public:
 
                 piece_placement_.make(m, hash_);
 
-                flip(to_move_);
                 hash_ ^= zobrist::ActiveColor<>::color[true];
+                flip(to_move_);
 
                 assert(hash_invariant());
         }

@@ -29,7 +29,7 @@ class Tracker
         set_type remaining_targets_;
         set_type not_occupied_;
         Piece with_{Piece::pawn};
-        bool is_promotion_{};
+        Piece into_{Piece::pawn};
         set_type king_order_{};
         Arena<std::size_t> sqa_;
         stack_vector<std::size_t> visited_path_ = stack_vector<std::size_t>(Alloc<std::size_t>{sqa_});
@@ -104,9 +104,9 @@ public:
                 with_ = p;
         }
 
-        auto set_promotion(bool b) noexcept
+        auto set_into(Piece p) noexcept
         {
-                is_promotion_ = b;
+                into_ = p;
         }
 
         template<class Iterator>
@@ -188,12 +188,17 @@ public:
 
         auto is_with(Piece p) const noexcept
         {
-                return with_ == p;
+                return with() == p;
         }
 
-        auto is_promotion() const noexcept
+        auto into() const
         {
-                return is_promotion_;
+                return into_;
+        }
+
+        auto is_into(Piece p) const noexcept
+        {
+                return into() == p;
         }
 
 private:
