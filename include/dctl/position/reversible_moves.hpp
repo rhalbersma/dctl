@@ -5,7 +5,7 @@ namespace dctl {
 
 class ReversibleMoves
 {
-        std::size_t ply{};
+        std::size_t ply = 0;
 public:
         ReversibleMoves() = default;
 

@@ -24,37 +24,37 @@ private:
         std::size_t dest_;
         Color to_move_;
         Piece with_;
-        bool is_promotion_ = false;
+        Piece into_;
 
         auto invariant() const
         {
                 return
                         util::implies(from() == dest(), is_jump()) &&
-                        util::nand(is_with(Piece::king), is_promotion()) &&
                         disjoint(captured(Piece::pawn), captured(Piece::king))
                 ;
         }
 
 public:
+        // pawn push
+        constexpr BaseMove(std::size_t src, std::size_t dst, Color c, Piece promotion)
+        :
+                from_{src},
+                dest_{dst},
+                to_move_{c},
+                with_{Piece::pawn},
+                into_{promotion}
+        {
+                assert(invariant());
+        }
+
         // king push
         constexpr BaseMove(std::size_t src, std::size_t dst, Color c)
         :
                 from_{src},
                 dest_{dst},
                 to_move_{c},
-                with_{Piece::king}
-        {
-                assert(invariant());
-        }
-
-        // pawn push
-        constexpr BaseMove(std::size_t src, std::size_t dst, Color c, bool prom)
-        :
-                from_{src},
-                dest_{dst},
-                to_move_{c},
-                with_{Piece::pawn},
-                is_promotion_{prom}
+                with_{Piece::king},
+                into_{Piece::king}
         {
                 assert(invariant());
         }
@@ -68,7 +68,7 @@ public:
                 dest_{t.dest()},
                 to_move_{t.to_move()},
                 with_{t.with()},
-                is_promotion_{t.is_promotion()}
+                into_{t.into()}
         {
                 assert(invariant());
         }
@@ -108,9 +108,19 @@ public:
                 return with() == p;
         }
 
+        constexpr auto into() const noexcept
+        {
+                return into_;
+        }
+
+        constexpr auto is_into(Piece p) const noexcept
+        {
+                return into() == p;
+        }
+
         constexpr auto is_promotion() const noexcept
         {
-                return is_promotion_;
+                return is_with(Piece::pawn) && is_into(Piece::king);
         }
 
         constexpr auto is_jump() const noexcept

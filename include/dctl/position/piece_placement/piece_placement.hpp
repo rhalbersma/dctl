@@ -53,30 +53,24 @@ public:
         {
                 using Zobrist = zobrist::PiecePlacement<set_type<Board>::size()>;
 
-                pieces(m.to_move()).reset(m.from());
-                pieces(m.to_move()).set  (m.dest());
                 hash ^= Zobrist::pieces(m.to_move())[m.from()];
                 hash ^= Zobrist::pieces(m.to_move())[m.dest()];
+                hash ^= Zobrist::pieces(m.with())[m.from()];
+                hash ^= Zobrist::pieces(m.into())[m.dest()];
+
+                pieces(m.to_move()).reset(m.from());
+                pieces(m.to_move()).set  (m.dest());
+                pieces(m.with()).reset(m.from());
+                pieces(m.into()).set  (m.dest());
 
                 if (m.is_jump()) {
+                        hash ^= zobrist::hash_xor_accumulate(Zobrist::pieces(!m.to_move()), m.captured());
+                        hash ^= zobrist::hash_xor_accumulate(Zobrist::pieces(Piece::pawn ), m.captured(Piece::pawn));
+                        hash ^= zobrist::hash_xor_accumulate(Zobrist::pieces(Piece::king ), m.captured(Piece::king));
+
                         pieces(!m.to_move()) ^= m.captured();
                         pieces(Piece::pawn ) ^= m.captured(Piece::pawn);
                         pieces(Piece::king ) ^= m.captured(Piece::king);
-                        hash ^= zobrist::hash_xor_accumulate(m.captured()           , Zobrist::pieces(!m.to_move()));
-                        hash ^= zobrist::hash_xor_accumulate(m.captured(Piece::pawn), Zobrist::pieces(Piece::pawn));
-                        hash ^= zobrist::hash_xor_accumulate(m.captured(Piece::king), Zobrist::pieces(Piece::king));
-                }
-
-                if (m.is_promotion()) {
-                        pieces(Piece::pawn).reset(m.from());
-                        pieces(Piece::king).set  (m.dest());
-                        hash ^= Zobrist::pieces(Piece::pawn)[m.from()];
-                        hash ^= Zobrist::pieces(Piece::king)[m.dest()];
-                } else {
-                        pieces(m.with()).reset(m.from());
-                        pieces(m.with()).set  (m.dest());
-                        hash ^= Zobrist::pieces(m.with())[m.from()];
-                        hash ^= Zobrist::pieces(m.with())[m.dest()];
                 }
                 assert(invariant());
         }
@@ -123,10 +117,10 @@ template<class TabulationHash, class Rules, class Board>
 auto hash_xor_accumulate(TabulationHash const& h, PiecePlacement<Rules, Board> const& p)
 {
         return
-                zobrist::hash_xor_accumulate(p.pieces(Color::black), h.pieces(Color::black)) ^
-                zobrist::hash_xor_accumulate(p.pieces(Color::white), h.pieces(Color::white)) ^
-                zobrist::hash_xor_accumulate(p.pieces(Piece::pawn ), h.pieces(Piece::pawn )) ^
-                zobrist::hash_xor_accumulate(p.pieces(Piece::king ), h.pieces(Piece::king ))
+                zobrist::hash_xor_accumulate(h.pieces(Color::black), p.pieces(Color::black)) ^
+                zobrist::hash_xor_accumulate(h.pieces(Color::white), p.pieces(Color::white)) ^
+                zobrist::hash_xor_accumulate(h.pieces(Piece::pawn ), p.pieces(Piece::pawn )) ^
+                zobrist::hash_xor_accumulate(h.pieces(Piece::king ), p.pieces(Piece::king ))
         ;
 }
 
