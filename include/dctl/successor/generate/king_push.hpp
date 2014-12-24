@@ -6,7 +6,6 @@
 #include <dctl/successor/select/push.hpp>               // push
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/position/unary_projections.hpp>
 #include <dctl/ray.hpp>                                 // make_iterator
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t, value_type_t

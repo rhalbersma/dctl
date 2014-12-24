@@ -261,8 +261,8 @@ auto hash_xor_accumulate(Position<Rules, Board> const& p)
         enum { N = MostRecentlyPushedKing<Rules, Board>::N };
 
         return
-                hash_xor_accumulate(zobrist::PiecePlacement<NumSquares>{}, p.piece_placement())                    ^
-                hash_xor_accumulate(zobrist::ActiveColor<>{}             , p.to_move())                       ^
+                hash_xor_accumulate(zobrist::PiecePlacement<NumSquares>{}, p.piece_placement())                      ^
+                hash_xor_accumulate(zobrist::ActiveColor<>{}             , p.to_move())                              ^
                 hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, p.mrp_king(Color::black), Color::black) ^
                 hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, p.mrp_king(Color::white), Color::white)
         ;
