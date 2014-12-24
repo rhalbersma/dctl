@@ -51,7 +51,7 @@ public:
         template<class Iterator>
         auto promote_en_passant(Iterator jumper) const
         {
-                assert(!tracker.is_with_king());
+                assert(!tracker.is_with(Piece::king));
                 return explore(jumper);
         }
 
