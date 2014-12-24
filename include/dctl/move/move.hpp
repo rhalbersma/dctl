@@ -130,7 +130,7 @@ public:
 
         constexpr auto num_captured() const noexcept
         {
-                return captured().count();
+                return captured(Piece::pawn).count() + captured(Piece::king).count();
         }
 
         friend constexpr auto

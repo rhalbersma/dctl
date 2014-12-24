@@ -3,7 +3,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
 #include <dctl/position/promotion.hpp>                  // is_promotion
-#include <dctl/successor/detail/raii.hpp>               // Launch, Capture, Visit, ToggleKingTargets, ToggleIsPromotion
+#include <dctl/successor/detail/raii.hpp>               // Launch, Capture, Visit, ToggleKingTargets, SetPromotion
 #include <dctl/successor/detail/tracker.hpp>            // Tracker
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/generate/king_jump.hpp>        // promote_en_passant
@@ -162,7 +162,7 @@ private:
                 if (!is_promotion(*jumper))
                         return add_jump();
 
-                raii::ToggleIsPromotion<tracker_type> guard{tracker};
+                raii::SetPromotion<tracker_type> guard{tracker};
                 add_jump();
         }
 
@@ -176,7 +176,7 @@ private:
                         return;
                 }
 
-                raii::ToggleIsPromotion<tracker_type> guard{tracker};
+                raii::SetPromotion<tracker_type> guard{tracker};
 
                 // tag dispatching on whether pawns can capture kings
                 promotion_king_targets_dispatch(jumper, is_pawn_jump_king_t<rules_type>{});

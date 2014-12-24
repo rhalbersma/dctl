@@ -1,52 +1,32 @@
 #pragma once
-#include <cassert>                      // assert
+#include <cstddef>      // size_t
 
 namespace dctl {
 
 class ReversibleMoves
 {
+        std::size_t ply{};
 public:
-        // constructors
-
         ReversibleMoves() = default;
 
-        explicit ReversibleMoves(int n) noexcept
+        explicit ReversibleMoves(std::size_t n) noexcept
         :
-                ply_{n}
+                ply{n}
         {}
 
-        // modifiers
+        /* implicit */ operator auto() const noexcept
+        {
+                return ply;
+        }
 
         template<class Move>
         void make(Move const& m) noexcept
         {
-                if (m.is_reversible()) {
-                        ++ply_;
-                        assert(!empty());
-                } else {
-                        ply_ = 0;
-                        assert(empty());
-                }
+                if (m.is_reversible())
+                        ++ply;
+                else
+                        ply = 0;
         }
-
-        // observers
-
-        /* implicit */ operator int() const noexcept
-        {
-                return ply_;
-        }
-
-private:
-        // contracts
-
-        bool empty() const
-        {
-                return 0 == ply_;
-        }
-
-        // representation
-
-        int ply_{};
 };
 
 }       // namespace dctl

@@ -35,12 +35,15 @@ public:
         friend class Cursor;
 
         template<int M>
-        Cursor(Cursor<Board, M> const& other) noexcept
+        /* implicit */ Cursor(Cursor<Board, M> const& other) noexcept
         :
                 cursor_{other.cursor_}
         {}
 
-        // modifiers
+        /* implicit */ operator auto() const noexcept
+        {
+                return cursor_;
+        }
 
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
@@ -54,13 +57,6 @@ public:
         {
                 util::ShiftAssign<is_negative(theta)>{}(cursor_, S);
                 return *this;
-        }
-
-        // observers
-
-        /* implicit */ operator Set() const noexcept
-        {
-                return cursor_;
         }
 };
 

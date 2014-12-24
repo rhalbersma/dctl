@@ -1,6 +1,7 @@
 #pragma once
-#include <cassert>      // assert
-#include <cstddef>      // size_t
+#include <dctl/piece.hpp>       // pawn, king
+#include <cassert>              // assert
+#include <cstddef>              // size_t
 
 namespace dctl {
 namespace successor {
@@ -91,48 +92,48 @@ public:
 };
 
 template<class Tracker>
-class ToggleIsWithKing
+class SetWithKing
 {
         Tracker& tracker;
 public:
-        ~ToggleIsWithKing()
+        ~SetWithKing()
         {
-                assert(tracker.is_with_king());
-                tracker.toggle_is_with_king();
+                assert(tracker.is_with(Piece::king));
+                tracker.set_with(Piece::pawn);
         }
 
-        ToggleIsWithKing(ToggleIsWithKing const&) = delete;
-        ToggleIsWithKing& operator=(ToggleIsWithKing const&) = delete;
+        SetWithKing(SetWithKing const&) = delete;
+        SetWithKing& operator=(SetWithKing const&) = delete;
 
-        ToggleIsWithKing(Tracker& t)
+        SetWithKing(Tracker& t)
         :
                 tracker{t}
         {
-                assert(!tracker.is_with_king());
-                tracker.toggle_is_with_king();
+                assert(tracker.is_with(Piece::pawn));
+                tracker.set_with(Piece::king);
         }
 };
 
 template<class Tracker>
-class ToggleIsPromotion
+class SetPromotion
 {
         Tracker& tracker;
 public:
-        ~ToggleIsPromotion()
+        ~SetPromotion()
         {
                 assert(tracker.is_promotion());
-                tracker.toggle_is_promotion();
+                tracker.set_promotion(false);
         }
 
-        ToggleIsPromotion(ToggleIsPromotion const&) = delete;
-        ToggleIsPromotion& operator=(ToggleIsPromotion const&) = delete;
+        SetPromotion(SetPromotion const&) = delete;
+        SetPromotion& operator=(SetPromotion const&) = delete;
 
-        ToggleIsPromotion(Tracker& t)
+        SetPromotion(Tracker& t)
         :
                 tracker{t}
         {
                 assert(!tracker.is_promotion());
-                tracker.toggle_is_promotion();
+                tracker.set_promotion(true);
         }
 };
 
