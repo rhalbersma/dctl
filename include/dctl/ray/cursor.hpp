@@ -20,6 +20,7 @@ class Cursor
 
         using Square = std::size_t;
 
+        int cursor_{};
 public:
         // constructors
 
@@ -34,12 +35,15 @@ public:
         friend class Cursor;
 
         template<int M>
-        Cursor(Cursor<Board, M> const& other) noexcept
+        /* implicit */ Cursor(Cursor<Board, M> const& other) noexcept
         :
                 cursor_{other.cursor_}
         {}
 
-        // modifiers
+        /* implicit */ operator auto() const noexcept
+        {
+                return static_cast<Square>(cursor_);
+        }
 
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
@@ -74,18 +78,6 @@ public:
         {
                 return (lhs.cursor_ - rhs.cursor_) / N;
         }
-
-        // observers
-
-        /* implicit */ operator Square() const noexcept
-        {
-                return static_cast<Square>(cursor_);
-        }
-
-private:
-        // representation
-
-        int cursor_{};
 };
 
 }       // namespace ray

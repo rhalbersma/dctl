@@ -24,11 +24,11 @@ class Tracker
         using rules_type = rules_type_t<Position>;
         using   set_type =   set_type_t<Position>;
 
-        set_type const king_targets_;
+        set_type const by_piece_[2];
         set_type initial_targets_;
         set_type remaining_targets_;
         set_type not_occupied_;
-        bool is_with_king_{};
+        Piece with_{Piece::pawn};
         bool is_promotion_{};
         set_type king_order_{};
         Arena<std::size_t> sqa_;
@@ -44,7 +44,7 @@ class Tracker
 public:
         explicit Tracker(Position const& p)
         :
-                king_targets_(p.pieces(!ToMove, Piece::king)),
+                by_piece_{p.pieces(!ToMove, Piece::pawn), p.pieces(!ToMove, Piece::king)},
                 initial_targets_(p.pieces(!ToMove)),
                 remaining_targets_(initial_targets_),
                 not_occupied_(p.not_occupied())
@@ -96,17 +96,17 @@ public:
         auto toggle_king_targets() noexcept
         {
                 static_assert(!is_pawn_jump_king_v<rules_type>, "");
-                initial_targets_ = remaining_targets_ ^= king_targets_;
+                initial_targets_ = remaining_targets_ ^= by_piece_[static_cast<std::size_t>(Piece::king)];
         }
 
-        auto toggle_is_with_king() noexcept
+        auto set_with(Piece p) noexcept
         {
-                is_with_king_ ^= true;
+                with_ = p;
         }
 
-        auto toggle_is_promotion() noexcept
+        auto set_promotion(bool b) noexcept
         {
-                is_promotion_ ^= true;
+                is_promotion_ = b;
         }
 
         template<class Iterator>
@@ -146,7 +146,7 @@ public:
 
         auto is_king(std::size_t sq) const
         {
-                return king_targets_.test(sq);
+                return by_piece_[static_cast<std::size_t>(Piece::king)].test(sq);
         }
 
         auto king_order() const
@@ -161,10 +161,7 @@ public:
 
         auto captured(Piece p) const noexcept
         {
-                if (p == Piece::pawn)
-                        return captured() & ~king_targets_;
-                else
-                        return captured() &  king_targets_;
+                return captured() & by_piece_[static_cast<std::size_t>(p)];
         }
 
         auto from() const
@@ -186,12 +183,12 @@ public:
 
         auto with() const
         {
-                return is_with_king_ ? Piece::king : Piece::pawn;
+                return with_;
         }
 
-        auto is_with_king() const noexcept
+        auto is_with(Piece p) const noexcept
         {
-                return is_with_king_;
+                return with_ == p;
         }
 
         auto is_promotion() const noexcept

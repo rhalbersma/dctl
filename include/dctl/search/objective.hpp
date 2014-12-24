@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/search/score.hpp>
 #include <dctl/successor.hpp>
+#include <xstd/cstddef.hpp>
 #include <type_traits>                  // false_type, true_type
 
 namespace dctl {
@@ -69,6 +70,8 @@ struct terminal<Misere>
 template<class Position>
 bool is_cycle(Position const& p)
 {
+        using namespace xstd::support_literals;
+
         // a cycle needs at least 4 reversible moves
         if (p.reversible_moves() < 4) return false;
 
@@ -76,7 +79,7 @@ bool is_cycle(Position const& p)
         auto q = grand_parent(*grand_parent(p));
 
         // compare the ancestor hash indices with the current hash index
-        for (auto i = 4; i <= p.reversible_moves(); i += 2) {
+        for (auto i = 4_z; i <= p.reversible_moves(); i += 2) {
                 if (q->hash() == p.hash())
                         return true;
                 q = grand_parent(*q);
