@@ -72,6 +72,7 @@ public:
                         pieces(Piece::pawn ) ^= m.captured(Piece::pawn);
                         pieces(Piece::king ) ^= m.captured(Piece::king);
                 }
+
                 assert(invariant());
         }
 
