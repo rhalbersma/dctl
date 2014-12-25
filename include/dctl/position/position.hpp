@@ -77,6 +77,21 @@ public:
                 return piece_placement_.pieces(c, p);
         }
 
+        // unrestricted consecutive moves with the same king
+        auto pieces(Color c, PieceKingType, std::false_type) const
+        {
+                return pieces(c, Piece::king);
+        }
+
+        // restricted consecutive moves with the same king
+        auto pieces(Color c, PieceKingType, std::true_type) const
+        {
+                auto kings = pieces(c, Piece::king);
+                if (mrp_king(c).is_active() && mrp_king(c).is_max())
+                        kings.reset(mrp_king(c).square());
+                return kings;
+        }
+
         auto pieces() const
         {
                 return piece_placement_.pieces();

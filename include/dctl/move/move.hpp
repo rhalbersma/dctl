@@ -120,7 +120,7 @@ public:
 
         constexpr auto is_promotion() const noexcept
         {
-                return is_with(Piece::pawn) && is_into(Piece::king);
+                return is_with(Piece::pawn) && !is_into(Piece::pawn);
         }
 
         constexpr auto is_jump() const noexcept
