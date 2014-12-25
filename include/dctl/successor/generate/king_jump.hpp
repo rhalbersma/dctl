@@ -2,7 +2,7 @@
 #include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down, _deg, rotate, inverse
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PieceKingType
-#include <dctl/successor/detail/raii.hpp>               // Launch, Capture, Visit, SetWithKing
+#include <dctl/successor/detail/raii.hpp>               // Launch, Capture, Visit, SetKingJump
 #include <dctl/successor/detail/tracker.hpp>            // Tracker
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/select/jump.hpp>               // jump
@@ -44,14 +44,14 @@ public:
 
         auto operator()(set_type const& active_kings) const
         {
-                raii::SetWithKing<tracker_type> guard{tracker};
+                raii::SetKingJump<tracker_type> guard{tracker};
                 serialize(active_kings);
         }
 
         template<class Iterator>
         auto promote_en_passant(Iterator jumper) const
         {
-                assert(!tracker.is_with(Piece::king));
+                assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::king));
                 return explore(jumper);
         }
 
