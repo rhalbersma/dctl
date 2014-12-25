@@ -92,21 +92,21 @@ public:
 };
 
 template<class Tracker>
-class SetWithKing
+class SetKingJump
 {
         Tracker& tracker;
 public:
-        ~SetWithKing()
+        ~SetKingJump()
         {
-                assert(tracker.is_with(Piece::king && tracker.is_into(Piece::pawn)));
+                assert(tracker.is_with(Piece::king) && tracker.is_into(Piece::king));
                 tracker.set_with(Piece::pawn);
                 tracker.set_into(Piece::pawn);
         }
 
-        SetWithKing(SetWithKing const&) = delete;
-        SetWithKing& operator=(SetWithKing const&) = delete;
+        SetKingJump(SetKingJump const&) = delete;
+        SetKingJump& operator=(SetKingJump const&) = delete;
 
-        SetWithKing(Tracker& t)
+        SetKingJump(Tracker& t)
         :
                 tracker{t}
         {
