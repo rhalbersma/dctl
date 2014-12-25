@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
-#include <dctl/rule_traits.hpp>                         // is_restricted_same_king_push_t
+#include <dctl/rule_traits.hpp>                         // is_restricted_king_push_t
 #include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
 #include <dctl/successor/detect/king_push.hpp>          // Detect (king push specialization)
 #include <dctl/successor/detect/pawn_push.hpp>          // Detect (pawn push specialization)
@@ -25,7 +25,7 @@ public:
                 auto const not_occupied = p.not_occupied();
                 return
                         PawnPush{not_occupied}(p.pieces(ToMove, Piece::pawn)) ||
-                        KingPush{not_occupied}(p.pieces(ToMove, PieceKingType{}, is_restricted_same_king_push_t<rules_type>{}))
+                        KingPush{not_occupied}(p.pieces(ToMove, PieceKingType{}, is_restricted_king_push_t<rules_type>{}))
                 ;
         }
 };

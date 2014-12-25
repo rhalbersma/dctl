@@ -164,7 +164,7 @@ private:
         void make_irreversible(Move const& m)
         {
                 // tag dispatching on restrictions on consecutive moves with the same king
-                make_irreversible(m, is_restricted_same_king_push_t<Rules>{});
+                make_irreversible(m, is_restricted_king_push_t<Rules>{});
         }
 
         // restricted consecutive moves with the same king
