@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE(Traits)
         static_assert(is_long_ranged_king_v<T>, "");
 
         // optional
-        static_assert(is_en_passant_promotion_v<T>, "");
+        static_assert(std::is_same<promotion_category_t<T>, promotion_en_passant_tag>::value, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -11,7 +11,7 @@
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror, turn
-#include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump_t, is_orthogonal_jump_t, is_en_passant_promotion_t
+#include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump_t, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
 #include <dctl/wave/iterator.hpp>                       // make_iterator
 #include <cassert>                                      // assert
@@ -137,34 +137,76 @@ private:
         {
                 assert(is_onboard(jumper));
                 raii::Visit<tracker_type> guard{tracker, *jumper};
-                explore(jumper);
+                try_promotion_dispatch(jumper, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto explore(Iterator jumper) const
-        {
-                en_passant_promotion_dispatch(jumper, is_en_passant_promotion_t<rules_type>{});
-        }
-
-        template<class Iterator>
-        auto en_passant_promotion_dispatch(Iterator jumper, std::false_type) const
+        auto try_promotion_dispatch(Iterator jumper, promotion_sur_place_tag) const
         {
                 if (find_next(jumper))
                         return;
 
-                if (!is_promotion(*jumper))
-                        return add_jump();
+                if (is_promotion(*jumper))
+                        return on_promotion(jumper);
 
-                raii::SetPromotion<tracker_type> guard{tracker};
                 add_jump();
         }
 
         template<class Iterator>
-        auto en_passant_promotion_dispatch(Iterator jumper, std::true_type) const
+        auto try_promotion_dispatch(Iterator jumper, promotion_apres_fini_tag) const
         {
                 if (is_promotion(*jumper))
-                        return KingJumps{tracker, moves}.promotion_en_passant(jumper);
+                        return on_promotion(jumper);
+                try_next(jumper);
+        }
 
+        template<class Iterator>
+        auto on_promotion(Iterator jumper) const
+        {
+                raii::SetPromotion<tracker_type> guard{tracker};
+                on_promotion_dispatch(jumper, promotion_category_t<rules_type>{});
+        }
+
+        template<class Iterator>
+        auto on_promotion_dispatch(Iterator /* jumper */, promotion_sur_place_tag) const
+        {
+                add_jump();
+        }
+
+        template<class Iterator>
+        auto on_promotion_dispatch(Iterator jumper, promotion_apres_fini_tag) const
+        {
+                try_next(jumper);
+        }
+
+        template<class Iterator>
+        auto on_promotion_dispatch(Iterator jumper, promotion_en_passant_tag) const
+        {
+                king_jumps_dispatch(jumper, is_pawn_jump_king_t<rules_type>{});
+        }
+
+        template<class Iterator>
+        auto king_jumps_dispatch(Iterator jumper, std::true_type) const
+        {
+                try_next_king_jump(jumper);
+        }
+
+        template<class Iterator>
+        auto king_jumps_dispatch(Iterator jumper, std::false_type) const
+        {
+                raii::ToggleKingTargets<tracker_type> guard{tracker};
+                try_next_king_jump(jumper);
+        }
+
+        template<class Iterator>
+        auto try_next_king_jump(Iterator jumper) const
+        {
+                KingJumps{tracker, moves}.try_next(jumper, promotion_category_t<rules_type>{});
+        }
+
+        template<class Iterator>
+        auto try_next(Iterator jumper) const
+        {
                 if (!find_next(jumper))
                         add_jump();
         }
@@ -206,12 +248,9 @@ private:
         auto turn_dispatch(Iterator jumper, std::false_type, std::true_type) const
         {
                 static_assert(!is_down(direction_v<Iterator>) && (is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>)), "");
-
-                // tag dispatching on the current jump direction
                 return turn_dispatch(jumper, angle_t<direction_v<Iterator>>{});
         }
 
-        // the upward direction
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, angle_t<up(orientation)>) const
         {
@@ -223,7 +262,6 @@ private:
                 ;
         }
 
-        // the left upward direction
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, angle_t<left_up(orientation)>) const
         {
@@ -235,7 +273,6 @@ private:
                 ;
         }
 
-        // the right upward direction
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, angle_t<right_up(orientation)>) const
         {
@@ -247,7 +284,6 @@ private:
                 ;
         }
 
-        // the left direction
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, angle_t<left(orientation)>) const
         {
@@ -258,7 +294,6 @@ private:
                 ;
         }
 
-        // the right direction
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, angle_t<right(orientation)>) const
         {
