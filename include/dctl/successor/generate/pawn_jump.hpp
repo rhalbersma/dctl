@@ -47,22 +47,17 @@ public:
 
         auto operator()(set_type const& active_pawns) const
         {
-                if (active_pawns.none())
-                        return;
-
-                // tag dispatching on whether pawns can capture kings
-                king_targets_dispatch(active_pawns, is_pawn_jump_king_t<rules_type>{});
+                if (active_pawns.any())
+                        pawn_jump_king_dispatch(active_pawns, is_pawn_jump_king_t<rules_type>{});
         }
 
 private:
-        // pawns that can capture kings
-        auto king_targets_dispatch(set_type const& active_pawns, std::true_type) const
+        auto pawn_jump_king_dispatch(set_type const& active_pawns, std::true_type) const
         {
                 branch(active_pawns);
         }
 
-        // pawns that cannot capture kings
-        auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const
+        auto pawn_jump_king_dispatch(set_type const& active_pawns, std::false_type) const
         {
                 raii::ToggleKingTargets<tracker_type> guard{tracker};
                 branch(active_pawns);
@@ -142,21 +137,19 @@ private:
         {
                 assert(is_onboard(jumper));
                 raii::Visit<tracker_type> guard{tracker, *jumper};
-                find_next(jumper);
+                explore(jumper);
         }
 
         template<class Iterator>
-        auto find_next(Iterator jumper) const
+        auto explore(Iterator jumper) const
         {
-                // tag dispatching on promotion conditiongs
-                promotion_dispatch(jumper, is_en_passant_promotion_t<rules_type>{});
+                en_passant_promotion_dispatch(jumper, is_en_passant_promotion_t<rules_type>{});
         }
 
-        // pawns that promote apres-fini
         template<class Iterator>
-        auto promotion_dispatch(Iterator jumper, std::false_type) const
+        auto en_passant_promotion_dispatch(Iterator jumper, std::false_type) const
         {
-                if (explore(jumper))
+                if (find_next(jumper))
                         return;
 
                 if (!is_promotion(*jumper))
@@ -166,46 +159,18 @@ private:
                 add_jump();
         }
 
-        // pawns that promote en-passant
         template<class Iterator>
-        auto promotion_dispatch(Iterator jumper, std::true_type) const
+        auto en_passant_promotion_dispatch(Iterator jumper, std::true_type) const
         {
-                if (!is_promotion(*jumper)) {
-                        if (!explore(jumper))
-                                add_jump();
-                        return;
-                }
+                if (is_promotion(*jumper))
+                        return KingJumps{tracker, moves}.promotion_en_passant(jumper);
 
-                raii::SetPromotion<tracker_type> guard{tracker};
-
-                // tag dispatching on whether pawns can capture kings
-                promotion_king_targets_dispatch(jumper, is_pawn_jump_king_t<rules_type>{});
-        }
-
-        // pawns that can capture kings
-        template<class Iterator>
-        auto promotion_king_targets_dispatch(Iterator jumper, std::true_type) const
-        {
-                promote_en_passant(jumper);
-        }
-
-        // pawns that cannot capture kings
-        template<class Iterator>
-        auto promotion_king_targets_dispatch(Iterator jumper, std::false_type) const
-        {
-                raii::ToggleKingTargets<tracker_type> guard{tracker};
-                promote_en_passant(jumper);
-        }
-
-        template<class Iterator>
-        auto promote_en_passant(Iterator jumper) const
-        {
-                if (!KingJumps{tracker, moves}.promote_en_passant(jumper))
+                if (!find_next(jumper))
                         add_jump();
         }
 
         template<class Iterator>
-        auto explore(Iterator jumper) const
+        auto find_next(Iterator jumper) const
         {
                 return scan(jumper) | turn(jumper);
         }

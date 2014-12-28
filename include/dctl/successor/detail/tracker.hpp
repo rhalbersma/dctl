@@ -68,13 +68,11 @@ public:
 
         auto capture(std::size_t sq)
         {
-                // tag dispatching on jump removal
                 capture_dispatch(sq, is_en_passant_jump_removal_t<rules_type>{});
         }
 
         auto release()
         {
-                // tag dispatching on jump removal
                 release_dispatch(last_piece(), is_en_passant_jump_removal_t<rules_type>{});
         }
 
@@ -218,7 +216,7 @@ private:
         void capture_impl(std::size_t sq)
         {
                 if (is_king(sq))
-                        king_order_.set(set_type::size() - 1 - num_pieces());
+                        king_order_.set(set_type::size() - 1 - num_captured());
                 removed_pieces_.push_back(sq);
                 remaining_targets_.reset(sq);
         }
@@ -241,7 +239,7 @@ private:
                 remaining_targets_.set(sq);
                 removed_pieces_.pop_back();
                 if (is_king(sq))
-                        king_order_.reset(set_type::size() - 1 - num_pieces());
+                        king_order_.reset(set_type::size() - 1 - num_captured());
         }
 
         template<int Direction>
@@ -250,7 +248,7 @@ private:
                 return wave::make_iterator<board_type, Direction>(s);
         }
 
-        auto num_pieces() const
+        auto num_captured() const
         {
                 return removed_pieces_.size();
         }
