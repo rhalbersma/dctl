@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/rule_traits.hpp>
 
 namespace dctl {
 namespace russian {
@@ -12,7 +13,7 @@ struct Rules
         static constexpr auto is_long_ranged_king = true;       // 1.4.5
 
         // optional
-        static constexpr auto is_en_passant_promotion = true;   // 1.5.15
+        using promotion_category = promotion_en_passant_tag;    // 1.5.15
 };
 
 }       // namespace russian

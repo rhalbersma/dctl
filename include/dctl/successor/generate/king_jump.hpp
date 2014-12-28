@@ -14,7 +14,7 @@
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
-#include <type_traits>                                  // false_type, true_type
+#include <type_traits>                                  // is_base_of, false_type, true_type
 
 namespace dctl {
 namespace successor {
@@ -49,10 +49,10 @@ public:
         }
 
         template<class Iterator>
-        auto promotion_en_passant(Iterator jumper) const
+        auto try_next(Iterator jumper, promotion_en_passant_tag) const
         {
-                raii::SetPromotion<tracker_type> guard{tracker};
-                pawn_jump_king_dispatch(jumper, is_pawn_jump_king_t<rules_type>{});
+                assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::king));
+                try_next(jumper);
         }
 
 private:
@@ -113,24 +113,11 @@ private:
         {
                 assert(is_onboard(jumper));
                 raii::Visit<tracker_type> guard{tracker, *jumper};
-                explore(jumper);
+                try_next(jumper);
         }
 
         template<class Iterator>
-        auto pawn_jump_king_dispatch(Iterator jumper, std::true_type) const
-        {
-                explore(jumper);
-        }
-
-        template<class Iterator>
-        auto pawn_jump_king_dispatch(Iterator jumper, std::false_type) const
-        {
-                raii::ToggleKingTargets<tracker_type> guard{tracker};
-                explore(jumper);
-        }
-
-        template<class Iterator>
-        auto explore(Iterator jumper) const
+        auto try_next(Iterator jumper) const
         {
                 if (!find_next(jumper))
                         add(jumper);
@@ -243,13 +230,13 @@ private:
         }
 
         template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const& /* path */, short_ranged_type) const
+        auto slide_dispatch(Iterator& jumper, set_type const& /* path */, std::false_type) const
         {
                 ++jumper;
         }
 
         template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const& path, long_ranged_type) const
+        auto slide_dispatch(Iterator& jumper, set_type const& path, std::true_type) const
         {
                 do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
         }

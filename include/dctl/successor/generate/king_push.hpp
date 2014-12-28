@@ -39,7 +39,7 @@ public:
         }
 
 private:
-        auto find_dispatch(set_type const& active_kings, short_ranged_type) const
+        auto find_dispatch(set_type const& active_kings, std::false_type) const
         {
                 if (active_kings.none())
                         return;
@@ -50,7 +50,7 @@ private:
                 transform_movers<right_down(orientation)>(active_kings);
         }
 
-        auto find_dispatch(set_type const& active_kings, long_ranged_type) const
+        auto find_dispatch(set_type const& active_kings, std::true_type) const
         {
                 for (auto&& from_sq : active_kings) {
                         transform_targets(along_ray<left_up   (orientation)>(from_sq));

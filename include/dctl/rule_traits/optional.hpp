@@ -4,7 +4,7 @@
 #include <dctl/rule_traits/optional/is_directly_halt_after_final_king.hpp>
 #include <dctl/rule_traits/optional/is_directly_land_after_piece.hpp>
 #include <dctl/rule_traits/optional/is_en_passant_jump_removal.hpp>
-#include <dctl/rule_traits/optional/is_en_passant_promotion.hpp>
+#include <dctl/rule_traits/optional/promotion_category.hpp>
 #include <dctl/rule_traits/optional/is_orthogonal_jump.hpp>
 #include <dctl/rule_traits/optional/is_pawn_jump_king.hpp>
 #include <dctl/rule_traits/optional/is_remove_duplicates.hpp>
