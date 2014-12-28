@@ -145,10 +145,8 @@ private:
         {
                 if (find_next(jumper))
                         return;
-
                 if (is_promotion(*jumper))
                         return on_promotion(jumper);
-
                 add_jump();
         }
 
