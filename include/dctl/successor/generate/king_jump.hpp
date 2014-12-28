@@ -49,10 +49,10 @@ public:
         }
 
         template<class Iterator>
-        auto promote_en_passant(Iterator jumper) const
+        auto promotion_en_passant(Iterator jumper) const
         {
-                assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::king));
-                return explore(jumper);
+                raii::SetPromotion<tracker_type> guard{tracker};
+                pawn_jump_king_dispatch(jumper, is_pawn_jump_king_t<rules_type>{});
         }
 
 private:
@@ -113,20 +113,32 @@ private:
         {
                 assert(is_onboard(jumper));
                 raii::Visit<tracker_type> guard{tracker, *jumper};
-                find_next(jumper);
+                explore(jumper);
         }
 
         template<class Iterator>
-        auto find_next(Iterator jumper) const
+        auto pawn_jump_king_dispatch(Iterator jumper, std::true_type) const
         {
-                if (!explore(jumper))
-                        add(jumper);
+                explore(jumper);
+        }
+
+        template<class Iterator>
+        auto pawn_jump_king_dispatch(Iterator jumper, std::false_type) const
+        {
+                raii::ToggleKingTargets<tracker_type> guard{tracker};
+                explore(jumper);
         }
 
         template<class Iterator>
         auto explore(Iterator jumper) const
         {
-                // tag dispatching on king jump direction reversal
+                if (!find_next(jumper))
+                        add(jumper);
+        }
+
+        template<class Iterator>
+        auto find_next(Iterator jumper) const
+        {
                 return reverse_dispatch(jumper, is_reversible_king_jump_direction_t<rules_type>{});
         }
 
@@ -227,21 +239,17 @@ private:
         auto slide(Iterator& jumper, set_type const& path) const
         {
                 assert(is_onboard(jumper));
-
-                // tag dispatching on king range
                 slide_dispatch(jumper, path, is_long_ranged_king_t<rules_type>{});
         }
 
-        // short ranged kings
         template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const& /* path */, std::false_type) const
+        auto slide_dispatch(Iterator& jumper, set_type const& /* path */, short_ranged_type) const
         {
                 ++jumper;
         }
 
-        // long ranged kings
         template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const& path, std::true_type) const
+        auto slide_dispatch(Iterator& jumper, set_type const& path, long_ranged_type) const
         {
                 do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
         }
